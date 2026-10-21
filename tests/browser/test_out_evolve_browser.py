@@ -6,14 +6,20 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import subprocess
 import tempfile
 import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from playwright.sync_api import Page, expect, sync_playwright
+
+if TYPE_CHECKING:
+    from tests.browser.out_evolve_recovery import verify_archive_recovery
+else:
+    from out_evolve_recovery import verify_archive_recovery
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = Path(os.environ.get("OUT_EVOLVE_EVIDENCE", "/tmp/out-evolve-browser-evidence"))
@@ -180,13 +186,15 @@ def main() -> None:
             interrupted.on("dialog", lambda dialog: dialog.accept())
             interrupted.goto(url)
             idle(interrupted)
+            interrupted.locator("#evolve-topology").select_option("referenced")
             manifest = json.loads(interrupted.locator("#evolve-apparatus").input_value())
             for suffix in ("a", "b", "c"):
                 name = "dust-" + suffix
                 channel = dict(manifest["channels"][0], id=name)
                 manifest["channels"].append(channel)
                 manifest["edges"].append({"id": name + "-readout", "from": name, "to": "readout", "gain": 1})
-                for original in manifest["primitives"][:2]:
+                for kind in ("shield", "attenuate"):
+                    original = next(primitive for primitive in manifest["primitives"] if primitive["kind"] == kind)
                     primitive = dict(original, id=original["kind"] + "-" + name, target=name)
                     manifest["primitives"].append(primitive)
             interrupted.locator("#evolve-form details summary").click()
@@ -197,18 +205,57 @@ def main() -> None:
             expect(interrupted.locator("#evolve-status")).to_contain_text("cancelled")
             cancelled = history(interrupted)
             assert cancelled["events"][-1]["payload"]["status"] == "cancelled"
+            original_checkpoint = cancelled["events"][-1]["payload"]["checkpoint"]
+            assert original_checkpoint["apparatus"] == manifest
+            assert manifest["id"] != frozen["apparatus"]["id"]
+            interrupted.locator("#evolve-import").set_input_files(package_path)
+            idle(interrupted)
+            expect(interrupted.locator("#evolve-status")).to_contain_text("unfinished search remains resumable")
+            expect(interrupted.locator("#evolve-resume")).to_be_enabled()
+            imported_pause = history(interrupted)
+            imported_event_count = len(imported_pause["events"])
+            assert imported_pause["events"][: len(cancelled["events"])] == cancelled["events"]
+            assert imported_pause["events"][-1]["payload"]["package"]["digest"] == frozen["digest"]
+            with interrupted.expect_download() as downloaded:
+                interrupted.locator("#evolve-export-history").click()
+            paused_path = OUTPUT / "paused-with-import-history.json"
+            downloaded.value.save_as(paused_path)
+            assert json.loads(paused_path.read_text()) == imported_pause
             interrupted.reload()
             idle(interrupted)
-            assert history(interrupted) == cancelled
-            interrupted.locator("#evolve-resume").click()
-            idle(interrupted)
-            resumed = history(interrupted)
+            assert history(interrupted) == imported_pause
+            expect(interrupted.locator("#evolve-resume")).to_be_enabled()
+            portable_pause = browser.new_context()
+            resumed_page = portable_pause.new_page()
+            resumed_page.goto(url)
+            idle(resumed_page)
+            resumed_page.locator("#evolve-import").set_input_files(paused_path)
+            idle(resumed_page)
+            resumed_page.reload()
+            idle(resumed_page)
+            assert history(resumed_page) == imported_pause
+            expect(resumed_page.locator("#evolve-resume")).to_be_enabled()
+            resumed_page.locator("#evolve-resume").click()
+            idle(resumed_page)
+            resumed = history(resumed_page)
             (OUTPUT / "cancel-resume.json").write_text(json.dumps(resumed, indent=2))
-            assert resumed["events"][: len(cancelled["events"])] == cancelled["events"]
+            assert resumed["events"][:imported_event_count] == imported_pause["events"]
+            resumed_stops = [
+                event["payload"]["checkpoint"]
+                for event in resumed["events"][imported_event_count:]
+                if event["kind"] in ("search-stopped", "search-paused")
+            ]
+            assert resumed_stops
+            assert all(token["apparatus"] == manifest for token in resumed_stops)
+            assert all(token["options"] == original_checkpoint["options"] for token in resumed_stops)
+            assert (
+                resumed_stops[-1]["summary"]["work"]["synthesis"] >= original_checkpoint["summary"]["work"]["synthesis"]
+            )
             assert any(
                 event["payload"].get("status") in ("qualified", "exhausted", "infeasible")
                 for event in resumed["events"]
             ), resumed["events"][-1]["payload"].get("message", "No terminal construction event")
+            portable_pause.close()
             interrupted_context.close()
 
             mixed_context = browser.new_context(viewport={"width": 1440, "height": 1000})
@@ -285,6 +332,171 @@ def main() -> None:
             idle(bounded)
             assert history(bounded) == bounded_history
             bounded_context.close()
+
+            qualified_context = browser.new_context(accept_downloads=True)
+            qualified = qualified_context.new_page()
+            qualified.on("dialog", lambda dialog: dialog.accept())
+            qualified.goto(url)
+            idle(qualified)
+            qualified.locator("#evolve-topology").select_option("referenced")
+            qualified_abort_script = """() => {
+                    let pending = true;
+                    const put = IDBObjectStore.prototype.put;
+                    IDBObjectStore.prototype.put = function(value, ...args) {
+                        const request = put.call(this, value, ...args);
+                        const event = value?.events?.at(-1);
+                        if (pending && event?.kind === 'search-stopped' && event.payload.status === 'qualified') {
+                            pending = false;
+                            const transaction = this.transaction;
+                            queueMicrotask(() => transaction.abort());
+                        }
+                        return request;
+                    };
+                }"""
+            qualified.evaluate(qualified_abort_script)
+            qualified.locator("#evolve-construct").click()
+            expect(qualified.locator("#evolve-retry-save")).to_be_visible(timeout=120000)
+            expect(qualified.locator("#evolve-form")).to_have_attribute("aria-busy", "false")
+            pending_history = history(qualified)
+            pending_event_count = len(pending_history["events"])
+            pending_token = pending_history["events"][-1]["payload"]["checkpoint"]
+            assert pending_token["status"] == "qualified"
+            assert not any(event["kind"] == "package-frozen" for event in pending_history["events"])
+            (OUTPUT / "qualified-pending-history.json").write_text(json.dumps(pending_history, indent=2))
+            qualified.locator("#evolve-retry-save").click()
+            idle(qualified)
+            expect(qualified.locator("#evolve-retry-save")).to_be_hidden()
+            expect(qualified.locator("#evolve-resume")).to_have_text("Finish qualifying package")
+            expect(qualified.locator("#evolve-resume")).to_be_enabled()
+            assert history(qualified) == pending_history
+            qualified.reload()
+            idle(qualified)
+            assert history(qualified) == pending_history
+            expect(qualified.locator("#evolve-resume")).to_be_enabled()
+            expect(qualified.locator("#evolve-export-package")).to_be_disabled()
+            qualified.locator("#evolve-import").set_input_files(package_path)
+            idle(qualified)
+            expect(qualified.locator("#evolve-status")).to_contain_text("candidate checkpoint remains pending")
+            qualified_import = history(qualified)
+            assert qualified_import["events"][:pending_event_count] == pending_history["events"]
+            (OUTPUT / "qualified-pending-with-import.json").write_text(json.dumps(qualified_import, indent=2))
+            qualified.reload()
+            idle(qualified)
+            expect(qualified.locator("#evolve-resume")).to_be_enabled()
+            qualified.locator("#evolve-resume").click()
+            idle(qualified)
+            expect(qualified.locator("#evolve-status")).to_contain_text("Capability qualified.")
+            finalized = history(qualified)
+            assert finalized["events"][: len(qualified_import["events"])] == qualified_import["events"]
+            assert not any(event["kind"] == "search-stopped" for event in finalized["events"][pending_event_count:])
+            final_package = next(
+                event["payload"]["package"]
+                for event in reversed(finalized["events"])
+                if event["kind"] == "package-frozen"
+            )
+            assert final_package["search"]["checkpoint"] == pending_token
+            assert final_package["search"]["work"] == pending_token["summary"]["work"]
+            assert final_package["apparatus"] == pending_token["apparatus"]
+            expect(qualified.locator("#evolve-resume")).to_be_disabled()
+            (OUTPUT / "qualified-save-recovered.json").write_text(json.dumps(finalized, indent=2))
+            final_package_path = OUTPUT / "qualified-final-package.json"
+            final_package_path.write_text(json.dumps(final_package, indent=2))
+            matching_context = browser.new_context()
+            matching = matching_context.new_page()
+            matching.goto(url)
+            idle(matching)
+            matching.locator("#evolve-import").set_input_files(OUTPUT / "qualified-pending-history.json")
+            idle(matching)
+            expect(matching.locator("#evolve-resume")).to_be_enabled()
+            matching.locator("#evolve-import").set_input_files(final_package_path)
+            idle(matching)
+            expect(matching.locator("#evolve-resume")).to_be_disabled()
+            expect(matching.locator("#evolve-status")).not_to_contain_text("remains pending")
+            matching.reload()
+            idle(matching)
+            expect(matching.locator("#evolve-resume")).to_be_disabled()
+            assert history(matching)["events"][-1]["payload"]["package"]["digest"] == final_package["digest"]
+            (OUTPUT / "matching-package-completed-history.json").write_text(json.dumps(history(matching), indent=2))
+            matching_context.close()
+            qualified_context.close()
+
+            unfunded_context = browser.new_context()
+            unfunded = unfunded_context.new_page()
+            unfunded.goto(url)
+            idle(unfunded)
+            unfunded.locator("#evolve-budget").fill("500")
+            unfunded.locator("#evolve-construct").click()
+            idle(unfunded)
+            expect(unfunded.locator("#evolve-status")).to_contain_text("Package qualification is inconclusive")
+            expect(unfunded.locator("#evolve-resume")).to_be_disabled()
+            unfunded_history = history(unfunded)
+            assert unfunded_history["events"][-1]["payload"]["status"] == "qualified"
+            assert not any(event["kind"] == "package-frozen" for event in unfunded_history["events"])
+            unfunded.reload()
+            idle(unfunded)
+            expect(unfunded.locator("#evolve-status")).to_contain_text("exceeds its frozen budget")
+            expect(unfunded.locator("#evolve-resume")).to_be_disabled()
+            expect(unfunded.locator("#evolve-export-package")).to_be_disabled()
+            assert history(unfunded) == unfunded_history
+            (OUTPUT / "unfunded-finalization-history.json").write_text(json.dumps(unfunded_history, indent=2))
+            unfunded_context.close()
+
+            repeated_path = OUTPUT / "repeated-successor-history.json"
+            repeated_script = """
+                import {readFileSync, writeFileSync} from 'node:fs';
+                const {buildSuccessor} = await import(process.argv[1]);
+                const {appendOutEvolveEvent} = await import(process.argv[2]);
+                const history = JSON.parse(readFileSync(process.argv[3], 'utf8'));
+                const parent = history.events.filter(event => event.kind === 'successor').at(-1).payload.package;
+                const report = await buildSuccessor(parent, {seed: 314159});
+                if (report.status !== 'FAIL' || report.oldScope.status !== 'UNEXPECTED-PASS') {
+                    throw Error('Expected repeated-scope negative.');
+                }
+                const updated = await appendOutEvolveEvent(history, 'successor', report);
+                writeFileSync(process.argv[4], JSON.stringify(updated));
+                console.log(JSON.stringify({
+                    node: process.version, status: report.status, oldScope: report.oldScope.status
+                }));
+            """
+            repeated_run = subprocess.run(
+                [
+                    os.environ.get("NODE_EXECUTABLE", "node"),
+                    "--input-type=module",
+                    "-e",
+                    repeated_script,
+                    (ROOT / "examples/successor-capability/evaluation.mjs").as_uri(),
+                    (ROOT / "examples/successor-capability/out-evolve-workspace.mjs").as_uri(),
+                    str(history_path),
+                    str(repeated_path),
+                ],
+                check=True,
+                text=True,
+                capture_output=True,
+                timeout=120,
+            )
+            (OUTPUT / "repeated-successor-fixture.log").write_text(repeated_run.stdout + repeated_run.stderr)
+            assert json.loads(repeated_run.stdout)["node"] == "v22.17.1"
+            repeated_context = browser.new_context()
+            repeated = repeated_context.new_page()
+            repeated.goto(url)
+            idle(repeated)
+            repeated.locator("#evolve-import").set_input_files(repeated_path)
+            idle(repeated)
+            repeated_event = history(repeated)["events"][-1]
+            assert repeated_event["payload"]["status"] == "FAIL"
+            assert repeated_event["payload"]["oldScope"]["status"] == "UNEXPECTED-PASS"
+            expect(repeated.locator("#evolve-events li").last).to_contain_text(
+                "Recorded prior-scope result: UNEXPECTED-PASS"
+            )
+            expect(repeated.locator("#evolve-events li").last).not_to_contain_text("The old package is insufficient")
+            repeated.reload()
+            idle(repeated)
+            expect(repeated.locator("#evolve-events li").last).to_contain_text(
+                "Recorded prior-scope result: UNEXPECTED-PASS"
+            )
+            repeated_context.close()
+
+            verify_archive_recovery(browser, url, package_path, history_path, OUTPUT)
 
             for width in (320, 390, 768, 1440):
                 page.set_viewport_size({"width": width, "height": 1000})

@@ -41,15 +41,31 @@
         parent.append(element);
         return element;
     }
+    function qualifiedFinalization() {
+        if (checkpoint?.status !== 'qualified') return null;
+        const result = outEvolveConstructor.advanceSearch(checkpoint, {steps: 0});
+        const parent = checkpoint.inheritance.parent || null;
+        const projected = outEvolvePackages.projectedFreezeCostCapability(checkpoint.apparatus, result, {parent});
+        return {result, parent, projected, funded: projected.total <= checkpoint.options.maxCost};
+    }
+    function qualifiedRecoveryStatus() {
+        const pending = qualifiedFinalization();
+        if (!pending.funded) return 'The candidate checkpoint is retained, but package qualification exceeds its frozen budget. No package has been accepted for this search.';
+        if (!outEvolve.searchHistoryCapacity(record, checkpoint).canFinalize) return 'The candidate checkpoint is retained, but this history cannot retain its remaining acceptance records. Export the checkpoint.';
+        return 'Qualified search recovered. Finish qualifying its package without repeating construction work.';
+    }
     function controls() {
         view('form').setAttribute('aria-busy', String(busyNow));
         for (const name of ['purpose', 'constraints', 'topology', 'budget', 'apparatus', 'construct', 'import']) {
             view(name).disabled = !readyNow || busyNow || unsaved;
         }
-        view('cancel').disabled = !busyNow || checkpoint === null || cancelled;
+        view('cancel').disabled = !busyNow || !['cancelled', 'searching'].includes(checkpoint?.status) || cancelled;
+        const finalization = qualifiedFinalization();
+        const capacity = checkpoint ? outEvolve.searchHistoryCapacity(record, checkpoint) : null;
         view('resume').disabled = !readyNow || busyNow || unsaved || checkpoint === null
-            || !['cancelled', 'searching'].includes(checkpoint.status)
-            || !outEvolve.searchHistoryCapacity(record, checkpoint).canAdvance;
+            || (finalization ? !finalization.funded || !capacity.canFinalize
+                : !['cancelled', 'searching'].includes(checkpoint.status) || !capacity.canAdvance);
+        view('resume').textContent = finalization ? 'Finish qualifying package' : 'Resume search';
         for (const name of ['reuse', 'successor']) view(name).disabled = !readyNow || busyNow || unsaved || !packageValue;
         if (packageValue?.scope?.includes('reservoir')) view('successor').disabled = true;
         view('successor').textContent = packageValue?.scope?.includes('reservoir')
@@ -85,8 +101,9 @@
             const description = payload.message || payload.reason || payload.purpose
                 || payload.status || payload.package?.digest || 'Frozen, append-only event.';
             node('p', item, String(description));
-            if (event.kind === 'successor') node('p', item,
-                'The old package is insufficient for the expanded scope. Its failure and the new obligations remain in this record.');
+            if (event.kind === 'successor') node('p', item, payload.oldScope?.status === 'FAIL'
+                ? 'The old package is insufficient for the expanded scope. Its failure and the new obligations remain in this record.'
+                : `Recorded prior-scope result: ${payload.oldScope?.status || 'unreported'}. Inspect the report before treating this attempt as a new function.`);
             const details = node('details', item);
             node('summary', details, 'Inspect this original event');
             const pre = node('pre', details, json(event));
@@ -169,13 +186,20 @@
             request.onerror = () => reject(request.error || Error('Local history storage is unavailable.'));
         });
     }
-    async function readSaved() {
+    async function readSaved(key = 'current') {
+        if (!database) return null;
         return new Promise((resolve, reject) => {
             const tx = database.transaction('history', 'readonly');
-            const request = tx.objectStore('history').get('current');
+            const request = tx.objectStore('history').get(key);
             request.onsuccess = () => resolve(request.result || null);
             request.onerror = () => reject(request.error);
         });
+    }
+    async function requireSavedContinuation(incoming) {
+        const saved = await readSaved(incoming.id);
+        if (!saved) return;
+        const inspected = await outEvolve.inspectOutEvolveWorkspace(saved);
+        outEvolve.requireHistoryContinuation(inspected.workspace, incoming);
     }
     async function refreshHistories() {
         if (!database) return;
@@ -211,9 +235,26 @@
                         reason = Error('Another tab changed the saved Out-Evolve history. Export this copy before reloading.');
                         tx.abort(); return;
                     }
-                    if (saved?.id) objectStore.put(saved, saved.id);
-                    objectStore.put(record, record.id);
-                    objectStore.put(record, 'current');
+                    try {
+                        if (saved?.id) outEvolve.requireHistoryContinuation(saved, record);
+                    } catch (error) { reason = error; tx.abort(); return; }
+                    const targets = new Map();
+                    if (saved?.id && saved.id !== record.id) targets.set(saved.id, saved);
+                    targets.set(record.id, record);
+                    let pending = targets.size;
+                    for (const [id, incoming] of targets) {
+                        const archived = objectStore.get(id);
+                        archived.onsuccess = () => {
+                            if (reason) return;
+                            try {
+                                if (archived.result) outEvolve.requireHistoryContinuation(archived.result, incoming);
+                            } catch (error) { reason = error; tx.abort(); return; }
+                            if (--pending) return;
+                            if (saved?.id && saved.id !== record.id) objectStore.put(saved, saved.id);
+                            objectStore.put(record, record.id);
+                            objectStore.put(record, 'current');
+                        };
+                    }
                 };
                 tx.oncomplete = resolve;
                 tx.onerror = () => reject(reason || tx.error || Error('Saving failed.'));
@@ -278,22 +319,38 @@
             ...(event.payload.exposedCaseIds || []), ...(event.payload.reuse?.exposedCaseIds || [])
         ]))];
     }
+    async function finalizeQualifiedSearch() {
+        const pending = qualifiedFinalization();
+        if (!pending) throw Error('No qualified search is awaiting package acceptance.');
+        if (!pending.funded) {
+            view('result-heading').textContent = 'Candidate found; package qualification is unfunded.';
+            setStatus(`Package qualification is inconclusive: ${pending.projected.total} model units would exceed the frozen ${checkpoint.options.maxCost}-unit cap. No package replay was run. Export the retained search evidence or begin a separate construction.`);
+            return;
+        }
+        if (!outEvolve.searchHistoryCapacity(record, checkpoint).canFinalize) {
+            setStatus('Package qualification is unfinished: this history cannot retain both remaining acceptance records. No package replay was run. Export the retained checkpoint.');
+            return;
+        }
+        const {result, parent} = pending;
+        runningApparatus = checkpointApparatus();
+        const frozen = await outEvolvePackages.freezeCapability(runningApparatus, result, {parent});
+        if (!await append('package-frozen', {status: 'qualified', package: frozen})) return;
+        checkpoint = null;
+        renderPackage(frozen);
+        setStatus('Capability qualified in the supplied model. Running matched comparisons…');
+        const comparison = await outEvolveEvaluation.compareCapability(frozen, {searchOptions: result.checkpoint?.options});
+        view('comparison').textContent = json(comparison);
+        renderExperimentWork(comparison);
+        if (!await append('comparison', comparison)) return;
+        setStatus('Capability qualified. Test new uses with the frozen package, or build its scope-expanding successor.');
+    }
     async function finishSearch(result) {
         await append('search-stopped', {status: result.status, reason: result.reason,
             checkpoint: outEvolveConstructor.exportSearchCheckpoint(result.checkpoint), ledger: result.ledger});
         if (unsaved) return;
-        if (result.status === 'qualified') {
-            checkpoint = null;
-            const frozen = await outEvolvePackages.freezeCapability(runningApparatus, result);
-            if (!await append('package-frozen', {status: 'qualified', package: frozen})) return;
-            renderPackage(frozen);
-            setStatus('Capability qualified in the supplied model. Running matched comparisons…');
-            const comparison = await outEvolveEvaluation.compareCapability(frozen, {searchOptions: result.checkpoint?.options});
-            view('comparison').textContent = json(comparison);
-            renderExperimentWork(comparison);
-            await append('comparison', comparison);
-            setStatus('Capability qualified. Test new uses with the frozen package, or build its scope-expanding successor.');
-        } else {
+        checkpoint = result.checkpoint;
+        if (result.status === 'qualified') await finalizeQualifiedSearch();
+        else {
             checkpoint = result.checkpoint;
             view('result-heading').textContent = result.status === 'cancelled' ? 'Search cancelled; evidence retained.' : 'No qualifying construction found within budget.';
             setStatus(result.reason || 'No qualifying construction found within budget.');
@@ -352,6 +409,7 @@
     });
     view('cancel').addEventListener('click', () => { cancelled = true; setStatus('Cancelling at the next bounded search step…'); controls(); });
     view('resume').addEventListener('click', () => { void withWork(async () => {
+        if (checkpoint?.status === 'qualified') { await finalizeQualifiedSearch(); return; }
         runningApparatus = checkpointApparatus(); setStatus('Resuming the same frozen search bounds…'); await pause(); await runSearch();
     }); });
     view('topology').addEventListener('change', fillDefault);
@@ -378,7 +436,20 @@
     }); });
     view('export-history').addEventListener('click', () => download(record, 'out-evolve-history.json'));
     view('export-package').addEventListener('click', () => download(packageValue, 'out-evolve-capability.json'));
-    view('retry-save').addEventListener('click', () => { void persist(); });
+    view('retry-save').addEventListener('click', () => { void (async () => {
+        if (busyNow || !readyNow) return;
+        busyNow = true; controls();
+        try {
+            if (!await persist()) return;
+            const inspected = await outEvolve.inspectOutEvolveWorkspace(record);
+            record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
+            runningApparatus = checkpointApparatus(); restoreView();
+            setStatus(checkpoint?.status === 'qualified'
+                ? qualifiedRecoveryStatus()
+                : checkpoint ? 'Search saved. Resume keeps its original apparatus, bounds and costs.' : 'History saved. Accepted packages and reports remain intact.');
+        } catch (error) { problem(error); }
+        finally { busyNow = false; controls(); }
+    })(); });
     view('open').addEventListener('click', () => { void withWork(async () => {
         const saved = await new Promise((resolve, reject) => {
             const request = database.transaction('history', 'readonly').objectStore('history').get(view('saved').value);
@@ -386,8 +457,10 @@
             request.onerror = () => reject(request.error);
         });
         const inspected = await outEvolve.inspectOutEvolveWorkspace(saved);
+        outEvolve.requireHistoryContinuation(record, inspected.workspace);
         record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
-        runningApparatus = checkpointApparatus(); restoreView(); await persist();
+        runningApparatus = checkpointApparatus(); restoreView();
+        if (!await persist()) { setStatus('This history has not been saved. Export this copy or retry saving.'); return; }
         setStatus('Saved history opened after semantic checks. Its original events remain intact.');
     }); });
     view('import').addEventListener('change', event => {
@@ -399,15 +472,24 @@
             if (value.schema === outEvolve.WORKSPACE_SCHEMA) {
                 const inspected = await outEvolve.inspectOutEvolveWorkspace(value);
                 outEvolve.requireHistoryContinuation(record, inspected.workspace);
+                await requireSavedContinuation(inspected.workspace);
                 record = inspected.workspace; checkpoint = inspected.checkpoint;
                 packageValue = inspected.latestPackage; runningApparatus = checkpointApparatus();
                 restoreView();
-                await persist();
+                if (!await persist()) { setStatus('Imported history has not been saved. Export this copy or retry saving.'); return; }
                 setStatus('History imported. Package semantics were rechecked; historical reports are not fresh evaluations.');
             } else {
                 await outEvolvePackages.importCapability(value);
-                await append('package-frozen', {status: 'qualified', package: value});
-                renderPackage(value); setStatus('Executable package imported after independent semantic checks.');
+                const saved = await append('package-frozen', {status: 'qualified', package: value});
+                if (outEvolve.packageCompletesSearch(checkpoint, value)) checkpoint = null;
+                runningApparatus = checkpointApparatus();
+                renderPackage(value);
+                if (!saved) { setStatus('Imported package history has not been saved. Export this copy or retry saving.'); return; }
+                setStatus('Executable package imported after independent semantic checks.'
+                    + (checkpoint?.status === 'qualified'
+                        ? ' The earlier candidate checkpoint remains pending its own package acceptance.'
+                        : ['cancelled', 'searching'].includes(checkpoint?.status)
+                        ? ' The unfinished search remains resumable with its original apparatus, bounds and costs.' : ''));
             }
         }).finally(() => { event.target.value = ''; });
     });
@@ -427,7 +509,9 @@
                 storedRevision = record.revision; storedIdentity = record.id;
                 runningApparatus = checkpointApparatus();
                 restoreView();
-                setStatus(checkpoint ? 'Saved search recovered. Resume keeps its original bounds, failures and costs.' : 'Saved Out-Evolve history recovered. Frozen package semantics rechecked.');
+                setStatus(checkpoint?.status === 'qualified'
+                    ? qualifiedRecoveryStatus()
+                    : checkpoint ? 'Saved search recovered. Resume keeps its original bounds, failures and costs.' : 'Saved Out-Evolve history recovered. Frozen package semantics rechecked.');
             }
             view('storage').textContent = 'History is stored locally on this device. Export a copy for backup.';
             await refreshHistories();

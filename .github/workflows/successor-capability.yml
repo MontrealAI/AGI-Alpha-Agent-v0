@@ -13,6 +13,7 @@ on:
       - scripts/templates/successor-capability/**
       - tests/browser/test_successor_capability_browser.py
       - tests/browser/test_out_evolve_browser.py
+      - tests/browser/out_evolve_recovery.py
       - tests/browser/test_successor_capability_accessibility.py
       - tests/test_successor_capability_delivery.py
   push:
@@ -65,7 +66,7 @@ jobs:
         run: |
           set -o pipefail
           python -m mypy --version | tee capability-evidence/logs/typing-version.log
-          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py tests/browser/test_out_evolve_browser.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
+          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py tests/browser/test_out_evolve_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py

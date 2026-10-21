@@ -25,9 +25,12 @@ python tests/browser/test_out_evolve_browser.py
 python tests/browser/test_successor_capability_browser.py
 ```
 
-The replay writes packages, full comparisons, failed attempts, cost ledgers, source digests and retained exposure history.
+The replay writes packages, full comparisons, failed attempts, cost ledgers, source digests and retained
+exposure history.
 Replaying into the same output directory retains prior runs and labels exposed cases as regressions.
 An optional uint32 seed is a reproducibility control; public local cases are not protected remote holdouts.
+One replay directory retains at most 100 reports. A full directory rejects another run before evaluation or
+writes; use a separate output directory and retain the earlier evidence.
 
 ## What executes
 
@@ -51,6 +54,11 @@ scope, certificates, fixtures, attempts, costs and compatibility-scoped parent a
 Import replays search and independently recomputes the executable claims; recomputing a hash cannot legitimize
 tampered semantics, erased attempts or discounted costs.
 Versioned Out-Evolve events use separate device storage and preserve v1 history behavior.
+Importing another package retains an unfinished search with its original apparatus, bounds and costs.
+An accepted checkpoint can finish package qualification after a failed save when its original budget and
+remaining history capacity fund acceptance; it does not rerun construction. Imports and saved-history switches
+must extend any stored history with the same identity, and storage transactions reject older or divergent
+archives before overwriting them. Export remains the recovery path when a save cannot complete.
 
 ## Evaluation and costs
 
@@ -60,8 +68,10 @@ it does not invent those downstream algorithms.
 The constructor never receives their hidden response law or truth values.
 Constructor evaluation separately freezes source identity and generates changed structural families.
 Correctly rejecting an infeasible family does not mean a capability was constructed for it.
-The successor introduces the reservoir operation, retains the old-plan failure, invalidates stale certificates,
+The initial successor introduces the reservoir operation, retains the old-plan failure, invalidates stale certificates,
 and independently accepts both prior and added obligations.
+A repeat attempt with an already covered scope does not establish another scope expansion, even if its
+package qualifies.
 
 Comparisons include a competent sensor/reference strategy, classical uniform-cost planning with the same
 primitives and semantic deduplication, and construction from scratch. Classical ties and comparator wins are valid.

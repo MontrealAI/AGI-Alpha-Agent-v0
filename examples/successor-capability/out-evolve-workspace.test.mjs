@@ -41,6 +41,81 @@ test('cancelled search reloads and resumes its deterministic frontier and accumu
     assert.equal(started.events[0].payload.checkpoint.expanded, 0);
 });
 
+test('unrelated package import preserves active search apparatus, bounds and work across history recovery', async () => {
+    const original = apparatus('referenced');
+    const other = apparatus('shielded');
+    const imported = await freezeCapability(other, construct(other));
+    for (const status of ['searching', 'cancelled']) {
+        let history = createOutEvolveWorkspace(`out-evolve-import-${status}`);
+        let search = advanceSearch(createSearch(original, {maxCost: 100000, maxStates: 2000}), {steps: 5});
+        if (status === 'cancelled') search = advanceSearch(search.checkpoint, {cancel: true});
+        history = await appendOutEvolveEvent(history, 'search-stopped', {status, checkpoint: search.checkpoint});
+        const stopped = structuredClone(history);
+        history = await appendOutEvolveEvent(history, 'package-frozen', {status: 'qualified', package: imported});
+        const restored = await inspectOutEvolveWorkspace(JSON.parse(JSON.stringify(history)));
+        assert.equal(restored.latestPackage.digest, imported.digest);
+        assert.equal(restored.checkpoint.status, status);
+        assert.deepEqual(restored.checkpoint.apparatus, original);
+        assert.deepEqual(restored.checkpoint.options, search.checkpoint.options);
+        assert.deepEqual(restored.checkpoint.work, search.checkpoint.work);
+        assert.deepEqual(restored.workspace.events.slice(0, stopped.events.length), stopped.events);
+        const resumed = advanceSearch(restored.checkpoint, {steps: 1000});
+        assert.equal(resumed.status, 'qualified');
+        assert.deepEqual(resumed.checkpoint.apparatus, original);
+        assert.deepEqual(resumed.program, construct(original).program);
+    }
+});
+
+test('qualified search remains finalizable until its matching package is accepted', async () => {
+    const original = apparatus('referenced');
+    const search = construct(original);
+    const ownPackage = await freezeCapability(original, search);
+    const other = apparatus('shielded');
+    const imported = await freezeCapability(other, construct(other));
+    let history = createOutEvolveWorkspace('out-evolve-qualified-pending');
+    history = await appendOutEvolveEvent(history, 'search-stopped', {status: 'qualified', checkpoint: search.checkpoint});
+    const stopped = await inspectOutEvolveWorkspace(JSON.parse(JSON.stringify(history)));
+    assert.equal(stopped.latestPackage, null);
+    assert.equal(stopped.checkpoint.status, 'qualified');
+    history = await appendOutEvolveEvent(history, 'package-frozen', {status: 'qualified', package: imported});
+    const unrelated = await inspectOutEvolveWorkspace(JSON.parse(JSON.stringify(history)));
+    assert.equal(unrelated.latestPackage.digest, imported.digest);
+    assert.deepEqual(exportSearchCheckpoint(unrelated.checkpoint), exportSearchCheckpoint(search.checkpoint));
+    const finalized = advanceSearch(unrelated.checkpoint, {steps: 0});
+    assert.deepEqual(finalized.ledger, search.ledger);
+    assert.equal(finalized.checkpoint.expanded, search.checkpoint.expanded);
+    history = await appendOutEvolveEvent(history, 'package-frozen', {status: 'qualified', package: ownPackage});
+    const accepted = await inspectOutEvolveWorkspace(JSON.parse(JSON.stringify(history)));
+    assert.equal(accepted.checkpoint, null);
+    assert.equal(accepted.latestPackage.digest, ownPackage.digest);
+    assert.equal(accepted.workspace.events.filter(event => event.kind === 'search-stopped').length, 1);
+});
+
+test('qualified finalization uses its two reserved terminal slots without another search step or stop', async () => {
+    const app = apparatus('shielded');
+    const search = construct(app, {maxCost: 100000, maxStates: 2000, maxMemoryStates: 2000, maxProgramSize: 12});
+    let history = createOutEvolveWorkspace('out-evolve-finalize-reserve');
+    for (let index = 0; index < WORKSPACE_LIMITS.events - 3; index++) {
+        history = await appendOutEvolveEvent(history, 'comparison', {status: 'COMPLETED', index});
+    }
+    assert.equal(searchHistoryCapacity(history, search.checkpoint).canAdvance, true);
+    history = await appendOutEvolveEvent(history, 'search-stopped', {status: 'qualified', checkpoint: search.checkpoint});
+    const restored = await inspectOutEvolveWorkspace(JSON.parse(JSON.stringify(history)));
+    const capacity = searchHistoryCapacity(restored.workspace, restored.checkpoint);
+    assert.equal(capacity.remainingEvents, 2);
+    assert.equal(capacity.canAdvance, false);
+    assert.equal(capacity.canFinalize, true);
+    const replayed = advanceSearch(restored.checkpoint, {steps: 0});
+    assert.deepEqual(replayed.ledger, search.ledger);
+    history = await appendOutEvolveEvent(history, 'package-frozen', {
+        status: 'qualified', package: await freezeCapability(app, replayed)
+    });
+    history = await appendOutEvolveEvent(history, 'comparison', {status: 'COMPLETED'});
+    assert.equal(history.events.length, WORKSPACE_LIMITS.events);
+    assert.equal((await inspectOutEvolveWorkspace(history)).checkpoint, null);
+    assert.equal(history.events.filter(event => event.kind === 'search-stopped').length, 1);
+});
+
 test('imports reject changed events and executable claims even when package digest is recomputed', async () => {
     let history = createOutEvolveWorkspace('out-evolve-tamper-test');
     history = await appendOutEvolveEvent(history, 'failure', {message: 'Retain original failure.', status: 'FAIL'});

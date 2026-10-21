@@ -27,6 +27,10 @@ let history = [];
 try {
     history = JSON.parse(await readFile(resolve(output, 'history.json'), 'utf8'));
     if (!Array.isArray(history) || history.length > 100) throw Error('Replay history limit exceeded.');
+    if (history.length === 100) {
+        throw Error('Replay history capacity reached (100 reports). '
+            + 'Use a new output directory to preserve prior evidence.');
+    }
 } catch (error) {
     if (error.code !== 'ENOENT') throw error;
 }

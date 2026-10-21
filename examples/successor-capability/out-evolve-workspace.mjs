@@ -57,6 +57,12 @@ function payloadShape(kind, payload) {
     }
 }
 
+/** An accepted package completes only the exact qualified search checkpoint it records. */
+export function packageCompletesSearch(checkpoint, pkg) {
+    return checkpoint?.status === 'qualified' && Boolean(pkg?.search?.checkpoint)
+        && same(exportSearchCheckpoint(checkpoint), pkg.search.checkpoint);
+}
+
 export async function inspectOutEvolveWorkspace(input) {
     const fingerprint = shape(input);
     let previous = null;
@@ -78,14 +84,16 @@ export async function inspectOutEvolveWorkspace(input) {
             latestPackage = event.payload.package;
             knownPackages.set(latestPackage.digest, latestPackage);
             packageCount += 1;
-            checkpoint = null;
+            // Package import does not finish an unrelated search, including one awaiting package acceptance.
+            if (packageCompletesSearch(checkpoint, latestPackage)) checkpoint = null;
+            else if (!['cancelled', 'searching', 'qualified'].includes(checkpoint?.status)) checkpoint = null;
         }
         if (['search-started', 'search-stopped', 'search-paused'].includes(event.kind)) {
             const token = event.payload.checkpoint;
             const checked = importSearchCheckpoint(token, {parent: knownPackages.get(token?.inheritance?.parentDigest) || null});
             if (event.kind === 'search-paused' ? event.payload.status !== 'INCONCLUSIVE'
                 : checked.status !== event.payload.status) throw Error('Search checkpoint status differs from its event.');
-            checkpoint = checked.status === 'qualified' ? null : checked;
+            checkpoint = checked;
         }
         if (event.kind === 'failure' && String(event.payload.status || '').toLowerCase() !== 'inconclusive'
             || ['fail', 'failed', 'exhausted', 'infeasible'].includes(
@@ -138,6 +146,7 @@ export function searchHistoryCapacity(workspace, checkpoint) {
     const parentBytes = checkpoint.inheritance.parent ? new TextEncoder().encode(canonical(checkpoint.inheritance.parent)).length : 0;
     const terminalEvidenceReserve = 262_144 + attemptedPrograms * programEnvelope + 2 * parentBytes;
     return {canAdvance: remainingEvents >= 3 && remainingBytes >= 2 * tokenBytes + terminalEvidenceReserve,
+        canFinalize: checkpoint.status === 'qualified' && remainingEvents >= 2 && remainingBytes >= terminalEvidenceReserve,
         remainingEvents, remainingBytes, tokenBytes, terminalEvidenceReserve};
 }
 

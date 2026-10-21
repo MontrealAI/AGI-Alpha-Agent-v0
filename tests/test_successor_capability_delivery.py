@@ -78,6 +78,10 @@ def test_acceptance_is_mandatory_read_only_and_retains_evidence() -> None:
         assert "set -o pipefail" in step["run"]
         assert f"tee capability-evidence/logs/{log}" in step["run"]
         assert "if" not in step and not step.get("continue-on-error")
+    typing = next(step["run"] for step in steps if "python -m mypy --strict" in step.get("run", ""))
+    assert "tests/browser/out_evolve_recovery.py" in typing
+    events = workflow.get("on", workflow.get(True))
+    assert "tests/browser/out_evolve_recovery.py" in events["pull_request"]["paths"]
     uploader = next(step for step in steps if step.get("uses", "").startswith("actions/upload-artifact@"))
     assert uploader["if"] == "always()"
     assert uploader["with"]["if-no-files-found"] == "error"
