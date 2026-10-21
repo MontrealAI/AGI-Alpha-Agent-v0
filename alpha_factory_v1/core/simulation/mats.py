@@ -250,7 +250,13 @@ def pareto_front(pop: Population) -> Population:
 
     fits = np.asarray([ind.fitness for ind in pop], dtype=float)
     dominated = np.zeros(len(pop), dtype=bool)
-    for i, fi in enumerate(fits):
+    # A dominated source cannot remove a survivor: dominance is transitive.
+    # Visit promising sources first, retaining population order for crowding.
+    order = np.argsort(fits[:, 0], kind="stable") if fits.ndim == 2 and fits.shape[1] else range(len(pop))
+    for i in order:
+        if dominated[i]:
+            continue
+        fi = fits[i]
         dom = np.all(fi <= fits, axis=1) & np.any(fi < fits, axis=1)
         dominated |= dom
     front = [ind for ind, d in zip(pop, dominated) if not d]

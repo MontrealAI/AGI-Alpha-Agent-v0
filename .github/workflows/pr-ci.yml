@@ -102,3 +102,20 @@ jobs:
           name: pr-demo-catalog
           path: evidence/demo-catalog.json
           if-no-files-found: warn
+      - name: Verify Pareto pruning with actual module and caller tests
+        run: |
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/pareto-tested-commit.txt
+          python -m scripts.run_local_tests \
+            tests/test_mats_pareto_pruning.py tests/test_mats.py \
+            tests/test_cross_industry_comparison.py -q \
+            --junitxml=evidence/pareto-integration.xml
+      - name: Retain Pareto integration evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: pr-pareto-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/pareto-tested-commit.txt
+            evidence/pareto-integration.xml
+          if-no-files-found: error
