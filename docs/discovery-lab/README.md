@@ -68,6 +68,16 @@ Selection does not run construction or change the edited charter; review exports
 source and lineage qualification. Reload explicitly opens the latest retained result.
 An overrun retains the finite program but makes wrapper qualification inconclusive and prevents parent reuse
 or commission export. Acquisitions, logical work, encoded bytes and virtual workers are different units.
+Each zero-cap review draft reserves the ancestor checking caps plus 10,000 declared receiver-admission
+units and the shared `DISCOVERY_LAB_INSPECTION_CHECKS` 10,000-unit native inspection charge. The latter
+is charged once per inspection attempt, including framing failures; it is not measured VM instructions.
+Inspection memory charges four canonical UTF-8 footprints per owned snapshot plus finite verifier words,
+not JavaScript heap measurements. Effective remaining limits must be exact safe vectors no larger than
+the committed request. The inspector validates the complete envelope and its separate payload commitment
+before semantic replay. Its measured elapsed cap is a soft deadline checked before and between synchronous
+replays and at report construction: an overrun retains spent work and returns incomplete, without claiming
+hard preemption. A zero elapsed allowance starts no semantic replay.
+
 Currency caps remain zero. No industrial or economic savings are inferred from these counts.
 
 ## Evidence and boundaries

@@ -39,7 +39,7 @@ function bridgeHarness(value, inspection) {
     const context = vm.createContext({
         ready: true, current: value, inspected: inspection, storedRevision: 0, pending: null,
         store: null, dirty: false, successorEditing: false, busy: false,
-        DISCOVERY_SOURCES: currentSources, capability: workspace, discoveryLab: runtime,
+        DISCOVERY_SOURCES: currentSources, capability: workspace, discoveryLab: runtime, discoveryContract: contract,
         discoveryHistory: {...history, workRequest: (record, route, envelope) =>
             history.workRequest(record, route, JSON.parse(JSON.stringify(envelope)))},
         canonical: contract.canonical, rawDraft: () => ({}), defaultExperimentText: () => '{}',
@@ -97,6 +97,8 @@ test('actual bridge source guard and exported commission select the chosen dupli
     const exported = await vm.runInContext("discoveryBridge.workRequest(selected, 'USDC')", context);
     assert.equal(exported.sourceDigest, currentSources.sourceDigest);
     assert.equal(exported.commission.id, child.attempt);
+    assert.equal(exported.resourceLimits.checking, child.charter.budget.checking
+        + records[1].charter.budget.checking + 10000 + contract.DISCOVERY_LAB_INSPECTION_CHECKS);
     assert.equal(exported.payload.ancestors.length, 1);
     assert.deepEqual(exported.payload.ancestors[0].result, records[1].result);
     assert.equal(exported.payload.result.lineage.generation, 2);

@@ -106,7 +106,7 @@ test('strict direct-object inspection rejects an accessor before invoking it', a
 test('real installed semantic adapter admits a frozen draft and rejects changed artifacts and forged evidence', async () => {
     const {record} = await campaign();
     const limits = {acquisitions: 10000, search: 10000000, checking: 10000000,
-        memoryBytes: 1000000, storageBytes: 1000000, workerCapacity: 4, installations: 100, elapsedMs: 120000};
+        memoryBytes: 8000000, storageBytes: 1000000, workerCapacity: 4, installations: 100, elapsedMs: 120000};
     const request = await history.workRequest(record, 'USDC', limits);
     const inspect = createInspector(sources);
     const accepted = await inspect(request.payload, {request, limits});
@@ -114,11 +114,164 @@ test('real installed semantic adapter admits a frozen draft and rejects changed 
     const swapped = {...request, inputArtifacts: []};
     assert.deepEqual((await inspect(request.payload, {request: swapped, limits})).reasons, ['INPUT_ARTIFACT_BINDING_MISMATCH']);
     const forged = copy(request.payload); forged.result.resources.search = 0;
-    const refused = await inspect(forged, {request, limits});
+    const forgedRequest = {...request, payload: forged, payloadDigest: await contract.payloadDigest(forged)};
+    const refused = await inspect(forged, {request: forgedRequest, limits});
     assert.equal(refused.accepted, false); assert.ok(refused.resourceUsed.search > 0);
     const exhausted = await inspect(request.payload, {request, limits: {...limits, checking: 0}});
     assert.equal(exhausted.accepted, false); assert.match(exhausted.reasons[0], /CHECK_INCOMPLETE$/);
     assert.equal(exhausted.resourceUsed.search, 0);
     const wrongSource = await inspect(request.payload, {request: {...request, sourceDigest: 'f'.repeat(64)}, limits});
     assert.deepEqual(wrongSource.reasons, ['INSTALLED_SOURCE_MISMATCH']);
+});
+
+const inspectionLimits = () => ({acquisitions: 10000, search: 10000000, checking: 10000000,
+    memoryBytes: 8000000, storageBytes: 4000000, workerCapacity: 4, installations: 100, elapsedMs: 120000});
+test('installed inspector validates all six complete envelopes with smaller sufficient effective limits', async () => {
+    const {record} = await campaign();
+    const limits = inspectionLimits();
+    const remaining = {...limits, acquisitions: 9900, search: 9999900, checking: 9999900,
+        memoryBytes: 7000000, storageBytes: 3000000, workerCapacity: 3, installations: 90, elapsedMs: 119000};
+    const inspect = createInspector(sources);
+    for (const [index, stage] of contract.STAGES.entries()) {
+        const request = await history.workRequest(record, index % 2 ? 'AGIALPHA' : 'USDC', limits);
+        request.stage = stage; request.inputArtifacts = record.artifacts.slice(0, index).map(value => value.digest);
+        const result = await inspect(request.payload, {request, limits: remaining});
+        assert.equal(result.accepted, true, stage);
+        assert.ok(result.resourceUsed.search > 0); assert.ok(result.resourceUsed.memoryBytes > 0);
+        assert.ok(result.resourceUsed.elapsedMs >= 0);
+    }
+});
+test('installed inspector refuses malformed complete requests before finite replay', async () => {
+    const {record} = await campaign(); const limits = inspectionLimits();
+    const original = await history.workRequest(record, 'USDC', limits); const inspect = createInspector(sources);
+    for (const change of [
+        value => { value.schema = 'other/v1'; },
+        value => { delete value.schema; },
+        value => { value.authority = 'submitted'; },
+        value => { value.executionMode = 'external'; },
+        value => { value.commission.status = 'SUBMITTED'; },
+        value => { value.commission.capBaseUnits = '1'; },
+        value => { value.commission.currency = 'AGIALPHA18'; },
+        value => { value.payloadDigest = '0'.repeat(64); },
+        value => { value.resourceLimits.checking = Number.MAX_SAFE_INTEGER + 1; }
+    ]) {
+        const request = copy(original); change(request);
+        const result = await inspect(original.payload, {request, limits});
+        assert.equal(result.accepted, false);
+        assert.equal(result.resourceUsed.search, 0);
+    }
+});
+test('installed inspector binds the separately inspected payload to the validated commitment', async () => {
+    const {record} = await campaign(); const limits = inspectionLimits();
+    const request = await history.workRequest(record, 'USDC', limits); const inspect = createInspector(sources);
+    const substituted = copy(request); substituted.payload.result.resources.search = 0;
+    substituted.payloadDigest = await contract.payloadDigest(substituted.payload);
+    await contract.validateWorkRequest(substituted);
+    const result = await inspect(request.payload, {request: substituted, limits});
+    assert.equal(result.accepted, false); assert.equal(result.resourceUsed.search, 0);
+    assert.deepEqual(result.reasons, ['PAYLOAD_COMMITMENT_MISMATCH']);
+});
+test('installed inspector refuses every effective dimension above the committed envelope', async () => {
+    const {record} = await campaign(); const limits = inspectionLimits();
+    const request = await history.workRequest(record, 'USDC', limits); const inspect = createInspector(sources);
+    for (const key of contract.RESOURCE_KEYS) {
+        const result = await inspect(request.payload, {request, limits: {...limits, [key]: limits[key] + 1}});
+        assert.equal(result.accepted, false, key); assert.equal(result.resourceUsed.search, 0, key);
+        assert.deepEqual(result.reasons, ['EFFECTIVE_LIMITS_EXCEED_COMMITMENT']);
+    }
+});
+test('installed inspector captures request payload and remaining limits before digest awaits', async () => {
+    const {record} = await campaign(); const limits = inspectionLimits();
+    const request = await history.workRequest(record, 'USDC', limits); const payload = copy(request.payload);
+    const inspect = createInspector(sources); const pending = inspect(payload, {request, limits});
+    request.executionMode = 'external'; request.payload.result.resources.search = 0;
+    payload.result.resources.search = 0; limits.checking = 0;
+    const result = await pending;
+    assert.equal(result.accepted, true); assert.ok(result.resourceUsed.search > 0);
+    const later = await inspect(payload, {request, limits: inspectionLimits()});
+    assert.equal(later.accepted, false); assert.equal(later.resourceUsed.search, 0);
+});
+test('zero elapsed allowance refuses before replay even when the trusted clock has not advanced', async t => {
+    const {record} = await campaign(); const limits = {...inspectionLimits(), elapsedMs: 0};
+    const request = await history.workRequest(record, 'USDC', limits);
+    t.mock.method(performance, 'now', () => 0);
+    const result = await createInspector(sources)(request.payload, {request, limits});
+    assert.equal(result.accepted, false); assert.equal(result.resourceUsed.search, 0);
+    assert.ok(result.resourceUsed.checking > 0); assert.ok(result.resourceUsed.memoryBytes > 0);
+    assert.match(result.reasons.at(-1), /CHECK_INCOMPLETE$/);
+});
+test('elapsed overrun after replay remains incomplete and retains actual finite work', async t => {
+    const {record} = await campaign(); const limits = {...inspectionLimits(), elapsedMs: 100};
+    const request = await history.workRequest(record, 'USDC', limits); let samples = 0;
+    // Start and pre-replay observations fit; the completion observation exceeds the allowance.
+    t.mock.method(performance, 'now', () => ++samples <= 2 ? 0 : 101);
+    const result = await createInspector(sources)(request.payload, {request, limits});
+    assert.equal(result.accepted, false); assert.equal(result.resourceUsed.elapsedMs, 101);
+    assert.ok(result.resourceUsed.search > 0); assert.ok(result.resourceUsed.acquisitions > 0);
+    assert.match(result.reasons.at(-1), /CHECK_INCOMPLETE$/);
+});
+test('invalid finite evidence keeps verification and elapsed costs after the soft deadline', async t => {
+    const {record} = await campaign(); const limits = {...inspectionLimits(), elapsedMs: 100};
+    const request = await history.workRequest(record, 'USDC', limits);
+    request.payload.result.resources.search = 0; request.payloadDigest = await contract.payloadDigest(request.payload);
+    let samples = 0; t.mock.method(performance, 'now', () => ++samples <= 2 ? 0 : 101);
+    const result = await createInspector(sources)(request.payload, {request, limits});
+    assert.equal(result.accepted, false); assert.equal(result.resourceUsed.elapsedMs, 101);
+    assert.ok(result.resourceUsed.search > 0); assert.ok(result.resourceUsed.checking > 0);
+    assert.ok(result.reasons.includes('FINITE_EVIDENCE_REJECTED'));
+    assert.match(result.reasons.at(-1), /CHECK_INCOMPLETE$/);
+});
+
+test('framing refusals preserve the fixed native charge and known encoded snapshots', async () => {
+    const {record} = await campaign(); const limits = inspectionLimits();
+    const request = await history.workRequest(record, 'USDC', limits); const inspect = createInspector(sources);
+    const invalid = {...request, executionMode: 'external'};
+    const source = {...request, sourceDigest: 'f'.repeat(64)};
+    for (const [candidate, remaining] of [[invalid, limits], [source, limits],
+        [request, {...limits, checking: contract.DISCOVERY_LAB_INSPECTION_CHECKS - 1}],
+        [request, {...limits, additional: 1}]]) {
+        const result = await inspect(request.payload, {request: candidate, limits: remaining});
+        assert.equal(result.accepted, false); assert.equal(result.resourceUsed.search, 0);
+        assert.equal(result.resourceUsed.checking, contract.DISCOVERY_LAB_INSPECTION_CHECKS);
+        assert.ok(result.resourceUsed.memoryBytes > 0); assert.ok(result.resourceUsed.elapsedMs >= 0);
+    }
+});
+test('native checking overhead is reserved before replay instead of borrowing charter capacity', async () => {
+    const {record} = await campaign();
+    const limits = {...inspectionLimits(), checking: runtime.DEFAULT_CHARTER.budget.checking + contract.DISCOVERY_LAB_INSPECTION_CHECKS};
+    const request = await history.workRequest(record, 'USDC', limits); const inspect = createInspector(sources);
+    const incomplete = await inspect(request.payload, {request,
+        limits: {...limits, checking: limits.checking - contract.DISCOVERY_LAB_INSPECTION_CHECKS}});
+    assert.equal(incomplete.accepted, false); assert.equal(incomplete.resourceUsed.search, 0);
+    assert.equal(incomplete.resourceUsed.checking, contract.DISCOVERY_LAB_INSPECTION_CHECKS);
+    assert.match(incomplete.reasons[0], /CHECK_INCOMPLETE$/);
+    const accepted = await inspect(request.payload, {request, limits});
+    assert.equal(accepted.accepted, true);
+    assert.ok(accepted.resourceUsed.checking > contract.DISCOVERY_LAB_INSPECTION_CHECKS);
+});
+test('elapsed deadline already exhausted at preflight does not begin finite replay', async t => {
+    const {record} = await campaign(); const limits = {...inspectionLimits(), elapsedMs: 100};
+    const request = await history.workRequest(record, 'USDC', limits); let samples = 0;
+    t.mock.method(performance, 'now', () => ++samples === 1 ? 0 : 101);
+    const result = await createInspector(sources)(request.payload, {request, limits});
+    assert.equal(result.accepted, false); assert.equal(result.resourceUsed.search, 0);
+    assert.equal(result.resourceUsed.elapsedMs, 101);
+    assert.equal(result.resourceUsed.checking, contract.DISCOVERY_LAB_INSPECTION_CHECKS);
+    assert.match(result.reasons.at(-1), /CHECK_INCOMPLETE$/);
+});
+
+test('context acquisition failures retain native framing charge without diagnostic getters', async () => {
+    let diagnosticReads = 0;
+    const failure = new Error('Opaque host context');
+    Object.defineProperty(failure, 'verificationResources', {get() { diagnosticReads++; throw Error('Do not read'); }});
+    Object.freeze(failure);
+    const opaque = {};
+    Object.defineProperty(opaque, 'request', {get() { throw failure; }});
+    for (const options of [null, opaque]) {
+        const result = await createInspector(sources)({}, options);
+        assert.equal(result.accepted, false);
+        assert.equal(result.resourceUsed.checking, contract.DISCOVERY_LAB_INSPECTION_CHECKS);
+        assert.equal(result.resourceUsed.search, 0); assert.ok(result.resourceUsed.elapsedMs >= 0);
+    }
+    assert.equal(diagnosticReads, 0);
 });

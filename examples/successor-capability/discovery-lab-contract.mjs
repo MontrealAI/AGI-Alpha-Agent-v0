@@ -28,11 +28,22 @@ export function canonical(value) {
             if (scalar(item)) return token(JSON.stringify(item));
         }
         if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return token(String(item));
+        let ownKeys;
         if (item && typeof item === 'object') {
-            const descriptors = Object.getOwnPropertyDescriptors(item);
-            if (Reflect.ownKeys(item).some(key => typeof key !== 'string')) throw Error('Symbol data is unsupported');
-            for (const [key, descriptor] of Object.entries(descriptors)) {
-                if (!Object.hasOwn(descriptor, 'value')) throw Error('Accessor data is unsupported');
+            ownKeys = Reflect.ownKeys(item);
+            const array = Array.isArray(item), width = ownKeys.length - (array ? 1 : 0);
+            if (width > 100000 - nodes) throw Error('JSON complexity exceeds limit');
+            // Bound width and the minimum serialized size before allocating descriptors.
+            let minimum = 2 + Math.max(0, (array ? item.length : width) - 1);
+            if (array) minimum += item.length;
+            for (const key of ownKeys) {
+                if (typeof key !== 'string') throw Error('Symbol data is unsupported');
+                if (!array) minimum += key.length + 4; // Quotes, colon and at least one value byte.
+                if (minimum > MAX_INPUT_BYTES - codeUnits) throw Error('Canonical JSON exceeds 2 MB');
+            }
+            for (const key of ownKeys) {
+                const descriptor = Object.getOwnPropertyDescriptor(item, key);
+                if (!descriptor || !Object.hasOwn(descriptor, 'value')) throw Error('Accessor data is unsupported');
                 if (Array.isArray(item) && key === 'length') continue;
                 if (!descriptor.enumerable) throw Error('Non-enumerable data is unsupported');
                 if (Array.isArray(item) && (!/^(0|[1-9][0-9]*)$/.test(key) || Number(key) >= item.length)) {
@@ -47,7 +58,7 @@ export function canonical(value) {
             return '[' + item.map(v => encode(v, depth + 1)).join(',') + ']';
         }
         if (item && typeof item === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(item))) {
-            const keys = Object.keys(item).sort();
+            const keys = ownKeys.sort();
             charge(2 + Math.max(0, keys.length - 1));
             return '{' + keys.map(key => {
                 if (key.length > MAX_INPUT_BYTES - 3) throw Error('Canonical JSON exceeds 2 MB');
@@ -64,6 +75,8 @@ export function canonical(value) {
     return result;
 }
 export const REQUEST_SCHEMA = 'successor-discovery-work-request/v1';
+// Declared bounded admission work, not measured VM instructions or currency.
+export const DISCOVERY_LAB_INSPECTION_CHECKS = 10000;
 export const STAGES = Object.freeze(['learn', 'think', 'design', 'strategise', 'execute', 'evolve']);
 export const RESOURCE_KEYS = Object.freeze([
     'acquisitions', 'search', 'checking', 'memoryBytes', 'storageBytes', 'workerCapacity', 'installations', 'elapsedMs'

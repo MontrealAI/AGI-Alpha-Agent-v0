@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {canonical,parseBounded} from './discovery-lab-contract.mjs';
+import {canonical,parseBounded,validateResources,DISCOVERY_LAB_INSPECTION_CHECKS} from './discovery-lab-contract.mjs';
 
 function withoutEncoder(operation) {
     const original = globalThis.TextEncoder;
@@ -65,4 +65,63 @@ test('array node ceiling is checked before descriptor materialization without sh
     } finally { Object.getOwnPropertyDescriptors = original; }
     const boundary = Array(99_999).fill(null);
     assert.equal(canonical(boundary), JSON.stringify(boundary));
+});
+
+function withoutDescriptors(value, operation) {
+    const bulk = Object.getOwnPropertyDescriptors, single = Object.getOwnPropertyDescriptor;
+    let inspected = 0;
+    Object.getOwnPropertyDescriptors = item => {
+        if (item === value) inspected++;
+        return bulk(item);
+    };
+    Object.getOwnPropertyDescriptor = (item, key) => {
+        if (item === value) inspected++;
+        return single(item, key);
+    };
+    try { operation(); assert.equal(inspected, 0, 'Over-limit value reached descriptor inspection'); }
+    finally {
+        Object.getOwnPropertyDescriptors = bulk;
+        Object.getOwnPropertyDescriptor = single;
+    }
+}
+
+test('wide object node ceiling precedes descriptors and preserves the admitted boundary', () => {
+    const value = Object.fromEntries(Array.from({length: 100_000}, (_, i) => ['k' + i, 0]));
+    withoutDescriptors(value, () => withoutEncoder(() =>
+        assert.throws(() => canonical(value), /JSON complexity exceeds limit/)));
+    delete value.k99999;
+    assert.equal(Object.keys(JSON.parse(canonical(value))).length, 99_999);
+});
+
+test('wide non-enumerable object and array keys are bounded before descriptor inspection', () => {
+    for (const value of [{}, []]) {
+        for (let i = 0; i < 100_000; i++) Object.defineProperty(value, 'extra' + i, {value: 0});
+        withoutDescriptors(value, () => withoutEncoder(() =>
+            assert.throws(() => canonical(value), /JSON complexity exceeds limit/)));
+    }
+});
+
+test('object key output lower bound precedes descriptors and observes the remaining output budget', () => {
+    const value = Object.fromEntries(Array.from({length: 3_000}, (_, i) => ['k'.repeat(700) + i, 0]));
+    withoutDescriptors(value, () => withoutEncoder(() =>
+        assert.throws(() => canonical(value), /Canonical JSON exceeds 2 MB/)));
+    const nested = {['k'.repeat(40)]: 0};
+    withoutDescriptors(nested, () => withoutEncoder(() =>
+        assert.throws(() => canonical(['x'.repeat(1_999_960), nested]), /Canonical JSON exceeds 2 MB/)));
+});
+
+test('remaining node budget bounds nested object width before descriptor inspection', () => {
+    const value = Object.fromEntries(Array.from({length: 99_999}, (_, i) => ['k' + i, 0]));
+    withoutDescriptors(value, () => withoutEncoder(() =>
+        assert.throws(() => canonical({nested: value}), /JSON complexity exceeds limit/)));
+});
+
+test('shared declared inspection charge composes with a distinct receiver allowance in the exact vector', () => {
+    assert.equal(DISCOVERY_LAB_INSPECTION_CHECKS, 10000);
+    const receiverChecks = 10000, replayChecks = 1000000;
+    const committed = validateResources({acquisitions: 0, search: 0,
+        checking: replayChecks + receiverChecks + DISCOVERY_LAB_INSPECTION_CHECKS,
+        memoryBytes: 0, storageBytes: 0, workerCapacity: 0, installations: 0, elapsedMs: 0});
+    assert.equal(committed.checking - receiverChecks - DISCOVERY_LAB_INSPECTION_CHECKS, replayChecks);
+    assert.throws(() => validateResources({...committed, inspectionApproved: true}), /resource vector/);
 });

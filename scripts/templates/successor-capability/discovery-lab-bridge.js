@@ -123,7 +123,7 @@ const discoveryBridge = {
         }
         const chain = [];
         for (let item = currentRecord; item; item = item.parent) chain.push(item.charter);
-        const resourceLimits = {acquisitions: 0, search: 0, checking: 10000, memoryBytes: 10000000,
+        const resourceLimits = {acquisitions: 0, search: 0, checking: 10000 + discoveryContract.DISCOVERY_LAB_INSPECTION_CHECKS, memoryBytes: 10000000,
             storageBytes: 4000000, workerCapacity: 4, installations: 0, elapsedMs: 120000};
         for (const charter of chain) {
             for (const key of ['acquisitions', 'search', 'checking', 'installations']) resourceLimits[key] += charter.budget[key];
