@@ -64,6 +64,22 @@ remaining history capacity fund acceptance; it does not rerun construction. Impo
 must extend any stored history with the same identity, and storage transactions reject older or divergent
 archives before overwriting them. Export remains the recovery path when a save cannot complete.
 
+Reuse and successor actions reserve room for their complete report before generating cases or running model work.
+The local history permits 256 events and 8,000,000 canonical UTF-8 bytes; finite JSON node and depth limits also
+apply. A conservative reservation can refuse work before the history is full. Start a separate history when its
+package and report reservation fits; otherwise export the package for separate evidence storage.
+
+Stored successor reports use compact constructor tokens instead of duplicate attempt and frontier arrays.
+Replay with the original parent package reconstructs their exact programs, attempts, frontier and charged work.
+Accepted package canonical content and digests, task results, exposure records, obligations and costs remain
+intact. Public evaluator return values keep their original format. Compact JSON exports keep valid bounded
+histories importable.
+
+If a report unexpectedly exceeds its reservation or cannot be appended, the complete generated report, source
+package and original history remain available as an **unrecorded evaluation** export. This fallback is held in
+the current session until exported; it is not a saved history or a fresh verification of imported evidence.
+Export it before continuing or leaving the page. A successful history-save retry does not erase this report.
+
 ## Evaluation and costs
 
 Frozen-package reuse generates threshold-screening, inverse-design and constrained-selection tasks after freezing.

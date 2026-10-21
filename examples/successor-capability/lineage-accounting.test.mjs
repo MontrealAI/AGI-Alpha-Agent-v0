@@ -47,6 +47,19 @@ test('third-generation comparison and attempted repeated succession include the 
     assert.equal(comparison.costs.coldStart, ancestor + third.costLedger.total);
     assert.equal(comparison.costs.totalAtHorizon,
         ancestor + third.costLedger.total + comparison.costs.uses * comparison.costs.operationPerUse);
+    const earlierSuccession = await buildSuccessor(first, {seed: 12345});
+    assert.equal(earlierSuccession.status, 'PASS');
+    assert.equal(earlierSuccession.newFunction.accepted, true);
+    assert.deepEqual(earlierSuccession.invalidated,
+        ['parent scope certificate', 'prior observations as fresh evidence']);
+    assert.equal(earlierSuccession.oldScope.status, 'FAIL');
+    assert.equal(earlierSuccession.oldScope.report.ok, false);
+    assert.equal(earlierSuccession.oldScope.reason,
+        'Original package was not qualified for the reservoir-exposing productive operation.');
+    assert.equal(earlierSuccession.oldScope.diagnostic.envelope.ok, false);
+    assert.equal(earlierSuccession.oldScope.diagnostic.independent.ok, false);
+    assert.equal(earlierSuccession.oldScope.diagnostic.explanation,
+        'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.');
     const succession = await buildSuccessor(second, {seed: 12345});
     assert.equal(succession.costs.ancestor, ancestor);
     assert.match(succession.costs.ancestorAccountingScope, /prior task evaluations are outside package ancestry/);
@@ -54,6 +67,15 @@ test('third-generation comparison and attempted repeated succession include the 
     assert.equal(succession.costs.cumulativeAfterAcceptance,
         ancestor + succession.costs.remainingAfterAcceptance);
     assert.equal(succession.oldScope.status, 'UNEXPECTED-PASS');
+    assert.equal(succession.oldScope.report.ok, true);
+    assert.equal(succession.oldScope.reason,
+        'Original package already qualifies for the reservoir-exposing productive operation.');
+    assert.equal(succession.oldScope.diagnostic.envelope.ok, true);
+    assert.equal(succession.oldScope.diagnostic.independent.ok, true);
+    assert.equal(succession.oldScope.diagnostic.explanation,
+        'Replaying the old plan preserves the required error envelope in the supplied model.');
+    assert.equal(succession.newFunction.accepted, false);
+    assert.deepEqual(succession.invalidated, ['prior observations as fresh evidence']);
     assert.equal(succession.status, 'FAIL', 'Repeating an existing scope is not a genuinely new accepted function.');
     const exhausted = await buildSuccessor(second, {seed: 12345, searchOptions: {maxStates: 1}});
     assert.equal(exhausted.status, 'INCONCLUSIVE');

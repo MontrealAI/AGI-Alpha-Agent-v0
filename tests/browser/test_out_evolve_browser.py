@@ -17,9 +17,13 @@ from typing import TYPE_CHECKING, Any
 from playwright.sync_api import Page, expect, sync_playwright
 
 if TYPE_CHECKING:
-    from tests.browser.out_evolve_recovery import verify_archive_recovery, verify_new_history_recovery
+    from tests.browser.out_evolve_recovery import (
+        verify_archive_recovery,
+        verify_new_history_recovery,
+        verify_report_capacity,
+    )
 else:
-    from out_evolve_recovery import verify_archive_recovery, verify_new_history_recovery
+    from out_evolve_recovery import verify_archive_recovery, verify_new_history_recovery, verify_report_capacity
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = Path(os.environ.get("OUT_EVOLVE_EVIDENCE", "/tmp/out-evolve-browser-evidence"))
@@ -604,6 +608,7 @@ def main() -> None:
             repeated_context.close()
 
             verify_archive_recovery(browser, url, package_path, history_path, OUTPUT)
+            verify_report_capacity(browser, url, package_path, OUTPUT)
 
             for width in (320, 390, 768, 1440):
                 page.set_viewport_size({"width": width, "height": 1000})

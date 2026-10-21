@@ -4,6 +4,9 @@
 from __future__ import annotations
 
 import json
+import os
+import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -382,6 +385,302 @@ def verify_new_history_recovery(browser: Browser, url: str, pending_history_path
         assert not errors, errors
         _write(destination / "new-history-save-recovery.json", {"status": "PASS", "cases": receipts})
         print("New-history original-save and fresh-save abort recovery: PASS")
+    finally:
+        for context in reversed(contexts):
+            context.close()
+
+
+def verify_report_capacity(browser: Browser, url: str, package_path: Path, output: Path) -> None:
+    """Reject report work before evaluation when a valid history cannot retain its result."""
+    destination = output / "report-capacity"
+    destination.mkdir(parents=True, exist_ok=True)
+    root = Path(__file__).resolve().parents[2]
+    generator_path = destination / "generate-report-capacity.mjs"
+    generator_path.write_text(
+        """import assert from 'node:assert/strict';
+import {readFileSync, writeFileSync} from 'node:fs';
+import {pathToFileURL} from 'node:url';
+import {join} from 'node:path';
+const [packagePath, destination, modulePath, constructorPath] = process.argv.slice(2);
+const workspace = await import(pathToFileURL(modulePath).href);
+const {canonical} = await import(pathToFileURL(constructorPath).href);
+assert.equal(process.version, 'v22.17.1');
+const pkg = JSON.parse(readFileSync(packagePath, 'utf8'));
+assert.ok(!pkg.scope.includes('reservoir'));
+const bytes = value => Buffer.byteLength(canonical(value), 'utf8');
+const packageEvent = {status: 'qualified', package: pkg};
+let full = workspace.createOutEvolveWorkspace('report-capacity-full-events');
+full = await workspace.appendOutEvolveEvent(full, 'package-frozen', packageEvent);
+while (full.events.length < workspace.WORKSPACE_LIMITS.events) {
+    const filler = {
+        kind: 'report-capacity-fixture', status: 'NOT-EVALUATED',
+        description: 'Synthetic capacity fixture; no task evaluation was performed.', note: String(full.events.length)
+    };
+    if (full.events.length === 1) {
+        filler.exposedCaseIds = {historical: 'non-array metadata'};
+        filler.reuse = {exposedCaseIds: 'not-an-array'};
+    }
+    full = await workspace.appendOutEvolveEvent(full, 'comparison', filler);
+}
+const fullReport = await workspace.inspectOutEvolveWorkspace(full);
+assert.deepEqual(fullReport.latestPackage, pkg);
+assert.equal(fullReport.failed, 0);
+assert.equal(fullReport.checkpoint, null);
+let nearPrefix = workspace.createOutEvolveWorkspace('report-capacity-near-bytes');
+nearPrefix = await workspace.appendOutEvolveEvent(nearPrefix, 'package-frozen', packageEvent);
+const payload = {kind: 'report-capacity-fixture', status: 'NOT-EVALUATED',
+    description: 'Synthetic capacity fixture; no task evaluation was performed.', note: '',
+    exposedCaseIds: {historical: 'non-array metadata'}, reuse: {exposedCaseIds: 'not-an-array'}};
+const emptyNote = await workspace.appendOutEvolveEvent(nearPrefix, 'comparison', payload);
+const targetBytes = 7_999_000;
+const padding = targetBytes - bytes(emptyNote);
+assert.ok(padding > 0);
+payload.note = 'é'.repeat(Math.floor(padding / 2)) + 'x'.repeat(padding % 2);
+const near = await workspace.appendOutEvolveEvent(nearPrefix, 'comparison', payload);
+const nearReport = await workspace.inspectOutEvolveWorkspace(near);
+assert.equal(bytes(near), targetBytes);
+assert.deepEqual(nearReport.latestPackage, pkg);
+assert.equal(nearReport.failed, 0);
+assert.equal(nearReport.checkpoint, null);
+const cases = [];
+for (const [name, value] of [['full-events-history.json', full], ['near-byte-history.json', near]]) {
+    writeFileSync(join(destination, name), canonical(value));
+    cases.push({name, id: value.id, events: value.events.length, canonicalUtf8Bytes: bytes(value)});
+}
+console.log(JSON.stringify({status: 'PASS', node: process.version, cases}));
+"""
+    )
+    generated = subprocess.run(
+        [
+            os.environ.get("NODE_EXECUTABLE", "node"),
+            str(generator_path),
+            str(package_path.resolve()),
+            str(destination.resolve()),
+            str(root / "examples/successor-capability/out-evolve-workspace.mjs"),
+            str(root / "examples/successor-capability/constructor.mjs"),
+        ],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    (destination / "fixture-generation.log").write_text(generated.stdout + generated.stderr)
+    assert generated.returncode == 0, generated.stderr
+    fixture_receipt: dict[str, Any] = json.loads(generated.stdout)
+    assert fixture_receipt["node"] == "v22.17.1"
+    _write(destination / "fixture-generation.json", fixture_receipt)
+    accepted_package: dict[str, Any] = json.loads(package_path.read_text())
+    contexts: list[BrowserContext] = []
+    errors: list[str] = []
+    receipts: list[dict[str, Any]] = []
+
+    def new_page() -> Page:
+        context = browser.new_context(accept_downloads=True)
+        contexts.append(context)
+        page = context.new_page()
+        page.on("dialog", lambda dialog: dialog.accept())
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(url)
+        _idle(page)
+        return page
+
+    def capacity_controls(page: Page) -> None:
+        expect(page.locator("#evolve-reuse")).to_be_disabled()
+        expect(page.locator("#evolve-successor")).to_be_disabled()
+        expect(page.locator("#evolve-new-history")).to_be_enabled()
+        expect(page.locator("#evolve-export-package")).to_be_enabled()
+        expect(page.locator("#evolve-export-history")).to_be_enabled()
+        expect(page.locator("#evolve-retry-save")).to_be_hidden()
+
+    try:
+        for fixture in fixture_receipt["cases"]:
+            fixture_path = destination / fixture["name"]
+            expected: dict[str, Any] = json.loads(fixture_path.read_text())
+            metadata = expected["events"][1]["payload"]
+            assert metadata["exposedCaseIds"] == {"historical": "non-array metadata"}
+            assert metadata["reuse"] == {"exposedCaseIds": "not-an-array"}
+            label = "full-events" if fixture["events"] == 256 else "near-byte"
+            page = new_page()
+            _import_history(page, fixture_path, expected["id"])
+            assert _history(page) == expected
+            capacity_controls(page)
+            page.evaluate(
+                """() => {
+                    window.__outEvolveCapacitySpies = {randomValuesCalls: 0, digestCalls: 0};
+                    const randomValues = crypto.getRandomValues.bind(crypto);
+                    const digest = crypto.subtle.digest.bind(crypto.subtle);
+                    crypto.getRandomValues = (...args) => {
+                        window.__outEvolveCapacitySpies.randomValuesCalls += 1;
+                        return randomValues(...args);
+                    };
+                    crypto.subtle.digest = (...args) => {
+                        window.__outEvolveCapacitySpies.digestCalls += 1;
+                        return digest(...args);
+                    };
+                }"""
+            )
+            attempts: list[dict[str, Any]] = []
+            for control in ("reuse", "successor"):
+                page.locator(f"#evolve-{control}").dispatch_event("click")
+                _idle(page)
+                capacity_controls(page)
+                expect(page.locator("#evolve-status")).to_contain_text(
+                    re.compile(r"(capacity|retain|full|space|reserve)", re.IGNORECASE)
+                )
+                expect(page.locator("#evolve-status")).to_contain_text(
+                    re.compile(r"(export|separate history)", re.IGNORECASE)
+                )
+                spies: dict[str, Any] = page.evaluate("window.__outEvolveCapacitySpies")
+                assert spies == {"randomValuesCalls": 0, "digestCalls": 0}
+                assert _history(page) == expected
+                assert _saved(page, "current") == expected
+                assert _saved(page, expected["id"]) == expected
+                expect(page.locator("#evolve-error")).to_be_empty()
+                attempts.append(
+                    {"control": control, "spies": spies, "status": page.locator("#evolve-status").text_content()}
+                )
+            package_export = destination / f"{label}-accepted-package.json"
+            with page.expect_download() as downloaded:
+                page.locator("#evolve-export-package").click()
+            downloaded.value.save_as(package_export)
+            assert json.loads(package_export.read_text()) == accepted_package
+            history_export = destination / f"{label}-exported-history.json"
+            with page.expect_download() as downloaded:
+                page.locator("#evolve-export-history").click()
+            downloaded.value.save_as(history_export)
+            assert json.loads(history_export.read_text()) == expected
+            assert history_export.stat().st_size == fixture["canonicalUtf8Bytes"]
+            assert history_export.stat().st_size <= 8_000_000
+            receipt = {
+                "fixture": fixture,
+                "attempts": attempts,
+                "acceptedPackageExportExact": True,
+                "historyUnchanged": True,
+                "historyExportBytes": history_export.stat().st_size,
+                "nonArrayHistoricalMetadataRetained": {
+                    "exposedCaseIds": metadata["exposedCaseIds"],
+                    "reuse": metadata["reuse"],
+                },
+            }
+            if label == "near-byte":
+                roundtrip = new_page()
+                _import_history(roundtrip, history_export, expected["id"])
+                assert _history(roundtrip) == expected
+                capacity_controls(roundtrip)
+                roundtrip.reload()
+                _idle(roundtrip)
+                capacity_controls(roundtrip)
+                assert _history(roundtrip) == expected
+                assert _saved(roundtrip, "current") == expected
+                assert _saved(roundtrip, expected["id"]) == expected
+                with roundtrip.expect_download() as downloaded:
+                    roundtrip.locator("#evolve-export-package").click()
+                reloaded_package = destination / "near-byte-roundtrip-accepted-package.json"
+                downloaded.value.save_as(reloaded_package)
+                assert json.loads(reloaded_package.read_text()) == accepted_package
+                receipt["exportFreshImportReloadExact"] = True
+            receipts.append(receipt)
+        overflow_page = new_page()
+        overflow_page.locator("#evolve-import").set_input_files(package_path)
+        _idle(overflow_page)
+        expect(overflow_page.locator("#evolve-status")).to_contain_text("Executable package imported")
+        original = _history(overflow_page)
+        assert len(original["events"]) == 1
+        assert original["events"][0]["kind"] == "package-frozen"
+        assert original["events"][0]["payload"]["package"] == accepted_package
+        _write(destination / "unexpected-overflow-original-history.json", original)
+        expect(overflow_page.locator("#evolve-reuse")).to_be_enabled()
+        overflow_page.evaluate(
+            """() => {
+                window.__outEvolveReportOverflow = {fired: false, actualUtf8Bytes: null, injectedUtf8Bytes: null};
+                const encode = TextEncoder.prototype.encode;
+                let armed = true;
+                TextEncoder.prototype.encode = function(value) {
+                    const encoded = encode.call(this, value);
+                    if (armed && typeof value === 'string' && value.includes('"kind":"frozen-package-reuse"')) {
+                        armed = false;
+                        window.__outEvolveReportOverflow = {
+                            fired: true, actualUtf8Bytes: encoded.length, injectedUtf8Bytes: 8_000_001
+                        };
+                        return new Uint8Array(8_000_001);
+                    }
+                    return encoded;
+                };
+            }"""
+        )
+        overflow_page.locator("#evolve-reuse").click()
+        expect(overflow_page.locator("#evolve-export-report")).to_be_visible(timeout=120000)
+        expect(overflow_page.locator("#evolve-form")).to_have_attribute("aria-busy", "false", timeout=120000)
+        expect(overflow_page.locator("#evolve-status")).to_contain_text("evaluation completed")
+        expect(overflow_page.locator("#evolve-status")).to_contain_text("complete report")
+        expect(overflow_page.locator("#evolve-new-history")).to_be_disabled()
+        expect(overflow_page.locator("#evolve-import")).to_be_disabled()
+        expect(overflow_page.locator("#evolve-retry-save")).to_be_hidden()
+        fault: dict[str, Any] = overflow_page.evaluate("window.__outEvolveReportOverflow")
+        assert fault["fired"] is True
+        assert 0 < fault["actualUtf8Bytes"] < 8_000_000
+        assert fault["injectedUtf8Bytes"] == 8_000_001
+        assert _history(overflow_page) == original
+        assert _saved(overflow_page, "current") == original
+        assert _saved(overflow_page, original["id"]) == original
+        expect(overflow_page.locator("#evolve-error")).to_contain_text("storage reservation")
+        pending_status = overflow_page.locator("#evolve-status").text_content()
+        with overflow_page.expect_download() as downloaded:
+            overflow_page.locator("#evolve-export-package").click()
+        overflow_package = destination / "unexpected-overflow-accepted-package.json"
+        downloaded.value.save_as(overflow_package)
+        assert json.loads(overflow_package.read_text()) == accepted_package
+        with overflow_page.expect_download() as downloaded:
+            overflow_page.locator("#evolve-export-report").click()
+        overflow_export = destination / "unexpected-overflow-report.json"
+        downloaded.value.save_as(overflow_export)
+        unrecorded: dict[str, Any] = json.loads(overflow_export.read_text())
+        assert unrecorded["schema"] == "out-evolve-unrecorded-evaluation/v1"
+        assert unrecorded["eventKind"] == "reuse"
+        assert unrecorded["history"] == original
+        assert unrecorded["package"] == accepted_package
+        report = unrecorded["report"]
+        assert report["kind"] == "frozen-package-reuse"
+        assert len(report["cases"]) == 3
+        assert len(report["measurements"]) == 24
+        assert report["exposedCaseIds"] == [case["id"] for case in report["cases"]]
+        assert report["ledger"]["tasks"] == len(report["cases"])
+        assert report["ledger"]["measurementCalls"] == len(report["measurements"])
+        assert report["ledger"]["total"] > 0
+        assert report["packageDigestBefore"] == accepted_package["digest"]
+        assert report["packageDigestAfter"] == accepted_package["digest"]
+        assert _history(overflow_page) == original
+        assert _saved(overflow_page, "current") == original
+        assert _saved(overflow_page, original["id"]) == original
+        _idle(overflow_page)
+        expect(overflow_page.locator("#evolve-new-history")).to_be_enabled()
+        expect(overflow_page.locator("#evolve-status")).to_contain_text("Start a separate history")
+        overflow_receipt = {
+            "faultInjection": "One completed reuse-report encoding returned an intentionally oversized byte array.",
+            "fault": fault,
+            "statusBeforeExport": pending_status,
+            "statusAfterExport": overflow_page.locator("#evolve-status").text_content(),
+            "historyAndDatabaseUnchanged": True,
+            "acceptedPackageExportExact": True,
+            "completeUnrecordedReportExported": True,
+            "casesRetained": len(report["cases"]),
+            "measurementsRetained": len(report["measurements"]),
+            "exposedCaseIdsRetained": report["exposedCaseIds"],
+            "ledgerRetained": report["ledger"],
+            "explicitSeparateHistoryEnabledAfterExport": True,
+        }
+        assert not errors, errors
+        _write(
+            destination / "report-capacity-results.json",
+            {
+                "status": "PASS",
+                "cases": receipts,
+                "unexpectedOverflow": overflow_receipt,
+                "pageErrors": errors,
+                "evaluationSpiesInstalledAfterImport": True,
+            },
+        )
+        print("Report capacity guards, compact export roundtrip and complete overflow-report recovery: PASS")
     finally:
         for context in reversed(contexts):
             context.close()

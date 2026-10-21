@@ -495,14 +495,18 @@ export async function buildSuccessor(input, options = {}) {
     try {
         const report = qualify(expanded, parent.ast);
         oldScope = {status: report.ok ? 'UNEXPECTED-PASS' : 'FAIL', report,
-            reason: 'Original package was not qualified for the reservoir-exposing productive operation.'};
+            reason: report.ok
+                ? 'Original package already qualifies for the reservoir-exposing productive operation.'
+                : 'Original package was not qualified for the reservoir-exposing productive operation.'};
     } catch (error) {
         oldScope = {status: 'FAIL', reason: String(error.message)};
     }
     oldScope.diagnostic = {frozenPackageUnchanged: true, prospectiveScopeOnlyAdaptation: true,
         requiredScope: expanded.scope, envelope: diagnosticEnvelope, independent: diagnosticVerification,
         reservoirMeasurement: {expected: 17, ...diagnosticMeasurement},
-        explanation: 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
+        explanation: diagnosticEnvelope.ok && diagnosticVerification.ok
+            ? 'Replaying the old plan preserves the required error envelope in the supplied model.'
+            : 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
     const searchOptions = {...options.searchOptions};
     const acceptance = await acceptBudgetedConstruction(expanded, construct(expanded, {...searchOptions, parent}),
         {parent, purpose: 'successor'});
@@ -530,7 +534,8 @@ export async function buildSuccessor(input, options = {}) {
     const prior = reuse.cases.filter(test => test.operation === 'standard');
     const added = reuse.cases.filter(test => test.operation === 'reservoir');
     const preserved = prior.length === 3 && prior.every(test => test.status === 'PASS');
-    const newFunction = added.length === 3 && added.every(test => test.status === 'PASS');
+    const newFunction = oldScope.status === 'FAIL' && added.length === 3
+        && added.every(test => test.status === 'PASS');
     const parentCost = lineageConstructionCost(parent);
     const parentAudit = verificationCostCapability(parent);
     const remaining = ledgerTotal(pkg.costLedger) + parentAudit + oldScopeAuditCost;
@@ -539,7 +544,9 @@ export async function buildSuccessor(input, options = {}) {
     return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor',
         status: oldScope.status === 'FAIL' && preserved && newFunction ? 'PASS' : 'FAIL',
         oldScope, parentDigest: parent.digest, package: pkg, result, scratch, reuse, scratchReuse,
-        inheritedAssets: pkg.parentAssets, invalidated: ['parent scope certificate', 'prior observations as fresh evidence'],
+        inheritedAssets: pkg.parentAssets,
+        invalidated: [...(oldScope.status === 'FAIL' ? ['parent scope certificate'] : []),
+            'prior observations as fresh evidence'],
         obligations: {preserved, standardCases: prior},
         newFunction: {accepted: newFunction, operation: 'reservoir', cases: added,
             description: 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'},

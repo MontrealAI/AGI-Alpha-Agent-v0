@@ -2,10 +2,99 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {apparatus} from './apparatus.mjs';
-import {createSearch, advanceSearch, construct, exportSearchCheckpoint} from './constructor.mjs';
+import {createSearch, advanceSearch, construct, exportSearchCheckpoint, importSearchCheckpoint, canonical} from './constructor.mjs';
+import {buildSuccessor, evaluateFrozenReuse} from './evaluation.mjs';
 import {freezeCapability, digestCapability} from './capability-package.mjs';
 import {createOutEvolveWorkspace, appendOutEvolveEvent, inspectOutEvolveWorkspace,
-    requireHistoryContinuation, searchHistoryCapacity, WORKSPACE_LIMITS} from './out-evolve-workspace.mjs';
+    requireHistoryContinuation, searchHistoryCapacity, evaluationHistoryCapacity, retainedEvaluationReport,
+    WORKSPACE_LIMITS} from './out-evolve-workspace.mjs';
+
+const bytes = value => new TextEncoder().encode(canonical(value)).length;
+const uiBounds = {maxCost: 100000, maxStates: 2000, maxMemoryStates: 2000, maxProgramSize: 12};
+
+test('retained successor reports reconstruct constructor evidence without changing packages or observed results', async () => {
+    const app = apparatus('shielded');
+    const parent = await freezeCapability(app, construct(app, uiBounds));
+    const raw = await buildSuccessor(parent, {seed: 9, searchOptions: parent.search.limits});
+    const original = canonical(raw);
+    const retained = retainedEvaluationReport(raw);
+    assert.equal(canonical(raw), original);
+    assert.deepEqual(retained.package, raw.package);
+    for (const key of ['oldScope', 'reuse', 'scratchReuse', 'obligations', 'newFunction', 'costs', 'limitations']) {
+        assert.deepEqual(retained[key], raw[key]);
+    }
+    for (const [key, source] of [['result', parent], ['scratch', null]]) {
+        assert.equal(Object.hasOwn(retained[key], 'attempts'), false);
+        assert.equal(Object.hasOwn(retained[key], 'frontier'), false);
+        const restored = importSearchCheckpoint(retained[key].checkpoint, {parent: source});
+        const replayed = advanceSearch(restored, {steps: 0});
+        assert.deepEqual(replayed.ledger, raw[key].ledger);
+        assert.deepEqual(replayed.program, raw[key].program);
+        assert.deepEqual(replayed.attempts, raw[key].attempts);
+        assert.deepEqual(replayed.frontier, raw[key].frontier);
+    }
+    let history = await appendOutEvolveEvent(createOutEvolveWorkspace('out-evolve-report-compact'), 'package-frozen', {package: parent});
+    const capacity = evaluationHistoryCapacity(history, parent, 'successor');
+    assert.equal(capacity.canRun, true);
+    assert.ok(bytes(retained) < capacity.reportBytes);
+    history = await appendOutEvolveEvent(history, 'successor', retained);
+    assert.equal((await inspectOutEvolveWorkspace(history)).latestPackage.digest, raw.package.digest);
+});
+
+test('evaluation reservation accounts for UTF8 exposures and refuses event, byte, node and depth boundaries before work', async () => {
+    const app = apparatus('shielded');
+    const pkg = await freezeCapability(app, construct(app, uiBounds));
+    const base = await appendOutEvolveEvent(createOutEvolveWorkspace('out-evolve-report-limits'), 'package-frozen', {package: pkg});
+    const exposures = ['\u0000'.repeat(1000) + '🧪'.repeat(1000)];
+    const capacity = evaluationHistoryCapacity(base, pkg, 'reuse', exposures);
+    assert.equal(capacity.exposureBytes, bytes(exposures));
+    const report = await evaluateFrozenReuse(pkg, {seed: 9, exposedCaseIds: exposures});
+    assert.ok(bytes(report) < capacity.reportBytes);
+    assert.deepEqual(report.exposedCaseIds[0], exposures[0]);
+    assert.equal(evaluationHistoryCapacity(base, pkg, 'reuse', Array.from({length: 4097}, (_, i) => String(i))).reason, 'exposure-limit');
+    let full = base;
+    while (full.events.length < WORKSPACE_LIMITS.events) full = await appendOutEvolveEvent(full, 'comparison', {status: 'NOT-EVALUATED'});
+    for (const kind of ['reuse', 'successor']) {
+        assert.equal(evaluationHistoryCapacity(full, pkg, kind).reason, 'event-limit');
+    }
+    const padded = await appendOutEvolveEvent(base, 'comparison', {note: 'x'.repeat(7_700_000)});
+    assert.equal(evaluationHistoryCapacity(padded, pkg, 'reuse').reason, 'byte-reserve');
+    const manyNodes = await appendOutEvolveEvent(base, 'comparison', {data: Array(1_910_000).fill(0)});
+    assert.equal(evaluationHistoryCapacity(manyNodes, pkg, 'reuse').reason, 'structural-reserve');
+    let deep = 'historical';
+    for (let i = 0; i < 49; i++) deep = [deep];
+    assert.equal(evaluationHistoryCapacity(base, pkg, 'reuse', [deep]).reason, 'structural-reserve');
+    const expensive = await freezeCapability(app, construct(app, {...uiBounds, maxStates: 100000, maxMemoryStates: 100000}));
+    const refused = evaluationHistoryCapacity(base, expensive, 'successor');
+    assert.equal(refused.canRun, false);
+    assert.equal(refused.fitsSeparateHistory, false);
+    let evidence = 'historical context';
+    for (let i = 0; i < 58; i++) evidence = {nested: evidence};
+    const deepPackage = await freezeCapability(app, construct(app, uiBounds), {evidence});
+    const deepHistory = await appendOutEvolveEvent(createOutEvolveWorkspace('out-evolve-report-depth'), 'package-frozen', {package: deepPackage});
+    assert.equal((await inspectOutEvolveWorkspace(deepHistory)).latestPackage.digest, deepPackage.digest);
+    assert.equal(evaluationHistoryCapacity(deepHistory, deepPackage, 'reuse').canRun, true);
+    assert.equal(evaluationHistoryCapacity(deepHistory, deepPackage, 'successor').reason, 'structural-reserve');
+    assert.equal(evaluationHistoryCapacity(deepHistory, deepPackage, 'successor').fitsSeparateHistory, false);
+});
+
+test('the conservative last-fit byte reservation retains a real report and the preceding history exactly', async () => {
+    const app = apparatus('shielded');
+    const pkg = await freezeCapability(app, construct(app, uiBounds));
+    const base = await appendOutEvolveEvent(createOutEvolveWorkspace('out-evolve-report-last-fit'), 'package-frozen', {package: pkg});
+    const emptyPadding = await appendOutEvolveEvent(base, 'comparison', {note: ''});
+    const reserve = evaluationHistoryCapacity(emptyPadding, pkg, 'reuse').requiredBytes;
+    const length = WORKSPACE_LIMITS.bytes - bytes(emptyPadding) - reserve;
+    const lastFit = await appendOutEvolveEvent(base, 'comparison', {note: 'x'.repeat(length)});
+    assert.equal(evaluationHistoryCapacity(lastFit, pkg, 'reuse').canRun, true);
+    const oneLess = await appendOutEvolveEvent(base, 'comparison', {note: 'x'.repeat(length + 1)});
+    assert.equal(evaluationHistoryCapacity(oneLess, pkg, 'reuse').canRun, false);
+    const raw = await evaluateFrozenReuse(pkg, {seed: 12});
+    const complete = await appendOutEvolveEvent(lastFit, 'reuse', retainedEvaluationReport(raw));
+    assert.deepEqual(complete.events.slice(0, lastFit.events.length), lastFit.events);
+    assert.deepEqual(complete.events.at(-1).payload, raw);
+    assert.ok(bytes(complete) <= WORKSPACE_LIMITS.bytes);
+});
 
 test('uppercase failed and inconclusive evidence survives a later qualifying package and reload', async () => {
     let history = createOutEvolveWorkspace('out-evolve-history-test');

@@ -14,6 +14,7 @@
     let cancelled = false;
     let unsaved = false;
     let readyNow = false;
+    let pendingEvaluation = null;
     const json = value => JSON.stringify(value, null, 2);
     const pause = () => new Promise(resolve => setTimeout(resolve, 16));
     const freshSeed = () => globalThis.crypto.getRandomValues(new Uint32Array(1))[0];
@@ -29,7 +30,7 @@
     }
     function clearProblem() { view('error').hidden = true; view('error').textContent = ''; }
     function download(value, filename) {
-        const url = URL.createObjectURL(new Blob([json(value) + '\n'], {type: 'application/json'}));
+        const url = URL.createObjectURL(new Blob([JSON.stringify(value)], {type: 'application/json'}));
         const link = document.createElement('a');
         link.href = url;
         link.download = filename;
@@ -55,25 +56,53 @@
         if (!outEvolve.searchHistoryCapacity(record, checkpoint).canFinalize) return 'The candidate checkpoint is retained, but this history cannot retain its remaining acceptance records. Export the checkpoint.';
         return 'Qualified search recovered. Finish qualifying its package without repeating construction work.';
     }
+    function capacityNotice(capacity, declined = false) {
+        const message = capacity.fitsSeparateHistory
+            ? 'This history cannot reserve room for another complete evaluation report. Export it or start a separate history and import the package there.'
+            : 'This workspace cannot reserve a complete evaluation report for this package and its frozen bounds. Export the package for separate evidence.';
+        return message + (declined ? ' No evaluation was run.' : '');
+    }
+    function reportCapacity(kind, exposures = exposedCases()) {
+        return packageValue ? outEvolve.evaluationHistoryCapacity(record, packageValue, kind, exposures) : null;
+    }
+    function requireReportCapacity(kind, exposures) {
+        if (pendingEvaluation && !pendingEvaluation.exported) {
+            setStatus('Export the unrecorded evaluation before starting more work. Its complete generated report is retained in this session.');
+            return null;
+        }
+        const capacity = reportCapacity(kind, exposures);
+        if (!capacity?.canRun) { setStatus(capacity ? capacityNotice(capacity, true) : 'Import or construct a package first.'); return null; }
+        return capacity;
+    }
     function controls() {
+        const reportBlocked = pendingEvaluation && !pendingEvaluation.exported;
         view('form').setAttribute('aria-busy', String(busyNow));
         for (const name of ['purpose', 'constraints', 'topology', 'budget', 'apparatus', 'construct', 'import']) {
-            view(name).disabled = !readyNow || busyNow || unsaved;
+            view(name).disabled = !readyNow || busyNow || unsaved || reportBlocked;
         }
         if (pendingSearch()) view('construct').disabled = true;
-        view('new-history').disabled = !readyNow || busyNow || unsaved || !record.events.length;
+        view('new-history').disabled = !readyNow || busyNow || unsaved || reportBlocked || !record.events.length;
         view('cancel').disabled = !busyNow || !['cancelled', 'searching'].includes(checkpoint?.status) || cancelled;
         const finalization = qualifiedFinalization();
         const capacity = checkpoint ? outEvolve.searchHistoryCapacity(record, checkpoint) : null;
-        view('resume').disabled = !readyNow || busyNow || unsaved || checkpoint === null
+        view('resume').disabled = !readyNow || busyNow || unsaved || reportBlocked || checkpoint === null
             || (finalization ? !finalization.funded || !capacity.canFinalize
                 : !['cancelled', 'searching'].includes(checkpoint.status) || !capacity.canAdvance);
         view('resume').textContent = finalization ? 'Finish qualifying package' : 'Resume search';
-        for (const name of ['reuse', 'successor']) view(name).disabled = !readyNow || busyNow || unsaved || !packageValue;
+        const exposures = packageValue ? exposedCases() : [];
+        const reuseCapacity = reportCapacity('reuse', exposures), successorCapacity = reportCapacity('successor', exposures);
+        for (const [name, capacity] of [['reuse', reuseCapacity], ['successor', successorCapacity]]) {
+            view(name).disabled = !readyNow || busyNow || unsaved || reportBlocked || !packageValue || !capacity?.canRun;
+        }
         if (packageValue?.scope?.includes('reservoir')) view('successor').disabled = true;
         view('successor').textContent = packageValue?.scope?.includes('reservoir')
             ? 'Reservoir scope already qualified' : 'Build successor';
-        for (const name of ['saved', 'open']) view(name).disabled = !readyNow || busyNow || unsaved || !view('saved').value;
+        for (const name of ['saved', 'open']) view(name).disabled = !readyNow || busyNow || unsaved || reportBlocked || !view('saved').value;
+        const denied = !reuseCapacity?.canRun ? reuseCapacity
+            : !packageValue?.scope?.includes('reservoir') && !successorCapacity?.canRun ? successorCapacity : null;
+        view('capacity').textContent = reportBlocked
+            ? 'An unrecorded evaluation is retained. Export its complete report before more work.' : denied ? capacityNotice(denied) : '';
+        view('export-report').hidden = !pendingEvaluation;
         view('export-package').disabled = !packageValue;
         view('export-history').disabled = !record.events.length;
         view('retry-save').hidden = !unsaved;
@@ -283,6 +312,28 @@
         record = await outEvolve.appendOutEvolveEvent(record, kind, payload);
         return persist();
     }
+    async function retainEvaluation(kind, report, capacity) {
+        pendingEvaluation = {schema: 'out-evolve-unrecorded-evaluation/v1', eventKind: kind,
+            history: record, package: packageValue, report, exported: false};
+        try {
+            const retained = outEvolve.retainedEvaluationReport(report);
+            const eventKind = kind === 'reuse' ? 'reuse' : report.package ? 'successor' : 'failure';
+            const payload = eventKind === 'failure'
+                ? {status: retained.status, message: retained.reason || 'No qualifying successor construction found within budget.', report: retained}
+                : retained;
+            const bytes = new TextEncoder().encode(outEvolveConstructor.canonical(payload)).length;
+            if (bytes > capacity.reportBytes) throw Error('The generated report exceeded its conservative storage reservation.');
+            const saved = await append(eventKind, payload);
+            pendingEvaluation = null;
+            return {report: retained, saved};
+        } catch (error) {
+            pendingEvaluation.reason = asError(error);
+            problem(error);
+            setStatus('The evaluation completed but its report could not enter this history. Export the unrecorded evaluation now; its complete report and source package are retained in this session.');
+            controls();
+            return null;
+        }
+    }
     function readBrief() {
         const purpose = view('purpose').value.trim();
         const constraints = view('constraints').value.trim();
@@ -323,8 +374,9 @@
         renderHistory();
     }
     function exposedCases() {
+        const ids = value => Array.isArray(value) ? value : [];
         return [...new Set(record.events.flatMap(event => [
-            ...(event.payload.exposedCaseIds || []), ...(event.payload.reuse?.exposedCaseIds || [])
+            ...ids(event.payload.exposedCaseIds), ...ids(event.payload.reuse?.exposedCaseIds)
         ]))];
     }
     async function finalizeQualifiedSearch() {
@@ -386,18 +438,21 @@
             await pause();
         }
     }
-    async function withWork(action) {
-        if (busyNow || unsaved || !readyNow) return;
+    async function withWork(action, evaluation = null) {
+        if (busyNow || unsaved || !readyNow || pendingEvaluation && !pendingEvaluation.exported) return;
         clearProblem(); busyNow = true; cancelled = false; controls();
         try { await action(); }
         catch (error) {
             problem(error);
-            try { await append('failure', {status: 'FAIL', message: asError(error), draft: {
+            let failureRetained = false;
+            try { await append('failure', {status: 'FAIL', message: asError(error), ...(evaluation
+                ? {operation: evaluation, packageDigest: packageValue?.digest || null} : {draft: {
                 purpose: view('purpose').value, constraints: view('constraints').value,
                 budget: view('budget').value, apparatusText: view('apparatus').value.slice(0, 100000)
-            }}); }
+            }})}); failureRetained = true; }
             catch (recordError) { problem(recordError); }
-            setStatus('This attempt failed. Its evidence remains in the history.');
+            setStatus(failureRetained ? 'This attempt failed. Its evidence remains in the history.'
+                : 'This attempt failed and its failure record could not be added. The existing history is retained; export it or start a separate history.');
         } finally { busyNow = false; controls(); }
     }
     view('form').addEventListener('submit', event => {
@@ -440,30 +495,45 @@
         runningApparatus = checkpointApparatus(); setStatus('Resuming the same frozen search bounds…'); await pause(); await runSearch();
     }); });
     view('topology').addEventListener('change', fillDefault);
-    view('reuse').addEventListener('click', () => { void withWork(async () => {
+    view('reuse').addEventListener('click', () => {
         const exposedCaseIds = exposedCases();
+        const capacity = requireReportCapacity('reuse', exposedCaseIds);
+        if (!capacity) return;
+        void withWork(async () => {
         setStatus('Testing new purposes using the unchanged frozen package…'); await pause();
         const report = await outEvolveEvaluation.evaluateFrozenReuse(packageValue, {seed: freshSeed(), exposedCaseIds});
-        await append('reuse', report);
-        view('evidence').textContent = json(report);
-        renderExperimentWork(report);
+        const retained = await retainEvaluation('reuse', report, capacity);
+        if (!retained?.saved) return;
+        view('evidence').textContent = json(retained.report);
+        renderExperimentWork(retained.report);
         setStatus(`Frozen-package reuse: ${report.status}. All accepted, failed and inconclusive cases are retained.`);
-    }); });
-    view('successor').addEventListener('click', () => { void withWork(async () => {
+    }, 'reuse'); });
+    view('successor').addEventListener('click', () => {
+        const exposedCaseIds = exposedCases();
+        const capacity = requireReportCapacity('successor', exposedCaseIds);
+        if (!capacity) return;
+        void withWork(async () => {
         setStatus('Exposing the dormant reservoir and checking which parent assets remain valid…'); await pause();
         const report = await outEvolveEvaluation.buildSuccessor(packageValue, {seed: freshSeed(),
-            exposedCaseIds: exposedCases(), searchOptions: packageValue.search.limits});
+            exposedCaseIds, searchOptions: packageValue.search.limits});
+        const retained = await retainEvaluation('successor', report, capacity);
+        if (!retained?.saved) return;
         if (report.package) {
-            if (!await append('successor', report)) return;
             renderPackage(report.package);
             view('comparison').textContent = json(report.costs);
-        } else if (!await append('failure', {status: report.status,
-            message: report.reason || 'No qualifying successor construction found within budget.', report})) return;
-        view('evidence').textContent = json(report);
-        renderExperimentWork(report);
+        }
+        view('evidence').textContent = json(retained.report);
+        renderExperimentWork(retained.report);
         setStatus(`Scope-expanding successor: ${report.status}. `
-            + (report.reason || 'Inspect preserved obligations, the old scope failure and cumulative cost.'));
-    }); });
+            + (report.reason || 'Inspect preserved obligations, the prior-scope result and cumulative cost.'));
+    }, 'successor'); });
+    view('export-report').addEventListener('click', () => {
+        if (!pendingEvaluation) return;
+        download(pendingEvaluation, 'out-evolve-unrecorded-evaluation.json');
+        pendingEvaluation.exported = true;
+        setStatus('Unrecorded evaluation exported with its complete report and original history. Start a separate history to continue.');
+        controls();
+    });
     view('export-history').addEventListener('click', () => download(record, 'out-evolve-history.json'));
     view('export-package').addEventListener('click', () => download(packageValue, 'out-evolve-capability.json'));
     view('retry-save').addEventListener('click', () => { void (async () => {
@@ -525,7 +595,7 @@
         }).finally(() => { event.target.value = ''; });
     });
     window.addEventListener('beforeunload', event => {
-        if (busyNow || unsaved) { event.preventDefault(); event.returnValue = ''; }
+        if (busyNow || unsaved || pendingEvaluation && !pendingEvaluation.exported) { event.preventDefault(); event.returnValue = ''; }
     });
     void (async () => {
         fillDefault(); controls();

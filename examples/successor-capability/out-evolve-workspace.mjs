@@ -10,6 +10,16 @@ export const EVENT_KINDS = Object.freeze([
 const trustedHistories = new WeakMap();
 const clone = value => JSON.parse(canonical(value));
 const same = (a, b) => canonical(a) === canonical(b);
+const encodedBytes = value => new TextEncoder().encode(canonical(value)).length;
+function structure(value) {
+    let nodes = 0, depth = 0;
+    const visit = (item, level) => {
+        nodes += 1; depth = Math.max(depth, level);
+        if (item && typeof item === 'object') Object.values(item).forEach(child => visit(child, level + 1));
+    };
+    visit(value, 0);
+    return {nodes, depth};
+}
 const exact = (value, names) => value && typeof value === 'object' && !Array.isArray(value)
     && Object.keys(value).length === names.length && names.every(name => Object.hasOwn(value, name));
 
@@ -148,6 +158,68 @@ export function searchHistoryCapacity(workspace, checkpoint) {
     return {canAdvance: remainingEvents >= 3 && remainingBytes >= 2 * tokenBytes + terminalEvidenceReserve,
         canFinalize: checkpoint.status === 'qualified' && remainingEvents >= 2 && remainingBytes >= terminalEvidenceReserve,
         remainingEvents, remainingBytes, tokenBytes, terminalEvidenceReserve};
+}
+
+/** Preserve observed evaluation evidence; reconstruct duplicate constructor state from its token. */
+export function retainedEvaluationReport(report) {
+    if (report.kind !== 'scope-expanding-successor') return clone(report);
+    const compact = result => {
+        if (!result?.checkpoint) return result;
+        const {attempts, frontier, checkpoint, ...retained} = result;
+        return {...retained, checkpoint: exportSearchCheckpoint(checkpoint)};
+    };
+    // Strip raw duplicate state before canonicalizing: a raw report may exceed canonical's node bound.
+    return clone({...report, result: compact(report.result), scratch: compact(report.scratch),
+        retention: {schema: 'out-evolve-retained-evaluation/v1', parentDigest: report.parentDigest,
+            constructorEvidence: 'Compact checkpoints reconstruct deterministic attempts, frontier, program and work; the original parent package is retained in this history.'}});
+}
+
+/** Reserve a complete retained report (or bounded failure) before RNG, imports or evaluation work. */
+export function evaluationHistoryCapacity(workspace, pkg, kind, exposedCaseIds = []) {
+    if (!['reuse', 'successor'].includes(kind)) throw Error('Unsupported retained evaluation kind.');
+    const remainingEvents = WORKSPACE_LIMITS.events - workspace.events.length;
+    const remainingBytes = WORKSPACE_LIMITS.bytes - encodedBytes(workspace);
+    const packageBytes = encodedBytes(pkg), exposureBytes = encodedBytes(exposedCaseIds);
+    const exposureCount = new Set(exposedCaseIds).size;
+    const workspaceStructure = structure(workspace), packageStructure = structure(pkg);
+    const exposureStructure = structure(exposedCaseIds), certificateStructure = structure(pkg.certificate);
+    let reportBytes = 524_288 + exposureBytes + 2 * encodedBytes(pkg.certificate);
+    let reportNodes = 100_000 + exposureStructure.nodes + 2 * certificateStructure.nodes;
+    let attemptBytes = 0, maximumAttempts = 0;
+    if (kind === 'successor') {
+        const app = {...pkg.apparatus, id: pkg.apparatus.id.endsWith('-expanded')
+            ? pkg.apparatus.id : `${pkg.apparatus.id}-expanded`, scope: ['standard', 'reservoir']};
+        const limits = pkg.search.limits;
+        const instructions = Math.max(limits.maxProgramSize, pkg.ast.installations.length);
+        const longestId = Math.max(...app.primitives.map(primitive => primitive.id.length));
+        const ast = {schema: 'out-evolve-ast/v1', installations: [], scope: ['standard', 'reservoir'],
+            prepare: {op: 'sequence', steps: Array.from({length: instructions}, () => ({op: 'primitive', id: 'x'.repeat(longestId)}))}};
+        // All-prepare syntax dominates installation syntax. IDs are bounded ASCII; program is escaped twice.
+        attemptBytes = encodedBytes({index: Number.MAX_VALUE, program: canonical(ast), programCost: Number.MAX_VALUE,
+            synthesisToDate: Number.MAX_VALUE, qualified: false, reason: 'x'.repeat(1024)}) + 256;
+        maximumAttempts = Math.min(limits.maxStates, limits.maxMemoryStates + 1);
+        // One accepted own-package attempt list; tokens omit raw state and embedded parent.
+        // Explicit manifest/parent/exposure terms cover their copies; 1MiB covers finite task/certificate
+        // records, event/failure wrappers, fresh token metadata and bounded evaluation-error evidence.
+        reportBytes = 1_048_576 + 16 * encodedBytes(app) + 4 * packageBytes
+            + 2 * exposureBytes + maximumAttempts * attemptBytes;
+        reportNodes = 100_000 + 16 * structure(app).nodes + 4 * packageStructure.nodes
+            + 2 * exposureStructure.nodes + maximumAttempts * 16;
+    }
+    const requiredBytes = reportBytes + 4096;
+    const fitsSeparateHistory = packageBytes + requiredBytes
+        - (kind === 'successor' ? 2 : 1) * exposureBytes + 4096 <= WORKSPACE_LIMITS.bytes
+        && (kind !== 'successor' || packageStructure.depth <= 48)
+        && packageStructure.nodes + reportNodes - (kind === 'successor' ? 2 : 1) * exposureStructure.nodes + 256 <= 2_000_000;
+    const structureFits = workspaceStructure.nodes + reportNodes + 128 <= 2_000_000
+        && exposureStructure.depth <= 48 && (kind !== 'successor' || packageStructure.depth <= 48);
+    return {canRun: remainingEvents >= 1 && remainingBytes >= requiredBytes && exposureCount <= 4096 && structureFits,
+        remainingEvents, remainingBytes, reportBytes, requiredBytes, fitsSeparateHistory,
+        packageBytes, exposureBytes, exposureCount, attemptBytes, maximumAttempts, reportNodes,
+        workspaceNodes: workspaceStructure.nodes, packageDepth: packageStructure.depth, exposureDepth: exposureStructure.depth,
+        reason: exposureCount > 4096 ? 'exposure-limit' : remainingEvents < 1 ? 'event-limit'
+            : remainingBytes < requiredBytes ? 'byte-reserve' : !structureFits ? 'structural-reserve' : null,
+        representation: 'out-evolve-retained-evaluation/v1'};
 }
 
 export function latestOutEvolveEvent(workspace, kind) {
