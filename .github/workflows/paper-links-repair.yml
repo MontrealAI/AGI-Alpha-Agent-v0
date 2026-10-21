@@ -1,0 +1,109 @@
+name: Public PDF link repair
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/paper-links-repair.yml'
+      - 'scripts/repair_paper_links.py'
+      - 'tests/test_paper_link_repair.py'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/paper-links-repair.yml'
+      - 'scripts/repair_paper_links.py'
+      - 'tests/test_paper_link_repair.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Check additive repair and fail-closed guards
+        run: python -m unittest discover -s tests -p test_paper_link_repair.py -v
+
+  prepare:
+    needs: validate
+    if: ${{ success() && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Restore public release and add only pinned original PDFs
+        env:
+          REPAIR_SOURCE: ${{ github.sha }}
+        run: python -m scripts.repair_paper_links prepare --work "$RUNNER_TEMP/pdf-repair" --source "$REPAIR_SOURCE"
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+        with:
+          name: pdf-link-repair-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pdf-repair/site
+          retention-days: 1
+      - name: Retain preparation evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: pdf-repair-preparation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pdf-repair/site-packs.json
+            ${{ runner.temp }}/pdf-repair/*-report.json
+            ${{ runner.temp }}/pdf-repair/site/paper-link-repair-20261021.json
+          if-no-files-found: error
+          retention-days: 14
+
+  deploy:
+    needs: prepare
+    if: ${{ success() && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Recheck exact live deployment and current main under Pages lock
+        env:
+          REPAIR_SOURCE: ${{ github.sha }}
+        run: python -m scripts.repair_paper_links guard --work "$RUNNER_TEMP/pdf-repair-guard" --source "$REPAIR_SOURCE"
+      - name: Deploy additive public PDF artifact
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+        with:
+          artifact_name: pdf-link-repair-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Verify all seven exact public PDF URLs and unchanged software bytes
+        env:
+          REPAIR_SOURCE: ${{ github.sha }}
+        run: python -m scripts.repair_paper_links verify-live --work "$RUNNER_TEMP/pdf-repair-guard" --source "$REPAIR_SOURCE"
+      - name: Retain live repair evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: pdf-repair-live-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pdf-repair-guard
+          if-no-files-found: error
+          retention-days: 14
