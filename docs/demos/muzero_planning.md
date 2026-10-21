@@ -12,6 +12,8 @@ Train a small neural network from real environment transitions, watch the learni
 and compare search with random actions and the network's own policy. Everything runs on your CPU.
 No API key, hosted model, Ollama service or public tunnel is required.
 
+<a id="start-here-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Start here — 1.37.1
 

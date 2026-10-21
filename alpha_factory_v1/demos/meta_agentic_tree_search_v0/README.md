@@ -16,6 +16,8 @@ shows the gap to the best design in the supplied training model.
 
 [Project notice](../../../docs/DISCLAIMER_SNIPPET.md)
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Current runnable path — 1.37.1
 

@@ -6,6 +6,8 @@
 
 [Launch Demo](../cross_industry_alpha_factory/index.html){.md-button}
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Current runnable path — 1.37.1
 

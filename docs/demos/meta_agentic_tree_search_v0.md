@@ -19,6 +19,8 @@ shows the gap to the best design in the supplied training model.
 [Notebook](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/alpha_factory_v1/demos/meta_agentic_tree_search_v0/colab_meta_agentic_tree_search.ipynb)
 
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Current runnable path — 1.37.1
 

@@ -9,6 +9,8 @@ learned-model Monte Carlo tree search. Start without an API key or language mode
 The supported task is deliberately small: take **0.3 now**, or learn a two-step
 route to **1.0 later**. All outcomes are simulator rewards, not money.
 
+<a id="start-in-three-steps-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Start in three steps — 1.37.1
 

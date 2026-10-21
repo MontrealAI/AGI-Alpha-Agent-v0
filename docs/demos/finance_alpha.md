@@ -12,6 +12,8 @@ Compare momentum, reversion, equal-weight rebalancing and cash across synthetic 
 reversal and gap scenarios—or import your own aligned price bars. Every decision, simulated
 fill, risk block and equity mark is available for review. No API key, model, Docker or broker account is needed.
 
+<a id="start-locally-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Start locally — 1.37.1
 

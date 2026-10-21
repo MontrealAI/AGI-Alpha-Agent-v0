@@ -2,6 +2,8 @@
 
 # 🏛️ Large-Scale α-AGI Business 3 👁️✨ — Ω-Lattice Enterprise Studio
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Current runnable path — 1.37.1
 

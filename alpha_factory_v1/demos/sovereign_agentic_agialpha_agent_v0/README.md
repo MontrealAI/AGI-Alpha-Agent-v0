@@ -10,6 +10,8 @@ review, and binds the next stage to the exact approved result.
 · [Original presentation](https://montrealai.github.io/AGI-Alpha-Agent-v0/sovereign_agentic_agialpha_agent_v0/research.html)
 · [Preserved original source](archive/manifest.json)
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 ## Current runnable path — 1.37.1
 

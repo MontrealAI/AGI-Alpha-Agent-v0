@@ -68,6 +68,15 @@ Future paper overlays wait for their matching software release, retain separate 
 relabel software artifacts or roll back a newer site. Existing software tag, manifest and site-pack identities stay
 source-bound. Publication guards and the serialized Pages boundary remain mandatory.
 
+### Existing links remain direct
+
+The combined site retains all 997 published file paths, directory index routes and known anchors.
+The 28 served PDF paths retain their original bytes; the seven featured PDF/TEX pairs remain at their
+original repository paths. Additional locations are copies, not moves, renames or redirects. Normal
+HTML updates remain possible. Packaged and public acceptance check this compatibility floor against
+the exact new distribution, and finalization rejects missing or stale evidence. The additive PDF repair
+receipt is retained as a historical record, not a claim about the new software's qualification.
+
 ## Qualification and preserved boundaries
 
 The complete read-only capability acceptance workflow is now also an explicit dependency of Agent release

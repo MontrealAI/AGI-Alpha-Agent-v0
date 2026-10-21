@@ -16,6 +16,7 @@ import tempfile
 import tomllib
 import zipfile
 from pathlib import Path
+from typing import Any
 from urllib.parse import urlsplit
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER
@@ -40,6 +41,20 @@ TI_PUBLIC_EXAMPLES = (
     "examples/transformational-source-audit/fixture.json",
     "examples/transformational-source-audit/expected-results.json",
 )
+
+
+def qualify_legacy_site(
+    site: Path, pack_manifest: Path, commit: str, version: str, evidence: Path
+) -> dict[str, Any] | None:
+    """Check retained public addresses against the exact restored distribution."""
+    if tuple(map(int, version.split("."))) < (1, 37, 1):
+        return None
+    from scripts.legacy_public_urls import check_site, verify_report
+
+    report = check_site(site, pack_manifest, commit, version)
+    verify_report(report, commit, version, pack_manifest, mode="local")
+    (evidence / "legacy-public-urls.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    return report
 
 
 def release_documents(version: str) -> tuple[str, ...]:
@@ -337,6 +352,7 @@ def main() -> None:
                 archive.write(path, path.relative_to("docs/manuscript"))
     model_manifest = json.loads(Path("scripts/browser_model_manifest.json").read_text(encoding="utf-8"))
     distributions = {}
+    legacy_public_urls = None
     for kind, folder_name in (("browser", "browser-distribution"), ("site", "pages-distribution")):
         source_folder = args.evidence / folder_name
         pack_manifest = source_folder / f"{kind}-packs.json"
@@ -362,6 +378,7 @@ def main() -> None:
                 release = json.loads((restored / "release.json").read_bytes())
                 if release["commit"] != sha or release["version"] != version:
                     raise ValueError("Site release identity differs from the accepted source")
+                legacy_public_urls = qualify_legacy_site(restored, pack_manifest, sha, version, args.evidence)
         data = json.loads(pack_manifest.read_bytes())
         for name in [pack_manifest.name, *(item["name"] for item in data["packs"])]:
             shutil.copy2(source_folder / name, output / name)
@@ -445,6 +462,11 @@ def main() -> None:
             "Optional legacy skips do not establish those integrations",
         ],
     }
+    if legacy_public_urls is not None:
+        manifest["legacy_public_urls"] = legacy_public_urls
+        manifest["release_gates"].append(
+            "retained public file paths, index routes and known anchors; immutable original PDFs and direct copies"
+        )
     if flagship:
         manifest["successor_alpha"] = {"local_acceptance": flagship, "workspace": flagship_workspace}
         manifest["release_gates"].append(
