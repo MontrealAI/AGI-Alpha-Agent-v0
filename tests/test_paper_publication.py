@@ -15,7 +15,7 @@ import pytest
 import yaml
 
 from scripts import publish_paper_site as papers
-from scripts.release_packs import pack
+from scripts.release_packs import digest, pack
 
 
 def commit(root: Path, message: str) -> str:
@@ -41,18 +41,20 @@ def source(tmp_path: Path) -> tuple[Path, str, str]:
         write(root, "docs/" + name, ("baseline " + name).encode())
     write(root, "docs/research/original.pdf", b"original PDF bytes")
     write(root, "runtime.py", b"unchanged software")
+    write(root, "docs/research-papers.json", b'{"papers": ["original"]}\n')
     first = commit(root, "software")
     write(root, "docs/research/fresh.pdf", b"fresh PDF bytes")
     write(root, "docs/research/fresh.tex", b"fresh TEX bytes")
     for name in papers.GENERATED:
         write(root, "docs/" + name, ("paper " + name).encode())
+    write(root, "docs/research-papers.json", b'{"papers": ["original", "fresh"]}\n')
     second = commit(root, "papers")
     return root, first, second
 
 
 def staged(source: tuple[Path, str, str], site: Path) -> tuple[dict[str, Any], dict[str, str], dict[str, str]]:
     root, software, _ = source
-    for name in papers.GENERATED:
+    for name in papers.SOURCE_OVERLAY:
         write(site, name, papers.source_bytes(root, software, "docs/" + name))
     write(site, "research/original.pdf", b"original PDF bytes")
     write(site, "successor/work/worker.js", b"runtime unchanged")
@@ -73,18 +75,20 @@ def test_overlay_preserves_complete_software_inventory(source: tuple[Path, str, 
     before, old, new = staged(source, site)
     delta = papers.compose_site(root, site, software_commit=software, baseline=before, old_assets=old, new_assets=new)
     after = papers.inventory(site)
-    assert {row["path"] for row in delta["files"]} == set(papers.GENERATED) | {
+    assert {row["path"] for row in delta["files"]} == set(papers.SOURCE_OVERLAY) | {
         "research/fresh.pdf",
         "research/fresh.tex",
     }
     assert delta["removed"] == []
+    assert (site / "research-papers.json").read_bytes() == (root / "docs/research-papers.json").read_bytes()
+    assert after["research-papers.json"] != before["research-papers.json"]
     assert after["release.json"] == before["release.json"]
-    for name in set(before) - set(papers.GENERATED):
+    for name in set(before) - set(papers.SOURCE_OVERLAY):
         assert after[name] == before[name]
     expected = {
         name: before[name]
         for name in sorted(before)
-        if name not in set(papers.GENERATED) | set(papers.site_assets(new))
+        if name not in set(papers.SOURCE_OVERLAY) | set(papers.site_assets(new))
     }
     assert delta["unchanged_inventory_sha256"] == papers.sha256(papers.canonical(expected))
 
@@ -250,9 +254,7 @@ def test_public_metadata_is_bound_to_source_and_checksums(tmp_path: Path) -> Non
     write(site, "index.html", b"tested site")
     release = tmp_path / "release"
     pack(site, release, "site", commit="a" * 40, version="1.2.3", limit=8192)
-    assets = [
-        {"name": p.name, "bytes": p.stat().st_size, "sha256": papers.digest(p)} for p in sorted(release.iterdir())
-    ]
+    assets = [{"name": p.name, "bytes": p.stat().st_size, "sha256": digest(p)} for p in sorted(release.iterdir())]
     manifest = {
         "repository": papers.REPOSITORY,
         "commit": "a" * 40,
@@ -261,7 +263,7 @@ def test_public_metadata_is_bound_to_source_and_checksums(tmp_path: Path) -> Non
         "distributions": {"site": {"manifest": "site-packs.json"}},
     }
     write(release, "release-manifest.json", papers.canonical(manifest))
-    write(release, "SHA256SUMS", "".join(f"{papers.digest(p)}  {p.name}\n" for p in sorted(release.iterdir())).encode())
+    write(release, "SHA256SUMS", "".join(f"{digest(p)}  {p.name}\n" for p in sorted(release.iterdir())).encode())
     result = papers.verify_distribution(release, "a" * 40, "1.2.3")
     assert result["commit"] == "a" * 40
     with pytest.raises(ValueError, match="identities differ"):
@@ -294,6 +296,7 @@ def test_separate_provenance_keeps_software_identity(
         "run_url": "https://github.com/example/actions/runs/1",
     }
     plan["paper"]["files"] = papers.site_assets(new)
+    plan["paper"]["catalog_sha256"] = digest(root / "docs/research-papers.json")
     sealed = papers.seal(site, plan, report)
     assert calls == [({"narrow": True}, paper, "1.2.3", "local project subpath")]
     live = papers.read_json(site / "release.json")
@@ -302,10 +305,19 @@ def test_separate_provenance_keeps_software_identity(
     assert publication["software"]["commit"] == software
     assert publication["paper"]["commit"] == paper
     assert publication["evidence"]["scope"] == "paper-site-only"
-    assert publication["evidence"]["homepage"]["sha256"] == papers.digest(report)
+    assert publication["evidence"]["homepage"]["sha256"] == digest(report)
     assert sealed["publication"] == live["paper_publication"]
-    assert live["paper_publication"]["sha256"] == papers.digest(site / "paper-publication.json")
-    assert all(papers.digest(site / name) == checksum for name, checksum in sealed["served_files"].items())
+    assert live["paper_publication"]["sha256"] == digest(site / "paper-publication.json")
+    assert all(digest(site / name) == checksum for name, checksum in sealed["served_files"].items())
+    assert sealed["served_files"]["research-papers.json"] == plan["paper"]["catalog_sha256"]
+    monkeypatch.setattr(papers, "fetch_public", lambda name: (site / name).read_bytes())
+    assert papers.verify_live(sealed)["passed"] is True
+    # Matching release/sidecar metadata is insufficient when the CDN serves the old catalog.
+    stale_catalog = papers.source_bytes(root, software, "docs/research-papers.json")
+    write(site, "research-papers.json", stale_catalog)
+    monkeypatch.setattr("scripts.publish_paper_site.time.sleep", lambda _: None)
+    with pytest.raises(TimeoutError, match="public edge"):
+        papers.verify_live(sealed)
 
 
 def test_workflow_lock_scope_permissions_and_retry_artifacts() -> None:
@@ -400,8 +412,9 @@ def test_live_provenance_requires_the_exact_sidecar_bytes(monkeypatch: pytest.Mo
         papers.live_release()
 
 
+@pytest.mark.parametrize("target", ["index.html", "research-papers.json"])
 def test_seal_rejects_tampering_after_validation(
-    source: tuple[Path, str, str], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    source: tuple[Path, str, str], tmp_path: Path, monkeypatch: pytest.MonkeyPatch, target: str
 ) -> None:
     root, software, _ = source
     site = tmp_path / "site"
@@ -414,6 +427,6 @@ def test_seal_rejects_tampering_after_validation(
     monkeypatch.setitem(sys.modules, "scripts.homepage_evidence", module)
     report = tmp_path / "homepage.json"
     report.write_text("{}")
-    write(site, "index.html", b"changed after validation")
+    write(site, target, b"changed after validation")
     with pytest.raises(ValueError, match="changed after"):
         papers.seal(site, plan, report)
