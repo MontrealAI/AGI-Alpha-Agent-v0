@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aXNpM2tnjEAEkDddyP/S+A8jRFWtdjTJhOhDqXTV0LQ='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-39XCoumrRLmA92nDlWlaFrl4LlYdGBZGmK+l4UtSzDM='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -250,7 +250,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
                 <div class="evolve-input-row"><div class="field"><label for="evolve-topology">Synthetic apparatus</label><select id="evolve-topology"><option value="shielded">Recurring disturbance</option><option value="routed">Coupled channels</option><option value="referenced">Common reference</option></select></div><div class="field"><label for="evolve-budget">Per-construction model-work cap</label><input id="evolve-budget" type="number" min="1" max="100000" step="1" value="100000" required></div></div>
                 <div class="evolve-invariant"><strong>The objective stays fixed.</strong><p id="evolve-objective">Preserve the productive state and meet the apparatus error tolerance on every admitted repeated use.</p><p>Permitted changes: declared protection, routing, attenuation, reference and measurement operations. Your brief is context; it cannot relax these checks.</p></div>
                 <details><summary>Edit the bounded synthetic defaults</summary><label for="evolve-apparatus">Apparatus manifest · JSON data only</label><textarea id="evolve-apparatus" rows="12" spellcheck="false" aria-describedby="evolve-model-limit"></textarea><p id="evolve-model-limit" class="fine-print">Only the versioned finite language executes. Changed graphs, guards, costs or scope require new qualification. No text becomes code.</p></details>
-                <div class="actions"><button id="evolve-construct" type="submit" class="primary">Construct capability</button><button id="evolve-cancel" type="button" disabled>Cancel search</button><button id="evolve-resume" type="button" disabled>Resume saved search</button></div>
+                <div class="actions"><button id="evolve-construct" type="submit" class="primary">Construct capability</button><button id="evolve-cancel" type="button" disabled>Cancel search</button><button id="evolve-resume" type="button" disabled>Resume saved search</button><button id="evolve-new-history" type="button" disabled>Start separate history</button></div>
             </form>
             <div class="evolve-result" role="group" aria-labelledby="evolve-result-heading">
                 <p class="eyebrow">WHAT BECAME POSSIBLE</p><h3 id="evolve-result-heading">Ready to construct.</h3><p id="evolve-status" role="status" aria-live="polite">Defaults are ready. A bounded search will generate and independently check an executable program.</p><p id="evolve-error" class="error" role="alert" hidden></p>
@@ -314,7 +314,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>cebe4d32e88720e5030d76f446c8b9f0fb696873ac7eee5b193ec89921633519</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>8d3e14021edf2daec7df1c8e7dbdf698fe9ea04179a908acc2a3dd94eb94d0db</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -2835,25 +2835,26 @@ function ledgerTotal(ledger) {
     return ledger.total;
 }
 
-/** Reserve an optional comparator's complete acceptance cost before running package replay. */
-async function acceptComparisonConstruction(app, result) {
+/** Reserve complete package acceptance cost before running any freeze replay. */
+async function acceptBudgetedConstruction(app, result, {parent = null, purpose = 'comparison'} = {}) {
     const constructionStatus = result.status;
     const base = {...result, constructionStatus, qualification: {status: 'inconclusive'}, acceptanceLedger: null,
         freeze: {status: 'not-run', reason: 'Construction did not reach a qualifying candidate.'}};
     if (constructionStatus !== 'qualified') return {result: base, package: null};
-    const projected = projectedFreezeCostCapability(app, result);
+    const projected = projectedFreezeCostCapability(app, result, {parent});
     const maxCost = result.checkpoint.options.maxCost;
     if (projected.total > maxCost) {
         return {result: {...base, status: 'exhausted',
-            reason: 'No accepted comparison package within budget: complete freeze and replay were not funded.',
+            reason: `No accepted ${purpose} package within budget: complete freeze and replay were not funded.`,
             freeze: {status: 'not-run', reason: 'total modeled cost', maxCost,
-                requiredTotal: projected.total, unperformedFreezeWork: projected.total - result.ledger.total}},
+                requiredTotal: projected.total, unperformedFreezeWork: projected.total - result.ledger.total,
+                projectedLedger: projected}},
             package: null};
     }
-    const pkg = await freezeCapability(app, result);
-    ensure(canonical(pkg.costLedger) === canonical(projected), 'Comparison freeze cost projection did not reproduce.');
+    const pkg = await freezeCapability(app, result, {parent});
+    ensure(canonical(pkg.costLedger) === canonical(projected), 'Package freeze cost projection did not reproduce.');
     return {result: {...base, acceptanceLedger: pkg.costLedger, qualification: {status: 'qualified'},
-        freeze: {status: 'completed', maxCost, requiredTotal: projected.total}}, package: pkg};
+        freeze: {status: 'completed', maxCost, requiredTotal: projected.total, projectedLedger: projected}}, package: pkg};
 }
 
 /** The same objective, tolerance, graph, primitive information and budget apply to both planning runs. */
@@ -2863,8 +2864,8 @@ async function compareCapability(input, options = {}) {
     if (options.searchOptions) ensure(Object.entries(options.searchOptions).every(([key, value]) =>
         Object.hasOwn(searchOptions, key) && canonical(value) === canonical(searchOptions[key])),
         'Comparison must use the effective construction limits recorded in the frozen package.');
-    const classicalAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, searchOptions));
-    const scratchAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, {...searchOptions}));
+    const classicalAcceptance = await acceptBudgetedConstruction(pkg.apparatus, construct(pkg.apparatus, searchOptions));
+    const scratchAcceptance = await acceptBudgetedConstruction(pkg.apparatus, construct(pkg.apparatus, {...searchOptions}));
     const classical = classicalAcceptance.result, scratch = scratchAcceptance.result;
     const classicalPackage = classicalAcceptance.package, scratchPackage = scratchAcceptance.package;
     const remaining = ledgerTotal(pkg.costLedger);
@@ -3094,22 +3095,23 @@ async function evaluateConstructorGeneralization(options = {}) {
         delete structuralWorld.id;
         const id = await hash({seed, structuralWorld});
         const obstruction = proveRecurringObstruction(variant);
-        const result = obstruction ? {status: 'infeasible', program: null, certificate: null,
+        const construction = obstruction ? {status: 'infeasible', program: null, certificate: null,
             reason: 'Independent zero-tolerance recurring-channel obstruction proves infeasibility in the supplied model.',
             proof: obstruction, ledger: {unit: 'abstract-model-work', synthesis: 0, unsuccessfulCandidates: 0,
                 tuning: 0, installation: 0, calibration: 0, qualification: 1, operation: 0, maintenance: 0, total: 1}}
             : construct(variant, searchOptions);
-        let pkg = null;
+        const acceptance = obstruction ? {result: construction, package: null}
+            : await acceptBudgetedConstruction(variant, construction, {purpose: 'generalization'});
+        const result = acceptance.result, pkg = acceptance.package;
         let reuse = null;
-        if (result.status === 'qualified') {
-            pkg = await freezeCapability(variant, result);
+        if (pkg) {
             reuse = await evaluateFrozenReuse(pkg, {seed: rng(0xffffffff), exposedCaseIds: [...exposed]});
             for (const used of reuse.exposedCaseIds) exposed.add(used);
         }
         cases.push({id, topology, structuralFamily: variant.family || variant.id || topology,
             exposure: exposure(id, exposed), status: obstruction ? 'PASS' : pkg && reuse.status === 'PASS' ? 'PASS'
                 : result.status === 'qualified' ? 'FAIL' : 'INCONCLUSIVE',
-            constructionStatus: obstruction ? 'proved-infeasible-no-construction' : result.status,
+            constructionStatus: obstruction ? 'proved-infeasible-no-construction' : result.constructionStatus,
             acceptedOutcome: obstruction ? 'independently-proved-negative-case' : pkg ? 'constructed-and-reused' : 'unfinished',
             constructorCalled: !obstruction, obstruction,
             result, package: pkg, reuse, publicApparatus: variant});
@@ -3210,12 +3212,14 @@ async function buildSuccessor(input, options = {}) {
         reservoirMeasurement: {expected: 17, ...diagnosticMeasurement},
         explanation: 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
     const searchOptions = {...options.searchOptions};
-    const result = construct(expanded, {...searchOptions, parent});
-    const scratchAcceptance = await acceptComparisonConstruction(expanded, construct(expanded, searchOptions));
+    const acceptance = await acceptBudgetedConstruction(expanded, construct(expanded, {...searchOptions, parent}),
+        {parent, purpose: 'successor'});
+    const result = acceptance.result, pkg = acceptance.package;
+    const scratchAcceptance = await acceptBudgetedConstruction(expanded, construct(expanded, searchOptions));
     const scratch = scratchAcceptance.result;
     const scratchPackage = scratchAcceptance.package;
     const scratchWork = ledgerTotal(scratchPackage?.costLedger || scratch.ledger);
-    if (result.status !== 'qualified') {
+    if (!pkg) {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
             oldScope, result, scratch, parentDigest: parent.digest,
             costs: {unit: 'abstract-model-work', ancestor: lineageConstructionCost(parent),
@@ -3224,10 +3228,12 @@ async function buildSuccessor(input, options = {}) {
                 cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
                 constructionFromScratch: scratchPackage ? scratchWork : null,
-                scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null},
-            reason: 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
+                scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null,
+                remainingSaving: null, cumulativeSaving: null},
+            reason: result.constructionStatus === 'qualified'
+                ? 'Candidate found; package acceptance could not be funded within budget. The candidate ledger and checkpoint are retained; acceptance replay was not run.'
+                : 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
     }
-    const pkg = await freezeCapability(expanded, result, {parent});
     const reuse = await evaluateFrozenReuse(pkg, options);
     const prior = reuse.cases.filter(test => test.operation === 'standard');
     const added = reuse.cases.filter(test => test.operation === 'reservoir');
@@ -3266,12 +3272,13 @@ async function runEvaluation(options = {}) {
     for (let index = 0; index < TOPOLOGIES.length; index++) {
         const topology = TOPOLOGIES[index];
         const app = apparatus(topology);
-        const result = construct(app, options.searchOptions || {});
-        if (result.status !== 'qualified') {
+        const acceptance = await acceptBudgetedConstruction(app, construct(app, options.searchOptions || {}),
+            {purpose: 'topology'});
+        const result = acceptance.result, pkg = acceptance.package;
+        if (!pkg) {
             topologies.push({topology, status: 'INCONCLUSIVE', result});
             continue;
         }
-        const pkg = await freezeCapability(app, result);
         const reuse = await evaluateFrozenReuse(pkg, {seed: (seed + index) >>> 0, exposedCaseIds: [...exposed]});
         for (const id of reuse.exposedCaseIds) exposed.add(id);
         const comparison = await compareCapability(pkg, options);
@@ -3320,7 +3327,7 @@ const outEvolveConstructor=capability_module_5;
 const outEvolvePackages=capability_module_8;
 const outEvolveApparatus=capability_module_9;
 const outEvolveEvaluation=capability_module_10;
-const SOURCE_HASH='cebe4d32e88720e5030d76f446c8b9f0fb696873ac7eee5b193ec89921633519';
+const SOURCE_HASH='8d3e14021edf2daec7df1c8e7dbdf698fe9ea04179a908acc2a3dd94eb94d0db';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -3884,6 +3891,7 @@ window.addEventListener('beforeunload', event => {
     const asError = error => String(error?.message || error).slice(0, 1000);
     const resultStatus = value => String(value?.status || '').toLowerCase();
     const failedStatus = value => ['fail', 'failed', 'exhausted', 'infeasible'].includes(resultStatus(value));
+    const pendingSearch = () => ['cancelled', 'searching', 'qualified'].includes(checkpoint?.status);
 
     function problem(error) {
         view('error').hidden = false;
@@ -3922,6 +3930,8 @@ window.addEventListener('beforeunload', event => {
         for (const name of ['purpose', 'constraints', 'topology', 'budget', 'apparatus', 'construct', 'import']) {
             view(name).disabled = !readyNow || busyNow || unsaved;
         }
+        if (pendingSearch()) view('construct').disabled = true;
+        view('new-history').disabled = !readyNow || busyNow || unsaved || !record.events.length;
         view('cancel').disabled = !busyNow || !['cancelled', 'searching'].includes(checkpoint?.status) || cancelled;
         const finalization = qualifiedFinalization();
         const capacity = checkpoint ? outEvolve.searchHistoryCapacity(record, checkpoint) : null;
@@ -3957,7 +3967,8 @@ window.addEventListener('beforeunload', event => {
                 || failedStatus(payload)) { item.dataset.result = 'fail'; failures += 1; }
             else if (resultStatus(payload) === 'inconclusive') { inconclusive += 1; }
             else if (['qualified', 'pass'].includes(resultStatus(payload)) || event.kind === 'package-frozen') item.dataset.result = 'pass';
-            const label = event.kind === 'search-stopped' && payload.status === 'searching'
+            const label = event.kind === 'failure' && resultStatus(payload) === 'inconclusive'
+                ? 'Inconclusive attempt retained' : event.kind === 'search-stopped' && payload.status === 'searching'
                 ? 'Search checkpoint saved' : event.kind === 'successor' && resultStatus(payload) !== 'pass'
                     ? 'Scope-expanding successor evaluated' : labels[event.kind] || event.kind;
             node('h4', item, `${event.sequence + 1}. ${label}`);
@@ -4032,12 +4043,14 @@ window.addEventListener('beforeunload', event => {
                 + 'including its import check and qualification. Earlier construction and comparisons remain in the history.';
         } else if (report?.kind === 'scope-expanding-successor') {
             const costs = report.costs;
-            text = `This successor experiment: ${costs.remainingAfterAcceptance ?? costs.remaining} model units of remaining work, `
+            text = `This successor experiment: ${report.status}; ${costs.remainingAfterAcceptance ?? costs.remaining} model units of remaining work, `
                 + `${costs.cumulativeAfterAcceptance ?? costs.cumulative} including ancestor construction. `
                 + (costs.scratchQualified === false
                     ? `Scratch comparator inconclusive; ${costs.scratchAfterAcceptance ?? costs.scratchConstructionWork} model units actually spent. `
                     : `Matched scratch work: ${costs.scratchAfterAcceptance ?? costs.constructionFromScratch ?? 'inconclusive'} model units. `)
-                + 'These amounts include the reported scope diagnostics and acceptance checks.';
+                + (report.result?.freeze?.status === 'not-run'
+                    ? 'Successor package acceptance was not run; its candidate ledger and checkpoint remain in the report. No successor package was accepted.'
+                    : 'These amounts include the reported scope diagnostics and acceptance checks.');
         }
         view('work-total').textContent = text;
     }
@@ -4169,12 +4182,14 @@ window.addEventListener('beforeunload', event => {
             && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
         view('comparison').textContent = latestFrozen?.kind === 'successor' ? json(latestFrozen.payload.costs)
             : comparison ? json(comparison.payload) : 'Not evaluated.';
-        const evidence = record.events.filter(event => ['reuse', 'successor'].includes(event.kind)
+        const evidence = record.events.filter(event => (['reuse', 'successor'].includes(event.kind)
+            || event.kind === 'failure' && event.payload.report?.kind === 'scope-expanding-successor')
             && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
-        view('evidence').textContent = evidence ? json(evidence.payload) : 'No evaluation recorded.';
-        const latestWork = record.events.filter(event => ['comparison', 'reuse', 'successor'].includes(event.kind)
+        view('evidence').textContent = evidence ? json(evidence.payload.report || evidence.payload) : 'No evaluation recorded.';
+        const latestWork = record.events.filter(event => (['comparison', 'reuse', 'successor'].includes(event.kind)
+            || event.kind === 'failure' && event.payload.report?.kind === 'scope-expanding-successor')
             && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
-        renderExperimentWork(latestWork?.payload);
+        renderExperimentWork(latestWork?.payload.report || latestWork?.payload);
         renderHistory();
     }
     function exposedCases() {
@@ -4187,7 +4202,7 @@ window.addEventListener('beforeunload', event => {
         if (!pending) throw Error('No qualified search is awaiting package acceptance.');
         if (!pending.funded) {
             view('result-heading').textContent = 'Candidate found; package qualification is unfunded.';
-            setStatus(`Package qualification is inconclusive: ${pending.projected.total} model units would exceed the frozen ${checkpoint.options.maxCost}-unit cap. No package replay was run. Export the retained search evidence or begin a separate construction.`);
+            setStatus(`Package qualification is inconclusive: ${pending.projected.total} model units would exceed the frozen ${checkpoint.options.maxCost}-unit cap. No package replay was run. Export the retained search evidence or start a separate history.`);
             return;
         }
         if (!outEvolve.searchHistoryCapacity(record, checkpoint).canFinalize) {
@@ -4257,6 +4272,11 @@ window.addEventListener('beforeunload', event => {
     }
     view('form').addEventListener('submit', event => {
         event.preventDefault();
+        if (pendingSearch()) {
+            setStatus('This history retains a pending search. Use its available Resume or Finish action, or start a separate history. Its original checkpoint is unchanged.');
+            controls();
+            return;
+        }
         void withWork(async () => {
             const brief = readBrief();
             const next = outEvolveConstructor.createSearch(brief.apparatus, {
@@ -4270,6 +4290,20 @@ window.addEventListener('beforeunload', event => {
             await pause(); await runSearch();
         });
     });
+    view('new-history').addEventListener('click', () => { void withWork(async () => {
+        if (!await persist()) {
+            setStatus('A separate history was not started because the current history could not be saved. Its checkpoint is unchanged. Export this copy or retry saving.');
+            return;
+        }
+        record = outEvolve.createOutEvolveWorkspace();
+        checkpoint = null; packageValue = null; runningApparatus = null;
+        restoreView();
+        if (!await persist()) {
+            setStatus('The separate empty history has not been saved. Retry saving; the previous history remains saved and can be reopened.');
+            return;
+        }
+        setStatus('Separate construction history started. The previous history and its original checkpoint remain available under saved histories.');
+    }); });
     view('cancel').addEventListener('click', () => { cancelled = true; setStatus('Cancelling at the next bounded search step…'); controls(); });
     view('resume').addEventListener('click', () => { void withWork(async () => {
         if (checkpoint?.status === 'qualified') { await finalizeQualifiedSearch(); return; }
@@ -4290,12 +4324,15 @@ window.addEventListener('beforeunload', event => {
         const report = await outEvolveEvaluation.buildSuccessor(packageValue, {seed: freshSeed(),
             exposedCaseIds: exposedCases(), searchOptions: packageValue.search.limits});
         if (report.package) {
-            await append('successor', report); renderPackage(report.package);
+            if (!await append('successor', report)) return;
+            renderPackage(report.package);
             view('comparison').textContent = json(report.costs);
-        } else await append('failure', {status: report.status, message: 'No qualifying successor construction found within budget.', report});
+        } else if (!await append('failure', {status: report.status,
+            message: report.reason || 'No qualifying successor construction found within budget.', report})) return;
         view('evidence').textContent = json(report);
         renderExperimentWork(report);
-        setStatus(`Scope-expanding successor: ${report.status}. Inspect preserved obligations, the old scope failure and cumulative cost.`);
+        setStatus(`Scope-expanding successor: ${report.status}. `
+            + (report.reason || 'Inspect preserved obligations, the old scope failure and cumulative cost.'));
     }); });
     view('export-history').addEventListener('click', () => download(record, 'out-evolve-history.json'));
     view('export-package').addEventListener('click', () => download(packageValue, 'out-evolve-capability.json'));
@@ -4304,6 +4341,7 @@ window.addEventListener('beforeunload', event => {
         busyNow = true; controls();
         try {
             if (!await persist()) return;
+            clearProblem();
             const inspected = await outEvolve.inspectOutEvolveWorkspace(record);
             record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
             runningApparatus = checkpointApparatus(); restoreView();

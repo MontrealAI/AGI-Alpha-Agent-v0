@@ -21,6 +21,7 @@
     const asError = error => String(error?.message || error).slice(0, 1000);
     const resultStatus = value => String(value?.status || '').toLowerCase();
     const failedStatus = value => ['fail', 'failed', 'exhausted', 'infeasible'].includes(resultStatus(value));
+    const pendingSearch = () => ['cancelled', 'searching', 'qualified'].includes(checkpoint?.status);
 
     function problem(error) {
         view('error').hidden = false;
@@ -59,6 +60,8 @@
         for (const name of ['purpose', 'constraints', 'topology', 'budget', 'apparatus', 'construct', 'import']) {
             view(name).disabled = !readyNow || busyNow || unsaved;
         }
+        if (pendingSearch()) view('construct').disabled = true;
+        view('new-history').disabled = !readyNow || busyNow || unsaved || !record.events.length;
         view('cancel').disabled = !busyNow || !['cancelled', 'searching'].includes(checkpoint?.status) || cancelled;
         const finalization = qualifiedFinalization();
         const capacity = checkpoint ? outEvolve.searchHistoryCapacity(record, checkpoint) : null;
@@ -94,7 +97,8 @@
                 || failedStatus(payload)) { item.dataset.result = 'fail'; failures += 1; }
             else if (resultStatus(payload) === 'inconclusive') { inconclusive += 1; }
             else if (['qualified', 'pass'].includes(resultStatus(payload)) || event.kind === 'package-frozen') item.dataset.result = 'pass';
-            const label = event.kind === 'search-stopped' && payload.status === 'searching'
+            const label = event.kind === 'failure' && resultStatus(payload) === 'inconclusive'
+                ? 'Inconclusive attempt retained' : event.kind === 'search-stopped' && payload.status === 'searching'
                 ? 'Search checkpoint saved' : event.kind === 'successor' && resultStatus(payload) !== 'pass'
                     ? 'Scope-expanding successor evaluated' : labels[event.kind] || event.kind;
             node('h4', item, `${event.sequence + 1}. ${label}`);
@@ -169,12 +173,14 @@
                 + 'including its import check and qualification. Earlier construction and comparisons remain in the history.';
         } else if (report?.kind === 'scope-expanding-successor') {
             const costs = report.costs;
-            text = `This successor experiment: ${costs.remainingAfterAcceptance ?? costs.remaining} model units of remaining work, `
+            text = `This successor experiment: ${report.status}; ${costs.remainingAfterAcceptance ?? costs.remaining} model units of remaining work, `
                 + `${costs.cumulativeAfterAcceptance ?? costs.cumulative} including ancestor construction. `
                 + (costs.scratchQualified === false
                     ? `Scratch comparator inconclusive; ${costs.scratchAfterAcceptance ?? costs.scratchConstructionWork} model units actually spent. `
                     : `Matched scratch work: ${costs.scratchAfterAcceptance ?? costs.constructionFromScratch ?? 'inconclusive'} model units. `)
-                + 'These amounts include the reported scope diagnostics and acceptance checks.';
+                + (report.result?.freeze?.status === 'not-run'
+                    ? 'Successor package acceptance was not run; its candidate ledger and checkpoint remain in the report. No successor package was accepted.'
+                    : 'These amounts include the reported scope diagnostics and acceptance checks.');
         }
         view('work-total').textContent = text;
     }
@@ -306,12 +312,14 @@
             && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
         view('comparison').textContent = latestFrozen?.kind === 'successor' ? json(latestFrozen.payload.costs)
             : comparison ? json(comparison.payload) : 'Not evaluated.';
-        const evidence = record.events.filter(event => ['reuse', 'successor'].includes(event.kind)
+        const evidence = record.events.filter(event => (['reuse', 'successor'].includes(event.kind)
+            || event.kind === 'failure' && event.payload.report?.kind === 'scope-expanding-successor')
             && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
-        view('evidence').textContent = evidence ? json(evidence.payload) : 'No evaluation recorded.';
-        const latestWork = record.events.filter(event => ['comparison', 'reuse', 'successor'].includes(event.kind)
+        view('evidence').textContent = evidence ? json(evidence.payload.report || evidence.payload) : 'No evaluation recorded.';
+        const latestWork = record.events.filter(event => (['comparison', 'reuse', 'successor'].includes(event.kind)
+            || event.kind === 'failure' && event.payload.report?.kind === 'scope-expanding-successor')
             && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
-        renderExperimentWork(latestWork?.payload);
+        renderExperimentWork(latestWork?.payload.report || latestWork?.payload);
         renderHistory();
     }
     function exposedCases() {
@@ -324,7 +332,7 @@
         if (!pending) throw Error('No qualified search is awaiting package acceptance.');
         if (!pending.funded) {
             view('result-heading').textContent = 'Candidate found; package qualification is unfunded.';
-            setStatus(`Package qualification is inconclusive: ${pending.projected.total} model units would exceed the frozen ${checkpoint.options.maxCost}-unit cap. No package replay was run. Export the retained search evidence or begin a separate construction.`);
+            setStatus(`Package qualification is inconclusive: ${pending.projected.total} model units would exceed the frozen ${checkpoint.options.maxCost}-unit cap. No package replay was run. Export the retained search evidence or start a separate history.`);
             return;
         }
         if (!outEvolve.searchHistoryCapacity(record, checkpoint).canFinalize) {
@@ -394,6 +402,11 @@
     }
     view('form').addEventListener('submit', event => {
         event.preventDefault();
+        if (pendingSearch()) {
+            setStatus('This history retains a pending search. Use its available Resume or Finish action, or start a separate history. Its original checkpoint is unchanged.');
+            controls();
+            return;
+        }
         void withWork(async () => {
             const brief = readBrief();
             const next = outEvolveConstructor.createSearch(brief.apparatus, {
@@ -407,6 +420,20 @@
             await pause(); await runSearch();
         });
     });
+    view('new-history').addEventListener('click', () => { void withWork(async () => {
+        if (!await persist()) {
+            setStatus('A separate history was not started because the current history could not be saved. Its checkpoint is unchanged. Export this copy or retry saving.');
+            return;
+        }
+        record = outEvolve.createOutEvolveWorkspace();
+        checkpoint = null; packageValue = null; runningApparatus = null;
+        restoreView();
+        if (!await persist()) {
+            setStatus('The separate empty history has not been saved. Retry saving; the previous history remains saved and can be reopened.');
+            return;
+        }
+        setStatus('Separate construction history started. The previous history and its original checkpoint remain available under saved histories.');
+    }); });
     view('cancel').addEventListener('click', () => { cancelled = true; setStatus('Cancelling at the next bounded search step…'); controls(); });
     view('resume').addEventListener('click', () => { void withWork(async () => {
         if (checkpoint?.status === 'qualified') { await finalizeQualifiedSearch(); return; }
@@ -427,12 +454,15 @@
         const report = await outEvolveEvaluation.buildSuccessor(packageValue, {seed: freshSeed(),
             exposedCaseIds: exposedCases(), searchOptions: packageValue.search.limits});
         if (report.package) {
-            await append('successor', report); renderPackage(report.package);
+            if (!await append('successor', report)) return;
+            renderPackage(report.package);
             view('comparison').textContent = json(report.costs);
-        } else await append('failure', {status: report.status, message: 'No qualifying successor construction found within budget.', report});
+        } else if (!await append('failure', {status: report.status,
+            message: report.reason || 'No qualifying successor construction found within budget.', report})) return;
         view('evidence').textContent = json(report);
         renderExperimentWork(report);
-        setStatus(`Scope-expanding successor: ${report.status}. Inspect preserved obligations, the old scope failure and cumulative cost.`);
+        setStatus(`Scope-expanding successor: ${report.status}. `
+            + (report.reason || 'Inspect preserved obligations, the old scope failure and cumulative cost.'));
     }); });
     view('export-history').addEventListener('click', () => download(record, 'out-evolve-history.json'));
     view('export-package').addEventListener('click', () => download(packageValue, 'out-evolve-capability.json'));
@@ -441,6 +471,7 @@
         busyNow = true; controls();
         try {
             if (!await persist()) return;
+            clearProblem();
             const inspected = await outEvolve.inspectOutEvolveWorkspace(record);
             record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
             runningApparatus = checkpointApparatus(); restoreView();

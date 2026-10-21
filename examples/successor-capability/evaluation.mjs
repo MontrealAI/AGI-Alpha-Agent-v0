@@ -127,25 +127,26 @@ function ledgerTotal(ledger) {
     return ledger.total;
 }
 
-/** Reserve an optional comparator's complete acceptance cost before running package replay. */
-async function acceptComparisonConstruction(app, result) {
+/** Reserve complete package acceptance cost before running any freeze replay. */
+async function acceptBudgetedConstruction(app, result, {parent = null, purpose = 'comparison'} = {}) {
     const constructionStatus = result.status;
     const base = {...result, constructionStatus, qualification: {status: 'inconclusive'}, acceptanceLedger: null,
         freeze: {status: 'not-run', reason: 'Construction did not reach a qualifying candidate.'}};
     if (constructionStatus !== 'qualified') return {result: base, package: null};
-    const projected = projectedFreezeCostCapability(app, result);
+    const projected = projectedFreezeCostCapability(app, result, {parent});
     const maxCost = result.checkpoint.options.maxCost;
     if (projected.total > maxCost) {
         return {result: {...base, status: 'exhausted',
-            reason: 'No accepted comparison package within budget: complete freeze and replay were not funded.',
+            reason: `No accepted ${purpose} package within budget: complete freeze and replay were not funded.`,
             freeze: {status: 'not-run', reason: 'total modeled cost', maxCost,
-                requiredTotal: projected.total, unperformedFreezeWork: projected.total - result.ledger.total}},
+                requiredTotal: projected.total, unperformedFreezeWork: projected.total - result.ledger.total,
+                projectedLedger: projected}},
             package: null};
     }
-    const pkg = await freezeCapability(app, result);
-    ensure(canonical(pkg.costLedger) === canonical(projected), 'Comparison freeze cost projection did not reproduce.');
+    const pkg = await freezeCapability(app, result, {parent});
+    ensure(canonical(pkg.costLedger) === canonical(projected), 'Package freeze cost projection did not reproduce.');
     return {result: {...base, acceptanceLedger: pkg.costLedger, qualification: {status: 'qualified'},
-        freeze: {status: 'completed', maxCost, requiredTotal: projected.total}}, package: pkg};
+        freeze: {status: 'completed', maxCost, requiredTotal: projected.total, projectedLedger: projected}}, package: pkg};
 }
 
 /** The same objective, tolerance, graph, primitive information and budget apply to both planning runs. */
@@ -155,8 +156,8 @@ export async function compareCapability(input, options = {}) {
     if (options.searchOptions) ensure(Object.entries(options.searchOptions).every(([key, value]) =>
         Object.hasOwn(searchOptions, key) && canonical(value) === canonical(searchOptions[key])),
         'Comparison must use the effective construction limits recorded in the frozen package.');
-    const classicalAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, searchOptions));
-    const scratchAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, {...searchOptions}));
+    const classicalAcceptance = await acceptBudgetedConstruction(pkg.apparatus, construct(pkg.apparatus, searchOptions));
+    const scratchAcceptance = await acceptBudgetedConstruction(pkg.apparatus, construct(pkg.apparatus, {...searchOptions}));
     const classical = classicalAcceptance.result, scratch = scratchAcceptance.result;
     const classicalPackage = classicalAcceptance.package, scratchPackage = scratchAcceptance.package;
     const remaining = ledgerTotal(pkg.costLedger);
@@ -386,22 +387,23 @@ export async function evaluateConstructorGeneralization(options = {}) {
         delete structuralWorld.id;
         const id = await hash({seed, structuralWorld});
         const obstruction = proveRecurringObstruction(variant);
-        const result = obstruction ? {status: 'infeasible', program: null, certificate: null,
+        const construction = obstruction ? {status: 'infeasible', program: null, certificate: null,
             reason: 'Independent zero-tolerance recurring-channel obstruction proves infeasibility in the supplied model.',
             proof: obstruction, ledger: {unit: 'abstract-model-work', synthesis: 0, unsuccessfulCandidates: 0,
                 tuning: 0, installation: 0, calibration: 0, qualification: 1, operation: 0, maintenance: 0, total: 1}}
             : construct(variant, searchOptions);
-        let pkg = null;
+        const acceptance = obstruction ? {result: construction, package: null}
+            : await acceptBudgetedConstruction(variant, construction, {purpose: 'generalization'});
+        const result = acceptance.result, pkg = acceptance.package;
         let reuse = null;
-        if (result.status === 'qualified') {
-            pkg = await freezeCapability(variant, result);
+        if (pkg) {
             reuse = await evaluateFrozenReuse(pkg, {seed: rng(0xffffffff), exposedCaseIds: [...exposed]});
             for (const used of reuse.exposedCaseIds) exposed.add(used);
         }
         cases.push({id, topology, structuralFamily: variant.family || variant.id || topology,
             exposure: exposure(id, exposed), status: obstruction ? 'PASS' : pkg && reuse.status === 'PASS' ? 'PASS'
                 : result.status === 'qualified' ? 'FAIL' : 'INCONCLUSIVE',
-            constructionStatus: obstruction ? 'proved-infeasible-no-construction' : result.status,
+            constructionStatus: obstruction ? 'proved-infeasible-no-construction' : result.constructionStatus,
             acceptedOutcome: obstruction ? 'independently-proved-negative-case' : pkg ? 'constructed-and-reused' : 'unfinished',
             constructorCalled: !obstruction, obstruction,
             result, package: pkg, reuse, publicApparatus: variant});
@@ -502,12 +504,14 @@ export async function buildSuccessor(input, options = {}) {
         reservoirMeasurement: {expected: 17, ...diagnosticMeasurement},
         explanation: 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
     const searchOptions = {...options.searchOptions};
-    const result = construct(expanded, {...searchOptions, parent});
-    const scratchAcceptance = await acceptComparisonConstruction(expanded, construct(expanded, searchOptions));
+    const acceptance = await acceptBudgetedConstruction(expanded, construct(expanded, {...searchOptions, parent}),
+        {parent, purpose: 'successor'});
+    const result = acceptance.result, pkg = acceptance.package;
+    const scratchAcceptance = await acceptBudgetedConstruction(expanded, construct(expanded, searchOptions));
     const scratch = scratchAcceptance.result;
     const scratchPackage = scratchAcceptance.package;
     const scratchWork = ledgerTotal(scratchPackage?.costLedger || scratch.ledger);
-    if (result.status !== 'qualified') {
+    if (!pkg) {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
             oldScope, result, scratch, parentDigest: parent.digest,
             costs: {unit: 'abstract-model-work', ancestor: lineageConstructionCost(parent),
@@ -516,10 +520,12 @@ export async function buildSuccessor(input, options = {}) {
                 cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
                 constructionFromScratch: scratchPackage ? scratchWork : null,
-                scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null},
-            reason: 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
+                scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null,
+                remainingSaving: null, cumulativeSaving: null},
+            reason: result.constructionStatus === 'qualified'
+                ? 'Candidate found; package acceptance could not be funded within budget. The candidate ledger and checkpoint are retained; acceptance replay was not run.'
+                : 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
     }
-    const pkg = await freezeCapability(expanded, result, {parent});
     const reuse = await evaluateFrozenReuse(pkg, options);
     const prior = reuse.cases.filter(test => test.operation === 'standard');
     const added = reuse.cases.filter(test => test.operation === 'reservoir');
@@ -558,12 +564,13 @@ export async function runEvaluation(options = {}) {
     for (let index = 0; index < TOPOLOGIES.length; index++) {
         const topology = TOPOLOGIES[index];
         const app = apparatus(topology);
-        const result = construct(app, options.searchOptions || {});
-        if (result.status !== 'qualified') {
+        const acceptance = await acceptBudgetedConstruction(app, construct(app, options.searchOptions || {}),
+            {purpose: 'topology'});
+        const result = acceptance.result, pkg = acceptance.package;
+        if (!pkg) {
             topologies.push({topology, status: 'INCONCLUSIVE', result});
             continue;
         }
-        const pkg = await freezeCapability(app, result);
         const reuse = await evaluateFrozenReuse(pkg, {seed: (seed + index) >>> 0, exposedCaseIds: [...exposed]});
         for (const id of reuse.exposedCaseIds) exposed.add(id);
         const comparison = await compareCapability(pkg, options);

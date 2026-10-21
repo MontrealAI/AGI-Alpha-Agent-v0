@@ -55,6 +55,10 @@ Import replays search and independently recomputes the executable claims; recomp
 tampered semantics, erased attempts or discounted costs.
 Versioned Out-Evolve events use separate device storage and preserve v1 history behavior.
 Importing another package retains an unfinished search with its original apparatus, bounds and costs.
+Construct cannot replace a pending checkpoint, including through form submission. Resume or finish the retained
+search when its original bounds permit. **Start separate history** saves and archives the existing history before
+creating another identity; reopening the earlier history restores its checkpoint unchanged. This also provides
+a separate construction path when a qualified candidate cannot fund acceptance within its frozen budget.
 An accepted checkpoint can finish package qualification after a failed save when its original budget and
 remaining history capacity fund acceptance; it does not rerun construction. Imports and saved-history switches
 must extend any stored history with the same identity, and storage transactions reject older or divergent
@@ -100,6 +104,10 @@ The 20-unit common-reference attempt is a completed negative result, not a cheap
 An optional planner or scratch comparison that cannot fund package freezing is inconclusive. Its actual search
 work stays in the ledger and aggregate totals; it cannot discard an accepted inherited successor or establish
 a successful baseline, cost advantage or saving.
+A primary successor candidate that cannot fund its complete package acceptance is also inconclusive.
+Its raw candidate work and checkpoint remain in the report, acceptance replay is not run, and the earlier
+accepted parent remains the available package. A candidate found within the search cap is not yet an
+accepted successor.
 
 ## Boundaries
 

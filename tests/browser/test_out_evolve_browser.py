@@ -17,9 +17,9 @@ from typing import TYPE_CHECKING, Any
 from playwright.sync_api import Page, expect, sync_playwright
 
 if TYPE_CHECKING:
-    from tests.browser.out_evolve_recovery import verify_archive_recovery
+    from tests.browser.out_evolve_recovery import verify_archive_recovery, verify_new_history_recovery
 else:
-    from out_evolve_recovery import verify_archive_recovery
+    from out_evolve_recovery import verify_archive_recovery, verify_new_history_recovery
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = Path(os.environ.get("OUT_EVOLVE_EVIDENCE", "/tmp/out-evolve-browser-evidence"))
@@ -33,7 +33,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 def idle(page: Page) -> None:
     """Wait for persisted evidence and unlocked founder controls."""
-    expect(page.locator("#evolve-construct")).to_be_enabled(timeout=120000)
+    expect(page.locator("#evolve-import")).to_be_enabled(timeout=120000)
     expect(page.locator("#evolve-form")).to_have_attribute("aria-busy", "false")
 
 
@@ -41,6 +41,16 @@ def history(page: Page) -> dict[str, Any]:
     """Read the actual visible exported event record."""
     value: dict[str, Any] = json.loads(page.locator("#evolve-history-json").text_content() or "{}")
     return value
+
+
+def pending_construct_guard(page: Page) -> None:
+    """A forced form submission cannot supersede a retained pending checkpoint."""
+    retained = history(page)
+    expect(page.locator("#evolve-construct")).to_be_disabled()
+    page.locator("#evolve-form").dispatch_event("submit")
+    idle(page)
+    expect(page.locator("#evolve-status")).to_contain_text("original checkpoint is unchanged")
+    assert history(page) == retained
 
 
 def audit(page: Page, label: str) -> None:
@@ -208,6 +218,9 @@ def main() -> None:
             original_checkpoint = cancelled["events"][-1]["payload"]["checkpoint"]
             assert original_checkpoint["apparatus"] == manifest
             assert manifest["id"] != frozen["apparatus"]["id"]
+            interrupted.locator("#evolve-topology").select_option("shielded")
+            pending_construct_guard(interrupted)
+            expect(interrupted.locator("#evolve-resume")).to_be_enabled()
             interrupted.locator("#evolve-import").set_input_files(package_path)
             idle(interrupted)
             expect(interrupted.locator("#evolve-status")).to_contain_text("unfinished search remains resumable")
@@ -235,6 +248,7 @@ def main() -> None:
             idle(resumed_page)
             assert history(resumed_page) == imported_pause
             expect(resumed_page.locator("#evolve-resume")).to_be_enabled()
+            pending_construct_guard(resumed_page)
             resumed_page.locator("#evolve-resume").click()
             idle(resumed_page)
             resumed = history(resumed_page)
@@ -309,6 +323,66 @@ def main() -> None:
             (OUTPUT / "common-reference-comparison.json").write_text(json.dumps(comparison, indent=2))
             reference_context.close()
 
+            unfunded_successor_context = browser.new_context(accept_downloads=True)
+            unfunded_successor = unfunded_successor_context.new_page()
+            unfunded_successor.goto(url)
+            idle(unfunded_successor)
+            unfunded_successor.locator("#evolve-budget").fill("600")
+            unfunded_successor.locator("#evolve-construct").click()
+            idle(unfunded_successor)
+            expect(unfunded_successor.locator("#evolve-status")).to_contain_text("Capability qualified.")
+            funded_parent_history = history(unfunded_successor)
+            funded_parent = next(
+                event["payload"]["package"]
+                for event in funded_parent_history["events"]
+                if event["kind"] == "package-frozen"
+            )
+            assert funded_parent["costLedger"]["total"] <= 600
+            unfunded_successor.locator("#evolve-successor").click()
+            idle(unfunded_successor)
+            expect(unfunded_successor.locator("#evolve-status")).to_contain_text(
+                "Scope-expanding successor: INCONCLUSIVE"
+            )
+            expect(unfunded_successor.locator("#evolve-status")).to_contain_text("Candidate found")
+            unfunded_successor_history = history(unfunded_successor)
+            assert (
+                unfunded_successor_history["events"][: len(funded_parent_history["events"])]
+                == funded_parent_history["events"]
+            )
+            successor_event = unfunded_successor_history["events"][-1]
+            assert successor_event["kind"] == "failure" and successor_event["payload"]["status"] == "INCONCLUSIVE"
+            expect(unfunded_successor.locator("#evolve-events > li").last.locator("h4")).to_contain_text(
+                "Inconclusive attempt retained"
+            )
+            unfunded_report = successor_event["payload"]["report"]
+            assert unfunded_report["oldScope"]["status"] == "FAIL"
+            assert unfunded_report["status"] == "INCONCLUSIVE"
+            assert not any(key in unfunded_report for key in ("package", "reuse", "newFunction"))
+            candidate = unfunded_report["result"]
+            assert candidate["constructionStatus"] == "qualified" and candidate["status"] == "exhausted"
+            assert candidate["checkpoint"]["status"] == "qualified" and candidate["ledger"]["total"] == 424
+            assert candidate["acceptanceLedger"] is None
+            assert candidate["freeze"]["status"] == "not-run"
+            assert candidate["freeze"]["requiredTotal"] == 1157 and candidate["freeze"]["maxCost"] == 600
+            expect(unfunded_successor.locator("#evolve-work-total")).to_contain_text(
+                "No successor package was accepted"
+            )
+            assert json.loads(unfunded_successor.locator("#evolve-evidence").text_content() or "{}") == unfunded_report
+            unfunded_successor.reload()
+            idle(unfunded_successor)
+            assert history(unfunded_successor) == unfunded_successor_history
+            assert json.loads(unfunded_successor.locator("#evolve-evidence").text_content() or "{}") == unfunded_report
+            expect(unfunded_successor.locator("#evolve-work-total")).to_contain_text(
+                "No successor package was accepted"
+            )
+            with unfunded_successor.expect_download() as downloaded:
+                unfunded_successor.locator("#evolve-export-package").click()
+            retained_parent_path = OUTPUT / "unfunded-successor-retained-parent.json"
+            downloaded.value.save_as(retained_parent_path)
+            assert json.loads(retained_parent_path.read_text()) == funded_parent
+            (OUTPUT / "unfunded-successor-history.json").write_text(json.dumps(unfunded_successor_history, indent=2))
+            unfunded_successor_context.close()
+
             bounded_context = browser.new_context()
             bounded = bounded_context.new_page()
             bounded.goto(url)
@@ -369,6 +443,7 @@ def main() -> None:
             expect(qualified.locator("#evolve-resume")).to_have_text("Finish qualifying package")
             expect(qualified.locator("#evolve-resume")).to_be_enabled()
             assert history(qualified) == pending_history
+            pending_construct_guard(qualified)
             qualified.reload()
             idle(qualified)
             assert history(qualified) == pending_history
@@ -420,7 +495,7 @@ def main() -> None:
             matching_context.close()
             qualified_context.close()
 
-            unfunded_context = browser.new_context()
+            unfunded_context = browser.new_context(accept_downloads=True)
             unfunded = unfunded_context.new_page()
             unfunded.goto(url)
             idle(unfunded)
@@ -438,8 +513,40 @@ def main() -> None:
             expect(unfunded.locator("#evolve-resume")).to_be_disabled()
             expect(unfunded.locator("#evolve-export-package")).to_be_disabled()
             assert history(unfunded) == unfunded_history
+            pending_construct_guard(unfunded)
             (OUTPUT / "unfunded-finalization-history.json").write_text(json.dumps(unfunded_history, indent=2))
+            unfunded.locator("#evolve-new-history").click()
+            idle(unfunded)
+            separate = history(unfunded)
+            assert separate["id"] != unfunded_history["id"] and not separate["events"]
+            expect(unfunded.locator("#evolve-construct")).to_be_enabled()
+            unfunded.locator("#evolve-budget").fill("100000")
+            unfunded.locator("#evolve-construct").click()
+            idle(unfunded)
+            expect(unfunded.locator("#evolve-status")).to_contain_text("Capability qualified.")
+            separate = history(unfunded)
+            assert separate["id"] != unfunded_history["id"]
+            assert any(event["kind"] == "package-frozen" for event in separate["events"])
+            (OUTPUT / "separate-after-unfunded-history.json").write_text(json.dumps(separate, indent=2))
+            saved_disclosure = unfunded.locator("details").filter(has=unfunded.locator("#evolve-saved"))
+            saved_disclosure.locator("summary").click()
+            unfunded.locator("#evolve-saved").select_option(unfunded_history["id"])
+            unfunded.locator("#evolve-open").click()
+            idle(unfunded)
+            assert history(unfunded) == unfunded_history
+            expect(unfunded.locator("#evolve-construct")).to_be_disabled()
+            expect(unfunded.locator("#evolve-resume")).to_be_disabled()
+            with unfunded.expect_download() as downloaded:
+                unfunded.locator("#evolve-export-history").click()
+            reopened_path = OUTPUT / "reopened-unfunded-history.json"
+            downloaded.value.save_as(reopened_path)
+            assert json.loads(reopened_path.read_text()) == unfunded_history
+            unfunded.reload()
+            idle(unfunded)
+            assert history(unfunded) == unfunded_history
+            expect(unfunded.locator("#evolve-construct")).to_be_disabled()
             unfunded_context.close()
+            verify_new_history_recovery(browser, url, OUTPUT / "unfunded-finalization-history.json", OUTPUT)
 
             repeated_path = OUTPUT / "repeated-successor-history.json"
             repeated_script = """

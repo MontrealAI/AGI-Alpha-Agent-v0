@@ -4,9 +4,10 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {apparatus, expandApparatus, TOPOLOGIES} from './apparatus.mjs';
-import {construct} from './constructor.mjs';
-import {freezeCapability, importCapability, projectedFreezeCostCapability} from './capability-package.mjs';
-import {buildSuccessor, compareCapability, runEvaluation} from './evaluation.mjs';
+import {construct, advanceSearch, importSearchCheckpoint} from './constructor.mjs';
+import {freezeCapability, importCapability, projectedFreezeCostCapability,
+    verificationCostCapability} from './capability-package.mjs';
+import {buildSuccessor, compareCapability, evaluateConstructorGeneralization, runEvaluation} from './evaluation.mjs';
 
 let parentPromise;
 function parent() {
@@ -139,4 +140,105 @@ test('an infeasible inherited search still reports an accepted scratch baseline 
     assert.equal(report.costs.scratchQualified, true);
     assert.equal(report.costs.scratchConstructionWork, 98);
     assert.equal(report.costs.constructionFromScratch, 98);
+});
+
+test('an unfunded primary successor retains its qualified candidate and actual work without claiming acceptance', async () => {
+    const app = apparatus('shielded');
+    const first = await freezeCapability(app, construct(app, {maxCost: 600}));
+    const original = JSON.stringify(first), expanded = expandApparatus(app);
+    assert.equal(first.costLedger.total, 591);
+    for (const maxCost of [600, 1156]) {
+        const raw = construct(expanded, {parent: first, maxCost});
+        const projected = projectedFreezeCostCapability(expanded, raw, {parent: first});
+        const report = await buildSuccessor(first, {seed: 123, searchOptions: {maxCost}});
+        assert.equal(report.status, 'INCONCLUSIVE');
+        assert.equal(report.oldScope.status, 'FAIL');
+        assert.equal(report.result.status, 'exhausted');
+        assert.equal(report.result.constructionStatus, 'qualified');
+        assert.equal(report.result.qualification.status, 'inconclusive');
+        assert.deepEqual(report.result.ledger, raw.ledger);
+        assert.equal(report.result.ledger.total, 424);
+        assert.deepEqual(report.result.checkpoint, raw.checkpoint);
+        const resumed = advanceSearch(importSearchCheckpoint(report.result.checkpoint), {steps: 0});
+        assert.equal(resumed.status, 'qualified');
+        assert.deepEqual(resumed.ledger, raw.ledger);
+        assert.equal(report.result.acceptanceLedger, null);
+        assert.equal(report.result.freeze.status, 'not-run');
+        assert.equal(report.result.freeze.requiredTotal, 1157);
+        assert.equal(report.result.freeze.unperformedFreezeWork, 733);
+        assert.deepEqual(report.result.freeze.projectedLedger, projected);
+        assert.equal(report.package, undefined);
+        assert.equal(report.reuse, undefined);
+        assert.equal(report.newFunction, undefined);
+        assert.match(report.reason, /Candidate found; package acceptance could not be funded/);
+        assert.equal(report.costs.ancestor, 591);
+        assert.equal(report.costs.remaining, raw.ledger.total + verificationCostCapability(first) + 5);
+        assert.equal(report.costs.remaining, 726);
+        assert.equal(report.costs.cumulative, 1317);
+        assert.equal(report.costs.scratchConstructionWork, report.scratch.ledger.total);
+        assert.ok(report.costs.scratchConstructionWork <= maxCost);
+        assert.equal(report.costs.remainingSaving, null);
+        assert.equal(report.costs.cumulativeSaving, null);
+    }
+    assert.equal(JSON.stringify(first), original);
+});
+
+test('the exact inherited primary freeze budget accepts the same candidate with its complete verified ledger', async () => {
+    const app = apparatus('shielded'), first = await freezeCapability(app, construct(app, {maxCost: 600}));
+    const report = await buildSuccessor(first, {seed: 123, searchOptions: {maxCost: 1157}});
+    assert.equal(report.status, 'PASS');
+    assert.equal(report.result.ledger.total, 424);
+    assert.equal(report.result.freeze.status, 'completed');
+    assert.equal(report.result.freeze.requiredTotal, 1157);
+    assert.equal(report.result.qualification.status, 'qualified');
+    assert.equal(report.package.costLedger.total, 1157);
+    assert.deepEqual(report.result.freeze.projectedLedger, report.package.costLedger);
+    assert.deepEqual(report.result.acceptanceLedger, report.package.costLedger);
+    assert.deepEqual(await importCapability(report.package), report.package);
+    assert.equal(report.obligations.preserved, true);
+    assert.equal(report.newFunction.accepted, true);
+    assert.equal(report.costs.remaining, 1157 + verificationCostCapability(first) + 5);
+});
+
+test('unfunded primary topology and successor acceptance retain only actual work in the vertical aggregate', async () => {
+    const report = await runEvaluation({seed: 42, searchOptions: {maxCost: 500},
+        constructorDigest: await sourceDigest()});
+    assert.equal(report.status, 'INCONCLUSIVE');
+    const shielded = report.topologies.find(item => item.topology === 'shielded');
+    assert.equal(shielded.status, 'INCONCLUSIVE');
+    assert.equal(shielded.result.constructionStatus, 'qualified');
+    assert.equal(shielded.result.qualification.status, 'inconclusive');
+    assert.equal(shielded.result.freeze.status, 'not-run');
+    assert.equal(shielded.result.freeze.requiredTotal, 591);
+    assert.equal(shielded.result.ledger.total, 294);
+    assert.equal(shielded.package, undefined);
+    assert.equal(report.costAccounting.topologyJourneys[0], 294);
+    assert.equal(report.successor.status, 'INCONCLUSIVE');
+    assert.equal(report.successor.package, undefined);
+    assert.equal(report.costAccounting.successorAndMatchedColdStart,
+        report.successor.costs.remaining + report.successor.costs.scratchConstructionWork);
+    assert.equal(report.aggregateCost, report.costAccounting.topologyJourneys.reduce((a, b) => a + b, 0)
+        + report.costAccounting.unseenFamilies.reduce((a, b) => a + b, 0)
+        + report.costAccounting.successorAndMatchedColdStart);
+});
+
+test('generalization keeps an unfunded runtime-qualified family distinct from its independently proved negative', async () => {
+    const report = await evaluateConstructorGeneralization({seed: 42, searchOptions: {maxCost: 1000},
+        constructorDigest: await sourceDigest()});
+    const routed = report.cases.find(item => item.topology === 'routed');
+    assert.equal(routed.status, 'INCONCLUSIVE');
+    assert.equal(routed.constructionStatus, 'qualified');
+    assert.equal(routed.result.qualification.status, 'inconclusive');
+    assert.equal(routed.result.ledger.total, 553);
+    assert.equal(routed.result.freeze.status, 'not-run');
+    assert.equal(routed.result.freeze.requiredTotal, 1105);
+    assert.equal(routed.result.acceptanceLedger, null);
+    assert.equal(routed.package, null);
+    assert.equal(routed.reuse, null);
+    assert.equal(routed.acceptedOutcome, 'unfinished');
+    const negative = report.cases.find(item => item.topology === 'referenced');
+    assert.equal(negative.status, 'PASS');
+    assert.equal(negative.acceptedOutcome, 'independently-proved-negative-case');
+    assert.equal(negative.package, null);
+    assert.equal(report.status, 'INCONCLUSIVE');
 });

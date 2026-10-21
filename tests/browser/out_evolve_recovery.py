@@ -12,7 +12,7 @@ from playwright.sync_api import Browser, BrowserContext, Page, expect
 
 def _idle(page: Page) -> None:
     """Wait for a completed, successfully saved browser action."""
-    expect(page.locator("#evolve-construct")).to_be_enabled(timeout=120000)
+    expect(page.locator("#evolve-import")).to_be_enabled(timeout=120000)
     expect(page.locator("#evolve-form")).to_have_attribute("aria-busy", "false")
 
 
@@ -226,6 +226,162 @@ def verify_archive_recovery(browser: Browser, url: str, package_path: Path, hist
         assert not errors, errors
         _write(destination / "archive-monotonicity.json", {"status": "PASS", "rejections": rejections, "races": races})
         print("Archived rollback/fork rejection and both atomic archive race guards: PASS")
+    finally:
+        for context in reversed(contexts):
+            context.close()
+
+
+def _abort_new_history_save(page: Page, identity: str, stage: str) -> None:
+    """Abort the real current-pointer write once, before or after the identity switch."""
+    page.evaluate(
+        """({identity, stage}) => {
+            window.__outEvolveNewHistoryAbort = {stage, fired: false, identity: null};
+            let armed = true;
+            const put = IDBObjectStore.prototype.put;
+            IDBObjectStore.prototype.put = function(value, key) {
+                const request = put.apply(this, arguments);
+                const isOriginal = value && value.id === identity;
+                if (armed && this.name === 'history' && key === 'current'
+                    && (stage === 'old' ? isOriginal : !isOriginal)) {
+                    armed = false;
+                    window.__outEvolveNewHistoryAbort.fired = true;
+                    window.__outEvolveNewHistoryAbort.identity = value.id;
+                    const transaction = this.transaction;
+                    queueMicrotask(() => transaction.abort());
+                }
+                return request;
+            };
+        }""",
+        {"identity": identity, "stage": stage},
+    )
+
+
+def verify_new_history_recovery(browser: Browser, url: str, pending_history_path: Path, output: Path) -> None:
+    """Retain a genuine pending search through either New history save failure and retry."""
+    destination = output / "new-history-recovery"
+    destination.mkdir(parents=True, exist_ok=True)
+    original: dict[str, Any] = json.loads(pending_history_path.read_text())
+    pending = original["events"][-1]["payload"]["checkpoint"]
+    assert pending["status"] == "qualified"
+    assert pending["options"]["maxCost"] == 500
+    assert all(event["kind"] != "package-frozen" for event in original["events"])
+    _write(destination / "original-pending-history.json", original)
+    contexts: list[BrowserContext] = []
+    errors: list[str] = []
+    receipts: list[dict[str, Any]] = []
+
+    def visible_state(page: Page) -> dict[str, Any]:
+        return {
+            "status": page.locator("#evolve-status").text_content(),
+            "storage": page.locator("#evolve-storage").text_content(),
+            "error": page.locator("#evolve-error").text_content(),
+            "retryVisible": page.locator("#evolve-retry-save").is_visible(),
+            "constructDisabled": page.locator("#evolve-construct").is_disabled(),
+            "finalizeDisabled": page.locator("#evolve-resume").is_disabled(),
+        }
+
+    try:
+        for stage in ("old", "new"):
+            context = browser.new_context(accept_downloads=True)
+            contexts.append(context)
+            page = context.new_page()
+            page.on("dialog", lambda dialog: dialog.accept())
+            page.on("pageerror", lambda error: errors.append(str(error)))
+            page.goto(url)
+            _idle(page)
+            _import_history(page, pending_history_path, original["id"])
+            assert _history(page) == original
+            expect(page.locator("#evolve-construct")).to_be_disabled()
+            expect(page.locator("#evolve-resume")).to_be_disabled()
+            expect(page.locator("#evolve-new-history")).to_be_enabled()
+            _abort_new_history_save(page, original["id"], stage)
+            page.locator("#evolve-new-history").click()
+            expect(page.locator("#evolve-form")).to_have_attribute("aria-busy", "false", timeout=120000)
+            expect(page.locator("#evolve-retry-save")).to_be_visible()
+            expect(page.locator("#evolve-import")).to_be_disabled()
+            expect(page.locator("#evolve-new-history")).to_be_disabled()
+            expect(page.locator("#evolve-storage")).to_contain_text("has not been saved")
+            expect(page.locator("#evolve-status")).not_to_contain_text("Separate construction history started")
+            fault: dict[str, Any] = page.evaluate("window.__outEvolveNewHistoryAbort")
+            assert fault["fired"] is True
+            failed_history = _history(page)
+            assert _saved(page, "current") == original
+            assert _saved(page, original["id"]) == original
+            if stage == "old":
+                assert fault["identity"] == original["id"]
+                assert failed_history == original
+                exported_path = destination / "old-save-failed-export.json"
+                with page.expect_download() as downloaded:
+                    page.locator("#evolve-export-history").click()
+                downloaded.value.save_as(exported_path)
+                assert json.loads(exported_path.read_text()) == original
+            else:
+                assert fault["identity"] != original["id"]
+                assert failed_history["id"] == fault["identity"]
+                assert failed_history["revision"] == 0
+                assert failed_history["events"] == []
+                expect(page.locator("#evolve-status")).to_contain_text("previous history remains saved")
+            _write(destination / f"{stage}-save-failed-visible.json", failed_history)
+            _write(destination / f"{stage}-save-failed-db-current.json", _saved(page, "current"))
+            _write(destination / f"{stage}-save-failed-archive.json", _saved(page, original["id"]))
+            receipt: dict[str, Any] = {"stage": stage, "fault": fault, "afterFailure": visible_state(page)}
+
+            page.locator("#evolve-retry-save").click()
+            _idle(page)
+            expect(page.locator("#evolve-retry-save")).to_be_hidden()
+            expect(page.locator("#evolve-error")).to_be_hidden()
+            assert _history(page) == failed_history
+            assert _saved(page, "current") == failed_history
+            assert _saved(page, original["id"]) == original
+            receipt["afterRetry"] = visible_state(page)
+            if stage == "old":
+                expect(page.locator("#evolve-new-history")).to_be_enabled()
+                page.locator("#evolve-new-history").click()
+                _idle(page)
+                expect(page.locator("#evolve-status")).to_contain_text("Separate construction history started")
+            fresh_history = _history(page)
+            assert fresh_history["id"] != original["id"]
+            assert fresh_history["revision"] == 0
+            assert fresh_history["events"] == []
+            assert _saved(page, "current") == fresh_history
+            assert _saved(page, fresh_history["id"]) == fresh_history
+            assert _saved(page, original["id"]) == original
+            _write(destination / f"{stage}-save-retried-fresh-history.json", fresh_history)
+
+            page.reload()
+            _idle(page)
+            assert _history(page) == fresh_history
+            assert _saved(page, original["id"]) == original
+            _open_saved(page, original["id"])
+            assert _history(page) == original
+            assert _saved(page, "current") == original
+            expect(page.locator("#evolve-construct")).to_be_disabled()
+            expect(page.locator("#evolve-resume")).to_be_disabled()
+            expect(page.locator("#evolve-new-history")).to_be_enabled()
+            expect(page.locator("#evolve-status")).to_contain_text("Saved history opened after semantic checks")
+            page.reload()
+            _idle(page)
+            assert _history(page) == original
+            assert _saved(page, "current") == original
+            assert _saved(page, original["id"]) == original
+            assert _saved(page, fresh_history["id"]) == fresh_history
+            expect(page.locator("#evolve-status")).to_contain_text("checkpoint is retained")
+            _write(destination / f"{stage}-save-reopened-pending-history.json", _history(page))
+            receipt.update(
+                {
+                    "freshIdentity": fresh_history["id"],
+                    "freshRevision": fresh_history["revision"],
+                    "reopenedIdentity": original["id"],
+                    "reopenedRevision": original["revision"],
+                    "originalCheckpointRetained": True,
+                    "freshHistorySavedAfterRetry": True,
+                    "afterReopenAndReload": visible_state(page),
+                }
+            )
+            receipts.append(receipt)
+        assert not errors, errors
+        _write(destination / "new-history-save-recovery.json", {"status": "PASS", "cases": receipts})
+        print("New-history original-save and fresh-save abort recovery: PASS")
     finally:
         for context in reversed(contexts):
             context.close()
