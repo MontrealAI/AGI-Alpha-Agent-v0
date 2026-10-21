@@ -71,6 +71,17 @@ function fixtureInputs(apparatus) {
     ]);
 }
 
+/** Project the declared freeze ledger from static program costs, without executing any replay. */
+export function projectedFreezeCostCapability(apparatus, result, {parent = null} = {}) {
+    if (result.status !== 'qualified' || !result.program) fail('Cannot price unfinished construction freeze.');
+    validCost(result.ledger);
+    const program = runtime.compile(apparatus, result.program);
+    const operationCost = 1 + program.steps.reduce((total, key) => total
+        + apparatus.primitives.find(primitive => primitive.id === key).cost, 0);
+    const fixtures = fixtureInputs(apparatus).map(() => ({expected: {cost: operationCost}}));
+    return frozenCost(result, fixtures, parent);
+}
+
 function parentAssets(apparatus, parent, inherited) {
     if (!parent) return {parentDigest: null, installations: [], observations: [], priorEvidence: 'none', ancestorCost: 0};
     const matching = inherited || parent.ast.installations;

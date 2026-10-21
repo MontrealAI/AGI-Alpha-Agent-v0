@@ -154,7 +154,9 @@
             const costs = report.costs;
             text = `This successor experiment: ${costs.remainingAfterAcceptance ?? costs.remaining} model units of remaining work, `
                 + `${costs.cumulativeAfterAcceptance ?? costs.cumulative} including ancestor construction. `
-                + `Matched scratch work: ${costs.scratchAfterAcceptance ?? costs.constructionFromScratch ?? 'inconclusive'} model units. `
+                + (costs.scratchQualified === false
+                    ? `Scratch comparator inconclusive; ${costs.scratchAfterAcceptance ?? costs.scratchConstructionWork} model units actually spent. `
+                    : `Matched scratch work: ${costs.scratchAfterAcceptance ?? costs.constructionFromScratch ?? 'inconclusive'} model units. `)
                 + 'These amounts include the reported scope diagnostics and acceptance checks.';
         }
         view('work-total').textContent = text;

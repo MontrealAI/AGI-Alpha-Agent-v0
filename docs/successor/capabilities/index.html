@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Cu9v5qmcgNnanXIcqwzQa4yZQjK3gQPAbUTwqYlvMpM='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-mqO0AKjlLxkk1RWrAKhfEl2R4AquUgHsAt5lHLxKl5E='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -314,7 +314,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>b8399195ce7fcbd990ea69f09570342085589eb4b5d4b84e96ffdc161fc99b08</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>d39e390d6293d934fc5aa7c5e7ed60f490b4a3c5f0bec2e7a20538700cdc2f4b</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -2331,6 +2331,17 @@ function fixtureInputs(apparatus) {
     ]);
 }
 
+/** Project the declared freeze ledger from static program costs, without executing any replay. */
+function projectedFreezeCostCapability(apparatus, result, {parent = null} = {}) {
+    if (result.status !== 'qualified' || !result.program) fail('Cannot price unfinished construction freeze.');
+    validCost(result.ledger);
+    const program = runtime.compile(apparatus, result.program);
+    const operationCost = 1 + program.steps.reduce((total, key) => total
+        + apparatus.primitives.find(primitive => primitive.id === key).cost, 0);
+    const fixtures = fixtureInputs(apparatus).map(() => ({expected: {cost: operationCost}}));
+    return frozenCost(result, fixtures, parent);
+}
+
 function parentAssets(apparatus, parent, inherited) {
     if (!parent) return {parentDigest: null, installations: [], observations: [], priorEvidence: 'none', ancestorCost: 0};
     const matching = inherited || parent.ast.installations;
@@ -2453,7 +2464,7 @@ async function qualifyCapability(input) {
     return checker.verify(pkg.apparatus, pkg.ast, pkg.certificate);
 }
 
-return {PACKAGE_SCHEMA,sha256,digestCapability,verificationCostCapability,freezeCapability,importCapability,prepareCapability,measureCapability,qualifyCapability};
+return {PACKAGE_SCHEMA,sha256,digestCapability,verificationCostCapability,projectedFreezeCostCapability,freezeCapability,importCapability,prepareCapability,measureCapability,qualifyCapability};
 })();
 const capability_module_4=(()=>{
 // SPDX-License-Identifier: Apache-2.0
@@ -2692,7 +2703,8 @@ const { apparatus, expandApparatus, TOPOLOGIES } = capability_module_9;
 const { qualify, measure, prepare, compile, validateApparatus } = capability_module_6;
 const { verify } = capability_module_7;
 const { construct, lineageConstructionCost } = capability_module_5;
-const { freezeCapability, importCapability, digestCapability, verificationCostCapability } = capability_module_8;
+const { freezeCapability, importCapability, digestCapability, verificationCostCapability,
+    projectedFreezeCostCapability } = capability_module_8;
 
 const EVALUATION_VERSION = 'out-evolve-evaluation/v1';
 const LIMITATIONS = Object.freeze([
@@ -2814,6 +2826,27 @@ function ledgerTotal(ledger) {
     return ledger.total;
 }
 
+/** Reserve an optional comparator's complete acceptance cost before running package replay. */
+async function acceptComparisonConstruction(app, result) {
+    const constructionStatus = result.status;
+    const base = {...result, constructionStatus, qualification: {status: 'inconclusive'}, acceptanceLedger: null,
+        freeze: {status: 'not-run', reason: 'Construction did not reach a qualifying candidate.'}};
+    if (constructionStatus !== 'qualified') return {result: base, package: null};
+    const projected = projectedFreezeCostCapability(app, result);
+    const maxCost = result.checkpoint.options.maxCost;
+    if (projected.total > maxCost) {
+        return {result: {...base, status: 'exhausted',
+            reason: 'No accepted comparison package within budget: complete freeze and replay were not funded.',
+            freeze: {status: 'not-run', reason: 'total modeled cost', maxCost,
+                requiredTotal: projected.total, unperformedFreezeWork: projected.total - result.ledger.total}},
+            package: null};
+    }
+    const pkg = await freezeCapability(app, result);
+    ensure(canonical(pkg.costLedger) === canonical(projected), 'Comparison freeze cost projection did not reproduce.');
+    return {result: {...base, acceptanceLedger: pkg.costLedger, qualification: {status: 'qualified'},
+        freeze: {status: 'completed', maxCost, requiredTotal: projected.total}}, package: pkg};
+}
+
 /** The same objective, tolerance, graph, primitive information and budget apply to both planning runs. */
 async function compareCapability(input, options = {}) {
     const pkg = await importCapability(input);
@@ -2821,10 +2854,10 @@ async function compareCapability(input, options = {}) {
     if (options.searchOptions) ensure(Object.entries(options.searchOptions).every(([key, value]) =>
         Object.hasOwn(searchOptions, key) && canonical(value) === canonical(searchOptions[key])),
         'Comparison must use the effective construction limits recorded in the frozen package.');
-    const classical = construct(pkg.apparatus, searchOptions);
-    const scratch = construct(pkg.apparatus, {...searchOptions});
-    const classicalPackage = classical.status === 'qualified' ? await freezeCapability(pkg.apparatus, classical) : null;
-    const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(pkg.apparatus, scratch) : null;
+    const classicalAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, searchOptions));
+    const scratchAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, {...searchOptions}));
+    const classical = classicalAcceptance.result, scratch = scratchAcceptance.result;
+    const classicalPackage = classicalAcceptance.package, scratchPackage = scratchAcceptance.package;
     const remaining = ledgerTotal(pkg.costLedger);
     const ancestor = pkg.parentAssets.ancestorCost;
     const ours = lineageConstructionCost(pkg);
@@ -2833,9 +2866,11 @@ async function compareCapability(input, options = {}) {
             ledger: pkg.costLedger},
         {name: 'classical-uniform-cost-planner', status: classical.status, ast: classical.program,
             certificate: classical.certificate, ledger: classicalPackage?.costLedger || classical.ledger,
+            constructionStatus: classical.constructionStatus, qualification: classical.qualification, freeze: classical.freeze,
             method: 'Classical uniform-cost planning with the same sound semantic deduplication; it may tie or win.'},
         {name: 'construction-from-scratch', status: scratch.status, ast: scratch.program,
-            certificate: scratch.certificate, ledger: scratchPackage?.costLedger || scratch.ledger}
+            certificate: scratch.certificate, ledger: scratchPackage?.costLedger || scratch.ledger,
+            constructionStatus: scratch.constructionStatus, qualification: scratch.qualification, freeze: scratch.freeze}
     ];
     const sensing = await sensingCorrectionBaseline(pkg, searchOptions);
     const uses = options.uses === undefined ? 24 : options.uses;
@@ -2844,10 +2879,11 @@ async function compareCapability(input, options = {}) {
     const operation = 1 + compiled.steps.reduce((total, key) => total
         + pkg.apparatus.primitives.find(primitive => primitive.id === key).cost, 0);
     const classicalCost = classicalPackage ? ledgerTotal(classicalPackage.costLedger) : null;
-    const relation = classical.status !== 'qualified' ? 'baseline-inconclusive'
+    const relation = !classicalPackage ? 'baseline-inconclusive'
         : ours < classicalCost ? 'lower-total-modeled-cost'
             : ours === classicalCost ? 'tie' : 'classical-baseline-lower-total-modeled-cost';
-    return {schema: EVALUATION_VERSION, kind: 'matched-comparison', status: 'COMPLETED',
+    return {schema: EVALUATION_VERSION, kind: 'matched-comparison',
+        status: classicalPackage && scratchPackage ? 'COMPLETED' : 'INCONCLUSIVE',
         frozenPackageDigest: pkg.digest, matched: {apparatus: true, objective: true, tolerance: true,
             primitives: true, information: true, budgets: searchOptions}, runs, sensingCorrection: sensing,
         relation, costs: {unit: 'abstract-model-work', coldStart: ours, remainingConstructionCost: remaining, ancestorConstructionCost: ancestor,
@@ -3166,7 +3202,10 @@ async function buildSuccessor(input, options = {}) {
         explanation: 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
     const searchOptions = {...options.searchOptions};
     const result = construct(expanded, {...searchOptions, parent});
-    const scratch = construct(expanded, searchOptions);
+    const scratchAcceptance = await acceptComparisonConstruction(expanded, construct(expanded, searchOptions));
+    const scratch = scratchAcceptance.result;
+    const scratchPackage = scratchAcceptance.package;
+    const scratchWork = ledgerTotal(scratchPackage?.costLedger || scratch.ledger);
     if (result.status !== 'qualified') {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
             oldScope, result, scratch, parentDigest: parent.digest,
@@ -3175,7 +3214,8 @@ async function buildSuccessor(input, options = {}) {
                 remaining: ledgerTotal(result.ledger) + verificationCostCapability(parent) + oldScopeAuditCost,
                 cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
-                constructionFromScratch: ledgerTotal(scratch.ledger)},
+                constructionFromScratch: scratchPackage ? scratchWork : null,
+                scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null},
             reason: 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
     }
     const pkg = await freezeCapability(expanded, result, {parent});
@@ -3187,7 +3227,6 @@ async function buildSuccessor(input, options = {}) {
     const parentCost = lineageConstructionCost(parent);
     const parentAudit = verificationCostCapability(parent);
     const remaining = ledgerTotal(pkg.costLedger) + parentAudit + oldScopeAuditCost;
-    const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(expanded, scratch) : null;
     const scratchCost = scratchPackage ? ledgerTotal(scratchPackage.costLedger) : null;
     const scratchReuse = scratchPackage ? await evaluateFrozenReuse(scratchPackage, options) : null;
     return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor',
@@ -3203,7 +3242,8 @@ async function buildSuccessor(input, options = {}) {
             frozenReuseAcceptance: reuse.ledger.total,
             remainingAfterAcceptance: remaining + reuse.ledger.total,
             cumulativeAfterAcceptance: parentCost + remaining + reuse.ledger.total,
-            scratchAfterAcceptance: scratchCost === null ? null : scratchCost + scratchReuse.ledger.total,
+            scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null,
+            scratchAfterAcceptance: scratchWork + (scratchReuse?.ledger.total || 0),
             constructionFromScratch: scratchCost, remainingSaving: scratchCost === null ? null : scratchCost - remaining,
             cumulativeSaving: scratchCost === null ? null : scratchCost - parentCost - remaining},
         limitations: [...LIMITATIONS, 'Inherited installations do not make ancestor construction cost disappear.']};
@@ -3244,7 +3284,7 @@ async function runEvaluation(options = {}) {
         + test.reuse.ledger.total : ledgerTotal(test.result.ledger));
     const successorCost = successor?.package ? successor.costs.remainingAfterAcceptance
         + successor.costs.scratchAfterAcceptance : successor ? successor.costs.remaining
-            + successor.costs.constructionFromScratch : 0;
+        + successor.costs.scratchConstructionWork : 0;
     const aggregateCost = sum(topologyCosts) + sum(familyCosts) + successorCost;
     return {schema: EVALUATION_VERSION, seed, status: topologies.every(test => test.status === 'PASS')
         && successor?.status === 'PASS' && generalization.status === 'PASS' && asts.size >= 3 ? 'PASS' : 'INCONCLUSIVE',
@@ -3271,7 +3311,7 @@ const outEvolveConstructor=capability_module_5;
 const outEvolvePackages=capability_module_8;
 const outEvolveApparatus=capability_module_9;
 const outEvolveEvaluation=capability_module_10;
-const SOURCE_HASH='b8399195ce7fcbd990ea69f09570342085589eb4b5d4b84e96ffdc161fc99b08';
+const SOURCE_HASH='d39e390d6293d934fc5aa7c5e7ed60f490b4a3c5f0bec2e7a20538700cdc2f4b';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -3968,7 +4008,9 @@ window.addEventListener('beforeunload', event => {
             const costs = report.costs;
             text = `This successor experiment: ${costs.remainingAfterAcceptance ?? costs.remaining} model units of remaining work, `
                 + `${costs.cumulativeAfterAcceptance ?? costs.cumulative} including ancestor construction. `
-                + `Matched scratch work: ${costs.scratchAfterAcceptance ?? costs.constructionFromScratch ?? 'inconclusive'} model units. `
+                + (costs.scratchQualified === false
+                    ? `Scratch comparator inconclusive; ${costs.scratchAfterAcceptance ?? costs.scratchConstructionWork} model units actually spent. `
+                    : `Matched scratch work: ${costs.scratchAfterAcceptance ?? costs.constructionFromScratch ?? 'inconclusive'} model units. `)
                 + 'These amounts include the reported scope diagnostics and acceptance checks.';
         }
         view('work-total').textContent = text;

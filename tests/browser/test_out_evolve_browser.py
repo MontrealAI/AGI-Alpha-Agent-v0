@@ -262,6 +262,30 @@ def main() -> None:
             (OUTPUT / "common-reference-comparison.json").write_text(json.dumps(comparison, indent=2))
             reference_context.close()
 
+            bounded_context = browser.new_context()
+            bounded = bounded_context.new_page()
+            bounded.goto(url)
+            idle(bounded)
+            bounded.locator("#evolve-budget").fill("1500")
+            bounded.locator("#evolve-construct").click()
+            idle(bounded)
+            bounded.locator("#evolve-successor").click()
+            idle(bounded)
+            expect(bounded.locator("#evolve-status")).to_contain_text("Scope-expanding successor: PASS")
+            bounded_history = history(bounded)
+            bounded_successor = bounded_history["events"][-1]["payload"]
+            assert bounded_successor["status"] == "PASS"
+            assert bounded_successor["package"]["digest"]
+            assert bounded_successor["costs"]["scratchQualified"] is False
+            assert bounded_successor["costs"]["scratchConstructionWork"] == 1399
+            assert bounded_successor["costs"]["constructionFromScratch"] is None
+            expect(bounded.locator("#evolve-work-total")).to_contain_text("Scratch comparator inconclusive; 1399")
+            (OUTPUT / "bounded-successor-history.json").write_text(json.dumps(bounded_history, indent=2))
+            bounded.reload()
+            idle(bounded)
+            assert history(bounded) == bounded_history
+            bounded_context.close()
+
             for width in (320, 390, 768, 1440):
                 page.set_viewport_size({"width": width, "height": 1000})
                 assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), width

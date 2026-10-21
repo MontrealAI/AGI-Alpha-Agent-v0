@@ -4,7 +4,8 @@ import { apparatus, expandApparatus, TOPOLOGIES } from './apparatus.mjs';
 import { qualify, measure, prepare, compile, validateApparatus } from './typed-runtime.mjs';
 import { verify } from './independent-checker.mjs';
 import { construct, lineageConstructionCost } from './constructor.mjs';
-import { freezeCapability, importCapability, digestCapability, verificationCostCapability } from './capability-package.mjs';
+import { freezeCapability, importCapability, digestCapability, verificationCostCapability,
+    projectedFreezeCostCapability } from './capability-package.mjs';
 
 export const EVALUATION_VERSION = 'out-evolve-evaluation/v1';
 export const LIMITATIONS = Object.freeze([
@@ -126,6 +127,27 @@ function ledgerTotal(ledger) {
     return ledger.total;
 }
 
+/** Reserve an optional comparator's complete acceptance cost before running package replay. */
+async function acceptComparisonConstruction(app, result) {
+    const constructionStatus = result.status;
+    const base = {...result, constructionStatus, qualification: {status: 'inconclusive'}, acceptanceLedger: null,
+        freeze: {status: 'not-run', reason: 'Construction did not reach a qualifying candidate.'}};
+    if (constructionStatus !== 'qualified') return {result: base, package: null};
+    const projected = projectedFreezeCostCapability(app, result);
+    const maxCost = result.checkpoint.options.maxCost;
+    if (projected.total > maxCost) {
+        return {result: {...base, status: 'exhausted',
+            reason: 'No accepted comparison package within budget: complete freeze and replay were not funded.',
+            freeze: {status: 'not-run', reason: 'total modeled cost', maxCost,
+                requiredTotal: projected.total, unperformedFreezeWork: projected.total - result.ledger.total}},
+            package: null};
+    }
+    const pkg = await freezeCapability(app, result);
+    ensure(canonical(pkg.costLedger) === canonical(projected), 'Comparison freeze cost projection did not reproduce.');
+    return {result: {...base, acceptanceLedger: pkg.costLedger, qualification: {status: 'qualified'},
+        freeze: {status: 'completed', maxCost, requiredTotal: projected.total}}, package: pkg};
+}
+
 /** The same objective, tolerance, graph, primitive information and budget apply to both planning runs. */
 export async function compareCapability(input, options = {}) {
     const pkg = await importCapability(input);
@@ -133,10 +155,10 @@ export async function compareCapability(input, options = {}) {
     if (options.searchOptions) ensure(Object.entries(options.searchOptions).every(([key, value]) =>
         Object.hasOwn(searchOptions, key) && canonical(value) === canonical(searchOptions[key])),
         'Comparison must use the effective construction limits recorded in the frozen package.');
-    const classical = construct(pkg.apparatus, searchOptions);
-    const scratch = construct(pkg.apparatus, {...searchOptions});
-    const classicalPackage = classical.status === 'qualified' ? await freezeCapability(pkg.apparatus, classical) : null;
-    const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(pkg.apparatus, scratch) : null;
+    const classicalAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, searchOptions));
+    const scratchAcceptance = await acceptComparisonConstruction(pkg.apparatus, construct(pkg.apparatus, {...searchOptions}));
+    const classical = classicalAcceptance.result, scratch = scratchAcceptance.result;
+    const classicalPackage = classicalAcceptance.package, scratchPackage = scratchAcceptance.package;
     const remaining = ledgerTotal(pkg.costLedger);
     const ancestor = pkg.parentAssets.ancestorCost;
     const ours = lineageConstructionCost(pkg);
@@ -145,9 +167,11 @@ export async function compareCapability(input, options = {}) {
             ledger: pkg.costLedger},
         {name: 'classical-uniform-cost-planner', status: classical.status, ast: classical.program,
             certificate: classical.certificate, ledger: classicalPackage?.costLedger || classical.ledger,
+            constructionStatus: classical.constructionStatus, qualification: classical.qualification, freeze: classical.freeze,
             method: 'Classical uniform-cost planning with the same sound semantic deduplication; it may tie or win.'},
         {name: 'construction-from-scratch', status: scratch.status, ast: scratch.program,
-            certificate: scratch.certificate, ledger: scratchPackage?.costLedger || scratch.ledger}
+            certificate: scratch.certificate, ledger: scratchPackage?.costLedger || scratch.ledger,
+            constructionStatus: scratch.constructionStatus, qualification: scratch.qualification, freeze: scratch.freeze}
     ];
     const sensing = await sensingCorrectionBaseline(pkg, searchOptions);
     const uses = options.uses === undefined ? 24 : options.uses;
@@ -156,10 +180,11 @@ export async function compareCapability(input, options = {}) {
     const operation = 1 + compiled.steps.reduce((total, key) => total
         + pkg.apparatus.primitives.find(primitive => primitive.id === key).cost, 0);
     const classicalCost = classicalPackage ? ledgerTotal(classicalPackage.costLedger) : null;
-    const relation = classical.status !== 'qualified' ? 'baseline-inconclusive'
+    const relation = !classicalPackage ? 'baseline-inconclusive'
         : ours < classicalCost ? 'lower-total-modeled-cost'
             : ours === classicalCost ? 'tie' : 'classical-baseline-lower-total-modeled-cost';
-    return {schema: EVALUATION_VERSION, kind: 'matched-comparison', status: 'COMPLETED',
+    return {schema: EVALUATION_VERSION, kind: 'matched-comparison',
+        status: classicalPackage && scratchPackage ? 'COMPLETED' : 'INCONCLUSIVE',
         frozenPackageDigest: pkg.digest, matched: {apparatus: true, objective: true, tolerance: true,
             primitives: true, information: true, budgets: searchOptions}, runs, sensingCorrection: sensing,
         relation, costs: {unit: 'abstract-model-work', coldStart: ours, remainingConstructionCost: remaining, ancestorConstructionCost: ancestor,
@@ -478,7 +503,10 @@ export async function buildSuccessor(input, options = {}) {
         explanation: 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
     const searchOptions = {...options.searchOptions};
     const result = construct(expanded, {...searchOptions, parent});
-    const scratch = construct(expanded, searchOptions);
+    const scratchAcceptance = await acceptComparisonConstruction(expanded, construct(expanded, searchOptions));
+    const scratch = scratchAcceptance.result;
+    const scratchPackage = scratchAcceptance.package;
+    const scratchWork = ledgerTotal(scratchPackage?.costLedger || scratch.ledger);
     if (result.status !== 'qualified') {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
             oldScope, result, scratch, parentDigest: parent.digest,
@@ -487,7 +515,8 @@ export async function buildSuccessor(input, options = {}) {
                 remaining: ledgerTotal(result.ledger) + verificationCostCapability(parent) + oldScopeAuditCost,
                 cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
-                constructionFromScratch: ledgerTotal(scratch.ledger)},
+                constructionFromScratch: scratchPackage ? scratchWork : null,
+                scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null},
             reason: 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
     }
     const pkg = await freezeCapability(expanded, result, {parent});
@@ -499,7 +528,6 @@ export async function buildSuccessor(input, options = {}) {
     const parentCost = lineageConstructionCost(parent);
     const parentAudit = verificationCostCapability(parent);
     const remaining = ledgerTotal(pkg.costLedger) + parentAudit + oldScopeAuditCost;
-    const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(expanded, scratch) : null;
     const scratchCost = scratchPackage ? ledgerTotal(scratchPackage.costLedger) : null;
     const scratchReuse = scratchPackage ? await evaluateFrozenReuse(scratchPackage, options) : null;
     return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor',
@@ -515,7 +543,8 @@ export async function buildSuccessor(input, options = {}) {
             frozenReuseAcceptance: reuse.ledger.total,
             remainingAfterAcceptance: remaining + reuse.ledger.total,
             cumulativeAfterAcceptance: parentCost + remaining + reuse.ledger.total,
-            scratchAfterAcceptance: scratchCost === null ? null : scratchCost + scratchReuse.ledger.total,
+            scratchConstructionWork: scratchWork, scratchQualified: scratchPackage !== null,
+            scratchAfterAcceptance: scratchWork + (scratchReuse?.ledger.total || 0),
             constructionFromScratch: scratchCost, remainingSaving: scratchCost === null ? null : scratchCost - remaining,
             cumulativeSaving: scratchCost === null ? null : scratchCost - parentCost - remaining},
         limitations: [...LIMITATIONS, 'Inherited installations do not make ancestor construction cost disappear.']};
@@ -556,7 +585,7 @@ export async function runEvaluation(options = {}) {
         + test.reuse.ledger.total : ledgerTotal(test.result.ledger));
     const successorCost = successor?.package ? successor.costs.remainingAfterAcceptance
         + successor.costs.scratchAfterAcceptance : successor ? successor.costs.remaining
-            + successor.costs.constructionFromScratch : 0;
+        + successor.costs.scratchConstructionWork : 0;
     const aggregateCost = sum(topologyCosts) + sum(familyCosts) + successorCost;
     return {schema: EVALUATION_VERSION, seed, status: topologies.every(test => test.status === 'PASS')
         && successor?.status === 'PASS' && generalization.status === 'PASS' && asts.size >= 3 ? 'PASS' : 'INCONCLUSIVE',

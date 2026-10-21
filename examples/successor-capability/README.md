@@ -87,6 +87,9 @@ The default matched comparisons retain these results in abstract model-work unit
 | Common reference | 1020 / 1020 | Tie | 20 | Did not qualify; independently rejected, error bound 0.5 |
 
 The 20-unit common-reference attempt is a completed negative result, not a cheaper successful alternative.
+An optional planner or scratch comparison that cannot fund package freezing is inconclusive. Its actual search
+work stays in the ledger and aggregate totals; it cannot discard an accepted inherited successor or establish
+a successful baseline, cost advantage or saving.
 
 ## Boundaries
 
