@@ -33,6 +33,19 @@ wall-time limits. A budget exhaustion is not a proof of impossibility. Classical
 remain valid outcomes; incomplete optional comparisons are not successful baselines or evidence of savings.
 Costs are abstract model-work units, not measured currency, speedup, customer benefit or revenue.
 
+## Dependency correction
+
+The operator, verified CPU demo and MuZero release locks use `certifi==2026.10.19` with the
+[official PyPI distribution hashes](https://pypi.org/project/certifi/2026.10.19/#files).
+This corrects [GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2)
+(`PYSEC-2026-4320`), which affects the previous `2026.7.22` pin's bundled certificate authorities.
+The correction does not suppress advisories or change release gates; a fresh exact-source dependency audit
+and the remaining acceptance checks must pass before publication.
+
+Published v1.36.0 and earlier artifacts are unchanged and are not patched by this source update. Install the
+matching new lock with the new release, and rebuild any container images that vendor the affected certifi
+bundle. Preserved historical and development dependency environments are outside this three-lock correction.
+
 ## Source evidence and remaining release gates
 
 The final feature source `9302abb9e313e217c9a362b0e63ff12b6eb393cd` passed all 18 reported source checks,
