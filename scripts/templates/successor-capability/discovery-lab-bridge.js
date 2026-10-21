@@ -43,6 +43,8 @@ const discoveryBridge = {
                     current = restored.workspace; inspected = restored.inspection; storedRevision = restored.revision;
                     fillBrief(inspected.latest.brief, inspected.latest.experiment);
                     renderVersions();
+                    render();
+                    for (const listener of discoveryListeners) listener();
                 }
             }
         }

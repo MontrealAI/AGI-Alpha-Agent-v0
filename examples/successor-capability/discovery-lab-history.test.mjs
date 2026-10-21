@@ -295,3 +295,74 @@ test('context acquisition failures retain native framing charge without diagnost
     }
     assert.equal(diagnosticReads, 0);
 });
+
+test('start payload retains validated source hashes across digest awaits', async () => {
+    const value = await workspace.createWorkspace(), input = {...sources};
+    const pending = history.startPayload(value, runtime.DEFAULT_CHARTER, input);
+    input.sourceDigest = 'NOT_VALIDATED'; input.modelDigest = 'f'.repeat(64);
+    const start = await pending;
+    for (const key of Object.keys(sources)) assert.equal(start.bindings[key], sources[key]);
+});
+
+test('start payload uses source descriptor values without original property reads', async () => {
+    const value = await workspace.createWorkspace(); let reads = 0;
+    const input = new Proxy({...sources}, {get() { reads++; throw Error('Original source property read'); }});
+    const start = await history.startPayload(value, runtime.DEFAULT_CHARTER, input);
+    for (const key of Object.keys(sources)) assert.equal(start.bindings[key], sources[key]);
+    assert.equal(reads, 0);
+});
+
+test('start payload rejects unsupported hidden source fields in the captured first frame', async () => {
+    const value = await workspace.createWorkspace(), input = {...sources};
+    Object.defineProperty(input, 'externalAuthority', {value: 'a'.repeat(64), enumerable: false});
+    await assert.rejects(history.startPayload(value, runtime.DEFAULT_CHARTER, input));
+});
+
+test('start payload source keys cannot expand after the first captured frame', async () => {
+    const value = await workspace.createWorkspace(); let scans = 0;
+    const input = new Proxy({...sources, externalAuthority: 'a'.repeat(64)}, {
+        ownKeys(target) {
+            return ++scans === 1 ? Reflect.ownKeys(target).filter(key => key !== 'externalAuthority') : Reflect.ownKeys(target);
+        }
+    });
+    const start = await history.startPayload(value, runtime.DEFAULT_CHARTER, input);
+    assert.deepEqual(Object.keys(start.bindings).sort(), [...contract.BINDING_KEYS].sort());
+    assert.equal(scans, 1);
+});
+
+test('start payload mission revision and version derive from one workspace frame', async () => {
+    const input = await workspace.createWorkspace(), original = copy(input);
+    const pending = history.startPayload(input, runtime.DEFAULT_CHARTER, sources);
+    input.events[0].payload.number = 99;
+    const start = await pending;
+    assert.equal(start.bindings.missionId, original.missionId);
+    assert.equal(start.bindings.revision, original.events.length);
+    assert.equal(start.version, original.events[0].payload.number);
+});
+
+test('completion result and digest use the same captured descriptor frame', async () => {
+    const original = runtime.runCampaign(runtime.DEFAULT_CHARTER);
+    const verified = runtime.verifyCampaign(runtime.DEFAULT_CHARTER, original); let scans = 0;
+    const input = new Proxy(original, {
+        ownKeys(value) { scans++; return Reflect.ownKeys(value); },
+        getOwnPropertyDescriptor(value, key) {
+            const descriptor = Reflect.getOwnPropertyDescriptor(value, key);
+            return key === 'failure' && scans > 1 ? {...descriptor, value: 'different-later-frame'} : descriptor;
+        }
+    });
+    const payload = await history.completedPayload('lab-' + crypto.randomUUID(), input, 1, verified.verificationResources);
+    assert.deepEqual(payload.result, original);
+    assert.equal(payload.resultDigest, await contract.payloadDigest(payload.result));
+    assert.equal(scans, 1);
+});
+
+test('completion retains both result and recorded verification before its digest await', async () => {
+    const result = runtime.runCampaign(runtime.DEFAULT_CHARTER), original = copy(result);
+    const receipt = runtime.verifyCampaign(runtime.DEFAULT_CHARTER, result).verificationResources, expected = copy(receipt);
+    const pending = history.completedPayload('lab-' + crypto.randomUUID(), result, 1, receipt);
+    result.failure = 'Caller changed the result'; receipt.checking = -1;
+    const payload = await pending;
+    assert.deepEqual(payload.result, original);
+    assert.deepEqual(payload.recordedVerification, expected);
+    assert.equal(payload.resultDigest, await contract.payloadDigest(payload.result));
+});

@@ -100,12 +100,55 @@ test('immutable object and exact-content reuse stay historical and divergent imp
     assert.deepEqual(history.auditSnapshot(), parsedAudit);
 });
 
-test('an already shallow-frozen imported envelope still freezes every descendant before caching', async () => {
+test('a shallow-frozen caller stays untouched while inspection and returned v2 frames are deeply frozen', async () => {
     const value = copy(await completed());
     Object.freeze(value);
     const inspection = await workspace.inspectWorkspace(value);
-    assert.ok(graphFrozen(value), 'A pre-frozen parent must not skip mutable descendants.');
+    assert.equal(Object.isFrozen(value.events), false, 'Inspection must not freeze caller-owned descendants.');
     assert.ok(graphFrozen(inspection));
+    const reopened = await workspace.parseWorkspace(contract.canonical(value));
+    assert.ok(graphFrozen(reopened));
+});
+
+test('mutable v2 inspection binds its first frame and never caches a later caller edit under it', async () => {
+    const input = copy(await completed()), originalReason = input.events[0].payload.reason;
+    const pending = workspace.inspectWorkspace(input);
+    input.events[0].payload.reason = 'Changed while the old digest was suspended';
+    const first = await pending;
+    assert.equal(first.versions[0].reason, originalReason);
+    assert.ok(graphFrozen(first));
+    assert.equal(Object.isFrozen(input), false);
+    await assert.rejects(workspace.inspectWorkspace(copy(input)), /binding mismatch/);
+    await assert.rejects(workspace.inspectWorkspace(input), /binding mismatch/);
+    input.events[0].payload.reason = originalReason;
+    assert.strictEqual(await workspace.inspectWorkspace(input), first);
+});
+
+test('a valid changed caller fingerprint misses its old cache and then warms its new frame', async () => {
+    const input = copy(await completed()), first = await workspace.inspectWorkspace(input);
+    assert.strictEqual(await workspace.inspectWorkspace(input), first);
+    const next = await workspace.addSuccessor(input, {...workspace.DEFAULT_BRIEF, title: 'Next proposal'}, null, 'Changed');
+    Object.assign(input, copy(next));
+    const second = await workspace.inspectWorkspace(input);
+    assert.notStrictEqual(second, first);
+    assert.equal(second.versions.length, 2);
+    assert.strictEqual(await workspace.inspectWorkspace(input), second);
+    assert.ok(graphFrozen(second));
+});
+
+test('Discovery event append adopts the checked owned prefix and returns a frozen v2 frame', async () => {
+    const input = await workspace.createWorkspace(), original = copy(input);
+    const start = await history.startPayload(input, runtime.DEFAULT_CHARTER, sources);
+    const pending = workspace.recordDiscoveryEvent(input, 'lab-started', start);
+    input.events[0].payload.reason = 'Caller changed the checked prefix';
+    const next = await pending;
+    assert.deepEqual(next.events.slice(0, original.events.length), original.events);
+    assert.ok(graphFrozen(next));
+    const inspection = await workspace.inspectWorkspace(next);
+    assert.strictEqual(await workspace.inspectWorkspace(next), inspection);
+    const reopened = await workspace.parseWorkspace(contract.canonical(next));
+    assert.ok(graphFrozen(reopened));
+    assert.equal((await workspace.inspectWorkspace(reopened)).discovery.active.attempt, start.attempt);
 });
 
 test('all eleven campaigns admitted by the event limit retain checked content without implicit replay thrashing', async () => {

@@ -165,3 +165,50 @@ test('editor parsing rejects duplicate keys and floats before model validation',
     const text = JSON.stringify(workspace.defaultExperiment()).replace('"seed":17', '"seed":1.5');
     assert.throws(() => workspace.parseExperiment(text), /integer/);
 });
+
+test('v1 inspection retains one history frame when caller edits during digest awaits', async () => {
+    const input = await workspace.createWorkspace(), original = copy(input);
+    const pending = workspace.inspectWorkspace(input);
+    input.events[0].payload.reason = 'Changed during digest';
+    const inspection = await pending;
+    assert.equal(inspection.latest.reason, original.events[0].payload.reason);
+    assert.equal(Object.isFrozen(input), false);
+    await assert.rejects(workspace.inspectWorkspace(copy(input)), /binding mismatch/);
+    const reopened = await workspace.parseWorkspace(workspace.canonical(original));
+    assert.deepEqual(reopened, original);
+    assert.equal(Object.isFrozen(reopened), false);
+});
+
+test('workspace inspection uses captured descriptor fields without original property reads', async () => {
+    const original = await workspace.createWorkspace(); let reads = 0;
+    const input = new Proxy(original, {get() { reads++; throw Error('Original workspace property read'); }});
+    const inspection = await workspace.inspectWorkspace(input);
+    assert.equal(inspection.latest.reason, original.events[0].payload.reason);
+    assert.equal(reads, 0);
+});
+
+test('unsupported fields in the captured workspace frame cannot disappear before semantic checks', async () => {
+    const original = await workspace.createWorkspace(); let scans = 0;
+    const input = new Proxy({...original, externalAuthority: true}, {
+        ownKeys(value) {
+            return ++scans === 1 ? Reflect.ownKeys(value) : Reflect.ownKeys(value).filter(key => key !== 'externalAuthority');
+        }
+    });
+    await assert.rejects(workspace.inspectWorkspace(input), /Unsupported capability workspace/);
+    assert.equal(scans, 1);
+});
+
+for (const operation of ['successor', 'evaluation']) {
+    test(`${operation} appends only to the checked captured v1 history prefix`, async () => {
+        const input = await workspace.createWorkspace(workspace.DEFAULT_BRIEF, workspace.defaultExperiment());
+        const original = copy(input);
+        const pending = operation === 'successor'
+            ? workspace.addSuccessor(input, {...workspace.DEFAULT_BRIEF, title: 'Changed proposal'}, null, 'New scope')
+            : workspace.recordEvaluation(input, 'development');
+        input.events[0].payload.reason = 'Caller changed the checked prefix';
+        const next = await pending;
+        assert.deepEqual(next.events.slice(0, original.events.length), original.events);
+        assert.equal(Object.isFrozen(next), false);
+        assert.equal((await workspace.inspectWorkspace(next)).head, next.events.at(-1).digest);
+    });
+}

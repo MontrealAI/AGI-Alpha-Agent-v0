@@ -3,8 +3,9 @@
 import * as runtime from './discovery-lab.mjs';
 import * as contract from './discovery-lab-contract.mjs';
 import * as artifacts from './discovery-lab-artifacts.mjs';
+import {inspectEvidence} from './discovery-lab-evidence-history.mjs';
 
-export const EVENT_KINDS = Object.freeze(['lab-started', 'lab-completed', 'lab-stopped']);
+export const EVENT_KINDS = Object.freeze(['lab-started', 'lab-completed', 'lab-stopped', 'lab-evidence-attached']);
 export const EXTENDED_SCHEMA = 'successor-capability-workspace/v2';
 export const REPORT_RESERVE_BYTES = 500_000;
 const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
@@ -73,7 +74,7 @@ export function reservationFor(charter) {
         workerCapacity: charter.workerCapacity, installations: 2 * charter.budget.installations, elapsedMs: 120_000};
 }
 
-export function emptyDiscoveryState() { return {attempts: [], campaigns: [], active: null}; }
+export function emptyDiscoveryState() { return {attempts: [], campaigns: [], active: null, attachments: []}; }
 
 /** Select a completed attempt by its source-bound history identity, never its reusable numeric result. */
 export function selectCampaign(campaigns, selection) {
@@ -96,6 +97,7 @@ export function selectCampaign(campaigns, selection) {
 
 /** Reconstruct events without converting imports into authority or externally qualified work. */
 export async function inspectDiscoveryEvent(state, event, context) {
+    if (event.kind === 'lab-evidence-attached') return inspectEvidence(state, event, context, chargeReplay);
     const payload = event.payload;
     if (event.kind === 'lab-started') {
         need(exact(payload, ['attempt', 'version', 'bindings', 'charter', 'parentDigest', 'reservation']),
@@ -181,6 +183,8 @@ export function historyCapacity(workspace, eventLimit = 24, byteLimit = 2_000_00
 }
 
 export async function startPayload(workspace, charter, sources, parentDigest = null) {
+    workspace = copy(workspace);
+    sources = copy(sources);
     charter = runtime.validateCharter(charter);
     need(exact(sources, ['modelDigest', 'sourceDigest', 'evaluatorDigest'])
         && Object.values(sources).every(hash), 'Installed Discovery Lab source identities are required.');
@@ -203,8 +207,9 @@ export async function startPayload(workspace, charter, sources, parentDigest = n
 }
 
 export async function completedPayload(attempt, result, elapsedMs, recordedVerification) {
-    return {attempt, result: copy(result), resultDigest: await contract.payloadDigest(result), elapsedMs,
-        recordedVerification: copy(recordedVerification)};
+    result = copy(result);
+    recordedVerification = copy(recordedVerification);
+    return {attempt, result, resultDigest: await contract.payloadDigest(result), elapsedMs, recordedVerification};
 }
 
 export function stoppedPayload(attempt, reason, state = 'paused') {

@@ -21,6 +21,7 @@ on:
       - tests/test_successor_capability_delivery.py
       - tests/test_discovery_lab_validation.py
       - tests/test_run_local_tests_environment.py
+      - tests/browser/test_discovery_lab_continuation.py
   push:
     branches: [main, additive/successor-capability-review-20261020]
   workflow_dispatch:
@@ -71,7 +72,7 @@ jobs:
         run: |
           set -o pipefail
           python -m mypy --version | tee capability-evidence/logs/typing-version.log
-          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py scripts/run_local_tests.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/test_discovery_lab_validation.py tests/test_run_local_tests_environment.py tests/browser/test_out_evolve_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
+          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py scripts/run_local_tests.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/browser/test_discovery_lab_continuation.py tests/test_discovery_lab_validation.py tests/test_run_local_tests_environment.py tests/browser/test_out_evolve_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py
@@ -104,6 +105,13 @@ jobs:
           set -o pipefail
           node examples/successor-capability/discovery-lab-reproduce.mjs --output "$DISCOVERY_LAB_REPLAY_EVIDENCE" 2>&1 | tee capability-evidence/logs/discovery-lab-replay.log
           python -m scripts.validate_discovery_lab --site docs --output capability-evidence/discovery-lab-browser 2>&1 | tee capability-evidence/logs/discovery-lab-browser.log
+      - name: Saved future-task protocol, docket and real-task boundary acceptance
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          DISCOVERY_CONTINUATION_EVIDENCE: ${{ github.workspace }}/capability-evidence/discovery-continuation
+        run: |
+          set -o pipefail
+          python tests/browser/test_discovery_lab_continuation.py 2>&1 | tee capability-evidence/logs/discovery-continuation-browser.log
       - name: Review ARIA and every contrast incomplete
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
