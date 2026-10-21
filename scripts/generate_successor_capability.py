@@ -52,6 +52,10 @@ def build(root: Path = ROOT) -> None:
         "outEvolvePackages": visit(root / "examples/successor-capability/capability-package.mjs"),
         "outEvolveApparatus": visit(root / "examples/successor-capability/apparatus.mjs"),
         "outEvolveEvaluation": visit(root / "examples/successor-capability/evaluation.mjs"),
+        "outExecute": visit(root / "examples/successor-capability/out-execute/engine.mjs"),
+        "outExecuteModel": visit(root / "examples/successor-capability/out-execute/model.mjs"),
+        "outExecuteFixtures": visit(root / "examples/successor-capability/out-execute/fixtures.mjs"),
+        "outExecuteTransport": visit(root / "examples/successor-capability/out-execute/transport.mjs"),
     }
     templates = root / "scripts/templates/successor-capability"
     for path in [root / "scripts/generate_successor_capability.py", *sorted(templates.iterdir())]:

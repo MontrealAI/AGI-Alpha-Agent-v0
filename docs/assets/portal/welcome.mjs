@@ -2,21 +2,10 @@
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
     "nav-papers": "Publications",
-    "papers-eyebrow": "LA RECHERCHE · OCTOBRE 2026",
+    "papers-eyebrow": "LA RECHERCHE",
     "papers-title": "De meilleures stratégies. Un autre jeu. De nouvelles capacités.",
-    "papers-intro": "Quatre manuscrits de recherche pour changer les conditions de réussite, tout en préservant la finalité du travail.",
-    "paper-featured": "PUBLICATION À LA UNE",
-    "paper-transformational-summary": "Repérer les formulations restrictives, en construire de meilleures et vérifier qu’elles servent toujours la finalité visée. Un cadre de reformulation vérifiable de façon indépendante, au-delà d’une recherche plus efficace.",
-    "paper-strategise-topic": "CONSTRUIRE LA STRATÉGIE",
-    "paper-strategise-summary": "Associer observation et construction pour créer des stratégies qui atteignent le résultat exigé malgré une incertitude persistante.",
-    "paper-execute-topic": "FAIRE DURER LES PROGRÈS",
-    "paper-execute-summary": "Préserver les progrès lorsque les tâches changent grâce à des capacités d’exécution réutilisables et à des contrats d’interface vérifiés indépendamment, dans des études synthétiques finies.",
-    "paper-evolve-topic": "CONSTRUIRE LA SUITE",
-    "paper-evolve-summary": "Une architecture proposée pour bâtir des capacités d’expérimentation et de production qui rendent possibles de nouvelles découvertes et des capacités successeures.",
-    "paper-read-featured": "Lire la publication à la une",
-    "paper-read": "Lire la publication",
-    "paper-format": "PDF en anglais",
-    "papers-note": "Vincent Boucher · MONTREAL.AI · Originaux en anglais. Propositions de recherche et études délimitées, sans revendication de capacité autonome générale ni de déploiement physique.",
+    "papers-intro": "Des manuscrits de recherche pour changer les conditions de réussite, tout en préservant la finalité du travail.",
+    "papers-note": "Originaux en anglais. Propositions de recherche et études délimitées, sans revendication de capacité autonome générale ni de déploiement physique.",
     "current-mainnet-record": "État actuel du déploiement Mainnet",
     "archived-mainnet-record": "Archives du déploiement du 11 octobre",
     "current-deployment-notice": "État actuel du déploiement Mainnet · cinq adresses de contrat vérifiées",
@@ -168,6 +157,8 @@ const french = {
     "directory-label": "Advanced tools and research",
 };
 
+const paperElements = [...document.querySelectorAll("[data-paper-key]")];
+const paperEnglish = new Map(paperElements.map((el) => [el, el.textContent]));
 const textElements = [...document.querySelectorAll("[data-home-key]")];
 const labelElements = [...document.querySelectorAll("[data-home-label]")];
 const english = Object.fromEntries([
@@ -190,6 +181,8 @@ function render() {
             ? "Trouvez votre Alpha. Construisez votre SUCCESSOR Ω. · AGIALPHA"
             : "Find your Alpha. Build your SUCCESSOR Ω. · AGIALPHA Flagship";
     for (const el of textElements) el.textContent = words[el.dataset.homeKey];
+    for (const el of paperElements)
+        el.textContent = language === "fr" ? el.dataset.paperFr : paperEnglish.get(el);
     for (const el of labelElements)
         el.setAttribute("aria-label", words[el.dataset.homeLabel]);
     document

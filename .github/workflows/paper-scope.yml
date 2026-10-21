@@ -1,0 +1,102 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Classify paper scope
+on:
+  workflow_call:
+    outputs:
+      mode:
+        description: paper only after trusted history and passive PDF checks; full otherwise
+        value: ${{ jobs.classify.outputs.mode }}
+permissions:
+  contents: read
+jobs:
+  classify:
+    name: Validate paper scope (not runtime acceptance)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      mode: ${{ steps.scope.outputs.mode }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Prove exact introduced history with the pre-change policy
+        id: scope
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.sha }}
+        run: |
+          policy="$RUNNER_TEMP/paper-policy"
+          mkdir -p "$policy/scripts"
+          # Dispatches, merges without a bounded base and first-time installation
+          # deliberately take the full lane. Never execute policy from the upload.
+          if [[ "$EVENT" != push && "$EVENT" != pull_request ]] || [[ ! "$BASE" =~ ^[0-9a-f]{40}$ ]] || [[ "$BASE" == 0000000000000000000000000000000000000000 ]]; then
+            echo 'mode=full' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          for file in scripts/paper_changes.py scripts/research_papers.py scripts/build_service_worker.py requirements-papers.lock; do
+            if ! git --no-replace-objects show "$BASE:$file" > "$policy/$file"; then
+              echo 'mode=full' >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          touch "$policy/scripts/__init__.py"
+          cd "$policy"
+          python scripts/paper_changes.py --root "$GITHUB_WORKSPACE" --base "$BASE" --head "$HEAD" --output scope.json
+          if python -c 'import json; raise SystemExit(json.load(open("scope.json"))["mode"] != "paper")'; then
+            python -m pip install --require-hashes --only-binary=:all: -r requirements-papers.lock
+            python -m scripts.research_papers --root "$GITHUB_WORKSPACE" check
+            echo 'Scope: paper/site checks only; NO full runtime qualification.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Scope: full software qualification required.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+  web-preview:
+    name: Optional web-upload files (not acceptance)
+    needs: classify
+    if: github.event_name == 'pull_request' && needs.classify.outputs.mode == 'full'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - name: Prepare downloadable paper files for web-only pull requests
+        id: preview
+        timeout-minutes: 3
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        # A preview is not acceptance. Failure must not suppress the full fallback.
+        continue-on-error: true
+        run: |
+          policy="$RUNNER_TEMP/paper-policy"
+          [[ "$BASE" =~ ^[0-9a-f]{40}$ ]] || exit 0
+          mkdir -p "$policy/scripts"
+          for file in scripts/research_papers.py scripts/build_service_worker.py requirements-papers.lock; do
+            git --no-replace-objects show "$BASE:$file" > "$policy/$file" || exit 0
+          done
+          touch "$policy/scripts/__init__.py"
+          cd "$policy"
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-papers.lock
+          python -m scripts.research_papers --root "$GITHUB_WORKSPACE" render
+          mkdir -p "$RUNNER_TEMP/paper-preview"
+          cd "$GITHUB_WORKSPACE"
+          cp --parents README.md docs/index.html docs/service-worker.js docs/assets/service-worker.js docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js "$RUNNER_TEMP/paper-preview/"
+          echo 'Download paper-preview, review its untrusted proposed changes before opening or uploading its five files to the PR, then squash-merge. Preview is NOT acceptance; unknown/mixed inputs still require full checks.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain deterministic web-upload preview (not release evidence)
+        continue-on-error: true
+        timeout-minutes: 1
+        if: steps.preview.outcome == 'success'
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: paper-preview-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/paper-preview/
+          if-no-files-found: ignore

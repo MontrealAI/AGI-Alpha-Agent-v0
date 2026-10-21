@@ -8,10 +8,15 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}-${{ github.sha }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
+  paper-scope:
+    uses: ./.github/workflows/paper-scope.yml
+
   mission:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -78,6 +83,8 @@ jobs:
           if-no-files-found: error
 
   guided-cross-repository:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

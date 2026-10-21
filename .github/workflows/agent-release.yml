@@ -8,10 +8,10 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: agent-release-${{ github.ref }}
-  # Superseded main commits cannot pass release_context. Cancel their whole run
-  # so a stalled Pages job cannot indefinitely hold the newest release in queue.
-  # The Pages job still serializes deployment, and all acceptance gates remain.
+  group: agent-release-${{ github.ref }}-${{ github.sha }}
+  # Different sources never cancel one another before paper classification.
+  # Stale SOFTWARE still fails the shared publication guard. This trades extra
+  # old-run compute for non-disruptive uploads; Pages remains serialized.
   cancel-in-progress: true
 
 defaults:
@@ -24,13 +24,19 @@ env:
   NO_DISCLAIMER: '1'
 
 jobs:
+  paper-scope:
+    uses: ./.github/workflows/paper-scope.yml
+
   publication-preflight:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
@@ -41,21 +47,25 @@ jobs:
         run: python -m scripts.publish_agent_release --preflight
 
   successor-journey:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     uses: ./.github/workflows/successor-mission.yml
 
   mark-wallet:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     uses: ./.github/workflows/mark-wallet.yml
 
   dependency-audit:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
@@ -63,6 +73,7 @@ jobs:
         run: |
           python -m pip install pip-audit==2.10.1
           python -m scripts.audit_agent_dependencies
+          python -m scripts.audit_agent_dependencies --lock requirements-papers.lock --output evidence/python-dependencies/papers
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
@@ -71,7 +82,8 @@ jobs:
           if-no-files-found: error
 
   runtime:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     strategy:
@@ -214,7 +226,8 @@ jobs:
           if-no-files-found: error
 
   regression:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     # Allow the complete locked suite plus cold strict-type checks to finish.
     timeout-minutes: 60
@@ -280,7 +293,8 @@ jobs:
           if-no-files-found: error
 
   browser-contracts:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -367,13 +381,15 @@ jobs:
           if-no-files-found: error
 
   real-model:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
@@ -408,7 +424,8 @@ jobs:
           if-no-files-found: error
 
   quality:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -431,6 +448,11 @@ jobs:
           python scripts/check_python_deps.py
           python check_env.py --auto-install
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Validate catalog originals and deterministic paper presentation
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-papers.lock
+          python -m scripts.research_papers check
+          python -m pytest --noconftest -o addopts= tests/test_research_papers.py tests/test_paper_changes.py tests/test_paper_publication.py tests/test_paper_workflow_policy.py -q
       - name: Require the full repository hook report
         run: |
           mkdir -p evidence
@@ -481,7 +503,8 @@ jobs:
           if-no-files-found: error
 
   gallery:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     strategy:
@@ -617,13 +640,15 @@ jobs:
           if-no-files-found: error
 
   native-demos:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
@@ -667,7 +692,8 @@ jobs:
           if-no-files-found: error
 
   sovereign-lab:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -678,6 +704,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ matrix.python }}
@@ -708,7 +735,8 @@ jobs:
           if-no-files-found: error
 
   finance-lab:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -749,7 +777,8 @@ jobs:
           if-no-files-found: error
 
   muzero-lab:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     strategy:
@@ -760,6 +789,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ matrix.python }}
@@ -799,7 +829,8 @@ jobs:
           if-no-files-found: error
 
   demo-distribution:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     strategy:
@@ -810,6 +841,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ matrix.python }}
@@ -832,7 +864,8 @@ jobs:
           if-no-files-found: warn
 
   historical-ci:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 125
     outputs:
@@ -844,6 +877,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Require successful historical CI on this exact main commit
         if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
         env:
@@ -865,13 +899,15 @@ jobs:
           if-no-files-found: warn
 
   successor-workbench:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
@@ -910,11 +946,18 @@ jobs:
           if-no-files-found: error
 
   transformational-intelligence:
-    needs: publication-preflight
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
     uses: ./.github/workflows/transformational-intelligence.yml
 
+  successor-capability:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
+    uses: ./.github/workflows/successor-capability.yml
+
   package:
-    needs: [mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey, transformational-intelligence]
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey, transformational-intelligence, successor-capability]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -957,8 +1000,8 @@ jobs:
           if-no-files-found: error
 
   pages:
-    needs: [package, historical-ci]
-    if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    needs: [paper-scope, package, historical-ci]
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' && (github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0') }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -977,6 +1020,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
@@ -1006,7 +1050,7 @@ jobs:
       - name: Reject superseded main before deployment
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python -m scripts.release_context
+        run: python -m scripts.release_context --before-software-deploy
       - name: Deploy the tested artifact
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
@@ -1056,8 +1100,8 @@ jobs:
           if-no-files-found: warn
 
   publish:
-    needs: [package, historical-ci, pages]
-    if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+    needs: [paper-scope, package, historical-ci, pages]
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' && (github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -1066,6 +1110,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.package.outputs.artifact-name }}

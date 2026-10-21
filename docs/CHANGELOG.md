@@ -1,11 +1,21 @@
-## 1.37.1 — Featured research papers (source candidate)
+## 1.37.1 — OUT-EXECUTE and simpler research publication (source candidate)
 
-- Lead with Transformational Intelligence, alongside Out-Strategise, Out-Execute and Out-Evolve, near the README top and homepage hero.
-- Add English/French summaries, accessible direct PDF links and responsive research cards without changing the originals.
-- Preserve the free-start flagship, historical README and mission, current capabilities, project history and payment routes.
-- Refresh only documentation release metadata and generated identities; retain all existing review and publication gates.
-- Require fresh exact-source browser, release and public-site acceptance before claiming publication.
-- See [release notes](agent/RELEASE_NOTES_1.37.1.md) for the documentation-only scope and verification requirements.
+- Execute independently checked finite boundary contracts in the existing capability workspace and portable project
+  history.
+- Preserve/ invalidate changed work explicitly, reconstruct current accepted results and retain actual logical-work
+  accounting.
+- Recover ordinary and unsaved checkpoints safely; reject stale evidence, forged terminal states and divergent
+  histories.
+- Retain honest equally capable and cheaper fixed-proof baselines; the authored study is not the manuscript
+  experiment.
+- Feature all six original papers and add fail-closed paper-only publication without relabeling qualified software.
+- Require the complete capability computation/browser/recovery gate before Agent release packaging, plus all prior
+  gates.
+- Qualify this combined software source as the next unused 1.37.1 identity; preserve prior releases and 1.37.0
+  proposal notes.
+- Keep Jobs/Fleet drafts inert, payment routes separate and operational authority unchanged.
+- See [release notes](agent/RELEASE_NOTES_1.37.1.md) for evidence, limits and exact-source publication requirements.
+
 
 ## 1.37.0 — Bounded reusable capability construction (source candidate)
 

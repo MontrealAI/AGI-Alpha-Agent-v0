@@ -23,13 +23,10 @@ ASSETS = (
     "assets/ecosystem/guide.mjs",
     "assets/ecosystem/contracts.json",
 )
-# Immutable English originals featured from v1.37.1 onward.
-PAPER_ASSETS = {
-    "Transformational_Intelligence.pdf": "d7170e8217e3bf6aa1b84868c1c76c5994c6995c5297ed092d7e72a6430c664f",
-    "Out_Strategise.pdf": "8a848150f14c578106633324edb54bc59713a579c1318d9ea872d3d5b3ec7e77",
-    "Out_Execute.pdf": "85c6834e2dd496748f72a9099d3a70cb13047b49e09e3ed84ce911e1f1c530f3",
-    "Out_Evolve.pdf": "5979bcaf704934ba42e4722389cbb1a9ef0cbc889e1b286428615a82a31e99bc",
-}
+# The catalog is data: new originals do not require verifier code edits.
+from scripts.research_papers import load_catalog, pdf_hashes
+
+PAPER_ASSETS = pdf_hashes(load_catalog(ROOT))
 ECOSYSTEM_CHECKS = {
     "all-recorded-addresses",
     "bilingual-responsive-layouts",
@@ -84,7 +81,7 @@ def verify_report(report: dict[str, Any], commit: str, version: str, origin: str
     if tuple(int(part) for part in version.split(".")) >= (1, 37, 1):
         required_checks.add("original-paper-bytes")
         if report.get("paper_assets") != PAPER_ASSETS:
-            raise ValueError("Featured papers require the exact four original PDF digests")
+            raise ValueError("Featured papers require the exact catalogued original PDF digests")
     if tuple(int(part) for part in version.split(".")) >= (1, 26, 3):
         required_checks.add("direct-plan-entry")
     if tuple(int(part) for part in version.split(".")) >= (1, 27, 2):

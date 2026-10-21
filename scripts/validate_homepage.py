@@ -20,6 +20,7 @@ from urllib.request import Request, urlopen
 from playwright.sync_api import Page, expect, sync_playwright
 
 from scripts.homepage_evidence import ASSETS, PAPER_ASSETS, asset_hashes
+from scripts.research_papers import load_catalog
 from scripts.validate_ascension import Handler, inspect
 from scripts.validate_ecosystem import validate as validate_ecosystem
 
@@ -27,12 +28,13 @@ from scripts.validate_ecosystem import validate as validate_ecosystem
 def assert_paper_links(page: Page, language: str) -> None:
     """Keep original PDFs and accessible link names intact through reading changes."""
     papers = page.locator("#papers")
-    expect(papers.locator("article")).to_have_count(4)
-    expect(papers.locator(".paper-link")).to_have_count(4)
+    records = load_catalog()["papers"]
+    expect(papers.locator("article")).to_have_count(len(records))
+    expect(papers.locator(".paper-link")).to_have_count(len(records))
     title_element = papers.locator(".paper-featured h3")
-    assert " ".join(title_element.inner_text().replace("\u00ad", "").split()) == "TRANSFORMATIONAL INTELLIGENCE ∞"
+    assert " ".join(title_element.inner_text().replace("\u00ad", "").split()) == records[0]["display_title"]
     words = title_element.locator(".paper-title-word")
-    expect(words).to_have_count(2)
+    expect(words).to_have_count(len(records[0]["title_words"]))
     for word in words.all():
         assert word.evaluate("element => getComputedStyle(element).display") == "block"
     title_fragments = title_element.evaluate(
@@ -57,15 +59,12 @@ def assert_paper_links(page: Page, language: str) -> None:
             return [...fragments.values()];
         }"""
     )
-    assert title_fragments and all(len(fragment) >= 4 for fragment in title_fragments), title_fragments
-    for index, (filename, title) in enumerate(
-        (
-            ("Transformational_Intelligence.pdf", "Transformational Intelligence"),
-            ("Out_Strategise.pdf", "Out-Strategise"),
-            ("Out_Execute.pdf", "Out-Execute"),
-            ("Out_Evolve.pdf", "Out-Evolve"),
-        )
-    ):
+    if records[0]["title_words"]:
+        assert title_fragments and all(len(fragment) >= 4 for fragment in title_fragments), title_fragments
+    for index, record in enumerate(records):
+        filename = record["pdf"]["path"].removeprefix("docs/")
+        title = record["title"]
+        expect(papers.locator(f'[data-paper-key="{record["id"]}-summary"]')).to_have_text(record["summary"][language])
         link = papers.locator(".paper-link").nth(index)
         expect(link).to_have_attribute("href", filename)
         expect(link).to_have_attribute("type", "application/pdf")
@@ -78,7 +77,7 @@ def assert_paper_links(page: Page, language: str) -> None:
             if language == "en"
             else ("Lire la publication à la une" if index == 0 else "Lire la publication")
         )
-        expect(link.locator("span[data-home-key^='paper-read']")).to_have_text(expected)
+        expect(link.locator("span[data-paper-key$='-read']")).to_have_text(expected)
         expect(link).to_have_accessible_name(re.compile(re.escape(expected) + r"\s*:\s*" + re.escape(title)))
         context = link.locator(".sr-only").evaluate(
             """element => {

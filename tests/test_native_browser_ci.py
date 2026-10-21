@@ -129,7 +129,10 @@ def test_supplier_real_browser_observation_is_in_required_browser_suite() -> Non
     assert "continue-on-error" not in step
     assert "continue-on-error" not in runtime
     assert release["jobs"]["mark-wallet"]["uses"] == "./.github/workflows/mark-wallet.yml"
-    assert "if" not in release["jobs"]["mark-wallet"]
+    assert (
+        release["jobs"]["mark-wallet"]["if"]
+        == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
+    )
     assert "continue-on-error" not in release["jobs"]["mark-wallet"]
     assert "mark-wallet" in release["jobs"]["package"]["needs"]
     assert "package" in release["jobs"]["pages"]["needs"]
@@ -137,7 +140,7 @@ def test_supplier_real_browser_observation_is_in_required_browser_suite() -> Non
     for name in ("package", "pages", "publish"):
         job = release["jobs"][name]
         assert "continue-on-error" not in job
-        assert not re.search(r"\b(?:always|failure|cancelled)\s*\(", job.get("if", ""))
+        assert not re.search(r"\b(?:always|failure)\s*\(", job.get("if", ""))
     test_native_browser_acceptance_is_one_command_with_both_suites()
 
 
@@ -181,7 +184,8 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     workflow = yaml.load((ROOT / ".github/workflows/successor-mission.yml").read_text(), Loader=UniqueWorkflowLoader)
     assert workflow["on"]["pull_request"] is None
     job = workflow["jobs"]["mission"]
-    assert "if" not in job and "continue-on-error" not in job
+    assert job["if"] == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
+    assert "continue-on-error" not in job
     steps = job["steps"]
     actions = [step for step in steps if "uses" in step]
     assert [step["uses"] for step in actions] == [
@@ -258,7 +262,8 @@ def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():
     assert browser["env"]["SUCCESSOR_ALPHA_SCREENSHOTS"] == "${{ github.workspace }}/discovery-screenshots/alpha"
 
     guided = workflow["jobs"]["guided-cross-repository"]
-    assert "if" not in guided and "continue-on-error" not in guided
+    assert guided["if"] == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
+    assert "continue-on-error" not in guided
     guided_steps = guided["steps"]
     assert [step["uses"] for step in guided_steps if "uses" in step] == [
         "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
@@ -314,7 +319,8 @@ def test_release_requires_full_successor_journey_before_packaging():
     assert "workflow_call" in journey["on"]
     job = release["jobs"]["successor-journey"]
     assert job == {
-        "needs": "publication-preflight",
+        "if": "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}",
+        "needs": ["paper-scope", "publication-preflight"],
         "uses": "./.github/workflows/successor-mission.yml",
     }
     assert "successor-journey" in release["jobs"]["package"]["needs"]
@@ -323,7 +329,7 @@ def test_release_requires_full_successor_journey_before_packaging():
     for name in ("package", "pages", "publish"):
         target = release["jobs"][name]
         assert "continue-on-error" not in target
-        assert not re.search(r"\b(?:always|failure|cancelled)\s*\(", target.get("if", ""))
+        assert not re.search(r"\b(?:always|failure)\s*\(", target.get("if", ""))
     test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites()
 
 

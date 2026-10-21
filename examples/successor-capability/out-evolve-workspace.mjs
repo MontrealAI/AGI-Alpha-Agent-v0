@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { canonical, importSearchCheckpoint, exportSearchCheckpoint } from './constructor.mjs';
 import * as packages from './capability-package.mjs';
+import {restoreExecution} from './out-execute/engine.mjs';
 
 export const WORKSPACE_SCHEMA = 'out-evolve-workspace/v1';
 export const WORKSPACE_LIMITS = Object.freeze({events: 256, bytes: 8_000_000});
 export const EVENT_KINDS = Object.freeze([
-    'brief', 'search-started', 'search-stopped', 'search-paused', 'package-frozen', 'reuse', 'comparison', 'successor', 'failure'
+    'brief', 'search-started', 'search-stopped', 'search-paused', 'package-frozen', 'reuse', 'comparison', 'successor', 'failure', 'execution'
 ]);
 const trustedHistories = new WeakMap();
 const clone = value => JSON.parse(canonical(value));
@@ -81,6 +82,12 @@ export async function inspectOutEvolveWorkspace(input) {
     let inconclusive = 0;
     let latestPackage = null;
     let checkpoint = null;
+    let latestExecution = null;
+    let executionVerificationWork = 0;
+    let recordedExecutionAdmissionWork = 0;
+    const executionAttemptWork = new Map();
+    const executionCompletions = [];
+    const executionAttempts = new Set();
     const knownPackages = new Map();
     for (const [sequence, event] of input.events.entries()) {
         if (!exact(event, ['sequence', 'previous', 'kind', 'payload', 'digest'])
@@ -88,6 +95,40 @@ export async function inspectOutEvolveWorkspace(input) {
             throw Error('Invalid or reordered Out-Evolve event.');
         }
         payloadShape(event.kind, event.payload);
+        if (event.kind === 'execution') {
+            const payload = event.payload;
+            if (!exact(payload, ['projectId', 'checkpoint', 'admissionVerification']) || payload.projectId !== input.id) {
+                throw Error('Execution must belong to this existing project history.');
+            }
+            const inspected = await restoreExecution(payload.checkpoint);
+            executionVerificationWork += inspected.countedVerificationWork;
+            const current = inspected.checkpoint;
+            executionAttemptWork.set(current.attemptId, Object.values(current.work).reduce((a, b) => a + b, 0));
+            recordedExecutionAdmissionWork += payload.admissionVerification.total + payload.admissionVerification.historyRecheckTotal;
+            if (!same(payload.admissionVerification, {work: inspected.verificationWork, total: inspected.countedVerificationWork, historyRecheckTotal: executionVerificationWork})) {
+                throw Error('Execution admission verification costs do not reproduce.');
+            }
+            if (!same(current.archive.completions, executionCompletions)) {
+                throw Error('Execution cannot omit, replace or import detached completion ancestry.');
+            }
+            if (latestExecution?.attemptId === current.attemptId) {
+                if (['COMPLETE', 'INCONCLUSIVE'].includes(latestExecution.status) || !same(latestExecution.model, current.model)
+                    || !same(latestExecution.source, current.source) || latestExecution.budget !== current.budget
+                    || current.next < latestExecution.next || !same(latestExecution.selection, current.selection)) {
+                    throw Error('Execution progress is stale or its frozen source changed.');
+                }
+                for (let i = 0; i < latestExecution.next; i++) if (!same(latestExecution.contracts[i], current.contracts[i])) {
+                    throw Error('Completed local work cannot be replaced in the same attempt.');
+                }
+            } else {
+                if (executionAttempts.has(current.attemptId) || latestExecution && ['PAUSED', 'CANCELLED'].includes(latestExecution.status)) {
+                    throw Error('Finish the pending execution, or retain it in a separate history before starting another attempt.');
+                }
+                executionAttempts.add(current.attemptId);
+            }
+            if (current.status === 'COMPLETE') executionCompletions.push(current.completion);
+            latestExecution = current;
+        }
         if (await eventDigest(input.id, event) !== event.digest) throw Error('Out-Evolve event digest mismatch.');
         if (event.kind === 'package-frozen' || event.kind === 'successor') {
             await packages.importCapability(event.payload.package);
@@ -108,10 +149,13 @@ export async function inspectOutEvolveWorkspace(input) {
         if (event.kind === 'failure' && String(event.payload.status || '').toLowerCase() !== 'inconclusive'
             || ['fail', 'failed', 'exhausted', 'infeasible'].includes(
             String(event.payload.status || '').toLowerCase())) failed += 1;
-        if (String(event.payload.status || '').toLowerCase() === 'inconclusive') inconclusive += 1;
+        if (String(event.payload.status || '').toLowerCase() === 'inconclusive'
+            || event.kind === 'execution' && ['INCONCLUSIVE', 'CANCELLED'].includes(event.payload.checkpoint.status)) inconclusive += 1;
         previous = event.digest;
     }
     const result = {workspace: clone(input), packageCount, failed, inconclusive, latestPackage, checkpoint,
+        latestExecution, executionCompletions, executionVerificationWork, recordedExecutionAdmissionWork,
+        recordedExecutionAttemptWork: [...executionAttemptWork.values()].reduce((a, b) => a + b, 0),
         evidenceStatus: failed ? 'retained-failure' : inconclusive ? 'retained-inconclusive' : 'no-recorded-failure',
         limits: 'Synthetic supplied-model checks only. Imported historical reports are records, not fresh evaluations.'};
     trustedHistories.set(input, fingerprint);
@@ -126,6 +170,14 @@ export async function appendOutEvolveEvent(input, kind, payload) {
     payloadShape(kind, payload);
     if (kind === 'package-frozen' || kind === 'successor') await packages.importCapability(payload.package);
     let savedPayload = payload;
+    if (kind === 'execution') {
+        if (payload.projectId !== input.id || !payload.checkpoint) throw Error('Execution needs this project identity.');
+        const inspected = await restoreExecution(payload.checkpoint);
+        savedPayload = {projectId: input.id, checkpoint: inspected.checkpoint,
+            admissionVerification: {work: inspected.verificationWork, total: inspected.countedVerificationWork,
+                historyRecheckTotal: inspected.countedVerificationWork + input.events.filter(event => event.kind === 'execution')
+                    .reduce((total, event) => total + event.payload.admissionVerification.total, 0)}};
+    }
     if (['search-started', 'search-stopped', 'search-paused'].includes(kind)) {
         const parentDigest = payload.checkpoint?.inheritance?.parentDigest;
         const parent = input.events.map(event => event.payload.package).find(value => value?.digest === parentDigest) || null;
@@ -141,6 +193,7 @@ export async function appendOutEvolveEvent(input, kind, payload) {
     result.events.push(event);
     result.revision = result.events.length;
     shape(result);
+    if (kind === 'execution') await inspectOutEvolveWorkspace(result);
     trustedHistories.set(result, canonical(result));
     return result;
 }
@@ -232,4 +285,29 @@ export function requireHistoryContinuation(current, incoming) {
         || current.events.some((event, index) => event.digest !== incoming.events[index]?.digest)) {
         throw Error('Import would discard or replace events in this history. Keep both as separate histories.');
     }
+}
+
+/** Admit an exported checkpoint without discarding its original project or unappended work. */
+export const EXECUTION_RECOVERY_SCHEMAS = Object.freeze(['out-execute-recovery/v1', 'out-execute-unsaved-recovery/v1']);
+export const EXECUTION_RECOVERY_MAX_BYTES = WORKSPACE_LIMITS.bytes + 2_001_024;
+export async function inspectExecutionRecovery(input, {current = null} = {}) {
+    if (encodedBytes(input) > EXECUTION_RECOVERY_MAX_BYTES
+        || !exact(input, ['schema', 'history', 'checkpoint']) || !EXECUTION_RECOVERY_SCHEMAS.includes(input.schema)) {
+        throw Error('Unsupported or oversized execution recovery wrapper.');
+    }
+    let inspected = await inspectOutEvolveWorkspace(input.history);
+    const initialVerificationWork = inspected.executionVerificationWork;
+    let appended = false;
+    if (!same(input.checkpoint, inspected.latestExecution)) {
+        if (input.schema !== 'out-execute-unsaved-recovery/v1') throw Error('Saved recovery checkpoint differs from its retained history.');
+        const recovered = await appendOutEvolveEvent(inspected.workspace, 'execution', {
+            projectId: inspected.workspace.id, checkpoint: input.checkpoint
+        });
+        inspected = await inspectOutEvolveWorkspace(recovered);
+        appended = true;
+    }
+    if (!inspected.latestExecution) throw Error('Recovery wrapper has no execution checkpoint.');
+    if (current !== null) requireHistoryContinuation(current, inspected.workspace);
+    return {...inspected, recovery: {appended, historicalOnly: true,
+        additionalReadVerificationWork: initialVerificationWork + (appended ? inspected.executionVerificationWork : 0)}};
 }

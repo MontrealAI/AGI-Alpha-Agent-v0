@@ -164,9 +164,9 @@ def parse_page(md_file: Path) -> tuple[str, str, str, str]:
                 "muzeromctsllmagent_v0",
                 "alpha_agi_insight_v1",
             }:
-                preview = f'assets/studio/previews/{case["id"]}.svg'
-                summary = f'{case["title"]}: {case["question"]} {case["deliverable"]}'
-                link = f'studio/?case={case["id"]}'
+                preview = f"assets/studio/previews/{case['id']}.svg"
+                summary = f"{case['title']}: {case['question']} {case['deliverable']}"
+                link = f"studio/?case={case['id']}"
                 break
     if md_file.stem == "sovereign_agentic_agialpha_agent_v0":
         preview = "sovereign_agentic_agialpha_agent_v0/assets/lab-preview.svg"
@@ -373,6 +373,9 @@ def build_portal_html(entries: list[tuple[str, str, str, str]], version: str, de
     template = (REPO_ROOT / "scripts" / "templates" / "portal.html").read_text(encoding="utf-8")
     index_html = template.replace("{{GALLERY}}", '<div class="demo-grid">' + cards + "</div>")
     index_html = index_html.replace("{{VERSION}}", version)
+    from scripts.research_papers import load_catalog, render_section
+
+    index_html = index_html.replace("{{RESEARCH_PAPERS}}", render_section(load_catalog(REPO_ROOT)))
     return index_html.replace("{{DECISION_CARDS}}", decision_cards)
 
 

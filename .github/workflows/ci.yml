@@ -38,7 +38,7 @@ permissions:
   # repository-projects, security-events, statuses.
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: true
 
 env:
@@ -70,8 +70,12 @@ env:
   AGIALPHA_DECIMALS: 18
 
 jobs:
+  paper-scope:
+    uses: ./.github/workflows/paper-scope.yml
 
   owner-check:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
     name: "Verify owner"
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -100,8 +104,8 @@ jobs:
 
   workflow-lint:
     name: "✅ Actionlint"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -120,8 +124,8 @@ jobs:
 
   lint-type:
     name: "🧹 Ruff + 🏷️ Mypy (${{ matrix.python-version }})"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
@@ -215,8 +219,8 @@ jobs:
 
   insight-eslint:
     name: "🧪 Insight Browser ESLint"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -256,10 +260,12 @@ jobs:
 
   tests:
     name: "✅ Pytest (${{ matrix.python-version }})"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    # A full-scope 3.12 run reached 98% near the prior 75-minute limit.
+    # Retain the full matrix/coverage campaign with finite setup/test headroom.
+    timeout-minutes: 90
     permissions:
       pull-requests: write
     env:
@@ -471,8 +477,8 @@ jobs:
 
   windows-smoke:
     name: "Windows Smoke"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: windows-latest
     timeout-minutes: 30
     env:
@@ -569,8 +575,8 @@ jobs:
 
   macos-smoke:
     name: "macOS Smoke"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: macos-latest
     timeout-minutes: 30
     env:
@@ -662,8 +668,8 @@ jobs:
 
   docs-check:
     name: "📜 MkDocs"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -767,8 +773,8 @@ jobs:
 
   docs-build:
     name: "📚 Docs Build"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -912,8 +918,8 @@ jobs:
 
   docker:
     name: "🐳 Docker build"
-    if: ${{ always() && needs.owner-check.result == 'success' }}
-    needs: owner-check
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
+    needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -1147,8 +1153,8 @@ jobs:
 
   deploy:
     name: "📦 Deploy"
-    if: ${{ needs.owner-check.result == 'success' && startsWith(github.ref, 'refs/tags/') }}
-    needs: [owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' && (needs.owner-check.result == 'success' && startsWith(github.ref, 'refs/tags/')) }}
+    needs: [paper-scope, owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -1234,8 +1240,8 @@ jobs:
 
   integration-result:
     name: Integration matrix
-    if: ${{ always() && github.ref == 'refs/heads/main' }}
-    needs: [owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker, branch-protection]
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && github.ref == 'refs/heads/main') }}
+    needs: [paper-scope, owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker, branch-protection]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -1254,8 +1260,8 @@ jobs:
 
   branch-protection:
     name: "🔒 Branch protection guardrails"
-    if: ${{ always() && needs.owner-check.result == 'success' && github.ref == 'refs/heads/main' }}
-    needs: [owner-check, workflow-lint, lint-type, tests, docs-check]
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success' && github.ref == 'refs/heads/main') }}
+    needs: [paper-scope, owner-check, workflow-lint, lint-type, tests, docs-check]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -1288,3 +1294,23 @@ jobs:
             --branch "${TARGET_BRANCH}" \
             ${apply_flag} \
             --required-checks-file scripts/required_checks.json
+
+  full-software-qualification:
+    name: Full software qualification
+    needs: [paper-scope, owner-check, workflow-lint, lint-type, insight-eslint, tests, windows-smoke, macos-smoke, docs-check, docs-build, docker, integration-result, branch-protection]
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Bind full-runtime scope to successful exact-source jobs
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python - <<'PYTHON'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          failed = {name: row['result'] for name, row in results.items() if row['result'] != 'success'}
+          if failed:
+              raise SystemExit(f'Full software qualification incomplete: {failed}')
+          print('Full software qualification, not paper-only validation.')
+          PYTHON

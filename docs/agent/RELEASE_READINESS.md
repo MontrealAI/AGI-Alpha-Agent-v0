@@ -1,18 +1,29 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.37.1 source candidate
+# Release readiness — 1.37.1 combined software candidate
 
-Version **1.37.1** adds a prominent research feature to the README and bilingual homepage, led by
-[Transformational Intelligence](../Transformational_Intelligence.pdf), alongside
-[Out-Strategise](../Out_Strategise.pdf) and [Out-Evolve](../Out_Evolve.pdf).
-The [release notes](RELEASE_NOTES_1.37.1.md) describe this documentation-only scope. Original paper bytes,
-current capabilities, project histories, contracts, payment routes and authorization boundaries are unchanged.
+Version **1.37.1** combines the existing capability/Out-Evolve source, the bounded OUT-EXECUTE implementation,
+six original featured papers and the simpler paper-publication lane. The [release notes](RELEASE_NOTES_1.37.1.md)
+describe the scope, explicit synthetic assumptions, equal/cheaper baselines and inert Jobs/Fleet drafts.
+The owner approved superseding the unpublished 1.37.0 candidate with this combined next source.
+This is a full software qualification, not a documentation-only or paper-overlay release.
 
-This later source requires a distinct release version and fresh exact-source acceptance. Do not reuse or move
-the v1.37.0 tag or replace earlier assets. The unchanged Agent release acceptance workflow must validate the
-homepage, complete all existing gates, package this source, verify public HTTPS and uploaded bytes, then publish.
-Local source checks do not establish a browser, deployed-site or complete release pass. Consult the matching
-release manifest and reports for actual acceptance; the previous source records below retain their original scope.
+All original PDF/TEX bytes, historical records, contracts, payment routes and authority boundaries are preserved.
+Version 1.37.1 was unused when prepared. Never reuse or move a published tag or replace published assets;
+verify live version availability again before publication. The 1.37.0 proposal below remains historical, not a
+claim that it was published. The authored local study is source-bound evidence, not exact-release acceptance
+or reproduction of the manuscript's missing companion archive.
+
+The complete capability workflow is now a required Agent release dependency, including exact source/generated
+identity, actual finite computation, recovery, browser and accessibility evidence. All older release dependencies
+and permissions remain. Fresh integrated PR checks/review, authorized merge, exact-main historical CI and Agent
+acceptance, security, packaging, public HTTPS and uploaded-byte checks are required. Paper-only checks cannot
+qualify this runtime/workflow change. Local browser and Semgrep limitations remain disclosed, not bypassed.
+
+Future verified paper-only descendants may use the separate [paper-publication lane](PAPER_UPLOADS.md), preserving
+the immutable tested software identity and adding explicit paper-site provenance. They do not mutate release assets
+or qualify new runtime code. Consult the matching manifest and reports to establish actual delivery; previous
+source records below retain their original scope.
 
 ## Previous source proposal — 1.37.0
 
