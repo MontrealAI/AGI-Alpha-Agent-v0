@@ -13,6 +13,7 @@ on:
       - scripts/templates/successor-capability/**
       - tests/browser/test_successor_capability_browser.py
       - tests/browser/test_out_evolve_browser.py
+      - tests/browser/test_discovery_lab_browser.py
       - tests/browser/out_evolve_recovery.py
       - tests/browser/test_successor_capability_accessibility.py
       - tests/test_successor_capability_delivery.py
@@ -90,6 +91,14 @@ jobs:
         run: |
           set -o pipefail
           python tests/browser/test_out_evolve_browser.py 2>&1 | tee capability-evidence/logs/out-evolve-browser.log
+      - name: Connected Discovery Lab replay and browser acceptance
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          DISCOVERY_LAB_EVIDENCE: ${{ github.workspace }}/capability-evidence/discovery-lab-browser
+        run: |
+          set -o pipefail
+          node examples/successor-capability/discovery-lab-reproduce.mjs --output capability-evidence/discovery-lab 2>&1 | tee capability-evidence/logs/discovery-lab-replay.log
+          python tests/browser/test_discovery_lab_browser.py 2>&1 | tee capability-evidence/logs/discovery-lab-browser.log
       - name: Review ARIA and every contrast incomplete
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js

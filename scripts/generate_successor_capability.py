@@ -39,7 +39,9 @@ def build(root: Path = ROOT) -> None:
             return f"const {binding} = {visit(path.parent / location)};"
 
         source = re.sub(r"^import\s+([^;]*?)\s+from\s+['\"]([^'\"]+)['\"];", imports, source, flags=re.MULTILINE)
-        exports = re.findall(r"^export\s+(?:async\s+)?(?:function|class|const)\s+(\w+)", source, flags=re.MULTILINE)
+        exports = re.findall(
+            r"^export\s+(?:async\s+)?(?:function\s*\*?|class|const)\s+(\w+)", source, flags=re.MULTILINE
+        )
         source = re.sub(r"^export\s+", "", source, flags=re.MULTILINE)
         chunks.append(f"const {name}=(()=>{{\n{source}\nreturn {{{','.join(exports)}}};\n}})();")
         return name
@@ -52,20 +54,36 @@ def build(root: Path = ROOT) -> None:
         "outEvolvePackages": visit(root / "examples/successor-capability/capability-package.mjs"),
         "outEvolveApparatus": visit(root / "examples/successor-capability/apparatus.mjs"),
         "outEvolveEvaluation": visit(root / "examples/successor-capability/evaluation.mjs"),
+        "discoveryLab": visit(root / "examples/successor-capability/discovery-lab.mjs"),
+        "discoveryHistory": visit(root / "examples/successor-capability/discovery-lab-history.mjs"),
+        "discoveryContract": visit(root / "examples/successor-capability/discovery-lab-contract.mjs"),
     }
     templates = root / "scripts/templates/successor-capability"
     for path in [root / "scripts/generate_successor_capability.py", *sorted(templates.iterdir())]:
         if path.is_file():
             sources[path.relative_to(root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    discovery_sources = {
+        "modelDigest": sources["examples/successor-capability/discovery-lab.mjs"],
+        "evaluatorDigest": sources["examples/successor-capability/discovery-lab-checker.mjs"],
+        "sourceDigest": source_hash,
+    }
     script = "\n(()=>{\n'use strict';\n" + "\n".join(chunks)
     script += "\n" + "\n".join(f"const {name}={value};" for name, value in modules.items())
     script += f"\nconst SOURCE_HASH='{source_hash}';\n" + (templates / "app.js").read_text()
-    script += "\n" + (templates / "out-evolve-app.js").read_text() + "\n})();\n"
+    script += "\n" + (templates / "out-evolve-app.js").read_text()
+    script += "\nconst DISCOVERY_SOURCES=" + json.dumps(discovery_sources, sort_keys=True) + ";\n"
+    script += (templates / "discovery-lab-app.js").read_text() + "\n"
+    script += (templates / "discovery-lab-bridge.js").read_text() + "\n})();\n"
     if "</script" in script.lower():
         raise ValueError("Closing script tag in source")
-    style = "\n" + (templates / "style.css").read_text() + "\n"
+    style = "\n" + (templates / "style.css").read_text() + "\n" + (templates / "discovery-lab.css").read_text() + "\n"
     page = (templates / "index.html").read_text()
+    page = page.replace(
+        '    <section id="out-evolve"',
+        (templates / "discovery-lab.html").read_text() + '\n    <section id="out-evolve"',
+        1,
+    )
     for key, value in (("SCRIPT", script), ("STYLE", style)):
         encoded = base64.b64encode(hashlib.sha256(value.encode()).digest()).decode()
         page = page.replace("{{" + key + "_HASH}}", "sha256-" + encoded).replace("{{" + key + "}}", value)

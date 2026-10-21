@@ -39,6 +39,40 @@ Existing modules are reuse candidates, not evidence that a new receiver or an
 integrated stage is already implemented. The new runtime, UI and seams require
 their own source-bound tests and published acceptance evidence.
 
+## New bounded implementation paths
+
+The additive Discovery Lab implementation is separate from the papers' original
+standalone experiments. Its source baseline and final qualification are recorded
+by the feature PR and release evidence; the source-inspection manifest above
+continues to identify the unchanged research inputs.
+
+| Path under `examples/successor-capability/` | Responsibility and scope |
+| --- | --- |
+| `discovery-lab.mjs` | Closed finite charter, bounded schedule construction, measured interval relation, executable state representation, compiled joint decoder/updater services, conditional fault policies, current finite factor contracts, installed platform semantics and charter invalidation. The full response cube is acquired and checked; no sparse end-to-end acquisition saving is claimed. |
+| `discovery-lab-checker.mjs` | Separately implemented moment, interval, state/update, independent service-input, continuous-service, residual-world, checkpoint, complete factor/profile and full-cube interaction checks. The checker has a finite work cap and returns inconclusive when it cannot complete. |
+| `discovery-lab-baselines.mjs` | Independent determinant-based measurement construction, pair-distinguishability closure, actual compiled realization, exhaustive finite policy route choices, direct factor enumeration and installed platform checks. It constructs and independently qualifies complete alternative six-stage witnesses. Its exactness concerns the declared finite grammar, not arbitrary lab architectures. |
+| `discovery-lab-contract.mjs` | Shared bounded data language and zero-cap unsubmitted commission request, binding mission revision, purpose, charter, model, source and evaluator identities. It grants no execution or payment authority. |
+
+The unrestricted finite reference combines independently generated measurement,
+representation, realization, policy and installation choices. It enumerates every
+route combination in each observation partition; because the downstream
+completion price is monotone in policy cost under these supplied semantics,
+retaining the cheapest route assignment per partition preserves the joint
+minimum. Each admitted composed campaign receives the current independent
+six-stage checker, rather than inheriting a declarative tie. Search and checking
+costs remain charged separately from its explicitly priced horizon objective.
+
+The fixed-architecture control executes raw measurements and corrected responses
+for every finite configuration on each use. Full-state reasoning emits an actual
+identity encoder and updater tables. Other controls check separate service
+occupancy, full/no diagnosis, complete recomputation, compatible incremental
+contracts, unchanged fixed certificates and a complete six-stage cold campaign.
+The scratch comparison points to the already executed, source-bound unrestricted
+reference, which was constructed without parent assets under the same current
+charter. Its measured search, checking and acquisitions are charged once in that
+reference row; the scratch row does not manufacture a second unexecuted campaign
+or double-charge an identical replay.
+
 ## Mechanisms that must remain explicit
 
 ### Measurement and uncertainty

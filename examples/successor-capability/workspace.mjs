@@ -2,6 +2,7 @@
 /** Append-only capability-development records. No execution or payment authority. */
 import * as protocol from '../../docs/assets/successor/engine.mjs';
 import * as witness from './witness.mjs';
+import * as discoveryHistory from './discovery-lab-history.mjs';
 
 export const SCHEMA = 'successor-capability-workspace/v1';
 export const LIMITS = Object.freeze({versions: 8, events: 24, bytes: 2_000_000});
@@ -33,6 +34,14 @@ const exact = (value, keys) => value && typeof value === 'object' && !Array.isAr
 const fail = message => { throw Error(message); };
 const equal = (left, right) => canonical(left) === canonical(right);
 const idPattern = /^capability-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const verifiedExtendedWorkspaces = new WeakMap();
+function freezeGraph(value) {
+    if (value && typeof value === 'object') {
+        for (const child of Object.values(value)) freezeGraph(child);
+        if (!Object.isFrozen(value)) Object.freeze(value);
+    }
+    return value;
+}
 
 export function validateBrief(brief) {
     if (!exact(brief, BRIEF_KEYS)) fail('Unsupported capability brief fields.');
@@ -81,14 +90,19 @@ async function eventDigest(missionId, event) {
 
 /** Recompute all admitted synthetic evidence, not just its hash. Imports grant no trust. */
 export async function inspectWorkspace(input) {
+    const fingerprint = discoveryHistory.validateHistoryData(input);
+    const cached = verifiedExtendedWorkspaces.get(input);
+    if (cached?.fingerprint === fingerprint) return cached.inspection;
     canonical(input);
     if (!exact(input, ['schema', 'missionId', 'revision', 'events', 'authority', 'paymentRoute'])
-        || input.schema !== SCHEMA || typeof input.missionId !== 'string' || !idPattern.test(input.missionId)
+        || ![SCHEMA, discoveryHistory.EXTENDED_SCHEMA].includes(input.schema)
+        || typeof input.missionId !== 'string' || !idPattern.test(input.missionId)
         || !Array.isArray(input.events) || input.events.length < 1 || input.events.length > LIMITS.events
         || input.revision !== input.events.length - 1 || !equal(input.authority, []) || input.paymentRoute !== 'none') {
         fail('Unsupported capability workspace or authority.');
     }
     const versions = [];
+    const discovery = discoveryHistory.emptyDiscoveryState();
     let previous = null;
     for (const [sequence, event] of input.events.entries()) {
         if (!exact(event, ['sequence', 'kind', 'previous', 'payload', 'digest'])
@@ -131,11 +145,21 @@ export async function inspectWorkspace(input) {
             version[payload.phase] = clone(payload);
             version.witnessAcceptance = [version.development, version.heldout].some(record => record?.report.verdict === 'fail')
                 ? 'fail' : version.development && version.heldout ? 'pass' : 'incomplete';
+        } else if (discoveryHistory.EVENT_KINDS.includes(event.kind)
+            && input.schema === discoveryHistory.EXTENDED_SCHEMA) {
+            if (!versions.length) fail('Discovery Lab needs a frozen capability version.');
+            await discoveryHistory.inspectDiscoveryEvent(discovery, event,
+                {missionId: input.missionId, version: versions.at(-1).number});
         } else fail('Unsupported capability event.');
         previous = event.digest;
     }
     if (!versions.length) fail('Capability version is missing.');
-    return {versions, latest: versions.at(-1), head: previous};
+    const inspection = {versions, latest: versions.at(-1), head: previous, discovery};
+    if (input.schema === discoveryHistory.EXTENDED_SCHEMA) {
+        freezeGraph(input); freezeGraph(inspection);
+        verifiedExtendedWorkspaces.set(input, {fingerprint, inspection});
+    }
+    return inspection;
 }
 
 async function append(workspace, kind, payload) {
@@ -191,5 +215,14 @@ export function parseExperiment(text) {
 export async function parseWorkspace(text) {
     const value = clone(protocol.parseBounded(text));
     await inspectWorkspace(value);
-    return clone(value);
+    return value.schema === discoveryHistory.EXTENDED_SCHEMA ? value : clone(value);
+}
+
+/** Add a checked event to the existing hash chain; prior v1 events retain exact bytes. */
+export async function recordDiscoveryEvent(workspace, kind, payload) {
+    await inspectWorkspace(workspace);
+    if (!discoveryHistory.EVENT_KINDS.includes(kind)) fail('Unsupported Discovery Lab event.');
+    const next = clone(workspace);
+    next.schema = discoveryHistory.EXTENDED_SCHEMA;
+    return append(next, kind, payload);
 }
