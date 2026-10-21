@@ -33,7 +33,8 @@ WORKERS = (
     "assets/service-worker.js",
     "alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
 )
-GENERATED = ("index.html", "research-papers.json", *WORKERS)
+GENERATED = ("index.html", *WORKERS)
+SOURCE_OVERLAY = (*GENERATED, "research-papers.json")
 METADATA = {"release.json", "paper-publication.json"}
 
 
@@ -281,12 +282,12 @@ def compose_site(
             raise ValueError(f"New paper would overwrite an unrelated baseline file: {name}")
         (site / name).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, site / name)
-    for name in GENERATED:
+    for name in SOURCE_OVERLAY:
         source = root / "docs" / name
         if source.is_symlink() or not source.is_file():
-            raise ValueError("Generated source must be an ordinary file")
+            raise ValueError("Overlay source must be an ordinary file")
         shutil.copyfile(source, site / name)
-    return verify_delta(baseline, inventory(site), set(new) | set(GENERATED))
+    return verify_delta(baseline, inventory(site), set(new) | set(SOURCE_OVERLAY))
 
 
 def download_release_assets(release: dict[str, Any], names: list[str], folder: Path) -> None:
@@ -432,7 +433,7 @@ def seal(site: Path, plan: dict[str, Any], homepage: Path) -> dict[str, Any]:
 
     report = read_json(homepage)
     verify_report(report, plan["paper"]["commit"], plan["software"]["version"], "local project subpath")
-    allowed = set(plan["paper"]["files"]) | set(GENERATED)
+    allowed = set(plan["paper"]["files"]) | set(SOURCE_OVERLAY)
     delta = verify_delta(plan["baseline_inventory"], inventory(site), allowed)
     if delta != plan["delta"]:
         raise ValueError("Site changed after the paper overlay was prepared")

@@ -8,7 +8,6 @@ import json
 from pathlib import Path
 import subprocess
 import sys
-import time
 import types
 from typing import Any
 
@@ -40,24 +39,23 @@ def source(tmp_path: Path) -> tuple[Path, str, str]:
     subprocess.run(["git", "-C", str(root), "config", "user.email", "paper@example.invalid"], check=True)
     for name in papers.GENERATED:
         write(root, "docs/" + name, ("baseline " + name).encode())
-    write(root, "docs/research-papers.json", papers.canonical({"papers": ["original"]}))
     write(root, "docs/research/original.pdf", b"original PDF bytes")
     write(root, "runtime.py", b"unchanged software")
+    write(root, "docs/research-papers.json", b'{"papers": ["original"]}\n')
     first = commit(root, "software")
     write(root, "docs/research/fresh.pdf", b"fresh PDF bytes")
     write(root, "docs/research/fresh.tex", b"fresh TEX bytes")
     for name in papers.GENERATED:
         write(root, "docs/" + name, ("paper " + name).encode())
-    write(root, "docs/research-papers.json", papers.canonical({"papers": ["original", "fresh"]}))
+    write(root, "docs/research-papers.json", b'{"papers": ["original", "fresh"]}\n')
     second = commit(root, "papers")
     return root, first, second
 
 
 def staged(source: tuple[Path, str, str], site: Path) -> tuple[dict[str, Any], dict[str, str], dict[str, str]]:
     root, software, _ = source
-    for name in papers.GENERATED:
+    for name in papers.SOURCE_OVERLAY:
         write(site, name, papers.source_bytes(root, software, "docs/" + name))
-    write(site, "research-papers.json", papers.source_bytes(root, software, "docs/research-papers.json"))
     write(site, "research/original.pdf", b"original PDF bytes")
     write(site, "successor/work/worker.js", b"runtime unchanged")
     write(site, "models/weights.bin", b"model unchanged")
@@ -77,27 +75,25 @@ def test_overlay_preserves_complete_software_inventory(source: tuple[Path, str, 
     before, old, new = staged(source, site)
     delta = papers.compose_site(root, site, software_commit=software, baseline=before, old_assets=old, new_assets=new)
     after = papers.inventory(site)
-    assert {row["path"] for row in delta["files"]} == set(papers.GENERATED) | {
+    assert {row["path"] for row in delta["files"]} == set(papers.SOURCE_OVERLAY) | {
         "research/fresh.pdf",
         "research/fresh.tex",
     }
     assert delta["removed"] == []
     assert (site / "research-papers.json").read_bytes() == (root / "docs/research-papers.json").read_bytes()
-    assert digest(site / "research-papers.json") != before["research-papers.json"]["sha256"]
+    assert after["research-papers.json"] != before["research-papers.json"]
     assert after["release.json"] == before["release.json"]
-    for name in set(before) - set(papers.GENERATED):
+    for name in set(before) - set(papers.SOURCE_OVERLAY):
         assert after[name] == before[name]
     expected = {
         name: before[name]
         for name in sorted(before)
-        if name not in set(papers.GENERATED) | set(papers.site_assets(new))
+        if name not in set(papers.SOURCE_OVERLAY) | set(papers.site_assets(new))
     }
     assert delta["unchanged_inventory_sha256"] == papers.sha256(papers.canonical(expected))
 
 
-@pytest.mark.parametrize(
-    "target", ["service-worker.js", "assets/service-worker.js", papers.WORKERS[2], "index.html", "research-papers.json"]
-)
+@pytest.mark.parametrize("target", ["service-worker.js", "assets/service-worker.js", papers.WORKERS[2], "index.html"])
 def test_unsupported_generated_baseline_is_not_rebuilt(
     source: tuple[Path, str, str], tmp_path: Path, target: str
 ) -> None:
@@ -164,13 +160,13 @@ def test_source_checkout_must_be_exact_and_clean(source: tuple[Path, str, str]) 
 
 
 def plan_for(source: tuple[Path, str, str]) -> dict[str, Any]:
-    root, software, paper = source
+    _, software, paper = source
     return {
         "schema": papers.PLAN_SCHEMA,
         "status": "ready",
         "sealed": True,
         "software": {"commit": software, "version": "1.2.3", "release_id": 123},
-        "paper": {"commit": paper, "catalog_sha256": digest(root / "docs/research-papers.json")},
+        "paper": {"commit": paper, "catalog_sha256": "a" * 64},
     }
 
 
@@ -179,7 +175,7 @@ def test_monotonic_publication_never_rolls_back(source: tuple[Path, str, str]) -
     plan = plan_for(source)
     live: dict[str, Any] = {"commit": software, "version": "1.2.3"}
     assert papers.require_live_order(root, plan, live)
-    live["paper_publication"] = {"paper_commit": paper, "catalog_sha256": plan["paper"]["catalog_sha256"]}
+    live["paper_publication"] = {"paper_commit": paper, "catalog_sha256": "a" * 64}
     assert not papers.require_live_order(root, plan, live)
     live["paper_publication"]["catalog_sha256"] = "b" * 64
     with pytest.raises(ValueError, match="conflicting"):
@@ -260,9 +256,7 @@ def test_public_metadata_is_bound_to_source_and_checksums(tmp_path: Path) -> Non
     write(site, "index.html", b"tested site")
     release = tmp_path / "release"
     pack(site, release, "site", commit="a" * 40, version="1.2.3", limit=8192)
-    assets = [
-        {"name": p.name, "bytes": p.stat().st_size, "sha256": papers.digest(p)} for p in sorted(release.iterdir())
-    ]
+    assets = [{"name": p.name, "bytes": p.stat().st_size, "sha256": digest(p)} for p in sorted(release.iterdir())]
     manifest = {
         "repository": papers.REPOSITORY,
         "commit": "a" * 40,
@@ -271,7 +265,7 @@ def test_public_metadata_is_bound_to_source_and_checksums(tmp_path: Path) -> Non
         "distributions": {"site": {"manifest": "site-packs.json"}},
     }
     write(release, "release-manifest.json", papers.canonical(manifest))
-    write(release, "SHA256SUMS", "".join(f"{papers.digest(p)}  {p.name}\n" for p in sorted(release.iterdir())).encode())
+    write(release, "SHA256SUMS", "".join(f"{digest(p)}  {p.name}\n" for p in sorted(release.iterdir())).encode())
     result = papers.verify_distribution(release, "a" * 40, "1.2.3")
     assert result["commit"] == "a" * 40
     with pytest.raises(ValueError, match="identities differ"):
@@ -304,6 +298,7 @@ def test_separate_provenance_keeps_software_identity(
         "run_url": "https://github.com/example/actions/runs/1",
     }
     plan["paper"]["files"] = papers.site_assets(new)
+    plan["paper"]["catalog_sha256"] = digest(root / "docs/research-papers.json")
     sealed = papers.seal(site, plan, report)
     assert calls == [({"narrow": True}, paper, "1.2.3", "local project subpath")]
     live = papers.read_json(site / "release.json")
@@ -312,11 +307,19 @@ def test_separate_provenance_keeps_software_identity(
     assert publication["software"]["commit"] == software
     assert publication["paper"]["commit"] == paper
     assert publication["evidence"]["scope"] == "paper-site-only"
-    assert publication["evidence"]["homepage"]["sha256"] == papers.digest(report)
+    assert publication["evidence"]["homepage"]["sha256"] == digest(report)
     assert sealed["publication"] == live["paper_publication"]
+    assert live["paper_publication"]["sha256"] == digest(site / "paper-publication.json")
+    assert all(digest(site / name) == checksum for name, checksum in sealed["served_files"].items())
     assert sealed["served_files"]["research-papers.json"] == plan["paper"]["catalog_sha256"]
-    assert live["paper_publication"]["sha256"] == papers.digest(site / "paper-publication.json")
-    assert all(papers.digest(site / name) == checksum for name, checksum in sealed["served_files"].items())
+    monkeypatch.setattr(papers, "fetch_public", lambda name: (site / name).read_bytes())
+    assert papers.verify_live(sealed)["passed"] is True
+    # Matching release/sidecar metadata is insufficient when the CDN serves the old catalog.
+    stale_catalog = papers.source_bytes(root, software, "docs/research-papers.json")
+    write(site, "research-papers.json", stale_catalog)
+    monkeypatch.setattr("scripts.publish_paper_site.time.sleep", lambda _: None)
+    with pytest.raises(TimeoutError, match="public edge"):
+        papers.verify_live(sealed)
 
 
 def test_workflow_lock_scope_permissions_and_retry_artifacts() -> None:
@@ -379,7 +382,7 @@ def test_locked_guard_revalidates_every_publication_boundary(
     monkeypatch.setattr(papers, "remote_metadata_digest", lambda *_: ("c" if change == "metadata" else "b") * 64)
     live: dict[str, Any] = {"commit": paper if change == "live-software" else software, "version": "1.2.3"}
     if change == "already-live":
-        live["paper_publication"] = {"paper_commit": paper, "catalog_sha256": plan["paper"]["catalog_sha256"]}
+        live["paper_publication"] = {"paper_commit": paper, "catalog_sha256": "a" * 64}
     monkeypatch.setattr(papers, "live_release", lambda: live)
     if change == "none":
         assert papers.guard(root, plan)
@@ -433,9 +436,8 @@ def test_seal_rejects_tampering_after_validation(
         papers.seal(site, plan, report)
 
 
-@pytest.mark.parametrize("mutation", ["none", "tampered", "missing", "wrong-plan"])
-def test_public_catalog_is_bound_to_the_sealed_paper_source(
-    source: tuple[Path, str, str], tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
+def test_seal_rejects_stale_catalog_plan_before_metadata_write(
+    source: tuple[Path, str, str], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     root, software, _ = source
     site = tmp_path / "site"
@@ -443,6 +445,7 @@ def test_public_catalog_is_bound_to_the_sealed_paper_source(
     delta = papers.compose_site(root, site, software_commit=software, baseline=before, old_assets=old, new_assets=new)
     plan = {
         **plan_for(source),
+        "sealed": False,
         "baseline_inventory": before,
         "delta": delta,
         "original_release": papers.read_json(site / "release.json"),
@@ -450,38 +453,17 @@ def test_public_catalog_is_bound_to_the_sealed_paper_source(
         "run_url": "https://github.com/example/actions/runs/1",
     }
     plan["paper"]["files"] = papers.site_assets(new)
+    plan["paper"]["catalog_sha256"] = papers.sha256(papers.source_bytes(root, software, "docs/research-papers.json"))
+    original_release = (site / "release.json").read_bytes()
+    assert digest(site / "research-papers.json") != plan["paper"]["catalog_sha256"]
     module = types.ModuleType("scripts.homepage_evidence")
     module.verify_report = lambda *_: None  # type: ignore[attr-defined]
     monkeypatch.setitem(sys.modules, "scripts.homepage_evidence", module)
     report = tmp_path / "homepage.json"
     report.write_text("{}")
-    if mutation == "wrong-plan":
-        plan["paper"]["catalog_sha256"] = "f" * 64
-        with pytest.raises(ValueError, match="catalog"):
-            papers.seal(site, plan, report)
-        assert not (site / "paper-publication.json").exists()
-        assert papers.read_json(site / "release.json") == plan["original_release"]
-        return
-    sealed = papers.seal(site, plan, report)
-    assert sealed["served_files"]["research-papers.json"] == plan["paper"]["catalog_sha256"]
-    monkeypatch.setattr(papers, "live_release", lambda: papers.read_json(site / "release.json"))
-    fetched = []
 
-    def fetch_public(name: str) -> bytes:
-        fetched.append(name)
-        if name == "research-papers.json":
-            if mutation == "missing":
-                raise OSError("Catalog unavailable")
-            if mutation == "tampered":
-                return papers.canonical({"papers": ["obsolete"]})
-        return (site / name).read_bytes()
+    with pytest.raises(ValueError, match="catalog.*source-bound"):
+        papers.seal(site, plan, report)
 
-    monkeypatch.setattr(papers, "fetch_public", fetch_public)
-    monkeypatch.setattr(time, "sleep", lambda _: None)
-    if mutation == "none":
-        assert papers.verify_live(sealed)["passed"] is True
-        assert fetched.count("research-papers.json") == 1
-    else:
-        with pytest.raises(TimeoutError, match="public edge"):
-            papers.verify_live(sealed)
-        assert fetched.count("research-papers.json") == 30
+    assert not (site / "paper-publication.json").exists()
+    assert (site / "release.json").read_bytes() == original_release
