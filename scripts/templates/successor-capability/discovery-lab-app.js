@@ -110,6 +110,7 @@ function mountDiscoveryLab({runtime, history}) {
             || selected.lineageQualified === false || !!savedState.locked || typeof history.workRequest !== 'function';
         byId('route').disabled = !idle;
         byId('export-account').disabled = !idle || typeof history.accountReceipt !== 'function';
+        for (const button of byId('events').querySelectorAll('button[data-campaign-digest]')) button.disabled = !idle;
         byId('reservation').textContent = manifestPending
             ? 'Apply the edited charter before construction. The previous frozen result does not validate unapplied changes.'
             : savedState.locked
@@ -235,17 +236,43 @@ function mountDiscoveryLab({runtime, history}) {
         byId('history-status').textContent = all.length
             ? all.length + ' retained campaigns in capability history ' + (savedState.workspaceId || '') + '. Earlier failures remain visible.'
             : 'No discovery-lab campaigns recorded.';
+        const selectedIndex = all.findIndex(record => record.campaignDigest && record.campaignDigest === selected?.campaignDigest);
+        byId('selection-status').textContent = selectedIndex >= 0
+            ? 'Showing campaign ' + (selectedIndex + 1) + ' · ' + outcomeState(all[selectedIndex])
+                + '. Choose a retained campaign to inspect or export its frozen result. Reload shows the latest retained result.'
+            : 'Choose a retained campaign to inspect its frozen result. Reload shows the latest retained result.';
         byId('events').replaceChildren();
         if (!all.length) node('li', byId('events'), 'No construction attempts yet.');
         for (const [index, record] of all.entries()) {
             const result = recordResult(record);
             const charter = recordCharter(record);
             const li = node('li', byId('events'));
+            const isSelected = Boolean(record.campaignDigest && record.campaignDigest === selected?.campaignDigest);
+            li.dataset.selected = String(isSelected);
             node('h4', li, 'Campaign ' + (index + 1) + ' · ' + outcomeState(record));
             node('p', li, charter ? charter.controls + ' controls · error ≤ ' + charter.accuracy
                 + ' · ' + charter.intendedUses + ' intended uses · ' + charter.topology + ' placement'
                 : 'Retained interruption or rejected attempt. Inspect its original event.');
             if (record.wrapperOutcome || result?.reason) node('p', li, record.wrapperOutcome || result.reason);
+            if (result && /^[0-9a-f]{64}$/.test(record.campaignDigest || '')) {
+                const button = node('button', li, 'Show campaign ' + (index + 1) + ' · ' + outcomeState(record));
+                button.type = 'button';
+                button.dataset.campaignDigest = record.campaignDigest;
+                button.setAttribute('aria-pressed', String(isSelected));
+                button.setAttribute('aria-controls', 'lab-outcome');
+                button.disabled = busy;
+                button.addEventListener('click', () => {
+                    if (busy) return;
+                    clearError();
+                    const matches = campaigns().filter(item => item.campaignDigest === button.dataset.campaignDigest && recordResult(item));
+                    if (matches.length !== 1) { error('This exact campaign is no longer uniquely available in the selected history.'); return; }
+                    renderResult(matches[0]);
+                    renderHistory();
+                    updateDraftState();
+                    message('Showing retained campaign ' + (index + 1) + '. No construction started. Export uses this frozen campaign; editable charter controls stay unchanged.');
+                    byId('result-heading').focus();
+                });
+            }
             const details = node('details', li);
             node('summary', details, 'Inspect this frozen campaign and its full evidence');
             const full = node('pre', details, json(record));
@@ -261,13 +288,15 @@ function mountDiscoveryLab({runtime, history}) {
             savedState = await history.state();
             if (!savedState || !Array.isArray(savedState.campaigns)) throw Error('The existing history bridge returned an unsupported state.');
             const all = campaigns();
-            const latest = all.at(-1);
-            if (latest && latest !== selected && recordResult(latest)) {
+            const matches = selected?.campaignDigest ? all.filter(record => record.campaignDigest === selected.campaignDigest) : [];
+            const retained = matches.length === 1 && recordResult(matches[0]) ? matches[0] : null;
+            const display = retained || [...all].reverse().find(record => recordResult(record)) || null;
+            if (display && display !== selected) {
                 const restoreCharter = selected === null && !editorTouched && !manifestPending;
-                renderResult(latest);
-                if (restoreCharter) fill(recordCharter(latest));
+                renderResult(display);
+                if (restoreCharter) fill(recordCharter(display));
             }
-            if (!all.length && selected) {
+            if (!display && selected) {
                 selected = null;
                 byId('outcome').hidden = true;
                 for (const name of ['comparison', 'resource', 'query']) byId(name + '-panel').hidden = true;

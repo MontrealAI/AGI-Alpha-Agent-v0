@@ -205,6 +205,7 @@ def browser_acceptance(entry: str, output: Path, expected_page_sha256: str) -> d
         "six-stage-accepted",
         "both-zero-cap-drafts",
         "edited-constraint-rejected",
+        "retained-campaign-selection",
         "stronger-successor",
         "history-reload",
         "resolved-accessibility",

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Shared bounded data language. Admission grants no execution authority.
+export const MAX_INPUT_BYTES = 2_000_000;
 function scalar(value) {
     if (typeof value !== 'string') return false;
     for (let i = 0; i < value.length; i++) {
@@ -12,12 +13,21 @@ function scalar(value) {
     return true;
 }
 export function canonical(value) {
-    let nodes = 0;
+    let nodes = 0, codeUnits = 0;
+    const charge = count => {
+        codeUnits += count;
+        if (codeUnits > MAX_INPUT_BYTES) throw Error('Canonical JSON exceeds 2 MB');
+    };
+    const token = text => { charge(text.length); return text; };
     function encode(item, depth = 0) {
         if (++nodes > 100000 || depth > 32) throw Error('JSON complexity exceeds limit');
-        if (item === null || typeof item === 'boolean') return JSON.stringify(item);
-        if (typeof item === 'string' && scalar(item)) return JSON.stringify(item);
-        if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return String(item);
+        if (Array.isArray(item) && item.length >= 100000) throw Error('JSON complexity exceeds limit');
+        if (item === null || typeof item === 'boolean') return token(JSON.stringify(item));
+        if (typeof item === 'string') {
+            if (item.length > MAX_INPUT_BYTES - 2) throw Error('Canonical JSON exceeds 2 MB');
+            if (scalar(item)) return token(JSON.stringify(item));
+        }
+        if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return token(String(item));
         if (item && typeof item === 'object') {
             const descriptors = Object.getOwnPropertyDescriptors(item);
             if (Reflect.ownKeys(item).some(key => typeof key !== 'string')) throw Error('Symbol data is unsupported');
@@ -33,18 +43,24 @@ export function canonical(value) {
         if (Array.isArray(item)) {
             if (Object.getPrototypeOf(item) !== Array.prototype) throw Error('Non-standard arrays are unsupported');
             for (let i = 0; i < item.length; i++) if (!Object.hasOwn(item, i)) throw Error('Sparse arrays are not JSON');
+            charge(2 + Math.max(0, item.length - 1));
             return '[' + item.map(v => encode(v, depth + 1)).join(',') + ']';
         }
         if (item && typeof item === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(item))) {
-            return '{' + Object.keys(item).sort().map(key => {
+            const keys = Object.keys(item).sort();
+            charge(2 + Math.max(0, keys.length - 1));
+            return '{' + keys.map(key => {
+                if (key.length > MAX_INPUT_BYTES - 3) throw Error('Canonical JSON exceeds 2 MB');
                 if (!/^[\x20-\x7e]+$/.test(key)) throw Error('Object keys must be printable ASCII');
-                return JSON.stringify(key) + ':' + encode(item[key], depth + 1);
+                return token(JSON.stringify(key) + ':') + encode(item[key], depth + 1);
             }).join(',') + '}';
         }
         throw Error('Unsupported JSON value; integers and Unicode scalars required');
     }
     const result = encode(value);
-    if (new TextEncoder().encode(result).length > 2000000) throw Error('Canonical JSON exceeds 2 MB');
+    if (result.length > MAX_INPUT_BYTES || new TextEncoder().encode(result).length > MAX_INPUT_BYTES) {
+        throw Error('Canonical JSON exceeds 2 MB');
+    }
     return result;
 }
 export const REQUEST_SCHEMA = 'successor-discovery-work-request/v1';
@@ -114,7 +130,8 @@ export async function parseWorkRequest(text) {
 }
 /** Parse untrusted imports before they can allocate large or deeply nested objects. */
 export function parseBounded(text) {
-    if (typeof text !== 'string' || new TextEncoder().encode(text).length > 2_000_000) throw Error('Import exceeds 2 MB');
+    if (typeof text !== 'string' || text.length > MAX_INPUT_BYTES
+        || new TextEncoder().encode(text).length > MAX_INPUT_BYTES) throw Error('Import exceeds 2 MB');
     let pos = 0, nodes = 0;
     const ws = () => { while (/[\x20\t\n\r]/.test(text[pos] || '\u0000')) pos++; };
     const string = () => {

@@ -28,6 +28,8 @@ def main() -> int:
         "LC_ALL",
         "VIRTUAL_ENV",
         "PLAYWRIGHT_BROWSERS_PATH",
+        "INSIGHT_ASSET_ROOT",
+        "FETCH_ASSETS_DIR",
     }
     env = {name: value for name, value in os.environ.items() if name in keep}
     # Resolve the compiler from the checked-in browser lockfile's installation,

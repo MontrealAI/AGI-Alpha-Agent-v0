@@ -153,7 +153,8 @@ class DiscoveryValidationTests(unittest.TestCase):
             "            'pageSha256': expected_page_sha256,\n"
             "            'campaigns': 4, 'checks': ['budget-inconclusive','six-stage-accepted',\n"
             "            'both-zero-cap-drafts',\n"
-            "            'edited-constraint-rejected','stronger-successor','history-reload','resolved-accessibility',\n"
+            "            'edited-constraint-rejected','retained-campaign-selection','stronger-successor',\n"
+            "            'history-reload','resolved-accessibility',\n"
             "            'responsive-390-320','keyboard','no-external-requests','exact-page-before-and-after']}\n"
         )
         with mock.patch.object(validation, "ROOT", self.root):
@@ -161,6 +162,9 @@ class DiscoveryValidationTests(unittest.TestCase):
                 self.page.as_uri(), self.root / "evidence", self.expected["pageSha256"]
             )
         self.assertEqual(result["output"], str((self.root / "evidence").resolve()))
+        browser.write_text(browser.read_text().replace("'retained-campaign-selection',", ""))
+        with mock.patch.object(validation, "ROOT", self.root), self.assertRaisesRegex(ValueError, "did not pass"):
+            validation.browser_acceptance(self.page.as_uri(), self.root / "evidence", self.expected["pageSha256"])
 
     def test_dirty_or_untracked_acceptance_inputs_cannot_claim_the_head_identity(self) -> None:
         for name in (

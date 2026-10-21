@@ -7,6 +7,8 @@ materials-testing mission. Visitors can change measurement accuracy, intended us
 operations, memory, worker placement, fault hypotheses, checkpoints and resource budgets. Those
 constraints drive construction and independent checking across all six stages. Failed and incomplete
 attempts remain in the same portable history as accepted predecessors.
+Visitors can select an earlier accepted campaign and export its still-qualified review draft after a
+later failure, without spending another construction attempt.
 
 The generated platform is frozen before threshold screening, inverse design and constrained selection.
 A four-control successor preserves the predecessor's original obligations and undergoes fresh finite

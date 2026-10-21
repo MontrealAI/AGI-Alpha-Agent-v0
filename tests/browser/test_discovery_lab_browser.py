@@ -7,7 +7,6 @@ import hashlib
 import json
 import os
 import shutil
-import tempfile
 import threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -53,13 +52,19 @@ def audit(page: Page, label: str) -> None:
     (OUTPUT / f"accessibility-{label}.json").write_text(json.dumps(result, indent=2))
 
 
+def download_json(page: Page, selector: str, destination: Path) -> dict[str, Any]:
+    """Retain the exact bytes emitted by an actual page download."""
+    with page.expect_download() as pending:
+        page.locator(selector).click()
+    pending.value.save_as(destination)
+    result: dict[str, Any] = json.loads(destination.read_text())
+    return result
+
+
 def download_request(page: Page, destination: Path, route: str) -> dict[str, Any]:
     """Inspect the actual emitted review draft, not a reconstructed request."""
     page.locator("#lab-route").select_option(route)
-    with page.expect_download() as pending:
-        page.locator("#lab-export-request").click()
-    pending.value.save_as(destination)
-    request: dict[str, Any] = json.loads(destination.read_text())
+    request = download_json(page, "#lab-export-request", destination)
     assert request["schema"] == "successor-discovery-work-request/v1"
     assert request["commission"]["capBaseUnits"] == "0"
     assert request["commission"]["status"] == "DRAFT_NOT_SUBMITTED"
@@ -99,7 +104,7 @@ def run_acceptance(entry: str, output: Path, *, expected_page_sha256: str | None
     errors: list[str] = []
     requests: list[str] = []
     try:
-        with tempfile.TemporaryDirectory(prefix="discovery-lab-browser-") as temporary, sync_playwright() as playwright:
+        with sync_playwright() as playwright:
             executable = os.environ.get("CHROMIUM_EXECUTABLE") or shutil.which("chromium")
             browser = playwright.chromium.launch(executable_path=executable)
             context = browser.new_context(accept_downloads=True, viewport={"width": 1440, "height": 1000})
@@ -149,10 +154,15 @@ def run_acceptance(entry: str, output: Path, *, expected_page_sha256: str | None
             assert page.locator("#lab-events > li").first.text_content() == first
             assert page.locator("#lab-stages > li").count() == 6
             assert page.locator("#lab-stages > li[data-state=accepted]").count() == 6
+            accepted_selector = (
+                page.locator("#lab-events > li").nth(1).get_by_role("button", name="Show campaign 2 · accepted")
+            )
+            accepted_digest = accepted_selector.get_attribute("data-campaign-digest")
+            assert accepted_digest is not None and len(accepted_digest) == 64
             audit(page, "accepted")
             page.locator("#discovery-lab").screenshot(path=str(OUTPUT / "desktop-accepted.png"))
-            manager = download_request(page, Path(temporary) / "manager.json", "USDC")
-            jobs = download_request(page, Path(temporary) / "jobs.json", "AGIALPHA")
+            manager = download_request(page, OUTPUT / "manager-initial-review-draft.json", "USDC")
+            jobs = download_request(page, OUTPUT / "jobs-initial-review-draft.json", "AGIALPHA")
             assert manager["commission"]["route"] == "manager-usdc"
             assert manager["commission"]["currency"] == "USDC6"
             assert jobs["commission"]["route"] == "jobs-agialpha"
@@ -169,6 +179,35 @@ def run_acceptance(entry: str, output: Path, *, expected_page_sha256: str | None
             expect(page.locator("#lab-outcome-summary")).to_contain_text("REJECTED")
             assert campaign_count(page) == 3
             assert page.locator("#lab-events > li").first.text_content() == first
+            expect(page.locator("#lab-export-request")).to_be_disabled()
+
+            # A later failure must not make its retained accepted predecessor unreachable.
+            accepted_selector = page.locator(f'button[data-campaign-digest="{accepted_digest}"]')
+            accepted_selector.focus()
+            page.keyboard.press("Enter")
+            expect(page.locator("#lab-result-heading")).to_be_focused()
+            expect(page.locator("#lab-outcome-summary")).to_contain_text("ACCEPTED")
+            expect(accepted_selector).to_have_attribute("aria-pressed", "true")
+            expect(page.locator("#lab-selection-status")).to_contain_text("Showing campaign 2 · accepted")
+            expect(page.locator("#lab-memory")).to_have_value("1")
+            assert campaign_count(page) == 3
+            assert download_request(page, OUTPUT / "manager-retained-review-draft.json", "USDC") == manager
+            assert download_request(page, OUTPUT / "jobs-retained-review-draft.json", "AGIALPHA") == jobs
+            expect(accepted_selector).to_have_attribute("aria-pressed", "true")
+            assert campaign_count(page) == 3
+            page.locator("#discovery-lab").screenshot(path=str(OUTPUT / "desktop-retained-selection.png"))
+
+            # Selection is view-only: reload clearly resets to the latest retained result.
+            selection_reload = page.reload()
+            assert selection_reload is not None and selection_reload.status == 200 and selection_reload.url == url
+            assert hashlib.sha256(selection_reload.body()).hexdigest() == loaded_page_hash
+            page.locator("#lab-public-confirmation").check()
+            idle(page)
+            assert campaign_count(page) == 3
+            expect(page.locator("#lab-outcome-summary")).to_contain_text("REJECTED")
+            expect(page.locator("#lab-selection-status")).to_contain_text("Showing campaign 3 · rejected")
+            expect(page.locator("#lab-selection-status")).to_contain_text("Reload shows the latest retained result")
+            expect(page.locator("#lab-export-request")).to_be_disabled()
 
             page.locator("#lab-successor").click()
             idle(page)
@@ -178,6 +217,19 @@ def run_acceptance(entry: str, output: Path, *, expected_page_sha256: str | None
             retained = page.locator("#lab-events").text_content()
             assert retained and "inconclusive" in retained and "accepted" in retained and "rejected" in retained
             page.locator("#discovery-lab").screenshot(path=str(OUTPUT / "desktop-successor.png"))
+            manager_successor = download_request(page, OUTPUT / "manager-review-draft.json", "USDC")
+            jobs_successor = download_request(page, OUTPUT / "jobs-review-draft.json", "AGIALPHA")
+            assert manager_successor["payloadDigest"] == jobs_successor["payloadDigest"]
+            assert manager_successor["commission"]["id"] == jobs_successor["commission"]["id"]
+            assert manager_successor["commission"]["branch"] != jobs_successor["commission"]["branch"]
+            workspace = download_json(page, "#export", OUTPUT / "browser-workspace.json")
+            assert workspace["missionId"] == manager_successor["missionId"]
+            resource_panel = page.locator("#lab-resource-panel")
+            resource_panel.locator("summary").click()
+            account = download_json(page, "#lab-export-account", OUTPUT / "browser-account.json")
+            assert account["schema"] == "discovery-lab-account-receipt/v1"
+            assert account["workspaceId"] == workspace["missionId"]
+            resource_panel.locator("summary").click()
             reloaded = page.reload()
             assert reloaded is not None and reloaded.status == 200 and reloaded.url == url
             reloaded_hash = hashlib.sha256(reloaded.body()).hexdigest()
@@ -200,6 +252,19 @@ def run_acceptance(entry: str, output: Path, *, expected_page_sha256: str | None
             expect(page.locator("#lab-uses")).to_be_focused()
             assert not errors, errors
             assert all(request.startswith(allowed_root) for request in requests), requests
+            artifacts = {}
+            for name in (
+                "manager-initial-review-draft.json",
+                "jobs-initial-review-draft.json",
+                "manager-retained-review-draft.json",
+                "jobs-retained-review-draft.json",
+                "manager-review-draft.json",
+                "jobs-review-draft.json",
+                "browser-workspace.json",
+                "browser-account.json",
+            ):
+                raw = (OUTPUT / name).read_bytes()
+                artifacts[name] = {"sha256": hashlib.sha256(raw).hexdigest(), "utf8Bytes": len(raw)}
             (OUTPUT / "journey.json").write_text(
                 json.dumps(
                     {
@@ -213,6 +278,7 @@ def run_acceptance(entry: str, output: Path, *, expected_page_sha256: str | None
                             "six-stage-accepted",
                             "both-zero-cap-drafts",
                             "edited-constraint-rejected",
+                            "retained-campaign-selection",
                             "stronger-successor",
                             "history-reload",
                             "resolved-accessibility",
@@ -225,6 +291,7 @@ def run_acceptance(entry: str, output: Path, *, expected_page_sha256: str | None
                         "pageErrors": errors,
                         "sourceHash": manifest["sourceHash"],
                         "pageSha256": loaded_page_hash,
+                        "artifacts": artifacts,
                     },
                     indent=2,
                 )

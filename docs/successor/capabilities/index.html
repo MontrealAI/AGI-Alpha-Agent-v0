@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UcomLbRZXcIsP6fXKsEpoM1EPJb6733ylFUl81cIl14='; style-src 'sha256-XcahuiSTfv0R80HR2dMenMvx1NbJgFAvfpgR9f8gCfs='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-KWm3mT0B9J4WKl0HOJnyvNC+LexH+GqCrE2KvVGM/n4='; style-src 'sha256-d9C9wFsCAZG3/SZYXaJ83ivVndvb7zo3950b5U+CVpA='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -300,6 +300,9 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
 .lab-history .section-heading > p { font-size: .8rem; }
 .lab-events { list-style: none; padding: 0; display: grid; gap: .8rem; margin-top: 1rem; }
 .lab-events > li { padding: 1rem; border: 1px solid #ffffff24; border-radius: 8px; background: #160f20; }
+.lab-events > li[data-selected="true"] { border-color: #dbc49c; }
+.lab-events button { margin: .75rem 0; }
+.lab-events button[aria-pressed="true"] { background: #40314e; border-color: #dbc49c; }
 .lab-events h4 { margin: 0; font-size: .88rem; }
 .lab-events p { margin-top: .5rem; font-size: .78rem; }
 .lab-events code { font-size: .68rem; }
@@ -390,7 +393,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </div>
     <section class="lab-successor" aria-labelledby="lab-successor-heading"><div><p class="eyebrow">03 · KEEP THE PARENT. RAISE THE PURPOSE.</p><h3 id="lab-successor-heading">Can this lab build its successor?</h3><p>A stronger charter adds a control setting and its update operation, with room for the required representation. Valid parent assets may survive; changed obligations need current acceptance. A failed successor leaves the accepted parent intact within its original scope.</p></div><div><button id="lab-successor" type="button" class="primary" disabled>Challenge with a stronger successor</button><p id="lab-successor-status" class="lab-help">First construct an accepted parent platform.</p></div></section>
     <section class="lab-routes" aria-labelledby="lab-route-heading"><div><p class="eyebrow">SAME MISSION · ONE ROUTE PER COMMISSION</p><h3 id="lab-route-heading">Review the next work order.</h3><p>The local replay is free. USDC and $AGIALPHA are alternative commission routes with separate caps and lifecycle requirements.</p></div><div><label for="lab-route">Proposed commission route</label><select id="lab-route"><option value="USDC">Jobs Manager · USDC</option><option value="AGIALPHA">Jobs v0 · $AGIALPHA</option></select><p id="lab-route-status" class="lab-help">DRAFT_NOT_SUBMITTED · No external executor is provisioned by this page.</p><button id="lab-export-request" type="button" disabled>Export zero-cap review draft</button></div></section>
-    <section class="lab-history" aria-labelledby="lab-history-heading"><div class="section-heading"><div><p class="eyebrow">04 · ONE EVIDENCE TRAIL</p><h3 id="lab-history-heading">Keep every attempt.</h3></div><p>Accepted, failed and inconclusive campaigns remain in the existing capability history. Importing evidence grants no authority or fresh acceptance.</p></div><p id="lab-history-status" class="lab-help">No discovery-lab campaigns recorded.</p><ol id="lab-events" class="lab-events"><li>No construction attempts yet.</li></ol><details><summary>Inspect source, model and charter bindings</summary><pre role="group" id="lab-bindings" tabindex="0" aria-label="Discovery lab identity bindings">No campaign.</pre></details><details><summary>What these results establish</summary><p class="lab-help">This is one bounded synthetic model inspired by seven distinct research papers. Their headline results are not combined here. A local finite checker establishes behavior within the supplied semantics; it is not an external scientific review, physical deployment, general intelligence result, revenue or token-value evidence.</p><p class="lab-help"><a href="../../discovery-lab/PAPER_TO_CODE.md">Read the paper-to-code map and reproduction guide</a> · <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850">Public integration evidence</a></p></details></section>
+    <section class="lab-history" aria-labelledby="lab-history-heading"><div class="section-heading"><div><p class="eyebrow">04 · ONE EVIDENCE TRAIL</p><h3 id="lab-history-heading">Keep every attempt.</h3></div><p>Accepted, failed and inconclusive campaigns remain in the existing capability history. Importing evidence grants no authority or fresh acceptance.</p></div><p id="lab-history-status" class="lab-help">No discovery-lab campaigns recorded.</p><p id="lab-selection-status" class="lab-help" role="status" aria-live="polite">Choose a retained campaign to inspect its frozen result. Reload shows the latest retained result.</p><ol id="lab-events" class="lab-events"><li>No construction attempts yet.</li></ol><details><summary>Inspect source, model and charter bindings</summary><pre role="group" id="lab-bindings" tabindex="0" aria-label="Discovery lab identity bindings">No campaign.</pre></details><details><summary>What these results establish</summary><p class="lab-help">This is one bounded synthetic model inspired by seven distinct research papers. Their headline results are not combined here. A local finite checker establishes behavior within the supplied semantics; it is not an external scientific review, physical deployment, general intelligence result, revenue or token-value evidence.</p><p class="lab-help"><a href="../../discovery-lab/PAPER_TO_CODE.md">Read the paper-to-code map and reproduction guide</a> · <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850">Public integration evidence</a></p></details></section>
     <noscript><p class="notice">JavaScript is required to construct the finite lab. No construction, qualification or work submission has occurred.</p></noscript>
 </section>
 
@@ -467,7 +470,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>c1d099d379becf19d60b55e269bed3862dfb4091e805a5436270ecdc6a0a027d</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>3775fb20316bdacf81808ee31b47359e364eab16905ea2972de4b179e64ebb49</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -2261,6 +2264,7 @@ return {compareCampaign};
 const capability_module_7=(()=>{
 // SPDX-License-Identifier: Apache-2.0
 // Shared bounded data language. Admission grants no execution authority.
+const MAX_INPUT_BYTES = 2_000_000;
 function scalar(value) {
     if (typeof value !== 'string') return false;
     for (let i = 0; i < value.length; i++) {
@@ -2273,12 +2277,21 @@ function scalar(value) {
     return true;
 }
 function canonical(value) {
-    let nodes = 0;
+    let nodes = 0, codeUnits = 0;
+    const charge = count => {
+        codeUnits += count;
+        if (codeUnits > MAX_INPUT_BYTES) throw Error('Canonical JSON exceeds 2 MB');
+    };
+    const token = text => { charge(text.length); return text; };
     function encode(item, depth = 0) {
         if (++nodes > 100000 || depth > 32) throw Error('JSON complexity exceeds limit');
-        if (item === null || typeof item === 'boolean') return JSON.stringify(item);
-        if (typeof item === 'string' && scalar(item)) return JSON.stringify(item);
-        if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return String(item);
+        if (Array.isArray(item) && item.length >= 100000) throw Error('JSON complexity exceeds limit');
+        if (item === null || typeof item === 'boolean') return token(JSON.stringify(item));
+        if (typeof item === 'string') {
+            if (item.length > MAX_INPUT_BYTES - 2) throw Error('Canonical JSON exceeds 2 MB');
+            if (scalar(item)) return token(JSON.stringify(item));
+        }
+        if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return token(String(item));
         if (item && typeof item === 'object') {
             const descriptors = Object.getOwnPropertyDescriptors(item);
             if (Reflect.ownKeys(item).some(key => typeof key !== 'string')) throw Error('Symbol data is unsupported');
@@ -2294,18 +2307,24 @@ function canonical(value) {
         if (Array.isArray(item)) {
             if (Object.getPrototypeOf(item) !== Array.prototype) throw Error('Non-standard arrays are unsupported');
             for (let i = 0; i < item.length; i++) if (!Object.hasOwn(item, i)) throw Error('Sparse arrays are not JSON');
+            charge(2 + Math.max(0, item.length - 1));
             return '[' + item.map(v => encode(v, depth + 1)).join(',') + ']';
         }
         if (item && typeof item === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(item))) {
-            return '{' + Object.keys(item).sort().map(key => {
+            const keys = Object.keys(item).sort();
+            charge(2 + Math.max(0, keys.length - 1));
+            return '{' + keys.map(key => {
+                if (key.length > MAX_INPUT_BYTES - 3) throw Error('Canonical JSON exceeds 2 MB');
                 if (!/^[\x20-\x7e]+$/.test(key)) throw Error('Object keys must be printable ASCII');
-                return JSON.stringify(key) + ':' + encode(item[key], depth + 1);
+                return token(JSON.stringify(key) + ':') + encode(item[key], depth + 1);
             }).join(',') + '}';
         }
         throw Error('Unsupported JSON value; integers and Unicode scalars required');
     }
     const result = encode(value);
-    if (new TextEncoder().encode(result).length > 2000000) throw Error('Canonical JSON exceeds 2 MB');
+    if (result.length > MAX_INPUT_BYTES || new TextEncoder().encode(result).length > MAX_INPUT_BYTES) {
+        throw Error('Canonical JSON exceeds 2 MB');
+    }
     return result;
 }
 const REQUEST_SCHEMA = 'successor-discovery-work-request/v1';
@@ -2375,7 +2394,8 @@ async function parseWorkRequest(text) {
 }
 /** Parse untrusted imports before they can allocate large or deeply nested objects. */
 function parseBounded(text) {
-    if (typeof text !== 'string' || new TextEncoder().encode(text).length > 2_000_000) throw Error('Import exceeds 2 MB');
+    if (typeof text !== 'string' || text.length > MAX_INPUT_BYTES
+        || new TextEncoder().encode(text).length > MAX_INPUT_BYTES) throw Error('Import exceeds 2 MB');
     let pos = 0, nodes = 0;
     const ws = () => { while (/[\x20\t\n\r]/.test(text[pos] || '\u0000')) pos++; };
     const string = () => {
@@ -2428,7 +2448,7 @@ function parseBounded(text) {
     return value;
 }
 
-return {canonical,REQUEST_SCHEMA,STAGES,RESOURCE_KEYS,BINDING_KEYS,payloadDigest,validateResources,validateBindings,validateWorkRequest,parseWorkRequest,parseBounded};
+return {MAX_INPUT_BYTES,canonical,REQUEST_SCHEMA,STAGES,RESOURCE_KEYS,BINDING_KEYS,payloadDigest,validateResources,validateBindings,validateWorkRequest,parseWorkRequest,parseBounded};
 })();
 const capability_module_4=(()=>{
 // SPDX-License-Identifier: Apache-2.0
@@ -5812,7 +5832,7 @@ const outEvolveEvaluation=capability_module_16;
 const discoveryLab=capability_module_4;
 const discoveryHistory=capability_module_3;
 const discoveryContract=capability_module_7;
-const SOURCE_HASH='c1d099d379becf19d60b55e269bed3862dfb4091e805a5436270ecdc6a0a027d';
+const SOURCE_HASH='3775fb20316bdacf81808ee31b47359e364eab16905ea2972de4b179e64ebb49';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -6976,7 +6996,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "0929e305a6d235774a6464662220e0ae454ec738fc42ffde6ba6f141d3217851", "sourceDigest": "c1d099d379becf19d60b55e269bed3862dfb4091e805a5436270ecdc6a0a027d"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "0929e305a6d235774a6464662220e0ae454ec738fc42ffde6ba6f141d3217851", "sourceDigest": "3775fb20316bdacf81808ee31b47359e364eab16905ea2972de4b179e64ebb49"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {
@@ -7089,6 +7109,7 @@ function mountDiscoveryLab({runtime, history}) {
             || selected.lineageQualified === false || !!savedState.locked || typeof history.workRequest !== 'function';
         byId('route').disabled = !idle;
         byId('export-account').disabled = !idle || typeof history.accountReceipt !== 'function';
+        for (const button of byId('events').querySelectorAll('button[data-campaign-digest]')) button.disabled = !idle;
         byId('reservation').textContent = manifestPending
             ? 'Apply the edited charter before construction. The previous frozen result does not validate unapplied changes.'
             : savedState.locked
@@ -7214,17 +7235,43 @@ function mountDiscoveryLab({runtime, history}) {
         byId('history-status').textContent = all.length
             ? all.length + ' retained campaigns in capability history ' + (savedState.workspaceId || '') + '. Earlier failures remain visible.'
             : 'No discovery-lab campaigns recorded.';
+        const selectedIndex = all.findIndex(record => record.campaignDigest && record.campaignDigest === selected?.campaignDigest);
+        byId('selection-status').textContent = selectedIndex >= 0
+            ? 'Showing campaign ' + (selectedIndex + 1) + ' · ' + outcomeState(all[selectedIndex])
+                + '. Choose a retained campaign to inspect or export its frozen result. Reload shows the latest retained result.'
+            : 'Choose a retained campaign to inspect its frozen result. Reload shows the latest retained result.';
         byId('events').replaceChildren();
         if (!all.length) node('li', byId('events'), 'No construction attempts yet.');
         for (const [index, record] of all.entries()) {
             const result = recordResult(record);
             const charter = recordCharter(record);
             const li = node('li', byId('events'));
+            const isSelected = Boolean(record.campaignDigest && record.campaignDigest === selected?.campaignDigest);
+            li.dataset.selected = String(isSelected);
             node('h4', li, 'Campaign ' + (index + 1) + ' · ' + outcomeState(record));
             node('p', li, charter ? charter.controls + ' controls · error ≤ ' + charter.accuracy
                 + ' · ' + charter.intendedUses + ' intended uses · ' + charter.topology + ' placement'
                 : 'Retained interruption or rejected attempt. Inspect its original event.');
             if (record.wrapperOutcome || result?.reason) node('p', li, record.wrapperOutcome || result.reason);
+            if (result && /^[0-9a-f]{64}$/.test(record.campaignDigest || '')) {
+                const button = node('button', li, 'Show campaign ' + (index + 1) + ' · ' + outcomeState(record));
+                button.type = 'button';
+                button.dataset.campaignDigest = record.campaignDigest;
+                button.setAttribute('aria-pressed', String(isSelected));
+                button.setAttribute('aria-controls', 'lab-outcome');
+                button.disabled = busy;
+                button.addEventListener('click', () => {
+                    if (busy) return;
+                    clearError();
+                    const matches = campaigns().filter(item => item.campaignDigest === button.dataset.campaignDigest && recordResult(item));
+                    if (matches.length !== 1) { error('This exact campaign is no longer uniquely available in the selected history.'); return; }
+                    renderResult(matches[0]);
+                    renderHistory();
+                    updateDraftState();
+                    message('Showing retained campaign ' + (index + 1) + '. No construction started. Export uses this frozen campaign; editable charter controls stay unchanged.');
+                    byId('result-heading').focus();
+                });
+            }
             const details = node('details', li);
             node('summary', details, 'Inspect this frozen campaign and its full evidence');
             const full = node('pre', details, json(record));
@@ -7240,13 +7287,15 @@ function mountDiscoveryLab({runtime, history}) {
             savedState = await history.state();
             if (!savedState || !Array.isArray(savedState.campaigns)) throw Error('The existing history bridge returned an unsupported state.');
             const all = campaigns();
-            const latest = all.at(-1);
-            if (latest && latest !== selected && recordResult(latest)) {
+            const matches = selected?.campaignDigest ? all.filter(record => record.campaignDigest === selected.campaignDigest) : [];
+            const retained = matches.length === 1 && recordResult(matches[0]) ? matches[0] : null;
+            const display = retained || [...all].reverse().find(record => recordResult(record)) || null;
+            if (display && display !== selected) {
                 const restoreCharter = selected === null && !editorTouched && !manifestPending;
-                renderResult(latest);
-                if (restoreCharter) fill(recordCharter(latest));
+                renderResult(display);
+                if (restoreCharter) fill(recordCharter(display));
             }
-            if (!all.length && selected) {
+            if (!display && selected) {
                 selected = null;
                 byId('outcome').hidden = true;
                 for (const name of ['comparison', 'resource', 'query']) byId(name + '-panel').hidden = true;

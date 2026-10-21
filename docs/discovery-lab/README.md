@@ -63,6 +63,9 @@ retain that session observation. Identical immutable evidence may reuse its alre
 same loaded runtime; this is neither a fresh experiment nor external acceptance.
 
 Elapsed receipts are self-reported local observations; importing them does not repeat their measurement.
+Use each history entry's **Show campaign** control to inspect an earlier frozen result after a later failure.
+Selection does not run construction or change the edited charter; review exports still require current
+source and lineage qualification. Reload explicitly opens the latest retained result.
 An overrun retains the finite program but makes wrapper qualification inconclusive and prevents parent reuse
 or commission export. Acquisitions, logical work, encoded bytes and virtual workers are different units.
 Currency caps remain zero. No industrial or economic savings are inferred from these counts.
