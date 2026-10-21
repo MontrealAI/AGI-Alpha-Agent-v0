@@ -13,6 +13,7 @@
 - Retain independent checking, frozen reuse, scope-compatible successors and complete unsuccessful comparisons and costs.
 - Preserve pending checkpoints, failed saves, archived histories and report-capacity limits before further evaluation.
 - Refresh release metadata and deterministic gallery/cache identities without changing runtime or publication gates.
+- Update certifi to 2026.10.19 with verified distribution hashes in the operator, CPU demo and MuZero release locks.
 - Preserve published v1.36.0, all original papers including Out-Strategise, and separate USDC/$AGIALPHA routes.
 - Require fresh exact-release acceptance; the compatible Jobs/Fleet release set remains incomplete.
 - See [release notes](docs/agent/RELEASE_NOTES_1.37.0.md) for source evidence, recovery and limits.
