@@ -6,6 +6,10 @@ This repository is a conceptual research prototype. References to "AGI" and "sup
 <!-- Reminder: keep the Insight Browser bundle under 6&nbsp;MB -->
 
 # Checks
+Local hook checks are recommended, not a prerequisite for opening a draft or pull request.
+Record actual outcomes below and explain failed or unrun checks in Testing. Required hosted merge
+and release checks remain unchanged; an explanation does not waive them.
+
 - [ ] I ran `pre-commit run --files <paths>`
 - [ ] I ran `pre-commit run --all-files`
 - [ ] I ran `python check_env.py --auto-install`

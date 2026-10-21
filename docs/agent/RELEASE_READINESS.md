@@ -1,6 +1,24 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.36.0 source candidate
+# Release readiness — 1.37.0 source candidate
+
+Version **1.37.0** prepares the already merged capability workspace and bounded Out-Evolve constructor
+for a new release. The [release notes](RELEASE_NOTES_1.37.0.md) identify the synthetic scope, preserved
+checks and compatibility boundaries. Source baseline `d8857ba56420c6a34c29cc74831f274d6e767560`
+has successful post-merge Smoke Test and Integration CI runs; that does not qualify the later release commit.
+The unchanged Agent release acceptance workflow must pass on the exact 1.37.0 source, package it,
+verify public served bytes and re-downloaded assets, then publish. Existing tags and assets are not replaced.
+
+Published [v1.36.0](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.36.0) identifies
+`a6d20a93c7c5b7430bf42d2367701b350513e90d`. Its original artifacts retain their source-specific validity,
+not acceptance of the later capability additions. A compatible current Jobs/Fleet release set remains
+incomplete. No deployment, activation, signing, funding, general invention or revenue result is authorized
+or established. USDC6 and AGIALPHA18 routes, original papers and existing functionality remain separate
+and unchanged.
+
+## Previous source proposal — 1.36.0
+
+The following preparation-time record is preserved; use the published release above for its actual delivery identity.
 
 Version **1.36.0** adds bounded transformational discovery and the shared inert TI project.
 The [release proposal](RELEASE_NOTES_1.36.0.md) and [implementation register](TRANSFORMATIONAL_IMPLEMENTATION.md)

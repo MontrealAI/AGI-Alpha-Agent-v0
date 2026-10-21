@@ -7,7 +7,7 @@
 [Launch Demo](../utils/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.36.0
+## Current runnable path — 1.37.0
 
 **Mode:** Library. Shared notices and isolated demo code evaluation helpers.
 
