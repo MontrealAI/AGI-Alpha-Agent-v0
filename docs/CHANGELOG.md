@@ -1,3 +1,13 @@
+## 1.37.0 — Bounded reusable capability construction (source candidate)
+
+- Include the additive capability workspace and generated Out-Evolve compositions over finite synthetic apparatus models.
+- Retain independent checking, frozen reuse, scope-compatible successors and complete unsuccessful comparisons and costs.
+- Preserve pending checkpoints, failed saves, archived histories and report-capacity limits before further evaluation.
+- Refresh release metadata and deterministic gallery/cache identities without changing runtime or publication gates.
+- Preserve published v1.36.0, all original papers including Out-Strategise, and separate USDC/$AGIALPHA routes.
+- Require fresh exact-release acceptance; the compatible Jobs/Fleet release set remains incomplete.
+- See [release notes](agent/RELEASE_NOTES_1.37.0.md) for source evidence, recovery and limits.
+
 ## 1.36.0 — Bounded transformational discovery (source candidate)
 
 - Add durable public-source discovery, frozen comparisons, exact-clause evidence and retained failures.

@@ -286,12 +286,13 @@ for modules, classes and functions.
 pre-commit install
 python check_env.py --auto-install   # add --wheelhouse <dir> when offline
 pre-commit run --all-files   # run once after installation
-pre-commit run --files <paths>   # before each commit
+pre-commit run --files <paths>   # recommended local feedback before each commit
 ```
 
-  - Re-run `pre-commit run --all-files` whenever `requirements.txt`, `requirements-dev.txt`,
-    `.pre-commit-config.yaml`, `pyproject.toml`, `mypy.ini`, or other lint configs change.
-    **CI enforces these checks.**
+  - A local `pre-commit run --all-files` is recommended whenever `requirements.txt`,
+    `requirements-dev.txt`, `.pre-commit-config.yaml`, `pyproject.toml`, `mypy.ini`, or other lint configs change.
+    Local hook completion is not a prerequisite for opening a draft or pull request. Disclose failed or unrun
+    checks and their reason; never report them as passing. Required hosted checks remain unchanged.
   - After editing `alpha_factory_v1/core/utils/a2a.proto`, run `pre-commit run --files alpha_factory_v1/core/utils/a2a.proto`
     to regenerate and verify protobuf sources.
   - Run `python tools/update_actions.py` before committing workflow changes to
@@ -330,10 +331,10 @@ install dependencies without internet access.
 - Ensure `git status` shows a clean working tree before committing.
 - Remove stray build artifacts with `git clean -fd` if needed.
 - Large bundle artifacts (`*.bundle.js` and `*.bundle.js.map`) are marked as generated in `.gitattributes` so search tools skip them.
-  - Follow the [Quick Checklist](CONTRIBUTING.md#quick-checklist) before committing.
-    Run `python scripts/check_python_deps.py`, `python check_env.py --auto-install`,
-    `pre-commit run --all-files` and `pytest`. Document any remaining test failures
-    in the PR description.
+  - Use the [Quick Checklist](CONTRIBUTING.md#quick-checklist) during development.
+    Run the applicable dependency/environment checks and tests; local pre-commit is recommended feedback
+    when available, not a prerequisite for opening a draft or pull request. Document failed or unrun checks
+    and their reason in the PR description. Required hosted merge and release checks are not waived.
 - See [tests/README.md](tests/README.md) for details on running the suite locally,
   including setting `PYTHONPATH` or installing in editable mode.
 - Summarize your changes and test results in the PR body.
@@ -349,9 +350,13 @@ install dependencies without internet access.
   ```
 - Issue reports should follow the templates under [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/).
 - Pull requests should follow [`pull_request_template.md`](.github/pull_request_template.md). Fill out
-  all sections to confirm linting, type checks and tests pass.
-  - Ensure `pre-commit` passes locally; the CI pipeline runs the same hooks and will fail if they do not.
-  - CI jobs lint only changed files when triggered by a push or pull request using `pre-commit run --from-ref ${{ github.event.before }} --to-ref ${{ github.sha }}`. Manual or scheduled runs still execute `pre-commit run --all-files` and fail on any hook errors.
+  all sections with actual lint, type-check and test outcomes, including checks not run.
+  - Local pre-commit checks are recommended. Their absence or failure does not prevent opening a draft
+    or pull request; disclose the limitation rather than claiming a pass. This does not authorize disabling
+    installed hooks, bypassing access restrictions or waiving required hosted checks.
+  - Canonical PR CI provides `Lint (ruff)` and `Smoke tests`; it is not the complete release hook campaign.
+    Full Integration CI runs on main, release tags or manual dispatch. Existing exact-main CI and Agent
+    release acceptance gates, including their full hook checks, remain required before publication.
 
 ### Starting the CI Pipeline
 You can manually trigger the CI run from the GitHub UI:

@@ -65,17 +65,18 @@ If you skip the setup script, manually install these tools with
 `tools/setup_precommit.sh` to install `pre-commit` and configure the hook
 without the full environment setup.
 
-Install the git hooks once and run them before each commit. Always
-execute `pre-commit run --files <changed-files>` prior to committing to
-catch lint errors early:
+Install the git hooks once. Running `pre-commit run --files <changed-files>` locally is
+recommended feedback to catch lint errors early, not a prerequisite for opening a draft or pull request:
 
 ```bash
 pre-commit install
 python check_env.py --auto-install  # add --wheelhouse <dir> when offline
 pre-commit run --all-files   # first time to set up caches
 ```
-Run `pre-commit run --all-files` again before opening a pull request to ensure
-repository-wide checks pass.
+A local `pre-commit run --all-files` is recommended for repository-wide feedback. If it cannot run
+or fails, a draft or pull request may still be opened: disclose the check, outcome and reason. Never
+claim an unrun or failed check passed. Existing hooks, access restrictions and required hosted merge
+and release checks remain unchanged; this policy does not authorize bypassing them.
 - Large bundle artifacts (`*.bundle.js` and `*.bundle.js.map`) are marked as generated in `.gitattributes`, so pre-commit and search tools ignore them.
 Use `pre-commit run --files docs/demos/<page>.md` to catch missing preview
 images. Each page under `docs/demos/` must start with a preview image using
@@ -87,26 +88,27 @@ You can also run it manually:
 
 ```bash
 pre-commit run --files .github/workflows/ci.yml
+```
 
 ## Quick Checklist
 
 Ensure **Python 3.11–3.13** and **Node.js 22** are installed before running the tools.
-Before committing, run `pre-commit run --files <changed-files>` to lint only your modifications.
+For early local feedback, `pre-commit run --files <changed-files>` is recommended to lint your modifications.
 
-Before opening a pull request, verify the environment and run the tests:
+Use these checks during development and record their actual outcomes in the pull request:
 
 ```bash
 python scripts/check_python_deps.py
 python check_env.py --auto-install
-pre-commit run --files <changed-files>  # ensure this passes before running tests
+pre-commit run --files <changed-files>  # recommended local feedback
 pytest
-pre-commit run --all-files
+pre-commit run --all-files  # recommended repository-wide local feedback
 ```
-The CI workflow automatically lints just the diff using
-`pre-commit run --from-ref ${{ github.event.before }} --to-ref ${{ github.sha }}`
-when triggered by a push or pull request. Manual or scheduled runs fall back to
-`pre-commit run --all-files`.
-```
+Local hook completion is not a prerequisite for draft or pull-request submission. Disclose failing
+or unrun checks rather than treating the list as a claim of success. Canonical PR CI provides
+`Lint (ruff)` and `Smoke tests`; full Integration CI runs on main, release tags or manual dispatch.
+Required hosted merge checks, exact-main CI and the complete Agent release acceptance gates, including
+their full hook checks, remain unchanged and must pass before publication.
 
 See [AGENTS.md](AGENTS.md#pull-requests) for more details.
 

@@ -35,6 +35,12 @@ Browser preparation is free. Execution, participant review and settlement requir
 These five current records are separate from the older 29-address ecosystem snapshots below.
 Existing wallet profiles retain their pinned historical addresses; publication does not migrate them.
 
+**Current contribution policy:** Local pre-commit checks are recommended feedback, not a prerequisite
+for opening a draft or pull request. Disclose failed or unrun checks and their reason; do not claim a pass.
+This current policy supersedes historical local-hook submission prerequisites in the preserved guide below.
+Installed hooks, access restrictions and required hosted merge/release checks are unchanged and not waived.
+See [Contributing](CONTRIBUTING.md#pre-commit-hooks) and [agent guidance](AGENTS.md#pull-requests).
+
 <!-- /current-entrypoints -->
 
 > **[Find a valuable opportunity. Invent a better approach. Build what matters. →](https://montrealai.github.io/AGI-Alpha-Agent-v0/successor/alpha/)**
@@ -44,12 +50,14 @@ Existing wallet profiles retain their pinned historical addresses; publication d
 > need proof review. The configured browser runner retains observed work for your review.
 > [English / Français guide and reproduction](docs/agent/SUCCESSOR_ALPHA.md).
 
-> **Current source candidate · 1.36.0.** [Start here](docs/agent/START_HERE.md) ·
-> [Release notes](docs/agent/RELEASE_NOTES_1.36.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
-> Version 1.36.0 adds bounded transformational discovery, retained comparisons and a shared inert project journey.
-> It preserves the 1.35.1 public-document reader and complete Computer Use history. Exact-source release qualification is pending.
-> Version 1.34.0 and its deployment/publication evidence remain unchanged. Use matching published assets
-> from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases); a source label alone is not publication.
+> **Current source candidate · 1.37.0.** [Start here](docs/agent/START_HERE.md) ·
+> [Release notes](docs/agent/RELEASE_NOTES_1.37.0.md) · [Release evidence and supported scope](docs/agent/RELEASE_READINESS.md).
+> Version 1.37.0 adds the capability workspace and bounded Out-Evolve constructor, independent checking,
+> frozen reuse and retained successor histories. These are synthetic software mechanisms, not physical deployment or general invention.
+> Published v1.36.0 and its source-bound artifacts remain unchanged; they do not contain these later additions.
+> Exact-source 1.37.0 release qualification and Jobs/Fleet compatibility remain separate gates.
+> Use matching published assets from [Releases](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases);
+> a source label or feature merge alone is not publication.
 
 > **Find your Alpha. Build your SUCCESSOR Ω. · Computer Use expansion.**
 > Define a useful outcome, prepare screenshot-and-keyboard/mouse work, and retain its results in the same project.
