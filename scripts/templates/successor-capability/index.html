@@ -1,0 +1,79 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#160c2f">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src '{{SCRIPT_HASH}}'; style-src '{{STYLE_HASH}}'; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <title>SUCCESSOR Ω · Capability workshop</title>
+    <style>{{STYLE}}</style>
+</head>
+<body>
+<a class="skip" href="#workspace">Skip to capability workshop</a>
+<header class="wrap site-header">
+    <a href="../" class="brand"><span class="brand-symbol" aria-hidden="true">Ω</span><span>SUCCESSOR Ω<small>THE CAPABILITY WORKSHOP</small></span></a>
+    <nav aria-label="Project navigation" class="top-nav"><a href="../discover/">Find your Alpha</a><a href="../mission/">Existing journey</a><button type="button" id="text-size" aria-pressed="false">Larger text</button></nav>
+</header>
+<main class="wrap" id="workspace">
+    <section class="hero" aria-labelledby="hero-title">
+        <div><p class="eyebrow">BUILD WHAT MAKES MORE POSSIBLE.</p><h1 id="hero-title">Not just one answer.<br><em>A new capability.</em></h1><p class="hero-description">An instrument. A new representation. An experimental or productive architecture. Start with an unmet need, challenge a limiting assumption, and design something an entire family of discoveries and businesses could build upon.</p><a class="button primary" href="#brief-heading">Shape your capability <span aria-hidden="true">↓</span></a></div>
+        <section class="possibility-card" aria-labelledby="how-heading"><span class="possibility-symbol" aria-hidden="true">α → Ω</span><h2 id="how-heading">Keep the ambition.<br>Make the evidence precise.</h2><ol><li><strong>Frame the possibility</strong><span>Name what is missing, not just a task to automate.</span></li><li><strong>Construct and test</strong><span>Freeze a proposal. Optionally test the supported synthetic instrument.</span></li><li><strong>Build its successor</strong><span>Keep every version and its evidence. Make the next change explicit.</span></li></ol><p class="fine-print">This browser does not build arbitrary described inventions. A proposal remains a proposal until its actual construction and evaluation exist.</p></section>
+    </section>
+    <section class="scope-strip" aria-label="What works today"><article><span class="scope-mark" aria-hidden="true">01</span><div><h2>Open-ended design</h2><p>Your brief is not reduced to a canned automation.</p></div></article><article><span class="scope-mark" aria-hidden="true">02</span><div><h2>Bounded local computation</h2><p>One optional synthetic witness. No external execution.</p></div></article><article><span class="scope-mark" aria-hidden="true">03</span><div><h2>Versioned evidence</h2><p>Frozen inputs, retained failures, explicit successors.</p></div></article></section>
+    <nav class="workshop-steps" aria-label="Workshop steps"><a href="#brief-heading">1 · Shape the brief</a><a href="#witness-heading">2 · Choose the instrument</a><a href="#evidence-heading">3 · Inspect evidence</a><a href="#history-heading">4 · Review history</a></nav>
+    <noscript><p class="notice">JavaScript is required for the local workshop. No proposal has been saved, constructed or evaluated.</p></noscript>
+    <div id="status" class="status" role="status" aria-live="polite">Preparing the local workshop…</div>
+    <p id="error" class="error" role="alert" hidden></p>
+    <section id="recovery" class="recovery panel" aria-labelledby="recovery-heading" hidden>
+        <p class="eyebrow">PROTECTED UNSAVED HISTORY</p><h2 id="recovery-heading">Keep this copy before moving on.</h2>
+        <p id="recovery-summary"></p><p>The candidate below has not been confirmed in local storage. A download attempt is not proof that the file was retained. Other histories cannot replace this copy until you explicitly acknowledge keeping its recovery file.</p>
+        <div class="actions"><button type="button" id="recovery-export">Download recovery history</button><button type="button" id="recovery-retry">Retry the same save</button><button type="button" id="recovery-confirm" disabled>I kept this recovery file</button></div>
+        <p id="recovery-retained" class="fine-print"></p>
+    </section>
+    <section class="library panel" aria-labelledby="library-heading">
+        <div class="section-heading"><div><p class="eyebrow">RETURN TO THE WORK</p><h2 id="library-heading">Your capability histories</h2></div><p>Browser storage is local to this origin and device, not a backup. Keep an exported copy.</p></div>
+        <div class="library-controls"><div class="grow"><label for="saved">Saved workspaces</label><select id="saved" disabled><option value="">No workspace selected</option></select></div><button type="button" id="open" disabled>Open saved</button><button type="button" id="new" disabled>New brief</button><button type="button" id="export" disabled>Export whole history</button></div>
+        <label class="checkbox-label public-confirmation" for="public-confirmation"><input id="public-confirmation" type="checkbox" disabled><span>I confirm that the brief or history I save or import contains only public, non-personal material I may use.</span></label>
+        <div class="import-row"><label for="import">Import a whole-history JSON file</label><input id="import" type="file" accept="application/json,.json" disabled></div>
+        <p id="identity" class="fine-print">No frozen version yet.</p>
+        <p class="fine-print">Already have a project? <a href="../mission/">Keep using your existing journey</a>. This additive workshop does not migrate, replace or change it. <a href="../../agent/GUIDED_SUCCESSOR_JOURNEY/">Read the existing journey guide</a>.</p>
+    </section>
+    <div class="workshop-layout">
+        <form id="brief-form" class="panel editor" aria-labelledby="brief-heading">
+            <div class="section-heading"><div><p class="eyebrow" id="editor-eyebrow">01 · DESIGN THE POSSIBILITY</p><h2 id="brief-heading">What should become possible?</h2></div><span id="draft-badge" class="badge">Unsaved proposal</span></div>
+            <p>Use public, non-personal examples only. Complete every field, naming unknowns honestly. The title is limited to 160 characters; each other brief field to 2,000.</p>
+            <div id="framing-fields" class="field-grid"></div>
+            <fieldset><legend>The construction</legend><p class="field-intro">Describe the new thing itself, the useful outcome it preserves, and what would count as a real test.</p><div id="construction-fields" class="field-grid"></div></fieldset>
+            <fieldset><legend>A family, not a one-off</legend><p class="field-intro">Explain what another person or project could reuse, and where the idea may stop working.</p><div id="reuse-fields" class="field-grid"></div></fieldset>
+            <fieldset><legend>Economic assumptions, not commitments</legend><p class="field-intro">These are hypotheses to investigate, not customers, financing, revenue, savings or adoption established by this page. Write “unknown” where there is no evidence.</p><div id="economics-fields" class="field-grid"></div></fieldset>
+            <fieldset class="witness-fieldset"><legend id="witness-heading">Optional: a bounded synthetic witness</legend><label class="checkbox-label" for="witness-enabled"><input id="witness-enabled" type="checkbox" disabled><span>Include the supported synthetic measurement instrument</span></label><p id="witness-limit">This fixed, bounded instrument is an optional test bed, not a translation or execution of your blue-sky description. Unrelated instruments, representations and architectures are not constructed here. The brief remains a proposal even when this separate witness passes.</p><div id="experiment-editor" hidden><label for="experiment">Synthetic instrument configuration · JSON data only</label><textarea id="experiment" rows="12" spellcheck="false" aria-describedby="witness-limit" disabled></textarea><p class="fine-print">Only the model’s supported configuration is accepted. No code, URLs, plugins or arbitrary expressions are executed.</p></div></fieldset>
+            <div id="successor-reason-field" hidden><label for="successor-reason">Why does this successor deserve a new version?</label><textarea id="successor-reason" maxlength="2000" rows="3" disabled></textarea><p class="fine-print">Name the lesson, failed assumption or deliberate change. Earlier evidence stays attached to the version that produced it.</p></div>
+            <div class="actions"><button id="freeze" type="submit" class="primary" disabled>Save &amp; freeze version 1</button><button id="start-successor" type="button" disabled>Develop a successor</button><button id="revert" type="button" disabled>Restore frozen inputs</button><button id="export-draft" type="button" disabled>Download working draft</button></div>
+            <p id="draft-state" class="inline-note">Saving a proposal does not execute or validate it.</p>
+        </form>
+        <aside class="workspace-aside">
+            <section class="panel evidence-panel" aria-labelledby="evidence-heading">
+                <p class="eyebrow">02 · MEASURE ONLY WHAT EXISTS</p><h2 id="evidence-heading">Evidence for this version</h2>
+                <p id="version-state" class="evidence-state">No validation yet.</p><p id="version-detail">First save a frozen version. A plain brief has no executable construction here.</p>
+                <div class="evidence-actions"><button id="development" type="button" class="primary" disabled>Construct &amp; test on development cases</button><button id="heldout" type="button" disabled>Evaluate unchanged held-out reuse</button></div>
+                <p id="run-gate" class="fine-print">Execution is disabled until a supported witness is frozen, saved and unchanged.</p>
+                <div class="phase-card"><p class="eyebrow">DEVELOPMENT</p><h3 id="development-state">Not evaluated</h3><p id="development-summary" class="fine-print">No construction or measurements recorded.</p><details><summary>Inspect the full development report</summary><pre id="development-report" tabindex="0" role="group" aria-label="Full development report">No development report.</pre></details></div>
+                <div class="phase-card"><p class="eyebrow">HELD-OUT SYNTHETIC CASES</p><h3 id="heldout-state">Not evaluated</h3><p id="heldout-summary" class="fine-print">No construction or measurements recorded.</p><details><summary>Inspect the full held-out report</summary><pre id="heldout-report" tabindex="0" role="group" aria-label="Full held-out report">No held-out report.</pre></details></div>
+                <p id="exposure-summary" class="exposure-note">No synthetic cases evaluated yet.</p>
+                <p class="fine-print">Held-out means a separate fixed synthetic set, not secret or independently protected data. Viewing and retesting public cases can inform later choices. A synthetic pass is not scientific validation, independent certification, general intelligence or business proof.</p>
+            </section>
+            <section class="panel limits-panel" aria-labelledby="limits-heading"><p class="eyebrow">KEEP THE BOUNDARY VISIBLE</p><h2 id="limits-heading">What this does not do</h2><ul><li>No model provider, external lab or arbitrary-code runner is connected.</li><li>No real-world experiment, deployment, commissioning, payment or financing occurs.</li><li>Beneficiaries, market demand, realized value and adoption remain unverified hypotheses.</li><li>Hashes check consistency, not authorship, truth or independent approval.</li><li>A successor starts without active evidence. A prior version’s pass does not transfer.</li></ul></section>
+        </aside>
+    </div>
+    <section class="panel history-panel" aria-labelledby="history-heading">
+        <div class="section-heading"><div><p class="eyebrow">03 · KEEP WHAT YOU LEARNED</p><h2 id="history-heading">A lineage you can inspect.</h2></div><p>Original briefs, frozen configurations, development results and held-out evidence stay with their own versions. Nothing here authorizes reuse in the outside world.</p></div>
+        <ol id="version-list" class="version-list"><li>No frozen versions yet.</li></ol>
+        <details><summary>Inspect the complete event history</summary><pre id="history-json" tabindex="0" role="group" aria-label="Complete workspace history">No workspace history.</pre></details>
+    </section>
+    <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
+</main>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>{{SOURCE_HASH}}</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<script>{{SCRIPT}}</script>
+</body>
+</html>

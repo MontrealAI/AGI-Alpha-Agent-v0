@@ -2,6 +2,14 @@
 
 [Research disclaimer](../DISCLAIMER_SNIPPET.md)
 
+## Develop a capability, not just a task
+
+[Open the additive capability workshop](../successor/capabilities/index.html) to describe an unmet problem family,
+challenge a restrictive assumption and retain a sequence of proposed constructions and exact evidence. An optional
+bounded synthetic instrument can be constructed and tested; arbitrary blue-sky proposals remain explicitly untested.
+Existing Alpha discovery, Jobs/Fleet journeys and their history are unchanged.
+See [implemented functions and limits](CAPABILITY_DEVELOPMENT.md).
+
 ## New here? Take a lab home / Emportez votre laboratoire
 
 [Create your personal SUCCESSOR Ω](../successor/play/index.html). Give it a nickname, choose a challenge,

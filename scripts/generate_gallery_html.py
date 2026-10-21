@@ -207,6 +207,7 @@ def insert_back_link(pages: Iterable[Path]) -> None:
             ("successor", "mission", "index.html"),
             ("successor", "discover", "index.html"),
             ("successor", "evaluate", "index.html"),
+            ("successor", "capabilities", "index.html"),
         ):
             continue  # The portable lab already has absolute online return links.
         text = page.read_text(encoding="utf-8")
@@ -416,6 +417,11 @@ def main() -> None:
         "scripts.generate_successor_build" if __package__ else "generate_successor_build"
     )
     successor_build.build(REPO_ROOT)
+    if (REPO_ROOT / "scripts/templates/successor-capability/index.html").is_file():
+        capability = importlib.import_module(
+            "scripts.generate_successor_capability" if __package__ else "generate_successor_capability"
+        )
+        capability.build(REPO_ROOT)
     if (REPO_ROOT / "scripts/templates/successor-alpha/index.html").is_file():
         flagship = importlib.import_module(
             "scripts.generate_successor_alpha" if __package__ else "generate_successor_alpha"
