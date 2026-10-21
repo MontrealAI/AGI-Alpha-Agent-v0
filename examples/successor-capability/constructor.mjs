@@ -120,12 +120,18 @@ function matchingParent(apparatus, parent) {
     if (!proof.ok) reject('Parent capability does not independently qualify.');
     if (!equal(parent.apparatus.channels, apparatus.channels) || !equal(parent.apparatus.edges, apparatus.edges)
         || parent.apparatus.tolerance !== apparatus.tolerance) reject('Stale parent apparatus contract.');
-    const assets = [];
     for (const id of parent.ast.installations) {
         const before = parent.apparatus.primitives.find(primitive => primitive.id === id);
         const after = apparatus.primitives.find(primitive => primitive.id === id);
         if (!before || !after || !equal(before, after)) reject('Stale parent installation semantics.');
-        assets.push(id);
+    }
+    const assets = [];
+    // A valid parent orders each installation after its guards. Removing an unsupported
+    // installation also removes its dependent installations, without changing semantics.
+    for (const id of parent.ast.installations) {
+        const primitive = apparatus.primitives.find(item => item.id === id);
+        if (apparatus.scope.every(scope => primitive.support.scopes.includes(scope))
+            && primitive.requires.every(required => assets.includes(required))) assets.push(id);
     }
     const ancestorCost = lineageConstructionCost(parent);
     return {parentDigest: parent.digest, assets, ancestorCost, parent: clone(parent)};

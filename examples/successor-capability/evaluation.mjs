@@ -63,7 +63,7 @@ export async function evaluateFrozenReuse(input, options = {}) {
     const truth = (x, operation = 'standard') => coefficients[0] + coefficients[1] * x
         + coefficients[2] * x * x + (operation === 'reservoir' ? 17 + 3 * x : 0);
     const scope = pkg.ast.scope;
-    const operations = scope.includes('reservoir') ? ['standard', 'reservoir'] : ['standard'];
+    const operations = ['standard', 'reservoir'].filter(operation => scope.includes(operation));
     const qualification = verify(pkg.apparatus, pkg.ast, pkg.certificate);
     const measurements = [];
     let runtimeCost = 0;
@@ -484,42 +484,79 @@ function semanticBehavior(app, ast) {
 export async function buildSuccessor(input, options = {}) {
     const parent = await importCapability(input);
     const expanded = expandApparatus(parent.apparatus);
+    const priorOperations = [...parent.ast.scope];
+    const addedOperations = expanded.scope.filter(operation => !priorOperations.includes(operation));
+    const diagnosticOperation = addedOperations[0] || 'reservoir';
     const diagnosticAST = clone(parent.ast);
     diagnosticAST.scope = [...expanded.scope];
-    const diagnosticEnvelope = qualify(expanded, diagnosticAST);
-    const diagnosticVerification = verify(expanded, diagnosticAST, diagnosticEnvelope.certificate);
-    const diagnosticMeasurement = measure(expanded, diagnosticAST, 17,
-        {operation: 'reservoir', cycle: expanded.limits.maxCycles - 1, sign: 1});
-    const oldScopeAuditCost = 3 + diagnosticMeasurement.cost;
+    let diagnosticEnvelope, diagnosticVerification, diagnosticMeasurement;
+    // Both qualification calls are attempted. Verification and measurement are charged
+    // only when the prospective plan can execute within its declared support envelope.
+    let oldScopeAuditCost = 2;
+    try {
+        diagnosticEnvelope = qualify(expanded, diagnosticAST);
+    } catch (error) {
+        diagnosticEnvelope = {status: 'INCOMPATIBLE', ok: false, reason: String(error.message)};
+    }
+    if (diagnosticEnvelope.status === 'INCOMPATIBLE') {
+        const reason = 'Prospective qualification could not complete; independent verification and measurement were not run.';
+        diagnosticVerification = {status: 'NOT-RUN', ok: false, reason};
+        diagnosticMeasurement = {status: 'NOT-RUN', reason};
+    } else {
+        diagnosticVerification = verify(expanded, diagnosticAST, diagnosticEnvelope.certificate);
+        diagnosticMeasurement = measure(expanded, diagnosticAST, 17,
+            {operation: diagnosticOperation, cycle: expanded.limits.maxCycles - 1, sign: 1});
+        oldScopeAuditCost += 1 + diagnosticMeasurement.cost;
+    }
     let oldScope;
     try {
         const report = qualify(expanded, parent.ast);
         oldScope = {status: report.ok ? 'UNEXPECTED-PASS' : 'FAIL', report,
-            reason: report.ok
-                ? 'Original package already qualifies for the reservoir-exposing productive operation.'
-                : 'Original package was not qualified for the reservoir-exposing productive operation.'};
+            reason: diagnosticOperation === 'reservoir'
+                ? report.ok
+                    ? 'Original package already qualifies for the reservoir-exposing productive operation.'
+                    : 'Original package was not qualified for the reservoir-exposing productive operation.'
+                : report.ok
+                    ? 'Original package already qualifies for the required productive scope.'
+                    : `Original package was not qualified for the newly required ${diagnosticOperation} productive operation.`};
     } catch (error) {
         oldScope = {status: 'FAIL', reason: String(error.message)};
     }
     oldScope.diagnostic = {frozenPackageUnchanged: true, prospectiveScopeOnlyAdaptation: true,
         requiredScope: expanded.scope, envelope: diagnosticEnvelope, independent: diagnosticVerification,
-        reservoirMeasurement: {expected: 17, ...diagnosticMeasurement},
-        explanation: diagnosticEnvelope.ok && diagnosticVerification.ok
+        operationMeasurement: {expected: 17, operation: diagnosticOperation, ...diagnosticMeasurement},
+        ...(diagnosticOperation === 'reservoir'
+            ? {reservoirMeasurement: {expected: 17, ...diagnosticMeasurement}} : {}),
+        explanation: diagnosticEnvelope.status === 'INCOMPATIBLE'
+            ? 'The old plan uses a primitive outside the newly required scope; prospective qualification could not complete. Independent verification and measurement were not run.'
+            : diagnosticEnvelope.ok && diagnosticVerification.ok
             ? 'Replaying the old plan preserves the required error envelope in the supplied model.'
-            : 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
+            : diagnosticOperation === 'reservoir'
+                ? 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'
+                : `Replaying the old plan under the newly required ${diagnosticOperation} operation exceeds the required error envelope.`};
     const searchOptions = {...options.searchOptions};
     const acceptance = await acceptBudgetedConstruction(expanded, construct(expanded, {...searchOptions, parent}),
         {parent, purpose: 'successor'});
     const result = acceptance.result, pkg = acceptance.package;
+    const inherited = result.checkpoint.inheritance.assets;
+    const inheritanceDiagnostic = {retainedInstallations: [...inherited],
+        excludedInstallations: parent.ast.installations.filter(id => !inherited.includes(id)).map(id => {
+            const primitive = expanded.primitives.find(item => item.id === id);
+            return {id, reason: expanded.scope.every(scope => primitive.support.scopes.includes(scope))
+                ? 'Requires an installation excluded from the expanded scope.'
+                : 'Primitive does not support every operation in the expanded scope.',
+            missingRequirements: primitive.requires.filter(required => !inherited.includes(required))};
+        })};
     const scratchAcceptance = await acceptBudgetedConstruction(expanded, construct(expanded, searchOptions));
     const scratch = scratchAcceptance.result;
     const scratchPackage = scratchAcceptance.package;
     const scratchWork = ledgerTotal(scratchPackage?.costLedger || scratch.ledger);
     if (!pkg) {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
-            oldScope, result, scratch, parentDigest: parent.digest,
+            oldScope, result, scratch, parentDigest: parent.digest, inheritanceDiagnostic,
             costs: {unit: 'abstract-model-work', ancestor: lineageConstructionCost(parent),
                 ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
+                oldScopeCheck: oldScopeAuditCost,
                 remaining: ledgerTotal(result.ledger) + verificationCostCapability(parent) + oldScopeAuditCost,
                 cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
@@ -531,10 +568,11 @@ export async function buildSuccessor(input, options = {}) {
                 : 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
     }
     const reuse = await evaluateFrozenReuse(pkg, options);
-    const prior = reuse.cases.filter(test => test.operation === 'standard');
-    const added = reuse.cases.filter(test => test.operation === 'reservoir');
-    const preserved = prior.length === 3 && prior.every(test => test.status === 'PASS');
-    const newFunction = oldScope.status === 'FAIL' && added.length === 3
+    const prior = reuse.cases.filter(test => priorOperations.includes(test.operation));
+    const added = reuse.cases.filter(test => addedOperations.includes(test.operation));
+    const preserved = prior.length === 3 * priorOperations.length && prior.every(test => test.status === 'PASS');
+    const newFunction = oldScope.status === 'FAIL' && addedOperations.length > 0
+        && added.length === 3 * addedOperations.length
         && added.every(test => test.status === 'PASS');
     const parentCost = lineageConstructionCost(parent);
     const parentAudit = verificationCostCapability(parent);
@@ -543,13 +581,18 @@ export async function buildSuccessor(input, options = {}) {
     const scratchReuse = scratchPackage ? await evaluateFrozenReuse(scratchPackage, options) : null;
     return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor',
         status: oldScope.status === 'FAIL' && preserved && newFunction ? 'PASS' : 'FAIL',
-        oldScope, parentDigest: parent.digest, package: pkg, result, scratch, reuse, scratchReuse,
+        oldScope, parentDigest: parent.digest, package: pkg, result, scratch, reuse, scratchReuse, inheritanceDiagnostic,
         inheritedAssets: pkg.parentAssets,
         invalidated: [...(oldScope.status === 'FAIL' ? ['parent scope certificate'] : []),
             'prior observations as fresh evidence'],
-        obligations: {preserved, standardCases: prior},
-        newFunction: {accepted: newFunction, operation: 'reservoir', cases: added,
-            description: 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'},
+        obligations: {preserved, priorScope: priorOperations, priorCases: prior,
+            standardCases: reuse.cases.filter(test => test.operation === 'standard')},
+        newFunction: {accepted: newFunction, operation: addedOperations.length === 1 ? addedOperations[0] : null,
+            operations: addedOperations, cases: added,
+            description: addedOperations.length === 0 ? 'No operation was added to the earlier qualified scope.'
+                : addedOperations[0] === 'reservoir'
+                    ? 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'
+                    : 'Operate the newly required standard mode while retaining the earlier measurement obligations.'},
         costs: {unit: 'abstract-model-work', ancestor: parentCost, remaining, cumulative: parentCost + remaining,
             ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
             packageConstruction: ledgerTotal(pkg.costLedger), parentImportAudit: parentAudit, oldScopeCheck: oldScopeAuditCost,

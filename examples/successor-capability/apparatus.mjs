@@ -62,7 +62,9 @@ export function apparatus(topology = 'shielded', expanded = false) {
 
 export function expandApparatus(input) {
     const result = JSON.parse(JSON.stringify(input));
-    result.id = result.id.endsWith('-expanded') ? result.id : `${result.id}-expanded`;
+    // The scope is identity-bound separately; preserve long valid IDs rather than
+    // overflowing the public 80-character contract or truncating distinct labels.
+    if (!result.id.endsWith('-expanded') && result.id.length <= 71) result.id += '-expanded';
     result.scope = ['standard', 'reservoir'];
     return result;
 }

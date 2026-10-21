@@ -170,3 +170,31 @@ test('compact child checkpoints resolve parent assets once and reject missing or
     const wrong = structuredClone(parent); wrong.digest = '0'.repeat(64);
     assert.throws(() => construction.importSearchCheckpoint(token, {parent: wrong}), /parent asset binding/);
 });
+
+test('inherited installations retain expanded support and dependency closure without discounting the parent', async () => {
+    const model = models.apparatus();
+    const sensor = model.primitives.find(item => item.id === 'sense-residual');
+    sensor.cost = 0;
+    sensor.support.scopes = ['standard'];
+    model.primitives.find(item => item.id === 'protect-residual').requires = [sensor.id];
+    model.primitives.find(item => item.id === 'reference-residual').cost = 100;
+    const parent = await packages.freezeCapability(model, construction.construct(model));
+    assert.deepEqual(parent.ast.installations, ['sense-residual', 'protect-residual']);
+    const expanded = models.expandApparatus(model);
+    const checkpoint = construction.createSearch(expanded, {parent});
+    assert.deepEqual(checkpoint.inheritance.assets, []);
+    assert.equal(checkpoint.inheritance.ancestorCost, parent.costLedger.total);
+    const token = JSON.parse(JSON.stringify(construction.exportSearchCheckpoint(checkpoint)));
+    assert.deepEqual(construction.importSearchCheckpoint(token, {parent}), checkpoint);
+    const result = construction.advanceSearch(checkpoint, {steps: 10000});
+    assert.equal(result.status, 'qualified');
+    const child = await packages.freezeCapability(expanded, result, {parent});
+    assert.deepEqual(child.parentAssets.installations, []);
+    assert.equal(child.parentAssets.ancestorCost, parent.costLedger.total);
+    assert.deepEqual(await packages.importCapability(child), child);
+    await assert.rejects(packages.freezeCapability(expanded, result,
+        {parent, inheritedAssets: parent.ast.installations}), /Inherited asset selection changed/);
+    const changed = structuredClone(expanded);
+    changed.primitives.find(item => item.id === sensor.id).cost++;
+    assert.throws(() => construction.createSearch(changed, {parent}), /Stale parent installation semantics/);
+});

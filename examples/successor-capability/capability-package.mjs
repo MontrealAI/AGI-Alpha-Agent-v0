@@ -129,7 +129,7 @@ export async function freezeCapability(apparatus, result, {parent = null, inheri
         costLedger, search: {schema: constructor.SEARCH_SCHEMA, limits: clone(checkpoint.options),
             expanded: checkpoint.expanded, generated: checkpoint.generated, work: clone(checkpoint.work),
             attempts: clone(result.attempts), frontier: clone(result.frontier)},
-        parentAssets: parentAssets(apparatus, verifiedParent, inheritedAssets), digest: ''};
+        parentAssets: parentAssets(apparatus, verifiedParent, inheritedAssets ?? checkpoint.inheritance.assets), digest: ''};
     output.search.checkpoint = constructor.compactSearchCheckpoint(checkpoint);
     output.search.parentSource = verifiedParent;
     if (!same(output.parentAssets.installations, checkpoint.inheritance.assets)) fail('Inherited asset selection changed.');

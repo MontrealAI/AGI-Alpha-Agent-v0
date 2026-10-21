@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-j9MOfv9lbxNNZxgwH9M5gGn54H3XY4pH9OaQYt7689A='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-df94dFQUBwsp9lZFJ1elwU8ZUghxJc+5l3V9GXiQVF8='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -314,7 +314,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>a07652802dd15e46409dc43ac93799ef739e563825551f42a03ced9dd340e9a4</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>a0cb8062a8e4e814948686dc58946b7d2e99bf89a928b0e82ea1121c494fadd8</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -1938,12 +1938,18 @@ function matchingParent(apparatus, parent) {
     if (!proof.ok) reject('Parent capability does not independently qualify.');
     if (!equal(parent.apparatus.channels, apparatus.channels) || !equal(parent.apparatus.edges, apparatus.edges)
         || parent.apparatus.tolerance !== apparatus.tolerance) reject('Stale parent apparatus contract.');
-    const assets = [];
     for (const id of parent.ast.installations) {
         const before = parent.apparatus.primitives.find(primitive => primitive.id === id);
         const after = apparatus.primitives.find(primitive => primitive.id === id);
         if (!before || !after || !equal(before, after)) reject('Stale parent installation semantics.');
-        assets.push(id);
+    }
+    const assets = [];
+    // A valid parent orders each installation after its guards. Removing an unsupported
+    // installation also removes its dependent installations, without changing semantics.
+    for (const id of parent.ast.installations) {
+        const primitive = apparatus.primitives.find(item => item.id === id);
+        if (apparatus.scope.every(scope => primitive.support.scopes.includes(scope))
+            && primitive.requires.every(required => assets.includes(required))) assets.push(id);
     }
     const ancestorCost = lineageConstructionCost(parent);
     return {parentDigest: parent.digest, assets, ancestorCost, parent: clone(parent)};
@@ -2389,7 +2395,7 @@ async function freezeCapability(apparatus, result, {parent = null, inheritedAsse
         costLedger, search: {schema: constructor.SEARCH_SCHEMA, limits: clone(checkpoint.options),
             expanded: checkpoint.expanded, generated: checkpoint.generated, work: clone(checkpoint.work),
             attempts: clone(result.attempts), frontier: clone(result.frontier)},
-        parentAssets: parentAssets(apparatus, verifiedParent, inheritedAssets), digest: ''};
+        parentAssets: parentAssets(apparatus, verifiedParent, inheritedAssets ?? checkpoint.inheritance.assets), digest: ''};
     output.search.checkpoint = constructor.compactSearchCheckpoint(checkpoint);
     output.search.parentSource = verifiedParent;
     if (!same(output.parentAssets.installations, checkpoint.inheritance.assets)) fail('Inherited asset selection changed.');
@@ -2770,7 +2776,9 @@ function apparatus(topology = 'shielded', expanded = false) {
 
 function expandApparatus(input) {
     const result = JSON.parse(JSON.stringify(input));
-    result.id = result.id.endsWith('-expanded') ? result.id : `${result.id}-expanded`;
+    // The scope is identity-bound separately; preserve long valid IDs rather than
+    // overflowing the public 80-character contract or truncating distinct labels.
+    if (!result.id.endsWith('-expanded') && result.id.length <= 71) result.id += '-expanded';
     result.scope = ['standard', 'reservoir'];
     return result;
 }
@@ -2843,7 +2851,7 @@ async function evaluateFrozenReuse(input, options = {}) {
     const truth = (x, operation = 'standard') => coefficients[0] + coefficients[1] * x
         + coefficients[2] * x * x + (operation === 'reservoir' ? 17 + 3 * x : 0);
     const scope = pkg.ast.scope;
-    const operations = scope.includes('reservoir') ? ['standard', 'reservoir'] : ['standard'];
+    const operations = ['standard', 'reservoir'].filter(operation => scope.includes(operation));
     const qualification = verify(pkg.apparatus, pkg.ast, pkg.certificate);
     const measurements = [];
     let runtimeCost = 0;
@@ -3264,42 +3272,79 @@ function semanticBehavior(app, ast) {
 async function buildSuccessor(input, options = {}) {
     const parent = await importCapability(input);
     const expanded = expandApparatus(parent.apparatus);
+    const priorOperations = [...parent.ast.scope];
+    const addedOperations = expanded.scope.filter(operation => !priorOperations.includes(operation));
+    const diagnosticOperation = addedOperations[0] || 'reservoir';
     const diagnosticAST = clone(parent.ast);
     diagnosticAST.scope = [...expanded.scope];
-    const diagnosticEnvelope = qualify(expanded, diagnosticAST);
-    const diagnosticVerification = verify(expanded, diagnosticAST, diagnosticEnvelope.certificate);
-    const diagnosticMeasurement = measure(expanded, diagnosticAST, 17,
-        {operation: 'reservoir', cycle: expanded.limits.maxCycles - 1, sign: 1});
-    const oldScopeAuditCost = 3 + diagnosticMeasurement.cost;
+    let diagnosticEnvelope, diagnosticVerification, diagnosticMeasurement;
+    // Both qualification calls are attempted. Verification and measurement are charged
+    // only when the prospective plan can execute within its declared support envelope.
+    let oldScopeAuditCost = 2;
+    try {
+        diagnosticEnvelope = qualify(expanded, diagnosticAST);
+    } catch (error) {
+        diagnosticEnvelope = {status: 'INCOMPATIBLE', ok: false, reason: String(error.message)};
+    }
+    if (diagnosticEnvelope.status === 'INCOMPATIBLE') {
+        const reason = 'Prospective qualification could not complete; independent verification and measurement were not run.';
+        diagnosticVerification = {status: 'NOT-RUN', ok: false, reason};
+        diagnosticMeasurement = {status: 'NOT-RUN', reason};
+    } else {
+        diagnosticVerification = verify(expanded, diagnosticAST, diagnosticEnvelope.certificate);
+        diagnosticMeasurement = measure(expanded, diagnosticAST, 17,
+            {operation: diagnosticOperation, cycle: expanded.limits.maxCycles - 1, sign: 1});
+        oldScopeAuditCost += 1 + diagnosticMeasurement.cost;
+    }
     let oldScope;
     try {
         const report = qualify(expanded, parent.ast);
         oldScope = {status: report.ok ? 'UNEXPECTED-PASS' : 'FAIL', report,
-            reason: report.ok
-                ? 'Original package already qualifies for the reservoir-exposing productive operation.'
-                : 'Original package was not qualified for the reservoir-exposing productive operation.'};
+            reason: diagnosticOperation === 'reservoir'
+                ? report.ok
+                    ? 'Original package already qualifies for the reservoir-exposing productive operation.'
+                    : 'Original package was not qualified for the reservoir-exposing productive operation.'
+                : report.ok
+                    ? 'Original package already qualifies for the required productive scope.'
+                    : `Original package was not qualified for the newly required ${diagnosticOperation} productive operation.`};
     } catch (error) {
         oldScope = {status: 'FAIL', reason: String(error.message)};
     }
     oldScope.diagnostic = {frozenPackageUnchanged: true, prospectiveScopeOnlyAdaptation: true,
         requiredScope: expanded.scope, envelope: diagnosticEnvelope, independent: diagnosticVerification,
-        reservoirMeasurement: {expected: 17, ...diagnosticMeasurement},
-        explanation: diagnosticEnvelope.ok && diagnosticVerification.ok
+        operationMeasurement: {expected: 17, operation: diagnosticOperation, ...diagnosticMeasurement},
+        ...(diagnosticOperation === 'reservoir'
+            ? {reservoirMeasurement: {expected: 17, ...diagnosticMeasurement}} : {}),
+        explanation: diagnosticEnvelope.status === 'INCOMPATIBLE'
+            ? 'The old plan uses a primitive outside the newly required scope; prospective qualification could not complete. Independent verification and measurement were not run.'
+            : diagnosticEnvelope.ok && diagnosticVerification.ok
             ? 'Replaying the old plan preserves the required error envelope in the supplied model.'
-            : 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
+            : diagnosticOperation === 'reservoir'
+                ? 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'
+                : `Replaying the old plan under the newly required ${diagnosticOperation} operation exceeds the required error envelope.`};
     const searchOptions = {...options.searchOptions};
     const acceptance = await acceptBudgetedConstruction(expanded, construct(expanded, {...searchOptions, parent}),
         {parent, purpose: 'successor'});
     const result = acceptance.result, pkg = acceptance.package;
+    const inherited = result.checkpoint.inheritance.assets;
+    const inheritanceDiagnostic = {retainedInstallations: [...inherited],
+        excludedInstallations: parent.ast.installations.filter(id => !inherited.includes(id)).map(id => {
+            const primitive = expanded.primitives.find(item => item.id === id);
+            return {id, reason: expanded.scope.every(scope => primitive.support.scopes.includes(scope))
+                ? 'Requires an installation excluded from the expanded scope.'
+                : 'Primitive does not support every operation in the expanded scope.',
+            missingRequirements: primitive.requires.filter(required => !inherited.includes(required))};
+        })};
     const scratchAcceptance = await acceptBudgetedConstruction(expanded, construct(expanded, searchOptions));
     const scratch = scratchAcceptance.result;
     const scratchPackage = scratchAcceptance.package;
     const scratchWork = ledgerTotal(scratchPackage?.costLedger || scratch.ledger);
     if (!pkg) {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
-            oldScope, result, scratch, parentDigest: parent.digest,
+            oldScope, result, scratch, parentDigest: parent.digest, inheritanceDiagnostic,
             costs: {unit: 'abstract-model-work', ancestor: lineageConstructionCost(parent),
                 ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
+                oldScopeCheck: oldScopeAuditCost,
                 remaining: ledgerTotal(result.ledger) + verificationCostCapability(parent) + oldScopeAuditCost,
                 cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
@@ -3311,10 +3356,11 @@ async function buildSuccessor(input, options = {}) {
                 : 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
     }
     const reuse = await evaluateFrozenReuse(pkg, options);
-    const prior = reuse.cases.filter(test => test.operation === 'standard');
-    const added = reuse.cases.filter(test => test.operation === 'reservoir');
-    const preserved = prior.length === 3 && prior.every(test => test.status === 'PASS');
-    const newFunction = oldScope.status === 'FAIL' && added.length === 3
+    const prior = reuse.cases.filter(test => priorOperations.includes(test.operation));
+    const added = reuse.cases.filter(test => addedOperations.includes(test.operation));
+    const preserved = prior.length === 3 * priorOperations.length && prior.every(test => test.status === 'PASS');
+    const newFunction = oldScope.status === 'FAIL' && addedOperations.length > 0
+        && added.length === 3 * addedOperations.length
         && added.every(test => test.status === 'PASS');
     const parentCost = lineageConstructionCost(parent);
     const parentAudit = verificationCostCapability(parent);
@@ -3323,13 +3369,18 @@ async function buildSuccessor(input, options = {}) {
     const scratchReuse = scratchPackage ? await evaluateFrozenReuse(scratchPackage, options) : null;
     return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor',
         status: oldScope.status === 'FAIL' && preserved && newFunction ? 'PASS' : 'FAIL',
-        oldScope, parentDigest: parent.digest, package: pkg, result, scratch, reuse, scratchReuse,
+        oldScope, parentDigest: parent.digest, package: pkg, result, scratch, reuse, scratchReuse, inheritanceDiagnostic,
         inheritedAssets: pkg.parentAssets,
         invalidated: [...(oldScope.status === 'FAIL' ? ['parent scope certificate'] : []),
             'prior observations as fresh evidence'],
-        obligations: {preserved, standardCases: prior},
-        newFunction: {accepted: newFunction, operation: 'reservoir', cases: added,
-            description: 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'},
+        obligations: {preserved, priorScope: priorOperations, priorCases: prior,
+            standardCases: reuse.cases.filter(test => test.operation === 'standard')},
+        newFunction: {accepted: newFunction, operation: addedOperations.length === 1 ? addedOperations[0] : null,
+            operations: addedOperations, cases: added,
+            description: addedOperations.length === 0 ? 'No operation was added to the earlier qualified scope.'
+                : addedOperations[0] === 'reservoir'
+                    ? 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'
+                    : 'Operate the newly required standard mode while retaining the earlier measurement obligations.'},
         costs: {unit: 'abstract-model-work', ancestor: parentCost, remaining, cumulative: parentCost + remaining,
             ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
             packageConstruction: ledgerTotal(pkg.costLedger), parentImportAudit: parentAudit, oldScopeCheck: oldScopeAuditCost,
@@ -3406,7 +3457,7 @@ const outEvolveConstructor=capability_module_5;
 const outEvolvePackages=capability_module_8;
 const outEvolveApparatus=capability_module_9;
 const outEvolveEvaluation=capability_module_10;
-const SOURCE_HASH='a07652802dd15e46409dc43ac93799ef739e563825551f42a03ced9dd340e9a4';
+const SOURCE_HASH='a0cb8062a8e4e814948686dc58946b7d2e99bf89a928b0e82ea1121c494fadd8';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
