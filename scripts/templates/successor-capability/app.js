@@ -196,6 +196,7 @@ function renderVersions() {
         const full = element('pre', details, JSON.stringify(version, null, 2));
         full.tabIndex = 0;
         full.setAttribute('aria-label', `Complete version ${version.number}`);
+        full.setAttribute('role', 'group');
     }
     $('history-json').textContent = JSON.stringify(current, null, 2);
 }
