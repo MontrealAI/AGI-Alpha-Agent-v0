@@ -12,6 +12,9 @@ on:
       - scripts/generate_gallery_html.py
       - scripts/templates/successor-capability/**
       - tests/browser/test_successor_capability_browser.py
+      - tests/browser/test_out_evolve_browser.py
+      - tests/browser/out_evolve_recovery.py
+      - tests/browser/test_successor_capability_accessibility.py
       - tests/test_successor_capability_delivery.py
   push:
     branches: [main, additive/successor-capability-review-20261020]
@@ -35,15 +38,35 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
+      - name: Bind retained evidence to exact source
+        run: |
+          mkdir -p capability-evidence/logs
+          python - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          root = pathlib.Path('.')
+          source = json.loads((root / 'docs/successor/capabilities/sources.json').read_text())
+          receipt = {'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                     'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+                     'source': source,
+                     'files': {path: hashlib.sha256((root / path).read_bytes()).hexdigest()
+                               for path in source['sources']}}
+          (root / 'capability-evidence/exact-checkout.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
       - name: Install browser and accessibility tools
         run: |
-          python -m pip install playwright==1.54.0 pytest==8.4.1 PyYAML==6.0.2
+          python -m pip install playwright==1.54.0 pytest==8.4.1 PyYAML==6.0.2 mypy==2.4.0
           python -m playwright install --with-deps chromium
           npm ci --prefix tests/browser --ignore-scripts
       - name: Computation, history and delivery gates
         run: |
-          node --test examples/successor-capability/*.test.mjs tests/browser/successor_engine.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_successor_capability_delivery.py -q
+          set -o pipefail
+          node --test examples/successor-capability/*.test.mjs tests/browser/successor_engine.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
+      - name: Strict typing with retained actual output
+        run: |
+          set -o pipefail
+          python -m mypy --version | tee capability-evidence/logs/typing-version.log
+          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py tests/browser/test_out_evolve_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py
@@ -53,7 +76,27 @@ jobs:
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
           CAPABILITY_SCREENSHOTS: ${{ github.workspace }}/capability-evidence
-        run: python tests/browser/test_successor_capability_browser.py
+        run: |
+          set -o pipefail
+          python tests/browser/test_successor_capability_browser.py 2>&1 | tee capability-evidence/logs/v1-browser.log
+      - name: Out-Evolve generated program, reuse and succession replay
+        run: |
+          set -o pipefail
+          node examples/successor-capability/replay.mjs capability-evidence/out-evolve 2>&1 | tee capability-evidence/logs/replay.log
+      - name: Out-Evolve browser journey and recovery
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          OUT_EVOLVE_EVIDENCE: ${{ github.workspace }}/capability-evidence/out-evolve-browser
+        run: |
+          set -o pipefail
+          python tests/browser/test_out_evolve_browser.py 2>&1 | tee capability-evidence/logs/out-evolve-browser.log
+      - name: Review ARIA and every contrast incomplete
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          CAPABILITY_ACCESSIBILITY_EVIDENCE: ${{ github.workspace }}/capability-evidence/accessibility-review
+        run: |
+          set -o pipefail
+          python tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/accessibility-review.log
       - name: Retain exact-source screenshots and journey evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
