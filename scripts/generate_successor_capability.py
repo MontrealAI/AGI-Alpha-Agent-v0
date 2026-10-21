@@ -47,6 +47,11 @@ def build(root: Path = ROOT) -> None:
     modules = {
         "capability": visit(root / "examples/successor-capability/workspace.mjs"),
         "storage": visit(root / "examples/successor-workbench/mission-store.mjs"),
+        "outEvolve": visit(root / "examples/successor-capability/out-evolve-workspace.mjs"),
+        "outEvolveConstructor": visit(root / "examples/successor-capability/constructor.mjs"),
+        "outEvolvePackages": visit(root / "examples/successor-capability/capability-package.mjs"),
+        "outEvolveApparatus": visit(root / "examples/successor-capability/apparatus.mjs"),
+        "outEvolveEvaluation": visit(root / "examples/successor-capability/evaluation.mjs"),
     }
     templates = root / "scripts/templates/successor-capability"
     for path in [root / "scripts/generate_successor_capability.py", *sorted(templates.iterdir())]:
@@ -55,7 +60,8 @@ def build(root: Path = ROOT) -> None:
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     script = "\n(()=>{\n'use strict';\n" + "\n".join(chunks)
     script += "\n" + "\n".join(f"const {name}={value};" for name, value in modules.items())
-    script += f"\nconst SOURCE_HASH='{source_hash}';\n" + (templates / "app.js").read_text() + "\n})();\n"
+    script += f"\nconst SOURCE_HASH='{source_hash}';\n" + (templates / "app.js").read_text()
+    script += "\n" + (templates / "out-evolve-app.js").read_text() + "\n})();\n"
     if "</script" in script.lower():
         raise ValueError("Closing script tag in source")
     style = "\n" + (templates / "style.css").read_text() + "\n"

@@ -12,6 +12,7 @@ on:
       - scripts/generate_gallery_html.py
       - scripts/templates/successor-capability/**
       - tests/browser/test_successor_capability_browser.py
+      - tests/browser/test_out_evolve_browser.py
       - tests/test_successor_capability_delivery.py
   push:
     branches: [main, additive/successor-capability-review-20261020]
@@ -54,6 +55,13 @@ jobs:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
           CAPABILITY_SCREENSHOTS: ${{ github.workspace }}/capability-evidence
         run: python tests/browser/test_successor_capability_browser.py
+      - name: Out-Evolve generated program, reuse and succession replay
+        run: node examples/successor-capability/replay.mjs capability-evidence/out-evolve
+      - name: Out-Evolve browser journey and recovery
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          OUT_EVOLVE_EVIDENCE: ${{ github.workspace }}/capability-evidence/out-evolve-browser
+        run: python tests/browser/test_out_evolve_browser.py
       - name: Retain exact-source screenshots and journey evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

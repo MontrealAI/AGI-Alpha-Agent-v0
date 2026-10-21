@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-L/7NsykKa06Z3Z9yoTZxK5wQuu4oZYPIyM8Rp+vs5a0='; style-src 'sha256-vJCJMs5TZka3bBNNoLkO5o/hogS2OprpVnhQ3yQV+iY='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9j9GjMp+p2XWtNr4C0sShSw6uHZk+SX4YPGGCsd+qjs='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -192,6 +192,41 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
 .public-confirmation { margin-top: 1.4rem; }
 .exposure-note { margin-top: 1.2rem; border-left: 2px solid var(--gold); padding-left: .8rem; font-size: .82rem; color: #efd7b4; }
 
+.evolve-v1-link { display: inline-block; margin: 1rem 0; font-size: .85rem; }
+.evolve-panel { margin: 1rem 0 2.5rem; border-color: #795498; background: linear-gradient(125deg, #26153c, #171020 72%); }
+.evolve-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2.4rem; margin-top: 2rem; }
+.evolve-layout > *, .evolve-input-row > * { min-width: 0; }
+.evolve-layout .field + .field { margin-top: 1rem; }
+.evolve-input-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }
+.evolve-input-row .field + .field { margin-top: 0; }
+.evolve-invariant { padding: 1rem 1.2rem; border-left: 2px solid var(--gold); background: #2c2039; border-radius: 0 8px 8px 0; margin-top: 1.4rem; }
+.evolve-invariant p { margin-top: .65rem; font-size: .82rem; }
+.evolve-result { border-left: 1px solid var(--soft-line); padding-left: 2.3rem; }
+.evolve-result > h3 { font: 400 1.85rem/1.25 Georgia, serif; margin: .6rem 0 1rem; }
+.evolve-result > p, .evolve-result > div > p { font-size: .86rem; margin-top: 1rem; }
+#evolve-apparatus { margin-top: .6rem; font: .76rem/1.6 ui-monospace, monospace; }
+.evolve-metrics { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.evolve-metrics > div { border: 1px solid var(--soft-line); border-radius: 8px; padding: .8rem; }
+.evolve-metrics dt { color: var(--muted); font-size: .72rem; }
+.evolve-metrics dd { color: #f2e8ff; font-size: 1rem; margin: .4rem 0 0; overflow-wrap: anywhere; }
+.evolve-history { margin-top: 2.2rem; padding-top: 1.5rem; border-top: 1px solid var(--soft-line); }
+.evolve-history h3 { font: 400 1.55rem Georgia, serif; }
+.evolve-history > label { margin-top: 1.2rem; }
+#evolve-events { max-height: 480px; overflow: auto; }
+#evolve-events > li { padding: .8rem 1rem; }
+#evolve-events h4 { font-size: .9rem; }
+#evolve-events [data-result=fail] { border-left-color: var(--red); }
+#evolve-events [data-result=pass] { border-left-color: var(--green); }
+#evolve-storage { margin-top: .8rem; }
+@media (max-width: 900px) {
+    .evolve-layout { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+    .evolve-result { border-left: 0; border-top: 1px solid var(--soft-line); padding: 1.7rem 0 0; }
+}
+@media (max-width: 450px) {
+    .evolve-input-row, .evolve-metrics { grid-template-columns: minmax(0, 1fr); }
+    .evolve-input-row .field + .field { margin-top: 1rem; }
+}
+
 </style>
 </head>
 <body>
@@ -202,10 +237,31 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
 </header>
 <main class="wrap" id="workspace">
     <section class="hero" aria-labelledby="hero-title">
-        <div><p class="eyebrow">BUILD WHAT MAKES MORE POSSIBLE.</p><h1 id="hero-title">Not just one answer.<br><em>A new capability.</em></h1><p class="hero-description">An instrument. A new representation. An experimental or productive architecture. Start with an unmet need, challenge a limiting assumption, and design something an entire family of discoveries and businesses could build upon.</p><a class="button primary" href="#brief-heading">Shape your capability <span aria-hidden="true">↓</span></a></div>
-        <section class="possibility-card" aria-labelledby="how-heading"><span class="possibility-symbol" aria-hidden="true">α → Ω</span><h2 id="how-heading">Keep the ambition.<br>Make the evidence precise.</h2><ol><li><strong>Frame the possibility</strong><span>Name what is missing, not just a task to automate.</span></li><li><strong>Construct and test</strong><span>Freeze a proposal. Optionally test the supported synthetic instrument.</span></li><li><strong>Build its successor</strong><span>Keep every version and its evidence. Make the next change explicit.</span></li></ol><p class="fine-print">This browser does not build arbitrary described inventions. A proposal remains a proposal until its actual construction and evaluation exist.</p></section>
+        <div><p class="eyebrow">BUILD WHAT MAKES MORE POSSIBLE.</p><h1 id="hero-title">Not just one answer.<br><em>A new capability.</em></h1><p class="hero-description">An instrument. A new representation. An experimental or productive architecture. Start with an unmet need, challenge a limiting assumption, and design something an entire family of discoveries and businesses could build upon.</p><a class="button primary" href="#out-evolve">Construct a capability <span aria-hidden="true">↓</span></a> <a class="evolve-v1-link" href="#brief-heading">Open the original proposal workshop</a></div>
+        <section class="possibility-card" aria-labelledby="how-heading"><span class="possibility-symbol" aria-hidden="true">α → Ω</span><h2 id="how-heading">Keep the ambition.<br>Make the evidence precise.</h2><ol><li><strong>Frame the possibility</strong><span>Name what is missing, not just a task to automate.</span></li><li><strong>Construct and test</strong><span>Generate a bounded program, inspect its evidence, and test what can reuse it.</span></li><li><strong>Build its successor</strong><span>Keep every version and its evidence. Make the next change explicit.</span></li></ol><p class="fine-print">This browser does not build arbitrary described inventions. A proposal remains a proposal until its actual construction and evaluation exist.</p></section>
     </section>
-    <section class="scope-strip" aria-label="What works today"><article><span class="scope-mark" aria-hidden="true">01</span><div><h2>Open-ended design</h2><p>Your brief is not reduced to a canned automation.</p></div></article><article><span class="scope-mark" aria-hidden="true">02</span><div><h2>Bounded local computation</h2><p>One optional synthetic witness. No external execution.</p></div></article><article><span class="scope-mark" aria-hidden="true">03</span><div><h2>Versioned evidence</h2><p>Frozen inputs, retained failures, explicit successors.</p></div></article></section>
+    <section class="scope-strip" aria-label="What works today"><article><span class="scope-mark" aria-hidden="true">01</span><div><h2>Open-ended design</h2><p>Your brief is not reduced to a canned automation.</p></div></article><article><span class="scope-mark" aria-hidden="true">02</span><div><h2>Bounded local computation</h2><p>A bounded program constructor and the original optional witness. No external execution.</p></div></article><article><span class="scope-mark" aria-hidden="true">03</span><div><h2>Versioned evidence</h2><p>Frozen inputs, retained failures, explicit successors.</p></div></article></section>
+    <section id="out-evolve" class="panel evolve-panel" aria-labelledby="evolve-heading">
+        <div class="section-heading"><div><p class="eyebrow">OUT-EVOLVE ♾ · EXECUTABLE CAPABILITY CONSTRUCTOR</p><h2 id="evolve-heading">Build the means.<br>Reuse what works.</h2></div><p>Construct a preparation interface for a synthetic stateful apparatus. Keep its useful response intact while controlling the nuisance that makes experiments unreliable.</p></div>
+        <div class="evolve-layout">
+            <form id="evolve-form" aria-label="Out-Evolve construction brief">
+                <div class="field"><label for="evolve-purpose">What should become possible?</label><input id="evolve-purpose" maxlength="1000" value="Repeatable measurements that later discovery tasks can trust." required></div>
+                <div class="field"><label for="evolve-constraints">What must be preserved?</label><textarea id="evolve-constraints" rows="2" maxlength="1000" required>Preserve productive state and measurement quality. Use only bounded synthetic operations.</textarea></div>
+                <div class="evolve-input-row"><div class="field"><label for="evolve-topology">Synthetic apparatus</label><select id="evolve-topology"><option value="shielded">Recurring disturbance</option><option value="routed">Coupled channels</option><option value="referenced">Common reference</option></select></div><div class="field"><label for="evolve-budget">Per-construction model-work cap</label><input id="evolve-budget" type="number" min="1" max="100000" step="1" value="100000" required></div></div>
+                <div class="evolve-invariant"><strong>The objective stays fixed.</strong><p id="evolve-objective">Preserve the productive state and meet the apparatus error tolerance on every admitted repeated use.</p><p>Permitted changes: declared protection, routing, attenuation, reference and measurement operations. Your brief is context; it cannot relax these checks.</p></div>
+                <details><summary>Edit the bounded synthetic defaults</summary><label for="evolve-apparatus">Apparatus manifest · JSON data only</label><textarea id="evolve-apparatus" rows="12" spellcheck="false" aria-describedby="evolve-model-limit"></textarea><p id="evolve-model-limit" class="fine-print">Only the versioned finite language executes. Changed graphs, guards, costs or scope require new qualification. No text becomes code.</p></details>
+                <div class="actions"><button id="evolve-construct" type="submit" class="primary">Construct capability</button><button id="evolve-cancel" type="button" disabled>Cancel search</button><button id="evolve-resume" type="button" disabled>Resume saved search</button></div>
+            </form>
+            <div class="evolve-result" aria-labelledby="evolve-result-heading">
+                <p class="eyebrow">WHAT BECAME POSSIBLE</p><h3 id="evolve-result-heading">Ready to construct.</h3><p id="evolve-status" role="status" aria-live="polite">Defaults are ready. A bounded search will generate and independently check an executable program.</p><p id="evolve-error" class="error" role="alert" hidden></p>
+                <div id="evolve-outcome" hidden><p id="evolve-mechanism"></p><p id="evolve-work-total" class="evolve-work-total">Later evaluation costs are reported separately from frozen package construction.</p><dl id="evolve-metrics" class="evolve-metrics"></dl><details><summary>Inspect the generated program and certificate</summary><pre id="evolve-program" tabindex="0" aria-label="Generated capability program"></pre></details><details><summary>Matched comparisons and complete cost ledger</summary><pre id="evolve-comparison" tabindex="0" aria-label="Capability comparison and costs">Not evaluated.</pre></details></div>
+                <div class="evidence-actions"><button id="evolve-reuse" type="button" disabled>Test new uses</button><button id="evolve-successor" type="button" disabled>Build successor</button><button id="evolve-export-package" type="button" disabled>Export executable package</button></div>
+                <p class="fine-print">A frozen package is reused unchanged for threshold screening, inverse design and constrained selection. A successor exposes a dormant reservoir, rechecks the old obligations and must add a new accepted function.</p>
+                <details><summary>What the evidence can establish</summary><p class="fine-print">Certificates apply to the supplied synthetic model. They do not validate physical hardware, general invention, market demand or business performance. Baselines can win or tie. Cases exposed in this history are regressions, not protected holdouts.</p><pre id="evolve-evidence" tabindex="0" aria-label="Detailed Out-Evolve evaluation evidence">No evaluation recorded.</pre></details>
+            </div>
+        </div>
+        <section class="evolve-history" aria-labelledby="evolve-history-heading"><div class="section-heading"><div><p class="eyebrow">RETAIN THE WHOLE EXPERIMENT</p><h3 id="evolve-history-heading">Construction history</h3></div><p id="evolve-retained">Failures and interrupted searches stay visible after later successes.</p></div><ol id="evolve-events" class="version-list"><li>No construction attempts recorded.</li></ol><div class="actions"><button id="evolve-export-history" type="button" disabled>Export Out-Evolve history</button><button id="evolve-retry-save" type="button" hidden>Retry saving this history</button></div><label for="evolve-import">Import Out-Evolve history or capability package</label><input id="evolve-import" type="file" accept="application/json,.json"><details><summary>Open another saved Out-Evolve history</summary><label for="evolve-saved">Saved history</label><select id="evolve-saved" disabled><option value="">No saved histories</option></select><button id="evolve-open" type="button" disabled>Open saved history</button><p class="fine-print">Importing a separate history keeps the previous copy here. Earlier same-identity histories cannot replace later events.</p></details><p id="evolve-storage" class="fine-print">Preparing local recovery…</p><details><summary>Inspect complete Out-Evolve events</summary><pre id="evolve-history-json" tabindex="0" aria-label="Complete Out-Evolve event history">No history.</pre></details></section>
+    </section>
     <nav class="workshop-steps" aria-label="Workshop steps"><a href="#brief-heading">1 · Shape the brief</a><a href="#witness-heading">2 · Choose the instrument</a><a href="#evidence-heading">3 · Inspect evidence</a><a href="#history-heading">4 · Review history</a></nav>
     <noscript><p class="notice">JavaScript is required for the local workshop. No proposal has been saved, constructed or evaluated.</p></noscript>
     <div id="status" class="status" role="status" aria-live="polite">Preparing the local workshop…</div>
@@ -258,7 +314,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>7e451071e9559660b3ada4391173207c498c19067d7d5b08a248b4ffa3b9c336</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>0b566f01b96c02a49fd168bdfc460ee964dc8518ff1afe329850ada6b578dc45</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -1255,9 +1311,1824 @@ async function openMissionStore({ indexedDB = globalThis.indexedDB,
 
 return {MAX_RECORD_BYTES,MAX_MISSIONS,MissionStorageError,openMissionStore};
 })();
+const capability_module_6=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Finite deterministic nuisance-channel interpreter. Certificates concern this model only. */
+const RUNTIME_VERSION = 'out-evolve-runtime/v1';
+const AST_SCHEMA = 'out-evolve-ast/v1';
+const clone = value => JSON.parse(JSON.stringify(value));
+const fail = message => { throw Error(message); };
+const id = value => typeof value === 'string' && /^[a-z][a-z0-9-]{0,79}$/.test(value);
+const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
+    && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
+const integer = (value, max = 1_000_000) => Number.isSafeInteger(value) && !Object.is(value, -0)
+    && value >= 0 && value <= max;
+const gain = value => !Object.is(value, -0) && [0, 0.5, 1].includes(value);
+const setOf = (values, allowed) => Array.isArray(values) && values.length > 0 && values.length <= allowed.length
+    && new Set(values).size === values.length && values.every(value => allowed.includes(value));
+
+function dataOnly(input) {
+    const seen = new WeakSet(); let nodes = 0;
+    function inspect(value, depth) {
+        if (++nodes > 20_000 || depth > 32) fail('Input exceeds finite data bounds.');
+        if (value === null || typeof value === 'boolean') return;
+        if (typeof value === 'string') {
+            if (value.length > 10_000) fail('Input string exceeds data bound.');
+            return;
+        }
+        if (typeof value === 'number') {
+            if (!Number.isFinite(value) || Object.is(value, -0)) fail('Invalid finite numeric data.');
+            return;
+        }
+        if (typeof value !== 'object' || seen.has(value)) fail('Only finite JSON data trees are accepted.');
+        const prototype = Object.getPrototypeOf(value);
+        if (prototype !== Object.prototype && prototype !== Array.prototype) fail('Unsupported data prototype.');
+        if (Object.getOwnPropertySymbols(value).length) fail('Symbol data is unsupported.');
+        seen.add(value);
+        for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(value))) {
+            if (key === 'length' && Array.isArray(value)) continue;
+            if (!Object.hasOwn(descriptor, 'value') || !descriptor.enumerable) fail('Accessor data is unsupported.');
+            inspect(descriptor.value, depth + 1);
+        }
+        seen.delete(value);
+    }
+    inspect(input, 0);
+}
+
+function validateApparatus(input) {
+    dataOnly(input);
+    if (!exact(input, ['schema', 'id', 'channels', 'edges', 'scope', 'tolerance', 'primitives', 'limits'])
+        || input.schema !== 'out-evolve-apparatus/v1' || !id(input.id)
+        || !setOf(input.scope, ['standard', 'reservoir']) || !integer(input.tolerance)
+        || !Array.isArray(input.channels) || !input.channels.length || input.channels.length > 8
+        || !Array.isArray(input.edges) || input.edges.length > 24
+        || !Array.isArray(input.primitives) || !input.primitives.length || input.primitives.length > 64) {
+        fail('Malformed apparatus contract.');
+    }
+    const channels = new Set();
+    for (const channel of input.channels) {
+        if (!exact(channel, ['id', 'initial', 'drift', 'cap', 'scopes']) || !id(channel.id)
+            || channel.id === 'readout' || channel.id === 'productive' || channels.has(channel.id)
+            || !integer(channel.cap) || !integer(channel.initial, channel.cap)
+            || !integer(channel.drift, channel.cap) || !setOf(channel.scopes, ['standard', 'reservoir'])) {
+            fail('Malformed nuisance state or support scope.');
+        }
+        channels.add(channel.id);
+    }
+    const edges = new Set();
+    const adjacency = Object.fromEntries([...channels].map(key => [key, []]));
+    for (const edge of input.edges) {
+        if (!exact(edge, ['id', 'from', 'to', 'gain']) || !id(edge.id) || edges.has(edge.id)
+            || !channels.has(edge.from) || (!channels.has(edge.to) && edge.to !== 'readout')
+            || !gain(edge.gain)) fail('Malformed apparatus graph or bounded gain.');
+        edges.add(edge.id);
+        if (edge.to !== 'readout') adjacency[edge.from].push(edge.to);
+    }
+    const visiting = new Set(), visited = new Set();
+    function visit(key) {
+        if (visiting.has(key)) fail('Cyclic apparatus graph.');
+        if (visited.has(key)) return;
+        visiting.add(key); adjacency[key].forEach(visit); visiting.delete(key); visited.add(key);
+    }
+    [...channels].forEach(visit);
+    const primitives = new Set(input.primitives.map(item => item.id));
+    if (primitives.size !== input.primitives.length) fail('Duplicate primitive.');
+    const effects = {shield: ['installed'], route: ['installed'], sensor: ['installed'],
+        attenuate: ['nuisance', 'transfer'], reference: ['observations'], destroy: ['productive']};
+    for (const primitive of input.primitives) {
+        if (!exact(primitive, ['id', 'phase', 'kind', 'target', 'gain', 'cost', 'requires', 'effects', 'support'])
+            || !id(primitive.id) || !Object.hasOwn(effects, primitive.kind) || !integer(primitive.cost)
+            || !gain(primitive.gain) || !Array.isArray(primitive.requires)
+            || primitive.requires.length > 16 || new Set(primitive.requires).size !== primitive.requires.length
+            || !primitive.requires.every(key => primitives.has(key))
+            || JSON.stringify(primitive.effects) !== JSON.stringify(effects[primitive.kind])
+            || !exact(primitive.support, ['scopes', 'boundedGain'])
+            || !setOf(primitive.support.scopes, ['standard', 'reservoir'])
+            || primitive.support.boundedGain !== primitive.gain) fail('Undeclared primitive semantics or effects.');
+        const install = ['shield', 'route', 'sensor'].includes(primitive.kind);
+        if (primitive.phase !== (install ? 'install' : 'prepare')
+            || (primitive.kind === 'route' ? !edges.has(primitive.target)
+                : primitive.kind === 'destroy' ? primitive.target !== 'productive' : !channels.has(primitive.target))
+            || (primitive.kind !== 'attenuate' && primitive.kind !== 'destroy' && primitive.gain !== 1)
+            || (primitive.kind === 'destroy' && primitive.gain !== 0)) fail('Invalid primitive target or phase.');
+        for (const requirement of primitive.requires) {
+            if (input.primitives.find(item => item.id === requirement).phase !== 'install') {
+                fail('Guards must refer to installations.');
+            }
+        }
+        if (primitive.kind === 'reference' && !primitive.requires.some(key => {
+            const sensor = input.primitives.find(item => item.id === key);
+            return sensor.kind === 'sensor' && sensor.target === primitive.target;
+        })) fail('Reference requires a matching synchronous nuisance sensor.');
+    }
+    if (!exact(input.limits, ['maxInstructions', 'maxRepeat', 'maxCost', 'maxCycles'])
+        || !integer(input.limits.maxInstructions, 64) || input.limits.maxInstructions < 1
+        || !integer(input.limits.maxRepeat, 32) || input.limits.maxRepeat < 1
+        || !integer(input.limits.maxCost) || !integer(input.limits.maxCycles, 4096)
+        || input.limits.maxCycles < 1) fail('Unsafe interpreter resource limits.');
+    return clone(input);
+}
+
+function compile(input, ast) {
+    dataOnly(ast);
+    const apparatus = validateApparatus(input);
+    if (!exact(ast, ['schema', 'installations', 'prepare', 'scope']) || ast.schema !== AST_SCHEMA
+        || !Array.isArray(ast.installations) || ast.installations.length > apparatus.limits.maxInstructions
+        || new Set(ast.installations).size !== ast.installations.length
+        || !setOf(ast.scope, ['standard', 'reservoir'])) fail('Malformed typed AST.');
+    const catalogue = new Map(apparatus.primitives.map(item => [item.id, item]));
+    const flattened = [];
+    let nodes = 0;
+    function walk(node, depth = 0) {
+        if (++nodes > 256 || depth > 8) fail('AST structure exceeds resource bounds.');
+        if (exact(node, ['op', 'id']) && node.op === 'primitive') {
+            const primitive = catalogue.get(node.id);
+            if (!primitive || primitive.phase !== 'prepare') fail('Unsupported prepare primitive.');
+            flattened.push(node.id);
+        } else if (exact(node, ['op', 'steps']) && node.op === 'sequence' && Array.isArray(node.steps)
+            && node.steps.length <= apparatus.limits.maxInstructions) node.steps.forEach(item => walk(item, depth + 1));
+        else if (exact(node, ['op', 'count', 'body']) && node.op === 'repeat'
+            && integer(node.count, apparatus.limits.maxRepeat) && node.count > 0) {
+            for (let index = 0; index < node.count; index++) walk(node.body, depth + 1);
+        } else fail('Malformed or unbounded AST instruction.');
+        if (flattened.length + ast.installations.length > apparatus.limits.maxInstructions) {
+            fail('Program exceeds instruction bound.');
+        }
+    }
+    for (const key of ast.installations) {
+        if (!catalogue.has(key) || catalogue.get(key).phase !== 'install') fail('Unsupported installation.');
+    }
+    walk(ast.prepare);
+    return {schema: AST_SCHEMA, runtime: RUNTIME_VERSION, installations: [...ast.installations],
+        steps: flattened, scope: [...ast.scope]};
+}
+
+function validateAST(apparatus, ast) {
+    compile(apparatus, ast);
+    return clone(ast);
+}
+
+function initialState(input, scope = input.scope) {
+    const apparatus = validateApparatus(input);
+    if (!setOf(scope, ['standard', 'reservoir'])) fail('Invalid state scope.');
+    return {bounds: Object.fromEntries(apparatus.channels.map(item => [item.id, item.initial])),
+        transfer: Object.fromEntries(apparatus.channels.map(item => [item.id, 1])), installed: [], references: [],
+        productive: 1, cost: 0, steps: 0, scope: [...scope]};
+}
+
+function step(input, prior, primitiveId) {
+    const primitive = input.primitives.find(item => item.id === primitiveId);
+    if (!primitive) fail('Unknown primitive.');
+    if (!primitive.requires.every(key => prior.installed.includes(key))) fail('Primitive guard not satisfied.');
+    if (!prior.scope.every(key => primitive.support.scopes.includes(key))) fail('Primitive outside support envelope.');
+    const state = clone(prior);
+    if (primitive.phase === 'install' && state.installed.includes(primitiveId)) fail('Installation already present.');
+    state.cost += primitive.cost; state.steps++;
+    if (!integer(state.cost, input.limits.maxCost) || state.steps > input.limits.maxInstructions) {
+        fail('Interpreter resource overflow.');
+    }
+    if (primitive.phase === 'install') state.installed.push(primitiveId);
+    else if (primitive.kind === 'attenuate') {
+        state.bounds[primitive.target] *= primitive.gain;
+        state.transfer[primitive.target] *= primitive.gain;
+    } else if (primitive.kind === 'reference') {
+        if (!state.references.includes(primitive.target)) state.references.push(primitive.target);
+    } else if (primitive.kind === 'destroy') state.productive = 0;
+    state.installed.sort(); state.references.sort();
+    return state;
+}
+
+function semanticKey(input, state) {
+    return JSON.stringify({bounds: state.bounds, transfer: state.transfer, installed: state.installed,
+        references: state.references, productive: state.productive, scope: state.scope});
+}
+
+function prepare(input, ast) {
+    const program = compile(input, ast);
+    let state = initialState(input, program.scope);
+    for (const key of [...program.installations, ...program.steps]) state = step(input, state, key);
+    return state;
+}
+
+function pathWeights(apparatus, state) {
+    const routed = new Set(apparatus.primitives.filter(item => item.kind === 'route'
+        && state.installed.includes(item.id)).map(item => item.target));
+    const cache = new Map([['readout', 1]]);
+    function weight(key) {
+        if (!cache.has(key)) cache.set(key, apparatus.edges.filter(edge => edge.from === key && !routed.has(edge.id))
+            .reduce((total, edge) => total + edge.gain * weight(edge.to), 0));
+        return cache.get(key);
+    }
+    return Object.fromEntries(apparatus.channels.map(item => [item.id, weight(item.id)]));
+}
+
+function recurringEnvelope(channel, a, d) {
+    if (a === 0) return {first: d, invariant: d};
+    if (a === 1) return {first: Math.min(channel.cap, channel.initial + d),
+        invariant: d ? channel.cap : channel.initial};
+    const denominator = 1n << BigInt(-Math.log2(a));
+    const ceil = (numerator, divisor) => Number((numerator + divisor - 1n) / divisor);
+    const first = Math.min(channel.cap, ceil(BigInt(channel.initial) + BigInt(d) * denominator, denominator));
+    const steady = Math.min(channel.cap, ceil(BigInt(d) * denominator, denominator - 1n));
+    return {first, invariant: Math.max(first, steady)};
+}
+
+function qualify(input, ast) {
+    const apparatus = validateApparatus(input), state = prepare(apparatus, ast), program = compile(apparatus, ast);
+    const weights = pathWeights(apparatus, state);
+    const envelopes = {}, coefficients = {}, recurrence = {};
+    for (const channel of apparatus.channels) {
+        const shielded = apparatus.primitives.some(item => item.kind === 'shield' && item.target === channel.id
+            && state.installed.includes(item.id));
+        const a = state.transfer[channel.id], d = shielded ? 0 : channel.drift;
+        const {first, invariant} = recurringEnvelope(channel, a, d);
+        envelopes[channel.id] = invariant;
+        coefficients[channel.id] = state.references.includes(channel.id) ? 0 : weights[channel.id];
+        recurrence[channel.id] = {gain: a, recurringDisturbance: d, cap: channel.cap, first, invariant: envelopes[channel.id]};
+    }
+    const errors = Object.fromEntries(ast.scope.map(operation => [operation, apparatus.channels
+        .filter(channel => channel.scopes.includes(operation))
+        .reduce((sum, channel) => sum + envelopes[channel.id] * coefficients[channel.id], 0)]));
+    const errorBound = Math.max(...Object.values(errors));
+    const preserved = state.productive === 1;
+    const scopeValid = JSON.stringify([...ast.scope].sort()) === JSON.stringify([...apparatus.scope].sort());
+    const ok = preserved && scopeValid && Number.isFinite(errorBound) && errorBound <= apparatus.tolerance;
+    const certificate = {schema: 'out-evolve-certificate/v1', runtime: RUNTIME_VERSION,
+        modelOnly: true, productiveGain: state.productive, requiredProductiveGain: 1,
+        scope: [...ast.scope], envelopes, coefficients, recurrence, errors, errorBound,
+        structuralSupport: Object.keys(coefficients).filter(key => coefficients[key] !== 0),
+        futureLanguage: 'repeat(prepare;operation;paired-reference;measure), all declared operations',
+        inputDomain: 'bounded independent nuisance sources; nonnegative DAG gains; exact dyadic interpreter',
+        precision: 'exact rational ceilings for conservative integer recurrence envelopes; no physical certificate'};
+    const installation = program.installations.reduce((sum, key) =>
+        sum + apparatus.primitives.find(item => item.id === key).cost, 0);
+    const preparation = program.steps.reduce((sum, key) =>
+        sum + apparatus.primitives.find(item => item.id === key).cost, 0);
+    const calibration = program.steps.reduce((sum, key) => {
+        const primitive = apparatus.primitives.find(item => item.id === key);
+        return sum + (primitive.kind === 'reference' ? primitive.cost : 0);
+    }, 0);
+    return {ok, preserved, errorBound, tolerance: apparatus.tolerance, cost: state.cost, scope: [...ast.scope],
+        costs: {installation, preparation, calibration, measurement: 1, maintenance: 0,
+            operationPerUse: preparation + 1, calibrationIncludedInPreparation: true},
+        certificate, reason: !preserved ? 'Productive-state preservation failed.' : !scopeValid
+            ? 'Package scope differs from required apparatus scope.' : !ok
+                ? 'Recurring nuisance exceeds required output quality.' : 'Qualified within the supplied synthetic model.'};
+}
+
+function measure(input, ast, signal, options = {}) {
+    dataOnly(options);
+    if (!options || typeof options !== 'object' || Array.isArray(options)
+        || Object.keys(options).some(key => !['operation', 'cycle', 'sign'].includes(key))) {
+        fail('Unsupported measurement options.');
+    }
+    const apparatus = validateApparatus(input), report = qualify(apparatus, ast), state = prepare(apparatus, ast);
+    const operation = options.operation ?? 'standard', cycle = options.cycle ?? 0, sign = options.sign ?? 1;
+    if (!ast.scope.includes(operation) || !apparatus.scope.includes(operation)) fail('Operation outside qualified scope.');
+    if (!Number.isFinite(signal) || Object.is(signal, -0) || Math.abs(signal) > 1_000_000
+        || !integer(cycle, apparatus.limits.maxCycles)
+        || ![-1, 1].includes(sign)) fail('Invalid measurement input or execution bound.');
+    if (state.productive !== 1) fail('Destructive program cannot measure the required product.');
+    const bounds = {};
+    for (const channel of apparatus.channels) {
+        const recurrence = report.certificate.recurrence[channel.id];
+        let value = channel.initial;
+        for (let round = 0; round <= cycle; round++) {
+            value = Math.min(channel.cap, recurrence.gain * value + recurrence.recurringDisturbance);
+        }
+        bounds[channel.id] = value;
+    }
+    const rawError = apparatus.channels.filter(channel => channel.scopes.includes(operation))
+        .reduce((total, channel) => total + bounds[channel.id] * report.certificate.coefficients[channel.id], 0);
+    const error = rawError === 0 ? 0 : sign * rawError;
+    const prepareCost = compile(apparatus, ast).steps.reduce((sum, key) =>
+        sum + apparatus.primitives.find(item => item.id === key).cost, 0);
+    return {value: signal + error, error, productive: signal, cost: prepareCost + 1,
+        errorBound: report.certificate.errors[operation], bounds, operation, cycle,
+        semantics: 'worst-aligned bounded nuisance; paired reference samples nuisance only'};
+}
+
+return {RUNTIME_VERSION,AST_SCHEMA,validateApparatus,compile,validateAST,initialState,step,semanticKey,prepare,qualify,measure};
+})();
+const capability_module_7=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Independent contract replay. Deliberately imports no runtime transitions or validators. */
+const reject = message => { throw Error(`Independent checker: ${message}`); };
+const objectKeys = (value, keys) => value !== null && typeof value === 'object' && !Array.isArray(value)
+    && Object.keys(value).sort().join(',') === [...keys].sort().join(',');
+const number = (value, max = 1_000_000) => typeof value === 'number' && Number.isSafeInteger(value)
+    && !Object.is(value, -0) && value >= 0 && value <= max;
+const identifier = value => typeof value === 'string' && /^[a-z][a-z0-9-]{0,79}$/.test(value);
+const scopes = value => Array.isArray(value) && value.length >= 1 && value.length <= 2
+    && new Set(value).size === value.length && value.every(key => key === 'standard' || key === 'reservoir');
+const gains = value => !Object.is(value, -0) && (value === 0 || value === 0.5 || value === 1);
+const stable = value => {
+    if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
+    if (value && typeof value === 'object') return '{' + Object.keys(value).sort()
+        .map(key => JSON.stringify(key) + ':' + stable(value[key])).join(',') + '}';
+    return JSON.stringify(value);
+};
+
+function verify(apparatus, ast, claimedCertificate) {
+    const pending = [[apparatus, 0], [ast, 0]];
+    if (claimedCertificate !== undefined) pending.push([claimedCertificate, 0]);
+    let dataCount = 0;
+    while (pending.length) {
+        const [value, depth] = pending.pop();
+        if (++dataCount > 20_000 || depth > 32) reject('finite data bounds exceeded');
+        if (value === null || typeof value === 'boolean') continue;
+        if (typeof value === 'number') {
+            if (!Number.isFinite(value) || Object.is(value, -0)) reject('invalid numeric data');
+        } else if (typeof value === 'string') {
+            if (value.length > 10_000) reject('oversized string');
+        } else if (typeof value === 'object') {
+            const prototype = Object.getPrototypeOf(value);
+            if (prototype !== Object.prototype && prototype !== Array.prototype
+                || Object.getOwnPropertySymbols(value).length) reject('unsupported data object');
+            for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(value))) {
+                if (key === 'length' && Array.isArray(value)) continue;
+                if (!Object.hasOwn(descriptor, 'value') || !descriptor.enumerable) reject('accessor data');
+                pending.push([descriptor.value, depth + 1]);
+            }
+        } else reject('unsupported data value');
+    }
+    if (!objectKeys(apparatus, ['schema', 'id', 'channels', 'edges', 'scope', 'tolerance', 'primitives', 'limits'])
+        || apparatus.schema !== 'out-evolve-apparatus/v1' || !identifier(apparatus.id) || !scopes(apparatus.scope)
+        || !number(apparatus.tolerance) || !Array.isArray(apparatus.channels) || !apparatus.channels.length
+        || apparatus.channels.length > 8 || !Array.isArray(apparatus.edges) || apparatus.edges.length > 24
+        || !Array.isArray(apparatus.primitives) || !apparatus.primitives.length || apparatus.primitives.length > 64) {
+        reject('malformed apparatus');
+    }
+    const channels = {}, edgeIDs = new Set(), catalogue = {};
+    for (const entry of apparatus.channels) {
+        if (!objectKeys(entry, ['id', 'initial', 'drift', 'cap', 'scopes']) || !identifier(entry.id)
+            || ['readout', 'productive'].includes(entry.id) || Object.hasOwn(channels, entry.id)
+            || !number(entry.cap) || !number(entry.initial, entry.cap) || !number(entry.drift, entry.cap)
+            || !scopes(entry.scopes)) reject('invalid channel declaration');
+        channels[entry.id] = entry;
+    }
+    const graph = Object.fromEntries(Object.keys(channels).map(key => [key, []]));
+    for (const edge of apparatus.edges) {
+        if (!objectKeys(edge, ['id', 'from', 'to', 'gain']) || !identifier(edge.id) || edgeIDs.has(edge.id)
+            || !Object.hasOwn(channels, edge.from) || (edge.to !== 'readout' && !Object.hasOwn(channels, edge.to))
+            || !gains(edge.gain)) reject('invalid edge declaration');
+        edgeIDs.add(edge.id); graph[edge.from].push(edge);
+    }
+    const ordered = [], marked = new Map();
+    const visit = key => {
+        if (marked.get(key) === 1) reject('cyclic graph');
+        if (marked.get(key) === 2) return;
+        marked.set(key, 1);
+        for (const edge of graph[key]) if (edge.to !== 'readout') visit(edge.to);
+        marked.set(key, 2); ordered.push(key);
+    };
+    Object.keys(channels).forEach(visit);
+    const effectLists = {shield: ['installed'], route: ['installed'], sensor: ['installed'],
+        attenuate: ['nuisance', 'transfer'], reference: ['observations'], destroy: ['productive']};
+    for (const primitive of apparatus.primitives) {
+        if (!objectKeys(primitive, ['id', 'phase', 'kind', 'target', 'gain', 'cost', 'requires', 'effects', 'support'])
+            || !identifier(primitive.id) || Object.hasOwn(catalogue, primitive.id)
+            || !Object.hasOwn(effectLists, primitive.kind) || !number(primitive.cost) || !gains(primitive.gain)
+            || !Array.isArray(primitive.requires) || primitive.requires.length > 16
+            || new Set(primitive.requires).size !== primitive.requires.length
+            || stable(primitive.effects) !== stable(effectLists[primitive.kind])
+            || !objectKeys(primitive.support, ['scopes', 'boundedGain']) || !scopes(primitive.support.scopes)
+            || primitive.support.boundedGain !== primitive.gain) reject('invalid primitive declaration');
+        const isInstall = ['shield', 'route', 'sensor'].includes(primitive.kind);
+        if (primitive.phase !== (isInstall ? 'install' : 'prepare')
+            || (primitive.kind === 'route' ? !edgeIDs.has(primitive.target) : primitive.kind === 'destroy'
+                ? primitive.target !== 'productive' : !Object.hasOwn(channels, primitive.target))
+            || (!['attenuate', 'destroy'].includes(primitive.kind) && primitive.gain !== 1)
+            || (primitive.kind === 'destroy' && primitive.gain !== 0)) reject('unsupported primitive semantics');
+        catalogue[primitive.id] = primitive;
+    }
+    for (const primitive of apparatus.primitives) {
+        if (!primitive.requires.every(key => Object.hasOwn(catalogue, key) && catalogue[key].phase === 'install')) {
+            reject('invalid guard');
+        }
+        if (primitive.kind === 'reference' && !primitive.requires.some(key =>
+            catalogue[key].kind === 'sensor' && catalogue[key].target === primitive.target)) reject('missing sensor guard');
+    }
+    const limits = apparatus.limits;
+    if (!objectKeys(limits, ['maxInstructions', 'maxRepeat', 'maxCost', 'maxCycles'])
+        || !number(limits.maxInstructions, 64) || limits.maxInstructions < 1
+        || !number(limits.maxRepeat, 32) || limits.maxRepeat < 1 || !number(limits.maxCost)
+        || !number(limits.maxCycles, 4096) || limits.maxCycles < 1) reject('unsafe resource limits');
+    if (!objectKeys(ast, ['schema', 'installations', 'prepare', 'scope']) || ast.schema !== 'out-evolve-ast/v1'
+        || !scopes(ast.scope) || !Array.isArray(ast.installations)
+        || ast.installations.length > limits.maxInstructions
+        || new Set(ast.installations).size !== ast.installations.length) reject('malformed AST');
+    const execution = []; let visits = 0;
+    const flatten = (node, depth) => {
+        if (++visits > 256 || depth > 8) reject('AST bounds exceeded');
+        if (objectKeys(node, ['op', 'id']) && node.op === 'primitive') {
+            if (!Object.hasOwn(catalogue, node.id) || catalogue[node.id].phase !== 'prepare') reject('unsupported operation');
+            execution.push(node.id);
+        } else if (objectKeys(node, ['op', 'steps']) && node.op === 'sequence' && Array.isArray(node.steps)
+            && node.steps.length <= limits.maxInstructions) {
+            for (const child of node.steps) flatten(child, depth + 1);
+        } else if (objectKeys(node, ['op', 'count', 'body']) && node.op === 'repeat'
+            && number(node.count, limits.maxRepeat) && node.count > 0) {
+            for (let count = 0; count < node.count; count++) flatten(node.body, depth + 1);
+        } else reject('unbounded or unknown AST operation');
+        if (execution.length + ast.installations.length > limits.maxInstructions) reject('instruction limit exceeded');
+    };
+    flatten(ast.prepare, 0);
+    const installed = new Set(), referenced = new Set(), contractions = Object.fromEntries(
+        Object.keys(channels).map(key => [key, 0]));
+    let productive = 1, cost = 0, installation = 0, preparation = 0, calibration = 0;
+    const interpret = (key, phase) => {
+        const primitive = catalogue[key];
+        if (!primitive || primitive.phase !== phase || !primitive.requires.every(required => installed.has(required))
+            || !ast.scope.every(scope => primitive.support.scopes.includes(scope))) reject('operation guard failed');
+        cost += primitive.cost;
+        if (!number(cost, limits.maxCost)) reject('resource overflow');
+        if (phase === 'install') {
+            if (installed.has(key)) reject('duplicate installation');
+            installed.add(key); installation += primitive.cost;
+        } else {
+            preparation += primitive.cost;
+            if (primitive.kind === 'attenuate') {
+                if (primitive.gain === 0) contractions[primitive.target] = Infinity;
+                else if (primitive.gain === 0.5) contractions[primitive.target]++;
+            } else if (primitive.kind === 'reference') {
+                referenced.add(primitive.target); calibration += primitive.cost;
+            } else if (primitive.kind === 'destroy') productive = 0;
+        }
+    };
+    for (const key of ast.installations) interpret(key, 'install');
+    for (const key of execution) interpret(key, 'prepare');
+    const closed = new Set([...installed].map(key => catalogue[key]).filter(item => item.kind === 'route')
+        .map(item => item.target));
+    const transferToOutput = {readout: 1};
+    for (const key of ordered) transferToOutput[key] = graph[key].reduce((sum, edge) =>
+        sum + (closed.has(edge.id) ? 0 : edge.gain * transferToOutput[edge.to]), 0);
+    const envelopes = {}, coefficients = {}, recurrence = {};
+    const ceilingRatio = (numerator, denominator) => {
+        const quotient = numerator / denominator;
+        return Number(quotient + (numerator % denominator === 0n ? 0n : 1n));
+    };
+    for (const [key, channel] of Object.entries(channels)) {
+        const protectedChannel = [...installed].some(name => catalogue[name].kind === 'shield'
+            && catalogue[name].target === key);
+        const drift = protectedChannel ? 0 : channel.drift, exponent = contractions[key];
+        const contraction = exponent === Infinity ? 0 : 2 ** -exponent;
+        let first, invariant;
+        if (exponent === Infinity) first = invariant = drift;
+        else if (exponent === 0) {
+            first = Math.min(channel.cap, channel.initial + drift);
+            invariant = drift === 0 ? channel.initial : channel.cap;
+        } else {
+            const scale = 2n ** BigInt(exponent), d = BigInt(drift);
+            first = Math.min(channel.cap, ceilingRatio(BigInt(channel.initial) + d * scale, scale));
+            invariant = Math.max(first, Math.min(channel.cap, ceilingRatio(d * scale, scale - 1n)));
+        }
+        envelopes[key] = invariant;
+        coefficients[key] = referenced.has(key) ? 0 : transferToOutput[key];
+        recurrence[key] = {gain: contraction, recurringDisturbance: drift, cap: channel.cap, first, invariant};
+    }
+    const errors = {};
+    for (const operation of ast.scope) {
+        errors[operation] = Object.values(channels).reduce((sum, channel) => sum
+            + (channel.scopes.includes(operation) ? envelopes[channel.id] * coefficients[channel.id] : 0), 0);
+    }
+    const errorBound = Math.max(...Object.values(errors)), preserved = productive === 1;
+    const scopeValid = stable([...ast.scope].sort()) === stable([...apparatus.scope].sort());
+    const ok = preserved && scopeValid && Number.isFinite(errorBound) && errorBound <= apparatus.tolerance;
+    const certificate = {schema: 'out-evolve-certificate/v1', runtime: 'out-evolve-runtime/v1',
+        modelOnly: true, productiveGain: productive, requiredProductiveGain: 1, scope: [...ast.scope],
+        envelopes, coefficients, recurrence, errors, errorBound,
+        structuralSupport: Object.keys(coefficients).filter(key => coefficients[key] !== 0),
+        futureLanguage: 'repeat(prepare;operation;paired-reference;measure), all declared operations',
+        inputDomain: 'bounded independent nuisance sources; nonnegative DAG gains; exact dyadic interpreter',
+        precision: 'exact rational ceilings for conservative integer recurrence envelopes; no physical certificate'};
+    if (claimedCertificate !== undefined && stable(claimedCertificate) !== stable(certificate)) {
+        reject('supplied preservation certificate does not match semantic replay');
+    }
+    return {ok, preserved, errorBound, tolerance: apparatus.tolerance, cost, scope: [...ast.scope],
+        costs: {installation, preparation, calibration, measurement: 1, maintenance: 0,
+            operationPerUse: preparation + 1, calibrationIncludedInPreparation: true}, certificate,
+        reason: !preserved ? 'Productive-state preservation failed.' : !scopeValid
+            ? 'Package scope differs from required apparatus scope.' : !ok
+                ? 'Recurring nuisance exceeds required output quality.' : 'Qualified within the supplied synthetic model.'};
+}
+
+return {verify};
+})();
+const capability_module_5=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Finite, cost-ordered construction over public apparatus semantics only. */
+const runtime = capability_module_6;
+const checker = capability_module_7;
+
+const CONSTRUCTOR_VERSION = 'out-evolve-constructor/v1';
+const SEARCH_SCHEMA = 'out-evolve-search/v1';
+const SEARCH_TOKEN_SCHEMA = 'out-evolve-search-token/v1';
+const MAX_SEARCH_TOKEN_BYTES = 2000000;
+const DEFAULT_BUDGET = Object.freeze({maxStates: 20000, maxProgramSize: 12,
+    maxCost: 1000000, maxMemoryStates: 20000, dominance: true});
+const trusted = new WeakMap();
+const checkpointVersions = new WeakMap();
+const freshTokens = new WeakMap();
+const clone = value => JSON.parse(JSON.stringify(value));
+const equal = (a, b) => canonical(a) === canonical(b);
+const reject = message => { throw new TypeError(message); };
+
+function trustCheckpoint(checkpoint) {
+    const fingerprint = canonical(checkpoint);
+    if (trusted.get(checkpoint) !== fingerprint) {
+        trusted.set(checkpoint, fingerprint);
+        checkpointVersions.set(checkpoint, {});
+    }
+    return checkpoint;
+}
+
+function canonical(value) {
+    const active = new Set();
+    let count = 0;
+    const visit = (item, depth) => {
+        if (++count > 2000000 || depth > 64) reject('Search data exceeds structural bounds.');
+        if (item === null || typeof item === 'boolean' || typeof item === 'string') return JSON.stringify(item);
+        if (typeof item === 'number') {
+            if (!Number.isFinite(item) || Object.is(item, -0)) reject('Unsafe search numeric value.');
+            return JSON.stringify(item);
+        }
+        if (!item || typeof item !== 'object' || active.has(item)) reject('Search requires finite plain JSON.');
+        active.add(item);
+        let result;
+        if (Array.isArray(item)) {
+            if (Object.getPrototypeOf(item) !== Array.prototype || Reflect.ownKeys(item).length !== item.length + 1) {
+                reject('Search array has additional or missing fields.');
+            }
+            result = '[' + Array.from({length: item.length}, (_, index) => {
+                const descriptor = Object.getOwnPropertyDescriptor(item, String(index));
+                if (!descriptor || !Object.hasOwn(descriptor, 'value') || !descriptor.enumerable) {
+                    reject('Search array accessor rejected.');
+                }
+                return visit(descriptor.value, depth + 1);
+            }).join(',') + ']';
+        } else {
+            if (Object.getPrototypeOf(item) !== Object.prototype) reject('Search requires plain objects.');
+            if (Reflect.ownKeys(item).length !== Object.keys(item).length) reject('Search has hidden object fields.');
+            result = '{' + Object.keys(item).sort().map(key => {
+                const d = Object.getOwnPropertyDescriptor(item, key);
+                if (!d || !Object.hasOwn(d, 'value') || !d.enumerable) reject('Search data accessor rejected.');
+                return JSON.stringify(key) + ':' + visit(item[key], depth + 1);
+            }).join(',') + '}';
+        }
+        active.delete(item);
+        return result;
+    };
+    return visit(value, 0);
+}
+
+function budget(input = {}) {
+    const allowed = [...Object.keys(DEFAULT_BUDGET), 'parent'];
+    for (const key of Object.keys(input)) if (!allowed.includes(key)) reject(`Unsupported constructor option: ${key}`);
+    const result = {...DEFAULT_BUDGET};
+    for (const key of Object.keys(result)) if (Object.hasOwn(input, key)) result[key] = input[key];
+    for (const [key, max] of [['maxStates', 100000], ['maxProgramSize', 32],
+        ['maxCost', 1000000000], ['maxMemoryStates', 100000]]) {
+        if (!Number.isSafeInteger(result[key]) || result[key] < 1 || result[key] > max) reject(`Invalid ${key}.`);
+    }
+    if (typeof result.dominance !== 'boolean') reject('Invalid dominance flag.');
+    return result;
+}
+
+function emptyAST(apparatus) {
+    return {schema: 'out-evolve-ast/v1', installations: [],
+        prepare: {op: 'sequence', steps: []}, scope: clone(apparatus.scope)};
+}
+
+function instructionCount(ast) { return ast.installations.length + ast.prepare.steps.length; }
+function programKey(ast) { return canonical(ast); }
+function pathCost(apparatus, ast, inherited) {
+    const ids = [...ast.installations, ...ast.prepare.steps.map(step => step.id)];
+    return ids.reduce((total, id) => total + (inherited.includes(id) ? 0
+        : apparatus.primitives.find(primitive => primitive.id === id).cost), 0);
+}
+
+function matchingParent(apparatus, parent) {
+    if (!parent) return {parentDigest: null, assets: [], ancestorCost: 0, parent: null};
+    canonical(parent);
+    if (!parent.apparatus || !parent.ast || !parent.certificate || typeof parent.digest !== 'string') {
+        reject('Parent capability is missing executable evidence.');
+    }
+    const proof = checker.verify(parent.apparatus, parent.ast, parent.certificate);
+    if (!proof.ok) reject('Parent capability does not independently qualify.');
+    if (!equal(parent.apparatus.channels, apparatus.channels) || !equal(parent.apparatus.edges, apparatus.edges)
+        || parent.apparatus.tolerance !== apparatus.tolerance) reject('Stale parent apparatus contract.');
+    const assets = [];
+    for (const id of parent.ast.installations) {
+        const before = parent.apparatus.primitives.find(primitive => primitive.id === id);
+        const after = apparatus.primitives.find(primitive => primitive.id === id);
+        if (!before || !after || !equal(before, after)) reject('Stale parent installation semantics.');
+        assets.push(id);
+    }
+    if (!Number.isSafeInteger(parent.costLedger?.total) || parent.costLedger.total < 0) reject('Invalid parent cost ledger.');
+    return {parentDigest: parent.digest, assets, ancestorCost: parent.costLedger.total, parent: clone(parent)};
+}
+
+function initialCheckpoint(apparatus, options, inheritance) {
+    runtime.validateApparatus(apparatus);
+    const ast = emptyAST(apparatus);
+    ast.installations = [...inheritance.assets];
+    let state = runtime.initialState(apparatus);
+    for (const id of ast.installations) state = runtime.step(apparatus, state, id);
+    const node = {ast, state, cost: 0, serial: 0, phase: 'install'};
+    const checkpoint = {schema: SEARCH_SCHEMA, constructorVersion: CONSTRUCTOR_VERSION,
+        apparatus: clone(apparatus), options: clone(options), inheritance: clone(inheritance),
+        status: 'searching', reason: 'Search is bounded and in progress.', expanded: 0,
+        generated: 1, nextSerial: 1, queue: [node], seen: {}, attempts: [], frontier: [],
+        controls: [], controlStop: null,
+        work: {synthesis: 0, qualification: inheritance.parent ? 1 : 0, rejectedTransitions: 0, budgetPruned: 0,
+            unsuccessfulCandidates: 0, deduplicated: 0}, result: null};
+    remember(checkpoint, node);
+    trustCheckpoint(checkpoint);
+    return checkpoint;
+}
+
+function createSearch(apparatus, options = {}) {
+    canonical(apparatus);
+    canonical(options);
+    return initialCheckpoint(apparatus, budget(options), matchingParent(apparatus, options.parent));
+}
+
+function behaviorKey(node) {
+    const {cost, steps, ...semantics} = node.state;
+    return canonical({phase: node.phase, semantics});
+}
+
+function remember(checkpoint, node) {
+    if (!checkpoint.options.dominance) return true;
+    const key = behaviorKey(node), count = instructionCount(node.ast);
+    const prior = checkpoint.seen[key] || [];
+    if (prior.some(item => item.cost <= node.cost && item.length <= count)) {
+        checkpoint.work.deduplicated += 1;
+        return false;
+    }
+    checkpoint.seen[key] = prior.filter(item => !(node.cost <= item.cost && count <= item.length));
+    checkpoint.seen[key].push({cost: node.cost, length: count});
+    return true;
+}
+
+function sortQueue(queue) {
+    queue.sort((a, b) => a.cost - b.cost || instructionCount(a.ast) - instructionCount(b.ast)
+        || a.serial - b.serial);
+}
+
+function spent(checkpoint) { return checkpoint.work.synthesis + checkpoint.work.qualification; }
+function memoryUnits(checkpoint) {
+    return checkpoint.queue.length + Object.values(checkpoint.seen).reduce((sum, points) => sum + points.length, 0)
+        + checkpoint.attempts.length + checkpoint.controls.length + checkpoint.frontier.length;
+}
+function stop(checkpoint, reason) {
+    checkpoint.status = 'exhausted';
+    checkpoint.reason = `No qualifying construction found within budget: ${reason}.`;
+}
+
+function expand(checkpoint) {
+    const {apparatus, options} = checkpoint;
+    if (memoryUnits(checkpoint) > options.maxMemoryStates) { stop(checkpoint, 'retained-state memory limit'); return; }
+    if (checkpoint.expanded >= options.maxStates) { stop(checkpoint, 'state limit'); return; }
+    if (!checkpoint.queue.length) {
+        if (checkpoint.work.budgetPruned) { stop(checkpoint, 'total modeled cost pruned pending branches'); return; }
+        checkpoint.status = 'infeasible';
+        checkpoint.reason = 'No construction exists in the declared finite program space and bounds.';
+        return;
+    }
+    sortQueue(checkpoint.queue);
+    const node = checkpoint.queue.shift();
+    const evaluationCost = 1 + instructionCount(node.ast);
+    if (spent(checkpoint) + evaluationCost + 1 > options.maxCost) { stop(checkpoint, 'total modeled cost'); return; }
+    checkpoint.expanded += 1;
+    checkpoint.work.synthesis += evaluationCost;
+    checkpoint.work.qualification += 1;
+    let report;
+    try { report = runtime.qualify(apparatus, node.ast); }
+    catch (error) { report = {ok: false, reason: error.message}; }
+    const cost = node.cost + spent(checkpoint);
+    const attempt = {index: checkpoint.expanded, program: programKey(node.ast),
+        programCost: node.cost, synthesisToDate: spent(checkpoint), qualified: false, reason: report.reason || ''};
+    checkpoint.attempts.push(attempt);
+    if (report.ok && cost <= options.maxCost) {
+        const independent = checker.verify(apparatus, node.ast, report.certificate);
+        checkpoint.work.qualification += 1;
+        if (!independent.ok) reject('Runtime and independent checker disagree; construction rejected.');
+        if (node.cost + spent(checkpoint) > options.maxCost) { stop(checkpoint, 'independent qualification cost'); return; }
+        attempt.qualified = true;
+        checkpoint.status = 'qualified';
+        checkpoint.reason = 'Generated program independently qualifies in the supplied synthetic model.';
+        checkpoint.result = {program: clone(node.ast), certificate: clone(report.certificate),
+            report: clone(report), programCost: node.cost};
+        checkpoint.frontier.push({installationCost: node.ast.installations.reduce((total, id) => total
+            + (checkpoint.inheritance.assets.includes(id) ? 0
+                : apparatus.primitives.find(primitive => primitive.id === id).cost), 0),
+        operationCost: node.ast.prepare.steps.reduce((total, step) => total
+            + apparatus.primitives.find(primitive => primitive.id === step.id).cost, 0),
+        program: clone(node.ast), status: 'first-qualified-uniform-cost-point'});
+        return;
+    }
+    checkpoint.work.unsuccessfulCandidates += 1;
+    if (instructionCount(node.ast) >= options.maxProgramSize) return;
+    for (const primitive of apparatus.primitives) {
+        if (primitive.phase === 'install' && (node.phase !== 'install'
+            || node.ast.installations.includes(primitive.id))) continue;
+        if (spent(checkpoint) + 1 > options.maxCost) { stop(checkpoint, 'candidate transition work'); return; }
+        checkpoint.work.synthesis += 1;
+        const ast = clone(node.ast);
+        if (primitive.phase === 'install') ast.installations.push(primitive.id);
+        else ast.prepare.steps.push({op: 'primitive', id: primitive.id});
+        let state;
+        try { state = runtime.step(apparatus, node.state, primitive.id); }
+        catch { checkpoint.work.rejectedTransitions += 1; continue; }
+        const child = {ast, state, cost: pathCost(apparatus, ast, checkpoint.inheritance.assets),
+            serial: checkpoint.nextSerial++, phase: primitive.phase === 'install' ? 'install' : 'prepare'};
+        if (child.cost + spent(checkpoint) > options.maxCost) { checkpoint.work.budgetPruned += 1; continue; }
+        if (!remember(checkpoint, child)) continue;
+        if (memoryUnits(checkpoint) + 1 > options.maxMemoryStates) {
+            stop(checkpoint, 'memory-state limit'); return;
+        }
+        checkpoint.queue.push(child);
+        checkpoint.generated += 1;
+    }
+}
+
+function ledger(checkpoint) {
+    const ast = checkpoint.result?.program;
+    const installations = ast ? ast.installations.filter(id => !checkpoint.inheritance.assets.includes(id)) : [];
+    const installation = installations.reduce((sum, id) => sum
+        + checkpoint.apparatus.primitives.find(primitive => primitive.id === id).cost, 0);
+    const operation = ast ? ast.prepare.steps.reduce((sum, step) => sum
+        + checkpoint.apparatus.primitives.find(primitive => primitive.id === step.id).cost, 0) : 0;
+    const values = {unit: 'abstract-model-work', synthesis: checkpoint.work.synthesis,
+        unsuccessfulCandidates: checkpoint.work.unsuccessfulCandidates,
+        unsuccessfulCandidatesAccounting: 'Count only; all attempted execution work is charged in synthesis.',
+        tuning: 0, installation, calibration: 0, qualification: checkpoint.work.qualification,
+        operation, maintenance: 0};
+    values.total = values.synthesis + values.tuning + values.installation + values.calibration
+        + values.qualification + values.operation + values.maintenance;
+    return values;
+}
+
+function resultFor(checkpoint) {
+    trustCheckpoint(checkpoint);
+    return {status: checkpoint.status, checkpoint, program: checkpoint.result?.program || null,
+        certificate: checkpoint.result?.certificate || null, ledger: ledger(checkpoint),
+        attempts: checkpoint.attempts, frontier: checkpoint.frontier, reason: checkpoint.reason};
+}
+
+function replayCheckpoint(input) {
+    if (!Number.isSafeInteger(input.expanded) || input.expanded < 0 || input.expanded > 100000) {
+        reject('Invalid checkpoint expansion count.');
+    }
+    const options = budget(input.options);
+    if (input.expanded > options.maxStates || !Array.isArray(input.controls)
+        || input.controls.length > options.maxMemoryStates) reject('Checkpoint exceeds frozen replay limits.');
+    let previousControl = -1;
+    for (const control of input.controls) {
+        if (!control || Object.keys(control).length !== 2 || !['cancel', 'resume'].includes(control.kind)
+            || !Number.isSafeInteger(control.at) || control.at < 0
+            || control.at < previousControl || control.at > input.expanded) {
+            reject('Invalid search control history.');
+        }
+        previousControl = control.at;
+    }
+    if (!equal(input.inheritance, matchingParent(input.apparatus, input.inheritance?.parent))) {
+        reject('Checkpoint parent assets do not reproduce independent compatibility.');
+    }
+    const replay = initialCheckpoint(input.apparatus, options, input.inheritance);
+    let control = 0;
+    const started = globalThis.performance.now();
+    function restoreControls() {
+        while (input.controls[control]?.at === replay.expanded) {
+            const next = input.controls[control++];
+            if (next.kind === 'resume') {
+                if (replay.status !== 'cancelled') reject('Checkpoint resumes a search that was not cancelled.');
+                replay.status = 'searching'; replay.reason = 'Search is bounded and in progress.';
+            } else {
+                if (!['searching', 'cancelled'].includes(replay.status)) reject('Checkpoint cancels a terminal search.');
+                replay.status = 'cancelled'; replay.reason = 'Search cancelled; evidence and remaining work retained.';
+            }
+            replay.controls.push(clone(next));
+        }
+    }
+    while (replay.expanded < input.expanded) {
+        if (globalThis.performance.now() - started > 60000) reject('Checkpoint reconstruction exceeded the execution limit.');
+        restoreControls();
+        if (replay.status !== 'searching') reject('Cancelled checkpoint advanced without a recorded resume.');
+        expand(replay);
+        if (replay.status !== 'searching' && replay.expanded !== input.expanded) reject('Impossible search checkpoint.');
+    }
+    restoreControls();
+    if (control !== input.controls.length) reject('Invalid search control history.');
+    const last = replay.controls.at(-1);
+    if (input.status === 'cancelled' && last?.kind === 'cancel' && last.at === replay.expanded) {
+        replay.status = 'cancelled'; replay.reason = 'Search cancelled; evidence and remaining work retained.';
+    } else if (input.status === 'exhausted' && ['cancel', 'resume'].includes(input.controlStop)
+        && memoryUnits(replay) + 1 > replay.options.maxMemoryStates) {
+        replay.controlStop = input.controlStop;
+        stop(replay, 'retained-history memory limit');
+    } else if (input.status === 'exhausted' && input.reason.includes('execution timeout')) {
+        stop(replay, 'execution timeout');
+    } else if (input.status !== replay.status && replay.status === 'searching') {
+        expand(replay);
+    }
+    return replay;
+}
+
+function validateCheckpoint(input) {
+    canonical(input);
+    if (!input || input.schema !== SEARCH_SCHEMA || input.constructorVersion !== CONSTRUCTOR_VERSION) {
+        reject('Unsupported constructor checkpoint.');
+    }
+    const replay = replayCheckpoint(input);
+    if (!equal(input, replay)) reject('Checkpoint does not reproduce deterministic search; tampering rejected.');
+    trustCheckpoint(input);
+    return input;
+}
+
+function searchToken(input) {
+    const {parent, ...inheritance} = input.inheritance;
+    return {schema: SEARCH_TOKEN_SCHEMA, constructorVersion: CONSTRUCTOR_VERSION, runtimeVersion: runtime.RUNTIME_VERSION,
+        apparatus: clone(input.apparatus), options: clone(input.options), inheritance: clone(inheritance),
+        expanded: input.expanded, controls: clone(input.controls), controlStop: input.controlStop,
+        status: input.status, reason: input.reason,
+        summary: {generated: input.generated, nextSerial: input.nextSerial, work: clone(input.work)}};
+}
+
+function compactSearchCheckpoint(input) {
+    const checkpoint = trusted.get(input) === canonical(input) ? input : validateCheckpoint(input);
+    const token = searchToken(checkpoint);
+    if (new TextEncoder().encode(canonical(token)).length > MAX_SEARCH_TOKEN_BYTES) {
+        reject('Compact checkpoint exceeds the bounded recovery token size.');
+    }
+    freshTokens.set(token, {checkpoint, version: checkpointVersions.get(checkpoint), fingerprint: canonical(token)});
+    return token;
+}
+
+function exportSearchCheckpoint(input) { return compactSearchCheckpoint(input); }
+
+function importCompactSearchCheckpoint(input, {parent = null} = {}) {
+    const serialized = canonical(input);
+    const fresh = freshTokens.get(input);
+    if (fresh && fresh.fingerprint === serialized && checkpointVersions.get(fresh.checkpoint) === fresh.version
+        && trusted.get(fresh.checkpoint) === canonical(fresh.checkpoint)
+        && (fresh.checkpoint.inheritance.parentDigest || null) === (parent?.digest || null)) {
+        return fresh.checkpoint;
+    }
+    const keys = ['schema', 'constructorVersion', 'runtimeVersion', 'apparatus', 'options', 'inheritance',
+        'expanded', 'controls', 'controlStop', 'status', 'reason', 'summary'];
+    if (new TextEncoder().encode(serialized).length > MAX_SEARCH_TOKEN_BYTES || !input
+        || Object.keys(input).length !== keys.length || !keys.every(key => Object.hasOwn(input, key))
+        || input.schema !== SEARCH_TOKEN_SCHEMA || input.constructorVersion !== CONSTRUCTOR_VERSION
+        || input.runtimeVersion !== runtime.RUNTIME_VERSION) reject('Unsupported compact search checkpoint.');
+    const inheritance = matchingParent(input.apparatus, parent);
+    const {parent: ignoredParent, ...scopedAssets} = inheritance;
+    if (!equal(input.inheritance, scopedAssets)) reject('Compact checkpoint parent asset binding mismatch.');
+    const replay = replayCheckpoint({...clone(input), inheritance});
+    if (!equal(input, searchToken(replay))) reject('Compact checkpoint does not reproduce deterministic work and status.');
+    trustCheckpoint(replay);
+    return replay;
+}
+
+function importSearchCheckpoint(input, context = {}) {
+    canonical(input);
+    return input?.schema === SEARCH_TOKEN_SCHEMA ? importCompactSearchCheckpoint(input, context)
+        : validateCheckpoint(clone(input));
+}
+
+function advanceSearch(input, {steps = 256, cancel = false, timeLimitMs = 1000, now = () => Date.now()} = {}) {
+    const checkpoint = trusted.get(input) === canonical(input) ? input : validateCheckpoint(input);
+    if (!Number.isSafeInteger(steps) || steps < 0 || steps > 100001
+        || !Number.isSafeInteger(timeLimitMs) || timeLimitMs < 0 || timeLimitMs > 60000
+        || typeof cancel !== 'boolean' || typeof now !== 'function') reject('Invalid search execution bounds.');
+    if (['qualified', 'exhausted', 'infeasible'].includes(checkpoint.status)) return resultFor(checkpoint);
+    if (cancel) {
+        if (memoryUnits(checkpoint) + 1 > checkpoint.options.maxMemoryStates) {
+            checkpoint.controlStop = 'cancel';
+            stop(checkpoint, 'retained-history memory limit'); return resultFor(checkpoint);
+        }
+        checkpoint.controls.push({kind: 'cancel', at: checkpoint.expanded});
+        checkpoint.status = 'cancelled';
+        checkpoint.reason = 'Search cancelled; evidence and remaining work retained.';
+        return resultFor(checkpoint);
+    }
+    if (checkpoint.status === 'cancelled') {
+        if (memoryUnits(checkpoint) + 1 > checkpoint.options.maxMemoryStates) {
+            checkpoint.controlStop = 'resume';
+            stop(checkpoint, 'retained-history memory limit'); return resultFor(checkpoint);
+        }
+        checkpoint.controls.push({kind: 'resume', at: checkpoint.expanded});
+        checkpoint.status = 'searching'; checkpoint.reason = 'Search is bounded and in progress.';
+    }
+    const started = now();
+    for (let count = 0; count < steps && checkpoint.status === 'searching'; count += 1) {
+        if (now() - started >= timeLimitMs) { stop(checkpoint, 'execution timeout'); break; }
+        expand(checkpoint);
+    }
+    return resultFor(checkpoint);
+}
+
+function construct(apparatus, options = {}) {
+    const checkpoint = createSearch(apparatus, options);
+    return advanceSearch(checkpoint, {steps: checkpoint.options.maxStates + 1, timeLimitMs: 60000});
+}
+
+return {CONSTRUCTOR_VERSION,SEARCH_SCHEMA,SEARCH_TOKEN_SCHEMA,MAX_SEARCH_TOKEN_BYTES,DEFAULT_BUDGET,canonical,createSearch,compactSearchCheckpoint,exportSearchCheckpoint,importCompactSearchCheckpoint,importSearchCheckpoint,advanceSearch,construct};
+})();
+const capability_module_8=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Portable model-only executable packages. Import recomputes semantics and replay. */
+const runtime = capability_module_6;
+const checker = capability_module_7;
+const constructor = capability_module_5;
+
+const PACKAGE_SCHEMA = 'out-evolve-capability-package/v1';
+const clone = value => JSON.parse(constructor.canonical(value));
+const same = (a, b) => constructor.canonical(a) === constructor.canonical(b);
+const fail = message => { throw new TypeError(message); };
+const KEYS = ['schema', 'runtimeVersion', 'constructorVersion', 'apparatus', 'apparatusDigest', 'objectiveDigest',
+    'catalogueDigest', 'ast', 'installations', 'executablePlan', 'interfaces', 'certificate', 'scope',
+    'errorEnvelope', 'invalidationRules', 'replayFixtures', 'frozenEvidence', 'costLedger', 'search', 'parentAssets', 'digest'];
+const INTERFACES = Object.freeze({prepare: 'out-evolve-prepare/v1', measure: 'out-evolve-measure/v1',
+    qualify: 'out-evolve-independent-qualify/v1'});
+const INVALIDATION = Object.freeze(['Runtime or schema change', 'Objective, tolerance or required scope change',
+    'Apparatus channels, graph, primitive guards, effects, gains or resource bounds change',
+    'Unmodeled coupling or disturbance exceeds supplied support envelope', 'Physical use requires separate qualification']);
+
+async function sha256(value) {
+    const bytes = new TextEncoder().encode(typeof value === 'string' ? value : constructor.canonical(value));
+    const result = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+    return [...new Uint8Array(result)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+async function digestCapability(input) {
+    const {digest, ...body} = input;
+    return sha256(body);
+}
+
+function objective(apparatus) {
+    return {requiredProductiveGain: 1, scope: apparatus.scope, tolerance: apparatus.tolerance,
+        usefulPurpose: 'Measure unchanged productive response with bounded recurring nuisance.'};
+}
+function catalogue(apparatus) {
+    return {channels: apparatus.channels, edges: apparatus.edges, primitives: apparatus.primitives, limits: apparatus.limits};
+}
+function validCost(ledger) {
+    const numeric = ['synthesis', 'unsuccessfulCandidates', 'tuning', 'installation', 'calibration',
+        'qualification', 'operation', 'maintenance', 'total'];
+    if (!ledger || ledger.unit !== 'abstract-model-work' || numeric.some(key =>
+        !Number.isSafeInteger(ledger[key]) || ledger[key] < 0)) fail('Invalid complete cost ledger.');
+    const sum = ['synthesis', 'tuning', 'installation', 'calibration', 'qualification', 'operation', 'maintenance']
+        .reduce((total, key) => total + ledger[key], 0);
+    if (sum !== ledger.total) fail('Cost ledger total mismatch.');
+}
+
+function frozenCost(result, fixtures, parent = null) {
+    const ledger = clone(result.ledger);
+    const replayCost = fixtures.reduce((sum, fixture) => sum + fixture.expected.cost, 0);
+    const auditCost = result.ledger.synthesis + result.ledger.qualification;
+    const checkingCost = 2 + fixtures.length + auditCost + (parent ? verificationCostCapability(parent) : 0);
+    ledger.qualification += checkingCost;
+    ledger.operation += replayCost;
+    ledger.total += checkingCost + replayCost;
+    return ledger;
+}
+
+function verificationCostCapability(pkg) {
+    const work = pkg.search.work;
+    const semanticReplay = work.synthesis + work.qualification;
+    const fixtureReplay = pkg.replayFixtures.reduce((total, fixture) => total + fixture.expected.cost + 1, 0);
+    const parent = pkg.search.parentSource ?? pkg.search.checkpoint.inheritance.parent ?? null;
+    return semanticReplay + 2 + fixtureReplay + (parent ? verificationCostCapability(parent) : 0);
+}
+
+function fixtureInputs(apparatus) {
+    return apparatus.scope.flatMap(operation => [
+        {signal: 7, options: {operation, cycle: 0, sign: 1}},
+        {signal: -3, options: {operation, cycle: apparatus.limits.maxCycles - 1, sign: -1}}
+    ]);
+}
+
+function parentAssets(apparatus, parent, inherited) {
+    if (!parent) return {parentDigest: null, installations: [], observations: [], priorEvidence: 'none', ancestorCost: 0};
+    const matching = inherited || parent.ast.installations;
+    if (matching.some(id => !parent.ast.installations.includes(id))) fail('Cannot inherit unavailable installation.');
+    for (const id of matching) {
+        const before = parent.apparatus.primitives.find(item => item.id === id);
+        const after = apparatus.primitives.find(item => item.id === id);
+        if (!same(before, after)) fail('Incompatible inherited primitive.');
+    }
+    if (!same(parent.apparatus.channels, apparatus.channels) || !same(parent.apparatus.edges, apparatus.edges)
+        || parent.apparatus.tolerance !== apparatus.tolerance) fail('Incompatible inherited apparatus support.');
+    return {parentDigest: parent.digest, installations: [...matching], observations: [],
+        priorEvidence: 'historical-only; new scope independently requalified', ancestorCost: parent.costLedger.total};
+}
+
+async function freezeCapability(apparatus, result, {parent = null, inheritedAssets = null, evidence = null} = {}) {
+    if (result.status !== 'qualified' || !result.program || !result.checkpoint) fail('Cannot freeze unfinished construction.');
+    const checkpoint = constructor.importSearchCheckpoint(result.checkpoint);
+    if (!same(checkpoint.apparatus, apparatus) || !same(checkpoint.result.program, result.program)) {
+        fail('Search source or program changed before freeze.');
+    }
+    if (!same(result.ledger, constructor.advanceSearch(checkpoint, {steps: 0}).ledger)) fail('Search cost ledger changed.');
+    const verifiedParent = parent ? await importCapability(parent) : null;
+    if ((checkpoint.inheritance.parentDigest || null) !== (verifiedParent?.digest || null)) {
+        fail('Parent inheritance differs from construction search.');
+    }
+    const ast = clone(result.program), report = runtime.qualify(apparatus, ast);
+    const independent = checker.verify(apparatus, ast, report.certificate);
+    if (!report.ok || !independent.ok) fail('Independent qualification failed before freeze.');
+    const fixtures = fixtureInputs(apparatus).map(input => ({...input, expected: runtime.measure(apparatus, ast,
+        input.signal, input.options)}));
+    const costLedger = frozenCost(result, fixtures, verifiedParent);
+    if (costLedger.total > checkpoint.options.maxCost) {
+        fail('No qualifying construction found within budget: independent replay and package freeze qualification cost.');
+    }
+    const output = {schema: PACKAGE_SCHEMA, runtimeVersion: runtime.RUNTIME_VERSION,
+        constructorVersion: constructor.CONSTRUCTOR_VERSION, apparatus: clone(apparatus),
+        apparatusDigest: await sha256(apparatus), objectiveDigest: await sha256(objective(apparatus)),
+        catalogueDigest: await sha256(catalogue(apparatus)), ast, installations: [...ast.installations],
+        executablePlan: runtime.compile(apparatus, ast), interfaces: clone(INTERFACES), certificate: report.certificate,
+        scope: [...ast.scope], errorEnvelope: clone(report.certificate.errors), invalidationRules: [...INVALIDATION],
+        replayFixtures: fixtures, frozenEvidence: {status: 'supplied-model-qualified', physicalValidation: false,
+            reuseStatus: 'not-yet-evaluated', externalReport: evidence === null ? null : clone(evidence)},
+        costLedger, search: {schema: constructor.SEARCH_SCHEMA, limits: clone(checkpoint.options),
+            expanded: checkpoint.expanded, generated: checkpoint.generated, work: clone(checkpoint.work),
+            attempts: clone(result.attempts), frontier: clone(result.frontier)},
+        parentAssets: parentAssets(apparatus, verifiedParent, inheritedAssets), digest: ''};
+    output.search.checkpoint = constructor.compactSearchCheckpoint(checkpoint);
+    output.search.parentSource = verifiedParent;
+    if (!same(output.parentAssets.installations, checkpoint.inheritance.assets)) fail('Inherited asset selection changed.');
+    output.digest = await digestCapability(output);
+    return output;
+}
+
+async function importCapability(input) {
+    constructor.canonical(input);
+    if (!input || Object.keys(input).length !== KEYS.length || !KEYS.every(key => Object.hasOwn(input, key))
+        || input.schema !== PACKAGE_SCHEMA || input.runtimeVersion !== runtime.RUNTIME_VERSION
+        || input.constructorVersion !== constructor.CONSTRUCTOR_VERSION) fail('Unsupported executable capability package.');
+    const pkg = clone(input);
+    if (pkg.digest !== await digestCapability(pkg) || pkg.apparatusDigest !== await sha256(pkg.apparatus)
+        || pkg.objectiveDigest !== await sha256(objective(pkg.apparatus))
+        || pkg.catalogueDigest !== await sha256(catalogue(pkg.apparatus))) fail('Package identity binding mismatch.');
+    const report = runtime.qualify(pkg.apparatus, pkg.ast);
+    const independent = checker.verify(pkg.apparatus, pkg.ast, pkg.certificate);
+    if (!report.ok || !independent.ok || !same(report.certificate, pkg.certificate)
+        || !same(runtime.compile(pkg.apparatus, pkg.ast), pkg.executablePlan)
+        || !same(pkg.interfaces, INTERFACES) || !same(pkg.scope, pkg.ast.scope)
+        || !same(pkg.installations, pkg.ast.installations) || !same(pkg.errorEnvelope, report.certificate.errors)
+        || !same(pkg.invalidationRules, INVALIDATION)) fail('Package executable contract does not independently qualify.');
+    if (!same(pkg.replayFixtures.map(({signal, options}) => ({signal, options})), fixtureInputs(pkg.apparatus))) {
+        fail('Package replay coverage changed.');
+    }
+    for (const fixture of pkg.replayFixtures) {
+        if (!same(runtime.measure(pkg.apparatus, pkg.ast, fixture.signal, fixture.options), fixture.expected)) {
+            fail('Package replay fixture mismatch.');
+        }
+    }
+    validCost(pkg.costLedger);
+    if (!pkg.search || pkg.search.schema !== constructor.SEARCH_SCHEMA || !Array.isArray(pkg.search.attempts)
+        || pkg.search.attempts.length !== pkg.search.expanded || pkg.costLedger.total > pkg.search.limits.maxCost
+        || pkg.frozenEvidence.physicalValidation !== false || pkg.frozenEvidence.status !== 'supplied-model-qualified'
+        || pkg.frozenEvidence.reuseStatus !== 'not-yet-evaluated') fail('Package evidence or search bounds changed.');
+    const parentSource = pkg.search.parentSource ?? pkg.search.checkpoint.inheritance.parent ?? null;
+    const verifiedParent = parentSource ? await importCapability(parentSource) : null;
+    const checkpoint = constructor.importSearchCheckpoint(pkg.search.checkpoint, {parent: verifiedParent});
+    const searchResult = constructor.advanceSearch(checkpoint, {steps: 0});
+    if (searchResult.status !== 'qualified' || !same(checkpoint.apparatus, pkg.apparatus)
+        || !same(searchResult.program, pkg.ast) || !same(checkpoint.options, pkg.search.limits)
+        || checkpoint.expanded !== pkg.search.expanded || checkpoint.generated !== pkg.search.generated
+        || !same(checkpoint.work, pkg.search.work) || !same(searchResult.attempts, pkg.search.attempts)
+        || !same(searchResult.frontier, pkg.search.frontier)
+        || !same(frozenCost(searchResult, pkg.replayFixtures, verifiedParent), pkg.costLedger)) {
+        fail('Package search, failures or total costs do not reproduce.');
+    }
+    if (!pkg.parentAssets || !Array.isArray(pkg.parentAssets.installations)
+        || !same(pkg.parentAssets.observations, []) || !Number.isSafeInteger(pkg.parentAssets.ancestorCost)
+        || pkg.parentAssets.ancestorCost < 0 || pkg.parentAssets.installations.some(id => !pkg.ast.installations.includes(id))) {
+        fail('Invalid compatibility-scoped parent assets.');
+    }
+    if (!same(parentAssets(pkg.apparatus, verifiedParent, checkpoint.inheritance.assets), pkg.parentAssets)) {
+        fail('Parent compatibility or cumulative ancestor cost does not reproduce.');
+    }
+    return pkg;
+}
+
+async function prepareCapability(input) {
+    const pkg = await importCapability(input);
+    return runtime.prepare(pkg.apparatus, pkg.ast);
+}
+
+async function measureCapability(input, signal, options = {}) {
+    const pkg = await importCapability(input);
+    return runtime.measure(pkg.apparatus, pkg.ast, signal, options);
+}
+
+async function qualifyCapability(input) {
+    const pkg = await importCapability(input);
+    return checker.verify(pkg.apparatus, pkg.ast, pkg.certificate);
+}
+
+return {PACKAGE_SCHEMA,sha256,digestCapability,verificationCostCapability,freezeCapability,importCapability,prepareCapability,measureCapability,qualifyCapability};
+})();
+const capability_module_4=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+const { canonical, importSearchCheckpoint, exportSearchCheckpoint } = capability_module_5;
+const packages = capability_module_8;
+
+const WORKSPACE_SCHEMA = 'out-evolve-workspace/v1';
+const WORKSPACE_LIMITS = Object.freeze({events: 256, bytes: 8_000_000});
+const EVENT_KINDS = Object.freeze([
+    'brief', 'search-started', 'search-stopped', 'search-paused', 'package-frozen', 'reuse', 'comparison', 'successor', 'failure'
+]);
+const trustedHistories = new WeakMap();
+const clone = value => JSON.parse(canonical(value));
+const same = (a, b) => canonical(a) === canonical(b);
+const exact = (value, names) => value && typeof value === 'object' && !Array.isArray(value)
+    && Object.keys(value).length === names.length && names.every(name => Object.hasOwn(value, name));
+
+function createOutEvolveWorkspace(id = globalThis.crypto.randomUUID()) {
+    if (typeof id !== 'string' || !/^[a-zA-Z0-9-]{8,80}$/.test(id)) throw Error('Invalid Out-Evolve history identity.');
+    return {schema: WORKSPACE_SCHEMA, id, revision: 0, events: [], authority: [], paymentRoute: 'none'};
+}
+
+async function eventDigest(id, event) {
+    const bytes = new TextEncoder().encode('out-evolve-workspace-event/v1\0' + canonical({
+        id, sequence: event.sequence, previous: event.previous, kind: event.kind, payload: event.payload
+    }));
+    const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+    return [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('');
+}
+
+function shape(input) {
+    const encoded = canonical(input);
+    if (new TextEncoder().encode(encoded).length > WORKSPACE_LIMITS.bytes) throw Error('Out-Evolve history exceeds its byte limit.');
+    if (!exact(input, ['schema', 'id', 'revision', 'events', 'authority', 'paymentRoute'])
+        || input.schema !== WORKSPACE_SCHEMA || typeof input.id !== 'string' || !/^[a-zA-Z0-9-]{8,80}$/.test(input.id)
+        || !Array.isArray(input.events) || input.events.length > WORKSPACE_LIMITS.events
+        || input.revision !== input.events.length || !same(input.authority, []) || input.paymentRoute !== 'none') {
+        throw Error('Unsupported Out-Evolve history or authority.');
+    }
+    return encoded;
+}
+
+function payloadShape(kind, payload) {
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw Error('Invalid event payload.');
+    if (kind === 'brief') {
+        if (!exact(payload, ['purpose', 'constraints', 'budget', 'apparatus'])
+            || !['purpose', 'constraints'].every(key => typeof payload[key] === 'string'
+                && payload[key].trim() && payload[key].length <= 1000)
+            || !Number.isSafeInteger(payload.budget) || payload.budget < 1 || payload.budget > 100000) {
+            throw Error('Provide a bounded purpose, constraints and integer construction budget.');
+        }
+    }
+    if (kind === 'failure' && (typeof payload.message !== 'string' || payload.message.length > 2000)) {
+        throw Error('Invalid failure record.');
+    }
+    if (['package-frozen', 'successor'].includes(kind) && !payload.package) throw Error('Missing frozen capability package.');
+    if (kind === 'search-stopped' && !['qualified', 'exhausted', 'cancelled', 'infeasible', 'searching'].includes(payload.status)) {
+        throw Error('Invalid construction stopping status.');
+    }
+}
+
+async function inspectOutEvolveWorkspace(input) {
+    const fingerprint = shape(input);
+    let previous = null;
+    let packageCount = 0;
+    let failed = 0;
+    let inconclusive = 0;
+    let latestPackage = null;
+    let checkpoint = null;
+    const knownPackages = new Map();
+    for (const [sequence, event] of input.events.entries()) {
+        if (!exact(event, ['sequence', 'previous', 'kind', 'payload', 'digest'])
+            || event.sequence !== sequence || event.previous !== previous || !EVENT_KINDS.includes(event.kind)) {
+            throw Error('Invalid or reordered Out-Evolve event.');
+        }
+        payloadShape(event.kind, event.payload);
+        if (await eventDigest(input.id, event) !== event.digest) throw Error('Out-Evolve event digest mismatch.');
+        if (event.kind === 'package-frozen' || event.kind === 'successor') {
+            await packages.importCapability(event.payload.package);
+            latestPackage = event.payload.package;
+            knownPackages.set(latestPackage.digest, latestPackage);
+            packageCount += 1;
+            checkpoint = null;
+        }
+        if (['search-started', 'search-stopped', 'search-paused'].includes(event.kind)) {
+            const token = event.payload.checkpoint;
+            const checked = importSearchCheckpoint(token, {parent: knownPackages.get(token?.inheritance?.parentDigest) || null});
+            if (event.kind === 'search-paused' ? event.payload.status !== 'INCONCLUSIVE'
+                : checked.status !== event.payload.status) throw Error('Search checkpoint status differs from its event.');
+            checkpoint = checked.status === 'qualified' ? null : checked;
+        }
+        if (event.kind === 'failure' && String(event.payload.status || '').toLowerCase() !== 'inconclusive'
+            || ['fail', 'failed', 'exhausted', 'infeasible'].includes(
+            String(event.payload.status || '').toLowerCase())) failed += 1;
+        if (String(event.payload.status || '').toLowerCase() === 'inconclusive') inconclusive += 1;
+        previous = event.digest;
+    }
+    const result = {workspace: clone(input), packageCount, failed, inconclusive, latestPackage, checkpoint,
+        evidenceStatus: failed ? 'retained-failure' : inconclusive ? 'retained-inconclusive' : 'no-recorded-failure',
+        limits: 'Synthetic supplied-model checks only. Imported historical reports are records, not fresh evaluations.'};
+    trustedHistories.set(input, fingerprint);
+    trustedHistories.set(result.workspace, fingerprint);
+    return result;
+}
+
+async function appendOutEvolveEvent(input, kind, payload) {
+    if (trustedHistories.get(input) !== shape(input)) await inspectOutEvolveWorkspace(input);
+    if (!EVENT_KINDS.includes(kind)) throw Error('Unsupported Out-Evolve event kind.');
+    if (input.events.length >= WORKSPACE_LIMITS.events) throw Error('History is full. Export before beginning a separate history.');
+    payloadShape(kind, payload);
+    if (kind === 'package-frozen' || kind === 'successor') await packages.importCapability(payload.package);
+    let savedPayload = payload;
+    if (['search-started', 'search-stopped', 'search-paused'].includes(kind)) {
+        const parentDigest = payload.checkpoint?.inheritance?.parentDigest;
+        const parent = input.events.map(event => event.payload.package).find(value => value?.digest === parentDigest) || null;
+        const checked = importSearchCheckpoint(payload.checkpoint, {parent});
+        if (kind === 'search-paused' ? payload.status !== 'INCONCLUSIVE'
+            : checked.status !== payload.status) throw Error('Search checkpoint status differs from its event.');
+        const {attempts: ignoredAttempts, frontier: ignoredFrontier, ...summary} = payload;
+        savedPayload = {...summary, checkpoint: exportSearchCheckpoint(checked)};
+    }
+    const result = clone(input);
+    const event = {sequence: result.events.length, previous: result.events.at(-1)?.digest || null, kind, payload: clone(savedPayload)};
+    event.digest = await eventDigest(result.id, event);
+    result.events.push(event);
+    result.revision = result.events.length;
+    shape(result);
+    trustedHistories.set(result, canonical(result));
+    return result;
+}
+
+function searchHistoryCapacity(workspace, checkpoint) {
+    const bytes = new TextEncoder().encode(canonical(workspace)).length;
+    const tokenBytes = new TextEncoder().encode(canonical(exportSearchCheckpoint(checkpoint))).length;
+    const remainingEvents = WORKSPACE_LIMITS.events - workspace.events.length;
+    const remainingBytes = WORKSPACE_LIMITS.bytes - bytes;
+    const primitiveId = Math.max(...checkpoint.apparatus.primitives.map(primitive => primitive.id.length));
+    const programEnvelope = 512 + checkpoint.options.maxProgramSize * (2 * primitiveId + 64);
+    const attemptedPrograms = Math.min(checkpoint.options.maxStates, checkpoint.options.maxMemoryStates);
+    const parentBytes = checkpoint.inheritance.parent ? new TextEncoder().encode(canonical(checkpoint.inheritance.parent)).length : 0;
+    const terminalEvidenceReserve = 262_144 + attemptedPrograms * programEnvelope + 2 * parentBytes;
+    return {canAdvance: remainingEvents >= 3 && remainingBytes >= 2 * tokenBytes + terminalEvidenceReserve,
+        remainingEvents, remainingBytes, tokenBytes, terminalEvidenceReserve};
+}
+
+function latestOutEvolveEvent(workspace, kind) {
+    return workspace.events.filter(event => event.kind === kind).at(-1) || null;
+}
+
+function requireHistoryContinuation(current, incoming) {
+    if (current.id !== incoming.id) return;
+    if (incoming.events.length < current.events.length
+        || current.events.some((event, index) => event.digest !== incoming.events[index]?.digest)) {
+        throw Error('Import would discard or replace events in this history. Keep both as separate histories.');
+    }
+}
+
+return {WORKSPACE_SCHEMA,WORKSPACE_LIMITS,EVENT_KINDS,createOutEvolveWorkspace,inspectOutEvolveWorkspace,appendOutEvolveEvent,searchHistoryCapacity,latestOutEvolveEvent,requireHistoryContinuation};
+})();
+const capability_module_9=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Public synthetic apparatus contracts. These contain no response law or final cases. */
+const APPARATUS_SCHEMA = 'out-evolve-apparatus/v1';
+const TOPOLOGIES = Object.freeze(['shielded', 'routed', 'referenced']);
+
+function primitive(id, phase, kind, target, cost, gain = 1, requires = []) {
+    const effects = {
+        shield: ['installed'], route: ['installed'], sensor: ['installed'],
+        attenuate: ['nuisance', 'transfer'], reference: ['observations'], destroy: ['productive']
+    }[kind];
+    return {id, phase, kind, target, gain, cost, requires, effects,
+        support: {scopes: ['standard', 'reservoir'], boundedGain: gain}};
+}
+
+function apparatus(topology = 'shielded', expanded = false) {
+    if (!TOPOLOGIES.includes(topology)) throw Error('Unknown synthetic topology.');
+    const channel = (id, initial = 8, drift = 2, cap = 16, scopes = ['standard', 'reservoir']) =>
+        ({id, initial, drift, cap, scopes});
+    const edge = (id, from, to, gain = 1) => ({id, from, to, gain});
+    let channels, edges, primitives;
+    if (topology === 'shielded') {
+        channels = [channel('residual')];
+        edges = [edge('residual-readout', 'residual', 'readout')];
+        primitives = [primitive('protect-residual', 'install', 'shield', 'residual', 4),
+            primitive('flush-residual', 'prepare', 'attenuate', 'residual', 1, 0),
+            primitive('halve-residual', 'prepare', 'attenuate', 'residual', 1, 0.5),
+            primitive('route-residual', 'install', 'route', 'residual-readout', 20),
+            primitive('sense-residual', 'install', 'sensor', 'residual', 18),
+            primitive('reference-residual', 'prepare', 'reference', 'residual', 1, 1, ['sense-residual'])];
+    } else if (topology === 'routed') {
+        channels = [channel('left'), channel('right', 6, 3), channel('junction', 0, 0)];
+        edges = [edge('left-junction', 'left', 'junction'), edge('right-junction', 'right', 'junction'),
+            edge('junction-readout', 'junction', 'readout')];
+        primitives = [primitive('route-junction', 'install', 'route', 'junction-readout', 5)];
+        for (const id of ['left', 'right']) primitives.push(
+            primitive(`protect-${id}`, 'install', 'shield', id, 5),
+            primitive(`flush-${id}`, 'prepare', 'attenuate', id, 1, 0),
+            primitive(`sense-${id}`, 'install', 'sensor', id, 8),
+            primitive(`reference-${id}`, 'prepare', 'reference', id, 1, 1, [`sense-${id}`]));
+    } else {
+        channels = [channel('common', 12, 4, 24), channel('local', 1, 0, 4)];
+        edges = [edge('common-readout', 'common', 'readout'), edge('local-readout', 'local', 'readout', 0.5)];
+        primitives = [primitive('sense-common', 'install', 'sensor', 'common', 2),
+            primitive('reference-common', 'prepare', 'reference', 'common', 1, 1, ['sense-common']),
+            primitive('protect-common', 'install', 'shield', 'common', 12),
+            primitive('flush-common', 'prepare', 'attenuate', 'common', 2, 0),
+            primitive('route-common', 'install', 'route', 'common-readout', 18),
+            primitive('flush-local', 'prepare', 'attenuate', 'local', 1, 0),
+            primitive('halve-local', 'prepare', 'attenuate', 'local', 1, 0.5)];
+    }
+    channels.push(channel('reservoir', 10, 3, 20, ['reservoir']));
+    edges.push(edge('reservoir-readout', 'reservoir', 'readout'));
+    primitives.push(primitive('protect-reservoir', 'install', 'shield', 'reservoir', 4),
+        primitive('flush-reservoir', 'prepare', 'attenuate', 'reservoir', 1, 0),
+        primitive('sense-reservoir', 'install', 'sensor', 'reservoir', 9),
+        primitive('reference-reservoir', 'prepare', 'reference', 'reservoir', 1, 1, ['sense-reservoir']),
+        primitive('erase-product', 'prepare', 'destroy', 'productive', 0, 0));
+    return {schema: APPARATUS_SCHEMA, id: `synthetic-${topology}${expanded ? '-expanded' : ''}`,
+        channels, edges, scope: expanded ? ['standard', 'reservoir'] : ['standard'], tolerance: 0,
+        primitives, limits: {maxInstructions: 32, maxRepeat: 16, maxCost: 1_000_000, maxCycles: 1024}};
+}
+
+function expandApparatus(input) {
+    const result = JSON.parse(JSON.stringify(input));
+    result.id = result.id.endsWith('-expanded') ? result.id : `${result.id}-expanded`;
+    result.scope = ['standard', 'reservoir'];
+    return result;
+}
+
+return {APPARATUS_SCHEMA,TOPOLOGIES,apparatus,expandApparatus};
+})();
+const capability_module_10=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Post-freeze synthetic evaluation. The constructor never receives response laws or final task truth. */
+const { apparatus, expandApparatus, TOPOLOGIES } = capability_module_9;
+const { qualify, measure, prepare, compile, validateApparatus } = capability_module_6;
+const { verify } = capability_module_7;
+const { construct } = capability_module_5;
+const { freezeCapability, importCapability, digestCapability, verificationCostCapability } = capability_module_8;
+
+const EVALUATION_VERSION = 'out-evolve-evaluation/v1';
+const LIMITATIONS = Object.freeze([
+    'Finite synthetic apparatus only; no physical, scientific, commercial or general invention validation.',
+    'Cases are generated after freezing. This public local evaluator is not a protected remote holdout.',
+    'Constructor and classical baseline use identical deterministic uniform-cost planning semantics; ties are valid.',
+    'Abstract model-work units are not currency, energy or measured wall-clock acceleration.'
+]);
+
+function canonical(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
+    return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
+}
+const clone = value => JSON.parse(canonical(value));
+const ensure = (condition, message) => { if (!condition) throw Error(message); };
+const sum = values => values.reduce((total, value) => total + value, 0);
+function seedValue(seed) {
+    if (seed === undefined) return globalThis.crypto.getRandomValues(new Uint32Array(1))[0];
+    ensure(Number.isSafeInteger(seed) && seed >= 0 && seed <= 0xffffffff, 'Seed must be a uint32.');
+    return seed;
+}
+function random(seed) {
+    let state = seed >>> 0;
+    return maximum => {
+        state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+        return state % maximum;
+    };
+}
+async function hash(value) {
+    const bytes = new TextEncoder().encode(canonical(value));
+    const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+    return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+function exposure(id, exposed) {
+    return exposed.has(id) ? 'previously-exposed-regression' : 'generated-after-freeze-public-model';
+}
+function outcome(cases) {
+    if (cases.some(test => test.status === 'FAIL')) return 'FAIL';
+    if (cases.some(test => test.status !== 'PASS')) return 'INCONCLUSIVE';
+    return cases.length ? 'PASS' : 'INCONCLUSIVE';
+}
+
+/** Freeze identity before generating tasks, and use the same package bytes for every purpose. */
+async function evaluateFrozenReuse(input, options = {}) {
+    const pkg = await importCapability(input);
+    const frozenBytes = canonical(pkg);
+    const frozenDigest = await digestCapability(pkg);
+    const seed = seedValue(options.seed);
+    const rng = random(seed);
+    const exposed = new Set(options.exposedCaseIds || []);
+    ensure(exposed.size <= 4096, 'Too many exposed evaluation cases.');
+    const coefficients = [rng(11) - 5, 4 + rng(4), 1 + rng(3)];
+    // This closure exists only after package freeze and is never supplied to synthesis.
+    const truth = (x, operation = 'standard') => coefficients[0] + coefficients[1] * x
+        + coefficients[2] * x * x + (operation === 'reservoir' ? 17 + 3 * x : 0);
+    const scope = pkg.ast.scope;
+    const operations = scope.includes('reservoir') ? ['standard', 'reservoir'] : ['standard'];
+    const qualification = verify(pkg.apparatus, pkg.ast, pkg.certificate);
+    const measurements = [];
+    let runtimeCost = 0;
+    let preservation = true;
+    for (const operation of operations) {
+        for (let cycle = 0; cycle < 3; cycle++) {
+            for (let x = 0; x < 8; x++) {
+                const signal = truth(x, operation);
+                const reading = measure(pkg.apparatus, pkg.ast, signal,
+                    {cycle, sign: rng(2) ? 1 : -1, operation});
+                runtimeCost += reading.cost;
+                const valid = Number.isFinite(reading.value) && Math.abs(reading.value - signal)
+                    <= pkg.certificate.errorBound + 1e-10;
+                preservation = preservation && reading.productive === signal;
+                measurements.push({operation, cycle, x, expected: signal, actual: reading.value,
+                    error: reading.value - signal, valid, productive: reading.productive});
+            }
+        }
+    }
+    const cases = [];
+    for (const operation of operations) {
+        const rows = measurements.filter(row => row.operation === operation && row.cycle === 2);
+        const threshold = (truth(3, operation) + truth(4, operation)) / 2;
+        const thresholdExpected = rows.filter(row => row.expected >= threshold).map(row => row.x);
+        const thresholdActual = rows.filter(row => row.actual >= threshold).map(row => row.x);
+        const target = truth(2 + rng(4), operation);
+        const nearest = field => rows.toSorted((a, b) => Math.abs(a[field] - target)
+            - Math.abs(b[field] - target) || a.x - b.x)[0].x;
+        const maximum = 3 + rng(4);
+        const best = field => rows.filter(row => row.x <= maximum)
+            .toSorted((a, b) => b[field] - a[field] || a.x - b.x)[0].x;
+        for (const [kind, expected, actual, task] of [
+            ['threshold-screening', thresholdExpected, thresholdActual, {threshold}],
+            ['inverse-design', nearest('expected'), nearest('actual'), {target}],
+            ['constrained-selection', best('expected'), best('actual'), {maximumInput: maximum}]
+        ]) {
+            const id = await hash({seed, operation, kind, task, truthCoefficients: coefficients});
+            const sound = measurements.filter(row => row.operation === operation).every(row => row.valid)
+                && preservation && qualification.ok;
+            cases.push({id, kind, operation, task, expected, actual,
+                status: sound && canonical(expected) === canonical(actual) ? 'PASS' : 'FAIL',
+                exposure: exposure(id, exposed)});
+            exposed.add(id);
+        }
+    }
+    const digestAfter = await digestCapability(pkg);
+    ensure(canonical(pkg) === frozenBytes && frozenDigest === digestAfter, 'Frozen package changed during reuse.');
+    return {schema: EVALUATION_VERSION, kind: 'frozen-package-reuse', status: outcome(cases),
+        freeze: {packageDigest: frozenDigest, order: 'package-frozen-before-seed-and-case-generation'},
+        packageDigestBefore: frozenDigest, packageDigestAfter: digestAfter, seed, cases, measurements,
+        qualification, preservation, exposedCaseIds: [...exposed],
+        ledger: {unit: 'abstract-model-work', tasks: cases.length, measurementCalls: measurements.length,
+            qualification: verificationCostCapability(pkg) + 1 + cases.length,
+            operation: runtimeCost, maintenance: 0,
+            total: verificationCostCapability(pkg) + 1 + cases.length + runtimeCost},
+        limitations: [...LIMITATIONS]};
+}
+
+function ledgerTotal(ledger) {
+    ensure(ledger && Number.isFinite(ledger.total) && ledger.total >= 0, 'Invalid evaluated cost ledger.');
+    return ledger.total;
+}
+
+/** The same objective, tolerance, graph, primitive information and budget apply to both planning runs. */
+async function compareCapability(input, options = {}) {
+    const pkg = await importCapability(input);
+    const searchOptions = {...pkg.search.limits};
+    if (options.searchOptions) ensure(Object.entries(options.searchOptions).every(([key, value]) =>
+        Object.hasOwn(searchOptions, key) && canonical(value) === canonical(searchOptions[key])),
+        'Comparison must use the effective construction limits recorded in the frozen package.');
+    const classical = construct(pkg.apparatus, searchOptions);
+    const scratch = construct(pkg.apparatus, {...searchOptions});
+    const classicalPackage = classical.status === 'qualified' ? await freezeCapability(pkg.apparatus, classical) : null;
+    const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(pkg.apparatus, scratch) : null;
+    const remaining = ledgerTotal(pkg.costLedger);
+    const ancestor = pkg.parentAssets.ancestorCost;
+    const ours = ancestor + remaining;
+    const runs = [
+        {name: 'constructed-package', status: 'qualified', ast: pkg.ast, certificate: pkg.certificate,
+            ledger: pkg.costLedger},
+        {name: 'classical-uniform-cost-planner', status: classical.status, ast: classical.program,
+            certificate: classical.certificate, ledger: classicalPackage?.costLedger || classical.ledger,
+            method: 'Classical uniform-cost planning with the same sound semantic deduplication; it may tie or win.'},
+        {name: 'construction-from-scratch', status: scratch.status, ast: scratch.program,
+            certificate: scratch.certificate, ledger: scratchPackage?.costLedger || scratch.ledger}
+    ];
+    const sensing = await sensingCorrectionBaseline(pkg, searchOptions);
+    const uses = options.uses === undefined ? 24 : options.uses;
+    ensure(Number.isSafeInteger(uses) && uses > 0 && uses <= 10000, 'Invalid amortization horizon.');
+    const compiled = compile(pkg.apparatus, pkg.ast);
+    const operation = 1 + compiled.steps.reduce((total, key) => total
+        + pkg.apparatus.primitives.find(primitive => primitive.id === key).cost, 0);
+    const classicalCost = classicalPackage ? ledgerTotal(classicalPackage.costLedger) : null;
+    const relation = classical.status !== 'qualified' ? 'baseline-inconclusive'
+        : ours < classicalCost ? 'lower-total-modeled-cost'
+            : ours === classicalCost ? 'tie' : 'classical-baseline-lower-total-modeled-cost';
+    return {schema: EVALUATION_VERSION, kind: 'matched-comparison', status: 'COMPLETED',
+        frozenPackageDigest: pkg.digest, matched: {apparatus: true, objective: true, tolerance: true,
+            primitives: true, information: true, budgets: searchOptions}, runs, sensingCorrection: sensing,
+        relation, costs: {unit: 'abstract-model-work', coldStart: ours, remainingConstructionCost: remaining, ancestorConstructionCost: ancestor,
+            operationPerUse: operation, uses, totalAtHorizon: ours + uses * operation,
+            amortizedPerUse: ours / uses + operation},
+        evaluationOverhead: {qualification: verificationCostCapability(pkg), total: verificationCostCapability(pkg),
+            unit: 'abstract-model-work', reason: 'Verified import of the candidate used for this comparison.'},
+        limitations: [...LIMITATIONS, 'Planner total includes abstract synthesis effort; no novel planning superiority is claimed.']};
+}
+
+/** Strong bounded sensing comparator: install any supplied sensors and use all admissible paired references. */
+async function sensingCorrectionBaseline(pkg, searchOptions = {}) {
+    const app = pkg.apparatus;
+    const maximum = searchOptions.maxProgramSize || 8;
+    const budget = searchOptions.maxCost || app.limits.maxCost;
+    const sensors = app.primitives.filter(primitive => primitive.kind === 'sensor');
+    const references = app.primitives.filter(primitive => primitive.kind === 'reference');
+    const maximumSubsets = Math.min(2 ** sensors.length, searchOptions.maxStates || 4096);
+    let best = null;
+    let tested = 0;
+    let failed = 0;
+    let simulationWork = 0;
+    for (let mask = 0; mask < maximumSubsets; mask++) {
+        const installations = sensors.filter((_, index) => mask & 2 ** index).map(primitive => primitive.id);
+        const refs = references.filter(primitive => primitive.requires.every(key => installations.includes(key)));
+        if (installations.length + refs.length > maximum) continue;
+        simulationWork += 1 + installations.length + refs.length;
+        const ast = {schema: 'out-evolve-ast/v1', installations,
+            prepare: {op: 'sequence', steps: refs.map(primitive => ({op: 'primitive', id: primitive.id}))},
+            scope: [...pkg.ast.scope]};
+        try {
+            const report = qualify(app, ast);
+            tested++;
+            if (!report.ok || report.cost > budget) failed++;
+            if (report.cost > budget) continue;
+            if (!best || report.ok && !best.ok || report.ok === best.ok && (report.errorBound < best.errorBound
+                || report.errorBound === best.errorBound && report.cost < best.cost)) best = {...report, ast};
+        } catch { tested++; failed++; }
+    }
+    const independent = best ? verify(app, best.ast, best.certificate) : null;
+    const replay = best?.ok ? app.scope.flatMap(operation => [
+        {signal: 7, options: {operation, cycle: 0, sign: 1}},
+        {signal: -3, options: {operation, cycle: app.limits.maxCycles - 1, sign: -1}}
+    ]).map(input => ({...input, actual: measure(app, best.ast, input.signal, input.options)})) : [];
+    const operationCost = replay.reduce((total, fixture) => total + fixture.actual.cost, 0);
+    const qualificationCost = tested + (best ? 1 : 0) + replay.length;
+    const installations = best?.ast.installations || [];
+    const installCost = installations.reduce((total, key) => total
+        + app.primitives.find(primitive => primitive.id === key).cost, 0);
+    return {name: 'competent-sensing-and-paired-reference-correction',
+        status: best?.ok ? 'qualified' : 'not-qualified-within-supplied-sensing-language',
+        best, tested, independent, replay, constructionChanges: installations.length > 0,
+        experimentalAccessChange: installations.length ? 'additional nuisance sensor access; no nuisance routing or suppression'
+            : 'unchanged sensor access',
+        matched: {graph: true, information: true, tolerance: true, maxProgramSize: maximum, maxCost: budget},
+        reason: 'Enumerates all sensor subsets within the budget and every admissible simultaneous reference; repeated references add no information in this model.',
+        ledger: {unit: 'abstract-model-work', synthesis: simulationWork, unsuccessfulCandidates: failed,
+            qualification: qualificationCost, installation: installCost, calibration: (best?.cost || 0) - installCost,
+            tuning: 0, operation: operationCost, maintenance: 0,
+            total: simulationWork + qualificationCost + (best?.cost || 0) + operationCost},
+        limitation: 'Where the supplied catalogue lacks a required sensor, this bounded comparator cannot identify unobserved independent nuisance. This is not a universal sensing impossibility proof.'};
+}
+
+/** Freeze implementation identity/configuration first, then generate unseen public structural variants. */
+async function evaluateConstructorGeneralization(options = {}) {
+    const searchOptions = {...options.searchOptions};
+    ensure(typeof options.constructorDigest === 'string' && /^[0-9a-f]{64}$/.test(options.constructorDigest),
+        'Provide the verified full constructor/runtime/checker source-closure SHA-256 before final family generation.');
+    const identity = options.constructorDigest;
+    const freeze = Object.freeze({constructorDigest: identity, configuration: clone(searchOptions)});
+    const seed = seedValue(options.seed);
+    const rng = random(seed);
+    const exposed = new Set(options.exposedCaseIds || []);
+    const cases = [];
+    for (const topology of TOPOLOGIES) {
+        const app = apparatus(topology, false);
+        const variant = structuralVariant(app, rng);
+        const structuralWorld = clone(variant);
+        delete structuralWorld.id;
+        const id = await hash({seed, structuralWorld});
+        const obstruction = proveRecurringObstruction(variant);
+        const result = obstruction ? {status: 'infeasible', program: null, certificate: null,
+            reason: 'Independent zero-tolerance recurring-channel obstruction proves infeasibility in the supplied model.',
+            proof: obstruction, ledger: {unit: 'abstract-model-work', synthesis: 0, unsuccessfulCandidates: 0,
+                tuning: 0, installation: 0, calibration: 0, qualification: 1, operation: 0, maintenance: 0, total: 1}}
+            : construct(variant, searchOptions);
+        let pkg = null;
+        let reuse = null;
+        if (result.status === 'qualified') {
+            pkg = await freezeCapability(variant, result);
+            reuse = await evaluateFrozenReuse(pkg, {seed: rng(0xffffffff), exposedCaseIds: [...exposed]});
+            for (const used of reuse.exposedCaseIds) exposed.add(used);
+        }
+        cases.push({id, topology, structuralFamily: variant.family || variant.id || topology,
+            exposure: exposure(id, exposed), status: obstruction ? 'PASS' : pkg && reuse.status === 'PASS' ? 'PASS'
+                : result.status === 'qualified' ? 'FAIL' : 'INCONCLUSIVE',
+            constructionStatus: obstruction ? 'proved-infeasible-no-construction' : result.status,
+            acceptedOutcome: obstruction ? 'independently-proved-negative-case' : pkg ? 'constructed-and-reused' : 'unfinished',
+            constructorCalled: !obstruction, obstruction,
+            result, package: pkg, reuse, publicApparatus: variant});
+        exposed.add(id);
+    }
+    return {schema: EVALUATION_VERSION, kind: 'constructor-generalization', status: outcome(cases),
+        freeze, order: 'constructor-frozen-before-structural-case-generation', seed, cases,
+        constructedFamilies: cases.filter(test => test.package).length,
+        provedInfeasibleFamilies: cases.filter(test => test.obstruction).length,
+        exposedCaseIds: [...exposed], limitations: [...LIMITATIONS,
+            'Structural variants belong to this supplied finite model; this does not establish cross-domain generalization.']};
+}
+
+/** Independent necessary-condition proof; it assumes every available route can be installed. */
+function proveRecurringObstruction(app) {
+    app = validateApparatus(app);
+    if (app.tolerance !== 0) return null;
+    const removed = new Set(app.primitives.filter(primitive => primitive.kind === 'route').map(primitive => primitive.target));
+    const weights = new Map([['readout', 1]]);
+    const weight = key => {
+        if (!weights.has(key)) weights.set(key, app.edges.filter(edge => edge.from === key && !removed.has(edge.id))
+            .reduce((total, edge) => total + edge.gain * weight(edge.to), 0));
+        return weights.get(key);
+    };
+    for (const channel of app.channels) {
+        const operation = app.scope.find(scope => channel.scopes.includes(scope));
+        if (!operation || channel.drift === 0 || weight(channel.id) === 0) continue;
+        if (app.primitives.some(primitive => primitive.target === channel.id
+            && ['shield', 'reference'].includes(primitive.kind))) continue;
+        return {schema: 'out-evolve-recurring-obstruction/v1', modelOnly: true, channel: channel.id,
+            operation, recurringDisturbance: channel.drift, pathGainAfterEveryAvailableRoute: weight(channel.id),
+            strictLowerBound: channel.drift * weight(channel.id), tolerance: 0,
+            reasoning: 'A positive recurring source still reaches readout after all possible routes; no shield or paired reference targets it. Attenuation cannot remove disturbance injected after preparation, and destructive shortcuts violate productive preservation.'};
+    }
+    return null;
+}
+
+function structuralVariant(input, rng) {
+    const app = clone(input);
+    const suffix = rng(0x1000000).toString(16);
+    app.id = app.id + '-post-freeze-' + suffix;
+    const productive = app.channels.filter(channel => channel.id !== 'reservoir');
+    const source = productive[rng(productive.length)];
+    const relayId = 'relay-' + suffix;
+    // Split a randomly selected live outgoing edge through a new state channel: a genuinely new graph.
+    const outgoing = app.edges.filter(edge => edge.from === source.id);
+    const edge = outgoing[rng(outgoing.length)];
+    if (edge) {
+        const originalTarget = edge.to;
+        edge.to = relayId;
+        app.channels.push({id: relayId, initial: 3 + rng(5), drift: 1 + rng(3), cap: 16,
+            scopes: ['standard', 'reservoir']});
+        app.edges.push({id: relayId + '-link', from: relayId, to: originalTarget, gain: 1});
+        const protection = clone(app.primitives.find(primitive => primitive.kind === 'shield'));
+        protection.id = 'protect-' + relayId; protection.target = relayId; protection.cost = 2 + rng(4);
+        const attenuation = clone(app.primitives.find(primitive => primitive.kind === 'attenuate' && primitive.gain === 0));
+        attenuation.id = 'flush-' + relayId; attenuation.target = relayId; attenuation.cost = 1 + rng(2);
+        app.primitives.push(protection, attenuation);
+    }
+    // Costs and recurrence parameters vary only within the declared public contract. No truth law is supplied.
+    source.initial = Math.min(source.cap, source.initial + rng(4));
+    source.drift = Math.min(source.cap, source.drift + rng(3));
+    for (const primitive of app.primitives) primitive.cost += rng(3);
+    return app;
+}
+
+function semanticBehavior(app, ast) {
+    const state = prepare(app, ast);
+    const catalogue = new Map(app.primitives.map(primitive => [primitive.id, primitive]));
+    const interventions = state.installed.map(key => catalogue.get(key))
+        .filter(primitive => ['shield', 'route', 'sensor'].includes(primitive.kind))
+        .map(primitive => ({kind: primitive.kind, target: primitive.target}));
+    return canonical({interventions, transfer: state.transfer, references: state.references,
+        recurrence: qualify(app, ast).certificate.recurrence});
+}
+
+/** Retain the old scope failure; inherit only independently checked compatible installed modules. */
+async function buildSuccessor(input, options = {}) {
+    const parent = await importCapability(input);
+    const expanded = expandApparatus(parent.apparatus);
+    const diagnosticAST = clone(parent.ast);
+    diagnosticAST.scope = [...expanded.scope];
+    const diagnosticEnvelope = qualify(expanded, diagnosticAST);
+    const diagnosticVerification = verify(expanded, diagnosticAST, diagnosticEnvelope.certificate);
+    const diagnosticMeasurement = measure(expanded, diagnosticAST, 17,
+        {operation: 'reservoir', cycle: expanded.limits.maxCycles - 1, sign: 1});
+    const oldScopeAuditCost = 3 + diagnosticMeasurement.cost;
+    let oldScope;
+    try {
+        const report = qualify(expanded, parent.ast);
+        oldScope = {status: report.ok ? 'UNEXPECTED-PASS' : 'FAIL', report,
+            reason: 'Original package was not qualified for the reservoir-exposing productive operation.'};
+    } catch (error) {
+        oldScope = {status: 'FAIL', reason: String(error.message)};
+    }
+    oldScope.diagnostic = {frozenPackageUnchanged: true, prospectiveScopeOnlyAdaptation: true,
+        requiredScope: expanded.scope, envelope: diagnosticEnvelope, independent: diagnosticVerification,
+        reservoirMeasurement: {expected: 17, ...diagnosticMeasurement},
+        explanation: 'Replaying the old plan under the newly required operation exposes recurring reservoir contamination.'};
+    const searchOptions = {...options.searchOptions};
+    const result = construct(expanded, {...searchOptions, parent});
+    const scratch = construct(expanded, searchOptions);
+    if (result.status !== 'qualified') {
+        return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
+            oldScope, result, scratch, parentDigest: parent.digest,
+            costs: {unit: 'abstract-model-work', ancestor: ledgerTotal(parent.costLedger),
+                remaining: ledgerTotal(result.ledger) + verificationCostCapability(parent) + oldScopeAuditCost,
+                cumulative: ledgerTotal(parent.costLedger) + ledgerTotal(result.ledger)
+                    + verificationCostCapability(parent) + oldScopeAuditCost,
+                constructionFromScratch: ledgerTotal(scratch.ledger)},
+            reason: 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
+    }
+    const pkg = await freezeCapability(expanded, result, {parent});
+    const reuse = await evaluateFrozenReuse(pkg, options);
+    const prior = reuse.cases.filter(test => test.operation === 'standard');
+    const added = reuse.cases.filter(test => test.operation === 'reservoir');
+    const preserved = prior.length === 3 && prior.every(test => test.status === 'PASS');
+    const newFunction = added.length === 3 && added.every(test => test.status === 'PASS');
+    const parentCost = ledgerTotal(parent.costLedger);
+    const parentAudit = verificationCostCapability(parent);
+    const remaining = ledgerTotal(pkg.costLedger) + parentAudit + oldScopeAuditCost;
+    const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(expanded, scratch) : null;
+    const scratchCost = scratchPackage ? ledgerTotal(scratchPackage.costLedger) : null;
+    const scratchReuse = scratchPackage ? await evaluateFrozenReuse(scratchPackage, options) : null;
+    return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor',
+        status: oldScope.status === 'FAIL' && preserved && newFunction ? 'PASS' : 'FAIL',
+        oldScope, parentDigest: parent.digest, package: pkg, result, scratch, reuse, scratchReuse,
+        inheritedAssets: pkg.parentAssets, invalidated: ['parent scope certificate', 'prior observations as fresh evidence'],
+        obligations: {preserved, standardCases: prior},
+        newFunction: {accepted: newFunction, operation: 'reservoir', cases: added,
+            description: 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'},
+        costs: {unit: 'abstract-model-work', ancestor: parentCost, remaining, cumulative: parentCost + remaining,
+            packageConstruction: ledgerTotal(pkg.costLedger), parentImportAudit: parentAudit, oldScopeCheck: oldScopeAuditCost,
+            frozenReuseAcceptance: reuse.ledger.total,
+            remainingAfterAcceptance: remaining + reuse.ledger.total,
+            cumulativeAfterAcceptance: parentCost + remaining + reuse.ledger.total,
+            scratchAfterAcceptance: scratchCost === null ? null : scratchCost + scratchReuse.ledger.total,
+            constructionFromScratch: scratchCost, remainingSaving: scratchCost === null ? null : scratchCost - remaining,
+            cumulativeSaving: scratchCost === null ? null : scratchCost - parentCost - remaining},
+        limitations: [...LIMITATIONS, 'Inherited installations do not make ancestor construction cost disappear.']};
+}
+
+/** Complete synthetic vertical, retaining all topology, reuse, baseline and succession evidence. */
+async function runEvaluation(options = {}) {
+    const seed = seedValue(options.seed);
+    const exposed = new Set(options.exposedCaseIds || []);
+    const topologies = [];
+    for (let index = 0; index < TOPOLOGIES.length; index++) {
+        const topology = TOPOLOGIES[index];
+        const app = apparatus(topology);
+        const result = construct(app, options.searchOptions || {});
+        if (result.status !== 'qualified') {
+            topologies.push({topology, status: 'INCONCLUSIVE', result});
+            continue;
+        }
+        const pkg = await freezeCapability(app, result);
+        const reuse = await evaluateFrozenReuse(pkg, {seed: (seed + index) >>> 0, exposedCaseIds: [...exposed]});
+        for (const id of reuse.exposedCaseIds) exposed.add(id);
+        const comparison = await compareCapability(pkg, options);
+        topologies.push({topology, status: reuse.status, package: pkg, result, reuse, comparison});
+    }
+    const parent = topologies.find(test => test.package)?.package;
+    const successor = parent ? await buildSuccessor(parent, {...options, seed: (seed + 10) >>> 0, exposedCaseIds: [...exposed]}) : null;
+    if (successor?.reuse) for (const id of successor.reuse.exposedCaseIds) exposed.add(id);
+    const generalization = await evaluateConstructorGeneralization({...options, seed: (seed + 20) >>> 0,
+        exposedCaseIds: [...exposed]});
+    for (const id of generalization.exposedCaseIds) exposed.add(id);
+    const asts = new Set(topologies.filter(test => test.package).map(test =>
+        semanticBehavior(test.package.apparatus, test.package.ast)));
+    const topologyCosts = topologies.map(test => test.package ? ledgerTotal(test.package.costLedger)
+        + test.reuse.ledger.total + test.comparison.evaluationOverhead.total
+        + ledgerTotal(test.comparison.runs[1].ledger) + ledgerTotal(test.comparison.runs[2].ledger)
+        + test.comparison.sensingCorrection.ledger.total : ledgerTotal(test.result.ledger));
+    const familyCosts = generalization.cases.map(test => test.package ? ledgerTotal(test.package.costLedger)
+        + test.reuse.ledger.total : ledgerTotal(test.result.ledger));
+    const successorCost = successor?.package ? successor.costs.remainingAfterAcceptance
+        + successor.costs.scratchAfterAcceptance : successor ? successor.costs.remaining
+            + successor.costs.constructionFromScratch : 0;
+    const aggregateCost = sum(topologyCosts) + sum(familyCosts) + successorCost;
+    return {schema: EVALUATION_VERSION, seed, status: topologies.every(test => test.status === 'PASS')
+        && successor?.status === 'PASS' && generalization.status === 'PASS' && asts.size >= 3 ? 'PASS' : 'INCONCLUSIVE',
+        topologies, behaviorallyDistinctPrograms: asts.size, successor, generalization,
+        acceptanceScope: 'finite-synthetic-machinery-with-explicit-positive-and-negative-tests',
+        allGeneratedFamiliesConstructed: generalization.constructedFamilies === generalization.cases.length,
+        constructionOutcomes: {qualified: generalization.constructedFamilies,
+            provedInfeasible: generalization.provedInfeasibleFamilies,
+            unfinished: generalization.cases.filter(test => test.status !== 'PASS').length},
+        exposedCaseIds: [...exposed],
+        aggregateCost, costAccounting: {unit: 'abstract-model-work', topologyJourneys: topologyCosts,
+            unseenFamilies: familyCosts, successorAndMatchedColdStart: successorCost, total: aggregateCost,
+            schedule: 'Includes each construction/freeze audit, verified import, independent decision check, measurement and comparison actually invoked; failed-candidate counts are included in synthesis, not added twice.',
+            excludes: 'Host CPU, serialization, file I/O and money; this ledger is an explicit model-work schedule.'},
+        limitations: [...LIMITATIONS]};
+}
+
+return {EVALUATION_VERSION,LIMITATIONS,evaluateFrozenReuse,compareCapability,sensingCorrectionBaseline,evaluateConstructorGeneralization,proveRecurringObstruction,buildSuccessor,runEvaluation};
+})();
 const capability=capability_module_0;
 const storage=capability_module_3;
-const SOURCE_HASH='7e451071e9559660b3ada4391173207c498c19067d7d5b08a248b4ffa3b9c336';
+const outEvolve=capability_module_4;
+const outEvolveConstructor=capability_module_5;
+const outEvolvePackages=capability_module_8;
+const outEvolveApparatus=capability_module_9;
+const outEvolveEvaluation=capability_module_10;
+const SOURCE_HASH='0b566f01b96c02a49fd168bdfc460ee964dc8518ff1afe329850ada6b578dc45';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -1795,6 +3666,433 @@ window.addEventListener('beforeunload', event => {
         ready = true;
         render();
     }
+})();
+
+// SPDX-License-Identifier: Apache-2.0
+// Additive v2 constructor UI. The original v1 workshop keeps its own storage and events.
+(() => {
+    const byId = id => document.getElementById(id);
+    const view = name => byId(`evolve-${name}`);
+    let record = outEvolve.createOutEvolveWorkspace();
+    let packageValue = null;
+    let checkpoint = null;
+    let runningApparatus = null;
+    let database = null;
+    let storedRevision = null;
+    let storedIdentity = null;
+    let busyNow = false;
+    let cancelled = false;
+    let unsaved = false;
+    let readyNow = false;
+    const json = value => JSON.stringify(value, null, 2);
+    const pause = () => new Promise(resolve => setTimeout(resolve, 16));
+    const freshSeed = () => globalThis.crypto.getRandomValues(new Uint32Array(1))[0];
+    const setStatus = text => { view('status').textContent = text; };
+    const asError = error => String(error?.message || error).slice(0, 1000);
+    const resultStatus = value => String(value?.status || '').toLowerCase();
+    const failedStatus = value => ['fail', 'failed', 'exhausted', 'infeasible'].includes(resultStatus(value));
+
+    function problem(error) {
+        view('error').hidden = false;
+        view('error').textContent = asError(error);
+    }
+    function clearProblem() { view('error').hidden = true; view('error').textContent = ''; }
+    function download(value, filename) {
+        const url = URL.createObjectURL(new Blob([json(value) + '\n'], {type: 'application/json'}));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+    function node(tag, parent, text) {
+        const element = document.createElement(tag);
+        if (text !== undefined) element.textContent = text;
+        parent.append(element);
+        return element;
+    }
+    function controls() {
+        view('form').setAttribute('aria-busy', String(busyNow));
+        for (const name of ['purpose', 'constraints', 'topology', 'budget', 'apparatus', 'construct', 'import']) {
+            view(name).disabled = !readyNow || busyNow || unsaved;
+        }
+        view('cancel').disabled = !busyNow || checkpoint === null || cancelled;
+        view('resume').disabled = !readyNow || busyNow || unsaved || checkpoint === null
+            || !['cancelled', 'searching'].includes(checkpoint.status)
+            || !outEvolve.searchHistoryCapacity(record, checkpoint).canAdvance;
+        for (const name of ['reuse', 'successor']) view(name).disabled = !readyNow || busyNow || unsaved || !packageValue;
+        if (packageValue?.scope?.includes('reservoir')) view('successor').disabled = true;
+        view('successor').textContent = packageValue?.scope?.includes('reservoir')
+            ? 'Reservoir scope already qualified' : 'Build successor';
+        for (const name of ['saved', 'open']) view(name).disabled = !readyNow || busyNow || unsaved || !view('saved').value;
+        view('export-package').disabled = !packageValue;
+        view('export-history').disabled = !record.events.length;
+        view('retry-save').hidden = !unsaved;
+    }
+    function renderHistory() {
+        const list = view('events');
+        list.replaceChildren();
+        const labels = {
+            brief: 'Purpose and constraints frozen', 'search-started': 'Construction search started',
+            'search-stopped': 'Construction search stopped', 'search-paused': 'Unfinished search retained at the storage bound',
+            'package-frozen': 'Executable capability frozen',
+            reuse: 'Frozen package tested on new uses', comparison: 'Matched comparisons recorded',
+            successor: 'Scope-expanding successor accepted', failure: 'Failed attempt retained'
+        };
+        let failures = 0;
+        let inconclusive = 0;
+        for (const event of record.events) {
+            const payload = event.payload;
+            const item = node('li', list);
+            if (event.kind === 'failure' && resultStatus(payload) !== 'inconclusive'
+                || failedStatus(payload)) { item.dataset.result = 'fail'; failures += 1; }
+            else if (resultStatus(payload) === 'inconclusive') { inconclusive += 1; }
+            else if (['qualified', 'pass'].includes(resultStatus(payload)) || event.kind === 'package-frozen') item.dataset.result = 'pass';
+            const label = event.kind === 'search-stopped' && payload.status === 'searching'
+                ? 'Search checkpoint saved' : event.kind === 'successor' && resultStatus(payload) !== 'pass'
+                    ? 'Scope-expanding successor evaluated' : labels[event.kind] || event.kind;
+            node('h4', item, `${event.sequence + 1}. ${label}`);
+            const description = payload.message || payload.reason || payload.purpose
+                || payload.status || payload.package?.digest || 'Frozen, append-only event.';
+            node('p', item, String(description));
+            if (event.kind === 'successor') node('p', item,
+                'The old package is insufficient for the expanded scope. Its failure and the new obligations remain in this record.');
+            const details = node('details', item);
+            node('summary', details, 'Inspect this original event');
+            const pre = node('pre', details, json(event));
+            pre.tabIndex = 0;
+            pre.setAttribute('aria-label', `Out-Evolve event ${event.sequence + 1}`);
+        }
+        if (!record.events.length) node('li', list, 'No construction attempts recorded.');
+        view('retained').textContent = failures || inconclusive
+            ? `${failures} failed attempt${failures === 1 ? '' : 's'} and ${inconclusive} inconclusive result${inconclusive === 1 ? '' : 's'} retained. Later success does not replace them.`
+            : 'Failures and interrupted searches stay visible after later successes.';
+        view('history-json').textContent = json(record);
+        controls();
+    }
+    function renderPackage(value) {
+        if (!value) return;
+        packageValue = value;
+        view('outcome').hidden = false;
+        view('result-heading').textContent = 'An executable preparation interface.';
+        view('mechanism').textContent = 'A generated composition changes experimental access to this apparatus. '
+            + 'Its independent checker derives preservation and a recurring error envelope from the supplied model.';
+        view('program').textContent = json({ast: value.ast, installations: value.installations,
+            executablePlan: value.executablePlan, interfaces: value.interfaces, certificate: value.certificate,
+            scope: value.scope, errorEnvelope: value.errorEnvelope, invalidationRules: value.invalidationRules,
+            parentAssets: value.parentAssets});
+        const metrics = view('metrics');
+        metrics.replaceChildren();
+        const inherited = Boolean(value.parentAssets?.parentDigest);
+        const costMetrics = inherited ? [
+            ['Frozen package construction cost', value.costLedger?.total ?? 'Inspect ledger'],
+            ['Frozen package lineage cost', (value.parentAssets.ancestorCost || 0) + value.costLedger.total]
+        ] : [['Frozen package construction cost', value.costLedger?.total ?? 'Inspect ledger']];
+        for (const [label, text] of [
+            ['Qualified scope', Array.isArray(value.scope) ? value.scope.join(', ') : json(value.scope)],
+            ...costMetrics,
+            ['Error envelope', json(value.errorEnvelope)],
+            ['Package identity', String(value.digest).slice(0, 16) + '…']
+        ]) {
+            const box = node('div', metrics);
+            node('dt', box, label); node('dd', box, String(text));
+        }
+        renderExperimentWork(null);
+        controls();
+    }
+    function renderExperimentWork(report) {
+        let text = 'Later evaluation costs are reported separately from frozen package construction.';
+        if (report?.kind === 'matched-comparison') {
+            const total = (report.runs || []).reduce((sum, run) => sum + (run.ledger?.total || 0), 0)
+                + (report.sensingCorrection?.ledger?.total || 0) + (report.evaluationOverhead?.total || 0);
+            text = `Matched experiment: ${report.relation}. ${total} model units across the recorded candidate, `
+                + 'classical planner, scratch construction, sensing comparison and comparison audit. '
+                + 'The input cap applies to each construction.';
+        } else if (report?.kind === 'frozen-package-reuse') {
+            text = `This frozen reuse evaluation: ${report.status}; ${report.ledger.total} model units, `
+                + 'including its import check and qualification. Earlier construction and comparisons remain in the history.';
+        } else if (report?.kind === 'scope-expanding-successor') {
+            const costs = report.costs;
+            text = `This successor experiment: ${costs.remainingAfterAcceptance ?? costs.remaining} model units of remaining work, `
+                + `${costs.cumulativeAfterAcceptance ?? costs.cumulative} including ancestor construction. `
+                + `Matched scratch work: ${costs.scratchAfterAcceptance ?? costs.constructionFromScratch ?? 'inconclusive'} model units. `
+                + 'These amounts include the reported scope diagnostics and acceptance checks.';
+        }
+        view('work-total').textContent = text;
+    }
+    async function openDatabase() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('agialpha.out-evolve.workspace.v1', 1);
+            request.onupgradeneeded = () => request.result.createObjectStore('history');
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || Error('Local history storage is unavailable.'));
+        });
+    }
+    async function readSaved() {
+        return new Promise((resolve, reject) => {
+            const tx = database.transaction('history', 'readonly');
+            const request = tx.objectStore('history').get('current');
+            request.onsuccess = () => resolve(request.result || null);
+            request.onerror = () => reject(request.error);
+        });
+    }
+    async function refreshHistories() {
+        if (!database) return;
+        const rows = await new Promise((resolve, reject) => {
+            const request = database.transaction('history', 'readonly').objectStore('history').getAll();
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+        const select = view('saved');
+        select.replaceChildren();
+        const unique = new Map(rows.filter(row => row?.id && Array.isArray(row.events)).map(row => [row.id, row]));
+        for (const [id, row] of unique) {
+            const purpose = row.events.filter(event => event.kind === 'brief').at(-1)?.payload?.purpose;
+            const option = node('option', select, `${purpose?.slice(0, 55) || 'Imported capability history'} · ${row.events.length} events`);
+            option.value = id;
+        }
+        if (unique.has(record.id)) select.value = record.id;
+        if (!unique.size) { const option = node('option', select, 'No saved histories'); option.value = ''; }
+        controls();
+    }
+    async function persist() {
+        renderHistory();
+        try {
+            if (!database) throw Error('Local storage is unavailable. Export this history before leaving.');
+            await new Promise((resolve, reject) => {
+                const tx = database.transaction('history', 'readwrite');
+                const objectStore = tx.objectStore('history');
+                const request = objectStore.get('current');
+                let reason = null;
+                request.onsuccess = () => {
+                    const saved = request.result || null;
+                    if ((saved?.id || null) !== storedIdentity || (saved?.revision ?? null) !== storedRevision) {
+                        reason = Error('Another tab changed the saved Out-Evolve history. Export this copy before reloading.');
+                        tx.abort(); return;
+                    }
+                    if (saved?.id) objectStore.put(saved, saved.id);
+                    objectStore.put(record, record.id);
+                    objectStore.put(record, 'current');
+                };
+                tx.oncomplete = resolve;
+                tx.onerror = () => reject(reason || tx.error || Error('Saving failed.'));
+                tx.onabort = () => reject(reason || tx.error || Error('Saving was interrupted.'));
+            });
+            storedRevision = record.revision;
+            storedIdentity = record.id;
+            unsaved = false;
+            view('storage').textContent = 'Saved locally. Reload resumes this history; export a copy for backup. The original workshop has separate storage.';
+            await refreshHistories();
+        } catch (error) {
+            unsaved = true;
+            view('storage').textContent = 'This history has not been saved. Export it now or retry this same save.';
+            problem(error);
+        }
+        controls();
+        return !unsaved;
+    }
+    async function append(kind, payload) {
+        record = await outEvolve.appendOutEvolveEvent(record, kind, payload);
+        return persist();
+    }
+    function readBrief() {
+        const purpose = view('purpose').value.trim();
+        const constraints = view('constraints').value.trim();
+        const budget = Number(view('budget').value);
+        const apparatus = JSON.parse(view('apparatus').value);
+        if (!purpose || !constraints) throw Error('Provide the purpose and what must be preserved.');
+        if (!Number.isSafeInteger(budget) || budget < 1 || budget > 100000) throw Error('Use an integer budget between 1 and 100,000 model units.');
+        return {purpose, constraints, budget, apparatus};
+    }
+    function fillDefault() {
+        view('apparatus').value = json(outEvolveApparatus.apparatus(view('topology').value));
+    }
+    function checkpointApparatus() {
+        return checkpoint?.apparatus || outEvolve.latestOutEvolveEvent(record, 'brief')?.payload.apparatus;
+    }
+    function restoreView() {
+        view('outcome').hidden = !packageValue;
+        if (packageValue) renderPackage(packageValue);
+        else view('result-heading').textContent = 'No frozen capability in this history.';
+        const brief = outEvolve.latestOutEvolveEvent(record, 'brief')?.payload;
+        if (brief) {
+            view('purpose').value = brief.purpose; view('constraints').value = brief.constraints;
+            view('budget').value = String(brief.budget); view('apparatus').value = json(brief.apparatus);
+        }
+        const latestFrozen = record.events.filter(event => ['package-frozen', 'successor'].includes(event.kind)).at(-1);
+        const comparison = record.events.filter(event => event.kind === 'comparison'
+            && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
+        view('comparison').textContent = latestFrozen?.kind === 'successor' ? json(latestFrozen.payload.costs)
+            : comparison ? json(comparison.payload) : 'Not evaluated.';
+        const evidence = record.events.filter(event => ['reuse', 'successor'].includes(event.kind)
+            && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
+        view('evidence').textContent = evidence ? json(evidence.payload) : 'No evaluation recorded.';
+        const latestWork = record.events.filter(event => ['comparison', 'reuse', 'successor'].includes(event.kind)
+            && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
+        renderExperimentWork(latestWork?.payload);
+        renderHistory();
+    }
+    function exposedCases() {
+        return [...new Set(record.events.flatMap(event => [
+            ...(event.payload.exposedCaseIds || []), ...(event.payload.reuse?.exposedCaseIds || [])
+        ]))];
+    }
+    async function finishSearch(result) {
+        await append('search-stopped', {status: result.status, reason: result.reason,
+            checkpoint: outEvolveConstructor.exportSearchCheckpoint(result.checkpoint), ledger: result.ledger});
+        if (unsaved) return;
+        if (result.status === 'qualified') {
+            checkpoint = null;
+            const frozen = await outEvolvePackages.freezeCapability(runningApparatus, result);
+            if (!await append('package-frozen', {status: 'qualified', package: frozen})) return;
+            renderPackage(frozen);
+            setStatus('Capability qualified in the supplied model. Running matched comparisons…');
+            const comparison = await outEvolveEvaluation.compareCapability(frozen, {searchOptions: result.checkpoint?.options});
+            view('comparison').textContent = json(comparison);
+            renderExperimentWork(comparison);
+            await append('comparison', comparison);
+            setStatus('Capability qualified. Test new uses with the frozen package, or build its scope-expanding successor.');
+        } else {
+            checkpoint = result.checkpoint;
+            view('result-heading').textContent = result.status === 'cancelled' ? 'Search cancelled; evidence retained.' : 'No qualifying construction found within budget.';
+            setStatus(result.reason || 'No qualifying construction found within budget.');
+        }
+    }
+    async function runSearch() {
+        while (true) {
+            const capacity = outEvolve.searchHistoryCapacity(record, checkpoint);
+            if (!capacity.canAdvance) {
+                const reason = 'Search is unfinished: the bounded history has reserved its final recovery record. '
+                    + 'No further constructor steps were run. Export this history to retain the complete replayable checkpoint.';
+                await append('search-paused', {status: 'INCONCLUSIVE', reason, pauseReason: 'history-capacity',
+                    checkpoint: outEvolveConstructor.exportSearchCheckpoint(checkpoint)});
+                view('result-heading').textContent = 'Search paused; unfinished work retained.';
+                setStatus(reason);
+                return;
+            }
+            const result = outEvolveConstructor.advanceSearch(checkpoint, {steps: 16, cancel: cancelled, timeLimitMs: 1000});
+            checkpoint = result.checkpoint;
+            controls();
+            if (result.status !== 'searching') { await finishSearch(result); return; }
+            if (!await append('search-stopped', {status: result.status, reason: result.reason,
+                checkpoint: outEvolveConstructor.exportSearchCheckpoint(result.checkpoint), ledger: result.ledger})) return;
+            setStatus(`Searching bounded compositions. ${result.ledger?.synthesis ?? result.checkpoint?.expanded ?? 'More'} model work recorded; failed candidates remain in the ledger.`);
+            await pause();
+        }
+    }
+    async function withWork(action) {
+        if (busyNow || unsaved || !readyNow) return;
+        clearProblem(); busyNow = true; cancelled = false; controls();
+        try { await action(); }
+        catch (error) {
+            problem(error);
+            try { await append('failure', {status: 'FAIL', message: asError(error), draft: {
+                purpose: view('purpose').value, constraints: view('constraints').value,
+                budget: view('budget').value, apparatusText: view('apparatus').value.slice(0, 100000)
+            }}); }
+            catch (recordError) { problem(recordError); }
+            setStatus('This attempt failed. Its evidence remains in the history.');
+        } finally { busyNow = false; controls(); }
+    }
+    view('form').addEventListener('submit', event => {
+        event.preventDefault();
+        void withWork(async () => {
+            const brief = readBrief();
+            const next = outEvolveConstructor.createSearch(brief.apparatus, {
+                maxCost: brief.budget, maxStates: 2000, maxMemoryStates: 2000, maxProgramSize: 12
+            });
+            if (!await append('brief', brief)) return;
+            checkpoint = next; runningApparatus = brief.apparatus;
+            if (!await append('search-started', {status: 'searching',
+                checkpoint: outEvolveConstructor.exportSearchCheckpoint(checkpoint)})) return;
+            setStatus('Constructing an executable preparation interface…');
+            await pause(); await runSearch();
+        });
+    });
+    view('cancel').addEventListener('click', () => { cancelled = true; setStatus('Cancelling at the next bounded search step…'); controls(); });
+    view('resume').addEventListener('click', () => { void withWork(async () => {
+        runningApparatus = checkpointApparatus(); setStatus('Resuming the same frozen search bounds…'); await pause(); await runSearch();
+    }); });
+    view('topology').addEventListener('change', fillDefault);
+    view('reuse').addEventListener('click', () => { void withWork(async () => {
+        const exposedCaseIds = exposedCases();
+        setStatus('Testing new purposes using the unchanged frozen package…'); await pause();
+        const report = await outEvolveEvaluation.evaluateFrozenReuse(packageValue, {seed: freshSeed(), exposedCaseIds});
+        await append('reuse', report);
+        view('evidence').textContent = json(report);
+        renderExperimentWork(report);
+        setStatus(`Frozen-package reuse: ${report.status}. All accepted, failed and inconclusive cases are retained.`);
+    }); });
+    view('successor').addEventListener('click', () => { void withWork(async () => {
+        setStatus('Exposing the dormant reservoir and checking which parent assets remain valid…'); await pause();
+        const report = await outEvolveEvaluation.buildSuccessor(packageValue, {seed: freshSeed(),
+            exposedCaseIds: exposedCases(), searchOptions: packageValue.search.limits});
+        if (report.package) {
+            await append('successor', report); renderPackage(report.package);
+            view('comparison').textContent = json(report.costs);
+        } else await append('failure', {status: report.status, message: 'No qualifying successor construction found within budget.', report});
+        view('evidence').textContent = json(report);
+        renderExperimentWork(report);
+        setStatus(`Scope-expanding successor: ${report.status}. Inspect preserved obligations, the old scope failure and cumulative cost.`);
+    }); });
+    view('export-history').addEventListener('click', () => download(record, 'out-evolve-history.json'));
+    view('export-package').addEventListener('click', () => download(packageValue, 'out-evolve-capability.json'));
+    view('retry-save').addEventListener('click', () => { void persist(); });
+    view('open').addEventListener('click', () => { void withWork(async () => {
+        const saved = await new Promise((resolve, reject) => {
+            const request = database.transaction('history', 'readonly').objectStore('history').get(view('saved').value);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+        const inspected = await outEvolve.inspectOutEvolveWorkspace(saved);
+        record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
+        runningApparatus = checkpointApparatus(); restoreView(); await persist();
+        setStatus('Saved history opened after semantic checks. Its original events remain intact.');
+    }); });
+    view('import').addEventListener('change', event => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        void withWork(async () => {
+            if (file.size > outEvolve.WORKSPACE_LIMITS.bytes) throw Error('Import exceeds the bounded history size.');
+            const value = JSON.parse(await file.text());
+            if (value.schema === outEvolve.WORKSPACE_SCHEMA) {
+                const inspected = await outEvolve.inspectOutEvolveWorkspace(value);
+                outEvolve.requireHistoryContinuation(record, inspected.workspace);
+                record = inspected.workspace; checkpoint = inspected.checkpoint;
+                packageValue = inspected.latestPackage; runningApparatus = checkpointApparatus();
+                restoreView();
+                await persist();
+                setStatus('History imported. Package semantics were rechecked; historical reports are not fresh evaluations.');
+            } else {
+                await outEvolvePackages.importCapability(value);
+                await append('package-frozen', {status: 'qualified', package: value});
+                renderPackage(value); setStatus('Executable package imported after independent semantic checks.');
+            }
+        }).finally(() => { event.target.value = ''; });
+    });
+    window.addEventListener('beforeunload', event => {
+        if (busyNow || unsaved) { event.preventDefault(); event.returnValue = ''; }
+    });
+    void (async () => {
+        fillDefault(); controls();
+        try {
+            database = await openDatabase();
+            const saved = await readSaved();
+            if (saved) {
+                storedRevision = saved.revision;
+                storedIdentity = saved.id;
+                const inspected = await outEvolve.inspectOutEvolveWorkspace(saved);
+                record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
+                storedRevision = record.revision; storedIdentity = record.id;
+                runningApparatus = checkpointApparatus();
+                restoreView();
+                setStatus(checkpoint ? 'Saved search recovered. Resume keeps its original bounds, failures and costs.' : 'Saved Out-Evolve history recovered. Frozen package semantics rechecked.');
+            }
+            view('storage').textContent = 'History is stored locally on this device. Export a copy for backup.';
+            await refreshHistories();
+        } catch (error) { problem(error); view('storage').textContent = 'Saved history could not be opened. Import an exported copy to recover it.'; }
+        readyNow = true; renderHistory();
+    })();
 })();
 
 })();
