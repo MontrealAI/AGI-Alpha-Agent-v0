@@ -92,6 +92,7 @@
             const pre = node('pre', details, json(event));
             pre.tabIndex = 0;
             pre.setAttribute('aria-label', `Out-Evolve event ${event.sequence + 1}`);
+            pre.setAttribute('role', 'group');
         }
         if (!record.events.length) node('li', list, 'No construction attempts recorded.');
         view('retained').textContent = failures || inconclusive
@@ -138,6 +139,14 @@
             text = `Matched experiment: ${report.relation}. ${total} model units across the recorded candidate, `
                 + 'classical planner, scratch construction, sensing comparison and comparison audit. '
                 + 'The input cap applies to each construction.';
+            const sensing = report.sensingCorrection;
+            if (sensing) {
+                const qualified = sensing.qualification?.status === 'qualified';
+                const completed = sensing.search?.complete === true;
+                text += ` Sensing attempt: ${sensing.ledger.total} model units; `
+                    + (qualified ? 'qualified' : completed ? 'did not qualify' : 'qualification inconclusive')
+                    + `; search ${sensing.search?.status || 'unreported'}.`;
+            }
         } else if (report?.kind === 'frozen-package-reuse') {
             text = `This frozen reuse evaluation: ${report.status}; ${report.ledger.total} model units, `
                 + 'including its import check and qualification. Earlier construction and comparisons remain in the history.';

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9j9GjMp+p2XWtNr4C0sShSw6uHZk+SX4YPGGCsd+qjs='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-Cu9v5qmcgNnanXIcqwzQa4yZQjK3gQPAbUTwqYlvMpM='; style-src 'sha256-d56mIl9m3qMTRKj020zOqnaBipkvQrL8hgAVeS+ipF4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -252,15 +252,15 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
                 <details><summary>Edit the bounded synthetic defaults</summary><label for="evolve-apparatus">Apparatus manifest · JSON data only</label><textarea id="evolve-apparatus" rows="12" spellcheck="false" aria-describedby="evolve-model-limit"></textarea><p id="evolve-model-limit" class="fine-print">Only the versioned finite language executes. Changed graphs, guards, costs or scope require new qualification. No text becomes code.</p></details>
                 <div class="actions"><button id="evolve-construct" type="submit" class="primary">Construct capability</button><button id="evolve-cancel" type="button" disabled>Cancel search</button><button id="evolve-resume" type="button" disabled>Resume saved search</button></div>
             </form>
-            <div class="evolve-result" aria-labelledby="evolve-result-heading">
+            <div class="evolve-result" role="group" aria-labelledby="evolve-result-heading">
                 <p class="eyebrow">WHAT BECAME POSSIBLE</p><h3 id="evolve-result-heading">Ready to construct.</h3><p id="evolve-status" role="status" aria-live="polite">Defaults are ready. A bounded search will generate and independently check an executable program.</p><p id="evolve-error" class="error" role="alert" hidden></p>
-                <div id="evolve-outcome" hidden><p id="evolve-mechanism"></p><p id="evolve-work-total" class="evolve-work-total">Later evaluation costs are reported separately from frozen package construction.</p><dl id="evolve-metrics" class="evolve-metrics"></dl><details><summary>Inspect the generated program and certificate</summary><pre id="evolve-program" tabindex="0" aria-label="Generated capability program"></pre></details><details><summary>Matched comparisons and complete cost ledger</summary><pre id="evolve-comparison" tabindex="0" aria-label="Capability comparison and costs">Not evaluated.</pre></details></div>
+                <div id="evolve-outcome" hidden><p id="evolve-mechanism"></p><p id="evolve-work-total" class="evolve-work-total">Later evaluation costs are reported separately from frozen package construction.</p><dl id="evolve-metrics" class="evolve-metrics"></dl><details><summary>Inspect the generated program and certificate</summary><pre role="group" id="evolve-program" tabindex="0" aria-label="Generated capability program"></pre></details><details><summary>Matched comparisons and complete cost ledger</summary><pre role="group" id="evolve-comparison" tabindex="0" aria-label="Capability comparison and costs">Not evaluated.</pre></details></div>
                 <div class="evidence-actions"><button id="evolve-reuse" type="button" disabled>Test new uses</button><button id="evolve-successor" type="button" disabled>Build successor</button><button id="evolve-export-package" type="button" disabled>Export executable package</button></div>
                 <p class="fine-print">A frozen package is reused unchanged for threshold screening, inverse design and constrained selection. A successor exposes a dormant reservoir, rechecks the old obligations and must add a new accepted function.</p>
-                <details><summary>What the evidence can establish</summary><p class="fine-print">Certificates apply to the supplied synthetic model. They do not validate physical hardware, general invention, market demand or business performance. Baselines can win or tie. Cases exposed in this history are regressions, not protected holdouts.</p><pre id="evolve-evidence" tabindex="0" aria-label="Detailed Out-Evolve evaluation evidence">No evaluation recorded.</pre></details>
+                <details><summary>What the evidence can establish</summary><p class="fine-print">Certificates apply to the supplied synthetic model. They do not validate physical hardware, general invention, market demand or business performance. Baselines can win or tie. Cases exposed in this history are regressions, not protected holdouts.</p><pre role="group" id="evolve-evidence" tabindex="0" aria-label="Detailed Out-Evolve evaluation evidence">No evaluation recorded.</pre></details>
             </div>
         </div>
-        <section class="evolve-history" aria-labelledby="evolve-history-heading"><div class="section-heading"><div><p class="eyebrow">RETAIN THE WHOLE EXPERIMENT</p><h3 id="evolve-history-heading">Construction history</h3></div><p id="evolve-retained">Failures and interrupted searches stay visible after later successes.</p></div><ol id="evolve-events" class="version-list"><li>No construction attempts recorded.</li></ol><div class="actions"><button id="evolve-export-history" type="button" disabled>Export Out-Evolve history</button><button id="evolve-retry-save" type="button" hidden>Retry saving this history</button></div><label for="evolve-import">Import Out-Evolve history or capability package</label><input id="evolve-import" type="file" accept="application/json,.json"><details><summary>Open another saved Out-Evolve history</summary><label for="evolve-saved">Saved history</label><select id="evolve-saved" disabled><option value="">No saved histories</option></select><button id="evolve-open" type="button" disabled>Open saved history</button><p class="fine-print">Importing a separate history keeps the previous copy here. Earlier same-identity histories cannot replace later events.</p></details><p id="evolve-storage" class="fine-print">Preparing local recovery…</p><details><summary>Inspect complete Out-Evolve events</summary><pre id="evolve-history-json" tabindex="0" aria-label="Complete Out-Evolve event history">No history.</pre></details></section>
+        <section class="evolve-history" aria-labelledby="evolve-history-heading"><div class="section-heading"><div><p class="eyebrow">RETAIN THE WHOLE EXPERIMENT</p><h3 id="evolve-history-heading">Construction history</h3></div><p id="evolve-retained">Failures and interrupted searches stay visible after later successes.</p></div><ol id="evolve-events" class="version-list"><li>No construction attempts recorded.</li></ol><div class="actions"><button id="evolve-export-history" type="button" disabled>Export Out-Evolve history</button><button id="evolve-retry-save" type="button" hidden>Retry saving this history</button></div><label for="evolve-import">Import Out-Evolve history or capability package</label><input id="evolve-import" type="file" accept="application/json,.json"><details><summary>Open another saved Out-Evolve history</summary><label for="evolve-saved">Saved history</label><select id="evolve-saved" disabled><option value="">No saved histories</option></select><button id="evolve-open" type="button" disabled>Open saved history</button><p class="fine-print">Importing a separate history keeps the previous copy here. Earlier same-identity histories cannot replace later events.</p></details><p id="evolve-storage" class="fine-print">Preparing local recovery…</p><details><summary>Inspect complete Out-Evolve events</summary><pre role="group" id="evolve-history-json" tabindex="0" aria-label="Complete Out-Evolve event history">No history.</pre></details></section>
     </section>
     <nav class="workshop-steps" aria-label="Workshop steps"><a href="#brief-heading">1 · Shape the brief</a><a href="#witness-heading">2 · Choose the instrument</a><a href="#evidence-heading">3 · Inspect evidence</a><a href="#history-heading">4 · Review history</a></nav>
     <noscript><p class="notice">JavaScript is required for the local workshop. No proposal has been saved, constructed or evaluated.</p></noscript>
@@ -299,8 +299,8 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
                 <p id="version-state" class="evidence-state">No validation yet.</p><p id="version-detail">First save a frozen version. A plain brief has no executable construction here.</p>
                 <div class="evidence-actions"><button id="development" type="button" class="primary" disabled>Construct &amp; test on development cases</button><button id="heldout" type="button" disabled>Evaluate unchanged held-out reuse</button></div>
                 <p id="run-gate" class="fine-print">Execution is disabled until a supported witness is frozen, saved and unchanged.</p>
-                <div class="phase-card"><p class="eyebrow">DEVELOPMENT</p><h3 id="development-state">Not evaluated</h3><p id="development-summary" class="fine-print">No construction or measurements recorded.</p><details><summary>Inspect the full development report</summary><pre id="development-report" tabindex="0" aria-label="Full development report">No development report.</pre></details></div>
-                <div class="phase-card"><p class="eyebrow">HELD-OUT SYNTHETIC CASES</p><h3 id="heldout-state">Not evaluated</h3><p id="heldout-summary" class="fine-print">No construction or measurements recorded.</p><details><summary>Inspect the full held-out report</summary><pre id="heldout-report" tabindex="0" aria-label="Full held-out report">No held-out report.</pre></details></div>
+                <div class="phase-card"><p class="eyebrow">DEVELOPMENT</p><h3 id="development-state">Not evaluated</h3><p id="development-summary" class="fine-print">No construction or measurements recorded.</p><details><summary>Inspect the full development report</summary><pre role="group" id="development-report" tabindex="0" aria-label="Full development report">No development report.</pre></details></div>
+                <div class="phase-card"><p class="eyebrow">HELD-OUT SYNTHETIC CASES</p><h3 id="heldout-state">Not evaluated</h3><p id="heldout-summary" class="fine-print">No construction or measurements recorded.</p><details><summary>Inspect the full held-out report</summary><pre role="group" id="heldout-report" tabindex="0" aria-label="Full held-out report">No held-out report.</pre></details></div>
                 <p id="exposure-summary" class="exposure-note">No synthetic cases evaluated yet.</p>
                 <p class="fine-print">Held-out means a separate fixed synthetic set, not secret or independently protected data. Viewing and retesting public cases can inform later choices. A synthetic pass is not scientific validation, independent certification, general intelligence or business proof.</p>
             </section>
@@ -310,11 +310,11 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     <section class="panel history-panel" aria-labelledby="history-heading">
         <div class="section-heading"><div><p class="eyebrow">03 · KEEP WHAT YOU LEARNED</p><h2 id="history-heading">A lineage you can inspect.</h2></div><p>Original briefs, frozen configurations, development results and held-out evidence stay with their own versions. Nothing here authorizes reuse in the outside world.</p></div>
         <ol id="version-list" class="version-list"><li>No frozen versions yet.</li></ol>
-        <details><summary>Inspect the complete event history</summary><pre id="history-json" tabindex="0" aria-label="Complete workspace history">No workspace history.</pre></details>
+        <details><summary>Inspect the complete event history</summary><pre role="group" id="history-json" tabindex="0" aria-label="Complete workspace history">No workspace history.</pre></details>
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>0b566f01b96c02a49fd168bdfc460ee964dc8518ff1afe329850ada6b578dc45</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>b8399195ce7fcbd990ea69f09570342085589eb4b5d4b84e96ffdc161fc99b08</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -1908,6 +1908,26 @@ function pathCost(apparatus, ast, inherited) {
         : apparatus.primitives.find(primitive => primitive.id === id).cost), 0);
 }
 
+/** Sum every frozen construction once; ancestor fields must reproduce the embedded chain. */
+function lineageConstructionCost(input) {
+    canonical(input);
+    function total(pkg) {
+        if (!pkg || !Number.isSafeInteger(pkg.costLedger?.total) || pkg.costLedger.total < 0
+            || !pkg.parentAssets || !Number.isSafeInteger(pkg.parentAssets.ancestorCost)
+            || pkg.parentAssets.ancestorCost < 0) reject('Invalid parent lineage cost ledger.');
+        const parent = pkg.search?.parentSource ?? pkg.search?.checkpoint?.inheritance?.parent ?? null;
+        const ancestorCost = parent ? total(parent) : 0;
+        if (pkg.parentAssets.ancestorCost !== ancestorCost
+            || (pkg.parentAssets.parentDigest || null) !== (parent?.digest || null)) {
+            reject('Parent cumulative ancestor cost does not reproduce its lineage.');
+        }
+        const cumulative = ancestorCost + pkg.costLedger.total;
+        if (!Number.isSafeInteger(cumulative)) reject('Cumulative lineage cost overflow.');
+        return cumulative;
+    }
+    return total(input);
+}
+
 function matchingParent(apparatus, parent) {
     if (!parent) return {parentDigest: null, assets: [], ancestorCost: 0, parent: null};
     canonical(parent);
@@ -1925,8 +1945,8 @@ function matchingParent(apparatus, parent) {
         if (!before || !after || !equal(before, after)) reject('Stale parent installation semantics.');
         assets.push(id);
     }
-    if (!Number.isSafeInteger(parent.costLedger?.total) || parent.costLedger.total < 0) reject('Invalid parent cost ledger.');
-    return {parentDigest: parent.digest, assets, ancestorCost: parent.costLedger.total, parent: clone(parent)};
+    const ancestorCost = lineageConstructionCost(parent);
+    return {parentDigest: parent.digest, assets, ancestorCost, parent: clone(parent)};
 }
 
 function initialCheckpoint(apparatus, options, inheritance) {
@@ -2235,7 +2255,7 @@ function construct(apparatus, options = {}) {
     return advanceSearch(checkpoint, {steps: checkpoint.options.maxStates + 1, timeLimitMs: 60000});
 }
 
-return {CONSTRUCTOR_VERSION,SEARCH_SCHEMA,SEARCH_TOKEN_SCHEMA,MAX_SEARCH_TOKEN_BYTES,DEFAULT_BUDGET,canonical,createSearch,compactSearchCheckpoint,exportSearchCheckpoint,importCompactSearchCheckpoint,importSearchCheckpoint,advanceSearch,construct};
+return {CONSTRUCTOR_VERSION,SEARCH_SCHEMA,SEARCH_TOKEN_SCHEMA,MAX_SEARCH_TOKEN_BYTES,DEFAULT_BUDGET,canonical,lineageConstructionCost,createSearch,compactSearchCheckpoint,exportSearchCheckpoint,importCompactSearchCheckpoint,importSearchCheckpoint,advanceSearch,construct};
 })();
 const capability_module_8=(()=>{
 // SPDX-License-Identifier: Apache-2.0
@@ -2323,7 +2343,8 @@ function parentAssets(apparatus, parent, inherited) {
     if (!same(parent.apparatus.channels, apparatus.channels) || !same(parent.apparatus.edges, apparatus.edges)
         || parent.apparatus.tolerance !== apparatus.tolerance) fail('Incompatible inherited apparatus support.');
     return {parentDigest: parent.digest, installations: [...matching], observations: [],
-        priorEvidence: 'historical-only; new scope independently requalified', ancestorCost: parent.costLedger.total};
+        priorEvidence: 'historical-only; new scope independently requalified',
+        ancestorCost: constructor.lineageConstructionCost(parent)};
 }
 
 async function freezeCapability(apparatus, result, {parent = null, inheritedAssets = null, evidence = null} = {}) {
@@ -2670,7 +2691,7 @@ const capability_module_10=(()=>{
 const { apparatus, expandApparatus, TOPOLOGIES } = capability_module_9;
 const { qualify, measure, prepare, compile, validateApparatus } = capability_module_6;
 const { verify } = capability_module_7;
-const { construct } = capability_module_5;
+const { construct, lineageConstructionCost } = capability_module_5;
 const { freezeCapability, importCapability, digestCapability, verificationCostCapability } = capability_module_8;
 
 const EVALUATION_VERSION = 'out-evolve-evaluation/v1';
@@ -2806,7 +2827,7 @@ async function compareCapability(input, options = {}) {
     const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(pkg.apparatus, scratch) : null;
     const remaining = ledgerTotal(pkg.costLedger);
     const ancestor = pkg.parentAssets.ancestorCost;
-    const ours = ancestor + remaining;
+    const ours = lineageConstructionCost(pkg);
     const runs = [
         {name: 'constructed-package', status: 'qualified', ast: pkg.ast, certificate: pkg.certificate,
             ledger: pkg.costLedger},
@@ -2830,6 +2851,7 @@ async function compareCapability(input, options = {}) {
         frozenPackageDigest: pkg.digest, matched: {apparatus: true, objective: true, tolerance: true,
             primitives: true, information: true, budgets: searchOptions}, runs, sensingCorrection: sensing,
         relation, costs: {unit: 'abstract-model-work', coldStart: ours, remainingConstructionCost: remaining, ancestorConstructionCost: ancestor,
+            ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
             operationPerUse: operation, uses, totalAtHorizon: ours + uses * operation,
             amortizedPerUse: ours / uses + operation},
         evaluationOverhead: {qualification: verificationCostCapability(pkg), total: verificationCostCapability(pkg),
@@ -2838,56 +2860,175 @@ async function compareCapability(input, options = {}) {
 }
 
 /** Strong bounded sensing comparator: install any supplied sensors and use all admissible paired references. */
-async function sensingCorrectionBaseline(pkg, searchOptions = {}) {
-    const app = pkg.apparatus;
-    const maximum = searchOptions.maxProgramSize || 8;
-    const budget = searchOptions.maxCost || app.limits.maxCost;
+async function sensingCorrectionBaseline(pkg, searchOptions = {}, execution = {}) {
+    function dataProperty(value, key) {
+        const descriptor = value && typeof value === 'object' && Object.getOwnPropertyDescriptor(value, key);
+        ensure(descriptor && Object.hasOwn(descriptor, 'value'), 'Sensing input accessors are unsupported.');
+        return descriptor.value;
+    }
+    function plainOptions(value) {
+        return value && typeof value === 'object' && !Array.isArray(value)
+            && Object.getPrototypeOf(value) === Object.prototype && Object.getOwnPropertySymbols(value).length === 0
+            && Object.values(Object.getOwnPropertyDescriptors(value)).every(descriptor =>
+                Object.hasOwn(descriptor, 'value') && descriptor.enumerable);
+    }
+    const app = validateApparatus(dataProperty(pkg, 'apparatus'));
+    const scopeInput = dataProperty(dataProperty(pkg, 'ast'), 'scope');
+    ensure(Array.isArray(scopeInput) && Object.getPrototypeOf(scopeInput) === Array.prototype
+        && scopeInput.length > 0 && scopeInput.length <= 2
+        && Reflect.ownKeys(scopeInput).length === scopeInput.length + 1, 'Invalid sensing scope.');
+    const scope = Array.from({length: scopeInput.length}, (_, index) => dataProperty(scopeInput, String(index)));
+    const limits = {maxProgramSize: 8, maxCost: app.limits.maxCost, maxStates: 4096, maxMemoryStates: 4096};
+    ensure(plainOptions(searchOptions), 'Invalid sensing limits.');
+    for (const key of Object.keys(searchOptions)) {
+        ensure(Object.hasOwn(limits, key) || key === 'dominance', `Unsupported sensing limit: ${key}.`);
+    }
+    for (const [key, maximum] of [['maxProgramSize', 32], ['maxCost', 1_000_000_000],
+        ['maxStates', 100_000], ['maxMemoryStates', 100_000]]) {
+        if (Object.hasOwn(searchOptions, key)) limits[key] = searchOptions[key];
+        ensure(Number.isSafeInteger(limits[key]) && limits[key] > 0 && limits[key] <= maximum,
+            `Invalid sensing ${key}.`);
+    }
+    if (Object.hasOwn(searchOptions, 'dominance')) ensure(typeof searchOptions.dominance === 'boolean', 'Invalid sensing dominance.');
+    ensure(plainOptions(execution)
+        && Object.keys(execution).every(key => key === 'timeLimitMs'), 'Invalid sensing execution controls.');
+    const timeLimitMs = execution.timeLimitMs ?? 60_000;
+    ensure(Number.isSafeInteger(timeLimitMs) && timeLimitMs >= 0 && timeLimitMs <= 60_000,
+        'Invalid sensing execution timeout.');
+    ensure(scope.every(value => typeof value === 'string')
+        && canonical([...scope].sort()) === canonical([...app.scope].sort()),
+        'Sensing scope must match the supplied apparatus.');
+    const started = Date.now();
     const sensors = app.primitives.filter(primitive => primitive.kind === 'sensor');
     const references = app.primitives.filter(primitive => primitive.kind === 'reference');
-    const maximumSubsets = Math.min(2 ** sensors.length, searchOptions.maxStates || 4096);
-    let best = null;
-    let tested = 0;
-    let failed = 0;
-    let simulationWork = 0;
-    for (let mask = 0; mask < maximumSubsets; mask++) {
-        const installations = sensors.filter((_, index) => mask & 2 ** index).map(primitive => primitive.id);
-        const refs = references.filter(primitive => primitive.requires.every(key => installations.includes(key)));
-        if (installations.length + refs.length > maximum) continue;
-        simulationWork += 1 + installations.length + refs.length;
-        const ast = {schema: 'out-evolve-ast/v1', installations,
-            prepare: {op: 'sequence', steps: refs.map(primitive => ({op: 'primitive', id: primitive.id}))},
-            scope: [...pkg.ast.scope]};
-        try {
-            const report = qualify(app, ast);
-            tested++;
-            if (!report.ok || report.cost > budget) failed++;
-            if (report.cost > budget) continue;
-            if (!best || report.ok && !best.ok || report.ok === best.ok && (report.errorBound < best.errorBound
-                || report.errorBound === best.errorBound && report.cost < best.cost)) best = {...report, ast};
-        } catch { tested++; failed++; }
-    }
-    const independent = best ? verify(app, best.ast, best.certificate) : null;
-    const replay = best?.ok ? app.scope.flatMap(operation => [
+    const totalSubsets = 1n << BigInt(sensors.length);
+    const maximum = limits.maxProgramSize, budget = limits.maxCost;
+    const ledger = {unit: 'abstract-model-work', synthesis: 0, unsuccessfulCandidates: 0,
+        qualification: 0, installation: 0, calibration: 0, tuning: 0, operation: 0, maintenance: 0, total: 0};
+    const spend = (kind, amount) => {
+        ensure(Number.isSafeInteger(amount) && amount >= 0 && ledger.total + amount <= budget,
+            'Sensing total work budget exceeded.');
+        ledger[kind] += amount; ledger.total += amount;
+    };
+    const attempts = [];
+    let best = null, diagnosticBest = null, unfundedBest = null, independent = null;
+    let tested = 0, enumerated = 0, excludedByProgramSize = 0, unaffordableCandidates = 0;
+    let stopped = null;
+    const replayInputs = app.scope.flatMap(operation => [
         {signal: 7, options: {operation, cycle: 0, sign: 1}},
         {signal: -3, options: {operation, cycle: app.limits.maxCycles - 1, sign: -1}}
-    ]).map(input => ({...input, actual: measure(app, best.ast, input.signal, input.options)})) : [];
-    const operationCost = replay.reduce((total, fixture) => total + fixture.actual.cost, 0);
-    const qualificationCost = tested + (best ? 1 : 0) + replay.length;
-    const installations = best?.ast.installations || [];
-    const installCost = installations.reduce((total, key) => total
-        + app.primitives.find(primitive => primitive.id === key).cost, 0);
-    return {name: 'competent-sensing-and-paired-reference-correction',
-        status: best?.ok ? 'qualified' : 'not-qualified-within-supplied-sensing-language',
-        best, tested, independent, replay, constructionChanges: installations.length > 0,
+    ]);
+    const preparationCost = candidate => candidate.ast.prepare.steps.reduce((total, step) => total
+        + app.primitives.find(primitive => primitive.id === step.id).cost, 0);
+    const terminalWork = candidate => !candidate ? 0 : candidate.cost + 1
+        + (candidate.ok ? replayInputs.length * (preparationCost(candidate) + 2) : 0);
+    const replaySlots = candidate => candidate?.ok ? replayInputs.length : 0;
+    const preferred = (candidate, prior) => !prior || candidate.ok && !prior.ok
+        || candidate.ok === prior.ok && (candidate.ok
+            ? terminalWork(candidate) < terminalWork(prior)
+                || terminalWork(candidate) === terminalWork(prior) && candidate.errorBound < prior.errorBound
+            : candidate.errorBound < prior.errorBound || candidate.errorBound === prior.errorBound && candidate.cost < prior.cost);
+    function installationOrder(selected) {
+        const installed = new Set(), order = [];
+        const pending = [...selected].sort((a, b) => a.id.localeCompare(b.id));
+        while (pending.length) {
+            const index = pending.findIndex(primitive => primitive.requires.every(key => installed.has(key)));
+            if (index < 0) return selected.map(primitive => primitive.id);
+            const [primitive] = pending.splice(index, 1);
+            order.push(primitive.id); installed.add(primitive.id);
+        }
+        return order;
+    }
+    for (let mask = 0n; mask < totalSubsets; mask++) {
+        if (Date.now() - started >= timeLimitMs) { stopped = 'execution timeout'; break; }
+        if (enumerated >= limits.maxStates) { stopped = 'state limit'; break; }
+        if (attempts.length + 1 + replaySlots(best) > limits.maxMemoryStates) { stopped = 'memory-state limit'; break; }
+        const selected = sensors.filter((_, index) => (mask & (1n << BigInt(index))) !== 0n);
+        const installations = installationOrder(selected);
+        const refs = references.filter(primitive => primitive.requires.every(key => installations.includes(key)));
+        const size = installations.length + refs.length;
+        const overProgramSize = size > maximum;
+        const candidateWork = 1 + size + (overProgramSize ? 0 : 1);
+        if (ledger.total + candidateWork + terminalWork(best) > budget) { stopped = 'total modeled work budget'; break; }
+        spend('synthesis', 1 + size); enumerated++;
+        const ast = {schema: 'out-evolve-ast/v1', installations,
+            prepare: {op: 'sequence', steps: refs.map(primitive => ({op: 'primitive', id: primitive.id}))},
+            scope: [...scope]};
+        if (overProgramSize) {
+            excludedByProgramSize++;
+            attempts.push({subset: mask.toString(), status: 'excluded-by-program-size', size, workToDate: ledger.total});
+            continue;
+        }
+        spend('qualification', 1); tested++;
+        try {
+            const report = qualify(app, ast);
+            const candidate = {...report, ast};
+            if (!report.ok) ledger.unsuccessfulCandidates++;
+            if (preferred(candidate, diagnosticBest)) diagnosticBest = candidate;
+            const affordable = ledger.total + terminalWork(candidate) <= budget
+                && attempts.length + 1 + replaySlots(candidate) <= limits.maxMemoryStates;
+            if (affordable && preferred(candidate, best)) best = candidate;
+            else if (!affordable) {
+                unaffordableCandidates++;
+                if (preferred(candidate, unfundedBest)) unfundedBest = candidate;
+            }
+            attempts.push({subset: mask.toString(), status: report.ok ? 'runtime-qualified' : 'runtime-negative',
+                errorBound: report.errorBound, programCost: report.cost, terminalWork: terminalWork(candidate),
+                terminalWorkAffordable: affordable, workToDate: ledger.total});
+        } catch (error) {
+            ledger.unsuccessfulCandidates++;
+            attempts.push({subset: mask.toString(), status: 'invalid-candidate', reason: String(error.message),
+                workToDate: ledger.total});
+        }
+    }
+    const replay = [];
+    if (best) {
+        if (Date.now() - started >= timeLimitMs) stopped = 'execution timeout before independent acceptance';
+        else {
+            ensure(ledger.total + terminalWork(best) <= budget, 'Sensing acceptance reservation was lost.');
+            const installation = best.ast.installations.reduce((total, key) => total
+                + app.primitives.find(primitive => primitive.id === key).cost, 0);
+            spend('installation', installation); spend('calibration', preparationCost(best));
+            spend('qualification', 1);
+            independent = verify(app, best.ast, best.certificate);
+            ensure(independent.ok === best.ok, 'Sensing runtime and independent checker disagree.');
+            if (best.ok) for (const input of replayInputs) {
+                if (Date.now() - started >= timeLimitMs) { stopped = 'execution timeout during acceptance replay'; break; }
+                spend('operation', preparationCost(best) + 1); spend('qualification', 1);
+                const actual = measure(app, best.ast, input.signal, input.options);
+                replay.push({...input, actual, accepted: actual.productive === input.signal
+                    && Math.abs(actual.value - input.signal) <= app.tolerance});
+            }
+        }
+    }
+    const enumerationComplete = BigInt(enumerated) === totalSubsets;
+    const accepted = !!(best?.ok && independent?.ok && replay.length === replayInputs.length
+        && replay.every(fixture => fixture.accepted));
+    const unresolvedAcceptance = !!(unfundedBest && preferred(unfundedBest, best));
+    const complete = enumerationComplete && excludedByProgramSize === 0 && !stopped
+        && independent !== null && !unresolvedAcceptance;
+    const searchStatus = stopped || unresolvedAcceptance ? 'exhausted'
+        : excludedByProgramSize ? 'truncated' : complete ? 'completed' : 'exhausted';
+    const status = accepted ? 'qualified' : complete ? 'not-qualified-within-supplied-sensing-language' : searchStatus;
+    const installations = independent ? best.ast.installations : [];
+    return {name: 'competent-sensing-and-paired-reference-correction', status,
+        qualification: {status: accepted ? 'qualified' : complete ? 'not-qualified' : 'inconclusive',
+            independentCheckPerformed: independent !== null, requiredReplays: best?.ok ? replayInputs.length : 0,
+            completedReplays: replay.length},
+        search: {status: searchStatus, complete, enumerationComplete, enumeratedSubsets: enumerated,
+            totalSubsets: totalSubsets.toString(), excludedByProgramSize, unaffordableCandidates, unresolvedAcceptance,
+            stopReason: stopped || (excludedByProgramSize ? 'program-size exclusions' : unresolvedAcceptance
+                ? 'candidate acceptance work exceeded remaining budget or memory' : null),
+            limits: {...limits, timeLimitMs}, memoryUnit: 'retained attempt records plus required accepted replay fixtures'},
+        best, diagnosticBest, tested, independent, replay, attempts, constructionChanges: installations.length > 0,
         experimentalAccessChange: installations.length ? 'additional nuisance sensor access; no nuisance routing or suppression'
             : 'unchanged sensor access',
         matched: {graph: true, information: true, tolerance: true, maxProgramSize: maximum, maxCost: budget},
-        reason: 'Enumerates all sensor subsets within the budget and every admissible simultaneous reference; repeated references add no information in this model.',
-        ledger: {unit: 'abstract-model-work', synthesis: simulationWork, unsuccessfulCandidates: failed,
-            qualification: qualificationCost, installation: installCost, calibration: (best?.cost || 0) - installCost,
-            tuning: 0, operation: operationCost, maintenance: 0,
-            total: simulationWork + qualificationCost + (best?.cost || 0) + operationCost},
-        limitation: 'Where the supplied catalogue lacks a required sensor, this bounded comparator cannot identify unobserved independent nuisance. This is not a universal sensing impossibility proof.'};
+        reason: complete ? accepted ? 'Completed the declared sensing strategy enumeration and independently accepted its best affordable candidate.'
+            : 'Completed the declared sensing strategy enumeration; the independently checked candidate does not meet tolerance.'
+            : `Sensing comparison is incomplete: ${stopped || (excludedByProgramSize ? 'program-size exclusions' : 'unfunded candidate acceptance')}. A retained qualified incumbent does not establish a completed comparison.`,
+        ledger,
+        limitation: 'This comparator enumerates sensor subsets followed by all admissible simultaneous references, without nuisance attenuation, routing or protection. Repeated references add no information in this model. Exhausted or excluded cases are inconclusive, never a sensing impossibility proof.'};
 }
 
 /** Freeze implementation identity/configuration first, then generate unseen public structural variants. */
@@ -3029,9 +3170,10 @@ async function buildSuccessor(input, options = {}) {
     if (result.status !== 'qualified') {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
             oldScope, result, scratch, parentDigest: parent.digest,
-            costs: {unit: 'abstract-model-work', ancestor: ledgerTotal(parent.costLedger),
+            costs: {unit: 'abstract-model-work', ancestor: lineageConstructionCost(parent),
+                ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
                 remaining: ledgerTotal(result.ledger) + verificationCostCapability(parent) + oldScopeAuditCost,
-                cumulative: ledgerTotal(parent.costLedger) + ledgerTotal(result.ledger)
+                cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
                 constructionFromScratch: ledgerTotal(scratch.ledger)},
             reason: 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
@@ -3042,7 +3184,7 @@ async function buildSuccessor(input, options = {}) {
     const added = reuse.cases.filter(test => test.operation === 'reservoir');
     const preserved = prior.length === 3 && prior.every(test => test.status === 'PASS');
     const newFunction = added.length === 3 && added.every(test => test.status === 'PASS');
-    const parentCost = ledgerTotal(parent.costLedger);
+    const parentCost = lineageConstructionCost(parent);
     const parentAudit = verificationCostCapability(parent);
     const remaining = ledgerTotal(pkg.costLedger) + parentAudit + oldScopeAuditCost;
     const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(expanded, scratch) : null;
@@ -3056,6 +3198,7 @@ async function buildSuccessor(input, options = {}) {
         newFunction: {accepted: newFunction, operation: 'reservoir', cases: added,
             description: 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'},
         costs: {unit: 'abstract-model-work', ancestor: parentCost, remaining, cumulative: parentCost + remaining,
+            ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
             packageConstruction: ledgerTotal(pkg.costLedger), parentImportAudit: parentAudit, oldScopeCheck: oldScopeAuditCost,
             frozenReuseAcceptance: reuse.ledger.total,
             remainingAfterAcceptance: remaining + reuse.ledger.total,
@@ -3128,7 +3271,7 @@ const outEvolveConstructor=capability_module_5;
 const outEvolvePackages=capability_module_8;
 const outEvolveApparatus=capability_module_9;
 const outEvolveEvaluation=capability_module_10;
-const SOURCE_HASH='0b566f01b96c02a49fd168bdfc460ee964dc8518ff1afe329850ada6b578dc45';
+const SOURCE_HASH='b8399195ce7fcbd990ea69f09570342085589eb4b5d4b84e96ffdc161fc99b08';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -3327,6 +3470,7 @@ function renderVersions() {
         const full = element('pre', details, JSON.stringify(version, null, 2));
         full.tabIndex = 0;
         full.setAttribute('aria-label', `Complete version ${version.number}`);
+        full.setAttribute('role', 'group');
     }
     $('history-json').textContent = JSON.stringify(current, null, 2);
 }
@@ -3762,6 +3906,7 @@ window.addEventListener('beforeunload', event => {
             const pre = node('pre', details, json(event));
             pre.tabIndex = 0;
             pre.setAttribute('aria-label', `Out-Evolve event ${event.sequence + 1}`);
+            pre.setAttribute('role', 'group');
         }
         if (!record.events.length) node('li', list, 'No construction attempts recorded.');
         view('retained').textContent = failures || inconclusive
@@ -3808,6 +3953,14 @@ window.addEventListener('beforeunload', event => {
             text = `Matched experiment: ${report.relation}. ${total} model units across the recorded candidate, `
                 + 'classical planner, scratch construction, sensing comparison and comparison audit. '
                 + 'The input cap applies to each construction.';
+            const sensing = report.sensingCorrection;
+            if (sensing) {
+                const qualified = sensing.qualification?.status === 'qualified';
+                const completed = sensing.search?.complete === true;
+                text += ` Sensing attempt: ${sensing.ledger.total} model units; `
+                    + (qualified ? 'qualified' : completed ? 'did not qualify' : 'qualification inconclusive')
+                    + `; search ${sensing.search?.status || 'unreported'}.`;
+            }
         } else if (report?.kind === 'frozen-package-reuse') {
             text = `This frozen reuse evaluation: ${report.status}; ${report.ledger.total} model units, `
                 + 'including its import check and qualification. Earlier construction and comparisons remain in the history.';

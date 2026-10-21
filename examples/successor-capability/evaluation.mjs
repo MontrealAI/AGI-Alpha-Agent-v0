@@ -3,7 +3,7 @@
 import { apparatus, expandApparatus, TOPOLOGIES } from './apparatus.mjs';
 import { qualify, measure, prepare, compile, validateApparatus } from './typed-runtime.mjs';
 import { verify } from './independent-checker.mjs';
-import { construct } from './constructor.mjs';
+import { construct, lineageConstructionCost } from './constructor.mjs';
 import { freezeCapability, importCapability, digestCapability, verificationCostCapability } from './capability-package.mjs';
 
 export const EVALUATION_VERSION = 'out-evolve-evaluation/v1';
@@ -139,7 +139,7 @@ export async function compareCapability(input, options = {}) {
     const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(pkg.apparatus, scratch) : null;
     const remaining = ledgerTotal(pkg.costLedger);
     const ancestor = pkg.parentAssets.ancestorCost;
-    const ours = ancestor + remaining;
+    const ours = lineageConstructionCost(pkg);
     const runs = [
         {name: 'constructed-package', status: 'qualified', ast: pkg.ast, certificate: pkg.certificate,
             ledger: pkg.costLedger},
@@ -163,6 +163,7 @@ export async function compareCapability(input, options = {}) {
         frozenPackageDigest: pkg.digest, matched: {apparatus: true, objective: true, tolerance: true,
             primitives: true, information: true, budgets: searchOptions}, runs, sensingCorrection: sensing,
         relation, costs: {unit: 'abstract-model-work', coldStart: ours, remainingConstructionCost: remaining, ancestorConstructionCost: ancestor,
+            ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
             operationPerUse: operation, uses, totalAtHorizon: ours + uses * operation,
             amortizedPerUse: ours / uses + operation},
         evaluationOverhead: {qualification: verificationCostCapability(pkg), total: verificationCostCapability(pkg),
@@ -171,56 +172,175 @@ export async function compareCapability(input, options = {}) {
 }
 
 /** Strong bounded sensing comparator: install any supplied sensors and use all admissible paired references. */
-export async function sensingCorrectionBaseline(pkg, searchOptions = {}) {
-    const app = pkg.apparatus;
-    const maximum = searchOptions.maxProgramSize || 8;
-    const budget = searchOptions.maxCost || app.limits.maxCost;
+export async function sensingCorrectionBaseline(pkg, searchOptions = {}, execution = {}) {
+    function dataProperty(value, key) {
+        const descriptor = value && typeof value === 'object' && Object.getOwnPropertyDescriptor(value, key);
+        ensure(descriptor && Object.hasOwn(descriptor, 'value'), 'Sensing input accessors are unsupported.');
+        return descriptor.value;
+    }
+    function plainOptions(value) {
+        return value && typeof value === 'object' && !Array.isArray(value)
+            && Object.getPrototypeOf(value) === Object.prototype && Object.getOwnPropertySymbols(value).length === 0
+            && Object.values(Object.getOwnPropertyDescriptors(value)).every(descriptor =>
+                Object.hasOwn(descriptor, 'value') && descriptor.enumerable);
+    }
+    const app = validateApparatus(dataProperty(pkg, 'apparatus'));
+    const scopeInput = dataProperty(dataProperty(pkg, 'ast'), 'scope');
+    ensure(Array.isArray(scopeInput) && Object.getPrototypeOf(scopeInput) === Array.prototype
+        && scopeInput.length > 0 && scopeInput.length <= 2
+        && Reflect.ownKeys(scopeInput).length === scopeInput.length + 1, 'Invalid sensing scope.');
+    const scope = Array.from({length: scopeInput.length}, (_, index) => dataProperty(scopeInput, String(index)));
+    const limits = {maxProgramSize: 8, maxCost: app.limits.maxCost, maxStates: 4096, maxMemoryStates: 4096};
+    ensure(plainOptions(searchOptions), 'Invalid sensing limits.');
+    for (const key of Object.keys(searchOptions)) {
+        ensure(Object.hasOwn(limits, key) || key === 'dominance', `Unsupported sensing limit: ${key}.`);
+    }
+    for (const [key, maximum] of [['maxProgramSize', 32], ['maxCost', 1_000_000_000],
+        ['maxStates', 100_000], ['maxMemoryStates', 100_000]]) {
+        if (Object.hasOwn(searchOptions, key)) limits[key] = searchOptions[key];
+        ensure(Number.isSafeInteger(limits[key]) && limits[key] > 0 && limits[key] <= maximum,
+            `Invalid sensing ${key}.`);
+    }
+    if (Object.hasOwn(searchOptions, 'dominance')) ensure(typeof searchOptions.dominance === 'boolean', 'Invalid sensing dominance.');
+    ensure(plainOptions(execution)
+        && Object.keys(execution).every(key => key === 'timeLimitMs'), 'Invalid sensing execution controls.');
+    const timeLimitMs = execution.timeLimitMs ?? 60_000;
+    ensure(Number.isSafeInteger(timeLimitMs) && timeLimitMs >= 0 && timeLimitMs <= 60_000,
+        'Invalid sensing execution timeout.');
+    ensure(scope.every(value => typeof value === 'string')
+        && canonical([...scope].sort()) === canonical([...app.scope].sort()),
+        'Sensing scope must match the supplied apparatus.');
+    const started = Date.now();
     const sensors = app.primitives.filter(primitive => primitive.kind === 'sensor');
     const references = app.primitives.filter(primitive => primitive.kind === 'reference');
-    const maximumSubsets = Math.min(2 ** sensors.length, searchOptions.maxStates || 4096);
-    let best = null;
-    let tested = 0;
-    let failed = 0;
-    let simulationWork = 0;
-    for (let mask = 0; mask < maximumSubsets; mask++) {
-        const installations = sensors.filter((_, index) => mask & 2 ** index).map(primitive => primitive.id);
-        const refs = references.filter(primitive => primitive.requires.every(key => installations.includes(key)));
-        if (installations.length + refs.length > maximum) continue;
-        simulationWork += 1 + installations.length + refs.length;
-        const ast = {schema: 'out-evolve-ast/v1', installations,
-            prepare: {op: 'sequence', steps: refs.map(primitive => ({op: 'primitive', id: primitive.id}))},
-            scope: [...pkg.ast.scope]};
-        try {
-            const report = qualify(app, ast);
-            tested++;
-            if (!report.ok || report.cost > budget) failed++;
-            if (report.cost > budget) continue;
-            if (!best || report.ok && !best.ok || report.ok === best.ok && (report.errorBound < best.errorBound
-                || report.errorBound === best.errorBound && report.cost < best.cost)) best = {...report, ast};
-        } catch { tested++; failed++; }
-    }
-    const independent = best ? verify(app, best.ast, best.certificate) : null;
-    const replay = best?.ok ? app.scope.flatMap(operation => [
+    const totalSubsets = 1n << BigInt(sensors.length);
+    const maximum = limits.maxProgramSize, budget = limits.maxCost;
+    const ledger = {unit: 'abstract-model-work', synthesis: 0, unsuccessfulCandidates: 0,
+        qualification: 0, installation: 0, calibration: 0, tuning: 0, operation: 0, maintenance: 0, total: 0};
+    const spend = (kind, amount) => {
+        ensure(Number.isSafeInteger(amount) && amount >= 0 && ledger.total + amount <= budget,
+            'Sensing total work budget exceeded.');
+        ledger[kind] += amount; ledger.total += amount;
+    };
+    const attempts = [];
+    let best = null, diagnosticBest = null, unfundedBest = null, independent = null;
+    let tested = 0, enumerated = 0, excludedByProgramSize = 0, unaffordableCandidates = 0;
+    let stopped = null;
+    const replayInputs = app.scope.flatMap(operation => [
         {signal: 7, options: {operation, cycle: 0, sign: 1}},
         {signal: -3, options: {operation, cycle: app.limits.maxCycles - 1, sign: -1}}
-    ]).map(input => ({...input, actual: measure(app, best.ast, input.signal, input.options)})) : [];
-    const operationCost = replay.reduce((total, fixture) => total + fixture.actual.cost, 0);
-    const qualificationCost = tested + (best ? 1 : 0) + replay.length;
-    const installations = best?.ast.installations || [];
-    const installCost = installations.reduce((total, key) => total
-        + app.primitives.find(primitive => primitive.id === key).cost, 0);
-    return {name: 'competent-sensing-and-paired-reference-correction',
-        status: best?.ok ? 'qualified' : 'not-qualified-within-supplied-sensing-language',
-        best, tested, independent, replay, constructionChanges: installations.length > 0,
+    ]);
+    const preparationCost = candidate => candidate.ast.prepare.steps.reduce((total, step) => total
+        + app.primitives.find(primitive => primitive.id === step.id).cost, 0);
+    const terminalWork = candidate => !candidate ? 0 : candidate.cost + 1
+        + (candidate.ok ? replayInputs.length * (preparationCost(candidate) + 2) : 0);
+    const replaySlots = candidate => candidate?.ok ? replayInputs.length : 0;
+    const preferred = (candidate, prior) => !prior || candidate.ok && !prior.ok
+        || candidate.ok === prior.ok && (candidate.ok
+            ? terminalWork(candidate) < terminalWork(prior)
+                || terminalWork(candidate) === terminalWork(prior) && candidate.errorBound < prior.errorBound
+            : candidate.errorBound < prior.errorBound || candidate.errorBound === prior.errorBound && candidate.cost < prior.cost);
+    function installationOrder(selected) {
+        const installed = new Set(), order = [];
+        const pending = [...selected].sort((a, b) => a.id.localeCompare(b.id));
+        while (pending.length) {
+            const index = pending.findIndex(primitive => primitive.requires.every(key => installed.has(key)));
+            if (index < 0) return selected.map(primitive => primitive.id);
+            const [primitive] = pending.splice(index, 1);
+            order.push(primitive.id); installed.add(primitive.id);
+        }
+        return order;
+    }
+    for (let mask = 0n; mask < totalSubsets; mask++) {
+        if (Date.now() - started >= timeLimitMs) { stopped = 'execution timeout'; break; }
+        if (enumerated >= limits.maxStates) { stopped = 'state limit'; break; }
+        if (attempts.length + 1 + replaySlots(best) > limits.maxMemoryStates) { stopped = 'memory-state limit'; break; }
+        const selected = sensors.filter((_, index) => (mask & (1n << BigInt(index))) !== 0n);
+        const installations = installationOrder(selected);
+        const refs = references.filter(primitive => primitive.requires.every(key => installations.includes(key)));
+        const size = installations.length + refs.length;
+        const overProgramSize = size > maximum;
+        const candidateWork = 1 + size + (overProgramSize ? 0 : 1);
+        if (ledger.total + candidateWork + terminalWork(best) > budget) { stopped = 'total modeled work budget'; break; }
+        spend('synthesis', 1 + size); enumerated++;
+        const ast = {schema: 'out-evolve-ast/v1', installations,
+            prepare: {op: 'sequence', steps: refs.map(primitive => ({op: 'primitive', id: primitive.id}))},
+            scope: [...scope]};
+        if (overProgramSize) {
+            excludedByProgramSize++;
+            attempts.push({subset: mask.toString(), status: 'excluded-by-program-size', size, workToDate: ledger.total});
+            continue;
+        }
+        spend('qualification', 1); tested++;
+        try {
+            const report = qualify(app, ast);
+            const candidate = {...report, ast};
+            if (!report.ok) ledger.unsuccessfulCandidates++;
+            if (preferred(candidate, diagnosticBest)) diagnosticBest = candidate;
+            const affordable = ledger.total + terminalWork(candidate) <= budget
+                && attempts.length + 1 + replaySlots(candidate) <= limits.maxMemoryStates;
+            if (affordable && preferred(candidate, best)) best = candidate;
+            else if (!affordable) {
+                unaffordableCandidates++;
+                if (preferred(candidate, unfundedBest)) unfundedBest = candidate;
+            }
+            attempts.push({subset: mask.toString(), status: report.ok ? 'runtime-qualified' : 'runtime-negative',
+                errorBound: report.errorBound, programCost: report.cost, terminalWork: terminalWork(candidate),
+                terminalWorkAffordable: affordable, workToDate: ledger.total});
+        } catch (error) {
+            ledger.unsuccessfulCandidates++;
+            attempts.push({subset: mask.toString(), status: 'invalid-candidate', reason: String(error.message),
+                workToDate: ledger.total});
+        }
+    }
+    const replay = [];
+    if (best) {
+        if (Date.now() - started >= timeLimitMs) stopped = 'execution timeout before independent acceptance';
+        else {
+            ensure(ledger.total + terminalWork(best) <= budget, 'Sensing acceptance reservation was lost.');
+            const installation = best.ast.installations.reduce((total, key) => total
+                + app.primitives.find(primitive => primitive.id === key).cost, 0);
+            spend('installation', installation); spend('calibration', preparationCost(best));
+            spend('qualification', 1);
+            independent = verify(app, best.ast, best.certificate);
+            ensure(independent.ok === best.ok, 'Sensing runtime and independent checker disagree.');
+            if (best.ok) for (const input of replayInputs) {
+                if (Date.now() - started >= timeLimitMs) { stopped = 'execution timeout during acceptance replay'; break; }
+                spend('operation', preparationCost(best) + 1); spend('qualification', 1);
+                const actual = measure(app, best.ast, input.signal, input.options);
+                replay.push({...input, actual, accepted: actual.productive === input.signal
+                    && Math.abs(actual.value - input.signal) <= app.tolerance});
+            }
+        }
+    }
+    const enumerationComplete = BigInt(enumerated) === totalSubsets;
+    const accepted = !!(best?.ok && independent?.ok && replay.length === replayInputs.length
+        && replay.every(fixture => fixture.accepted));
+    const unresolvedAcceptance = !!(unfundedBest && preferred(unfundedBest, best));
+    const complete = enumerationComplete && excludedByProgramSize === 0 && !stopped
+        && independent !== null && !unresolvedAcceptance;
+    const searchStatus = stopped || unresolvedAcceptance ? 'exhausted'
+        : excludedByProgramSize ? 'truncated' : complete ? 'completed' : 'exhausted';
+    const status = accepted ? 'qualified' : complete ? 'not-qualified-within-supplied-sensing-language' : searchStatus;
+    const installations = independent ? best.ast.installations : [];
+    return {name: 'competent-sensing-and-paired-reference-correction', status,
+        qualification: {status: accepted ? 'qualified' : complete ? 'not-qualified' : 'inconclusive',
+            independentCheckPerformed: independent !== null, requiredReplays: best?.ok ? replayInputs.length : 0,
+            completedReplays: replay.length},
+        search: {status: searchStatus, complete, enumerationComplete, enumeratedSubsets: enumerated,
+            totalSubsets: totalSubsets.toString(), excludedByProgramSize, unaffordableCandidates, unresolvedAcceptance,
+            stopReason: stopped || (excludedByProgramSize ? 'program-size exclusions' : unresolvedAcceptance
+                ? 'candidate acceptance work exceeded remaining budget or memory' : null),
+            limits: {...limits, timeLimitMs}, memoryUnit: 'retained attempt records plus required accepted replay fixtures'},
+        best, diagnosticBest, tested, independent, replay, attempts, constructionChanges: installations.length > 0,
         experimentalAccessChange: installations.length ? 'additional nuisance sensor access; no nuisance routing or suppression'
             : 'unchanged sensor access',
         matched: {graph: true, information: true, tolerance: true, maxProgramSize: maximum, maxCost: budget},
-        reason: 'Enumerates all sensor subsets within the budget and every admissible simultaneous reference; repeated references add no information in this model.',
-        ledger: {unit: 'abstract-model-work', synthesis: simulationWork, unsuccessfulCandidates: failed,
-            qualification: qualificationCost, installation: installCost, calibration: (best?.cost || 0) - installCost,
-            tuning: 0, operation: operationCost, maintenance: 0,
-            total: simulationWork + qualificationCost + (best?.cost || 0) + operationCost},
-        limitation: 'Where the supplied catalogue lacks a required sensor, this bounded comparator cannot identify unobserved independent nuisance. This is not a universal sensing impossibility proof.'};
+        reason: complete ? accepted ? 'Completed the declared sensing strategy enumeration and independently accepted its best affordable candidate.'
+            : 'Completed the declared sensing strategy enumeration; the independently checked candidate does not meet tolerance.'
+            : `Sensing comparison is incomplete: ${stopped || (excludedByProgramSize ? 'program-size exclusions' : 'unfunded candidate acceptance')}. A retained qualified incumbent does not establish a completed comparison.`,
+        ledger,
+        limitation: 'This comparator enumerates sensor subsets followed by all admissible simultaneous references, without nuisance attenuation, routing or protection. Repeated references add no information in this model. Exhausted or excluded cases are inconclusive, never a sensing impossibility proof.'};
 }
 
 /** Freeze implementation identity/configuration first, then generate unseen public structural variants. */
@@ -362,9 +482,10 @@ export async function buildSuccessor(input, options = {}) {
     if (result.status !== 'qualified') {
         return {schema: EVALUATION_VERSION, kind: 'scope-expanding-successor', status: 'INCONCLUSIVE',
             oldScope, result, scratch, parentDigest: parent.digest,
-            costs: {unit: 'abstract-model-work', ancestor: ledgerTotal(parent.costLedger),
+            costs: {unit: 'abstract-model-work', ancestor: lineageConstructionCost(parent),
+                ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
                 remaining: ledgerTotal(result.ledger) + verificationCostCapability(parent) + oldScopeAuditCost,
-                cumulative: ledgerTotal(parent.costLedger) + ledgerTotal(result.ledger)
+                cumulative: lineageConstructionCost(parent) + ledgerTotal(result.ledger)
                     + verificationCostCapability(parent) + oldScopeAuditCost,
                 constructionFromScratch: ledgerTotal(scratch.ledger)},
             reason: 'No qualifying construction found within budget.', limitations: [...LIMITATIONS]};
@@ -375,7 +496,7 @@ export async function buildSuccessor(input, options = {}) {
     const added = reuse.cases.filter(test => test.operation === 'reservoir');
     const preserved = prior.length === 3 && prior.every(test => test.status === 'PASS');
     const newFunction = added.length === 3 && added.every(test => test.status === 'PASS');
-    const parentCost = ledgerTotal(parent.costLedger);
+    const parentCost = lineageConstructionCost(parent);
     const parentAudit = verificationCostCapability(parent);
     const remaining = ledgerTotal(pkg.costLedger) + parentAudit + oldScopeAuditCost;
     const scratchPackage = scratch.status === 'qualified' ? await freezeCapability(expanded, scratch) : null;
@@ -389,6 +510,7 @@ export async function buildSuccessor(input, options = {}) {
         newFunction: {accepted: newFunction, operation: 'reservoir', cases: added,
             description: 'Operate the reservoir-exposing productive mode while retaining the earlier measurement obligations.'},
         costs: {unit: 'abstract-model-work', ancestor: parentCost, remaining, cumulative: parentCost + remaining,
+            ancestorAccountingScope: 'All frozen package construction ledgers; separately recorded prior task evaluations are outside package ancestry.',
             packageConstruction: ledgerTotal(pkg.costLedger), parentImportAudit: parentAudit, oldScopeCheck: oldScopeAuditCost,
             frozenReuseAcceptance: reuse.ledger.total,
             remainingAfterAcceptance: remaining + reuse.ledger.total,

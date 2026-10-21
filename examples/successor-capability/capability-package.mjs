@@ -83,7 +83,8 @@ function parentAssets(apparatus, parent, inherited) {
     if (!same(parent.apparatus.channels, apparatus.channels) || !same(parent.apparatus.edges, apparatus.edges)
         || parent.apparatus.tolerance !== apparatus.tolerance) fail('Incompatible inherited apparatus support.');
     return {parentDigest: parent.digest, installations: [...matching], observations: [],
-        priorEvidence: 'historical-only; new scope independently requalified', ancestorCost: parent.costLedger.total};
+        priorEvidence: 'historical-only; new scope independently requalified',
+        ancestorCost: constructor.lineageConstructionCost(parent)};
 }
 
 export async function freezeCapability(apparatus, result, {parent = null, inheritedAssets = null, evidence = null} = {}) {

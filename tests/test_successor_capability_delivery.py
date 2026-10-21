@@ -5,10 +5,10 @@ from __future__ import annotations
 
 import importlib.util
 import json
-from pathlib import Path
 import re
 import shutil
 import tempfile
+from pathlib import Path
 from types import ModuleType
 
 import yaml
@@ -63,8 +63,21 @@ def test_acceptance_is_mandatory_read_only_and_retains_evidence() -> None:
         matches = [step for step in steps if command in step.get("run", "")]
         assert len(matches) == 1
         assert "if" not in matches[0] and not matches[0].get("continue-on-error")
-    browser = next(step for step in steps if step.get("run") == commands[-1])
+    browser = next(step for step in steps if commands[-1] in step.get("run", ""))
     assert browser["env"]["AXE_SCRIPT"].endswith("/tests/browser/node_modules/axe-core/axe.min.js")
+    retained = {
+        commands[0]: "node.log",
+        "tests/test_successor_capability_delivery.py -q": "delivery.log",
+        "python -m mypy --strict": "typing.log",
+        commands[-1]: "v1-browser.log",
+        "python tests/browser/test_out_evolve_browser.py": "out-evolve-browser.log",
+        "python tests/browser/test_successor_capability_accessibility.py": "accessibility-review.log",
+    }
+    for command, log in retained.items():
+        step = next(step for step in steps if command in step.get("run", ""))
+        assert "set -o pipefail" in step["run"]
+        assert f"tee capability-evidence/logs/{log}" in step["run"]
+        assert "if" not in step and not step.get("continue-on-error")
     uploader = next(step for step in steps if step.get("uses", "").startswith("actions/upload-artifact@"))
     assert uploader["if"] == "always()"
     assert uploader["with"]["if-no-files-found"] == "error"

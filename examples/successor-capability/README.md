@@ -55,6 +55,8 @@ Versioned Out-Evolve events use separate device storage and preserve v1 history 
 ## Evaluation and costs
 
 Frozen-package reuse generates threshold-screening, inverse-design and constrained-selection tasks after freezing.
+Their task algorithms are prewritten. The generated capability controls modeled measurement nuisance;
+it does not invent those downstream algorithms.
 The constructor never receives their hidden response law or truth values.
 Constructor evaluation separately freezes source identity and generates changed structural families.
 Correctly rejecting an infeasible family does not mean a capability was constructed for it.
@@ -70,6 +72,21 @@ independent replay, operations and decision checks in declared abstract model-wo
 They do not measure currency, wall-clock acceleration or every browser bookkeeping instruction.
 Reports distinguish frozen package cost, further verification/evaluation work, cold-start and amortized costs,
 and remaining versus cumulative lineage costs.
+The sensing comparator charges candidate work and terminal qualification/replay against one total cap.
+Its qualification result and search completion are separate: an exhausted or truncated search cannot establish
+a completed negative result, and a qualified incumbent does not establish complete enumeration.
+Ancestor accounting includes every frozen package construction ledger in the parent chain. Separately recorded
+earlier task evaluations remain in history and are outside package ancestry.
+
+The default matched comparisons retain these results in abstract model-work units:
+
+| Apparatus | Constructor / classical planner | Planner relation | Sensing work | Sensing qualification |
+| --- | ---: | --- | ---: | --- |
+| Shielded | 591 / 591 | Tie | 42 | Qualified |
+| Routed | 439 / 439 | Tie | 67 | Qualified |
+| Common reference | 1020 / 1020 | Tie | 20 | Did not qualify; independently rejected, error bound 0.5 |
+
+The 20-unit common-reference attempt is a completed negative result, not a cheaper successful alternative.
 
 ## Boundaries
 
@@ -80,6 +97,9 @@ The reservoir operation activates latent source support. Irreversible reservoir 
 standard operations, physical apparatus, arbitrary task domains and commercial outcomes are not established.
 No general invention or superiority over competent classical planning is claimed.
 
-This branch is based on the draft PR #4844 source `ee6950aa10f2ca4cf528b7190d59be1d66e6f670`.
-It must be reconciled with the eventual released baseline and requalified before integration.
-This implementation does not authorize merge, publication or deployment.
+This additive implementation follows PR #4844's capability workspace in
+`MontrealAI/AGI-Alpha-Agent-v0`; its separate integration PR is #4845.
+Integration requires the predecessor's qualified merge followed by reconciliation and qualification against main.
+Fleet release verification remains separate. Merging does not establish release or deployment.
+Accessibility evidence includes review of reported ARIA and contrast incompletes, keyboard and viewport checks;
+zero automated violations alone is not a claim of complete accessibility or assistive-technology coverage.

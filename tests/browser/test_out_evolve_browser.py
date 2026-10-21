@@ -242,6 +242,26 @@ def main() -> None:
             (OUTPUT / "mixed-history.json").write_text(json.dumps(history(mixed), indent=2))
             mixed_context.close()
 
+            reference_context = browser.new_context()
+            reference = reference_context.new_page()
+            reference.goto(url)
+            idle(reference)
+            reference.locator("#evolve-topology").select_option("referenced")
+            reference.locator("#evolve-construct").click()
+            idle(reference)
+            reference_history = history(reference)
+            comparison = next(
+                event["payload"] for event in reference_history["events"] if event["kind"] == "comparison"
+            )
+            sensing = comparison["sensingCorrection"]
+            assert comparison["relation"] == "tie"
+            assert sensing["ledger"]["total"] == 20
+            assert sensing["qualification"]["status"] == "not-qualified"
+            assert sensing["search"]["complete"]
+            expect(reference.locator("#evolve-work-total")).to_contain_text("20 model units; did not qualify")
+            (OUTPUT / "common-reference-comparison.json").write_text(json.dumps(comparison, indent=2))
+            reference_context.close()
+
             for width in (320, 390, 768, 1440):
                 page.set_viewport_size({"width": width, "height": 1000})
                 assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), width

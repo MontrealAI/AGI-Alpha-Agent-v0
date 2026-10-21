@@ -90,6 +90,26 @@ function pathCost(apparatus, ast, inherited) {
         : apparatus.primitives.find(primitive => primitive.id === id).cost), 0);
 }
 
+/** Sum every frozen construction once; ancestor fields must reproduce the embedded chain. */
+export function lineageConstructionCost(input) {
+    canonical(input);
+    function total(pkg) {
+        if (!pkg || !Number.isSafeInteger(pkg.costLedger?.total) || pkg.costLedger.total < 0
+            || !pkg.parentAssets || !Number.isSafeInteger(pkg.parentAssets.ancestorCost)
+            || pkg.parentAssets.ancestorCost < 0) reject('Invalid parent lineage cost ledger.');
+        const parent = pkg.search?.parentSource ?? pkg.search?.checkpoint?.inheritance?.parent ?? null;
+        const ancestorCost = parent ? total(parent) : 0;
+        if (pkg.parentAssets.ancestorCost !== ancestorCost
+            || (pkg.parentAssets.parentDigest || null) !== (parent?.digest || null)) {
+            reject('Parent cumulative ancestor cost does not reproduce its lineage.');
+        }
+        const cumulative = ancestorCost + pkg.costLedger.total;
+        if (!Number.isSafeInteger(cumulative)) reject('Cumulative lineage cost overflow.');
+        return cumulative;
+    }
+    return total(input);
+}
+
 function matchingParent(apparatus, parent) {
     if (!parent) return {parentDigest: null, assets: [], ancestorCost: 0, parent: null};
     canonical(parent);
@@ -107,8 +127,8 @@ function matchingParent(apparatus, parent) {
         if (!before || !after || !equal(before, after)) reject('Stale parent installation semantics.');
         assets.push(id);
     }
-    if (!Number.isSafeInteger(parent.costLedger?.total) || parent.costLedger.total < 0) reject('Invalid parent cost ledger.');
-    return {parentDigest: parent.digest, assets, ancestorCost: parent.costLedger.total, parent: clone(parent)};
+    const ancestorCost = lineageConstructionCost(parent);
+    return {parentDigest: parent.digest, assets, ancestorCost, parent: clone(parent)};
 }
 
 function initialCheckpoint(apparatus, options, inheritance) {
