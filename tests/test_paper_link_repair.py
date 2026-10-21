@@ -286,8 +286,8 @@ class WorkflowPolicyTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/paper-links-repair.yml").read_text()
         self.assertIn("group: github-pages\n      cancel-in-progress: false", workflow)
         self.assertIn("contents: read\n      pages: write\n      id-token: write", workflow)
-        self.assertEqual(workflow.count("persist-credentials: false"), 3)
-        self.assertEqual(workflow.count("github.event_name != 'pull_request'"), 2)
+        self.assertEqual(workflow.count("persist-credentials: false"), 4)
+        self.assertEqual(workflow.count("github.event_name != 'pull_request'"), 3)
         self.assertNotIn("configure-pages", workflow)
         self.assertNotIn("ADMIN_GITHUB_TOKEN", workflow)
         self.assertNotIn("continue-on-error", workflow)
@@ -301,6 +301,25 @@ class WorkflowPolicyTests(unittest.TestCase):
         self.assertIn("needs: prepare", workflow)
         self.assertIn("artifact_name: pdf-link-repair-${{ github.run_id }}-${{ github.run_attempt }}", workflow)
         self.assertIn("actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e", workflow)
+
+    def test_failed_live_verification_can_retry_without_pages_authority(self) -> None:
+        workflow = (ROOT / ".github/workflows/paper-links-repair.yml").read_text()
+        deployment, verification = workflow.split("\n  verify-live:\n", 1)
+        self.assertIn("needs: deploy", verification)
+        self.assertIn("permissions:\n      contents: read", verification)
+        self.assertIn("scripts.repair_paper_links verify-live", verification)
+        self.assertIn("REPAIR_SOURCE: ${{ github.sha }}", verification)
+        self.assertIn("if: ${{ always() }}", verification)
+        for forbidden in (
+            "pages: write",
+            "id-token:",
+            "environment:",
+            "actions/deploy-pages@",
+            "scripts.repair_paper_links prepare",
+            "scripts.repair_paper_links guard",
+        ):
+            self.assertNotIn(forbidden, verification)
+        self.assertNotIn("scripts.repair_paper_links verify-live", deployment)
 
 
 if __name__ == "__main__":
