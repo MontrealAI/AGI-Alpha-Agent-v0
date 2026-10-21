@@ -40,10 +40,12 @@ def retain_failure(page: Page, sources: dict[str, Any]) -> Iterator[None]:
         }
         try:
             record["visibleState"] = page.evaluate(
-                """() => Object.fromEntries([
-                'lab-future-status', 'lab-status', 'lab-error', 'error', 'identity', 'lab-run-future', 'lab-commit-future',
-                'lab-freeze-future', 'lab-real-task-report'].map(id => {const item = document.getElementById(id);
-                return [id, item ? {text: item.textContent, disabled: item.disabled ?? null, hidden: item.hidden} : null];}))"""
+                "() => Object.fromEntries([\n                'lab-future-status', 'lab-status"
+                "', 'lab-error', 'error', 'identity', 'lab-run-future', 'lab-commit-future',"
+                "\n                'lab-freeze-future', 'lab-real-task-report'].map(id => {co"
+                "nst item = document.getElementById(id);\n                return [id, item ? "
+                "{text: item.textContent, disabled: item.disabled ?? null, hidden: item.hidd"
+                "en} : null];}))"
             )
             (OUTPUT / "failure-page.html").write_text(page.content())
             page.screenshot(path=str(OUTPUT / "failure.png"), full_page=True)
