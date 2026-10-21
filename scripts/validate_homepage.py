@@ -28,7 +28,31 @@ def assert_paper_links(page: Page, language: str) -> None:
     """Keep original PDFs and accessible link names intact through reading changes."""
     papers = page.locator("#papers")
     expect(papers.locator("article")).to_have_count(3)
-    expect(papers.locator(".paper-featured h3")).to_have_text("TRANSFORMATIONAL INTELLIGENCE ∞")
+    title_element = papers.locator(".paper-featured h3")
+    assert " ".join(title_element.inner_text().replace("\u00ad", "").split()) == "TRANSFORMATIONAL INTELLIGENCE ∞"
+    title_fragments = title_element.evaluate(
+        """element => {
+            const fragments = new Map();
+            let word = 0;
+            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+            while (walker.nextNode()) {
+                const node = walker.currentNode;
+                for (let index = 0; index < node.length; index++) {
+                    const character = node.textContent[index];
+                    if (/\\s/.test(character)) { word += 1; continue; }
+                    if (!/[A-Z]/.test(character)) continue;
+                    const range = document.createRange();
+                    range.setStart(node, index);
+                    range.setEnd(node, index + 1);
+                    const top = Math.round(range.getBoundingClientRect().top);
+                    const key = `${word}:${top}`;
+                    fragments.set(key, (fragments.get(key) || '') + character);
+                }
+            }
+            return [...fragments.values()];
+        }"""
+    )
+    assert title_fragments and all(len(fragment) >= 4 for fragment in title_fragments), title_fragments
     for index, (filename, title) in enumerate(
         (
             ("Transformational_Intelligence.pdf", "Transformational Intelligence"),
@@ -49,6 +73,16 @@ def assert_paper_links(page: Page, language: str) -> None:
             else ("Lire la publication à la une" if index == 0 else "Lire la publication")
         )
         expect(link.locator("span[data-home-key^='paper-read']")).to_have_text(expected)
+        expect(link).to_have_accessible_name(re.compile(re.escape(expected) + r"\s*:\s*" + re.escape(title)))
+        context = link.locator(".sr-only").evaluate(
+            """element => {
+                const style = getComputedStyle(element);
+                const rect = element.getBoundingClientRect();
+                return {position: style.position, clip: style.clipPath, width: rect.width, height: rect.height};
+            }"""
+        )
+        assert context["position"] == "absolute" and context["clip"] == "inset(50%)", context
+        assert context["width"] <= 1 and context["height"] <= 1, context
     expect(papers.locator("[data-home-key]")).not_to_have_count(0)
     assert "undefined" not in papers.inner_text()
 

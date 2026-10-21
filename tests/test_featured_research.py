@@ -52,3 +52,15 @@ def test_paper_copy_has_french_equivalents_and_declared_scope() -> None:
     assert "not claims of general autonomous capability or physical deployment" in section
     assert 'class="paper-subtitle" lang="en"' in section
     assert section.count('class="sr-only" lang="en"') == 3
+
+
+def test_feature_title_wraps_at_syllables_and_context_stays_accessible() -> None:
+    homepage = (ROOT / "docs/index.html").read_text(encoding="utf-8")
+    assert "TRANS&shy;FORMA&shy;TIONAL INTEL&shy;LIGENCE" in homepage
+    css = (ROOT / "docs/assets/portal/welcome.css").read_text(encoding="utf-8")
+    title = css.split(".paper-featured h3 {", 1)[1].split("}", 1)[0]
+    assert "hyphens: manual" in title and "overflow-wrap: normal" in title
+    assert "max-width" not in title
+    context = css.split(".paper-link .sr-only {", 1)[1].split("}", 1)[0]
+    assert "clip-path: inset(50%)" in context and "position: absolute" in context
+    assert "display: none" not in context and "visibility: hidden" not in context
