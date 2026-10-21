@@ -9,6 +9,7 @@ on:
       - docs/assets/successor/engine.mjs
       - docs/successor/capabilities/**
       - scripts/generate_successor_capability.py
+      - scripts/validate_discovery_lab.py
       - scripts/generate_gallery_html.py
       - scripts/templates/successor-capability/**
       - tests/browser/test_successor_capability_browser.py
@@ -17,6 +18,7 @@ on:
       - tests/browser/out_evolve_recovery.py
       - tests/browser/test_successor_capability_accessibility.py
       - tests/test_successor_capability_delivery.py
+      - tests/test_discovery_lab_validation.py
   push:
     branches: [main, additive/successor-capability-review-20261020]
   workflow_dispatch:
@@ -62,12 +64,12 @@ jobs:
         run: |
           set -o pipefail
           node --test examples/successor-capability/*.test.mjs tests/browser/successor_engine.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_discovery_lab_validation.py tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
       - name: Strict typing with retained actual output
         run: |
           set -o pipefail
           python -m mypy --version | tee capability-evidence/logs/typing-version.log
-          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py tests/browser/test_out_evolve_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
+          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/test_discovery_lab_validation.py tests/browser/test_out_evolve_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py
@@ -95,10 +97,11 @@ jobs:
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
           DISCOVERY_LAB_EVIDENCE: ${{ github.workspace }}/capability-evidence/discovery-lab-browser
+          DISCOVERY_LAB_REPLAY_EVIDENCE: ${{ runner.temp }}/discovery-lab-replay
         run: |
           set -o pipefail
-          node examples/successor-capability/discovery-lab-reproduce.mjs --output capability-evidence/discovery-lab 2>&1 | tee capability-evidence/logs/discovery-lab-replay.log
-          python tests/browser/test_discovery_lab_browser.py 2>&1 | tee capability-evidence/logs/discovery-lab-browser.log
+          node examples/successor-capability/discovery-lab-reproduce.mjs --output "$DISCOVERY_LAB_REPLAY_EVIDENCE" 2>&1 | tee capability-evidence/logs/discovery-lab-replay.log
+          python -m scripts.validate_discovery_lab --site docs --output capability-evidence/discovery-lab-browser 2>&1 | tee capability-evidence/logs/discovery-lab-browser.log
       - name: Review ARIA and every contrast incomplete
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
@@ -106,6 +109,12 @@ jobs:
         run: |
           set -o pipefail
           python tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/accessibility-review.log
+      - name: Collect external Discovery Lab replay output
+        if: always()
+        run: |
+          if [ -d "$RUNNER_TEMP/discovery-lab-replay" ]; then
+            cp -a "$RUNNER_TEMP/discovery-lab-replay" capability-evidence/discovery-lab
+          fi
       - name: Retain exact-source screenshots and journey evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

@@ -21,12 +21,17 @@ node --test --test-concurrency=1 examples/successor-capability/*.test.mjs
 node examples/successor-capability/discovery-lab-reproduce.mjs --output /tmp/discovery-lab-evidence
 python scripts/generate_successor_capability.py
 python tests/browser/test_discovery_lab_browser.py
+python -m scripts.validate_discovery_lab --site docs --output /tmp/discovery-lab-packaged-evidence
 ```
 
 The browser command uses the existing pinned Playwright/Axe setup in `SUCCESSOR capability workspace` CI.
 Its receipts bind actual page bytes, source manifest, browser version, accessibility results and screenshots.
 The CLI writes full reports, parent chains, a case summary and separately measured elapsed observations.
 Public cases are regression inputs, not protected holdouts.
+The packaged validator requires source files to match the exact Git checkout. After the normal release
+workflow builds and deploys that source, add `--url https://montrealai.github.io/AGI-Alpha-Agent-v0/`
+and point `--site` at its matching site package to check actual HTTPS page/manifest bytes before and
+after the same complete journey. A local validator pass establishes no public deployment.
 
 ## Contracts and custody
 
@@ -66,6 +71,7 @@ Currency caps remain zero. No industrial or economic savings are inferred from t
 
 See [paper-to-code map](PAPER_TO_CODE.md), [source custody](SOURCES.json),
 [foundation reproduction](FOUNDATION_REPRODUCTION.json) and [scoped model review](MODEL_REVIEW.json).
+The [candidate release notes](RELEASE_NOTES.md) describe upgrade, recovery and delivery gates.
 The independently constructed complete cold reference uses the same declared primitives and objective.
 It may tie or win; component controls and fixed certificates preserve their own valid scopes.
 

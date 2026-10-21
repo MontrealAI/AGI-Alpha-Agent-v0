@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-dWHGMazzaVfKcrl+ZXIuq3DUU7Qha2eJ1J1V5YQ+3O8='; style-src 'sha256-XcahuiSTfv0R80HR2dMenMvx1NbJgFAvfpgR9f8gCfs='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UcomLbRZXcIsP6fXKsEpoM1EPJb6733ylFUl81cIl14='; style-src 'sha256-XcahuiSTfv0R80HR2dMenMvx1NbJgFAvfpgR9f8gCfs='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -467,7 +467,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>ca447b4ee3a9d2eb0dd764c1d9e478f2d2610c9e694dffe105b3c70e3fd26142</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>c1d099d379becf19d60b55e269bed3862dfb4091e805a5436270ecdc6a0a027d</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -3100,6 +3100,7 @@ const copy = value => JSON.parse(contract.canonical(value));
 const need = (condition, message) => { if (!condition) throw Error(message); };
 const hash = value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
 const integer = value => Number.isSafeInteger(value) && value >= 0 && !Object.is(value, -0);
+const SOURCE_KEYS = ['modelDigest', 'sourceDigest', 'evaluatorDigest'];
 const sessionAudit = {id: crypto.randomUUID(), inspections: 0, resources: {}, cachedInspections: 0, cacheBytesPeak: 0};
 const verifiedReports = new Map();
 const CACHE_ENTRIES = 12;
@@ -3160,6 +3161,25 @@ function reservationFor(charter) {
 
 function emptyDiscoveryState() { return {attempts: [], campaigns: [], active: null}; }
 
+/** Select a completed attempt by its source-bound history identity, never its reusable numeric result. */
+function selectCampaign(campaigns, selection) {
+    const identity = {};
+    for (const key of ['campaignDigest', 'attempt', 'bindings', 'resultDigest']) {
+        const descriptor = selection && Object.getOwnPropertyDescriptor(selection, key);
+        need(descriptor && Object.hasOwn(descriptor, 'value'), 'Select one complete source-bound campaign identity.');
+        identity[key] = descriptor.value;
+    }
+    contract.validateBindings(identity.bindings);
+    need(hash(identity.campaignDigest) && hash(identity.resultDigest), 'Invalid campaign identity.');
+    const matches = campaigns.filter(record => record.campaignDigest === identity.campaignDigest);
+    need(matches.length === 1 && matches[0].attempt === identity.attempt
+        && matches[0].resultDigest === identity.resultDigest && same(matches[0].bindings, identity.bindings),
+    'The selected source-bound campaign is absent or changed.');
+    need(matches[0].lineageQualified !== false,
+        'This historical campaign has unresolved parent lineage; requalify it without inherited authority.');
+    return matches[0];
+}
+
 /** Reconstruct events without converting imports into authority or externally qualified work. */
 async function inspectDiscoveryEvent(state, event, context) {
     const payload = event.payload;
@@ -3180,10 +3200,22 @@ async function inspectDiscoveryEvent(state, event, context) {
         need(same(payload.reservation, reservationFor(charter)),
             'The total construction/replay reservation must bind the frozen per-phase caps.');
         need(payload.parentDigest === null || hash(payload.parentDigest), 'Invalid parent commitment.');
-        const parent = payload.parentDigest === null ? null
-            : state.campaigns.find(item => item.resultDigest === payload.parentDigest && item.state === 'accepted');
+        const identifiedParent = payload.parentDigest === null ? null
+            : state.campaigns.find(item => item.campaignDigest === payload.parentDigest && item.state === 'accepted');
+        const legacyParents = identifiedParent || payload.parentDigest === null ? []
+            : state.campaigns.filter(item => item.resultDigest === payload.parentDigest && item.state === 'accepted');
+        // Old v2 histories keep their original first-match interpretation. New starts never create ambiguous references.
+        const parent = identifiedParent || legacyParents[0] || null;
         need(payload.parentDigest === null || Boolean(parent), 'Accepted parent is absent from this history.');
-        const record = {...copy(payload), parent, state: 'searching'};
+        const lineageIssues = [...(parent?.lineageIssues || [])];
+        if (legacyParents.length > 1) lineageIssues.push('AMBIGUOUS_LEGACY_PARENT');
+        if (parent && !SOURCE_KEYS.every(key => parent.bindings[key] === bindings[key])) {
+            lineageIssues.push('PARENT_SOURCE_MISMATCH');
+        }
+        need(!identifiedParent || lineageIssues.length === 0,
+            'The identified parent is not qualified under the current source lineage.');
+        const record = {...copy(payload), parent, state: 'searching', lineageQualified: lineageIssues.length === 0,
+            lineageIssues: [...new Set(lineageIssues)]};
         state.attempts.push(record);
         state.active = record;
     } else if (event.kind === 'lab-completed') {
@@ -3201,6 +3233,8 @@ async function inspectDiscoveryEvent(state, event, context) {
         active.result = checked.result;
         active.artifacts = await artifacts.makeArtifacts(active.bindings, active.result);
         active.resultDigest = payload.resultDigest;
+        // The verified completion hash includes the prior start, its mission/source bindings and this exact attempt.
+        active.campaignDigest = event.digest;
         active.elapsedReceipt = {elapsedMs: payload.elapsedMs, limitMs: active.reservation.elapsedMs,
             scope: 'Self-reported local construction and verification wall-clock observation. Imports are not fresh measurements.'};
         active.state = payload.elapsedMs > active.reservation.elapsedMs ? 'inconclusive' : payload.result.state;
@@ -3242,6 +3276,15 @@ async function startPayload(workspace, charter, sources, parentDigest = null) {
     const reservation = reservationFor(charter);
     const version = [...workspace.events].reverse().find(event => event.kind === 'version')?.payload.number;
     need(integer(version) && version > 0, 'A frozen capability version is required.');
+    if (parentDigest !== null) {
+        need(hash(parentDigest), 'Invalid parent commitment.');
+        const completed = workspace.events.filter(event => event.kind === 'lab-completed');
+        if (!completed.some(event => event.digest === parentDigest)) {
+            const legacy = completed.filter(event => event.payload.resultDigest === parentDigest);
+            need(legacy.length <= 1, 'Ambiguous result digest; select the unique source-bound campaign.');
+            if (legacy.length === 1) parentDigest = legacy[0].digest;
+        }
+    }
     return {attempt: 'lab-' + crypto.randomUUID(), version, bindings, charter, parentDigest, reservation};
 }
 
@@ -3256,7 +3299,7 @@ function stoppedPayload(attempt, reason, state = 'paused') {
 }
 
 async function workRequest(record, route, resourceUsed) {
-    need(record?.result && record.state === 'accepted' && hash(record.resultDigest),
+    need(record?.result && record.state === 'accepted' && record.lineageQualified !== false && hash(record.resultDigest),
         'A retained resource-qualified campaign is required for a review draft.');
     const currency = route === 'USDC' ? 'USDC6' : route === 'AGIALPHA' ? 'AGIALPHA18' : null;
     need(currency, 'Select one supported commission route.');
@@ -3275,7 +3318,7 @@ async function workRequest(record, route, resourceUsed) {
         payloadDigest: await contract.payloadDigest(payload), payload});
 }
 
-return {EVENT_KINDS,EXTENDED_SCHEMA,REPORT_RESERVE_BYTES,auditSnapshot,validateHistoryData,verifyForRecording,reservationFor,emptyDiscoveryState,inspectDiscoveryEvent,historyCapacity,startPayload,completedPayload,stoppedPayload,workRequest};
+return {EVENT_KINDS,EXTENDED_SCHEMA,REPORT_RESERVE_BYTES,auditSnapshot,validateHistoryData,verifyForRecording,reservationFor,emptyDiscoveryState,selectCampaign,inspectDiscoveryEvent,historyCapacity,startPayload,completedPayload,stoppedPayload,workRequest};
 })();
 const capability_module_0=(()=>{
 // SPDX-License-Identifier: Apache-2.0
@@ -5769,7 +5812,7 @@ const outEvolveEvaluation=capability_module_16;
 const discoveryLab=capability_module_4;
 const discoveryHistory=capability_module_3;
 const discoveryContract=capability_module_7;
-const SOURCE_HASH='ca447b4ee3a9d2eb0dd764c1d9e478f2d2610c9e694dffe105b3c70e3fd26142';
+const SOURCE_HASH='c1d099d379becf19d60b55e269bed3862dfb4091e805a5436270ecdc6a0a027d';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -6933,7 +6976,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "0929e305a6d235774a6464662220e0ae454ec738fc42ffde6ba6f141d3217851", "sourceDigest": "ca447b4ee3a9d2eb0dd764c1d9e478f2d2610c9e694dffe105b3c70e3fd26142"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "0929e305a6d235774a6464662220e0ae454ec738fc42ffde6ba6f141d3217851", "sourceDigest": "c1d099d379becf19d60b55e269bed3862dfb4091e805a5436270ecdc6a0a027d"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {
@@ -6997,7 +7040,7 @@ function mountDiscoveryLab({runtime, history}) {
     function recordCharter(record) { return record?.charter || recordResult(record)?.charter || null; }
     function campaigns() { return Array.isArray(savedState.campaigns) ? savedState.campaigns : []; }
     function latestAccepted() {
-        return [...campaigns()].reverse().find(record => outcomeState(record) === 'accepted') || null;
+        return [...campaigns()].reverse().find(record => outcomeState(record) === 'accepted' && record.lineageQualified !== false) || null;
     }
     function fill(next) {
         draft = copy(next);
@@ -7043,7 +7086,7 @@ function mountDiscoveryLab({runtime, history}) {
         const parent = latestAccepted();
         byId('successor').disabled = !runnable || !parent || recordCharter(parent)?.controls >= 4;
         byId('export-request').disabled = !idle || !selected || outcomeState(selected) !== 'accepted'
-            || !!savedState.locked || typeof history.workRequest !== 'function';
+            || selected.lineageQualified === false || !!savedState.locked || typeof history.workRequest !== 'function';
         byId('route').disabled = !idle;
         byId('export-account').disabled = !idle || typeof history.accountReceipt !== 'function';
         byId('reservation').textContent = manifestPending
@@ -7148,6 +7191,7 @@ function mountDiscoveryLab({runtime, history}) {
             : state === 'inconclusive'
                 ? 'INCONCLUSIVE · ' + (record.wrapperOutcome || 'Finite work or resources ended before acceptance. This is not a proof of infeasibility.')
                 : state.toUpperCase() + ' · ' + (result.reason || 'Inspect the retained stage evidence. Earlier accepted parents remain within their original scope.');
+        if (record.lineageQualified === false) summary.textContent += ' Historical parent lineage is unresolved; requalify before reuse or work-order export.';
         byId('stages').replaceChildren();
         for (const [index, stage] of (result.stages || []).entries()) renderStage(stage, index);
         byId('result-facts').replaceChildren();
@@ -7329,7 +7373,7 @@ function mountDiscoveryLab({runtime, history}) {
     });
     byId('export-request').addEventListener('click', () => {
         void operation(async () => {
-            if (!selected || outcomeState(selected) !== 'accepted' || savedState.locked) throw Error('Choose a retained accepted campaign first.');
+            if (!selected || outcomeState(selected) !== 'accepted' || selected.lineageQualified === false || savedState.locked) throw Error('Choose a retained accepted campaign first.');
             const request = await history.workRequest(selected, byId('route').value);
             const url = URL.createObjectURL(new Blob([json(request)], {type: 'application/json'}));
             const link = node('a', document.body);
@@ -7424,10 +7468,10 @@ const discoveryBridge = {
                 await persist(stopped, storedRevision, current);
             }
             if (!discoveryHistory.historyCapacity(current).canRun) throw Error('Not enough history capacity for a complete attempt and recovery.');
-            const parentDigest = parent?.resultDigest || null;
-            if (parentDigest && !inspected.discovery.campaigns.some(record => record.resultDigest === parentDigest
-                && record.state === 'accepted'
-                && ['modelDigest', 'sourceDigest', 'evaluatorDigest'].every(key => record.bindings[key] === DISCOVERY_SOURCES[key]))) {
+            const selectedParent = parent ? discoveryHistory.selectCampaign(inspected.discovery.campaigns, parent) : null;
+            const parentDigest = selectedParent?.campaignDigest || null;
+            if (selectedParent && (selectedParent.state !== 'accepted'
+                || !['modelDigest', 'sourceDigest', 'evaluatorDigest'].every(key => selectedParent.bindings[key] === DISCOVERY_SOURCES[key]))) {
                 throw Error('The selected parent is not currently qualified under these installed sources.');
             }
             const start = await discoveryHistory.startPayload(current, charter, DISCOVERY_SOURCES, parentDigest);
@@ -7461,8 +7505,8 @@ const discoveryBridge = {
     },
     async workRequest(record, route) {
         const state = await this.state();
-        if (!state.ready || state.locked || !record?.resultDigest) throw Error('A saved current campaign is required.');
-        const currentRecord = inspected.discovery.campaigns.find(value => value.resultDigest === record.resultDigest);
+        if (!state.ready || state.locked || !record?.campaignDigest) throw Error('A saved current campaign is required.');
+        const currentRecord = discoveryHistory.selectCampaign(inspected.discovery.campaigns, record);
         if (!currentRecord || currentRecord.state !== 'accepted'
             || !['modelDigest', 'sourceDigest', 'evaluatorDigest'].every(key => currentRecord.bindings[key] === DISCOVERY_SOURCES[key])) {
             throw Error('This campaign does not match the currently installed model/source/evaluator.');

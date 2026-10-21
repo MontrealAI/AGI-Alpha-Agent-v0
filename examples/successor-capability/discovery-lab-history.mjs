@@ -14,6 +14,7 @@ const copy = value => JSON.parse(contract.canonical(value));
 const need = (condition, message) => { if (!condition) throw Error(message); };
 const hash = value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
 const integer = value => Number.isSafeInteger(value) && value >= 0 && !Object.is(value, -0);
+const SOURCE_KEYS = ['modelDigest', 'sourceDigest', 'evaluatorDigest'];
 const sessionAudit = {id: crypto.randomUUID(), inspections: 0, resources: {}, cachedInspections: 0, cacheBytesPeak: 0};
 const verifiedReports = new Map();
 const CACHE_ENTRIES = 12;
@@ -74,6 +75,25 @@ export function reservationFor(charter) {
 
 export function emptyDiscoveryState() { return {attempts: [], campaigns: [], active: null}; }
 
+/** Select a completed attempt by its source-bound history identity, never its reusable numeric result. */
+export function selectCampaign(campaigns, selection) {
+    const identity = {};
+    for (const key of ['campaignDigest', 'attempt', 'bindings', 'resultDigest']) {
+        const descriptor = selection && Object.getOwnPropertyDescriptor(selection, key);
+        need(descriptor && Object.hasOwn(descriptor, 'value'), 'Select one complete source-bound campaign identity.');
+        identity[key] = descriptor.value;
+    }
+    contract.validateBindings(identity.bindings);
+    need(hash(identity.campaignDigest) && hash(identity.resultDigest), 'Invalid campaign identity.');
+    const matches = campaigns.filter(record => record.campaignDigest === identity.campaignDigest);
+    need(matches.length === 1 && matches[0].attempt === identity.attempt
+        && matches[0].resultDigest === identity.resultDigest && same(matches[0].bindings, identity.bindings),
+    'The selected source-bound campaign is absent or changed.');
+    need(matches[0].lineageQualified !== false,
+        'This historical campaign has unresolved parent lineage; requalify it without inherited authority.');
+    return matches[0];
+}
+
 /** Reconstruct events without converting imports into authority or externally qualified work. */
 export async function inspectDiscoveryEvent(state, event, context) {
     const payload = event.payload;
@@ -94,10 +114,22 @@ export async function inspectDiscoveryEvent(state, event, context) {
         need(same(payload.reservation, reservationFor(charter)),
             'The total construction/replay reservation must bind the frozen per-phase caps.');
         need(payload.parentDigest === null || hash(payload.parentDigest), 'Invalid parent commitment.');
-        const parent = payload.parentDigest === null ? null
-            : state.campaigns.find(item => item.resultDigest === payload.parentDigest && item.state === 'accepted');
+        const identifiedParent = payload.parentDigest === null ? null
+            : state.campaigns.find(item => item.campaignDigest === payload.parentDigest && item.state === 'accepted');
+        const legacyParents = identifiedParent || payload.parentDigest === null ? []
+            : state.campaigns.filter(item => item.resultDigest === payload.parentDigest && item.state === 'accepted');
+        // Old v2 histories keep their original first-match interpretation. New starts never create ambiguous references.
+        const parent = identifiedParent || legacyParents[0] || null;
         need(payload.parentDigest === null || Boolean(parent), 'Accepted parent is absent from this history.');
-        const record = {...copy(payload), parent, state: 'searching'};
+        const lineageIssues = [...(parent?.lineageIssues || [])];
+        if (legacyParents.length > 1) lineageIssues.push('AMBIGUOUS_LEGACY_PARENT');
+        if (parent && !SOURCE_KEYS.every(key => parent.bindings[key] === bindings[key])) {
+            lineageIssues.push('PARENT_SOURCE_MISMATCH');
+        }
+        need(!identifiedParent || lineageIssues.length === 0,
+            'The identified parent is not qualified under the current source lineage.');
+        const record = {...copy(payload), parent, state: 'searching', lineageQualified: lineageIssues.length === 0,
+            lineageIssues: [...new Set(lineageIssues)]};
         state.attempts.push(record);
         state.active = record;
     } else if (event.kind === 'lab-completed') {
@@ -115,6 +147,8 @@ export async function inspectDiscoveryEvent(state, event, context) {
         active.result = checked.result;
         active.artifacts = await artifacts.makeArtifacts(active.bindings, active.result);
         active.resultDigest = payload.resultDigest;
+        // The verified completion hash includes the prior start, its mission/source bindings and this exact attempt.
+        active.campaignDigest = event.digest;
         active.elapsedReceipt = {elapsedMs: payload.elapsedMs, limitMs: active.reservation.elapsedMs,
             scope: 'Self-reported local construction and verification wall-clock observation. Imports are not fresh measurements.'};
         active.state = payload.elapsedMs > active.reservation.elapsedMs ? 'inconclusive' : payload.result.state;
@@ -156,6 +190,15 @@ export async function startPayload(workspace, charter, sources, parentDigest = n
     const reservation = reservationFor(charter);
     const version = [...workspace.events].reverse().find(event => event.kind === 'version')?.payload.number;
     need(integer(version) && version > 0, 'A frozen capability version is required.');
+    if (parentDigest !== null) {
+        need(hash(parentDigest), 'Invalid parent commitment.');
+        const completed = workspace.events.filter(event => event.kind === 'lab-completed');
+        if (!completed.some(event => event.digest === parentDigest)) {
+            const legacy = completed.filter(event => event.payload.resultDigest === parentDigest);
+            need(legacy.length <= 1, 'Ambiguous result digest; select the unique source-bound campaign.');
+            if (legacy.length === 1) parentDigest = legacy[0].digest;
+        }
+    }
     return {attempt: 'lab-' + crypto.randomUUID(), version, bindings, charter, parentDigest, reservation};
 }
 
@@ -170,7 +213,7 @@ export function stoppedPayload(attempt, reason, state = 'paused') {
 }
 
 export async function workRequest(record, route, resourceUsed) {
-    need(record?.result && record.state === 'accepted' && hash(record.resultDigest),
+    need(record?.result && record.state === 'accepted' && record.lineageQualified !== false && hash(record.resultDigest),
         'A retained resource-qualified campaign is required for a review draft.');
     const currency = route === 'USDC' ? 'USDC6' : route === 'AGIALPHA' ? 'AGIALPHA18' : null;
     need(currency, 'Select one supported commission route.');

@@ -78,10 +78,10 @@ const discoveryBridge = {
                 await persist(stopped, storedRevision, current);
             }
             if (!discoveryHistory.historyCapacity(current).canRun) throw Error('Not enough history capacity for a complete attempt and recovery.');
-            const parentDigest = parent?.resultDigest || null;
-            if (parentDigest && !inspected.discovery.campaigns.some(record => record.resultDigest === parentDigest
-                && record.state === 'accepted'
-                && ['modelDigest', 'sourceDigest', 'evaluatorDigest'].every(key => record.bindings[key] === DISCOVERY_SOURCES[key]))) {
+            const selectedParent = parent ? discoveryHistory.selectCampaign(inspected.discovery.campaigns, parent) : null;
+            const parentDigest = selectedParent?.campaignDigest || null;
+            if (selectedParent && (selectedParent.state !== 'accepted'
+                || !['modelDigest', 'sourceDigest', 'evaluatorDigest'].every(key => selectedParent.bindings[key] === DISCOVERY_SOURCES[key]))) {
                 throw Error('The selected parent is not currently qualified under these installed sources.');
             }
             const start = await discoveryHistory.startPayload(current, charter, DISCOVERY_SOURCES, parentDigest);
@@ -115,8 +115,8 @@ const discoveryBridge = {
     },
     async workRequest(record, route) {
         const state = await this.state();
-        if (!state.ready || state.locked || !record?.resultDigest) throw Error('A saved current campaign is required.');
-        const currentRecord = inspected.discovery.campaigns.find(value => value.resultDigest === record.resultDigest);
+        if (!state.ready || state.locked || !record?.campaignDigest) throw Error('A saved current campaign is required.');
+        const currentRecord = discoveryHistory.selectCampaign(inspected.discovery.campaigns, record);
         if (!currentRecord || currentRecord.state !== 'accepted'
             || !['modelDigest', 'sourceDigest', 'evaluatorDigest'].every(key => currentRecord.bindings[key] === DISCOVERY_SOURCES[key])) {
             throw Error('This campaign does not match the currently installed model/source/evaluator.');

@@ -61,7 +61,7 @@ function mountDiscoveryLab({runtime, history}) {
     function recordCharter(record) { return record?.charter || recordResult(record)?.charter || null; }
     function campaigns() { return Array.isArray(savedState.campaigns) ? savedState.campaigns : []; }
     function latestAccepted() {
-        return [...campaigns()].reverse().find(record => outcomeState(record) === 'accepted') || null;
+        return [...campaigns()].reverse().find(record => outcomeState(record) === 'accepted' && record.lineageQualified !== false) || null;
     }
     function fill(next) {
         draft = copy(next);
@@ -107,7 +107,7 @@ function mountDiscoveryLab({runtime, history}) {
         const parent = latestAccepted();
         byId('successor').disabled = !runnable || !parent || recordCharter(parent)?.controls >= 4;
         byId('export-request').disabled = !idle || !selected || outcomeState(selected) !== 'accepted'
-            || !!savedState.locked || typeof history.workRequest !== 'function';
+            || selected.lineageQualified === false || !!savedState.locked || typeof history.workRequest !== 'function';
         byId('route').disabled = !idle;
         byId('export-account').disabled = !idle || typeof history.accountReceipt !== 'function';
         byId('reservation').textContent = manifestPending
@@ -212,6 +212,7 @@ function mountDiscoveryLab({runtime, history}) {
             : state === 'inconclusive'
                 ? 'INCONCLUSIVE · ' + (record.wrapperOutcome || 'Finite work or resources ended before acceptance. This is not a proof of infeasibility.')
                 : state.toUpperCase() + ' · ' + (result.reason || 'Inspect the retained stage evidence. Earlier accepted parents remain within their original scope.');
+        if (record.lineageQualified === false) summary.textContent += ' Historical parent lineage is unresolved; requalify before reuse or work-order export.';
         byId('stages').replaceChildren();
         for (const [index, stage] of (result.stages || []).entries()) renderStage(stage, index);
         byId('result-facts').replaceChildren();
@@ -393,7 +394,7 @@ function mountDiscoveryLab({runtime, history}) {
     });
     byId('export-request').addEventListener('click', () => {
         void operation(async () => {
-            if (!selected || outcomeState(selected) !== 'accepted' || savedState.locked) throw Error('Choose a retained accepted campaign first.');
+            if (!selected || outcomeState(selected) !== 'accepted' || selected.lineageQualified === false || savedState.locked) throw Error('Choose a retained accepted campaign first.');
             const request = await history.workRequest(selected, byId('route').value);
             const url = URL.createObjectURL(new Blob([json(request)], {type: 'application/json'}));
             const link = node('a', document.body);
