@@ -397,8 +397,23 @@ def render_section(catalog: dict[str, Any]) -> str:
         '    <p data-home-key="papers-intro">Research manuscripts on changing the conditions of success, '
         "while preserving the purpose of the work.</p>",
         "  </div>",
-        f'  <div class="papers-grid" style="--paper-companion-count: {max(1, len(catalog["papers"]) - 1)}">',
+        '  <nav class="papers-index" aria-labelledby="papers-index-title">',
+        '    <p id="papers-index-title" data-home-key="papers-index-title">Choose your reading path</p>',
     ]
+    lead = catalog["papers"][0]
+    lines.append(
+        f'    <a class="papers-foundation" href="#paper-{lead["id"]}-title" lang="en">'
+        + escape(lead["display_title"])
+        + "</a>"
+    )
+    if len(catalog["papers"]) > 1:
+        lines.append('    <ol class="papers-mission-list">')
+        for row in catalog["papers"][1:]:
+            lines.append(
+                f'      <li><a href="#paper-{row["id"]}-title" lang="en">' + escape(row["display_title"]) + "</a></li>"
+            )
+        lines.append("    </ol>")
+    lines.extend(["  </nav>", '  <div class="papers-grid">'])
     for index, row in enumerate(catalog["papers"]):
         slug = row["id"]
         extra = " paper-featured" if row["featured"] else ""
@@ -412,7 +427,7 @@ def render_section(catalog: dict[str, Any]) -> str:
             )
             if row["symbol"]:
                 title += ' <span class="paper-infinity">' + escape(row["symbol"]) + "</span>"
-        lines.append(f'      <h3 id="paper-{slug}-title" lang="en">{title}</h3>')
+        lines.append(f'      <h3 id="paper-{slug}-title" lang="en" tabindex="-1">{title}</h3>')
         if row["subtitle"]:
             lines.append('      <p class="paper-subtitle" lang="en">' + escape(row["subtitle"]) + "</p>")
         lines.append("      " + translated("p", f"{slug}-summary", row["summary"]))
@@ -453,8 +468,25 @@ def render_readme(catalog: dict[str, Any]) -> str:
     lines = ["## Featured research", ""]
     for row in catalog["papers"]:
         target = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/" + row["pdf"]["path"]
-        lines.append(f"- **[{markdown_text(row['display_title'])}]({target})** · {markdown_text(row['summary']['en'])}")
-        lines.append(f"  {markdown_text(row['author'])} · {row['date']} · English PDF.")
+        if row["featured"]:
+            lines.extend(
+                [
+                    f"### [{markdown_text(row['display_title'])}]({target})",
+                    "",
+                    f"**{markdown_text(row['subtitle'])}**" if row["subtitle"] else "**The foundation**",
+                    "",
+                    markdown_text(row["summary"]["en"]),
+                    f"{markdown_text(row['author'])} · {row['date']} · English PDF.",
+                    "",
+                ]
+            )
+            if len(catalog["papers"]) > 1:
+                lines.extend(["**Companion papers · reading order**", ""])
+        else:
+            lines.append(
+                f"- **[{markdown_text(row['display_title'])}]({target})** · {markdown_text(row['summary']['en'])}"
+            )
+            lines.append(f"  {markdown_text(row['author'])} · {row['date']} · English PDF.")
     lines.extend(
         [
             "",

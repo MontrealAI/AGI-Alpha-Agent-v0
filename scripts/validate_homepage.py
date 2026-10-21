@@ -31,6 +31,26 @@ def assert_paper_links(page: Page, language: str) -> None:
     records = load_catalog()["papers"]
     expect(papers.locator("article")).to_have_count(len(records))
     expect(papers.locator(".paper-link")).to_have_count(len(records))
+    reading_index = papers.locator(".papers-index")
+    expect(reading_index).to_have_accessible_name(
+        "Choose your reading path" if language == "en" else "Choisissez votre parcours de lecture"
+    )
+    expect(reading_index.locator("a")).to_have_count(len(records))
+    expect(reading_index.locator("ol > li")).to_have_count(len(records) - 1)
+    grid_box = papers.locator(".papers-grid").bounding_box()
+    lead_box = papers.locator(".paper-featured").bounding_box()
+    assert grid_box is not None and lead_box is not None
+    assert abs(grid_box["width"] - lead_box["width"]) < 1, "The foundation spans the reading grid"
+    card_boxes = []
+    for card in papers.locator("article").all():
+        box = card.bounding_box()
+        assert box is not None
+        card_boxes.append(box)
+    for first, box in enumerate(card_boxes):
+        for other in card_boxes[first + 1 :]:
+            horizontal = min(box["x"] + box["width"], other["x"] + other["width"]) - max(box["x"], other["x"])
+            vertical = min(box["y"] + box["height"], other["y"] + other["height"]) - max(box["y"], other["y"])
+            assert min(horizontal, vertical) <= 1, "Paper cards must not overlap"
     title_element = papers.locator(".paper-featured h3")
     assert " ".join(title_element.inner_text().replace("\u00ad", "").split()) == records[0]["display_title"]
     words = title_element.locator(".paper-title-word")
@@ -64,6 +84,10 @@ def assert_paper_links(page: Page, language: str) -> None:
     for index, record in enumerate(records):
         filename = record["pdf"]["path"].removeprefix("docs/")
         title = record["title"]
+        index_link = papers.locator(".papers-index a").nth(index)
+        expect(index_link).to_have_attribute("href", f'#paper-{record["id"]}-title')
+        expect(index_link).to_have_accessible_name(record["display_title"])
+        expect(papers.locator(f'#paper-{record["id"]}-title')).to_have_attribute("tabindex", "-1")
         expect(papers.locator(f'[data-paper-key="{record["id"]}-summary"]')).to_have_text(record["summary"][language])
         link = papers.locator(".paper-link").nth(index)
         expect(link).to_have_attribute("href", filename)
@@ -373,6 +397,23 @@ def validate(
             assert_handoff(page, "en", False)
             report["checks"] += ["clear-first-step", "three-visible-steps", "readable-default-text", "working-faq"]
 
+            # Index links move to focusable headings, not duplicate PDF downloads.
+            first_paper, last_paper = load_catalog()["papers"][0], load_catalog()["papers"][-1]
+            first_target = f'#paper-{first_paper["id"]}-title'
+            last_target = f'#paper-{last_paper["id"]}-title'
+            page.locator(".papers-index a").first.focus()
+            page.keyboard.press("Enter")
+            expect(page.locator(first_target)).to_be_focused()
+            expect(page).to_have_url(origin + first_target)
+            page.locator(".papers-index a").last.click()
+            expect(page.locator(last_target)).to_be_focused()
+            expect(page).to_have_url(origin + last_target)
+            page.go_back()
+            expect(page).to_have_url(origin + first_target)
+            page.go_forward()
+            expect(page).to_have_url(origin + last_target)
+            assert_handoff(page, "en", False)
+
             # A keyboard-only visitor reaches the main content before navigating the header.
             page.goto(origin, wait_until="networkidle")
             page.keyboard.press("Tab")
@@ -566,6 +607,9 @@ def validate(
             fallback.locator("#questions summary").first.click()
             expect(fallback.locator("#questions details").first).to_have_attribute("open", "")
             assert_handoff(fallback, "en", False)
+            fallback.locator(".papers-index a").last.click()
+            expect(fallback).to_have_url(origin + last_target)
+            expect(fallback.locator(last_target)).to_be_focused()
             fallback.locator("#home [data-start-link]").click()
             expect(fallback).to_have_url(origin + "start/#journey")
             expect(fallback.locator("#journey")).to_be_focused()

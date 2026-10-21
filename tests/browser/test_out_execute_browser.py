@@ -21,6 +21,7 @@ AXE = Path(os.environ.get("AXE_SCRIPT", str(ROOT / "tests/browser/node_modules/a
 def idle(page: Page) -> None:
     expect(page.locator("#evolve-form")).to_have_attribute("aria-busy", "false", timeout=120000)
     expect(page.locator("#evolve-import")).to_be_enabled(timeout=120000)
+    expect(page.locator("#evolve-error")).to_be_hidden()
 
 
 def history(page: Page) -> dict[str, Any]:
@@ -49,6 +50,7 @@ def main() -> None:
             expect(page.locator("#execute-acceptance")).to_contain_text("Unfinished")
             page.locator("#execute-step").click()
             idle(page)
+            assert history(page)["events"][-1]["payload"]["checkpoint"]["next"] == 1
             page.locator("#execute-pause").click()
             idle(page)
             paused = history(page)

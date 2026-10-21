@@ -11,9 +11,12 @@ test('workflow keeps old strong campaigns and bounded separate conventional cove
  for(const p of ['empty','delegated','marker'])assert(w.includes('ALPHA_NATIVE_PROFILE='+p));assert.match(w,/permissions:\n  contents: read/);assert.doesNotMatch(w,/secrets\.|contents: write|id-token:|continue-on-error|\|\| true/);
 });
 
-test('new job exact actions and shards are finite; whole workflow has only two jobs',()=>{
+test('exact actions and shards stay finite behind the trusted paper classifier',()=>{
  const w=fs.readFileSync(path.join(__dirname,'../../../.github/workflows/alpha-authority-v2.yml'),'utf8');
- assert.deepEqual([...w.split('\njobs:\n')[1].matchAll(/^  ([a-z-]+):$/gm)].map(x=>x[1]),['offline-qualification','conventional-qualification']);
+ assert.deepEqual([...w.split('\njobs:\n')[1].matchAll(/^  ([a-z-]+):$/gm)].map(x=>x[1]),['paper-scope','offline-qualification','conventional-qualification']);
+ assert.ok(w.includes('  paper-scope:\n    uses: ./.github/workflows/paper-scope.yml\n\n  offline-qualification:'));
+ const scopeGate="    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}\n    needs: paper-scope\n";
+ for(const name of ['offline-qualification','conventional-qualification'])assert.ok(w.includes('  '+name+':\n'+scopeGate));
  const sections=w.split('\n  conventional-qualification:\n');assert.equal(sections.length,2);const job=sections[1];
  const actions=[...job.matchAll(/uses: ([^\s]+)/g)].map(x=>x[1]);assert.deepEqual(actions,['actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd','actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f','actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f']);
  assert.deepEqual([...job.matchAll(/^          run_check ([a-z-]+) /gm)].map(x=>x[1]),['compile','unit','local']);

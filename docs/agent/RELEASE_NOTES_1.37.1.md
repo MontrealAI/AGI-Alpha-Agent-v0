@@ -5,7 +5,7 @@
 ## Combined software scope
 
 This candidate combines the capability workspace and bounded Out-Evolve work described in the preserved
-[1.37.0 proposal](RELEASE_NOTES_1.37.0.md) with executable OUT-EXECUTE contracts, six featured papers and
+[1.37.0 proposal](RELEASE_NOTES_1.37.0.md) with executable OUT-EXECUTE contracts, seven featured papers and
 an additive paper-publication lane. The owner approved qualifying this combined source as the next release
 rather than waiting for the unpublished 1.37.0 candidate. Version 1.37.1 was unused when prepared; no published
 release, tag, asset or earlier evidence is overwritten. This is not a documentation-only release.
@@ -47,13 +47,16 @@ wall-clock savings, currency or industrial benefit. Host JSON/hash/allocation ov
 operation unit; elapsed study time and serialized bytes are reported separately. Source hashes bind bytes,
 not external authenticity. Physical, industrial and general-AI benefits remain hypotheses.
 
-### Six original papers and a bounded publication lane
+### Seven original papers and a bounded publication lane
 
 The README and bilingual homepage feature **TRANSFORMATIONAL INTELLIGENCE ∞**, **Out-Learn 📚**, **Out-Think 🧠**,
-**Out-Strategise ♟️**, **Out-Execute ⚡** and **Out-Evolve ♾️**. Accessible direct English PDF links, French/English
+**Out-Design 🎨**, **Out-Strategise ♟️**, **Out-Execute ⚡** and **Out-Evolve ♾️**. Accessible direct English PDF links, French/English
 summaries, larger-text controls and no-JavaScript reading preserve the flagship's free-start entry and history.
-All six original PDF/TEX pairs and canonical URLs remain unchanged. Out-Learn describes constructed measurement
+All seven original PDF/TEX pairs and canonical URLs remain unchanged. Out-Learn describes constructed measurement
 protocols and reusable calibration under declared drift and measurement-error assumptions, not physical qualification.
+Out-Design studies equivalent implementations that preserve required services and release capacity for change in
+finite executable models. A research link does not imply an implemented or commissioned runtime capability.
+The TI foundation leads a linked reading index and responsive companion grid immediately after the free-start intro.
 
 The [paper-upload guide](PAPER_UPLOADS.md) describes one catalog import and the normal pull request. A pre-change,
 fail-closed classifier examines every introduced commit. Only validated paper/catalog changes and exact bounded

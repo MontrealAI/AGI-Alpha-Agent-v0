@@ -5,6 +5,7 @@ const french = {
     "papers-eyebrow": "LA RECHERCHE",
     "papers-title": "De meilleures stratégies. Un autre jeu. De nouvelles capacités.",
     "papers-intro": "Des manuscrits de recherche pour changer les conditions de réussite, tout en préservant la finalité du travail.",
+    "papers-index-title": "Choisissez votre parcours de lecture",
     "papers-note": "Originaux en anglais. Propositions de recherche et études délimitées, sans revendication de capacité autonome générale ni de déploiement physique.",
     "current-mainnet-record": "État actuel du déploiement Mainnet",
     "archived-mainnet-record": "Archives du déploiement du 11 octobre",

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {CHECKER_VERSION, clone, seal, validateModel} from './model.mjs';
+import {MODEL_SCHEMA, SEMANTICS, CHECKER_VERSION, clone, seal, validateModel} from './model.mjs';
 import {exhaustive, verifyContract, verifyDecomposition} from './checker.mjs';
 import {execute, startExecution, advanceExecution, restoreExecution, retainCompletion,
     inspectArchive, inspectCompletion, selectBoundary, decompose} from './engine.mjs';
@@ -147,7 +147,7 @@ test('final-acceptance budget failures remain unaccepted and survive independent
 test('checkpoint terminal status and reason require a real reachable budget failure', async () => {
     const paused = await startExecution(containment(), {source, selection});
     for (const reason of ['fabricated-budget-failure', 'ingestion-selection-and-import-audit-exceed-budget',
-        'next-module-exceeds-budget', 'current-acceptance-exceeds-budget']) {
+        'next-module-exceeds-budget', 'boundary-selection-exceeds-budget', 'current-acceptance-exceeds-budget']) {
         await assert.rejects(() => restoreExecution({...clone(paused), status: 'INCONCLUSIVE', reason}), /CHECKPOINT_/);
     }
     await assert.rejects(() => restoreExecution({...clone(paused), reason: 'operator-cancelled'}), /TERMINAL_REASON/);
@@ -175,4 +175,69 @@ test('actual ancestor profile comparisons are charged during reuse, restore and 
     const restored = await restoreExecution(third);
     assert.equal(restored.verificationWork.reuseAuditProfileComparisons,
         third.work.reuseAuditProfileComparisons + third.work.profileComparisons);
+});
+
+const singleton = cost => ({schema: MODEL_SCHEMA, semantics: SEMANTICS,
+    variables: [{id: 'x', domain: [0]}], factors: [{id: 'f', scope: ['x'], costs: [cost]}]});
+
+test('exact budgets accept feasible and infeasible results without a speculative feasibility charge', async () => {
+    for (const cost of [null, 0]) for (const maxBoundary of [0, 1]) {
+        const model = singleton(cost), policy = {maxBoundary, shortlist: null, horizon: 8};
+        const full = await execute(model, {source, selection: policy});
+        assert.equal(full.completion.selection.status, cost === null ? 'INFEASIBLE' : 'OPTIMAL');
+        assert.equal(full.contracts.length, maxBoundary === 0 ? 1 : 0);
+        if (maxBoundary === 0) assert.equal(full.completion.countedWork, cost === null ? 11 : 14);
+        const exact = await execute(model, {source, selection: policy, budget: full.completion.countedWork});
+        assert.equal(exact.status, 'COMPLETE'); assert.deepEqual(exact.work, full.work);
+        assert.deepEqual(exact.completion.selection, full.completion.selection);
+        assert.deepEqual(exact.completion.artifact, full.completion.artifact);
+        await inspectCompletion(exact.completion);
+        assert.equal((await restoreExecution(clone(exact))).checkpoint.status, 'COMPLETE');
+        const reasons = new Set();
+        for (let budget = 1; budget < full.completion.countedWork; budget++) {
+            const low = await execute(model, {source, selection: policy, budget});
+            assert.equal(low.status, 'INCONCLUSIVE'); assert.equal(low.completion, null);
+            reasons.add(low.reason);
+            const restored = await restoreExecution(clone(low));
+            assert.deepEqual(restored.checkpoint.work, low.work);
+            assert.equal((await advanceExecution(restored.checkpoint)).status, 'INCONCLUSIVE');
+            assert.equal(restored.verificationWork.reuseAuditAssignments,
+                low.work.reuseAuditAssignments + low.work.constructionAssignments + low.work.boundaryAssignments);
+            assert.equal(restored.verificationWork.reuseAuditFactorLookups, low.work.reuseAuditFactorLookups
+                + low.work.constructionFactorLookups + low.work.profileLookups + low.work.boundaryFactorLookups);
+            assert.equal(low.work.acceptanceBoundaryAssignments, 0);
+            assert.equal(low.work.materializedValues, 0); assert.equal(low.work.outputFactorLookups, 0);
+            if (low.reason === 'boundary-selection-exceeds-budget') assert.equal(low.work.boundaryAssignments, 0);
+            if (low.reason === 'current-acceptance-exceeds-budget') assert.equal(low.work.boundaryAssignments, 1);
+            await assert.rejects(() => restoreExecution({...clone(low), budget: full.budget}), /CHECKPOINT_/);
+        }
+        assert.ok(reasons.has('boundary-selection-exceeds-budget'));
+        assert.ok(reasons.has('current-acceptance-exceeds-budget'));
+        if (maxBoundary === 0) assert.ok(reasons.has('next-module-exceeds-budget'));
+    }
+});
+
+test('semantic-stop exact budgets omit only the reused selection, never current acceptance', async () => {
+    for (const cost of [null, 0]) for (const maxBoundary of [0, 1]) {
+        const model = singleton(cost), policy = {maxBoundary, shortlist: null, horizon: 8};
+        const before = await execute(model, {source, selection: policy}), archive = await retainCompletion(before);
+        const full = await execute(model, {source, selection: policy, archive});
+        assert.equal(full.completion.change.semanticStop, true);
+        assert.equal(full.work.boundaryAssignments, 0); assert.equal(full.work.profileLookups, 0);
+        assert.equal(full.work.acceptanceBoundaryAssignments, 1);
+        const exact = await execute(model, {source, selection: policy, archive, budget: full.completion.countedWork});
+        assert.equal(exact.status, 'COMPLETE'); assert.deepEqual(exact.work, full.work);
+        await inspectArchive(await retainCompletion(exact));
+        const low = await execute(model, {source, selection: policy, archive, budget: full.completion.countedWork - 1});
+        assert.equal(low.status, 'INCONCLUSIVE'); assert.equal(low.reason, 'current-acceptance-exceeds-budget');
+        assert.equal(low.completion, null); assert.equal(low.work.boundaryAssignments, 0);
+        assert.equal(low.work.acceptanceBoundaryAssignments, 0);
+        const restored = await restoreExecution(clone(low));
+        assert.deepEqual(restored.checkpoint.work, low.work);
+        assert.equal(restored.verificationWork.reuseAuditAssignments, low.work.reuseAuditAssignments);
+        assert.equal(restored.verificationWork.reuseAuditFactorLookups, low.work.reuseAuditFactorLookups);
+        assert.equal(restored.verificationWork.reuseAuditProfileComparisons,
+            low.work.reuseAuditProfileComparisons + low.work.profileComparisons);
+        await assert.rejects(() => restoreExecution({...clone(low), budget: full.budget}), /CHECKPOINT_/);
+    }
 });

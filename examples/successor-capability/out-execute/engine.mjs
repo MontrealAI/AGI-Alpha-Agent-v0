@@ -149,7 +149,7 @@ function initialWork(model, selection, audit) {
     work.reuseAuditScopeVisits = audit.scopeVisits; work.reuseAuditProfileComparisons = audit.profileComparisons;
     return work;
 }
-function requiredFinalWork(model, decomposition, contracts, canStop, work, feasible = true) {
+function requiredBoundaryWork(model, decomposition, canStop, work) {
     const domains = domainMap(model), boundaryCount = cardinality(decomposition.boundary, domains);
     const next = clone(work);
     if (!canStop) {
@@ -157,6 +157,10 @@ function requiredFinalWork(model, decomposition, contracts, canStop, work, feasi
         next.profileLookups += boundaryCount * decomposition.modules.length;
         next.boundaryFactorLookups += boundaryCount * decomposition.boundaryFactors.length;
     }
+    return next;
+}
+function requiredAcceptanceWork(model, decomposition, work, feasible) {
+    const boundaryCount = cardinality(decomposition.boundary, domainMap(model)), next = clone(work);
     next.materializedValues += feasible ? model.variables.length : 0;
     next.outputFactorLookups += feasible ? model.factors.length : 0;
     // A separate acceptance reduction is never concealed by the optimization stopping claim.
@@ -164,6 +168,10 @@ function requiredFinalWork(model, decomposition, contracts, canStop, work, feasi
     next.acceptanceProfileLookups += boundaryCount * decomposition.modules.length;
     next.acceptanceFactorLookups += boundaryCount * decomposition.boundaryFactors.length + (feasible ? model.factors.length : 0);
     return next;
+}
+function requiredFinalWork(model, decomposition, canStop, work, feasible) {
+    return requiredAcceptanceWork(model, decomposition,
+        requiredBoundaryWork(model, decomposition, canStop, work), feasible);
 }
 function equalProfiles(left, right) {
     return same(left.module.interface, right.module.interface)
@@ -183,7 +191,7 @@ function stopping(model, decomposition, contracts, source, prior, work) {
     }
     return equal;
 }
-function compose(model, decomposition, contracts, priorSelection = null) {
+function chooseBoundary(model, decomposition, contracts, priorSelection = null) {
     const domains = domainMap(model);
     let selection = priorSelection ? clone(priorSelection) : {status: 'INFEASIBLE', boundary: null, cost: null};
     if (!priorSelection) {
@@ -196,6 +204,10 @@ function compose(model, decomposition, contracts, priorSelection = null) {
             if (cost !== null && (selection.cost === null || cost < selection.cost)) selection = {status: 'OPTIMAL', boundary, cost};
         }
     }
+    return selection;
+}
+function materialize(model, contracts, selection) {
+    const domains = domainMap(model);
     if (selection.cost === null) return {selection, artifact: null};
     const artifact = {...selection.boundary};
     for (const contract of contracts) {
@@ -257,7 +269,7 @@ export async function restoreExecution(input) {
         selection: saved.selection.policy, budget: saved.budget, attemptId: saved.attemptId});
     const verificationWork = clone(fresh.work);
     const initialStatus = fresh.status;
-    let acceptanceStop = false;
+    let requiredTerminalWork = null;
     requireValue(same(saved.selection, fresh.selection) && same(saved.plan, fresh.plan), 'CHECKPOINT_PLAN');
     integer(saved.next, 0, saved.contracts.length);
     requireValue(saved.contracts.length === fresh.contracts.length, 'CHECKPOINT_CONTRACTS');
@@ -291,13 +303,26 @@ export async function restoreExecution(input) {
         fresh.work = saved.completion.work;
     } else {
         requireValue(saved.completion === null, 'UNFINISHED_ACCEPTANCE');
-        if (saved.status === 'INCONCLUSIVE' && saved.reason === 'current-acceptance-exceeds-budget') {
+        if (saved.status === 'INCONCLUSIVE' && ['boundary-selection-exceeds-budget',
+            'current-acceptance-exceeds-budget'].includes(saved.reason)) {
             requireValue(initialStatus === 'PAUSED' && workTotal(fresh.work) <= saved.budget, 'CHECKPOINT_REACHABLE_PROGRESS');
             requireValue(saved.next === saved.contracts.length, 'CHECKPOINT_ACCEPTANCE_PROGRESS');
-            const beforeComparisons = fresh.work.profileComparisons;
-            acceptanceStop = stopping(saved.model, saved.selection.decomposition, saved.contracts, saved.source,
-                fresh.archive.completions.at(-1) || null, fresh.work);
+            const prior = fresh.archive.completions.at(-1) || null, beforeComparisons = fresh.work.profileComparisons;
+            const canStop = stopping(saved.model, saved.selection.decomposition, saved.contracts, saved.source, prior, fresh.work);
             verificationWork.reuseAuditProfileComparisons += fresh.work.profileComparisons - beforeComparisons;
+            requiredTerminalWork = requiredBoundaryWork(saved.model, saved.selection.decomposition, canStop, fresh.work);
+            if (saved.reason === 'current-acceptance-exceeds-budget') {
+                requireValue(workTotal(requiredTerminalWork) <= saved.budget, 'CHECKPOINT_BUDGET_REASON');
+                const selected = chooseBoundary(saved.model, saved.selection.decomposition, saved.contracts,
+                    canStop ? prior.selection : null);
+                // Reconstructing a spent selection performs a new scan unless qualified profiles stop it.
+                verificationWork.reuseAuditAssignments += requiredTerminalWork.boundaryAssignments - fresh.work.boundaryAssignments;
+                verificationWork.reuseAuditFactorLookups += requiredTerminalWork.profileLookups - fresh.work.profileLookups
+                    + requiredTerminalWork.boundaryFactorLookups - fresh.work.boundaryFactorLookups;
+                fresh.work = requiredTerminalWork;
+                requiredTerminalWork = requiredAcceptanceWork(saved.model, saved.selection.decomposition,
+                    fresh.work, selected.status === 'OPTIMAL');
+            }
         }
     }
     requireValue(same(saved.work, fresh.work), 'CHECKPOINT_WORK');
@@ -311,9 +336,8 @@ export async function restoreExecution(input) {
             const proposed = clone(fresh.work);
             constructionWork(saved.model, saved.selection.decomposition.modules[saved.next], proposed);
             requireValue(workTotal(proposed) > saved.budget, 'CHECKPOINT_BUDGET_REASON');
-        } else if (saved.reason === 'current-acceptance-exceeds-budget') {
-            const required = requiredFinalWork(saved.model, saved.selection.decomposition, saved.contracts, acceptanceStop, fresh.work);
-            requireValue(workTotal(required) > saved.budget, 'CHECKPOINT_BUDGET_REASON');
+        } else if (['boundary-selection-exceeds-budget', 'current-acceptance-exceeds-budget'].includes(saved.reason)) {
+            requireValue(requiredTerminalWork !== null && workTotal(requiredTerminalWork) > saved.budget, 'CHECKPOINT_BUDGET_REASON');
         } else requireValue(false, 'CHECKPOINT_REASON');
     } else if (saved.status !== 'COMPLETE') {
         requireValue(initialStatus === 'PAUSED' && workTotal(fresh.work) <= saved.budget
@@ -346,11 +370,15 @@ export async function advanceExecution(input, {modules = 1, cancel = false} = {}
     if (state.next !== state.contracts.length) return mark(state);
     const prior = state.archive.completions.at(-1) || null, proposed = clone(state.work);
     const semanticStop = stopping(state.model, state.selection.decomposition, state.contracts, state.source, prior, proposed);
-    let finalWork = requiredFinalWork(state.model, state.selection.decomposition, state.contracts, semanticStop, proposed);
-    if (workTotal(finalWork) > state.budget) { state.work = proposed; state.status = 'INCONCLUSIVE'; state.reason = 'current-acceptance-exceeds-budget'; return mark(state); }
-    const result = compose(state.model, state.selection.decomposition, state.contracts, semanticStop ? prior.selection : null);
+    const boundaryWork = requiredBoundaryWork(state.model, state.selection.decomposition, semanticStop, proposed);
+    if (workTotal(boundaryWork) > state.budget) { state.work = proposed; state.status = 'INCONCLUSIVE'; state.reason = 'boundary-selection-exceeds-budget'; return mark(state); }
+    const selected = chooseBoundary(state.model, state.selection.decomposition, state.contracts, semanticStop ? prior.selection : null);
+    state.work = boundaryWork;
+    // Feasibility is now known from a reserved, charged reduction, not an unmetered preliminary scan.
+    const finalWork = requiredAcceptanceWork(state.model, state.selection.decomposition, state.work, selected.status === 'OPTIMAL');
+    if (workTotal(finalWork) > state.budget) { state.status = 'INCONCLUSIVE'; state.reason = 'current-acceptance-exceeds-budget'; return mark(state); }
+    const result = materialize(state.model, state.contracts, selected);
     await verifySelection(state.model, state.selection.decomposition, state.contracts, result.selection, result.artifact);
-    finalWork = requiredFinalWork(state.model, state.selection.decomposition, state.contracts, semanticStop, proposed, result.selection.status === 'OPTIMAL');
     state.work = finalWork;
     state.completion = await seal({schema: COMPLETION_SCHEMA, attemptId: state.attemptId, source: state.source, model: state.model,
         selector: state.selection, decomposition: state.selection.decomposition, contracts: state.contracts,
@@ -383,7 +411,7 @@ export async function inspectCompletion(input, {prior = null, historicalAudit = 
         else requireValue(same(plan.contracts[i], completion.contracts[i]), 'COMPLETION_REUSED_PROFILE');
     }
     const semanticStop = stopping(model, chosen.decomposition, completion.contracts, completion.source, prior, work);
-    const finalWork = requiredFinalWork(model, chosen.decomposition, completion.contracts, semanticStop, work, completion.selection.status === 'OPTIMAL');
+    const finalWork = requiredFinalWork(model, chosen.decomposition, semanticStop, work, completion.selection.status === 'OPTIMAL');
     requireValue(same(completion.change, {retained: plan.retained, invalidated: plan.invalidated, removed: plan.removed,
         rebuilt: plan.invalidated.map(v => v.module), semanticStop}), 'COMPLETION_CHANGE_ACCOUNT');
     requireValue(same(completion.work, finalWork) && completion.countedWork === workTotal(finalWork)

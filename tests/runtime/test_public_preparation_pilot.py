@@ -157,7 +157,10 @@ def test_release_real_weight_job_requires_actual_ti_pilot_and_cannot_soft_fail()
     release = yaml.load((root / ".github/workflows/agent-release.yml").read_text(), Loader=yaml.BaseLoader)
     assert "real-model" in release["jobs"]["package"]["needs"]
     model_job = release["jobs"]["real-model"]
-    assert "if" not in model_job and "continue-on-error" not in model_job
+    assert model_job["if"] == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
+    assert model_job["needs"] == ["paper-scope", "publication-preflight"]
+    assert release["jobs"]["paper-scope"]["uses"] == "./.github/workflows/paper-scope.yml"
+    assert "continue-on-error" not in model_job
     command = next(step for step in model_job["steps"] if "scripts.validate_agent_model" in step.get("run", ""))
     assert "--with-ti-public-pilot" in command["run"]
     assert "if" not in command and "continue-on-error" not in command

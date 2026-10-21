@@ -59,6 +59,11 @@ Progress is checkpointed at component boundaries, not within one component.
 explicit independent restore. `INCONCLUSIVE` and unfinished attempts have no current
 accepted artifact. An inconclusive budget is not silently increased. Validation or
 unsupported-schema failures throw and are retained as failures by the workspace.
+Boundary selection is reserved and charged before determining whether a current artifact
+exists; materialization and independent acceptance then use the actual feasible or
+infeasible outcome. Insufficient acceptance budgets retain already spent selection work.
+Unpublished preview checkpoints that omitted this spent work may be rejected on import;
+retain their original export rather than rewriting the ledger or claiming migration.
 
 The existing Out-Evolve project history holds execution checkpoints, failures,
 complete lineage, admission verification work and inert draft records. It retains its

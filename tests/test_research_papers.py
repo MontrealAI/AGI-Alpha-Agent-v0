@@ -281,7 +281,10 @@ def test_catalog_text_is_html_data_not_markup_or_attributes() -> None:
     assert all(not key.startswith("on") for _, attrs in parsed.elements for key in attrs)
     assert escape(attack, quote=True) in html
     assert any(attrs.get("data-paper-fr") == attack for _, attrs in parsed.elements)
-    assert [attrs["href"] for tag, attrs in parsed.elements if tag == "a"] == ["papers/first.pdf"]
+    assert [attrs["href"] for tag, attrs in parsed.elements if tag == "a"] == [
+        "#paper-first-title",
+        "papers/first.pdf",
+    ]
 
 
 def test_readme_escapes_markdown_and_raw_html() -> None:
@@ -313,6 +316,24 @@ def test_fifth_paper_is_generated_generically_with_both_languages() -> None:
     assert readme.count("https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/") == 5
     assert html == papers.render_section(data)
     assert readme == papers.render_readme(data)
+
+
+@pytest.mark.parametrize("count", [1, 2, 7, 10])
+def test_reading_index_is_ordered_local_navigation_not_duplicate_downloads(count: int) -> None:
+    data = catalog(*(paper_row(f"paper-{i}", featured=i == 0) for i in range(count)))
+    html = papers.render_section(data)
+    parsed = CapturedHTML()
+    parsed.feed(html)
+    anchors = [attrs["href"] for tag, attrs in parsed.elements if tag == "a"]
+    assert anchors == [f"#paper-paper-{i}-title" for i in range(count)] + [
+        f"papers/paper-{i}.pdf" for i in range(count)
+    ]
+    targets = [attrs for tag, attrs in parsed.elements if tag == "h3"]
+    assert [target["id"] for target in targets] == [f"paper-paper-{i}-title" for i in range(count)]
+    assert all(target["tabindex"] == "-1" for target in targets)
+    assert html.count('class="paper-link"') == count
+    assert html.count("<li>") == count - 1
+    assert papers.render_readme(data).count("### [") == 1
 
 
 @pytest.mark.parametrize("text", ["start end start", "end start", "start only", "start end end"])

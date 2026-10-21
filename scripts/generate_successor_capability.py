@@ -39,7 +39,9 @@ def build(root: Path = ROOT) -> None:
             return f"const {binding} = {visit(path.parent / location)};"
 
         source = re.sub(r"^import\s+([^;]*?)\s+from\s+['\"]([^'\"]+)['\"];", imports, source, flags=re.MULTILINE)
-        exports = re.findall(r"^export\s+(?:async\s+)?(?:function|class|const)\s+(\w+)", source, flags=re.MULTILINE)
+        exports = re.findall(
+            r"^export\s+(?:async\s+)?(?:function\s*\*?|class|const)\s+(\w+)", source, flags=re.MULTILINE
+        )
         source = re.sub(r"^export\s+", "", source, flags=re.MULTILINE)
         chunks.append(f"const {name}=(()=>{{\n{source}\nreturn {{{','.join(exports)}}};\n}})();")
         return name
