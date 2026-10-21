@@ -1,6 +1,6 @@
 ## 1.37.1 — Featured research papers (source candidate)
 
-- Lead with Transformational Intelligence, alongside Out-Strategise and Out-Evolve, near the README top and homepage hero.
+- Lead with Transformational Intelligence, alongside Out-Strategise, Out-Execute and Out-Evolve, near the README top and homepage hero.
 - Add English/French summaries, accessible direct PDF links and responsive research cards without changing the originals.
 - Preserve the free-start flagship, historical README and mission, current capabilities, project history and payment routes.
 - Refresh only documentation release metadata and generated identities; retain all existing review and publication gates.

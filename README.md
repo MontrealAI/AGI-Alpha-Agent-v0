@@ -23,6 +23,8 @@ still serve the intended purpose. The lead paper connects strategy discovery to 
 
 - **[Out-Strategise ♟️][paper-strategise]** — Couples observation with construction to create strategies
   that achieve the required outcome despite unresolved uncertainty.
+- **[Out-Execute ⚡][paper-execute]** — Studies reusable execution capabilities and independently checked
+  boundary contracts that preserve progress as tasks change, in finite synthetic settings.
 - **[Out-Evolve ♾️][paper-evolve]** — Proposes building capabilities for experimentation and production
   that make further discoveries and successor capabilities possible.
 
@@ -33,12 +35,13 @@ they are not claims of general autonomous capability or physical deployment.
 
 [paper-transformational]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Transformational_Intelligence.pdf
 [paper-strategise]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Strategise.pdf
+[paper-execute]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Execute.pdf
 [paper-evolve]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Evolve.pdf
 [papers-website]: https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers
 <!-- /featured-research-papers -->
 
 **Current source candidate · 1.37.1.** [Research-feature release notes](docs/agent/RELEASE_NOTES_1.37.1.md).
-This documentation update features the three original papers without changing their bytes or the agent's capabilities.
+This documentation update features the four original papers without changing their bytes or the agent's capabilities.
 Existing release records below keep their original scope. Exact-source acceptance and publication remain required.
 
 ## Choose your next step

@@ -27,7 +27,8 @@ from scripts.validate_ecosystem import validate as validate_ecosystem
 def assert_paper_links(page: Page, language: str) -> None:
     """Keep original PDFs and accessible link names intact through reading changes."""
     papers = page.locator("#papers")
-    expect(papers.locator("article")).to_have_count(3)
+    expect(papers.locator("article")).to_have_count(4)
+    expect(papers.locator(".paper-link")).to_have_count(4)
     title_element = papers.locator(".paper-featured h3")
     assert " ".join(title_element.inner_text().replace("\u00ad", "").split()) == "TRANSFORMATIONAL INTELLIGENCE ∞"
     words = title_element.locator(".paper-title-word")
@@ -61,6 +62,7 @@ def assert_paper_links(page: Page, language: str) -> None:
         (
             ("Transformational_Intelligence.pdf", "Transformational Intelligence"),
             ("Out_Strategise.pdf", "Out-Strategise"),
+            ("Out_Execute.pdf", "Out-Execute"),
             ("Out_Evolve.pdf", "Out-Evolve"),
         )
     ):

@@ -5,14 +5,15 @@
 ## What changes
 
 The main README now introduces **TRANSFORMATIONAL INTELLIGENCE ∞ — Learning to Change the Game**
-near the top, with **Out-Strategise ♟️** and **Out-Evolve ♾️** alongside it. The flagship's free-start
-entry remains first. The homepage adds a dedicated research section immediately after its hero, plus a
-navigation link, English/French summaries and direct links to the three original English PDFs.
+near the top, with **Out-Strategise ♟️**, **Out-Execute ⚡** and **Out-Evolve ♾️** alongside it.
+The flagship's free-start entry remains first. The homepage adds a dedicated research section immediately after its hero, plus a
+navigation link, English/French summaries and direct links to the four original English PDFs.
 
 The featured manuscript investigates purpose-preserving problem reformulation. Out-Strategise studies
-observation and construction together under unresolved uncertainty. Out-Evolve proposes constructing
-experimentation and production capabilities that enable further capabilities. The descriptions retain the
-distinction between research proposals, bounded exact studies and qualification still required.
+observation and construction together under unresolved uncertainty. Out-Execute studies reusable execution
+capabilities and independently checked boundary contracts that preserve progress through change in finite
+synthetic settings. Out-Evolve proposes constructing experimentation and production capabilities that enable
+further capabilities. The descriptions retain the distinction between research proposals, bounded exact studies and qualification still required.
 
 The reading links work without JavaScript, do not open embedded readers and do not require an account,
 wallet or installation. Existing language and larger-text controls also apply to the new section.
@@ -21,7 +22,7 @@ navigation, includes their touch targets and accessibility, and retains research
 
 ## Preserved scope
 
-All three original paper files and canonical GitHub URLs remain unchanged. The original README, mission,
+All four original paper files and canonical GitHub URLs remain unchanged. The original README, mission,
 flywheels, current flagship entry, retained project journeys, selected essays and advanced tools remain
 available. Earlier release notes, tags, artifacts and deployment records keep their original identities.
 

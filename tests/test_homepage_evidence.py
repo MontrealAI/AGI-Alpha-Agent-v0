@@ -199,6 +199,15 @@ def test_pre_feature_release_keeps_legacy_report_compatibility(report):
         verify_report(legacy, "a" * 40, "1.37.1", "https://site/")
 
 
+def test_three_paper_candidate_cannot_qualify_four_paper_release(report):
+    from scripts.finalize_pages_release import verify_homepage_report
+
+    stale = featured_paper_report(report)
+    del stale["paper_assets"]["Out_Execute.pdf"]
+    with pytest.raises(ValueError, match="exact four original PDF digests"):
+        verify_homepage_report(stale, "a" * 40, "1.37.1", "https://site/")
+
+
 @pytest.mark.parametrize("damage", ["marker", "map", "null", "invalid", "extra"])
 def test_featured_paper_evidence_rejects_incomplete_or_invalid_records(report, damage):
     from scripts.finalize_pages_release import verify_homepage_report
