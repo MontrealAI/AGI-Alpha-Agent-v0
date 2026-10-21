@@ -30,6 +30,75 @@ test('charter validation is strict and bounded with duplicate-key/numeric parser
     assert.throws(() => parseCharter(JSON.stringify(DEFAULT_CHARTER).replace('"accuracy":1', '"accuracy":1.0')));
 });
 
+test('charter semantics reject invalid captured controls and budgets masked by property reads', () => {
+    for (const key of ['controls', 'budget']) {
+        const invalid = charter(key === 'controls' ? {controls: 5}
+            : {budget: {...DEFAULT_CHARTER.budget, checking: -1}});
+        const input = new Proxy(invalid, {
+            get(value, name) { return name === key ? DEFAULT_CHARTER[key] : Reflect.get(value, name); }
+        });
+        assert.throws(() => validateCharter(input), /Unsupported finite discovery charter/);
+    }
+});
+
+test('charter validation uses descriptor values without original property reads', () => {
+    const expected = charter({}); let reads = 0;
+    const trap = {get() { reads++; throw Error('Original charter property was read'); }};
+    const input = new Proxy({...expected, budget: new Proxy({...expected.budget}, trap)}, trap);
+    assert.deepEqual(validateCharter(input), expected);
+    assert.equal(reads, 0);
+});
+
+test('charter return retains the validated budget instead of a later JSON property view', () => {
+    const expected = charter({}); let scans = 0;
+    const budget = new Proxy({...expected.budget}, {
+        ownKeys(value) { scans++; return Reflect.ownKeys(value); },
+        get(value, key) { return key === 'checking' && scans >= 3 ? -1 : Reflect.get(value, key); }
+    });
+    const validated = validateCharter({...expected, budget});
+    assert.deepEqual(validated, expected);
+    assert.equal(scans, 1);
+});
+
+test('campaign verification returns resource counts from the frame it checked', () => {
+    const input = structuredClone(base), reads = {checking: 0, search: 0};
+    input.resources = new Proxy(input.resources, {
+        get(value, key) {
+            return Object.hasOwn(reads, key) && ++reads[key] > 1 ? -5000 : Reflect.get(value, key);
+        }
+    });
+    const verdict = verifyCampaign(DEFAULT_CHARTER, input);
+    assert.equal(verdict.verified, true);
+    assert.equal(verdict.checks, base.resources.checking);
+    assert.equal(verdict.replaySearch, base.resources.search);
+    assert.deepEqual(reads, {checking: 0, search: 0});
+});
+
+test('campaign verification rejects invalid captured costs masked by original property reads', () => {
+    const input = structuredClone(base);
+    input.resources = new Proxy({...input.resources, checking: -1}, {
+        get(value, key) { return key === 'checking' ? base.resources.checking : Reflect.get(value, key); }
+    });
+    assert.throws(() => verifyCampaign(DEFAULT_CHARTER, input), error =>
+        /do not reconstruct/.test(error.message) && error.verificationResources.checking === base.resources.checking);
+});
+
+test('verified original parent identity reuses only its captured intact frame', () => {
+    let armed = false, reads = 0;
+    const input = new Proxy(structuredClone(base), {
+        get(value, key) {
+            if (armed) { reads++; throw Error('Original parent property was read'); }
+            return Reflect.get(value, key);
+        }
+    });
+    assert.equal(verifyCampaign(DEFAULT_CHARTER, input).accepted, true);
+    armed = true;
+    const result = runCampaign(charter({controls: 4, memory: 16, operations: ['flip-z', 'flip-w']}), {parent: input});
+    assert.equal(result.state, 'accepted');
+    assert.equal(result.reuse.acceptedPredecessorPreserved, true);
+    assert.equal(reads, 0);
+});
+
 test('measurement raw evidence and exact contrast are generated rather than supplied final answers', () => {
     const p = stage(base, 'learn').program;
     assert.equal(p.queryRows.length, 8);

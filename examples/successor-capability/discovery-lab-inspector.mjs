@@ -134,7 +134,7 @@ async function inspectCampaign(payload, options, sources) {
 
 /** The host pins these identities from installed bytes, never from an imported request. */
 export function createInspector(installedSources) {
-    contract.canonical(installedSources);
+    installedSources = JSON.parse(contract.canonical(installedSources));
     if (!exact(installedSources, ['modelDigest', 'sourceDigest', 'evaluatorDigest'])
         || !Object.values(installedSources).every(value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value))) {
         throw Error('Installed Discovery Lab source identities are required.');

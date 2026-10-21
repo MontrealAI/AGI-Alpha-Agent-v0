@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-I5EvDMOlAyBPVsTqIRh6hmMvyCMlP3r8MXwC2SmvODQ='; style-src 'sha256-d9C9wFsCAZG3/SZYXaJ83ivVndvb7zo3950b5U+CVpA='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-WQjeBGCW7IjQfLA+eIK6iXwluAgiRNiKr8CTn8QFbV0='; style-src 'sha256-d9C9wFsCAZG3/SZYXaJ83ivVndvb7zo3950b5U+CVpA='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -470,7 +470,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>46858f3b1e5e2b5cc00f0118b0ec3660d8d701cfa726e097475757efd141442a</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>3cc770caddaa916974a5836b77e7d76ebdd022025948f3bfd52c4b9b9174dc3b</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -2513,7 +2513,7 @@ const uniqueList = (value, choices, required = false) => Array.isArray(value) &&
     && (!required || value.length > 0) && new Set(value).size === value.length && value.every(x => choices.includes(x));
 
 function validateCharter(input) {
-    boundedCanonical(input);
+    input = JSON.parse(boundedCanonical(input));
     if (!exact(input, fields) || input.schema !== DEFAULT_CHARTER.schema || input.purpose !== DEFAULT_CHARTER.purpose
         || ![3, 4].includes(input.controls) || !integer(input.accuracy, 0, 8)
         || !integer(input.intendedUses, 1, 100) || !integer(input.memory, 1, 16)
@@ -2530,7 +2530,7 @@ function validateCharter(input) {
         || !integer(input.budget.acquisitions, 0, 10000) || !integer(input.budget.search, 0, 1000000)
         || !integer(input.budget.checking, 0, 1000000) || !integer(input.budget.storageBytes, 1024, 2000000)
         || !integer(input.budget.installations, 0, 100)) fail('Unsupported finite discovery charter.');
-    return copy(input);
+    return input;
 }
 
 function parseCharter(text) { return validateCharter(parseBounded(text)); }
@@ -2920,10 +2920,12 @@ function invalidationFor(before, after) {
 
 /** Search and qualification are distinct; any truncated attempt is inconclusive. */
 function runCampaign(input, options = {}) {
-    const charter = validateCharter(input), parent = options.parent || null;
-    if (parent && trustedCampaigns.get(parent) !== boundedCanonical(parent)) {
+    const charter = validateCharter(input), originalParent = options.parent || null;
+    const parentFrame = originalParent ? boundedCanonical(originalParent) : null;
+    if (originalParent && trustedCampaigns.get(originalParent) !== parentFrame) {
         fail('Verify the intact parent in its retained history before successor reuse.');
     }
+    const parent = originalParent ? JSON.parse(parentFrame) : null;
     if (parent && (parent.schema !== 'discovery-lab-campaign/v1' || parent.state !== 'accepted')) {
         fail('A successor requires an accepted parent campaign within its original scope.');
     }
@@ -3036,8 +3038,9 @@ function runCampaign(input, options = {}) {
 
 /** Independent certificate checks plus deterministic result reconstruction. */
 function verifyCampaign(charter, result, options = {}) {
-    const current = validateCharter(charter);
-    boundedCanonical(result);
+    const current = validateCharter(charter), originalResult = result;
+    const resultFrame = boundedCanonical(result);
+    result = JSON.parse(resultFrame);
     if (!result || result.schema !== 'discovery-lab-campaign/v1' || !equal(result.charter, current)) {
         fail('Campaign does not belong to this exact charter.');
     }
@@ -3056,7 +3059,7 @@ function verifyCampaign(charter, result, options = {}) {
         error.verificationResources = copy(reconstructed.resources);
         throw error;
     }
-    trustedCampaigns.set(result, boundedCanonical(result));
+    trustedCampaigns.set(originalResult, resultFrame);
     return {verified: true, accepted: result.state === 'accepted', state: result.state,
         verificationResources: copy(reconstructed.resources),
         checks: result.resources.checking, replaySearch: result.resources.search,
@@ -3076,7 +3079,7 @@ const same = (a, b) => contract.canonical(a) === contract.canonical(b);
 const fields = ['schema', 'kind', ...contract.BINDING_KEYS, 'inputArtifacts', 'scope', 'assumptions',
     'payload', 'checkerOutcome', 'attempts', 'costs', 'dependencies', 'invalidations', 'executionMode', 'state'];
 async function validateArtifact(input) {
-    contract.canonical(input);
+    input = JSON.parse(contract.canonical(input));
     if (!exact(input, [...fields, 'digest']) || input.schema !== ARTIFACT_SCHEMA
         || !contract.STAGES.includes(input.kind) || input.executionMode !== 'synthetic-local') {
         throw Error('Unsupported versioned Discovery Lab artifact.');
@@ -3109,11 +3112,11 @@ async function validateArtifact(input) {
     }
     const body = Object.fromEntries(fields.map(key => [key, input[key]]));
     if (input.digest !== await contract.payloadDigest(body)) throw Error('Artifact digest mismatch.');
-    return JSON.parse(contract.canonical(input));
+    return input;
 }
 async function makeArtifacts(bindings, result) {
     const bound = contract.validateBindings(bindings);
-    contract.canonical(result);
+    result = JSON.parse(contract.canonical(result));
     if (result.schema !== 'discovery-lab-campaign/v1' || !Array.isArray(result.stages)
         || result.stages.length !== 6 || !result.stages.every((stage, index) => stage.kind === contract.STAGES[index])) {
         throw Error('All six ordered campaign artifacts are required.');
@@ -5861,7 +5864,7 @@ const outEvolveEvaluation=capability_module_16;
 const discoveryLab=capability_module_4;
 const discoveryHistory=capability_module_3;
 const discoveryContract=capability_module_7;
-const SOURCE_HASH='46858f3b1e5e2b5cc00f0118b0ec3660d8d701cfa726e097475757efd141442a';
+const SOURCE_HASH='3cc770caddaa916974a5836b77e7d76ebdd022025948f3bfd52c4b9b9174dc3b';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -7025,7 +7028,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "0929e305a6d235774a6464662220e0ae454ec738fc42ffde6ba6f141d3217851", "sourceDigest": "46858f3b1e5e2b5cc00f0118b0ec3660d8d701cfa726e097475757efd141442a"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "d01610121ea603050ef6302af4c84816381d275f30508a6308e5298d0109987f", "sourceDigest": "3cc770caddaa916974a5836b77e7d76ebdd022025948f3bfd52c4b9b9174dc3b"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {

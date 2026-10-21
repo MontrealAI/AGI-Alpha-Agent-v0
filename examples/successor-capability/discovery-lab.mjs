@@ -31,7 +31,7 @@ const uniqueList = (value, choices, required = false) => Array.isArray(value) &&
     && (!required || value.length > 0) && new Set(value).size === value.length && value.every(x => choices.includes(x));
 
 export function validateCharter(input) {
-    boundedCanonical(input);
+    input = JSON.parse(boundedCanonical(input));
     if (!exact(input, fields) || input.schema !== DEFAULT_CHARTER.schema || input.purpose !== DEFAULT_CHARTER.purpose
         || ![3, 4].includes(input.controls) || !integer(input.accuracy, 0, 8)
         || !integer(input.intendedUses, 1, 100) || !integer(input.memory, 1, 16)
@@ -48,7 +48,7 @@ export function validateCharter(input) {
         || !integer(input.budget.acquisitions, 0, 10000) || !integer(input.budget.search, 0, 1000000)
         || !integer(input.budget.checking, 0, 1000000) || !integer(input.budget.storageBytes, 1024, 2000000)
         || !integer(input.budget.installations, 0, 100)) fail('Unsupported finite discovery charter.');
-    return copy(input);
+    return input;
 }
 
 export function parseCharter(text) { return validateCharter(parseBounded(text)); }
@@ -438,10 +438,12 @@ export function invalidationFor(before, after) {
 
 /** Search and qualification are distinct; any truncated attempt is inconclusive. */
 export function runCampaign(input, options = {}) {
-    const charter = validateCharter(input), parent = options.parent || null;
-    if (parent && trustedCampaigns.get(parent) !== boundedCanonical(parent)) {
+    const charter = validateCharter(input), originalParent = options.parent || null;
+    const parentFrame = originalParent ? boundedCanonical(originalParent) : null;
+    if (originalParent && trustedCampaigns.get(originalParent) !== parentFrame) {
         fail('Verify the intact parent in its retained history before successor reuse.');
     }
+    const parent = originalParent ? JSON.parse(parentFrame) : null;
     if (parent && (parent.schema !== 'discovery-lab-campaign/v1' || parent.state !== 'accepted')) {
         fail('A successor requires an accepted parent campaign within its original scope.');
     }
@@ -554,8 +556,9 @@ export function runCampaign(input, options = {}) {
 
 /** Independent certificate checks plus deterministic result reconstruction. */
 export function verifyCampaign(charter, result, options = {}) {
-    const current = validateCharter(charter);
-    boundedCanonical(result);
+    const current = validateCharter(charter), originalResult = result;
+    const resultFrame = boundedCanonical(result);
+    result = JSON.parse(resultFrame);
     if (!result || result.schema !== 'discovery-lab-campaign/v1' || !equal(result.charter, current)) {
         fail('Campaign does not belong to this exact charter.');
     }
@@ -574,7 +577,7 @@ export function verifyCampaign(charter, result, options = {}) {
         error.verificationResources = copy(reconstructed.resources);
         throw error;
     }
-    trustedCampaigns.set(result, boundedCanonical(result));
+    trustedCampaigns.set(originalResult, resultFrame);
     return {verified: true, accepted: result.state === 'accepted', state: result.state,
         verificationResources: copy(reconstructed.resources),
         checks: result.resources.checking, replaySearch: result.resources.search,

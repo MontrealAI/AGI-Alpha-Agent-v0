@@ -8,7 +8,7 @@ const same = (a, b) => contract.canonical(a) === contract.canonical(b);
 const fields = ['schema', 'kind', ...contract.BINDING_KEYS, 'inputArtifacts', 'scope', 'assumptions',
     'payload', 'checkerOutcome', 'attempts', 'costs', 'dependencies', 'invalidations', 'executionMode', 'state'];
 export async function validateArtifact(input) {
-    contract.canonical(input);
+    input = JSON.parse(contract.canonical(input));
     if (!exact(input, [...fields, 'digest']) || input.schema !== ARTIFACT_SCHEMA
         || !contract.STAGES.includes(input.kind) || input.executionMode !== 'synthetic-local') {
         throw Error('Unsupported versioned Discovery Lab artifact.');
@@ -41,11 +41,11 @@ export async function validateArtifact(input) {
     }
     const body = Object.fromEntries(fields.map(key => [key, input[key]]));
     if (input.digest !== await contract.payloadDigest(body)) throw Error('Artifact digest mismatch.');
-    return JSON.parse(contract.canonical(input));
+    return input;
 }
 export async function makeArtifacts(bindings, result) {
     const bound = contract.validateBindings(bindings);
-    contract.canonical(result);
+    result = JSON.parse(contract.canonical(result));
     if (result.schema !== 'discovery-lab-campaign/v1' || !Array.isArray(result.stages)
         || result.stages.length !== 6 || !result.stages.every((stage, index) => stage.kind === contract.STAGES[index])) {
         throw Error('All six ordered campaign artifacts are required.');

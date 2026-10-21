@@ -126,6 +126,26 @@ test('real installed semantic adapter admits a frozen draft and rejects changed 
 
 const inspectionLimits = () => ({acquisitions: 10000, search: 10000000, checking: 10000000,
     memoryBytes: 8000000, storageBytes: 4000000, workerCapacity: 4, installations: 100, elapsedMs: 120000});
+test('installed source semantics reject an invalid captured hash masked by property reads', () => {
+    const input = new Proxy({...sources, modelDigest: 'invalid'}, {
+        get(value, key) { return key === 'modelDigest' ? sources.modelDigest : Reflect.get(value, key); }
+    });
+    assert.throws(() => createInspector(input), /Installed Discovery Lab source identities are required/);
+});
+test('installed source context pins the captured frame for actual native inspection', async () => {
+    const {record} = await campaign(); const limits = inspectionLimits();
+    const request = await history.workRequest(record, 'USDC', limits);
+    const target = {...sources}; let reads = 0;
+    const input = new Proxy(target, {
+        get(value, key) { reads++; return String(key).endsWith('Digest') ? 'f'.repeat(64) : Reflect.get(value, key); }
+    });
+    const inspect = createInspector(input);
+    target.sourceDigest = 'e'.repeat(64);
+    const verdict = await inspect(request.payload, {request, limits});
+    assert.equal(verdict.accepted, true);
+    assert.equal(reads, 0);
+    assert.ok(verdict.resourceUsed.search > 0);
+});
 test('installed inspector validates all six complete envelopes with smaller sufficient effective limits', async () => {
     const {record} = await campaign();
     const limits = inspectionLimits();

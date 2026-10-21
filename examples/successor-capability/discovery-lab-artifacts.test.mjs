@@ -29,3 +29,73 @@ test('artifact substitution, unsupported fields, omitted programs and future dep
         await assert.rejects(validateArtifact(altered));
     }
 });
+
+for (const [name, change] of [
+    ['scope', input => { input.scope = {callerChanged: true}; }],
+    ['payload', input => { input.payload.program = {callerChanged: true}; }],
+    ['costs', input => { input.costs.search++; }]
+]) {
+    test(`artifact validation retains the committed ${name} snapshot across hashing`, async () => {
+        const original = (await makeArtifacts(bindings, runCampaign(DEFAULT_CHARTER)))[0];
+        const input = JSON.parse(canonical(original)), pending = validateArtifact(input);
+        change(input);
+        const validated = await pending;
+        assert.deepEqual(validated, original);
+        assert.notEqual(validated, input);
+        assert.deepEqual(await validateArtifact(validated), original);
+    });
+}
+
+test('artifact validation uses descriptor values without rereading caller properties', async () => {
+    const original = (await makeArtifacts(bindings, runCampaign(DEFAULT_CHARTER)))[0];
+    let reads = 0;
+    const input = new Proxy(original, {get() { reads++; throw Error('Caller property was reread'); }});
+    assert.deepEqual(await validateArtifact(input), original);
+    assert.equal(reads, 0);
+});
+
+test('an unknown artifact field in the first captured frame cannot disappear before validation', async () => {
+    const original = (await makeArtifacts(bindings, runCampaign(DEFAULT_CHARTER)))[0];
+    let scans = 0;
+    const input = new Proxy({...original, authority: true}, {
+        ownKeys(value) {
+            return ++scans === 1 ? Reflect.ownKeys(value) : Reflect.ownKeys(value).filter(key => key !== 'authority');
+        }
+    });
+    await assert.rejects(validateArtifact(input), /Unsupported versioned Discovery Lab artifact/);
+    assert.equal(scans, 1);
+});
+
+for (const [name, change] of [
+    ['stage', input => { input.stages[5] = {...input.stages[5], reason: 'caller changed'}; }],
+    ['scope', input => { input.stages[0].scope = {callerChanged: true}; }],
+    ['costs', input => { input.stages[4].cost.search++; }],
+    ['invalidations', input => {
+        input.invalidations = {changed: ['memory'], earliest: 'think', invalidated: STAGES.slice(1)};
+    }]
+]) {
+    test(`all six artifacts retain one campaign snapshot when caller ${name} changes during hashing`, async () => {
+        const original = runCampaign(DEFAULT_CHARTER), expected = await makeArtifacts(bindings, original);
+        const input = JSON.parse(canonical(original)), pending = makeArtifacts(bindings, input);
+        change(input);
+        const artifacts = await pending;
+        assert.deepEqual(artifacts, expected);
+        for (const artifact of artifacts) assert.deepEqual(await validateArtifact(artifact), artifact);
+    });
+}
+
+test('artifact construction uses captured campaign fields without original property reads', async () => {
+    const original = runCampaign(DEFAULT_CHARTER), expected = await makeArtifacts(bindings, original);
+    let reads = 0;
+    const input = new Proxy(original, {get() { reads++; throw Error('Caller campaign property was reread'); }});
+    assert.deepEqual(await makeArtifacts(bindings, input), expected);
+    assert.equal(reads, 0);
+});
+
+test('artifact construction rejects an unsupported campaign schema from the first captured frame', async () => {
+    const original = runCampaign(DEFAULT_CHARTER);
+    const input = new Proxy({...original, schema: 'unsupported-campaign/v1'}, {
+        get(value, key) { return key === 'schema' ? original.schema : Reflect.get(value, key); }
+    });
+    await assert.rejects(makeArtifacts(bindings, input), /All six ordered campaign artifacts are required/);
+});
