@@ -2,6 +2,8 @@
 
 This dataset retains actual synthetic browser downloads and local native-inspection receipts. It is representative evidence for the identified source bytes. It grants no release, merge, payment, deployment, or external-execution approval. Both browser reports say `packaged-local`; the hosted run served its tested page on the Actions runner's localhost. This is not public HTTPS page acceptance.
 
+Subsequent review found limitations in this exact historical source: direct inspector calls did not validate the complete request/payload commitment or enforce the measured elapsed allowance, and the shared canonicalizer allocated object descriptors before checking object width. The native inspector also lacked a separately declared framing charge. See [Alpha review](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4851#discussion_r4342179467), its [elapsed finding](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4851#discussion_r4342179478), and [Fleet's shared-width finding](https://github.com/MontrealAI/AGI-Fleet-Linux/pull/64#discussion_r4342007670). These positive observations do not establish those adversarial boundaries or complete native framing accounting. Repairs and their new source identities require fresh qualification; every raw payload below remains unchanged evidence of the identified earlier source.
+
 ## Source and provenance
 
 | Identity | Exact value |
@@ -9,7 +11,7 @@ This dataset retains actual synthetic browser downloads and local native-inspect
 | Alpha feature source | `1665cb83f09bde3962f80942e2f1e54b789d9708` |
 | Hosted tested merge commit | `27c44eda525048761883014e731e942ca60e55bc` |
 | Identical Git tree for both commits | `d89e40f15fb47d8dd848e998d1fd26e6712e90be` |
-| Source catalogue SHA-256 | `3775fb20316bdacf81808ee31b47359e364eab16905ea2972de4b179e64ebb49` |
+| Generated sourceHash | `3775fb20316bdacf81808ee31b47359e364eab16905ea2972de4b179e64ebb49` |
 | Generated page SHA-256 | `c95ca4565623e1b42fb3f3b44756a91d2c5354312680135924ee24d90099e8f4` |
 | Source manifest SHA-256 | `761a2b8f799ce4f0f77582e80069331a5e30506164ab3e99e03f3472a800b5ec` |
 | Software version reported | `1.37.0` |
