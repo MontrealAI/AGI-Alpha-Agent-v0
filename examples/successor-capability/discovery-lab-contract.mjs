@@ -21,41 +21,57 @@ export function canonical(value) {
     const token = text => { charge(text.length); return text; };
     function encode(item, depth = 0) {
         if (++nodes > 100000 || depth > 32) throw Error('JSON complexity exceeds limit');
-        if (Array.isArray(item) && item.length >= 100000) throw Error('JSON complexity exceeds limit');
+        const array = Array.isArray(item);
         if (item === null || typeof item === 'boolean') return token(JSON.stringify(item));
         if (typeof item === 'string') {
             if (item.length > MAX_INPUT_BYTES - 2) throw Error('Canonical JSON exceeds 2 MB');
             if (scalar(item)) return token(JSON.stringify(item));
         }
         if (typeof item === 'number' && Number.isSafeInteger(item) && !Object.is(item, -0)) return token(String(item));
-        let ownKeys;
+        let ownKeys, captured, arrayLength;
         if (item && typeof item === 'object') {
             ownKeys = Reflect.ownKeys(item);
-            const array = Array.isArray(item), width = ownKeys.length - (array ? 1 : 0);
+            const width = ownKeys.length - (array ? 1 : 0);
             if (width > 100000 - nodes) throw Error('JSON complexity exceeds limit');
-            // Bound width and the minimum serialized size before allocating descriptors.
-            let minimum = 2 + Math.max(0, (array ? item.length : width) - 1);
-            if (array) minimum += item.length;
+            const lengthDescriptor = array ? Object.getOwnPropertyDescriptor(item, 'length') : null;
+            if (array) {
+                if (!lengthDescriptor || !Object.hasOwn(lengthDescriptor, 'value')
+                    || !Number.isSafeInteger(lengthDescriptor.value) || lengthDescriptor.value < 0
+                    || Object.is(lengthDescriptor.value, -0)) {
+                    throw Error('Invalid array length');
+                }
+                arrayLength = lengthDescriptor.value;
+                if (arrayLength >= 100000) throw Error('JSON complexity exceeds limit');
+            }
+            // Bound serialized size before capturing element/member descriptors.
+            let minimum = 2 + Math.max(0, (array ? arrayLength : width) - 1);
+            if (array) minimum += arrayLength;
             for (const key of ownKeys) {
                 if (typeof key !== 'string') throw Error('Symbol data is unsupported');
                 if (!array) minimum += key.length + 4; // Quotes, colon and at least one value byte.
                 if (minimum > MAX_INPUT_BYTES - codeUnits) throw Error('Canonical JSON exceeds 2 MB');
             }
+            captured = Object.create(null);
             for (const key of ownKeys) {
-                const descriptor = Object.getOwnPropertyDescriptor(item, key);
+                const descriptor = array && key === 'length' ? lengthDescriptor : Object.getOwnPropertyDescriptor(item, key);
                 if (!descriptor || !Object.hasOwn(descriptor, 'value')) throw Error('Accessor data is unsupported');
-                if (Array.isArray(item) && key === 'length') continue;
+                if (array && key === 'length') continue;
                 if (!descriptor.enumerable) throw Error('Non-enumerable data is unsupported');
-                if (Array.isArray(item) && (!/^(0|[1-9][0-9]*)$/.test(key) || Number(key) >= item.length)) {
+                if (array && (!/^(0|[1-9][0-9]*)$/.test(key) || Number(key) >= arrayLength)) {
                     throw Error('Extra array properties are unsupported');
                 }
+                captured[key] = descriptor.value;
             }
         }
-        if (Array.isArray(item)) {
+        if (array) {
             if (Object.getPrototypeOf(item) !== Array.prototype) throw Error('Non-standard arrays are unsupported');
-            for (let i = 0; i < item.length; i++) if (!Object.hasOwn(item, i)) throw Error('Sparse arrays are not JSON');
-            charge(2 + Math.max(0, item.length - 1));
-            return '[' + item.map(v => encode(v, depth + 1)).join(',') + ']';
+            const parts = [];
+            charge(2 + Math.max(0, arrayLength - 1));
+            for (let i = 0; i < arrayLength; i++) {
+                if (!Object.hasOwn(captured, i)) throw Error('Sparse arrays are not JSON');
+                parts.push(encode(captured[i], depth + 1));
+            }
+            return '[' + parts.join(',') + ']';
         }
         if (item && typeof item === 'object' && [Object.prototype, null].includes(Object.getPrototypeOf(item))) {
             const keys = ownKeys.sort();
@@ -63,7 +79,7 @@ export function canonical(value) {
             return '{' + keys.map(key => {
                 if (key.length > MAX_INPUT_BYTES - 3) throw Error('Canonical JSON exceeds 2 MB');
                 if (!/^[\x20-\x7e]+$/.test(key)) throw Error('Object keys must be printable ASCII');
-                return token(JSON.stringify(key) + ':') + encode(item[key], depth + 1);
+                return token(JSON.stringify(key) + ':') + encode(captured[key], depth + 1);
             }).join(',') + '}';
         }
         throw Error('Unsupported JSON value; integers and Unicode scalars required');
@@ -95,14 +111,14 @@ export async function payloadDigest(value) {
         .map(value => value.toString(16).padStart(2, '0')).join('');
 }
 export function validateResources(value) {
-    canonical(value);
+    value = JSON.parse(canonical(value));
     if (!exact(value, RESOURCE_KEYS) || !RESOURCE_KEYS.every(key => nonnegative(value[key]))) {
         throw Error('Invalid Discovery Lab resource vector.');
     }
-    return JSON.parse(canonical(value));
+    return value;
 }
 export function validateBindings(value) {
-    canonical(value);
+    value = JSON.parse(canonical(value));
     if (!exact(value, BINDING_KEYS)
         || typeof value.missionId !== 'string'
         || !/^capability-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value.missionId)
@@ -110,10 +126,10 @@ export function validateBindings(value) {
         || !BINDING_KEYS.slice(2).every(key => hash(value[key]))) {
         throw Error('Invalid Discovery Lab source or mission bindings.');
     }
-    return JSON.parse(canonical(value));
+    return value;
 }
 export async function validateWorkRequest(input) {
-    canonical(input);
+    input = JSON.parse(canonical(input));
     const keys = ['schema', ...BINDING_KEYS, 'stage', 'inputArtifacts', 'resourceLimits', 'executionMode',
         'commission', 'payloadDigest', 'payload'];
     if (!exact(input, keys) || input.schema !== REQUEST_SCHEMA) throw Error('Unsupported Discovery Lab request schema.');
@@ -136,7 +152,7 @@ export async function validateWorkRequest(input) {
         || !hash(input.payloadDigest) || input.payloadDigest !== await payloadDigest(input.payload)) {
         throw Error('Discovery Lab executable payload commitment mismatch.');
     }
-    return JSON.parse(canonical(input));
+    return input;
 }
 export async function parseWorkRequest(text) {
     return validateWorkRequest(parseBounded(text));

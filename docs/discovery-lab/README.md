@@ -77,6 +77,9 @@ the committed request. The inspector validates the complete envelope and its sep
 before semantic replay. Its measured elapsed cap is a soft deadline checked before and between synchronous
 replays and at report construction: an overrun retains spent work and returns incomplete, without claiming
 hard preemption. A zero elapsed allowance starts no semantic replay.
+Canonical encoding captures data descriptors and bounded array length once. Each semantic validator
+checks and returns one inert parsed snapshot, so later caller reads or changes during hashing cannot
+replace the data that was validated.
 
 Currency caps remain zero. No industrial or economic savings are inferred from these counts.
 

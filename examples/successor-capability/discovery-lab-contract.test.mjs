@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {canonical,parseBounded,validateResources,DISCOVERY_LAB_INSPECTION_CHECKS} from './discovery-lab-contract.mjs';
+import {readFileSync} from 'node:fs';
+import {canonical,parseBounded,validateResources,validateBindings,validateWorkRequest,
+    BINDING_KEYS,DISCOVERY_LAB_INSPECTION_CHECKS} from './discovery-lab-contract.mjs';
 
 function withoutEncoder(operation) {
     const original = globalThis.TextEncoder;
@@ -124,4 +126,70 @@ test('shared declared inspection charge composes with a distinct receiver allowa
         memoryBytes: 0, storageBytes: 0, workerCapacity: 0, installations: 0, elapsedMs: 0});
     assert.equal(committed.checking - receiverChecks - DISCOVERY_LAB_INSPECTION_CHECKS, replayChecks);
     assert.throws(() => validateResources({...committed, inspectionApproved: true}), /resource vector/);
+});
+
+const requestFixture = () => JSON.parse(readFileSync(new URL('./fixtures/discovery-lab-request.json', import.meta.url)));
+test('canonical data comes from captured descriptors without property or array-method reads', () => {
+    for (const [value, expected] of [[{count: 7}, '{"count":7}'], [[1, 2], '[1,2]']]) {
+        let reads = 0;
+        const view = new Proxy(value, {get() { reads++; throw Error('Caller property was read'); }});
+        assert.equal(canonical(view), expected);
+        assert.equal(reads, 0);
+    }
+});
+test('captured array length must itself be a bounded nonnegative integer', () => {
+    for (const length of [NaN, Infinity, -1, -0, 0.5, '0', false]) {
+        const view = new Proxy([], {
+            get: (target, key) => Reflect.get(target, key),
+            getOwnPropertyDescriptor(target, key) {
+                const descriptor = Reflect.getOwnPropertyDescriptor(target, key);
+                return key === 'length' ? {...descriptor, value: length} : descriptor;
+            }
+        });
+        assert.throws(() => canonical(view), /array length|complexity/i);
+    }
+});
+test('resource and binding validation returns the same inert snapshot it checked', () => {
+    const fixture = requestFixture();
+    for (const [value, key, validate] of [
+        [fixture.resourceLimits, 'checking', validateResources],
+        [Object.fromEntries(BINDING_KEYS.map(key => [key, fixture[key]])), 'revision', validateBindings]
+    ]) {
+        value[key] = 0; let passes = 0;
+        const view = new Proxy(value, {
+            ownKeys(target) { passes++; return Reflect.ownKeys(target); },
+            get(target, name) { return name === key && passes >= 3 ? -1 : Reflect.get(target, name); },
+            getOwnPropertyDescriptor(target, name) {
+                const descriptor = Reflect.getOwnPropertyDescriptor(target, name);
+                return name === key && passes >= 3 ? {...descriptor, value: -1} : descriptor;
+            }
+        });
+        assert.equal(validate(view)[key], 0);
+        assert.equal(passes, 1);
+    }
+});
+test('complete request validation keeps extra keys from its first captured frame', async () => {
+    const fixture = {...requestFixture(), extra: true}; let passes = 0;
+    const view = new Proxy(fixture, {
+        ownKeys(target) {
+            const keys = Reflect.ownKeys(target); passes++;
+            return passes === 1 ? keys : keys.filter(key => key !== 'extra');
+        }
+    });
+    await assert.rejects(validateWorkRequest(view), /request schema/);
+});
+test('complete request validation uses captured mode data rather than a later property value', async () => {
+    const fixture = {...requestFixture(), executionMode: 'external'};
+    const view = new Proxy(fixture, {
+        get(target, key) { return key === 'executionMode' ? 'synthetic-local' : Reflect.get(target, key); }
+    });
+    await assert.rejects(validateWorkRequest(view), /not provisioned/);
+});
+test('complete request validation owns all data before awaiting its payload hash', async () => {
+    const fixture = requestFixture(), original = structuredClone(fixture);
+    const pending = validateWorkRequest(fixture);
+    fixture.executionMode = 'external'; fixture.commission.capBaseUnits = '1';
+    fixture.commission.status = 'SUBMITTED'; fixture.resourceLimits.checking = -1;
+    fixture.payload.notice = 'Changed after validation started';
+    assert.deepEqual(await pending, original);
 });
