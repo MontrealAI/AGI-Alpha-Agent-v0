@@ -1,0 +1,88 @@
+{
+  "passed": false,
+  "error": "Locator expected to be enabled\nActual value: disabled \nCall log:\n  - Expect \"to_be_enabled\" with timeout 120000ms\n  - waiting for locator(\"#lab-run-future\")\n    123 \u00d7 locator resolved to <button disabled type=\"button\" id=\"lab-run-future\">3 \u00b7 Run all alternatives</button>\n        - unexpected value \"disabled\"\n",
+  "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/32717074a7f1/alpha/tests/browser/test_discovery_lab_continuation.py\", line 32, in retain_failure\n    yield\n  File \"/workspace/scratch/32717074a7f1/alpha/tests/browser/test_discovery_lab_continuation.py\", line 85, in main\n    page.locator(\"#lab-freeze-future\").click()\n  File \"/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py\", line 20294, in to_be_enabled\n    self._sync(self._impl_obj.to_be_enabled(enabled=enabled, timeout=timeout))\n  File \"/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py\", line 115, in _sync\n    return task.result()\n           ^^^^^^^^^^^^^\n  File \"/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/_impl/_assertions.py\", line 718, in to_be_enabled\n    await self._expect_impl(\n  File \"/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/_impl/_assertions.py\", line 83, in _expect_impl\n    raise AssertionError(\nAssertionError: Locator expected to be enabled\nActual value: disabled \nCall log:\n  - Expect \"to_be_enabled\" with timeout 120000ms\n  - waiting for locator(\"#lab-run-future\")\n    123 \u00d7 locator resolved to <button disabled type=\"button\" id=\"lab-run-future\">3 \u00b7 Run all alternatives</button>\n        - unexpected value \"disabled\"\n\n",
+  "source": {
+    "schema": "successor-capability-source/v1",
+    "sourceHash": "86560d7976f1c4c5d56ccfb8d3492ba299889ff2255d1337416d4af561605664",
+    "sources": {
+      "docs/assets/successor/engine.mjs": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488",
+      "docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json": "40210f1a91deb3aa9089710a7902d39c6149db4c2ff2840f66d28b8adb396608",
+      "examples/successor-capability/apparatus.mjs": "3624abc15b1457bbfc2a7dc5c0693df66f29d13d7ef9fc43c77adf6d1758096d",
+      "examples/successor-capability/capability-package.mjs": "7010c63d3529893e37c929b0f2c30b011c6ef9b96de6774bb12bd8a29e78fc86",
+      "examples/successor-capability/constructor.mjs": "99feb7ca1b3be001d4aed5230d96598094ff31f58cda42be0a97dfc23f11f5e2",
+      "examples/successor-capability/discovery-lab-artifacts.mjs": "77d193b29a725234bfd7cfd8d66155acd4b43c535c83db17ebed68b815d0f303",
+      "examples/successor-capability/discovery-lab-baselines.mjs": "91123c8c471224910ae420f3ec140a31fb0e1ad09862cbf85132ebc7993232ce",
+      "examples/successor-capability/discovery-lab-checker.mjs": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099",
+      "examples/successor-capability/discovery-lab-contract.mjs": "98c8de8ce2774b7650bf4ee11eeedfb0a69b75fa6d1b080ef823637d77d0ab47",
+      "examples/successor-capability/discovery-lab-deployments.mjs": "07dec0160c4b15c19450eade70ff2464a30ad8020ed73780ea53bff841c5ac35",
+      "examples/successor-capability/discovery-lab-docket.mjs": "4b2ede922aae317e64f833bd8771738c83b38d519c3ea4d23c22e4f3994f7546",
+      "examples/successor-capability/discovery-lab-evidence-history.mjs": "da56f3f111e0d76d89156e7700c46a93482fc60722687f649209aaad0c7d2149",
+      "examples/successor-capability/discovery-lab-future-checker.mjs": "b9f325312025e3f4d63c269a884a8dfc5ec244ad6e07cc0a8a1a1a2ad4e56eff",
+      "examples/successor-capability/discovery-lab-future.mjs": "33d3b918ac59b8848f605d24cb804c68a481270a633fee530537c73e732d9649",
+      "examples/successor-capability/discovery-lab-history.mjs": "b786df019bd38d1b39e661276bae17bf4d243b33857779270cb8b61c86995b3f",
+      "examples/successor-capability/discovery-lab-real-task.mjs": "86aae1d8e0ad8c072957567cf5c5f19983e8a5dcba28225f4d3f53e7efe98d2d",
+      "examples/successor-capability/discovery-lab.mjs": "08e57ac70899302bb953615afc8bda9070508ca53801d0860414e2dd8549727f",
+      "examples/successor-capability/evaluation.mjs": "4fcbdce45c41b89cd797fe7272af7c1b1e59931984df9e0028903081002cc0ff",
+      "examples/successor-capability/independent-checker.mjs": "b59034eeb73594178170d81d7b4f96625a52230e85bda94038bf7ccd4ad0d286",
+      "examples/successor-capability/out-evolve-workspace.mjs": "c4ed6ee1e73632138685dbe3556726151b51cd1eaa69711be9b0f4dc2679dc56",
+      "examples/successor-capability/typed-runtime.mjs": "6aad0ef6d64718081312160ce5bfb5669c3693dded6d401067a6229e34093b23",
+      "examples/successor-capability/witness.mjs": "424d90415fcfb2d6d374e44e687e814f7b53fd6cf20f97f65c4c366981f5c215",
+      "examples/successor-capability/workspace.mjs": "aa6d64676bfc10be91146733c636a07665172d2d81c1f7c2b700b5e37241b53f",
+      "examples/successor-workbench/mission-store.mjs": "ccdae4fa9b546e1f0e31e289ff8d3c325fcb6c5cddf5a065de67ed991f1a7cb0",
+      "scripts/generate_successor_capability.py": "12fcafc5ab1d0f002e4a743742cdfbfec6e70524fbae891ca60e787f975ef664",
+      "scripts/templates/successor-capability/app.js": "65d30e012718d4c9e7382f820d36754509308883e58bcffa00d25499d422c114",
+      "scripts/templates/successor-capability/discovery-lab-app.js": "30f9c1cb5a30258e3bbe491ee54514a990445c26d0c94928d3e5921d7d47db06",
+      "scripts/templates/successor-capability/discovery-lab-bridge.js": "7836a35ef7846c8931f2edc752678813568bd1efa2e49751a4312fd07d7c9c72",
+      "scripts/templates/successor-capability/discovery-lab-continuation.js": "bdd2dd7eabc95f75da1fc690c28ee17a18725ac0e70f785fff877c01b9db62f2",
+      "scripts/templates/successor-capability/discovery-lab.css": "f64ea92c8e88620900e27edba223c714242b8684fbea852e09ba029e75b9449d",
+      "scripts/templates/successor-capability/discovery-lab.html": "17478b3aa1697bf302439a92ab50f816be0505273456242c73b7777bfbd24db8",
+      "scripts/templates/successor-capability/index.html": "24e44b340e9679f38e4127a66013970ed239f382a66c7d1fd4d52c623cd6148e",
+      "scripts/templates/successor-capability/out-evolve-app.js": "8e852a7ccd2d6da56ef808baec7426f843651aab355d71fd09405e1299db894d",
+      "scripts/templates/successor-capability/style.css": "402eb33725e27505692e9ba040e9199ee1f055ef563852d4449f43d899dc1866"
+    }
+  },
+  "scope": "failed-local-generated-continuation-acceptance",
+  "visibleState": {
+    "lab-future-status": {
+      "text": "Construct and save an accepted six-stage campaign first. These steps use the latest saved campaign under the installed sources.",
+      "disabled": null,
+      "hidden": false
+    },
+    "lab-status": {
+      "text": "No construction has run. The charter is ready to inspect.",
+      "disabled": null,
+      "hidden": false
+    },
+    "error": {
+      "text": "",
+      "disabled": null,
+      "hidden": true
+    },
+    "identity": {
+      "text": "No frozen version yet. The default example is an editable proposal.",
+      "disabled": null,
+      "hidden": false
+    },
+    "lab-run-future": {
+      "text": "3 \u00b7 Run all alternatives",
+      "disabled": true,
+      "hidden": false
+    },
+    "lab-commit-future": {
+      "text": "2 \u00b7 Commit future tasks",
+      "disabled": true,
+      "hidden": false
+    },
+    "lab-freeze-future": {
+      "text": "1 \u00b7 Freeze accepted capability",
+      "disabled": true,
+      "hidden": false
+    },
+    "lab-real-task-report": {
+      "text": "NOT_RUN \u00b7 A qualified model, tool runtime and independent operator are required.",
+      "disabled": null,
+      "hidden": false
+    }
+  }
+}

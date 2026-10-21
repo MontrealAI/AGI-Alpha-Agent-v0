@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/32717074a7f1/alpha/tests/browser/test_discovery_lab_continuation.py", line 96, in <module>
+    server.shutdown()
+^^^^^^
+  File "/workspace/scratch/32717074a7f1/alpha/tests/browser/test_discovery_lab_continuation.py", line 48, in main
+    page.locator("#lab-commit-future").click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 20294, in to_be_enabled
+    self._sync(self._impl_obj.to_be_enabled(enabled=enabled, timeout=timeout))
+  File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/_impl/_assertions.py", line 718, in to_be_enabled
+    await self._expect_impl(
+  File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/playwright/_impl/_assertions.py", line 83, in _expect_impl
+    raise AssertionError(
+AssertionError: Locator expected to be enabled
+Actual value: disabled 
+Call log:
+  - Expect "to_be_enabled" with timeout 120000ms
+  - waiting for locator("#lab-run-future")
+    123 × locator resolved to <button disabled type="button" id="lab-run-future">3 · Run all alternatives</button>
+        - unexpected value "disabled"
+

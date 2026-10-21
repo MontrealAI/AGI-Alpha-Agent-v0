@@ -1,0 +1,169 @@
+F...............                                                         [100%]
+=================================== FAILURES ===================================
+____________ test_local_assets_reach_credential_clean_offline_child ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-28/test_local_assets_reach_creden0')
+
+    def test_local_assets_reach_credential_clean_offline_child(tmp_path: Path) -> None:
+        insight_root = tmp_path / "insight assets"
+        fetch_root = tmp_path / "fallback assets"
+        insight_root.mkdir()
+        fetch_root.mkdir()
+        probe = tmp_path / "test_runner_boundary.py"
+        probe.write_text(
+            f"""# SPDX-License-Identifier: Apache-2.0
+    import os
+    from pathlib import Path
+    import runpy
+    import socket
+    import pytest
+    
+    
+    def test_child_boundary():
+        insight_root = Path({str(insight_root)!r})
+        fetch_root = Path({str(fetch_root)!r})
+        assert os.environ["INSIGHT_ASSET_ROOT"] == str(insight_root)
+        assert os.environ["FETCH_ASSETS_DIR"] == str(fetch_root)
+        asset_root = runpy.run_path({str(ROOT / "tests" / "test_assets_replaced.py")!r})["_asset_root"]
+        assert asset_root() == insight_root
+        del os.environ["INSIGHT_ASSET_ROOT"]
+        assert asset_root() == fetch_root
+        for key in ("OPENAI_API_KEY", "GITHUB_TOKEN", "UNRELATED_PRIVATE_TOKEN"):
+            assert key not in os.environ
+        assert os.environ["NEO4J_PASSWORD"] == "local-tests-only-strong-password"
+        assert os.environ["API_TOKEN"] == "test-token"
+        assert os.environ["ALPHA_TEST_OFFLINE"] == "1"
+        with socket.socket() as client:
+            with pytest.raises(OSError, match="external network disabled by offline test runner"):
+                client.connect(("198.51.100.1", 443))
+    """
+        )
+        env = {
+            "PATH": str(Path(sys.executable).parent) + os.pathsep + os.defpath,
+            "HOME": str(tmp_path / "home"),
+            "LANG": "C.UTF-8",
+            "INSIGHT_ASSET_ROOT": str(insight_root),
+            "FETCH_ASSETS_DIR": str(fetch_root),
+            "OPENAI_API_KEY": "fixture-openai-only",
+            "GITHUB_TOKEN": "fixture-github-only",
+            "UNRELATED_PRIVATE_TOKEN": "fixture-private-only",
+            "NEO4J_PASSWORD": "fixture-password-only",
+            "API_TOKEN": "fixture-api-only",
+        }
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "scripts.run_local_tests",
+                "--noconftest",
+                "-c",
+                "/dev/null",
+                "-p",
+                "no:cacheprovider",
+                str(probe),
+                "-q",
+            ],
+            cwd=ROOT,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=60,
+        )
+>       assert completed.returncode == 0, completed.stdout + completed.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/pytest/__main__.py", line 9, in <module>
+E             raise SystemExit(pytest.console_main())
+E                              ^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201, in console_main
+E             code = main()
+E                    ^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 156, in main
+E             config = _prepareconfig(args, plugins)
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 342, in _prepareconfig
+E             config = pluginmanager.hook.pytest_cmdline_parse(
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512, in __call__
+E             return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120, in _hookexec
+E             return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 167, in _multicall
+E             raise exception
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 139, in _multicall
+E             teardown.throw(exception)
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/helpconfig.py", line 112, in pytest_cmdline_parse
+E             config = yield
+E                      ^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121, in _multicall
+E             res = hook_impl.function(*args)
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 1146, in pytest_cmdline_parse
+E             self.parse(args)
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 1527, in parse
+E             self._preparse(args, addopts=addopts)
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 1412, in _preparse
+E             self.pluginmanager.load_setuptools_entrypoints("pytest11")
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/pluggy/_manager.py", line 416, in load_setuptools_entrypoints
+E             plugin = ep.load()
+E                      ^^^^^^^^^
+E           File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/metadata/__init__.py", line 205, in load
+E             module = import_module(match.group('module'))
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py", line 90, in import_module
+E             return _bootstrap._gcd_import(name[level:], package, level)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+E           File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+E           File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+E           File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+E           File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+E           File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+E           File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+E           File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+E           File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+E           File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+E           File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+E           File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/assertion/rewrite.py", line 186, in exec_module
+E             exec(co, module.__dict__)
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/requests_mock/__init__.py", line 13, in <module>
+E             from requests_mock.adapter import Adapter, ANY
+E           File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+E           File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+E           File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/_pytest/assertion/rewrite.py", line 186, in exec_module
+E             exec(co, module.__dict__)
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/requests_mock/adapter.py", line 16, in <module>
+E             from requests.adapters import BaseAdapter
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/requests/__init__.py", line 47, in <module>
+E             from .exceptions import RequestsDependencyWarning
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/requests/exceptions.py", line 14, in <module>
+E             from .compat import JSONDecodeError as CompatJSONDecodeError
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/requests/compat.py", line 49, in <module>
+E             chardet = _resolve_char_detection()
+E                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/requests/compat.py", line 43, in _resolve_char_detection
+E             chardet = importlib.import_module(lib)
+E                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py", line 90, in import_module
+E             return _bootstrap._gcd_import(name[level:], package, level)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/charset_normalizer/__init__.py", line 26, in <module>
+E             from .api import from_bytes, from_fp, from_path, is_binary
+E           File "/workspace/scratch/ce7e013c0938/lab-venv/lib/python3.12/site-packages/charset_normalizer/api.py", line 7, in <module>
+E             from .cd import (
+E           File "src/charset_normalizer/cd.pyx", line 1, in init charset_normalizer.cd
+E         AttributeError: module 'charset_normalizer.md' has no attribute 'CharInfo'
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/workspace/scratch/ce7e013c0938/lab-venv/bin/python', '-m', 'scripts.run_local_tests', '--noco...ne 1, in init charset_normalizer.cd\nAttributeError: module \'charset_normalizer.md\' has no attribute \'CharInfo\'\n').returncode
+
+tests/test_run_local_tests_environment.py:81: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_run_local_tests_environment.py::test_local_assets_reach_credential_clean_offline_child
+1 failed, 15 passed in 1.60s
