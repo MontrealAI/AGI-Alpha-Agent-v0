@@ -7,7 +7,7 @@
 [Launch Demo](../cross_industry_alpha_factory/index.html){.md-button}
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.37.1
 
 **Mode:** Supplied-input comparison. Compare your own cross-industry assessments
 using explicit priorities, review thresholds and evidence notes. This is a

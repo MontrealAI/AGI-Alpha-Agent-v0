@@ -1,6 +1,20 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.37.0 source candidate
+# Release readiness — 1.37.1 source candidate
+
+Version **1.37.1** adds a prominent research feature to the README and bilingual homepage, led by
+[Transformational Intelligence](../Transformational_Intelligence.pdf), alongside
+[Out-Strategise](../Out_Strategise.pdf) and [Out-Evolve](../Out_Evolve.pdf).
+The [release notes](RELEASE_NOTES_1.37.1.md) describe this documentation-only scope. Original paper bytes,
+current capabilities, project histories, contracts, payment routes and authorization boundaries are unchanged.
+
+This later source requires a distinct release version and fresh exact-source acceptance. Do not reuse or move
+the v1.37.0 tag or replace earlier assets. The unchanged Agent release acceptance workflow must validate the
+homepage, complete all existing gates, package this source, verify public HTTPS and uploaded bytes, then publish.
+Local source checks do not establish a browser, deployed-site or complete release pass. Consult the matching
+release manifest and reports for actual acceptance; the previous source records below retain their original scope.
+
+## Previous source proposal — 1.37.0
 
 Version **1.37.0** prepares the already merged capability workspace and bounded Out-Evolve constructor
 for a new release. The [release notes](RELEASE_NOTES_1.37.0.md) identify the synthetic scope, preserved

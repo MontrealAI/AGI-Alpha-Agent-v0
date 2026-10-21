@@ -102,6 +102,7 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
     assert re.findall(r'<a\b[^>]*href="([^"]+)"', navigation[1]) == [
         "successor/alpha/",
         "start/",
+        "#papers",
         "#how-it-works",
         "#questions",
         "#research",

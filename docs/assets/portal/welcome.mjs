@@ -1,6 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "nav-papers": "Publications",
+    "papers-eyebrow": "LA RECHERCHE · OCTOBRE 2026",
+    "papers-title": "De meilleures stratégies. Un autre jeu. De nouvelles capacités.",
+    "papers-intro": "Trois manuscrits de recherche pour changer les conditions de réussite, tout en préservant la finalité du travail.",
+    "paper-featured": "PUBLICATION À LA UNE",
+    "paper-transformational-summary": "Repérer les formulations restrictives, en construire de meilleures et vérifier qu’elles servent toujours la finalité visée. Un cadre de reformulation vérifiable de façon indépendante, au-delà d’une recherche plus efficace.",
+    "paper-strategise-topic": "CONSTRUIRE LA STRATÉGIE",
+    "paper-strategise-summary": "Associer observation et construction pour créer des stratégies qui atteignent le résultat exigé malgré une incertitude persistante.",
+    "paper-evolve-topic": "CONSTRUIRE LA SUITE",
+    "paper-evolve-summary": "Une architecture proposée pour bâtir des capacités d’expérimentation et de production qui rendent possibles de nouvelles découvertes et des capacités successeures.",
+    "paper-read-featured": "Lire la publication à la une",
+    "paper-read": "Lire la publication",
+    "paper-format": "PDF en anglais",
+    "papers-note": "Vincent Boucher · MONTREAL.AI · Originaux en anglais. Propositions de recherche et études délimitées, sans revendication de capacité autonome générale ni de déploiement physique.",
     "current-mainnet-record": "État actuel du déploiement Mainnet",
     "archived-mainnet-record": "Archives du déploiement du 11 octobre",
     "current-deployment-notice": "État actuel du déploiement Mainnet · cinq adresses de contrat vérifiées",

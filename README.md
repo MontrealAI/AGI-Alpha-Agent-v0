@@ -13,6 +13,34 @@ problem formulations that unnecessarily limit the outcome. Keep the attempts, ev
 Planning and the catalog example are free in your browser. Computer execution uses a separately configured
 native model and isolated runner. [What works now and how to begin](docs/agent/SUCCESSOR_ALPHA.md).
 
+<!-- featured-research-papers -->
+## Featured research · TRANSFORMATIONAL INTELLIGENCE ∞
+
+**[TRANSFORMATIONAL INTELLIGENCE ∞ — Learning to Change the Game][paper-transformational]**
+
+Investigates how to identify restrictive problem formulations, construct better ones and test that they
+still serve the intended purpose. The lead paper connects strategy discovery to independently testable reformulation.
+
+- **[Out-Strategise ♟️][paper-strategise]** — Couples observation with construction to create strategies
+  that achieve the required outcome despite unresolved uncertainty.
+- **[Out-Evolve ♾️][paper-evolve]** — Proposes building capabilities for experimentation and production
+  that make further discoveries and successor capabilities possible.
+
+Research manuscripts by Vincent Boucher, MONTREAL.AI · October 2026 · English PDFs.
+The papers distinguish proposed architectures, exact studies and the qualification still required;
+they are not claims of general autonomous capability or physical deployment.
+**[Explore the papers on the website, in English or French →][papers-website]**
+
+[paper-transformational]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Transformational_Intelligence.pdf
+[paper-strategise]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Strategise.pdf
+[paper-evolve]: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Evolve.pdf
+[papers-website]: https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers
+<!-- /featured-research-papers -->
+
+**Current source candidate · 1.37.1.** [Research-feature release notes](docs/agent/RELEASE_NOTES_1.37.1.md).
+This documentation update features the three original papers without changing their bytes or the agent's capabilities.
+Existing release records below keep their original scope. Exact-source acceptance and publication remain required.
+
 ## Choose your next step
 
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**

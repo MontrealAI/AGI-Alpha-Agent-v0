@@ -24,6 +24,35 @@ from scripts.validate_ascension import Handler, inspect
 from scripts.validate_ecosystem import validate as validate_ecosystem
 
 
+def assert_paper_links(page: Page, language: str) -> None:
+    """Keep original PDFs and accessible link names intact through reading changes."""
+    papers = page.locator("#papers")
+    expect(papers.locator("article")).to_have_count(3)
+    expect(papers.locator(".paper-featured h3")).to_have_text("TRANSFORMATIONAL INTELLIGENCE ∞")
+    for index, (filename, title) in enumerate(
+        (
+            ("Transformational_Intelligence.pdf", "Transformational Intelligence"),
+            ("Out_Strategise.pdf", "Out-Strategise"),
+            ("Out_Evolve.pdf", "Out-Evolve"),
+        )
+    ):
+        link = papers.locator(".paper-link").nth(index)
+        expect(link).to_have_attribute("href", filename)
+        expect(link).to_have_attribute("type", "application/pdf")
+        expect(link).to_have_attribute("hreflang", "en")
+        expect(link.locator(".sr-only")).to_have_text(": " + title)
+        expect(link.locator(".paper-format")).to_have_text("English PDF" if language == "en" else "PDF en anglais")
+        expect(link.locator("span[aria-hidden='true']")).to_have_text("↗")
+        expected = (
+            ("Read the featured paper" if index == 0 else "Read the paper")
+            if language == "en"
+            else ("Lire la publication à la une" if index == 0 else "Lire la publication")
+        )
+        expect(link.locator("span[data-home-key^='paper-read']")).to_have_text(expected)
+    expect(papers.locator("[data-home-key]")).not_to_have_count(0)
+    assert "undefined" not in papers.inner_text()
+
+
 def assert_reading_links(page: Page, language: str) -> None:
     """Language switches preserve each guide's visible text and hidden context."""
     guides = page.locator("#reading .reading-card .reading-guide")
@@ -45,6 +74,7 @@ def assert_reading_links(page: Page, language: str) -> None:
 
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
+    assert_paper_links(page, language)
     assert_reading_links(page, language)
     for selector, path, fragments in (
         ("[data-alpha-link]", "successor/alpha/", {"", "computer-mission"}),
@@ -176,7 +206,7 @@ def check_layout(page: Page) -> list[dict[str, Any]]:
     controls = inspect(
         page,
         """(() => [...document.querySelectorAll(
-          'header a, header button, #home a, #home button, #questions summary, .welcome-ecosystem a'
+          'header a, header button, #home a, #home button, #papers a, #questions summary, .welcome-ecosystem a'
         )].filter(el => !el.closest('#research') && el.getClientRects().length &&
           getComputedStyle(el).visibility !== 'hidden').map(el => {
           const box = el.getBoundingClientRect();
@@ -193,7 +223,11 @@ def check_layout(page: Page) -> list[dict[str, Any]]:
 def audit(page: Page, axe_source: str, *, beginner_only: bool) -> dict[str, Any]:
     """Run axe against the shipped CSP and retain exact failures for review."""
     inspect(page, axe_source + "; void 0")
-    context = "{include:['header','#home','.welcome-ecosystem'],exclude:['#research']}" if beginner_only else "document"
+    context = (
+        "{include:['header','#home','#papers','.welcome-ecosystem'],exclude:['#research']}"
+        if beginner_only
+        else "document"
+    )
     tags = "['wcag2a','wcag2aa','wcag21aa','best-practice']" if beginner_only else "['wcag2a','wcag2aa','wcag21aa']"
     return cast(dict[str, Any], inspect(page, f"axe.run({context}, {{runOnly:{{type:'tag',values:{tags}}}}})"))
 
@@ -228,6 +262,7 @@ def validate(
         "layouts": [],
         "accessibility": [],
         "assets": {},
+        "paper_assets": {},
     }
     try:
         expected_assets = asset_hashes()
@@ -247,6 +282,19 @@ def validate(
                 raise ValueError(f"Homepage asset differs from the tested source: {relative}")
             report["assets"][relative] = digest
         report["checks"].append("exact-current-assets")
+        for filename in ("Transformational_Intelligence.pdf", "Out_Strategise.pdf", "Out_Evolve.pdf"):
+            expected = hashlib.sha256((root / "docs" / filename).read_bytes()).hexdigest()
+            if hashlib.sha256((site / filename).read_bytes()).hexdigest() != expected:
+                raise ValueError(f"Built research paper differs from the original: {filename}")
+            request = Request(origin + filename, headers={"Cache-Control": "no-cache"})
+            with urlopen(request, timeout=20) as response:
+                if response.status != 200 or response.geturl() != origin + filename:
+                    raise ValueError(f"Unexpected research paper response: {filename}")
+                received = hashlib.sha256(response.read()).hexdigest()
+            if received != expected:
+                raise ValueError(f"Served research paper differs from the original: {filename}")
+            report["paper_assets"][filename] = received
+        report["checks"].append("original-paper-bytes")
         axe_source = axe_script.read_text(encoding="utf-8")
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(executable_path=executable)
@@ -434,6 +482,10 @@ def validate(
                     {"width": width, "language": language, "large_text": large, "controls": controls}
                 )
                 page.screenshot(path=str(output / f"homepage-{language}-{width}{'-large' if large else ''}.png"))
+                assert_paper_links(page, language)
+                page.locator("#papers").screenshot(
+                    path=str(output / f"homepage-papers-{language}-{width}{'-large' if large else ''}.png")
+                )
                 page.locator("#alpha-journey").screenshot(
                     path=str(output / f"homepage-journey-{language}-{width}{'-large' if large else ''}.png")
                 )
