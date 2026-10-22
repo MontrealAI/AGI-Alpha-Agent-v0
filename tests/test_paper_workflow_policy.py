@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Independent contracts for trusted paper scope and unchanged software gates."""
+"""Independent contracts for trusted paper scope and reviewed software gates."""
 
 from __future__ import annotations
 
@@ -67,7 +67,7 @@ def dependencies(job: dict[str, Any]) -> set[str]:
     return {value} if isinstance(value, str) else set(value)
 
 
-@pytest.mark.parametrize("name", (*GATED, "paper-scope.yml", "paper-publication.yml"))
+@pytest.mark.parametrize("name", (*GATED, "paper-scope.yml", "paper-preview.yml", "paper-publication.yml"))
 def test_workflow_yaml_has_no_duplicate_mapping_keys(name: str) -> None:
     workflow(name)
 
@@ -85,7 +85,14 @@ def test_runtime_gates_preserve_original_permissions_dependencies_and_failure_se
             # The combined software release adds, never substitutes, its exact-source
             # capability/browser/recovery gate. The delivery test binds that call.
             added_dependencies.add("successor-capability")
-        assert dependencies(after) == dependencies(before) | added_dependencies, (name, key)
+        expected_dependencies = dependencies(before) | added_dependencies
+        if (name, key) == ("agent-release.yml", "historical-ci"):
+            # Waiting is deferred until every substantive package prerequisite completes.
+            expected_dependencies |= dependencies(new["jobs"]["package"]) - {"historical-ci"}
+        if (name, key) == ("pr-ci.yml", "smoke"):
+            # Lint and smoke independently feed their required verdicts.
+            expected_dependencies.discard("lint")
+        assert dependencies(after) == expected_dependencies, (name, key)
         condition = after.get("if", "")
         assert "needs.paper-scope.outputs.mode == 'full'" in condition, (name, key)
         assert "!cancelled()" in condition, (name, key)
@@ -153,6 +160,10 @@ def test_paper_scope_executes_only_extracted_prechange_policy() -> None:
     assert 'git --no-replace-objects show "$BASE:$file" > "$policy/$file"' in script
     assert 'cd "$policy"' in script
     assert script.index('cd "$policy"') < script.index("python scripts/paper_changes.py")
+    extracted = script.split("for file in", 1)[1].split("; do", 1)[0]
+    for required in ("scripts/release_plan.py", "scripts/check_editorial_docs.py", "requirements-editorial-docs.lock"):
+        assert required in extracted
+    assert script.index("python scripts/paper_changes.py") < script.index("python -m scripts.check_editorial_docs")
     assert '--root "$GITHUB_WORKSPACE" --base "$BASE" --head "$HEAD"' in script
     assert 'python -m scripts.research_papers --root "$GITHUB_WORKSPACE" check' in script
     assert "--require-hashes --only-binary=:all: -r requirements-papers.lock" in script
@@ -198,6 +209,53 @@ def test_both_deployment_lanes_share_lock_and_recheck_immediately_before_deploy(
             index for index, step in enumerate(steps) if step.get("uses", "").startswith("actions/deploy-pages@")
         )
         assert steps[index - 1]["run"] == command
+
+
+@pytest.mark.parametrize(
+    "missing", ["scripts/release_plan.py", "scripts/check_editorial_docs.py", "requirements-editorial-docs.lock"]
+)
+def test_missing_prechange_release_policy_falls_back_full_before_branch_code(tmp_path: Path, missing: str) -> None:
+    from tests.test_paper_changes import git, save
+
+    git(tmp_path, "init", "-b", "main")
+    git(tmp_path, "config", "user.name", "Fixture")
+    git(tmp_path, "config", "user.email", "fixture@example.invalid")
+    (tmp_path / "scripts").mkdir()
+    # Every available policy file would fail if executed; one trusted input is
+    # absent even though the candidate supplies it. Installation must fall back.
+    for path in (
+        "scripts/paper_changes.py",
+        "scripts/release_plan.py",
+        "scripts/check_editorial_docs.py",
+        "scripts/research_papers.py",
+        "scripts/build_service_worker.py",
+        "requirements-papers.lock",
+        "requirements-editorial-docs.lock",
+    ):
+        if path != missing:
+            (tmp_path / path).write_text("raise AssertionError('must not execute')\n")
+    base = save(tmp_path)
+    (tmp_path / missing).write_text("raise AssertionError('untrusted branch policy')\n")
+    head = save(tmp_path)
+    step = next(step for step in workflow("paper-scope.yml")["jobs"]["classify"]["steps"] if step.get("id") == "scope")
+    output = tmp_path / "output"
+    result = subprocess.run(
+        ["bash", "-eu", "-o", "pipefail", "-c", step["run"]],
+        cwd=tmp_path,
+        env={
+            **os.environ,
+            "RUNNER_TEMP": str(tmp_path),
+            "GITHUB_OUTPUT": str(output),
+            "GITHUB_WORKSPACE": str(tmp_path),
+            "EVENT": "push",
+            "BASE": base,
+            "HEAD": head,
+        },
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    assert output.read_text() == "mode=full\n"
 
 
 def test_descendant_check_fetches_objects_without_executing_new_source(
@@ -318,7 +376,7 @@ PREVIEW_FILES = {
 
 
 def preview_steps() -> tuple[dict[str, Any], dict[str, Any]]:
-    steps = workflow("paper-scope.yml")["jobs"]["web-preview"]["steps"]
+    steps = workflow("paper-preview.yml")["jobs"]["web-preview"]["steps"]
     preview = next(step for step in steps if step.get("id") == "preview")
     artifact = next(step for step in steps if step.get("uses", "").startswith("actions/upload-artifact@"))
     return preview, artifact
@@ -327,13 +385,16 @@ def preview_steps() -> tuple[dict[str, Any], dict[str, Any]]:
 def test_optional_preview_never_qualifies_papers_or_blocks_full_fallback() -> None:
     policy = workflow("paper-scope.yml")
     job = policy["jobs"]["classify"]
-    preview_job = policy["jobs"]["web-preview"]
+    assert set(policy["jobs"]) == {"classify"}
+    preview_policy = workflow("paper-preview.yml")
+    preview_job = preview_policy["jobs"]["web-preview"]
     preview, artifact = preview_steps()
     assert policy["permissions"] == {"contents": "read"}
     assert job["outputs"] == {"mode": "${{ steps.scope.outputs.mode }}"}
-    assert dependencies(preview_job) == {"classify"}
+    assert dependencies(preview_job) == {"paper-scope"}
+    assert preview_policy["jobs"]["paper-scope"]["uses"] == "./.github/workflows/paper-scope.yml"
     assert "github.event_name == 'pull_request'" in preview_job["if"]
-    assert "needs.classify.outputs.mode == 'full'" in preview_job["if"]
+    assert "needs.paper-scope.outputs.mode == 'full'" in preview_job["if"]
     assert preview_job["continue-on-error"] is True
     assert "outputs" not in preview_job
     assert 0 < preview["timeout-minutes"] < preview_job["timeout-minutes"] < job["timeout-minutes"]
@@ -364,7 +425,7 @@ def test_preview_uses_only_trusted_policy_and_locked_wheels() -> None:
     assert script.index('git --no-replace-objects show "$BASE:$file"') < script.index('cd "$policy"')
     checkout = next(
         step
-        for step in workflow("paper-scope.yml")["jobs"]["web-preview"]["steps"]
+        for step in workflow("paper-preview.yml")["jobs"]["web-preview"]["steps"]
         if step.get("uses", "").startswith("actions/checkout@")
     )
     assert checkout["with"]["persist-credentials"] is False

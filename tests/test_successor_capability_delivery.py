@@ -8,15 +8,78 @@ import importlib.util
 import hashlib
 import json
 import re
+import stat
 import shutil
 import subprocess
 import tempfile
 from pathlib import Path
 from types import ModuleType
 
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def capability_checkout_paths() -> list[str]:
+    """All raw-hashed inputs and retained generated identities need LF checkouts."""
+    manifest = json.loads((ROOT / "docs/successor/capabilities/sources.json").read_text())
+    return sorted(
+        set(manifest["sources"])
+        | {
+            "examples/successor-capability/discovery-lab-reproduce.mjs",
+            "docs/successor/capabilities/index.html",
+            "docs/successor/capabilities/sources.json",
+            "docs/alpha_factory_v1/demos/successor/capabilities/index.html",
+            "docs/alpha_factory_v1/demos/successor/capabilities/sources.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+        }
+    )
+
+
+def test_every_capability_byte_hashed_input_has_explicit_lf_checkout_attributes(tmp_path: Path) -> None:
+    paths = capability_checkout_paths()
+    shutil.copyfile(ROOT / ".gitattributes", tmp_path / ".gitattributes")
+    subprocess.run(["git", "-C", str(tmp_path), "init", "--quiet"], capture_output=True, check=True)
+    result = subprocess.run(
+        ["git", "-C", str(tmp_path), "check-attr", "--stdin", "text", "eol"],
+        input="\n".join(paths) + "\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert result.stdout.splitlines() == [line for name in paths for line in (f"{name}: text: set", f"{name}: eol: lf")]
+
+
+def test_actual_crlf_checkout_preserves_capability_raw_bytes_and_catalog_hashes(tmp_path: Path) -> None:
+    """A real Git checkout must retain raw bytes even with autocrlf enabled."""
+    source, checkout = tmp_path / "source", tmp_path / "checkout"
+    source.mkdir()
+    checkout.mkdir()
+    paths = capability_checkout_paths()
+    for name in [".gitattributes", *paths]:
+        target = source / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, target)
+    (source / "checkout-control.txt").write_bytes(b"ordinary unpinned control\n")
+    for arguments in (
+        ("init", "--quiet"),
+        ("config", "core.autocrlf", "true"),
+        ("config", "core.eol", "crlf"),
+        ("add", ".gitattributes", *paths, "checkout-control.txt"),
+        ("checkout-index", "--all", "--force", "--prefix=" + str(checkout) + "/"),
+    ):
+        subprocess.run(["git", "-C", str(source), *arguments], capture_output=True, check=True)
+    assert (checkout / "checkout-control.txt").read_bytes() == b"ordinary unpinned control\r\n"
+    for name in paths:
+        assert (checkout / name).read_bytes() == (ROOT / name).read_bytes(), name
+    catalog = json.loads((checkout / "docs/successor/capabilities/sources.json").read_bytes())
+    for name, expected in catalog["sources"].items():
+        assert hashlib.sha256((checkout / name).read_bytes()).hexdigest() == expected, name
+    encoded = json.dumps(catalog["sources"], sort_keys=True, separators=(",", ":")).encode()
+    assert hashlib.sha256(encoded).hexdigest() == catalog["sourceHash"]
 
 
 def test_native_fleet_return_cannot_be_skipped_by_the_required_hosted_journey() -> None:
@@ -302,11 +365,37 @@ def test_release_packaging_requires_the_same_complete_capability_gate() -> None:
     }
     package = workflow["jobs"]["package"]
     assert "successor-capability" in package["needs"]
+    assert "style-advisory" not in package["needs"]
     assert package["if"] == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
     assert not package.get("continue-on-error")
     download = next(step for step in package["steps"] if step.get("uses", "").startswith("actions/download-artifact@"))
-    assert download["with"]["pattern"] == "!{historical-ci,release-package,public-pages,github-pages}*"
+    # Keep advisory formatting out without excluding substantive acceptance evidence.
+    assert (
+        download["with"]["pattern"] == "!{historical-ci,release-package,public-pages,github-pages,advisory-formatting}*"
+    )
     assert download["with"]["digest-mismatch"] == "error"
+
+
+@pytest.mark.parametrize(
+    "mutation", ["advisory-evidence", "capability-evidence", "capability-gate", "digest", "advisory-gate"]
+)
+def test_release_evidence_contract_rejects_policy_regressions(monkeypatch: pytest.MonkeyPatch, mutation: str) -> None:
+    workflow = yaml.safe_load((ROOT / ".github/workflows/agent-release.yml").read_text())
+    package = workflow["jobs"]["package"]
+    download = next(step for step in package["steps"] if step.get("uses", "").startswith("actions/download-artifact@"))
+    if mutation == "advisory-evidence":
+        download["with"]["pattern"] = download["with"]["pattern"].replace(",advisory-formatting", "")
+    elif mutation == "capability-evidence":
+        download["with"]["pattern"] = download["with"]["pattern"].replace("}*", ",successor-capability}*")
+    elif mutation == "capability-gate":
+        package["needs"].remove("successor-capability")
+    elif mutation == "digest":
+        download["with"]["digest-mismatch"] = "warn"
+    else:
+        package["needs"].append("style-advisory")
+    monkeypatch.setattr(yaml, "safe_load", lambda _source: workflow)
+    with pytest.raises(AssertionError):
+        test_release_packaging_requires_the_same_complete_capability_gate()
 
 
 def test_retained_authored_study_is_bound_to_installed_source_and_keeps_counterbaselines() -> None:
@@ -325,3 +414,203 @@ def test_retained_authored_study_is_bound_to_installed_source_and_keeps_counterb
     assert summary["identicalInputControl"]["fixedSecond"] < summary["identicalInputControl"]["boundarySecond"]
     assert summary["localArchiveReopenAudit"]["profileComparisons"] > 0
     assert len(record["retainedFixtureSha256"]) == summary["fixtures"] == 64
+
+
+# These fixtures use only ordinary owned Git checkouts and data-only old bodies.
+# The retained parent reproducer is never executed.
+def _refresh_copy(tmp_path: Path) -> Path:
+    root = tmp_path / "checkout"
+    for name in capability_checkout_paths():
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / name).read_bytes().replace(b"\n", b"\r\n"))
+    return root
+
+
+def _git(root: Path, *arguments: str) -> bytes:
+    return subprocess.run(["git", "-C", str(root), *arguments], capture_output=True, check=True).stdout
+
+
+def test_existing_parent_to_lf_attributes_checkout_has_explicit_backed_up_repair(tmp_path: Path) -> None:
+    """A normal upgrade leaves stale raw CRLF despite clean Git status and LF attributes."""
+    helper = load_script("refresh_capability_checkout")
+    paths = capability_checkout_paths()
+    fixture = json.loads((ROOT / "tests/fixtures/capability-checkout-parent.json").read_bytes())
+    assert fixture["sourceCommit"] == "87a003d23d3093edac3747ee1f9da292c6159515"
+    assert fixture["sourceTree"] == "ffa3d663519e713eca31a9840b8bf6816e53e12a"
+    source, checkout = tmp_path / "source", tmp_path / "checkout"
+    source.mkdir()
+    controls = ["docs/Out_Execute.tex", "docs/Out_Execute.pdf"]
+    for name in [*paths, *controls]:
+        target = source / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / name).read_bytes())
+    (source / "unpinned-control.txt").write_bytes(b"ordinary control\n")
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert len(raw) == entry["bytes"] and hashlib.sha256(raw).hexdigest() == entry["sha256"]
+        (source / name).write_bytes(raw)
+    for arguments in (
+        ("init", "--quiet"),
+        ("config", "user.name", "Owned test"),
+        ("config", "user.email", "owned-test@example.invalid"),
+        ("config", "commit.gpgsign", "false"),
+        ("add", "."),
+        ("commit", "--quiet", "-m", "Exact old attribute and reproducer bodies"),
+    ):
+        _git(source, *arguments)
+    parent = _git(source, "rev-parse", "HEAD").decode().strip()
+    for name in fixture["files"]:
+        (source / name).write_bytes((ROOT / name).read_bytes())
+    _git(source, "add", ".")
+    _git(source, "commit", "--quiet", "-m", "Reviewed LF attribute transition")
+    target = _git(source, "rev-parse", "HEAD").decode().strip()
+    subprocess.run(
+        ["git", "clone", "--quiet", "--local", "--no-checkout", str(source), str(checkout)],
+        capture_output=True,
+        check=True,
+    )
+    _git(checkout, "config", "core.autocrlf", "true")
+    _git(checkout, "config", "core.eol", "crlf")
+    _git(checkout, "checkout", "--quiet", "--detach", parent)
+    _git(checkout, "checkout", "--quiet", "--detach", target)
+    assert _git(checkout, "status", "--porcelain") == b""
+    (checkout / "private-staged.txt").write_bytes(b"private staged content\n")
+    _git(checkout, "add", "private-staged.txt")
+    originals = {name: (checkout / name).read_bytes() for name in paths}
+    modes = {name: stat.S_IMODE((checkout / name).stat().st_mode) for name in paths}
+    unchanged = {
+        name: (checkout / name).read_bytes()
+        for name in [*controls, "unpinned-control.txt", "private-staged.txt", ".git/index", ".git/config"]
+    }
+    assert unchanged["unpinned-control.txt"] == b"ordinary control\r\n"
+    assert len(paths) == 61
+    assert sum(b"\r\n" in raw for raw in originals.values()) == 59
+    catalog = json.loads(originals[helper.CATALOG])
+    assert (
+        sum(hashlib.sha256(originals[name]).hexdigest() != digest for name, digest in catalog["sources"].items()) == 52
+    )
+    dry_run = helper.refresh(checkout)
+    assert dry_run["checked"] == 61 and len(dry_run["needsRefresh"]) == 59
+    assert dry_run["sourceHash"] == catalog["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    assert not dry_run["applied"] and dry_run["backupDirectory"] is None
+    assert originals == {name: (checkout / name).read_bytes() for name in paths}
+    backup_parent = tmp_path / "backups"
+    backup_parent.mkdir()
+    applied = helper.refresh(checkout, apply=True, backup_parent=backup_parent)
+    backup = Path(applied["backupDirectory"])
+    assert applied["applied"] and stat.S_IMODE(backup.stat().st_mode) == 0o700
+    manifest = json.loads((backup / "manifest.json").read_bytes())
+    assert len(manifest["files"]) == 61
+    assert manifest["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    for entry in manifest["files"]:
+        name = entry["path"]
+        assert (backup / "files" / name).read_bytes() == originals[name]
+        assert entry["bytes"] == len(originals[name])
+        assert entry["sha256"] == hashlib.sha256(originals[name]).hexdigest()
+        assert entry["mode"] == modes[name] == stat.S_IMODE((checkout / name).stat().st_mode)
+        assert (checkout / name).read_bytes() == (ROOT / name).read_bytes()
+    assert unchanged == {name: (checkout / name).read_bytes() for name in unchanged}
+    # Index bytes/stat metadata stay untouched; raw working bytes are the repair contract.
+    assert _git(checkout, "diff", "--exit-code") == b""
+    assert helper.refresh(checkout, apply=True, backup_parent=backup_parent)["backupDirectory"] is None
+    assert list(backup_parent.iterdir()) == [backup]
+
+
+def test_checkout_refresh_keeps_legacy_identity_and_refuses_cross_profile_bytes(tmp_path: Path) -> None:
+    helper = load_script("refresh_capability_checkout")
+    legacy_raw = (ROOT / "tests/fixtures/capability-checkout-legacy-catalog.json").read_bytes()
+    assert len(legacy_raw) == 5416
+    assert hashlib.sha256(legacy_raw).hexdigest() == "9cddd00ed38a3500efeaac8977bf3db46363face0cfe56e713ec91750662e09a"
+    legacy = json.loads(legacy_raw)
+    assert len(legacy["sources"]) == 41 and legacy["sourceHash"] == helper.SOURCE_HASH
+    for raw in (legacy_raw, legacy_raw.replace(b"\n", b"\r\n")):
+        source_hash, source_count, file_count, extra = helper._source_profile(raw)
+        assert (source_hash, source_count, file_count) == (helper.SOURCE_HASH, 41, 49)
+        assert extra == helper.EXTRA_FILES
+        assert helper._canonical(raw, extra[helper.CATALOG][1], extra[helper.CATALOG][0], helper.CATALOG) == legacy_raw
+    root = _refresh_copy(tmp_path)
+    (root / helper.CATALOG).write_bytes(legacy_raw.replace(b"\n", b"\r\n"))
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+    with pytest.raises(ValueError, match="unexpected capability bytes"):
+        helper.refresh(root, apply=True, backup_parent=backups)
+    assert originals == {name: (root / name).read_bytes() for name in originals}
+    assert list(backups.iterdir()) == []
+    for schema in (legacy, json.loads((ROOT / helper.CATALOG).read_bytes())):
+        changed = dict(schema)
+        changed["sources"] = dict(changed["sources"])
+        name = next(iter(changed["sources"]))
+        changed["sources"][name] = "0" * 64
+        changed["sourceHash"] = hashlib.sha256(
+            json.dumps(changed["sources"], sort_keys=True, separators=(",", ":")).encode()
+        ).hexdigest()
+        with pytest.raises(ValueError, match="unexpected capability bytes"):
+            helper._source_profile(json.dumps(changed, sort_keys=True, indent=2).encode() + b"\n")
+
+
+@pytest.mark.parametrize("edit", ["private", "mixed", "catalog", "oversize", "retained-generated"])
+def test_checkout_refresh_refuses_the_whole_plan_for_unexpected_bytes(tmp_path: Path, edit: str) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    name = "scripts/generate_successor_capability.py"
+    if edit == "catalog":
+        name = helper.CATALOG
+    elif edit == "retained-generated":
+        name = "docs/assets/service-worker.js"
+    path = root / name
+    raw = path.read_bytes()
+    if edit == "mixed":
+        path.write_bytes(raw.replace(b"\r\n", b"\n", 1))
+    elif edit == "oversize":
+        with path.open("wb") as stream:
+            stream.truncate(helper.MAX_FILE_BYTES + 1)
+    else:
+        path.write_bytes(raw + b"private edit\r\n")
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+    with pytest.raises(ValueError):
+        helper.refresh(root, apply=True, backup_parent=backups)
+    assert originals == {name: (root / name).read_bytes() for name in originals}
+    assert list(backups.iterdir()) == []
+
+
+def test_checkout_refresh_refuses_aliases_and_inside_backup_before_changes(tmp_path: Path) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    with pytest.raises(ValueError, match="outside"):
+        helper.refresh(root, apply=True, backup_parent=root)
+    catalog = root / helper.CATALOG
+    saved = catalog.read_bytes()
+    outside = tmp_path / "original-catalog.json"
+    outside.write_bytes(saved)
+    catalog.unlink()
+    catalog.symlink_to(outside)
+    with pytest.raises(ValueError, match="regular"):
+        helper.refresh(root, apply=True, backup_parent=tmp_path)
+    assert outside.read_bytes() == saved
+    assert not list(tmp_path.glob("capability-lf-backup-*"))
+
+
+def test_checkout_refresh_retains_all_originals_on_replace_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+
+    def unavailable_replace(*arguments: object) -> None:
+        raise OSError("ordinary unavailable destination fixture")
+
+    monkeypatch.setattr(helper.os, "replace", unavailable_replace)
+    with pytest.raises(RuntimeError, match="original bytes retained"):
+        helper.refresh(root, apply=True, backup_parent=backups)
+    (backup,) = backups.iterdir()
+    assert json.loads((backup / "result.json").read_bytes()) == {"applied": [], "complete": False}
+    assert originals == {name: (root / name).read_bytes() for name in originals}
+    assert originals == {name: (backup / "files" / name).read_bytes() for name in originals}
+    assert not [path for path in root.rglob(".*") if ".lf-" in path.name]

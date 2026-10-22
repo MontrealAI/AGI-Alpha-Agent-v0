@@ -361,6 +361,8 @@ def prepare(root: Path, folder: Path, site: Path) -> dict[str, Any]:
         raise Deferred(f"Main requires full software acceptance, not a paper overlay: {error}") from error
     if proof.get("mode") != "paper" or software == head:
         raise Deferred("No paper-only descendant needs publication")
+    if proof["release_plan"]["paper_publication"] == "not-applicable":
+        raise Deferred("Editorial-only source change: existing software and site remain unchanged")
     catalog = load_catalog(root)
     verify_files(root, catalog)
     render(root, check=True)

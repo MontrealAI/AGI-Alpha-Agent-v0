@@ -17,6 +17,39 @@ The **1.37.1** discussion below remains the paper predecessor's dated scope. Its
 PDF/TEX bytes and historical tags/assets remain unchanged. No mainnet transaction, signing, funding, activation,
 settlement or live paid work is authorized by this software candidate.
 
+## Existing CRLF checkout upgrade for this 1.38.0 source
+
+Adding LF attributes does not rewrite unchanged files in an existing `core.autocrlf=true` checkout.
+After updating this source, explicitly inspect the fixed capability closure before generating or validating:
+
+```bash
+python scripts/refresh_capability_checkout.py
+```
+
+For this version only, the helper authenticates the catalogue and all **49** fixed source/generated files
+against the reviewed `644258ac21cc938aff861d02ad728e8f3c9716f6ea78700acc35e4d7400eebf2` source identity.
+The default command writes nothing. If it reports `needsRefresh`, close editors and other processes writing
+to this checkout, choose an existing backup parent **outside** the checkout, and explicitly apply:
+
+```bash
+python scripts/refresh_capability_checkout.py --apply --backup-parent /existing/external/backup-parent
+```
+
+All 49 working files must first match their exact pinned LF bytes or their uniform CRLF equivalents.
+Private content edits, mixed line endings, missing/oversized files and symlinked file paths refuse the whole
+plan before backup or source writes. Preserve and review meaningful edits separately; this is a version-bound
+working-file normalization tool, not a general renormalizer or source-acceptance check. It does not inspect,
+change or discard staged edits, the Git index/configuration, unlisted files or original PDF/TEX papers.
+It never runs Git, a generator or repository code, and generation does not invoke it automatically.
+
+Apply creates a new private `capability-lf-backup-*` directory with every original raw body and a SHA-256,
+size and mode manifest, then rechecks the inputs before replacing only affected files with pinned LF bytes.
+Retain that backup and the printed result. An interrupted operation may be partial: the backup remains,
+`result.json` records completed replacements when possible, and there is no automatic rollback or durability
+claim. Stop on an error and inspect the retained originals before another action. With no concurrent edits,
+a successful repair preserves file modes; a second check reports no refresh needed. Native Windows generation
+has separate qualification requirements; this repair does not establish a release, browser or runtime pass.
+
 ## Preserved paper predecessor readiness record
 
 ## Release readiness — 1.37.1 combined software candidate
@@ -172,7 +205,8 @@ must be uploaded, re-downloaded and checksum-verified before publication. Existi
 assets are not overwritten. No final-source or public-site pass is established by this source document.
 
 Local and public acceptance evidence have separate captures. The original validation ZIP stays unchanged;
-public-validation packs retain every public report and screenshot under the same 450 MB per-asset limit.
+public-validation packs retain every public report and screenshot. Current release assets must be strictly
+smaller than GitHub's 2 GiB hosting ceiling; there is no additional 450 MB project cap.
 The release manifest's `validation_evidence` inventory and `SHA256SUMS` identify both sets.
 
 Independent custody, providers, market access, Fleet commissioning, external dependency qualification

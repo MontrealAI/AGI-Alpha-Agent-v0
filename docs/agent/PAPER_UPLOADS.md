@@ -62,6 +62,102 @@ embedded files are rejected. The existing bounded passive C2PA content-credentia
 attachment is preserved but is not treated as verification of its claims. A PDF rejection never rewrites the
 original; correct the source document explicitly and give revisions a new ID.
 
+## Recovering a byte-mismatched checkout
+
+Catalog hashes always describe the exact original bytes. A digest mismatch can
+mean a local edit or corruption; an older checkout with `core.autocrlf=true` is
+another possible cause. The new manuscript attributes protect fresh checkouts,
+but updating an existing checkout may retain its previously converted CRLF bytes.
+Even the first forced checkout of the new commit may leave those bytes unchanged.
+Do not normalize a manuscript, change its catalog hash, or force-reset/clean the
+existing worktree to make validation pass. Preserve staged, unstaged and untracked
+work there, including any intentionally revised originals that need a new ID.
+
+Use an independent local clone for inspection instead. Linked worktrees share
+the original repository's `.git/info/attributes`, whose rules can override the
+committed manuscript attributes and convert even a fresh sibling's bytes. Do not
+edit those local rules as part of recovery; the independent clone leaves them
+untouched and does not copy them. First choose a
+specific, verified source commit containing the byte-preserving attributes, or a
+previously qualified tag that contains them. Obtain its full commit SHA from a
+trusted source and independently check its provenance. Do not assume the latest
+main commit is a qualified release. The block below resolves and checks that
+explicit SHA locally only after clearing inherited Git routing; it stops if the
+commit cannot be resolved.
+
+From the existing repository, substitute that full SHA and choose a unique sibling
+destination that does not exist. These commands work without changing the
+original worktree's files, index or local configuration. `--no-local` uses
+Git transport over the explicit local path, without a network fetch, rather than
+copying local object-store links or alternates. Do not use `--shared` or `--reference`:
+
+Use Bash or Git Bash, not a generic POSIX shell. Run the entire parenthesized block:
+its subshell clears inherited Git-prefixed variables regardless of letter case
+before any Git command, including source-SHA resolution. Native Windows Git
+also recognizes names such as `git_object_directory` or `Git_Dir`; an uppercase-only
+Bash prefix match would leave them behind. Otherwise routing variables can
+redirect writes outside the clone or leave it dependent on external objects.
+It then disables global and system Git configuration for every Git command in
+the subshell using `GIT_CONFIG_GLOBAL=/dev/null` and `GIT_CONFIG_NOSYSTEM=1`.
+This excludes external execution settings such as `core.fsmonitor`, which are
+not disabled by `core.hooksPath`. The original repository's local configuration
+is neither rewritten nor copied to the independent clone.
+The caller's environment is unchanged. If a variable cannot be unset, or any
+Git command or SHA comparison fails, the block stops with a nonzero exit status.
+Do not continue to validation after a failed block. The empty `core.attributesFile`
+setting disables global attributes, `GIT_ATTR_NOSYSTEM=1` disables system
+attributes, and `--template=` prevents configured templates from installing
+`info/attributes` in the clone. Apply the attribute settings to both clone and
+checkout: `-text` alone does not disable a global smudge filter. These settings
+apply only to the commands below and do not change the original configuration.
+The command-local `core.hooksPath=/dev/null` also prevents configured hooks from
+rewriting files during clone or checkout, without editing or deleting those hooks.
+
+```sh
+(
+  recovery_env_vars=$(compgen -A variable) || exit 1
+  while IFS= read -r recovery_var; do
+    case "$recovery_var" in
+      [gG][iI][tT]_*) unset "$recovery_var" || exit 1 ;;
+    esac
+  done <<< "$recovery_env_vars"
+  export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 || exit 1
+  source_sha=FULL_VERIFIED_COMMIT_SHA
+  resolved_sha=$(git rev-parse --verify "$source_sha^{commit}") || exit 1
+  [ "$resolved_sha" = "$source_sha" ] || exit 1
+  GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
+    clone --template= --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean || exit 1
+  GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
+    -C ../AGI-Alpha-Agent-byte-clean checkout --detach "$source_sha" || exit 1
+  recovered_sha=$(git -C ../AGI-Alpha-Agent-byte-clean rev-parse --verify HEAD) || exit 1
+  [ "$recovered_sha" = "$source_sha" ] || exit 1
+  printf '%s\n' "$recovered_sha"
+)
+```
+
+Confirm the reported SHA is exactly the chosen commit. Do not add `--force`, reuse
+an occupied directory, or delete existing work to clear a destination error;
+choose another nonexistent sibling path. Git refuses a nonempty destination.
+If the chosen commit is unavailable in the clone, stop rather than checking out a
+different source. The clone contains committed source, not the old checkout's
+staged, unstaged or untracked edits.
+Activate a Python environment containing the hash-locked validator dependencies
+from `requirements-papers.lock` (see the installation command above); a fresh
+clone does not install dependencies. Then enter the new sibling and invoke the
+validator as a module from that repository root:
+
+```sh
+cd ../AGI-Alpha-Agent-byte-clean
+python -m scripts.research_papers check
+```
+
+Passing there establishes that checkout's manuscript validation, not software
+release qualification. If the fresh sibling still fails, stop and investigate
+the exact file, source commit and catalog instead of rewriting originals or
+accepting a different hash. Keep the old worktree and review its local changes
+separately; this procedure neither migrates nor discards them. Fresh hosted
+Windows checks and all required source-specific release checks remain mandatory.
+
 ## GitHub web editor alternative
 
 Do not upload a bare paper directly to main expecting the fast lane. Create a

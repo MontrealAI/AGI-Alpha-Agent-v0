@@ -17,6 +17,7 @@ if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.build_service_worker import is_cache_asset, render_scripts
+from scripts.release_plan import EDITORIAL_PATH, plan_for_full_scope, plan_for_proved_scope, prove_editorial_document
 from scripts.research_papers import (
     CATALOG,
     HTML_END,
@@ -99,13 +100,15 @@ def prove_transition(root: Path, before: str, after: str) -> dict[str, Any]:
     current = parse_catalog(blob(root, new, CATALOG))
     preserve_catalog(previous, current)
     files = asset_hashes(current)
-    allowed = {CATALOG, *files, *GENERATED}
+    allowed = {CATALOG, *files, *GENERATED, EDITORIAL_PATH}
     if changed - allowed:
         raise ValueError(
             "Software/mixed/unknown paths require full qualification: " + ", ".join(sorted(changed - allowed))
         )
     if any(name not in new for name in changed):
         raise ValueError("Paper-only changes cannot remove files")
+    if EDITORIAL_PATH in changed:
+        prove_editorial_document(blob(root, old, EDITORIAL_PATH), blob(root, new, EDITORIAL_PATH))
     for name, digest in files.items():
         raw = blob(root, new, name)
         if hashlib.sha256(raw).hexdigest() != digest:
@@ -132,6 +135,7 @@ def prove_transition(root: Path, before: str, after: str) -> dict[str, Any]:
         "after": after,
         "paths": sorted(changed),
         "catalog_sha256": hashlib.sha256(blob(root, new, CATALOG)).hexdigest(),
+        "has_paper_changes": bool(changed - {EDITORIAL_PATH}),
     }
 
 
@@ -156,12 +160,14 @@ def prove_paper_descendants(root: Path, base: str, head: str) -> dict[str, Any]:
             raise ValueError("Incomplete paper ancestry")
         proofs.append(prove_transition(root, words[1], words[0]))
     final = prove_transition(root, base, head)
+    plan = plan_for_proved_scope(base, head, has_paper_changes=final["has_paper_changes"])
     return {
         "schema": SCHEMA,
         "mode": "paper",
         "software_commit": base,
         "paper_commit": head,
         "catalog_sha256": final["catalog_sha256"],
+        "release_plan": plan.to_dict(),
         "transitions": proofs,
     }
 
@@ -175,7 +181,16 @@ def classify(root: Path, base: str | None, head: str) -> dict[str, Any]:
             raise ValueError("No substantive paper-only change")
         return result
     except (ValueError, OSError, UnicodeError, KeyError, TypeError, subprocess.SubprocessError) as error:
-        return {"schema": SCHEMA, "mode": "full", "software_commit": head, "paper_commit": head, "reason": str(error)}
+        return {
+            "schema": SCHEMA,
+            "mode": "full",
+            "software_commit": head,
+            "paper_commit": head,
+            "reason": str(error),
+            "release_plan": plan_for_full_scope(
+                head if isinstance(head, str) and re.fullmatch(r"[0-9a-f]{40}", head) else None
+            ).to_dict(),
+        }
 
 
 def main() -> None:

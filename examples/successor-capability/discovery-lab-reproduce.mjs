@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /** Reproduce the public finite campaign bank; output carries no execution authority. */
-import {readFileSync, mkdirSync, writeFileSync} from 'node:fs';
-import {resolve, relative, isAbsolute} from 'node:path';
+import {readFileSync, mkdirSync, writeFileSync, lstatSync, realpathSync} from 'node:fs';
+import {resolve, relative, isAbsolute, dirname, basename, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {DEFAULT_CHARTER, runCampaign, verifyCampaign} from './discovery-lab.mjs';
@@ -13,10 +13,45 @@ for (let index = 0; index < arguments_.length; index++) {
     else if (arguments_[index] === '--output' && arguments_[index + 1] && output === null) output = resolve(arguments_[++index]);
     else throw Error('Usage: node discovery-lab-reproduce.mjs [--full] [--output <evidence-directory>]');
 }
+const repository = realpathSync(fileURLToPath(new URL('../../', import.meta.url)));
+function outsideRepository(path) {
+    const missing = [];
+    let existing = resolve(path);
+    while (true) {
+        try { lstatSync(existing); break; }
+        catch (error) {
+            if (error.code !== 'ENOENT' || dirname(existing) === existing) throw error;
+            missing.unshift(basename(existing));
+            existing = dirname(existing);
+        }
+    }
+    // Resolve an existing output or its nearest existing ancestor. A dangling
+    // symlink remains an error; never treat it as a missing plain directory.
+    const actual = resolve(realpathSync(existing), ...missing);
+    const inRepo = relative(repository, actual);
+    if (!inRepo || !isAbsolute(inRepo) && inRepo !== '..' && !inRepo.startsWith('..' + sep)) {
+        throw Error('Choose an evidence directory outside this repository.');
+    }
+    return actual;
+}
+if (output) output = outsideRepository(output);
+const destinations = new Map();
 if (output) {
-    const inRepo = relative(fileURLToPath(new URL('../../', import.meta.url)), output);
-    if (!inRepo || !inRepo.startsWith('..') && !isAbsolute(inRepo)) throw Error('Choose an evidence directory outside this repository.');
-    mkdirSync(resolve(output, 'reports'), {recursive: true});
+    // Preflight the complete finite bank before mkdir or any report write. Keep
+    // run()'s immediate reports, including evidence from an unexpected outcome.
+    const names = ['accepted-default', 'noisy-one-use', 'noisy-twelve-uses', 'undeclared-quadratic-drift',
+        'quadratic-reconstruction', 'non-updatable-memory', 'wrong-location', 'staging-enabled',
+        'hidden-private-coupling', 'exhausted-search', 'stronger-checkpoint', 'stronger-four-control-successor',
+        'route-before-change', 'equal-profiles-current-route', 'lineage-generation-two', 'lineage-generation-three'];
+    const reports = outsideRepository(resolve(output, 'reports'));
+    for (const name of [...names.map(id => 'reports/' + id + '.json'), 'summary.json', 'elapsed-receipts.json']) {
+        destinations.set(name, outsideRepository(resolve(output, name)));
+    }
+    mkdirSync(reports, {recursive: true});
+}
+function writeEvidence(name, bytes) {
+    if (!destinations.has(name)) throw Error('Unplanned evidence destination.');
+    writeFileSync(outsideRepository(destinations.get(name)), bytes);
 }
 const hash = value => createHash('sha256').update(value).digest('hex');
 const sources = Object.fromEntries(['discovery-lab.mjs', 'discovery-lab-checker.mjs', 'discovery-lab-baselines.mjs',
@@ -35,7 +70,7 @@ function run(id, specification, expected, parent = null) {
     const ancestors = parent ? [...(ancestry.get(parent) || []), {charter: parent.charter, result: parent}] : [];
     ancestry.set(report, ancestors);
     const evidence = {schema: 'discovery-lab-campaign-evidence/v1', charter: specification, result: report, ancestors};
-    if (output) writeFileSync(resolve(output, 'reports', id + '.json'), JSON.stringify(evidence, null, 2) + '\n');
+    if (output) writeEvidence('reports/' + id + '.json', JSON.stringify(evidence, null, 2) + '\n');
     if (!verification.verified || report.state !== expected) throw Error(`Unexpected ${id} outcome: ${report.state}`);
     records.push({id, expected, state: report.state, charter: specification,
         reportDigest: hash(canonical(report)), stages: report.stages.map(({kind, status, reason}) => ({kind, status, reason})),
@@ -69,8 +104,8 @@ const summary = {schema: 'discovery-lab-public-campaign-bank/v1',
     scope: 'Public authored supplied-model cases, not protected holdouts or physical measurements.',
     runtime: process.version, sourceSha256: sources, count: records.length, records};
 if (output) {
-    writeFileSync(resolve(output, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
-    writeFileSync(resolve(output, 'elapsed-receipts.json'), JSON.stringify({schema: 'discovery-lab-wall-clock-receipts/v1',
+    writeEvidence('summary.json', JSON.stringify(summary, null, 2) + '\n');
+    writeEvidence('elapsed-receipts.json', JSON.stringify({schema: 'discovery-lab-wall-clock-receipts/v1',
         receipts: elapsedReceipts}, null, 2) + '\n');
     console.log(JSON.stringify({evidenceDirectory: output, count: records.length, summary: 'summary.json',
         elapsedReceipt: 'elapsed-receipts.json', reportDirectory: 'reports'}));

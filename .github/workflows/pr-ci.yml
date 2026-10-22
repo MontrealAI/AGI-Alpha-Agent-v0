@@ -59,7 +59,7 @@ jobs:
   smoke:
     name: "Full smoke tests"
     if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled()) }}
-    needs: [paper-scope, lint]
+    needs: paper-scope
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

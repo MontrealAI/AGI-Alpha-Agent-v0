@@ -63,7 +63,91 @@ def assert_full(root: Path, base: str | None, head: str) -> dict[str, Any]:
     assert result["software_commit"] == head
     assert result["paper_commit"] == head
     assert result["reason"]
+    assert result["release_plan"]["tier"] == "full"
+    assert result["release_plan"]["software_checks"] == "run"
     return result
+
+
+def editorial_base(history: tuple[Path, str]) -> tuple[Path, str]:
+    root, _ = history
+    (root / "docs/CHANGELOG.md").write_text("## Existing record\n\nPreserved text.\n")
+    return root, save(root, "Existing changelog baseline")
+
+
+def prepend_editorial(root: Path, text: str = "## Clarification\n\n- Plain prose only.\n\n") -> None:
+    path = root / "docs/CHANGELOG.md"
+    path.write_bytes(text.encode() + path.read_bytes())
+
+
+def test_passive_editorial_skips_software_without_publishing_a_new_identity(history: tuple[Path, str]) -> None:
+    root, base = editorial_base(history)
+    prepend_editorial(root)
+    head = save(root)
+    result = changes.classify(root, base, head)
+    assert result["mode"] == "paper"
+    plan = result["release_plan"]
+    assert plan["tier"] == "passive-editorial"
+    assert plan["source_commit"] == head and plan["base_commit"] == base
+    assert plan["paper_publication"] == plan["software_publication"] == "not-applicable"
+    assert plan["component_reuse"] is False
+
+
+def test_papers_plus_editorial_retain_existing_paper_publication(history: tuple[Path, str]) -> None:
+    root, base = editorial_base(history)
+    prepend_editorial(root)
+    append_paper(root)
+    result = changes.classify(root, base, save(root))
+    assert result["mode"] == "paper"
+    assert result["release_plan"]["tier"] == "paper"
+    assert result["release_plan"]["paper_publication"] == "run"
+
+
+@pytest.mark.parametrize("text", ["Correction to existing wording.\n", "## Notes\n\n[Link](https://example.org/)\n"])
+def test_editorial_corrections_and_markdown_are_not_arbitrarily_restricted(
+    history: tuple[Path, str], text: str
+) -> None:
+    root, base = editorial_base(history)
+    (root / "docs/CHANGELOG.md").write_text(text)
+    result = changes.classify(root, base, save(root))
+    assert result["mode"] == "paper"
+    assert result["release_plan"]["tier"] == "passive-editorial"
+
+
+@pytest.mark.parametrize("path", ["app.py", "requirements.lock", "scripts/release_plan.py", ".github/workflows/x.yml"])
+def test_editorial_cannot_hide_shared_code_policy_or_dependencies(history: tuple[Path, str], path: str) -> None:
+    root, base = editorial_base(history)
+    prepend_editorial(root)
+    target = root / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text("changed\n")
+    assert_full(root, base, save(root))
+
+
+def test_editorial_cannot_hide_reverted_unsafe_history(history: tuple[Path, str]) -> None:
+    root, base = editorial_base(history)
+    old = (root / "app.py").read_bytes()
+    (root / "app.py").write_text("unsafe\n")
+    save(root)
+    (root / "app.py").write_bytes(old)
+    prepend_editorial(root)
+    assert_full(root, base, save(root))
+
+
+@pytest.mark.parametrize("kind", ["binary", "delete", "executable", "symlink"])
+def test_nonpassive_changelog_changes_require_full(history: tuple[Path, str], kind: str) -> None:
+    root, base = editorial_base(history)
+    path = root / "docs/CHANGELOG.md"
+    if kind == "binary":
+        path.write_bytes(b"\xff")
+    elif kind == "delete":
+        path.unlink()
+    elif kind == "executable":
+        prepend_editorial(root)
+        path.chmod(0o755)
+    else:
+        path.unlink()
+        path.symlink_to("../app.py")
+    assert_full(root, base, save(root))
 
 
 def test_only_catalog_new_paper_bytes_and_exact_generated_outputs_pass(history: tuple[Path, str]) -> None:
