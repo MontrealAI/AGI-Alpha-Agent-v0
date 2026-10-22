@@ -1,0 +1,226 @@
+{
+  "schema": "alpha/ready-triggered-automatic-review-monitor/v1",
+  "createdAt": "2026-10-22T07:15:22.221Z",
+  "result": "AUTOMATIC_REVIEW_COMPLETED_WITH_TWO_UNRESOLVED_P2_FINDINGS",
+  "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+  "pullRequest": 4851,
+  "scope": {
+    "readOnly": true,
+    "AlphaOnly": true,
+    "reviewRequestsTriggered": 0,
+    "publicWrites": false,
+    "mergesByMonitor": 0,
+    "cancelsOrReruns": 0,
+    "sourceEdits": false,
+    "testsOrProbes": false,
+    "claim": "Exact original24d automatic review and observed PR/check lifecycle only."
+  },
+  "readyAt": "2026-10-22T07:05:04Z",
+  "review": {
+    "summaryId": 6325508655,
+    "summaryURL": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4851#issuecomment-6325508655",
+    "summaryUpdatedAt": "2026-10-22T07:12:31Z",
+    "trigger": "Draft marked ready",
+    "startedAt": "2026-10-22T07:05:10.264329Z",
+    "completedAt": "2026-10-22T07:12:30.800285Z",
+    "codeReviewState": {
+      "commit_sha": "24d58598f896106323f2c120487586bdf5104612",
+      "has_any_findings": true,
+      "has_unresolved_findings": true,
+      "status": "completed"
+    },
+    "id": 5610481904,
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4851#pullrequestreview-5610481904",
+    "submittedAt": "2026-10-22T07:12:27Z",
+    "commit": "24d58598f896106323f2c120487586bdf5104612",
+    "state": "COMMENTED",
+    "currentConfiguredReviewClear": false,
+    "priorManual0510ClearIsHistoricalAndDoesNotReplaceThisResult": true
+  },
+  "findings": [
+    {
+      "severity": "P2",
+      "id": 4345508847,
+      "reviewId": 5610481904,
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4851#discussion_r4345508847",
+      "createdAt": "2026-10-22T07:12:28Z",
+      "updatedAt": "2026-10-22T07:12:28Z",
+      "commit": "24d58598f896106323f2c120487586bdf5104612",
+      "originalCommit": "24d58598f896106323f2c120487586bdf5104612",
+      "path": "scripts/generate_successor_capability.py",
+      "line": 57,
+      "startLine": null,
+      "originalLine": 57,
+      "title": "Pin the byte-hashed source closure to LF",
+      "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Pin the byte-hashed source closure to LF**\n\nOn a checkout where these newly included modules have CRLF line endings, `visit()` reads them as text and hashes the newline-normalized `source.encode()`, while `verify_packaged()` and `capture_capability_operator()` later hash the raw bytes. The new paths are not pinned with `text eol=lf` in `.gitattributes`; converting only `discovery-lab.mjs` to CRLF reproduces a manifest digest that differs from the source file, causing validation and release packaging to fail on such checkouts. Pin every closure member to LF or compute the catalogue digest from the same raw bytes the validators use.\n\nUseful? React with 👍 / 👎.\n\n<!-- codex-code-review-finding:v1 -->",
+      "classification": "New exact24d configured-review finding; not a moved historical original-commit comment.",
+      "independentlyReproducedByThisMonitor": false
+    },
+    {
+      "severity": "P2",
+      "id": 4345508855,
+      "reviewId": 5610481904,
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4851#discussion_r4345508855",
+      "createdAt": "2026-10-22T07:12:28Z",
+      "updatedAt": "2026-10-22T07:12:28Z",
+      "commit": "24d58598f896106323f2c120487586bdf5104612",
+      "originalCommit": "24d58598f896106323f2c120487586bdf5104612",
+      "path": "examples/successor-capability/discovery-lab-reproduce.mjs",
+      "line": 18,
+      "startLine": 17,
+      "originalLine": 18,
+      "title": "Resolve symlinks before enforcing output isolation",
+      "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Resolve symlinks before enforcing output isolation**\n\nAlthough the workflow now supplies `runner.temp`, the CLI's remaining boundary check is lexical: if an apparently external path such as `/tmp/evidence` is a symlink to a directory inside the repository, `relative()` begins with `..` and passes, but `mkdirSync()` and the later writes follow the symlink into the checkout. This defeats the explicit outside-repository guarantee and can contaminate or overwrite checkout evidence; resolve the existing output or its nearest existing parent to its real path before applying the boundary test.\n\nUseful? React with 👍 / 👎.\n\n<!-- codex-code-review-finding:v1 -->",
+      "classification": "New exact24d configured-review finding; not a moved historical original-commit comment.",
+      "independentlyReproducedByThisMonitor": false
+    }
+  ],
+  "observedChecks": {
+    "head": "24d58598f896106323f2c120487586bdf5104612",
+    "lastCollectionAt": "2026-10-22T07:13:17.417Z",
+    "headCheckRuns": 39,
+    "successful": 37,
+    "intentionalSkipped": [
+      {
+        "id": 119680978608,
+        "name": "Full software qualification",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 119680051002,
+        "name": "Full software qualification",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ],
+    "otherNonSuccess": [],
+    "workflowRuns": 11,
+    "newReadyTriggeredWorkflowRuns": [],
+    "formerSynthetic": "d3ba2c3a4a275d7f2c7619504b703f931b8c4507",
+    "formerSyntheticCheckRuns": 0
+  },
+  "prLifecycle": {
+    "state": "closed",
+    "merged": true,
+    "mergedAt": "2026-10-22T07:12:36Z",
+    "head": "24d58598f896106323f2c120487586bdf5104612",
+    "baseAtMerge": "5a5340a15698165bceb21e252f3bec58d7fd8298",
+    "actualMergeCommit": "87a003d23d3093edac3747ee1f9da292c6159515",
+    "actualMainAtFinalObservation": "87a003d23d3093edac3747ee1f9da292c6159515",
+    "expectedLifecycleChangePerRoot": true,
+    "lifecycleChangeIsNotAReviewFinding": true,
+    "noMergeOperationByMonitor": true
+  },
+  "requirements": {
+    "configuredReviewMustNotBeReportedClear": true,
+    "rootNotifiedOfBothFindingsImmediatelyAfterFirstCapturedCompletion": true,
+    "remaining": "Triage both concrete P2 findings and determine the corrective source scope. This monitor does not reproduce, modify or qualify a repair.",
+    "noAcceptedMainOrReleaseQualificationClaim": true
+  },
+  "finalExactObservation": {
+    "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T071437747Z.json",
+    "bytes": 2461,
+    "sha256": "71b0d84e9536418d89cc20c1a3515b644e521cc6ba8fb8becf807c6da8ae5c95",
+    "observedAt": "2026-10-22T07:14:37.747Z",
+    "resources": [
+      {
+        "key": "pr",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/pulls/4851",
+        "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/raw-10a36634094600fb7b3b49b8e1f599f07bc3625cf3fd4d418168778170c7ca99.json",
+        "bytes": 26709,
+        "sha256": "10a36634094600fb7b3b49b8e1f599f07bc3625cf3fd4d418168778170c7ca99"
+      },
+      {
+        "key": "summary",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/issues/comments/6325508655",
+        "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/raw-691b2e35477c2b240f202e4e54db581e10e19287fd538ca3329e9bc10fe8e8ac.json",
+        "bytes": 4827,
+        "sha256": "691b2e35477c2b240f202e4e54db581e10e19287fd538ca3329e9bc10fe8e8ac"
+      },
+      {
+        "key": "review",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/pulls/4851/reviews/5610481904",
+        "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/raw-1d1da72935f876a8cfd02364facca41670686e91b61081b935f014f92cf77c32.json",
+        "bytes": 2521,
+        "sha256": "1d1da72935f876a8cfd02364facca41670686e91b61081b935f014f92cf77c32"
+      },
+      {
+        "key": "inlineLF",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/pulls/comments/4345508847",
+        "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/raw-2bdd220b0b54dac9e5bc34b90f182b51e12176ac891e9bc6141c2361b531d17c.json",
+        "bytes": 3828,
+        "sha256": "2bdd220b0b54dac9e5bc34b90f182b51e12176ac891e9bc6141c2361b531d17c"
+      },
+      {
+        "key": "inlineSymlink",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/pulls/comments/4345508855",
+        "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/raw-0c83415b7a21ab26e7a1f5b2f9d116f26b0767ffbd4e7557d5a17ba7a0081a52.json",
+        "bytes": 4527,
+        "sha256": "0c83415b7a21ab26e7a1f5b2f9d116f26b0767ffbd4e7557d5a17ba7a0081a52"
+      },
+      {
+        "key": "main",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/git/ref/heads/main",
+        "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/raw-e759003959113ee9ac4276a4c91292ab96c5059a87ec6f4636a11dfe80dbb8f3.json",
+        "bytes": 356,
+        "sha256": "e759003959113ee9ac4276a4c91292ab96c5059a87ec6f4636a11dfe80dbb8f3"
+      }
+    ]
+  },
+  "immutableObservationIndex": [
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T070620634Z.json",
+      "bytes": 2516,
+      "sha256": "048e3e91574cd8c8832eb80f49394e2d45e62457c7a55e1cf37168c13a7f6b27",
+      "observedAt": "2026-10-22T07:06:20.634Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T070754769Z.json",
+      "bytes": 3425,
+      "sha256": "13cdf47ba3633c58ba124885fa44e10bbcdd4ce00c057412540c9eb689ffb672",
+      "observedAt": "2026-10-22T07:07:54.769Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T070926363Z.json",
+      "bytes": 3425,
+      "sha256": "9641ff024d4b19187f98c11bded5b1887388f01f214e6edf72b9983dbbd43dc8",
+      "observedAt": "2026-10-22T07:09:26.363Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T071047406Z.json",
+      "bytes": 3425,
+      "sha256": "549c54f0e2623b31eb97308eda8b8cba890619cff4295e0b91678c39778c13b5",
+      "observedAt": "2026-10-22T07:10:47.406Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T071137437Z.json",
+      "bytes": 3425,
+      "sha256": "e27a8cf5f87ca75b206ae843f4e04833ea6cd1a516b802f4680d50d1cbe33eab",
+      "observedAt": "2026-10-22T07:11:37.437Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T071227269Z.json",
+      "bytes": 3425,
+      "sha256": "bbe91104e250d3f20029310245067c2a5de4f75bddca9caa24ca80d61c307fef",
+      "observedAt": "2026-10-22T07:12:27.269Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T071317417Z.json",
+      "bytes": 3425,
+      "sha256": "bab373ee11776ab7d2a4328a19a2c3f75dd559e434bd866ddc96942d1bffec4f",
+      "observedAt": "2026-10-22T07:13:17.417Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha-ready-automatic-review-monitor/observation-2026-10-22T071437747Z.json",
+      "bytes": 2461,
+      "sha256": "71b0d84e9536418d89cc20c1a3515b644e521cc6ba8fb8becf807c6da8ae5c95",
+      "observedAt": "2026-10-22T07:14:37.747Z"
+    }
+  ],
+  "allCapturedRawResourceHashesReverified": true,
+  "rawObservationFiles": {
+    "distinct": 19,
+    "bytes": 1053366
+  }
+}
