@@ -102,3 +102,10 @@
     .lab-checks label { display: flex; }
 }
 .lab-confirmation { margin-top: 1.3rem; font-size: .8rem; }
+
+.lab-hierarchy { margin-block: 1.5rem; background: radial-gradient(ellipse at top right, #432356, #1d142c 75%); }
+.lab-hierarchy-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.lab-hierarchy-grid > div { min-width: 0; }
+.lab-hierarchy-grid dt { color: #f0d9b6; font-size: 1rem; }
+.lab-hierarchy-grid dd { margin: .7rem 0 0; font-size: .85rem; line-height: 1.8; color: #d5c7e2; }
+@media (max-width: 820px) { .lab-hierarchy-grid { grid-template-columns: minmax(0, 1fr); gap: 1rem; } }

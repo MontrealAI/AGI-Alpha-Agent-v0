@@ -30,6 +30,27 @@ test('artifact substitution, unsupported fields, omitted programs and future dep
     }
 });
 
+test('validation returns the owned artifact snapshot despite post-digest caller mutation', async () => {
+    const artifact = (await makeArtifacts(bindings, runCampaign(DEFAULT_CHARTER)))[0];
+    const expected = structuredClone(artifact);
+    const pending = validateArtifact(artifact);
+    artifact.scope = {forged: true};
+    artifact.payload.scope = {forged: true};
+    artifact.payload.program.queryRows[0].interval[0]++;
+    artifact.digest = '0'.repeat(64);
+    assert.deepEqual(await pending, expected);
+});
+
+test('artifact construction owns all campaign stages before the first asynchronous digest', async () => {
+    const result = runCampaign(DEFAULT_CHARTER);
+    const expected = await makeArtifacts(bindings, result);
+    const pending = makeArtifacts(bindings, result);
+    result.stages[1].scope = {forged: true};
+    result.stages[1].program = null;
+    result.invalidations.changed.push('forged');
+    assert.deepEqual(await pending, expected);
+});
+
 for (const [name, change] of [
     ['scope', input => { input.scope = {callerChanged: true}; }],
     ['payload', input => { input.payload.program = {callerChanged: true}; }],

@@ -512,7 +512,7 @@ export function runCampaign(input, options = {}) {
     const oldSlice = parent && state === 'accepted' && parent.charter.controls <= charter.controls
         ? parent.stages[5].program.responseTable.every((value, mask) => value === stages[5].program.responseTable[mask]) : false;
     if (parent && state === 'accepted' && (!oldSlice
-        || parent.charter.controls < charter.controls && parent.charter.operations.some(operation => !charter.operations.includes(operation)))) {
+        || parent.charter.operations.some(operation => !charter.operations.includes(operation)))) {
         state = 'rejected'; failure = 'The successor failed to preserve the accepted predecessor purpose on its original domain and operations.';
         stages[5].status = 'rejected'; stages[5].reason = failure; queryResults = null;
     }

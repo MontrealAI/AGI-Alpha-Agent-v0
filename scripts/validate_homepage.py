@@ -19,9 +19,102 @@ from urllib.request import Request, urlopen
 
 from playwright.sync_api import Page, expect, sync_playwright
 
-from scripts.homepage_evidence import ASSETS, asset_hashes
+from scripts.homepage_evidence import ASSETS, PAPER_ASSETS, asset_hashes
+from scripts.research_papers import load_catalog
 from scripts.validate_ascension import Handler, inspect
 from scripts.validate_ecosystem import validate as validate_ecosystem
+
+
+def assert_paper_links(page: Page, language: str) -> None:
+    """Keep original PDFs and accessible link names intact through reading changes."""
+    papers = page.locator("#papers")
+    records = load_catalog()["papers"]
+    expect(papers.locator("article")).to_have_count(len(records))
+    expect(papers.locator(".paper-link")).to_have_count(len(records))
+    reading_index = papers.locator(".papers-index")
+    expect(reading_index).to_have_accessible_name(
+        "Choose your reading path" if language == "en" else "Choisissez votre parcours de lecture"
+    )
+    expect(reading_index.locator("a")).to_have_count(len(records))
+    expect(reading_index.locator("ol > li")).to_have_count(len(records) - 1)
+    grid_box = papers.locator(".papers-grid").bounding_box()
+    lead_box = papers.locator(".paper-featured").bounding_box()
+    assert grid_box is not None and lead_box is not None
+    assert abs(grid_box["width"] - lead_box["width"]) < 1, "The foundation spans the reading grid"
+    card_boxes = []
+    for card in papers.locator("article").all():
+        box = card.bounding_box()
+        assert box is not None
+        card_boxes.append(box)
+    for first, box in enumerate(card_boxes):
+        remaining_start = first + 1
+        for other in card_boxes[remaining_start:]:
+            horizontal = min(box["x"] + box["width"], other["x"] + other["width"]) - max(box["x"], other["x"])
+            vertical = min(box["y"] + box["height"], other["y"] + other["height"]) - max(box["y"], other["y"])
+            assert min(horizontal, vertical) <= 1, "Paper cards must not overlap"
+    title_element = papers.locator(".paper-featured h3")
+    assert " ".join(title_element.inner_text().replace("\u00ad", "").split()) == records[0]["display_title"]
+    words = title_element.locator(".paper-title-word")
+    expect(words).to_have_count(len(records[0]["title_words"]))
+    for word in words.all():
+        assert word.evaluate("element => getComputedStyle(element).display") == "block"
+    title_fragments = title_element.evaluate(
+        """element => {
+            const fragments = new Map();
+            let word = 0;
+            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+            while (walker.nextNode()) {
+                const node = walker.currentNode;
+                for (let index = 0; index < node.length; index++) {
+                    const character = node.textContent[index];
+                    if (/\\s/.test(character)) { word += 1; continue; }
+                    if (!/[A-Z]/.test(character)) continue;
+                    const range = document.createRange();
+                    range.setStart(node, index);
+                    range.setEnd(node, index + 1);
+                    const top = Math.round(range.getBoundingClientRect().top);
+                    const key = `${word}:${top}`;
+                    fragments.set(key, (fragments.get(key) || '') + character);
+                }
+            }
+            return [...fragments.values()];
+        }"""
+    )
+    if records[0]["title_words"]:
+        assert title_fragments and all(len(fragment) >= 4 for fragment in title_fragments), title_fragments
+    for index, record in enumerate(records):
+        filename = record["pdf"]["path"].removeprefix("docs/")
+        title = record["title"]
+        index_link = papers.locator(".papers-index a").nth(index)
+        expect(index_link).to_have_attribute("href", f'#paper-{record["id"]}-title')
+        expect(index_link).to_have_accessible_name(record["display_title"])
+        expect(papers.locator(f'#paper-{record["id"]}-title')).to_have_attribute("tabindex", "-1")
+        expect(papers.locator(f'[data-paper-key="{record["id"]}-summary"]')).to_have_text(record["summary"][language])
+        link = papers.locator(".paper-link").nth(index)
+        expect(link).to_have_attribute("href", filename)
+        expect(link).to_have_attribute("type", "application/pdf")
+        expect(link).to_have_attribute("hreflang", "en")
+        expect(link.locator(".sr-only")).to_have_text(": " + title)
+        expect(link.locator(".paper-format")).to_have_text("English PDF" if language == "en" else "PDF en anglais")
+        expect(link.locator("span[aria-hidden='true']")).to_have_text("↗")
+        expected = (
+            ("Read the featured paper" if index == 0 else "Read the paper")
+            if language == "en"
+            else ("Lire la publication à la une" if index == 0 else "Lire la publication")
+        )
+        expect(link.locator("span[data-paper-key$='-read']")).to_have_text(expected)
+        expect(link).to_have_accessible_name(re.compile(re.escape(expected) + r"\s*:\s*" + re.escape(title)))
+        context = link.locator(".sr-only").evaluate(
+            """element => {
+                const style = getComputedStyle(element);
+                const rect = element.getBoundingClientRect();
+                return {position: style.position, clip: style.clipPath, width: rect.width, height: rect.height};
+            }"""
+        )
+        assert context["position"] == "absolute" and context["clip"] == "inset(50%)", context
+        assert context["width"] <= 1 and context["height"] <= 1, context
+    expect(papers.locator("[data-home-key]")).not_to_have_count(0)
+    assert "undefined" not in papers.inner_text()
 
 
 def assert_reading_links(page: Page, language: str) -> None:
@@ -45,6 +138,7 @@ def assert_reading_links(page: Page, language: str) -> None:
 
 def assert_handoff(page: Page, language: str, large: bool) -> None:
     """Require every first-plan entry to retain the visitor's reading preferences."""
+    assert_paper_links(page, language)
     assert_reading_links(page, language)
     for selector, path, fragments in (
         ("[data-alpha-link]", "successor/alpha/", {"", "computer-mission"}),
@@ -176,7 +270,7 @@ def check_layout(page: Page) -> list[dict[str, Any]]:
     controls = inspect(
         page,
         """(() => [...document.querySelectorAll(
-          'header a, header button, #home a, #home button, #questions summary, .welcome-ecosystem a'
+          'header a, header button, #home a, #home button, #papers a, #questions summary, .welcome-ecosystem a'
         )].filter(el => !el.closest('#research') && el.getClientRects().length &&
           getComputedStyle(el).visibility !== 'hidden').map(el => {
           const box = el.getBoundingClientRect();
@@ -193,7 +287,11 @@ def check_layout(page: Page) -> list[dict[str, Any]]:
 def audit(page: Page, axe_source: str, *, beginner_only: bool) -> dict[str, Any]:
     """Run axe against the shipped CSP and retain exact failures for review."""
     inspect(page, axe_source + "; void 0")
-    context = "{include:['header','#home','.welcome-ecosystem'],exclude:['#research']}" if beginner_only else "document"
+    context = (
+        "{include:['header','#home','#papers','.welcome-ecosystem'],exclude:['#research']}"
+        if beginner_only
+        else "document"
+    )
     tags = "['wcag2a','wcag2aa','wcag21aa','best-practice']" if beginner_only else "['wcag2a','wcag2aa','wcag21aa']"
     return cast(dict[str, Any], inspect(page, f"axe.run({context}, {{runOnly:{{type:'tag',values:{tags}}}}})"))
 
@@ -228,6 +326,7 @@ def validate(
         "layouts": [],
         "accessibility": [],
         "assets": {},
+        "paper_assets": {},
     }
     try:
         expected_assets = asset_hashes()
@@ -247,6 +346,20 @@ def validate(
                 raise ValueError(f"Homepage asset differs from the tested source: {relative}")
             report["assets"][relative] = digest
         report["checks"].append("exact-current-assets")
+        for filename, expected in PAPER_ASSETS.items():
+            if hashlib.sha256((root / "docs" / filename).read_bytes()).hexdigest() != expected:
+                raise ValueError(f"Source research paper differs from the original: {filename}")
+            if hashlib.sha256((site / filename).read_bytes()).hexdigest() != expected:
+                raise ValueError(f"Built research paper differs from the original: {filename}")
+            request = Request(origin + filename, headers={"Cache-Control": "no-cache"})
+            with urlopen(request, timeout=20) as response:
+                if response.status != 200 or response.geturl() != origin + filename:
+                    raise ValueError(f"Unexpected research paper response: {filename}")
+                received = hashlib.sha256(response.read()).hexdigest()
+            if received != expected:
+                raise ValueError(f"Served research paper differs from the original: {filename}")
+            report["paper_assets"][filename] = received
+        report["checks"].append("original-paper-bytes")
         axe_source = axe_script.read_text(encoding="utf-8")
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(executable_path=executable)
@@ -284,6 +397,23 @@ def validate(
                 summary.click()
             assert_handoff(page, "en", False)
             report["checks"] += ["clear-first-step", "three-visible-steps", "readable-default-text", "working-faq"]
+
+            # Index links move to focusable headings, not duplicate PDF downloads.
+            first_paper, last_paper = load_catalog()["papers"][0], load_catalog()["papers"][-1]
+            first_target = f'#paper-{first_paper["id"]}-title'
+            last_target = f'#paper-{last_paper["id"]}-title'
+            page.locator(".papers-index a").first.focus()
+            page.keyboard.press("Enter")
+            expect(page.locator(first_target)).to_be_focused()
+            expect(page).to_have_url(origin + first_target)
+            page.locator(".papers-index a").last.click()
+            expect(page.locator(last_target)).to_be_focused()
+            expect(page).to_have_url(origin + last_target)
+            page.go_back()
+            expect(page).to_have_url(origin + first_target)
+            page.go_forward()
+            expect(page).to_have_url(origin + last_target)
+            assert_handoff(page, "en", False)
 
             # A keyboard-only visitor reaches the main content before navigating the header.
             page.goto(origin, wait_until="networkidle")
@@ -434,6 +564,10 @@ def validate(
                     {"width": width, "language": language, "large_text": large, "controls": controls}
                 )
                 page.screenshot(path=str(output / f"homepage-{language}-{width}{'-large' if large else ''}.png"))
+                assert_paper_links(page, language)
+                page.locator("#papers").screenshot(
+                    path=str(output / f"homepage-papers-{language}-{width}{'-large' if large else ''}.png")
+                )
                 page.locator("#alpha-journey").screenshot(
                     path=str(output / f"homepage-journey-{language}-{width}{'-large' if large else ''}.png")
                 )
@@ -474,6 +608,9 @@ def validate(
             fallback.locator("#questions summary").first.click()
             expect(fallback.locator("#questions details").first).to_have_attribute("open", "")
             assert_handoff(fallback, "en", False)
+            fallback.locator(".papers-index a").last.click()
+            expect(fallback).to_have_url(origin + last_target)
+            expect(fallback.locator(last_target)).to_be_focused()
             fallback.locator("#home [data-start-link]").click()
             expect(fallback).to_have_url(origin + "start/#journey")
             expect(fallback.locator("#journey")).to_be_focused()

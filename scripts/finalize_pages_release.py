@@ -176,6 +176,22 @@ def staged_release(folder: Path) -> Iterator[Path]:
             raise
 
 
+def verify_legacy_evidence(folder: Path, evidence: Path, manifest: dict[str, Any]) -> dict[str, Any] | None:
+    """Require complete local and direct public URL evidence for new releases."""
+    if tuple(map(int, manifest["version"].split("."))) < (1, 37, 1):
+        return None
+    from scripts.legacy_public_urls import verify_report
+
+    local = manifest.get("legacy_public_urls")
+    if not isinstance(local, dict):
+        raise ValueError("Missing packaged legacy public URL acceptance")
+    packs = folder / "site-packs.json"
+    verify_report(local, manifest["commit"], manifest["version"], packs, mode="local")
+    public = json.loads((evidence / "public-pages/legacy-public-urls.json").read_text(encoding="utf-8"))
+    verify_report(public, manifest["commit"], manifest["version"], packs, mode="public")
+    return public
+
+
 def finalize(folder: Path, evidence: Path) -> None:
     """Bind public evidence to the packaged commit and refresh package checksums."""
     manifest_path = folder / "release-manifest.json"
@@ -187,6 +203,7 @@ def finalize(folder: Path, evidence: Path) -> None:
         raise ValueError("Public Pages evidence differs from the packaged source")
     if workspace["origin"] != url or not workspace["model_required"] or public["url"] != url:
         raise ValueError("Public Pages acceptance must exercise the full canonical site")
+    legacy_public_urls = verify_legacy_evidence(folder, evidence, manifest)
     flagship = None
     if tuple(map(int, manifest["version"].split("."))) >= (1, 34, 0):
         from scripts.successor_alpha_evidence import load_report, verify_release_workspace, verify_report
@@ -452,6 +469,11 @@ def finalize(folder: Path, evidence: Path) -> None:
         manifest_path = folder / "release-manifest.json"
         manifest["validation_evidence"] = prepare_public_validation(folder, evidence, manifest)
         manifest["public_pages"] = public
+        if legacy_public_urls is not None:
+            manifest["public_legacy_public_urls"] = legacy_public_urls
+            manifest["release_gates"].append(
+                "public direct-200 legacy paths/index routes/anchors and exact original PDFs without redirects"
+            )
         if flagship:
             manifest["public_successor_alpha"] = flagship
             manifest["release_gates"].append(

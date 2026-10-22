@@ -6,6 +6,8 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+from html import escape
+from html.parser import HTMLParser
 import json
 import os
 import re
@@ -16,7 +18,8 @@ import tempfile
 import tomllib
 import zipfile
 from pathlib import Path
-from urllib.parse import urlsplit
+from typing import Any
+from urllib.parse import unquote, urlsplit
 
 from alpha_factory_v1.utils.disclaimer import DISCLAIMER
 from scripts.check_agent_preservation import BADGE_MAINTENANCE
@@ -40,6 +43,38 @@ TI_PUBLIC_EXAMPLES = (
     "examples/transformational-source-audit/fixture.json",
     "examples/transformational-source-audit/expected-results.json",
 )
+
+CAPABILITY_GUIDES = (
+    "docs/discovery-lab/README.md",
+    "docs/discovery-lab/SPECIFICATION.md",
+    "docs/discovery-lab/PAPER_TO_CODE.md",
+    "docs/discovery-lab/SOURCES.json",
+    "docs/discovery-lab/MODEL_REVIEW.json",
+    "docs/discovery-lab/FOUNDATION_REPRODUCTION.json",
+    "docs/discovery-lab/RELEASE_NOTES.md",
+    "docs/discovery-lab/CONTINUATION_2026-10-21.md",
+    "docs/discovery-lab/FUTURE_PROTOCOL.md",
+    "docs/discovery-lab/EVIDENCE_DOCKET.md",
+    "docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.md",
+    "docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json",
+    "docs/discovery-lab/REAL_TASK_ADAPTER.md",
+    "examples/successor-capability/README.md",
+    "examples/successor-capability/out-execute/README.md",
+)
+
+
+def qualify_legacy_site(
+    site: Path, pack_manifest: Path, commit: str, version: str, evidence: Path
+) -> dict[str, Any] | None:
+    """Check retained public addresses against the exact restored distribution."""
+    if tuple(map(int, version.split("."))) < (1, 37, 1):
+        return None
+    from scripts.legacy_public_urls import check_site, verify_report
+
+    report = check_site(site, pack_manifest, commit, version)
+    verify_report(report, commit, version, pack_manifest, mode="local")
+    (evidence / "legacy-public-urls.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    return report
 
 
 def release_documents(version: str) -> tuple[str, ...]:
@@ -113,11 +148,17 @@ def release_documents(version: str) -> tuple[str, ...]:
             "examples/transformational-intelligence/public-preparation/README.md",
             "examples/transformational-source-audit/README.md",
         )
+    if tuple(map(int, version.split("."))) >= (1, 38, 0):
+        documents += (*CAPABILITY_GUIDES, "docs/agent/PAPER_UPLOADS.md")
     return documents
 
 
 def release_document_name(name: str) -> str:
     """Keep distinct example guides usable in the flattened operator archive."""
+    if name in CAPABILITY_GUIDES:
+        if name.startswith("docs/discovery-lab/"):
+            return "DISCOVERY_LAB_" + Path(name).stem + Path(name).suffix
+        return "OUT_EXECUTE.md" if "/out-execute/" in name else "CAPABILITY_WORKSPACE.md"
     return {
         "examples/transformational-intelligence/README.md": "TRANSFORMATIONAL_DISCOVERY.md",
         "examples/transformational-intelligence/LOCAL_MODEL.md": "TRANSFORMATIONAL_LOCAL_MODEL.md",
@@ -128,22 +169,191 @@ def release_document_name(name: str) -> str:
     }.get(name, Path(name).name)
 
 
-def copy_release_documents(root: Path, output: Path, version: str, commit: str, *, archive_links: bool = False) -> None:
+def operator_document_name(name: str) -> str:
+    """Preserve new capability repository paths inside the operator archive."""
+    return "capability/" + name if name in CAPABILITY_GUIDES else release_document_name(name)
+
+
+def capability_archive_entry(
+    root: Path, page: bytes, available: set[str], commit: str
+) -> tuple[bytes, dict[str, bytes], list[dict[str, str]]]:
+    """Adapt only anchor navigation; keep the original inline programs, styles and CSP."""
+    text = page.decode("utf-8")
+    offsets = [0]
+    for line in text.splitlines(keepends=True):
+        offsets.append(offsets[-1] + len(line))
+    anchors: list[tuple[int, str, str]] = []
+
+    class Links(HTMLParser):
+        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+            href = dict(attrs).get("href")
+            if tag == "a" and href is not None:
+                line, column = self.getpos()
+                start_tag = self.get_starttag_text()
+                if start_tag is None:
+                    raise ValueError("Capability anchor has no original start-tag text")
+                anchors.append((offsets[line - 1] + column, start_tag, href))
+
+    Links().feed(text)
+    additions = {}
+    navigation = []
+    replacements = []
+    for offset, tag, href in anchors:
+        parsed = urlsplit(href)
+        if parsed.scheme or parsed.netloc or not parsed.path:
+            continue
+        target = (root / "docs/successor/capabilities" / unquote(parsed.path)).resolve()
+        if not target.is_relative_to(root):
+            raise ValueError("Capability archive link leaves the repository")
+        name = target.relative_to(root).as_posix()
+        if target.suffix.lower() == ".pdf" and name not in available and name not in additions:
+            additions[name] = target.read_bytes()
+        if name in available or name in additions:
+            adapted = (
+                name + ("?" + parsed.query if parsed.query else "") + ("#" + parsed.fragment if parsed.fragment else "")
+            )
+        else:
+            if target.is_dir():
+                target = target / "index.html"
+            elif not target.exists() and target.with_suffix(".md").is_file():
+                target = target.with_suffix(".md")
+            if not target.is_file():
+                raise ValueError("Capability navigation has no repository source: " + href)
+            source = target.relative_to(root).as_posix()
+            navigation.append(
+                {
+                    "originalHref": href,
+                    "sourcePath": source,
+                    "sourceUrl": f"https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/{commit}/{source}",
+                }
+            )
+            adapted = "#archive-navigation"
+
+        def replace_href(match: re.Match[str]) -> str:
+            return match[1] + match[2] + escape(adapted, quote=True) + match[2]
+
+        rewritten, count = re.subn(
+            r"(\bhref\s*=\s*)([\"'])(.*?)\2",
+            replace_href,
+            tag,
+            count=1,
+        )
+        if count != 1:
+            raise ValueError("Capability navigation attribute cannot be adapted")
+        replacements.append((offset, len(tag), rewritten))
+    for offset, size, replacement in reversed(replacements):
+        remaining_start = offset + size
+        text = text[:offset] + replacement + text[remaining_start:]
+    if 'id="archive-navigation"' in text:
+        raise ValueError("Capability archive navigation identity collides")
+    links = "".join(
+        f'<li><a href="{escape(item["sourceUrl"], quote=True)}">'
+        f'Exact source for {escape(item["originalHref"])}</a></li>'
+        for item in {item["sourcePath"]: item for item in navigation}.values()
+    )
+    notice = (
+        '<aside id="archive-navigation" class="panel" aria-labelledby="archive-navigation-heading">'
+        '<h2 id="archive-navigation-heading">Other journeys and source guides</h2>'
+        "<p>This operator archive runs the capability workspace and retains its linked papers and guides. "
+        "The gallery and other journeys require the separate full site distribution. "
+        "Their exact source remains available through the links below; these are source views, "
+        "not an accepted live deployment.</p>"
+        f"<ul>{links}</ul></aside>"
+    )
+    if text.count("</main>") != 1:
+        raise ValueError("Capability archive entry needs one main region")
+    return text.replace("</main>", notice + "</main>", 1).encode(), additions, navigation
+
+
+def capture_capability_operator(
+    root: Path, version: str, commit: str
+) -> tuple[dict[str, bytes], dict[str, Any], bytes, list[dict[str, str]], set[str]]:
+    """Own every original guide and validated raw input before creating any output."""
+    captured: dict[str, bytes] = {}
+
+    def capture(name: str) -> bytes:
+        if name not in captured:
+            captured[name] = (root / name).read_bytes()
+        return captured[name]
+
+    for name in release_documents(version):
+        capture(name)
+    for name in ("docs/transformational-intelligence/index.html", *TI_PUBLIC_EXAMPLES):
+        capture(name)
+    catalog_path = "docs/successor/capabilities/sources.json"
+    page_path = "docs/successor/capabilities/index.html"
+    paper_catalog_path = "docs/research-papers.json"
+    catalog = json.loads(capture(catalog_path))
+    sources = catalog["sources"]
+    encoded = json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()
+    if hashlib.sha256(encoded).hexdigest() != catalog["sourceHash"]:
+        raise ValueError("Capability source catalog digest does not reproduce")
+    for name, expected in sources.items():
+        if hashlib.sha256(capture(name)).hexdigest() != expected:
+            raise ValueError("Capability source differs from catalog: " + name)
+    from scripts.research_papers import asset_hashes, parse_catalog
+
+    papers = asset_hashes(parse_catalog(capture(paper_catalog_path)))
+    for name, expected in papers.items():
+        if hashlib.sha256(capture(name)).hexdigest() != expected:
+            raise ValueError("Paper source differs from catalog: " + name)
+    raw_names = set(sources) | set(papers) | {catalog_path, page_path, paper_catalog_path}
+    entry, additions, navigation = capability_archive_entry(
+        root, capture(page_path), raw_names | set(CAPABILITY_GUIDES), commit
+    )
+    captured.update(additions)
+    raw_names.update(additions)
+    return captured, catalog, entry, navigation, raw_names
+
+
+def copy_release_documents(
+    root: Path,
+    output: Path,
+    version: str,
+    commit: str,
+    *,
+    archive_links: bool = False,
+    captured: dict[str, bytes] | None = None,
+) -> dict[str, bytes]:
     """Use pinned standalone fixture links or archive-local links; preserve manuscripts."""
     root = root.resolve()
     names = release_documents(version)
-    packaged = {name: release_document_name(name) for name in names}
+    if tuple(map(int, version.split("."))) >= (1, 38, 0) and captured is None:
+        captured = {name: (root / name).read_bytes() for name in names}
+    rendered = {}
+    packaged = {name: operator_document_name(name) if archive_links else release_document_name(name) for name in names}
     if tuple(map(int, version.split("."))) >= (1, 36, 0):
         packaged["docs/transformational-intelligence/index.html"] = "transformational-intelligence-workspace.html"
         if archive_links:
             packaged.update(
                 {name: "transformational-examples/" + name.removeprefix("examples/") for name in TI_PUBLIC_EXAMPLES}
             )
+    if archive_links and tuple(map(int, version.split("."))) >= (1, 38, 0):
+        from scripts.research_papers import asset_hashes, parse_catalog
+
+        catalog_path = "docs/successor/capabilities/sources.json"
+        assert captured is not None
+        for name in (catalog_path, "docs/research-papers.json"):
+            if name not in captured:
+                captured[name] = (root / name).read_bytes()
+        sources = json.loads(captured[catalog_path])["sources"]
+        closure = (
+            set(sources)
+            | set(asset_hashes(parse_catalog(captured["docs/research-papers.json"])))
+            | {catalog_path, "docs/successor/capabilities/index.html"}
+        )
+        packaged.update({name: "capability/" + name for name in closure})
+        packaged["docs/successor/capabilities/index.html"] = "capability/index.html"
     for name in names:
         source = root / name
         target = output / packaged[name]
+        target.parent.mkdir(parents=True, exist_ok=True)
         if source.suffix != ".md" or name.startswith("docs/manuscript/"):
-            shutil.copy2(source, target)
+            if captured is None:
+                shutil.copy2(source, target)
+            else:
+                rendered[name] = captured[name]
+                target.write_bytes(rendered[name])
             continue
 
         def rewrite(match: re.Match[str], source: Path = source, name: str = name) -> str:
@@ -158,7 +368,7 @@ def copy_release_documents(root: Path, output: Path, version: str, commit: str, 
                 raise ValueError(f"Broken release guide link: {name}: {link}")
             relative = destination.relative_to(root).as_posix()
             if relative in packaged and not source.name.startswith("RELEASE_NOTES_"):
-                url = packaged[relative]
+                url = Path(os.path.relpath(packaged[relative], Path(packaged[name]).parent)).as_posix()
             elif relative.startswith("docs/") and relative.endswith(".html"):
                 url = "https://montrealai.github.io/AGI-Alpha-Agent-v0/" + relative.removeprefix("docs/").removesuffix(
                     "index.html"
@@ -174,10 +384,16 @@ def copy_release_documents(root: Path, output: Path, version: str, commit: str, 
                 + ")"
             )
 
-        sections = re.split(r"(```.*?```)", source.read_text(encoding="utf-8"), flags=re.DOTALL)
+        text = source.read_text(encoding="utf-8") if captured is None else captured[name].decode("utf-8")
+        sections = re.split(r"(```.*?```)", text, flags=re.DOTALL)
         for index in range(0, len(sections), 2):
             sections[index] = re.sub(r"\]\(([^\s)]+)\)", rewrite, sections[index])
-        target.write_text("".join(sections), encoding="utf-8")
+        rendered[name] = "".join(sections).encode("utf-8")
+        if captured is None:
+            target.write_text("".join(sections), encoding="utf-8")
+        else:
+            target.write_bytes(rendered[name])
+    return rendered
 
 
 def package_mainnet_record(root: Path, output: Path, version: str) -> Path:
@@ -232,21 +448,100 @@ def package_successor_alpha_workspace(root: Path, output: Path) -> dict[str, str
 def package_operator_guide(root: Path, output: Path, version: str, commit: str) -> Path:
     """Retain all guides with offline links, the exact TI page and public fixtures."""
     destination = output / f"alpha-agent-v{version}-operator-guide.zip"
+    snapshot = (
+        capture_capability_operator(root, version, commit)
+        if tuple(map(int, version.split("."))) >= (1, 38, 0)
+        else None
+    )
+    if snapshot is not None:
+        captured, catalog, entry, navigation, raw_names = snapshot
+        if (output / "transformational-intelligence-workspace.html").read_bytes() != captured[
+            "docs/transformational-intelligence/index.html"
+        ]:
+            raise ValueError("Operator TI workspace differs from captured source")
     with tempfile.TemporaryDirectory(prefix="alpha-operator-guides-") as raw:
         guides = Path(raw)
-        copy_release_documents(root, guides, version, commit, archive_links=True)
+        rendered = copy_release_documents(
+            root, guides, version, commit, archive_links=True, captured=snapshot[0] if snapshot is not None else None
+        )
         with zipfile.ZipFile(destination, "x", zipfile.ZIP_DEFLATED) as archive:
             for name in release_documents(version):
                 if name.startswith(("docs/agent/", "examples/transformational")):
-                    path = guides / release_document_name(name)
-                    archive.write(path, path.name)
+                    path = guides / operator_document_name(name)
+                    if snapshot is None:
+                        archive.write(path, operator_document_name(name))
+                    else:
+                        archive.writestr(operator_document_name(name), rendered[name])
             if tuple(map(int, version.split("."))) >= (1, 36, 0):
-                archive.write(
-                    output / "transformational-intelligence-workspace.html",
-                    "transformational-intelligence-workspace.html",
-                )
+                if snapshot is None:
+                    archive.write(
+                        output / "transformational-intelligence-workspace.html",
+                        "transformational-intelligence-workspace.html",
+                    )
+                else:
+                    archive.writestr(
+                        "transformational-intelligence-workspace.html",
+                        captured["docs/transformational-intelligence/index.html"],
+                    )
                 for name in TI_PUBLIC_EXAMPLES:
-                    archive.write(root / name, "transformational-examples/" + name.removeprefix("examples/"))
+                    if snapshot is None:
+                        archive.write(root / name, "transformational-examples/" + name.removeprefix("examples/"))
+                    else:
+                        archive.writestr("transformational-examples/" + name.removeprefix("examples/"), captured[name])
+            if snapshot is not None:
+                page_path = "docs/successor/capabilities/index.html"
+                bindings = {}
+                for name in sorted(raw_names | set(CAPABILITY_GUIDES)):
+                    destination_name = "capability/" + name
+                    original = captured[name]
+                    packaged = original if name in raw_names else rendered[name]
+                    archive.writestr(destination_name, packaged)
+                    bindings[name] = {
+                        "archivePath": destination_name,
+                        "sourceSha256": hashlib.sha256(original).hexdigest(),
+                        "packagedSha256": hashlib.sha256(packaged).hexdigest(),
+                    }
+                archive.writestr("capability/index.html", entry)
+                archive.writestr(
+                    "capability/source-map.json",
+                    json.dumps(
+                        {
+                            "schema": "agialpha.capability-operator-guide.v1",
+                            "commit": commit,
+                            "version": version,
+                            "sourceHash": catalog["sourceHash"],
+                            "files": bindings,
+                            "entry": {
+                                "archivePath": "capability/index.html",
+                                "originalArchivePath": "capability/" + page_path,
+                                "originalSha256": hashlib.sha256(captured[page_path]).hexdigest(),
+                                "adaptedSha256": hashlib.sha256(entry).hexdigest(),
+                                "adaptation": (
+                                    "Anchor navigation and archive scope only; original script/style/CSP unchanged."
+                                ),
+                                "externalJourneySources": navigation,
+                            },
+                        },
+                        sort_keys=True,
+                        indent=2,
+                    )
+                    + "\n",
+                )
+                archive.writestr(
+                    "capability/README.md",
+                    "# Capability operator guides\n\n"
+                    "Open index.html for the self-contained browser workspace and usable archive navigation.\n"
+                    "docs/discovery-lab/README.md and examples/successor-capability/README.md describe its scope.\n"
+                    "Run CLI reproduction and full repository checks from the separate source archive; this guide\n"
+                    "archive retains the browser import closure and all directly linked original papers, "
+                    "not every test runner.\n"
+                    "The full gallery and other journeys need the separate site distribution; "
+                    "archive navigation explains this scope.\n"
+                    "docs/successor/capabilities/index.html is the byte-preserved raw original for source inspection.\n"
+                    "source-map.json binds repository paths, original bytes, packaged guide bytes "
+                    "and this source identity.\n"
+                    "Historical records are not current acceptance or authority to execute external work.\n",
+                )
     return destination
 
 
@@ -337,6 +632,7 @@ def main() -> None:
                 archive.write(path, path.relative_to("docs/manuscript"))
     model_manifest = json.loads(Path("scripts/browser_model_manifest.json").read_text(encoding="utf-8"))
     distributions = {}
+    legacy_public_urls = None
     for kind, folder_name in (("browser", "browser-distribution"), ("site", "pages-distribution")):
         source_folder = args.evidence / folder_name
         pack_manifest = source_folder / f"{kind}-packs.json"
@@ -362,6 +658,7 @@ def main() -> None:
                 release = json.loads((restored / "release.json").read_bytes())
                 if release["commit"] != sha or release["version"] != version:
                     raise ValueError("Site release identity differs from the accepted source")
+                legacy_public_urls = qualify_legacy_site(restored, pack_manifest, sha, version, args.evidence)
         data = json.loads(pack_manifest.read_bytes())
         for name in [pack_manifest.name, *(item["name"] for item in data["packs"])]:
             shutil.copy2(source_folder / name, output / name)
@@ -445,6 +742,11 @@ def main() -> None:
             "Optional legacy skips do not establish those integrations",
         ],
     }
+    if legacy_public_urls is not None:
+        manifest["legacy_public_urls"] = legacy_public_urls
+        manifest["release_gates"].append(
+            "retained public file paths, index routes and known anchors; immutable original PDFs and direct copies"
+        )
     if flagship:
         manifest["successor_alpha"] = {"local_acceptance": flagship, "workspace": flagship_workspace}
         manifest["release_gates"].append(

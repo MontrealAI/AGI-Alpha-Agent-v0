@@ -302,6 +302,30 @@ test('a claimed stronger successor cannot silently discard an old required opera
     assert.equal(base.state, 'accepted');
 });
 
+test('equal-control successors retain every predecessor operation and reject substitution', () => {
+    const prior = canonical(base);
+    const changed = charter({operations: ['flip-x']});
+    const rejected = runCampaign(changed, {parent: base});
+    assert.equal(rejected.state, 'rejected');
+    assert.match(rejected.failure, /predecessor purpose/);
+    assert.equal(rejected.queryResults, null);
+    assert.equal(verifyCampaign(changed, rejected, {parent: base}).verified, true);
+    assert.equal(canonical(base), prior);
+    const recovery = runCampaign(DEFAULT_CHARTER, {parent: base});
+    assert.equal(recovery.state, 'accepted');
+    assert.equal(recovery.lineage.generation, 2);
+});
+
+test('equal-control operation additions and expanded-control extensions preserve predecessor operations', () => {
+    for (const changed of [charter({operations: ['flip-z', 'flip-x']}),
+        charter({controls: 4, memory: 16, operations: ['flip-z', 'flip-w']})]) {
+        const accepted = runCampaign(changed, {parent: base});
+        assert.equal(accepted.state, 'accepted');
+        assert.equal(accepted.reuse.priorPurposePreservedOnOldSlice, true);
+        assert.equal(verifyCampaign(changed, accepted, {parent: base}).verified, true);
+    }
+});
+
 
 test('complete-profile equality stops upstream optimization while changed executable route witnesses are rebuilt', () => {
     const firstCharter = charter({faultHypotheses: ['clear', 'left']});

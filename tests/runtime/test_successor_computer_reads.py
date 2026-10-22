@@ -22,6 +22,7 @@ import pytest
 
 from alpha_factory_v1.core.runtime.store import Conflict, Journal
 from alpha_factory_v1.core.runtime.successor import computer, computer_read
+from alpha_factory_v1.core.runtime.successor.workbench import write_receipt
 
 
 @contextlib.contextmanager
@@ -301,9 +302,8 @@ def test_compressed_response_is_refused_before_body_read_or_decompression(monkey
     assert requests[0].headers["accept-encoding"] == "identity" and len(compressed) < 2048
 
 
-@pytest.mark.parametrize("reason", ["stop", "deadline"])
-def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, reason: str
+def check_native_interruption_retains_reserved_action_cleanup_and_no_replay(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, reason: str, *, clock: Callable[[], float] = time.monotonic
 ) -> None:
     children, ready = substitute_reader(monkeypatch, tmp_path, dns_wait=True, startup_delay=1.3)
     if reason == "deadline":
@@ -317,7 +317,7 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
         input_rights="public",
         license="Public technical test fixture",
     )
-    closed = []
+    closed: list[float] = []
     stopped_at: list[float] = []
 
     class ControlledAdvisor:
@@ -333,7 +333,7 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
                     key = "@successor-computer:" + json.loads((output / "run.json").read_text())["run_id"]
                     latest = journal.latest(key)
                     if latest["state"] != "stopped":
-                        stopped_at.append(time.monotonic())
+                        stopped_at.append(clock())
                         computer._change(journal, key, latest["revision"], state="stopped")
                 checkpoint()
 
@@ -347,7 +347,8 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
             return self.observe()
 
         def close(self) -> None:
-            closed.append(True)
+            assert len(children) == 1 and children[0].poll() is not None
+            closed.append(clock())
 
     advisor = ControlledAdvisor()
     image = "sha256:" + "a" * 64
@@ -355,20 +356,79 @@ def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
     with pytest.raises(Conflict if reason == "stop" else TimeoutError):
         computer.run_session(journal, mission, advisor, image, output, permit, factory=ControlledComputer)
     assert ready.exists()
-    if reason == "deadline":
-        phase_started = entered()
-        assert phase_started is not None and time.monotonic() - phase_started < 2.5
-    else:
-        assert stopped_at and time.monotonic() - stopped_at[0] < 2.5
     receipt = json.loads((output / "receipt.json").read_text())
     assert receipt["state"] == ("stopped" if reason == "stop" else "interrupted")
     assert receipt["actions_reserved"] == 1 and receipt["events"][-1]["status"] == "reserved"
     assert receipt["pending"] == "action" and receipt["billing"] == "UNKNOWN"
-    assert receipt["cleanup"] == "VERIFIED" and closed == [True] and children[0].poll() is not None
+    assert receipt["cleanup"] == "VERIFIED" and len(closed) == 1 and children[0].poll() is not None
     assert (output / "signed-receipt.json").is_file()
     with pytest.raises(Conflict, match="reconcile"):
         computer.run_session(journal, mission, advisor, image, tmp_path / "retry", permit, factory=ControlledComputer)
     journal.verify()
+    # Bound revocation through actual child reaping and environment close. Protected
+    # receipt persistence follows close and invokes Windows ACL tooling separately.
+    phase_started = entered() if reason == "deadline" else stopped_at[0] if stopped_at else None
+    assert phase_started is not None and closed[0] - phase_started < 2.5, "native interruption cleanup exceeded 2.5s"
+
+
+@pytest.mark.parametrize("reason", ["stop", "deadline"])
+def test_native_interruption_retains_reserved_action_cleanup_and_no_replay(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, reason: str
+) -> None:
+    check_native_interruption_retains_reserved_action_cleanup_and_no_replay(monkeypatch, tmp_path, reason)
+
+
+def check_native_interruption_cleanup_latency_distinguishes_protected_receipt_persistence(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, delayed_phase: str
+) -> None:
+    # A stage clock makes both controls deterministic without delaying processes,
+    # retaining the actual reader, journal, receipt persistence and STOP checks.
+    now = 0.0
+    fetch: Callable[[computer.ReadBroker, str, str], dict[str, Any]] = computer.ReadBroker.fetch
+
+    def delayed_fetch(self: computer.ReadBroker, url: str, method: str) -> dict[str, Any]:
+        nonlocal now
+        try:
+            return fetch(self, url, method)
+        finally:
+            if delayed_phase == "cleanup":
+                now += 3.0
+
+    def delayed_receipt(*args: Any, **kwargs: Any) -> None:
+        nonlocal now
+        if delayed_phase == "receipt":
+            now += 3.0
+        write_receipt(*args, **kwargs)
+
+    monkeypatch.setattr(computer.ReadBroker, "fetch", delayed_fetch)
+    monkeypatch.setattr(computer, "write_receipt", delayed_receipt)
+
+    def check() -> None:
+        check_native_interruption_retains_reserved_action_cleanup_and_no_replay(
+            monkeypatch, tmp_path, "stop", clock=lambda: now
+        )
+
+    if delayed_phase == "cleanup":
+        with pytest.raises(AssertionError, match="native interruption cleanup exceeded 2.5s"):
+            check()
+    else:
+        check()
+
+
+def test_native_interruption_cleanup_latency_excludes_protected_receipt_persistence(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    check_native_interruption_cleanup_latency_distinguishes_protected_receipt_persistence(
+        monkeypatch, tmp_path, "receipt"
+    )
+
+
+def test_native_interruption_cleanup_latency_still_refuses_slow_cleanup(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    check_native_interruption_cleanup_latency_distinguishes_protected_receipt_persistence(
+        monkeypatch, tmp_path, "cleanup"
+    )
 
 
 def approved_reader_source() -> bytes:

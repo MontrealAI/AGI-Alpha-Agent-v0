@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: true
 
 defaults:
@@ -26,8 +26,13 @@ env:
   AGIALPHA_DECIMALS: 18
 
 jobs:
+  paper-scope:
+    uses: ./.github/workflows/paper-scope.yml
+
   lint:
-    name: "Lint (ruff)"
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
+    name: "Full lint (ruff)"
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -52,9 +57,9 @@ jobs:
         run: python scripts/ruff_targets.py --run
 
   smoke:
-    name: "Smoke tests"
-    if: ${{ always() }}
-    needs: lint
+    name: "Full smoke tests"
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled()) }}
+    needs: [paper-scope, lint]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -102,3 +107,73 @@ jobs:
           name: pr-demo-catalog
           path: evidence/demo-catalog.json
           if-no-files-found: warn
+
+  full-software-qualification:
+    name: Full software qualification
+    needs: [paper-scope, lint, smoke, lint-result, smoke-result]
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Bind full-runtime scope to successful exact-source jobs
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python - <<'PYTHON'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          failed = {name: row['result'] for name, row in results.items() if row['result'] != 'success'}
+          if failed:
+              raise SystemExit(f'Full software qualification incomplete: {failed}')
+          print('Full software qualification, not paper-only validation.')
+          PYTHON
+
+  lint-result:
+    name: "Lint (ruff)"
+    # Required legacy context must fail, not skip-success, if scope validation fails.
+    if: ${{ always() }}
+    needs: [paper-scope, lint]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require validated paper scope or successful full software checks
+        env:
+          SCOPE_RESULT: ${{ needs.paper-scope.result }}
+          SCOPE_MODE: ${{ needs.paper-scope.outputs.mode }}
+          FULL_RESULT: ${{ needs.lint.result }}
+        run: |
+          python - <<'PYTHON'
+          import os
+          scope, mode, full = (os.environ[key] for key in ('SCOPE_RESULT', 'SCOPE_MODE', 'FULL_RESULT'))
+          if scope != 'success' or mode not in {'paper', 'full'} or mode == 'full' and full != 'success':
+              raise SystemExit(f'Unqualified check: scope={scope}, mode={mode}, full={full}')
+          message = 'Paper-only validation; NOT full runtime acceptance.' if mode == 'paper' else 'Full software check passed.'
+          print(message)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as report:
+              report.write(message + '\n')
+          PYTHON
+
+  smoke-result:
+    name: "Smoke tests"
+    # Required legacy context must fail, not skip-success, if scope validation fails.
+    if: ${{ always() }}
+    needs: [paper-scope, smoke]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require validated paper scope or successful full software checks
+        env:
+          SCOPE_RESULT: ${{ needs.paper-scope.result }}
+          SCOPE_MODE: ${{ needs.paper-scope.outputs.mode }}
+          FULL_RESULT: ${{ needs.smoke.result }}
+        run: |
+          python - <<'PYTHON'
+          import os
+          scope, mode, full = (os.environ[key] for key in ('SCOPE_RESULT', 'SCOPE_MODE', 'FULL_RESULT'))
+          if scope != 'success' or mode not in {'paper', 'full'} or mode == 'full' and full != 'success':
+              raise SystemExit(f'Unqualified check: scope={scope}, mode={mode}, full={full}')
+          message = 'Paper-only validation; NOT full runtime acceptance.' if mode == 'paper' else 'Full software check passed.'
+          print(message)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as report:
+              report.write(message + '\n')
+          PYTHON

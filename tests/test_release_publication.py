@@ -123,6 +123,10 @@ def test_active_operator_guides_and_asset_examples_match_the_release() -> None:
 
 @pytest.mark.parametrize("head,kind", [("a" * 40, "commit"), ("b" * 40, "commit"), ("a" * 40, "tag")])
 def test_remote_main_must_still_match_before_publication(monkeypatch, head, kind) -> None:
+    def reject_paper_proof(*_args):
+        raise ValueError("Not a paper descendant")
+
+    monkeypatch.setattr(release_context, "require_paper_descendant", reject_paper_proof)
     monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
     monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
     monkeypatch.setenv("GITHUB_SHA", "a" * 40)
@@ -1124,3 +1128,45 @@ def test_failed_second_metadata_promotion_restores_original_metadata_and_removes
     assert promotions[:2] == ["release-manifest.json", "SHA256SUMS"]
     assert _release_bytes(folder) == before
     assert not list(tmp_path.glob(".alpha-public-release-*"))
+
+
+def test_verified_paper_descendant_keeps_original_software_identity(monkeypatch):
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "check_output",
+        lambda *a, **k: json.dumps({"ref": "refs/heads/main", "object": {"sha": "b" * 40, "type": "commit"}}),
+    )
+    calls = []
+    monkeypatch.setattr(release_context, "require_paper_descendant", lambda *args: calls.append(args))
+    assert release_context.require_current_main() == "a" * 40
+    assert calls[0][1:] == ("a" * 40, "b" * 40)
+
+
+def test_published_software_cannot_rollback_later_paper_site(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.37.1"\n')
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "run",
+        lambda *a, **k: subprocess.CompletedProcess(a, 0, json.dumps({"tag_name": "v1.37.1", "draft": False}), ""),
+    )
+    with pytest.raises(RuntimeError, match="already public"):
+        release_context.require_unpublished_software()
+
+
+@pytest.mark.parametrize("draft", [0, 1, None, "false"])
+def test_release_lookup_requires_builtin_boolean_draft(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, draft: object
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.37.1"\n')
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "run",
+        lambda *a, **k: subprocess.CompletedProcess(a, 0, json.dumps({"tag_name": "v1.37.1", "draft": draft}), ""),
+    )
+    with pytest.raises(ValueError, match="Invalid exact release lookup"):
+        release_context.require_unpublished_software()

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Build content-versioned gallery caches without touching model or operator caches."""
+
 from __future__ import annotations
 
 import argparse
@@ -50,75 +51,90 @@ self.addEventListener('fetch', event => {
 """
 
 
+def is_cache_asset(relative: Path) -> bool:
+    """Select the same lightweight paths for disk and exact-Git validation."""
+    if relative.parts[:2] == ("reports", "computer-use-study"):
+        return False
+    if {"ascension-wallet", "nova-studio"}.intersection(relative.parts) or (
+        "mainnet" in relative.parts and {"ascension-protocol", "ascension"}.intersection(relative.parts)
+    ):
+        return False
+    if "pyodide" in relative.parts:
+        return False
+    if "alpha_agi_insight_v1" in relative.parts:
+        legacy = "alpha_factory_v1/demos/alpha_agi_insight_v1/"
+        allowed = {
+            "index.html",
+            "style.css",
+            "script.js",
+            "plotly.min.js",
+            "d3.v7.min.js",
+            "forecast.json",
+            "population.json",
+            "tree.json",
+        }
+        return relative.as_posix().startswith(legacy) and relative.as_posix().removeprefix(legacy) in allowed
+    if relative.name == "service-worker.js":
+        return False
+    if relative.name == "index.html" or relative.as_posix() == "gallery.html":
+        return True
+    if relative.parts[:1] == ("deployments",) and relative.name in {"directory.css", "manifest.json"}:
+        return True
+    return relative.suffix in {".js", ".mjs", ".css", ".svg", ".json"} and (
+        "assets" in relative.parts or "stylesheets" in relative.parts
+    )
+
+
 def gather_assets(docs_dir: Path) -> list[str]:
     """Select lightweight gallery resources; Insight manages its own model cache."""
-    assets: set[str] = set()
-    for item in docs_dir.rglob("*"):
-        if not item.is_file():
-            continue
-        relative = item.relative_to(docs_dir)
-        # The study has its own complete offline ZIP; do not cache only its overview.
-        if relative.parts[:2] == ("reports", "computer-use-study"):
-            continue
-        # Wallet code and profiles need network freshness, including nested gallery copies.
-        if {"ascension-wallet", "nova-studio"}.intersection(relative.parts) or (
-            "mainnet" in relative.parts and {"ascension-protocol", "ascension"}.intersection(relative.parts)
-        ):
-            continue
-        if "pyodide" in relative.parts:
-            continue
-        if "alpha_agi_insight_v1" in relative.parts:
-            legacy = "alpha_factory_v1/demos/alpha_agi_insight_v1/"
-            allowed = {
-                "index.html",
-                "style.css",
-                "script.js",
-                "plotly.min.js",
-                "d3.v7.min.js",
-                "forecast.json",
-                "population.json",
-                "tree.json",
-            }
-            if relative.as_posix().startswith(legacy) and relative.as_posix().removeprefix(legacy) in allowed:
-                assets.add(relative.as_posix())
-            continue
-        if item.name == "service-worker.js":
-            continue
-        if item.name == "index.html" or relative.as_posix() == "gallery.html":
-            assets.add(relative.as_posix())
-        elif relative.parts[:1] == ("deployments",) and item.name in {"directory.css", "manifest.json"}:
-            assets.add(relative.as_posix())
-        elif item.suffix in {".js", ".mjs", ".css", ".svg", ".json"} and (
-            "assets" in relative.parts or "stylesheets" in relative.parts
-        ):
-            assets.add(relative.as_posix())
-    return sorted(assets)
+    result = []
+    if docs_dir.is_symlink():
+        raise ValueError("Gallery source cannot be a symlink")
+    for path in docs_dir.rglob("*"):
+        if path.is_symlink():
+            raise ValueError("Gallery assets cannot contain symlinks")
+        relative = path.relative_to(docs_dir)
+        if path.is_file() and is_cache_asset(relative):
+            result.append(relative.as_posix())
+    return sorted(result)
 
 
-def build(docs_dir: Path) -> str:
-    """Write root and compatibility workers with a digest of the actual bytes."""
-    release = json.loads((Path(__file__).resolve().parents[1] / "alpha_factory_v1/demos/catalog.json").read_text())[
-        "release"
-    ]
-    assets = gather_assets(docs_dir)
+def render_scripts(asset_bytes: dict[str, bytes], release: str) -> dict[str, str]:
+    """Pure rendering: no input data can change the worker program or cache policy."""
     digest = hashlib.sha256()
+    assets = sorted(asset_bytes)
     for asset in assets:
+        if not is_cache_asset(Path(asset)):
+            raise ValueError("Unexpected gallery cache input")
         digest.update(asset.encode())
-        digest.update((docs_dir / asset).read_bytes())
+        digest.update(asset_bytes[asset])
     version = "agialpha-gallery-" + digest.hexdigest()[:16]
+    result = {}
     for destination, prefix in [
-        (docs_dir / "service-worker.js", "./"),
-        (docs_dir / "assets" / "service-worker.js", "../"),
-        (docs_dir / "alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js", "../../../"),
+        ("service-worker.js", "./"),
+        ("assets/service-worker.js", "../"),
+        ("alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js", "../../../"),
     ]:
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        script = (
+        result[destination] = (
             TEMPLATE.replace("__RELEASE__", json.dumps(release))
             .replace("__CACHE__", json.dumps(version))
             .replace("__ASSETS__", json.dumps([prefix + asset for asset in assets], indent=2))
         )
+    return result
+
+
+def build(docs_dir: Path) -> str:
+    """Write root and compatibility workers with a digest of the actual bytes."""
+    release = json.loads((docs_dir.resolve().parent / "alpha_factory_v1/demos/catalog.json").read_text())["release"]
+    scripts = render_scripts({name: (docs_dir / name).read_bytes() for name in gather_assets(docs_dir)}, release)
+    for name, script in scripts.items():
+        destination = docs_dir / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(script, encoding="utf-8")
-    return version
+    cache = json.loads(scripts["service-worker.js"].split("const CACHE = ", 1)[1].split(";", 1)[0])
+    if not isinstance(cache, str):
+        raise ValueError("Invalid generated cache name")
+    return cache
 
 
 def main() -> None:

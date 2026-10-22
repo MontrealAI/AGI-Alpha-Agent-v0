@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 // Display preferences only. No accounts, cookies, telemetry or task storage.
 const french = {
+    "nav-papers": "Publications",
+    "papers-eyebrow": "LA RECHERCHE",
+    "papers-title": "De meilleures stratégies. Un autre jeu. De nouvelles capacités.",
+    "papers-intro": "Des manuscrits de recherche pour changer les conditions de réussite, tout en préservant la finalité du travail.",
+    "papers-index-title": "Choisissez votre parcours de lecture",
+    "papers-note": "Originaux en anglais. Propositions de recherche et études délimitées, sans revendication de capacité autonome générale ni de déploiement physique.",
     "current-mainnet-record": "État actuel du déploiement Mainnet",
     "archived-mainnet-record": "Archives du déploiement du 11 octobre",
     "current-deployment-notice": "État actuel du déploiement Mainnet · cinq adresses de contrat vérifiées",
@@ -152,6 +158,8 @@ const french = {
     "directory-label": "Advanced tools and research",
 };
 
+const paperElements = [...document.querySelectorAll("[data-paper-key]")];
+const paperEnglish = new Map(paperElements.map((el) => [el, el.textContent]));
 const textElements = [...document.querySelectorAll("[data-home-key]")];
 const labelElements = [...document.querySelectorAll("[data-home-label]")];
 const english = Object.fromEntries([
@@ -174,6 +182,8 @@ function render() {
             ? "Trouvez votre Alpha. Construisez votre SUCCESSOR Ω. · AGIALPHA"
             : "Find your Alpha. Build your SUCCESSOR Ω. · AGIALPHA Flagship";
     for (const el of textElements) el.textContent = words[el.dataset.homeKey];
+    for (const el of paperElements)
+        el.textContent = language === "fr" ? el.dataset.paperFr : paperEnglish.get(el);
     for (const el of labelElements)
         el.setAttribute("aria-label", words[el.dataset.homeLabel]);
     document
