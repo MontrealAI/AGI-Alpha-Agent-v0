@@ -1,0 +1,94 @@
+{
+  "schema": "discovery-lab-foundation-reproduction/v1",
+  "date": "2026-10-21",
+  "source_repository": "MontrealAI/AGI-Alpha-Agent-v0",
+  "source_commit": "6ab02a24b1f59306fb25e0e8da73b6210a2fe363",
+  "source_archive": "docs/Transformational_Intelligence_LaTeX.zip",
+  "source_archive_sha256": "49b89b4ca5a0db766d4e38af27d39c2ccbe98c4eec2e9b52af023fbbbca0e9b1",
+  "interpreter": "3.12.14",
+  "platform": "Linux",
+  "commands": [
+    "python -m unittest -q",
+    "python frame_lab.py --out FRESH_OUTPUT_DIRECTORY"
+  ],
+  "test_result": {
+    "passed": 50,
+    "failed": 0,
+    "observed_exit_code": 0
+  },
+  "manifest_checks": [
+    {
+      "path": "CLAIMS_AND_EVIDENCE.md",
+      "match": true
+    },
+    {
+      "path": "Makefile",
+      "match": true
+    },
+    {
+      "path": "README.md",
+      "match": true
+    },
+    {
+      "path": "REVISION_NOTES.md",
+      "match": true
+    },
+    {
+      "path": "Transformational_Intelligence.pdf",
+      "match": true
+    },
+    {
+      "path": "Transformational_Intelligence.tex",
+      "match": true
+    },
+    {
+      "path": "artifact_status.json",
+      "match": true
+    },
+    {
+      "path": "frame_lab.py",
+      "match": true
+    },
+    {
+      "path": "reference_metadata.json",
+      "match": true
+    },
+    {
+      "path": "references.bib",
+      "match": true
+    },
+    {
+      "path": "results/accuracy.csv",
+      "match": true
+    },
+    {
+      "path": "results/results.json",
+      "match": true
+    },
+    {
+      "path": "results/run_output.txt",
+      "match": true
+    },
+    {
+      "path": "results/tests.txt",
+      "match": true
+    },
+    {
+      "path": "test_frame_lab.py",
+      "match": true
+    }
+  ],
+  "regenerated_outputs": [
+    {
+      "path": "results.json",
+      "sha256": "b4976652b941861d9b156b4c0053f1a79a335a91bc823bc240e817af964f4c31",
+      "byte_identical": true
+    },
+    {
+      "path": "accuracy.csv",
+      "sha256": "7d6d95c17c3a00ea7f6f64e24fb2a913ff48180762f3cf2928f96c5997bada47",
+      "byte_identical": true
+    }
+  ],
+  "scope": "Exact supplied two-hypothesis synthetic causal model and standard-library companion only. No model calls, external execution, physical results or new integrated workcell qualification."
+}
