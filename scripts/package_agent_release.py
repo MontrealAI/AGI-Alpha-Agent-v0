@@ -26,7 +26,7 @@ from scripts.check_agent_preservation import BADGE_MAINTENANCE
 from scripts.check_factory_readiness import check as verify_factory
 from scripts.check_manuscript import verify as verify_manuscript
 from scripts.check_successor_preservation import check as verify_successor_preservation
-from scripts.release_packs import digest, require_asset_limits, restore
+from scripts.release_packs import MAX_ASSET_BYTES, digest, require_asset_limits, restore
 from scripts.wait_for_release_ci import require_historical_evidence
 
 TI_PUBLIC_EXAMPLES = (
@@ -679,7 +679,7 @@ def main() -> None:
         "factory": factory_preservation,
         "successor_preservation": {key: value for key, value in preservation.items() if key != "inventory"},
         "distributions": distributions,
-        "maximum_asset_bytes": 450_000_000,
+        "maximum_asset_bytes": MAX_ASSET_BYTES,
         "commit": sha,
         "historical_ci": historical_ci,
         "baseline": "ac9b112a44670f67d53fc3d188ef73fa16e90894",
@@ -696,7 +696,7 @@ def main() -> None:
             "runtime Python 3.11/3.12/3.13",
             "full offline Python regression",
             "strict runtime types",
-            "full-repository and changed-file pre-commit hooks",
+            "blocking repository and changed-file security/integrity hooks; cosmetic formatting advisory",
             "real Docker isolation",
             "real PostgreSQL ledger and locked TypeScript integration",
             "pinned local model inference and generated-code evaluation",
@@ -720,7 +720,7 @@ def main() -> None:
                 "Decision Studio calculation oracles, versioned replay, staffing coverage, "
                 "deadlines and public offline journeys"
             ),
-            "Linux/macOS/Windows smoke on Python 3.11/3.12/3.13",
+            "Linux Python 3.11/3.12/3.13 and macOS/Windows Python 3.12 compatibility smoke",
             "Solidity tests with shipped identity logic",
             "contract toolchain full dependency audit: no moderate/high/critical advisories",
             "unsigned mainnet plan execution and read-only verification rejection tests",

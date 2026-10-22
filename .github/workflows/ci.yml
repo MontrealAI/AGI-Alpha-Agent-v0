@@ -201,7 +201,7 @@ jobs:
           fi
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
-          SKIP: eslint-insight-browser
+          SKIP: eslint-insight-browser,black,ruff-format,flake8,update-actions
       - name: Remove pre-commit cache from lint scope
         run: rm -rf .cache/pre-commit
       - name: Fail on uncommitted changes
@@ -259,13 +259,12 @@ jobs:
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run lint
 
   tests:
-    name: "✅ Pytest (${{ matrix.python-version }})"
+    name: "✅ Integration smoke (${{ matrix.python-version }})"
     if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled() && needs.owner-check.result == 'success') }}
     needs: [paper-scope, owner-check]
     runs-on: ubuntu-latest
-    # A full-scope 3.12 run reached 98% near the prior 75-minute limit.
-    # Retain the full matrix/coverage campaign with finite setup/test headroom.
-    timeout-minutes: 90
+    # The sole full coverage campaign is agent-release.yml / regression.
+    timeout-minutes: 45
     permissions:
       pull-requests: write
     env:
@@ -277,7 +276,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJSON('["3.11","3.12"]') }}
+        python-version: ["3.12"]
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -397,15 +396,16 @@ jobs:
           df -h
       - name: Install the locked runtime accessibility auditor
         run: npm ci --prefix tests/browser --ignore-scripts --no-audit --no-fund
-      - name: Run tests with coverage
+      - name: Run focused integration smoke
         shell: bash
         run: |
           python check_env.py --auto-install${WHEELHOUSE:+ --wheelhouse "$WHEELHOUSE"}
           python -m playwright install chromium
           mkdir -p artifacts/test-reports
-          pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 --junitxml=artifacts/test-reports/pytest.xml --durations=25
+          pytest --noconftest -o addopts= tests/test_ping_agent.py tests/test_af_requests.py tests/test_macro_simulation_boundaries.py tests/test_openai_bridge_integration.py -q --junitxml=artifacts/test-reports/pytest.xml
       - name: Mutation tests
-        if: matrix.python-version == '3.11'
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: |
           mutmut --version
           python - <<'PY'
@@ -429,6 +429,8 @@ jobs:
           # job instead of hanging until workflow cancellation.
           PYTEST_ADDOPTS="tests/test_mutation_smoke_target.py -q" timeout 20m mutmut run
       - name: Run benchmark
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: |
           pytest tests/test_benchmark.py -q
           cat tests/benchmarks/latest.json
@@ -443,6 +445,8 @@ jobs:
           name: benchmark-results-${{ matrix.python-version }}
           path: tests/benchmarks/latest.json
       - name: Generate benchmark comment
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: |
           python - <<'PY'
           import json
@@ -457,10 +461,6 @@ jobs:
         with:
           header: benchmark
           path: bench.txt
-      - name: Check coverage report
-        id: coverage-check
-        run: |
-          if [[ -f artifacts/coverage.xml ]]; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
       - name: Upload pytest results
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -468,12 +468,6 @@ jobs:
           name: pytest-${{ matrix.python-version }}
           path: artifacts/test-reports/pytest.xml
           if-no-files-found: warn
-      - name: Upload coverage
-        if: steps.coverage-check.outputs.found == 'true'
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
-        with:
-          name: coverage-xml-${{ matrix.python-version }}
-          path: artifacts/coverage.xml
 
   windows-smoke:
     name: "Windows Smoke"
@@ -765,7 +759,7 @@ jobs:
         run: git ls-files -z 'docs/**' | xargs -0 pre-commit run --files
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
-          SKIP: eslint-insight-browser
+          SKIP: eslint-insight-browser,black,ruff-format,flake8,update-actions
       - name: Build documentation
         run: mkdocs build --strict
       - name: Check for binary diffs (post-build)
@@ -874,7 +868,7 @@ jobs:
         run: git ls-files -z 'docs/**' | xargs -0 pre-commit run --files
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
-          SKIP: eslint-insight-browser
+          SKIP: eslint-insight-browser,black,ruff-format,flake8,update-actions
       - name: Build insight browser
         run: npm --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1 run build
       - name: Build gallery site

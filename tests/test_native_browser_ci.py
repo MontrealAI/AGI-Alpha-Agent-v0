@@ -110,9 +110,9 @@ def test_supplier_real_browser_observation_is_in_required_browser_suite() -> Non
     assert name in names(browser)
     smoke = yaml.load((ROOT / ".github/workflows/smoke.yml").read_text(), Loader=UniqueWorkflowLoader)
     steps = smoke["jobs"]["smoke"]["steps"]
-    run = next(step["run"] for step in steps if step.get("name") == "Exercise the installed operator lifecycle")
-    assert "--ignore=tests/runtime/test_supplier_browser_browser.py" in shlex.split(run)
-    assert "--ignore=tests/runtime/test_supplier_browser_spec.py" not in shlex.split(run)
+    run = next(step["run"] for step in steps if step.get("name") == "Smoke the installed operator entry point")
+    assert "alpha-agent --version" in run
+    assert "python -m pytest tests/runtime" not in run
     release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
     runtime = release["jobs"]["runtime"]
     assert set(runtime["strategy"]["matrix"]["python"]) == {"3.11", "3.12", "3.13"}
@@ -152,7 +152,7 @@ def test_business_sum_binding_runs_before_merge_on_every_python() -> None:
     step = next(
         step
         for step in job["steps"]
-        if step.get("name") == "Run focused smoke tests on every platform and Python version"
+        if step.get("name") == "Run focused smoke tests on every selected compatibility cell"
     )
     assert "if" not in step
     assert "continue-on-error" not in step
@@ -352,11 +352,21 @@ def test_integration_pytest_installs_pinned_auditor_after_cleanup():
     steps = job["steps"]
     install = next(step for step in steps if step.get("name") == "Install the locked runtime accessibility auditor")
     cleanup = next(step for step in steps if step.get("name") == "Clean caches before pytest")
-    acceptance = next(step for step in steps if step.get("name") == "Run tests with coverage")
+    acceptance = next(step for step in steps if step.get("name") == "Run focused integration smoke")
     assert install["run"] == "npm ci --prefix tests/browser --ignore-scripts --no-audit --no-fund"
     assert steps.index(cleanup) < steps.index(install) < steps.index(acceptance)
     assert "tests/browser/package-lock.json" in workflow["env"]["NODE_LOCKFILES"].splitlines()
     for step in (install, acceptance):
         assert "if" not in step and "continue-on-error" not in step
-    assert "--cov-fail-under=80" in acceptance["run"]
-    assert "--ignore" not in acceptance["run"]
+    assert "--cov" not in acceptance["run"]
+    assert "tests/test_macro_simulation_boundaries.py" in acceptance["run"]
+    assert "tests/test_openai_bridge_integration.py" in acceptance["run"]
+    release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
+    primary = next(
+        step
+        for step in release["jobs"]["regression"]["steps"]
+        if step.get("name") == "Full offline regression including notebooks"
+    )
+    assert "--cov-fail-under=80" in primary["run"]
+    assert "--ignore" not in primary["run"]
+    assert not primary.get("continue-on-error")

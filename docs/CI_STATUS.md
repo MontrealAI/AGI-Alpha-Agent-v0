@@ -11,7 +11,7 @@ documentation changes on `main`.
 | --- | --- | --- |
 | PR CI | Latest push to main: Ruff and focused smoke tests | [PR CI runs](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/pr-ci.yml?query=branch%3Amain+event%3Apush) |
 | Integration CI | Current main commit: every required validation job, including Python and browser tests, docs and Docker | [Integration runs](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci.yml?query=branch%3Amain) |
-| Smoke Test | Current main commit: all nine Linux, macOS and Windows / Python 3.11–3.13 runs | [Smoke runs](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml?query=branch%3Amain) |
+| Smoke Test | Current main commit: five compatibility runs: Linux Python 3.11/3.12/3.13 and macOS/Windows Python 3.12 | [Smoke runs](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/smoke.yml?query=branch%3Amain) |
 | CI Health | Latest CI Health workflow run on main; open it for the evaluated upstream branch and commit | [Watchdog runs](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/ci-health.yml?query=branch%3Amain) |
 | Release acceptance | Latest push to main: bounded runtime, real inference, browser, contract, recovery, preservation and packaging checks | [Acceptance runs](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/workflows/agent-release.yml?query=branch%3Amain+event%3Apush) |
 | Release | Latest published stable version | [Release assets, checksums and evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/latest) |

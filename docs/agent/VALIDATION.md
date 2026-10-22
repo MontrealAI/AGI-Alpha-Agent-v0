@@ -5,7 +5,8 @@
 Version 1.37.1 retains local validation in the original ZIP and deployed-site validation in separate
 public-validation packs. The release manifest's `validation_evidence` inventory and matching
 `SHA256SUMS` identify every archive, pack manifest and part. Public captures preserve all reports and
-screenshots without overwriting local records or exceeding the 450 MB per-asset limit. Earlier
+screenshots without overwriting local records. Current release assets follow GitHub's strict less-than-2-GiB
+hosting limit, without an additional 450 MB project cap. Earlier
 version-specific acceptance records below retain their original scope.
 
 Version 1.28.1 separates direct evidence from mocks, simulations and unavailable integrations.
@@ -30,8 +31,11 @@ Before main-branch packaging, a separate gate requires the historical integratio
 to succeed on that exact main commit. A failure, cancellation, timeout or skipped workflow blocks
 publication. Their final run snapshots are included in the validation archive.
 
-Full-repository and changed-file pre-commit hooks are required gates, including the locked browser
-ESLint environment. Their complete report, exit status and any proposed formatting are retained.
+Blocking full-repository and changed-file hooks remain required, including the locked browser
+ESLint environment, security scans, syntax, secret and binary-integrity checks. Black, Ruff formatting
+and duplicate Flake8 style feedback run in a separate advisory checkout; workflow action updates are
+not a release prerequisite. Hook reports retain their explicit scope, skipped hooks and exit status.
+See [fast release qualification](FAST_RELEASE_POLICY.md).
 The PostgreSQL ledger is exercised against a real temporary Docker database after TCP readiness;
 TypeScript meme mining uses the locked compiler. Both integration checks must run without skips.
 
@@ -120,9 +124,11 @@ reload, with matching deterministic continuations, the actual WASM backend and n
 minimal-gallery job continues to require working offline simulation. Browser API-response fixtures
 are reported separately from actual ONNX inference. Model provenance is in `scripts/browser_model_manifest.json`.
 
-The standalone Smoke Test matrix covers all nine OS/Python combinations; exact-main smoke success is
-included in the historical-CI publication gate. AIGA's direct-file startup test can no longer turn a
-service failure into a skip. README preservation permits CI badge query maintenance and the exact
+The standalone Smoke Test matrix covers five compatibility cells: Linux Python 3.11/3.12/3.13 and
+macOS/Windows Python 3.12. Exact-main smoke success remains included in the historical-CI publication
+gate. The full installed-runtime suite remains in Agent release acceptance on Python 3.11/3.12/3.13;
+its Python 3.12 regression job owns the single full coverage campaign. AIGA's direct-file startup test
+can no longer turn a service failure into a skip. README preservation permits CI badge query maintenance and the exact
 live main-commit Health/Smoke/Integration image URLs. It rejects static passing replacements, forced Health colors,
 unrelated checks or branches, and any removed flywheel or other historical text.
 

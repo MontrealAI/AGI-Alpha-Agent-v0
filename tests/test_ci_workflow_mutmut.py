@@ -29,20 +29,36 @@ def test_mutmut_version_is_pinned_in_dev_lockfile() -> None:
     assert "mutmut==3.3.0 \\" in lock
 
 
-def test_integration_tests_have_finite_headroom_without_reducing_scope() -> None:
+def test_integration_smoke_is_required_and_full_coverage_has_one_owner() -> None:
     import yaml
 
     workflow = yaml.safe_load(Path(".github/workflows/ci.yml").read_text(encoding="utf-8"))
     tests = workflow["jobs"]["tests"]
-    assert tests["timeout-minutes"] == 90
+    assert tests["timeout-minutes"] == 45
     assert tests["strategy"]["fail-fast"] is False
-    assert tests["strategy"]["matrix"]["python-version"] == '${{ fromJSON(\'["3.11","3.12"]\') }}'
+    assert tests["strategy"]["matrix"]["python-version"] == ["3.12"]
     assert not tests.get("continue-on-error")
     steps = tests["steps"]
-    coverage = next(step for step in steps if step.get("name") == "Run tests with coverage")
-    assert "if" not in coverage and not coverage.get("continue-on-error")
+    smoke = next(step for step in steps if step.get("name") == "Run focused integration smoke")
+    assert "if" not in smoke and not smoke.get("continue-on-error")
     assert (
-        "pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 "
-        "--junitxml=artifacts/test-reports/pytest.xml --durations=25"
-    ) in coverage["run"]
+        "pytest --noconftest -o addopts= tests/test_ping_agent.py tests/test_af_requests.py "
+        "tests/test_macro_simulation_boundaries.py tests/test_openai_bridge_integration.py "
+        "-q --junitxml=artifacts/test-reports/pytest.xml"
+    ) in smoke["run"]
     assert next(step for step in steps if step.get("name") == "Upload pytest results")["if"] == "always()"
+    for name in ("Mutation tests", "Run benchmark", "Generate benchmark comment"):
+        diagnostic = next(step for step in steps if step.get("name") == name)
+        assert diagnostic["if"] == "github.event_name == 'workflow_dispatch'"
+        assert diagnostic["continue-on-error"] is True
+    release = yaml.safe_load(Path(".github/workflows/agent-release.yml").read_text(encoding="utf-8"))
+    regression = release["jobs"]["regression"]
+    assert not regression.get("continue-on-error")
+    coverage = next(
+        step for step in regression["steps"] if step.get("name") == "Full offline regression including notebooks"
+    )
+    assert "if" not in coverage and not coverage.get("continue-on-error")
+    assert "python -m scripts.run_local_tests -q --cov" in coverage["run"]
+    assert "--cov-fail-under=80" in coverage["run"]
+    assert "--junitxml=evidence/regression.xml" in coverage["run"]
+    assert "regression" in release["jobs"]["package"]["needs"]

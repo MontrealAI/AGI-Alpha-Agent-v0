@@ -205,7 +205,8 @@ must be uploaded, re-downloaded and checksum-verified before publication. Existi
 assets are not overwritten. No final-source or public-site pass is established by this source document.
 
 Local and public acceptance evidence have separate captures. The original validation ZIP stays unchanged;
-public-validation packs retain every public report and screenshot under the same 450 MB per-asset limit.
+public-validation packs retain every public report and screenshot. Current release assets must be strictly
+smaller than GitHub's 2 GiB hosting ceiling; there is no additional 450 MB project cap.
 The release manifest's `validation_evidence` inventory and `SHA256SUMS` identify both sets.
 
 Independent custody, providers, market access, Fleet commissioning, external dependency qualification

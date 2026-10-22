@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Independent contracts for trusted paper scope and unchanged software gates."""
+"""Independent contracts for trusted paper scope and reviewed software gates."""
 
 from __future__ import annotations
 
@@ -67,7 +67,7 @@ def dependencies(job: dict[str, Any]) -> set[str]:
     return {value} if isinstance(value, str) else set(value)
 
 
-@pytest.mark.parametrize("name", (*GATED, "paper-scope.yml", "paper-publication.yml"))
+@pytest.mark.parametrize("name", (*GATED, "paper-scope.yml", "paper-preview.yml", "paper-publication.yml"))
 def test_workflow_yaml_has_no_duplicate_mapping_keys(name: str) -> None:
     workflow(name)
 
@@ -85,7 +85,11 @@ def test_runtime_gates_preserve_original_permissions_dependencies_and_failure_se
             # The combined software release adds, never substitutes, its exact-source
             # capability/browser/recovery gate. The delivery test binds that call.
             added_dependencies.add("successor-capability")
-        assert dependencies(after) == dependencies(before) | added_dependencies, (name, key)
+        expected_dependencies = dependencies(before) | added_dependencies
+        if (name, key) == ("pr-ci.yml", "smoke"):
+            # Lint and smoke independently feed their required verdicts.
+            expected_dependencies.discard("lint")
+        assert dependencies(after) == expected_dependencies, (name, key)
         condition = after.get("if", "")
         assert "needs.paper-scope.outputs.mode == 'full'" in condition, (name, key)
         assert "!cancelled()" in condition, (name, key)
@@ -318,7 +322,7 @@ PREVIEW_FILES = {
 
 
 def preview_steps() -> tuple[dict[str, Any], dict[str, Any]]:
-    steps = workflow("paper-scope.yml")["jobs"]["web-preview"]["steps"]
+    steps = workflow("paper-preview.yml")["jobs"]["web-preview"]["steps"]
     preview = next(step for step in steps if step.get("id") == "preview")
     artifact = next(step for step in steps if step.get("uses", "").startswith("actions/upload-artifact@"))
     return preview, artifact
@@ -327,13 +331,16 @@ def preview_steps() -> tuple[dict[str, Any], dict[str, Any]]:
 def test_optional_preview_never_qualifies_papers_or_blocks_full_fallback() -> None:
     policy = workflow("paper-scope.yml")
     job = policy["jobs"]["classify"]
-    preview_job = policy["jobs"]["web-preview"]
+    assert set(policy["jobs"]) == {"classify"}
+    preview_policy = workflow("paper-preview.yml")
+    preview_job = preview_policy["jobs"]["web-preview"]
     preview, artifact = preview_steps()
     assert policy["permissions"] == {"contents": "read"}
     assert job["outputs"] == {"mode": "${{ steps.scope.outputs.mode }}"}
-    assert dependencies(preview_job) == {"classify"}
+    assert dependencies(preview_job) == {"paper-scope"}
+    assert preview_policy["jobs"]["paper-scope"]["uses"] == "./.github/workflows/paper-scope.yml"
     assert "github.event_name == 'pull_request'" in preview_job["if"]
-    assert "needs.classify.outputs.mode == 'full'" in preview_job["if"]
+    assert "needs.paper-scope.outputs.mode == 'full'" in preview_job["if"]
     assert preview_job["continue-on-error"] is True
     assert "outputs" not in preview_job
     assert 0 < preview["timeout-minutes"] < preview_job["timeout-minutes"] < job["timeout-minutes"]
@@ -364,7 +371,7 @@ def test_preview_uses_only_trusted_policy_and_locked_wheels() -> None:
     assert script.index('git --no-replace-objects show "$BASE:$file"') < script.index('cd "$policy"')
     checkout = next(
         step
-        for step in workflow("paper-scope.yml")["jobs"]["web-preview"]["steps"]
+        for step in workflow("paper-preview.yml")["jobs"]["web-preview"]["steps"]
         if step.get("uses", "").startswith("actions/checkout@")
     )
     assert checkout["with"]["persist-credentials"] is False

@@ -350,7 +350,8 @@ omits the optional historical browser model. The previous manual compiler is ret
 ## Full browser text generation
 
 The release includes `browser-packs.json`, `release_packs.py` and all `browser-*.zip` packs for the complete
-browser distribution. Every file stays below 450,000,000 bytes; all original assets remain included.
+browser distribution. Each release asset stays strictly below GitHub's 2 GiB hosting ceiling; all original assets remain included.
+Use the matching release helper for its manifests; no additional 450 MB project limit applies.
 Verify their entries in `SHA256SUMS`, then restore to a new directory and serve it:
 
 ```bash

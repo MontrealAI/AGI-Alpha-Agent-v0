@@ -22,7 +22,15 @@ from scripts.experience_evidence import verify_report as verify_experience_repor
 from scripts.governance_evidence import verify_report as verify_governance_report
 from scripts.homepage_evidence import verify_report as verify_homepage_report
 from scripts.mats_evidence import verify_report as verify_mats_report
-from scripts.release_packs import MAX_ASSET_BYTES, digest, pack, require_asset_limits, restore, safe_name
+from scripts.release_packs import (
+    MAX_ASSET_BYTES,
+    MAX_MANIFEST_BYTES,
+    digest,
+    pack,
+    require_asset_limits,
+    restore,
+    safe_name,
+)
 from scripts.sovereign_evidence import verify_report as verify_sovereign_report
 from scripts.successor_evidence import verify_report as verify_successor_report
 from scripts.onboarding_evidence import verify_report as verify_onboarding_report
@@ -115,7 +123,7 @@ def verify_public_validation(folder: Path, evidence: Path, manifest: dict[str, A
         raise ValueError("Retained local validation or release identity differs")
     name = f"alpha-agent-v{manifest['version']}-public-validation-packs.json"
     path = folder / name
-    if path.is_symlink() or not path.is_file() or path.stat().st_size > MAX_ASSET_BYTES:
+    if path.is_symlink() or not path.is_file() or path.stat().st_size > MAX_MANIFEST_BYTES:
         raise ValueError("Public validation pack manifest must be an ordinary bounded release asset")
     data = json.loads(path.read_bytes())
     expected = {
