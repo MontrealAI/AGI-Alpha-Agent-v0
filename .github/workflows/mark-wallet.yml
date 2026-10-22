@@ -30,6 +30,7 @@ on:
       - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
       - 'tests/runtime/test_successor_studio*.py'
       - 'tests/runtime/test_successor_enterprise_harness.py'
+      - 'tests/runtime/test_successor_enterprise_ascension.py'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
       - 'scripts/build_service_worker.py'
@@ -69,6 +70,7 @@ on:
       - 'alpha_factory_v1/core/runtime/web/ascension-studio*'
       - 'tests/runtime/test_successor_studio*.py'
       - 'tests/runtime/test_successor_enterprise_harness.py'
+      - 'tests/runtime/test_successor_enterprise_ascension.py'
       - 'docs/ascension-protocol/**'
       - 'scripts/build_mark_wallet.py'
       - 'scripts/build_service_worker.py'
@@ -135,6 +137,7 @@ jobs:
         run: >-
           python -m pytest --confcutdir=tests/runtime
           tests/runtime/test_successor_enterprise_harness.py
+          tests/runtime/test_successor_enterprise_ascension.py
           tests/runtime/test_successor_studio.py tests/runtime/test_successor_studio_operator.py
           tests/runtime/test_successor_studio_operator_browser.py
           tests/runtime/test_successor_studio_interruptions.py tests/runtime/test_budget_reservations.py tests/runtime/test_budget_browser.py
