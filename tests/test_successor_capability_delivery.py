@@ -19,6 +19,67 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def capability_checkout_paths() -> list[str]:
+    """All raw-hashed inputs and retained generated identities need LF checkouts."""
+    manifest = json.loads((ROOT / "docs/successor/capabilities/sources.json").read_text())
+    return sorted(
+        set(manifest["sources"])
+        | {
+            "examples/successor-capability/discovery-lab-reproduce.mjs",
+            "docs/successor/capabilities/index.html",
+            "docs/successor/capabilities/sources.json",
+            "docs/alpha_factory_v1/demos/successor/capabilities/index.html",
+            "docs/alpha_factory_v1/demos/successor/capabilities/sources.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+        }
+    )
+
+
+def test_every_capability_byte_hashed_input_has_explicit_lf_checkout_attributes(tmp_path: Path) -> None:
+    paths = capability_checkout_paths()
+    shutil.copyfile(ROOT / ".gitattributes", tmp_path / ".gitattributes")
+    subprocess.run(["git", "-C", str(tmp_path), "init", "--quiet"], capture_output=True, check=True)
+    result = subprocess.run(
+        ["git", "-C", str(tmp_path), "check-attr", "--stdin", "text", "eol"],
+        input="\n".join(paths) + "\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert result.stdout.splitlines() == [line for name in paths for line in (f"{name}: text: set", f"{name}: eol: lf")]
+
+
+def test_actual_crlf_checkout_preserves_capability_raw_bytes_and_catalog_hashes(tmp_path: Path) -> None:
+    """A real Git checkout must retain raw bytes even with autocrlf enabled."""
+    source, checkout = tmp_path / "source", tmp_path / "checkout"
+    source.mkdir()
+    checkout.mkdir()
+    paths = capability_checkout_paths()
+    for name in [".gitattributes", *paths]:
+        target = source / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, target)
+    (source / "checkout-control.txt").write_bytes(b"ordinary unpinned control\n")
+    for arguments in (
+        ("init", "--quiet"),
+        ("config", "core.autocrlf", "true"),
+        ("config", "core.eol", "crlf"),
+        ("add", ".gitattributes", *paths, "checkout-control.txt"),
+        ("checkout-index", "--all", "--force", "--prefix=" + str(checkout) + "/"),
+    ):
+        subprocess.run(["git", "-C", str(source), *arguments], capture_output=True, check=True)
+    assert (checkout / "checkout-control.txt").read_bytes() == b"ordinary unpinned control\r\n"
+    for name in paths:
+        assert (checkout / name).read_bytes() == (ROOT / name).read_bytes(), name
+    catalog = json.loads((checkout / "docs/successor/capabilities/sources.json").read_bytes())
+    for name, expected in catalog["sources"].items():
+        assert hashlib.sha256((checkout / name).read_bytes()).hexdigest() == expected, name
+    encoded = json.dumps(catalog["sources"], sort_keys=True, separators=(",", ":")).encode()
+    assert hashlib.sha256(encoded).hexdigest() == catalog["sourceHash"]
+
+
 def test_native_fleet_return_cannot_be_skipped_by_the_required_hosted_journey() -> None:
     """An actual immutable public checkout and mandatory mode guard the extra acceptance."""
     workflow = yaml.safe_load((ROOT / ".github/workflows/successor-capability.yml").read_text())
