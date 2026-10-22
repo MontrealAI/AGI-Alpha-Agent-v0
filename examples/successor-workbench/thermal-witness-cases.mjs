@@ -39,6 +39,17 @@ export async function runThermalCases({ thermalExample, executeThermal, validate
     const x = thermalExample(); x.measurement.coverage = 'UNKNOWN';
     equal((await run(x)).decision, 'OBSERVABILITY_NOT_ESTABLISHED', 'coverage');
   });
+  await record('unbounded material-property covariance does not qualify', async () => {
+    const x = thermalExample();
+    x.measurement.propertyModel = 'VARIABLE_OR_UNKNOWN';
+    x.measurement.densityKgPerM3 = { low: 990, estimate: 1000, high: 1010 };
+    x.measurement.intervals[0].deltaTemperatureUK = 1000000;
+    const r = await run(x);
+    equal(r.decision, 'OBSERVABILITY_NOT_ESTABLISHED', 'variable properties');
+    equal(r.evidence.propertyModel, 'VARIABLE_OR_UNKNOWN', 'model retained');
+    check(r.evidence.acquisitionAssumption.includes('constant within each interval'), 'scope in evidence');
+    check(401120000n > BigInt(r.evidence.quantity.high), 'known covariance counterexample remains outside this model');
+  });
   await record('unbounded temperature does not qualify', async () => {
     const x = thermalExample(); x.measurement.temperatureWitness.kind = 'UNBOUNDED';
     equal((await run(x)).decision, 'OBSERVABILITY_NOT_ESTABLISHED', 'temperature');
@@ -93,6 +104,9 @@ export async function runThermalCases({ thermalExample, executeThermal, validate
       { get() { return 92000000; }, enumerable: true }); }],
     ['sparse interval array', x => { delete x.measurement.intervals[0]; }],
     ['symbol property', x => { x[Symbol('hidden')] = 1; }],
+    ['nonempty heat extension', x => { x.extension.extra = 'unexpected'; }],
+    ['empty-string extension key', x => { x.extension[''] = { unexpected: 'payload' }; }],
+    ['missing material-property model', x => { delete x.measurement.propertyModel; }],
   ]) {
     await record('reject ' + name, () => { const x = thermalExample(); mutate(x); reject(() => validateThermalInput(x), name); });
   }
@@ -107,7 +121,11 @@ export async function runThermalCases({ thermalExample, executeThermal, validate
   });
   await record('zero lower temperature rise is not regularized', async () => {
     const x = thermalExample('heat-capacity'); x.extension.temperatureRiseUK.low = 0;
-    equal((await run(x)).decision, 'HEAT_CAPACITY_NOT_IDENTIFIABLE', 'sample unidentifiable');
+    const r = await run(x);
+    equal(r.decision, 'HEAT_CAPACITY_NOT_IDENTIFIABLE', 'sample unidentifiable');
+    equal(r.evidence.downstream.low, null, 'zero-denominator lower bound');
+    equal(r.evidence.downstream.high, null, 'zero-denominator upper bound');
+    equal(r.evidence.downstream.ratioDomain, 'DENOMINATOR_INCLUDES_ZERO', 'ratio domain');
   });
   await record('downstream heat capacity uncertainty is separately constrained', async () => {
     const x = thermalExample('heat-capacity'); x.extension.temperatureRiseUK.low = 1000000;
@@ -118,6 +136,26 @@ export async function runThermalCases({ thermalExample, executeThermal, validate
     x.extension.lossEnergyMicroJ = { low: '5000000000', estimate: '5000000000', high: '5000000000' };
     equal((await run(x)).decision, 'ENERGY_BOUNDARY_INCONSISTENT', 'losses');
   });
+  await record('negative capacity has ordered exact bounds and remains inconsistent', async () => {
+    const x = thermalExample('heat-capacity');
+    x.extension.lossEnergyMicroJ = { low: '5000000000', estimate: '5000000000', high: '5000000000' };
+    x.extension.temperatureRiseUK = { low: 1000000, estimate: 5000000, high: 10000000 };
+    const r = await run(x), d = r.evidence.downstream;
+    equal(d.low, '-1520/1', 'negative capacity lower');
+    equal(d.estimate, '-304/1', 'negative capacity estimate');
+    equal(d.high, '-152/1', 'negative capacity upper');
+    equal(r.decision, 'ENERGY_BOUNDARY_INCONSISTENT', 'no feasible positive capacity');
+  });
+  await record('zero-crossing capacity preserves bounds and unresolved energy', async () => {
+    const x = thermalExample('heat-capacity');
+    x.extension.lossEnergyMicroJ = { low: '3000000000', estimate: '3480000000', high: '4000000000' };
+    x.extension.temperatureRiseUK = { low: 1000000, estimate: 5000000, high: 10000000 };
+    const r = await run(x), d = r.evidence.downstream;
+    equal(d.low, '-520/1', 'crossing capacity lower');
+    equal(d.estimate, '0/1', 'crossing capacity estimate');
+    equal(d.high, '480/1', 'crossing capacity upper');
+    equal(r.decision, 'ENERGY_BOUNDARY_NOT_RESOLVED', 'positive capacity possible but not established');
+  });
   await record('recovery accounts for stored energy with exact rational result', async () => {
     const r = await run(thermalExample('heat-recovery'));
     equal(r.evidence.downstream.estimate, '87/125', '(3680-200)/5000');
@@ -125,7 +163,11 @@ export async function runThermalCases({ thermalExample, executeThermal, validate
   });
   await record('recovery with zero denominator lower bound is unidentifiable', async () => {
     const x = thermalExample('heat-recovery'); x.extension.inputEnergyMicroJ.low = '0';
-    equal((await run(x)).decision, 'RECOVERY_RATIO_NOT_IDENTIFIABLE', 'denominator');
+    const r = await run(x);
+    equal(r.decision, 'RECOVERY_RATIO_NOT_IDENTIFIABLE', 'denominator');
+    equal(r.evidence.downstream.low, null, 'zero-denominator lower bound');
+    equal(r.evidence.downstream.high, null, 'zero-denominator upper bound');
+    equal(r.evidence.downstream.ratioDomain, 'DENOMINATOR_INCLUDES_ZERO', 'ratio domain');
   });
   await record('impossible recovery is preserved above one rather than clamped', async () => {
     const x = thermalExample('heat-recovery');
@@ -133,6 +175,36 @@ export async function runThermalCases({ thermalExample, executeThermal, validate
     const r = await run(x);
     equal(r.evidence.downstream.estimate, '87/25', 'unclamped ratio');
     equal(r.decision, 'ENERGY_BOUNDARY_INCONSISTENT', 'impossible recovery');
+  });
+  await record('negative recovery has ordered exact bounds and remains inconsistent', async () => {
+    const x = thermalExample('heat-recovery');
+    x.extension.storageReleaseMicroJ = { low: '5000000000', estimate: '5000000000', high: '5000000000' };
+    x.extension.inputEnergyMicroJ = { low: '1000000000', estimate: '2000000000', high: '3000000000' };
+    const r = await run(x), d = r.evidence.downstream;
+    equal(d.low, '-33/25', 'negative recovery lower');
+    equal(d.estimate, '-33/50', 'negative recovery estimate');
+    equal(d.high, '-11/25', 'negative recovery upper');
+    equal(r.decision, 'ENERGY_BOUNDARY_INCONSISTENT', 'no feasible nonnegative recovery');
+  });
+  await record('zero-crossing recovery preserves bounds and unresolved energy', async () => {
+    const x = thermalExample('heat-recovery');
+    x.extension.storageReleaseMicroJ = { low: '3000000000', estimate: '3680000000', high: '4000000000' };
+    x.extension.inputEnergyMicroJ = { low: '1000000000', estimate: '2000000000', high: '3000000000' };
+    const r = await run(x), d = r.evidence.downstream;
+    equal(d.low, '-8/25', 'crossing recovery lower');
+    equal(d.estimate, '0/1', 'crossing recovery estimate');
+    equal(d.high, '17/25', 'crossing recovery upper');
+    equal(r.decision, 'ENERGY_BOUNDARY_NOT_RESOLVED', 'nonnegative recovery possible but not established');
+  });
+  await record('recovery uncertainty crossing one is unresolved rather than impossible', async () => {
+    const x = thermalExample('heat-recovery');
+    x.extension.inputEnergyMicroJ = { low: '3400000000', estimate: '3500000000', high: '3600000000' };
+    const r = await run(x), d = r.evidence.downstream;
+    equal(d.low, '29/30', 'recovery lower');
+    equal(d.estimate, '174/175', 'recovery estimate');
+    equal(d.high, '87/85', 'recovery upper');
+    equal(d.worstRelativeErrorPpm, '30253', 'conservative ratio uncertainty');
+    equal(r.decision, 'ENERGY_BOUNDARY_NOT_RESOLVED', 'feasible recovery remains possible');
   });
   await record('submicrojoule results round bounds outward', async () => {
     const x = thermalExample();

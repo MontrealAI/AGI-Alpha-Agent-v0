@@ -26,7 +26,7 @@ Coordination: [#4850](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/48
 | OUT-DESIGN | Instrument specification, dependency closure and qualification proposal | Fixed thermal adapter and conditional capability proposal | Native registration and independent acceptance |
 | OUT-STRATEGISE | Competing construction/evaluation record | Command-derived refusal, wide-uncertainty failure, bounded witness result, conventional tie | Frozen comparative campaign with total economic and acquisition costs |
 | OUT-EXECUTE | Bounded worker evidence, exact source/result identity, review | Existing workbench API plus new thermal execute/checkpoints | Actual harness, Fleet and chosen-contract execution |
-| OUT-EVOLVE | Distinct successor mission, new requirements and qualification | Three computed measurement families and separate mission commitments | Accepted parent capability, successor journal, cumulative costs and rollback |
+| OUT-EVOLVE | Distinct successor mission, new requirements and qualification | Three computed measurement families; separate workbench mission commitments implemented with native check pending | Accepted parent capability, successor journal, cumulative costs and rollback |
 
 The full required journey remains opportunity → FusionPlan → seed → eligible review → simulated funding → job → actual worker → independent acceptance → simulated settlement → reusable capability → distinct successor → interruption/reload → continued operation. It has **not run end to end in this session**.
 

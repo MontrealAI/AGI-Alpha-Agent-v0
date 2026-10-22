@@ -16,9 +16,10 @@ function fields(value, keys, label) {
   const proto = Object.getPrototypeOf(value);
   if (proto !== Object.prototype && proto !== null) throw Error('SCHEMA: ' + label);
   const actual = Reflect.ownKeys(value);
-  if (actual.some(key => typeof key !== 'string') || actual.sort().join('|') !== [...keys].sort().join('|')) {
-    throw Error('SCHEMA: ' + label);
-  }
+  if (actual.length !== keys.length || actual.some(key => typeof key !== 'string')) throw Error('SCHEMA: ' + label);
+  actual.sort();
+  const expected = [...keys].sort();
+  if (actual.some((key, index) => key !== expected[index])) throw Error('SCHEMA: ' + label);
   for (const key of actual) {
     const d = Object.getOwnPropertyDescriptor(value, key);
     if (!d.enumerable || !Object.hasOwn(d, 'value')) throw Error('DATA_REQUIRED: ' + label);
@@ -63,10 +64,11 @@ export function validateThermalInput(input) {
   integer(input.policy.maxRelativeErrorPpm, 1, 50000, 'accuracy policy, at most 5 percent');
   decimal(input.policy.minimumHeatMicroJ, 'minimum heat');
   const m = input.measurement;
-  fields(m, ['mode', 'coverage', 'commandSourceId', 'volumeWitness', 'temperatureWitness',
+  fields(m, ['mode', 'coverage', 'propertyModel', 'commandSourceId', 'volumeWitness', 'temperatureWitness',
     'densityKgPerM3', 'specificHeatJPerKgK', 'windowMs', 'intervals'], 'measurement');
   if (m.mode !== 'SIMULATED_MEASUREMENTS' ||
-      !['WHOLE_FLOW_DECLARED_BOUNDS', 'UNKNOWN'].includes(m.coverage)) throw Error('MEASUREMENT_MODE');
+      !['WHOLE_FLOW_DECLARED_BOUNDS', 'UNKNOWN'].includes(m.coverage) ||
+      !['CONSTANT_WITHIN_INTERVAL', 'VARIABLE_OR_UNKNOWN'].includes(m.propertyModel)) throw Error('MEASUREMENT_MODE');
   text(m.commandSourceId, 'command source');
   witness(m.volumeWitness, ['INDEPENDENT_SIMULATED', 'COMMAND_DERIVED', 'ABSENT'], 'volume witness');
   witness(m.temperatureWitness, ['BOUNDED_SIMULATED', 'UNBOUNDED'], 'temperature witness');
@@ -140,6 +142,18 @@ function ratioQuality(lowN, lowD, estimateN, estimateD, highN, highD) {
     highD * estimateD * lowN);
   return String(max([lowerDeviation, upperDeviation]));
 }
+function ratioBounds(lowN, estimateN, highN, lowD, estimateD, highD) {
+  const estimate = estimateD > 0n ? rational(estimateN, estimateD) : null;
+  if (lowD <= 0n) return { low: null, estimate, high: null, worstRelativeErrorPpm: null,
+    ratioDomain: 'DENOMINATOR_INCLUDES_ZERO' };
+  const corners = [[lowN, lowD], [lowN, highD], [highN, lowD], [highN, highD]];
+  const compare = (a, b) => a[0] * b[1] - b[0] * a[1];
+  const lower = corners.reduce((a, b) => compare(a, b) <= 0n ? a : b);
+  const upper = corners.reduce((a, b) => compare(a, b) >= 0n ? a : b);
+  return { low: rational(...lower), estimate, high: rational(...upper),
+    worstRelativeErrorPpm: ratioQuality(lower[0], lower[1], estimateN, estimateD, upper[0], upper[1]),
+    ratioDomain: 'POSITIVE_DENOMINATOR' };
+}
 function strings(low, estimate, high) {
   return { low: String(low), estimate: String(estimate), high: String(high) };
 }
@@ -177,6 +191,7 @@ export async function executeThermal(supplied, checkpoint) {
   const commandEstimate = round(commandNumerator, scale * 60000n);
   const uncertainty = quality(estimate, low, high);
   const observable = m.coverage === 'WHOLE_FLOW_DECLARED_BOUNDS' &&
+    m.propertyModel === 'CONSTANT_WITHIN_INTERVAL' &&
     m.volumeWitness.kind === 'INDEPENDENT_SIMULATED' && m.temperatureWitness.kind === 'BOUNDED_SIMULATED' &&
     new Set([m.commandSourceId, m.volumeWitness.sourceId, m.temperatureWitness.sourceId]).size === 3;
   const accurate = uncertainty.worstRelativeErrorPpm !== null &&
@@ -197,16 +212,13 @@ export async function executeThermal(supplied, checkpoint) {
       const netEstimate = estimate - BigInt(losses.estimate) - BigInt(container.estimate);
       downstream = { name: 'single-sample heat capacity', unit: 'joules per kelvin',
         netEnergyMicroJ: strings(netLow, netEstimate, netHigh), temperatureRiseUK: rise,
-        low: rise.high > 0 ? rational(netLow, BigInt(rise.high)) : null,
-        estimate: rise.estimate > 0 ? rational(netEstimate, BigInt(rise.estimate)) : null,
-        high: rise.low > 0 ? rational(netHigh, BigInt(rise.low)) : null,
-        worstRelativeErrorPpm: ratioQuality(netLow, BigInt(rise.high), netEstimate,
-          BigInt(rise.estimate), netHigh, BigInt(rise.low)),
+        ...ratioBounds(netLow, netEstimate, netHigh, BigInt(rise.low), BigInt(rise.estimate), BigInt(rise.high)),
         assumption: 'All residual measured heat enters one sample; losses and container storage are independently bounded.' };
       if (decision === 'CONDITIONAL_BOUNDS_MET') {
         if (!independent) decision = 'ADDITIONAL_INDEPENDENT_WITNESS_REQUIRED';
         else if (rise.low === 0) decision = 'HEAT_CAPACITY_NOT_IDENTIFIABLE';
-        else if (netLow <= 0n) decision = 'ENERGY_BOUNDARY_INCONSISTENT';
+        else if (netHigh <= 0n) decision = 'ENERGY_BOUNDARY_INCONSISTENT';
+        else if (netLow <= 0n) decision = 'ENERGY_BOUNDARY_NOT_RESOLVED';
         else if (downstream.worstRelativeErrorPpm === null ||
           BigInt(downstream.worstRelativeErrorPpm) > BigInt(input.policy.maxRelativeErrorPpm)) {
           decision = 'DOWNSTREAM_UNCERTAINTY_EXCEEDS_POLICY';
@@ -220,16 +232,13 @@ export async function executeThermal(supplied, checkpoint) {
       downstream = { name: 'storage-adjusted heat recovery', unit: 'dimensionless',
         netHeatMicroJ: strings(netLow, netEstimate, netHigh),
         inputEnergyMicroJ: energy, minimumRecoveryPpm: e.minimumRecoveryPpm,
-        low: denominatorHigh > 0n ? rational(netLow, denominatorHigh) : null,
-        estimate: BigInt(energy.estimate) > 0n ? rational(netEstimate, BigInt(energy.estimate)) : null,
-        high: denominatorLow > 0n ? rational(netHigh, denominatorLow) : null,
-        worstRelativeErrorPpm: ratioQuality(netLow, denominatorHigh, netEstimate,
-          BigInt(energy.estimate), netHigh, denominatorLow),
+        ...ratioBounds(netLow, netEstimate, netHigh, denominatorLow, BigInt(energy.estimate), denominatorHigh),
         assumption: 'The independent input bound covers every energy input; stored-energy release is separately bounded.' };
       if (decision === 'CONDITIONAL_BOUNDS_MET') {
         if (!independent) decision = 'ADDITIONAL_INDEPENDENT_WITNESS_REQUIRED';
         else if (denominatorLow === 0n) decision = 'RECOVERY_RATIO_NOT_IDENTIFIABLE';
-        else if (netLow < 0n || netHigh > denominatorLow) decision = 'ENERGY_BOUNDARY_INCONSISTENT';
+        else if (netHigh < 0n || netLow > denominatorHigh) decision = 'ENERGY_BOUNDARY_INCONSISTENT';
+        else if (netLow < 0n || netHigh > denominatorLow) decision = 'ENERGY_BOUNDARY_NOT_RESOLVED';
         else if (downstream.worstRelativeErrorPpm === null ||
           BigInt(downstream.worstRelativeErrorPpm) > BigInt(input.policy.maxRelativeErrorPpm)) {
           decision = 'DOWNSTREAM_UNCERTAINTY_EXCEEDS_POLICY';
@@ -245,6 +254,8 @@ export async function executeThermal(supplied, checkpoint) {
     coverageMs: m.intervals.slice(0, work).reduce((sum, v) => sum + v.durationMs, 0),
     simulation: true, physicalValidity: 'NOT_ESTABLISHED', independentReview: false,
     witnessIndependence: 'Declared synthetic channel separation, not authenticated metrological or organizational independence.',
+    propertyModel: m.propertyModel,
+    acquisitionAssumption: 'Density and specific heat are constant within each interval. The temperature bound covers its volume-weighted mean differential; property-temperature covariance is not modeled.',
     observable, quantity, uncertainty, downstream,
     commandOnlyBaseline: { heatMicroJ: String(commandEstimate), errorVsWitnessEstimateMicroJ: String(commandEstimate - estimate),
       canBoundHiddenFlowError: false },
@@ -262,7 +273,7 @@ export async function executeThermal(supplied, checkpoint) {
     artifacts: [jsonArtifact('thermal-bounds.json', evidence), jsonArtifact('thermal-capability-proposal.json', proposal)],
     limits: [
       'Executed fixed calorimetry arithmetic over simulated measurement inputs; no physical instrument is controlled.',
-      'Bounds assume complete participating-flow coverage and honest calibration limits. Correlated or omitted errors can invalidate them.',
+      'Bounds assume complete participating-flow coverage, fixed properties within each interval and honest calibration limits. Unmodeled property-temperature covariance or omitted errors can invalidate them.',
       'A command-derived volume cannot observe actuator bias. Different source labels alone do not prove independence.',
       'The historical Foundry failure remains retained; this new computation is not a rerun of the original full study.',
       'The installed native thermal worker, SUCCESSOR harness, independent Fleet review and contract settlement are not connected by this extension.',
@@ -288,7 +299,8 @@ export function thermalExample(family = 'delivered-heat') {
   const input = {
     schema: THERMAL_SCHEMA, family,
     measurement: {
-      mode: 'SIMULATED_MEASUREMENTS', coverage: 'WHOLE_FLOW_DECLARED_BOUNDS', commandSourceId: 'controller-telemetry',
+      mode: 'SIMULATED_MEASUREMENTS', coverage: 'WHOLE_FLOW_DECLARED_BOUNDS',
+      propertyModel: 'CONSTANT_WITHIN_INTERVAL', commandSourceId: 'controller-telemetry',
       volumeWitness: { sourceId: 'independent-volume', kind: 'INDEPENDENT_SIMULATED' },
       temperatureWitness: { sourceId: 'differential-reference', kind: 'BOUNDED_SIMULATED' },
       densityKgPerM3: bandOf(1000), specificHeatJPerKgK: bandOf(4000), windowMs: 60000,

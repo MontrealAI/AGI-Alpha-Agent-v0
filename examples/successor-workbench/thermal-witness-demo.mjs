@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createHash } from 'node:crypto';
 import { open, readFile } from 'node:fs/promises';
+import { constants } from 'node:fs';
 
 const root = new URL('../../', import.meta.url);
 const manifestPath = 'alpha_factory_v1/core/runtime/successor/workbench_sources.json';
@@ -24,17 +25,21 @@ async function captureSources() {
     nodeVersion: process.version, sources, authentication: 'LOCAL_SOURCE_SNAPSHOT_NOT_RELEASE_ATTESTATION' };
 }
 async function readInput(path) {
-  const handle = await open(path, 'r'), buffer = Buffer.alloc(2000001);
-  let used = 0;
+  const handle = await open(path, constants.O_RDONLY | (constants.O_NONBLOCK ?? 0));
   try {
+    const stat = await handle.stat();
+    if (!stat.isFile()) throw Error('INPUT_REGULAR_FILE_REQUIRED');
+    if (stat.size > 2000000) throw Error('INPUT_TOO_LARGE');
+    const buffer = Buffer.alloc(2000001);
+    let used = 0;
     while (used < buffer.length) {
       const read = await handle.read(buffer, used, buffer.length - used, used);
       if (read.bytesRead === 0) break;
       used += read.bytesRead;
     }
+    if (used > 2000000) throw Error('INPUT_TOO_LARGE');
+    return buffer.subarray(0, used).toString('utf8');
   } finally { await handle.close(); }
-  if (used > 2000000) throw Error('INPUT_TOO_LARGE');
-  return buffer.subarray(0, used).toString('utf8');
 }
 const args = process.argv.slice(2), mode = args[0] || 'foundry';
 if (!['foundry', 'delivered-heat', 'heat-capacity', 'heat-recovery', '--input'].includes(mode) ||

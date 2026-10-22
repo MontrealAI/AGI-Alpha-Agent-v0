@@ -23,7 +23,7 @@ The first command generates the fixed simulated acquisition, then passes **only 
 
 The other three examples are exact synthetic fixtures with distinct extra measurement requirements. They do not estimate the original research model's wall heat capacity or establish a physical recovery efficiency.
 
-The optional input file uses the exact schema returned by `thermalExample()`. Integers express nanolitres, microkelvin and milliseconds; large energy values use decimal strings. Unknown fields, unsafe integers, accessors, sparse arrays, wrong versions, duplicate intervals, gaps and incomplete windows are rejected. The import limit reuses the workbench's 2 MB bound.
+The optional input file uses the exact schema returned by `thermalExample()`. Integers express nanolitres, microkelvin and milliseconds; large energy values use decimal strings. Unknown fields, unsafe integers, accessors, sparse arrays, wrong versions, duplicate intervals, gaps and incomplete windows are rejected. The import limit reuses the workbench's 2 MB bound. The CLI opens a nonblocking read-only descriptor and requires a regular file; directories, named pipes and oversized files are rejected before parsing.
 
 The adapter is installed explicitly with `createWorkbench([thermalWitnessAdapter])`. It is not silently added to the native worker registry. Existing examples, browser experiences and generated workers are preserved.
 
@@ -40,6 +40,8 @@ density in kg/m3 × specific heat in J/kg/K × volume in nanolitres
 ~~~
 
 All production interval arithmetic uses BigInt. Products evaluate all endpoint combinations, including negative differential temperatures. Lower and upper energy limits are rounded outwards. The relative-error limit uses the worst distance from the estimate divided by the smallest possible absolute true heat; an interval including zero cannot establish relative accuracy.
+
+The required `propertyModel` is `CONSTANT_WITHIN_INTERVAL` or `VARIABLE_OR_UNKNOWN`. Only the former can qualify: density and specific heat must be constant within each acquisition interval. The scalar property bands do not capture within-interval covariance with signed temperature. Variable or unknown properties remain unqualified; a future enthalpy integrator would need to account for that covariance explicitly.
 
 A point sensor reading is insufficient unless its declared uncertainty also covers spatial coverage, temporal variation and correlation with flow. Merely giving two channels different names does not establish metrological or organizational independence. The current input mode is explicitly simulated.
 
@@ -74,7 +76,9 @@ A wider +/-0.05 K differential-temperature uncertainty fails the 5% useful-accur
 | Material heat capacity | Measured delivered heat | Independent sample temperature-rise, loss and container-storage bounds; one-sample energy model | Heat-capacity interval; a zero rise or uncertain energy balance remains inconclusive |
 | Process heat recovery | Measured recovered heat | Independent total input-energy bound and separately bounded stored-energy release | Unclamped recovery-ratio interval and target decision |
 
-Downstream uncertainty is evaluated independently of calorimeter precision. A precise heat estimate does not automatically qualify an imprecise capacity or recovery estimate. Every changed mission obtains a different existing-workbench semantic commitment. No result inherits capability acceptance or authority.
+Downstream ratios compute all four signed numerator/positive-denominator endpoint combinations, preserving ordered bounds even for rejected negative-energy cases. A denominator interval containing zero has null finite bounds. `ENERGY_BOUNDARY_NOT_RESOLVED` means uncertainty includes both feasible and infeasible balances; `ENERGY_BOUNDARY_INCONSISTENT` means the modeled bounds exclude every feasible balance. Both prevent qualification.
+
+Downstream uncertainty is evaluated independently of calorimeter precision. A precise heat estimate does not automatically qualify an imprecise capacity or recovery estimate. The existing-workbench integration is designed to give each changed mission a distinct semantic commitment; the native test for this behavior is pending until an exact-head hosted result is available. No result inherits capability acceptance or authority.
 
 These are computed mission families around one measurement capability. The complete enterprise successor lifecycle, accepted capability inventory and cumulative ancestor/search/maintenance cost ledger still require the existing native and enterprise integration path.
 
@@ -90,9 +94,9 @@ The worker's most favorable decision is `CONDITIONAL_BOUNDS_MET`. Its proposal s
 
 ## Test status and integration boundary
 
-The portable 42-case suite and independent reference were executed in the available V8 JavaScript tool runtime against the exact source text. The selected execution workspace failed before connection, so that observation does not claim native Node, browser, installed package or EVM execution.
+The portable 51-case suite and independent reference were executed in the available V8 JavaScript tool runtime against the exact source text. The selected execution workspace failed before connection, so that observation does not claim native Node, browser, installed package or EVM execution.
 
-The new Node tests exercise the real workbench, its canonical transport, pack/artifact tampering, inert import, distinct mission identity, and the one-command source demo. A single static import in the existing workbench test entry selects them in the ordinary existing workbench workflows. Hosted results must be read from the exact PR head; a green unrelated workflow is insufficient.
+The new Node tests exercise the real workbench, its canonical transport, pack/artifact tampering, inert import, distinct mission identity, the one-command source demo, and regular-file/oversize/nonregular input handling. The POSIX FIFO regression treats a subprocess timeout as a failure, never a successful rejection. A single static import in the existing workbench test entry selects them in the ordinary existing workbench workflows. Hosted results must be read from the exact PR head; a green unrelated workflow is insufficient.
 
 No workflow, permission, dependency, deployment, payment adapter, existing source manifest or generated worker was changed. Native worker registration, actual SUCCESSOR harness invocation and recovery, independent Fleet review, local-EVM lifecycle, browser placement and software release qualification remain outstanding. PR #4863's existing review restriction and the #4855/#4869/#4870 source leases are preserved.
 
