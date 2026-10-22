@@ -266,7 +266,7 @@ export async function executeThermal(supplied, checkpoint) {
     schema: 'thermal-capability-proposal/v1', family: input.family, decision,
     boundedArithmeticAccepted: decision === 'CONDITIONAL_BOUNDS_MET',
     acceptedCapability: false, authority: [], settlement: 'NOT_CONNECTED',
-    requires: ['Independent result acceptance', 'Authenticated witness acquisition', 'Native harness adapter registration'],
+    requires: ['Independent result acceptance', 'Authenticated witness acquisition', 'Actual harness execution and recovery receipt'],
   };
   return { decision, summary: { family: input.family, completion: evidence.completion, intervalsProcessed: work,
     acceptedCapability: false, physicalValidity: 'NOT_ESTABLISHED' }, evidence,
@@ -276,7 +276,7 @@ export async function executeThermal(supplied, checkpoint) {
       'Bounds assume complete participating-flow coverage, fixed properties within each interval and honest calibration limits. Unmodeled property-temperature covariance or omitted errors can invalidate them.',
       'A command-derived volume cannot observe actuator bias. Different source labels alone do not prove independence.',
       'The historical Foundry failure remains retained; this new computation is not a rerun of the original full study.',
-      'The installed native thermal worker, SUCCESSOR harness, independent Fleet review and contract settlement are not connected by this extension.',
+      'A source or packaged-worker result alone does not establish SUCCESSOR harness recovery, independent Fleet acceptance or contract settlement.',
     ] };
 }
 export const thermalWitnessAdapter = Object.freeze({
