@@ -47,7 +47,8 @@ def assert_paper_links(page: Page, language: str) -> None:
         assert box is not None
         card_boxes.append(box)
     for first, box in enumerate(card_boxes):
-        for other in card_boxes[first + 1 :]:
+        remaining_start = first + 1
+        for other in card_boxes[remaining_start:]:
             horizontal = min(box["x"] + box["width"], other["x"] + other["width"]) - max(box["x"], other["x"])
             vertical = min(box["y"] + box["height"], other["y"] + other["height"]) - max(box["y"], other["y"])
             assert min(horizontal, vertical) <= 1, "Paper cards must not overlap"

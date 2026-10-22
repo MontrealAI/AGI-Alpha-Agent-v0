@@ -7,6 +7,7 @@ from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+from typing import Any
 from urllib.parse import unquote
 
 import pytest
@@ -390,3 +391,15 @@ def test_report_rejects_json_numeric_coercion_inside_candidate_inventory(candida
     row["bytes"] = float(row["bytes"])
     with pytest.raises(ValueError, match="exact source"):
         verify(candidate, report)
+
+
+def test_candidate_inventory_rejects_integer_subclasses(candidate: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    class IntegerSubclass(int):
+        pass
+
+    root, _, pack, manifest = candidate
+    data = json.loads(pack.read_bytes())
+    data["files"][0]["bytes"] = IntegerSubclass(data["files"][0]["bytes"])
+    monkeypatch.setattr(checker, "_json", lambda path: data)
+    with pytest.raises(ValueError, match="Invalid or duplicate candidate path"):
+        checker._pack(pack, manifest, COMMIT, VERSION)

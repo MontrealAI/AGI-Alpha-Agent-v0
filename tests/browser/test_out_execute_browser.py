@@ -139,7 +139,8 @@ def main() -> None:
             unsaved_context.close()
             page.evaluate(AXE.read_text())
             audit = page.evaluate(
-                "async () => await axe.run(document, {runOnly: {type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
+                "async () => await axe.run(document, {runOnly: {type: 'tag', values: "
+                "['wcag2a','wcag2aa','wcag21aa','best-practice']}})"
             )
             (OUTPUT / "accessibility.json").write_text(json.dumps(audit, indent=2))
             assert not audit["violations"]

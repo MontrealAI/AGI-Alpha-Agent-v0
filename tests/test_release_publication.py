@@ -1155,3 +1155,18 @@ def test_published_software_cannot_rollback_later_paper_site(tmp_path, monkeypat
     )
     with pytest.raises(RuntimeError, match="already public"):
         release_context.require_unpublished_software()
+
+
+@pytest.mark.parametrize("draft", [0, 1, None, "false"])
+def test_release_lookup_requires_builtin_boolean_draft(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, draft: object
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.37.1"\n')
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "run",
+        lambda *a, **k: subprocess.CompletedProcess(a, 0, json.dumps({"tag_name": "v1.37.1", "draft": draft}), ""),
+    )
+    with pytest.raises(ValueError, match="Invalid exact release lookup"):
+        release_context.require_unpublished_software()
