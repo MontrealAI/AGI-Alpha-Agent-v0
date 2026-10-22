@@ -2,7 +2,7 @@
 // Pure, deliberately restricted Git-config syntax audit. No Git or filesystem calls.
 import assert from 'node:assert/strict';
 
-const SECTIONS = new Set(['core', 'remote', 'branch', 'extensions', 'http']);
+const SECTIONS = new Set(['core', 'remote', 'branch', 'extensions', 'http', 'gc']);
 const DENIED = new Set(['fsmonitor', 'worktree', 'hookspath', 'attributesfile', 'uploadpack',
     'receivepack', 'promisor', 'partialclone', 'alternaterefscommand', 'sshcommand', 'gitproxy',
     'vcs', 'include', 'includeif', 'protocol']);
@@ -48,6 +48,10 @@ function configRows(text) {
 export function auditGitConfiguration(config, ignoredWorktree = null) {
     const rows = configRows(config);
     for (const row of rows) {
+        if (row.section === 'gc') {
+            assert.ok(row.subsection === null && row.key === 'auto' && row.value === '0',
+                'Only disabled automatic Git garbage collection is admitted');
+        }
         if (row.key === 'worktreeconfig') {
             assert.ok(row.section === 'extensions' && row.subsection === null
                 && FALSE.has(row.value?.toLowerCase()), 'Enabled or ambiguous worktree configuration is refused');
