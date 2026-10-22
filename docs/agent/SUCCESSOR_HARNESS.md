@@ -104,10 +104,11 @@ The Autonomous Enterprises foundry and browser work in the coordinated flagship 
 are not replaced. This CLI slice is not a claim that their full operational pilot or
 four-repository paid journey has completed.
 
-Run focused tests with:
+Run focused tests in the existing locked operator environment (including the chain
+hashing extra for the compiled Studio handoff) with:
 
 ```sh
-python -m pytest tests/test_successor_enterprise_harness.py tests/runtime/test_successor_workbench.py
+python -m pytest tests/runtime/test_successor_enterprise_harness.py tests/runtime/test_successor_workbench.py
 ```
 
 Tests cover real numerical/public-data work, immutable configuration, distinct IDs,
