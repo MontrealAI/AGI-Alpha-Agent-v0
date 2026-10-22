@@ -181,6 +181,11 @@ export async function inspectWorkspace(input) {
 }
 
 async function append(workspace, kind, payload) {
+    // Historical interleavings remain inspectable; new unrelated events must not spend recovery slots.
+    if (workspace.events.length && !enterpriseHistory.EVENT_KINDS.includes(kind)) {
+        const {inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
+        if (enterprises?.active) fail('Finish or stop the active enterprise attempt before recording other mission history.');
+    }
     if (workspace.events.length >= LIMITS.events) fail('History capacity reached; preserve this complete workspace.');
     const next = clone(workspace), event = {sequence: next.events.length, kind,
         previous: next.events.at(-1)?.digest || null, payload: clone(payload)};
@@ -216,7 +221,8 @@ export async function addSuccessor(workspace, brief, experiment, reason) {
 }
 
 export async function recordEvaluation(workspace, phase) {
-    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {latest, versions, enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before evaluating a synthetic witness.');
     if (!['development', 'heldout'].includes(phase)) fail('Unsupported evaluation phase.');
     if (latest.experiment === null) fail('This proposal has no implemented evaluator. No capability has been executed.');
     if (latest[phase]) fail('This version already contains that evaluation. Retuning requires a new successor.');
@@ -241,7 +247,8 @@ export async function parseWorkspace(text) {
 /** Add a checked event to the existing hash chain; prior v1 events retain exact bytes. */
 export async function recordDiscoveryEvent(workspace, kind, payload) {
     payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
-    const {workspace: owned} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before recording Discovery Lab work.');
     if (!discoveryHistory.EVENT_KINDS.includes(kind)) fail('Unsupported Discovery Lab event.');
     const next = clone(owned);
     next.schema = discoveryHistory.EXTENDED_SCHEMA;

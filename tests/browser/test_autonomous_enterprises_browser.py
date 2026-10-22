@@ -32,6 +32,12 @@ def main() -> None:
             page.goto(f"http://127.0.0.1:{server.server_port}/docs/successor/capabilities/#autonomous-enterprises")
             expect(page.locator("#enterprise-build")).to_be_enabled(timeout=30000)
             expect(page.locator("#enterprise-seed")).to_be_disabled()
+            page.locator("#witness-enabled").check()
+            page.locator("#public-confirmation").check()
+            page.locator("#freeze").click()
+            expect(page.locator("#development")).to_be_enabled()
+            page.locator("#lab-public-confirmation").check()
+            expect(page.locator("#lab-construct")).to_be_enabled()
             page.locator("#enterprise-build").click()
             expect(page.locator("#enterprise-status")).to_contain_text("Frozen", timeout=120000)
             expect(page.locator("#enterprise-seed")).to_be_enabled()
@@ -39,6 +45,12 @@ def main() -> None:
             expect(page.locator("#brief-title")).to_be_disabled()
             expect(page.locator("#start-successor")).to_be_disabled()
             expect(page.locator("#freeze")).to_be_disabled()
+            expect(page.locator("#development")).to_be_disabled()
+            expect(page.locator("#heldout")).to_be_disabled()
+            expect(page.locator("#lab-construct")).to_be_disabled()
+            expect(page.locator("#lab-successor")).to_be_disabled()
+            expect(page.locator("#run-gate")).to_contain_text("Finish or stop the active enterprise attempt")
+            expect(page.locator("#lab-reservation")).to_contain_text("Finish or stop the active enterprise attempt")
             frozen = existing.history(page)
             constructed = dict(frozen)
             cutoff = next(
@@ -99,6 +111,9 @@ def main() -> None:
             expect(page.locator("#enterprise-status")).to_contain_text("Successor accepted locally", timeout=120000)
             expect(page.locator("#brief-title")).to_be_enabled()
             expect(page.locator("#start-successor")).to_be_enabled()
+            expect(page.locator("#development")).to_be_enabled()
+            page.locator("#lab-public-confirmation").check()
+            expect(page.locator("#lab-construct")).to_be_enabled()
             with page.expect_download(timeout=120000) as downloading:
                 page.locator("#enterprise-export").click()
             docket_path = OUTPUT / "evidence-docket.json"
@@ -151,6 +166,8 @@ def main() -> None:
                             "accepted-construction-reload",
                             "freeze-without-rebuilding-or-future-inputs",
                             "proposal-version-guard",
+                            "active-unrelated-history-guards",
+                            "terminal-related-controls-resume",
                             "five-treatments",
                             "changed-kernel-successor",
                             "actual-docket-download",

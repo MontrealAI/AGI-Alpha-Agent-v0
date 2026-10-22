@@ -5,6 +5,17 @@ import {buildFoundry, constructInverse} from './foundry.mjs';
 import {qualifyArtifact} from './checker.mjs';
 import {evaluateFuture, TREATMENTS} from './future.mjs';
 const constructionLeases = new WeakSet(), invocationLeases = new WeakSet(), successorLeases = new WeakSet();
+// The longest accepted path appends one event to leave each of these states, then terminates.
+// Early refusal/rejection may finish sooner. Keep one additional slot for an explicit recovery stop.
+const continuationStates = Object.freeze(['RESERVED', 'ACCEPTED_CONSTRUCTION', 'FROZEN', 'TASKS_COMMITTED',
+    'INVOCATION_RESERVED', 'INVOCATION_RECONCILED', 'READY_FOR_SUCCESSOR', 'SUCCESSOR_RESERVED']);
+function requireContinuationSpace(value, current) {
+    const position = continuationStates.indexOf(current.state);
+    need(position >= 0, 'No supported active enterprise continuation.');
+    const remaining = continuationStates.length - position;
+    need(workspace.LIMITS.events - value.events.length >= remaining + 1,
+        `History capacity needs ${remaining} continuation events and one recovery event; retain this history or stop the active attempt.`);
+}
 
 export async function start(workspaceInput, charterInput) {
     const charter = validateCharter(charterInput), value = copy(workspaceInput);
@@ -33,6 +44,7 @@ export async function next(valueInput, optionsInput = {}) {
     const inspected = await state(value), current = inspected.current;
     need(current, 'No active bounded enterprise attempt.');
     need(same(current.charter.source, inputSource), 'Installed source changed; keep history and requalify before continuation.');
+    requireContinuationSpace(value, current);
     const payload = {attempt: current.attempt};
     if (inspected.next === 'construct') {
         need(constructionLeases.has(valueInput), 'Recovered construction is uncertain; retain and reconcile its reservation instead of retrying.');
@@ -89,6 +101,7 @@ export async function invokeReserved(valueInput, expectedSource) {
     const value = copy(valueInput), source = copy(expectedSource), {current} = await state(value);
     need(current?.state === 'INVOCATION_RESERVED' && same(source, current.charter.source),
         'An exact persisted current-source invocation reservation is required.');
+    requireContinuationSpace(value, current);
     const report = await evaluateFuture(current.bundle, current.freeze, current.bank, current.charter.perTaskLimit);
     return workspace.recordEnterpriseEvent(value, 'enterprise-invoked', {attempt: current.attempt,
         invocationId: current.invocation.invocationId, report});

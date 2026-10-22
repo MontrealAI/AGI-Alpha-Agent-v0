@@ -220,7 +220,8 @@ function controls() {
     $('import').disabled = !idle;
     $('export').disabled = !idle || !current;
     $('export-draft').disabled = !idle;
-    const runnable = idle && current && storedRevision !== null && !dirty && !successorEditing && !pending && inspected?.latest.experiment !== null;
+    const runnable = idle && current && storedRevision !== null && !dirty && !successorEditing && !pending
+        && !inspected?.enterprises?.active && inspected?.latest.experiment !== null;
     $('development').disabled = !runnable || !!inspected?.latest.development;
     $('heldout').disabled = !runnable || !inspected?.latest.development || !!inspected?.latest.heldout;
     $('recovery').hidden = !pending;
@@ -238,7 +239,7 @@ function render() {
     $('draft-state').textContent = inspected?.enterprises?.active ? 'Finish or stop the current enterprise attempt before editing this proposal or saving a successor version.' : pending ? 'The candidate history is protected in memory. Retry saving or retain its recovery export before replacing it.' : dirty ? current ? 'Inputs have changed. Earlier results are historical and do not validate this draft. Freeze a successor with a reason before another test.' : 'Saving this brief creates a frozen proposal, not an executed invention. Confirm public, non-personal material above first.' : 'These inputs are frozen. Editing starts an unvalidated successor draft; original evidence remains unchanged.';
     $('version-state').textContent = !latest ? 'No validation yet.' : dirty ? 'Draft changed · no current validation.' : latest.experiment === null ? 'Proposal only · not executed.' : latest.witnessAcceptance === 'fail' ? 'Computed FAIL · synthetic witness only' : latest.witnessAcceptance === 'pass' ? 'Computed PASS · both synthetic phases only' : latest.development ? 'Development passed · reuse still pending' : 'No validation yet.';
     $('version-detail').textContent = !latest ? 'First save a frozen version. A plain brief has no executable construction here.' : dirty ? `Reports below belong to frozen version ${latest.number}, not the edited draft.` : latest.experiment === null ? 'The brief has been retained. No evaluator executes or validates its described capability.' : 'Only the fixed supported synthetic instrument is constructed and evaluated. The broad capability brief and economic hypotheses remain unevaluated.';
-    $('run-gate').textContent = pending ? 'Testing is locked while this history is not confirmed saved.' : dirty ? 'Save a frozen version with unchanged inputs before constructing or evaluating the witness.' : latest?.experiment === null ? 'No synthetic witness selected. Proposal mode does not run any evaluator.' : latest?.heldout ? 'Both recorded phases are retained. Develop a successor to make a new explicit experiment.' : latest?.development ? 'Development is retained. Evaluate the unchanged frozen configuration next.' : 'The construction and development evaluation run only when you press the button.';
+    $('run-gate').textContent = pending ? 'Testing is locked while this history is not confirmed saved.' : inspected?.enterprises?.active ? 'Finish or stop the active enterprise attempt before evaluating this witness. Its remaining history space is reserved for continuation and recovery.' : dirty ? 'Save a frozen version with unchanged inputs before constructing or evaluating the witness.' : latest?.experiment === null ? 'No synthetic witness selected. Proposal mode does not run any evaluator.' : latest?.heldout ? 'Both recorded phases are retained. Develop a successor to make a new explicit experiment.' : latest?.development ? 'Development is retained. Evaluate the unchanged frozen configuration next.' : 'The construction and development evaluation run only when you press the button.';
     phaseReport('development', latest?.development);
     phaseReport('heldout', latest?.heldout);
     const exposures = [];
@@ -368,6 +369,9 @@ function resetDraft() {
     renderVersions();
 }
 function assertFrozenWitness() {
+    if (inspected?.enterprises?.active) {
+        throw Error('Finish or stop the active enterprise attempt before evaluating a synthetic witness.');
+    }
     if (!current || !inspected || storedRevision === null || pending || dirty || successorEditing) {
         throw Error('Save unchanged frozen inputs before evaluating a synthetic witness.');
     }

@@ -68,12 +68,14 @@ Existing release tags, deployment/ENS history, STOP and authority/spend journals
 ## Actual bounded results
 
 The Alpha contract has eleven passing ordinary cases on Node 22.23.3; the complete current enterprise and owner
-metadata set passes 151/151 on both Node 24.19.0 and 22.23.3. A separate actual n32 inspection reused the retained
+metadata set passes 160/160 on both Node 24.19.0 and 22.23.3 after the history-capacity repair. A separate earlier n32 inspection reused the retained
 recovery workspace/docket and accepted its full fifteen-treatment/changed-kernel history with 19,414,180 declared
 checking units (19,404,180 current replay plus 10,000 admission), 4,198 measured milliseconds and a 5,687,296-byte
 encoded-footprint reservation. Its preparation/export replays are separately retained and not free.
 This older frozen mission is a new-inspector source observation, not installed custody of public head5711145.
 
-The Manager/Jobs source receivers pass their twenty actual-source cases per local runtime; Fleet’s separate n32
-case retains all 1,024 convolution basis pairs and 32 inverse bases. Source manifests, original failures and the
+The current Manager/Jobs source receivers pass 22 ordinary and actual-source cases per local runtime, and Fleet
+passes 15 on each Node profile. Fleet’s fresh separate n32 case retains all 1,024 convolution basis pairs and 32 inverse bases. Source manifests, original failures and the
 bounded static review distinguish implementation from final installed four-repository acceptance.
+Fresh browser qualification of the history-capacity repair is blocked by missing Python test dependencies and
+Chromium IPC permissions. Earlier browser evidence remains historical; hosted acceptance is required for the new source.

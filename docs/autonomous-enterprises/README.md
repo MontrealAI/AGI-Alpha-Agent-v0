@@ -28,9 +28,11 @@ or recent release assets. This is **an independent reimplementation**, not repro
 ## Reproduce and inspect
 
 The repository pins Node 22.17.1. The original hosted candidate passed all 516 Node tests on that runtime, then failed
-a workflow-policy assertion; its archive and logs remain retained. The current source passes 104 enterprise tests plus 47 owner metadata tests locally
-on Node 24.19.0 and 22.23.3, with a freshly completed fourteen-check browser journey and docket replay. Fresh exact-source hosted
-acceptance remains required. No model, wallet, account, package installation or network access is needed for this study.
+a workflow-policy assertion; its archive and logs remain retained. The current source passes 113 enterprise tests plus 47 owner metadata tests locally
+on Node 24.19.0 and 22.23.3. Its complete n32 CLI journey and thirteen-section docket independently replay.
+The earlier source's fourteen-check browser journey remains historical. Fresh browser execution for this history-capacity
+repair is blocked by missing Python test dependencies and local Chromium IPC permissions; it is not a current browser pass.
+Fresh exact-source hosted acceptance remains required. No model, wallet, account, package installation or network access is needed for the deterministic study.
 
 ```bash
 node --test examples/autonomous-enterprises/*.test.mjs
@@ -51,7 +53,10 @@ supplies future inputs, invokes all five treatments, constructs a changed-kernel
 replays the actual docket, reloads the saved mission, and checks desktop/mobile, keyboard and pinned Axe accessibility.
 The existing capability workflow retains its original checks and adds these tests and raw browser evidence.
 Saving a new successor proposal is refused while an enterprise attempt is active, both by central history replay
-and by the interface, so continuation and safe stopping retain their original version.
+and by the interface, so continuation and safe stopping retain their original version. New witness evaluations and
+Discovery Lab appends are also held until finish or Stop. Continuation checks every remaining event plus a recovery
+slot before work; an older near-capacity history stays readable and can use its remaining slot to Stop. An already
+full historical chain stays readable and exportable, but cannot append another event.
 
 ## Actual counted results and their denominators
 
@@ -99,8 +104,8 @@ tables are bounded to seven capabilities. It does not prove a rational-price, ti
 
 | Lane | Existing owner work | Remaining dependency |
 | --- | --- | --- |
-| Alpha | #4853 stacked on #4851; owner parent f0a6794a; paper repair from main 5a5340a1 | Exact-source hosted checks/review; qualified normal integrations and fresh main release |
-| Manager | #1613; maintenance v1.19.6 is separate | Final installed Discovery/enterprise source and compatible profile; USDC6 only |
+| Alpha | #4855 stacked on #4851; current owner parent 24d58598; #4853 retained | Exact-source hosted checks/review; qualified normal integrations and fresh main release |
+| Manager | #1617 stacked on current owner #1616; #1613 retained; maintenance v1.19.6 is separate | Final installed Discovery/enterprise source and compatible profile; USDC6 only |
 | Jobs | #4010; prerequisite rc.17 is now published | Final installed receivers and a later compatible profile; AGIALPHA18 only |
 | Fleet | #64; held #61 remains separate | Eligible owner/custody review, final installed acceptance and compatible publication |
 
@@ -130,3 +135,10 @@ The next configured review identified a P1 version boundary: saving a proposal d
 strand that attempt. The current repair refuses that event in central replay and API preflight, and disables proposal
 editing until finish or stop. Three failing ordinary cases now pass along with the preserved legacy case on both
 local Node profiles; the actual browser checks proposal gating and recovery. Fresh configured review remains required.
+
+The next configured review found that unrelated witness or Discovery events could consume the slots observed at
+enterprise start. The history-capacity repair blocks new unrelated appends while the attempt is active and checks
+remaining continuation plus recovery capacity before computation. Valid historical interleavings still parse unchanged.
+The retained nine-case regression fails four cases on the prior implementation and passes all nine after repair;
+it covers dense histories, pre-work refusal, safe Stop, legacy activity and unknown reservations. Current local Node
+and CLI results do not replace the fresh browser, hosted, installed-custody or release gates.

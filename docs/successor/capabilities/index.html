@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-izLBiJ4I9QDvBFdwU10SsHUHJwja6EtZDaaPVOPi1Ak='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-/lOtVcAw/g1tNVIYBVO8j5dA/7PGVN54fWL1YLwLnVI='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -522,7 +522,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>c64f26fac13d73dc4fb4a591ac6c87c314fc3f8e44449307db77ca4c7df2622f</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -5880,6 +5880,11 @@ async function inspectWorkspace(input) {
 }
 
 async function append(workspace, kind, payload) {
+    // Historical interleavings remain inspectable; new unrelated events must not spend recovery slots.
+    if (workspace.events.length && !enterpriseHistory.EVENT_KINDS.includes(kind)) {
+        const {inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
+        if (enterprises?.active) fail('Finish or stop the active enterprise attempt before recording other mission history.');
+    }
     if (workspace.events.length >= LIMITS.events) fail('History capacity reached; preserve this complete workspace.');
     const next = clone(workspace), event = {sequence: next.events.length, kind,
         previous: next.events.at(-1)?.digest || null, payload: clone(payload)};
@@ -5915,7 +5920,8 @@ async function addSuccessor(workspace, brief, experiment, reason) {
 }
 
 async function recordEvaluation(workspace, phase) {
-    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {latest, versions, enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before evaluating a synthetic witness.');
     if (!['development', 'heldout'].includes(phase)) fail('Unsupported evaluation phase.');
     if (latest.experiment === null) fail('This proposal has no implemented evaluator. No capability has been executed.');
     if (latest[phase]) fail('This version already contains that evaluation. Retuning requires a new successor.');
@@ -5940,7 +5946,8 @@ async function parseWorkspace(text) {
 /** Add a checked event to the existing hash chain; prior v1 events retain exact bytes. */
 async function recordDiscoveryEvent(workspace, kind, payload) {
     payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
-    const {workspace: owned} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before recording Discovery Lab work.');
     if (!discoveryHistory.EVENT_KINDS.includes(kind)) fail('Unsupported Discovery Lab event.');
     const next = clone(owned);
     next.schema = discoveryHistory.EXTENDED_SCHEMA;
@@ -10166,6 +10173,17 @@ const {buildFoundry, constructInverse} = capability_module_19;
 const {qualifyArtifact} = capability_module_17;
 const {evaluateFuture, TREATMENTS} = capability_module_18;
 const constructionLeases = new WeakSet(), invocationLeases = new WeakSet(), successorLeases = new WeakSet();
+// The longest accepted path appends one event to leave each of these states, then terminates.
+// Early refusal/rejection may finish sooner. Keep one additional slot for an explicit recovery stop.
+const continuationStates = Object.freeze(['RESERVED', 'ACCEPTED_CONSTRUCTION', 'FROZEN', 'TASKS_COMMITTED',
+    'INVOCATION_RESERVED', 'INVOCATION_RECONCILED', 'READY_FOR_SUCCESSOR', 'SUCCESSOR_RESERVED']);
+function requireContinuationSpace(value, current) {
+    const position = continuationStates.indexOf(current.state);
+    need(position >= 0, 'No supported active enterprise continuation.');
+    const remaining = continuationStates.length - position;
+    need(workspace.LIMITS.events - value.events.length >= remaining + 1,
+        `History capacity needs ${remaining} continuation events and one recovery event; retain this history or stop the active attempt.`);
+}
 
 async function start(workspaceInput, charterInput) {
     const charter = validateCharter(charterInput), value = copy(workspaceInput);
@@ -10194,6 +10212,7 @@ async function next(valueInput, optionsInput = {}) {
     const inspected = await state(value), current = inspected.current;
     need(current, 'No active bounded enterprise attempt.');
     need(same(current.charter.source, inputSource), 'Installed source changed; keep history and requalify before continuation.');
+    requireContinuationSpace(value, current);
     const payload = {attempt: current.attempt};
     if (inspected.next === 'construct') {
         need(constructionLeases.has(valueInput), 'Recovered construction is uncertain; retain and reconcile its reservation instead of retrying.');
@@ -10250,6 +10269,7 @@ async function invokeReserved(valueInput, expectedSource) {
     const value = copy(valueInput), source = copy(expectedSource), {current} = await state(value);
     need(current?.state === 'INVOCATION_RESERVED' && same(source, current.charter.source),
         'An exact persisted current-source invocation reservation is required.');
+    requireContinuationSpace(value, current);
     const report = await evaluateFuture(current.bundle, current.freeze, current.bank, current.charter.perTaskLimit);
     return workspace.recordEnterpriseEvent(value, 'enterprise-invoked', {attempt: current.attempt,
         invocationId: current.invocation.invocationId, report});
@@ -10287,7 +10307,7 @@ const enterpriseController=capability_module_39;
 const enterpriseProtocol=capability_module_16;
 const enterpriseHistory=capability_module_15;
 const enterpriseCapital=capability_module_35;
-const SOURCE_HASH='845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28';
+const SOURCE_HASH='c64f26fac13d73dc4fb4a591ac6c87c314fc3f8e44449307db77ca4c7df2622f';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -10510,7 +10530,8 @@ function controls() {
     $('import').disabled = !idle;
     $('export').disabled = !idle || !current;
     $('export-draft').disabled = !idle;
-    const runnable = idle && current && storedRevision !== null && !dirty && !successorEditing && !pending && inspected?.latest.experiment !== null;
+    const runnable = idle && current && storedRevision !== null && !dirty && !successorEditing && !pending
+        && !inspected?.enterprises?.active && inspected?.latest.experiment !== null;
     $('development').disabled = !runnable || !!inspected?.latest.development;
     $('heldout').disabled = !runnable || !inspected?.latest.development || !!inspected?.latest.heldout;
     $('recovery').hidden = !pending;
@@ -10528,7 +10549,7 @@ function render() {
     $('draft-state').textContent = inspected?.enterprises?.active ? 'Finish or stop the current enterprise attempt before editing this proposal or saving a successor version.' : pending ? 'The candidate history is protected in memory. Retry saving or retain its recovery export before replacing it.' : dirty ? current ? 'Inputs have changed. Earlier results are historical and do not validate this draft. Freeze a successor with a reason before another test.' : 'Saving this brief creates a frozen proposal, not an executed invention. Confirm public, non-personal material above first.' : 'These inputs are frozen. Editing starts an unvalidated successor draft; original evidence remains unchanged.';
     $('version-state').textContent = !latest ? 'No validation yet.' : dirty ? 'Draft changed · no current validation.' : latest.experiment === null ? 'Proposal only · not executed.' : latest.witnessAcceptance === 'fail' ? 'Computed FAIL · synthetic witness only' : latest.witnessAcceptance === 'pass' ? 'Computed PASS · both synthetic phases only' : latest.development ? 'Development passed · reuse still pending' : 'No validation yet.';
     $('version-detail').textContent = !latest ? 'First save a frozen version. A plain brief has no executable construction here.' : dirty ? `Reports below belong to frozen version ${latest.number}, not the edited draft.` : latest.experiment === null ? 'The brief has been retained. No evaluator executes or validates its described capability.' : 'Only the fixed supported synthetic instrument is constructed and evaluated. The broad capability brief and economic hypotheses remain unevaluated.';
-    $('run-gate').textContent = pending ? 'Testing is locked while this history is not confirmed saved.' : dirty ? 'Save a frozen version with unchanged inputs before constructing or evaluating the witness.' : latest?.experiment === null ? 'No synthetic witness selected. Proposal mode does not run any evaluator.' : latest?.heldout ? 'Both recorded phases are retained. Develop a successor to make a new explicit experiment.' : latest?.development ? 'Development is retained. Evaluate the unchanged frozen configuration next.' : 'The construction and development evaluation run only when you press the button.';
+    $('run-gate').textContent = pending ? 'Testing is locked while this history is not confirmed saved.' : inspected?.enterprises?.active ? 'Finish or stop the active enterprise attempt before evaluating this witness. Its remaining history space is reserved for continuation and recovery.' : dirty ? 'Save a frozen version with unchanged inputs before constructing or evaluating the witness.' : latest?.experiment === null ? 'No synthetic witness selected. Proposal mode does not run any evaluator.' : latest?.heldout ? 'Both recorded phases are retained. Develop a successor to make a new explicit experiment.' : latest?.development ? 'Development is retained. Evaluate the unchanged frozen configuration next.' : 'The construction and development evaluation run only when you press the button.';
     phaseReport('development', latest?.development);
     phaseReport('heldout', latest?.heldout);
     const exposures = [];
@@ -10658,6 +10679,9 @@ function resetDraft() {
     renderVersions();
 }
 function assertFrozenWitness() {
+    if (inspected?.enterprises?.active) {
+        throw Error('Finish or stop the active enterprise attempt before evaluating a synthetic witness.');
+    }
     if (!current || !inspected || storedRevision === null || pending || dirty || successorEditing) {
         throw Error('Save unchanged frozen inputs before evaluating a synthetic witness.');
     }
@@ -11596,7 +11620,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "c64f26fac13d73dc4fb4a591ac6c87c314fc3f8e44449307db77ca4c7df2622f"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {
@@ -11658,6 +11682,7 @@ function mountDiscoveryLab({runtime, history}) {
     function recordResult(record) { return record?.result || record?.campaign || null; }
     function outcomeState(record) { return record?.state || recordResult(record)?.state || 'candidate'; }
     function recordCharter(record) { return record?.charter || recordResult(record)?.charter || null; }
+    function enterpriseActive() { return typeof inspected !== 'undefined' && Boolean(inspected?.enterprises?.active); }
     function campaigns() { return Array.isArray(savedState.campaigns) ? savedState.campaigns : []; }
     function latestAccepted() {
         return [...campaigns()].reverse().find(record => outcomeState(record) === 'accepted' && record.lineageQualified !== false) || null;
@@ -11700,7 +11725,7 @@ function mountDiscoveryLab({runtime, history}) {
         const idle = !busy;
         byId('form').setAttribute('aria-busy', String(busy));
         for (const input of byId('form').querySelectorAll('input,select,textarea,button')) input.disabled = !idle;
-        const runnable = idle && savedState.ready && !savedState.locked && !manifestPending
+        const runnable = idle && savedState.ready && !savedState.locked && !manifestPending && !enterpriseActive()
             && byId('public-confirmation').checked;
         byId('construct').disabled = !runnable;
         const parent = latestAccepted();
@@ -11710,7 +11735,9 @@ function mountDiscoveryLab({runtime, history}) {
         byId('route').disabled = !idle;
         byId('export-account').disabled = !idle || typeof history.accountReceipt !== 'function';
         for (const button of byId('events').querySelectorAll('button[data-campaign-digest]')) button.disabled = !idle;
-        byId('reservation').textContent = manifestPending
+        byId('reservation').textContent = enterpriseActive()
+            ? 'Finish or stop the active enterprise attempt before running Discovery Lab. Its remaining history space is reserved for continuation and recovery.'
+            : manifestPending
             ? 'Apply the edited charter before construction. The previous frozen result does not validate unapplied changes.'
             : savedState.locked
             ? savedState.reason || 'Resolve the existing workspace recovery or draft before running another campaign.'
@@ -11929,6 +11956,7 @@ function mountDiscoveryLab({runtime, history}) {
         finally { busy = false; await refresh(); controls(); }
     }
     function assertRunnable() {
+        if (enterpriseActive()) throw Error('Finish or stop the active enterprise attempt before running Discovery Lab.');
         if (!savedState.ready || savedState.locked) throw Error(savedState.reason || 'The existing workspace is not ready.');
         if (manifestPending) throw Error('Apply the edited JSON charter before construction.');
         if (!byId('public-confirmation').checked) throw Error('Confirm the supplied synthetic scope before constructing.');
@@ -12453,7 +12481,7 @@ const REAL_TASK_SOURCES={"adapterSourceDigest": "86aae1d8e0ad8c072957567cf5c5f19
 })();
 
 
-const ENTERPRISE_SOURCES={"checker": "52735ba95b2f4be8580fffc957e9d8f910c9e08b6458c5bb847f3f74a500bf7d", "closure": "845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28", "constructor": "3369219a306f69bf446d8d1cd343624686d2eba101e9be5be3afa9af463ee615"};
+const ENTERPRISE_SOURCES={"checker": "52735ba95b2f4be8580fffc957e9d8f910c9e08b6458c5bb847f3f74a500bf7d", "closure": "c64f26fac13d73dc4fb4a591ac6c87c314fc3f8e44449307db77ca4c7df2622f", "constructor": "3369219a306f69bf446d8d1cd343624686d2eba101e9be5be3afa9af463ee615"};
 // SPDX-License-Identifier: Apache-2.0
 (() => {
     const el = id => document.getElementById('enterprise-' + id);
