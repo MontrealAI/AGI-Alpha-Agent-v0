@@ -23,9 +23,11 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
+import time
 import tomllib
 from typing import Any
 from urllib.parse import quote
+import urllib.error
 import urllib.request
 
 from scripts import release_packs
@@ -37,6 +39,8 @@ ORIGIN = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
 SCHEMA = "agialpha.legacy-public-urls.acceptance.v1"
 MAX_JSON = 64 * 1024 * 1024
 MAX_BODY = 32 * 1024 * 1024
+FETCH_ATTEMPTS = 3
+RETRY_STATUSES = {429, 502, 503, 504}
 
 
 def _sha(raw: bytes) -> str:
@@ -262,10 +266,29 @@ def _fetch(url: str, method: str, size: int) -> tuple[int, str, dict[str, str], 
             "Cache-Control": "no-cache",
         },
     )
-    with urllib.request.build_opener(_NoRedirect()).open(request, timeout=60) as response:
-        headers = {key.lower(): value for key, value in response.headers.items()}
-        raw = response.read(size + 1) if method == "GET" else b""
-        return response.status, response.geturl(), headers, raw
+    for attempt in range(1, FETCH_ATTEMPTS + 1):
+        status: int | str = "unavailable"
+        try:
+            with urllib.request.build_opener(_NoRedirect()).open(request, timeout=60) as response:
+                status = response.status
+                headers = {key.lower(): value for key, value in response.headers.items()}
+                raw = response.read(size + 1) if method == "GET" else b""
+                return response.status, response.geturl(), headers, raw
+        except (urllib.error.URLError, TimeoutError) as error:
+            # HTTPError is a URLError subclass. Never retry redirects, permanent
+            # HTTP failures, TLS errors or other non-timeout network failures.
+            if isinstance(error, urllib.error.HTTPError):
+                status = error.code
+                retry = status in RETRY_STATUSES
+                error.close()
+            else:
+                retry = isinstance(error, TimeoutError) or isinstance(error.reason, TimeoutError)
+            if not retry or attempt == FETCH_ATTEMPTS:
+                raise ValueError(
+                    f"Public request failed: method={method} url={url} status={status} attempts={attempt}: {error}"
+                ) from error
+        time.sleep(attempt)
+    raise AssertionError("Unreachable retry exhaustion")
 
 
 def _observe(route: str, name: str, row: dict[str, Any], manifest: dict[str, Any]) -> dict[str, Any]:
