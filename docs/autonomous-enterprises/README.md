@@ -30,9 +30,12 @@ or recent release assets. This is **an independent reimplementation**, not repro
 The repository pins Node 22.17.1. The original hosted candidate passed all 516 Node tests on that runtime, then failed
 a workflow-policy assertion; its archive and logs remain retained. The current source passes 113 enterprise tests plus 47 owner metadata tests locally
 on Node 24.19.0 and 22.23.3. Its complete n32 CLI journey and thirteen-section docket independently replay.
-The earlier source's fourteen-check browser journey remains historical. Fresh browser execution for this history-capacity
-repair is blocked by missing Python test dependencies and local Chromium IPC permissions; it is not a current browser pass.
-Fresh exact-source hosted acceptance remains required. No model, wallet, account, package installation or network access is needed for the deterministic study.
+At public commit `72075cf`, the exact-tree hosted capability workflow passed 576 Node tests, strict typing and the sixteen-check
+enterprise browser journey on observed Chromium 155.0.8059.0. Its original archive is retained and hash-verified.
+The browser harness also reviews every contrast-incomplete node in actual frozen, terminal desktop and mobile states;
+use the current head's hosted artifact for its result. Local browser execution remains blocked by missing Python test
+dependencies and Chromium IPC permissions; the rejected attempts are retained. Fresh exact-source hosted acceptance
+remains required. No model, wallet, account, package installation or network access is needed for the deterministic study.
 
 ```bash
 node --test examples/autonomous-enterprises/*.test.mjs

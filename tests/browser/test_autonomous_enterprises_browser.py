@@ -9,6 +9,7 @@ import subprocess
 import threading
 
 from playwright.sync_api import expect, sync_playwright
+import test_successor_capability_accessibility as accessibility
 import test_successor_capability_browser as existing
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -18,6 +19,9 @@ OUTPUT = Path(os.environ.get("ENTERPRISE_BROWSER_EVIDENCE", "/tmp/autonomous-ent
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     existing.OUTPUT = OUTPUT
+    accessibility.OUTPUT = OUTPUT / "contrast-review"
+    accessibility.OUTPUT.mkdir(parents=True, exist_ok=True)
+    contrast_reviews = []
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(existing.QuietHandler, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     errors: list[str] = []
@@ -51,6 +55,8 @@ def main() -> None:
             expect(page.locator("#lab-successor")).to_be_disabled()
             expect(page.locator("#run-gate")).to_contain_text("Finish or stop the active enterprise attempt")
             expect(page.locator("#lab-reservation")).to_contain_text("Finish or stop the active enterprise attempt")
+            contrast_reviews.append(accessibility.inspect(page, "enterprise-frozen"))
+            page.locator("#autonomous-enterprises").screenshot(path=str(OUTPUT / "frozen.png"), animations="disabled")
             frozen = existing.history(page)
             constructed = dict(frozen)
             cutoff = next(
@@ -142,12 +148,14 @@ def main() -> None:
             assert json.loads(proof)["verified"] is True
             (OUTPUT / "docket-verification.json").write_text(proof)
             existing.audit(page, "enterprise-desktop")
+            contrast_reviews.append(accessibility.inspect(page, "enterprise-desktop"))
             page.locator("#autonomous-enterprises").screenshot(path=str(OUTPUT / "desktop.png"), animations="disabled")
             page.reload()
             expect(page.locator("#enterprise-status")).to_contain_text("Successor accepted locally", timeout=120000)
             page.set_viewport_size({"width": 390, "height": 844})
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
             existing.audit(page, "enterprise-mobile")
+            contrast_reviews.append(accessibility.inspect(page, "enterprise-mobile"))
             page.locator("#autonomous-enterprises").screenshot(path=str(OUTPUT / "mobile.png"), animations="disabled")
             page.locator("#enterprise-capital-run").focus()
             expect(page.locator("#enterprise-capital-run")).to_be_focused()
@@ -160,6 +168,7 @@ def main() -> None:
                         "browser": browser.version,
                         "missionId": run["workspace"]["missionId"],
                         "eventCount": len(events),
+                        "contrastReviews": contrast_reviews,
                         "checks": [
                             "actual-construction",
                             "freeze-before-future-inputs",
@@ -176,6 +185,7 @@ def main() -> None:
                             "mobile",
                             "keyboard",
                             "axe",
+                            "contrast-incompletes-reviewed",
                             "no-page-errors",
                         ],
                     },

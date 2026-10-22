@@ -77,5 +77,7 @@ This older frozen mission is a new-inspector source observation, not installed c
 The current Manager/Jobs source receivers pass 22 ordinary and actual-source cases per local runtime, and Fleet
 passes 15 on each Node profile. Fleet’s fresh separate n32 case retains all 1,024 convolution basis pairs and 32 inverse bases. Source manifests, original failures and the
 bounded static review distinguish implementation from final installed four-repository acceptance.
-Fresh browser qualification of the history-capacity repair is blocked by missing Python test dependencies and
-Chromium IPC permissions. Earlier browser evidence remains historical; hosted acceptance is required for the new source.
+Local browser execution is blocked by missing Python test dependencies and Chromium IPC permissions. The exact-tree
+hosted `72075cf` capability run passed 576 Node tests, strict typing and 16 enterprise browser checks on observed
+Chromium 155.0.8059.0. The harness now also retains per-node contrast review for actual enterprise states; its current
+head requires its own hosted receipt. Neither browser evidence nor a matching source label authenticates installed custody.
