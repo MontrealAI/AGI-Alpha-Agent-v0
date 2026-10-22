@@ -27,3 +27,22 @@ def test_mutmut_paths_configured_in_pyproject() -> None:
 def test_mutmut_version_is_pinned_in_dev_lockfile() -> None:
     lock = Path("requirements-dev.lock").read_text(encoding="utf-8")
     assert "mutmut==3.3.0 \\" in lock
+
+
+def test_integration_tests_have_finite_headroom_without_reducing_scope() -> None:
+    import yaml
+
+    workflow = yaml.safe_load(Path(".github/workflows/ci.yml").read_text(encoding="utf-8"))
+    tests = workflow["jobs"]["tests"]
+    assert tests["timeout-minutes"] == 90
+    assert tests["strategy"]["fail-fast"] is False
+    assert tests["strategy"]["matrix"]["python-version"] == '${{ fromJSON(\'["3.11","3.12"]\') }}'
+    assert not tests.get("continue-on-error")
+    steps = tests["steps"]
+    coverage = next(step for step in steps if step.get("name") == "Run tests with coverage")
+    assert "if" not in coverage and not coverage.get("continue-on-error")
+    assert (
+        "pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 "
+        "--junitxml=artifacts/test-reports/pytest.xml --durations=25"
+    ) in coverage["run"]
+    assert next(step for step in steps if step.get("name") == "Upload pytest results")["if"] == "always()"

@@ -101,17 +101,31 @@ def test_nested_mirror_keeps_internal_and_resolves_shared_assets(
 
 
 def test_gallery_cache_version_changes_with_contents(tmp_path: Path) -> None:
-    (tmp_path / "assets").mkdir()
-    chart = tmp_path / "assets/chart.min.js"
+    docs = tmp_path / "docs"
+    (docs / "assets").mkdir(parents=True)
+    catalog = tmp_path / "alpha_factory_v1/demos/catalog.json"
+    catalog.parent.mkdir(parents=True)
+    catalog.write_text(json.dumps({"release": "demo-cache-fixture"}))
+    chart = docs / "assets/chart.min.js"
     chart.write_text("version one")
-    first = build_service_worker.build(tmp_path)
+    first = build_service_worker.build(docs)
+    assert 'const RELEASE = "demo-cache-fixture";' in (docs / "service-worker.js").read_text()
     chart.write_text("version two")
-    assert build_service_worker.build(tmp_path) != first
+    assert build_service_worker.build(docs) != first
     # Heavy model files belong to the existing Insight cache, not gallery precache.
-    model = tmp_path / "alpha_agi_insight_v1/assets/model.json"
+    model = docs / "alpha_agi_insight_v1/assets/model.json"
     model.parent.mkdir(parents=True)
     model.write_text(json.dumps({"large": True}))
-    assert all("alpha_agi_insight_v1" not in path for path in build_service_worker.gather_assets(tmp_path))
+    assert all("alpha_agi_insight_v1" not in path for path in build_service_worker.gather_assets(docs))
+
+
+def test_gallery_cache_requires_its_own_project_catalog(tmp_path: Path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "index.html").write_text("isolated fixture")
+    # Never silently take release identity from the executing source checkout.
+    with pytest.raises(FileNotFoundError):
+        build_service_worker.build(docs)
 
 
 def test_report_reader_does_not_enter_an_incomplete_gallery_cache(tmp_path: Path) -> None:

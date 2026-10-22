@@ -140,3 +140,11 @@ Integration requires the predecessor's qualified merge followed by reconciliatio
 Fleet release verification remains separate. Merging does not establish release or deployment.
 Accessibility evidence includes review of reported ARIA and contrast incompletes, keyboard and viewport checks;
 zero automated violations alone is not a claim of complete accessibility or assistive-technology coverage.
+
+## Change-aware completion (OUT-EXECUTE)
+
+The same workspace and project history now include a bounded finite-model boundary-contract
+engine, independent qualification, revision/reuse planning, current witness reconstruction,
+complete work accounting and explicitly unsubmitted Jobs/Fleet draft exports.
+See [the executable scope, trust model, limits and reproducible comparisons](out-execute/README.md).
+This extends the constructor rather than replacing its existing routes or apparatus.

@@ -32,7 +32,10 @@ def test_generated_source_and_csp_bind_exact_bytes() -> None:
 def test_browser_gate_is_mandatory_and_has_pinned_tooling() -> None:
     workflow = yaml.safe_load((ROOT / ".github/workflows/successor-mission.yml").read_text())
     job = workflow["jobs"]["mission"]
-    assert "if" not in job and not job.get("continue-on-error")
+    assert job["if"] == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
+    assert job["needs"] == "paper-scope"
+    assert workflow["jobs"]["paper-scope"]["uses"] == "./.github/workflows/paper-scope.yml"
+    assert not job.get("continue-on-error")
     checks = [
         step
         for step in job["steps"]

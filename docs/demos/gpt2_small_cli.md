@@ -3,8 +3,10 @@
 # GPT‑2 Small CLI Demo
 
 ![preview](../gpt2_small_cli/assets/preview.svg){.demo-preview}
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.37.1
 
 **Mode:** Local model. Generates text with the actual GPT-2 124M model.
 

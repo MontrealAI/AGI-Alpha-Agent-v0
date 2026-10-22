@@ -16,8 +16,10 @@ shows the gap to the best design in the supplied training model.
 
 [Project notice](../../../docs/DISCLAIMER_SNIPPET.md)
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.37.1
 
 **Mode: Offline search lab.** Python 3.11–3.13; the supported lab uses only the standard library.
 No API key, paid provider, GPU, Docker service or runtime download is required after obtaining the source.

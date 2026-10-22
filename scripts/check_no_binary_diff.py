@@ -261,6 +261,23 @@ def main() -> int:
     binary_paths = [path for path in changed_paths if _matches_binary_extension(path)]
     binary_paths.extend(_has_binary_diff(base_ref))
     authorized = AUTHORIZED_MANUSCRIPT | AUTHORIZED_REPORT_PACK | AUTHORIZED_FLAGSHIP_ARTWORK
+    # Only exact validated catalog bytes qualify; this is not a PDF suffix exclusion.
+    from scripts.research_papers import (
+        CATALOG,
+        asset_hashes,
+        load_catalog,
+        parse_catalog,
+        preserve_catalog,
+        verify_files,
+    )
+
+    catalog = load_catalog(Path.cwd())
+    verify_files(Path.cwd(), catalog, pdf_checks=False)
+    # Full/mixed qualification cannot silently rewrite previously catalogued originals.
+    previous = _run("git", "show", f"{base_ref}:{CATALOG}", check=False)
+    if previous.returncode == 0:
+        preserve_catalog(parse_catalog(previous.stdout.encode()), catalog)
+    authorized |= asset_hashes(catalog)
     binary_paths = sorted(
         {
             path

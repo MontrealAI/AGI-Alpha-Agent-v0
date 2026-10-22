@@ -53,8 +53,13 @@ class GuidedDelivery(unittest.TestCase):
         self.assertIsNotNone(journey)
         self.assertEqual(
             set(journey.group(1).splitlines()),
-            {"    needs: publication-preflight", "    uses: ./.github/workflows/successor-mission.yml"},
+            {
+                "    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}",
+                "    needs: [paper-scope, publication-preflight]",
+                "    uses: ./.github/workflows/successor-mission.yml",
+            },
         )
+        self.assertIn("  paper-scope:\n    uses: ./.github/workflows/paper-scope.yml\n", release)
         package_start = release.index("  package:")
         package = release[package_start:]
         self.assertIn("successor-journey", package.split("steps:", 1)[0])

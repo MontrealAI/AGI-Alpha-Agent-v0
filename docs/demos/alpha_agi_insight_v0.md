@@ -20,8 +20,10 @@ Five clearly labeled synthetic cases make every assumption inspectable. You can 
 own supplied source excerpts; the tool does not fetch or authenticate those sources.
 Priority scores are not forecast probabilities, valuations or a claim of beyond-human prediction.
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.37.1
 
 **Mode:** Local evidence review. **Prerequisites:** Python 3.11–3.13 and the installed package or a source checkout.
 Discovery uses only the standard library.

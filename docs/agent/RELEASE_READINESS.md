@@ -1,6 +1,48 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
-# Release readiness — 1.37.0 source candidate
+<a id="release-readiness-1360-source-candidate"></a>
+
+# Release readiness — 1.37.1 combined software candidate
+
+Version **1.37.1** combines the existing capability/Out-Evolve source, the bounded OUT-EXECUTE implementation,
+seven original featured papers and the simpler paper-publication lane. The [release notes](RELEASE_NOTES_1.37.1.md)
+describe the scope, explicit synthetic assumptions, equal/cheaper baselines and inert Jobs/Fleet drafts.
+The owner approved superseding the unpublished 1.37.0 candidate with this combined next source.
+This is a full software qualification, not a documentation-only or paper-overlay release.
+
+All original PDF/TEX bytes, historical records, contracts, payment routes and authority boundaries are preserved.
+Version 1.37.1 was unused when prepared. Never reuse or move a published tag or replace published assets;
+verify live version availability again before publication. The 1.37.0 proposal below remains historical, not a
+claim that it was published. The authored local study is source-bound evidence, not exact-release acceptance
+or reproduction of the manuscript's missing companion archive.
+
+The complete capability workflow is now a required Agent release dependency, including exact source/generated
+identity, actual finite computation, recovery, browser and accessibility evidence. All older release dependencies
+and permissions remain. Fresh integrated PR checks/review, authorized merge, exact-main historical CI and Agent
+acceptance, security, packaging, public HTTPS and uploaded-byte checks are required. Paper-only checks cannot
+qualify this runtime/workflow change. Local browser and Semgrep limitations remain disclosed, not bypassed.
+
+Future verified paper-only descendants may use the separate [paper-publication lane](PAPER_UPLOADS.md), preserving
+the immutable tested software identity and adding explicit paper-site provenance. They do not mutate release assets
+or qualify new runtime code. Consult the matching manifest and reports to establish actual delivery; previous
+source records below retain their original scope.
+
+## Existing public links
+
+The combined release must retain the 997 currently published file paths: 991 original v1.36.0 paths,
+five additive original PDF copies, and the historical PDF-repair receipt. Directory index routes and
+known page anchors remain available while HTML content may legitimately evolve. The 28 served PDF
+paths (23 earlier PDFs plus five additions) retain their original bytes. The seven featured PDF/TEX
+source pairs are a separate 14-file commitment at their original GitHub paths. New paper locations
+are additional byte-identical copies, never moves, renames, redirects or HTML substitutes.
+
+Packaging checks the exact restored site packs; public acceptance checks direct responses and binds
+its evidence to those same packs before release finalization. Public HTML, PDFs and the historical receipt
+are byte-checked with GET; other assets use direct HEAD responses and expected content lengths, not a
+claim of downloaded model-byte verification. Local restored packs are checked in full. The repair receipt remains historical,
+not the current software identity. Unknown third-party shortlinks or social posts are not claimed verified.
+
+## Previous source proposal — 1.37.0
 
 Version **1.37.0** prepares the already merged capability workspace and bounded Out-Evolve constructor
 for a new release. The [release notes](RELEASE_NOTES_1.37.0.md) identify the synthetic scope, preserved

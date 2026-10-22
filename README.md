@@ -13,6 +13,40 @@ problem formulations that unnecessarily limit the outcome. Keep the attempts, ev
 Planning and the catalog example are free in your browser. Computer execution uses a separately configured
 native model and isolated runner. [What works now and how to begin](docs/agent/SUCCESSOR_ALPHA.md).
 
+<!-- featured-research-papers -->
+## Featured research
+
+### [TRANSFORMATIONAL INTELLIGENCE ∞](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Transformational_Intelligence.pdf)
+
+**Learning to Change the Game**
+
+Identify restrictive problem formulations, construct better ones and test that they still serve the intended purpose\. A framework for independently testable reformulation, not just better search\.
+Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
+
+**Companion papers · reading order**
+
+- **[Out\-Learn 📚](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Learn.pdf)** · Studies how to construct measurement protocols and learn reusable calibration, with error guarantees under declared drift and measurement\-error assumptions in exact synthetic studies\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-21 · English PDF.
+- **[Out\-Think 🧠](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Think.pdf)** · Studies executable reasoning representations that preserve required answers and operations, and when to replace rather than refine inherited internal codes, in exact finite models\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-21 · English PDF.
+- **[Out\-Design 🎨](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Design.pdf)** · Studies equivalent implementations that preserve required services and release usable capacity for reconfiguration and new capabilities, with checked constructions in finite executable models\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-21 · English PDF.
+- **[Out\-Strategise ♟️](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Strategise.pdf)** · Couple observation with construction to create strategies that achieve the required outcome despite unresolved uncertainty\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-20 · English PDF.
+- **[Out\-Execute ⚡](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Execute.pdf)** · Preserve progress as tasks change through reusable execution capabilities and independently checked boundary contracts, demonstrated in finite synthetic studies\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-21 · English PDF.
+- **[Out\-Evolve ♾️](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Evolve.pdf)** · A proposed architecture for building experimentation and production capabilities that make further discoveries and successor capabilities possible\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-20 · English PDF.
+
+Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
+[Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
+<!-- /featured-research-papers -->
+
+**Current source candidate · 1.37.1.** [Research-feature release notes](docs/agent/RELEASE_NOTES_1.37.1.md).
+This combined software candidate adds bounded OUT-EXECUTE execution, simpler paper publication and seven featured
+research manuscripts. The paper collection is not a claim that every proposed capability is implemented.
+Existing release records below keep their original scope. Exact-source acceptance and publication remain required.
+
 ## Choose your next step
 
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**

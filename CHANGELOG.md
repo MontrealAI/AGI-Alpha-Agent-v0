@@ -1,3 +1,12 @@
+## 1.37.1 — Featured research papers (source candidate)
+
+- Lead with Transformational Intelligence, alongside Out-Strategise, Out-Execute and Out-Evolve, near the README top and homepage hero.
+- Add English/French summaries, accessible direct PDF links and responsive research cards without changing the originals.
+- Preserve the free-start flagship, historical README and mission, current capabilities, project history and payment routes.
+- Refresh only documentation release metadata and generated identities; retain all existing review and publication gates.
+- Require fresh exact-source browser, release and public-site acceptance before claiming publication.
+- See [release notes](docs/agent/RELEASE_NOTES_1.37.1.md) for the documentation-only scope and verification requirements.
+
 ## 1.37.0 — Bounded reusable capability construction (source candidate)
 
 - Include the additive capability workspace and generated Out-Evolve compositions over finite synthetic apparatus models.

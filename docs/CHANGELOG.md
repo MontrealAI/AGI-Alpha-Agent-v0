@@ -1,3 +1,22 @@
+## 1.37.1 — OUT-EXECUTE and simpler research publication (source candidate)
+
+- Execute independently checked finite boundary contracts in the existing capability workspace and portable project
+  history.
+- Preserve/ invalidate changed work explicitly, reconstruct current accepted results and retain actual logical-work
+  accounting.
+- Recover ordinary and unsaved checkpoints safely; reject stale evidence, forged terminal states and divergent
+  histories.
+- Retain honest equally capable and cheaper fixed-proof baselines; the authored study is not the manuscript
+  experiment.
+- Feature all six original papers and add fail-closed paper-only publication without relabeling qualified software.
+- Require the complete capability computation/browser/recovery gate before Agent release packaging, plus all prior
+  gates.
+- Qualify this combined software source as the next unused 1.37.1 identity; preserve prior releases and 1.37.0
+  proposal notes.
+- Keep Jobs/Fleet drafts inert, payment routes separate and operational authority unchanged.
+- See [release notes](agent/RELEASE_NOTES_1.37.1.md) for evidence, limits and exact-source publication requirements.
+
+
 ## 1.37.0 — Bounded reusable capability construction (source candidate)
 
 - Include the additive capability workspace and generated Out-Evolve compositions over finite synthetic apparatus models.

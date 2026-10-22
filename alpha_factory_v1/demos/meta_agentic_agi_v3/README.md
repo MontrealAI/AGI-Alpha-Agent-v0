@@ -13,9 +13,11 @@ selection decision, parent/child relationship and review gate.
 [Original flowcharts and research](RESEARCH_ARCHIVE.md) ·
 [Original visual replay](https://montrealai.github.io/AGI-Alpha-Agent-v0/meta_agentic_agi_v3/research.html)
 
+<a id="start-in-two-minutes-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
 
-## Start in two minutes — 1.37.0
+## Start in two minutes — 1.37.1
 
 The browser lab requires no account, key or installation. Choose a question, run the curriculum, inspect a round,
 and download the evidence. Everything is computed locally. Once cached, the public lab can recalculate offline.

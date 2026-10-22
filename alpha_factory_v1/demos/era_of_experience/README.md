@@ -15,8 +15,10 @@ reward, policy decision and review gate can be reproduced from the exported scen
 
 [Project notice](../../../docs/DISCLAIMER_SNIPPET.md)
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.37.1
 
 **Mode: Offline learning lab.** Python 3.11–3.13; the supported lab uses only the standard library.
 No API key, model, Docker service, paid provider, package download or GPU is needed after obtaining the source.

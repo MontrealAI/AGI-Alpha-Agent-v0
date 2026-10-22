@@ -39,7 +39,9 @@ def build(root: Path = ROOT) -> None:
             return f"const {binding} = {visit(path.parent / location)};"
 
         source = re.sub(r"^import\s+([^;]*?)\s+from\s+['\"]([^'\"]+)['\"];", imports, source, flags=re.MULTILINE)
-        exports = re.findall(r"^export\s+(?:async\s+)?(?:function|class|const)\s+(\w+)", source, flags=re.MULTILINE)
+        exports = re.findall(
+            r"^export\s+(?:async\s+)?(?:function\s*\*?|class|const)\s+(\w+)", source, flags=re.MULTILINE
+        )
         source = re.sub(r"^export\s+", "", source, flags=re.MULTILINE)
         chunks.append(f"const {name}=(()=>{{\n{source}\nreturn {{{','.join(exports)}}};\n}})();")
         return name
@@ -52,6 +54,10 @@ def build(root: Path = ROOT) -> None:
         "outEvolvePackages": visit(root / "examples/successor-capability/capability-package.mjs"),
         "outEvolveApparatus": visit(root / "examples/successor-capability/apparatus.mjs"),
         "outEvolveEvaluation": visit(root / "examples/successor-capability/evaluation.mjs"),
+        "outExecute": visit(root / "examples/successor-capability/out-execute/engine.mjs"),
+        "outExecuteModel": visit(root / "examples/successor-capability/out-execute/model.mjs"),
+        "outExecuteFixtures": visit(root / "examples/successor-capability/out-execute/fixtures.mjs"),
+        "outExecuteTransport": visit(root / "examples/successor-capability/out-execute/transport.mjs"),
     }
     templates = root / "scripts/templates/successor-capability"
     for path in [root / "scripts/generate_successor_capability.py", *sorted(templates.iterdir())]:

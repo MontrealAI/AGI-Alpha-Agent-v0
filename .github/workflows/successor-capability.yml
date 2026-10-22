@@ -13,19 +13,26 @@ on:
       - scripts/templates/successor-capability/**
       - tests/browser/test_successor_capability_browser.py
       - tests/browser/test_out_evolve_browser.py
+      - tests/browser/test_out_execute_browser.py
       - tests/browser/out_evolve_recovery.py
       - tests/browser/test_successor_capability_accessibility.py
       - tests/test_successor_capability_delivery.py
   push:
     branches: [main, additive/successor-capability-review-20261020]
   workflow_dispatch:
+  workflow_call:
 permissions:
   contents: read
 concurrency:
-  group: capability-${{ github.event.pull_request.number || github.ref }}
+  group: capability-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
   cancel-in-progress: true
 jobs:
+  paper-scope:
+    uses: ./.github/workflows/paper-scope.yml
+
   capability:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -60,13 +67,13 @@ jobs:
       - name: Computation, history and delivery gates
         run: |
           set -o pipefail
-          node --test examples/successor-capability/*.test.mjs tests/browser/successor_engine.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
+          node --test examples/successor-capability/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
       - name: Strict typing with retained actual output
         run: |
           set -o pipefail
           python -m mypy --version | tee capability-evidence/logs/typing-version.log
-          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py tests/browser/test_out_evolve_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
+          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py tests/browser/test_out_evolve_browser.py tests/browser/test_out_execute_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py
@@ -90,6 +97,14 @@ jobs:
         run: |
           set -o pipefail
           python tests/browser/test_out_evolve_browser.py 2>&1 | tee capability-evidence/logs/out-evolve-browser.log
+      - name: Out-Execute bounded computation and browser history
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          OUT_EXECUTE_EVIDENCE: ${{ github.workspace }}/capability-evidence/out-execute-browser
+        run: |
+          set -o pipefail
+          node examples/successor-capability/out-execute/reproduce.mjs capability-evidence/out-execute-study 4 2>&1 | tee capability-evidence/logs/out-execute-study.log
+          python tests/browser/test_out_execute_browser.py 2>&1 | tee capability-evidence/logs/out-execute-browser.log
       - name: Review ARIA and every contrast incomplete
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js

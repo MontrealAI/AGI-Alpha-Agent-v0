@@ -25,7 +25,16 @@ SHA = "a" * 40
 
 def run(**overrides: object) -> dict:
     return (
-        dict(id=1, head_sha=SHA, head_branch="main", event="push", status="completed", conclusion="success") | overrides
+        dict(
+            id=1,
+            run_attempt=1,
+            head_sha=SHA,
+            head_branch="main",
+            event="push",
+            status="completed",
+            conclusion="success",
+        )
+        | overrides
     )
 
 
@@ -52,6 +61,29 @@ def test_latest_run_must_pass_even_when_an_older_run_passed() -> None:
     assert not assess_runs([], SHA)
 
 
+def job(**overrides: object) -> dict:
+    return {
+        "id": 100,
+        "run_id": 1,
+        "run_attempt": 1,
+        "head_sha": SHA,
+        "name": "Full software qualification",
+        "status": "completed",
+        "conclusion": "success",
+    } | overrides
+
+
+def qualification(**overrides: object) -> dict:
+    return {
+        "run_id": 1,
+        "run_attempt": 1,
+        "head_sha": SHA,
+        "endpoint": f"repos/{REPOSITORY}/actions/runs/1/attempts/1/jobs",
+        "total_count": 1,
+        "jobs": [job()],
+    } | overrides
+
+
 def snapshot() -> dict:
     return {
         "commit": SHA,
@@ -59,6 +91,7 @@ def snapshot() -> dict:
         "ref": "refs/heads/main",
         "required": True,
         "workflows": {workflow: [run(path=f".github/workflows/{workflow}")] for workflow in WORKFLOWS},
+        "qualification_jobs": {workflow: qualification() for workflow in WORKFLOWS},
     }
 
 
@@ -130,7 +163,7 @@ def test_latest_failed_run_blocks_packaging_even_when_old_success_is_present() -
 
 def test_candidate_scope_is_bound_to_its_own_ref_and_never_authorizes_main() -> None:
     ref = "refs/heads/candidate"
-    candidate = snapshot() | {"required": False, "ref": ref, "workflows": {}}
+    candidate = snapshot() | {"required": False, "ref": ref, "workflows": {}, "qualification_jobs": {}}
     validate_snapshot(candidate, SHA, REPOSITORY, ref)
     with pytest.raises(ValueError):
         validate_snapshot(candidate, SHA, REPOSITORY, "refs/heads/main")
@@ -181,6 +214,8 @@ def test_waiter_allows_historical_tests_to_finish_after_previous_deadlines(
     monkeypatch.setattr(wait_for_release_ci.time, "sleep", lambda seconds: rounds.append(seconds))
 
     def response(command: list[str], **kwargs) -> str:
+        if "/attempts/" in command[-1]:
+            return json.dumps({"total_count": 1, "jobs": [job()]})
         workflow = command[-1].split("/workflows/")[1].split("/")[0]
         record = snapshot()["workflows"][workflow][0]
         if workflow == "ci.yml" and not rounds:
@@ -232,6 +267,8 @@ def test_waiter_deadline_still_rejects_unfinished_historical_ci(tmp_path: Path, 
     monkeypatch.setattr(wait_for_release_ci.time, "sleep", lambda seconds: pytest.fail("Expired wait must stop"))
 
     def response(command: list[str], **kwargs) -> str:
+        if "/attempts/" in command[-1]:
+            return json.dumps({"total_count": 1, "jobs": [job()]})
         workflow = command[-1].split("/workflows/")[1].split("/")[0]
         record = snapshot()["workflows"][workflow][0]
         if workflow == "ci.yml":
@@ -244,3 +281,130 @@ def test_waiter_deadline_still_rejects_unfinished_historical_ci(tmp_path: Path, 
     evidence = json.loads(Path("evidence/historical-ci.json").read_text())
     with pytest.raises(ValueError, match="completed successful main push"):
         validate_snapshot(evidence, SHA, REPOSITORY, "refs/heads/main")
+
+
+@pytest.mark.parametrize(
+    "mutate",
+    [
+        "missing",
+        "empty",
+        "skipped",
+        "failed",
+        "pending",
+        "duplicate",
+        "old-run",
+        "old-attempt",
+        "wrong-sha",
+        "wrong-endpoint",
+        "incomplete",
+        "bool-id",
+    ],
+)
+def test_green_paper_workflow_cannot_supply_full_runtime_evidence(mutate: str) -> None:
+    evidence = snapshot()
+    record = evidence["qualification_jobs"]["ci.yml"]
+    if mutate == "missing":
+        evidence.pop("qualification_jobs")
+    elif mutate == "empty":
+        record.update(jobs=[], total_count=0)
+    elif mutate == "skipped":
+        record["jobs"][0]["conclusion"] = "skipped"
+    elif mutate == "failed":
+        record["jobs"][0]["conclusion"] = "failure"
+    elif mutate == "pending":
+        record["jobs"][0].update(status="in_progress", conclusion=None)
+    elif mutate == "duplicate":
+        record["jobs"].append(job(id=101))
+        record["total_count"] = 2
+    elif mutate == "old-run":
+        record["jobs"][0]["run_id"] = 2
+    elif mutate == "old-attempt":
+        record["jobs"][0]["run_attempt"] = 2
+    elif mutate == "wrong-sha":
+        record["jobs"][0]["head_sha"] = "b" * 40
+    elif mutate == "wrong-endpoint":
+        record["endpoint"] = f"repos/{REPOSITORY}/actions/runs/1/jobs?filter=all"
+    elif mutate == "incomplete":
+        record["total_count"] = 5
+    else:
+        record["run_id"] = True
+    with pytest.raises((ValueError, RuntimeError)):
+        validate_snapshot(evidence, SHA, REPOSITORY, "refs/heads/main")
+
+
+def test_latest_run_attempt_cannot_reuse_prior_attempt_marker() -> None:
+    evidence = snapshot()
+    evidence["workflows"]["ci.yml"][0]["run_attempt"] = 2
+    with pytest.raises(ValueError, match="latest exact run"):
+        validate_snapshot(evidence, SHA, REPOSITORY, "refs/heads/main")
+
+
+def test_jobs_are_paginated_for_the_exact_run_attempt(monkeypatch) -> None:
+    calls = []
+
+    def response(command: list[str], **kwargs) -> str:
+        endpoint = command[-1]
+        calls.append(endpoint)
+        assert "/runs/7/attempts/3/jobs?per_page=100&page=" in endpoint
+        if endpoint.endswith("page=1"):
+            jobs = [job(id=index, run_id=7, run_attempt=3, name=f"test-{index}") for index in range(1, 101)]
+        else:
+            jobs = [job(id=101, run_id=7, run_attempt=3)]
+            # The public API may omit this field; the exact endpoint binds it.
+            jobs[0].pop("run_attempt")
+        return json.dumps({"total_count": 101, "jobs": jobs})
+
+    monkeypatch.setattr(subprocess, "check_output", response)
+    latest = run(id=7, run_attempt=3)
+    result = wait_for_release_ci.fetch_qualification_jobs(REPOSITORY, latest)
+    assert len(calls) == 2
+    assert result["total_count"] == 101
+    assert result["jobs"][-1]["run_attempt"] == 3
+    wait_for_release_ci.validate_qualification(result, latest, REPOSITORY)
+
+
+@pytest.mark.parametrize(
+    "problem", ["wrong-run", "wrong-attempt", "wrong-sha", "truncated", "changing-total", "duplicate"]
+)
+def test_paginated_jobs_fail_closed_on_inconsistent_inventory(monkeypatch, problem: str) -> None:
+    count = 0
+
+    def response(command: list[str], **kwargs) -> str:
+        nonlocal count
+        count += 1
+        record = job()
+        if problem == "wrong-run":
+            record["run_id"] = 2
+        elif problem == "wrong-attempt":
+            record["run_attempt"] = 2
+        elif problem == "wrong-sha":
+            record["head_sha"] = "b" * 40
+        if problem == "truncated":
+            return json.dumps({"total_count": 2, "jobs": [record] if count == 1 else []})
+        if problem == "changing-total":
+            return json.dumps({"total_count": 2 if count == 1 else 3, "jobs": [record]})
+        if problem == "duplicate":
+            return json.dumps({"total_count": 2, "jobs": [record, record]})
+        return json.dumps({"total_count": 1, "jobs": [record]})
+
+    monkeypatch.setattr(subprocess, "check_output", response)
+    with pytest.raises(ValueError):
+        wait_for_release_ci.fetch_qualification_jobs(REPOSITORY, run())
+
+
+def test_offline_packaging_rejects_green_paper_scope_before_building(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["package", "--output", "release", "--evidence", "evidence"])
+    monkeypatch.setenv("GITHUB_SHA", SHA)
+    monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: None)
+    monkeypatch.setattr(subprocess, "check_output", lambda *args, **kwargs: SHA)
+    path = tmp_path / "evidence" / "historical-ci" / "historical-ci.json"
+    path.parent.mkdir(parents=True)
+    evidence = snapshot()
+    evidence["qualification_jobs"]["ci.yml"]["jobs"][0]["conclusion"] = "skipped"
+    path.write_text(json.dumps(evidence))
+    with pytest.raises(RuntimeError, match="Full software qualification"):
+        package_agent_release.main()
+    assert not Path("release").exists()
