@@ -283,6 +283,8 @@ jobs:
           fetch-depth: 0
       - name: Check for binary diffs (pre-build)
         run: python scripts/check_no_binary_diff.py
+      - name: Free disk space
+        run: bash scripts/ci_free_disk.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -314,8 +316,6 @@ jobs:
             requirements.lock
             requirements-dev.lock
             alpha_factory_v1/backend/requirements-lock.txt
-      - name: Free disk space
-        run: bash scripts/ci_free_disk.sh
       - name: Install dependencies
         run: ./scripts/ci_install_python_baseline.sh --include-backend-lock
       - name: Ensure npm cache path lifecycle contract
@@ -678,6 +678,8 @@ jobs:
           fetch-depth: 0
       - name: Check for binary diffs (pre-build)
         run: python scripts/check_no_binary_diff.py
+      - name: Free disk space
+        run: bash scripts/ci_free_disk.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -709,8 +711,6 @@ jobs:
             requirements.lock
             requirements-dev.lock
             requirements-docs.lock
-      - name: Free disk space
-        run: bash scripts/ci_free_disk.sh
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
@@ -786,6 +786,8 @@ jobs:
           fetch-depth: 0
       - name: Check for binary diffs (pre-build)
         run: python scripts/check_no_binary_diff.py
+      - name: Free disk space
+        run: bash scripts/ci_free_disk.sh
       - name: Ensure pip cache directory
         shell: bash
         run: |
@@ -817,8 +819,6 @@ jobs:
             requirements.lock
             requirements-dev.lock
             requirements-docs.lock
-      - name: Free disk space
-        run: bash scripts/ci_free_disk.sh
       - name: Verify $AGIALPHA configuration
         run: python scripts/check_agialpha_config.py
       - name: Cache pre-commit
