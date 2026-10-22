@@ -437,6 +437,8 @@ def seal(site: Path, plan: dict[str, Any], homepage: Path) -> dict[str, Any]:
     delta = verify_delta(plan["baseline_inventory"], inventory(site), allowed)
     if delta != plan["delta"]:
         raise ValueError("Site changed after the paper overlay was prepared")
+    if digest(site / "research-papers.json") != plan["paper"]["catalog_sha256"]:
+        raise ValueError("Paper-site catalog differs from its source-bound publication plan")
     publication = {
         "schema": SCHEMA,
         "software": plan["software"],

@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+from typing import Any
 
 import pytest
 
@@ -82,6 +83,41 @@ def qualification(**overrides: object) -> dict:
         "total_count": 1,
         "jobs": [job()],
     } | overrides
+
+
+class IntSubclass(int):
+    """A numerically equal value must not satisfy exact JSON integer fields."""
+
+
+@pytest.mark.parametrize("field", ["id", "run_attempt"])
+@pytest.mark.parametrize("value", [True, IntSubclass(1)])
+def test_qualification_endpoint_refuses_bool_and_integer_subclasses(field: str, value: object) -> None:
+    with pytest.raises(ValueError, match="exact positive"):
+        wait_for_release_ci.jobs_endpoint(REPOSITORY, run(**{field: value}))
+
+
+@pytest.mark.parametrize(
+    "field,job_field",
+    [
+        ("run_id", False),
+        ("run_attempt", False),
+        ("total_count", False),
+        ("id", True),
+        ("run_id", True),
+        ("run_attempt", True),
+    ],
+)
+@pytest.mark.parametrize("value", [True, IntSubclass(1)])
+def test_qualification_inventory_refuses_bool_and_integer_subclasses(
+    field: str, job_field: bool, value: object
+) -> None:
+    record = qualification()
+    if job_field:
+        record["jobs"][0][field] = value
+    else:
+        record[field] = value
+    with pytest.raises(ValueError):
+        wait_for_release_ci.validate_qualification(record, run(), REPOSITORY)
 
 
 def snapshot() -> dict:
@@ -408,3 +444,42 @@ def test_offline_packaging_rejects_green_paper_scope_before_building(tmp_path: P
     with pytest.raises(RuntimeError, match="Full software qualification"):
         package_agent_release.main()
     assert not Path("release").exists()
+
+
+class IntegerSubclass(int):
+    """An equal numeric value must not satisfy an exact builtin schema."""
+
+
+@pytest.mark.parametrize("value", [True, 1.0, IntegerSubclass(1)])
+@pytest.mark.parametrize("field", ["id", "run_attempt"])
+def test_qualification_endpoint_rejects_nonbuiltin_integer_ids(field: str, value: object) -> None:
+    with pytest.raises(ValueError, match="exact positive"):
+        wait_for_release_ci.jobs_endpoint(REPOSITORY, run(**{field: value}))
+
+
+@pytest.mark.parametrize("value", [True, 1.0, IntegerSubclass(1)])
+@pytest.mark.parametrize("field", ["run_id", "run_attempt", "total_count", "job.id", "job.run_id", "job.run_attempt"])
+def test_qualification_record_rejects_nonbuiltin_integer_fields(field: str, value: object) -> None:
+    record = qualification()
+    if field.startswith("job."):
+        record["jobs"][0][field.removeprefix("job.")] = value
+    else:
+        record[field] = value
+    with pytest.raises(ValueError):
+        wait_for_release_ci.validate_qualification(record, run(), REPOSITORY)
+
+
+@pytest.mark.parametrize("value", [True, 1.0, IntegerSubclass(1)])
+@pytest.mark.parametrize("field", ["total_count", "job.id", "job.run_id", "job.run_attempt"])
+def test_fetched_job_inventory_rejects_nonbuiltin_integer_fields(
+    monkeypatch: pytest.MonkeyPatch, field: str, value: object
+) -> None:
+    response: dict[str, Any] = {"total_count": 1, "jobs": [job()]}
+    if field.startswith("job."):
+        response["jobs"][0][field.removeprefix("job.")] = value
+    else:
+        response[field] = value
+    monkeypatch.setattr(subprocess, "check_output", lambda *args, **kwargs: "captured response")
+    monkeypatch.setattr(json, "loads", lambda raw: response)
+    with pytest.raises(ValueError):
+        wait_for_release_ci.fetch_qualification_jobs(REPOSITORY, run())

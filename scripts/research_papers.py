@@ -6,6 +6,8 @@ Paper text is data, never a template or program. TEX is stored, never compiled.
 
 from __future__ import annotations
 
+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).
+
 import argparse
 from datetime import date
 import hashlib
@@ -104,7 +106,7 @@ def parse_catalog(raw: bytes) -> dict[str, Any]:
             raise ValueError("Invalid display title words")
         for word in words:
             plain(word, 100)
-        if row["language"] != "en" or type(row["featured"]) is not bool:
+        if row["language"] != "en" or type(row["featured"]) is not bool:  # noqa: E721
             raise ValueError("This presentation supports English originals and bilingual descriptions")
         featured += row["featured"]
         publication_date = row["date"]

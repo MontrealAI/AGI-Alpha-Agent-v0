@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).
+
 import argparse
 import json
 import os
@@ -50,7 +52,8 @@ def assess_runs(runs: list[dict[str, Any]], sha: str) -> bool:
 
 def jobs_endpoint(repository: str, run: dict[str, Any]) -> str:
     """Bind job evidence to one run attempt, not the API's default mixed view."""
-    if repository != REPOSITORY or any(type(run.get(key)) is not int or run[key] <= 0 for key in ("id", "run_attempt")):
+    keys = ("id", "run_attempt")
+    if repository != REPOSITORY or any(type(run.get(key)) is not int or run[key] <= 0 for key in keys):  # noqa: E721
         raise ValueError("Qualification requires exact positive run and attempt IDs")
     return f"repos/{repository}/actions/runs/{run['id']}/attempts/{run['run_attempt']}/jobs"
 
@@ -70,7 +73,7 @@ def fetch_qualification_jobs(repository: str, run: dict[str, Any]) -> dict[str, 
         data = json.loads(response)
         count, rows = data.get("total_count"), data.get("jobs")
         if (
-            type(count) is not int
+            type(count) is not int  # noqa: E721
             or not 0 <= count <= MAX_JOBS
             or not isinstance(rows, list)
             or len(rows) > 100
@@ -81,13 +84,13 @@ def fetch_qualification_jobs(repository: str, run: dict[str, Any]) -> dict[str, 
         for job in rows:
             if (
                 not isinstance(job, dict)
-                or type(job.get("id")) is not int
+                or type(job.get("id")) is not int  # noqa: E721
                 or job["id"] <= 0
                 or job["id"] in seen
-                or type(job.get("run_id")) is not int
+                or type(job.get("run_id")) is not int  # noqa: E721
                 or job.get("run_id") != run["id"]
                 or job.get("head_sha") != run["head_sha"]
-                or type(job.get("run_attempt", run["run_attempt"])) is not int
+                or type(job.get("run_attempt", run["run_attempt"])) is not int  # noqa: E721
                 or job.get("run_attempt", run["run_attempt"]) != run["run_attempt"]
             ):
                 raise ValueError("Qualification job is not bound to the requested run, attempt and SHA")
@@ -116,8 +119,8 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->
     """A green paper-scope workflow is never a successful full-runtime gate."""
     if (
         not isinstance(record, dict)
-        or type(record.get("run_id")) is not int
-        or type(record.get("run_attempt")) is not int
+        or type(record.get("run_id")) is not int  # noqa: E721
+        or type(record.get("run_attempt")) is not int  # noqa: E721
         or any(
             record.get(key) != expected
             for key, expected in {
@@ -132,7 +135,7 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->
     jobs = record.get("jobs")
     if (
         not isinstance(jobs, list)
-        or type(record.get("total_count")) is not int
+        or type(record.get("total_count")) is not int  # noqa: E721
         or record["total_count"] != len(jobs)
         or not 0 <= len(jobs) <= MAX_JOBS
     ):
@@ -141,12 +144,12 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->
     for job in jobs:
         if (
             not isinstance(job, dict)
-            or type(job.get("id")) is not int
+            or type(job.get("id")) is not int  # noqa: E721
             or job["id"] <= 0
             or job["id"] in seen
-            or type(job.get("run_id")) is not int
+            or type(job.get("run_id")) is not int  # noqa: E721
             or job["run_id"] != run["id"]
-            or type(job.get("run_attempt")) is not int
+            or type(job.get("run_attempt")) is not int  # noqa: E721
             or job["run_attempt"] != run["run_attempt"]
             or job.get("head_sha") != run["head_sha"]
         ):
@@ -188,7 +191,7 @@ def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> Non
             or not isinstance(run.get("id"), int)
             or isinstance(run["id"], bool)
             or run["id"] <= 0
-            or type(run.get("run_attempt")) is not int
+            or type(run.get("run_attempt")) is not int  # noqa: E721
             or run["run_attempt"] <= 0
             for run in runs
         ):

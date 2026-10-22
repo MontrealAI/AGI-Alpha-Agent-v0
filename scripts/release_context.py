@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).
+
 import json
 import os
 import re
@@ -68,7 +70,7 @@ def require_unpublished_software() -> None:
     if (
         not isinstance(release, dict)
         or release.get("tag_name") != f"v{version}"
-        or type(release.get("draft")) is not bool
+        or type(release.get("draft")) is not bool  # noqa: E721
     ):
         raise ValueError("Invalid exact release lookup")
     if release["draft"] is False:

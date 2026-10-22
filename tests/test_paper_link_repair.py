@@ -205,7 +205,10 @@ class PaperLinkRepairTests(unittest.TestCase):
         base = {"id": repair.BASELINE_DEPLOYMENT, "sha": repair.BASELINE_COMMIT}
         status = {
             "state": state,
-            "log_url": f"https://github.com/{repair.REPOSITORY}/actions/runs/{repair.BASELINE_RUN}/job/{repair.BASELINE_JOB}",
+            "log_url": (
+                f"https://github.com/{repair.REPOSITORY}/actions/runs/{repair.BASELINE_RUN}"
+                f"/job/{repair.BASELINE_JOB}"
+            ),
             "environment_url": repair.SITE,
         }
 

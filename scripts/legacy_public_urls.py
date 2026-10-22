@@ -14,6 +14,8 @@ not a browser-execution check and does not detect JavaScript-driven navigation.
 
 from __future__ import annotations
 
+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).
+
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
@@ -120,7 +122,7 @@ def _pack(path: Path, manifest: dict[str, Any], commit: str, version: str) -> di
         size, digest = row.get("bytes"), row.get("sha256")
         if (
             name.casefold() in folded
-            or type(size) is not int
+            or type(size) is not int  # noqa: E721
             or not 0 <= size <= release_packs.MAX_TOTAL_BYTES
             or not isinstance(digest, str)
             or not re.fullmatch(r"[0-9a-f]{64}", digest)
