@@ -3,6 +3,7 @@
 import * as protocol from '../../docs/assets/successor/engine.mjs';
 import * as witness from './witness.mjs';
 import * as discoveryHistory from './discovery-lab-history.mjs';
+import * as enterpriseHistory from '../autonomous-enterprises/history.mjs';
 
 export const SCHEMA = 'successor-capability-workspace/v1';
 export const LIMITS = Object.freeze({versions: 8, events: 24, bytes: 2_000_000});
@@ -105,6 +106,7 @@ async function inspectOwnedWorkspace(input) {
     }
     const versions = [];
     const discovery = discoveryHistory.emptyDiscoveryState();
+    const enterprises = enterpriseHistory.emptyState();
     let previous = null;
     for (const [sequence, event] of input.events.entries()) {
         if (!exact(event, ['sequence', 'kind', 'previous', 'payload', 'digest'])
@@ -147,6 +149,11 @@ async function inspectOwnedWorkspace(input) {
             version[payload.phase] = clone(payload);
             version.witnessAcceptance = [version.development, version.heldout].some(record => record?.report.verdict === 'fail')
                 ? 'fail' : version.development && version.heldout ? 'pass' : 'incomplete';
+        } else if (enterpriseHistory.EVENT_KINDS.includes(event.kind)
+            && input.schema === discoveryHistory.EXTENDED_SCHEMA) {
+            if (!versions.length) fail('Enterprise construction needs a frozen capability version.');
+            await enterpriseHistory.inspectEvent(enterprises, event,
+                {missionId: input.missionId, version: versions.at(-1).number});
         } else if (discoveryHistory.EVENT_KINDS.includes(event.kind)
             && input.schema === discoveryHistory.EXTENDED_SCHEMA) {
             if (!versions.length) fail('Discovery Lab needs a frozen capability version.');
@@ -157,6 +164,7 @@ async function inspectOwnedWorkspace(input) {
     }
     if (!versions.length) fail('Capability version is missing.');
     const inspection = {versions, latest: versions.at(-1), head: previous, discovery};
+    if (enterprises.attempts.length) inspection.enterprises = enterprises;
     const checked = {fingerprint, workspace: input, inspection};
     if (input.schema === discoveryHistory.EXTENDED_SCHEMA) {
         freezeGraph(inspection);
@@ -233,6 +241,16 @@ export async function recordDiscoveryEvent(workspace, kind, payload) {
     payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
     const {workspace: owned} = await inspectOwnedWorkspace(workspace);
     if (!discoveryHistory.EVENT_KINDS.includes(kind)) fail('Unsupported Discovery Lab event.');
+    const next = clone(owned);
+    next.schema = discoveryHistory.EXTENDED_SCHEMA;
+    return append(next, kind, payload);
+}
+
+/** Append enterprise evidence to the same bounded mission chain and recovery format. */
+export async function recordEnterpriseEvent(workspace, kind, payload) {
+    payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
+    const {workspace: owned} = await inspectOwnedWorkspace(workspace);
+    if (!enterpriseHistory.EVENT_KINDS.includes(kind)) fail('Unsupported enterprise event.');
     const next = clone(owned);
     next.schema = discoveryHistory.EXTENDED_SCHEMA;
     return append(next, kind, payload);

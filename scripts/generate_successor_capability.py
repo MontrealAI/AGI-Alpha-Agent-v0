@@ -67,6 +67,10 @@ def build(root: Path = ROOT) -> None:
         "outExecuteModel": visit(root / "examples/successor-capability/out-execute/model.mjs"),
         "outExecuteFixtures": visit(root / "examples/successor-capability/out-execute/fixtures.mjs"),
         "outExecuteTransport": visit(root / "examples/successor-capability/out-execute/transport.mjs"),
+        "enterpriseController": visit(root / "examples/autonomous-enterprises/controller.mjs"),
+        "enterpriseProtocol": visit(root / "examples/autonomous-enterprises/protocol.mjs"),
+        "enterpriseHistory": visit(root / "examples/autonomous-enterprises/history.mjs"),
+        "enterpriseCapital": visit(root / "examples/autonomous-enterprises/capital.mjs"),
     }
     deployment_path = root / "docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json"
     deployment_bytes = deployment_path.read_bytes()
@@ -96,11 +100,23 @@ def build(root: Path = ROOT) -> None:
         + json.dumps({"adapterSourceDigest": real_task_hash, "checkerSourceDigest": real_task_hash}, sort_keys=True)
         + ";\n"
     )
-    script += (templates / "discovery-lab-continuation.js").read_text() + "\n})();\n"
+    script += (templates / "discovery-lab-continuation.js").read_text() + "\n"
+    enterprise_sources = {
+        "constructor": sources["examples/autonomous-enterprises/foundry.mjs"],
+        "checker": sources["examples/autonomous-enterprises/checker.mjs"],
+        "closure": source_hash,
+    }
+    script += "\nconst ENTERPRISE_SOURCES=" + json.dumps(enterprise_sources, sort_keys=True) + ";\n"
+    script += (templates / "autonomous-enterprises.js").read_text() + "\n})();\n"
     if "</script" in script.lower():
         raise ValueError("Closing script tag in source")
     style = "\n" + (templates / "style.css").read_text() + "\n" + (templates / "discovery-lab.css").read_text() + "\n"
     page = (templates / "index.html").read_text()
+    page = page.replace(
+        '    <section id="out-evolve"',
+        (templates / "autonomous-enterprises.html").read_text() + '\n    <section id="out-evolve"',
+        1,
+    )
     page = page.replace(
         '    <section id="out-evolve"',
         (templates / "discovery-lab.html").read_text() + '\n    <section id="out-evolve"',

@@ -1,0 +1,115 @@
+# SPDX-License-Identifier: Apache-2.0
+from functools import partial
+from http.server import ThreadingHTTPServer
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import threading
+
+from playwright.sync_api import expect, sync_playwright
+import test_successor_capability_browser as existing
+
+ROOT = Path(__file__).resolve().parents[2]
+OUTPUT = Path(os.environ.get("ENTERPRISE_BROWSER_EVIDENCE", "/tmp/autonomous-enterprises-browser"))
+
+
+def main() -> None:
+    OUTPUT.mkdir(parents=True, exist_ok=True)
+    existing.OUTPUT = OUTPUT
+    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(existing.QuietHandler, directory=str(ROOT)))
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    errors: list[str] = []
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(
+                executable_path=os.environ.get("CHROMIUM_EXECUTABLE") or shutil.which("chromium")
+            )
+            context = browser.new_context(accept_downloads=True, viewport={"width": 1440, "height": 1000})
+            page = context.new_page()
+            page.on("pageerror", lambda error: errors.append(str(error)))
+            page.goto(f"http://127.0.0.1:{server.server_port}/docs/successor/capabilities/#autonomous-enterprises")
+            expect(page.locator("#enterprise-build")).to_be_enabled(timeout=30000)
+            expect(page.locator("#enterprise-seed")).to_be_disabled()
+            page.locator("#enterprise-build").click()
+            expect(page.locator("#enterprise-status")).to_contain_text("Frozen", timeout=120000)
+            expect(page.locator("#enterprise-seed")).to_be_enabled()
+            expect(page.locator("#enterprise-facts")).to_contain_text("1,508,042")
+            page.locator("#enterprise-capital-run").click()
+            expect(page.locator("#enterprise-capital-summary")).to_contain_text("13")
+            page.locator("#enterprise-seed").fill("20261021")
+            page.locator("#enterprise-continue").click()
+            expect(page.locator("#enterprise-status")).to_contain_text("Successor accepted locally", timeout=120000)
+            with page.expect_download(timeout=120000) as downloading:
+                page.locator("#enterprise-export").click()
+            docket_path = OUTPUT / "evidence-docket.json"
+            downloading.value.save_as(docket_path)
+            docket = json.loads(docket_path.read_text())
+            assert len(docket["files"]) == 13
+            run = json.loads(docket["files"]["05_agialpha_runs/run.json"])
+            events = run["workspace"]["events"]
+            assert events[0]["kind"] == "version"
+            assert [event["kind"] for event in events].index("enterprise-frozen") < [
+                event["kind"] for event in events
+            ].index("enterprise-tasks")
+            proof = subprocess.check_output(
+                [
+                    "node",
+                    "--input-type=module",
+                    "-e",
+                    "import {readFileSync} from 'node:fs';"
+                    "import {verifyDiscoveryDocket} from './examples/successor-capability/discovery-lab-docket.mjs';"
+                    "console.log(JSON.stringify(await verifyDiscoveryDocket(readFileSync(process.argv[1],'utf8'))));",
+                    str(docket_path),
+                ],
+                cwd=ROOT,
+                text=True,
+            )
+            assert json.loads(proof)["verified"] is True
+            (OUTPUT / "docket-verification.json").write_text(proof)
+            existing.audit(page, "enterprise-desktop")
+            page.locator("#autonomous-enterprises").screenshot(path=str(OUTPUT / "desktop.png"), animations="disabled")
+            page.reload()
+            expect(page.locator("#enterprise-status")).to_contain_text("Successor accepted locally", timeout=120000)
+            page.set_viewport_size({"width": 390, "height": 844})
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+            existing.audit(page, "enterprise-mobile")
+            page.locator("#autonomous-enterprises").screenshot(path=str(OUTPUT / "mobile.png"), animations="disabled")
+            page.locator("#enterprise-capital-run").focus()
+            expect(page.locator("#enterprise-capital-run")).to_be_focused()
+            assert not errors, errors
+            (OUTPUT / "summary.json").write_text(
+                json.dumps(
+                    {
+                        "status": "PASSED",
+                        "source": json.loads((ROOT / "docs/successor/capabilities/sources.json").read_text()),
+                        "browser": browser.version,
+                        "missionId": run["workspace"]["missionId"],
+                        "eventCount": len(events),
+                        "checks": [
+                            "actual-construction",
+                            "freeze-before-future-inputs",
+                            "five-treatments",
+                            "changed-kernel-successor",
+                            "actual-docket-download",
+                            "independent-docket-replay",
+                            "reload",
+                            "mobile",
+                            "keyboard",
+                            "axe",
+                            "no-page-errors",
+                        ],
+                    },
+                    indent=2,
+                )
+                + "\n"
+            )
+            browser.close()
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+if __name__ == "__main__":
+    main()
