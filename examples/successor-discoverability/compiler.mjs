@@ -4,21 +4,29 @@ export const COMPILER_VERSION = '1.0.0-experimental';
 const fail = m => { throw new TypeError(m); };
 const integer = (v, lo, hi, label) => { if (!Number.isSafeInteger(v) || v < lo || v > hi) fail(label); return v; };
 const exact = (o, keys, label) => { if (!o || typeof o !== 'object' || Array.isArray(o) || Object.keys(o).sort().join('|') !== [...keys].sort().join('|')) fail(label); };
-export function snapshot(value) {
+export function snapshot(value, meter=null) {
   let nodes = 0;
   function copy(v, depth) {
     if (++nodes > 30000 || depth > 16) fail('JSON framing limit');
+    if(meter) meter.step('jsonNodes');
     if (v === null || typeof v === 'boolean') return v;
-    if (typeof v === 'number') { if (!Number.isSafeInteger(v)) fail('integer JSON required'); return v; }
-    if (typeof v === 'string') { if (v.length > 100000) fail('string limit'); return v; }
+    if (typeof v === 'number') { if (!Number.isSafeInteger(v) || Object.is(v,-0)) fail('integer JSON required'); return v; }
+    if (typeof v === 'string') {
+      if (v.length > 100000) fail('string limit');
+      if(meter) meter.step('stringUnits',Math.ceil(v.length/16));
+      for(let i=0;i<v.length;i++){const c=v.charCodeAt(i);if(c>=0xd800&&c<=0xdbff){const d=v.charCodeAt(++i);if(!(d>=0xdc00&&d<=0xdfff))fail('unpaired surrogate');}else if(c>=0xdc00&&c<=0xdfff)fail('unpaired surrogate');}
+      return v;
+    }
     if (!v || typeof v !== 'object') fail('plain JSON required');
     const proto = Object.getPrototypeOf(v);
     if (!Array.isArray(v) && proto !== Object.prototype && proto !== null) fail('plain object required');
+    const own = Reflect.ownKeys(v);
+    if(own.some(k=>typeof k!=='string'||(!Array.isArray(v)||k!=='length')&&!Object.getOwnPropertyDescriptor(v,k).enumerable))fail('non-JSON property');
     const names = Object.keys(v);
     if (names.length > 30000) fail('object limit');
     const out = Array.isArray(v) ? [] : {};
     for (const k of names) {
-      if (['__proto__','constructor','prototype'].includes(k)) fail('forbidden key');
+      if (k.length>100 || ['__proto__','constructor','prototype'].includes(k)) fail('forbidden key');
       const d = Object.getOwnPropertyDescriptor(v, k);
       if (!d || !Object.hasOwn(d, 'value')) fail('accessor prohibited');
       out[k] = copy(d.value, depth + 1);
@@ -89,7 +97,7 @@ async function construct(p,meter){
     if(i===n){
       if(!s||w.reduce((a,b)=>gcd(a,b),0)!==1) return;
       meter.step('nuisanceChecks',Math.max(1,p.nuisance[0].length));
-      if(legal(w,p)) templates.push(Object.freeze([...w]));
+      if(legal(w,p)){ if(templates.length>=1024)throw new Exhausted('template retention limit');meter.step('retainedTemplateCells',n);templates.push(Object.freeze([...w])); }
       return;
     }
     w[i]=0; await rec(i+1,s,l,first);
@@ -101,6 +109,8 @@ async function construct(p,meter){
     w[i]=0;
   }
   await rec(0,0,0,false);
+  meter.step('templateSortBound',templates.length*Math.ceil(Math.log2(templates.length+1)));
+  await meter.cooperate();
   templates.sort((a,b)=>canonical(a).localeCompare(canonical(b),'en'));
   return Object.freeze(templates);
 }
@@ -116,15 +126,23 @@ function transcriptWitness(p,experiments,pair){
     observationTwice:experiments.map(e=>Math.max(e.responses[i].center-e.radius,e.responses[j].center-e.radius)+Math.min(e.responses[i].center+e.radius,e.responses[j].center+e.radius)),
     scope:'All qualified experiments in this finite grammar; fresh independent bounded errors for each acquisition. Not impossibility outside the grammar.'};
 }
+function finish(result,meter){
+  const chars=canonical(result).length;
+  if(chars>150000)throw new Exhausted('serialized result limit');
+  meter.step('serializedUnits',Math.ceil(chars/16));
+  return {...result,work:meter.report(),resourceLimits:{maxTemplates:1024,maxExperiments:128,maxSerializedCharacters:150000,maxCacheEntries:8},
+    workDefinition:'Metered logical operations, including framing and serialization estimates; not VM instruction count. Runtime deadline is separate.'};
+}
 export function createCompiler({strategy='cached'}={}){
   if(!['cached','fresh'].includes(strategy)) fail('compiler strategy');
   const cache=new Map(); let hits=0,misses=0;
   return {
     stats:()=>({hits,misses,entries:cache.size}),
     async compile(input,{budget=2000000,checkpoint=async()=>{}}={}){
-      const p=validateProblem(input),meter=new Meter(budget,checkpoint),key=structural(p),pairs=pairsFor(p);
+      const meter=new Meter(budget,checkpoint);let p=null,key=null,pairs=[];
       let templates=[],libraryHit=false,all=[],best=null,bestCost=null,searchComplete=false;
       try{
+        p=frozen(validate(snapshot(input,meter)));key=structural(p);pairs=pairsFor(p);
         await meter.cooperate(true);
         meter.step('frame',p.channels.length+p.worlds.length+pairs.length);
         if(strategy==='cached'&&cache.has(key)){templates=cache.get(key);libraryHit=true;hits++;meter.step('libraryLookup');}
@@ -139,13 +157,13 @@ export function createCompiler({strategy='cached'}={}){
         const base={compilerVersion:COMPILER_VERSION,problemId:p.id,libraryHit,templateCount:templates.length,goalPairCount:pairs.length};
         if(union!==full){
           const k=pairs.findIndex((_,i)=>(union&(1n<<BigInt(i)))===0n);
-          return {...base,status:'UNIDENTIFIABLE_WITHIN_GRAMMAR',certificate:{decisionIdentifiable:false,optimalWithinGrammar:false,searchComplete:true},
-            witness:transcriptWitness(p,all,pairs[k]),experiments:all.map(({mask,...e})=>e),work:meter.report()};
+          return finish({...base,status:'UNIDENTIFIABLE_WITHIN_GRAMMAR',certificate:{decisionIdentifiable:false,optimalWithinGrammar:false,searchComplete:true},
+            witness:transcriptWitness(p,all,pairs[k]),experiments:all.map(({mask,...e})=>e)},meter);
         }
         if(!pairs.length){best=[];bestCost=0;searchComplete=true;}
         else{
           const byMask=new Map();
-          for(const e of all){if(!e.mask)continue;const k=e.mask.toString(),old=byMask.get(k);if(!old||e.cost<old.cost)byMask.set(k,e);}
+          for(const e of all){meter.step('coverageCollapse');await meter.cooperate();if(!e.mask)continue;const k=e.mask.toString(),old=byMask.get(k);if(!old||e.cost<old.cost)byMask.set(k,e);}
           let candidates=[...byMask.values()];
           const keep=[];
           for(let i=0;i<candidates.length;i++){
@@ -159,16 +177,21 @@ export function createCompiler({strategy='cached'}={}){
             if(!dominated)keep.push(candidates[i]);
           }
           candidates=keep.sort((a,b)=>a.cost-b.cost||canonical(a.weights).localeCompare(canonical(b.weights),'en'));
-          const options=pairs.map((_,i)=>candidates.map((e,j)=>(e.mask&(1n<<BigInt(i)))?j:-1).filter(j=>j>=0));
+          const options=[];
+          meter.step('candidateSortBound',candidates.length*Math.ceil(Math.log2(candidates.length+1)));
+          for(let i=0;i<pairs.length;i++){
+            meter.step('optionChecks',candidates.length);await meter.cooperate();
+            options.push(candidates.map((e,j)=>(e.mask&(1n<<BigInt(i)))?j:-1).filter(j=>j>=0));
+          }
           let cover=0n,chosen=[];
           while(cover!==full){
             meter.step('greedySteps',candidates.length);
             let pick=-1,ratio=-1;
             for(let i=0;i<candidates.length;i++){
-              let v=candidates[i].mask&~cover,count=0;while(v){v&=v-1n;count++;}
+              let v=candidates[i].mask&~cover,count=0;while(v){meter.step('greedyPairBits');v&=v-1n;count++;}
               const r=count/candidates[i].cost;if(r>ratio){ratio=r;pick=i;}
             }
-            chosen.push(pick);cover|=candidates[pick].mask;
+            chosen.push(pick);cover|=candidates[pick].mask;await meter.cooperate();
           }
           best=chosen.map(i=>candidates[i]);bestCost=best.reduce((s,e)=>s+e.cost,0);
           const seen=new Map();
@@ -180,7 +203,7 @@ export function createCompiler({strategy='cached'}={}){
             let branch=null;
             for(let k=0;k<pairs.length;k++){
               if(covered&(1n<<BigInt(k)))continue;
-              meter.step('branchChecks');
+              meter.step('branchChecks',1+options[k].length);
               const o=options[k].filter(i=>cost+candidates[i].cost<bestCost);
               if(!o.length)return;
               if(!branch||o.length<branch.length)branch=o;
@@ -189,14 +212,15 @@ export function createCompiler({strategy='cached'}={}){
           }
           await search(0n,0,[]);searchComplete=true;
         }
+        if(best.length>128)throw new Exhausted('program experiment limit');
         const experiments=best.map(({mask,...e})=>e);
         const program={schema:'discoverability.program.v1',problemKey:canonical(p),experiments,totalCost:bestCost,
           protocol:'fresh-independent-bounded-read-errors; shared additive nuisance cancelled within each experiment'};
-        return {...base,status:bestCost>p.missionBudget?'OVER_MISSION_BUDGET':'COMPILED',program,
-          certificate:{decisionIdentifiable:true,optimalWithinGrammar:true,searchComplete,acceptedForBudget:bestCost<=p.missionBudget},work:meter.report()};
+        return finish({...base,status:bestCost>p.missionBudget?'OVER_MISSION_BUDGET':'COMPILED',program,
+          certificate:{decisionIdentifiable:true,optimalWithinGrammar:true,searchComplete,acceptedForBudget:bestCost<=p.missionBudget}},meter);
       }catch(e){
         if(!(e instanceof Exhausted))throw e;
-        return {compilerVersion:COMPILER_VERSION,problemId:p.id,status:'BUDGET_EXHAUSTED',libraryHit,templateCount:templates.length,
+        return {compilerVersion:COMPILER_VERSION,problemId:p?.id??'unframed-input',status:'BUDGET_EXHAUSTED',exhaustionReason:e.message,libraryHit,templateCount:templates.length,
           certificate:{decisionIdentifiable:false,optimalWithinGrammar:false,searchComplete:false},work:meter.report(),
           limits:['Incomplete search is not a negative scientific result; no program is qualified.']};
       }

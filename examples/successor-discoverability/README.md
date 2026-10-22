@@ -61,3 +61,8 @@ License: Apache-2.0, as the repository.
 
 Observation input accepts integers or exact {numerator, denominator} pairs. Bounds are compared with BigInt arithmetic.
 Raw floating-point JSON observations are refused, preserving exact safe-integer transport. The structural cache is limited to eight libraries.
+
+The acquisition runner reads and records only nonzero-weight channels, so no uncharged observations enter its output.
+Work counters cover declared logical operations and framing/serialization estimates, not VM instructions.
+Construction retains at most 1,024 templates, emits at most 128 experiments and 150,000 serialized characters;
+reaching a resource ceiling returns an explicit exhausted reason. The maintained runtime deadline remains separate.

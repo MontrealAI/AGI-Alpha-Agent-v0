@@ -22,12 +22,14 @@ export function acquireSynthetic(problem,program,worldId,{nuisanceScale=13,error
   const raw=[],observations=[];
   for(let j=0;j<program.experiments.length;j++){
     const e=program.experiments[j];
-    const values=problem.channels.map((c,i)=>{
+    const active=e.weights.map((w,i)=>w?i:-1).filter(i=>i>=0);
+    const values=active.map(i=>{
+      const c=problem.channels[i];
       const nuisance=problem.nuisance[i].reduce((s,x,k)=>s+x*(nuisanceScale+(j+1)*(k+1)),0);
       const sign=errorSign===0?((i+j)%3)-1:errorSign;
       return world.signal[i]+nuisance+sign*c.noise;
     });
-    observations.push(e.weights.reduce((s,w,i)=>s+w*values[i],0)); raw.push(values);
+    observations.push(active.reduce((s,i,k)=>s+e.weights[i]*values[k],0)); raw.push({activeChannels:active,values,chargedCost:active.reduce((s,i)=>s+problem.channels[i].cost,0)});
   }
   return {observations,raw,mode:'NEWLY_EXECUTED_SYNTHETIC',truthForEvaluatorOnly:{worldId,requiredDecision:world.goal},
     limits:['Finite supplied world class; synthetic acquisition; no external instrument, real customer or settlement.']};

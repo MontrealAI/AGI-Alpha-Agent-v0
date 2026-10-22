@@ -112,3 +112,14 @@ test('structural cache has a fixed eight-library bound',async()=>{
  for(let i=1;i<=10;i++)await c.compile(digitalFault({noise:i}));
  assert.equal(c.stats().entries,8);
 });
+
+test('acquisition records contain only charged active channels',async()=>{
+ const p=digitalFault(),r=await createCompiler().compile(p),run=acquireSynthetic(p,r.program,p.worlds[0].id);
+ assert.equal(run.raw.reduce((s,x)=>s+x.chargedCost,0),r.program.totalCost);
+ for(let j=0;j<run.raw.length;j++)assert.deepEqual(run.raw[j].activeChannels,r.program.experiments[j].weights.map((w,i)=>w?i:-1).filter(i=>i>=0));
+});
+test('JSON frame refuses hidden or unsupported transport values',()=>{
+ const a={value:1};a[Symbol('extra')]=1;assert.throws(()=>snapshot(a),/non-JSON/);
+ const b={value:1};Object.defineProperty(b,'hidden',{value:1});assert.throws(()=>snapshot(b),/non-JSON/);
+ assert.throws(()=>snapshot(-0),/integer/);assert.throws(()=>snapshot('\ud800'),/surrogate/);
+});
