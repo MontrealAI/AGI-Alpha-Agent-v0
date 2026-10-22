@@ -173,11 +173,16 @@ def test_business_sum_binding_runs_before_merge_on_every_python() -> None:
 def test_complete_regression_installs_the_pinned_accessibility_auditor():
     release = yaml.load((ROOT / ".github/workflows/agent-release.yml").read_text(), Loader=UniqueWorkflowLoader)
     steps = release["jobs"]["regression"]["steps"]
-    install = next(step for step in steps if step.get("name") == "Original locked development environment")
+    installs = [
+        step for step in steps if "npm ci --prefix tests/browser --ignore-scripts" in step.get("run", "").splitlines()
+    ]
+    assert len(installs) == 1
+    install = installs[0]
+    browser = next(step for step in steps if step.get("name") == "Install Chromium with bounded official retries")
     acceptance = next(step for step in steps if step.get("name") == "Full offline regression including notebooks")
-    assert "npm ci --prefix tests/browser --ignore-scripts" in install["run"].splitlines()
-    assert steps.index(install) < steps.index(acceptance)
-    assert "if" not in install and "continue-on-error" not in install
+    assert steps.index(install) < steps.index(browser) < steps.index(acceptance)
+    for required in (install, browser, acceptance):
+        assert "if" not in required and not required.get("continue-on-error")
 
 
 def test_mission_recovery_gate_has_exact_pins_and_unconditional_real_suites():

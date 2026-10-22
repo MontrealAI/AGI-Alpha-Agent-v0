@@ -239,10 +239,24 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements.lock
+            requirements-dev.lock
+            .github/workflows/agent-release.yml
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: '22.17.1'
+          cache: npm
+          cache-dependency-path: |
+            tests/browser/package-lock.json
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+            .github/workflows/agent-release.yml
       - name: Original locked development environment
+        timeout-minutes: 15
+        env:
+          PIP_DEFAULT_TIMEOUT: '60'
+          PIP_RETRIES: '2'
         run: |
           python -m pip install 'pip<26'
           python -m pip install --require-hashes -r requirements.lock -r requirements-dev.lock
@@ -250,10 +264,38 @@ jobs:
           python scripts/check_python_deps.py
           python check_env.py --auto-install
           python -m pip check
+      - name: Install locked regression browser dependencies
+        timeout-minutes: 8
+        env:
+          NPM_CONFIG_FETCH_RETRIES: '2'
+          NPM_CONFIG_FETCH_TIMEOUT: '60000'
+        run: |
           npm ci --prefix tests/browser --ignore-scripts
           npm ci --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
+      - name: Build the regression browser assets
+        timeout-minutes: 10
+        run: |
           FETCH_ASSETS_SKIP_LLM=1 npm run build --prefix alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1
-          python -m playwright install --with-deps chromium
+      - name: Install Chromium with bounded official retries
+        timeout-minutes: 12
+        env:
+          PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: '60000'
+        run: |
+          # The successful same-source gallery installed its whole environment in
+          # 117 seconds. Bound each attempt so a stalled apt mirror cannot consume
+          # the entire job; rerun only this idempotent official installer once.
+          for attempt in 1 2; do
+            if timeout --kill-after=30s 5m python -m playwright install --with-deps chromium; then
+              exit 0
+            else
+              status=$?
+            fi
+            if [[ "$attempt" == 2 ]]; then
+              exit "$status"
+            fi
+            echo "::warning::Chromium provisioning attempt $attempt failed ($status); retrying once."
+            sleep 5
+          done
       - name: Verify deterministic legacy restart behavior
         run: |
           mkdir -p evidence
@@ -562,21 +604,60 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements.lock
+            requirements-dev.lock
+            requirements-docs.lock
+            .github/workflows/agent-release.yml
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: '22.17.1'
+          cache: npm
+          cache-dependency-path: |
+            tests/browser/package-lock.json
+            alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/package-lock.json
+            .github/workflows/agent-release.yml
       - name: Install the historical documentation environment
+        timeout-minutes: 15
+        env:
+          PIP_DEFAULT_TIMEOUT: '60'
+          PIP_RETRIES: '2'
         run: |
           bash scripts/ci_install_python_baseline.sh --include-docs-lock
           python -m pip check
-          python -m playwright install --with-deps chromium
+      - name: Install Chromium with bounded official retries
+        timeout-minutes: 12
+        env:
+          PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: '60000'
+        run: |
+          # The successful same-source gallery installed its whole environment in
+          # 117 seconds. Bound each attempt so a stalled apt mirror cannot consume
+          # the entire job; rerun only this idempotent official installer once.
+          for attempt in 1 2; do
+            if timeout --kill-after=30s 5m python -m playwright install --with-deps chromium; then
+              exit 0
+            else
+              status=$?
+            fi
+            if [[ "$attempt" == 2 ]]; then
+              exit "$status"
+            fi
+            echo "::warning::Chromium provisioning attempt $attempt failed ($status); retrying once."
+            sleep 5
+          done
       - name: Build the historical sandbox preflight image
         run: docker build -t selfheal-sandbox:latest -f sandbox.Dockerfile .
       - name: Verify exact inherited CSP script hashes
         run: python -m pytest --noconftest -o addopts= tests/security/test_csp.py -q
+      - name: Install locked browser algorithm dependencies
+        timeout-minutes: 8
+        env:
+          NPM_CONFIG_FETCH_RETRIES: '2'
+          NPM_CONFIG_FETCH_TIMEOUT: '60000'
+        run: npm ci --prefix tests/browser --ignore-scripts
       - name: Verify independent browser algorithm contracts
         run: |
-          npm ci --prefix tests/browser --ignore-scripts
           node --test tests/browser/portal_engine.test.mjs tests/browser/ascension_engine.test.mjs tests/browser/insight_engine.test.mjs tests/browser/bloom_engine.test.mjs tests/browser/compounding_engine.test.mjs tests/browser/studio_engine.test.mjs tests/browser/successor_engine.test.mjs
       - name: Require accessible first-use onboarding on a project subpath
         run: python -m scripts.validate_onboarding --output evidence/onboarding
