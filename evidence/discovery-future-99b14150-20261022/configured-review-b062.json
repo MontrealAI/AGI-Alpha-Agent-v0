@@ -1,0 +1,26 @@
+{
+  "sourceCommit": "b062fde0118ca74e1f36fc96816ca6985ab64bc8",
+  "knownUnresolvedFinding": {
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4853#discussion_r4343277724",
+    "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Normalize unvalidated units before hashing receipt identity**\n\nFresh evidence in the repaired head shows another reframing path: `semanticReceipt` hashes the entire copied inspection, including `resources.units`, but validation later only requires that field to be a string. An importer can change it to any equal-byte-length string so all storage and resource checks still pass while producing a new `receiptId`; the same inspection can then bypass the semantic duplicate checks and be charged twice. Validate this field against a canonical value or exclude it from the semantic projection.\n\nUseful? React with 👍 / 👎.\n\n<!-- codex-code-review-finding:v1 -->",
+    "user": {
+      "login": "chatgpt-codex-connector[bot]",
+      "name": "chatgpt-codex-connector[bot]",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/in/1144995?v=4",
+      "id": 199175422
+    },
+    "id": 4343277724,
+    "pull_request_review_id": 5607754440,
+    "in_reply_to_id": null,
+    "created_at": "2026-10-22T00:12:16Z",
+    "updated_at": "2026-10-22T00:12:17Z",
+    "review": null,
+    "side": "RIGHT",
+    "line": 50,
+    "start_line": 49,
+    "path": "examples/successor-capability/discovery-lab-receipts.mjs",
+    "body_html": "<p dir=\"auto\"><strong><sub><sub><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://camo.githubusercontent.com/f2c1aacb361ddd3a0e9f9cacdb84fab050de434017f6747bb916e31e29bdf03d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f50322d79656c6c6f773f7374796c653d666c6174\"><img src=\"https://camo.githubusercontent.com/f2c1aacb361ddd3a0e9f9cacdb84fab050de434017f6747bb916e31e29bdf03d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f50322d79656c6c6f773f7374796c653d666c6174\" alt=\"P2 Badge\" data-canonical-src=\"https://img.shields.io/badge/P2-yellow?style=flat\" style=\"max-width: 100%;\"></a></sub></sub>  Normalize unvalidated units before hashing receipt identity</strong></p>\n<p dir=\"auto\">Fresh evidence in the repaired head shows another reframing path: <code class=\"notranslate\">semanticReceipt</code> hashes the entire copied inspection, including <code class=\"notranslate\">resources.units</code>, but validation later only requires that field to be a string. An importer can change it to any equal-byte-length string so all storage and resource checks still pass while producing a new <code class=\"notranslate\">receiptId</code>; the same inspection can then bypass the semantic duplicate checks and be charged twice. Validate this field against a canonical value or exclude it from the semantic projection.</p>\n<p dir=\"auto\">Useful? React with 👍 / 👎.</p>\n"
+  },
+  "scope": "historical-positive-case-evidence-does-not-clear-this-finding"
+}

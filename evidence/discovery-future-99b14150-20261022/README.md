@@ -27,6 +27,15 @@ Alpha inspector, using the original browser-exported requests. They do not retur
 fixture receipts. Both receipts return to the same saved mission; raw bytes,
 separate currency ledgers and the docket survive reopening unchanged.
 
+## Additional unresolved finding on these historical bytes
+
+The configured review of b062 found that changing the free-form
+`resources.units` label can still create another semantic receipt identity.
+[Finding4343277724](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4853#discussion_r4343277724)
+is valid and is being repaired separately. These passing positive cases do not
+clear that boundary. Keep this dataset historical; do not promote it to release
+or installed-package qualification. The exact review record is retained here.
+
 ## Source and evidence identity
 
 - Production sourceHash: `99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d`.
@@ -80,6 +89,6 @@ and operational real-task execution remain separate qualifications. Docket
 `totalComplete:false`, unattested source context and no authority remain explicit.
 The supplied competent static alternative is cheaper overall; public seeds are
 not protected holdouts. Live observation and qualified real-task execution remain
-NOT_RUN. Configured review, full hooks/Python coverage, paper/main integration,
+NOT_RUN. The additional configured finding, full hooks/Python coverage, paper/main integration,
 versioned receiver profiles, final-main checks and release/deployment acceptance
 remain required. No gate is waived by this dataset.
