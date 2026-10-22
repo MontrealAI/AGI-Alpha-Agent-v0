@@ -365,11 +365,37 @@ def test_release_packaging_requires_the_same_complete_capability_gate() -> None:
     }
     package = workflow["jobs"]["package"]
     assert "successor-capability" in package["needs"]
+    assert "style-advisory" not in package["needs"]
     assert package["if"] == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
     assert not package.get("continue-on-error")
     download = next(step for step in package["steps"] if step.get("uses", "").startswith("actions/download-artifact@"))
-    assert download["with"]["pattern"] == "!{historical-ci,release-package,public-pages,github-pages}*"
+    # Keep advisory formatting out without excluding substantive acceptance evidence.
+    assert (
+        download["with"]["pattern"] == "!{historical-ci,release-package,public-pages,github-pages,advisory-formatting}*"
+    )
     assert download["with"]["digest-mismatch"] == "error"
+
+
+@pytest.mark.parametrize(
+    "mutation", ["advisory-evidence", "capability-evidence", "capability-gate", "digest", "advisory-gate"]
+)
+def test_release_evidence_contract_rejects_policy_regressions(monkeypatch: pytest.MonkeyPatch, mutation: str) -> None:
+    workflow = yaml.safe_load((ROOT / ".github/workflows/agent-release.yml").read_text())
+    package = workflow["jobs"]["package"]
+    download = next(step for step in package["steps"] if step.get("uses", "").startswith("actions/download-artifact@"))
+    if mutation == "advisory-evidence":
+        download["with"]["pattern"] = download["with"]["pattern"].replace(",advisory-formatting", "")
+    elif mutation == "capability-evidence":
+        download["with"]["pattern"] = download["with"]["pattern"].replace("}*", ",successor-capability}*")
+    elif mutation == "capability-gate":
+        package["needs"].remove("successor-capability")
+    elif mutation == "digest":
+        download["with"]["digest-mismatch"] = "warn"
+    else:
+        package["needs"].append("style-advisory")
+    monkeypatch.setattr(yaml, "safe_load", lambda _source: workflow)
+    with pytest.raises(AssertionError):
+        test_release_packaging_requires_the_same_complete_capability_gate()
 
 
 def test_retained_authored_study_is_bound_to_installed_source_and_keeps_counterbaselines() -> None:
