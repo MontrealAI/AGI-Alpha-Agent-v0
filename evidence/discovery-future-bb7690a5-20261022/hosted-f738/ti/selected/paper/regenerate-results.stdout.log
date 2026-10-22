@@ -1,0 +1,321 @@
+{
+  "study_type": "Exact finite synthetic calculation; no LLM calls; no autonomous discovery claim",
+  "model": {
+    "worlds": [
+      "cause",
+      "confounded"
+    ],
+    "prior_cause": {
+      "exact": "1/2",
+      "decimal": 0.5
+    },
+    "latent_probability": {
+      "exact": "1/2",
+      "decimal": 0.5
+    },
+    "permissions_both_frames": [
+      "observe",
+      "do0",
+      "do1"
+    ],
+    "passive_frame": [
+      "observe"
+    ],
+    "active_frame": [
+      "observe",
+      "do0",
+      "do1"
+    ],
+    "selection": "Exact Bellman recursion; stop on equal loss when it uses fewer queries",
+    "scope": "Known two-hypothesis model, at most 12 interaction steps; expected-query cost is not lifecycle cost"
+  },
+  "accuracy_table": [
+    {
+      "horizon": 0,
+      "passive_accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "expected_queries": {
+        "exact": "0",
+        "decimal": 0.0
+      },
+      "enumerated_traces": 2
+    },
+    {
+      "horizon": 1,
+      "passive_accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "accuracy": {
+        "exact": "3/4",
+        "decimal": 0.75
+      },
+      "expected_queries": {
+        "exact": "1",
+        "decimal": 1.0
+      },
+      "enumerated_traces": 4
+    },
+    {
+      "horizon": 2,
+      "passive_accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "accuracy": {
+        "exact": "7/8",
+        "decimal": 0.875
+      },
+      "expected_queries": {
+        "exact": "7/4",
+        "decimal": 1.75
+      },
+      "enumerated_traces": 8
+    },
+    {
+      "horizon": 4,
+      "passive_accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "accuracy": {
+        "exact": "31/32",
+        "decimal": 0.96875
+      },
+      "expected_queries": {
+        "exact": "47/16",
+        "decimal": 2.9375
+      },
+      "enumerated_traces": 32
+    },
+    {
+      "horizon": 8,
+      "passive_accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "accuracy": {
+        "exact": "511/512",
+        "decimal": 0.998046875
+      },
+      "expected_queries": {
+        "exact": "1279/256",
+        "decimal": 4.99609375
+      },
+      "enumerated_traces": 512
+    },
+    {
+      "horizon": 12,
+      "passive_accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "accuracy": {
+        "exact": "8191/8192",
+        "decimal": 0.9998779296875
+      },
+      "expected_queries": {
+        "exact": "28671/4096",
+        "decimal": 6.999755859375
+      },
+      "enumerated_traces": 8192
+    }
+  ],
+  "cost_table": [
+    {
+      "query_cost": {
+        "exact": "0",
+        "decimal": 0.0
+      },
+      "max_horizon": 12,
+      "optimal_probe_caps": [
+        12
+      ],
+      "action": "do0",
+      "accuracy": {
+        "exact": "8191/8192",
+        "decimal": 0.9998779296875
+      },
+      "expected_queries": {
+        "exact": "28671/4096",
+        "decimal": 6.999755859375
+      },
+      "loss": {
+        "exact": "1/8192",
+        "decimal": 0.0001220703125
+      },
+      "bellman_cache_states": 103
+    },
+    {
+      "query_cost": {
+        "exact": "1/256",
+        "decimal": 0.00390625
+      },
+      "max_horizon": 12,
+      "optimal_probe_caps": [
+        7
+      ],
+      "action": "do0",
+      "accuracy": {
+        "exact": "255/256",
+        "decimal": 0.99609375
+      },
+      "expected_queries": {
+        "exact": "575/128",
+        "decimal": 4.4921875
+      },
+      "loss": {
+        "exact": "703/32768",
+        "decimal": 0.021453857421875
+      },
+      "bellman_cache_states": 103
+    },
+    {
+      "query_cost": {
+        "exact": "1/64",
+        "decimal": 0.015625
+      },
+      "max_horizon": 12,
+      "optimal_probe_caps": [
+        5
+      ],
+      "action": "do0",
+      "accuracy": {
+        "exact": "63/64",
+        "decimal": 0.984375
+      },
+      "expected_queries": {
+        "exact": "111/32",
+        "decimal": 3.46875
+      },
+      "loss": {
+        "exact": "143/2048",
+        "decimal": 0.06982421875
+      },
+      "bellman_cache_states": 103
+    },
+    {
+      "query_cost": {
+        "exact": "1/8",
+        "decimal": 0.125
+      },
+      "max_horizon": 12,
+      "optimal_probe_caps": [
+        2
+      ],
+      "action": "do0",
+      "accuracy": {
+        "exact": "7/8",
+        "decimal": 0.875
+      },
+      "expected_queries": {
+        "exact": "7/4",
+        "decimal": 1.75
+      },
+      "loss": {
+        "exact": "11/32",
+        "decimal": 0.34375
+      },
+      "bellman_cache_states": 103
+    },
+    {
+      "query_cost": {
+        "exact": "1/4",
+        "decimal": 0.25
+      },
+      "max_horizon": 12,
+      "optimal_probe_caps": [
+        0,
+        1
+      ],
+      "action": "guess_cause",
+      "accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "expected_queries": {
+        "exact": "0",
+        "decimal": 0.0
+      },
+      "loss": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "bellman_cache_states": 103
+    },
+    {
+      "query_cost": {
+        "exact": "1",
+        "decimal": 1.0
+      },
+      "max_horizon": 12,
+      "optimal_probe_caps": [
+        0
+      ],
+      "action": "guess_cause",
+      "accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "expected_queries": {
+        "exact": "0",
+        "decimal": 0.0
+      },
+      "loss": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "bellman_cache_states": 103
+    }
+  ],
+  "negative_controls": {
+    "uninformative_interventions": {
+      "accuracy": {
+        "exact": "1/2",
+        "decimal": 0.5
+      },
+      "queries": {
+        "exact": "0",
+        "decimal": 0.0
+      }
+    },
+    "unauthorized_frame_rejected": true,
+    "unrestricted_optimal_baseline": "The active Bellman planner is the unrestricted baseline; it exactly matches the transformed policy."
+  },
+  "complementarity": {
+    "neither": {
+      "exact": "0",
+      "decimal": 0.0
+    },
+    "representation_only": {
+      "exact": "-1/8",
+      "decimal": -0.125
+    },
+    "checker_only": {
+      "exact": "-1/8",
+      "decimal": -0.125
+    },
+    "both": {
+      "exact": "1/2",
+      "decimal": 0.5
+    }
+  },
+  "inference_example": {
+    "alpha_total": 0.05,
+    "attempt": 1,
+    "claims": 1,
+    "per_claim_alpha": 0.025,
+    "pairs": 2000,
+    "observed_gain": 0.1,
+    "lcb": 0.03926385380916949,
+    "calibration_epsilon": 0.01,
+    "calibrated_lcb": 0.01926385380916949,
+    "zero_failure_upper": 0.0018427397934059368
+  }
+}
