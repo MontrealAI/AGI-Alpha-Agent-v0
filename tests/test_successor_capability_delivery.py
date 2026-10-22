@@ -592,12 +592,34 @@ def _enterprise_138_workers() -> dict[str, bytes]:
     return workers
 
 
-@pytest.mark.parametrize("historical", [False, True])
-def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path: Path, historical: bool) -> None:
+def _enterprise_139_initial_workers() -> dict[str, bytes]:
+    helper = load_script("refresh_capability_checkout")
+    fixture = json.loads((ROOT / "tests/fixtures/capability-checkout-enterprise-139-initial-workers.json").read_bytes())
+    assert fixture["sourceCommit"] == "8f13b39ed1718f5e8141ac1b37a10bb05c0f2900"
+    assert fixture["sourceTree"] == "d81806c883a4553d7dd5f7400bad0d277392c251"
+    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    changed = {
+        name
+        for name, record in helper.ENTERPRISE_139_RELEASE_EXTRA_FILES.items()
+        if record != helper.ENTERPRISE_139_EXTRA_FILES[name]
+    }
+    assert set(fixture["files"]) == changed
+    workers = {}
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == (entry["bytes"], entry["sha256"])
+        assert (entry["bytes"], entry["sha256"]) == helper.ENTERPRISE_139_EXTRA_FILES[name]
+        workers[name] = raw
+    return workers
+
+
+@pytest.mark.parametrize("edition", ["current", "1.38", "1.39-initial"])
+def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path: Path, edition: str) -> None:
     helper = load_script("refresh_capability_checkout")
     root = _refresh_copy(tmp_path)
-    if historical:
-        for name, raw in _enterprise_138_workers().items():
+    if edition != "current":
+        workers = _enterprise_138_workers() if edition == "1.38" else _enterprise_139_initial_workers()
+        for name, raw in workers.items():
             (root / name).write_bytes(raw.replace(b"\n", b"\r\n"))
     originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
     backups = tmp_path / "backups"
@@ -612,11 +634,14 @@ def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path
     assert helper.refresh(root)["needsRefresh"] == []
 
 
+@pytest.mark.parametrize("edition", ["1.38", "1.39-initial"])
 @pytest.mark.parametrize("edit", ["mixed-root", "mixed-assets", "mixed-insight", "unknown", "old-tampered"])
-def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_writes(tmp_path: Path, edit: str) -> None:
+def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_writes(
+    tmp_path: Path, edit: str, edition: str
+) -> None:
     helper = load_script("refresh_capability_checkout")
     root = _refresh_copy(tmp_path)
-    old = _enterprise_138_workers()
+    old = _enterprise_138_workers() if edition == "1.38" else _enterprise_139_initial_workers()
     names = list(old)
     if edit.startswith("mixed-"):
         name = names[["mixed-root", "mixed-assets", "mixed-insight"].index(edit)]

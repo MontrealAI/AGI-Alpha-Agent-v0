@@ -111,6 +111,16 @@ ENTERPRISE_139_EXTRA_FILES = ENTERPRISE_EXTRA_FILES | {
         "a36cc805ecbbefad9ac5b393c9aa42312f60d952802aa8ae7ff896d536d49549",
     ),
 }
+# The corrected 1.39 release metadata changes the gallery cache digest. Retain
+# the initial edition and admit this complete, separately reviewed byte closure.
+ENTERPRISE_139_RELEASE_EXTRA_FILES = ENTERPRISE_139_EXTRA_FILES | {
+    "docs/service-worker.js": (23275, "93f8bf1fdab5d1af5cc4940f71617033ba35892cf19f8ea943cd147f877e77ad"),
+    "docs/assets/service-worker.js": (23707, "00f8c57a5914aa30e686a72ce1954199262546ecb6ee22e4fb6e33f2b58b278f"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26299,
+        "ec3b9aacbbe712af09575219d9164f5058970c70fa4900c0e0daa2b028e516d0",
+    ),
+}
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -177,6 +187,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_PARENT_SOURCE_HASH, 53, 61, ENTERPRISE_PARENT_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_RELEASE_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))
