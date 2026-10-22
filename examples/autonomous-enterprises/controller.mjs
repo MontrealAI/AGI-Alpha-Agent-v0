@@ -5,16 +5,8 @@ import {buildFoundry, constructInverse} from './foundry.mjs';
 import {qualifyArtifact} from './checker.mjs';
 import {evaluateFuture, TREATMENTS} from './future.mjs';
 const constructionLeases = new WeakSet(), invocationLeases = new WeakSet(), successorLeases = new WeakSet();
-// The longest accepted path appends one event to leave each of these states, then terminates.
-// Early refusal/rejection may finish sooner. Keep one additional slot for an explicit recovery stop.
-const continuationStates = Object.freeze(['RESERVED', 'ACCEPTED_CONSTRUCTION', 'FROZEN', 'TASKS_COMMITTED',
-    'INVOCATION_RESERVED', 'INVOCATION_RECONCILED', 'READY_FOR_SUCCESSOR', 'SUCCESSOR_RESERVED']);
 function requireContinuationSpace(value, current) {
-    const position = continuationStates.indexOf(current.state);
-    need(position >= 0, 'No supported active enterprise continuation.');
-    const remaining = continuationStates.length - position;
-    need(workspace.LIMITS.events - value.events.length >= remaining + 1,
-        `History capacity needs ${remaining} continuation events and one recovery event; retain this history or stop the active attempt.`);
+    workspace.requireEnterpriseHistorySpace(value, current);
 }
 
 export async function start(workspaceInput, charterInput) {
@@ -23,7 +15,7 @@ export async function start(workspaceInput, charterInput) {
     need(!inspected.enterprises?.active, 'Reconcile the earlier enterprise reservation first.');
     need(!inspected.enterprises?.attempts.some(row => row.unresolvedReservation || row.unknownSpent
         || row.state === 'INVOCATION_RESERVED'), 'Unknown historical spent work must be reconciled before another attempt in this mission.');
-    need(workspace.LIMITS.events - value.events.length >= 11, 'Reserve history space for construction, future tasks and recovery.');
+    workspace.requireEnterpriseHistorySpace(value);
     const result = await workspace.recordEnterpriseEvent(value, 'enterprise-started',
         {attempt: 'enterprise-' + crypto.randomUUID(), charter});
     constructionLeases.add(result); return result;

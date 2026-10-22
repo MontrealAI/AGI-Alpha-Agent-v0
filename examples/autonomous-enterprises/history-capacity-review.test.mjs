@@ -6,7 +6,7 @@ import * as workspace from '../successor-capability/workspace.mjs';
 import * as discovery from '../successor-capability/discovery-lab-history.mjs';
 import * as discoveryRuntime from '../successor-capability/discovery-lab.mjs';
 import * as controller from './controller.mjs';
-import {defaultCharter} from './protocol.mjs';
+import {defaultCharter, makeTaskBank} from './protocol.mjs';
 import {digest} from '../../docs/assets/successor/engine.mjs';
 
 const source = {constructor: '1'.repeat(64), checker: '2'.repeat(64), closure: '3'.repeat(64)};
@@ -27,6 +27,7 @@ async function discoveryStart(value) {
 async function appendRecorded(value, kind, payload) {
     const next = owned(value), event = {sequence: next.events.length, kind,
         previous: next.events.at(-1).digest, payload};
+    next.schema = discovery.EXTENDED_SCHEMA;
     event.digest = await digest('capability-event', {missionId: next.missionId, ...event});
     next.events.push(event); next.revision = next.events.length - 1;
     return next;
@@ -184,4 +185,61 @@ test('a legacy mission with no enterprise still records its ordinary witness and
     assert.equal(inspected.latest.witnessAcceptance, 'pass');
     assert.equal(inspected.discovery.attempts.length, 1); assert.equal(inspected.discovery.active, null);
     assert.equal(inspected.enterprises, undefined);
+});
+
+test('the public enterprise appender refuses a new reservation without all continuation and recovery slots', async () => {
+    let value = await original();
+    for (let i = 0; i < 11; i++) value = await legacyLabPair(value);
+    value = await workspace.parseWorkspace(workspace.canonical(value));
+    const before = workspace.canonical(value);
+    assert.equal(value.events.length, 23);
+    await assert.rejects(workspace.recordEnterpriseEvent(value, 'enterprise-started',
+        {attempt: 'enterprise-' + crypto.randomUUID(), charter}), /history.*space|history.*capacity/i);
+    assert.equal(workspace.canonical(value), before);
+    assert.equal((await workspace.inspectWorkspace(value)).enterprises, undefined);
+});
+
+test('the public enterprise appender shares the eleven-slot admission boundary and retains Stop', async () => {
+    let value = await original();
+    for (let i = 0; i < 6; i++) value = await legacyLabPair(value);
+    assert.equal(workspace.LIMITS.events - value.events.length, 11);
+    const prefix = workspace.canonical(value.events);
+    const started = await workspace.recordEnterpriseEvent(value, 'enterprise-started',
+        {attempt: 'enterprise-' + crypto.randomUUID(), charter});
+    assert.equal((await controller.state(started)).current.state, 'RESERVED');
+    const stopped = await controller.stop(started, 'Stop the directly recorded reservation without inventing execution.');
+    assert.equal((await controller.state(stopped)).current, null);
+    assert.equal((await controller.state(stopped)).history.at(-1).state, 'CANCELLED');
+    assert.equal(workspace.canonical(stopped.events.slice(0, value.events.length)), prefix);
+    value = await workspace.recordEvaluation(value, 'development');
+    assert.equal(workspace.LIMITS.events - value.events.length, 10);
+    await assert.rejects(workspace.recordEnterpriseEvent(value, 'enterprise-started',
+        {attempt: 'enterprise-' + crypto.randomUUID(), charter}), /history.*space|history.*capacity/i);
+});
+
+test('a historical near-capacity reservation remains readable and can consume its final Stop slot', async () => {
+    let value = await workspace.recordEvaluation(await original(), 'development');
+    for (let i = 0; i < 10; i++) value = await legacyLabPair(value);
+    value = await appendRecorded(value, 'enterprise-started', {attempt: 'enterprise-' + crypto.randomUUID(), charter});
+    const encoded = workspace.canonical(value), restored = await workspace.parseWorkspace(encoded);
+    assert.equal(restored.events.length, 23); assert.equal(workspace.canonical(restored), encoded);
+    const stopped = await controller.stop(restored, 'Keep the original reservation and explicitly stop at capacity.');
+    assert.equal(stopped.events.length, 24);
+    assert.equal(workspace.canonical(stopped.events.slice(0, restored.events.length)), workspace.canonical(restored.events));
+    assert.equal((await controller.state(stopped)).history.at(-1).unknownSpent, true);
+});
+
+test('direct enterprise continuations cannot consume the last recovery slot of a historical frozen attempt', async () => {
+    const base = await original(), evaluated = await workspace.recordEvaluation(base, 'development');
+    let value = await appendRecorded(await frozen(base), 'evaluation', evaluated.events.at(-1).payload);
+    for (let i = 0; i < 9; i++) value = await legacyLabPair(value);
+    const restored = await workspace.parseWorkspace(workspace.canonical(value));
+    const {current} = await controller.state(restored), before = workspace.canonical(restored);
+    assert.equal(restored.events.length, 23);
+    const bank = await makeTaskBank(current.freeze, 77, current.charter.maxN, current.charter.taskLimit);
+    await assert.rejects(workspace.recordEnterpriseEvent(restored, 'enterprise-tasks',
+        {attempt: current.attempt, bank}), /history.*space|history.*capacity/i);
+    assert.equal(workspace.canonical(restored), before);
+    const stopped = await controller.stop(restored, 'Retain the final Stop slot after refusing direct continuation.');
+    assert.equal(stopped.events.length, 24); assert.equal((await controller.state(stopped)).current, null);
 });

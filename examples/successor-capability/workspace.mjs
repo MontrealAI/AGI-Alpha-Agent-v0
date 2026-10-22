@@ -7,6 +7,8 @@ import * as enterpriseHistory from '../autonomous-enterprises/history.mjs';
 
 export const SCHEMA = 'successor-capability-workspace/v1';
 export const LIMITS = Object.freeze({versions: 8, events: 24, bytes: 2_000_000});
+const enterpriseContinuationStates = Object.freeze(['RESERVED', 'ACCEPTED_CONSTRUCTION', 'FROZEN', 'TASKS_COMMITTED',
+    'INVOCATION_RESERVED', 'INVOCATION_RECONCILED', 'READY_FOR_SUCCESSOR', 'SUCCESSOR_RESERVED']);
 export const canonical = protocol.canonical;
 export const defaultExperiment = witness.defaultExperiment;
 export const DEFAULT_BRIEF = Object.freeze({
@@ -255,11 +257,29 @@ export async function recordDiscoveryEvent(workspace, kind, payload) {
     return append(next, kind, payload);
 }
 
+/** Keep the full accepted continuation and one explicit Stop available before new work. */
+export function requireEnterpriseHistorySpace(workspace, current = null) {
+    const available = LIMITS.events - workspace.events.length;
+    if (current === null) {
+        if (available < 11) fail('Reserve history space for construction, future tasks and recovery.');
+        return;
+    }
+    const position = enterpriseContinuationStates.indexOf(current.state);
+    if (position < 0) fail('No supported active enterprise continuation.');
+    const remaining = enterpriseContinuationStates.length - position;
+    if (available < remaining + 1) fail(
+        `History capacity needs ${remaining} continuation events and one recovery event; retain this history or stop the active attempt.`);
+}
+
 /** Append enterprise evidence to the same bounded mission chain and recovery format. */
 export async function recordEnterpriseEvent(workspace, kind, payload) {
     payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
-    const {workspace: owned} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
     if (!enterpriseHistory.EVENT_KINDS.includes(kind)) fail('Unsupported enterprise event.');
+    if (kind === 'enterprise-started') requireEnterpriseHistorySpace(owned);
+    else if (enterprises?.active && !['enterprise-stopped', 'enterprise-budget-refused', 'enterprise-successor'].includes(kind)) {
+        requireEnterpriseHistorySpace(owned, enterprises.active);
+    }
     const next = clone(owned);
     next.schema = discoveryHistory.EXTENDED_SCHEMA;
     return append(next, kind, payload);

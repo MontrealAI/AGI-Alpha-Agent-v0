@@ -51,8 +51,8 @@ EXTRA_FILES = {
         "0b067ee54afeea5a22b7737deb752168d5d2ff6a4d7404a406579ea3f79df247",
     ),
 }
-ENTERPRISE_SOURCE_HASH = "c64f26fac13d73dc4fb4a591ac6c87c314fc3f8e44449307db77ca4c7df2622f"
-ENTERPRISE_EXTRA_FILES = EXTRA_FILES | {
+ENTERPRISE_PARENT_SOURCE_HASH = "c64f26fac13d73dc4fb4a591ac6c87c314fc3f8e44449307db77ca4c7df2622f"
+ENTERPRISE_PARENT_EXTRA_FILES = EXTRA_FILES | {
     "docs/successor/capabilities/index.html": (
         933102,
         "5c55a089546345eea1a9907cf736f437f28a58ab468342e73308a6ac2aee1634",
@@ -74,6 +74,31 @@ ENTERPRISE_EXTRA_FILES = EXTRA_FILES | {
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26299,
         "20e4dbd3e3780a361bff61b9536d3c22548c558bb87e98b9a2a42e165af6a3e9",
+    ),
+}
+ENTERPRISE_SOURCE_HASH = "54769dbfde99ae13708a33292866f0ca7e6b8b7792a7a944f76bf2fbf1de1358"
+ENTERPRISE_EXTRA_FILES = ENTERPRISE_PARENT_EXTRA_FILES | {
+    "docs/successor/capabilities/index.html": (
+        933603,
+        "804f83eab8077d45a2e741a334d4c92be5209de1e9781ea865ed9ffc8487d97e",
+    ),
+    "docs/successor/capabilities/sources.json": (
+        6894,
+        "d1c3cb9a5c3eb96e9e5eb111b83a713786ec18ed1213a407cd77bbaf018c5adb",
+    ),
+    "docs/alpha_factory_v1/demos/successor/capabilities/index.html": (
+        933691,
+        "0d9235cf4e9050498c470c44cba74223d1c6481b3abcaf209d72ba794417a071",
+    ),
+    "docs/alpha_factory_v1/demos/successor/capabilities/sources.json": (
+        6894,
+        "d1c3cb9a5c3eb96e9e5eb111b83a713786ec18ed1213a407cd77bbaf018c5adb",
+    ),
+    "docs/service-worker.js": (23275, "7b6204079cd78d5cb92e91a9b6af4bfde99c01e765292697289fcfbff8a83f5d"),
+    "docs/assets/service-worker.js": (23707, "0db9a2730d24548c730601bd56a5fae3dab82359df6402736f29c0b87378108c"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26299,
+        "e02eb78e93d637475c5db53a2fe21efcabf85b410fd0ba450f155d7379dd652a",
     ),
 }
 
@@ -137,6 +162,7 @@ def _source_profile(raw: bytes) -> tuple[str, int, int, dict[str, tuple[int, str
     digest = _hash(raw.replace(b"\r\n", b"\n"))
     for source_hash, source_count, file_count, extra in (
         (SOURCE_HASH, 41, 49, EXTRA_FILES),
+        (ENTERPRISE_PARENT_SOURCE_HASH, 53, 61, ENTERPRISE_PARENT_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:

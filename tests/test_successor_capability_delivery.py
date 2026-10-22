@@ -59,7 +59,11 @@ def test_actual_crlf_checkout_preserves_capability_raw_bytes_and_catalog_hashes(
     source.mkdir()
     checkout.mkdir()
     paths = capability_checkout_paths()
-    for name in [".gitattributes", *paths]:
+    fixtures = [
+        "tests/fixtures/capability-checkout-legacy-catalog.json",
+        "tests/fixtures/capability-checkout-enterprise-parent-catalog.json",
+    ]
+    for name in [".gitattributes", *paths, *fixtures]:
         target = source / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / name, target)
@@ -68,12 +72,12 @@ def test_actual_crlf_checkout_preserves_capability_raw_bytes_and_catalog_hashes(
         ("init", "--quiet"),
         ("config", "core.autocrlf", "true"),
         ("config", "core.eol", "crlf"),
-        ("add", ".gitattributes", *paths, "checkout-control.txt"),
+        ("add", ".gitattributes", *paths, *fixtures, "checkout-control.txt"),
         ("checkout-index", "--all", "--force", "--prefix=" + str(checkout) + "/"),
     ):
         subprocess.run(["git", "-C", str(source), *arguments], capture_output=True, check=True)
     assert (checkout / "checkout-control.txt").read_bytes() == b"ordinary unpinned control\r\n"
-    for name in paths:
+    for name in [*paths, *fixtures]:
         assert (checkout / name).read_bytes() == (ROOT / name).read_bytes(), name
     catalog = json.loads((checkout / "docs/successor/capabilities/sources.json").read_bytes())
     for name, expected in catalog["sources"].items():
@@ -548,6 +552,23 @@ def test_checkout_refresh_keeps_legacy_identity_and_refuses_cross_profile_bytes(
         ).hexdigest()
         with pytest.raises(ValueError, match="unexpected capability bytes"):
             helper._source_profile(json.dumps(changed, sort_keys=True, indent=2).encode() + b"\n")
+
+
+def test_checkout_refresh_preserves_the_preceding_enterprise_source_profile() -> None:
+    helper = load_script("refresh_capability_checkout")
+    raw = (ROOT / "tests/fixtures/capability-checkout-enterprise-parent-catalog.json").read_bytes()
+    assert len(raw) == 6894
+    assert hashlib.sha256(raw).hexdigest() == "0d8207718f1757e2d5c6707909825f034bb79fe7afcc61ac95eb9b6ffe228e5f"
+    for encoded in (raw, raw.replace(b"\n", b"\r\n")):
+        source_hash, source_count, file_count, extra = helper._source_profile(encoded)
+        assert source_hash == helper.ENTERPRISE_PARENT_SOURCE_HASH != helper.ENTERPRISE_SOURCE_HASH
+        assert (source_count, file_count) == (53, 61)
+        assert extra == helper.ENTERPRISE_PARENT_EXTRA_FILES
+        assert helper._canonical(encoded, extra[helper.CATALOG][1], extra[helper.CATALOG][0], helper.CATALOG) == raw
+    changed = json.loads(raw)
+    changed["sourceHash"] = helper.ENTERPRISE_SOURCE_HASH
+    with pytest.raises(ValueError, match="unexpected capability bytes"):
+        helper._source_profile(json.dumps(changed, sort_keys=True, indent=2).encode() + b"\n")
 
 
 @pytest.mark.parametrize("edit", ["private", "mixed", "catalog", "oversize", "retained-generated"])
