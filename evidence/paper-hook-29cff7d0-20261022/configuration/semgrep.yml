@@ -1,0 +1,13 @@
+imports:
+  - p/python
+rules:
+  - id: solidity-tx-origin
+    languages: [solidity]
+    pattern: tx.origin
+    message: Avoid tx.origin for authorization
+    severity: ERROR
+  - id: solidity-call-value
+    languages: [solidity]
+    pattern-regex: "\\.call\\.value\\("
+    message: Unsafe call.value detected
+    severity: ERROR

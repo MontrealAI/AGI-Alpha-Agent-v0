@@ -1,0 +1,108 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 2a1c67e0b2f81df602ec1f6e7aeb030b9709dc7c
+    hooks:
+      - id: black
+        # Retain the hash-verified original study harness byte-for-byte.
+        exclude: ^(alpha_factory_v1/backend/agent_factory\.py|studies/computer-use/2026-10-14/04_Reproduce/)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: 1bd02b3569e3ac5cc66552b1336a96a8880d1bae
+    hooks:
+      - id: ruff
+        exclude: alpha_factory_v1/backend/agent_factory.py
+      - id: ruff-format
+        exclude: alpha_factory_v1/backend/agent_factory.py
+  - repo: https://github.com/pycqa/flake8
+    rev: 7d37d9032d0d161634be4554273c30efd4dea0b3
+    hooks:
+      - id: flake8
+        # These historical fixtures are verified against SOURCE_PROVENANCE.json.
+        exclude: ^studies/computer-use/2026-10-14/04_Reproduce/
+  - repo: https://github.com/semgrep/semgrep
+    rev: 2bbd0a55b3655b26991c936b92e0c0f6d6f4fa94
+    hooks:
+      - id: semgrep
+        args: ["--config", "semgrep.yml"]
+        additional_dependencies: ["setuptools>=75,<81"]
+        types: [python]
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: d0a0a0d7aa4e87ed0c7a31b5fcee1c20697718ff
+    hooks:
+      - id: shellcheck
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
+  - repo: local
+    hooks:
+      - id: proto-verify
+        name: Verify protobuf files are up to date
+        entry: make proto-verify
+        language: system
+        pass_filenames: false
+      - id: verify-env-docs
+        name: Verify environment docs and runbook checklist
+        entry: python tools/check_env_table.py
+        language: python
+        pass_filenames: false
+      - id: dp-scrub
+        name: Detect private text in commit
+        entry: python scripts/dp_scrubber.py
+        language: python
+        pass_filenames: false
+      - id: env-check
+        name: Verify required Python packages are installed
+        entry: scripts/env_check.sh
+        language: system
+        pass_filenames: false
+      - id: verify-disclaimer-helper
+        name: Ensure scripts import disclaimer helper
+        entry: python scripts/verify_disclaimer_helper.py
+        language: python
+        pass_filenames: false
+      - id: verify-gallery-assets
+        name: Verify demo gallery preview assets exist
+        entry: python scripts/verify_gallery_assets.py
+        language: python
+        pass_filenames: false
+      - id: verify-html-disclaimer
+        name: Verify HTML pages reference the disclaimer snippet
+        entry: python scripts/verify_html_disclaimer.py
+        language: python
+        pass_filenames: false
+      - id: no-binary-diff
+        name: Block binary diffs
+        entry: python scripts/check_no_binary_diff.py
+        language: python
+        pass_filenames: false
+      - id: update-actions
+        name: Update workflow action versions
+        entry: python tools/update_actions.py
+        language: system
+        files: ^\.github/workflows/
+        pass_filenames: false
+      - id: py-compile
+        name: Validate Python syntax with py_compile
+        entry: python -m py_compile
+        language: python
+        types: [python]
+      - id: eslint-insight-browser
+        name: Lint Insight Browser with ESLint
+        entry: scripts/run_eslint.sh
+        language: system
+        files: ^alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/
+        types: [javascript]
+        exclude: |
+          (^docs/)|
+          (^dist/)|
+          (^alpha_factory_v1/core/interface/web_client/dist/)|
+          (^alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm/)|
+          (^alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/(dist|lib)/)|
+          (^alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/wasm_llm/)|
+          (^alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/build/)|
+          (build\.js$)|
+          (tests/)|
+          (^alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/)|
+          (^alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_client/dist/)|
+          (^alpha_factory_v1/ui/static/)|
+          (bundle\.esm\.min\.js$)|(insight\.bundle\.js$)

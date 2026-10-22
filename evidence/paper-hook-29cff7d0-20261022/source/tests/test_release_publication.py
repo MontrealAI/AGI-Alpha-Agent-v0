@@ -1,0 +1,1172 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Ordinary main commits must never replace an already published version."""
+
+from __future__ import annotations
+
+import json
+import hashlib
+from html.parser import HTMLParser
+from pathlib import Path
+import re
+import subprocess
+import sys
+import tomllib
+from urllib.parse import urlsplit
+import zipfile
+
+import pytest
+
+from scripts import finalize_pages_release, publish_agent_release, release_context
+from scripts import ascension_protocol_evidence, package_agent_release, business3_evidence, governance_evidence
+from scripts import discovery_evidence
+from scripts import experience_evidence, mats_evidence, curriculum_evidence
+
+
+@pytest.mark.parametrize("damage", [None, "origin", "commit", "sourceHash", "page_sha256", "families", "axe", "passed"])
+def test_workbench_publication_refuses_stale_or_incomplete_journeys(damage: str | None) -> None:
+    """Controlled reports cannot substitute stale content or skipped accessibility for public acceptance."""
+    root = Path(__file__).resolve().parents[1]
+    origin = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+    report = {
+        "schema": "agialpha.successor-workbench.acceptance.v1",
+        "passed": True,
+        "commit": "a" * 40,
+        "version": "1.29.0",
+        "origin": origin + "successor/work/",
+        "sourceHash": json.loads((root / "alpha_factory_v1/core/runtime/successor/workbench_sources.json").read_text())[
+            "sourceHash"
+        ],
+        "page_sha256": hashlib.sha256((root / "docs/successor/work/index.html").read_bytes()).hexdigest(),
+        "families": ["reliability", "performance", "documentation", "public-data", "numerical"],
+        "offline_save_reopen": "PASS",
+        "keyboard": "PASS",
+        "languages": ["en", "fr"],
+        "viewports": [1440, 390, 320],
+        "axe": "PASS",
+        "errors": [],
+    }
+    if damage:
+        report[damage] = 1 if damage == "passed" else "stale-or-not-run"
+        with pytest.raises(ValueError, match="exact public release"):
+            finalize_pages_release.verify_workbench_report(report, "a" * 40, "1.29.0", origin)
+    else:
+        finalize_pages_release.verify_workbench_report(report, "a" * 40, "1.29.0", origin)
+
+
+def test_source_version_and_catalog_match_the_release_without_installed_metadata(monkeypatch) -> None:
+    import importlib.metadata
+    import runpy
+    import tomllib
+
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+
+    def missing_distribution(_name: str) -> str:
+        raise importlib.metadata.PackageNotFoundError
+
+    monkeypatch.setattr(importlib.metadata, "version", missing_distribution)
+    package = runpy.run_path(str(root / "alpha_factory_v1/__init__.py"))
+    assert package["__version__"] == version
+    assert json.loads((root / "alpha_factory_v1/demos/catalog.json").read_text())["release"] == version
+
+
+def test_every_current_workspace_uses_the_release_version() -> None:
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+
+    class VersionParser(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__()
+            self.versions: list[str | None] = []
+
+        def handle_starttag(self, tag, attrs) -> None:
+            values = dict(attrs)
+            if tag == "meta" and values.get("name") == "application-version":
+                self.versions.append(values.get("content"))
+
+    for name in (
+        "",
+        "start/",
+        "studio/",
+        "successor/",
+        "alpha_factory_v1/demos/successor/",
+        "ascension/",
+        "ascension-protocol/",
+        "insight/",
+        "bloom/",
+        "compounding/",
+        "alpha_agi_business_3_v1/",
+        "alpha_agi_insight_v0/",
+        "alpha_factory_v1/demos/alpha_agi_insight_v0/",
+        "solving_agi_governance/",
+        "alpha_factory_v1/demos/solving_agi_governance/",
+        "alpha_factory_v1/demos/ascension-protocol/",
+        "alpha_factory_v1/demos/alpha_agi_business_3_v1/",
+    ):
+        page = root / "docs" / name / "index.html"
+        parser = VersionParser()
+        parser.feed(page.read_text())
+        assert parser.versions == [version], f"Stale release metadata in {page}"
+
+
+def test_active_operator_guides_and_asset_examples_match_the_release() -> None:
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+    operations = (root / "docs/agent/OPERATIONS.md").read_text()
+    factory = (root / "docs/agent/FACTORY_GUIDE.md").read_text()
+    assert f"Current release: **{version}**" in operations
+    assert f"**Version {version}.**" in factory
+    for asset_version in re.findall(r"alpha-agent-v(\d+\.\d+\.\d+)-(?:manuscript|browser)\.zip", operations):
+        assert asset_version == version, "An active download example points to an older release"
+    assert "docs/agent/REPOSITORY_GUIDE.md" in package_agent_release.release_documents(version)
+
+
+@pytest.mark.parametrize("head,kind", [("a" * 40, "commit"), ("b" * 40, "commit"), ("a" * 40, "tag")])
+def test_remote_main_must_still_match_before_publication(monkeypatch, head, kind) -> None:
+    def reject_paper_proof(*_args):
+        raise ValueError("Not a paper descendant")
+
+    monkeypatch.setattr(release_context, "require_paper_descendant", reject_paper_proof)
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "check_output",
+        lambda *args, **kwargs: json.dumps({"ref": "refs/heads/main", "object": {"sha": head, "type": kind}}),
+    )
+    if head == "a" * 40 and kind == "commit":
+        assert release_context.require_current_main() == head
+    else:
+        with pytest.raises(RuntimeError, match="Superseded"):
+            release_context.require_current_main()
+
+
+@pytest.mark.parametrize(
+    "variable,value", [("GITHUB_REPOSITORY", "other/repo"), ("GITHUB_REF", "refs/tags/v1.5.1"), ("GITHUB_SHA", "bad")]
+)
+def test_unauthorized_context_fails_before_network(monkeypatch, variable, value) -> None:
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    monkeypatch.setenv(variable, value)
+    monkeypatch.setattr(
+        release_context.subprocess, "check_output", lambda *args, **kwargs: pytest.fail("network access")
+    )
+    with pytest.raises(ValueError):
+        release_context.require_current_main()
+
+
+@pytest.mark.parametrize("superseded_at", [1, 2])
+def test_superseded_run_cannot_publish_even_if_main_moves_during_upload(tmp_path, monkeypatch, superseded_at) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    folder = tmp_path / "release"
+    folder.mkdir()
+    (folder / "release-manifest.json").write_text(json.dumps({"commit": "a" * 40, "version": "1.5.1"}))
+    (folder / "RELEASE_NOTES_1.5.1.md").write_text("Verified fixture")
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.5.1"\n')
+    calls = []
+    checks = []
+
+    def context():
+        checks.append(True)
+        if len(checks) == superseded_at:
+            raise RuntimeError("Superseded release run")
+        return "a" * 40
+
+    def github(*args):
+        calls.append(args)
+        if args[:2] == ("release", "download"):
+            dest = Path(args[-1])
+            for path in folder.iterdir():
+                (dest / path.name).write_bytes(path.read_bytes())
+            return ""
+        if args[0] == "api":
+            assert len(args) == 2 and "/releases?" in args[1], "Unexpected API mutation"
+            return json.dumps(
+                [{"id": 1, "tag_name": "v1.5.1", "draft": True, "assets": [{"name": p.name} for p in folder.iterdir()]}]
+            )
+        assert args[:2] == ("release", "upload")
+        return ""
+
+    monkeypatch.setattr(publish_agent_release, "require_current_main", context)
+    monkeypatch.setattr(publish_agent_release, "gh", github)
+    monkeypatch.setattr(
+        publish_agent_release.subprocess,
+        "run",
+        lambda *args, **kwargs: subprocess.CompletedProcess(
+            [], 0, json.dumps({"object": {"type": "commit", "sha": "a" * 40}})
+        ),
+    )
+    with pytest.raises(RuntimeError, match="Superseded"):
+        publish_agent_release.main()
+    assert len(checks) == superseded_at
+    assert not any("PATCH" in call for call in calls)
+    if superseded_at == 1:
+        assert len(calls) == 1
+
+
+@pytest.mark.parametrize("version", ["1.2.0", "1.2.1"])
+@pytest.mark.parametrize("kind", ["commit", "tag"])
+@pytest.mark.parametrize("problem", [None, "commit", "missing", "type"])
+def test_public_version_is_left_unchanged(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, version: str, kind: str, problem: str | None
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("GITHUB_REPOSITORY", "MontrealAI/AGI-Alpha-Agent-v0")
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    release = tmp_path / "release"
+    release.mkdir()
+    (release / "release-manifest.json").write_text(json.dumps({"commit": "a" * 40, "version": version}))
+    (tmp_path / "pyproject.toml").write_text(f'[project]\nversion = "{version}"\n')
+    calls = []
+
+    def read_public_release(*args: str) -> str:
+        calls.append(args)
+        assert len(args) == 2 and args[0] == "api", "A public release must only make read requests"
+        if args[1].endswith("/releases?per_page=100"):
+            return json.dumps([{"tag_name": f"v{version}", "draft": False, "html_url": "https://example.test/release"}])
+        target = {"type": "tree" if problem == "type" else "commit", "sha": ("b" if problem == "commit" else "a") * 40}
+        if args[1].endswith(f"/git/ref/tags/v{version}"):
+            if problem == "missing":
+                raise subprocess.CalledProcessError(1, ["gh", *args])
+            return json.dumps({"object": {"type": "tag", "sha": "c" * 40} if kind == "tag" else target})
+        assert kind == "tag" and args[1].endswith("/git/tags/" + "c" * 40)
+        return json.dumps({"object": target})
+
+    def no_mutation(*args: object, **kwargs: object) -> None:
+        raise AssertionError("An existing public version must not invoke any mutation")
+
+    monkeypatch.setattr(publish_agent_release, "gh", read_public_release)
+    monkeypatch.setattr(publish_agent_release.subprocess, "run", no_mutation)
+    if problem == "missing":
+        with pytest.raises(subprocess.CalledProcessError):
+            publish_agent_release.main()
+    elif problem:
+        with pytest.raises(ValueError, match="existing.*tag"):
+            publish_agent_release.main()
+    else:
+        publish_agent_release.main()
+    assert len(calls) == (3 if kind == "tag" and problem != "missing" else 2)
+
+
+@pytest.mark.parametrize("version", ["1.2.0", "../../other-tag", 121])
+def test_invalid_package_version_cannot_publish(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, version: object
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("GITHUB_REPOSITORY", "MontrealAI/AGI-Alpha-Agent-v0")
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    release = tmp_path / "release"
+    release.mkdir()
+    (release / "release-manifest.json").write_text(json.dumps({"commit": "a" * 40, "version": version}))
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.2.1"\n')
+
+    def no_github_access(*args: object, **kwargs: object) -> None:
+        raise AssertionError("An invalid package must be rejected before any GitHub access")
+
+    monkeypatch.setattr(publish_agent_release, "gh", no_github_access)
+    monkeypatch.setattr(publish_agent_release.subprocess, "run", no_github_access)
+    with pytest.raises(ValueError, match="package version differs"):
+        publish_agent_release.main()
+
+
+@pytest.mark.parametrize(
+    "version,problem",
+    [
+        ("1.4.0", None),
+        ("1.4.0", "commit"),
+        ("1.4.0", "asset"),
+        ("1.5.0", None),
+        ("1.5.0", "commit"),
+        ("1.5.0", "asset"),
+        ("1.5.0", "ascension"),
+        ("1.5.0", "paper"),
+        ("1.5.0", "origin"),
+        ("1.6.0", None),
+        ("1.7.0", None),
+        *[
+            ("1.8.0", problem)
+            for problem in (
+                None,
+                "transfer-failed",
+                "transfer-origin",
+                "transfer-check",
+                "transfer-scenario",
+                "transfer-browser",
+                "transfer-schema",
+                "transfer-manuscript",
+            )
+        ],
+        *[
+            ("1.10.0", problem)
+            for problem in (
+                None,
+                "studio-failed",
+                "studio-origin",
+                "studio-check",
+                "studio-case",
+                "studio-browser",
+                "studio-http",
+                "studio-schema",
+                "studio-commit",
+                "studio-version",
+                "studio-calculation",
+            )
+        ],
+        ("1.7.0", "bloom-failed"),
+        *[
+            ("1.12.1", problem)
+            for problem in (
+                None,
+                "protocol-failed",
+                "protocol-boolean",
+                "protocol-origin",
+                "protocol-commit",
+                "protocol-version",
+                "protocol-schema",
+                "protocol-check",
+                "protocol-asset",
+                "protocol-browser",
+                "protocol-http",
+            )
+        ],
+        *[
+            ("1.13.0", problem)
+            for problem in (None, "business3-failed", "business3-check", "business3-asset", "business3-cases")
+        ],
+        *[
+            ("1.14.0", problem)
+            for problem in (None, "governance-failed", "governance-check", "governance-asset", "governance-cases")
+        ],
+        *[
+            ("1.15.0", problem)
+            for problem in (None, "discovery-failed", "discovery-check", "discovery-asset", "discovery-cases")
+        ],
+        *[
+            ("1.16.0", problem)
+            for problem in (None, "experience-failed", "experience-check", "experience-asset", "experience-cases")
+        ],
+        *[("1.17.0", problem) for problem in (None, "mats-failed", "mats-check", "mats-asset", "mats-cases")],
+        *[
+            ("1.18.0", problem)
+            for problem in (None, "curriculum-failed", "curriculum-check", "curriculum-asset", "curriculum-cases")
+        ],
+        ("1.7.0", "bloom-origin"),
+        ("1.7.0", "bloom-check"),
+        ("1.7.0", "bloom-experience"),
+        ("1.7.0", "bloom-browser"),
+        ("1.7.0", "bloom-schema"),
+        ("1.6.0", "atlas-failed"),
+        ("1.6.0", "atlas-origin"),
+        ("1.6.0", "atlas-check"),
+        ("1.6.0", "atlas-scenario"),
+        ("1.6.0", "atlas-browser"),
+        ("1.6.0", "atlas-schema"),
+    ],
+)
+def test_public_evidence_requires_same_commit_and_intact_package(
+    tmp_path: Path, problem: str | None, version: str
+) -> None:
+    folder = tmp_path / "release"
+    evidence = tmp_path / "evidence"
+    folder.mkdir()
+    (evidence / "public-pages").mkdir(parents=True)
+    manifest = {"version": version, "commit": "a" * 40, "release_gates": []}
+    (folder / "release-manifest.json").write_text(json.dumps(manifest))
+    archive_path = folder / f"alpha-agent-v{version}-validation.zip"
+    with zipfile.ZipFile(archive_path, "w") as archive:
+        archive.writestr("existing.txt", "existing evidence")
+    (folder / "source.zip").write_bytes(b"immutable source fixture")
+    checksums = [f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}" for p in sorted(folder.iterdir())]
+    (folder / "SHA256SUMS").write_text("\n".join(checksums) + "\n")
+    url = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+    public = {**manifest, "url": url}
+    if problem == "commit":
+        public["commit"] = "b" * 40
+    if problem == "asset":
+        (folder / "source.zip").write_bytes(b"corrupted source fixture")
+    (evidence / "public-pages" / "release.json").write_text(json.dumps(public))
+    (evidence / "public-pages" / "workspace.json").write_text(json.dumps({"origin": url, "model_required": True}))
+    if tuple(map(int, version.split("."))) >= (1, 5, 0):
+        ascension_dir = evidence / "public-pages" / "ascension"
+        ascension_dir.mkdir()
+        (ascension_dir / "ascension.json").write_text(
+            json.dumps(
+                {
+                    "origin": "https://example.test/" if problem == "origin" else url,
+                    "passed": problem != "ascension",
+                    "paper_sha256": (
+                        "altered"
+                        if problem == "paper"
+                        else "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa"
+                    ),
+                }
+            )
+        )
+    if tuple(map(int, version.split("."))) >= (1, 6, 0):
+        atlas_dir = evidence / "public-pages" / "insight-atlas"
+        atlas_dir.mkdir()
+        atlas = {
+            "schema": "agialpha.insight.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "scenarios": [{"id": name} for name in ("energy", "science", "enterprise")],
+            "browser_errors": [],
+            "checks": [
+                "all-three-scenarios",
+                "stale-proof-rejected",
+                "tampered-proof-rejected",
+                "unsafe-quorum-blocked",
+                "native-mission-schema",
+                "native-research-execution-and-signed-export",
+                "reviewed-design-reuse-requires-fresh-evidence",
+                "recovery-replays-promotions",
+                "tampered-history-rejected",
+                "revocation-survives-recovery",
+                "mirrored-page",
+                "offline-reload-recovery-and-replay",
+                "axe-wcag-a-aa-no-violations",
+                "keyboard-selection-retains-focus",
+            ],
+        }
+        if problem == "atlas-failed":
+            atlas["passed"] = False
+        elif problem == "atlas-origin":
+            atlas["origin"] = "https://example.test/"
+        elif problem == "atlas-check":
+            atlas["checks"].remove("tampered-proof-rejected")
+        elif problem == "atlas-scenario":
+            atlas["scenarios"].pop()
+        elif problem == "atlas-browser":
+            atlas["browser_errors"] = ["uncaught error"]
+        elif problem == "atlas-schema":
+            atlas["schema"] = "declared-pass-only"
+        (atlas_dir / "insight-atlas.json").write_text(json.dumps(atlas))
+    if tuple(map(int, version.split("."))) >= (1, 7, 0):
+        bloom_dir = evidence / "public-pages" / "proof-bloom"
+        bloom_dir.mkdir()
+        bloom = {
+            "schema": "agialpha.bloom.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "experiences": [{"id": name} for name in ("nova", "sovereign", "omega", "invention", "proof")],
+            "browser_errors": [],
+            "checks": [
+                "all-five-experiences",
+                "original-gallery-preserved",
+                "baseline-and-stress-computed",
+                "native-missions-executed-and-signed-returns",
+                "signature-key-and-input-binding",
+                "self-declared-verdict-rejected",
+                "tampered-and-stale-return-rejected",
+                "reviewed-failure-remains-hold",
+                "exact-benchmark-reuse-needs-fresh-probes",
+                "transitive-revocation",
+                "unchanged-recovery-roundtrip",
+                "tampered-history-rejected-atomically",
+                "jobspec-download-sha256",
+                "keyboard-focus-preserved",
+                "input-text-escaped",
+                "mirrored-page",
+                "offline-recovery-and-execution",
+                "mobile-no-overflow",
+                "axe-wcag-a-aa-no-violations",
+            ],
+        }
+        if problem == "bloom-failed":
+            bloom["passed"] = False
+        elif problem == "bloom-origin":
+            bloom["origin"] = "https://example.test/"
+        elif problem == "bloom-check":
+            bloom["checks"].remove("signature-key-and-input-binding")
+        elif problem == "bloom-experience":
+            bloom["experiences"].pop()
+        elif problem == "bloom-browser":
+            bloom["browser_errors"] = ["uncaught error"]
+        elif problem == "bloom-schema":
+            bloom["schema"] = "self-declared-pass"
+        (bloom_dir / "proof-bloom.json").write_text(json.dumps(bloom))
+    if tuple(map(int, version.split("."))) >= (1, 8, 0):
+        target = evidence / "public-pages" / "compounding"
+        target.mkdir()
+        transfer = {
+            "schema": "agialpha.transfer.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "scenarios": [{"id": name} for name in ("seasonal", "shift", "ablation")],
+            "browser_errors": [],
+            "manuscript_sha256": "4b290d5a8232364b8808c0af8a96e7c9b152afd7ac3f5ba05668a538e073791a",
+            "checks": [
+                "exact-198-page-manuscript",
+                "all-three-scenarios",
+                "python-javascript-exact-replay",
+                "complete-docket-zip-replay",
+                "review-does-not-override-loss",
+                "archive-ablation-zero-gain",
+                "eci-e2-no-independent-claim",
+                "native-cli-browser-handoff",
+                "imported-review-keeps-timing-provenance",
+                "tampered-and-stale-import-rejected-atomically",
+                "cost-overhead-closes-gate",
+                "changed-inputs-clear-review",
+                "keyboard-focus-preserved",
+                "axe-wcag-a-aa-no-violations",
+                "mobile-no-overflow",
+                "offline-recovery-and-execution",
+                "mirrored-page",
+            ],
+        }
+        if problem == "transfer-failed":
+            transfer["passed"] = False
+        elif problem == "transfer-origin":
+            transfer["origin"] = "https://example.test/"
+        elif problem == "transfer-check":
+            transfer["checks"].remove("complete-docket-zip-replay")
+        elif problem == "transfer-scenario":
+            transfer["scenarios"].pop()
+        elif problem == "transfer-browser":
+            transfer["browser_errors"] = ["uncaught error"]
+        elif problem == "transfer-schema":
+            transfer["schema"] = "declared-pass"
+        elif problem == "transfer-manuscript":
+            transfer["manuscript_sha256"] = "0" * 64
+        (target / "compounding.json").write_text(json.dumps(transfer))
+    if tuple(map(int, version.split("."))) >= (1, 10, 0):
+        target = evidence / "public-pages" / "decision-studio"
+        target.mkdir()
+        studio = {
+            "schema": "agialpha.decision.acceptance.v1",
+            "origin": url,
+            "passed": True,
+            "commit": manifest["commit"],
+            "version": version,
+            "calculation_version": "1.10.0",
+            "browser_errors": [],
+            "http_failures": [],
+            "cases": [
+                {"id": name}
+                for name in (
+                    "capital",
+                    "invention",
+                    "supply",
+                    "delivery",
+                    "launch",
+                    "inventory",
+                    "service",
+                    "energy",
+                    "proof",
+                    "nova",
+                    "agency",
+                )
+            ],
+            "checks": [
+                "all-case-calculations",
+                "downloaded-dossier-cli-replay",
+                "edited-input-invalidation",
+                "worker-cancellation",
+                "forgery-rejection",
+                "csv-import-infeasibility",
+                "explicit-save-restore-clear",
+                "all-artifact-downloads",
+                "mobile-no-overflow",
+                "accessible-controls",
+                "practical-catalog-search",
+                "legacy-route-bridge",
+                "offline-recalculation",
+                "public-current-assets",
+                "staffing-cap-and-backlog-hold",
+                "editable-table-keyboard-focus",
+                "archived-dossier-replay",
+            ],
+        }
+        changes = {
+            "studio-failed": ("passed", False),
+            "studio-origin": ("origin", "https://example.test/"),
+            "studio-check": ("checks", []),
+            "studio-case": ("cases", []),
+            "studio-browser": ("browser_errors", ["uncaught"]),
+            "studio-http": ("http_failures", ["404"]),
+            "studio-schema": ("schema", "unverified"),
+            "studio-commit": ("commit", "b" * 40),
+            "studio-version": ("version", "1.9.0"),
+            "studio-calculation": ("calculation_version", "1.9.0"),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            studio[key] = value
+        (target / "decision-studio.json").write_text(json.dumps(studio))
+    if tuple(map(int, version.split("."))) >= (1, 12, 1):
+        target = evidence / "public-pages" / "ascension-protocol"
+        target.mkdir()
+        protocol = {
+            "schema": ascension_protocol_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(ascension_protocol_evidence.CHECKS),
+            "asset_sha256": ascension_protocol_evidence.asset_hashes(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "protocol-failed": ("passed", False),
+            "protocol-boolean": ("passed", 1),
+            "protocol-origin": ("origin", "https://example.test/"),
+            "protocol-commit": ("commit", "b" * 40),
+            "protocol-version": ("version", "1.12.0"),
+            "protocol-schema": ("schema", "unverified"),
+            "protocol-check": ("checks", []),
+            "protocol-asset": ("asset_sha256", {}),
+            "protocol-browser": ("browser_errors", ["uncaught"]),
+            "protocol-http": ("http_failures", ["404"]),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            protocol[key] = value
+        (target / "report.json").write_text(json.dumps(protocol))
+    if tuple(map(int, version.split("."))) >= (1, 13, 0):
+        target = evidence / "public-pages" / "business3"
+        target.mkdir()
+        business3 = {
+            "schema": business3_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(business3_evidence.CHECKS),
+            "assets": business3_evidence.asset_hashes(),
+            "cases": business3_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "business3-failed": ("passed", False),
+            "business3-check": ("checks", []),
+            "business3-asset": ("assets", {}),
+            "business3-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            business3[key] = value
+        (target / "business3.json").write_text(json.dumps(business3))
+    if tuple(map(int, version.split("."))) >= (1, 14, 0):
+        target = evidence / "public-pages" / "governance"
+        target.mkdir()
+        governance = {
+            "schema": governance_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(governance_evidence.CHECKS),
+            "assets": governance_evidence.asset_hashes(),
+            "cases": governance_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "governance-failed": ("passed", False),
+            "governance-check": ("checks", []),
+            "governance-asset": ("assets", {}),
+            "governance-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            governance[key] = value
+        (target / "governance.json").write_text(json.dumps(governance))
+    if tuple(map(int, version.split("."))) >= (1, 15, 0):
+        target = evidence / "public-pages" / "discovery"
+        target.mkdir()
+        discovery = {
+            "schema": discovery_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(discovery_evidence.CHECKS),
+            "assets": discovery_evidence.asset_hashes(),
+            "cases": discovery_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "discovery-failed": ("passed", False),
+            "discovery-check": ("checks", []),
+            "discovery-asset": ("assets", {}),
+            "discovery-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            discovery[key] = value
+        (target / "discovery.json").write_text(json.dumps(discovery))
+    if tuple(map(int, version.split("."))) >= (1, 16, 0):
+        target = evidence / "public-pages" / "experience"
+        target.mkdir()
+        experience = {
+            "schema": experience_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(experience_evidence.CHECKS),
+            "assets": experience_evidence.asset_hashes(),
+            "cases": experience_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "experience-failed": ("passed", False),
+            "experience-check": ("checks", []),
+            "experience-asset": ("assets", {}),
+            "experience-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            experience[key] = value
+        (target / "experience.json").write_text(json.dumps(experience))
+    if tuple(map(int, version.split("."))) >= (1, 17, 0):
+        target = evidence / "public-pages" / "mats"
+        target.mkdir()
+        mats = {
+            "schema": mats_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(mats_evidence.CHECKS),
+            "assets": mats_evidence.asset_hashes(),
+            "cases": mats_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "mats-failed": ("passed", False),
+            "mats-check": ("checks", []),
+            "mats-asset": ("assets", {}),
+            "mats-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            mats[key] = value
+        (target / "mats.json").write_text(json.dumps(mats))
+    if tuple(map(int, version.split("."))) >= (1, 18, 0):
+        target = evidence / "public-pages" / "curriculum"
+        target.mkdir()
+        curriculum = {
+            "schema": curriculum_evidence.SCHEMA,
+            "passed": True,
+            "origin": url,
+            "commit": manifest["commit"],
+            "version": version,
+            "checks": sorted(curriculum_evidence.CHECKS),
+            "assets": curriculum_evidence.asset_hashes(),
+            "cases": curriculum_evidence.expected_cases(),
+            "browser_errors": [],
+            "http_failures": [],
+        }
+        changes = {
+            "curriculum-failed": ("passed", False),
+            "curriculum-check": ("checks", []),
+            "curriculum-asset": ("assets", {}),
+            "curriculum-cases": ("cases", []),
+        }
+        if problem in changes:
+            key, value = changes[problem]
+            curriculum[key] = value
+        (target / "curriculum.json").write_text(json.dumps(curriculum))
+    before = {p.name: p.read_bytes() for p in folder.iterdir()}
+    if problem:
+        with pytest.raises(ValueError):
+            finalize_pages_release.finalize(folder, evidence)
+        assert {p.name: p.read_bytes() for p in folder.iterdir()} == before
+        return
+    finalize_pages_release.finalize(folder, evidence)
+    if tuple(map(int, version.split("."))) >= (1, 6, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_insight_atlas"]["passed"]
+    if tuple(map(int, version.split("."))) >= (1, 7, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_proof_bloom"]["passed"]
+    if tuple(map(int, version.split("."))) >= (1, 10, 0):
+        assert (
+            json.loads((folder / "release-manifest.json").read_text())["public_decision_studio"]["commit"]
+            == manifest["commit"]
+        )
+    if tuple(map(int, version.split("."))) >= (1, 12, 1):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_ascension_protocol"] == protocol
+    if tuple(map(int, version.split("."))) >= (1, 13, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_business3"] == business3
+    if tuple(map(int, version.split("."))) >= (1, 14, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_governance"] == governance
+    if tuple(map(int, version.split("."))) >= (1, 16, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_experience"] == experience
+    if tuple(map(int, version.split("."))) >= (1, 17, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_mats"] == mats
+    if tuple(map(int, version.split("."))) >= (1, 18, 0):
+        assert json.loads((folder / "release-manifest.json").read_text())["public_curriculum"] == curriculum
+    assert (folder / "source.zip").read_bytes() == before["source.zip"]
+    with zipfile.ZipFile(archive_path) as archive:
+        assert archive.read("existing.txt") == b"existing evidence"
+        assert "public-pages/release.json" not in archive.namelist()
+    assert archive_path.read_bytes() == before[archive_path.name]
+    finalized = json.loads((folder / "release-manifest.json").read_text())
+    retained = finalized["validation_evidence"]
+    assert retained["local"]["sha256"] == hashlib.sha256(before[archive_path.name]).hexdigest()
+    public_manifest = folder / retained["public"]["manifest"]
+    from scripts.release_packs import restore
+
+    restored = tmp_path / "restored-public-evidence"
+    restore(public_manifest, restored)
+    assert {p.relative_to(restored).as_posix(): p.read_bytes() for p in restored.rglob("*") if p.is_file()} == {
+        p.relative_to(evidence).as_posix(): p.read_bytes() for p in evidence.rglob("*") if p.is_file()
+    }
+    for line in (folder / "SHA256SUMS").read_text().splitlines():
+        digest, name = line.split("  ", 1)
+        assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == digest
+
+
+def test_release_guides_have_working_flattened_links_and_preserve_the_manuscript(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
+    package_agent_release.copy_release_documents(root, tmp_path, version, "a" * 40)
+    if tuple(map(int, version.split("."))) >= (1, 36, 0):
+        from scripts.transformational_evidence import package_workspace
+
+        package_workspace(root, tmp_path)
+    assert {"START_HERE.md", "FACTORY_GUIDE.md", "DEMOS.md", "ASCENSION_PROTOCOL.md"}.issubset(
+        {p.name for p in tmp_path.iterdir()}
+    )
+    for name in ("AGI_ALPHA_Unified_Publication_Final.md", "AGI_ALPHA_Unified_Publication_Final.pdf"):
+        assert (tmp_path / name).read_bytes() == (root / "docs/manuscript" / name).read_bytes()
+    for source in root.joinpath("docs/agent").glob("*.md"):
+        copied = tmp_path / source.name
+        if not copied.exists():
+            continue
+        text = re.sub(r"```.*?```", "", copied.read_text(), flags=re.S)
+        for link in re.findall(r"\]\(([^\s)]+)\)", text):
+            parsed = urlsplit(link)
+            if not parsed.scheme and parsed.path:
+                assert (tmp_path / parsed.path).is_file(), (source.name, link)
+    release_notes = (tmp_path / f"RELEASE_NOTES_{version}.md").read_text()
+    assert f"/blob/{'a' * 40}/docs/agent/START_HERE.md" in release_notes
+    paper_guide = (tmp_path / "WHITEPAPER_IMPLEMENTATION.md").read_text()
+    assert f"/blob/{'a' * 40}/whitepaper_v0.1.0-alphav15.pdf" in paper_guide
+    assert "../assets/whitepaper_v0.1.0-alphav15.pdf" not in paper_guide
+
+
+@pytest.mark.parametrize("staged", [False, True])
+def test_release_packaging_refuses_dirty_source_before_creating_assets(
+    tmp_path: Path, monkeypatch, staged: bool
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    subprocess.run(["git", "init", "-q"], check=True)
+    source = tmp_path / "source.txt"
+    source.write_text("committed version")
+    subprocess.run(["git", "add", "source.txt"], check=True)
+    subprocess.run(
+        ["git", "-c", "user.name=Release Fixture", "-c", "user.email=fixture@example.test", "commit", "-qm", "Fixture"],
+        check=True,
+    )
+    source.write_text("uncommitted version")
+    if staged:
+        subprocess.run(["git", "add", "source.txt"], check=True)
+    monkeypatch.setattr(sys, "argv", ["package", "--output", "release", "--evidence", "evidence"])
+    with pytest.raises(subprocess.CalledProcessError):
+        package_agent_release.main()
+    assert not (tmp_path / "release").exists()
+
+
+def test_integrated_operator_guide_contains_adapter_and_reservation_instructions() -> None:
+    documents = set(package_agent_release.release_documents("1.32.0"))
+    assert {
+        "docs/agent/ECOSYSTEM_ADAPTERS.md",
+        "docs/agent/SUPPLIER_BROWSER_ADAPTER.md",
+        "docs/agent/SUCCESSOR_COMPUTER_USE.md",
+        "docs/agent/NATIVE_BUDGET_RESERVATIONS.md",
+    } <= documents
+
+
+@pytest.mark.parametrize("kind", ["commit", "tag"])
+@pytest.mark.parametrize("target", [None, "a" * 40, "b" * 40])
+def test_publication_preflight_detects_version_collision_without_activation(
+    tmp_path, monkeypatch, kind, target
+) -> None:
+    """Publication only needs source/release checks, never live activation or journal closure."""
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.34.0"\n')
+    monkeypatch.setattr(publish_agent_release, "require_current_main", lambda: "a" * 40)
+    calls = []
+
+    def read_only_github(*args):
+        calls.append(args)
+        assert len(args) == 2 and args[0] == "api", "Preflight must never mutate GitHub"
+        if args[1].endswith("/git/matching-refs/tags/v1.34.0"):
+            # Prefix matches must not collide with the exact version.
+            refs = [{"ref": "refs/tags/v1.34.01", "object": {"type": "commit", "sha": "b" * 40}}]
+            if target:
+                refs.append(
+                    {"ref": "refs/tags/v1.34.0", "object": {"type": kind, "sha": "c" * 40 if kind == "tag" else target}}
+                )
+            return json.dumps(refs)
+        assert kind == "tag" and args[1].endswith("/git/tags/" + "c" * 40)
+        return json.dumps({"object": {"type": "commit", "sha": target}})
+
+    monkeypatch.setattr(publish_agent_release, "gh", read_only_github)
+    if target == "b" * 40:
+        with pytest.raises(ValueError, match="increment the release version"):
+            publish_agent_release.preflight()
+    else:
+        publish_agent_release.preflight()
+    assert calls
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["pyproject.toml"]
+
+
+def test_publication_preflight_fails_closed_on_github_error(tmp_path, monkeypatch) -> None:
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.34.0"\n')
+    monkeypatch.setattr(publish_agent_release, "require_current_main", lambda: "a" * 40)
+
+    def unavailable(*args):
+        raise subprocess.CalledProcessError(1, ["gh", *args], stderr="HTTP 403")
+
+    monkeypatch.setattr(publish_agent_release, "gh", unavailable)
+    with pytest.raises(subprocess.CalledProcessError):
+        publish_agent_release.preflight()
+
+
+def test_publication_preflight_rejects_superseded_main_before_tag_lookup(monkeypatch) -> None:
+    def superseded():
+        raise RuntimeError("Superseded release run")
+
+    monkeypatch.setattr(publish_agent_release, "require_current_main", superseded)
+    monkeypatch.setattr(publish_agent_release, "gh", lambda *args: pytest.fail("Tag lookup before context check"))
+    with pytest.raises(RuntimeError, match="Superseded"):
+        publish_agent_release.preflight()
+
+
+def _public_finalization_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    """Keep early-version gate fixtures focused on transport, without fabricating modern proof."""
+    folder = tmp_path / "release"
+    evidence = tmp_path / "evidence"
+    folder.mkdir()
+    (evidence / "public-pages").mkdir(parents=True)
+    manifest = {"version": "1.4.0", "commit": "a" * 40, "release_gates": []}
+    (folder / "release-manifest.json").write_text(json.dumps(manifest))
+    with zipfile.ZipFile(folder / "alpha-agent-v1.4.0-validation.zip", "w", zipfile.ZIP_STORED) as archive:
+        archive.writestr("public-pages/release.json", b"earlier local capture with the same relative name")
+        archive.writestr("local-evidence.bin", bytes(range(256)) * 27)
+    (evidence / "public-pages/release.json").write_text(
+        json.dumps(
+            {
+                "commit": manifest["commit"],
+                "version": manifest["version"],
+                "url": "https://montrealai.github.io/AGI-Alpha-Agent-v0/",
+            }
+        )
+    )
+    (evidence / "public-pages/workspace.json").write_text(
+        json.dumps(
+            {
+                "origin": "https://montrealai.github.io/AGI-Alpha-Agent-v0/",
+                "model_required": True,
+            }
+        )
+    )
+    checksums = [f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}" for p in sorted(folder.iterdir())]
+    (folder / "SHA256SUMS").write_text("\n".join(checksums) + "\n")
+    return folder, evidence
+
+
+def _release_bytes(folder: Path) -> dict[str, bytes]:
+    return {path.name: path.read_bytes() for path in folder.iterdir()}
+
+
+def test_public_evidence_is_sharded_below_limit_with_all_colliding_capture_bytes_preserved(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from random import Random
+    from scripts.release_packs import restore
+
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    (evidence / "public-pages/incompressible.bin").write_bytes(Random(41).randbytes(25000))
+    original = _release_bytes(folder)
+    bounded = finalize_pages_release.prepare_public_validation
+    monkeypatch.setattr(
+        finalize_pages_release,
+        "prepare_public_validation",
+        lambda *args, **kwargs: bounded(*args, **kwargs, limit=8192),
+    )
+    finalize_pages_release.finalize(folder, evidence)
+    manifest = json.loads((folder / "release-manifest.json").read_text())
+    record = manifest["validation_evidence"]
+    assert record["schema"] == "agialpha.validation-evidence.v1"
+    assert record["public"]["packs"] > 1
+    assert (folder / record["local"]["name"]).read_bytes() == original[record["local"]["name"]]
+    with zipfile.ZipFile(folder / record["local"]["name"]) as archive:
+        assert archive.read("public-pages/release.json") == b"earlier local capture with the same relative name"
+    packed = json.loads((folder / record["public"]["manifest"]).read_text())
+    assert packed["max_asset_bytes"] == 8192
+    for item in packed["packs"]:
+        assert (folder / item["name"]).stat().st_size <= 8192
+        with zipfile.ZipFile(folder / item["name"]) as archive:
+            assert len(archive.namelist()) == len(set(archive.namelist()))
+    assert any(len(item["parts"]) > 1 for item in packed["files"])
+    destination = tmp_path / "restored"
+    restore(folder / record["public"]["manifest"], destination)
+    assert {p.relative_to(destination).as_posix(): p.read_bytes() for p in destination.rglob("*") if p.is_file()} == {
+        p.relative_to(evidence).as_posix(): p.read_bytes() for p in evidence.rglob("*") if p.is_file()
+    }
+    for line in (folder / "SHA256SUMS").read_text().splitlines():
+        expected, name = line.split("  ", 1)
+        assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == expected
+    for item in manifest["assets"]:
+        assert hashlib.sha256((folder / item["name"]).read_bytes()).hexdigest() == item["sha256"]
+
+
+def test_public_finalization_is_byte_idempotent_and_refuses_changed_or_tampered_evidence(tmp_path: Path) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    finalize_pages_release.finalize(folder, evidence)
+    finalized = _release_bytes(folder)
+    finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == finalized
+    (evidence / "new-observation.txt").write_text("a later capture must not silently replace the original")
+    with pytest.raises(ValueError, match="capture bytes"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == finalized
+    (evidence / "new-observation.txt").unlink()
+    pack = next(folder.glob("*-public-validation-*.zip"))
+    pack.write_bytes(pack.read_bytes() + b"tampered")
+    tampered = _release_bytes(folder)
+    with pytest.raises(ValueError, match="Packaged asset changed"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == tampered
+
+
+@pytest.mark.parametrize("problem", ["restore-failure", "ambiguous-path", "unchecksummed-asset"])
+def test_public_pack_failures_preserve_every_original_release_byte(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, problem: str
+) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    if problem == "ambiguous-path":
+        (evidence / "Same.txt").write_bytes(b"one")
+        (evidence / "same.txt").write_bytes(b"another")
+    elif problem == "unchecksummed-asset":
+        (folder / "untracked.bin").write_bytes(b"must not acquire release status")
+    else:
+
+        def rejected_restore(*args, **kwargs):
+            raise ValueError("Synthetic pack restore failure")
+
+        monkeypatch.setattr(finalize_pages_release, "restore", rejected_restore)
+    before = _release_bytes(folder)
+    with pytest.raises(ValueError):
+        finalize_pages_release.finalize(folder, evidence)
+    assert _release_bytes(folder) == before
+    assert not list(tmp_path.glob(".alpha-public-release-*"))
+
+
+def test_public_pack_bytes_are_deterministic_for_identical_captures(tmp_path: Path) -> None:
+    from shutil import copytree
+
+    left = tmp_path / "left"
+    left.mkdir()
+    folder, evidence = _public_finalization_fixture(left)
+    right = tmp_path / "right"
+    copytree(left, right)
+    finalize_pages_release.finalize(folder, evidence)
+    finalize_pages_release.finalize(right / "release", right / "evidence")
+    assert _release_bytes(folder) == _release_bytes(right / "release")
+
+
+def test_failed_public_pack_promotion_rolls_back_new_assets_without_changing_metadata(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    before = _release_bytes(folder)
+    link = finalize_pages_release.os.link
+    promotions = []
+
+    def interrupted_link(source: Path, destination: Path) -> None:
+        if Path(destination).parent == folder and "-public-validation-" in Path(destination).name:
+            promotions.append(Path(destination).name)
+            if len(promotions) == 2:
+                raise OSError("Synthetic interrupted pack promotion")
+        link(source, destination)
+
+    monkeypatch.setattr(finalize_pages_release.os, "link", interrupted_link)
+    with pytest.raises(OSError, match="interrupted pack promotion"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert len(promotions) == 2
+    assert _release_bytes(folder) == before
+    assert not list(tmp_path.glob(".alpha-public-release-*"))
+
+
+def test_failed_second_metadata_promotion_restores_original_metadata_and_removes_new_packs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    folder, evidence = _public_finalization_fixture(tmp_path)
+    before = _release_bytes(folder)
+    replace = finalize_pages_release.os.replace
+    promotions = []
+
+    def interrupted_replace(source: Path, destination: Path) -> None:
+        target = Path(destination)
+        if target.parent == folder and target.name in {"release-manifest.json", "SHA256SUMS"}:
+            promotions.append(target.name)
+            if len(promotions) == 2:
+                raise OSError("Synthetic interrupted metadata promotion")
+        replace(source, destination)
+
+    monkeypatch.setattr(finalize_pages_release.os, "replace", interrupted_replace)
+    with pytest.raises(OSError, match="interrupted metadata promotion"):
+        finalize_pages_release.finalize(folder, evidence)
+    assert promotions[:2] == ["release-manifest.json", "SHA256SUMS"]
+    assert _release_bytes(folder) == before
+    assert not list(tmp_path.glob(".alpha-public-release-*"))
+
+
+def test_verified_paper_descendant_keeps_original_software_identity(monkeypatch):
+    monkeypatch.setenv("GITHUB_REPOSITORY", release_context.REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setenv("GITHUB_SHA", "a" * 40)
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "check_output",
+        lambda *a, **k: json.dumps({"ref": "refs/heads/main", "object": {"sha": "b" * 40, "type": "commit"}}),
+    )
+    calls = []
+    monkeypatch.setattr(release_context, "require_paper_descendant", lambda *args: calls.append(args))
+    assert release_context.require_current_main() == "a" * 40
+    assert calls[0][1:] == ("a" * 40, "b" * 40)
+
+
+def test_published_software_cannot_rollback_later_paper_site(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.37.1"\n')
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "run",
+        lambda *a, **k: subprocess.CompletedProcess(a, 0, json.dumps({"tag_name": "v1.37.1", "draft": False}), ""),
+    )
+    with pytest.raises(RuntimeError, match="already public"):
+        release_context.require_unpublished_software()
+
+
+@pytest.mark.parametrize("draft", [0, 1, None, "false"])
+def test_release_lookup_requires_builtin_boolean_draft(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, draft: object
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion = "1.37.1"\n')
+    monkeypatch.setattr(
+        release_context.subprocess,
+        "run",
+        lambda *a, **k: subprocess.CompletedProcess(a, 0, json.dumps({"tag_name": "v1.37.1", "draft": draft}), ""),
+    )
+    with pytest.raises(ValueError, match="Invalid exact release lookup"):
+        release_context.require_unpublished_software()

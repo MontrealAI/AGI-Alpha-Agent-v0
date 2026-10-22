@@ -1,0 +1,244 @@
+{
+  "schema": "lossless-raw-hook-records/v1",
+  "scope": "Historical pre-annotation release-delta campaign; includes intermediate Ruff-format mutation and wrong-Node ESLint failure",
+  "summaryOriginalPath": "integration-review/pinned-release-delta-hooks.json",
+  "summary": [
+    {
+      "hook": "black",
+      "exit_code": 0,
+      "seconds": 4.72,
+      "log": "../integration-review/pinned-release-delta-black.log",
+      "bytes": 80
+    },
+    {
+      "hook": "ruff",
+      "exit_code": 0,
+      "seconds": 0.28,
+      "log": "../integration-review/pinned-release-delta-ruff.log",
+      "bytes": 80
+    },
+    {
+      "hook": "ruff-format",
+      "exit_code": 1,
+      "seconds": 0.337,
+      "log": "../integration-review/pinned-release-delta-ruff-format.log",
+      "bytes": 14670
+    },
+    {
+      "hook": "flake8",
+      "exit_code": 0,
+      "seconds": 2.264,
+      "log": "../integration-review/pinned-release-delta-flake8.log",
+      "bytes": 80
+    },
+    {
+      "hook": "semgrep",
+      "exit_code": 0,
+      "seconds": 2.379,
+      "log": "../integration-review/pinned-release-delta-semgrep.log",
+      "bytes": 80
+    },
+    {
+      "hook": "shellcheck",
+      "exit_code": 0,
+      "seconds": 0.694,
+      "log": "../integration-review/pinned-release-delta-shellcheck.log",
+      "bytes": 80
+    },
+    {
+      "hook": "actionlint",
+      "exit_code": 0,
+      "seconds": 0.182,
+      "log": "../integration-review/pinned-release-delta-actionlint.log",
+      "bytes": 80
+    },
+    {
+      "hook": "proto-verify",
+      "exit_code": 0,
+      "seconds": 0.169,
+      "log": "../integration-review/pinned-release-delta-proto-verify.log",
+      "bytes": 80
+    },
+    {
+      "hook": "verify-env-docs",
+      "exit_code": 0,
+      "seconds": 0.232,
+      "log": "../integration-review/pinned-release-delta-verify-env-docs.log",
+      "bytes": 80
+    },
+    {
+      "hook": "dp-scrub",
+      "exit_code": 0,
+      "seconds": 0.221,
+      "log": "../integration-review/pinned-release-delta-dp-scrub.log",
+      "bytes": 80
+    },
+    {
+      "hook": "verify-disclaimer-helper",
+      "exit_code": 0,
+      "seconds": 0.23,
+      "log": "../integration-review/pinned-release-delta-verify-disclaimer-helper.log",
+      "bytes": 80
+    },
+    {
+      "hook": "verify-gallery-assets",
+      "exit_code": 0,
+      "seconds": 0.244,
+      "log": "../integration-review/pinned-release-delta-verify-gallery-assets.log",
+      "bytes": 80
+    },
+    {
+      "hook": "verify-html-disclaimer",
+      "exit_code": 0,
+      "seconds": 0.259,
+      "log": "../integration-review/pinned-release-delta-verify-html-disclaimer.log",
+      "bytes": 80
+    },
+    {
+      "hook": "no-binary-diff",
+      "exit_code": 0,
+      "seconds": 0.283,
+      "log": "../integration-review/pinned-release-delta-no-binary-diff.log",
+      "bytes": 80
+    },
+    {
+      "hook": "py-compile",
+      "exit_code": 0,
+      "seconds": 0.443,
+      "log": "../integration-review/pinned-release-delta-py-compile.log",
+      "bytes": 80
+    },
+    {
+      "hook": "eslint-insight-browser",
+      "exit_code": 1,
+      "seconds": 0.174,
+      "log": "../integration-review/pinned-release-delta-eslint-insight-browser.log",
+      "bytes": 14748
+    }
+  ],
+  "rawLogs": [
+    {
+      "originalPath": "integration-review/pinned-release-delta-black.log",
+      "bytes": 80,
+      "sha256": "2869c191c4a23911c683859051a2e2a835761a0ff3f5b76023d6b8f9685c988d",
+      "rawUtf8": "black....................................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-ruff.log",
+      "bytes": 80,
+      "sha256": "2b22759f15811e07b1f1e9d86277cb09b2ac6cebb7f781cea5daaaf7acf65a84",
+      "rawUtf8": "ruff.....................................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-ruff-format.log",
+      "bytes": 14670,
+      "sha256": "a791b4abac53719025c0b8c0606cb9912d6e94109165b663905ad935308d9f1a",
+      "rawUtf8": "ruff-format..............................................................Failed\n- hook id: ruff-format\n- files were modified by this hook\n\n1 file reformatted, 431 files left unchanged\n\nAll changes made by hooks:\ndiff --git a/scripts/legacy_public_urls.py b/scripts/legacy_public_urls.py\nindex 01f8590f..fe34dfdd 100644\n--- a/scripts/legacy_public_urls.py\n+++ b/scripts/legacy_public_urls.py\n@@ -14,6 +14,8 @@ not a browser-execution check and does not detect JavaScript-driven navigation.\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import argparse\n from concurrent.futures import ThreadPoolExecutor\n import hashlib\n@@ -120,7 +122,7 @@ def _pack(path: Path, manifest: dict[str, Any], commit: str, version: str) -> di\n         size, digest = row.get(\"bytes\"), row.get(\"sha256\")\n         if (\n             name.casefold() in folded\n-            or type(size) is not int\n+            or type(size) is not int  # noqa: E721\n             or not 0 <= size <= release_packs.MAX_TOTAL_BYTES\n             or not isinstance(digest, str)\n             or not re.fullmatch(r\"[0-9a-f]{64}\", digest)\ndiff --git a/scripts/release_context.py b/scripts/release_context.py\nindex 94bebf46..fbd11e76 100644\n--- a/scripts/release_context.py\n+++ b/scripts/release_context.py\n@@ -3,6 +3,8 @@\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import json\n import os\n import re\n@@ -68,7 +70,7 @@ def require_unpublished_software() -> None:\n     if (\n         not isinstance(release, dict)\n         or release.get(\"tag_name\") != f\"v{version}\"\n-        or type(release.get(\"draft\")) is not bool\n+        or type(release.get(\"draft\")) is not bool  # noqa: E721\n     ):\n         raise ValueError(\"Invalid exact release lookup\")\n     if release[\"draft\"] is False:\ndiff --git a/scripts/research_papers.py b/scripts/research_papers.py\nindex 826c455f..38a653f1 100644\n--- a/scripts/research_papers.py\n+++ b/scripts/research_papers.py\n@@ -6,6 +6,8 @@ Paper text is data, never a template or program. TEX is stored, never compiled.\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import argparse\n from datetime import date\n import hashlib\n@@ -104,7 +106,7 @@ def parse_catalog(raw: bytes) -> dict[str, Any]:\n             raise ValueError(\"Invalid display title words\")\n         for word in words:\n             plain(word, 100)\n-        if row[\"language\"] != \"en\" or type(row[\"featured\"]) is not bool:\n+        if row[\"language\"] != \"en\" or type(row[\"featured\"]) is not bool:  # noqa: E721\n             raise ValueError(\"This presentation supports English originals and bilingual descriptions\")\n         featured += row[\"featured\"]\n         publication_date = row[\"date\"]\ndiff --git a/scripts/validate_homepage.py b/scripts/validate_homepage.py\nindex eacba160..fd89a9d6 100644\n--- a/scripts/validate_homepage.py\n+++ b/scripts/validate_homepage.py\n@@ -47,7 +47,8 @@ def assert_paper_links(page: Page, language: str) -> None:\n         assert box is not None\n         card_boxes.append(box)\n     for first, box in enumerate(card_boxes):\n-        for other in card_boxes[first + 1 :]:\n+        remaining_start = first + 1\n+        for other in card_boxes[remaining_start:]:\n             horizontal = min(box[\"x\"] + box[\"width\"], other[\"x\"] + other[\"width\"]) - max(box[\"x\"], other[\"x\"])\n             vertical = min(box[\"y\"] + box[\"height\"], other[\"y\"] + other[\"height\"]) - max(box[\"y\"], other[\"y\"])\n             assert min(horizontal, vertical) <= 1, \"Paper cards must not overlap\"\ndiff --git a/scripts/wait_for_release_ci.py b/scripts/wait_for_release_ci.py\nindex c23cbca9..c31ef319 100644\n--- a/scripts/wait_for_release_ci.py\n+++ b/scripts/wait_for_release_ci.py\n@@ -4,6 +4,8 @@\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import argparse\n import json\n import os\n@@ -50,7 +52,10 @@ def assess_runs(runs: list[dict[str, Any]], sha: str) -> bool:\n \n def jobs_endpoint(repository: str, run: dict[str, Any]) -> str:\n     \"\"\"Bind job evidence to one run attempt, not the API's default mixed view.\"\"\"\n-    if repository != REPOSITORY or any(type(run.get(key)) is not int or run[key] <= 0 for key in (\"id\", \"run_attempt\")):\n+    if repository != REPOSITORY or any(\n+        type(run.get(key)) is not int or run[key] <= 0\n+        for key in (\"id\", \"run_attempt\")  # noqa: E721\n+    ):\n         raise ValueError(\"Qualification requires exact positive run and attempt IDs\")\n     return f\"repos/{repository}/actions/runs/{run['id']}/attempts/{run['run_attempt']}/jobs\"\n \n@@ -70,7 +75,7 @@ def fetch_qualification_jobs(repository: str, run: dict[str, Any]) -> dict[str,\n         data = json.loads(response)\n         count, rows = data.get(\"total_count\"), data.get(\"jobs\")\n         if (\n-            type(count) is not int\n+            type(count) is not int  # noqa: E721\n             or not 0 <= count <= MAX_JOBS\n             or not isinstance(rows, list)\n             or len(rows) > 100\n@@ -81,13 +86,13 @@ def fetch_qualification_jobs(repository: str, run: dict[str, Any]) -> dict[str,\n         for job in rows:\n             if (\n                 not isinstance(job, dict)\n-                or type(job.get(\"id\")) is not int\n+                or type(job.get(\"id\")) is not int  # noqa: E721\n                 or job[\"id\"] <= 0\n                 or job[\"id\"] in seen\n-                or type(job.get(\"run_id\")) is not int\n+                or type(job.get(\"run_id\")) is not int  # noqa: E721\n                 or job.get(\"run_id\") != run[\"id\"]\n                 or job.get(\"head_sha\") != run[\"head_sha\"]\n-                or type(job.get(\"run_attempt\", run[\"run_attempt\"])) is not int\n+                or type(job.get(\"run_attempt\", run[\"run_attempt\"])) is not int  # noqa: E721\n                 or job.get(\"run_attempt\", run[\"run_attempt\"]) != run[\"run_attempt\"]\n             ):\n                 raise ValueError(\"Qualification job is not bound to the requested run, attempt and SHA\")\n@@ -116,8 +121,8 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->\n     \"\"\"A green paper-scope workflow is never a successful full-runtime gate.\"\"\"\n     if (\n         not isinstance(record, dict)\n-        or type(record.get(\"run_id\")) is not int\n-        or type(record.get(\"run_attempt\")) is not int\n+        or type(record.get(\"run_id\")) is not int  # noqa: E721\n+        or type(record.get(\"run_attempt\")) is not int  # noqa: E721\n         or any(\n             record.get(key) != expected\n             for key, expected in {\n@@ -132,7 +137,7 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->\n     jobs = record.get(\"jobs\")\n     if (\n         not isinstance(jobs, list)\n-        or type(record.get(\"total_count\")) is not int\n+        or type(record.get(\"total_count\")) is not int  # noqa: E721\n         or record[\"total_count\"] != len(jobs)\n         or not 0 <= len(jobs) <= MAX_JOBS\n     ):\n@@ -141,12 +146,12 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->\n     for job in jobs:\n         if (\n             not isinstance(job, dict)\n-            or type(job.get(\"id\")) is not int\n+            or type(job.get(\"id\")) is not int  # noqa: E721\n             or job[\"id\"] <= 0\n             or job[\"id\"] in seen\n-            or type(job.get(\"run_id\")) is not int\n+            or type(job.get(\"run_id\")) is not int  # noqa: E721\n             or job[\"run_id\"] != run[\"id\"]\n-            or type(job.get(\"run_attempt\")) is not int\n+            or type(job.get(\"run_attempt\")) is not int  # noqa: E721\n             or job[\"run_attempt\"] != run[\"run_attempt\"]\n             or job.get(\"head_sha\") != run[\"head_sha\"]\n         ):\n@@ -188,7 +193,7 @@ def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> Non\n             or not isinstance(run.get(\"id\"), int)\n             or isinstance(run[\"id\"], bool)\n             or run[\"id\"] <= 0\n-            or type(run.get(\"run_attempt\")) is not int\n+            or type(run.get(\"run_attempt\")) is not int  # noqa: E721\n             or run[\"run_attempt\"] <= 0\n             for run in runs\n         ):\ndiff --git a/tests/browser/test_out_execute_browser.py b/tests/browser/test_out_execute_browser.py\nindex 93ddae1e..ea3722ef 100644\n--- a/tests/browser/test_out_execute_browser.py\n+++ b/tests/browser/test_out_execute_browser.py\n@@ -139,7 +139,8 @@ def main() -> None:\n             unsaved_context.close()\n             page.evaluate(AXE.read_text())\n             audit = page.evaluate(\n-                \"async () => await axe.run(document, {runOnly: {type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa','best-practice']}})\"\n+                \"async () => await axe.run(document, {runOnly: {type: 'tag', values: \"\n+                \"['wcag2a','wcag2aa','wcag21aa','best-practice']}})\"\n             )\n             (OUTPUT / \"accessibility.json\").write_text(json.dumps(audit, indent=2))\n             assert not audit[\"violations\"]\ndiff --git a/tests/test_legacy_public_urls.py b/tests/test_legacy_public_urls.py\nindex 29fb575e..98618d83 100644\n--- a/tests/test_legacy_public_urls.py\n+++ b/tests/test_legacy_public_urls.py\n@@ -390,3 +390,15 @@ def test_report_rejects_json_numeric_coercion_inside_candidate_inventory(candida\n     row[\"bytes\"] = float(row[\"bytes\"])\n     with pytest.raises(ValueError, match=\"exact source\"):\n         verify(candidate, report)\n+\n+\n+def test_candidate_inventory_rejects_integer_subclasses(candidate, monkeypatch):\n+    class IntegerSubclass(int):\n+        pass\n+\n+    root, _, pack, manifest = candidate\n+    data = json.loads(pack.read_bytes())\n+    data[\"files\"][0][\"bytes\"] = IntegerSubclass(data[\"files\"][0][\"bytes\"])\n+    monkeypatch.setattr(checker, \"_json\", lambda path: data)\n+    with pytest.raises(ValueError, match=\"Invalid or duplicate candidate path\"):\n+        checker._pack(pack, manifest, COMMIT, VERSION)\ndiff --git a/tests/test_release_ci_gate.py b/tests/test_release_ci_gate.py\nindex 5277ed50..6b813272 100644\n--- a/tests/test_release_ci_gate.py\n+++ b/tests/test_release_ci_gate.py\n@@ -84,6 +84,41 @@ def qualification(**overrides: object) -> dict:\n     } | overrides\n \n \n+class IntSubclass(int):\n+    \"\"\"A numerically equal value must not satisfy exact JSON integer fields.\"\"\"\n+\n+\n+@pytest.mark.parametrize(\"field\", [\"id\", \"run_attempt\"])\n+@pytest.mark.parametrize(\"value\", [True, IntSubclass(1)])\n+def test_qualification_endpoint_refuses_bool_and_integer_subclasses(field: str, value: object) -> None:\n+    with pytest.raises(ValueError, match=\"exact positive\"):\n+        wait_for_release_ci.jobs_endpoint(REPOSITORY, run(**{field: value}))\n+\n+\n+@pytest.mark.parametrize(\n+    \"field,job_field\",\n+    [\n+        (\"run_id\", False),\n+        (\"run_attempt\", False),\n+        (\"total_count\", False),\n+        (\"id\", True),\n+        (\"run_id\", True),\n+        (\"run_attempt\", True),\n+    ],\n+)\n+@pytest.mark.parametrize(\"value\", [True, IntSubclass(1)])\n+def test_qualification_inventory_refuses_bool_and_integer_subclasses(\n+    field: str, job_field: bool, value: object\n+) -> None:\n+    record = qualification()\n+    if job_field:\n+        record[\"jobs\"][0][field] = value\n+    else:\n+        record[field] = value\n+    with pytest.raises(ValueError):\n+        wait_for_release_ci.validate_qualification(record, run(), REPOSITORY)\n+\n+\n def snapshot() -> dict:\n     return {\n         \"commit\": SHA,\n@@ -408,3 +443,40 @@ def test_offline_packaging_rejects_green_paper_scope_before_building(tmp_path: P\n     with pytest.raises(RuntimeError, match=\"Full software qualification\"):\n         package_agent_release.main()\n     assert not Path(\"release\").exists()\n+\n+\n+class IntegerSubclass(int):\n+    \"\"\"An equal numeric value must not satisfy an exact builtin schema.\"\"\"\n+\n+\n+@pytest.mark.parametrize(\"value\", [True, 1.0, IntegerSubclass(1)])\n+@pytest.mark.parametrize(\"field\", [\"id\", \"run_attempt\"])\n+def test_qualification_endpoint_rejects_nonbuiltin_integer_ids(field: str, value: object) -> None:\n+    with pytest.raises(ValueError, match=\"exact positive\"):\n+        wait_for_release_ci.jobs_endpoint(REPOSITORY, run(**{field: value}))\n+\n+\n+@pytest.mark.parametrize(\"value\", [True, 1.0, IntegerSubclass(1)])\n+@pytest.mark.parametrize(\"field\", [\"run_id\", \"run_attempt\", \"total_count\", \"job.id\", \"job.run_id\", \"job.run_attempt\"])\n+def test_qualification_record_rejects_nonbuiltin_integer_fields(field: str, value: object) -> None:\n+    record = qualification()\n+    if field.startswith(\"job.\"):\n+        record[\"jobs\"][0][field.removeprefix(\"job.\")] = value\n+    else:\n+        record[field] = value\n+    with pytest.raises(ValueError):\n+        wait_for_release_ci.validate_qualification(record, run(), REPOSITORY)\n+\n+\n+@pytest.mark.parametrize(\"value\", [True, 1.0, IntegerSubclass(1)])\n+@pytest.mark.parametrize(\"field\", [\"total_count\", \"job.id\", \"job.run_id\", \"job.run_attempt\"])\n+def test_fetched_job_inventory_rejects_nonbuiltin_integer_fields(monkeypatch, field: str, value: object) -> None:\n+    response = {\"total_count\": 1, \"jobs\": [job()]}\n+    if field.startswith(\"job.\"):\n+        response[\"jobs\"][0][field.removeprefix(\"job.\")] = value\n+    else:\n+        response[field] = value\n+    monkeypatch.setattr(subprocess, \"check_output\", lambda *args, **kwargs: \"captured response\")\n+    monkeypatch.setattr(wait_for_release_ci.json, \"loads\", lambda raw: response)\n+    with pytest.raises(ValueError):\n+        wait_for_release_ci.fetch_qualification_jobs(REPOSITORY, run())\ndiff --git a/tests/test_release_publication.py b/tests/test_release_publication.py\nindex b342f641..65adb70c 100644\n--- a/tests/test_release_publication.py\n+++ b/tests/test_release_publication.py\n@@ -1155,3 +1155,16 @@ def test_published_software_cannot_rollback_later_paper_site(tmp_path, monkeypat\n     )\n     with pytest.raises(RuntimeError, match=\"already public\"):\n         release_context.require_unpublished_software()\n+\n+\n+@pytest.mark.parametrize(\"draft\", [0, 1, None, \"false\"])\n+def test_release_lookup_requires_builtin_boolean_draft(tmp_path, monkeypatch, draft):\n+    monkeypatch.chdir(tmp_path)\n+    (tmp_path / \"pyproject.toml\").write_text('[project]\\nversion = \"1.37.1\"\\n')\n+    monkeypatch.setattr(\n+        release_context.subprocess,\n+        \"run\",\n+        lambda *a, **k: subprocess.CompletedProcess(a, 0, json.dumps({\"tag_name\": \"v1.37.1\", \"draft\": draft}), \"\"),\n+    )\n+    with pytest.raises(ValueError, match=\"Invalid exact release lookup\"):\n+        release_context.require_unpublished_software()\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-flake8.log",
+      "bytes": 80,
+      "sha256": "cca5172a2c1673e000aac017e984ae4dcff007ddbf0b3827ce008f39519ccf73",
+      "rawUtf8": "flake8...................................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-semgrep.log",
+      "bytes": 80,
+      "sha256": "1c1bf90bcfdbf5ad6b93e4bf89d0b2273031ea806052b80df43ef0d110ba125f",
+      "rawUtf8": "semgrep..................................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-shellcheck.log",
+      "bytes": 80,
+      "sha256": "7afba59043b8086058fe5e1d69f6da521e200a14f823e48b7eb432d6cb0630d1",
+      "rawUtf8": "shellcheck...............................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-actionlint.log",
+      "bytes": 80,
+      "sha256": "cb285c40d9405a6f10647831baffeec2bc427f2817b2d07c3ef4719639a9b0c5",
+      "rawUtf8": "Lint GitHub Actions workflow files.......................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-proto-verify.log",
+      "bytes": 80,
+      "sha256": "21eacd8675be207ccbb4c0d0860e6cd9c54f2761ff9f4a1769c0dd943c7bb65f",
+      "rawUtf8": "Verify protobuf files are up to date.....................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-verify-env-docs.log",
+      "bytes": 80,
+      "sha256": "880c753c1d48226916c0e0369973c47351f767b44ecee1ffce2f6512864706c7",
+      "rawUtf8": "Verify environment docs and runbook checklist............................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-dp-scrub.log",
+      "bytes": 80,
+      "sha256": "de0509e0565121fa578e079bbb5b4896ba7782bee52893fedac63b4d18be3a1b",
+      "rawUtf8": "Detect private text in commit............................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-verify-disclaimer-helper.log",
+      "bytes": 80,
+      "sha256": "5b3b3cc9afa57b9789f1b1e10f0e863b99f2a738356de00cbbd55deb443aae43",
+      "rawUtf8": "Ensure scripts import disclaimer helper..................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-verify-gallery-assets.log",
+      "bytes": 80,
+      "sha256": "66bebd41dfb750b3a4d6e1cd182e215a18304a681d143ba84721d3228a781d4e",
+      "rawUtf8": "Verify demo gallery preview assets exist.................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-verify-html-disclaimer.log",
+      "bytes": 80,
+      "sha256": "cd971aaa584870ad1f3eefe1240095f0e5353e6a7414e72106a242bd58e5121b",
+      "rawUtf8": "Verify HTML pages reference the disclaimer snippet.......................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-no-binary-diff.log",
+      "bytes": 80,
+      "sha256": "ab96c85187746d46c7b89536ec382fb03270892c9f86c97a26ab0adbc09daebc",
+      "rawUtf8": "Block binary diffs.......................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-py-compile.log",
+      "bytes": 80,
+      "sha256": "126a941292e1ea22e7d713566acf3390d9e651d826a840287221d4036dc63bba",
+      "rawUtf8": "Validate Python syntax with py_compile...................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-eslint-insight-browser.log",
+      "bytes": 14748,
+      "sha256": "d8ff41c860d61be1daba24c5d897346f518b24f2cde06fa426bc02a2262e8ae5",
+      "rawUtf8": "Lint Insight Browser with ESLint.........................................Failed\n- hook id: eslint-insight-browser\n- exit code: 1\n\nerror: Node.js 22.17.1 is required. Run 'nvm use' before linting.\nerror: Node.js 22.17.1 is required. Run 'nvm use' before linting.\n\nAll changes made by hooks:\ndiff --git a/scripts/legacy_public_urls.py b/scripts/legacy_public_urls.py\nindex 01f8590f..fe34dfdd 100644\n--- a/scripts/legacy_public_urls.py\n+++ b/scripts/legacy_public_urls.py\n@@ -14,6 +14,8 @@ not a browser-execution check and does not detect JavaScript-driven navigation.\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import argparse\n from concurrent.futures import ThreadPoolExecutor\n import hashlib\n@@ -120,7 +122,7 @@ def _pack(path: Path, manifest: dict[str, Any], commit: str, version: str) -> di\n         size, digest = row.get(\"bytes\"), row.get(\"sha256\")\n         if (\n             name.casefold() in folded\n-            or type(size) is not int\n+            or type(size) is not int  # noqa: E721\n             or not 0 <= size <= release_packs.MAX_TOTAL_BYTES\n             or not isinstance(digest, str)\n             or not re.fullmatch(r\"[0-9a-f]{64}\", digest)\ndiff --git a/scripts/release_context.py b/scripts/release_context.py\nindex 94bebf46..fbd11e76 100644\n--- a/scripts/release_context.py\n+++ b/scripts/release_context.py\n@@ -3,6 +3,8 @@\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import json\n import os\n import re\n@@ -68,7 +70,7 @@ def require_unpublished_software() -> None:\n     if (\n         not isinstance(release, dict)\n         or release.get(\"tag_name\") != f\"v{version}\"\n-        or type(release.get(\"draft\")) is not bool\n+        or type(release.get(\"draft\")) is not bool  # noqa: E721\n     ):\n         raise ValueError(\"Invalid exact release lookup\")\n     if release[\"draft\"] is False:\ndiff --git a/scripts/research_papers.py b/scripts/research_papers.py\nindex 826c455f..38a653f1 100644\n--- a/scripts/research_papers.py\n+++ b/scripts/research_papers.py\n@@ -6,6 +6,8 @@ Paper text is data, never a template or program. TEX is stored, never compiled.\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import argparse\n from datetime import date\n import hashlib\n@@ -104,7 +106,7 @@ def parse_catalog(raw: bytes) -> dict[str, Any]:\n             raise ValueError(\"Invalid display title words\")\n         for word in words:\n             plain(word, 100)\n-        if row[\"language\"] != \"en\" or type(row[\"featured\"]) is not bool:\n+        if row[\"language\"] != \"en\" or type(row[\"featured\"]) is not bool:  # noqa: E721\n             raise ValueError(\"This presentation supports English originals and bilingual descriptions\")\n         featured += row[\"featured\"]\n         publication_date = row[\"date\"]\ndiff --git a/scripts/validate_homepage.py b/scripts/validate_homepage.py\nindex eacba160..fd89a9d6 100644\n--- a/scripts/validate_homepage.py\n+++ b/scripts/validate_homepage.py\n@@ -47,7 +47,8 @@ def assert_paper_links(page: Page, language: str) -> None:\n         assert box is not None\n         card_boxes.append(box)\n     for first, box in enumerate(card_boxes):\n-        for other in card_boxes[first + 1 :]:\n+        remaining_start = first + 1\n+        for other in card_boxes[remaining_start:]:\n             horizontal = min(box[\"x\"] + box[\"width\"], other[\"x\"] + other[\"width\"]) - max(box[\"x\"], other[\"x\"])\n             vertical = min(box[\"y\"] + box[\"height\"], other[\"y\"] + other[\"height\"]) - max(box[\"y\"], other[\"y\"])\n             assert min(horizontal, vertical) <= 1, \"Paper cards must not overlap\"\ndiff --git a/scripts/wait_for_release_ci.py b/scripts/wait_for_release_ci.py\nindex c23cbca9..c31ef319 100644\n--- a/scripts/wait_for_release_ci.py\n+++ b/scripts/wait_for_release_ci.py\n@@ -4,6 +4,8 @@\n \n from __future__ import annotations\n \n+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).\n+\n import argparse\n import json\n import os\n@@ -50,7 +52,10 @@ def assess_runs(runs: list[dict[str, Any]], sha: str) -> bool:\n \n def jobs_endpoint(repository: str, run: dict[str, Any]) -> str:\n     \"\"\"Bind job evidence to one run attempt, not the API's default mixed view.\"\"\"\n-    if repository != REPOSITORY or any(type(run.get(key)) is not int or run[key] <= 0 for key in (\"id\", \"run_attempt\")):\n+    if repository != REPOSITORY or any(\n+        type(run.get(key)) is not int or run[key] <= 0\n+        for key in (\"id\", \"run_attempt\")  # noqa: E721\n+    ):\n         raise ValueError(\"Qualification requires exact positive run and attempt IDs\")\n     return f\"repos/{repository}/actions/runs/{run['id']}/attempts/{run['run_attempt']}/jobs\"\n \n@@ -70,7 +75,7 @@ def fetch_qualification_jobs(repository: str, run: dict[str, Any]) -> dict[str,\n         data = json.loads(response)\n         count, rows = data.get(\"total_count\"), data.get(\"jobs\")\n         if (\n-            type(count) is not int\n+            type(count) is not int  # noqa: E721\n             or not 0 <= count <= MAX_JOBS\n             or not isinstance(rows, list)\n             or len(rows) > 100\n@@ -81,13 +86,13 @@ def fetch_qualification_jobs(repository: str, run: dict[str, Any]) -> dict[str,\n         for job in rows:\n             if (\n                 not isinstance(job, dict)\n-                or type(job.get(\"id\")) is not int\n+                or type(job.get(\"id\")) is not int  # noqa: E721\n                 or job[\"id\"] <= 0\n                 or job[\"id\"] in seen\n-                or type(job.get(\"run_id\")) is not int\n+                or type(job.get(\"run_id\")) is not int  # noqa: E721\n                 or job.get(\"run_id\") != run[\"id\"]\n                 or job.get(\"head_sha\") != run[\"head_sha\"]\n-                or type(job.get(\"run_attempt\", run[\"run_attempt\"])) is not int\n+                or type(job.get(\"run_attempt\", run[\"run_attempt\"])) is not int  # noqa: E721\n                 or job.get(\"run_attempt\", run[\"run_attempt\"]) != run[\"run_attempt\"]\n             ):\n                 raise ValueError(\"Qualification job is not bound to the requested run, attempt and SHA\")\n@@ -116,8 +121,8 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->\n     \"\"\"A green paper-scope workflow is never a successful full-runtime gate.\"\"\"\n     if (\n         not isinstance(record, dict)\n-        or type(record.get(\"run_id\")) is not int\n-        or type(record.get(\"run_attempt\")) is not int\n+        or type(record.get(\"run_id\")) is not int  # noqa: E721\n+        or type(record.get(\"run_attempt\")) is not int  # noqa: E721\n         or any(\n             record.get(key) != expected\n             for key, expected in {\n@@ -132,7 +137,7 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->\n     jobs = record.get(\"jobs\")\n     if (\n         not isinstance(jobs, list)\n-        or type(record.get(\"total_count\")) is not int\n+        or type(record.get(\"total_count\")) is not int  # noqa: E721\n         or record[\"total_count\"] != len(jobs)\n         or not 0 <= len(jobs) <= MAX_JOBS\n     ):\n@@ -141,12 +146,12 @@ def validate_qualification(record: Any, run: dict[str, Any], repository: str) ->\n     for job in jobs:\n         if (\n             not isinstance(job, dict)\n-            or type(job.get(\"id\")) is not int\n+            or type(job.get(\"id\")) is not int  # noqa: E721\n             or job[\"id\"] <= 0\n             or job[\"id\"] in seen\n-            or type(job.get(\"run_id\")) is not int\n+            or type(job.get(\"run_id\")) is not int  # noqa: E721\n             or job[\"run_id\"] != run[\"id\"]\n-            or type(job.get(\"run_attempt\")) is not int\n+            or type(job.get(\"run_attempt\")) is not int  # noqa: E721\n             or job[\"run_attempt\"] != run[\"run_attempt\"]\n             or job.get(\"head_sha\") != run[\"head_sha\"]\n         ):\n@@ -188,7 +193,7 @@ def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> Non\n             or not isinstance(run.get(\"id\"), int)\n             or isinstance(run[\"id\"], bool)\n             or run[\"id\"] <= 0\n-            or type(run.get(\"run_attempt\")) is not int\n+            or type(run.get(\"run_attempt\")) is not int  # noqa: E721\n             or run[\"run_attempt\"] <= 0\n             for run in runs\n         ):\ndiff --git a/tests/browser/test_out_execute_browser.py b/tests/browser/test_out_execute_browser.py\nindex 93ddae1e..ea3722ef 100644\n--- a/tests/browser/test_out_execute_browser.py\n+++ b/tests/browser/test_out_execute_browser.py\n@@ -139,7 +139,8 @@ def main() -> None:\n             unsaved_context.close()\n             page.evaluate(AXE.read_text())\n             audit = page.evaluate(\n-                \"async () => await axe.run(document, {runOnly: {type: 'tag', values: ['wcag2a','wcag2aa','wcag21aa','best-practice']}})\"\n+                \"async () => await axe.run(document, {runOnly: {type: 'tag', values: \"\n+                \"['wcag2a','wcag2aa','wcag21aa','best-practice']}})\"\n             )\n             (OUTPUT / \"accessibility.json\").write_text(json.dumps(audit, indent=2))\n             assert not audit[\"violations\"]\ndiff --git a/tests/test_legacy_public_urls.py b/tests/test_legacy_public_urls.py\nindex 29fb575e..98618d83 100644\n--- a/tests/test_legacy_public_urls.py\n+++ b/tests/test_legacy_public_urls.py\n@@ -390,3 +390,15 @@ def test_report_rejects_json_numeric_coercion_inside_candidate_inventory(candida\n     row[\"bytes\"] = float(row[\"bytes\"])\n     with pytest.raises(ValueError, match=\"exact source\"):\n         verify(candidate, report)\n+\n+\n+def test_candidate_inventory_rejects_integer_subclasses(candidate, monkeypatch):\n+    class IntegerSubclass(int):\n+        pass\n+\n+    root, _, pack, manifest = candidate\n+    data = json.loads(pack.read_bytes())\n+    data[\"files\"][0][\"bytes\"] = IntegerSubclass(data[\"files\"][0][\"bytes\"])\n+    monkeypatch.setattr(checker, \"_json\", lambda path: data)\n+    with pytest.raises(ValueError, match=\"Invalid or duplicate candidate path\"):\n+        checker._pack(pack, manifest, COMMIT, VERSION)\ndiff --git a/tests/test_release_ci_gate.py b/tests/test_release_ci_gate.py\nindex 5277ed50..6b813272 100644\n--- a/tests/test_release_ci_gate.py\n+++ b/tests/test_release_ci_gate.py\n@@ -84,6 +84,41 @@ def qualification(**overrides: object) -> dict:\n     } | overrides\n \n \n+class IntSubclass(int):\n+    \"\"\"A numerically equal value must not satisfy exact JSON integer fields.\"\"\"\n+\n+\n+@pytest.mark.parametrize(\"field\", [\"id\", \"run_attempt\"])\n+@pytest.mark.parametrize(\"value\", [True, IntSubclass(1)])\n+def test_qualification_endpoint_refuses_bool_and_integer_subclasses(field: str, value: object) -> None:\n+    with pytest.raises(ValueError, match=\"exact positive\"):\n+        wait_for_release_ci.jobs_endpoint(REPOSITORY, run(**{field: value}))\n+\n+\n+@pytest.mark.parametrize(\n+    \"field,job_field\",\n+    [\n+        (\"run_id\", False),\n+        (\"run_attempt\", False),\n+        (\"total_count\", False),\n+        (\"id\", True),\n+        (\"run_id\", True),\n+        (\"run_attempt\", True),\n+    ],\n+)\n+@pytest.mark.parametrize(\"value\", [True, IntSubclass(1)])\n+def test_qualification_inventory_refuses_bool_and_integer_subclasses(\n+    field: str, job_field: bool, value: object\n+) -> None:\n+    record = qualification()\n+    if job_field:\n+        record[\"jobs\"][0][field] = value\n+    else:\n+        record[field] = value\n+    with pytest.raises(ValueError):\n+        wait_for_release_ci.validate_qualification(record, run(), REPOSITORY)\n+\n+\n def snapshot() -> dict:\n     return {\n         \"commit\": SHA,\n@@ -408,3 +443,40 @@ def test_offline_packaging_rejects_green_paper_scope_before_building(tmp_path: P\n     with pytest.raises(RuntimeError, match=\"Full software qualification\"):\n         package_agent_release.main()\n     assert not Path(\"release\").exists()\n+\n+\n+class IntegerSubclass(int):\n+    \"\"\"An equal numeric value must not satisfy an exact builtin schema.\"\"\"\n+\n+\n+@pytest.mark.parametrize(\"value\", [True, 1.0, IntegerSubclass(1)])\n+@pytest.mark.parametrize(\"field\", [\"id\", \"run_attempt\"])\n+def test_qualification_endpoint_rejects_nonbuiltin_integer_ids(field: str, value: object) -> None:\n+    with pytest.raises(ValueError, match=\"exact positive\"):\n+        wait_for_release_ci.jobs_endpoint(REPOSITORY, run(**{field: value}))\n+\n+\n+@pytest.mark.parametrize(\"value\", [True, 1.0, IntegerSubclass(1)])\n+@pytest.mark.parametrize(\"field\", [\"run_id\", \"run_attempt\", \"total_count\", \"job.id\", \"job.run_id\", \"job.run_attempt\"])\n+def test_qualification_record_rejects_nonbuiltin_integer_fields(field: str, value: object) -> None:\n+    record = qualification()\n+    if field.startswith(\"job.\"):\n+        record[\"jobs\"][0][field.removeprefix(\"job.\")] = value\n+    else:\n+        record[field] = value\n+    with pytest.raises(ValueError):\n+        wait_for_release_ci.validate_qualification(record, run(), REPOSITORY)\n+\n+\n+@pytest.mark.parametrize(\"value\", [True, 1.0, IntegerSubclass(1)])\n+@pytest.mark.parametrize(\"field\", [\"total_count\", \"job.id\", \"job.run_id\", \"job.run_attempt\"])\n+def test_fetched_job_inventory_rejects_nonbuiltin_integer_fields(monkeypatch, field: str, value: object) -> None:\n+    response = {\"total_count\": 1, \"jobs\": [job()]}\n+    if field.startswith(\"job.\"):\n+        response[\"jobs\"][0][field.removeprefix(\"job.\")] = value\n+    else:\n+        response[field] = value\n+    monkeypatch.setattr(subprocess, \"check_output\", lambda *args, **kwargs: \"captured response\")\n+    monkeypatch.setattr(wait_for_release_ci.json, \"loads\", lambda raw: response)\n+    with pytest.raises(ValueError):\n+        wait_for_release_ci.fetch_qualification_jobs(REPOSITORY, run())\ndiff --git a/tests/test_release_publication.py b/tests/test_release_publication.py\nindex b342f641..65adb70c 100644\n--- a/tests/test_release_publication.py\n+++ b/tests/test_release_publication.py\n@@ -1155,3 +1155,16 @@ def test_published_software_cannot_rollback_later_paper_site(tmp_path, monkeypat\n     )\n     with pytest.raises(RuntimeError, match=\"already public\"):\n         release_context.require_unpublished_software()\n+\n+\n+@pytest.mark.parametrize(\"draft\", [0, 1, None, \"false\"])\n+def test_release_lookup_requires_builtin_boolean_draft(tmp_path, monkeypatch, draft):\n+    monkeypatch.chdir(tmp_path)\n+    (tmp_path / \"pyproject.toml\").write_text('[project]\\nversion = \"1.37.1\"\\n')\n+    monkeypatch.setattr(\n+        release_context.subprocess,\n+        \"run\",\n+        lambda *a, **k: subprocess.CompletedProcess(a, 0, json.dumps({\"tag_name\": \"v1.37.1\", \"draft\": draft}), \"\"),\n+    )\n+    with pytest.raises(ValueError, match=\"Invalid exact release lookup\"):\n+        release_context.require_unpublished_software()\n"
+    }
+  ],
+  "pathInventory": "checks/pinned-hook-release-delta-paths.json",
+  "laterFormatRechecks": [
+    {
+      "originalPath": "integration-review/pinned-release-delta-black-final.log",
+      "bytes": 80,
+      "sha256": "2869c191c4a23911c683859051a2e2a835761a0ff3f5b76023d6b8f9685c988d",
+      "rawUtf8": "black....................................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-ruff-final.log",
+      "bytes": 80,
+      "sha256": "2b22759f15811e07b1f1e9d86277cb09b2ac6cebb7f781cea5daaaf7acf65a84",
+      "rawUtf8": "ruff.....................................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-ruff-format-final.log",
+      "bytes": 80,
+      "sha256": "60f942e1e35c51f94353ed4d542f976ace340cbc23746accdc86695d2e2178d4",
+      "rawUtf8": "ruff-format..............................................................Passed\n"
+    },
+    {
+      "originalPath": "integration-review/pinned-release-delta-flake8-final.log",
+      "bytes": 80,
+      "sha256": "cca5172a2c1673e000aac017e984ae4dcff007ddbf0b3827ce008f39519ccf73",
+      "rawUtf8": "flake8...................................................................Passed\n"
+    }
+  ]
+}

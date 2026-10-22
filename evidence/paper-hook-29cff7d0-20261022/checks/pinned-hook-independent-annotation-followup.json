@@ -1,0 +1,111 @@
+{
+  "schema": "independent-pinned-hook-final-annotation-and-scanner-assessment/v1",
+  "parentReviewSha256": "a38ac4f00b7cd454f85d5e091354b794c51c727ef3ee09a46141d5829ce7540f",
+  "baseLocalCommit": "ecc2e2227a2e6b0f361ee7b3fc8c512ef62df606",
+  "baseTree": "f4bd8fd71e915fce76a7c476fef11943249002c1",
+  "reviewedState": "dirty-nine-file-working-delta; futurecommitmustmatchsourcehashes",
+  "diffSha256": "e093ef16c4a418a47b492686bd99faf5cd1e4d192639ba3e4e361eaa083f0be8",
+  "diffBytes": 14856,
+  "files": [
+    {
+      "path": "scripts/legacy_public_urls.py",
+      "size": 19357,
+      "sha256": "b397a32ea2bbfa0c41fb7047d7e4163d72d1b6f8173de0703dffc7e31d9a18aa"
+    },
+    {
+      "path": "scripts/release_context.py",
+      "size": 4400,
+      "sha256": "b90c3d12a5db335391be0117d3586cce87241443c1a0296953f708e00624a406"
+    },
+    {
+      "path": "scripts/research_papers.py",
+      "size": 28149,
+      "sha256": "14e4901eb93bf0ad45f5bd8542fdc5f421169722a40da4ad60ff070b74ae2821"
+    },
+    {
+      "path": "scripts/validate_homepage.py",
+      "size": 35927,
+      "sha256": "4d5be6cd631dcf461555ce1e4aabaa296c35a734dfffd55a764ed8d5ac8d5291"
+    },
+    {
+      "path": "scripts/wait_for_release_ci.py",
+      "size": 13535,
+      "sha256": "a27a9ae6567504ec5219dffa28db7605d1103cbb7d91989ae8c43f5570322364"
+    },
+    {
+      "path": "tests/browser/test_out_execute_browser.py",
+      "size": 8271,
+      "sha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e"
+    },
+    {
+      "path": "tests/test_legacy_public_urls.py",
+      "size": 16691,
+      "sha256": "04617091487e98c71d21568356c85c84cfa067404064f7fa97ce264ee4287673"
+    },
+    {
+      "path": "tests/test_release_ci_gate.py",
+      "size": 19141,
+      "sha256": "2598546446255905d565c0a88d04c295f80735e5c7c5dc2e99efa66d9d7476a7"
+    },
+    {
+      "path": "tests/test_release_publication.py",
+      "size": 51872,
+      "sha256": "608f5080fe2a28cd3187682288c40e72e001129608627728b5c13120f257bf6d"
+    }
+  ],
+  "annotationFollowup": {
+    "tests/test_legacy_public_urls.py": {
+      "priorSourceReconstructedExactly": true,
+      "changes": "Any import and new fixture/return annotations only"
+    },
+    "tests/test_release_ci_gate.py": {
+      "priorSourceReconstructedExactly": true,
+      "changes": "Any import, MonkeyPatch annotation, local response annotation and equivalent imported-json patch target"
+    },
+    "tests/test_release_publication.py": {
+      "priorSourceReconstructedExactly": true,
+      "changes": "new fixture/value/return annotations only"
+    }
+  },
+  "otherSixPathsByteIdenticalToPriorReviewedSource": true,
+  "ordinaryTests": {
+    "selectedCases": 17,
+    "passed": 17,
+    "full329Repeated": false,
+    "reason": "only three annotated/new-test-target paths changed; targeted17 cover all adjusted newtestfunctions",
+    "logSha256": "34035dc6c77e92a6fa849e5dc7640e76b43435d4ed875abb3893ffb3f4ab81af",
+    "output": ".................                                                        [100%]\n17 passed, 312 deselected in 0.35s\n"
+  },
+  "typingQualification": {
+    "sixProductionBrowserPaths": "root reports strictPASS; independent semantic/source review retains prior proof",
+    "ninePaths": "root reports145 errors in three largelyuntyped inherited testfiles; not claimedpassing"
+  },
+  "semgrepCaseAssessment": {
+    "scanLogSha256": "65e310dc7a38e5115e496f62ef0b9e4bd98c8b761810f4e2d028b525db046824",
+    "scannedPythonFiles": 9,
+    "pythonRules": 151,
+    "scannerFindingCount": 1,
+    "findingRetained": true,
+    "ruleId": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+    "ruleVersion": "qkTR7zn",
+    "ruleCanonicalSha256": "3e1cd428fe05cbe4cf303009178716651c53df793c1b5a97abc166b86e39a93e",
+    "matchedFile": "tests/browser/test_out_execute_browser.py",
+    "matchedFileSha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e",
+    "matchedLine": 43,
+    "match": "context.on(\"request\", lambda request: requests.append(request.url))",
+    "technicalDisposition": "FALSE_POSITIVE_FOR_THIS_SOURCE_BOUND_MATCH",
+    "sourceReceiver": "requests is a functionlocal list[str] initialized to[] atline36; no requests HTTPclient module is imported",
+    "sourceValue": "request is the Playwright request-event callback argument, not a Django HTTPrequest",
+    "sinkAssessment": "list.append records the observed URL; it does not issue a new server-side or browser request",
+    "ruleReason": "broadpattern requests.$METHOD(...,request.$W,...) matches an append method on a local list byname",
+    "surroundingBehavior": "Browser navigations explicitly target the local ephemeralHTTPserver; recordedURLs are laterasserted tohave thatexactlocalhostprefix orblob scheme",
+    "limits": "The laterURLassertion is posthoc detection, not a network-isolation boundary. This disposition covers only this matched listappend and is not a claim that all browserbehavior is safe. No browser run performed.",
+    "ruleSuppressionAdded": false,
+    "globalConfigurationChanged": false,
+    "formalHumanOrOrganizationApprovalClaimed": false
+  },
+  "findingsInAnnotationRepair": [],
+  "sourceEditsByReviewer": false,
+  "prohibitedProbeOrBrowser": false,
+  "sharedRuntimeInstall": false
+}

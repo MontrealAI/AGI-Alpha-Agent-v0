@@ -1,0 +1,38 @@
+/root/.cache/pre-commit/repol6sg6tzz/py_env-python3.12/lib/python3.12/site-packages/opentelemetry/instrumentation/dependencies.py:4: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import (
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 9 files tracked by git with 151 Code rules:
+  Scanning 9 files with 151 python rules.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+Some files were skipped or only partially analyzed.
+  Scan skipped: 4 files matching .semgrepignore patterns
+  For a full list of skipped files, run semgrep with the --verbose flag.
+
+Ran 151 rules on 9 files: 1 finding.
+
+A new version of Semgrep is available. See https://semgrep.dev/docs/upgrading
+                  
+                  
+┌────────────────┐
+│ 1 Code Finding │
+└────────────────┘
+                                             
+    tests/browser/test_out_execute_browser.py
+   ❯❯❱ python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests
+          Data from request object is passed to a new server-side request. This could lead to a server-side  
+          request forgery (SSRF). To mitigate, ensure that schemes and hosts are validated against an        
+          allowlist, do not forward the response to the user, and ensure proper authentication and transport-
+          layer security in the proxied request. See https://owasp.org/www-                                  
+          community/attacks/Server_Side_Request_Forgery to learn more about SSRF vulnerabilities.            
+          Details: https://sg.run/YvY4                                                                       
+                                                                                                             
+           43┆ context.on("request", lambda request: requests.append(request.url))
+

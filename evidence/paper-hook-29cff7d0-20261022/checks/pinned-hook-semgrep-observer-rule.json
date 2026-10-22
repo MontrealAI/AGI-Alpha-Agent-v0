@@ -1,0 +1,253 @@
+{
+  "rule": {
+    "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+    "message": "Data from request object is passed to a new server-side request. This could lead to a server-side request forgery (SSRF). To mitigate, ensure that schemes and hosts are validated against an allowlist, do not forward the response to the user, and ensure proper authentication and transport-layer security in the proxied request. See https://owasp.org/www-community/attacks/Server_Side_Request_Forgery to learn more about SSRF vulnerabilities.",
+    "metadata": {
+      "cwe": [
+        "CWE-918: Server-Side Request Forgery (SSRF)"
+      ],
+      "owasp": [
+        "A10:2021 - Server-Side Request Forgery (SSRF)",
+        "A01:2025 - Broken Access Control"
+      ],
+      "references": [
+        "https://owasp.org/www-community/attacks/Server_Side_Request_Forgery"
+      ],
+      "category": "security",
+      "technology": [
+        "django"
+      ],
+      "cwe2022-top25": true,
+      "cwe2021-top25": true,
+      "subcategory": [
+        "vuln"
+      ],
+      "likelihood": "MEDIUM",
+      "impact": "HIGH",
+      "confidence": "MEDIUM",
+      "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+      "vulnerability_class": [
+        "Server-Side Request Forgery (SSRF)"
+      ],
+      "source": "https://semgrep.dev/r/python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "shortlink": "https://sg.run/YvY4",
+      "semgrep.dev": {
+        "rule": {
+          "r_id": 9514,
+          "rv_id": 1263406,
+          "rule_id": "j2UvEw",
+          "version_id": "qkTR7zn",
+          "url": "https://semgrep.dev/playground/r/qkTR7zn/python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+          "origin": "community",
+          "path": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests"
+        }
+      }
+    },
+    "languages": [
+      "python"
+    ],
+    "severity": "ERROR",
+    "patterns": [
+      {
+        "pattern-inside": "def $FUNC(...):\n  ...\n"
+      },
+      {
+        "pattern-either": [
+          {
+            "pattern": "requests.$METHOD(..., $S.format(..., request.$W.get(...), ...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., $S % request.$W.get(...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., f\"...{request.$W.get(...)}...\", ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., request.$W.get(...), ...)"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\nrequests.$METHOD(..., $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\n$INTERM = $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\nrequests.$METHOD(..., $STR.format(..., $DATA, ...), ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\n$INTERM = $STR.format(..., $DATA, ...)\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\nrequests.$METHOD(..., $STR % $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\n$INTERM = $STR % $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\nrequests.$METHOD(..., f\"...{$DATA}...\", ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\n$INTERM = f\"...{$DATA}...\"\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\nrequests.$METHOD(..., $STR + $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W.get(...)\n...\n$INTERM = $STR + $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$A = requests.$METHOD(..., request.$W.get(...), ...)"
+          },
+          {
+            "pattern": "return requests.$METHOD(..., request.$W.get(...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., $S.format(..., request.$W(...), ...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., $S % request.$W(...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., f\"...{request.$W(...)}...\", ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., request.$W(...), ...)"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\nrequests.$METHOD(..., $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\n$INTERM = $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\nrequests.$METHOD(..., $STR.format(..., $DATA, ...), ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\n$INTERM = $STR.format(..., $DATA, ...)\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\nrequests.$METHOD(..., $STR % $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\n$INTERM = $STR % $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\nrequests.$METHOD(..., f\"...{$DATA}...\", ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\n$INTERM = f\"...{$DATA}...\"\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\nrequests.$METHOD(..., $STR + $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W(...)\n...\n$INTERM = $STR + $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$A = requests.$METHOD(..., request.$W(...), ...)"
+          },
+          {
+            "pattern": "return requests.$METHOD(..., request.$W(...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., $S.format(..., request.$W[...], ...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., $S % request.$W[...], ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., f\"...{request.$W[...]}...\", ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., request.$W[...], ...)"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\nrequests.$METHOD(..., $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\n$INTERM = $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\nrequests.$METHOD(..., $STR.format(..., $DATA, ...), ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\n$INTERM = $STR.format(..., $DATA, ...)\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\nrequests.$METHOD(..., $STR % $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\n$INTERM = $STR % $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\nrequests.$METHOD(..., f\"...{$DATA}...\", ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\n$INTERM = f\"...{$DATA}...\"\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\nrequests.$METHOD(..., $STR + $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W[...]\n...\n$INTERM = $STR + $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$A = requests.$METHOD(..., request.$W[...], ...)"
+          },
+          {
+            "pattern": "return requests.$METHOD(..., request.$W[...], ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., $S.format(..., request.$W, ...), ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., $S % request.$W, ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., f\"...{request.$W}...\", ...)"
+          },
+          {
+            "pattern": "requests.$METHOD(..., request.$W, ...)"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\nrequests.$METHOD(..., $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\n$INTERM = $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\nrequests.$METHOD(..., $STR.format(..., $DATA, ...), ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\n$INTERM = $STR.format(..., $DATA, ...)\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\nrequests.$METHOD(..., $STR % $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\n$INTERM = $STR % $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\nrequests.$METHOD(..., f\"...{$DATA}...\", ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\n$INTERM = f\"...{$DATA}...\"\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\nrequests.$METHOD(..., $STR + $DATA, ...)\n"
+          },
+          {
+            "pattern": "$DATA = request.$W\n...\n$INTERM = $STR + $DATA\n...\nrequests.$METHOD(..., $INTERM, ...)\n"
+          },
+          {
+            "pattern": "$A = requests.$METHOD(..., request.$W, ...)"
+          },
+          {
+            "pattern": "return requests.$METHOD(..., request.$W, ...)"
+          }
+        ]
+      }
+    ]
+  },
+  "sourceRulesFileSha256": "e3c25cf9b28ddfd3cb1b7f240d2fc0998734199efa539fa0b10281487a602e79"
+}

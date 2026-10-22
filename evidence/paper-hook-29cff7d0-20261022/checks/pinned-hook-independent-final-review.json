@@ -1,0 +1,138 @@
+{
+  "schema": "independent-pinned-hook-compatibility-review/v1",
+  "scope": "STATIC_AND_ORDINARY_NEGATIVE_REGRESSION_REVIEW_NOT_HOSTED_QUALIFICATION",
+  "ownerRequest": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4854#issuecomment-6330353929",
+  "baseLocalCommit": "ecc2e2227a2e6b0f361ee7b3fc8c512ef62df606",
+  "baseTree": "f4bd8fd71e915fce76a7c476fef11943249002c1",
+  "publicEquivalentBase": "bd98d353735a03969783f0255f07d9c9cfb8745f",
+  "reviewedState": "dirty-nine-file-working-delta; bind future commit to these exact hashes or review changed inputs",
+  "diffSha256": "cd6b9c5e0fbb0b9809ce2947650f6896de8b6a6f0ca29a207648ad36126b4c8b",
+  "diffBytes": 14449,
+  "files": [
+    {
+      "path": "scripts/legacy_public_urls.py",
+      "size": 19357,
+      "sha256": "b397a32ea2bbfa0c41fb7047d7e4163d72d1b6f8173de0703dffc7e31d9a18aa",
+      "baselineSha256": "0a8c88fee3329ee508c9f6e4eae0bdee4aa649018588c8407c4e508603d818a9"
+    },
+    {
+      "path": "scripts/release_context.py",
+      "size": 4400,
+      "sha256": "b90c3d12a5db335391be0117d3586cce87241443c1a0296953f708e00624a406",
+      "baselineSha256": "c45192cda0ee92cbc3bcc451851767e9f0941b17370d5591f9f4bdf17b149783"
+    },
+    {
+      "path": "scripts/research_papers.py",
+      "size": 28149,
+      "sha256": "14e4901eb93bf0ad45f5bd8542fdc5f421169722a40da4ad60ff070b74ae2821",
+      "baselineSha256": "2af10f52549c31a38c35cca8a319cd8a6095f4764b25f67a142db3d3dc679758"
+    },
+    {
+      "path": "scripts/validate_homepage.py",
+      "size": 35927,
+      "sha256": "4d5be6cd631dcf461555ce1e4aabaa296c35a734dfffd55a764ed8d5ac8d5291",
+      "baselineSha256": "dd64b2aa314b44938a2304acb75004d6c392d587d4f632ad8c5573a3b183bd73"
+    },
+    {
+      "path": "scripts/wait_for_release_ci.py",
+      "size": 13535,
+      "sha256": "a27a9ae6567504ec5219dffa28db7605d1103cbb7d91989ae8c43f5570322364",
+      "baselineSha256": "239f01419013c92eca712a64a38ab9ddf089c4186b9eb1a4a8e78246f6e99424"
+    },
+    {
+      "path": "tests/browser/test_out_execute_browser.py",
+      "size": 8271,
+      "sha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e",
+      "baselineSha256": "0f1c49383402bd0fa6a6987aa11170e28551c521b732ffe7f06464dc9c47bbd4"
+    },
+    {
+      "path": "tests/test_legacy_public_urls.py",
+      "size": 16635,
+      "sha256": "ab7d151a60cb655399816c180fe0ac34a4ff91b0db3a1a940a93fea325d0492a",
+      "baselineSha256": "a1c8dff4ed97e16a25535a3de33785b9eafcb39b6385581e65795c3c473e7ee5"
+    },
+    {
+      "path": "tests/test_release_ci_gate.py",
+      "size": 19096,
+      "sha256": "83b6e8bd8cac453dc196009c72baf47a2db9b6da111326851f837d813765e982",
+      "baselineSha256": "7cf22e401ea62c21a2909c6b92b6aa0e46e4206e92e88ed23bce85ead806748a"
+    },
+    {
+      "path": "tests/test_release_publication.py",
+      "size": 51824,
+      "sha256": "9f4cb436939ef0a9c8be6e5be3f8e76f4a67ddce4ed236080d98048d1e1f74e0",
+      "baselineSha256": "3b87d7329e8fdd25d67c4ef6c3151c7d04479bfef5ccec626ab2bd67dea57d22"
+    }
+  ],
+  "astChecks": {
+    "scripts/legacy_public_urls.py": {
+      "rawAstIdentical": true
+    },
+    "scripts/release_context.py": {
+      "rawAstIdentical": true
+    },
+    "scripts/research_papers.py": {
+      "rawAstIdentical": true
+    },
+    "tests/browser/test_out_execute_browser.py": {
+      "rawAstIdentical": true
+    },
+    "scripts/wait_for_release_ci.py": {
+      "rawAstIdentical": false,
+      "astIdenticalAfterOnlyFixedTupleAliasNormalization": true,
+      "exactTuple": [
+        "id",
+        "run_attempt"
+      ],
+      "allOtherFunctionsRawAstIdentical": true
+    },
+    "scripts/validate_homepage.py": {
+      "astIdenticalAfterOnlySliceAliasNormalization": true,
+      "remainingStart": "first+1",
+      "sameCardPairRange": true
+    }
+  },
+  "negativeBoundaryAssessment": {
+    "exactBuiltinIntChecksPreserved": true,
+    "booleanAndSubclassRefusalPreserved": true,
+    "exactBooleanDraftAndFeaturedSchemasPreserved": true,
+    "jobRunAttemptSourceIdentityAndCompleteInventoryGatesUnchanged": true,
+    "noGlobalLintOrRuleChanges": true,
+    "narrowPerLineE721Exceptions": true,
+    "existingResearchCatalogRejectsFeatured1": true,
+    "qualificationAddedCases": "endpoint and record/fetched-inventory bool,float,int-subclass exact fields; existing frozen16-case overlap retained alongside41newrootcases",
+    "candidatePackAddedCase": "int subclass bytes refused, existing bool and float cases retained",
+    "releaseDraftAddedCases": [
+      0,
+      1,
+      null,
+      "false"
+    ]
+  },
+  "ordinaryTests": {
+    "runtime": "/dev/shm/discovery-clean-pytest/bin/python",
+    "python": "3.12",
+    "pytest": "8.4.1",
+    "pluginAutoload": false,
+    "conftest": false,
+    "files": [
+      "tests/test_legacy_public_urls.py",
+      "tests/test_release_ci_gate.py",
+      "tests/test_release_publication.py"
+    ],
+    "passed": 329,
+    "seconds": 10.9,
+    "log": "integration-review/pinned-hook-independent-scoped-tests.log",
+    "logSha256": "66d767570c86facc017ef5caf8c3aee29893ac43bed762edd4e38f086a9be083",
+    "scopedFlake8ExitCode": 0
+  },
+  "findings": [],
+  "reviewerSourceEdits": false,
+  "prohibitedExecutionOrBrowserProbes": false,
+  "sharedRuntimeInstall": false,
+  "limitations": [
+    "This is same-session AI technical review, not institutional or human approval.",
+    "No full release-delta hook pass or hosted final-head check is inferred; root separately owns those pending checks.",
+    "The earlier intermediate AST report saw owner formatting in progress; final report normalizes only explicitly verified inert aliases."
+  ]
+}
