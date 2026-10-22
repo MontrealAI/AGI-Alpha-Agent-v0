@@ -101,6 +101,17 @@ ENTERPRISE_EXTRA_FILES = ENTERPRISE_PARENT_EXTRA_FILES | {
         "e02eb78e93d637475c5db53a2fe21efcabf85b410fd0ba450f155d7379dd652a",
     ),
 }
+# The 1.39 edition retains the same scientific catalogue and complete source
+# closure. Only these three generated gallery workers have new reviewed bytes.
+ENTERPRISE_139_EXTRA_FILES = ENTERPRISE_EXTRA_FILES | {
+    "docs/service-worker.js": (23275, "ac2035bc13defd9e1118969eae165106d5eac952ee7d69b54f54c05f0664ff44"),
+    "docs/assets/service-worker.js": (23707, "76eb433503202b0020a1df522afed3686b5f6d846634ff481bf57dced64685d6"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26299,
+        "a36cc805ecbbefad9ac5b393c9aa42312f60d952802aa8ae7ff896d536d49549",
+    ),
+}
+SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
 class Record(TypedDict):
@@ -158,16 +169,20 @@ def _canonical(raw: bytes, expected: str, size: int | None, name: str) -> bytes:
     return canonical
 
 
-def _source_profile(raw: bytes) -> tuple[str, int, int, dict[str, tuple[int, str]]]:
+def _source_profiles(raw: bytes) -> list[SourceProfile]:
     digest = _hash(raw.replace(b"\r\n", b"\n"))
+    profiles = []
     for source_hash, source_count, file_count, extra in (
         (SOURCE_HASH, 41, 49, EXTRA_FILES),
         (ENTERPRISE_PARENT_SOURCE_HASH, 53, 61, ENTERPRISE_PARENT_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
-            return source_hash, source_count, file_count, extra
-    raise ValueError("Private or unexpected capability bytes; nothing refreshed: " + CATALOG)
+            profiles.append((source_hash, source_count, file_count, extra))
+    if not profiles:
+        raise ValueError("Private or unexpected capability bytes; nothing refreshed: " + CATALOG)
+    return profiles
 
 
 def _fingerprint(value: os.stat_result) -> tuple[int, ...]:
@@ -181,11 +196,9 @@ def _unchanged(root: Path, records: list[Record]) -> None:
             raise ValueError("Checkout changed during repair; stop and retain backup: " + record["path"])
 
 
-def refresh(root: Path = ROOT, *, apply: bool = False, backup_parent: Path | None = None) -> RefreshResult:
-    """Check the selected exact closure before any backup or canonical-byte replacement."""
-    root = root.resolve(strict=True)
-    catalog_raw, _ = _read(root, CATALOG)
-    source_hash, source_count, file_count, extra = _source_profile(catalog_raw)
+def _profile_records(root: Path, catalog_raw: bytes, profile: SourceProfile) -> list[Record]:
+    """Validate the entire fixed byte edition without writing or accepting a mixture."""
+    source_hash, source_count, file_count, extra = profile
     catalog_bytes = _canonical(catalog_raw, extra[CATALOG][1], extra[CATALOG][0], CATALOG)
     catalog = json.loads(catalog_bytes)
     sources = catalog["sources"]
@@ -207,6 +220,25 @@ def refresh(root: Path = ROOT, *, apply: bool = False, backup_parent: Path | Non
         records.append({"path": name, "raw": raw, "canonical": canonical, "status": status})
     if sum(len(r["raw"]) for r in records) > MAX_TOTAL_BYTES:
         raise ValueError("Capability repair exceeds total bound")
+    return records
+
+
+def refresh(root: Path = ROOT, *, apply: bool = False, backup_parent: Path | None = None) -> RefreshResult:
+    """Check one complete exact closure before any backup or canonical-byte replacement."""
+    root = root.resolve(strict=True)
+    catalog_raw, _ = _read(root, CATALOG)
+    failure: ValueError | None = None
+    for profile in _source_profiles(catalog_raw):
+        try:
+            records = _profile_records(root, catalog_raw, profile)
+        except ValueError as error:
+            failure = error
+        else:
+            source_hash, _, file_count, _ = profile
+            break
+    else:
+        assert failure is not None
+        raise failure
     changed = [r for r in records if r["raw"] != r["canonical"]]
     result: RefreshResult = {
         "schema": "capability-lf-checkout-refresh/v1",

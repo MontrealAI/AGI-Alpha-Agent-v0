@@ -2,7 +2,7 @@
 
 # Operate the $AGIALPHA Agent
 
-Current release: **1.38.0** (proposed source scope; not published). See [release readiness and deployment scope](RELEASE_READINESS.md)
+Current experimental source candidate: **1.39.0** (publication and installed compatibility pending). See [release readiness and deployment scope](RELEASE_READINESS.md)
 before choosing a launch path; use one published release's matching assets and manifest for its actual delivery identity.
 
 For Nova-Seed projects and the installed Studio desk, begin with the

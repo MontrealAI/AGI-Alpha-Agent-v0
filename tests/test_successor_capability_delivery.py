@@ -529,7 +529,7 @@ def test_checkout_refresh_keeps_legacy_identity_and_refuses_cross_profile_bytes(
     legacy = json.loads(legacy_raw)
     assert len(legacy["sources"]) == 41 and legacy["sourceHash"] == helper.SOURCE_HASH
     for raw in (legacy_raw, legacy_raw.replace(b"\n", b"\r\n")):
-        source_hash, source_count, file_count, extra = helper._source_profile(raw)
+        source_hash, source_count, file_count, extra = helper._source_profiles(raw)[0]
         assert (source_hash, source_count, file_count) == (helper.SOURCE_HASH, 41, 49)
         assert extra == helper.EXTRA_FILES
         assert helper._canonical(raw, extra[helper.CATALOG][1], extra[helper.CATALOG][0], helper.CATALOG) == legacy_raw
@@ -551,7 +551,7 @@ def test_checkout_refresh_keeps_legacy_identity_and_refuses_cross_profile_bytes(
             json.dumps(changed["sources"], sort_keys=True, separators=(",", ":")).encode()
         ).hexdigest()
         with pytest.raises(ValueError, match="unexpected capability bytes"):
-            helper._source_profile(json.dumps(changed, sort_keys=True, indent=2).encode() + b"\n")
+            helper._source_profiles(json.dumps(changed, sort_keys=True, indent=2).encode() + b"\n")
 
 
 def test_checkout_refresh_preserves_the_preceding_enterprise_source_profile() -> None:
@@ -560,7 +560,7 @@ def test_checkout_refresh_preserves_the_preceding_enterprise_source_profile() ->
     assert len(raw) == 6894
     assert hashlib.sha256(raw).hexdigest() == "0d8207718f1757e2d5c6707909825f034bb79fe7afcc61ac95eb9b6ffe228e5f"
     for encoded in (raw, raw.replace(b"\n", b"\r\n")):
-        source_hash, source_count, file_count, extra = helper._source_profile(encoded)
+        source_hash, source_count, file_count, extra = helper._source_profiles(encoded)[0]
         assert source_hash == helper.ENTERPRISE_PARENT_SOURCE_HASH != helper.ENTERPRISE_SOURCE_HASH
         assert (source_count, file_count) == (53, 61)
         assert extra == helper.ENTERPRISE_PARENT_EXTRA_FILES
@@ -568,7 +568,72 @@ def test_checkout_refresh_preserves_the_preceding_enterprise_source_profile() ->
     changed = json.loads(raw)
     changed["sourceHash"] = helper.ENTERPRISE_SOURCE_HASH
     with pytest.raises(ValueError, match="unexpected capability bytes"):
-        helper._source_profile(json.dumps(changed, sort_keys=True, indent=2).encode() + b"\n")
+        helper._source_profiles(json.dumps(changed, sort_keys=True, indent=2).encode() + b"\n")
+
+
+def _enterprise_138_workers() -> dict[str, bytes]:
+    helper = load_script("refresh_capability_checkout")
+    fixture = json.loads((ROOT / "tests/fixtures/capability-checkout-enterprise-138-workers.json").read_bytes())
+    assert fixture["sourceCommit"] == "a3c519049de93e98f09d0c124ce7b926001078b6"
+    assert fixture["sourceTree"] == "4295eddcded465bef546ac81080452fb1e163686"
+    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    changed = {
+        name
+        for name, record in helper.ENTERPRISE_139_EXTRA_FILES.items()
+        if record != helper.ENTERPRISE_EXTRA_FILES[name]
+    }
+    assert set(fixture["files"]) == changed
+    workers = {}
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == (entry["bytes"], entry["sha256"])
+        assert (entry["bytes"], entry["sha256"]) == helper.ENTERPRISE_EXTRA_FILES[name]
+        workers[name] = raw
+    return workers
+
+
+@pytest.mark.parametrize("historical", [False, True])
+def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path: Path, historical: bool) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    if historical:
+        for name, raw in _enterprise_138_workers().items():
+            (root / name).write_bytes(raw.replace(b"\n", b"\r\n"))
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+    result = helper.refresh(root, apply=True, backup_parent=backups)
+    assert result["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    assert result["checked"] == 61 and result["applied"] is True
+    backup = Path(result["backupDirectory"])
+    for name, raw in originals.items():
+        assert (backup / "files" / name).read_bytes() == raw
+        assert (root / name).read_bytes() == raw.replace(b"\r\n", b"\n")
+    assert helper.refresh(root)["needsRefresh"] == []
+
+
+@pytest.mark.parametrize("edit", ["mixed-root", "mixed-assets", "mixed-insight", "unknown", "old-tampered"])
+def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_writes(tmp_path: Path, edit: str) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    old = _enterprise_138_workers()
+    names = list(old)
+    if edit.startswith("mixed-"):
+        name = names[["mixed-root", "mixed-assets", "mixed-insight"].index(edit)]
+        (root / name).write_bytes(old[name].replace(b"\n", b"\r\n"))
+    else:
+        if edit == "old-tampered":
+            for name, raw in old.items():
+                (root / name).write_bytes(raw.replace(b"\n", b"\r\n"))
+        path = root / names[0]
+        path.write_bytes(path.read_bytes().replace(b"const CACHE", b"const OTHER", 1))
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+    with pytest.raises(ValueError, match="unexpected capability bytes"):
+        helper.refresh(root, apply=True, backup_parent=backups)
+    assert originals == {name: (root / name).read_bytes() for name in originals}
+    assert list(backups.iterdir()) == []
 
 
 @pytest.mark.parametrize("edit", ["private", "mixed", "catalog", "oversize", "retained-generated"])

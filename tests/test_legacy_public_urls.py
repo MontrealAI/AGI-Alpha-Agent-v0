@@ -403,3 +403,154 @@ def test_candidate_inventory_rejects_integer_subclasses(candidate: Any, monkeypa
     monkeypatch.setattr(checker, "_json", lambda path: data)
     with pytest.raises(ValueError, match="Invalid or duplicate candidate path"):
         checker._pack(pack, manifest, COMMIT, VERSION)
+
+
+@pytest.fixture
+def fetch_sequence(monkeypatch):
+    """Exercise the real fetch/observe path without networking or sleeping."""
+    from io import BytesIO
+    from urllib.error import HTTPError
+
+    calls, sleeps, responses, errors = [], [], [], []
+    outcomes = []
+    url = checker.ORIGIN + "paper.pdf"
+    raw = b"%PDF-1.7\noriginal paper\n"
+
+    class Response:
+        status = 200
+        headers = {"Content-Length": str(len(raw)), "Content-Type": "application/pdf"}
+        closed = False
+
+        def __init__(self, outcome):
+            self.outcome = outcome
+            self.reads = []
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            self.closed = True
+
+        def geturl(self):
+            return url
+
+        def read(self, size):
+            self.reads.append(size)
+            if self.outcome == "read-timeout":
+                raise TimeoutError("body stalled")
+            return self.outcome
+
+    class Opener:
+        def open(self, request, timeout):
+            calls.append((request.full_url, request.get_method(), timeout))
+            outcome = outcomes.pop(0)
+            if isinstance(outcome, int):
+                error = HTTPError(url, outcome, "HTTP failure", {}, BytesIO(b"error body"))
+                errors.append(error)
+                raise error
+            if isinstance(outcome, Exception):
+                raise outcome
+            response = Response(outcome)
+            responses.append(response)
+            return response
+
+    def build(handler):
+        assert isinstance(handler, checker._NoRedirect)
+        return Opener()
+
+    monkeypatch.setattr(checker.urllib.request, "build_opener", build)
+    monkeypatch.setattr(checker.time, "sleep", sleeps.append)
+    return outcomes, calls, sleeps, responses, errors, url, raw
+
+
+@pytest.mark.parametrize("status", [429, 502, 503, 504])
+@pytest.mark.parametrize("method", ["GET", "HEAD"])
+def test_fetch_retries_only_transient_http_statuses(fetch_sequence, status, method):
+    outcomes, calls, sleeps, responses, errors, url, raw = fetch_sequence
+    outcomes.extend([status, status, raw])
+    assert checker._fetch(url, method, len(raw))[3] == (raw if method == "GET" else b"")
+    assert calls == [(url, method, 60)] * 3
+    assert sleeps == [1, 2]
+    assert all(error.fp.closed for error in errors)
+    assert all(response.closed for response in responses)
+    assert responses[0].reads == ([len(raw) + 1] if method == "GET" else [])
+
+
+@pytest.mark.parametrize("failure", ["open-timeout", "wrapped-timeout", "read-timeout"])
+def test_fetch_retries_timeouts_without_partial_body(fetch_sequence, failure):
+    from urllib.error import URLError
+
+    outcomes, calls, sleeps, responses, _, url, raw = fetch_sequence
+    error = TimeoutError("connection stalled")
+    outcome = error if failure == "open-timeout" else URLError(error) if failure == "wrapped-timeout" else failure
+    outcomes.extend([outcome, raw])
+    assert checker._fetch(url, "GET", len(raw))[3] == raw
+    assert len(calls) == 2
+    assert sleeps == [1]
+    assert all(response.closed for response in responses)
+
+
+@pytest.mark.parametrize("failure", [429, 502, 503, 504, "open-timeout", "wrapped-timeout", "read-timeout"])
+def test_fetch_retry_exhaustion_is_bounded_and_diagnostic(fetch_sequence, failure):
+    from urllib.error import URLError
+
+    outcomes, calls, sleeps, responses, errors, url, raw = fetch_sequence
+    outcome = TimeoutError("stalled") if failure == "open-timeout" else failure
+    if failure == "wrapped-timeout":
+        outcome = URLError(TimeoutError("stalled"))
+    outcomes.extend([outcome] * 3 + [raw])
+    with pytest.raises(ValueError) as caught:
+        checker._fetch(url, "GET", len(raw))
+    status = failure if isinstance(failure, int) else 200 if failure == "read-timeout" else "unavailable"
+    assert f"method=GET url={url} status={status} attempts=3" in str(caught.value)
+    assert len(calls) == 3
+    assert sleeps == [1, 2]
+    assert outcomes == [raw]
+    assert all(error.fp.closed for error in errors)
+    assert all(response.closed for response in responses)
+
+
+@pytest.mark.parametrize("status", [301, 302, 303, 307, 308, 400, 401, 403, 404, 410, 500])
+def test_fetch_permanent_http_failure_is_not_retried(fetch_sequence, status):
+    outcomes, calls, sleeps, _, errors, url, raw = fetch_sequence
+    outcomes.extend([status, raw])
+    with pytest.raises(ValueError, match=f"status={status} attempts=1"):
+        checker._fetch(url, "GET", len(raw))
+    assert len(calls) == 1
+    assert sleeps == []
+    assert errors[0].fp.closed
+
+
+def test_fetch_non_timeout_network_failure_is_not_retried(fetch_sequence):
+    from ssl import SSLCertVerificationError
+    from urllib.error import URLError
+
+    outcomes, calls, sleeps, _, _, url, raw = fetch_sequence
+    outcomes.extend([URLError(SSLCertVerificationError("invalid certificate")), raw])
+    with pytest.raises(ValueError, match="status=unavailable attempts=1"):
+        checker._fetch(url, "GET", len(raw))
+    assert len(calls) == 1
+    assert sleeps == []
+
+
+@pytest.mark.parametrize("damage", ["short", "oversized", "same-sized"])
+def test_transient_retry_does_not_mask_body_integrity(candidate, fetch_sequence, damage):
+    outcomes, calls, sleeps, _, _, _, raw = fetch_sequence
+    body = raw[:-1] if damage == "short" else raw + b"x" if damage == "oversized" else raw[:-1] + b"x"
+    outcomes.extend([503, body, raw])
+    with pytest.raises(ValueError, match="bytes differ"):
+        checker._observe("paper.pdf", "paper.pdf", record(raw), candidate[3])
+    assert len(calls) == 2
+    assert sleeps == [1]
+    assert outcomes == [raw]
+
+
+@pytest.mark.parametrize("status", [302, 404])
+def test_transient_retry_does_not_mask_later_permanent_failure(fetch_sequence, status):
+    outcomes, calls, sleeps, _, _, url, raw = fetch_sequence
+    outcomes.extend([503, status, raw])
+    with pytest.raises(ValueError, match=f"status={status} attempts=2"):
+        checker._fetch(url, "GET", len(raw))
+    assert len(calls) == 2
+    assert sleeps == [1]
+    assert outcomes == [raw]

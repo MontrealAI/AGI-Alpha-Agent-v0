@@ -50,12 +50,12 @@ Research proposals and bounded studies, not claims of general autonomous capabil
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current source candidate · 1.38.0.** [Integrated flagship release notes](docs/agent/RELEASE_NOTES_1.38.0.md).
-This combined software candidate adds bounded OUT-EXECUTE execution and brings the seven original papers together
-with the six-stage Discovery Lab, frozen future-task experiments and one replayed evidence docket. It preserves
-existing proposal and Out-Evolve journeys. This is not a claim that every proposed capability is implemented.
-Synthetic results and unsigned work drafts grant no operational authority.
-Predecessor qualification, independent integration review and exact-source publication checks remain required.
+**Current experimental source candidate · 1.39.0.** [Autonomous Enterprises preview notes](docs/agent/RELEASE_NOTES_1.39.0.md).
+The additive enterprise workspace develops a bounded finite capability, freezes it and compares later tasks
+while retaining rejected alternatives, declared costs and recoverable history. It extends the existing six-stage
+Discovery Lab, OUT-EXECUTE and thirteen-section evidence docket. Supplied synthetic semantics and zero-cap
+inspection drafts describe the supported preview; installed native compatibility, external model/tool pilots
+and observed organizational benefit retain separate qualification. Fresh exact-source release gates remain pending.
 
 ## Choose your next step
 
