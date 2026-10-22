@@ -194,7 +194,7 @@ def first_use(browser: Browser, output: Path, errors: list[str], external: list[
     page.keyboard.press("Tab")
     expect(page.locator(".skip")).to_be_focused()
     page.keyboard.press("Enter")
-    assert page.url.endswith("#computer-title")
+    expect(page).to_have_url(f"{URL}#computer-title")
     expect(page.locator("#computer-title")).to_be_focused()
     page.keyboard.press("Tab")
     expect(page.locator('[data-i18n="computerRunnerGuide"]')).to_be_focused()

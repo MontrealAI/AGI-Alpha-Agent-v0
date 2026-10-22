@@ -104,7 +104,7 @@ def main() -> None:
             page.keyboard.press("Tab")
             expect(page.locator(".skip")).to_be_focused()
             page.keyboard.press("Enter")
-            assert page.url.endswith("#workspace")
+            expect(page).to_have_url(f"{url}#workspace")
             audit(page, "initial")
             capture(page, "desktop-introduction", ".hero")
             expect(page.locator("#development")).to_be_disabled()
