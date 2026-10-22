@@ -8,7 +8,7 @@ const DENIED = new Set(['fsmonitor', 'worktree', 'hookspath', 'attributesfile', 
     'vcs', 'include', 'includeif', 'protocol']);
 const FALSE = new Set(['false', 'no', 'off', '0']);
 
-function configRows(text) {
+function configRows(text, ignoredWorktree = false) {
     assert.ok(typeof text === 'string' && Buffer.byteLength(text) <= 128000
         && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(text), 'Bounded Git configuration text required');
     let section = null, subsection = null;
@@ -26,7 +26,8 @@ function configRows(text) {
         if (!line) continue;
         if (line.startsWith('[')) {
             const match = /^\[([A-Za-z][A-Za-z0-9-]*)(?:\s+"([^"\\]*)")?\]$/.exec(line);
-            assert.ok(match && SECTIONS.has(match[1].toLowerCase()), 'Unexpected local Git configuration section');
+            assert.ok(match && (SECTIONS.has(match[1].toLowerCase())
+                || (ignoredWorktree && match[1].toLowerCase() === 'index')), 'Unexpected local Git configuration section');
             section = match[1].toLowerCase(); subsection = match[2] ?? null;
             assert.ok(subsection === null || ['remote', 'branch', 'http'].includes(section),
                 'Unexpected local Git configuration subsection');
@@ -65,9 +66,10 @@ export function auditGitConfiguration(config, ignoredWorktree = null) {
     if (ignoredWorktree !== null) {
         // Admit only the inert sparse-checkout-disable residue, never executable
         // or redirected settings even though this file is disabled by the audit above.
-        for (const row of configRows(ignoredWorktree)) {
-            assert.ok(row.section === 'core' && row.subsection === null
-                && ['sparsecheckout', 'sparsecheckoutcone', 'bare'].includes(row.key)
+        for (const row of configRows(ignoredWorktree, true)) {
+            assert.ok(row.subsection === null
+                && ((row.section === 'core' && ['sparsecheckout', 'sparsecheckoutcone', 'bare'].includes(row.key))
+                    || (row.section === 'index' && row.key === 'sparse'))
                 && FALSE.has(row.value?.toLowerCase()), 'Non-benign ignored worktree configuration is refused');
         }
     }
