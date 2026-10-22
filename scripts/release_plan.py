@@ -59,7 +59,8 @@ def plan_for_proved_scope(base: str, head: str, *, has_paper_changes: bool) -> R
     """Describe a completed independent proof; this does not perform that proof."""
     if any(not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha) for sha in (base, head)):
         raise ValueError("Release plans require exact source identities")
-    if base == head or type(has_paper_changes) is not bool:
+    # Identity admits only the two bool singletons, not truthy/equal substitutes.
+    if base == head or (has_paper_changes is not True and has_paper_changes is not False):
         raise ValueError("Release plans require a real, classified transition")
     return ReleasePlan(
         SCHEMA,
