@@ -39,7 +39,7 @@ def fixture_site(tmp_path: Path, text: str) -> Path:
     ],
 )
 def test_valid_ordinary_markdown_is_allowed(tmp_path: Path, text: str) -> None:
-    checker.validate_page(fixture_site(tmp_path, text))
+    checker.validate_docs(fixture_site(tmp_path, text))
 
 
 @pytest.mark.parametrize(
@@ -52,11 +52,12 @@ def test_valid_ordinary_markdown_is_allowed(tmp_path: Path, text: str) -> None:
 )
 def test_missing_local_targets_fail_like_strict_build(tmp_path: Path, text: str) -> None:
     root = fixture_site(tmp_path, text)
-    with pytest.raises(ValueError, match="Strict editorial"):
-        checker.validate_page(root)
+    from mkdocs.exceptions import Abort
+
+    with pytest.raises(Abort):
+        checker.validate_docs(root)
     from mkdocs.commands.build import build
     from mkdocs.config import load_config
-    from mkdocs.exceptions import Abort
 
     with pytest.raises(Abort):
         build(load_config(config_file=str(root / "mkdocs.yml"), strict=True))
@@ -65,11 +66,13 @@ def test_missing_local_targets_fail_like_strict_build(tmp_path: Path, text: str)
 def test_actual_configured_anchor_severity_is_used(tmp_path: Path) -> None:
     root = fixture_site(tmp_path, "# Changelog\n[Anchor](target.md#missing)")
     # MkDocs 1.6.1 defaults missing anchors to INFO, not a strict error.
-    checker.validate_page(root)
+    checker.validate_docs(root)
     with (root / "mkdocs.yml").open("a") as f:
         f.write("validation:\n  links:\n    anchors: warn\n")
-    with pytest.raises(ValueError, match="does not contain an anchor"):
-        checker.validate_page(root)
+    from mkdocs.exceptions import Abort
+
+    with pytest.raises(Abort):
+        checker.validate_docs(root)
 
 
 def test_prebuild_generated_targets_and_page_hooks_are_preserved(tmp_path: Path) -> None:
@@ -84,7 +87,7 @@ def test_prebuild_generated_targets_and_page_hooks_are_preserved(tmp_path: Path)
     )
     with (root / "mkdocs.yml").open("a") as f:
         f.write("hooks: [hook.py]\n")
-    checker.validate_page(root)
+    checker.validate_docs(root)
     assert not (root / "site").exists()
 
 
@@ -92,8 +95,10 @@ def test_plugin_excluded_targets_follow_mkdocs_semantics(tmp_path: Path) -> None
     root = fixture_site(tmp_path, "# Changelog\n[Target](target.md)")
     config = root / "mkdocs.yml"
     config.write_text(config.read_text().replace("plugins: []", "plugins:\n  - exclude:\n      glob: ['target.md']"))
-    with pytest.raises(ValueError, match="Strict editorial"):
-        checker.validate_page(root)
+    from mkdocs.exceptions import Abort
+
+    with pytest.raises(Abort):
+        checker.validate_docs(root)
 
 
 @pytest.mark.parametrize("mutation", ["altered-plan", "wrong-head", "dirty"])
@@ -117,7 +122,7 @@ def test_bad_proof_or_checkout_never_loads_hooks(tmp_path: Path, monkeypatch, mu
             else b"" if args[0] == "status" else ("c" * 40 if mutation == "wrong-head" else "b" * 40).encode()
         ),
     )
-    monkeypatch.setattr(checker, "validate_page", lambda root: pytest.fail("Unproved checkout executed hooks"))
+    monkeypatch.setattr(checker, "validate_docs", lambda root: pytest.fail("Unproved checkout executed hooks"))
     with pytest.raises(ValueError):
         checker.check(tmp_path, scope)
 
@@ -137,7 +142,7 @@ def test_pure_and_mixed_editorial_require_check_but_paper_only_does_not(
     monkeypatch.setattr(checker, "prove_paper_descendants", lambda *args: scope)
     monkeypatch.setattr(checker, "git", lambda root, *args: b"" if args[0] == "status" else ("b" * 40).encode())
     calls = []
-    monkeypatch.setattr(checker, "validate_page", calls.append)
+    monkeypatch.setattr(checker, "validate_docs", calls.append)
     assert checker.check(tmp_path, scope) is expected
     assert calls == ([tmp_path] if expected else [])
 
@@ -238,3 +243,69 @@ def test_actual_workflow_propagates_editorial_failure(tmp_path: Path) -> None:
     )
     assert result.returncode == 19, result.stderr
     assert not summary.exists()
+
+
+def test_missing_page_template_fails_the_complete_build(tmp_path: Path) -> None:
+    root = fixture_site(tmp_path, "---\ntemplate: missing.html\n---\n# Changelog\n")
+    from jinja2 import TemplateNotFound
+
+    with pytest.raises(TemplateNotFound):
+        checker.validate_docs(root)
+    assert not (root / "site").exists()
+
+
+@pytest.mark.parametrize(
+    "template,exception",
+    [
+        ("{% broken template %}", "syntax"),
+        ("{{ 1 / 0 }}", "runtime"),
+    ],
+)
+def test_existing_but_invalid_template_cannot_pass(tmp_path: Path, template: str, exception: str) -> None:
+    root = fixture_site(tmp_path, "---\ntemplate: custom.html\n---\n# Changelog\n")
+    from jinja2 import TemplateSyntaxError
+
+    templates = root / "templates"
+    templates.mkdir()
+    (templates / "custom.html").write_text(template)
+    config = root / "mkdocs.yml"
+    config.write_text(config.read_text().replace("theme: mkdocs", "theme:\n  name: mkdocs\n  custom_dir: templates"))
+    with pytest.raises(TemplateSyntaxError if exception == "syntax" else ZeroDivisionError):
+        checker.validate_docs(root)
+
+
+def test_valid_front_matter_and_final_output_hooks_work_from_policy_directory(tmp_path: Path, monkeypatch) -> None:
+    root = fixture_site(
+        tmp_path, "---\ntemplate: main.html\ntitle: Corrected title\n---\n# Changelog\n[Target](target.md)\n"
+    )
+    (root / "hook.py").write_text(
+        "from pathlib import Path\n"
+        "def on_post_build(config):\n"
+        "    output = Path(config.site_dir)\n"
+        '    assert "<html" in (output / "CHANGELOG/index.html").read_text()\n'
+        '    (Path(config.docs_dir).parent / "observed-output").write_text(str(output))\n'
+    )
+    with (root / "mkdocs.yml").open("a") as f:
+        f.write("hooks: [hook.py]\n")
+    policy = root / "extracted-policy"
+    policy.mkdir()
+    monkeypatch.chdir(policy)
+    checker.validate_docs(root)
+    output = Path((root / "observed-output").read_text())
+    assert not output.exists()
+    assert not (root / "site").exists()
+
+
+def test_material_search_and_exclude_render_valid_front_matter(tmp_path: Path) -> None:
+    root = fixture_site(tmp_path, "---\ntemplate: main.html\n---\n# Changelog\n[Target](target.md)\n")
+    pytest.importorskip("material", reason="Production theme requires the docs dependency profile")
+    config = root / "mkdocs.yml"
+    config.write_text(
+        config.read_text()
+        .replace("theme: mkdocs", "theme: material")
+        .replace("plugins: []", "plugins:\n  - search\n  - exclude:\n      glob: ['ignored/**']")
+    )
+    (root / "docs/ignored").mkdir()
+    (root / "docs/ignored/draft.md").write_text("[Excluded draft](missing.md)")
+    checker.validate_docs(root)
+    assert not (root / "site").exists()

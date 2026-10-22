@@ -8,16 +8,16 @@ creation, deletion, executable modes, symlinks and invalid UTF-8 fall back to fu
 qualification. The existing 25 MB Git-proof bound still applies.
 
 Because the changelog is also a MkDocs navigation page, pure editorial and mixed
-paper/editorial changes must pass a targeted MkDocs page check. It uses the pinned
-documentation renderer, unchanged repository configuration, plugins, exclusions,
-normal generated link targets and Markdown warning levels. Missing local targets
-fail with the same warning-to-error semantics as strict MkDocs. Ordinary valid
-links, headings and corrections remain allowed. This renders the changed page
-(and referenced anchor targets), not a complete site or software acceptance run;
-it does not verify external URLs or publish the changed page. Checker and lock
-files are extracted from the trusted pre-change base; missing policy takes the
-full lane. A fresh Git proof and clean exact-source checkout are required before
-loading repository hooks. No browser, container or application setup is added.
+paper/editorial changes must pass the existing complete strict MkDocs build.
+The pinned documentation toolchain loads the unchanged repository configuration,
+templates, plugins and normal generated targets. Missing local targets, missing
+page templates and template-rendering errors fail normally; ordinary valid links,
+headings, front matter and corrections remain allowed. Output is built in a
+fresh temporary directory and discarded, never uploaded or published. This is a
+documentation build, not a software, browser or container acceptance campaign.
+It does not verify external URLs. Checker and lock files are extracted from the
+trusted pre-change base; missing policy takes the full lane. A fresh Git proof
+and clean exact-source checkout are required before loading repository hooks.
 
 The policy compares complete exact Git trees and every introduced transition,
 including side-branch history. A code change followed by a revert cannot hide
