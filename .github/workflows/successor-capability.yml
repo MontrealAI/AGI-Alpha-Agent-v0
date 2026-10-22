@@ -8,6 +8,7 @@ on:
       - examples/successor-workbench/mission-store.mjs
       - docs/assets/successor/engine.mjs
       - docs/successor/capabilities/**
+      - docs/alpha_factory_v1/demos/successor/capabilities/**
       - scripts/generate_successor_capability.py
       - scripts/run_local_tests.py
       - scripts/validate_discovery_lab.py
@@ -76,8 +77,9 @@ jobs:
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py
+          python scripts/mirror_demo_pages.py
           python scripts/build_service_worker.py
-          git diff --exit-code -- docs/successor/capabilities docs/service-worker.js docs/assets/service-worker.js docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js
+          git diff --exit-code -- docs/successor/capabilities docs/alpha_factory_v1/demos/successor/capabilities docs/service-worker.js docs/assets/service-worker.js docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js
       - name: Browser journey, accessibility and durable recovery
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js

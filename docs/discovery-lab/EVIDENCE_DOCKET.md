@@ -97,6 +97,12 @@ Every retained receipt has a semantic `receiptId` and a separate exact-byte
 `receiptDigest`. Different stages or retries can share one logical commission
 and currency route while retaining their separate inspection costs. Reframing
 one receipt with whitespace or property-order changes cannot charge it twice.
+Identity version `discovery-lab-receipt-identity/v2` binds the parsed canonical
+work request and the validated inspection. It excludes the raw request hash and
+framing-derived receiver/reservation/allowance/total memory and storage fields
+from identity only. Exact raw hashes and all validated reported resource charges
+remain in the retained evidence and ledger. Native work, stage, request limits,
+outcome and diagnostics remain bound to the identity.
 The commission's alternative routes are still listed once each. The receiver
 schema has no authenticated invocation nonce; identical semantic receipts from
 two actual invocations cannot be distinguished without a separately retained

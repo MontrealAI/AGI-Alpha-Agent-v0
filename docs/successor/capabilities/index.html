@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-gcSkBy/6863aDas6xNk17I0MJR3vj6vZfzIjRYPf8hc='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nCkrfrhJrYh04dBAMymmK6ZCBy3CUQYEuXsZV9Hq5SE='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -492,7 +492,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>1c6d719a9b5b78878fb4ec9b813c4b38dad91d0483f63c111b7be0ad926090b5</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -3751,6 +3751,21 @@ function receiverSource(input, route) {
     'Docket receiver source identity differs.');
     return input;
 }
+function semanticReceipt(receipt, request) {
+    const inspection = copy(receipt);
+    // Raw JSON framing has its own exact-byte digest. It cannot mint another
+    // inspection identity, including through sizes derived from that framing.
+    delete inspection.original; delete inspection.requestSha256;
+    for (const key of ['receiverUsed', 'receiverReservation', 'nativeLimits', 'totalUsed']) {
+        if (inspection.resources[key] === null) continue;
+        delete inspection.resources[key].storageBytes;
+        delete inspection.resources[key].memoryBytes;
+    }
+    // Native work, limits in the parsed request, stage, outcome and diagnostics
+    // remain bound. Without an invocation nonce identical executions cannot be
+    // distinguished; no caller-supplied identity is invented for them.
+    return {schema: 'discovery-lab-receipt-identity/v2', request, inspection};
+}
 async function inspectReceiverReceipt(input, context, options = {}) {
     const frame = JSON.parse(contract.canonical({input, context, options}));
     input = frame.input; context = frame.context; options = frame.options;
@@ -3851,7 +3866,7 @@ async function inspectReceiverReceipt(input, context, options = {}) {
             review: 'separate-review-required', settlement: 'not-connected'})
         && receipt.capabilityAcceptance === 'not-granted-by-import' && receipt.authority === 'none',
     'Docket receiver status or authority is forged.');
-    return {receiptId: await contract.payloadDigest(receipt), receiptDigest: await rawReceiptDigest(input.raw), requestDigest: receipt.requestSha256,
+    return {receiptId: await contract.payloadDigest(semanticReceipt(receipt, request)), receiptDigest: await rawReceiptDigest(input.raw), requestDigest: receipt.requestSha256,
         campaignDigest: campaign.campaignDigest, commission: copy(receipt.commission), state,
         resources: copy(resources.totalUsed), source: copy(source),
         provenance: 'retained-unattested-source',
@@ -7084,29 +7099,51 @@ async function inspectReadOnlyDeployment(handle, deploymentName, {rpc, keccak256
     requireValue(typeof provider === 'string' && /^[a-zA-Z0-9._-]{1,128}$/.test(provider), 'Use a public provider label without a credential or URL');
     requireValue(Number.isSafeInteger(maxDurationMs) && maxDurationMs >= 1 && maxDurationMs <= 60000, 'Bound the observation duration');
     const start = performance.now(), calls = [], rows = [], deployment = handle.inventory.deployments[deploymentName];
-    let observedBlock = null, phase = 'chain';
+    const controller = new AbortController(), ownedSignal = controller.signal;
+    let observedBlock = null, phase = 'chain', callerAbort, observation, beforeCleanupElapsed;
+    function guardDeadline(deadline) {
+        if (performance.now() > deadline) {
+            controller.abort();
+            throw Error('Observation deadline exceeded');
+        }
+        requireValue(!ownedSignal.aborted, 'Observation cancelled');
+    }
     async function call(method, params) {
         requireValue(['eth_chainId', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call'].includes(method), 'Read-only RPC method required');
-        requireValue(!signal?.aborted && performance.now() - start < maxDurationMs && calls.length < 100, 'Observation cancelled or budget exhausted');
+        guardDeadline(start + maxDurationMs);
+        requireValue(calls.length < 100, 'Observation call budget exhausted');
         calls.push({method, params});
-        const result = parseBounded(canonical(await bounded(() => rpc({method, params, signal}))));
-        requireValue(performance.now() - start <= maxDurationMs, 'Observation deadline exceeded');
+        const result = parseBounded(canonical(await bounded(() => rpc({method, params, signal: ownedSignal}))));
+        guardDeadline(start + maxDurationMs);
         return result;
     }
     async function bounded(operation) {
         let timer, abort;
         const operationDeadline = Math.min(start + maxDurationMs, performance.now() + 5000);
         try {
-            const result = await Promise.race([Promise.resolve().then(operation), new Promise((_, reject) => {
-                timer = setTimeout(() => reject(Error('Bounded RPC timeout')), Math.min(5000, maxDurationMs - (performance.now() - start)));
-                if (signal) { abort = () => reject(Error('Cancelled')); signal.addEventListener('abort', abort, {once: true}); }
+            guardDeadline(operationDeadline);
+            const result = await Promise.race([Promise.resolve().then(() => {
+                guardDeadline(operationDeadline);
+                return operation();
+            }), new Promise((_, reject) => {
+                abort = () => reject(Error('Observation cancelled'));
+                ownedSignal.addEventListener('abort', abort, {once: true});
+                if (ownedSignal.aborted) abort();
+                timer = setTimeout(() => {
+                    controller.abort();
+                    reject(Error('Bounded observation timeout'));
+                }, Math.max(0, operationDeadline - performance.now()));
             })]);
-            requireValue(!signal?.aborted, 'Cancelled');
-            requireValue(performance.now() <= operationDeadline, 'Observation deadline exceeded');
+            guardDeadline(operationDeadline);
             return result;
-        } finally { clearTimeout(timer); if (abort) signal.removeEventListener('abort', abort); }
+        } finally { clearTimeout(timer); if (abort) ownedSignal.removeEventListener('abort', abort); }
     }
     try {
+        if (signal) {
+            callerAbort = () => controller.abort();
+            signal.addEventListener('abort', callerAbort, {once: true});
+            if (signal.aborted) callerAbort();
+        }
         const chain = await call('eth_chainId', []); requireValue(chain === '0x1', 'Wrong chain');
         phase = 'block';
         const block = await call('eth_getBlockByNumber', ['finalized', false]);
@@ -7133,18 +7170,29 @@ async function inspectReadOnlyDeployment(handle, deploymentName, {rpc, keccak256
         phase = 'block-recheck';
         const recheck = await call('eth_getBlockByNumber', [block.number, false]);
         requireValue(same(recheck.hash, block.hash), 'Observation block changed');
-        requireValue(!signal?.aborted && performance.now() - start <= maxDurationMs, 'Observation cancelled or deadline exceeded');
+        guardDeadline(start + maxDurationMs);
         const accepted = rows.every(row => row.codeMatches && row.ownerMatches !== false);
-        return freeze({...initial, provider, status: accepted ? 'OBSERVED_CODE_AND_RECORDED_OWNERS' : 'REJECTED_IDENTITY_MISMATCH',
+        observation = {...initial, provider, status: accepted ? 'OBSERVED_CODE_AND_RECORDED_OWNERS' : 'REJECTED_IDENTITY_MISMATCH',
             block: observedBlock, contracts: rows, calls,
-            costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(performance.now() - start))},
             incomplete: ['ABI_AND_COMPILER_SOURCE', 'PROXY_AND_EXTERNAL_AUTHORITY', 'TOKEN_AND_IDENTITY_ROOTS',
-                'PAUSE_BALANCES_ALLOWANCES_AND_POLICY', 'INDEPENDENT_OPERATOR_AND_ACTIVATION_APPROVAL']});
+                'PAUSE_BALANCES_ALLOWANCES_AND_POLICY', 'INDEPENDENT_OPERATOR_AND_ACTIVATION_APPROVAL']};
     } catch {
-        return freeze({...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
+        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
             block: observedBlock, partialContracts: rows, stoppedAt: phase, observationComplete: false,
-            reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE'], costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(performance.now() - start))}});
+            reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
+    } finally {
+        beforeCleanupElapsed = performance.now() - start;
+        controller.abort();
+        if (callerAbort) signal.removeEventListener('abort', callerAbort);
     }
+    const elapsed = performance.now() - start;
+    if (signal?.aborted || elapsed > maxDurationMs) {
+        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
+            block: observedBlock, partialContracts: rows,
+            stoppedAt: beforeCleanupElapsed <= maxDurationMs && elapsed > maxDurationMs ? 'cleanup' : observation.stoppedAt ?? phase,
+            observationComplete: false, reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
+    }
+    return freeze({...observation, costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(elapsed))}});
 }
 
 function prepareOperatorIntent(handle, route, raw) {
@@ -7185,7 +7233,7 @@ const discoveryFuture=capability_module_10;
 const discoveryDocket=capability_module_22;
 const discoveryDeployments=capability_module_23;
 const discoveryRealTask=capability_module_12;
-const SOURCE_HASH='1c6d719a9b5b78878fb4ec9b813c4b38dad91d0483f63c111b7be0ad926090b5';
+const SOURCE_HASH='99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -8349,7 +8397,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "1c6d719a9b5b78878fb4ec9b813c4b38dad91d0483f63c111b7be0ad926090b5"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {

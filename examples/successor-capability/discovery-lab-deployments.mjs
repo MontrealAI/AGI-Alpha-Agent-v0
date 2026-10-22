@@ -81,29 +81,51 @@ export async function inspectReadOnlyDeployment(handle, deploymentName, {rpc, ke
     requireValue(typeof provider === 'string' && /^[a-zA-Z0-9._-]{1,128}$/.test(provider), 'Use a public provider label without a credential or URL');
     requireValue(Number.isSafeInteger(maxDurationMs) && maxDurationMs >= 1 && maxDurationMs <= 60000, 'Bound the observation duration');
     const start = performance.now(), calls = [], rows = [], deployment = handle.inventory.deployments[deploymentName];
-    let observedBlock = null, phase = 'chain';
+    const controller = new AbortController(), ownedSignal = controller.signal;
+    let observedBlock = null, phase = 'chain', callerAbort, observation, beforeCleanupElapsed;
+    function guardDeadline(deadline) {
+        if (performance.now() > deadline) {
+            controller.abort();
+            throw Error('Observation deadline exceeded');
+        }
+        requireValue(!ownedSignal.aborted, 'Observation cancelled');
+    }
     async function call(method, params) {
         requireValue(['eth_chainId', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call'].includes(method), 'Read-only RPC method required');
-        requireValue(!signal?.aborted && performance.now() - start < maxDurationMs && calls.length < 100, 'Observation cancelled or budget exhausted');
+        guardDeadline(start + maxDurationMs);
+        requireValue(calls.length < 100, 'Observation call budget exhausted');
         calls.push({method, params});
-        const result = parseBounded(canonical(await bounded(() => rpc({method, params, signal}))));
-        requireValue(performance.now() - start <= maxDurationMs, 'Observation deadline exceeded');
+        const result = parseBounded(canonical(await bounded(() => rpc({method, params, signal: ownedSignal}))));
+        guardDeadline(start + maxDurationMs);
         return result;
     }
     async function bounded(operation) {
         let timer, abort;
         const operationDeadline = Math.min(start + maxDurationMs, performance.now() + 5000);
         try {
-            const result = await Promise.race([Promise.resolve().then(operation), new Promise((_, reject) => {
-                timer = setTimeout(() => reject(Error('Bounded RPC timeout')), Math.min(5000, maxDurationMs - (performance.now() - start)));
-                if (signal) { abort = () => reject(Error('Cancelled')); signal.addEventListener('abort', abort, {once: true}); }
+            guardDeadline(operationDeadline);
+            const result = await Promise.race([Promise.resolve().then(() => {
+                guardDeadline(operationDeadline);
+                return operation();
+            }), new Promise((_, reject) => {
+                abort = () => reject(Error('Observation cancelled'));
+                ownedSignal.addEventListener('abort', abort, {once: true});
+                if (ownedSignal.aborted) abort();
+                timer = setTimeout(() => {
+                    controller.abort();
+                    reject(Error('Bounded observation timeout'));
+                }, Math.max(0, operationDeadline - performance.now()));
             })]);
-            requireValue(!signal?.aborted, 'Cancelled');
-            requireValue(performance.now() <= operationDeadline, 'Observation deadline exceeded');
+            guardDeadline(operationDeadline);
             return result;
-        } finally { clearTimeout(timer); if (abort) signal.removeEventListener('abort', abort); }
+        } finally { clearTimeout(timer); if (abort) ownedSignal.removeEventListener('abort', abort); }
     }
     try {
+        if (signal) {
+            callerAbort = () => controller.abort();
+            signal.addEventListener('abort', callerAbort, {once: true});
+            if (signal.aborted) callerAbort();
+        }
         const chain = await call('eth_chainId', []); requireValue(chain === '0x1', 'Wrong chain');
         phase = 'block';
         const block = await call('eth_getBlockByNumber', ['finalized', false]);
@@ -130,18 +152,29 @@ export async function inspectReadOnlyDeployment(handle, deploymentName, {rpc, ke
         phase = 'block-recheck';
         const recheck = await call('eth_getBlockByNumber', [block.number, false]);
         requireValue(same(recheck.hash, block.hash), 'Observation block changed');
-        requireValue(!signal?.aborted && performance.now() - start <= maxDurationMs, 'Observation cancelled or deadline exceeded');
+        guardDeadline(start + maxDurationMs);
         const accepted = rows.every(row => row.codeMatches && row.ownerMatches !== false);
-        return freeze({...initial, provider, status: accepted ? 'OBSERVED_CODE_AND_RECORDED_OWNERS' : 'REJECTED_IDENTITY_MISMATCH',
+        observation = {...initial, provider, status: accepted ? 'OBSERVED_CODE_AND_RECORDED_OWNERS' : 'REJECTED_IDENTITY_MISMATCH',
             block: observedBlock, contracts: rows, calls,
-            costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(performance.now() - start))},
             incomplete: ['ABI_AND_COMPILER_SOURCE', 'PROXY_AND_EXTERNAL_AUTHORITY', 'TOKEN_AND_IDENTITY_ROOTS',
-                'PAUSE_BALANCES_ALLOWANCES_AND_POLICY', 'INDEPENDENT_OPERATOR_AND_ACTIVATION_APPROVAL']});
+                'PAUSE_BALANCES_ALLOWANCES_AND_POLICY', 'INDEPENDENT_OPERATOR_AND_ACTIVATION_APPROVAL']};
     } catch {
-        return freeze({...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
+        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
             block: observedBlock, partialContracts: rows, stoppedAt: phase, observationComplete: false,
-            reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE'], costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(performance.now() - start))}});
+            reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
+    } finally {
+        beforeCleanupElapsed = performance.now() - start;
+        controller.abort();
+        if (callerAbort) signal.removeEventListener('abort', callerAbort);
     }
+    const elapsed = performance.now() - start;
+    if (signal?.aborted || elapsed > maxDurationMs) {
+        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
+            block: observedBlock, partialContracts: rows,
+            stoppedAt: beforeCleanupElapsed <= maxDurationMs && elapsed > maxDurationMs ? 'cleanup' : observation.stoppedAt ?? phase,
+            observationComplete: false, reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
+    }
+    return freeze({...observation, costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(elapsed))}});
 }
 
 export function prepareOperatorIntent(handle, route, raw) {

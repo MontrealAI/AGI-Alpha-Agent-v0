@@ -120,3 +120,134 @@ test('synchronous final recheck and Keccak overruns cannot win the timeout micro
     hashing.keccak256 = async code => { stall(); return originalKeccak(code); };
     assert.equal((await inspectReadOnlyDeployment(handle, 'alpha', hashing)).status, 'INCONCLUSIVE');
 });
+
+test('timeout aborts the actual outstanding RPC through an owned signal', async () => {
+    let receivedSignal, aborted = false;
+    const report = await inspectReadOnlyDeployment(handle, 'alpha', {
+        provider: 'synthetic-abort-aware-provider', maxDurationMs: 10, keccak256: async () => '0x' + '0'.repeat(64),
+        rpc: ({signal}) => {
+            receivedSignal = signal;
+            return new Promise((_, reject) => signal?.addEventListener('abort', () => {
+                aborted = true; reject(Object.freeze(Error('Transport aborted')));
+            }, {once: true}));
+        }
+    });
+    assert.equal(report.status, 'INCONCLUSIVE'); assert.ok(receivedSignal instanceof AbortSignal);
+    assert.equal(receivedSignal.aborted, true); assert.equal(aborted, true);
+    assert.equal(report.costs.rpcCalls, 1); assert.equal(report.observationComplete, false);
+    assert.equal(report.authority, 'none'); assert.equal(report.operationallyReady, false);
+});
+
+test('caller cancellation reaches owned transport signal and terminal cleanup detaches the link', async () => {
+    const caller = new AbortController(); let receivedSignal, aborted = false, begin;
+    const started = new Promise(resolve => { begin = resolve; });
+    const originalAdd = caller.signal.addEventListener.bind(caller.signal);
+    const originalRemove = caller.signal.removeEventListener.bind(caller.signal);
+    let adds = 0, removes = 0;
+    caller.signal.addEventListener = (...args) => { adds++; return originalAdd(...args); };
+    caller.signal.removeEventListener = (...args) => { removes++; return originalRemove(...args); };
+    const pending = inspectReadOnlyDeployment(handle, 'alpha', {
+        provider: 'synthetic-linked-abort-provider', signal: caller.signal,
+        keccak256: async () => '0x' + '0'.repeat(64),
+        rpc: ({signal}) => {
+            receivedSignal = signal;
+            return new Promise((_, reject) => {
+                signal?.addEventListener('abort', () => { aborted = true; reject(Error('Transport aborted')); }, {once: true});
+                begin();
+            });
+        }
+    });
+    await started; caller.abort(); const report = await pending;
+    assert.equal(report.status, 'CANCELLED'); assert.notEqual(receivedSignal, caller.signal);
+    assert.equal(receivedSignal.aborted, true); assert.equal(aborted, true);
+    assert.equal(adds, 1); assert.equal(removes, 1); assert.equal(report.costs.rpcCalls, 1);
+});
+
+test('success and late owner-query failure close owned signals while preserving caller and partial outputs', async () => {
+    for (const failOwner of [false, true]) {
+        const caller = new AbortController(), supplied = syntheticProvider(), baseRpc = supplied.rpc, observed = [];
+        const add = caller.signal.addEventListener.bind(caller.signal), remove = caller.signal.removeEventListener.bind(caller.signal);
+        let links = 0, unlinks = 0;
+        caller.signal.addEventListener = (...args) => { links++; return add(...args); };
+        caller.signal.removeEventListener = (...args) => { unlinks++; return remove(...args); };
+        supplied.signal = caller.signal;
+        supplied.rpc = request => {
+            observed.push(request.signal);
+            if (failOwner && request.method === 'eth_call') throw Object.freeze(Error('Opaque provider failure'));
+            return baseRpc(request);
+        };
+        const report = await inspectReadOnlyDeployment(handle, 'alpha', supplied);
+        assert.equal(report.status, failOwner ? 'INCONCLUSIVE' : 'OBSERVED_CODE_AND_RECORDED_OWNERS');
+        assert.ok(observed.every(signal => signal instanceof AbortSignal && signal.aborted));
+        assert.ok(observed.every(signal => signal === observed[0] && signal !== caller.signal));
+        assert.equal(caller.signal.aborted, false); assert.equal(links, 1); assert.equal(unlinks, 1);
+        if (failOwner) {
+            assert.equal(report.partialContracts.length, 1); assert.equal(report.partialContracts[0].codeMatches, true);
+            assert.equal(report.partialContracts[0].ownerStatus, 'NOT_RUN'); assert.ok(report.block.hash);
+        }
+    }
+});
+
+test('a transport ignoring abort cannot resume the observer after its deadline', async () => {
+    let finish, receivedSignal;
+    const report = await inspectReadOnlyDeployment(handle, 'alpha', {
+        provider: 'synthetic-noncooperative-provider', maxDurationMs: 10,
+        keccak256: async () => '0x' + '0'.repeat(64),
+        rpc: ({signal}) => { receivedSignal = signal; return new Promise(resolve => { finish = resolve; }); }
+    });
+    assert.equal(report.status, 'INCONCLUSIVE'); assert.equal(receivedSignal.aborted, true);
+    const before = JSON.stringify(report); finish('0x1');
+    await new Promise(resolve => queueMicrotask(resolve));
+    await new Promise(resolve => queueMicrotask(resolve));
+    assert.equal(JSON.stringify(report), before); assert.equal(report.calls.length, 1);
+    assert.equal(report.observationComplete, false);
+});
+
+test('pre-aborted callers make no transport calls and cannot start Keccak work', async () => {
+    const caller = new AbortController(); caller.abort(); let calls = 0, hashes = 0;
+    const report = await inspectReadOnlyDeployment(handle, 'alpha', {
+        provider: 'synthetic-preaborted-provider', signal: caller.signal,
+        rpc: async () => { calls++; return '0x1'; }, keccak256: async () => { hashes++; return '0x' + '0'.repeat(64); }
+    });
+    assert.equal(report.status, 'CANCELLED'); assert.equal(calls, 0); assert.equal(hashes, 0);
+    assert.equal(report.costs.rpcCalls, 0);
+});
+
+test('the five-second per-call deadline aborts transport before the longer total allowance', async () => {
+    let receivedSignal, aborted = false;
+    const report = await inspectReadOnlyDeployment(handle, 'alpha', {
+        provider: 'synthetic-percall-timeout-provider', maxDurationMs: 60000,
+        keccak256: async () => '0x' + '0'.repeat(64),
+        rpc: ({signal}) => {
+            receivedSignal = signal;
+            return new Promise((_, reject) => signal?.addEventListener('abort', () => {
+                aborted = true; reject(Error('Transport aborted by per-call deadline'));
+            }, {once: true}));
+        }
+    });
+    assert.equal(report.status, 'INCONCLUSIVE'); assert.equal(receivedSignal.aborted, true); assert.equal(aborted, true);
+    assert.equal(report.costs.rpcCalls, 1); assert.ok(report.costs.elapsedMs >= 4000 && report.costs.elapsedMs < 60000);
+});
+
+test('terminal abort cleanup is charged before freezing and cannot escape the total deadline', async t => {
+    let clock = 0; t.mock.method(performance, 'now', () => clock);
+    const supplied = syntheticProvider(), originalRpc = supplied.rpc;
+    let listenerInstalled = false, cleanupRan = false;
+    supplied.maxDurationMs = 20;
+    supplied.rpc = request => {
+        if (!listenerInstalled) {
+            listenerInstalled = true;
+            request.signal.addEventListener('abort', () => {
+                cleanupRan = true;
+                clock += 40;
+            }, {once: true});
+        }
+        return originalRpc(request);
+    };
+    const report = await inspectReadOnlyDeployment(handle, 'alpha', supplied);
+    assert.equal(cleanupRan, true); assert.equal(report.status, 'INCONCLUSIVE');
+    assert.equal(report.stoppedAt, 'cleanup'); assert.equal(report.observationComplete, false);
+    assert.equal(report.partialContracts.length, 5); assert.ok(report.block.hash);
+    assert.ok(report.costs.elapsedMs >= 40); assert.equal(report.costs.rpcCalls, report.calls.length);
+    assert.ok(Object.isFrozen(report));
+});

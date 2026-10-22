@@ -42,7 +42,16 @@ hash is rechecked at completion. It retains the method/parameter trace, runtime
 hashes, recorded-owner comparisons, block identity and provider label. Failed or
 cancelled attempts retain their selected block, partial checks and stopped phase.
 Both successful and incomplete attempts retain RPC count and observed elapsed time. Calls are
-bounded by per-call and total deadlines, cancellation and a 100-call ceiling.
+bounded by five-second per-call and total deadlines, cancellation and a 100-call
+ceiling. One internally owned AbortController is linked to the caller's signal;
+every actual RPC receives the owned signal even when the caller supplies none.
+Timeouts and observed deadline overruns abort it, and terminal cleanup aborts it
+and detaches the caller listener. Observed cleanup time is charged before the
+report is frozen; cleanup that exceeds the total deadline retains the partial
+checks as inconclusive. The observer never aborts the caller's controller.
+A cooperative transport must pass this signal to its underlying fetch and stop on
+abort. An ignored signal cannot be forcibly preempted by this JavaScript adapter;
+late results cannot resume observation or change the retained incomplete report.
 
 The inspector establishes only its named code/owner observations. ABI/compiler,
 proxy/external authority, token and identity roots, pause/balances/allowances/policy,

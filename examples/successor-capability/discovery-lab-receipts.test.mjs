@@ -53,6 +53,26 @@ async function modeledReceipt(record, route = 'USDC', stage = 'evolve', branch =
     }
     return {raw: encode(), source};
 }
+async function reframeEmbeddedRequest(wrapper, pretty) {
+    const receipt = JSON.parse(wrapper.raw), previousBytes = new TextEncoder().encode(receipt.original).length;
+    const request = JSON.parse(receipt.original);
+    receipt.original = pretty ? JSON.stringify(request, null, 2)
+        : JSON.stringify(Object.fromEntries(Object.entries(request).reverse()));
+    receipt.requestSha256 = await receipts.rawReceiptDigest(receipt.original);
+    const delta = new TextEncoder().encode(receipt.original).length - previousBytes;
+    const workingBytes = receipt.resources.receiverUsed.memoryBytes - receipt.resources.receiverUsed.storageBytes + delta;
+    receipt.resources.receiverReservation.memoryBytes += 3 * delta;
+    receipt.resources.receiverReservation.storageBytes += 2 * delta;
+    for (const key of contract.RESOURCE_KEYS) receipt.resources.nativeLimits[key]
+        = request.resourceLimits[key] - receipt.resources.receiverReservation[key];
+    for (let index = 0; index < 12; index++) {
+        receipt.resources.receiverUsed.storageBytes = new TextEncoder().encode(JSON.stringify(receipt)).length;
+        receipt.resources.receiverUsed.memoryBytes = workingBytes + receipt.resources.receiverUsed.storageBytes;
+        for (const key of contract.RESOURCE_KEYS) receipt.resources.totalUsed[key]
+            = receipt.resources.receiverUsed[key] + receipt.resources.checkerUsed[key];
+    }
+    return {...wrapper, raw: JSON.stringify(receipt)};
+}
 test('pure receipt inspection binds replayed context while retaining unattested content identity', async () => {
     const record = await campaign(), wrapper = await modeledReceipt(record), context = receipts.makeReceiverContext(record);
     const checked = await receipts.inspectReceiverReceipt(wrapper, context, {expectedReceiverSources: [wrapper.source]});
@@ -68,6 +88,18 @@ test('semantic identity survives receipt reframing while exact raw digest preser
     assert.equal(first.receiptId, second.receiptId); assert.notEqual(first.receiptDigest, second.receiptDigest);
     const learn = await receipts.inspectReceiverReceipt(await modeledReceipt(record, 'USDC', 'learn'), context);
     assert.notEqual(first.receiptId, learn.receiptId);
+});
+test('nested request whitespace and property order cannot create another semantic inspection', async () => {
+    const record = await campaign(), wrapper = await modeledReceipt(record), context = receipts.makeReceiverContext(record);
+    const first = await receipts.inspectReceiverReceipt(wrapper, context);
+    for (const pretty of [true, false]) {
+        const reframed = await reframeEmbeddedRequest(wrapper, pretty);
+        const checked = await receipts.inspectReceiverReceipt(reframed, context);
+        assert.equal(checked.state, 'local-checked');
+        assert.notEqual(first.receiptDigest, checked.receiptDigest);
+        assert.notEqual(first.requestDigest, checked.requestDigest);
+        assert.equal(first.receiptId, checked.receiptId);
+    }
 });
 test('pure context and receipt frames are owned before digest suspension and getters never execute', async () => {
     const record = await campaign(), wrapper = await modeledReceipt(record), context = receipts.makeReceiverContext(record);

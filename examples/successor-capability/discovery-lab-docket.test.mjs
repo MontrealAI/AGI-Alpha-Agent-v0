@@ -59,6 +59,26 @@ async function modeledReceipt(record, route = 'USDC', stage = 'evolve', branch =
     }
     return {raw: encode(), source};
 }
+async function reframeEmbeddedRequest(wrapper, pretty) {
+    const receipt = JSON.parse(wrapper.raw), previousBytes = new TextEncoder().encode(receipt.original).length;
+    const request = JSON.parse(receipt.original);
+    receipt.original = pretty ? JSON.stringify(request, null, 2)
+        : JSON.stringify(Object.fromEntries(Object.entries(request).reverse()));
+    receipt.requestSha256 = await docket.rawDigest(receipt.original);
+    const delta = new TextEncoder().encode(receipt.original).length - previousBytes;
+    const workingBytes = receipt.resources.receiverUsed.memoryBytes - receipt.resources.receiverUsed.storageBytes + delta;
+    receipt.resources.receiverReservation.memoryBytes += 3 * delta;
+    receipt.resources.receiverReservation.storageBytes += 2 * delta;
+    for (const key of contract.RESOURCE_KEYS) receipt.resources.nativeLimits[key]
+        = request.resourceLimits[key] - receipt.resources.receiverReservation[key];
+    for (let index = 0; index < 12; index++) {
+        receipt.resources.receiverUsed.storageBytes = new TextEncoder().encode(JSON.stringify(receipt)).length;
+        receipt.resources.receiverUsed.memoryBytes = workingBytes + receipt.resources.receiverUsed.storageBytes;
+        for (const key of contract.RESOURCE_KEYS) receipt.resources.totalUsed[key]
+            = receipt.resources.receiverUsed[key] + receipt.resources.checkerUsed[key];
+    }
+    return {...wrapper, raw: JSON.stringify(receipt)};
+}
 async function rehashFiles(value) {
     for (const path of docket.DOCKET_PATHS) value.checksums[path] = await docket.rawDigest(value.files[path]);
     return value;
@@ -152,6 +172,27 @@ test('distinct same-route inspection receipts retain every cost while semantic r
     changed.receipts.push(await modeledReceipt(record, 'USDC', 'think', record.attempt + '-another-branch'));
     await assert.rejects(docket.createDiscoveryDocket(value, changed), /frozen branch/);
 });
+test('same-stage incomplete retry and completed inspection retain distinct native work and costs', async () => {
+    const {value, record} = await campaign(), attachments = await docket.emptyDocketAttachments(value);
+    const completed = await modeledReceipt(record), incomplete = JSON.parse(completed.raw);
+    incomplete.state = 'inconclusive';
+    incomplete.checker.report = {accepted: false, resourceUsed: {...vector(), checking: 10_000},
+        reasons: ['INSPECTION_PREFLIGHT_CHECK_INCOMPLETE']};
+    incomplete.resources.checkerUsed = incomplete.checker.report.resourceUsed;
+    for (let index = 0; index < 12; index++) {
+        incomplete.resources.receiverUsed.storageBytes = new TextEncoder().encode(JSON.stringify(incomplete)).length;
+        incomplete.resources.receiverUsed.memoryBytes = new TextEncoder().encode(incomplete.original).length
+            + incomplete.resources.receiverUsed.storageBytes;
+        for (const key of contract.RESOURCE_KEYS) incomplete.resources.totalUsed[key]
+            = incomplete.resources.receiverUsed[key] + incomplete.resources.checkerUsed[key];
+    }
+    attachments.receipts = [{...completed, raw: JSON.stringify(incomplete)}, completed];
+    const exported = await docket.createDiscoveryDocket(value, attachments);
+    const costs = JSON.parse(exported.files['08_cost_ledgers/costs.json']);
+    assert.equal(costs.commissions[0].alternatives[0].inspectionReceiptIds.length, 2);
+    assert.equal(costs.receiverInspectionByRoute['manager-usdc'].checking,
+        incomplete.resources.totalUsed.checking + JSON.parse(completed.raw).resources.totalUsed.checking);
+});
 
 test('returned receipt bytes persist in the same history and deduplicate across history plus legacy attachments', async () => {
     const built = await campaign(); let value = built.value;
@@ -175,6 +216,20 @@ test('returned receipt bytes persist in the same history and deduplicate across 
         await evidence.evidencePayload(built.record.campaignDigest, 'receiver-receipt', otherStage));
     const updated = await docket.createDiscoveryDocket(next), costs = JSON.parse(updated.files['08_cost_ledgers/costs.json']);
     assert.equal(costs.commissions[0].alternatives[0].inspectionReceiptIds.length, 2);
+});
+test('nested request reframing cannot bypass history or docket exactly-once inspection costs', async () => {
+    const built = await campaign(), receipt = await modeledReceipt(built.record);
+    const value = await workspace.recordDiscoveryEvent(built.value, 'lab-evidence-attached',
+        await evidence.evidencePayload(built.record.campaignDigest, 'receiver-receipt', receipt));
+    for (const pretty of [true, false]) {
+        const reframed = await reframeEmbeddedRequest(receipt, pretty);
+        await assert.rejects(workspace.recordDiscoveryEvent(value, 'lab-evidence-attached',
+            await evidence.evidencePayload(built.record.campaignDigest, 'receiver-receipt', reframed)), /Duplicate semantic receipt/);
+        const external = await docket.emptyDocketAttachments(value); external.receipts = [reframed];
+        await assert.rejects(docket.createDiscoveryDocket(value, external), /repeats a semantic receipt/);
+        const externalOnly = await docket.emptyDocketAttachments(built.value); externalOnly.receipts = [receipt, reframed];
+        await assert.rejects(docket.createDiscoveryDocket(built.value, externalOnly), /repeats a semantic receipt/);
+    }
 });
 
 test('future evidence is derived from ordered existing history and cannot be supplied as a caller aggregate', async () => {
