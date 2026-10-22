@@ -11,9 +11,11 @@ from scripts.homepage_evidence import (
     ASSETS,
     ECOSYSTEM_CHECKS,
     ECOSYSTEM_LAYOUTS,
+    EXPERIENCE_ASSETS,
     PAPER_ASSETS,
     REQUIRED_CHECKS,
     REQUIRED_LAYOUTS,
+    RESOURCE_LINKS,
     ROOT,
     asset_hashes,
     verify_report,
@@ -22,6 +24,9 @@ from scripts.homepage_evidence import (
 
 @pytest.fixture
 def report():
+    resource_checks = (["research-resource-links"] if RESOURCE_LINKS else []) + (
+        ["qualified-research-experience-bytes"] if EXPERIENCE_ASSETS else []
+    )
     return {
         "schema": "agialpha.homepage.acceptance.v1",
         "passed": True,
@@ -30,8 +35,10 @@ def report():
         "origin": "https://site/",
         "browser_version": "Chromium fixture",
         "browser_errors": [],
-        "checks": sorted(REQUIRED_CHECKS),
+        "checks": sorted(REQUIRED_CHECKS) + resource_checks,
         "assets": asset_hashes(),
+        "research_resources": deepcopy(RESOURCE_LINKS),
+        "research_experience_assets": deepcopy(EXPERIENCE_ASSETS),
         "accessibility": [
             {"width": width, "language": language, "large_text": large, "scope": scope, "violations": []}
             for width, language, large in REQUIRED_LAYOUTS

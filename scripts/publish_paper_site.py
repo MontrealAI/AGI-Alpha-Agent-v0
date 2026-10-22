@@ -252,6 +252,42 @@ def site_assets(assets: dict[str, str]) -> dict[str, str]:
     return result
 
 
+def require_qualified_experiences(
+    root: Path,
+    site: Path,
+    *,
+    software_commit: str,
+    baseline: dict[str, Any],
+    catalog: dict[str, Any],
+) -> None:
+    """Require linked HTML in both qualified source and restored site; never copy it.
+
+    A resource link cannot promote new executable content into the paper-only
+    allowlist. New or changed HTML still requires the full source qualification.
+    """
+    from scripts.research_papers import MAX_EXPERIENCE, experience_hashes, ordinary_path
+
+    for source_name, expected in experience_hashes(catalog).items():
+        name = source_name.removeprefix("docs/")
+        record = baseline.get(name, {})
+        if (
+            record.get("sha256") != expected
+            or type(record.get("bytes")) is not int  # noqa: E721
+            or not 0 < record["bytes"] <= MAX_EXPERIENCE
+        ):
+            raise Deferred(f"Research experience needs full source qualification: {source_name}")
+        try:
+            released = source_bytes(root, software_commit, source_name)
+        except subprocess.CalledProcessError as error:
+            raise Deferred(f"Research experience is absent from qualified source: {source_name}") from error
+        if len(released) != record["bytes"] or sha256(released) != expected:
+            raise Deferred(f"Research experience differs from qualified source: {source_name}")
+        for folder, relative in ((root, source_name), (site, name)):
+            path = ordinary_path(folder, relative)
+            if path.stat().st_size != record["bytes"] or digest(path) != expected:
+                raise ValueError(f"Research experience bytes differ from the qualified baseline: {source_name}")
+
+
 def compose_site(
     root: Path,
     site: Path,
@@ -392,6 +428,7 @@ def prepare(root: Path, folder: Path, site: Path) -> dict[str, Any]:
     before = inventory(site)
     if before != {row["path"]: {"bytes": row["bytes"], "sha256": row["sha256"]} for row in distribution["files"]}:
         raise ValueError("Restored inventory differs from the source-bound pack manifest")
+    require_qualified_experiences(root, site, software_commit=software, baseline=before, catalog=catalog)
     current_assets = asset_hashes(catalog)
     delta = compose_site(
         root,

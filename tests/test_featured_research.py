@@ -8,6 +8,7 @@ import re
 import pytest
 
 from scripts.homepage_evidence import PAPER_ASSETS
+from scripts.research_papers import load_catalog, verify_files
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPERS = {
@@ -21,13 +22,26 @@ PAPERS = {
 }
 
 
-def test_seven_paper_inventory_matches_release_evidence() -> None:
+def test_historical_seven_paper_inventory_remains_in_release_evidence() -> None:
     assert len(PAPERS) == 7
-    assert set(PAPERS) == set(PAPER_ASSETS)
+    assert set(PAPERS) <= set(PAPER_ASSETS)
     source = (ROOT / "docs/Out_Execute.tex").read_bytes()
     assert hashlib.sha1(f"blob {len(source)}\0".encode() + source).hexdigest() == (
         "19b468ae269e338adfb49d9fadfe0327a7fa026d"
     )
+
+
+def test_every_current_catalogue_original_matches_release_evidence_and_links() -> None:
+    catalog = load_catalog(ROOT)
+    assert PAPER_ASSETS == {row["pdf"]["path"].removeprefix("docs/"): row["pdf"]["sha256"] for row in catalog["papers"]}
+    verify_files(ROOT, catalog)
+    homepage = (ROOT / "docs/index.html").read_text(encoding="utf-8")
+    section = homepage.split('id="papers"', 1)[1].split("</section>", 1)[0]
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for row in catalog["papers"]:
+        filename = row["pdf"]["path"].removeprefix("docs/")
+        assert section.count(f'href="{filename}" type="application/pdf" hreflang="en"') == 1
+        assert f'https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/{row["pdf"]["path"]}' in readme
 
 
 @pytest.mark.parametrize("filename,original_blob", PAPERS.items())
@@ -61,8 +75,10 @@ def test_feature_follows_free_start_and_precedes_other_journeys() -> None:
     assert 'href="#papers" data-home-key="nav-papers"' in homepage
     index = section.split('class="papers-index"', 1)[1].split("</nav>", 1)[0]
     identifiers = ["transformational", "learn", "think", "design", "strategise", "execute", "evolve"]
-    assert re.findall(r'href="#paper-([a-z]+)-title"', index) == identifiers
-    assert index.count("<li>") == 6
+    current = [row["id"] for row in load_catalog(ROOT)["papers"]]
+    assert re.findall(r'href="#paper-([a-z][a-z0-9-]{0,63})-title"', index) == current
+    assert [slug for slug in current if slug in identifiers] == identifiers
+    assert index.count("<li>") == len(current) - 1
     assert 'aria-labelledby="papers-index-title"' in index
     for slug in identifiers:
         assert f'id="paper-{slug}-title" lang="en" tabindex="-1"' in section
@@ -78,7 +94,8 @@ def test_paper_copy_has_french_equivalents_and_declared_scope() -> None:
     assert "Research proposals and bounded studies" in section
     assert "not claims of general autonomous capability or physical deployment" in section
     assert 'class="paper-subtitle" lang="en"' in section
-    assert section.count('class="sr-only" lang="en"') == len(PAPER_ASSETS)
+    resource_count = sum(len(row.get("resources", {})) for row in load_catalog(ROOT)["papers"])
+    assert section.count('class="sr-only" lang="en"') == len(PAPER_ASSETS) + resource_count
     assert "finite synthetic studies" in section
 
 
