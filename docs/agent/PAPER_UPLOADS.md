@@ -95,6 +95,11 @@ Use Bash or Git Bash, not a generic POSIX shell. Run the entire parenthesized bl
 its subshell clears inherited `GIT_*` variables before any Git command, including
 source-SHA resolution. Otherwise variables such as `GIT_OBJECT_DIRECTORY` can
 redirect writes outside the clone or leave it dependent on external objects.
+It then disables global and system Git configuration for every Git command in
+the subshell using `GIT_CONFIG_GLOBAL=/dev/null` and `GIT_CONFIG_NOSYSTEM=1`.
+This excludes external execution settings such as `core.fsmonitor`, which are
+not disabled by `core.hooksPath`. The original repository's local configuration
+is neither rewritten nor copied to the independent clone.
 The caller's environment is unchanged. If a variable cannot be unset, or any
 Git command or SHA comparison fails, the block stops with a nonzero exit status.
 Do not continue to validation after a failed block. The empty `core.attributesFile`
@@ -111,6 +116,7 @@ rewriting files during clone or checkout, without editing or deleting those hook
   for git_var in "${!GIT_@}"; do
     unset "$git_var" || exit 1
   done
+  export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 || exit 1
   source_sha=FULL_VERIFIED_COMMIT_SHA
   resolved_sha=$(git rev-parse --verify "$source_sha^{commit}") || exit 1
   [ "$resolved_sha" = "$source_sha" ] || exit 1

@@ -131,6 +131,49 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             self.assertNotEqual(objects_after, objects_before)
             with self.assertRaises(subprocess.CalledProcessError):
                 git(unsafe, "cat-file", "-e", new + "^{commit}")
+            # A synchronous fixture fsmonitor proves the external execution channel
+            # without spawning background workers, using sockets, or racing checkout.
+            monitor = parent / "monitor.py"
+            monitor_log = parent / "monitor.log"
+            monitor.write_text(
+                "from pathlib import Path\nimport sys\n"
+                f"with Path({str(monitor_log)!r}).open('ab') as log:\n"
+                "    log.write(b'fsmonitor invoked\\n')\n"
+                "Path('fsmonitor-marker.tex').write_bytes(b'% External configuration ran\\n')\n"
+                "sys.stdout.buffer.write(b'fixture-token\\0/\\0')\n",
+                encoding="utf-8",
+            )
+            global_config = home / ".gitconfig"
+            git(
+                origin,
+                "config",
+                "--file",
+                str(global_config),
+                "core.fsmonitor",
+                f'"{Path(sys.executable).as_posix()}" "{monitor.as_posix()}"',
+            )
+            protected += [monitor, global_config]
+            original.update({path: path.read_bytes() for path in (monitor, global_config)})
+            isolate_config = "  export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 || exit 1\n"
+            self.assertEqual(recipe.count(isolate_config), 1)
+            unsafe_monitor = parent / "unsafe-monitor"
+            old_recipe = recipe.replace(isolate_config, "").replace("FULL_VERIFIED_COMMIT_SHA", new)
+            old_recipe = old_recipe.replace("../AGI-Alpha-Agent-byte-clean", shlex.quote(unsafe_monitor.as_posix()))
+            result = subprocess.run(
+                [bash, "--noprofile", "--norc", "-c", old_recipe],
+                cwd=origin,
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=30,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.decode().strip(), new)
+            self.assertTrue((unsafe_monitor / "fsmonitor-marker.tex").is_file())
+            self.assertIn(b"fsmonitor invoked", monitor_log.read_bytes())
+            protected.append(monitor_log)
+            original[monitor_log] = monitor_log.read_bytes()
             for case in ("success", "readonly", "missing-commit", "occupied"):
                 with self.subTest(case=case):
                     fresh = parent / case
@@ -164,6 +207,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                         self.assertEqual(result.stdout.decode().strip(), new)
                         self.assertEqual(git(fresh, "rev-parse", "HEAD").decode().strip(), new)
                         self.assertFalse((fresh / ".git/objects/info/alternates").exists())
+                        self.assertFalse((fresh / "fsmonitor-marker.tex").exists())
                         for name in PAPERS:
                             self.assertEqual((fresh / name).read_bytes(), ORIGINAL)
                             self.assertEqual(git(fresh, "show", ":" + name), ORIGINAL)
