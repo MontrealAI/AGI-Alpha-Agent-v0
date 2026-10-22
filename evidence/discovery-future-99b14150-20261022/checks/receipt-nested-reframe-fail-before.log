@@ -1,0 +1,51 @@
+TAP version 13
+# Subtest: nested request reframing cannot bypass history or docket exactly-once inspection costs
+not ok 1 - nested request reframing cannot bypass history or docket exactly-once inspection costs
+  ---
+  duration_ms: 513.876744
+  type: 'test'
+  location: '/workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-docket.test.mjs:199:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (file:///workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-docket.test.mjs:205:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: nested request whitespace and property order cannot create another semantic inspection
+not ok 2 - nested request whitespace and property order cannot create another semantic inspection
+  ---
+  duration_ms: 248.627646
+  type: 'test'
+  location: '/workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-receipts.test.mjs:92:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'faed1800df0625ee5f71c2b39e3c837b5d385bb4c788d3a0ec948a918610a9a8'
+    - 'd8f6a16ea3a0e8ce88fe40e11f36496c742704b6c5b681324aeb1f85342d1fcf'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'd8f6a16ea3a0e8ce88fe40e11f36496c742704b6c5b681324aeb1f85342d1fcf'
+  actual: 'faed1800df0625ee5f71c2b39e3c837b5d385bb4c788d3a0ec948a918610a9a8'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-receipts.test.mjs:101:16)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 586.91149

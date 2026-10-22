@@ -1,0 +1,40 @@
+{
+  "schema": "discovery-lab/receipt-p2-closure/v1",
+  "finding": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4853#discussion_r4343168923",
+  "receiptModuleSha256": "b85730db99a3b12c5aaf5486e70f10ba384da07acb1d972893d9daa1626d08d0",
+  "semanticIdentity": "discovery-lab-receipt-identity/v2",
+  "behavior": "Canonical parsed request plus validated inspection; raw exact bytes/hash and ledger charges retained. Framing-dependent memory/storage omitted from identity only.",
+  "failBeforeLog": "receipt-nested-reframe-fail-before.log",
+  "validation": [
+    {
+      "node": "22.17.1",
+      "passed": 20,
+      "log": "receipt-nested-reframe-node22.log"
+    },
+    {
+      "node": "24.21.0",
+      "passed": 20,
+      "log": "receipt-nested-reframe-node24.log"
+    }
+  ],
+  "independentReview": {
+    "file": "receipt-p2-independent-review.json",
+    "sha256": "a3968082434f54eb33474b4e6523848801f3d1e35d86ceaef06bad9651cd055e",
+    "actualNativeRetryAndStageCheckingUnits": 254030,
+    "actualNativeDistinctInspections": 3
+  },
+  "freshBrowser": {
+    "sourceHash": "99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d",
+    "pageSha256": "1b2183fc4b27ce8865c6f183dcf24372d9ac5ab9dd90fbf0ed3530fb75a30c18",
+    "missionId": "capability-0714044c-3ef6-4979-b5b1-a104a2abfb18",
+    "missionCasesPassed": 14,
+    "nativeRouteCasesPassed": 8,
+    "docketSha256": "e56d3764326990477647922227120cf7d19050aa03e1bdc20ebba0580c1c6c00",
+    "nativeEvidenceDirectory": "/dev/shm/discovery-native-receipt-current6/both-routes-browser",
+    "nestedReframeEvidenceDirectory": "/dev/shm/discovery-native-receipt-current6/nested-reframe-browser",
+    "nestedReframeDuplicateRefused": true,
+    "historyHeadLedgerAndReopenedDocketUnchanged": true
+  },
+  "limits": "Actual source-module and immutable local-browser execution; no installed-package, hosted qualification, public deployment, settlement or execution authority. Receiver provenance remains unattested.",
+  "currentSourcePublicQualification": "pending root configured review and final public source verification"
+}

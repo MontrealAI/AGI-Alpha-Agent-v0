@@ -1,0 +1,146 @@
+TAP version 13
+# Subtest: one pinned inventory retains all39 contracts and historical Fleet instance without readiness promotion
+ok 1 - one pinned inventory retains all39 contracts and historical Fleet instance without readiness promotion
+  ---
+  duration_ms: 0.911155
+  type: 'test'
+  ...
+# Subtest: inventory source mismatch, forged handles and malicious data fail closed
+ok 2 - inventory source mismatch, forged handles and malicious data fail closed
+  ---
+  duration_ms: 16.567894
+  type: 'test'
+  ...
+# Subtest: wrong chain,address,runtime,ABI,role,identity root and token route remain blocked
+ok 3 - wrong chain,address,runtime,ABI,role,identity root and token route remain blocked
+  ---
+  duration_ms: 1.892305
+  type: 'test'
+  ...
+# Subtest: read-only inspector pins a common block, records calls and keeps all remaining readiness separate
+ok 4 - read-only inspector pins a common block, records calls and keeps all remaining readiness separate
+  ---
+  duration_ms: 5.445084
+  type: 'test'
+  ...
+# Subtest: unavailable,wrong-chain,timeout,cancelled and immutable-error providers do not create success
+ok 5 - unavailable,wrong-chain,timeout,cancelled and immutable-error providers do not create success
+  ---
+  duration_ms: 20.279408
+  type: 'test'
+  ...
+# Subtest: unsigned operator drafts have no signing or submission path and preserve actor/ABI/readiness gates
+ok 6 - unsigned operator drafts have no signing or submission path and preserve actor/ABI/readiness gates
+  ---
+  duration_ms: 0.864404
+  type: 'test'
+  ...
+# Subtest: synchronous final recheck and Keccak overruns cannot win the timeout microtask race
+ok 7 - synchronous final recheck and Keccak overruns cannot win the timeout microtask race
+  ---
+  duration_ms: 61.744697
+  type: 'test'
+  ...
+# Subtest: timeout aborts the actual outstanding RPC through an owned signal
+not ok 8 - timeout aborts the actual outstanding RPC through an owned signal
+  ---
+  duration_ms: 16.830751
+  type: 'test'
+  location: '/workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:124:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(receivedSignal instanceof AbortSignal)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:135:57)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: caller cancellation reaches owned transport signal and terminal cleanup detaches the link
+not ok 9 - caller cancellation reaches owned transport signal and terminal cleanup detaches the link
+  ---
+  duration_ms: 1.672803
+  type: 'test'
+  location: '/workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:141:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected "actual" not to be reference-equal to "expected":
+    
+    AbortSignal {
+      [Symbol(events.maxEventTargetListeners)]: 0,
+      [Symbol(events.maxEventTargetListenersWarned)]: false,
+      [Symbol(kAborted)]: true,
+      [Symbol(kComposite)]: false,
+      [Symbol(kEvents)]: SafeMap(1) [Map] {
+        'abort' => {
+          next: undefined,
+          resistStopPropagation: false,
+          size: 0
+        }
+      },
+      [Symbol(kHandlers)]: SafeMap(0) [Map] {},
+      [Symbol(kReason)]: DOMException [AbortError]: This operation was aborted
+          at new DOMException (node:internal/per_context/domexception:53:5)
+          at AbortController.abort (node:internal/abort_controller:504:18)
+          at TestContext.<anonymous> (file:///workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:160:27)
+          at async Test.run (node:internal/test_runner/test:1054:7)
+          at async Test.processPendingSubtests (node:internal/test_runner/test:744:7),
+      addEventListener: [Function (anonymous)],
+      removeEventListener: [Function (anonymous)]
+    }
+    
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: success and late owner-query failure close owned signals while preserving caller and partial outputs
+not ok 10 - success and late owner-query failure close owned signals while preserving caller and partial outputs
+  ---
+  duration_ms: 1.945164
+  type: 'test'
+  location: '/workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:166:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(observed.every(signal => signal instanceof AbortSignal && signal.aborted))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:177:16)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a transport ignoring abort cannot resume the observer after its deadline
+not ok 11 - a transport ignoring abort cannot resume the observer after its deadline
+  ---
+  duration_ms: 8.916291
+  type: 'test'
+  location: '/workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:187:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'aborted')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/32717074a7f1/alpha/examples/successor-capability/discovery-lab-deployments.test.mjs:194:78)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 7
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 213.693888
