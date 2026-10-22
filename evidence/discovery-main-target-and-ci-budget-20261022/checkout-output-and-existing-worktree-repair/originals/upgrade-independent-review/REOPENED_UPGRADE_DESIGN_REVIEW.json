@@ -1,0 +1,49 @@
+{
+  "schema": "alpha/independent-transition-upgrade-design-review/v1",
+  "createdAt": "2026-10-22T08:07:41.378919+00:00",
+  "state": "ACTUAL_NEW_P2_CONFIRMED_REPAIR_IMPLEMENTATION_PENDING",
+  "reviewer": "/root/alpha33b_packet_review",
+  "finding": 4345797435,
+  "currentPublicHead": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+  "currentPublicReviewClear": false,
+  "confirmedEvidence": {
+    "file": "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/CONFIRMED_TRANSITION_FINDING.json",
+    "bytes": 9525,
+    "sha256": "912587410342a1eb8772c0acc1535e7166ffcd4327fc68ac16f4e924ae3384e9",
+    "staleOf49": 47,
+    "rawCatalogueMismatchesOf41": 40,
+    "gitStatusCleanDespiteMismatch": true
+  },
+  "preferredNarrowDesign": "Explicit opt-in, no-Git stdlib upgrade helper outside the41-file source closure; fixed authenticated49-file normalization, with version-bound documentation and regression.",
+  "whyNotUnqualifiedGitForce": "A clean Git status does not prove raw byte identity in this transition. A force refresh without raw preflight and backups can discard private edits; broad reset/settings/generator changes are unnecessary.",
+  "safetyObligations": [
+    "Authenticate the canonical catalogue before trusting its41 path/hash entries, then add exactly8 compiled extra path/size/hash pins.",
+    "Read only bounded regular direct paths, including catalogue before initial parsing; reject aliases, mixed/semantic/private edits or unknown source versions.",
+    "Accept only exact canonical LF or exact uniform LF-to-CRLF renderings; default dry-run writes nothing.",
+    "Before any source replacement, retain all49 exact originals and mode/hash metadata in a new private external backup location; never overwrite old backups.",
+    "Recheck snapshots after backup; atomically normalize only the stale fixed files and preserve modes. No Git/index/config access, generator execution, full reset or silent repair.",
+    "Retain backup on failure and describe interruption/ordinary no-concurrent-edit scope honestly; no generic transaction or filesystem-sandbox claim.",
+    "Preserve52rawpapers, opaque -text patterns, all41 catalogue bodies/hash644258, generated pages/CSP/mirror/workers, priorJS/path cases and workflow gates."
+  ],
+  "validationPlan": [
+    "Actual ordinary parent-to-target fixture: stale47/rawmismatch40 before upgrade; dry-run no writes; explicit refresh yields0 mismatches with complete matching backup.",
+    "Private working-file edit causes whole-plan refusal without any replacement; metadata/index/config and unrelated opaque paper/PDF/control bytes remain exact.",
+    "Inspect/re-run only changed/new trusted regressions; prior unchanged25 Node cases remain applicable."
+  ],
+  "pending": [
+    "Concrete implementation and docs/static review.",
+    "Frozen final source identities and focused regression outputs.",
+    "Root-only future publication and fresh exact-public-head configured review/requiredCI."
+  ],
+  "actions": {
+    "productionSourceEdits": false,
+    "publicWrites": false,
+    "ordinaryOwnedGitFixtureWritten": true,
+    "GitOnlyFixtureExecution": true,
+    "sourceArtifactCodeExecuted": false,
+    "customTransportOrBlockedProbes": false,
+    "browser": false,
+    "runtimeInstall": false,
+    "SHMWrites": false
+  }
+}

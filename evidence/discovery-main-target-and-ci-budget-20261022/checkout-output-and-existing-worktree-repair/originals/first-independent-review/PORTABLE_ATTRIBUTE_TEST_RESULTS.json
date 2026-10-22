@@ -1,0 +1,63 @@
+{
+  "schema": "alpha/independent-final-portable-attribute-regressions/v1",
+  "createdAt": "2026-10-22T07:42:02.115011+00:00",
+  "commit": "e7693280c650c2f73d48672a1e784de728eb9ec2",
+  "results": [
+    {
+      "command": [
+        "/dev/shm/discovery-clean-pytest/bin/python",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-c",
+        "/dev/null",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "/workspace/scratch/32717074a7f1/alpha-ready-sourcefix-independent-review/tmp/pytest-portable-final",
+        "tests/test_successor_capability_delivery.py::test_every_capability_byte_hashed_input_has_explicit_lf_checkout_attributes",
+        "tests/test_successor_capability_delivery.py::test_actual_crlf_checkout_preserves_capability_raw_bytes_and_catalog_hashes",
+        "tests/test_successor_capability_delivery.py::test_portable_bundle_reproduces_and_gallery_preserves_exact_bytes",
+        "-q"
+      ],
+      "cwd": "/workspace/scratch/32717074a7f1/alpha-ready-review-fix",
+      "exitCode": 0,
+      "log": "/workspace/scratch/32717074a7f1/alpha-ready-sourcefix-independent-review/independent-python-portable-final-three-tests.log",
+      "bytes": 98,
+      "sha256": "f5aab43e509b7fff016e95e624da6235a18ad1fa37a90094151935748355af71",
+      "output": "...                                                                      [100%]\n3 passed in 0.29s\n"
+    },
+    {
+      "command": [
+        "/dev/shm/discovery-clean-pytest/bin/python",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-c",
+        "/dev/null",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "/workspace/scratch/32717074a7f1/alpha-ready-sourcefix-independent-review/tmp/pytest-no-git-attribute",
+        "tests/test_successor_capability_delivery.py::test_every_capability_byte_hashed_input_has_explicit_lf_checkout_attributes",
+        "-q"
+      ],
+      "cwd": "/workspace/scratch/32717074a7f1/alpha-ready-sourcefix-independent-review/tmp/source-copy-without-git",
+      "exitCode": 0,
+      "log": "/workspace/scratch/32717074a7f1/alpha-ready-sourcefix-independent-review/independent-source-copy-no-git-attribute-test.log",
+      "bytes": 98,
+      "sha256": "59907462a8d5fd93406cdf4c7d1eb2f7b7a96664ae85c4ec202693d419cd019e",
+      "output": ".                                                                        [100%]\n1 passed in 0.09s\n",
+      "sourceRootHasNoGitMetadata": true,
+      "fixtureInputs": [
+        ".gitattributes",
+        "docs/successor/capabilities/sources.json",
+        "tests/test_successor_capability_delivery.py"
+      ],
+      "scope": "Only this exact attribute test; no full source-archive qualification claim."
+    }
+  ],
+  "trackedSourceEdits": false,
+  "runtimeInstall": false,
+  "SHMWrites": false
+}

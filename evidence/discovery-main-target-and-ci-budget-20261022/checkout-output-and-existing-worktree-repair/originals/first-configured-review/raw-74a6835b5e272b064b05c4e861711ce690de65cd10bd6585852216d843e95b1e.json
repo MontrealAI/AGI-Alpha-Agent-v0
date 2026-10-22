@@ -1,0 +1,94 @@
+# Treat compiled bundle artifacts as generated files
+*.bundle.js linguist-generated
+*.bundle.js.map linguist-generated
+
+# Preserve the canonical manuscript's intentional Markdown line breaks; hashes are verified in CI.
+docs/manuscript/AGI_ALPHA_Unified_Publication_Final.md whitespace=-blank-at-eol
+
+# Pinned AGI Jobs source hashes require identical bytes on every checkout platform.
+examples/build-successor/vendor/agijobs/*.mjs text eol=lf
+
+# Keep byte-hashed TI runtime, public-source inputs and browser closure identical on every checkout.
+alpha_factory_v1/core/runtime/**/*.py text eol=lf
+docs/Transformational_Intelligence.tex text eol=lf
+docs/Autonomous_Enterprises.tex -text
+docs/Beyond_the_Original_Problem.tex text eol=lf
+docs/Beyond_the_Production_Frontier.tex text eol=lf
+docs/assets/successor/engine.mjs text eol=lf
+docs/assets/transformational-intelligence/source-understanding.mjs text eol=lf
+docs/transformational-intelligence/index.html text eol=lf
+docs/transformational-intelligence/sources.json text eol=lf
+examples/build-successor/model.mjs text eol=lf
+examples/successor-alpha/computer.mjs text eol=lf
+examples/successor-alpha/continuity.mjs text eol=lf
+examples/successor-alpha/engine.mjs text eol=lf
+examples/successor-alpha/project.mjs text eol=lf
+examples/successor-workbench/engine.mjs text eol=lf
+examples/transformational-intelligence/inspector.mjs text eol=lf
+examples/transformational-intelligence/project-bridge.mjs text eol=lf
+examples/transformational-intelligence/vendor/fleet/LICENSE text eol=lf
+examples/transformational-intelligence/vendor/fleet/SOURCE.json text eol=lf
+examples/transformational-intelligence/vendor/fleet/fleet/successor/vendor/manager/LICENSE text eol=lf
+examples/transformational-intelligence/vendor/fleet/fleet/successor/vendor/manager/site/assets/successor/safe.mjs text eol=lf
+examples/transformational-intelligence/vendor/fleet/local-runtime/primitives.mjs text eol=lf
+examples/transformational-intelligence/vendor/fleet/local-runtime/transformation/project.mjs text eol=lf
+scripts/generate_transformational_intelligence.py text eol=lf
+scripts/reproduce_*.py text eol=lf
+examples/transformational-intelligence/public-preparation/* text eol=lf
+scripts/templates/transformational-intelligence/app.js text eol=lf
+scripts/templates/transformational-intelligence/index.html text eol=lf
+scripts/templates/transformational-intelligence/style.css text eol=lf
+
+# Preserve opaque manuscript originals, including future versioned uploads, byte-for-byte.
+docs/Out_*.tex -text
+docs/papers/*.tex -text
+
+# Keep the complete capability byte-hashed closure and generated identities identical on every checkout.
+docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json text eol=lf
+examples/successor-capability/apparatus.mjs text eol=lf
+examples/successor-capability/capability-package.mjs text eol=lf
+examples/successor-capability/constructor.mjs text eol=lf
+examples/successor-capability/discovery-lab-artifacts.mjs text eol=lf
+examples/successor-capability/discovery-lab-baselines.mjs text eol=lf
+examples/successor-capability/discovery-lab-checker.mjs text eol=lf
+examples/successor-capability/discovery-lab-contract.mjs text eol=lf
+examples/successor-capability/discovery-lab-deployments.mjs text eol=lf
+examples/successor-capability/discovery-lab-docket.mjs text eol=lf
+examples/successor-capability/discovery-lab-evidence-history.mjs text eol=lf
+examples/successor-capability/discovery-lab-fleet-receipts.mjs text eol=lf
+examples/successor-capability/discovery-lab-future-checker.mjs text eol=lf
+examples/successor-capability/discovery-lab-future.mjs text eol=lf
+examples/successor-capability/discovery-lab-history.mjs text eol=lf
+examples/successor-capability/discovery-lab-real-task.mjs text eol=lf
+examples/successor-capability/discovery-lab-receipts.mjs text eol=lf
+examples/successor-capability/discovery-lab.mjs text eol=lf
+examples/successor-capability/evaluation.mjs text eol=lf
+examples/successor-capability/independent-checker.mjs text eol=lf
+examples/successor-capability/out-evolve-workspace.mjs text eol=lf
+examples/successor-capability/out-execute/checker.mjs text eol=lf
+examples/successor-capability/out-execute/engine.mjs text eol=lf
+examples/successor-capability/out-execute/fixtures.mjs text eol=lf
+examples/successor-capability/out-execute/model.mjs text eol=lf
+examples/successor-capability/out-execute/transport.mjs text eol=lf
+examples/successor-capability/typed-runtime.mjs text eol=lf
+examples/successor-capability/witness.mjs text eol=lf
+examples/successor-capability/workspace.mjs text eol=lf
+examples/successor-workbench/mission-store.mjs text eol=lf
+scripts/generate_successor_capability.py text eol=lf
+scripts/templates/successor-capability/app.js text eol=lf
+scripts/templates/successor-capability/discovery-lab-app.js text eol=lf
+scripts/templates/successor-capability/discovery-lab-bridge.js text eol=lf
+scripts/templates/successor-capability/discovery-lab-continuation.js text eol=lf
+scripts/templates/successor-capability/discovery-lab.css text eol=lf
+scripts/templates/successor-capability/discovery-lab.html text eol=lf
+scripts/templates/successor-capability/index.html text eol=lf
+scripts/templates/successor-capability/out-evolve-app.js text eol=lf
+scripts/templates/successor-capability/style.css text eol=lf
+examples/successor-capability/discovery-lab-reproduce.mjs text eol=lf
+docs/successor/capabilities/index.html text eol=lf
+docs/successor/capabilities/sources.json text eol=lf
+docs/alpha_factory_v1/demos/successor/capabilities/index.html text eol=lf
+docs/alpha_factory_v1/demos/successor/capabilities/sources.json text eol=lf
+docs/service-worker.js text eol=lf
+docs/assets/service-worker.js text eol=lf
+docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js text eol=lf

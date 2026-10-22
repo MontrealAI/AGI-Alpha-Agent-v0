@@ -1,0 +1,4149 @@
+{
+  "schema": "discovery-lab-public-campaign-bank/v1",
+  "scope": "Public authored supplied-model cases, not protected holdouts or physical measurements.",
+  "runtime": "v22.17.1",
+  "sourceSha256": {
+    "discovery-lab.mjs": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506",
+    "discovery-lab-checker.mjs": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099",
+    "discovery-lab-baselines.mjs": "91123c8c471224910ae420f3ec140a31fb0e1ad09862cbf85132ebc7993232ce",
+    "discovery-lab-contract.mjs": "98c8de8ce2774b7650bf4ee11eeedfb0a69b75fa6d1b080ef823637d77d0ab47",
+    "discovery-lab-reproduce.mjs": "21aabff4e543789f6ddbc074fcf7e0a3ea706cada55345f680f4edcb7afac894"
+  },
+  "count": 16,
+  "records": [
+    {
+      "id": "accepted-default",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "f5b0b3711e8f8314b2ead3f3a2dfd79fc7b4e323d3d656f24ada6a0c080495dd",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 906,
+        "search": 6601,
+        "checking": 97015,
+        "memoryWords": 30,
+        "storageBytes": 29294,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 906,
+        "search": 6601,
+        "checking": 97015,
+        "memoryWords": 30,
+        "storageBytes": 29294,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 498,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/accepted-default.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 906,
+          "search": 6601,
+          "checking": 97015,
+          "memoryWords": 30,
+          "storageBytes": 29294,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 906,
+          "search": 6601,
+          "checking": 97015,
+          "memoryWords": 30,
+          "storageBytes": 29294,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 6073,
+            "checking": 83166,
+            "acquisitions": 540,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 642,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1120,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1081,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "noisy-one-use",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 4,
+        "intendedUses": 1,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 1,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "a52d3c719e089b4c33ead2ab40f6e05ab5054486b1f82ee4b5c1edf0529cc943",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 426,
+        "search": 3998,
+        "checking": 60063,
+        "memoryWords": 30,
+        "storageBytes": 29415,
+        "workerSlots": 3,
+        "installations": 2
+      },
+      "verificationResources": {
+        "acquisitions": 426,
+        "search": 3998,
+        "checking": 60063,
+        "memoryWords": 30,
+        "storageBytes": 29415,
+        "workerSlots": 3,
+        "installations": 2
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 506,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/noisy-one-use.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 426,
+          "search": 3998,
+          "checking": 60063,
+          "memoryWords": 30,
+          "storageBytes": 29415,
+          "workerSlots": 3,
+          "installations": 2
+        },
+        "cumulative": {
+          "acquisitions": 426,
+          "search": 3998,
+          "checking": 60063,
+          "memoryWords": 30,
+          "storageBytes": 29415,
+          "workerSlots": 3,
+          "installations": 2
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 2,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 3,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 4,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 5,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 6,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 7,
+            "outcome": "ambiguous"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [],
+          "possible": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "interval-ambiguity-retained"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 3553,
+            "checking": 46294,
+            "acquisitions": 324,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 8,
+            "acquisitions": 24,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 642,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1120,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1081,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "noisy-twelve-uses",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 4,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 1,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "1caccfbca71aee0d7df7fe0a4f98a981fd12fc38bc0fac7461fde6974586e776",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 690,
+        "search": 4086,
+        "checking": 60149,
+        "memoryWords": 30,
+        "storageBytes": 29432,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 690,
+        "search": 4086,
+        "checking": 60149,
+        "memoryWords": 30,
+        "storageBytes": 29432,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 504,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/noisy-twelve-uses.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 690,
+          "search": 4086,
+          "checking": 60149,
+          "memoryWords": 30,
+          "storageBytes": 29432,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 690,
+          "search": 4086,
+          "checking": 60149,
+          "memoryWords": 30,
+          "storageBytes": 29432,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 4,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 5,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 6,
+            "outcome": "ambiguous"
+          },
+          {
+            "mask": 7,
+            "outcome": "ambiguous"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [],
+          "possible": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "interval-ambiguity-retained"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 3553,
+            "checking": 46294,
+            "acquisitions": 324,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 642,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1120,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1081,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "undeclared-quadratic-drift",
+      "expected": "rejected",
+      "state": "rejected",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "quadratic",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "2829868412c8c997d297c792c1026256dab6575f5fba054c4ab0075ffba1d531",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "rejected",
+          "reason": "No searched schedule meets the declared error and drift scope."
+        },
+        {
+          "kind": "think",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "design",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "strategise",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "execute",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "evolve",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        }
+      ],
+      "resources": {
+        "acquisitions": 54,
+        "search": 26,
+        "checking": 0,
+        "memoryWords": 0,
+        "storageBytes": 9411,
+        "workerSlots": 0,
+        "installations": 0
+      },
+      "verificationResources": {
+        "acquisitions": 54,
+        "search": 26,
+        "checking": 0,
+        "memoryWords": 0,
+        "storageBytes": 9411,
+        "workerSlots": 0,
+        "installations": 0
+      },
+      "queryVerification": null,
+      "reportPath": "reports/undeclared-quadratic-drift.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 54,
+          "search": 26,
+          "checking": 0,
+          "memoryWords": 0,
+          "storageBytes": 9411,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "cumulative": {
+          "acquisitions": 54,
+          "search": 26,
+          "checking": 0,
+          "memoryWords": 0,
+          "storageBytes": 9411,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": null,
+      "competitors": []
+    },
+    {
+      "id": "quadratic-reconstruction",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "quadratic",
+        "actualDrift": "quadratic",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "6ea12b86cc84c3ae2c81a794cf004bb520322577cad581606bc1f2cd75d76488",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 2000,
+        "search": 14679,
+        "checking": 187237,
+        "memoryWords": 30,
+        "storageBytes": 33117,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 2000,
+        "search": 14679,
+        "checking": 187237,
+        "memoryWords": 30,
+        "storageBytes": 33117,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 526,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/quadratic-reconstruction.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 2000,
+          "search": 14679,
+          "checking": 187237,
+          "memoryWords": 30,
+          "storageBytes": 33117,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 2000,
+          "search": 14679,
+          "checking": 187237,
+          "memoryWords": 30,
+          "storageBytes": 33117,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 14125,
+            "checking": 169152,
+            "acquisitions": 1440,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 384,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 1060,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1538,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1499,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 2320,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 2320,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "non-updatable-memory",
+      "expected": "rejected",
+      "state": "rejected",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z",
+          "flip-x"
+        ],
+        "memory": 6,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "e181f2f6305e3f7f6acec46cc851f06a14d5221d9ea239df038312dad489daf4",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "rejected",
+          "reason": "The resident representation exceeds its declared memory."
+        },
+        {
+          "kind": "design",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "strategise",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "execute",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "evolve",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        }
+      ],
+      "resources": {
+        "acquisitions": 78,
+        "search": 50,
+        "checking": 847,
+        "memoryWords": 24,
+        "storageBytes": 10529,
+        "workerSlots": 0,
+        "installations": 0
+      },
+      "verificationResources": {
+        "acquisitions": 78,
+        "search": 50,
+        "checking": 847,
+        "memoryWords": 24,
+        "storageBytes": 10529,
+        "workerSlots": 0,
+        "installations": 0
+      },
+      "queryVerification": null,
+      "reportPath": "reports/non-updatable-memory.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 78,
+          "search": 50,
+          "checking": 847,
+          "memoryWords": 24,
+          "storageBytes": 10529,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "cumulative": {
+          "acquisitions": 78,
+          "search": 50,
+          "checking": 847,
+          "memoryWords": 24,
+          "storageBytes": 10529,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": null,
+      "competitors": []
+    },
+    {
+      "id": "wrong-location",
+      "expected": "rejected",
+      "state": "rejected",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "wrong",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "3dbdf8ad88195d387d12dfdee0c9de92e7913ad535980961861d64d2e897db02",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "rejected",
+          "reason": "Released capacity is at the wrong location; staging is not permitted."
+        },
+        {
+          "kind": "execute",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "evolve",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        }
+      ],
+      "resources": {
+        "acquisitions": 78,
+        "search": 78,
+        "checking": 1871,
+        "memoryWords": 22,
+        "storageBytes": 11908,
+        "workerSlots": 3,
+        "installations": 1
+      },
+      "verificationResources": {
+        "acquisitions": 78,
+        "search": 78,
+        "checking": 1871,
+        "memoryWords": 22,
+        "storageBytes": 11908,
+        "workerSlots": 3,
+        "installations": 1
+      },
+      "queryVerification": null,
+      "reportPath": "reports/wrong-location.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 78,
+          "search": 78,
+          "checking": 1871,
+          "memoryWords": 22,
+          "storageBytes": 11908,
+          "workerSlots": 3,
+          "installations": 1
+        },
+        "cumulative": {
+          "acquisitions": 78,
+          "search": 78,
+          "checking": 1871,
+          "memoryWords": 22,
+          "storageBytes": 11908,
+          "workerSlots": 3,
+          "installations": 1
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": null,
+      "competitors": []
+    },
+    {
+      "id": "staging-enabled",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "staged",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "b7dddc330b824d8fc985d01da7b83d3eb23721d633f57495e0760d94205728c4",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 906,
+        "search": 6601,
+        "checking": 98193,
+        "memoryWords": 30,
+        "storageBytes": 29509,
+        "workerSlots": 3,
+        "installations": 5
+      },
+      "verificationResources": {
+        "acquisitions": 906,
+        "search": 6601,
+        "checking": 98193,
+        "memoryWords": 30,
+        "storageBytes": 29509,
+        "workerSlots": 3,
+        "installations": 5
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 498,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/staging-enabled.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 906,
+          "search": 6601,
+          "checking": 98193,
+          "memoryWords": 30,
+          "storageBytes": 29509,
+          "workerSlots": 3,
+          "installations": 5
+        },
+        "cumulative": {
+          "acquisitions": 906,
+          "search": 6601,
+          "checking": 98193,
+          "memoryWords": 30,
+          "storageBytes": 29509,
+          "workerSlots": 3,
+          "installations": 5
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 6073,
+            "checking": 84192,
+            "acquisitions": 540,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 642,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1139,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1100,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1921,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1921,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "hidden-private-coupling",
+      "expected": "rejected",
+      "state": "rejected",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": true,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "d87bc1d51e21ce00c0370186b2e9e5f5bbe1732d15b6c62d6073f765811deaf9",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "rejected",
+          "reason": "Complete supplied scopes do not represent the true current cost system."
+        },
+        {
+          "kind": "evolve",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        }
+      ],
+      "resources": {
+        "acquisitions": 78,
+        "search": 176,
+        "checking": 4573,
+        "memoryWords": 30,
+        "storageBytes": 17552,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 78,
+        "search": 176,
+        "checking": 4573,
+        "memoryWords": 30,
+        "storageBytes": 17552,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": null,
+      "reportPath": "reports/hidden-private-coupling.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 78,
+          "search": 176,
+          "checking": 4573,
+          "memoryWords": 30,
+          "storageBytes": 17552,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 78,
+          "search": 176,
+          "checking": 4573,
+          "memoryWords": 30,
+          "storageBytes": 17552,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": null,
+      "competitors": []
+    },
+    {
+      "id": "exhausted-search",
+      "expected": "inconclusive",
+      "state": "inconclusive",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 5,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "271ff3f7d97fb3afcc6b1868ea8ecff36e4a550ff3ec47ef3f582f07b9ad96da",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "inconclusive",
+          "reason": "search budget exhausted"
+        },
+        {
+          "kind": "think",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "design",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "strategise",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "execute",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        },
+        {
+          "kind": "evolve",
+          "status": "paused",
+          "reason": "An upstream stage has no accepted current artifact."
+        }
+      ],
+      "resources": {
+        "acquisitions": 9,
+        "search": 5,
+        "checking": 0,
+        "memoryWords": 0,
+        "storageBytes": 6352,
+        "workerSlots": 0,
+        "installations": 0
+      },
+      "verificationResources": {
+        "acquisitions": 9,
+        "search": 5,
+        "checking": 0,
+        "memoryWords": 0,
+        "storageBytes": 6352,
+        "workerSlots": 0,
+        "installations": 0
+      },
+      "queryVerification": null,
+      "reportPath": "reports/exhausted-search.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 9,
+          "search": 5,
+          "checking": 0,
+          "memoryWords": 0,
+          "storageBytes": 6352,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "cumulative": {
+          "acquisitions": 9,
+          "search": 5,
+          "checking": 0,
+          "memoryWords": 0,
+          "storageBytes": 6352,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": null,
+      "competitors": []
+    },
+    {
+      "id": "stronger-checkpoint",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety",
+          "sterile"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "7d6f7b90c92ecb47257ac5845ae2ecea8546ddb0ba0b1cf312f9e57617022375",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 906,
+        "search": 6539,
+        "checking": 98223,
+        "memoryWords": 30,
+        "storageBytes": 30316,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 906,
+        "search": 6539,
+        "checking": 98223,
+        "memoryWords": 30,
+        "storageBytes": 30316,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 499,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/stronger-checkpoint.json",
+      "ancestorReportDigests": [
+        "f5b0b3711e8f8314b2ead3f3a2dfd79fc7b4e323d3d656f24ada6a0c080495dd"
+      ],
+      "lineage": {
+        "generation": 2,
+        "incremental": {
+          "acquisitions": 906,
+          "search": 6539,
+          "checking": 98223,
+          "memoryWords": 30,
+          "storageBytes": 30316,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 1812,
+          "search": 13140,
+          "checking": 195238,
+          "memoryWords": 30,
+          "storageBytes": 59610,
+          "workerSlots": 3,
+          "installations": 8
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [
+          "prepare",
+          "reference",
+          "capacity",
+          "checkpoint"
+        ],
+        "priorPurposePreservedOnOldSlice": true,
+        "acceptedPredecessorPreserved": true,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 6073,
+            "checking": 84354,
+            "acquisitions": 540,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 643,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1133,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1085,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1942,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 4,
+            "checking": 1771,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "stronger-four-control-successor",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 4,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z",
+          "flip-w"
+        ],
+        "memory": 16,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "5026a41c869a3689b23db431126c9f859fd1f68547cee48c474f636a7ca4b3cf",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 1650,
+        "search": 30024,
+        "checking": 194858,
+        "memoryWords": 60,
+        "storageBytes": 35045,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 1650,
+        "search": 30024,
+        "checking": 194858,
+        "memoryWords": 60,
+        "storageBytes": 35045,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 1108,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/stronger-four-control-successor.json",
+      "ancestorReportDigests": [
+        "f5b0b3711e8f8314b2ead3f3a2dfd79fc7b4e323d3d656f24ada6a0c080495dd"
+      ],
+      "lineage": {
+        "generation": 2,
+        "incremental": {
+          "acquisitions": 1650,
+          "search": 30024,
+          "checking": 194858,
+          "memoryWords": 60,
+          "storageBytes": 35045,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 2556,
+          "search": 36625,
+          "checking": 291873,
+          "memoryWords": 60,
+          "storageBytes": 64339,
+          "workerSlots": 3,
+          "installations": 8
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [
+          "prepare",
+          "reference",
+          "capacity",
+          "route",
+          "checkpoint"
+        ],
+        "priorPurposePreservedOnOldSlice": true,
+        "acceptedPredecessorPreserved": true,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 8,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 9,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 10,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 11,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 12,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 13,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 14,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 15,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6,
+            8
+          ],
+          "possible": [
+            5,
+            6,
+            8
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            12
+          ],
+          "suppliedModelOptima": [
+            12
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 29073,
+            "checking": 169728,
+            "acquisitions": 972,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 192,
+            "checking": 192,
+            "acquisitions": 576,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 32,
+            "checking": 900,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 2320,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 2281,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 3140,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 2960,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "route-before-change",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "1c294a8de646c741dc9fa49008ba7e0313ebf251ca573e47e2403536c8a45698",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 906,
+        "search": 6518,
+        "checking": 93970,
+        "memoryWords": 30,
+        "storageBytes": 27885,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 906,
+        "search": 6518,
+        "checking": 93970,
+        "memoryWords": 30,
+        "storageBytes": 27885,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 496,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/route-before-change.json",
+      "ancestorReportDigests": [],
+      "lineage": {
+        "generation": 1,
+        "incremental": {
+          "acquisitions": 906,
+          "search": 6518,
+          "checking": 93970,
+          "memoryWords": 30,
+          "storageBytes": 27885,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 906,
+          "search": 6518,
+          "checking": 93970,
+          "memoryWords": 30,
+          "storageBytes": 27885,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [],
+        "priorPurposePreservedOnOldSlice": false,
+        "acceptedPredecessorPreserved": false,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 6008,
+            "checking": 80556,
+            "acquisitions": 540,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 640,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1088,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1075,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1810,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1810,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "equal-profiles-current-route",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "right"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "82efc8e6b431a666722e272544489d3b4406b475dd2d5a93fcf072c68eb00f8e",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 906,
+        "search": 6469,
+        "checking": 94521,
+        "memoryWords": 30,
+        "storageBytes": 28107,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 906,
+        "search": 6469,
+        "checking": 94521,
+        "memoryWords": 30,
+        "storageBytes": 28107,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 496,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/equal-profiles-current-route.json",
+      "ancestorReportDigests": [
+        "1c294a8de646c741dc9fa49008ba7e0313ebf251ca573e47e2403536c8a45698"
+      ],
+      "lineage": {
+        "generation": 2,
+        "incremental": {
+          "acquisitions": 906,
+          "search": 6469,
+          "checking": 94521,
+          "memoryWords": 30,
+          "storageBytes": 28107,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 1812,
+          "search": 12987,
+          "checking": 188491,
+          "memoryWords": 30,
+          "storageBytes": 55992,
+          "workerSlots": 3,
+          "installations": 8
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [
+          "prepare",
+          "reference",
+          "capacity",
+          "checkpoint"
+        ],
+        "priorPurposePreservedOnOldSlice": true,
+        "acceptedPredecessorPreserved": true,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 6021,
+            "checking": 81228,
+            "acquisitions": 540,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 640,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1088,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1075,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1822,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 4,
+            "checking": 1651,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "unsupported",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 0,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "lineage-generation-two",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "beb533d343db54d34f669adc2cd60720a80b1566d9ba5bba50bb09548e32f9e6",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 906,
+        "search": 6526,
+        "checking": 98759,
+        "memoryWords": 30,
+        "storageBytes": 29249,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 906,
+        "search": 6526,
+        "checking": 98759,
+        "memoryWords": 30,
+        "storageBytes": 29249,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 498,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/lineage-generation-two.json",
+      "ancestorReportDigests": [
+        "f5b0b3711e8f8314b2ead3f3a2dfd79fc7b4e323d3d656f24ada6a0c080495dd"
+      ],
+      "lineage": {
+        "generation": 2,
+        "incremental": {
+          "acquisitions": 906,
+          "search": 6526,
+          "checking": 98759,
+          "memoryWords": 30,
+          "storageBytes": 29249,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 1812,
+          "search": 13127,
+          "checking": 195774,
+          "memoryWords": 30,
+          "storageBytes": 58543,
+          "workerSlots": 3,
+          "installations": 8
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [
+          "prepare",
+          "reference",
+          "capacity",
+          "route",
+          "checkpoint"
+        ],
+        "priorPurposePreservedOnOldSlice": true,
+        "acceptedPredecessorPreserved": true,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 6073,
+            "checking": 83166,
+            "acquisitions": 540,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 642,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1120,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1081,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1722,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1929,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "lineage-generation-three",
+      "expected": "accepted",
+      "state": "accepted",
+      "charter": {
+        "schema": "discovery-lab-charter/v1",
+        "purpose": "qualified-finite-discovery-platform",
+        "controls": 3,
+        "accuracy": 1,
+        "intendedUses": 12,
+        "observations": [
+          "contrast",
+          "reference",
+          "coarse",
+          "full"
+        ],
+        "operations": [
+          "flip-z"
+        ],
+        "memory": 8,
+        "workerCapacity": 3,
+        "topology": "right",
+        "faultHypotheses": [
+          "clear",
+          "left",
+          "right",
+          "both"
+        ],
+        "checkpoints": [
+          "safety"
+        ],
+        "noise": 0,
+        "driftScope": "linear",
+        "actualDrift": "linear",
+        "hiddenCoupling": false,
+        "budget": {
+          "acquisitions": 2000,
+          "search": 1000000,
+          "checking": 1000000,
+          "storageBytes": 500000,
+          "installations": 20
+        }
+      },
+      "reportDigest": "6602a69c6035a81fa5d664ab7ad5d986c494a9f8fce449012bab2e8e9952efe6",
+      "stages": [
+        {
+          "kind": "learn",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "think",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "design",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "strategise",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "execute",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        },
+        {
+          "kind": "evolve",
+          "status": "accepted",
+          "reason": "Every finite semantic obligation passed."
+        }
+      ],
+      "resources": {
+        "acquisitions": 906,
+        "search": 6526,
+        "checking": 98749,
+        "memoryWords": 30,
+        "storageBytes": 29250,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "verificationResources": {
+        "acquisitions": 906,
+        "search": 6526,
+        "checking": 98749,
+        "memoryWords": 30,
+        "storageBytes": 29250,
+        "workerSlots": 3,
+        "installations": 4
+      },
+      "queryVerification": {
+        "accepted": true,
+        "checks": 498,
+        "reason": "Every frozen-platform downstream query passed independent finite checking."
+      },
+      "reportPath": "reports/lineage-generation-three.json",
+      "ancestorReportDigests": [
+        "f5b0b3711e8f8314b2ead3f3a2dfd79fc7b4e323d3d656f24ada6a0c080495dd",
+        "beb533d343db54d34f669adc2cd60720a80b1566d9ba5bba50bb09548e32f9e6"
+      ],
+      "lineage": {
+        "generation": 3,
+        "incremental": {
+          "acquisitions": 906,
+          "search": 6526,
+          "checking": 98749,
+          "memoryWords": 30,
+          "storageBytes": 29250,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "cumulative": {
+          "acquisitions": 2718,
+          "search": 19653,
+          "checking": 294523,
+          "memoryWords": 30,
+          "storageBytes": 87793,
+          "workerSlots": 3,
+          "installations": 12
+        },
+        "accounting": "Parent cumulative costs plus only this campaign work; no inherited cost is charged twice."
+      },
+      "reuse": {
+        "retainedFactors": [
+          "prepare",
+          "reference",
+          "capacity",
+          "route",
+          "checkpoint"
+        ],
+        "priorPurposePreservedOnOldSlice": true,
+        "acceptedPredecessorPreserved": true,
+        "claim": "Current witnesses and acceptance were performed; retained assets do not confer authority."
+      },
+      "queryOutcome": {
+        "threshold": [
+          {
+            "mask": 0,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 1,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 2,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 3,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 4,
+            "outcome": "rejected"
+          },
+          {
+            "mask": 5,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 6,
+            "outcome": "accepted"
+          },
+          {
+            "mask": 7,
+            "outcome": "accepted"
+          }
+        ],
+        "inverse": {
+          "target": 8,
+          "definite": [
+            5,
+            6
+          ],
+          "possible": [
+            5,
+            6
+          ]
+        },
+        "selection": {
+          "maximumActiveControls": 2,
+          "candidates": [
+            5,
+            6
+          ],
+          "suppliedModelOptima": [
+            5,
+            6
+          ],
+          "uncertainty": "exact-within-supplied-model"
+        }
+      },
+      "competitors": [
+        {
+          "name": "Unrestricted same-primitive finite reference",
+          "status": "accepted",
+          "relation": "tie",
+          "measuredWork": {
+            "search": 6073,
+            "checking": 83166,
+            "acquisitions": 540,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed architecture with more search",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 96,
+            "checking": 96,
+            "acquisitions": 288,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full-state reasoning",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 8,
+            "checking": 642,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Separate service realization",
+          "status": "rejected",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 3,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full diagnosis",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1120,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "No-diagnosis construction",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1081,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Full recomputation",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 28,
+            "checking": 1902,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Equally capable incremental contracts",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1722,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Fixed complete certificate",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1919,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        },
+        {
+          "name": "Successor from scratch",
+          "status": "accepted",
+          "relation": null,
+          "measuredWork": {
+            "search": 0,
+            "checking": 1,
+            "acquisitions": 0,
+            "installations": 0
+          }
+        }
+      ]
+    }
+  ],
+  "elapsedReceipt": {
+    "schema": "discovery-lab-wall-clock-receipts/v1",
+    "receipts": [
+      {
+        "id": "accepted-default",
+        "constructionElapsedMs": 124,
+        "verificationElapsedMs": 72,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "noisy-one-use",
+        "constructionElapsedMs": 40,
+        "verificationElapsedMs": 40,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "noisy-twelve-uses",
+        "constructionElapsedMs": 39,
+        "verificationElapsedMs": 47,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "undeclared-quadratic-drift",
+        "constructionElapsedMs": 1,
+        "verificationElapsedMs": 2,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "quadratic-reconstruction",
+        "constructionElapsedMs": 116,
+        "verificationElapsedMs": 124,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "non-updatable-memory",
+        "constructionElapsedMs": 2,
+        "verificationElapsedMs": 2,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "wrong-location",
+        "constructionElapsedMs": 3,
+        "verificationElapsedMs": 4,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "staging-enabled",
+        "constructionElapsedMs": 54,
+        "verificationElapsedMs": 53,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "hidden-private-coupling",
+        "constructionElapsedMs": 5,
+        "verificationElapsedMs": 6,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "exhausted-search",
+        "constructionElapsedMs": 1,
+        "verificationElapsedMs": 1,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "stronger-checkpoint",
+        "constructionElapsedMs": 62,
+        "verificationElapsedMs": 60,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "stronger-four-control-successor",
+        "constructionElapsedMs": 97,
+        "verificationElapsedMs": 110,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "route-before-change",
+        "constructionElapsedMs": 53,
+        "verificationElapsedMs": 53,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "equal-profiles-current-route",
+        "constructionElapsedMs": 51,
+        "verificationElapsedMs": 52,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "lineage-generation-two",
+        "constructionElapsedMs": 56,
+        "verificationElapsedMs": 65,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      },
+      {
+        "id": "lineage-generation-three",
+        "constructionElapsedMs": 55,
+        "verificationElapsedMs": 58,
+        "scope": "Actual local wall clock; separate from deterministic logical resource vectors."
+      }
+    ]
+  }
+}

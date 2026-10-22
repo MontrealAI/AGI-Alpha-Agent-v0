@@ -1,0 +1,90 @@
+...F......                                                               [100%]
+=================================== FAILURES ===================================
+_ test_existing_parent_to_lf_attributes_checkout_has_explicit_backed_up_repair _
+
+tmp_path = PosixPath('/workspace/scratch/32717074a7f1/alpha-ready-review-fix-evidence/upgrade-pytest-temp/test_existing_parent_to_lf_att0')
+
+    def test_existing_parent_to_lf_attributes_checkout_has_explicit_backed_up_repair(tmp_path: Path) -> None:
+        """A normal upgrade leaves stale raw CRLF despite clean Git status and LF attributes."""
+        helper = load_script("refresh_capability_checkout")
+        paths = capability_checkout_paths()
+        fixture = json.loads((ROOT / "tests/fixtures/capability-checkout-parent.json").read_bytes())
+        assert fixture["sourceCommit"] == "87a003d23d3093edac3747ee1f9da292c6159515"
+        assert fixture["sourceTree"] == "ffa3d663519e713eca31a9840b8bf6816e53e12a"
+        source, checkout = tmp_path / "source", tmp_path / "checkout"
+        source.mkdir()
+        controls = ["docs/Out_Execute.tex", "docs/Out_Execute.pdf"]
+        for name in [*paths, *controls]:
+            target = source / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((ROOT / name).read_bytes())
+        (source / "unpinned-control.txt").write_bytes(b"ordinary control\n")
+        for name, entry in fixture["files"].items():
+            raw = entry["text"].encode()
+            assert len(raw) == entry["bytes"] and hashlib.sha256(raw).hexdigest() == entry["sha256"]
+            (source / name).write_bytes(raw)
+        for arguments in (
+            ("init", "--quiet"),
+            ("config", "user.name", "Owned test"),
+            ("config", "user.email", "owned-test@example.invalid"),
+            ("config", "commit.gpgsign", "false"),
+            ("add", "."),
+            ("commit", "--quiet", "-m", "Exact old attribute and reproducer bodies"),
+        ):
+            _git(source, *arguments)
+        parent = _git(source, "rev-parse", "HEAD").decode().strip()
+        for name in fixture["files"]:
+            (source / name).write_bytes((ROOT / name).read_bytes())
+        _git(source, "add", ".")
+        _git(source, "commit", "--quiet", "-m", "Reviewed LF attribute transition")
+        target = _git(source, "rev-parse", "HEAD").decode().strip()
+        subprocess.run(
+            ["git", "clone", "--quiet", "--local", "--no-checkout", str(source), str(checkout)],
+            capture_output=True,
+            check=True,
+        )
+        _git(checkout, "config", "core.autocrlf", "true")
+        _git(checkout, "config", "core.eol", "crlf")
+        _git(checkout, "checkout", "--quiet", "--detach", parent)
+        _git(checkout, "checkout", "--quiet", "--detach", target)
+        assert _git(checkout, "status", "--porcelain") == b""
+        originals = {name: (checkout / name).read_bytes() for name in paths}
+        modes = {name: stat.S_IMODE((checkout / name).stat().st_mode) for name in paths}
+        unchanged = {
+            name: (checkout / name).read_bytes()
+            for name in [*controls, "unpinned-control.txt", ".git/index", ".git/config"]
+        }
+        assert unchanged["unpinned-control.txt"] == b"ordinary control\r\n"
+        assert sum(b"\r\n" in raw for raw in originals.values()) == 47
+        catalog = json.loads(originals[helper.CATALOG])
+        assert (
+            sum(hashlib.sha256(originals[name]).hexdigest() != digest for name, digest in catalog["sources"].items()) == 40
+        )
+        dry_run = helper.refresh(checkout)
+        assert dry_run["checked"] == 49 and len(dry_run["needsRefresh"]) == 47
+        assert not dry_run["applied"] and dry_run["backupDirectory"] is None
+        assert originals == {name: (checkout / name).read_bytes() for name in paths}
+        backup_parent = tmp_path / "backups"
+        backup_parent.mkdir()
+        applied = helper.refresh(checkout, apply=True, backup_parent=backup_parent)
+        backup = Path(applied["backupDirectory"])
+        assert applied["applied"] and stat.S_IMODE(backup.stat().st_mode) == 0o700
+        manifest = json.loads((backup / "manifest.json").read_bytes())
+        assert len(manifest["files"]) == 49
+        for entry in manifest["files"]:
+            name = entry["path"]
+            assert (backup / "files" / name).read_bytes() == originals[name]
+            assert entry["bytes"] == len(originals[name])
+            assert entry["sha256"] == hashlib.sha256(originals[name]).hexdigest()
+            assert entry["mode"] == modes[name] == stat.S_IMODE((checkout / name).stat().st_mode)
+            assert (checkout / name).read_bytes() == (ROOT / name).read_bytes()
+        assert unchanged == {name: (checkout / name).read_bytes() for name in unchanged}
+>       assert _git(checkout, "status", "--porcelain") == b""
+E       AssertionError: assert b' M docs/alp...y/style.css\n' == b''
+E         
+E         Use -v to get more diff
+
+tests/test_successor_capability_delivery.py:483: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../../dev::test_existing_parent_to_lf_attributes_checkout_has_explicit_backed_up_repair
+1 failed, 9 passed in 0.85s

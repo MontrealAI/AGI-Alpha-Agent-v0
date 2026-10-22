@@ -1,0 +1,21 @@
+--- tests/test_successor_capability_delivery.py	2026-10-22 07:24:50.969768+00:00
++++ tests/test_successor_capability_delivery.py	2026-10-22 07:32:07.493210+00:00
+@@ -44,13 +44,11 @@
+         input="\n".join(paths) + "\n",
+         text=True,
+         capture_output=True,
+         check=True,
+     )
+-    assert result.stdout.splitlines() == [
+-        line for name in paths for line in (f"{name}: text: set", f"{name}: eol: lf")
+-    ]
++    assert result.stdout.splitlines() == [line for name in paths for line in (f"{name}: text: set", f"{name}: eol: lf")]
+ 
+ 
+ def test_actual_crlf_checkout_preserves_capability_raw_bytes_and_catalog_hashes(tmp_path: Path) -> None:
+     """A real Git checkout must retain raw bytes even with autocrlf enabled."""
+     source, checkout = tmp_path / "source", tmp_path / "checkout"
+would reformat tests/test_successor_capability_delivery.py
+
+Oh no! 💥 💔 💥
+1 file would be reformatted.

@@ -1,0 +1,92 @@
+{
+  "schema": "alpha/independent-explicit-upgrade-end-to-end/v1",
+  "createdAt": "2026-10-22T08:15:27.684355+00:00",
+  "localCommit": "be7485eb233aed8dd5d161627af0a4c3b9e5ddbb",
+  "helperSHA256": "e795995d0b0cc3193243573d3c74569aa1d4e8c5afef8cb843a2781103793e87",
+  "finding": 4345797435,
+  "ordinaryRealTransitionStaleBefore": 47,
+  "catalogueMismatchesBefore": 40,
+  "staleAfterExplicitUpgrade": 0,
+  "catalogueMismatchesAfter": 0,
+  "all49CanonicalBytesExact": true,
+  "all49OriginalBackupsRawBytesModesSHAExact": true,
+  "private0700BackupAnd0600Bodies": true,
+  "fileModesPreservedIncludingPrivate0640": true,
+  "dryRunNoWrites": true,
+  "privateEditRefusesWholePlanWithNoBackupOrSourceWrites": true,
+  "privateIndexConfigAndOpaqueTexFixtureBytesPreserved": true,
+  "secondApplyNoOpNoNewBackup": true,
+  "backup": "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/independent-backups/capability-lf-backup-o95z3xd4",
+  "sourceTrackedFilesChangedByReviewer": false,
+  "untrustedArtifactCodeExecuted": false,
+  "helperTargetSourceCodeExecuted": false,
+  "onlyTrustedReviewedHelperExecuted": true,
+  "publicWrites": false,
+  "SHMWrites": false,
+  "records": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py",
+        "--root",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/owned-parent-target-checkout"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"schema\": \"capability-lf-checkout-refresh/v1\",\n  \"sourceHash\": \"644258ac21cc938aff861d02ad728e8f3c9716f6ea78700acc35e4d7400eebf2\",\n  \"checked\": 49,\n  \"needsRefresh\": [\n    \"docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js\",\n    \"docs/alpha_factory_v1/demos/successor/capabilities/index.html\",\n    \"docs/alpha_factory_v1/demos/successor/capabilities/sources.json\",\n    \"docs/assets/service-worker.js\",\n    \"docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json\",\n    \"docs/service-worker.js\",\n    \"docs/successor/capabilities/index.html\",\n    \"docs/successor/capabilities/sources.json\",\n    \"examples/successor-capability/apparatus.mjs\",\n    \"examples/successor-capability/capability-package.mjs\",\n    \"examples/successor-capability/constructor.mjs\",\n    \"examples/successor-capability/discovery-lab-artifacts.mjs\",\n    \"examples/successor-capability/discovery-lab-baselines.mjs\",\n    \"examples/successor-capability/discovery-lab-checker.mjs\",\n    \"examples/successor-capability/discovery-lab-contract.mjs\",\n    \"examples/successor-capability/discovery-lab-deployments.mjs\",\n    \"examples/successor-capability/discovery-lab-docket.mjs\",\n    \"examples/successor-capability/discovery-lab-evidence-history.mjs\",\n    \"examples/successor-capability/discovery-lab-fleet-receipts.mjs\",\n    \"examples/successor-capability/discovery-lab-future-checker.mjs\",\n    \"examples/successor-capability/discovery-lab-future.mjs\",\n    \"examples/successor-capability/discovery-lab-history.mjs\",\n    \"examples/successor-capability/discovery-lab-real-task.mjs\",\n    \"examples/successor-capability/discovery-lab-receipts.mjs\",\n    \"examples/successor-capability/discovery-lab.mjs\",\n    \"examples/successor-capability/evaluation.mjs\",\n    \"examples/successor-capability/independent-checker.mjs\",\n    \"examples/successor-capability/out-evolve-workspace.mjs\",\n    \"examples/successor-capability/out-execute/checker.mjs\",\n    \"examples/successor-capability/out-execute/engine.mjs\",\n    \"examples/successor-capability/out-execute/fixtures.mjs\",\n    \"examples/successor-capability/out-execute/model.mjs\",\n    \"examples/successor-capability/out-execute/transport.mjs\",\n    \"examples/successor-capability/typed-runtime.mjs\",\n    \"examples/successor-capability/witness.mjs\",\n    \"examples/successor-capability/workspace.mjs\",\n    \"examples/successor-workbench/mission-store.mjs\",\n    \"scripts/generate_successor_capability.py\",\n    \"scripts/templates/successor-capability/app.js\",\n    \"scripts/templates/successor-capability/discovery-lab-app.js\",\n    \"scripts/templates/successor-capability/discovery-lab-bridge.js\",\n    \"scripts/templates/successor-capability/discovery-lab-continuation.js\",\n    \"scripts/templates/successor-capability/discovery-lab.css\",\n    \"scripts/templates/successor-capability/discovery-lab.html\",\n    \"scripts/templates/successor-capability/index.html\",\n    \"scripts/templates/successor-capability/out-evolve-app.js\",\n    \"scripts/templates/successor-capability/style.css\"\n  ],\n  \"applied\": false,\n  \"backupDirectory\": null\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py",
+        "--root",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/owned-private-edit-refusal",
+        "--apply",
+        "--backup-parent",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/private-edit-backups"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py\", line 227, in <module>\n    print(json.dumps(refresh(arguments.root, apply=arguments.apply, backup_parent=arguments.backup_parent), indent=2))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py\", line 143, in refresh\n    canonical = _canonical(raw, digest, size, name)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py\", line 105, in _canonical\n    raise ValueError(\"Private or unexpected capability bytes; nothing refreshed: \" + name)\nValueError: Private or unexpected capability bytes; nothing refreshed: examples/successor-capability/discovery-lab-history.mjs\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py",
+        "--root",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/owned-parent-target-checkout",
+        "--apply",
+        "--backup-parent",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/independent-backups"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"schema\": \"capability-lf-checkout-refresh/v1\",\n  \"sourceHash\": \"644258ac21cc938aff861d02ad728e8f3c9716f6ea78700acc35e4d7400eebf2\",\n  \"checked\": 49,\n  \"needsRefresh\": [\n    \"docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js\",\n    \"docs/alpha_factory_v1/demos/successor/capabilities/index.html\",\n    \"docs/alpha_factory_v1/demos/successor/capabilities/sources.json\",\n    \"docs/assets/service-worker.js\",\n    \"docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json\",\n    \"docs/service-worker.js\",\n    \"docs/successor/capabilities/index.html\",\n    \"docs/successor/capabilities/sources.json\",\n    \"examples/successor-capability/apparatus.mjs\",\n    \"examples/successor-capability/capability-package.mjs\",\n    \"examples/successor-capability/constructor.mjs\",\n    \"examples/successor-capability/discovery-lab-artifacts.mjs\",\n    \"examples/successor-capability/discovery-lab-baselines.mjs\",\n    \"examples/successor-capability/discovery-lab-checker.mjs\",\n    \"examples/successor-capability/discovery-lab-contract.mjs\",\n    \"examples/successor-capability/discovery-lab-deployments.mjs\",\n    \"examples/successor-capability/discovery-lab-docket.mjs\",\n    \"examples/successor-capability/discovery-lab-evidence-history.mjs\",\n    \"examples/successor-capability/discovery-lab-fleet-receipts.mjs\",\n    \"examples/successor-capability/discovery-lab-future-checker.mjs\",\n    \"examples/successor-capability/discovery-lab-future.mjs\",\n    \"examples/successor-capability/discovery-lab-history.mjs\",\n    \"examples/successor-capability/discovery-lab-real-task.mjs\",\n    \"examples/successor-capability/discovery-lab-receipts.mjs\",\n    \"examples/successor-capability/discovery-lab.mjs\",\n    \"examples/successor-capability/evaluation.mjs\",\n    \"examples/successor-capability/independent-checker.mjs\",\n    \"examples/successor-capability/out-evolve-workspace.mjs\",\n    \"examples/successor-capability/out-execute/checker.mjs\",\n    \"examples/successor-capability/out-execute/engine.mjs\",\n    \"examples/successor-capability/out-execute/fixtures.mjs\",\n    \"examples/successor-capability/out-execute/model.mjs\",\n    \"examples/successor-capability/out-execute/transport.mjs\",\n    \"examples/successor-capability/typed-runtime.mjs\",\n    \"examples/successor-capability/witness.mjs\",\n    \"examples/successor-capability/workspace.mjs\",\n    \"examples/successor-workbench/mission-store.mjs\",\n    \"scripts/generate_successor_capability.py\",\n    \"scripts/templates/successor-capability/app.js\",\n    \"scripts/templates/successor-capability/discovery-lab-app.js\",\n    \"scripts/templates/successor-capability/discovery-lab-bridge.js\",\n    \"scripts/templates/successor-capability/discovery-lab-continuation.js\",\n    \"scripts/templates/successor-capability/discovery-lab.css\",\n    \"scripts/templates/successor-capability/discovery-lab.html\",\n    \"scripts/templates/successor-capability/index.html\",\n    \"scripts/templates/successor-capability/out-evolve-app.js\",\n    \"scripts/templates/successor-capability/style.css\"\n  ],\n  \"applied\": true,\n  \"backupDirectory\": \"/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/independent-backups/capability-lf-backup-o95z3xd4\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py",
+        "--root",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/owned-parent-target-checkout"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"schema\": \"capability-lf-checkout-refresh/v1\",\n  \"sourceHash\": \"644258ac21cc938aff861d02ad728e8f3c9716f6ea78700acc35e4d7400eebf2\",\n  \"checked\": 49,\n  \"needsRefresh\": [],\n  \"applied\": false,\n  \"backupDirectory\": null\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/32717074a7f1/alpha-ready-review-fix/scripts/refresh_capability_checkout.py",
+        "--root",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/owned-parent-target-checkout",
+        "--apply",
+        "--backup-parent",
+        "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/independent-backups"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"schema\": \"capability-lf-checkout-refresh/v1\",\n  \"sourceHash\": \"644258ac21cc938aff861d02ad728e8f3c9716f6ea78700acc35e4d7400eebf2\",\n  \"checked\": 49,\n  \"needsRefresh\": [],\n  \"applied\": true,\n  \"backupDirectory\": null\n}\n",
+      "stderr": ""
+    }
+  ]
+}

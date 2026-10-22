@@ -1,0 +1,252 @@
+{
+  "schema": "alpha/4859-source-bound-configured-review-terminal/v1",
+  "createdAt": "2026-10-22T07:53:02.089Z",
+  "result": "CONFIGURED_REVIEW_COMPLETED_WITH_ONE_UNRESOLVED_P2_MERGE_HELD",
+  "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+  "pullRequest": 4859,
+  "source": {
+    "publicHead": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+    "publicTree": "33c13a46596b56db79da7bd73b705da4afd7d36c",
+    "publicSoleParent": "87a003d23d3093edac3747ee1f9da292c6159515",
+    "localReviewedEquivalent": "e7693280c650c2f73d48672a1e784de728eb9ec2",
+    "actualSynthetic": "18df78697bb02728cb3bda756eddc089ebb2cae4",
+    "syntheticTree": "33c13a46596b56db79da7bd73b705da4afd7d36c",
+    "orderedSyntheticParents": [
+      "87a003d23d3093edac3747ee1f9da292c6159515",
+      "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e"
+    ],
+    "allFourPublicRawFilesMatchExactLocalBytesSha256GitBlobAndTreeCommittedModes": true,
+    "files": 4,
+    "bytes": 39313
+  },
+  "review": {
+    "summaryId": 6335555564,
+    "summaryURL": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4859#issuecomment-6335555564",
+    "trigger": "PR opened",
+    "startedAt": "2026-10-22T07:45:41.554515Z",
+    "completedAt": "2026-10-22T07:49:33.620062Z",
+    "summaryUpdatedAt": "2026-10-22T07:49:34Z",
+    "state": {
+      "commit_sha": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+      "has_any_findings": true,
+      "has_unresolved_findings": true,
+      "status": "completed"
+    },
+    "reviewId": 5610856293,
+    "reviewURL": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4859#pullrequestreview-5610856293",
+    "submittedAt": "2026-10-22T07:49:31Z",
+    "commit": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+    "reviewState": "COMMENTED",
+    "currentConfiguredReviewClear": false
+  },
+  "finding": {
+    "severity": "P2",
+    "id": 4345797435,
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4859#discussion_r4345797435",
+    "reviewId": 5610856293,
+    "commit": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+    "originalCommit": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+    "createdAt": "2026-10-22T07:49:31Z",
+    "path": ".gitattributes",
+    "startLine": 47,
+    "line": 49,
+    "title": "Force existing worktrees to refresh newly pinned files",
+    "summary": "The review reports that a core.autocrlf=true worktree updated from the parent can retain CRLF bytes for unchanged blobs even after new LF attributes apply. Existing raw-source checks may still fail. The new regression models a fresh checkout, so it does not cover that parent-to-target transition.",
+    "requestedNextEvaluation": "Reproduce the ordinary parent-to-target checkout transition and evaluate a force-refresh upgrade path or corresponding repair before asserting review-clear.",
+    "independentlyReproducedByThisMonitor": false,
+    "staticEvaluation": "The current checkout regression initializes an index with the target attributes and checks out from that index; it does not exercise a worktree initially checked out with parent attributes. The new review case is therefore not covered by the previously passed fixture."
+  },
+  "terminalPRState": {
+    "observedAt": "2026-10-22T07:51:53.263Z",
+    "state": "open",
+    "draft": false,
+    "head": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+    "base": "87a003d23d3093edac3747ee1f9da292c6159515",
+    "synthetic": "18df78697bb02728cb3bda756eddc089ebb2cae4",
+    "main": "87a003d23d3093edac3747ee1f9da292c6159515",
+    "refsRemainExpected": true
+  },
+  "requiredContexts": {
+    "observedAt": "2026-10-22T07:51:53.263Z",
+    "requiredNamesProvidedByRoot": [
+      "Lint (ruff)",
+      "Smoke tests"
+    ],
+    "contexts": [
+      {
+        "name": "Lint (ruff)",
+        "matches": []
+      },
+      {
+        "name": "Smoke tests",
+        "matches": []
+      }
+    ],
+    "headCheckRuns": 6,
+    "checkState": "Only six queued paper-scope checks exist; required Lint/Smoke contexts have not yet appeared, so no required-check pass is claimed.",
+    "legacyCombinedStatus": "pending"
+  },
+  "originalPRRuns": {
+    "observedAt": "2026-10-22T07:50:23.416Z",
+    "total": 6,
+    "rows": [
+      {
+        "id": 39742745806,
+        "name": "🔥 Smoke Test",
+        "head": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+        "attempt": 1,
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 39742745829,
+        "name": "Alpha creator authority v2 candidate",
+        "head": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+        "attempt": 1,
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 39742745852,
+        "name": "SUCCESSOR capability workspace",
+        "head": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+        "attempt": 1,
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 39742745721,
+        "name": "✅ PR CI",
+        "head": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+        "attempt": 1,
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 39742745832,
+        "name": "SUCCESSOR mission recovery",
+        "head": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+        "attempt": 1,
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 39742746183,
+        "name": "Transformational Intelligence acceptance",
+        "head": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+        "attempt": 1,
+        "status": "queued",
+        "conclusion": null
+      }
+    ],
+    "allOriginalAttemptsPreserved": true,
+    "artifactDownloads": false,
+    "cancelRerunDispatch": false
+  },
+  "immediateNotification": {
+    "rootNotifiedAfterFirstCapturedCompletion": true,
+    "firstCapturedCompletionAt": "2026-10-22T07:50:23.416Z",
+    "findingsNotDismissedUsingPriorLocalOr24dClear": true
+  },
+  "actions": {
+    "readOnlyGitHubGETs": true,
+    "publicWrites": false,
+    "reviewTriggers": 0,
+    "sourceEdits": false,
+    "testsOrProbes": false,
+    "browser": false,
+    "runtimeInstall": false,
+    "artifactDownloads": false,
+    "mergeCancelRerunDispatch": false,
+    "SHMWrites": false
+  },
+  "finalExactObservation": {
+    "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/observation-2026-10-22T075153263Z.json",
+    "bytes": 2964,
+    "sha256": "add5ba8304d367f4062a378267bc6d73f9b26fd630328146591fb5f14f437093",
+    "resources": [
+      {
+        "key": "pr",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/pulls/4859",
+        "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/raw-af8cfc11660cbb48a17cea682682925beb11c9f6940f0b93ff5cd422a2a993b8.json",
+        "bytes": 21757,
+        "sha256": "af8cfc11660cbb48a17cea682682925beb11c9f6940f0b93ff5cd422a2a993b8"
+      },
+      {
+        "key": "main",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/git/ref/heads/main",
+        "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/raw-e759003959113ee9ac4276a4c91292ab96c5059a87ec6f4636a11dfe80dbb8f3.json",
+        "bytes": 356,
+        "sha256": "e759003959113ee9ac4276a4c91292ab96c5059a87ec6f4636a11dfe80dbb8f3"
+      },
+      {
+        "key": "summary",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/issues/comments/6335555564",
+        "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/raw-9d0b63c249506dca0205901c8fffbc4e93272c13c65b46fd52987cd1b1361ca3.json",
+        "bytes": 4818,
+        "sha256": "9d0b63c249506dca0205901c8fffbc4e93272c13c65b46fd52987cd1b1361ca3"
+      },
+      {
+        "key": "review",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/pulls/4859/reviews/5610856293",
+        "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/raw-466b859c899e9bbbfc1ebec441420fc61dd5b1c19ffdca6e3e80c243b9323096.json",
+        "bytes": 2521,
+        "sha256": "466b859c899e9bbbfc1ebec441420fc61dd5b1c19ffdca6e3e80c243b9323096"
+      },
+      {
+        "key": "inline",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/pulls/comments/4345797435",
+        "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/raw-afac2ee763c765707ab3c93dac9bf39496788b63e5f842810dbce70c4958caf1.json",
+        "bytes": 4050,
+        "sha256": "afac2ee763c765707ab3c93dac9bf39496788b63e5f842810dbce70c4958caf1"
+      },
+      {
+        "key": "headChecks",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/commits/1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e/check-runs?per_page=100",
+        "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/raw-e1239c3e128537eaf0398c4fc952790e97bb8f0a0d2638252655e6a410a7fc35.json",
+        "bytes": 21890,
+        "sha256": "e1239c3e128537eaf0398c4fc952790e97bb8f0a0d2638252655e6a410a7fc35"
+      },
+      {
+        "key": "statuses",
+        "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/commits/1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e/status?per_page=100",
+        "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/raw-03bed35e7808725c2083d91a630e1826c66e78f685d6516de41f12c839d5d7c3.json",
+        "bytes": 5150,
+        "sha256": "03bed35e7808725c2083d91a630e1826c66e78f685d6516de41f12c839d5d7c3"
+      }
+    ]
+  },
+  "limits": [
+    "The finding is an actual exact-head configured-review result; this monitor has not independently reproduced the new worktree-transition case.",
+    "Initial source authentication and capture setup left a gap between the first observation and the completion observation; the exact observation times are retained, and an uninterrupted50-second capture cadence is not claimed.",
+    "No branch-protection administration or human approval state was inferred. Root supplied the required Lint/Smoke context names; both are still absent in the observed checks.",
+    "This report authorizes no publication or merge. No accepted-main, release, package, public-byte or final native-pin qualification transfers from prior records."
+  ],
+  "nextState": "Keep PR4859 unmerged while root evaluates the new P2 and any required exact-head checks. Any repair/new head requires its own source binding and configured review.",
+  "initialPublicSourceAuthentication": {
+    "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/INITIAL_PUBLIC_SOURCE_AUTHENTICATION.json",
+    "bytes": 2797,
+    "sha256": "2db1ccb7295d1ed3d1a77b6c60762815796c08195457271cea8b5ecf3e3c3eec"
+  },
+  "immutableObservations": [
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/observation-2026-10-22T074702606Z.json",
+      "bytes": 6153,
+      "sha256": "84fbe4ea3cbb580fe519f2575e62bb14f2224f96168088e9669e96c41293a6cc",
+      "observedAt": "2026-10-22T07:47:02.606Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/observation-2026-10-22T075023416Z.json",
+      "bytes": 3427,
+      "sha256": "798bb52b3c672687058a3fd4f054ff2df3e1ef6bfe3ccf56c1ad92669484190b",
+      "observedAt": "2026-10-22T07:50:23.416Z"
+    },
+    {
+      "file": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/observation-2026-10-22T075153263Z.json",
+      "bytes": 2964,
+      "sha256": "add5ba8304d367f4062a378267bc6d73f9b26fd630328146591fb5f14f437093",
+      "observedAt": "2026-10-22T07:51:53.263Z"
+    }
+  ],
+  "allCapturedResourceHashesReverified": true
+}

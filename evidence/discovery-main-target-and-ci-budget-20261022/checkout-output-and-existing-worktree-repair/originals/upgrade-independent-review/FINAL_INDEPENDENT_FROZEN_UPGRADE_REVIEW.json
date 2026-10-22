@@ -1,0 +1,231 @@
+{
+  "schema": "alpha/independent-frozen-checkout-upgrade-review/v1",
+  "createdAt": "2026-10-22T08:21:08.569983+00:00",
+  "reviewer": "/root/alpha33b_packet_review",
+  "status": "LOCAL_SOURCE_SCOPED_CLEAR_PROPOSED_PUBLIC_CHILD_PENDING_NEW_HEAD_CONFIGURED_REVIEW_AND_CI",
+  "newBlockingFindings": [],
+  "reviewedSource": {
+    "localCommit": "be7485eb233aed8dd5d161627af0a4c3b9e5ddbb",
+    "tree": "d36301c17c4c53297aaa4d4c5cbf2c7b7387a775",
+    "localSoleParent": "e7693280c650c2f73d48672a1e784de728eb9ec2",
+    "localParentTree": "33c13a46596b56db79da7bd73b705da4afd7d36c",
+    "rawIndexHeadExact": true,
+    "worktreeClean": true,
+    "trackedFiles": 3773,
+    "rawBytes": 193022773,
+    "independentlyRecomputedTreeObjects": 633,
+    "proposedPublicSoleParent": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+    "proposedPublicParentTree": "33c13a46596b56db79da7bd73b705da4afd7d36c",
+    "proposedPublicTargetTree": "d36301c17c4c53297aaa4d4c5cbf2c7b7387a775",
+    "publicationAuthority": "Root only; review grants no public action authority."
+  },
+  "actualConfiguredFinding": {
+    "publicHead": "1bac5ac9a5b51c4a0277e3f5bfd08c80cf6a6d3e",
+    "PR": 4859,
+    "review": 5610856293,
+    "inline": 4345797435,
+    "severity": "P2",
+    "finding": "New LF checkout attributes do not rewrite unchanged raw CRLF bodies in an existing parent-to-target checkout.",
+    "independentReproduction": "CONFIRMED using an ordinary owned local two-commit Git checkout: 47 of 49 raw files remained CRLF and 40 of 41 catalogue raw hashes mismatched despite clean Git status and explicit LF attributes. No custom transport or target-source execution.",
+    "localDisposition": "ADDRESSED by an explicit, opt-in version-bound dry-run/apply upgrade and actual parent-to-target regression. Automatic Git checkout behavior itself is unchanged.",
+    "publicDisposition": "Current public 1bac finding remains historical/unresolved on that head. The reviewed local source must be published as a new normal sole-parent1bac child, authenticated, and evaluated by completed configured review on that actual new head before merge."
+  },
+  "exactFourPathDelta": [
+    {
+      "path": "docs/agent/RELEASE_READINESS.md",
+      "before": {
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "6e1b7295e8f54347dd312dc29f74cf57819f272d",
+        "path": "docs/agent/RELEASE_READINESS.md",
+        "bytes": 39737,
+        "sha256": "2c7049b859d017add56c0d86bff106c459614cdbab58a53f37c52e4450660cf0"
+      },
+      "after": {
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "300d63f3d7c6a33d9d5d40956b5e489806477648",
+        "path": "docs/agent/RELEASE_READINESS.md",
+        "bytes": 41988,
+        "sha256": "788d849fc55152b1e0002069a9c78e441cf26449379190e66cfb773d6197596e"
+      },
+      "change": "modified",
+      "contentType": "text/plain; charset=utf-8",
+      "encoding": "utf-8",
+      "unicodeScalars": 41940
+    },
+    {
+      "path": "scripts/refresh_capability_checkout.py",
+      "before": null,
+      "after": {
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "c8ae6eecc9a148e4e1061ad4826fc5afe0932201",
+        "path": "scripts/refresh_capability_checkout.py",
+        "bytes": 10151,
+        "sha256": "e795995d0b0cc3193243573d3c74569aa1d4e8c5afef8cb843a2781103793e87"
+      },
+      "change": "added",
+      "contentType": "text/plain; charset=utf-8",
+      "encoding": "utf-8",
+      "unicodeScalars": 10151
+    },
+    {
+      "path": "tests/fixtures/capability-checkout-parent.json",
+      "before": null,
+      "after": {
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "019341a389bc0d426cb58eb062478015c73fb67a",
+        "path": "tests/fixtures/capability-checkout-parent.json",
+        "bytes": 9307,
+        "sha256": "f5b59a0dc9843d31a4a5d3146c566583b5a48b652ce4a778ec9e83573202257b"
+      },
+      "change": "added",
+      "contentType": "application/json; charset=utf-8",
+      "encoding": "utf-8",
+      "unicodeScalars": 9307
+    },
+    {
+      "path": "tests/test_successor_capability_delivery.py",
+      "before": {
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "49a5e6e3aedb18820ec5658a57cecc51506f3fcc",
+        "path": "tests/test_successor_capability_delivery.py",
+        "bytes": 19176,
+        "sha256": "d0775697f9b5060050f678a564aa50e727afc1f86e73a780fa8f9ea0a59e78e9"
+      },
+      "after": {
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "f4286eae9ea0e04faba9f4568d9eae95d1a13d54",
+        "path": "tests/test_successor_capability_delivery.py",
+        "bytes": 27233,
+        "sha256": "f7ac4db39d31ada16cc4bbe94bc6bb177a3f1197c7debaed064630d494f54f65"
+      },
+      "change": "modified",
+      "contentType": "text/plain; charset=utf-8",
+      "encoding": "utf-8",
+      "unicodeScalars": 27233
+    }
+  ],
+  "sourcePreservation": {
+    "unchangedParentPathsOutsideExactFour": 3769,
+    "allOtherParentPathsUnchanged": true,
+    "all52OriginalPapersModesGitBlobsRawSHA256AndBytesExact": true,
+    "paperBytes": 31643491,
+    "all32WorkflowBodiesActionPinsAndGatesUnchanged": true,
+    "all41CatalogueSourceBytesAndHashesUnchanged": true,
+    "sourceHash": "644258ac21cc938aff861d02ad728e8f3c9716f6ea78700acc35e4d7400eebf2",
+    "compiled8ExtraPinsAndClosed49Exact": true,
+    "all7GeneratedPagesCataloguesWorkersUnchanged": true,
+    "originalPaperTextAttributesUnchanged": true,
+    "priorReproducerGuardAnd25NodeCasesUnchanged": true,
+    "dataOnlyOldFixtureMatchesActual87TreeffaOriginalAttributesAndReproducer": true,
+    "fullRawInventoryExactlyMatchesAuthorManifest": true,
+    "allAuthorReferencedProofLogAndHistoryBytesSHA256Verified": true
+  },
+  "semanticReview": {
+    "helper": "Stdlib-only fixed-version 49-file helper. Pinned canonical catalogue authenticates the 41-path source map; eight fixed pins authenticate generated bodies and reproducer. No target-controlled arbitrary repair map. Only exact canonical LF or exact uniformly rendered CRLF is accepted.",
+    "preflight": "Safe relative fixed paths; direct directory ancestors and bounded regular files; symlinks fail. All 49 are fully validated before any backup/source writes. Device/inode/mode/owner/size/mtime and raw-body rechecks guard ordinary accidental changes.",
+    "backupAndApply": "Explicit apply creates a new external private0700 directory; all49 raw bodies with hashes/sizes/modes are backed up0600 before temporary staging or replacements. Only affected bounded targets are atomically replaced; modes retained. Backup persists after IO error; no automatic rollback/durability claim.",
+    "privateEdits": "Private semantic edits, mixed endings, edited catalogue, oversized/missing/type-mismatched files refuse the whole plan. Staged content/index/configuration are neither inspected nor changed. No full worktree reset, blanket force, Git settings or generator rewrite.",
+    "docs": "New current1.38.0 section gives dryrun/apply/external backup commands, sourceHash and closure49 binding, private edit handling, stop-on-error/no-concurrent-edit limits and separate native Windows/browser/release/runtime qualification.",
+    "statusLimit": "Raw byte normalization preserves Git index bytes. Git2.55 may continue reporting M due retained stat/normalization metadata even while raw49 match pinned HEAD and ordinary diff is empty. No clean-status/index-refresh promise is made."
+  },
+  "independentValidation": {
+    "ordinaryOwnedRealTransition": {
+      "staleBefore": 47,
+      "catalogueMismatchesBefore": 40,
+      "staleAfterExplicitApply": 0,
+      "catalogueMismatchesAfter": 0,
+      "all49CanonicalRawBytesExact": true,
+      "all49OriginalBackupRawBytesHashesSizesModesExact": true,
+      "backupDir0700AndBodies0600": true,
+      "fileModesIncluding0640Preserved": true,
+      "dryrunNoWrites": true,
+      "privateEditWholePlanRefusalNoBackupOrSourceWrites": true,
+      "indexConfigAndOpaquePaperFixtureBytesPreserved": true,
+      "secondDryrunAndApplyNoOpNoNewBackup": true
+    },
+    "selectedNewRegressions": {
+      "result": "7 PASSED in0.81s",
+      "selection": [
+        "test_existing_parent_to_lf_attributes_checkout_has_explicit_backed_up_repair",
+        "test_checkout_refresh_refuses_the_whole_plan_for_unexpected_bytes[private,mixed,catalog,oversize]",
+        "test_checkout_refresh_refuses_aliases_and_inside_backup_before_changes",
+        "test_checkout_refresh_retains_all_originals_on_replace_failure"
+      ],
+      "runtime": "Existing Python3.12.14/pytest8.4.1; no installation; conftest/third-party plugin autoload/cache disabled; bytecode disabled; temporary paths in scratch.",
+      "executionBoundary": "Only reviewed trusted helper/unit fixtures ran. No retained parent reproducer, target-source module, artifact, denied custom-uploadpack/external-import/marker probe or broad helper/delivery suite ran."
+    },
+    "authorValidation": "All author references hash-verified. Author reports final selected10 PASS, Black/Ruff/Flake8 PASS, canonical49 dryrun with0 refresh. Strict mypy unavailable in installed interpreter and dependency preflight metadata refusal retained; no environment install. Initial9PASS/1FAIL clean-status-overclaim test log retained; final test asserts raw49/index/preservation and empty diff. Unchanged JS25 not rerun.",
+    "staticPeer": "Independent static-only peer found no new blocking source finding on exact frozen head/tree."
+  },
+  "evidence": {
+    "sourceManifest": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/INDEPENDENT_FROZEN_UPGRADE_SOURCE_MANIFEST.json",
+      "bytes": 1100403,
+      "sha256": "3e5e13ecdf3f522b5c46a95bf5803df668b74b6eba2d8fd15f346c08102c00fe"
+    },
+    "ordinaryTransitionFinding": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/CONFIRMED_TRANSITION_FINDING.json",
+      "bytes": 9525,
+      "sha256": "912587410342a1eb8772c0acc1535e7166ffcd4327fc68ac16f4e924ae3384e9"
+    },
+    "independentEndToEnd": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/INDEPENDENT_EXPLICIT_UPGRADE_END_TO_END.json",
+      "bytes": 11773,
+      "sha256": "933307714f7f5ff3a22ff6bc841a3131f5b8da105bcc344c4acef3e75406b0c2"
+    },
+    "selectedSevenNewTestLog": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/independent-seven-new-upgrade-tests.log",
+      "bytes": 98,
+      "sha256": "e05675e677b0dfc0614671fc154ba2e7b5877c32f357b1a4814d2d5a1da415fe"
+    },
+    "staticPeer": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-worktree-transition-independent-review/STATIC_SCOPE_PEER_REVIEW.json",
+      "bytes": 1025,
+      "sha256": "5fd8d3c00d65a4e76d28d86a9c70008c4ce23520dc12625e1bf0653d64c26f49"
+    },
+    "authorReport": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-ready-review-fix-evidence/UPGRADE_AUTHOR_REPORT.json",
+      "bytes": 7179,
+      "sha256": "5f81471710b5c8f8021386f67ef6fdebdff1f5feb8406b0918b65c604f069995"
+    },
+    "authorFullSource": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-ready-review-fix-evidence/UPGRADE_FULL_SOURCE_IDENTITY.json",
+      "bytes": 1097069,
+      "sha256": "8c715cb8230638f31c9f872b142f195bb46a0082b044a81defaea2d73fde57df"
+    },
+    "authorExactFourProposal": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-ready-review-fix-evidence/UPGRADE_EXACT_FOUR_PATH_DELTA_PUBLIC_PROPOSAL.json",
+      "bytes": 3466,
+      "sha256": "31a9844b51f4fa510b44c738991a4613ca052414f44d034536374c453598e68a"
+    },
+    "authorPreservation": {
+      "path": "/workspace/scratch/32717074a7f1/alpha-ready-review-fix-evidence/UPGRADE_PRESERVED_SOURCE_IDENTITIES.json",
+      "bytes": 39536,
+      "sha256": "0deffb1017e4f2ba08ededaaa401c8537019f500ef3c26e191f487278e6401c8"
+    },
+    "original52PaperIdentity": {
+      "path": "/workspace/scratch/32717074a7f1/jobs-alpha-merge-readiness/static-source-readback.json",
+      "bytes": 30693,
+      "sha256": "21c0b6a3026dc5a5d15cdff1cc573d7d24ce2483b9943a76659ed76c976981f6"
+    },
+    "priorPublicFindingReport": {
+      "path": "/workspace/scratch/32717074a7f1/alpha4859-fix-automatic-review-monitor/TERMINAL_CONFIGURED_REVIEW_FINDING_REPORT.json",
+      "bytes": 11549,
+      "sha256": "6ed574726e7cd5fe63e4367d03c9aa9d3c78a8bee7ad99c1d76822b5025bfaed"
+    }
+  },
+  "limitsAndRemainingRequirements": [
+    "This is a local frozen-source review, not a current public new-head configured-review result. Root must authenticate exact proposed raw bodies/modes/blobs/root and sole parent1bac if publishing.",
+    "Complete the configured review on the actual new public head and evaluate any actual findings; previous24d/1bac/local clears do not transfer. Required current checks and finalmain release/runtime/browser qualifications remain separate.",
+    "Native Windows was not executed; ordinary LinuxGit core.autocrlf=true/eol=crlf transition was executed. No broad suite/environment completeness claim.",
+    "No concurrent writer/hostile filesystem race/automatic rollback/durability guarantee. Stop and inspect retained originals on errors.",
+    "No public commit/ref/comment/review trigger/workflow action/merge/tag/release or finalpin performed by reviewer. No SHM writes, blocked probes, browser or installs.",
+    "All earlier clear/reopened/failure reports remain immutable; this source-bound local disposition does not rewrite historical observations."
+  ]
+}
