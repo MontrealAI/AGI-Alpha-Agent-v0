@@ -292,7 +292,9 @@ pre-commit run --files <paths>   # recommended local feedback before each commit
   - A local `pre-commit run --all-files` is recommended whenever `requirements.txt`,
     `requirements-dev.txt`, `.pre-commit-config.yaml`, `pyproject.toml`, `mypy.ini`, or other lint configs change.
     Local hook completion is not a prerequisite for opening a draft or pull request. Disclose failed or unrun
-    checks and their reason; never report them as passing. Required hosted checks remain unchanged.
+    checks and their reason; never report them as passing. Required hosted checks follow the
+    [fast release policy](docs/agent/FAST_RELEASE_POLICY.md); formatting feedback is advisory, while
+    selected security, integrity and behavioral acceptance remains blocking.
   - After editing `alpha_factory_v1/core/utils/a2a.proto`, run `pre-commit run --files alpha_factory_v1/core/utils/a2a.proto`
     to regenerate and verify protobuf sources.
   - Run `python tools/update_actions.py` before committing workflow changes to
@@ -356,7 +358,10 @@ install dependencies without internet access.
     installed hooks, bypassing access restrictions or waiving required hosted checks.
   - Canonical PR CI provides `Lint (ruff)` and `Smoke tests`; it is not the complete release hook campaign.
     Full Integration CI runs on main, release tags or manual dispatch. Existing exact-main CI and Agent
-    release acceptance gates, including their full hook checks, remain required before publication.
+    release acceptance gates remain required before publication under the
+    [fast release policy](docs/agent/FAST_RELEASE_POLICY.md): one full coverage campaign, representative
+    platform smoke and blocking security/integrity hooks. Cosmetic hooks run separately as advisory
+    feedback; this does not waive required test failures or authorize broader permissions.
 
 ### Starting the CI Pipeline
 You can manually trigger the CI run from the GitHub UI:

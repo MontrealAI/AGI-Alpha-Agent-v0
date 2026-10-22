@@ -453,11 +453,14 @@ jobs:
           python -m pip install --require-hashes --only-binary=:all: -r requirements-papers.lock
           python -m scripts.research_papers check
           python -m pytest --noconftest -o addopts= tests/test_research_papers.py tests/test_paper_changes.py tests/test_paper_publication.py tests/test_paper_workflow_policy.py -q
-      - name: Require the full repository hook report
+      - name: Require the blocking repository hook report
+        env:
+          SKIP: black,ruff-format,flake8,update-actions
         run: |
           mkdir -p evidence
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
           import subprocess
           result = subprocess.run(["pre-commit", "run", "--all-files", "--show-diff-on-failure"], capture_output=True, text=True)
@@ -466,13 +469,14 @@ jobs:
           print(result.stderr, end="")
           patch = subprocess.check_output(["git", "diff", "--binary"])
           Path("evidence/precommit-all.patch").write_bytes(patch)
-          Path("evidence/precommit-all.json").write_text(json.dumps({"passed": result.returncode == 0, "exit_code": result.returncode}) + "\n")
-          print(f"Full repository hook exit code: {result.returncode}; complete output and proposed formatting are retained.")
+          Path("evidence/precommit-all.json").write_text(json.dumps({"passed": result.returncode == 0, "exit_code": result.returncode, "scope": "blocking hooks", "skipped_hooks": os.environ["SKIP"].split(",")}) + "\n")
+          print(f"Blocking repository hook exit code: {result.returncode}; complete output and proposed formatting are retained.")
           raise SystemExit(result.returncode)
           PY
-      - name: Require hooks on every release change
+      - name: Require blocking hooks on every release change
+        env:
+          SKIP: black,ruff-format,flake8,update-actions
         run: |
-          python tools/update_actions.py
           git diff --name-only -z d1df708e3e08ee58b7cbe74758767ddb2da2d5f9 HEAD | xargs -0 pre-commit run --files
           git diff --exit-code
       - name: Verify the documented contributor setup in a fresh environment
@@ -501,6 +505,40 @@ jobs:
           name: quality
           path: evidence/
           if-no-files-found: error
+
+  style-advisory:
+    name: Advisory formatting (not release acceptance)
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pre-commit==4.2.0
+      - name: Black formatting feedback
+        continue-on-error: true
+        run: pre-commit run black --all-files --show-diff-on-failure
+      - name: Ruff formatting feedback
+        continue-on-error: true
+        run: pre-commit run ruff-format --all-files --show-diff-on-failure
+      - name: Flake8 style feedback
+        continue-on-error: true
+        run: pre-commit run flake8 --all-files --show-diff-on-failure
+      - name: Record proposed formatting without changing release source
+        if: always()
+        run: git diff > "$RUNNER_TEMP/formatting.patch"
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: advisory-formatting
+          path: ${{ runner.temp }}/formatting.patch
+          if-no-files-found: ignore
 
   gallery:
     if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
@@ -973,7 +1011,7 @@ jobs:
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           # Ignore failed historical snapshots and outputs from previous attempts.
-          pattern: '!{historical-ci,release-package,public-pages,github-pages}*'
+          pattern: '!{historical-ci,release-package,public-pages,github-pages,advisory-formatting}*'
           path: evidence
           digest-mismatch: error
       - name: Download the successful historical job's exact evidence

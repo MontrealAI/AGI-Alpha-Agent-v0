@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Create and safely restore content-preserving release packs below 450 MB."""
+"""Create and safely restore content-preserving release packs within GitHub hosting bounds."""
 
 from __future__ import annotations
 
@@ -18,7 +18,9 @@ from functools import partial
 from pathlib import Path, PurePosixPath
 from typing import IO, Any
 
-MAX_ASSET_BYTES = 450_000_000
+# GitHub release assets must be strictly smaller than 2 GiB.
+MAX_ASSET_BYTES = (2**31) - 1
+MAX_MANIFEST_BYTES = 64 * 1024 * 1024
 MAX_TOTAL_BYTES = 20_000_000_000
 MAX_ENTRIES = 200_000
 SCHEMA = "agialpha.release-packs.v1"
@@ -76,7 +78,7 @@ def classify(name: str) -> str:
 
 
 def require_asset_limits(folder: Path) -> list[dict[str, Any]]:
-    """Fail closed before upload if any release asset exceeds the decimal ceiling."""
+    """Fail closed before upload if any release asset exceeds the hosting ceiling."""
     result = []
     for path in sorted(folder.iterdir()):
         if path.is_symlink() or not path.is_file():
@@ -207,7 +209,7 @@ def pack(source: Path, output: Path, prefix: str, *, commit: str, version: str, 
     }
     target = output / f"{prefix}-packs.json"
     target.write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n", encoding="utf-8")
-    if target.stat().st_size > 64 * 1024 * 1024:
+    if target.stat().st_size > MAX_MANIFEST_BYTES:
         raise ValueError("Inventory exceeds the supported restore limit")
     return target
 
@@ -224,7 +226,7 @@ def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
 
 def restore(manifest_path: Path, destination: Path, *, groups: Iterable[str] | None = None) -> dict[str, Any]:
     """Validate packs fully and promote an independent staged tree atomically."""
-    if manifest_path.is_symlink() or manifest_path.stat().st_size > 64 * 1024 * 1024:
+    if manifest_path.is_symlink() or manifest_path.stat().st_size > MAX_MANIFEST_BYTES:
         raise ValueError("Invalid or oversized pack manifest")
     manifest = json.loads(manifest_path.read_bytes(), object_pairs_hook=unique_object)
     if not isinstance(manifest, dict) or manifest.get("schema") != SCHEMA:

@@ -18,16 +18,20 @@ def test_merge_to_main_validation_jobs_are_not_tag_only() -> None:
         assert not job.get("continue-on-error")
 
 
-def test_lint_and_tests_run_full_matrix_on_main() -> None:
-    workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
-
-    assert 'python-version: ${{ fromJSON(\'["3.11","3.12"]\') }}' in workflow
-    assert (
-        'if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then'
-        not in workflow
+def test_integration_smoke_defers_full_coverage_to_primary_release_regression() -> None:
+    workflow = yaml.safe_load(Path(".github/workflows/ci.yml").read_text(encoding="utf-8"))
+    job = workflow["jobs"]["tests"]
+    assert job["strategy"]["matrix"]["python-version"] == ["3.12"]
+    smoke = next(step for step in job["steps"] if step.get("name") == "Run focused integration smoke")
+    assert "--cov" not in smoke["run"]
+    assert "tests/test_openai_bridge_integration.py" in smoke["run"]
+    assert not smoke.get("continue-on-error")
+    release = yaml.safe_load(Path(".github/workflows/agent-release.yml").read_text(encoding="utf-8"))
+    regression = release["jobs"]["regression"]
+    primary = next(
+        step for step in regression["steps"] if step.get("name") == "Full offline regression including notebooks"
     )
-    expected_pytest = (
-        "pytest --cov --cov-report=xml:artifacts/coverage.xml --cov-fail-under=80 "
-        "--junitxml=artifacts/test-reports/pytest.xml"
-    )
-    assert expected_pytest in workflow
+    assert "--cov-fail-under=80" in primary["run"]
+    assert "--ignore" not in primary["run"]
+    assert not primary.get("continue-on-error")
+    assert "regression" in release["jobs"]["package"]["needs"]

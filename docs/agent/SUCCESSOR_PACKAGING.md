@@ -2,7 +2,8 @@
 
 # Release packs and independent restoration
 
-Every distributed file is limited to **450,000,000 bytes**. The native wheel, matching dependency lock,
+GitHub requires each release asset to be **strictly smaller than 2 GiB** (at most 2,147,483,647 bytes).
+There is no additional 450 MB project limit. The native wheel, matching dependency lock,
 installer and operator guides form the small native installation. Browser/site downloads use `core`,
 `models`, `media` and `research` ZIP packs. Original files, model notices, research and diagrams remain
 in their original relative paths. Large individual files are split into bounded stored chunks and
@@ -53,7 +54,7 @@ The complete site deployed by CI is reconstructed from these exact tested packs 
 From version 1.34.0, the original `alpha-agent-v1.34.0-validation.zip` retains local acceptance
 unchanged. Public HTTPS acceptance uses separate public-validation packs so neither capture overwrites
 the other. The release manifest's `validation_evidence` inventory identifies both captures; all assets
-remain covered by `SHA256SUMS` and the 450 MB per-asset limit.
+remain covered by `SHA256SUMS` and the GitHub hosting bound.
 
 Download `release_packs.py`, the public-validation pack manifest and every ZIP it lists from the same
 release. For version 1.34.0, restore the complete public evidence into a new directory with:
@@ -107,7 +108,18 @@ Téléchargez `release_packs.py`, le manifeste et les archives de la **même ver
 empreintes avec `SHA256SUMS`, conservé par un canal de confiance. Pour la répétition locale sans modèle,
 utilisez la première commande avec `--groups core`, puis ouvrez `/successor/` sur le serveur local.
 Pour retrouver tous les médias, recherches et modèles, téléchargez toutes les archives et restaurez
-sans `--groups`. Chaque fichier distribué reste sous 450 000 000 octets. Le programme vérifie toutes
+sans `--groups`. Chaque fichier reste strictement inférieur à 2 Gio, conformément à la limite GitHub;
+la limite supplémentaire de 450 Mo est supprimée. Le programme vérifie toutes
 les données avant d'activer le nouveau dossier et refuse d'écraser un dossier existant. Conservez
 l'ancienne installation pour revenir en arrière. Ces vérifications d'intégrité ne confèrent aucune
 autorité opérationnelle ni qualification indépendante.
+
+## Hosting limits and helper compatibility
+
+[GitHub release assets](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
+must be smaller than 2 GiB. Packing still reads at most 64 MiB per chunk; restoration streams at 1 MiB.
+Path, checksum, entry-count and total-extraction protections are unchanged. No evidence is dropped.
+Use the helper and manifests from the same release. The new helper restores older 450 MB manifests
+unchanged; older helpers reject manifests declaring the newer hosting bound, even if their packs are small.
+Published historical assets and their original helpers remain unchanged. Individual tools may impose
+smaller download limits; those are tool restrictions, not release qualification requirements.

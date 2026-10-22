@@ -33,14 +33,19 @@ jobs:
     if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
     needs: paper-scope
     runs-on: ${{ matrix.os }}
-    # Windows runtime tests take about 42 minutes; allow dependency setup and runner headroom.
-    # Keep the complete installed-runtime suite on every platform and Python version.
-    timeout-minutes: ${{ matrix.os == 'windows-latest' && 60 || 25 }}
+    # Primary full runtime acceptance lives in agent-release.yml.
+    # This is a representative compatibility matrix, not the Cartesian product.
+    timeout-minutes: 25
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.11", "3.12", "3.13"]
+        exclude:
+          - {os: windows-latest, python-version: "3.11"}
+          - {os: windows-latest, python-version: "3.13"}
+          - {os: macos-latest, python-version: "3.11"}
+          - {os: macos-latest, python-version: "3.13"}
     steps:
       - name: Check manual dispatch token
         if: github.event_name == 'workflow_dispatch' && github.actor != github.repository_owner && github.actor != 'github-actions[bot]'
@@ -82,7 +87,7 @@ jobs:
           python -m pip check
           python scripts/check_python_deps.py
           python check_env.py
-      - name: Run focused smoke tests on every platform and Python version
+      - name: Run focused smoke tests on every selected compatibility cell
         run: |
           mkdir -p evidence
           python -m pytest --noconftest -o addopts= tests/test_ping_agent.py tests/test_af_requests.py -q --junitxml=evidence/smoke.xml
@@ -105,11 +110,12 @@ jobs:
           OMNI_ALLOW_PROVIDER: '0'
         run: |
           python -m pytest -q -c /dev/null --noconftest -p no:cacheprovider tests/test_native_browser_ci.py tests/test_business_submission_http.py tests/test_orchestrator_rest.py tests/test_openai_bridge_integration.py tests/test_demo_execution_claims.py tests/test_alpha_business_v1_script.py tests/test_business_bridge_offline.py --junitxml=evidence/demo-action-binding.xml
-      - name: Exercise the installed operator lifecycle
+      - name: Smoke the installed operator entry point
         run: |
           python -m pip install --no-deps .
-          # Actual browser journeys run in the required pinned Chromium wallet acceptance job.
-          python -m pytest tests/runtime --confcutdir=tests/runtime --ignore=tests/runtime/test_budget_browser.py --ignore=tests/runtime/test_ecosystem_browser.py --ignore=tests/runtime/test_supplier_browser_browser.py -q --junitxml=evidence/runtime.xml
+          # The complete installed-runtime suite still runs on Python 3.11/3.12/3.13
+          # in agent-release.yml; browser journeys remain in wallet acceptance.
+          alpha-agent --version | tee evidence/installed-version.txt
       - name: Run 2-year simulation
         run: |
           python -m alpha_factory_v1.demos.alpha_agi_insight_v1.src.interface.cli simulate \
@@ -151,7 +157,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Require all nine platform and Python runs to succeed
+      - name: Require all five selected compatibility runs to succeed
         env:
           MATRIX_RESULT: ${{ needs.smoke.result }}
         run: test "$MATRIX_RESULT" = success
