@@ -8,7 +8,8 @@
         const row = latest(), active = inspected?.enterprises?.active;
         const idle = ready && !busy && !pending && (!current || !dirty && !successorEditing);
         el('build').disabled = !idle || !!active;
-        el('continue').disabled = !idle || !active || !['FROZEN', 'TASKS_COMMITTED', 'INVOCATION_RECONCILED', 'READY_FOR_SUCCESSOR'].includes(active.state);
+        el('continue').disabled = !idle || !active || !['ACCEPTED_CONSTRUCTION', 'FROZEN', 'TASKS_COMMITTED', 'INVOCATION_RECONCILED', 'READY_FOR_SUCCESSOR'].includes(active.state);
+        el('continue').textContent = active?.state === 'ACCEPTED_CONSTRUCTION' ? 'Freeze accepted construction' : 'Supply future tasks & continue';
         el('seed').disabled = !idle || active?.state !== 'FROZEN';
         el('stop').disabled = !active || !!pending;
         el('export').disabled = !idle || !current;
@@ -74,7 +75,7 @@
         await save(await enterpriseController.start(current, enterpriseProtocol.defaultCharter(source)));
         await advance(true);
     }));
-    el('continue').addEventListener('click', () => void perform(() => advance(false)));
+    el('continue').addEventListener('click', () => void perform(() => advance(inspected?.enterprises?.active?.state === 'ACCEPTED_CONSTRUCTION')));
     el('stop').addEventListener('click', () => {
         if (busy) { stopRequested = true; el('status').textContent = 'Stop requested. The current bounded step will be retained before stopping.'; }
         else void perform(async () => save(await enterpriseController.stop(current, 'Operator stopped the bounded local controller.')));

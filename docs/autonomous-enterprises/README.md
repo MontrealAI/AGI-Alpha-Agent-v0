@@ -45,6 +45,8 @@ thirteen sections. `capital-confirmation.json` preserves every generated model a
 and arithmetic counts are deterministic; mission UUIDs, timing and environment observations are separate run identities.
 
 The real browser acceptance is `tests/browser/test_autonomous_enterprises_browser.py`. It constructs and freezes,
+restores an authenticated accepted-construction prefix in storage and reloads it, freezes the retained construction
+once without revealing future inputs, then
 supplies future inputs, invokes all five treatments, constructs a changed-kernel successor, downloads and independently
 replays the actual docket, reloads the saved mission, and checks desktop/mobile, keyboard and pinned Axe accessibility.
 The existing capability workflow retains its original checks and adds these tests and raw browser evidence.
@@ -95,7 +97,7 @@ tables are bounded to seven capabilities. It does not prove a rational-price, ti
 
 | Lane | Existing owner work | Remaining dependency |
 | --- | --- | --- |
-| Alpha | #4853 stacked on #4851; owner parent 5173078a | Exact-source hosted checks/review; qualified normal integrations and fresh main release |
+| Alpha | #4853 stacked on #4851; owner parent f0a6794a; paper repair from main 5a5340a1 | Exact-source hosted checks/review; qualified normal integrations and fresh main release |
 | Manager | #1613; maintenance v1.19.6 is separate | Final installed Discovery/enterprise source and compatible profile; USDC6 only |
 | Jobs | #4010; prerequisite rc.17 is now published | Final installed receivers and a later compatible profile; AGIALPHA18 only |
 | Fleet | #64; held #61 remains separate | Eligible owner/custody review, final installed acceptance and compatible publication |
@@ -115,3 +117,8 @@ and unrecorded partial work when successor qualification throws. The repair clos
 frames and records failed successor replay. Retained fail-before/pass-after controls cover inert metadata alterations,
 a late stale-work-bound exception, a fully counted negative spectrum certificate and known-zero budget refusal.
 These source fixes require fresh review; the original findings are not erased or represented as organizational approval.
+The next configured review found a reload boundary where accepted construction could not continue to freeze.
+The repaired interface offers that safe transition and stops at the freeze before enabling future inputs. Its actual
+browser saved-prefix fixture fails on the previous page and passes all thirteen checks after repair; it does not claim
+an operating-system interruption test. The source candidate also preserves the newer owner's two inert checkout
+metadata files and the merged opaque-paper attributes/test, including exact original manuscript bytes.

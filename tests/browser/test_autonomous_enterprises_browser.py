@@ -36,6 +36,59 @@ def main() -> None:
             expect(page.locator("#enterprise-status")).to_contain_text("Frozen", timeout=120000)
             expect(page.locator("#enterprise-seed")).to_be_enabled()
             expect(page.locator("#enterprise-facts")).to_contain_text("1,508,042")
+            frozen = existing.history(page)
+            constructed = dict(frozen)
+            cutoff = next(
+                index + 1 for index, event in enumerate(frozen["events"]) if event["kind"] == "enterprise-constructed"
+            )
+            constructed["events"] = frozen["events"][:cutoff]
+            constructed["revision"] = cutoff - 1
+            (OUTPUT / "accepted-construction-workspace.json").write_text(json.dumps(constructed, indent=2))
+            # Restore the actual authenticated saved prefix at the interrupted boundary.
+            # The fixture contains the same retained construction, not a second build.
+            envelope = page.evaluate(
+                """async value => {
+                    const db = await new Promise((resolve, reject) => {
+                        const request = indexedDB.open('agialpha.successor-capability.v1', 1);
+                        request.onsuccess = () => resolve(request.result);
+                        request.onerror = () => reject(request.error);
+                    });
+                    let envelope;
+                    await new Promise((resolve, reject) => {
+                        const tx = db.transaction('missions', 'readwrite');
+                        const store = tx.objectStore('missions');
+                        const request = store.get(value.missionId);
+                        request.onsuccess = () => {
+                            const prior = request.result;
+                            envelope = {missionId:value.missionId,
+                                revision:prior.revision - (prior.workspace.events.length - value.events.length),
+                                workspace:value};
+                            store.put(envelope);
+                        };
+                        tx.oncomplete = () => resolve();
+                        tx.onerror = () => reject(tx.error);
+                        tx.onabort = () => reject(tx.error);
+                    });
+                    db.close();
+                    return envelope;
+                }""",
+                constructed,
+            )
+            (OUTPUT / "accepted-construction-storage-envelope.json").write_text(json.dumps(envelope, indent=2))
+            page.reload()
+            expect(page.locator("#enterprise-status")).to_contain_text("Construction accepted", timeout=120000)
+            expect(page.locator("#enterprise-build")).to_be_disabled()
+            expect(page.locator("#enterprise-seed")).to_be_disabled()
+            expect(page.locator("#enterprise-continue")).to_be_enabled()
+            page.locator("#enterprise-continue").click()
+            expect(page.locator("#enterprise-status")).to_contain_text("Frozen", timeout=120000)
+            expect(page.locator("#enterprise-seed")).to_be_enabled()
+            recovered = existing.history(page)
+            assert recovered["events"][:cutoff] == constructed["events"]
+            assert [event["kind"] for event in recovered["events"]].count("enterprise-constructed") == 1
+            assert recovered["events"][-1]["kind"] == "enterprise-frozen"
+            assert not any(event["kind"] == "enterprise-tasks" for event in recovered["events"])
+            (OUTPUT / "recovered-frozen-workspace.json").write_text(json.dumps(recovered, indent=2))
             page.locator("#enterprise-capital-run").click()
             expect(page.locator("#enterprise-capital-summary")).to_contain_text("13")
             page.locator("#enterprise-seed").fill("20261021")
@@ -90,6 +143,8 @@ def main() -> None:
                         "checks": [
                             "actual-construction",
                             "freeze-before-future-inputs",
+                            "accepted-construction-reload",
+                            "freeze-without-rebuilding-or-future-inputs",
                             "five-treatments",
                             "changed-kernel-successor",
                             "actual-docket-download",

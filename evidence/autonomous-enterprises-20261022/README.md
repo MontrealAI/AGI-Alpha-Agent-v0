@@ -1,6 +1,12 @@
 # Autonomous Enterprises local source evidence
 
-Latest repaired-source evidence is in `review-repair-20261022/`; its source closure is
+Latest recovery/integration evidence is in `recovery-integration-20261022/`, source closure
+`7dcba13d2638de03086c6b8424bf5e4dd6db4e1854054ffdd0b41c96434c0da3`.
+It retains 136/136 tests per local runtime (89 enterprise plus 47 exact owner metadata), five targeted Python checks,
+the fresh n32 docket and thirteen-check browser recovery journey. The previous page's disabled Continue failure,
+separate invalid first fixture and sparse missing-catalog failure remain retained with their exact scopes.
+
+Earlier repaired-source evidence is in `review-repair-20261022/`; its source closure is
 `bae61e59ad39ea53af3c293c0833a7a9e64e3ef0bf50f22e27b60d66c4c1cf6f`.
 It retains 89/89 enterprise tests on each local runtime, a fresh complete n32 journey, and the actual eleven-check
 browser/download/replay journey. `hosted-cca1-failure/` preserves the previous hosted failures and original artifact.

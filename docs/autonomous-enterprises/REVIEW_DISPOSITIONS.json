@@ -67,6 +67,15 @@
       "disposition": "REPAIRED_IN_SOURCE_PENDING_FRESH_REVIEW",
       "change": "Catch successor qualification exceptions and mark unknown partial replay work before rethrowing.",
       "test": "successor-replay-review.test.mjs: prior history 2/3; repaired history 3/3, including late stale-work-bound exception, known negative spectrum receipt and unstarted refusal."
+    },
+    {
+      "id": "configured-P2-accepted-construction-recovery",
+      "finding": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4855#discussion_r4344417828",
+      "reviewedHead": "3db43f9a1f177c099af9c6b900ae7664eae5d727",
+      "disposition": "REPAIRED_IN_SOURCE_PENDING_FRESH_REVIEW",
+      "change": "Enable safe accepted-construction continuation, label it Freeze accepted construction, and stop at FROZEN before future inputs. Uncertain execution states remain disabled.",
+      "test": "Actual browser restores an authenticated constructed prefix with matching history/storage revisions, reloads, freezes once without rebuilding or future tasks, then completes all15 treatments and successor. Old page fails disabled Continue; repaired page passes13 checks.",
+      "review": "Separate scoped static reviewer found no findings; this saved-prefix fixture is not an actual OS interruption."
     }
   ],
   "limitations": [

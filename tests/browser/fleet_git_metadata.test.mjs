@@ -9,7 +9,7 @@ import {spawnSync} from 'node:child_process';
 import {auditGitConfiguration} from './fleet_git_metadata.mjs';
 
 const ordinary = '[core]\n repositoryformatversion = 0\n bare = false\n[gc]\n auto = 0\n';
-const residue = '[core]\n sparseCheckout = false\n sparseCheckoutCone = false\n';
+const residue = '[core]\n sparseCheckout = false\n sparseCheckoutCone = false\n[index]\n sparse = false\n';
 
 test('inactive bounded sparse-checkout residue is admitted without enabling it', () => {
     assert.deepEqual(auditGitConfiguration(ordinary, residue),
@@ -63,6 +63,49 @@ test('ignored file must still contain only benign disabled sparse metadata', () 
         '[include]\n path = unavailable.cfg\n', '[extensions]\n worktreeConfig = true\n', 'x'.repeat(128001)]) {
         assert.throws(() => auditGitConfiguration(ordinary, value));
     }
+});
+
+for (const fragment of [
+    '[index]\n sparse\n', '[index]\n sparse = true\n', '[index]\n sparse = unknown\n',
+    '[index]\n sparse = "false"\n', '[index]\n sparse = false\n sparse = true\n',
+    '[index]\n sparse = true\n sparse = false\n', '[index]\n other = false\n',
+    '[index "other"]\n sparse = false\n', '[index.sparse]\n value = false\n'
+]) {
+    test('active or ambiguous ignored sparse index is refused as inert text: ' + JSON.stringify(fragment), () => {
+        assert.throws(() => auditGitConfiguration(ordinary, residue + fragment));
+    });
+}
+
+test('disabled sparse index is admitted only in the ignored worktree file', () => {
+    for (const value of ['false', 'NO', 'off', '0']) {
+        assert.doesNotThrow(() => auditGitConfiguration(ordinary, residue + '[index]\n sparse = ' + value + '\n'));
+    }
+    assert.throws(() => auditGitConfiguration(ordinary + '[index]\n sparse = false\n', residue));
+});
+
+test('ordinary sparse-checkout disable residue passes without editing its bytes', () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'fleet-inert-sparse-disable-'));
+    const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')));
+    Object.assign(env, {GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_SYSTEM: os.devNull,
+        GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_COUNT: '0', GIT_TERMINAL_PROMPT: '0'});
+    const git = (...args) => spawnSync('git', ['-c', 'core.hooksPath=' + os.devNull, '-C', directory, ...args],
+        {env, encoding: 'utf8', timeout: 10000});
+    try {
+        assert.equal(git('init', '--quiet').status, 0);
+        fs.writeFileSync(path.join(directory, 'fixture.txt'), 'ordinary inert checkout fixture\n');
+        assert.equal(git('add', 'fixture.txt').status, 0);
+        assert.equal(git('-c', 'user.name=Inert fixture', '-c', 'user.email=fixture@example.invalid',
+            'commit', '--quiet', '-m', 'ordinary fixture').status, 0);
+        assert.equal(git('config', '--local', 'gc.auto', '0').status, 0);
+        assert.equal(git('sparse-checkout', 'disable').status, 0);
+        assert.equal(git('config', '--local', '--unset-all', 'extensions.worktreeConfig').status, 0);
+        const config = fs.readFileSync(path.join(directory, '.git/config'), 'utf8');
+        const ignored = fs.readFileSync(path.join(directory, '.git/config.worktree'), 'utf8');
+        assert.match(ignored, /\[index\]\s+sparse = false/);
+        assert.doesNotThrow(() => auditGitConfiguration(config, ignored));
+        assert.equal(git('config', '--get', 'index.sparse').status, 1);
+        assert.equal(fs.readFileSync(path.join(directory, '.git/config.worktree'), 'utf8'), ignored);
+    } finally { fs.rmSync(directory, {recursive: true, force: true}); }
 });
 
 test('ordinary Git fixture confirms disabled config.worktree is ignored, with an inert enabled control', () => {
