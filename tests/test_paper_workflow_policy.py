@@ -160,7 +160,10 @@ def test_paper_scope_executes_only_extracted_prechange_policy() -> None:
     assert 'git --no-replace-objects show "$BASE:$file" > "$policy/$file"' in script
     assert 'cd "$policy"' in script
     assert script.index('cd "$policy"') < script.index("python scripts/paper_changes.py")
-    assert "scripts/release_plan.py" in script.split("for file in", 1)[1].split("; do", 1)[0]
+    extracted = script.split("for file in", 1)[1].split("; do", 1)[0]
+    for required in ("scripts/release_plan.py", "scripts/check_editorial_docs.py", "requirements-editorial-docs.lock"):
+        assert required in extracted
+    assert script.index("python scripts/paper_changes.py") < script.index("python -m scripts.check_editorial_docs")
     assert '--root "$GITHUB_WORKSPACE" --base "$BASE" --head "$HEAD"' in script
     assert 'python -m scripts.research_papers --root "$GITHUB_WORKSPACE" check' in script
     assert "--require-hashes --only-binary=:all: -r requirements-papers.lock" in script
@@ -208,18 +211,31 @@ def test_both_deployment_lanes_share_lock_and_recheck_immediately_before_deploy(
         assert steps[index - 1]["run"] == command
 
 
-def test_missing_prechange_release_policy_falls_back_full_before_branch_code(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    "missing", ["scripts/release_plan.py", "scripts/check_editorial_docs.py", "requirements-editorial-docs.lock"]
+)
+def test_missing_prechange_release_policy_falls_back_full_before_branch_code(tmp_path: Path, missing: str) -> None:
     from tests.test_paper_changes import git, save
 
     git(tmp_path, "init", "-b", "main")
     git(tmp_path, "config", "user.name", "Fixture")
     git(tmp_path, "config", "user.email", "fixture@example.invalid")
     (tmp_path / "scripts").mkdir()
-    # The first old-policy file would fail if executed. The next requested file
-    # is absent from the trusted base, even though the branch supplies one.
-    (tmp_path / "scripts/paper_changes.py").write_text("raise AssertionError('must not execute')\n")
+    # Every available policy file would fail if executed; one trusted input is
+    # absent even though the candidate supplies it. Installation must fall back.
+    for path in (
+        "scripts/paper_changes.py",
+        "scripts/release_plan.py",
+        "scripts/check_editorial_docs.py",
+        "scripts/research_papers.py",
+        "scripts/build_service_worker.py",
+        "requirements-papers.lock",
+        "requirements-editorial-docs.lock",
+    ):
+        if path != missing:
+            (tmp_path / path).write_text("raise AssertionError('must not execute')\n")
     base = save(tmp_path)
-    (tmp_path / "scripts/release_plan.py").write_text("raise AssertionError('untrusted branch policy')\n")
+    (tmp_path / missing).write_text("raise AssertionError('untrusted branch policy')\n")
     head = save(tmp_path)
     step = next(step for step in workflow("paper-scope.yml")["jobs"]["classify"]["steps"] if step.get("id") == "scope")
     output = tmp_path / "output"
