@@ -8,7 +8,7 @@ import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {auditGitConfiguration} from './fleet_git_metadata.mjs';
 
-const ordinary = '[core]\n repositoryformatversion = 0\n bare = false\n';
+const ordinary = '[core]\n repositoryformatversion = 0\n bare = false\n[gc]\n auto = 0\n';
 const residue = '[core]\n sparseCheckout = false\n sparseCheckoutCone = false\n';
 
 test('inactive bounded sparse-checkout residue is admitted without enabling it', () => {
@@ -26,6 +26,15 @@ for (const value of ['true', 'yes', 'on', '1', '', 'unknown', '"false"']) {
 }
 
 for (const fragment of [
+    '[gc]\n auto\n',
+    '[gc]\n auto = 1\n',
+    '[gc]\n auto = -1\n',
+    '[gc]\n auto = "0"\n',
+    '[gc]\n auto = unknown\n',
+    '[gc]\n auto = 0\n auto = 1\n',
+    '[gc]\n auto = 1\n auto = 0\n',
+    '[gc]\n recentObjectsHook = unavailable-value\n',
+    '[gc "other"]\n auto = 0\n',
     '[extensions]\n worktreeConfig\n',
     '[extensions]\n worktreeConfig = false\n worktreeConfig = true\n',
     '[extensions]\n worktreeConfig = true\n worktreeConfig = false\n',
@@ -65,6 +74,7 @@ test('ordinary Git fixture confirms disabled config.worktree is ignored, with an
         {env, encoding: 'utf8', timeout: 10000});
     try {
         assert.equal(git('init', '--quiet').status, 0);
+        assert.equal(git('config', '--local', 'gc.auto', '0').status, 0);
         const configPath = path.join(directory, '.git/config');
         const original = fs.readFileSync(configPath, 'utf8');
         fs.writeFileSync(path.join(directory, '.git/config.worktree'), residue);
