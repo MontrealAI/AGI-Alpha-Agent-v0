@@ -1,0 +1,54 @@
+{
+  "schema": "alpha/independent-checkout-gc-compatibility-review/v1",
+  "reviewerRole": "manager_installed_review; same-session AI technical reviewer independent of the two-file implementer, not human or organizational approval",
+  "baselinePublicCommit": "fa34900431fecd0d5432e163c41f896f97cfe5bc",
+  "baselineTree": "19a879636f9a88a13c6fafd216a987e1cf43073d",
+  "localBaseCommit": "4f309ce3e7d420f9995ed52dc3b6f21c686145a2",
+  "status": "NO_UNRESOLVED_STATIC_FINDINGS_FOR_EXACT_TWO_FILE_PROPOSAL",
+  "files": [
+    {
+      "path": "tests/browser/fleet_git_metadata.mjs",
+      "bytes": 4138,
+      "sha256": "573a846fd1c6617df212b523ad1a5f3fc3a8030ad34e444163ad81451f89da5e",
+      "gitBlob": "986fc29e1cf0d6e60fa643f080f21b55f98caa60",
+      "mode": "100644"
+    },
+    {
+      "path": "tests/browser/fleet_git_metadata.test.mjs",
+      "bytes": 4897,
+      "sha256": "3a5d5efcf846adc927c99ea01a5198134403482071f15a9dddfe6f80b270df3d",
+      "gitBlob": "858c7878d45be52fd1b4872333dfe463f236765e",
+      "mode": "100644"
+    }
+  ],
+  "findings": [],
+  "reasoning": [
+    "The only admitted new namespace is gc. Every gc value row must have no subsection, normalized key auto, and exact unquoted literal zero; the check is applied independently to every row, so an active duplicate cannot override a benign duplicate.",
+    "Bare, positive, negative, quoted, unknown values and all other gc keys remain refused. Existing namespace/subsection/continuation/escape/danger-key checks are unchanged.",
+    "No include or includeIf section is newly admitted. The inert Git2.51.1 unset-all record shows removal of the sole includeIf path also removes its section; no need to broaden the policy to empty conditional headers was established.",
+    "The ordinary existing Git-config fixture now uses checkout\u2019s gc.auto=0. No source metadata is deleted or overridden to make the source guard pass.",
+    "Runtime catalog and native receiver behavior are unchanged; this is harness compatibility with ordinary hosted checkout metadata."
+  ],
+  "independentlyReadEvidence": {
+    "inertUnsetReport": "integration-review/inert-checkout-config-unset.json",
+    "sha256": "33fd48a5a85ec524f6a13d0bae7f3044ae0c9971a068d5e4a70b0bbb4c4efb06"
+  },
+  "primarySources": [
+    {
+      "url": "https://git-scm.com/docs/git-config/2.55.0",
+      "sections": [
+        "gc.auto",
+        "Includes"
+      ],
+      "paraphrase": "Zero disables automatic garbage-collection heuristics; include directives are activated through path values."
+    }
+  ],
+  "executionInThisReview": false,
+  "implementerReportedTests": "36 inert/ordinary Git-config cases pass Node22; not independently rerun by reviewer because root requested static review only.",
+  "managerCompatibility": "Manager raw JS/Python guards, normalized source-root namespace lists and preservation guard also need the narrow gc.auto=0 rule before hosted acceptance. Implementer notified.",
+  "limits": [
+    "Fresh complete original hosted acceptance remains required on the next source head.",
+    "The original failed fa source result is retained and not relabeled.",
+    "No uploadpack, external-import, marker/escape probe, browser, additional workflow run, metadata sanitization, credential or public write performed."
+  ]
+}

@@ -1,0 +1,226 @@
+TAP version 13
+# Subtest: inactive bounded sparse-checkout residue is admitted without enabling it
+ok 1 - inactive bounded sparse-checkout residue is admitted without enabling it
+  ---
+  duration_ms: 7.151168
+  type: 'test'
+  ...
+# Subtest: ambiguous or active worktreeConfig value is refused: "true"
+ok 2 - ambiguous or active worktreeConfig value is refused: "true"
+  ---
+  duration_ms: 0.639655
+  type: 'test'
+  ...
+# Subtest: ambiguous or active worktreeConfig value is refused: "yes"
+ok 3 - ambiguous or active worktreeConfig value is refused: "yes"
+  ---
+  duration_ms: 0.141803
+  type: 'test'
+  ...
+# Subtest: ambiguous or active worktreeConfig value is refused: "on"
+ok 4 - ambiguous or active worktreeConfig value is refused: "on"
+  ---
+  duration_ms: 0.162446
+  type: 'test'
+  ...
+# Subtest: ambiguous or active worktreeConfig value is refused: "1"
+ok 5 - ambiguous or active worktreeConfig value is refused: "1"
+  ---
+  duration_ms: 0.18585
+  type: 'test'
+  ...
+# Subtest: ambiguous or active worktreeConfig value is refused: ""
+ok 6 - ambiguous or active worktreeConfig value is refused: ""
+  ---
+  duration_ms: 0.118539
+  type: 'test'
+  ...
+# Subtest: ambiguous or active worktreeConfig value is refused: "unknown"
+ok 7 - ambiguous or active worktreeConfig value is refused: "unknown"
+  ---
+  duration_ms: 0.17269
+  type: 'test'
+  ...
+# Subtest: ambiguous or active worktreeConfig value is refused: "\\"false\\""
+ok 8 - ambiguous or active worktreeConfig value is refused: "\\"false\\""
+  ---
+  duration_ms: 0.11956
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n auto\\n"
+ok 9 - non-admitted metadata is refused as inert text: "[gc]\\n auto\\n"
+  ---
+  duration_ms: 2.410848
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n auto = 1\\n"
+ok 10 - non-admitted metadata is refused as inert text: "[gc]\\n auto = 1\\n"
+  ---
+  duration_ms: 0.400154
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n auto = -1\\n"
+ok 11 - non-admitted metadata is refused as inert text: "[gc]\\n auto = -1\\n"
+  ---
+  duration_ms: 0.177528
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n auto = \\"0\\"\\n"
+ok 12 - non-admitted metadata is refused as inert text: "[gc]\\n auto = \\"0\\"\\n"
+  ---
+  duration_ms: 0.157768
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n auto = unknown\\n"
+ok 13 - non-admitted metadata is refused as inert text: "[gc]\\n auto = unknown\\n"
+  ---
+  duration_ms: 0.095544
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n auto = 0\\n auto = 1\\n"
+ok 14 - non-admitted metadata is refused as inert text: "[gc]\\n auto = 0\\n auto = 1\\n"
+  ---
+  duration_ms: 0.088543
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n auto = 1\\n auto = 0\\n"
+ok 15 - non-admitted metadata is refused as inert text: "[gc]\\n auto = 1\\n auto = 0\\n"
+  ---
+  duration_ms: 0.097807
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc]\\n recentObjectsHook = unavailable-value\\n"
+ok 16 - non-admitted metadata is refused as inert text: "[gc]\\n recentObjectsHook = unavailable-value\\n"
+  ---
+  duration_ms: 0.098058
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[gc \\"other\\"]\\n auto = 0\\n"
+ok 17 - non-admitted metadata is refused as inert text: "[gc \\"other\\"]\\n auto = 0\\n"
+  ---
+  duration_ms: 0.117036
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig\\n"
+ok 18 - non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig\\n"
+  ---
+  duration_ms: 2.54495
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = false\\n worktreeConfig = true\\n"
+ok 19 - non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = false\\n worktreeConfig = true\\n"
+  ---
+  duration_ms: 0.128054
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = true\\n worktreeConfig = false\\n"
+ok 20 - non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = true\\n worktreeConfig = false\\n"
+  ---
+  duration_ms: 0.09267
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = fal\\\\\\nse\\n"
+ok 21 - non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = fal\\\\\\nse\\n"
+  ---
+  duration_ms: 0.132019
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = \\"false\\n\\"\\n"
+ok 22 - non-admitted metadata is refused as inert text: "[extensions]\\n worktreeConfig = \\"false\\n\\"\\n"
+  ---
+  duration_ms: 0.379262
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions \\"other\\"]\\n worktreeConfig = false\\n"
+ok 23 - non-admitted metadata is refused as inert text: "[extensions \\"other\\"]\\n worktreeConfig = false\\n"
+  ---
+  duration_ms: 0.112339
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions.worktreeConfig]\\n value = false\\n"
+ok 24 - non-admitted metadata is refused as inert text: "[extensions.worktreeConfig]\\n value = false\\n"
+  ---
+  duration_ms: 0.087061
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[core]\\n bare = true\\n"
+ok 25 - non-admitted metadata is refused as inert text: "[core]\\n bare = true\\n"
+  ---
+  duration_ms: 0.096826
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[include]\\n path = unavailable.cfg\\n"
+ok 26 - non-admitted metadata is refused as inert text: "[include]\\n path = unavailable.cfg\\n"
+  ---
+  duration_ms: 0.077407
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[includeIf \\"gitdir:other\\"]\\n path = unavailable.cfg\\n"
+ok 27 - non-admitted metadata is refused as inert text: "[includeIf \\"gitdir:other\\"]\\n path = unavailable.cfg\\n"
+  ---
+  duration_ms: 0.075654
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[filter \\"unavailable\\"]\\n smudge = unavailable-value\\n"
+ok 28 - non-admitted metadata is refused as inert text: "[filter \\"unavailable\\"]\\n smudge = unavailable-value\\n"
+  ---
+  duration_ms: 0.372562
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[protocol \\"file\\"]\\n allow = always\\n"
+ok 29 - non-admitted metadata is refused as inert text: "[protocol \\"file\\"]\\n allow = always\\n"
+  ---
+  duration_ms: 3.256343
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[core]\\n fsmonitor = unavailable-value\\n"
+ok 30 - non-admitted metadata is refused as inert text: "[core]\\n fsmonitor = unavailable-value\\n"
+  ---
+  duration_ms: 0.146581
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[core]\\n worktree = other\\n"
+ok 31 - non-admitted metadata is refused as inert text: "[core]\\n worktree = other\\n"
+  ---
+  duration_ms: 0.100111
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[remote \\"origin\\"]\\n promisor = true\\n"
+ok 32 - non-admitted metadata is refused as inert text: "[remote \\"origin\\"]\\n promisor = true\\n"
+  ---
+  duration_ms: 0.083226
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[remote \\"origin\\"]\\n uploadpack = unavailable-value\\n"
+ok 33 - non-admitted metadata is refused as inert text: "[remote \\"origin\\"]\\n uploadpack = unavailable-value\\n"
+  ---
+  duration_ms: 0.094413
+  type: 'test'
+  ...
+# Subtest: non-admitted metadata is refused as inert text: "[extensions]\\n partialClone = origin\\n"
+ok 34 - non-admitted metadata is refused as inert text: "[extensions]\\n partialClone = origin\\n"
+  ---
+  duration_ms: 0.082785
+  type: 'test'
+  ...
+# Subtest: ignored file must still contain only benign disabled sparse metadata
+ok 35 - ignored file must still contain only benign disabled sparse metadata
+  ---
+  duration_ms: 2.352239
+  type: 'test'
+  ...
+# Subtest: ordinary Git fixture confirms disabled config.worktree is ignored, with an inert enabled control
+ok 36 - ordinary Git fixture confirms disabled config.worktree is ignored, with an inert enabled control
+  ---
+  duration_ms: 18.843467
+  type: 'test'
+  ...
+1..36
+# tests 36
+# suites 0
+# pass 36
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 176.530494

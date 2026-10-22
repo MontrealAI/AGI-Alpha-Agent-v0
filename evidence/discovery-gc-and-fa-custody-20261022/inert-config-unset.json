@@ -1,0 +1,17 @@
+{
+  "schema": "inert-checkout-config-unset-semantics/v1",
+  "gitVersion": "git version 2.51.1",
+  "before": "[core]\n repositoryformatversion = 0\n bare = false\n[remote \"origin\"]\n url = https://github.com/MontrealAI/AGI-Fleet-Linux\n[gc]\n auto = 0\n[includeIf \"gitdir:/inert/public/workspace/.git\"]\n path = /unavailable-inert-credentials-file\n",
+  "after": "[core]\n repositoryformatversion = 0\n bare = false\n[remote \"origin\"]\n url = https://github.com/MontrealAI/AGI-Fleet-Linux\n[gc]\n auto = 0\n",
+  "command": [
+    "git",
+    "config",
+    "--file",
+    "EXPLICIT_INERT_CONFIG",
+    "--no-includes",
+    "--unset-all",
+    "includeIf.gitdir:/inert/public/workspace/.git.path"
+  ],
+  "noGitRootNeeded": true,
+  "noNetworkOrExecutableFixture": true
+}
