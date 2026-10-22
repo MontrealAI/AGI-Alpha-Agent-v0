@@ -8,12 +8,14 @@ import importlib.util
 import hashlib
 import json
 import re
+import stat
 import shutil
 import subprocess
 import tempfile
 from pathlib import Path
 from types import ModuleType
 
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -386,3 +388,162 @@ def test_retained_authored_study_is_bound_to_installed_source_and_keeps_counterb
     assert summary["identicalInputControl"]["fixedSecond"] < summary["identicalInputControl"]["boundarySecond"]
     assert summary["localArchiveReopenAudit"]["profileComparisons"] > 0
     assert len(record["retainedFixtureSha256"]) == summary["fixtures"] == 64
+
+
+# These fixtures use only ordinary owned Git checkouts and data-only old bodies.
+# The retained parent reproducer is never executed.
+def _refresh_copy(tmp_path: Path) -> Path:
+    root = tmp_path / "checkout"
+    for name in capability_checkout_paths():
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / name).read_bytes().replace(b"\n", b"\r\n"))
+    return root
+
+
+def _git(root: Path, *arguments: str) -> bytes:
+    return subprocess.run(["git", "-C", str(root), *arguments], capture_output=True, check=True).stdout
+
+
+def test_existing_parent_to_lf_attributes_checkout_has_explicit_backed_up_repair(tmp_path: Path) -> None:
+    """A normal upgrade leaves stale raw CRLF despite clean Git status and LF attributes."""
+    helper = load_script("refresh_capability_checkout")
+    paths = capability_checkout_paths()
+    fixture = json.loads((ROOT / "tests/fixtures/capability-checkout-parent.json").read_bytes())
+    assert fixture["sourceCommit"] == "87a003d23d3093edac3747ee1f9da292c6159515"
+    assert fixture["sourceTree"] == "ffa3d663519e713eca31a9840b8bf6816e53e12a"
+    source, checkout = tmp_path / "source", tmp_path / "checkout"
+    source.mkdir()
+    controls = ["docs/Out_Execute.tex", "docs/Out_Execute.pdf"]
+    for name in [*paths, *controls]:
+        target = source / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / name).read_bytes())
+    (source / "unpinned-control.txt").write_bytes(b"ordinary control\n")
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert len(raw) == entry["bytes"] and hashlib.sha256(raw).hexdigest() == entry["sha256"]
+        (source / name).write_bytes(raw)
+    for arguments in (
+        ("init", "--quiet"),
+        ("config", "user.name", "Owned test"),
+        ("config", "user.email", "owned-test@example.invalid"),
+        ("config", "commit.gpgsign", "false"),
+        ("add", "."),
+        ("commit", "--quiet", "-m", "Exact old attribute and reproducer bodies"),
+    ):
+        _git(source, *arguments)
+    parent = _git(source, "rev-parse", "HEAD").decode().strip()
+    for name in fixture["files"]:
+        (source / name).write_bytes((ROOT / name).read_bytes())
+    _git(source, "add", ".")
+    _git(source, "commit", "--quiet", "-m", "Reviewed LF attribute transition")
+    target = _git(source, "rev-parse", "HEAD").decode().strip()
+    subprocess.run(
+        ["git", "clone", "--quiet", "--local", "--no-checkout", str(source), str(checkout)],
+        capture_output=True,
+        check=True,
+    )
+    _git(checkout, "config", "core.autocrlf", "true")
+    _git(checkout, "config", "core.eol", "crlf")
+    _git(checkout, "checkout", "--quiet", "--detach", parent)
+    _git(checkout, "checkout", "--quiet", "--detach", target)
+    assert _git(checkout, "status", "--porcelain") == b""
+    (checkout / "private-staged.txt").write_bytes(b"private staged content\n")
+    _git(checkout, "add", "private-staged.txt")
+    originals = {name: (checkout / name).read_bytes() for name in paths}
+    modes = {name: stat.S_IMODE((checkout / name).stat().st_mode) for name in paths}
+    unchanged = {
+        name: (checkout / name).read_bytes()
+        for name in [*controls, "unpinned-control.txt", "private-staged.txt", ".git/index", ".git/config"]
+    }
+    assert unchanged["unpinned-control.txt"] == b"ordinary control\r\n"
+    assert sum(b"\r\n" in raw for raw in originals.values()) == 47
+    catalog = json.loads(originals[helper.CATALOG])
+    assert (
+        sum(hashlib.sha256(originals[name]).hexdigest() != digest for name, digest in catalog["sources"].items()) == 40
+    )
+    dry_run = helper.refresh(checkout)
+    assert dry_run["checked"] == 49 and len(dry_run["needsRefresh"]) == 47
+    assert not dry_run["applied"] and dry_run["backupDirectory"] is None
+    assert originals == {name: (checkout / name).read_bytes() for name in paths}
+    backup_parent = tmp_path / "backups"
+    backup_parent.mkdir()
+    applied = helper.refresh(checkout, apply=True, backup_parent=backup_parent)
+    backup = Path(applied["backupDirectory"])
+    assert applied["applied"] and stat.S_IMODE(backup.stat().st_mode) == 0o700
+    manifest = json.loads((backup / "manifest.json").read_bytes())
+    assert len(manifest["files"]) == 49
+    for entry in manifest["files"]:
+        name = entry["path"]
+        assert (backup / "files" / name).read_bytes() == originals[name]
+        assert entry["bytes"] == len(originals[name])
+        assert entry["sha256"] == hashlib.sha256(originals[name]).hexdigest()
+        assert entry["mode"] == modes[name] == stat.S_IMODE((checkout / name).stat().st_mode)
+        assert (checkout / name).read_bytes() == (ROOT / name).read_bytes()
+    assert unchanged == {name: (checkout / name).read_bytes() for name in unchanged}
+    # Index bytes/stat metadata stay untouched; raw working bytes are the repair contract.
+    assert _git(checkout, "diff", "--exit-code") == b""
+    assert helper.refresh(checkout, apply=True, backup_parent=backup_parent)["backupDirectory"] is None
+    assert list(backup_parent.iterdir()) == [backup]
+
+
+@pytest.mark.parametrize("edit", ["private", "mixed", "catalog", "oversize"])
+def test_checkout_refresh_refuses_the_whole_plan_for_unexpected_bytes(tmp_path: Path, edit: str) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    path = root / (helper.CATALOG if edit == "catalog" else "scripts/generate_successor_capability.py")
+    raw = path.read_bytes()
+    if edit == "mixed":
+        path.write_bytes(raw.replace(b"\r\n", b"\n", 1))
+    elif edit == "oversize":
+        with path.open("wb") as stream:
+            stream.truncate(helper.MAX_FILE_BYTES + 1)
+    else:
+        path.write_bytes(raw + b"private edit\r\n")
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+    with pytest.raises(ValueError):
+        helper.refresh(root, apply=True, backup_parent=backups)
+    assert originals == {name: (root / name).read_bytes() for name in originals}
+    assert list(backups.iterdir()) == []
+
+
+def test_checkout_refresh_refuses_aliases_and_inside_backup_before_changes(tmp_path: Path) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    with pytest.raises(ValueError, match="outside"):
+        helper.refresh(root, apply=True, backup_parent=root)
+    catalog = root / helper.CATALOG
+    saved = catalog.read_bytes()
+    outside = tmp_path / "original-catalog.json"
+    outside.write_bytes(saved)
+    catalog.unlink()
+    catalog.symlink_to(outside)
+    with pytest.raises(ValueError, match="regular"):
+        helper.refresh(root, apply=True, backup_parent=tmp_path)
+    assert outside.read_bytes() == saved
+    assert not list(tmp_path.glob("capability-lf-backup-*"))
+
+
+def test_checkout_refresh_retains_all_originals_on_replace_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    helper = load_script("refresh_capability_checkout")
+    root = _refresh_copy(tmp_path)
+    originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
+    backups = tmp_path / "backups"
+    backups.mkdir()
+
+    def unavailable_replace(*arguments: object) -> None:
+        raise OSError("ordinary unavailable destination fixture")
+
+    monkeypatch.setattr(helper.os, "replace", unavailable_replace)
+    with pytest.raises(RuntimeError, match="original bytes retained"):
+        helper.refresh(root, apply=True, backup_parent=backups)
+    (backup,) = backups.iterdir()
+    assert json.loads((backup / "result.json").read_bytes()) == {"applied": [], "complete": False}
+    assert originals == {name: (root / name).read_bytes() for name in originals}
+    assert originals == {name: (backup / "files" / name).read_bytes() for name in originals}
+    assert not [path for path in root.rglob(".*") if ".lf-" in path.name]
