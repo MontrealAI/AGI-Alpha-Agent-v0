@@ -13,6 +13,14 @@ problem formulations that unnecessarily limit the outcome. Keep the attempts, ev
 Planning and the catalog example are free in your browser. Computer execution uses a separately configured
 native model and isolated runner. [What works now and how to begin](docs/agent/SUCCESSOR_ALPHA.md).
 
+**Autonomous Enterprises · Build the means of building.** Construct checked Walsh, XOR-convolution and inverse
+capabilities, freeze their bytes, then invoke them on later tasks in the same mission history.
+[Free local foundry and evidence guide](docs/autonomous-enterprises/README.md) ·
+[Selected 23-page paper](docs/Autonomous_Enterprises.pdf) ·
+[Source candidate and qualification](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4855).
+This additive source preview preserves SUCCESSOR Ω, Discovery Lab and all six research stages.
+Installed cross-repository receivers, public deployment and the operational real-task pilot remain unqualified.
+
 <!-- featured-research-papers -->
 ## Featured research
 

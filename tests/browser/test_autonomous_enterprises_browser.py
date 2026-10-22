@@ -36,6 +36,9 @@ def main() -> None:
             expect(page.locator("#enterprise-status")).to_contain_text("Frozen", timeout=120000)
             expect(page.locator("#enterprise-seed")).to_be_enabled()
             expect(page.locator("#enterprise-facts")).to_contain_text("1,508,042")
+            expect(page.locator("#brief-title")).to_be_disabled()
+            expect(page.locator("#start-successor")).to_be_disabled()
+            expect(page.locator("#freeze")).to_be_disabled()
             frozen = existing.history(page)
             constructed = dict(frozen)
             cutoff = next(
@@ -94,6 +97,8 @@ def main() -> None:
             page.locator("#enterprise-seed").fill("20261021")
             page.locator("#enterprise-continue").click()
             expect(page.locator("#enterprise-status")).to_contain_text("Successor accepted locally", timeout=120000)
+            expect(page.locator("#brief-title")).to_be_enabled()
+            expect(page.locator("#start-successor")).to_be_enabled()
             with page.expect_download(timeout=120000) as downloading:
                 page.locator("#enterprise-export").click()
             docket_path = OUTPUT / "evidence-docket.json"
@@ -145,6 +150,7 @@ def main() -> None:
                             "freeze-before-future-inputs",
                             "accepted-construction-reload",
                             "freeze-without-rebuilding-or-future-inputs",
+                            "proposal-version-guard",
                             "five-treatments",
                             "changed-kernel-successor",
                             "actual-docket-download",

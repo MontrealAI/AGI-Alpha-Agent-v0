@@ -28,8 +28,8 @@ or recent release assets. This is **an independent reimplementation**, not repro
 ## Reproduce and inspect
 
 The repository pins Node 22.17.1. The original hosted candidate passed all 516 Node tests on that runtime, then failed
-a workflow-policy assertion; its archive and logs remain retained. The repaired source passes 89 enterprise tests locally
-on Node 24.19.0 and 22.23.3, with a freshly completed browser journey and docket replay. Fresh exact-source hosted
+a workflow-policy assertion; its archive and logs remain retained. The current source passes 104 enterprise tests plus 47 owner metadata tests locally
+on Node 24.19.0 and 22.23.3, with a freshly completed fourteen-check browser journey and docket replay. Fresh exact-source hosted
 acceptance remains required. No model, wallet, account, package installation or network access is needed for this study.
 
 ```bash
@@ -50,6 +50,8 @@ once without revealing future inputs, then
 supplies future inputs, invokes all five treatments, constructs a changed-kernel successor, downloads and independently
 replays the actual docket, reloads the saved mission, and checks desktop/mobile, keyboard and pinned Axe accessibility.
 The existing capability workflow retains its original checks and adds these tests and raw browser evidence.
+Saving a new successor proposal is refused while an enterprise attempt is active, both by central history replay
+and by the interface, so continuation and safe stopping retain their original version.
 
 ## Actual counted results and their denominators
 
@@ -102,8 +104,9 @@ tables are bounded to seven capabilities. It does not prove a rational-price, ti
 | Jobs | #4010; prerequisite rc.17 is now published | Final installed receivers and a later compatible profile; AGIALPHA18 only |
 | Fleet | #64; held #61 remains separate | Eligible owner/custody review, final installed acceptance and compatible publication |
 
-This foundry increment does not implement or qualify enterprise-specific installed receivers in the other three
-repositories. The existing 39-record inventory remains historical; fresh approved RPC/ABI/role/token observations
+The new [native inspection contract](NATIVE_CONTRACT.md) has additive source-only receiver candidates in the
+other three repositories, with actual local interoperability evidence. Installed source custody, durable receipt
+commit integration and release/profile qualification remain unqualified. The existing 39-record inventory remains historical; fresh approved RPC/ABI/role/token observations
 are **NOT_RUN**. The public real-task operational pilot remains **NOT_RUN**. Broader manuscript implementation,
 all-four-homepage placement, final native round trips, Windows-hosted checkout, fresh releases, downloaded-byte
 acceptance and public served journeys remain explicit owner-qualified gates. No maintenance release or local proof
@@ -122,3 +125,8 @@ The repaired interface offers that safe transition and stops at the freeze befor
 browser saved-prefix fixture fails on the previous page and passes all thirteen checks after repair; it does not claim
 an operating-system interruption test. The source candidate also preserves the newer owner's two inert checkout
 metadata files and the merged opaque-paper attributes/test, including exact original manuscript bytes.
+
+The next configured review identified a P1 version boundary: saving a proposal during an active enterprise could
+strand that attempt. The current repair refuses that event in central replay and API preflight, and disables proposal
+editing until finish or stop. Three failing ordinary cases now pass along with the preserved legacy case on both
+local Node profiles; the actual browser checks proposal gating and recovery. Fresh configured review remains required.

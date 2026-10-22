@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-cD6txlHLeoLo4LsrrJK+/OP+7Wg89clz7e1zCRrObQs='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-izLBiJ4I9QDvBFdwU10SsHUHJwja6EtZDaaPVOPi1Ak='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -522,7 +522,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>7dcba13d2638de03086c6b8424bf5e4dd6db4e1854054ffdd0b41c96434c0da3</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -5813,6 +5813,7 @@ async function inspectOwnedWorkspace(input) {
             || event.digest !== await eventDigest(input.missionId, event)) fail('Capability history binding mismatch.');
         const payload = event.payload;
         if (event.kind === 'version') {
+            if (enterprises.active) fail('Finish or stop the active enterprise attempt before saving a successor version.');
             if (!exact(payload, ['number', 'parent', 'reason', 'specification', 'frozenDigest'])
                 || payload.number !== versions.length + 1 || versions.length >= LIMITS.versions
                 || payload.parent !== (versions.length ? versions.at(-1).frozenDigest : null)
@@ -5903,7 +5904,8 @@ async function createWorkspace(brief = DEFAULT_BRIEF, experiment = null) {
 async function addSuccessor(workspace, brief, experiment, reason) {
     brief = JSON.parse(discoveryHistory.validateHistoryData(brief));
     experiment = JSON.parse(discoveryHistory.validateHistoryData(experiment));
-    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {latest, versions, enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before saving a successor version.');
     if (versions.length >= LIMITS.versions) fail('Version capacity reached; preserve this complete workspace.');
     if (equal(latest.brief, brief) && equal(latest.experiment, experiment)) {
         fail('A successor needs an explicit change to the proposal or experiment; prior evidence stays historical.');
@@ -10285,7 +10287,7 @@ const enterpriseController=capability_module_39;
 const enterpriseProtocol=capability_module_16;
 const enterpriseHistory=capability_module_15;
 const enterpriseCapital=capability_module_35;
-const SOURCE_HASH='7dcba13d2638de03086c6b8424bf5e4dd6db4e1854054ffdd0b41c96434c0da3';
+const SOURCE_HASH='845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -10490,7 +10492,7 @@ function renderVersions() {
 }
 function controls() {
     const idle = ready && !busy;
-    const editable = idle && !pending;
+    const editable = idle && !pending && !inspected?.enterprises?.active;
     for (const [key] of fields) $(`brief-${key}`).disabled = !editable;
     $('witness-enabled').disabled = !editable;
     $('experiment').disabled = !editable || !$('witness-enabled').checked;
@@ -10523,7 +10525,7 @@ function render() {
     $('identity').textContent = current ? `${current.missionId} · history revision ${current.revision} · ${pending ? 'not confirmed saved' : storedRevision === null ? 'in memory only' : `saved locally · storage revision ${storedRevision}`}` : 'No frozen version yet. The default example is an editable proposal.';
     $('draft-badge').textContent = pending ? 'Unsaved recovery copy' : dirty ? current ? 'Stale · successor draft' : 'Unsaved proposal' : `Frozen version ${latest.number}`;
     $('editor-eyebrow').textContent = successorEditing ? '01 · DEVELOP AN EXPLICIT SUCCESSOR' : '01 · DESIGN THE POSSIBILITY';
-    $('draft-state').textContent = pending ? 'The candidate history is protected in memory. Retry saving or retain its recovery export before replacing it.' : dirty ? current ? 'Inputs have changed. Earlier results are historical and do not validate this draft. Freeze a successor with a reason before another test.' : 'Saving this brief creates a frozen proposal, not an executed invention. Confirm public, non-personal material above first.' : 'These inputs are frozen. Editing starts an unvalidated successor draft; original evidence remains unchanged.';
+    $('draft-state').textContent = inspected?.enterprises?.active ? 'Finish or stop the current enterprise attempt before editing this proposal or saving a successor version.' : pending ? 'The candidate history is protected in memory. Retry saving or retain its recovery export before replacing it.' : dirty ? current ? 'Inputs have changed. Earlier results are historical and do not validate this draft. Freeze a successor with a reason before another test.' : 'Saving this brief creates a frozen proposal, not an executed invention. Confirm public, non-personal material above first.' : 'These inputs are frozen. Editing starts an unvalidated successor draft; original evidence remains unchanged.';
     $('version-state').textContent = !latest ? 'No validation yet.' : dirty ? 'Draft changed · no current validation.' : latest.experiment === null ? 'Proposal only · not executed.' : latest.witnessAcceptance === 'fail' ? 'Computed FAIL · synthetic witness only' : latest.witnessAcceptance === 'pass' ? 'Computed PASS · both synthetic phases only' : latest.development ? 'Development passed · reuse still pending' : 'No validation yet.';
     $('version-detail').textContent = !latest ? 'First save a frozen version. A plain brief has no executable construction here.' : dirty ? `Reports below belong to frozen version ${latest.number}, not the edited draft.` : latest.experiment === null ? 'The brief has been retained. No evaluator executes or validates its described capability.' : 'Only the fixed supported synthetic instrument is constructed and evaluated. The broad capability brief and economic hypotheses remain unevaluated.';
     $('run-gate').textContent = pending ? 'Testing is locked while this history is not confirmed saved.' : dirty ? 'Save a frozen version with unchanged inputs before constructing or evaluating the witness.' : latest?.experiment === null ? 'No synthetic witness selected. Proposal mode does not run any evaluator.' : latest?.heldout ? 'Both recorded phases are retained. Develop a successor to make a new explicit experiment.' : latest?.development ? 'Development is retained. Evaluate the unchanged frozen configuration next.' : 'The construction and development evaluation run only when you press the button.';
@@ -11594,7 +11596,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "7dcba13d2638de03086c6b8424bf5e4dd6db4e1854054ffdd0b41c96434c0da3"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {
@@ -12451,7 +12453,7 @@ const REAL_TASK_SOURCES={"adapterSourceDigest": "86aae1d8e0ad8c072957567cf5c5f19
 })();
 
 
-const ENTERPRISE_SOURCES={"checker": "52735ba95b2f4be8580fffc957e9d8f910c9e08b6458c5bb847f3f74a500bf7d", "closure": "7dcba13d2638de03086c6b8424bf5e4dd6db4e1854054ffdd0b41c96434c0da3", "constructor": "3369219a306f69bf446d8d1cd343624686d2eba101e9be5be3afa9af463ee615"};
+const ENTERPRISE_SOURCES={"checker": "52735ba95b2f4be8580fffc957e9d8f910c9e08b6458c5bb847f3f74a500bf7d", "closure": "845a761f58c0edfe741d8ce767ab0a29dc971397522936f06008a11b0f411d28", "constructor": "3369219a306f69bf446d8d1cd343624686d2eba101e9be5be3afa9af463ee615"};
 // SPDX-License-Identifier: Apache-2.0
 (() => {
     const el = id => document.getElementById('enterprise-' + id);

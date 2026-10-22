@@ -114,6 +114,7 @@ async function inspectOwnedWorkspace(input) {
             || event.digest !== await eventDigest(input.missionId, event)) fail('Capability history binding mismatch.');
         const payload = event.payload;
         if (event.kind === 'version') {
+            if (enterprises.active) fail('Finish or stop the active enterprise attempt before saving a successor version.');
             if (!exact(payload, ['number', 'parent', 'reason', 'specification', 'frozenDigest'])
                 || payload.number !== versions.length + 1 || versions.length >= LIMITS.versions
                 || payload.parent !== (versions.length ? versions.at(-1).frozenDigest : null)
@@ -204,7 +205,8 @@ export async function createWorkspace(brief = DEFAULT_BRIEF, experiment = null) 
 export async function addSuccessor(workspace, brief, experiment, reason) {
     brief = JSON.parse(discoveryHistory.validateHistoryData(brief));
     experiment = JSON.parse(discoveryHistory.validateHistoryData(experiment));
-    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {latest, versions, enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before saving a successor version.');
     if (versions.length >= LIMITS.versions) fail('Version capacity reached; preserve this complete workspace.');
     if (equal(latest.brief, brief) && equal(latest.experiment, experiment)) {
         fail('A successor needs an explicit change to the proposal or experiment; prior evidence stays historical.');
