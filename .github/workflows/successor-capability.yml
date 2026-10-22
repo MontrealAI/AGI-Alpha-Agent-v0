@@ -28,6 +28,8 @@ on:
       - tests/browser/fleet_receipt_native.mjs
       - tests/browser/fleet_module_boundary.mjs
       - tests/browser/fleet_module_boundary.test.mjs
+      - tests/browser/fleet_git_metadata.mjs
+      - tests/browser/fleet_git_metadata.test.mjs
   push:
     branches: [main, additive/successor-capability-review-20261020]
   workflow_dispatch:
@@ -85,7 +87,7 @@ jobs:
       - name: Computation, history and delivery gates
         run: |
           set -o pipefail
-          node --test examples/successor-capability/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs tests/browser/fleet_module_boundary.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
+          node --test examples/successor-capability/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs tests/browser/fleet_module_boundary.test.mjs tests/browser/fleet_git_metadata.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
           PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
       - name: Strict typing with retained actual output
         run: |

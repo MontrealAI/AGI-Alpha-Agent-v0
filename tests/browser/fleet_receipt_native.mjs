@@ -8,6 +8,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {parseModuleSources, checkDependencyRecords, ownedTarget, createModuleBoundary} from './fleet_module_boundary.mjs';
+import {auditGitConfiguration} from './fleet_git_metadata.mjs';
 const ALPHA_ROOT = path.resolve(fileURLToPath(new URL('../../', import.meta.url)));
 const FLEET_COMMIT = '0dd352fdd2b1af00bc8358e0ac7f96682fd6f796';
 const FLEET_TREE = '79415af24ebf57d30981f841f13b7969e4193502';
@@ -46,16 +47,23 @@ function guardRoot(root) {
     const directory = path.join(root, '.git');
     assert.ok(fs.lstatSync(directory).isDirectory() && fs.realpathSync(directory) === directory,
         'An ordinary independent Git checkout is required');
-    assert.equal(fs.existsSync(path.join(directory, 'config.worktree')), false, 'Worktree configuration is not admitted by this source helper');
-    const config = boundedRegular(path.join(directory, 'config'), 128000).toString();
-    for (const match of config.matchAll(/^\s*\[\s*([\w.-]+)/gm)) {
-        assert.ok(['core', 'remote', 'branch', 'extensions', 'http'].includes(match[1].toLowerCase()), 'Unexpected local Git configuration section');
-    }
-    assert.ok(!/^\s*(?:fsmonitor|worktree|hookspath|attributesfile|uploadpack|receivepack|promisor|partialclone|alternaterefscommand|sshcommand|gitproxy|vcs)\s*=/im.test(config),
-        'Executable, lazy-fetch or redirected Git configuration is refused');
+    assert.equal(fs.lstatSync(path.join(directory, 'commondir'), {throwIfNoEntry: false}), undefined,
+        'A redirected common Git directory is not an ordinary independent root');
+    const worktreePath = path.join(directory, 'config.worktree');
+    const worktreePresent = fs.lstatSync(worktreePath, {throwIfNoEntry: false}) !== undefined;
+    const decode = bytes => new TextDecoder('utf-8', {fatal: true}).decode(bytes);
+    const metadata = filename => {
+        assert.ok(fs.lstatSync(filename).isFile() && fs.realpathSync(filename) === filename,
+            'Git metadata must be regular local files');
+        return boundedRegular(filename, 128000);
+    };
+    const config = metadata(path.join(directory, 'config'));
+    const ignored = worktreePresent ? metadata(worktreePath) : null;
+    const configuration = auditGitConfiguration(decode(config), ignored === null ? null : decode(ignored));
     const packs = path.join(directory, 'objects/pack');
     assert.ok(!fs.existsSync(packs) || !fs.readdirSync(packs).some(name => name.endsWith('.promisor')),
         'Promisor object packs are not admitted by this read-only source helper');
+    return {...configuration, configSha256: sha(config), ignoredWorktreeSha256: ignored === null ? null : sha(ignored)};
 }
 function regular(root, relative) {
     const filename = path.resolve(root, relative), actual = fs.realpathSync(filename);
@@ -77,7 +85,7 @@ assert.ok(fleetArg && workspacePath && requestPath && outputArg && process.argv.
 const fleetRoot = fs.realpathSync(fleetArg), output = path.resolve(outputArg);
 assert.ok(path.isAbsolute(fleetArg) && path.isAbsolute(outputArg) && !fs.existsSync(output), 'Explicit source and absent evidence paths required');
 const workspaceBytes = boundedRegular(workspacePath), requestBytes = boundedRegular(requestPath), original = requestBytes.toString();
-guardRoot(fleetRoot); guardRoot(ALPHA_ROOT);
+const gitMetadata = {fleet: guardRoot(fleetRoot), alpha: guardRoot(ALPHA_ROOT)};
 assert.equal(git(fleetRoot, 'rev-parse', '--show-toplevel').toString().trim(), fleetRoot, 'Fleet must be its own Git root');
 assert.equal(git(fleetRoot, 'rev-parse', 'HEAD').toString().trim(), FLEET_COMMIT);
 assert.equal(git(fleetRoot, 'rev-parse', 'HEAD^{tree}').toString().trim(), FLEET_TREE);
@@ -89,6 +97,7 @@ const sourceMap = Object.fromEntries(Object.keys(catalog.sources).sort().map(key
 assert.equal(sha(JSON.stringify(sourceMap)), catalog.sourceHash, 'Installed source catalog must reproduce');
 const boundarySource = capture(ALPHA_ROOT, 'tests/browser/fleet_module_boundary.mjs', alphaCommit);
 const harnessSources = {'tests/browser/fleet_module_boundary.mjs': sha(boundarySource),
+    'tests/browser/fleet_git_metadata.mjs': sha(capture(ALPHA_ROOT, 'tests/browser/fleet_git_metadata.mjs', alphaCommit)),
     'tests/browser/fleet_receipt_native.mjs': sha(capture(ALPHA_ROOT, 'tests/browser/fleet_receipt_native.mjs', alphaCommit))};
 const snapshot = fs.mkdtempSync(path.join(os.tmpdir(), 'fleet-native-captured-'));
 let boundary;
@@ -189,7 +198,7 @@ try {
     for (const item of variants) fs.writeFileSync(path.join(output, item.name + '.json'), JSON.stringify(item.wrapper, null, 2) + '\n');
     const report = {schema: 'actual-browser-fleet-native-return/v1', alphaCommit, alphaTree, sourceHash: catalog.sourceHash,
         fleetSource: source, runtime, runtimeDigest, sourceFiles, harnessSources, moduleBoundarySha256: sha(boundarySource),
-        allCatalogInputsVerified: allCatalogInputs.size,
+        allCatalogInputsVerified: allCatalogInputs.size, gitMetadata,
         workspaceSha256: sha(workspaceBytes), requestSha256: sha(requestBytes),
         missionId: value.missionId, campaignDigest: selected.campaignDigest, receipt: checked, variants: variants.map(item => item.name),
         scope: 'Actual captured public Fleet source and Alpha inspector; no installed released Fleet service, remote execution or institutional independence',

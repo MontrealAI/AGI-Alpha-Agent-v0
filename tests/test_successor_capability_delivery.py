@@ -37,10 +37,17 @@ def test_native_fleet_return_cannot_be_skipped_by_the_required_hosted_journey() 
     assert journey["env"]["DISCOVERY_FLEET_REQUIRED"] == "1"
     assert "if" not in journey and not journey.get("continue-on-error")
     events = workflow.get("on", workflow.get(True))
-    for name in ("fleet_receipt_native.mjs", "fleet_module_boundary.mjs", "fleet_module_boundary.test.mjs"):
+    for name in (
+        "fleet_receipt_native.mjs",
+        "fleet_module_boundary.mjs",
+        "fleet_module_boundary.test.mjs",
+        "fleet_git_metadata.mjs",
+        "fleet_git_metadata.test.mjs",
+    ):
         assert "tests/browser/" + name in events["pull_request"]["paths"]
     node_step = next(step["run"] for step in steps if "node --test" in step.get("run", ""))
     assert "tests/browser/fleet_module_boundary.test.mjs" in node_step
+    assert "tests/browser/fleet_git_metadata.test.mjs" in node_step
 
 
 def test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands(tmp_path: Path) -> None:
@@ -86,6 +93,54 @@ def test_native_source_helper_refuses_unsafe_metadata_without_installing_or_runn
         assert result.returncode != 0 and expected in result.stderr
 
 
+def test_native_source_helper_refuses_non_admitted_worktree_metadata(tmp_path: Path) -> None:
+    """Only inert local metadata is supplied; refusal precedes any Git object read."""
+    node = shutil.which("node")
+    assert node is not None
+    for kind, expected in [
+        ("active-worktree", "worktree configuration is refused"),
+        ("bare-worktree-key", "worktree configuration is refused"),
+        ("commondir", "common Git directory"),
+        ("worktree-directory", "metadata must be regular"),
+        ("oversize-worktree", "Bounded regular file"),
+    ]:
+        root = tmp_path / kind
+        directory = root / ".git"
+        directory.mkdir(parents=True)
+        config = "[core]\n bare = false\n"
+        if kind == "active-worktree":
+            config += "[extensions]\n worktreeConfig = false\n worktreeConfig = true\n"
+        elif kind == "bare-worktree-key":
+            config += "[extensions]\n worktreeConfig\n"
+        (directory / "config").write_text(config)
+        if kind == "commondir":
+            (directory / "commondir").write_text("../unavailable\n")
+        elif kind == "worktree-directory":
+            (directory / "config.worktree").mkdir()
+        else:
+            (directory / "config.worktree").write_text(
+                "#" + "x" * 128000 if kind == "oversize-worktree" else "[core]\n sparseCheckout = false\n"
+            )
+        mission, request = tmp_path / "mission.json", tmp_path / "request.json"
+        mission.write_text("{}")
+        request.write_text("{}")
+        result = subprocess.run(
+            [
+                node,
+                str(ROOT / "tests/browser/fleet_receipt_native.mjs"),
+                str(root),
+                str(mission),
+                str(request),
+                str(root / "absent-output"),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=15,
+            check=False,
+        )
+        assert result.returncode != 0 and expected in result.stderr, kind
+
+
 def test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer() -> None:
     """Inspect the fixed acceptance inventory as inert syntax, without loading browser code."""
     tree = ast.parse((ROOT / "tests/browser/test_discovery_lab_continuation.py").read_text())
@@ -111,6 +166,44 @@ def test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_produ
     acceptance = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "fleet_return")
     loops = [node for node in ast.walk(acceptance) if isinstance(node, ast.For)]
     assert any(isinstance(node.iter, ast.Name) and node.iter.id == "FLEET_VARIANTS" for node in loops)
+
+
+def test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history() -> None:
+    """Protect the two alternatives consumed from one authenticated browser artifact."""
+    source = (ROOT / "tests/browser/test_discovery_lab_continuation.py").read_text()
+    tree = ast.parse(source)
+    function = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "fleet_return")
+    downloads = [
+        node
+        for node in ast.walk(function)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "download_request"
+    ]
+    assert [ast.literal_eval(node.args[2]) for node in downloads] == ["USDC", "AGIALPHA"]
+    journal = next(
+        node.value
+        for node in ast.walk(function)
+        if isinstance(node, ast.Assign)
+        and any(isinstance(target, ast.Name) and target.id == "request_exports" for target in node.targets)
+    )
+
+    def fields(node: ast.expr) -> dict[str, ast.expr]:
+        assert isinstance(node, ast.Dict)
+        result = {}
+        for key, value in zip(node.keys, node.values):
+            assert key is not None
+            name = ast.literal_eval(key)
+            assert isinstance(name, str) and name not in result
+            result[name] = value
+        return result
+
+    entries = fields(journal)
+    assert {"missionId", "campaignDigest", "sourceHash", "pageSha256", "workspace", "requests"} <= entries.keys()
+    assert fields(entries["requests"]).keys() == {"manager-usdc", "jobs-agialpha"}
+    assert {"file", "sha256", "jobsFile", "jobsSha256", "revision", "eventPrefix", "head"} <= fields(
+        entries["workspace"]
+    ).keys()
+    assert "jobs_workspace_path.read_bytes() == workspace_path.read_bytes()" in source
+    assert '"browser-native-requests.json"' in source and '"jobs-browser-request.json"' in source
 
 
 def load_script(name: str) -> ModuleType:

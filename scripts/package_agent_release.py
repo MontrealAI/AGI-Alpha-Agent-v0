@@ -189,7 +189,10 @@ def capability_archive_entry(
             href = dict(attrs).get("href")
             if tag == "a" and href is not None:
                 line, column = self.getpos()
-                anchors.append((offsets[line - 1] + column, self.get_starttag_text(), href))
+                start_tag = self.get_starttag_text()
+                if start_tag is None:
+                    raise ValueError("Capability anchor has no original start-tag text")
+                anchors.append((offsets[line - 1] + column, start_tag, href))
 
     Links().feed(text)
     additions = {}
@@ -225,9 +228,13 @@ def capability_archive_entry(
                 }
             )
             adapted = "#archive-navigation"
+
+        def replace_href(match: re.Match[str]) -> str:
+            return match[1] + match[2] + escape(adapted, quote=True) + match[2]
+
         rewritten, count = re.subn(
             r"(\bhref\s*=\s*)([\"'])(.*?)\2",
-            lambda match: match[1] + match[2] + escape(adapted, quote=True) + match[2],
+            replace_href,
             tag,
             count=1,
         )
@@ -235,11 +242,13 @@ def capability_archive_entry(
             raise ValueError("Capability navigation attribute cannot be adapted")
         replacements.append((offset, len(tag), rewritten))
     for offset, size, replacement in reversed(replacements):
-        text = text[:offset] + replacement + text[offset + size :]
+        remaining_start = offset + size
+        text = text[:offset] + replacement + text[remaining_start:]
     if 'id="archive-navigation"' in text:
         raise ValueError("Capability archive navigation identity collides")
     links = "".join(
-        f'<li><a href="{escape(item["sourceUrl"], quote=True)}">Exact source for {escape(item["originalHref"])}</a></li>'
+        f'<li><a href="{escape(item["sourceUrl"], quote=True)}">'
+        f'Exact source for {escape(item["originalHref"])}</a></li>'
         for item in {item["sourcePath"]: item for item in navigation}.values()
     )
     notice = (
@@ -247,7 +256,8 @@ def capability_archive_entry(
         '<h2 id="archive-navigation-heading">Other journeys and source guides</h2>'
         "<p>This operator archive runs the capability workspace and retains its linked papers and guides. "
         "The gallery and other journeys require the separate full site distribution. "
-        "Their exact source remains available through the links below; these are source views, not an accepted live deployment.</p>"
+        "Their exact source remains available through the links below; these are source views, "
+        "not an accepted live deployment.</p>"
         f"<ul>{links}</ul></aside>"
     )
     if text.count("</main>") != 1:
@@ -506,7 +516,9 @@ def package_operator_guide(root: Path, output: Path, version: str, commit: str) 
                                 "originalArchivePath": "capability/" + page_path,
                                 "originalSha256": hashlib.sha256(captured[page_path]).hexdigest(),
                                 "adaptedSha256": hashlib.sha256(entry).hexdigest(),
-                                "adaptation": "Anchor navigation and archive scope only; original script/style/CSP unchanged.",
+                                "adaptation": (
+                                    "Anchor navigation and archive scope only; original script/style/CSP unchanged."
+                                ),
                                 "externalJourneySources": navigation,
                             },
                         },
@@ -521,10 +533,13 @@ def package_operator_guide(root: Path, output: Path, version: str, commit: str) 
                     "Open index.html for the self-contained browser workspace and usable archive navigation.\n"
                     "docs/discovery-lab/README.md and examples/successor-capability/README.md describe its scope.\n"
                     "Run CLI reproduction and full repository checks from the separate source archive; this guide\n"
-                    "archive retains the browser import closure and all directly linked original papers, not every test runner.\n"
-                    "The full gallery and other journeys need the separate site distribution; archive navigation explains this scope.\n"
+                    "archive retains the browser import closure and all directly linked original papers, "
+                    "not every test runner.\n"
+                    "The full gallery and other journeys need the separate site distribution; "
+                    "archive navigation explains this scope.\n"
                     "docs/successor/capabilities/index.html is the byte-preserved raw original for source inspection.\n"
-                    "source-map.json binds repository paths, original bytes, packaged guide bytes and this source identity.\n"
+                    "source-map.json binds repository paths, original bytes, packaged guide bytes "
+                    "and this source identity.\n"
                     "Historical records are not current acceptance or authority to execute external work.\n",
                 )
     return destination

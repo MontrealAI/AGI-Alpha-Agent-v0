@@ -50,7 +50,25 @@ def fleet_return(page: Page) -> dict[str, Any]:
     output = OUTPUT / "fleet-native"
     workspace_path, request_path = OUTPUT / "fleet-browser-workspace.json", OUTPUT / "fleet-browser-request.json"
     original_workspace = preserved.download_json(page, "#export", workspace_path)
-    preserved.download_request(page, request_path, "USDC")
+    manager_request = preserved.download_request(page, request_path, "USDC")
+    jobs_request_path, jobs_workspace_path = (
+        OUTPUT / "jobs-browser-request.json",
+        OUTPUT / "jobs-browser-workspace.json",
+    )
+    jobs_request = preserved.download_request(page, jobs_request_path, "AGIALPHA")
+    assert manager_request["commission"]["route"] == "manager-usdc"
+    assert manager_request["commission"]["currency"] == "USDC6"
+    assert jobs_request["commission"]["route"] == "jobs-agialpha"
+    assert jobs_request["commission"]["currency"] == "AGIALPHA18"
+    assert manager_request["commission"]["id"] == jobs_request["commission"]["id"]
+    assert manager_request["commission"]["branch"] != jobs_request["commission"]["branch"]
+    assert {key: value for key, value in manager_request.items() if key != "commission"} == {
+        key: value for key, value in jobs_request.items() if key != "commission"
+    }
+    assert jobs_request["missionId"] == original_workspace["missionId"]
+    page.locator("#lab-route").select_option("USDC")
+    assert preserved.download_json(page, "#export", jobs_workspace_path) == original_workspace
+    assert jobs_workspace_path.read_bytes() == workspace_path.read_bytes()
     try:
         native = subprocess.run(
             [
@@ -83,6 +101,36 @@ def fleet_return(page: Page) -> dict[str, Any]:
     assert proof["workspaceSha256"] == hashlib.sha256(workspace_path.read_bytes()).hexdigest()
     assert proof["requestSha256"] == hashlib.sha256(request_path.read_bytes()).hexdigest()
     assert proof["sourceHash"] == json.loads((OUTPUT / "served/sources.json").read_text())["sourceHash"]
+    request_exports = {
+        "schema": "actual-browser-native-request-exports/v1",
+        "missionId": original_workspace["missionId"],
+        "campaignDigest": proof["campaignDigest"],
+        "sourceHash": proof["sourceHash"],
+        "pageSha256": hashlib.sha256((OUTPUT / "served/index.html").read_bytes()).hexdigest(),
+        "workspace": {
+            "file": workspace_path.name,
+            "sha256": proof["workspaceSha256"],
+            "jobsFile": jobs_workspace_path.name,
+            "jobsSha256": hashlib.sha256(jobs_workspace_path.read_bytes()).hexdigest(),
+            "revision": original_workspace["revision"],
+            "eventPrefix": [event["digest"] for event in original_workspace["events"]],
+            "head": original_workspace["events"][-1]["digest"],
+        },
+        "requests": {
+            "manager-usdc": {
+                "file": request_path.name,
+                "sha256": proof["requestSha256"],
+                "currency": manager_request["commission"]["currency"],
+            },
+            "jobs-agialpha": {
+                "file": jobs_request_path.name,
+                "sha256": hashlib.sha256(jobs_request_path.read_bytes()).hexdigest(),
+                "currency": jobs_request["commission"]["currency"],
+            },
+        },
+        "scope": "Actual UI downloads from one unchanged pre-Fleet mission; alternative unsubmitted zero-cap drafts",
+    }
+    (OUTPUT / "browser-native-requests.json").write_text(json.dumps(request_exports, indent=2) + "\n")
     page.locator("#lab-import-receipt").set_input_files(output / "wrapper.json")
     expect(page.locator("#lab-receipt-status")).to_contain_text("Receiver receipt retained", timeout=120000)
     accepted_path = OUTPUT / "fleet-return-docket.json"
@@ -124,11 +172,14 @@ def fleet_return(page: Page) -> dict[str, Any]:
             "actual-native-return",
             "separate-cost-ledger",
             "raw-request-and-receipt-retained",
+            "actual-both-currency-request-downloads",
+            "unchanged-pre-Fleet-history-for-both-routes",
             *["refused-" + name for name in FLEET_VARIANTS],
             "reload-byte-identity",
         ],
         "docketSha256": hashlib.sha256(expected_bytes).hexdigest(),
         "scope": proof["scope"],
+        "requestExports": request_exports,
     }
 
 
