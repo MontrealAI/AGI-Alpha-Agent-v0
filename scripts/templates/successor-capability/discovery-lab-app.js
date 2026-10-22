@@ -59,6 +59,7 @@ function mountDiscoveryLab({runtime, history}) {
     function recordResult(record) { return record?.result || record?.campaign || null; }
     function outcomeState(record) { return record?.state || recordResult(record)?.state || 'candidate'; }
     function recordCharter(record) { return record?.charter || recordResult(record)?.charter || null; }
+    function enterpriseActive() { return typeof inspected !== 'undefined' && Boolean(inspected?.enterprises?.active); }
     function campaigns() { return Array.isArray(savedState.campaigns) ? savedState.campaigns : []; }
     function latestAccepted() {
         return [...campaigns()].reverse().find(record => outcomeState(record) === 'accepted' && record.lineageQualified !== false) || null;
@@ -101,7 +102,7 @@ function mountDiscoveryLab({runtime, history}) {
         const idle = !busy;
         byId('form').setAttribute('aria-busy', String(busy));
         for (const input of byId('form').querySelectorAll('input,select,textarea,button')) input.disabled = !idle;
-        const runnable = idle && savedState.ready && !savedState.locked && !manifestPending
+        const runnable = idle && savedState.ready && !savedState.locked && !manifestPending && !enterpriseActive()
             && byId('public-confirmation').checked;
         byId('construct').disabled = !runnable;
         const parent = latestAccepted();
@@ -111,7 +112,9 @@ function mountDiscoveryLab({runtime, history}) {
         byId('route').disabled = !idle;
         byId('export-account').disabled = !idle || typeof history.accountReceipt !== 'function';
         for (const button of byId('events').querySelectorAll('button[data-campaign-digest]')) button.disabled = !idle;
-        byId('reservation').textContent = manifestPending
+        byId('reservation').textContent = enterpriseActive()
+            ? 'Finish or stop the active enterprise attempt before running Discovery Lab. Its remaining history space is reserved for continuation and recovery.'
+            : manifestPending
             ? 'Apply the edited charter before construction. The previous frozen result does not validate unapplied changes.'
             : savedState.locked
             ? savedState.reason || 'Resolve the existing workspace recovery or draft before running another campaign.'
@@ -330,6 +333,7 @@ function mountDiscoveryLab({runtime, history}) {
         finally { busy = false; await refresh(); controls(); }
     }
     function assertRunnable() {
+        if (enterpriseActive()) throw Error('Finish or stop the active enterprise attempt before running Discovery Lab.');
         if (!savedState.ready || savedState.locked) throw Error(savedState.reason || 'The existing workspace is not ready.');
         if (manifestPending) throw Error('Apply the edited JSON charter before construction.');
         if (!byId('public-confirmation').checked) throw Error('Confirm the supplied synthetic scope before constructing.');

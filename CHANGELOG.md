@@ -1,3 +1,12 @@
+## 1.39.0 — Autonomous Enterprises (experimental source candidate)
+
+- Add the finite enterprise workspace, capability freeze, later-task comparisons and retained thirteen-section docket to the existing Discovery Lab.
+- Reserve continuation and Stop capacity in both controller and public append paths while preserving historical parsing and recovery.
+- Retain exact original enterprise evidence admission and all historical checkout profiles; bind the new generated edition by its whole listed byte closure.
+- Preserve the reviewed main public-URL transport correction, every original paper and evidence record, separate currency routes and existing release gates.
+- Installed cross-repository compatibility, external model/tool work, real-user validation and live activation remain separately scoped and unqualified.
+- See [release notes](docs/agent/RELEASE_NOTES_1.39.0.md); exact-source hosted, main, package, public-site and downloaded-byte qualification is still required.
+
 ## 1.38.0 — Connected capability development (local integration candidate)
 
 - Bring the original seven papers and independently checked OUT-EXECUTE workspace together with all six Discovery Lab stages.

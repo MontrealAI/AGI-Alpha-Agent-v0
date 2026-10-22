@@ -2,6 +2,7 @@
 // A derived export of the existing mission history; importing it grants no authority.
 import * as contract from './discovery-lab-contract.mjs';
 import * as workspace from './workspace.mjs';
+import {extendDocket} from '../autonomous-enterprises/docket.mjs';
 import {inspectReceiverReceipt, makeReceiverContext, rawReceiptDigest, receiptRequestBindings} from './discovery-lab-receipts.mjs';
 
 export const DOCKET_SCHEMA = 'successor-discovery-evidence-docket/v1';
@@ -246,6 +247,7 @@ async function filesFor(value, attachments, options = {}) {
             futureEvaluationCount: data.futureEvaluations.length, realTaskRecordCount: data.realTaskRecords.length,
             operationalAcceptance: 'not-established', authority: 'none', unknown})
     };
+    extendDocket(files, inspection);
     const checksums = {};
     for (const path of DOCKET_PATHS) checksums[path] = await rawDigest(files[path]);
     return {schema: DOCKET_SCHEMA, format: 'bounded-canonical-file-map', files, checksums};
