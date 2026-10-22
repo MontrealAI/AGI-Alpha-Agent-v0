@@ -15,7 +15,11 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+import pytest
+
 from scripts.research_papers import verify_files
+
+pytestmark = pytest.mark.smoke
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL = b"% Immutable original\n\\section{Original}\n"
@@ -85,7 +89,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                 if bundled.is_file():
                     bash = str(bundled)
         if bash is None:
-            self.skipTest("Bash/Git Bash is required to exercise the documented shell recipe")
+            self.fail("Bash/Git Bash is required to exercise the documented smoke regression")
         document = (ROOT / "docs/agent/PAPER_UPLOADS.md").read_text(encoding="utf-8")
         recipe = next(
             block for block in re.findall(r"```sh\n(.*?)```", document, re.S) if "compgen -A variable" in block
