@@ -195,7 +195,9 @@ def test_superseded_main_defers_under_lock_before_other_reads(
 ) -> None:
     root, software, _ = source
     module = types.ModuleType("scripts.paper_changes")
-    module.prove_paper_descendants = lambda *_: pytest.fail("must not prove after current-main rejection")  # type: ignore[attr-defined]
+    module.prove_paper_descendants = (  # type: ignore[attr-defined]
+        lambda *_: pytest.fail("must not prove after current-main rejection")
+    )
     monkeypatch.setitem(sys.modules, "scripts.paper_changes", module)
     monkeypatch.setattr(papers, "current_main", lambda: software)
     monkeypatch.setattr(papers, "public_release", lambda *_: pytest.fail("must not inspect release after stale main"))
@@ -367,7 +369,9 @@ def test_locked_guard_revalidates_every_publication_boundary(
     plan["software"].update(release_manifest_sha256="b" * 64, site_packs_sha256="b" * 64)
     plan["proof"] = {"mode": "paper", "software_commit": software, "paper_commit": paper}
     module = types.ModuleType("scripts.paper_changes")
-    module.prove_paper_descendants = lambda *_: ({} if change == "proof" else plan["proof"])  # type: ignore[attr-defined]
+    module.prove_paper_descendants = (  # type: ignore[attr-defined]
+        lambda *_: ({} if change == "proof" else plan["proof"])
+    )
     monkeypatch.setitem(sys.modules, "scripts.paper_changes", module)
     monkeypatch.setattr(papers, "current_main", lambda: paper)
     monkeypatch.setattr(
@@ -430,3 +434,36 @@ def test_seal_rejects_tampering_after_validation(
     write(site, target, b"changed after validation")
     with pytest.raises(ValueError, match="changed after"):
         papers.seal(site, plan, report)
+
+
+def test_seal_rejects_stale_catalog_plan_before_metadata_write(
+    source: tuple[Path, str, str], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    root, software, _ = source
+    site = tmp_path / "site"
+    before, old, new = staged(source, site)
+    delta = papers.compose_site(root, site, software_commit=software, baseline=before, old_assets=old, new_assets=new)
+    plan = {
+        **plan_for(source),
+        "sealed": False,
+        "baseline_inventory": before,
+        "delta": delta,
+        "original_release": papers.read_json(site / "release.json"),
+        "proof": {"mode": "paper"},
+        "run_url": "https://github.com/example/actions/runs/1",
+    }
+    plan["paper"]["files"] = papers.site_assets(new)
+    plan["paper"]["catalog_sha256"] = papers.sha256(papers.source_bytes(root, software, "docs/research-papers.json"))
+    original_release = (site / "release.json").read_bytes()
+    assert digest(site / "research-papers.json") != plan["paper"]["catalog_sha256"]
+    module = types.ModuleType("scripts.homepage_evidence")
+    module.verify_report = lambda *_: None  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "scripts.homepage_evidence", module)
+    report = tmp_path / "homepage.json"
+    report.write_text("{}")
+
+    with pytest.raises(ValueError, match="catalog.*source-bound"):
+        papers.seal(site, plan, report)
+
+    assert not (site / "paper-publication.json").exists()
+    assert (site / "release.json").read_bytes() == original_release
