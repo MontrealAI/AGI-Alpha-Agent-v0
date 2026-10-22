@@ -1,0 +1,63 @@
+{
+  "schema": "discovery-lab/receipt-v3-closure/v1",
+  "finding": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4853#discussion_r4343277724",
+  "source": {
+    "moduleSha256": "dcff0519c680fac180d24ade5a02eb415a9ee950220c09d693bb2145d47de521",
+    "receiptTestsSha256": "566ac138fb0b8f7251024096841825c8ab4ee836b3765c72be275c851a663352",
+    "docketTestsSha256": "08b5f398270754bce2e6babfcb2c38bf7b29e808854cba5ab3c5ad4c04796a63",
+    "docSha256": "db843ab655a9d6de6d4eb3645158fbac8708f925d1a663ac5da37bf3957eed58"
+  },
+  "identity": "discovery-lab-receipt-identity/v3",
+  "identityFields": [
+    "canonical parsed request",
+    "validated receipt schema",
+    "validated adapter/contract code source",
+    "fixed receiver admission checking",
+    "exact validated native logical prefix: acquisitions/search/checking/storage/installations/workers"
+  ],
+  "excludedOnlyFromIdentity": [
+    "raw JSON framing and request hash",
+    "units labels",
+    "free diagnostics/reasons",
+    "accepted/state/envelope flags",
+    "elapsed counters",
+    "permissive memory",
+    "receiver accounting/reservations/native allowances"
+  ],
+  "rawStatesHashesAndCompleteReportedLedgerUnchanged": true,
+  "tests": [
+    {
+      "node": "22.17.1",
+      "passed": 38,
+      "log": "receipt-explicit-projection-node22.log"
+    },
+    {
+      "node": "24.21.0",
+      "passed": 38,
+      "log": "receipt-explicit-projection-node24.log"
+    }
+  ],
+  "failBefore": "receipt-explicit-projection-fail-before.log",
+  "independent": {
+    "file": "receipt-v3-independent-audit.json",
+    "sha256": "d57cc14e4dbe5ff1ced1d5ae2a24fea3e9baec192260f5b3aacb7c6fa112b59e",
+    "sixActualAdversarialVariantsSameIdentity": true,
+    "threeActualNativeDistinctPrefixStageExecutionsChecking": 254030
+  },
+  "freshBrowser": {
+    "sourceHash": "bb7690a5f2d72498726382f22b7c3fae5a6ac5f00ccd737f6301453ceb5f2172",
+    "pageSha256": "c613f496de88d8b83b71fb8541d9242f4ae731d006983f3f6c5ed6bbe59fb7db",
+    "missionId": "capability-ec5d7c2b-dd8b-404a-b029-ef4cf0a8bae4",
+    "missionCasesPassed": 14,
+    "actualNativeRoutesPassed": 8,
+    "adversarialUiVariantsRefused": 8,
+    "docketBeforeEachAfterReopenSha256": "3c810e62dae6dea319473d8b4aee0c8778cd50fbebc25836eb2a8655552b9a5a",
+    "evidence": "/dev/shm/discovery-native-receipt-current7/freefield-browser"
+  },
+  "limits": "Unattested raw receipts can assert another valid logical prefix; only authenticated independent invocation traces can establish actual invocation counts. Same-request/same-prefix multiplicity and missing costs remain unknown. No installed-release/hosted/public deployment or settlement acceptance follows from these local/browser tests.",
+  "supersedesWithoutDeleting": {
+    "historicalV2Closure": "receipt-p2-closure.json",
+    "historicalV2Module": "b85730db99a3b12c5aaf5486e70f10ba384da07acb1d972893d9daa1626d08d0",
+    "unresolvedAtHistoricalSource": "free fields could mint another identity"
+  }
+}

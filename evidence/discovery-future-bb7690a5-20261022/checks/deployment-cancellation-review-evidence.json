@@ -1,0 +1,51 @@
+{
+  "schema": "successor-deployment-cancellation-correction/v1",
+  "finding": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4853#discussion_r4343168930",
+  "reviewedHistoricalSource": "d1d17d724a9eefc23e655f097b19de995523053b",
+  "baselineModuleSha256": "07dec0160c4b15c19450eade70ff2464a30ad8020ed73780ea53bff841c5ac35",
+  "proposedFiles": {
+    "alpha/examples/successor-capability/discovery-lab-deployments.mjs": "85e2ccb9cbf252986a1aa84d204d5dba438e90ffd66efbffc2fdb84fe4cab732",
+    "alpha/examples/successor-capability/discovery-lab-deployments.test.mjs": "55f84dc47f470be350e96a8fd08d46bc6297efaf63d8566df3acfa6ab667434d",
+    "alpha/docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.md": "7cdd5c77ad802aa9b15711c2a79873ed318067130032f643447aa8e3672ef4df"
+  },
+  "retainedLogs": {
+    "deployment-cancellation-before.tap": "b8ccf0b8036c44d46068b8f867dc35ee6cd90b4d94264e4d25d5f882bc143f57",
+    "deployment-cancellation-after-node22.tap": "4b3767ea139c0fbd5ad10245da190a104acc78f25377b69e36b134689498477b",
+    "deployment-cancellation-after-node24.tap": "a58854c69e96eb736cb40c155248c45dbe6b0fe1fef9c81aa0a29e2dfc8b076b",
+    "deployment-cleanup-before.tap": "5a97e6e6d1280e3221780b2f36e421a58edf54f6239f73c899962366a097d210",
+    "deployment-cleanup-after-node22.tap": "ff2a4c2e1845718fb3c0cf95becfe3a76c4b4e7d35aa8b00fbaa64f1cf518501",
+    "deployment-cleanup-after-node24.tap": "2b6c06f82ce6d6fa70265664e9a8e081a152c7d0262fc4a6908862c26df98c33",
+    "deployment-cancellation-final-node24.tap": "6414a77d72e8b137579f66c98259f9e1c286eea67516159042013203f33588cc"
+  },
+  "baselineRegression": {
+    "passed": 7,
+    "failed": 4,
+    "scope": "Original7 plus first4 new cancellation regressions before production repair; two further cases added after repair"
+  },
+  "after": {
+    "node22.17.1": {
+      "passed": 14,
+      "failed": 0,
+      "source": "independentreview"
+    },
+    "node24.21.0": {
+      "passed": 14,
+      "failed": 0
+    }
+  },
+  "scope": "Local synthetic adapter and actual timer cancellation tests. No live RPC, signing, transaction, release or deployed acceptance. Independent same-session source review clear.",
+  "cleanupRegression": {
+    "reviewerSourceSha256": "7a45874aa392cbeff2f9fe79876f71aa51d7d654ff4e29b980f0de8b07c561b5",
+    "beforePassed": 0,
+    "beforeFailed": 1,
+    "afterFocusedNode22Passed": 1,
+    "afterFocusedNode24Passed": 1,
+    "scope": "Retains previouslyunpublished firstcancellationfix after independent reviewer foundcleanupcostgap; finalizationnow followsabort+unlink+elapsedreconciliation"
+  },
+  "independentReview": {
+    "reviewer": "/root/jobs/scope_pin_review",
+    "status": "CLEAR",
+    "sameSessionAI": true,
+    "additionalProbe": "Actual40msabortcleanup withtotal20=>INCONCLUSIVE/report43ms/actual44ms,5partialcontracts/block/11calls retained"
+  }
+}
