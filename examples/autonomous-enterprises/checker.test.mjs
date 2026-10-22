@@ -161,3 +161,41 @@ test('declared foundry size and invocation inventory cannot disguise different e
     await assert.rejects(evaluateEnvelope(small.transform, [...small.all.slice(0, -1), redefined],
         [basis(4, 0)]), /redefines/);
 });
+
+const disclosureFixture = buildFoundry({qualifyArtifact, maxN: 4});
+for (const [name, change] of [
+    ['metric units', bundle => { bundle.metric = 'complete-financial-cost/v1'; }],
+    ['excluded unmeasured costs', bundle => { bundle.excludedCosts = []; }],
+    ['isolated comparison scope', bundle => { bundle.isolatedComparisonScope = 'Every isolated architecture was freshly measured.'; }],
+    ['scientific claims', bundle => { bundle.claims = ['Externally validated superiority and revenue.']; }],
+    ['extra top-level authority', bundle => { bundle.executionApproved = true; }],
+    ['identity charge scope', bundle => { bundle.identity.chargeScope = 'Included and institutionally approved.'; }],
+    ['extra identity metadata', bundle => { bundle.identity.approved = true; }],
+    ['joint comparison scope', bundle => { bundle.controls.unrestrictedJoint.scope = 'Benchmark victory over unrestricted compilers.'; }],
+    ['extra joint comparison metadata', bundle => { bundle.controls.unrestrictedJoint.pilotComplete = true; }],
+    ['extra inverse-only metadata', bundle => { bundle.controls.inverseOnly.pilotComplete = true; }],
+    ['extra control branch', bundle => { bundle.controls.operational = {validated: true}; }],
+    ['extra plan container metadata', bundle => { bundle.plans.admittedBy = 'independent institution'; }],
+    ['extra transform record metadata', bundle => { bundle.transforms[0].approved = true; }],
+    ['extra convolution record metadata', bundle => { bundle.convolution.externalAcceptance = true; }],
+    ['inverse admission state', bundle => { bundle.inverseDirect.state = 'OPERATIONALLY_VALIDATED'; }],
+    ['extra inverse record metadata', bundle => { bundle.inverseInherited.realizedProfit = 1; }],
+    ['extra stage envelope metadata', bundle => { bundle.transforms[0].envelope.approved = true; }],
+    ['extra identity envelope metadata', bundle => { bundle.identity.envelope.approved = true; }],
+    ['extra selected verification metadata', bundle => { bundle.convolution.verification.approved = true; }],
+    ['extra identity verification metadata', bundle => { bundle.identity.verification.approved = true; }],
+    ['extra nested certificate metadata', bundle => { bundle.transforms[0].verification.cases[0].approved = true; }]
+]) {
+    test(`foundry admission rejects changed ${name} while preserving valid receipts`, async () => {
+        const bundle = clone(await disclosureFixture); change(bundle);
+        await assert.rejects(verifyBundle(bundle));
+    });
+}
+
+test('closed-disclosure admission preserves the complete original scientific bytes', async () => {
+    const bundle = await disclosureFixture, before = JSON.stringify(bundle);
+    const result = await verifyBundle(bundle);
+    assert.equal(result.verified, true); assert.equal(JSON.stringify(bundle), before);
+    assert.deepEqual(result.counts, bundle.counts);
+    assert.deepEqual(result.observedWorkLedger, bundle.observedWorkLedger);
+});

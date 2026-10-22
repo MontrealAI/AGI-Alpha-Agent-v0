@@ -95,8 +95,11 @@ export async function inspectEvent(state, event, context) {
         need(same(child.envelope.artifact.ast.kernel, kernel), 'Successor must implement the declared changed kernel.');
         const convolution = row.bundle.convolution.envelope.digest;
         need(child.envelope.digest === await digest(child.envelope.artifact), 'Successor executable bytes changed.');
-        const checked = await qualifyArtifact(child.envelope.artifact, row.bundle.envelopes,
-            {reference: 'inherited', convolutionDigest: convolution});
+        let checked;
+        try {
+            checked = await qualifyArtifact(child.envelope.artifact, row.bundle.envelopes,
+                {reference: 'inherited', convolutionDigest: convolution});
+        } catch (error) { noteFailedReplay(); throw error; }
         chargeReplay('successorReplayWork', checked.totalWork + additionalCheckingWork(checked));
         need(checked.totalWork + additionalCheckingWork(checked) <= row.charter.admissionLimit,
             'Current successor admission allowance exceeded.');

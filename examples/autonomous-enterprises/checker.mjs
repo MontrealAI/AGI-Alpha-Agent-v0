@@ -3,6 +3,22 @@
 import {canonical as dataCanonical} from '../successor-capability/discovery-lab-contract.mjs';
 
 const SCHEMA = 'autonomous-enterprise-artifact/v1';
+const BUNDLE_KEYS = Object.freeze(['schema', 'reproduction', 'maxN', 'metric', 'excludedCosts',
+    'totalCostComplete', 'isolatedComparisonScope', 'identity', 'transforms', 'convolution',
+    'inverseDirect', 'inverseInherited', 'envelopes', 'counts', 'observedWorkLedger', 'recipes',
+    'plans', 'controls', 'claims']);
+// Independently pinned disclosures: executable arithmetic cannot authenticate broader claims.
+const DISCLOSURES = Object.freeze({
+    metric: 'paper-declared-arithmetic-work/v1',
+    excludedCosts: ['indexing', 'allocation', 'serialization', 'hashing', 'control overhead',
+        'rational bit growth', 'authoring', 'engineering', 'institutional review', 'money', 'energy'],
+    isolatedComparisonScope: 'Specified isolated architecture recomposed from executed per-build receipts; repeated full builds are not separately wall-clock metered.',
+    claims: ['Classical transform/convolution/inverse templates and finite grammar are supplied.',
+        'Basis completeness follows only within the structurally linear/bilinear grammar.',
+        'Arithmetic counts exclude bit complexity, wall-clock time, money and energy.',
+        'The historical transform and convolution charges remain charged to the complete lineage.']
+});
+const JOINT_SCOPE = 'Same supplied primitives and build/checking recipes; not a compiler benchmark.';
 const HASH = /^[a-f0-9]{64}$/;
 const utf8 = new TextEncoder();
 const need = (condition, message) => { if (!condition) throw Error(message); };
@@ -331,14 +347,9 @@ export function specificationApplication(kindInput, inputsInput, optionsInput = 
         scope: 'Direct exact mathematical specification; separate from generated artifact execution.'};
 }
 
-function verificationProjection(receipt) {
-    const fields = ['accepted', 'semantics', 'basisCases', 'arithmetic', 'comparisons', 'matrixComparisons',
-        'totalWork', 'operatingWork', 'cases', 'scopeChecks', 'reference', 'dependencyChecks', 'accountingScope'];
-    return Object.fromEntries(fields.map(key => [key, receipt[key]]));
-}
 const same = (left, right) => canonical(left) === canonical(right);
 function retainedReceipt(record, receipt) {
-    need(receipt.accepted && same(verificationProjection(record.verification), verificationProjection(receipt)),
+    need(receipt.accepted && same(record.verification, receipt),
         'Saved complete-domain certificate or selected work receipt differs from current replay.');
     need(record.work === receipt.totalWork && record.totalWork === record.constructionWork + receipt.totalWork,
         'Saved construction/qualification sum is inconsistent.');
@@ -454,11 +465,27 @@ function verifyPlanWitness(plan, recipes, initial, target, bits) {
 /** Replay every candidate, selected certificate, cost ledger and finite same-primitives optimum. */
 export async function verifyBundle(bundleInput) {
     const bundle = snapshot(bundleInput);
-    need(bundle.schema === 'autonomous-enterprise-foundry/v1' && bundle.reproduction === 'INDEPENDENT_REIMPLEMENTATION'
+    need(exact(bundle, BUNDLE_KEYS) && bundle.schema === 'autonomous-enterprise-foundry/v1'
+        && bundle.reproduction === 'INDEPENDENT_REIMPLEMENTATION'
         && width(bundle.maxN) && bundle.maxN >= 2 && Array.isArray(bundle.envelopes)
         && bundle.envelopes.length <= 8 && bundle.totalCostComplete === false,
     'Unsupported bounded foundry bundle.');
+    need(same({metric: bundle.metric, excludedCosts: bundle.excludedCosts,
+        isolatedComparisonScope: bundle.isolatedComparisonScope, claims: bundle.claims}, DISCLOSURES),
+    'Foundry disclosure values differ from the qualified arithmetic scope.');
     need(Array.isArray(bundle.transforms) && bundle.transforms.length === Math.log2(bundle.maxN), 'Incomplete transform chain.');
+    need(exact(bundle.identity, ['envelope', 'verification', 'chargeScope'])
+        && bundle.identity.chargeScope === 'additional research admission', 'Identity admission scope or frame differs.');
+    const buildKeys = ['envelope', 'verification', 'work', 'preparation', 'constructionWork', 'totalWork'];
+    need(bundle.transforms.concat([bundle.convolution]).every(record => exact(record, [...buildKeys, 'attempts']))
+        && ['inverseDirect', 'inverseInherited'].every(key => exact(bundle[key], [...buildKeys, 'state'])
+            && bundle[key].state === 'ACCEPTED'), 'Foundry construction record frame or admission state differs.');
+    need([bundle.identity, ...bundle.transforms, bundle.convolution, bundle.inverseDirect, bundle.inverseInherited]
+        .every(record => exact(record.envelope, ['digest', 'artifact'])), 'Foundry stage envelope frame differs.');
+    need(exact(bundle.plans, ['joint', 'inverseOnly']) && exact(bundle.controls, ['inverseOnly', 'unrestrictedJoint'])
+        && exact(bundle.controls.inverseOnly, ['selected', 'alternatives', 'result'])
+        && exact(bundle.controls.unrestrictedJoint, ['result', 'cost', 'scope'])
+        && bundle.controls.unrestrictedJoint.scope === JOINT_SCOPE, 'Foundry comparison scope or container frame differs.');
     need(bundle.transforms.every((record, i) => record.envelope.artifact.kind === 'walsh'
         && record.envelope.artifact.n === 2 ** (i + 1)) && bundle.convolution.envelope.artifact.kind === 'xor-convolution'
         && bundle.convolution.envelope.artifact.n === bundle.maxN
@@ -486,7 +513,7 @@ export async function verifyBundle(bundleInput) {
         need(receipt.accepted, 'Bundle selected artifact is not qualified.');
         if (i === 0) {
             need(envelope.artifact.kind === 'identity'
-                && same(verificationProjection(record.verification), verificationProjection(receipt)), 'Identity certificate differs.');
+                && same(record.verification, receipt), 'Identity certificate differs.');
             observed.identityResearchAdmission = receipt.totalWork + receipt.scopeChecks.arithmetic + receipt.scopeChecks.comparisons
                 + receipt.dependencyChecks.arithmetic + receipt.dependencyChecks.comparisons;
         } else {

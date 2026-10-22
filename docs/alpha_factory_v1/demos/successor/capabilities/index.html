@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-SiBTP7D/9HdDKXPBO9tbVlhIzZZ2okbeSaChjoPXvPg='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-wiaVCQPeSryGp1kZzl9EuZY+tk7eD9yX3Oz+lqIy+mE='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -522,7 +522,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../../../DISCLAIMER_SNIPPET" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>844d98a7a7a529943f5d52e232dbf8bc3f040132868bc30fc8928acaf6946b9b</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../../../DISCLAIMER_SNIPPET" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>bae61e59ad39ea53af3c293c0833a7a9e64e3ef0bf50f22e27b60d66c4c1cf6f</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -4500,6 +4500,22 @@ const capability_module_17=(()=>{
 const {canonical: dataCanonical} = capability_module_7;
 
 const SCHEMA = 'autonomous-enterprise-artifact/v1';
+const BUNDLE_KEYS = Object.freeze(['schema', 'reproduction', 'maxN', 'metric', 'excludedCosts',
+    'totalCostComplete', 'isolatedComparisonScope', 'identity', 'transforms', 'convolution',
+    'inverseDirect', 'inverseInherited', 'envelopes', 'counts', 'observedWorkLedger', 'recipes',
+    'plans', 'controls', 'claims']);
+// Independently pinned disclosures: executable arithmetic cannot authenticate broader claims.
+const DISCLOSURES = Object.freeze({
+    metric: 'paper-declared-arithmetic-work/v1',
+    excludedCosts: ['indexing', 'allocation', 'serialization', 'hashing', 'control overhead',
+        'rational bit growth', 'authoring', 'engineering', 'institutional review', 'money', 'energy'],
+    isolatedComparisonScope: 'Specified isolated architecture recomposed from executed per-build receipts; repeated full builds are not separately wall-clock metered.',
+    claims: ['Classical transform/convolution/inverse templates and finite grammar are supplied.',
+        'Basis completeness follows only within the structurally linear/bilinear grammar.',
+        'Arithmetic counts exclude bit complexity, wall-clock time, money and energy.',
+        'The historical transform and convolution charges remain charged to the complete lineage.']
+});
+const JOINT_SCOPE = 'Same supplied primitives and build/checking recipes; not a compiler benchmark.';
 const HASH = /^[a-f0-9]{64}$/;
 const utf8 = new TextEncoder();
 const need = (condition, message) => { if (!condition) throw Error(message); };
@@ -4828,14 +4844,9 @@ function specificationApplication(kindInput, inputsInput, optionsInput = {}) {
         scope: 'Direct exact mathematical specification; separate from generated artifact execution.'};
 }
 
-function verificationProjection(receipt) {
-    const fields = ['accepted', 'semantics', 'basisCases', 'arithmetic', 'comparisons', 'matrixComparisons',
-        'totalWork', 'operatingWork', 'cases', 'scopeChecks', 'reference', 'dependencyChecks', 'accountingScope'];
-    return Object.fromEntries(fields.map(key => [key, receipt[key]]));
-}
 const same = (left, right) => canonical(left) === canonical(right);
 function retainedReceipt(record, receipt) {
-    need(receipt.accepted && same(verificationProjection(record.verification), verificationProjection(receipt)),
+    need(receipt.accepted && same(record.verification, receipt),
         'Saved complete-domain certificate or selected work receipt differs from current replay.');
     need(record.work === receipt.totalWork && record.totalWork === record.constructionWork + receipt.totalWork,
         'Saved construction/qualification sum is inconsistent.');
@@ -4951,11 +4962,27 @@ function verifyPlanWitness(plan, recipes, initial, target, bits) {
 /** Replay every candidate, selected certificate, cost ledger and finite same-primitives optimum. */
 async function verifyBundle(bundleInput) {
     const bundle = snapshot(bundleInput);
-    need(bundle.schema === 'autonomous-enterprise-foundry/v1' && bundle.reproduction === 'INDEPENDENT_REIMPLEMENTATION'
+    need(exact(bundle, BUNDLE_KEYS) && bundle.schema === 'autonomous-enterprise-foundry/v1'
+        && bundle.reproduction === 'INDEPENDENT_REIMPLEMENTATION'
         && width(bundle.maxN) && bundle.maxN >= 2 && Array.isArray(bundle.envelopes)
         && bundle.envelopes.length <= 8 && bundle.totalCostComplete === false,
     'Unsupported bounded foundry bundle.');
+    need(same({metric: bundle.metric, excludedCosts: bundle.excludedCosts,
+        isolatedComparisonScope: bundle.isolatedComparisonScope, claims: bundle.claims}, DISCLOSURES),
+    'Foundry disclosure values differ from the qualified arithmetic scope.');
     need(Array.isArray(bundle.transforms) && bundle.transforms.length === Math.log2(bundle.maxN), 'Incomplete transform chain.');
+    need(exact(bundle.identity, ['envelope', 'verification', 'chargeScope'])
+        && bundle.identity.chargeScope === 'additional research admission', 'Identity admission scope or frame differs.');
+    const buildKeys = ['envelope', 'verification', 'work', 'preparation', 'constructionWork', 'totalWork'];
+    need(bundle.transforms.concat([bundle.convolution]).every(record => exact(record, [...buildKeys, 'attempts']))
+        && ['inverseDirect', 'inverseInherited'].every(key => exact(bundle[key], [...buildKeys, 'state'])
+            && bundle[key].state === 'ACCEPTED'), 'Foundry construction record frame or admission state differs.');
+    need([bundle.identity, ...bundle.transforms, bundle.convolution, bundle.inverseDirect, bundle.inverseInherited]
+        .every(record => exact(record.envelope, ['digest', 'artifact'])), 'Foundry stage envelope frame differs.');
+    need(exact(bundle.plans, ['joint', 'inverseOnly']) && exact(bundle.controls, ['inverseOnly', 'unrestrictedJoint'])
+        && exact(bundle.controls.inverseOnly, ['selected', 'alternatives', 'result'])
+        && exact(bundle.controls.unrestrictedJoint, ['result', 'cost', 'scope'])
+        && bundle.controls.unrestrictedJoint.scope === JOINT_SCOPE, 'Foundry comparison scope or container frame differs.');
     need(bundle.transforms.every((record, i) => record.envelope.artifact.kind === 'walsh'
         && record.envelope.artifact.n === 2 ** (i + 1)) && bundle.convolution.envelope.artifact.kind === 'xor-convolution'
         && bundle.convolution.envelope.artifact.n === bundle.maxN
@@ -4983,7 +5010,7 @@ async function verifyBundle(bundleInput) {
         need(receipt.accepted, 'Bundle selected artifact is not qualified.');
         if (i === 0) {
             need(envelope.artifact.kind === 'identity'
-                && same(verificationProjection(record.verification), verificationProjection(receipt)), 'Identity certificate differs.');
+                && same(record.verification, receipt), 'Identity certificate differs.');
             observed.identityResearchAdmission = receipt.totalWork + receipt.scopeChecks.arithmetic + receipt.scopeChecks.comparisons
                 + receipt.dependencyChecks.arithmetic + receipt.dependencyChecks.comparisons;
         } else {
@@ -5617,8 +5644,11 @@ async function inspectEvent(state, event, context) {
         need(same(child.envelope.artifact.ast.kernel, kernel), 'Successor must implement the declared changed kernel.');
         const convolution = row.bundle.convolution.envelope.digest;
         need(child.envelope.digest === await digest(child.envelope.artifact), 'Successor executable bytes changed.');
-        const checked = await qualifyArtifact(child.envelope.artifact, row.bundle.envelopes,
-            {reference: 'inherited', convolutionDigest: convolution});
+        let checked;
+        try {
+            checked = await qualifyArtifact(child.envelope.artifact, row.bundle.envelopes,
+                {reference: 'inherited', convolutionDigest: convolution});
+        } catch (error) { noteFailedReplay(); throw error; }
         chargeReplay('successorReplayWork', checked.totalWork + additionalCheckingWork(checked));
         need(checked.totalWork + additionalCheckingWork(checked) <= row.charter.admissionLimit,
             'Current successor admission allowance exceeded.');
@@ -8989,764 +9019,7 @@ async function runEvaluation(options = {}) {
 
 return {EVALUATION_VERSION,LIMITATIONS,evaluateFrozenReuse,compareCapability,sensingCorrectionBaseline,evaluateConstructorGeneralization,proveRecurringObstruction,buildSuccessor,runEvaluation};
 })();
-const capability_module_34=(()=>{
-// SPDX-License-Identifier: Apache-2.0
-// Extend the canonical thirteen sections; the existing run.json remains the complete replay authority.
-const {canonical} = capability_module_7;
-const {summary} = capability_module_15;
-function extendDocket(files, inspection) {
-    if (!inspection.enterprises) return files;
-    const state = inspection.enterprises, overview = summary(state);
-    const records = state.attempts;
-    const add = (path, value) => {
-        const before = JSON.parse(files[path]); before.autonomousEnterprises = value;
-        files[path] = canonical(before) + '\n';
-    };
-    files['00_manifest.md'] += '\nAutonomous Enterprises is an additive paper companion within the same mission and thirteen-section docket.\n';
-    files['01_claims_matrix.md'] += '\n| Autonomous Enterprises | Independent bounded reimplementation; companion package not obtained |\n'
-        + '| Selected construction recipes | Actual receipts; restricted classical arithmetic templates |\n'
-        + '| Funding and settlement | Synthetic only; no collected revenue or transaction |\n';
-    files['02_environment.md'] += '\nEnterprise artifacts use restricted JSON ASTs and exact bounded rational arithmetic. Hashing, bit complexity and engineering are not included in the declared arithmetic metric.\n';
-    add('03_benchmark_tasks/spec.json', records.map(row => ({attempt: row.attempt, charter: row.charter,
-        freeze: row.freeze || null, taskBank: row.bank || null})));
-    add('04_baselines/comparison.json', records.map(row => ({attempt: row.attempt,
-        constructionControls: row.bundle?.controls || null, actualRecipePlans: row.bundle?.plans || null,
-        futureComparisons: row.future || null})));
-    add('06_proof_bundles/capability.json', records.map(row => ({attempt: row.attempt,
-        evidenceLocation: '05_agialpha_runs/run.json → workspace.events: complete artifacts, rejected attempts and certificates',
-        artifactDigests: row.freeze?.artifactDigests || row.bundle?.envelopes.map(item => item.digest) || [],
-        independentReplay: row.bundleProof ? {verified: row.bundleProof.verified,
-            countedWorkPerReplay: row.bundleProof.currentReplayWork} : null,
-        successor: row.successor || null})));
-    add('07_replay_logs/replay.json', records.map(row => ({attempt: row.attempt, eventDigests: row.events,
-        currentBundleReplayWork: row.bundleProof?.currentReplayWork || null,
-        currentFutureReplayWork: row.futureProof?.currentReplayWork || null,
-        replayIsAdditionalWork: true})));
-    add('08_cost_ledgers/costs.json', records.map(row => ({attempt: row.attempt,
-        selectedComparison: row.bundle?.counts || null, completeObservedBuild: row.bundle?.observedWorkLedger || null,
-        constructionReservation: row.reservation, unknownConstructionSpent: row.unknownSpent,
-        invocationReservation: row.invocation || null, futureObservedWork: row.futureSpent ?? null,
-        successor: row.successor ? {observedWork: row.successor.observedSuccessorWork,
-            lineageWork: row.successor.lineageWork} : null,
-        admissionAllowancePerCompleteReplay: row.charter.admissionLimit,
-        currentBundleReplayWork: row.bundleProof?.currentReplayWork || null,
-        currentFutureReplayWork: row.futureProof?.currentReplayWork || null,
-        totalComplete: false, excluded: row.bundle?.excludedCosts || ['Unstarted or interrupted work is unknown.']})));
-    add('09_safety_ledgers/safety.json', overview);
-    add('10_validator_reports/review.json', {checker: 'Separately authored restricted interpreter and complete basis certificates',
-        organizationalIndependence: false, originalCompanion: 'NOT_OBTAINED', operationalPilot: 'NOT_RUN'});
-    add('12_summary_tables/outcome.json', overview);
-    return files;
-}
-
-return {extendDocket};
-})();
-const capability_module_33=(()=>{
-// SPDX-License-Identifier: Apache-2.0
-// A derived export of the existing mission history; importing it grants no authority.
-const contract = capability_module_7;
-const workspace = capability_module_0;
-const {extendDocket} = capability_module_34;
-const {inspectReceiverReceipt, makeReceiverContext, rawReceiptDigest, receiptRequestBindings} = capability_module_13;
-
-const DOCKET_SCHEMA = 'successor-discovery-evidence-docket/v1';
-const ATTACHMENT_SCHEMA = 'successor-discovery-docket-attachments/v1';
-const DOCKET_PATHS = Object.freeze([
-    '00_manifest.md', '01_claims_matrix.md', '02_environment.md',
-    '03_benchmark_tasks/spec.json', '04_baselines/comparison.json', '05_agialpha_runs/run.json',
-    '06_proof_bundles/capability.json', '07_replay_logs/replay.json', '08_cost_ledgers/costs.json',
-    '09_safety_ledgers/safety.json', '10_validator_reports/review.json',
-    '11_alpha_wu_calibration/status.json', '12_summary_tables/outcome.json'
-]);
-const same = (left, right) => contract.canonical(left) === contract.canonical(right);
-const copy = value => JSON.parse(contract.canonical(value));
-const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
-    && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
-const need = (condition, message) => { if (!condition) throw Error(message); };
-const hash = value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
-const git = value => typeof value === 'string' && /^[0-9a-f]{40}$/.test(value);
-const zero = () => Object.fromEntries(['acquisitions', 'search', 'checking', 'memoryWords',
-    'storageBytes', 'workerSlots', 'installations'].map(key => [key, 0]));
-const receiptZero = () => Object.fromEntries(contract.RESOURCE_KEYS.map(key => [key, 0]));
-function capturedOptions(options) {
-    const owned = copy(options);
-    need(Object.keys(owned).every(key => ['expectedSources', 'expectedReceiverSources', 'expectedWorkspaceHead',
-        'expectedMissionId'].includes(key)), 'Unsupported docket verifier option.');
-    if (Object.hasOwn(owned, 'expectedWorkspaceHead')) need(hash(owned.expectedWorkspaceHead), 'Expected docket head is invalid.');
-    return owned;
-}
-const rawDigest = rawReceiptDigest;
-function sum(target, vector, peaks = []) {
-    for (const key of Object.keys(target)) {
-        const next = peaks.includes(key) ? Math.max(target[key], vector[key]) : target[key] + vector[key];
-        need(Number.isSafeInteger(next) && next >= 0, 'Docket cost total exceeds the integer bound.');
-        target[key] = next;
-    }
-}
-function validateSource(input) {
-    need(exact(input, ['repository', 'commit', 'tree', 'files'])
-        && /^MontrealAI\/[A-Za-z0-9_.-]+$/.test(input.repository) && git(input.commit) && git(input.tree)
-        && Array.isArray(input.files) && input.files.length <= 100,
-    'Docket repository source identity differs.');
-    const names = new Set();
-    for (const file of input.files) {
-        need(exact(file, ['path', 'sha256']) && typeof file.path === 'string' && file.path.length <= 500
-            && !file.path.startsWith('/') && !file.path.includes('\\')
-            && file.path.split('/').every(part => part && !['.', '..'].includes(part))
-            && hash(file.sha256) && !names.has(file.path), 'Docket generated/source file identity differs.');
-        names.add(file.path);
-    }
-    return input;
-}
-
-async function emptyDocketAttachments(value) {
-    value = copy(value);
-    const inspected = await workspace.inspectWorkspace(value);
-    return {schema: ATTACHMENT_SCHEMA, missionId: value.missionId, workspaceHead: inspected.head,
-        sources: [], receipts: []};
-}
-
-async function derive(value, attachments, options) {
-    // Own both graphs before the first digest/replay suspension.
-    value = copy(value); attachments = copy(attachments);
-    const expectedSources = options.expectedSources === undefined ? undefined : copy(options.expectedSources);
-    const receiverSources = options.expectedReceiverSources === undefined ? undefined : copy(options.expectedReceiverSources);
-    const expectedHead = options.expectedWorkspaceHead, expectedMission = options.expectedMissionId;
-    const inspection = await workspace.inspectWorkspace(value);
-    need(expectedHead === undefined || inspection.head === expectedHead, 'Docket history differs from the independently retained head.');
-    need(expectedMission === undefined || value.missionId === expectedMission, 'Docket mission differs from the independently retained identity.');
-    need(exact(attachments, ['schema', 'missionId', 'workspaceHead', 'sources', 'receipts'])
-        && attachments.schema === ATTACHMENT_SCHEMA && attachments.missionId === value.missionId
-        && attachments.workspaceHead === inspection.head
-        && ['sources', 'receipts'].every(key => Array.isArray(attachments[key])
-            && attachments[key].length <= 24), 'Docket attachment mission/head or fields differ.');
-    attachments.sources.forEach(validateSource);
-    need(new Set(attachments.sources.map(item => item.repository + ':' + item.commit)).size === attachments.sources.length,
-        'Docket repeats or contradicts a repository commit source context.');
-    if (expectedSources !== undefined) need(same(attachments.sources, expectedSources), 'Docket source context differs from installed expectations.');
-    const historyAttachments = inspection.discovery.attachments || [];
-    const receipts = [], receiptIds = new Set(), branches = new Map();
-    const combinedReceipts = [...historyAttachments.filter(item => item.kind === 'receiver-receipt').map(item => item.record),
-        ...attachments.receipts];
-    for (const item of combinedReceipts) {
-        const bindings = await receiptRequestBindings(item);
-        const campaign = inspection.discovery.campaigns.find(record => same(record.bindings, bindings));
-        need(campaign, 'Receipt has no independently replayed campaign.');
-        const checked = await inspectReceiverReceipt(item, makeReceiverContext(campaign),
-            receiverSources === undefined ? {} : {expectedReceiverSources: receiverSources});
-        const branch = checked.commission.id + ':' + checked.commission.route;
-        need(!receiptIds.has(checked.receiptId), 'Docket repeats a semantic receipt.');
-        const branchIdentity = {branch: checked.commission.branch, currency: checked.commission.currency};
-        const previous = branches.get(branch), fleet = checked.inspectionKind === 'fleet-local-review' || previous?.fleet;
-        need(!previous || same(previous.identity, branchIdentity), fleet
-            ? 'Contradictory original work reference: Fleet review cannot change the retained request branch.'
-            : 'Docket commission route changes its frozen branch.');
-        receiptIds.add(checked.receiptId); branches.set(branch, {identity: branchIdentity, fleet}); receipts.push(checked);
-    }
-    // These records have already passed the installed event replay. They can only
-    // enter through original ordered hash-chain events, never caller aggregates.
-    const futureEvaluations = historyAttachments.filter(item => item.kind === 'future-evaluation').map(item => ({
-        campaignDigest: item.campaignDigest, eventDigest: item.eventDigest, recordDigest: item.recordDigest, result: item.record}));
-    const realTaskRecords = historyAttachments.filter(item => item.kind === 'real-task-contract').map(item => ({
-        campaignDigest: item.campaignDigest, eventDigest: item.eventDigest, recordDigest: item.recordDigest, record: item.record}));
-    const unresolvedFuture = historyAttachments.filter(item => item.kind === 'future-run-reserved'
-        && item.resolution?.kind !== 'future-evaluation').map(item => {
-        const bank = historyAttachments.find(record => record.kind === 'future-task-bank'
-            && record.campaignDigest === item.campaignDigest && record.record.digest === item.record.taskBankDigest);
-        const maximumLogicalWork = bank.record.tasks.length * item.capsule.protocol.treatments.length * item.record.perTaskWorkLimit;
-        need(Number.isSafeInteger(maximumLogicalWork), 'Future execution reservation exceeds the integer bound.');
-        return {campaignDigest: item.campaignDigest, recordDigest: item.recordDigest, eventDigest: item.eventDigest,
-            attempt: item.record.attempt, taskBankDigest: item.record.taskBankDigest,
-            perTaskWorkLimit: item.record.perTaskWorkLimit, maximumLogicalWork,
-            state: item.resolution?.kind === 'future-run-stopped' ? 'stopped' : 'reserved', spent: 'unknown-reservation-retained'};
-    });
-    const evidenceReplayLogical = {acquisitions: 0, search: 0, checking: 0, installations: 0};
-    for (const item of historyAttachments) {
-        if (item.kind === 'future-freeze' || item.kind === 'future-evaluation') sum(evidenceReplayLogical, item.capsule.admissionReplay);
-        if (item.kind === 'future-evaluation') for (const run of item.record.runs) sum(evidenceReplayLogical, run.costs);
-    }
-    const legacyWitnessCosts = value.events.filter(item => item.kind === 'evaluation').map(item => ({
-        eventDigest: item.digest, version: item.payload.number, phase: item.payload.phase, costs: item.payload.report.costs,
-        accounting: 'Original witness metrics retained separately; repeated construction references are not a second construction charge or Discovery units'}));
-    const realTaskChecks = [], seenChecks = new Set();
-    for (const item of realTaskRecords) {
-        const record = item.record;
-        const proposalIdentity = record.proposalDigest;
-        need(hash(proposalIdentity), 'A source/history-bound immutable real-task proposal is required.');
-        for (const check of item.record.checks) {
-            const checkIdentity = proposalIdentity + ':' + check.digest;
-            if (seenChecks.has(checkIdentity)) continue;
-            seenChecks.add(checkIdentity);
-            realTaskChecks.push({eventDigest: item.eventDigest, proposalIdentity, checkDigest: check.digest, taskId: check.taskId,
-                state: check.status, reportedObservation: check.observation.resourceUsed, contractChecker: check.checkerCharge,
-                accounting: check.resourceAccounting, operationalState: item.record.operationalState});
-        }
-    }
-    const construction = zero(), recordedReplay = zero();
-    const campaigns = inspection.discovery.campaigns.map(record => {
-        sum(construction, record.result.resources, ['memoryWords', 'workerSlots']);
-        sum(recordedReplay, record.recordedVerification, ['memoryWords', 'workerSlots']);
-        return {attempt: record.attempt, campaignDigest: record.campaignDigest, resultDigest: record.resultDigest,
-            bindings: record.bindings, state: record.state, parent: record.parent?.campaignDigest || null,
-            lineageQualified: record.lineageQualified, invalidations: record.result.invalidations,
-            generation: record.result.lineage.generation, lineageCumulative: record.result.lineage.cumulative,
-            construction: record.result.resources, recordedReplay: record.recordedVerification,
-            elapsedReceipt: record.elapsedReceipt, artifactDigests: record.artifacts.map(item => item.digest)};
-    });
-    const unresolved = inspection.discovery.attempts.filter(record => !record.result).map(record => ({
-        attempt: record.attempt, state: record.state, reservation: record.reservation,
-        spent: 'unknown', disposition: record.resourceDisposition || 'active-reservation-retained'}));
-    const total = zero(); sum(total, construction, ['memoryWords', 'workerSlots']); sum(total, recordedReplay, ['memoryWords', 'workerSlots']);
-    const routeCosts = {}, fleetCosts = receiptZero();
-    for (const receipt of receipts) {
-        if (receipt.inspectionKind === 'fleet-local-review') {
-            sum(fleetCosts, receipt.resources, ['memoryBytes', 'workerCapacity']);
-            continue;
-        }
-        routeCosts[receipt.commission.route] ||= receiptZero();
-        sum(routeCosts[receipt.commission.route], receipt.resources, ['memoryBytes', 'workerCapacity']);
-    }
-    const commissioned = receipts.filter(item => item.inspectionKind !== 'fleet-local-review');
-    const commissions = [...new Set(commissioned.map(item => item.commission.id))].map(id => ({id,
-        alternatives: [...new Set(commissioned.filter(item => item.commission.id === id).map(item => item.commission.route))].map(route => {
-            const inspected = commissioned.filter(item => item.commission.id === id && item.commission.route === route);
-            return {route, currency: inspected[0].commission.currency, reservedBaseUnits: '0', status: 'DRAFT_NOT_SUBMITTED',
-                inspectionReceiptIds: inspected.map(item => item.receiptId)};
-        }),
-        interpretation: 'alternative routes; no currency conversion or duplicate payment obligation'}));
-    return {value, attachments, inspection, campaigns, receipts, unresolved, construction, recordedReplay,
-        total, routeCosts, fleetCosts, commissions, futureEvaluations, realTaskRecords, historyAttachments, unresolvedFuture,
-        evidenceReplayLogical, legacyWitnessCosts, realTaskChecks};
-}
-
-async function filesFor(value, attachments, options = {}) {
-    const data = await derive(value, attachments, options);
-    const {inspection, campaigns, receipts, unresolved} = data;
-    const render = item => contract.canonical(item) + '\n';
-    const run = {schema: DOCKET_SCHEMA, workspace: data.value, attachments: data.attachments};
-    const runDigest = await contract.payloadDigest(run);
-    const unknown = ['independent organizational reproduction', 'current mainnet readiness', 'real settlement',
-        'energy', 'monetary compute cost', 'human review/coordination time', 'calibrated alpha-WU', 'delayed commercial outcomes',
-        'current export/replay overhead outside recorded campaign checks'];
-    if (data.attachments.sources.length === 0) unknown.push('authenticated repository/generated-asset source inventory');
-    const files = {
-        '00_manifest.md': '# Discovery Lab Evidence Docket\n\nSchema: ' + DOCKET_SCHEMA + '\n\nMission: ' + data.value.missionId
-            + '\n\nHistory head: ' + inspection.head + '\n\nRun commitment: ' + runDigest
-            + '\n\nDerived from the complete existing mission history. Attachments bind this exact head; they are not new history events.\n'
-            + 'Replay checks bounded synthetic computations. Imported evidence grants no capability, payment or execution authority.\n',
-        '01_claims_matrix.md': '# Claims\n\n| Claim | Status |\n|---|---|\n'
-            + '| Six-stage finite campaign evidence | Replayed; each original outcome retained |\n'
-            + '| Future-task advantage | ' + (data.futureEvaluations.length ? 'Separate protocol evidence retained in history; inspect its comparisons' : 'NOT_RUN: no future-task protocol evidence attached') + ' |\n'
-            + '| Real-task operational pilot | NOT_ESTABLISHED: contract records do not establish execution |\n'
-            + '| Independent organizational validation / commercial value / AGI or ASI | Unproven |\n'
-            + '| Promotion, release, live execution and settlement authority | Not granted by this docket |\n',
-        '02_environment.md': '# Environment\n\nBounded public synthetic integer computations in the installed browser/Node runtime.\n'
-            + 'Source/file identities are retained declarations unless separately authenticated against installed context.\n'
-            + 'Receiver checking is local; no remote execution, payment, energy measurement or organizational independence is inferred.\n',
-        '03_benchmark_tasks/spec.json': render({charters: inspection.discovery.attempts.map(item => ({attempt: item.attempt,
-            bindings: item.bindings, charter: item.charter})), futureTaskAttachments: data.futureEvaluations.length,
-        realTaskAttachments: data.realTaskRecords.length, exposure: 'Public seeded synthetic protocol; not secret external benchmarks'}),
-        '04_baselines/comparison.json': render({campaigns: inspection.discovery.campaigns.map(item => ({
-            campaignDigest: item.campaignDigest, comparisons: item.result.comparisons})),
-        futureTaskAttachments: data.futureEvaluations.length, unmeasured: unknown}),
-        '05_agialpha_runs/run.json': render(run),
-        '06_proof_bundles/capability.json': render({campaigns: inspection.discovery.campaigns.map(item => ({
-            campaignDigest: item.campaignDigest, artifacts: item.artifacts})), sources: data.attachments.sources,
-        receiverReceipts: receipts, historyAttachments: data.historyAttachments.map(item => ({campaignDigest: item.campaignDigest,
-            kind: item.kind, recordDigest: item.recordDigest, eventDigest: item.eventDigest})), importedAuthority: 'none'}),
-        '07_replay_logs/replay.json': render({method: 'Reconstruct every original workspace event and finite campaign; rebuild every docket section',
-            head: inspection.head, eventDigests: data.value.events.map(item => item.digest),
-            sourceContext: 'retained declarations; optional independently installed expectations checked separately',
-            independentOrganization: false, cachedOrCurrentReplayWork: 'not-separately-metered', rawReceiptDigests: receipts.map(item => item.receiptDigest)}),
-        '08_cost_ledgers/costs.json': render({construction: data.construction, recordedReplay: data.recordedReplay,
-            knownHistoryTotal: data.total, accounting: 'Each completed campaign increment and its recorded verification counted once; ancestor cumulative totals are descriptive and never summed again',
-            historyTotalScope: 'Discovery Lab campaign construction and its recorded verification only; other metric schemas remain separate below',
-            legacyWitnessCosts: data.legacyWitnessCosts, realTaskContractChecks: data.realTaskChecks,
-            peakMetrics: ['memoryWords', 'workerSlots'], unresolvedAttempts: unresolved,
-            unresolvedFutureAttempts: data.unresolvedFuture,
-            knownAttemptOutcomesComplete: unresolved.length === 0 && data.unresolvedFuture.length === 0,
-            totalComplete: false, totalCompletenessReason: 'Review, coordination, energy, monetary and aggregate export/reopen overhead remain unmeasured',
-            receiverInspectionByRoute: data.routeCosts, fleetLocalReviewObservations: data.fleetCosts,
-            fleetAccounting: 'Separate observed invocation costs, not combined with commission routes or a complete system total',
-            commissions: data.commissions, currenciesCombined: false,
-            futureTaskCosts: data.futureEvaluations.map(item => ({eventDigest: item.eventDigest,
-                freezeDigest: item.result.freezeDigest, taskBankDigest: item.result.taskBankDigest,
-                summaries: item.result.summaries, accounting: item.result.accounting})),
-            evidencePerFullReplayLogical: data.evidenceReplayLogical,
-            evidenceReplayScope: 'One complete attached-evidence replay; cumulative number of exports/reopens and wall time remain unmeasured',
-            amortization: 'No universal amortization assumed; inspect each attached future-task comparison', unmeasured: unknown}),
-        '09_safety_ledgers/safety.json': render({authority: [], transactionSubmission: 'not-performed-by-docket',
-            importedCodeExecution: false, rollback: 'Prior accepted campaigns and rejected/inconclusive attempts remain in the original history',
-            unresolvedAttempts: unresolved, unresolvedFutureAttempts: data.unresolvedFuture,
-            promotion: 'external explicit authorization required; no imported self-promotion'}),
-        '10_validator_reports/review.json': render({producer: 'Discovery Lab finite stage builders',
-            checker: 'Installed separately implemented finite checker and deterministic replay',
-            organizationalIndependence: 'not-established', receiverReceipts: receipts.map(item => ({
-                receiptDigest: item.receiptDigest, state: item.state, authenticity: item.authenticity})),
-            externalReview: 'pending', realTaskExecution: 'not-established'}),
-        '11_alpha_wu_calibration/status.json': render({status: 'uncalibrated', alphaWU: null,
-            reason: 'No external workload calibration or verifier; abstract resource counts are not alpha-WU or currency'}),
-        '12_summary_tables/outcome.json': render({campaigns, unresolved, unresolvedFuture: data.unresolvedFuture,
-            receiverReceiptCount: receipts.length,
-            futureEvaluationCount: data.futureEvaluations.length, realTaskRecordCount: data.realTaskRecords.length,
-            operationalAcceptance: 'not-established', authority: 'none', unknown})
-    };
-    extendDocket(files, inspection);
-    const checksums = {};
-    for (const path of DOCKET_PATHS) checksums[path] = await rawDigest(files[path]);
-    return {schema: DOCKET_SCHEMA, format: 'bounded-canonical-file-map', files, checksums};
-}
-
-async function createDiscoveryDocket(value, attachments, options = {}) {
-    options = capturedOptions(options);
-    const captured = copy(value);
-    const bound = attachments === undefined ? await emptyDocketAttachments(captured) : copy(attachments);
-    const docket = await filesFor(captured, bound, options);
-    // The complete export shares the established two-megabyte bounded input language.
-    return copy(docket);
-}
-async function exportDiscoveryDocket(value, attachments, options = {}) {
-    return contract.canonical(await createDiscoveryDocket(value, attachments, options));
-}
-async function verifyDiscoveryDocket(input, options = {}) {
-    options = capturedOptions(options);
-    const docket = typeof input === 'string' ? contract.parseBounded(input) : copy(input);
-    need(exact(docket, ['schema', 'format', 'files', 'checksums']) && docket.schema === DOCKET_SCHEMA
-        && docket.format === 'bounded-canonical-file-map' && exact(docket.files, DOCKET_PATHS)
-        && exact(docket.checksums, DOCKET_PATHS), 'Docket paths, format or fields differ.');
-    for (const path of DOCKET_PATHS) {
-        need(typeof docket.files[path] === 'string' && docket.checksums[path] === await rawDigest(docket.files[path]),
-            'Docket file checksum differs: ' + path);
-    }
-    const run = contract.parseBounded(docket.files['05_agialpha_runs/run.json']);
-    need(exact(run, ['schema', 'workspace', 'attachments']) && run.schema === DOCKET_SCHEMA, 'Unsupported docket run.');
-    const expected = await filesFor(run.workspace, run.attachments, options);
-    need(same(docket, expected), 'Docket content differs from finite replay or omits retained evidence.');
-    return {verified: true, scope: 'complete-local-synthetic-history-and-bound-attachments',
-        missionId: run.workspace.missionId, workspaceHead: run.attachments.workspaceHead,
-        authority: 'none', externalReplication: 'pending', settlement: 'not-performed'};
-}
-
-return {DOCKET_SCHEMA,ATTACHMENT_SCHEMA,DOCKET_PATHS,rawDigest,emptyDocketAttachments,createDiscoveryDocket,exportDiscoveryDocket,verifyDiscoveryDocket};
-})();
 const capability_module_35=(()=>{
-// SPDX-License-Identifier: Apache-2.0
-const {canonical, parseBounded, payloadDigest} = capability_module_7;
-
-const DEPLOYMENT_INVENTORY_DIGEST = "9638704a60477c383c3e9cf684a099f087fd9d926f498fc67acaa93639ed9492";
-const handles = new WeakSet();
-const address = /^0x[0-9a-fA-F]{40}$/;
-const hash = /^0x[0-9a-fA-F]{64}$/;
-const digest = /^[0-9a-f]{64}$/;
-const snapshot = value => parseBounded(typeof value === 'string' ? value : canonical(value));
-const same = (a, b) => typeof a === 'string' && typeof b === 'string' && a.toLowerCase() === b.toLowerCase();
-function requireValue(condition, message) { if (!condition) throw Error(message); }
-function freeze(value) {
-    if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
-    return value;
-}
-function trusted(handle) { requireValue(handles.has(handle), 'A source-authenticated inventory handle is required'); return handle; }
-function routeFor(handle, route) {
-    trusted(handle);
-    requireValue(Object.hasOwn(handle.inventory.routes, route), 'Unknown deployment route');
-    const selected = handle.inventory.routes[route], deployment = handle.inventory.deployments[selected.deployment];
-    const contract = deployment.contracts.find(row => row.name === selected.contract);
-    return {selected, deployment, contract, token: handle.inventory.tokens[selected.currency]};
-}
-
-async function loadDeploymentInventory(raw, expectedDigest = DEPLOYMENT_INVENTORY_DIGEST) {
-    const inventory = snapshot(raw);
-    requireValue(digest.test(expectedDigest), 'A trusted inventory digest is required');
-    requireValue(await payloadDigest(inventory) === expectedDigest, 'Deployment inventory source mismatch');
-    requireValue(inventory.schema === 'successor-deployment-compatibility/v1' && inventory.chainId === 1
-        && inventory.authority === 'none' && inventory.operationallyReady === false, 'Invalid deployment inventory');
-    for (const [name, count] of Object.entries({alpha: 5, manager: 9, jobs: 25})) {
-        const deployment = inventory.deployments[name];
-        requireValue(deployment.contracts.length === count && deployment.liveObservation.status === 'NOT_RUN', 'Invalid recorded deployment scope');
-        requireValue(deployment.contracts.every(row => address.test(row.address) && hash.test(row.runtimeKeccak256)), 'Invalid contract identity');
-        requireValue(new Set(deployment.contracts.map(row => row.address.toLowerCase())).size === count, 'Duplicate deployment contract');
-    }
-    for (const [route, currency] of [['manager-usdc', 'USDC6'], ['jobs-agialpha', 'AGIALPHA18']]) {
-        requireValue(inventory.routes[route].currency === currency && address.test(inventory.tokens[currency].address), 'Mixed token route');
-    }
-    const handle = freeze({inventory, digest: expectedDigest}); handles.add(handle); return handle;
-}
-
-function deploymentSummary(handle) {
-    trusted(handle);
-    return freeze({schema: 'successor-deployment-summary/v1', inventoryDigest: handle.digest,
-        recordedContracts: Object.values(handle.inventory.deployments).reduce((n, row) => n + row.contracts.length, 0),
-        liveObservation: 'NOT_RUN', operationallyReady: false, authority: 'none',
-        routes: Object.fromEntries(Object.keys(handle.inventory.routes).map(route => {
-            const {selected, contract, token, deployment} = routeFor(handle, route);
-            return [route, {address: contract.address, currency: selected.currency, token: token.address,
-                decimals: token.decimals, directOwner: selected.owner, ultimateGovernor: selected.ultimateGovernor,
-                ownerContract: selected.ownerContract, operatorPath: selected.operatorPath, historicalObservation: deployment.historicalObservation,
-                missingAbiPin: contract.abiSha256 === null, ensRoots: selected.ensRoots}];
-        })), fleetCompatibility: handle.inventory.fleetCompatibility, unresolved: handle.inventory.unresolved});
-}
-
-function assessDeploymentContext(handle, route, raw) {
-    const context = snapshot(raw), {selected, contract, token} = routeFor(handle, route), reasons = [];
-    if (context.chainId !== handle.inventory.chainId) reasons.push('WRONG_CHAIN');
-    if (!same(context.deploymentAddress, contract.address)) reasons.push('STALE_OR_WRONG_DEPLOYMENT');
-    if (context.currency !== selected.currency || !same(context.tokenAddress, token.address)
-        || context.tokenDecimals !== token.decimals) reasons.push('WRONG_TOKEN_ROUTE');
-    if (!same(context.runtimeKeccak256, contract.runtimeKeccak256)) reasons.push('WRONG_RUNTIME_CODE');
-    if (contract.abiSha256 === null) reasons.push('ABI_PIN_UNAVAILABLE');
-    else if (context.abiSha256 !== contract.abiSha256) reasons.push('WRONG_ABI');
-    if (!same(context.owner, selected.owner)) reasons.push('WRONG_ROLE');
-    if (selected.ensRoots === null) reasons.push('IDENTITY_ROOTS_UNAVAILABLE');
-    else if (canonical(context.ensRoots ?? null) !== canonical(selected.ensRoots)) reasons.push('WRONG_IDENTITY_ROOT');
-    return freeze({schema: 'successor-deployment-context-assessment/v1', inventoryDigest: handle.digest,
-        route, compatible: reasons.length === 0, reasons, operationallyReady: false, authority: 'none'});
-}
-
-/** Caller supplies trusted read-only transport and Keccak implementation; imported data cannot install either. */
-async function inspectReadOnlyDeployment(handle, deploymentName, {rpc, keccak256, provider, signal,
-    maxDurationMs = 30000} = {}) {
-    trusted(handle);
-    const initial = {schema: 'successor-deployment-observation/v1', inventoryDigest: handle.digest,
-        deployment: deploymentName, authority: 'none', operationallyReady: false};
-    requireValue(Object.hasOwn(handle.inventory.deployments, deploymentName), 'Unknown deployment');
-    if (typeof rpc !== 'function' || typeof keccak256 !== 'function') return freeze({...initial, status: 'NOT_RUN', reasons: ['READ_ONLY_PROVIDER_OR_KECCAK_UNAVAILABLE']});
-    requireValue(typeof provider === 'string' && /^[a-zA-Z0-9._-]{1,128}$/.test(provider), 'Use a public provider label without a credential or URL');
-    requireValue(Number.isSafeInteger(maxDurationMs) && maxDurationMs >= 1 && maxDurationMs <= 60000, 'Bound the observation duration');
-    const start = performance.now(), calls = [], rows = [], deployment = handle.inventory.deployments[deploymentName];
-    const controller = new AbortController(), ownedSignal = controller.signal;
-    let observedBlock = null, phase = 'chain', callerAbort, observation, beforeCleanupElapsed;
-    function guardDeadline(deadline) {
-        if (performance.now() > deadline) {
-            controller.abort();
-            throw Error('Observation deadline exceeded');
-        }
-        requireValue(!ownedSignal.aborted, 'Observation cancelled');
-    }
-    async function call(method, params) {
-        requireValue(['eth_chainId', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call'].includes(method), 'Read-only RPC method required');
-        guardDeadline(start + maxDurationMs);
-        requireValue(calls.length < 100, 'Observation call budget exhausted');
-        calls.push({method, params});
-        const result = parseBounded(canonical(await bounded(() => rpc({method, params, signal: ownedSignal}))));
-        guardDeadline(start + maxDurationMs);
-        return result;
-    }
-    async function bounded(operation) {
-        let timer, abort;
-        const operationDeadline = Math.min(start + maxDurationMs, performance.now() + 5000);
-        try {
-            guardDeadline(operationDeadline);
-            const result = await Promise.race([Promise.resolve().then(() => {
-                guardDeadline(operationDeadline);
-                return operation();
-            }), new Promise((_, reject) => {
-                abort = () => reject(Error('Observation cancelled'));
-                ownedSignal.addEventListener('abort', abort, {once: true});
-                if (ownedSignal.aborted) abort();
-                timer = setTimeout(() => {
-                    controller.abort();
-                    reject(Error('Bounded observation timeout'));
-                }, Math.max(0, operationDeadline - performance.now()));
-            })]);
-            guardDeadline(operationDeadline);
-            return result;
-        } finally { clearTimeout(timer); if (abort) ownedSignal.removeEventListener('abort', abort); }
-    }
-    try {
-        if (signal) {
-            callerAbort = () => controller.abort();
-            signal.addEventListener('abort', callerAbort, {once: true});
-            if (signal.aborted) callerAbort();
-        }
-        const chain = await call('eth_chainId', []); requireValue(chain === '0x1', 'Wrong chain');
-        phase = 'block';
-        const block = await call('eth_getBlockByNumber', ['finalized', false]);
-        requireValue(hash.test(block.hash) && /^0x[0-9a-f]+$/i.test(block.number) && /^0x[0-9a-f]+$/i.test(block.timestamp), 'Invalid observation block');
-        observedBlock = {number: block.number, hash: block.hash, timestamp: block.timestamp};
-        for (const contract of deployment.contracts) {
-            phase = 'runtime:' + contract.name;
-            const code = await call('eth_getCode', [contract.address, block.number]);
-            requireValue(typeof code === 'string' && code.length <= 200000 && /^0x(?:[0-9a-fA-F]{2})+$/.test(code), 'Invalid or absent contract code');
-            const actualHash = await bounded(() => keccak256(code)); requireValue(typeof actualHash === 'string' && hash.test(actualHash), 'Invalid Keccak result');
-            const row = {name: contract.name, address: contract.address, runtimeKeccak256: actualHash,
-                codeMatches: same(actualHash, contract.runtimeKeccak256), actualOwner: null, ownerMatches: null,
-                completion: 'CODE_CHECKED', ownerStatus: contract.recordedOwner ? 'NOT_RUN' : 'NOT_APPLICABLE'};
-            rows.push(row);
-            if (contract.recordedOwner) {
-                phase = 'owner:' + contract.name;
-                const encoded = await call('eth_call', [{to: contract.address, data: '0x8da5cb5b'}, block.number]);
-                requireValue(typeof encoded === 'string' && /^0x0{24}[0-9a-fA-F]{40}$/.test(encoded), 'Invalid owner response');
-                row.actualOwner = '0x' + encoded.slice(-40); row.ownerMatches = same(row.actualOwner, contract.recordedOwner);
-                row.ownerStatus = 'OBSERVED';
-            }
-            row.completion = 'CODE_AND_RECORDED_OWNER_CHECKS_COMPLETE';
-        }
-        phase = 'block-recheck';
-        const recheck = await call('eth_getBlockByNumber', [block.number, false]);
-        requireValue(same(recheck.hash, block.hash), 'Observation block changed');
-        guardDeadline(start + maxDurationMs);
-        const accepted = rows.every(row => row.codeMatches && row.ownerMatches !== false);
-        observation = {...initial, provider, status: accepted ? 'OBSERVED_CODE_AND_RECORDED_OWNERS' : 'REJECTED_IDENTITY_MISMATCH',
-            block: observedBlock, contracts: rows, calls,
-            incomplete: ['ABI_AND_COMPILER_SOURCE', 'PROXY_AND_EXTERNAL_AUTHORITY', 'TOKEN_AND_IDENTITY_ROOTS',
-                'PAUSE_BALANCES_ALLOWANCES_AND_POLICY', 'INDEPENDENT_OPERATOR_AND_ACTIVATION_APPROVAL']};
-    } catch {
-        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
-            block: observedBlock, partialContracts: rows, stoppedAt: phase, observationComplete: false,
-            reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
-    } finally {
-        beforeCleanupElapsed = performance.now() - start;
-        controller.abort();
-        if (callerAbort) signal.removeEventListener('abort', callerAbort);
-    }
-    const elapsed = performance.now() - start;
-    if (signal?.aborted || elapsed > maxDurationMs) {
-        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
-            block: observedBlock, partialContracts: rows,
-            stoppedAt: beforeCleanupElapsed <= maxDurationMs && elapsed > maxDurationMs ? 'cleanup' : observation.stoppedAt ?? phase,
-            observationComplete: false, reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
-    }
-    return freeze({...observation, costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(elapsed))}});
-}
-
-function prepareOperatorIntent(handle, route, raw) {
-    const input = snapshot(raw), {selected, contract} = routeFor(handle, route);
-    requireValue(Object.keys(input).sort().join(',') === 'abiSha256,actor,consequences,currency,data', 'Exact operator intent fields required');
-    requireValue(address.test(input.actor) && typeof input.data === 'string' && input.data.length <= 32770
-        && /^0x(?:[0-9a-fA-F]{2}){4,}$/.test(input.data), 'Invalid unsigned intent');
-    requireValue(typeof input.consequences === 'string' && input.consequences.length >= 10 && input.consequences.length <= 2048, 'Explicit consequences required');
-    const reasons = ['CURRENT_READBACK_AND_OPERATOR_APPROVAL_REQUIRED'];
-    if (!same(input.actor, selected.owner)) reasons.push('WRONG_ROLE');
-    if (selected.ownerContract !== null) reasons.push('CONTRACT_OWNER_EXECUTION_PATH_UNQUALIFIED');
-    if (input.currency !== selected.currency) reasons.push('WRONG_TOKEN_ROUTE');
-    if (contract.abiSha256 === null || input.abiSha256 !== contract.abiSha256) reasons.push('ABI_PIN_UNAVAILABLE_OR_MISMATCHED');
-    return freeze({schema: 'successor-unsigned-operator-intent/v1', route, inventoryDigest: handle.digest,
-        status: 'BLOCKED_OPERATOR_REVIEW_REQUIRED', executable: false, authority: 'none', reasons,
-        requiredActor: selected.owner, ultimateGovernor: selected.ultimateGovernor, ownerContract: selected.ownerContract,
-        operatorPath: selected.operatorPath, consequences: input.consequences,
-        unsignedDraft: selected.ownerContract !== null ? null
-            : {chainId: handle.inventory.chainId, to: contract.address, from: input.actor, value: '0', data: input.data},
-        proposedCall: {chainId: handle.inventory.chainId, target: contract.address, data: input.data},
-        callsPerformed: 0, signed: false, submitted: false});
-}
-
-return {DEPLOYMENT_INVENTORY_DIGEST,loadDeploymentInventory,deploymentSummary,assessDeploymentContext,inspectReadOnlyDeployment,prepareOperatorIntent};
-})();
-const capability_module_36=(()=>{
-// SPDX-License-Identifier: Apache-2.0
-const {MODEL_SCHEMA, SEMANTICS, clone} = capability_module_29;
-function containment(flipped = false) {
-    return {schema: MODEL_SCHEMA, semantics: SEMANTICS,
-        variables: ['b', 'x', 'y'].map(id => ({id, domain: [0, 1]})),
-        factors: [{id: 'outside', scope: ['b'], costs: [1, 4]},
-            {id: 'first', scope: ['b', 'x'], costs: flipped ? [3, 0, 0, 3] : [0, 3, 3, 0]},
-            {id: 'second', scope: ['b', 'y'], costs: [0, 2, 2, 0]}]};
-}
-function scalarCounterexample(flipped = false) {
-    return {schema: MODEL_SCHEMA, semantics: SEMANTICS,
-        variables: ['b', 'x'].map(id => ({id, domain: [0, 1]})),
-        factors: [{id: 'pin', scope: ['b'], costs: [0, null]},
-            {id: 'component', scope: ['b', 'x'], costs: flipped ? [2, 3, 0, 1] : [0, 1, 2, 3]}]};
-}
-function interactingPaths(colors = 3) {
-    const domain = Array.from({length: colors}, (_, i) => i);
-    return {schema: MODEL_SCHEMA, semantics: SEMANTICS,
-        variables: ['u', 'a', 'v', 'b', 'c'].map(id => ({id, domain})),
-        factors: [['u', 'a'], ['a', 'v'], ['u', 'b'], ['b', 'c'], ['c', 'v']].map((scope, i) => ({
-            id: `edge${i}`, scope, costs: domain.flatMap(a => domain.map(b => a === b ? null : 0))}))};
-}
-// Explicit xorshift32 protocol, not the unavailable manuscript companion's Python RNG.
-function random(seed) {
-    let state = seed >>> 0;
-    return limit => { state ^= state << 13; state ^= state >>> 17; state ^= state << 5; return (state >>> 0) % limit; };
-}
-function weightedStream(seed, updates = 8) {
-    const next = random(seed), domain = [0, 1, 2];
-    const ids = ['b0', 'b1', ...Array.from({length: 3}, (_, i) => [`m${i}x0`, `m${i}x1`]).flat()];
-    const scopes = ids.map(id => [id]); scopes.push(['b0', 'b1']);
-    for (let i = 0; i < 3; i++) {
-        scopes.push([`m${i}x0`, `m${i}x1`]);
-        for (const id of [`m${i}x0`, `m${i}x1`]) for (const b of ['b0', 'b1']) scopes.push([b, id]);
-    }
-    const model = {schema: MODEL_SCHEMA, semantics: SEMANTICS, variables: ids.map(id => ({id, domain})),
-        factors: scopes.map((scope, i) => ({id: `factor${String(i).padStart(3, '0')}`, scope,
-            costs: Array.from({length: 3 ** scope.length}, () => scope.length === 1 ? next(6) : next(10) === 0 ? null : next(5))}))};
-    const snapshots = [clone(model)], revise = random(seed + 1000000);
-    for (let i = 0; i < updates; i++) {
-        const factor = model.factors[revise(model.factors.length)], entry = revise(factor.costs.length);
-        const values = [null, 0, 1, 2, 3, 4, 5].filter(value => value !== factor.costs[entry]);
-        factor.costs[entry] = values[revise(values.length)]; snapshots.push(clone(model));
-    }
-    return snapshots;
-}
-
-return {containment,scalarCounterexample,interactingPaths,random,weightedStream};
-})();
-const capability_module_37=(()=>{
-// SPDX-License-Identifier: Apache-2.0
-/** Inert compatibility proposal. No existing target accepts this new schema yet. */
-const {canonical} = capability_module_24;
-const {sha256} = capability_module_27;
-const {inspectArchive} = capability_module_28;
-const {fields, same, clone, requireValue, seal, checkSeal, bounded} = capability_module_29;
-const REQUEST_SCHEMA = 'out-execute-commissioning-draft/v1';
-const TARGETS = Object.freeze({
-    'manager-usdc': {repository: 'MontrealAI/AGIJobManager', commit: '4d4c32685eebf23b0aa35dbb45abe23ac8a261cb',
-        path: 'site/assets/successor/jobs.mjs', interface: 'agijobmanager/successor-improvement-draft/v1',
-        asset: 'USDC', decimals: 6, role: 'bounded-construction-or-independent-evaluation'},
-    'jobs-agialpha': {repository: 'MontrealAI/AGIJobsv0', commit: '83065adf18a6ee987f8fa479a496a052d35db682',
-        path: 'packages/successor-core/src/compiler.mjs', interface: 'SealedWorkOrder / JobGraph',
-        asset: 'AGIALPHA', decimals: 18, role: 'bounded-construction-or-independent-evaluation'},
-    'fleet-qualified-review': {repository: 'MontrealAI/AGI-Fleet-Linux', commit: '45759fb096faf8988f58ae5ea71248d0f35a97c7',
-        path: 'local-runtime/schemas/client-v1.d.ts', interface: 'local-task/admission/prepared-grant',
-        asset: null, decimals: null, role: 'separately-qualified-execution-and-review'}
-});
-const constraints = Object.freeze({authority: 'none', signed: false, funded: false, executionApproved: false,
-    independentProof: false, settlement: 'not-connected', spendBaseUnits: '0', reservations: [],
-    deployments: [], transactions: [], modelCalls: 0, tokenConversion: 'none', membershipChanges: []});
-
-async function prepareWorkRequest(archiveRaw, {projectId, target, expectedSource, purpose = 'independent-evaluation'} = {}) {
-    requireValue(typeof projectId === 'string' && /^[a-zA-Z0-9-]{8,80}$/.test(projectId), 'PROJECT_ID');
-    requireValue(Object.hasOwn(TARGETS, target) && ['bounded-construction', 'independent-evaluation'].includes(purpose), 'TARGET_PURPOSE');
-    const archive = bounded(archiveRaw);
-    const inspected = await inspectArchive(archive), candidate = inspected.archive?.completions.at(-1);
-    requireValue(candidate && expectedSource && same(candidate.source, expectedSource), 'INDEPENDENT_EXPECTED_SOURCE_REQUIRED');
-    const raw = canonical(archive);
-    const body = {schema: REQUEST_SCHEMA, projectId, purpose, target, targetInterface: clone(TARGETS[target]),
-        archiveRaw: raw, archiveSha256: await sha256(raw), candidateDigest: candidate.digest,
-        incumbentDigest: candidate.parentDigest, expectedSource: clone(expectedSource),
-        acceptance: {scope: 'complete-declared-finite-model-only', independentEvaluator: null, acceptanceOwner: null,
-            baseline: 'full-enumeration-and-equally-capable-incremental-contracts',
-            obligations: ['Every factor and domain bound to current source', 'All profile rows and witnesses independently checked',
-                'Current whole artifact accepted', 'Failures, unknowns and complete cost ledgers retained',
-                'No source hash treated as behavioral or operational proof']},
-        adapterStatus: target === 'fleet-qualified-review' ? 'BLOCKED_UNPROVISIONED_NOT_EXECUTABLE' : 'DRAFT_NEW_SCHEMA_ADAPTER_NOT_INSTALLED',
-        unresolved: ['Explicit owner, producer and independent reviewer assignment', 'Exact target adapter and runtime qualification',
-            'Current source/package/host admission and expiry', 'Rights and protocol-specific membership checks',
-            'External budget, acceptance and any action authorization remain separate'],
-        limits: clone(constraints)};
-    return seal(body);
-}
-
-async function inspectWorkRequest(input, {expectedSource, projectId, target} = {}) {
-    const request = bounded(input);
-    fields(request, ['schema', 'projectId', 'purpose', 'target', 'targetInterface', 'archiveRaw', 'archiveSha256',
-        'candidateDigest', 'incumbentDigest', 'expectedSource', 'acceptance', 'adapterStatus', 'unresolved', 'limits', 'digest']);
-    requireValue(request.schema === REQUEST_SCHEMA && request.projectId === projectId && request.target === target,
-        'EXPECTED_REQUEST_CONTEXT_REQUIRED');
-    const rebuilt = await prepareWorkRequest(request.archiveRaw, {projectId, target, expectedSource, purpose: request.purpose});
-    requireValue(same(request, rebuilt), 'WORK_REQUEST_BINDING'); await checkSeal(request);
-    return {request, authority: [], executable: false, externalEvidence: 'not-established'};
-}
-
-return {REQUEST_SCHEMA,TARGETS,prepareWorkRequest,inspectWorkRequest};
-})();
-const capability_module_38=(()=>{
-// SPDX-License-Identifier: Apache-2.0
-const workspace = capability_module_0;
-const {copy, need, same, validateCharter, makeFreeze, makeTaskBank, completeConstructionWork} = capability_module_16;
-const {buildFoundry, constructInverse} = capability_module_19;
-const {qualifyArtifact} = capability_module_17;
-const {evaluateFuture, TREATMENTS} = capability_module_18;
-const constructionLeases = new WeakSet(), invocationLeases = new WeakSet(), successorLeases = new WeakSet();
-
-async function start(workspaceInput, charterInput) {
-    const charter = validateCharter(charterInput), value = copy(workspaceInput);
-    const inspected = await workspace.inspectWorkspace(value);
-    need(!inspected.enterprises?.active, 'Reconcile the earlier enterprise reservation first.');
-    need(!inspected.enterprises?.attempts.some(row => row.unresolvedReservation || row.unknownSpent
-        || row.state === 'INVOCATION_RESERVED'), 'Unknown historical spent work must be reconciled before another attempt in this mission.');
-    need(workspace.LIMITS.events - value.events.length >= 11, 'Reserve history space for construction, future tasks and recovery.');
-    const result = await workspace.recordEnterpriseEvent(value, 'enterprise-started',
-        {attempt: 'enterprise-' + crypto.randomUUID(), charter});
-    constructionLeases.add(result); return result;
-}
-async function state(value) {
-    const checked = await workspace.inspectWorkspace(value), current = checked.enterprises?.active;
-    const stages = {RESERVED: 'construct', ACCEPTED_CONSTRUCTION: 'freeze', FROZEN: 'supply-future-tasks',
-        TASKS_COMMITTED: 'reserve-invocation', INVOCATION_RESERVED: 'RECONCILE_UNCERTAIN_EXECUTION',
-        INVOCATION_RECONCILED: 'reconcile-simulated-work', READY_FOR_SUCCESSOR: 'reserve-successor',
-        SUCCESSOR_RESERVED: 'construct-successor'};
-    return {current, next: current ? stages[current.state] : 'STOPPED', history: checked.enterprises?.attempts || [],
-        externalAuthority: false};
-}
-async function next(valueInput, optionsInput = {}) {
-    const value = copy(valueInput), options = copy(optionsInput);
-    const {seed = 20261021, expectedSource} = options;
-    const inputSource = copy(expectedSource);
-    const inspected = await state(value), current = inspected.current;
-    need(current, 'No active bounded enterprise attempt.');
-    need(same(current.charter.source, inputSource), 'Installed source changed; keep history and requalify before continuation.');
-    const payload = {attempt: current.attempt};
-    if (inspected.next === 'construct') {
-        need(constructionLeases.has(valueInput), 'Recovered construction is uncertain; retain and reconcile its reservation instead of retrying.');
-        constructionLeases.delete(valueInput);
-        const completeReservation = Math.ceil(2_000_000 * (current.charter.maxN / 32) ** 2);
-        if (current.charter.constructionLimit < completeReservation) {
-            return workspace.recordEnterpriseEvent(value, 'enterprise-budget-refused', {attempt: current.attempt,
-                reservationBound: completeReservation});
-        }
-        const bundle = await buildFoundry({qualifyArtifact, maxN: current.charter.maxN});
-        return workspace.recordEnterpriseEvent(value, 'enterprise-constructed', {...payload, bundle});
-    }
-    if (inspected.next === 'freeze') return workspace.recordEnterpriseEvent(value, 'enterprise-frozen', {...payload,
-        freeze: await makeFreeze(current.charter, current.bundle, current.acceptedAt)});
-    if (inspected.next === 'supply-future-tasks') return workspace.recordEnterpriseEvent(value, 'enterprise-tasks', {...payload,
-        bank: await makeTaskBank(current.freeze, seed, current.charter.maxN, current.charter.taskLimit)});
-    if (inspected.next === 'reserve-invocation') {
-        const totalTreatmentReservation = current.bank.tasks.length * TREATMENTS.length * current.charter.perTaskLimit;
-        const currentAdmissionReserve = completeConstructionWork(current.bundle);
-        const result = await workspace.recordEnterpriseEvent(value, 'enterprise-run-reserved', {...payload,
-            invocationId: 'invocation-' + crypto.randomUUID(), bankDigest: current.bank.digest, workLimit: current.charter.perTaskLimit,
-            totalTreatmentReservation, currentAdmissionReserve,
-            verificationReplayReserve: totalTreatmentReservation + currentAdmissionReserve});
-        invocationLeases.add(result); return result;
-    }
-    if (inspected.next === 'reconcile-simulated-work') return workspace.recordEnterpriseEvent(value, 'enterprise-settled', {...payload,
-        settlement: {status: 'SIMULATED_ONLY', currency: 'none', collectedCash: '0', externalSubmission: 'NOT_SUBMITTED',
-            obligations: [], recordedWork: current.actualConstructionWork + current.futureSpent}});
-    if (inspected.next === 'reserve-successor') {
-        if (!current.future.runs.every(run => run.state === 'ACCEPTED')) {
-            return workspace.recordEnterpriseEvent(value, 'enterprise-stopped', {attempt: current.attempt,
-                reason: 'Rejected or inconclusive comparison retains all earlier outcomes and holds successor construction.', outcome: 'REJECTED'});
-        }
-        const result = await workspace.recordEnterpriseEvent(value, 'enterprise-successor-reserved', {attempt: current.attempt,
-            parentFreezeDigest: current.freeze.digest, constructionReservation: current.charter.constructionLimit});
-        successorLeases.add(result); return result;
-    }
-    if (inspected.next === 'construct-successor') {
-        need(successorLeases.has(valueInput), 'Recovered successor construction needs reconciliation; no automatic retry.');
-        successorLeases.delete(valueInput);
-        const n = current.charter.maxN;
-        const construction = await constructInverse(current.bundle.transforms.at(-1).envelope,
-            current.bundle.envelopes, qualifyArtifact, {reference: 'inherited',
-                convolutionDigest: current.bundle.convolution.envelope.digest,
-                kernel: Array.from({length: n}, (_, i) => String(i ? 1 : n + 3))});
-        return workspace.recordEnterpriseEvent(value, 'enterprise-successor', {...payload,
-            construction, parentFreezeDigest: current.freeze.digest});
-    }
-    throw Error('Execution outcome is uncertain. Import its exact result or explicitly stop; it will not be retried automatically.');
-}
-async function invokeReserved(valueInput, expectedSource) {
-    need(invocationLeases.has(valueInput), 'This recovered or already attempted invocation requires exact-result reconciliation; no automatic retry.');
-    invocationLeases.delete(valueInput);
-    const value = copy(valueInput), source = copy(expectedSource), {current} = await state(value);
-    need(current?.state === 'INVOCATION_RESERVED' && same(source, current.charter.source),
-        'An exact persisted current-source invocation reservation is required.');
-    const report = await evaluateFuture(current.bundle, current.freeze, current.bank, current.charter.perTaskLimit);
-    return workspace.recordEnterpriseEvent(value, 'enterprise-invoked', {attempt: current.attempt,
-        invocationId: current.invocation.invocationId, report});
-}
-async function stop(valueInput, reason) {
-    const value = copy(valueInput), {current} = await state(value);
-    need(current, 'No active attempt to stop.');
-    return workspace.recordEnterpriseEvent(value, 'enterprise-stopped', {attempt: current.attempt,
-        reason, outcome: 'CANCELLED'});
-}
-
-return {start,state,next,invokeReserved,stop};
-})();
-const capability_module_39=(()=>{
 // SPDX-License-Identifier: Apache-2.0
 // Independent reimplementation of the selected manuscript's finite scalar model.
 const {canonical} = capability_module_7;
@@ -10226,6 +9499,768 @@ function runCapitalConfirmation(options = {}) {
 
 return {completion,completionDynamic,checkCompletionWitness,completionTable,qualifyCompletionMap,capitalRequirement,portfolioCapital,retentionLaw,epsilonCover,productiveDominance,pruneDominated,substitutionChain,resourceWitness,profileFromTrace,syntheticCapitalExample,capitalControls,runCapitalConfirmation};
 })();
+const capability_module_34=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+// Extend the canonical thirteen sections; the existing run.json remains the complete replay authority.
+const {canonical} = capability_module_7;
+const {summary} = capability_module_15;
+const {syntheticCapitalExample, capitalControls} = capability_module_35;
+function extendDocket(files, inspection) {
+    if (!inspection.enterprises) return files;
+    const state = inspection.enterprises, overview = summary(state);
+    const records = state.attempts;
+    const add = (path, value) => {
+        const before = JSON.parse(files[path]); before.autonomousEnterprises = value;
+        files[path] = canonical(before) + '\n';
+    };
+    files['00_manifest.md'] += '\nAutonomous Enterprises is an additive paper companion within the same mission and thirteen-section docket.\n';
+    files['01_claims_matrix.md'] += '\n| Autonomous Enterprises | Independent bounded reimplementation; companion package not obtained |\n'
+        + '| Selected construction recipes | Actual receipts; restricted classical arithmetic templates |\n'
+        + '| Funding and settlement | Synthetic only; no collected revenue or transaction |\n';
+    files['02_environment.md'] += '\nEnterprise artifacts use restricted JSON ASTs and exact bounded rational arithmetic. Hashing, bit complexity and engineering are not included in the declared arithmetic metric.\n';
+    add('03_benchmark_tasks/spec.json', records.map(row => ({attempt: row.attempt, charter: row.charter,
+        freeze: row.freeze || null, taskBank: row.bank || null})));
+    add('04_baselines/comparison.json', records.map(row => ({attempt: row.attempt,
+        constructionControls: row.bundle?.controls || null, actualRecipePlans: row.bundle?.plans || null,
+        futureComparisons: row.future || null})));
+    const comparisons = JSON.parse(files['04_baselines/comparison.json']);
+    comparisons.autonomousCapitalModel = {example: syntheticCapitalExample(), controls: capitalControls(),
+        accounting: 'Synthetic cash units, distinct from foundry arithmetic work. Analysis overhead is unmeasured, not zero.'};
+    files['04_baselines/comparison.json'] = canonical(comparisons) + '\n';
+    add('06_proof_bundles/capability.json', records.map(row => ({attempt: row.attempt,
+        evidenceLocation: '05_agialpha_runs/run.json → workspace.events: complete artifacts, rejected attempts and certificates',
+        artifactDigests: row.freeze?.artifactDigests || row.bundle?.envelopes.map(item => item.digest) || [],
+        independentReplay: row.bundleProof ? {verified: row.bundleProof.verified,
+            countedWorkPerReplay: row.bundleProof.currentReplayWork} : null,
+        successor: row.successor || null})));
+    add('07_replay_logs/replay.json', records.map(row => ({attempt: row.attempt, eventDigests: row.events,
+        currentBundleReplayWork: row.bundleProof?.currentReplayWork || null,
+        currentFutureReplayWork: row.futureProof?.currentReplayWork || null,
+        replayIsAdditionalWork: true})));
+    add('08_cost_ledgers/costs.json', records.map(row => ({attempt: row.attempt,
+        selectedComparison: row.bundle?.counts || null, completeObservedBuild: row.bundle?.observedWorkLedger || null,
+        constructionReservation: row.reservation, unknownConstructionSpent: row.unknownSpent,
+        invocationReservation: row.invocation || null, futureObservedWork: row.futureSpent ?? null,
+        successor: row.successor ? {observedWork: row.successor.observedSuccessorWork,
+            lineageWork: row.successor.lineageWork} : null,
+        admissionAllowancePerCompleteReplay: row.charter.admissionLimit,
+        currentBundleReplayWork: row.bundleProof?.currentReplayWork || null,
+        currentFutureReplayWork: row.futureProof?.currentReplayWork || null,
+        totalComplete: false, excluded: row.bundle?.excludedCosts || ['Unstarted or interrupted work is unknown.']})));
+    add('09_safety_ledgers/safety.json', overview);
+    add('10_validator_reports/review.json', {checker: 'Separately authored restricted interpreter and complete basis certificates',
+        organizationalIndependence: false, originalCompanion: 'NOT_OBTAINED', operationalPilot: 'NOT_RUN'});
+    add('12_summary_tables/outcome.json', overview);
+    return files;
+}
+
+return {extendDocket};
+})();
+const capability_module_33=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+// A derived export of the existing mission history; importing it grants no authority.
+const contract = capability_module_7;
+const workspace = capability_module_0;
+const {extendDocket} = capability_module_34;
+const {inspectReceiverReceipt, makeReceiverContext, rawReceiptDigest, receiptRequestBindings} = capability_module_13;
+
+const DOCKET_SCHEMA = 'successor-discovery-evidence-docket/v1';
+const ATTACHMENT_SCHEMA = 'successor-discovery-docket-attachments/v1';
+const DOCKET_PATHS = Object.freeze([
+    '00_manifest.md', '01_claims_matrix.md', '02_environment.md',
+    '03_benchmark_tasks/spec.json', '04_baselines/comparison.json', '05_agialpha_runs/run.json',
+    '06_proof_bundles/capability.json', '07_replay_logs/replay.json', '08_cost_ledgers/costs.json',
+    '09_safety_ledgers/safety.json', '10_validator_reports/review.json',
+    '11_alpha_wu_calibration/status.json', '12_summary_tables/outcome.json'
+]);
+const same = (left, right) => contract.canonical(left) === contract.canonical(right);
+const copy = value => JSON.parse(contract.canonical(value));
+const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
+    && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
+const need = (condition, message) => { if (!condition) throw Error(message); };
+const hash = value => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value);
+const git = value => typeof value === 'string' && /^[0-9a-f]{40}$/.test(value);
+const zero = () => Object.fromEntries(['acquisitions', 'search', 'checking', 'memoryWords',
+    'storageBytes', 'workerSlots', 'installations'].map(key => [key, 0]));
+const receiptZero = () => Object.fromEntries(contract.RESOURCE_KEYS.map(key => [key, 0]));
+function capturedOptions(options) {
+    const owned = copy(options);
+    need(Object.keys(owned).every(key => ['expectedSources', 'expectedReceiverSources', 'expectedWorkspaceHead',
+        'expectedMissionId'].includes(key)), 'Unsupported docket verifier option.');
+    if (Object.hasOwn(owned, 'expectedWorkspaceHead')) need(hash(owned.expectedWorkspaceHead), 'Expected docket head is invalid.');
+    return owned;
+}
+const rawDigest = rawReceiptDigest;
+function sum(target, vector, peaks = []) {
+    for (const key of Object.keys(target)) {
+        const next = peaks.includes(key) ? Math.max(target[key], vector[key]) : target[key] + vector[key];
+        need(Number.isSafeInteger(next) && next >= 0, 'Docket cost total exceeds the integer bound.');
+        target[key] = next;
+    }
+}
+function validateSource(input) {
+    need(exact(input, ['repository', 'commit', 'tree', 'files'])
+        && /^MontrealAI\/[A-Za-z0-9_.-]+$/.test(input.repository) && git(input.commit) && git(input.tree)
+        && Array.isArray(input.files) && input.files.length <= 100,
+    'Docket repository source identity differs.');
+    const names = new Set();
+    for (const file of input.files) {
+        need(exact(file, ['path', 'sha256']) && typeof file.path === 'string' && file.path.length <= 500
+            && !file.path.startsWith('/') && !file.path.includes('\\')
+            && file.path.split('/').every(part => part && !['.', '..'].includes(part))
+            && hash(file.sha256) && !names.has(file.path), 'Docket generated/source file identity differs.');
+        names.add(file.path);
+    }
+    return input;
+}
+
+async function emptyDocketAttachments(value) {
+    value = copy(value);
+    const inspected = await workspace.inspectWorkspace(value);
+    return {schema: ATTACHMENT_SCHEMA, missionId: value.missionId, workspaceHead: inspected.head,
+        sources: [], receipts: []};
+}
+
+async function derive(value, attachments, options) {
+    // Own both graphs before the first digest/replay suspension.
+    value = copy(value); attachments = copy(attachments);
+    const expectedSources = options.expectedSources === undefined ? undefined : copy(options.expectedSources);
+    const receiverSources = options.expectedReceiverSources === undefined ? undefined : copy(options.expectedReceiverSources);
+    const expectedHead = options.expectedWorkspaceHead, expectedMission = options.expectedMissionId;
+    const inspection = await workspace.inspectWorkspace(value);
+    need(expectedHead === undefined || inspection.head === expectedHead, 'Docket history differs from the independently retained head.');
+    need(expectedMission === undefined || value.missionId === expectedMission, 'Docket mission differs from the independently retained identity.');
+    need(exact(attachments, ['schema', 'missionId', 'workspaceHead', 'sources', 'receipts'])
+        && attachments.schema === ATTACHMENT_SCHEMA && attachments.missionId === value.missionId
+        && attachments.workspaceHead === inspection.head
+        && ['sources', 'receipts'].every(key => Array.isArray(attachments[key])
+            && attachments[key].length <= 24), 'Docket attachment mission/head or fields differ.');
+    attachments.sources.forEach(validateSource);
+    need(new Set(attachments.sources.map(item => item.repository + ':' + item.commit)).size === attachments.sources.length,
+        'Docket repeats or contradicts a repository commit source context.');
+    if (expectedSources !== undefined) need(same(attachments.sources, expectedSources), 'Docket source context differs from installed expectations.');
+    const historyAttachments = inspection.discovery.attachments || [];
+    const receipts = [], receiptIds = new Set(), branches = new Map();
+    const combinedReceipts = [...historyAttachments.filter(item => item.kind === 'receiver-receipt').map(item => item.record),
+        ...attachments.receipts];
+    for (const item of combinedReceipts) {
+        const bindings = await receiptRequestBindings(item);
+        const campaign = inspection.discovery.campaigns.find(record => same(record.bindings, bindings));
+        need(campaign, 'Receipt has no independently replayed campaign.');
+        const checked = await inspectReceiverReceipt(item, makeReceiverContext(campaign),
+            receiverSources === undefined ? {} : {expectedReceiverSources: receiverSources});
+        const branch = checked.commission.id + ':' + checked.commission.route;
+        need(!receiptIds.has(checked.receiptId), 'Docket repeats a semantic receipt.');
+        const branchIdentity = {branch: checked.commission.branch, currency: checked.commission.currency};
+        const previous = branches.get(branch), fleet = checked.inspectionKind === 'fleet-local-review' || previous?.fleet;
+        need(!previous || same(previous.identity, branchIdentity), fleet
+            ? 'Contradictory original work reference: Fleet review cannot change the retained request branch.'
+            : 'Docket commission route changes its frozen branch.');
+        receiptIds.add(checked.receiptId); branches.set(branch, {identity: branchIdentity, fleet}); receipts.push(checked);
+    }
+    // These records have already passed the installed event replay. They can only
+    // enter through original ordered hash-chain events, never caller aggregates.
+    const futureEvaluations = historyAttachments.filter(item => item.kind === 'future-evaluation').map(item => ({
+        campaignDigest: item.campaignDigest, eventDigest: item.eventDigest, recordDigest: item.recordDigest, result: item.record}));
+    const realTaskRecords = historyAttachments.filter(item => item.kind === 'real-task-contract').map(item => ({
+        campaignDigest: item.campaignDigest, eventDigest: item.eventDigest, recordDigest: item.recordDigest, record: item.record}));
+    const unresolvedFuture = historyAttachments.filter(item => item.kind === 'future-run-reserved'
+        && item.resolution?.kind !== 'future-evaluation').map(item => {
+        const bank = historyAttachments.find(record => record.kind === 'future-task-bank'
+            && record.campaignDigest === item.campaignDigest && record.record.digest === item.record.taskBankDigest);
+        const maximumLogicalWork = bank.record.tasks.length * item.capsule.protocol.treatments.length * item.record.perTaskWorkLimit;
+        need(Number.isSafeInteger(maximumLogicalWork), 'Future execution reservation exceeds the integer bound.');
+        return {campaignDigest: item.campaignDigest, recordDigest: item.recordDigest, eventDigest: item.eventDigest,
+            attempt: item.record.attempt, taskBankDigest: item.record.taskBankDigest,
+            perTaskWorkLimit: item.record.perTaskWorkLimit, maximumLogicalWork,
+            state: item.resolution?.kind === 'future-run-stopped' ? 'stopped' : 'reserved', spent: 'unknown-reservation-retained'};
+    });
+    const evidenceReplayLogical = {acquisitions: 0, search: 0, checking: 0, installations: 0};
+    for (const item of historyAttachments) {
+        if (item.kind === 'future-freeze' || item.kind === 'future-evaluation') sum(evidenceReplayLogical, item.capsule.admissionReplay);
+        if (item.kind === 'future-evaluation') for (const run of item.record.runs) sum(evidenceReplayLogical, run.costs);
+    }
+    const legacyWitnessCosts = value.events.filter(item => item.kind === 'evaluation').map(item => ({
+        eventDigest: item.digest, version: item.payload.number, phase: item.payload.phase, costs: item.payload.report.costs,
+        accounting: 'Original witness metrics retained separately; repeated construction references are not a second construction charge or Discovery units'}));
+    const realTaskChecks = [], seenChecks = new Set();
+    for (const item of realTaskRecords) {
+        const record = item.record;
+        const proposalIdentity = record.proposalDigest;
+        need(hash(proposalIdentity), 'A source/history-bound immutable real-task proposal is required.');
+        for (const check of item.record.checks) {
+            const checkIdentity = proposalIdentity + ':' + check.digest;
+            if (seenChecks.has(checkIdentity)) continue;
+            seenChecks.add(checkIdentity);
+            realTaskChecks.push({eventDigest: item.eventDigest, proposalIdentity, checkDigest: check.digest, taskId: check.taskId,
+                state: check.status, reportedObservation: check.observation.resourceUsed, contractChecker: check.checkerCharge,
+                accounting: check.resourceAccounting, operationalState: item.record.operationalState});
+        }
+    }
+    const construction = zero(), recordedReplay = zero();
+    const campaigns = inspection.discovery.campaigns.map(record => {
+        sum(construction, record.result.resources, ['memoryWords', 'workerSlots']);
+        sum(recordedReplay, record.recordedVerification, ['memoryWords', 'workerSlots']);
+        return {attempt: record.attempt, campaignDigest: record.campaignDigest, resultDigest: record.resultDigest,
+            bindings: record.bindings, state: record.state, parent: record.parent?.campaignDigest || null,
+            lineageQualified: record.lineageQualified, invalidations: record.result.invalidations,
+            generation: record.result.lineage.generation, lineageCumulative: record.result.lineage.cumulative,
+            construction: record.result.resources, recordedReplay: record.recordedVerification,
+            elapsedReceipt: record.elapsedReceipt, artifactDigests: record.artifacts.map(item => item.digest)};
+    });
+    const unresolved = inspection.discovery.attempts.filter(record => !record.result).map(record => ({
+        attempt: record.attempt, state: record.state, reservation: record.reservation,
+        spent: 'unknown', disposition: record.resourceDisposition || 'active-reservation-retained'}));
+    const total = zero(); sum(total, construction, ['memoryWords', 'workerSlots']); sum(total, recordedReplay, ['memoryWords', 'workerSlots']);
+    const routeCosts = {}, fleetCosts = receiptZero();
+    for (const receipt of receipts) {
+        if (receipt.inspectionKind === 'fleet-local-review') {
+            sum(fleetCosts, receipt.resources, ['memoryBytes', 'workerCapacity']);
+            continue;
+        }
+        routeCosts[receipt.commission.route] ||= receiptZero();
+        sum(routeCosts[receipt.commission.route], receipt.resources, ['memoryBytes', 'workerCapacity']);
+    }
+    const commissioned = receipts.filter(item => item.inspectionKind !== 'fleet-local-review');
+    const commissions = [...new Set(commissioned.map(item => item.commission.id))].map(id => ({id,
+        alternatives: [...new Set(commissioned.filter(item => item.commission.id === id).map(item => item.commission.route))].map(route => {
+            const inspected = commissioned.filter(item => item.commission.id === id && item.commission.route === route);
+            return {route, currency: inspected[0].commission.currency, reservedBaseUnits: '0', status: 'DRAFT_NOT_SUBMITTED',
+                inspectionReceiptIds: inspected.map(item => item.receiptId)};
+        }),
+        interpretation: 'alternative routes; no currency conversion or duplicate payment obligation'}));
+    return {value, attachments, inspection, campaigns, receipts, unresolved, construction, recordedReplay,
+        total, routeCosts, fleetCosts, commissions, futureEvaluations, realTaskRecords, historyAttachments, unresolvedFuture,
+        evidenceReplayLogical, legacyWitnessCosts, realTaskChecks};
+}
+
+async function filesFor(value, attachments, options = {}) {
+    const data = await derive(value, attachments, options);
+    const {inspection, campaigns, receipts, unresolved} = data;
+    const render = item => contract.canonical(item) + '\n';
+    const run = {schema: DOCKET_SCHEMA, workspace: data.value, attachments: data.attachments};
+    const runDigest = await contract.payloadDigest(run);
+    const unknown = ['independent organizational reproduction', 'current mainnet readiness', 'real settlement',
+        'energy', 'monetary compute cost', 'human review/coordination time', 'calibrated alpha-WU', 'delayed commercial outcomes',
+        'current export/replay overhead outside recorded campaign checks'];
+    if (data.attachments.sources.length === 0) unknown.push('authenticated repository/generated-asset source inventory');
+    const files = {
+        '00_manifest.md': '# Discovery Lab Evidence Docket\n\nSchema: ' + DOCKET_SCHEMA + '\n\nMission: ' + data.value.missionId
+            + '\n\nHistory head: ' + inspection.head + '\n\nRun commitment: ' + runDigest
+            + '\n\nDerived from the complete existing mission history. Attachments bind this exact head; they are not new history events.\n'
+            + 'Replay checks bounded synthetic computations. Imported evidence grants no capability, payment or execution authority.\n',
+        '01_claims_matrix.md': '# Claims\n\n| Claim | Status |\n|---|---|\n'
+            + '| Six-stage finite campaign evidence | Replayed; each original outcome retained |\n'
+            + '| Future-task advantage | ' + (data.futureEvaluations.length ? 'Separate protocol evidence retained in history; inspect its comparisons' : 'NOT_RUN: no future-task protocol evidence attached') + ' |\n'
+            + '| Real-task operational pilot | NOT_ESTABLISHED: contract records do not establish execution |\n'
+            + '| Independent organizational validation / commercial value / AGI or ASI | Unproven |\n'
+            + '| Promotion, release, live execution and settlement authority | Not granted by this docket |\n',
+        '02_environment.md': '# Environment\n\nBounded public synthetic integer computations in the installed browser/Node runtime.\n'
+            + 'Source/file identities are retained declarations unless separately authenticated against installed context.\n'
+            + 'Receiver checking is local; no remote execution, payment, energy measurement or organizational independence is inferred.\n',
+        '03_benchmark_tasks/spec.json': render({charters: inspection.discovery.attempts.map(item => ({attempt: item.attempt,
+            bindings: item.bindings, charter: item.charter})), futureTaskAttachments: data.futureEvaluations.length,
+        realTaskAttachments: data.realTaskRecords.length, exposure: 'Public seeded synthetic protocol; not secret external benchmarks'}),
+        '04_baselines/comparison.json': render({campaigns: inspection.discovery.campaigns.map(item => ({
+            campaignDigest: item.campaignDigest, comparisons: item.result.comparisons})),
+        futureTaskAttachments: data.futureEvaluations.length, unmeasured: unknown}),
+        '05_agialpha_runs/run.json': render(run),
+        '06_proof_bundles/capability.json': render({campaigns: inspection.discovery.campaigns.map(item => ({
+            campaignDigest: item.campaignDigest, artifacts: item.artifacts})), sources: data.attachments.sources,
+        receiverReceipts: receipts, historyAttachments: data.historyAttachments.map(item => ({campaignDigest: item.campaignDigest,
+            kind: item.kind, recordDigest: item.recordDigest, eventDigest: item.eventDigest})), importedAuthority: 'none'}),
+        '07_replay_logs/replay.json': render({method: 'Reconstruct every original workspace event and finite campaign; rebuild every docket section',
+            head: inspection.head, eventDigests: data.value.events.map(item => item.digest),
+            sourceContext: 'retained declarations; optional independently installed expectations checked separately',
+            independentOrganization: false, cachedOrCurrentReplayWork: 'not-separately-metered', rawReceiptDigests: receipts.map(item => item.receiptDigest)}),
+        '08_cost_ledgers/costs.json': render({construction: data.construction, recordedReplay: data.recordedReplay,
+            knownHistoryTotal: data.total, accounting: 'Each completed campaign increment and its recorded verification counted once; ancestor cumulative totals are descriptive and never summed again',
+            historyTotalScope: 'Discovery Lab campaign construction and its recorded verification only; other metric schemas remain separate below',
+            legacyWitnessCosts: data.legacyWitnessCosts, realTaskContractChecks: data.realTaskChecks,
+            peakMetrics: ['memoryWords', 'workerSlots'], unresolvedAttempts: unresolved,
+            unresolvedFutureAttempts: data.unresolvedFuture,
+            knownAttemptOutcomesComplete: unresolved.length === 0 && data.unresolvedFuture.length === 0,
+            totalComplete: false, totalCompletenessReason: 'Review, coordination, energy, monetary and aggregate export/reopen overhead remain unmeasured',
+            receiverInspectionByRoute: data.routeCosts, fleetLocalReviewObservations: data.fleetCosts,
+            fleetAccounting: 'Separate observed invocation costs, not combined with commission routes or a complete system total',
+            commissions: data.commissions, currenciesCombined: false,
+            futureTaskCosts: data.futureEvaluations.map(item => ({eventDigest: item.eventDigest,
+                freezeDigest: item.result.freezeDigest, taskBankDigest: item.result.taskBankDigest,
+                summaries: item.result.summaries, accounting: item.result.accounting})),
+            evidencePerFullReplayLogical: data.evidenceReplayLogical,
+            evidenceReplayScope: 'One complete attached-evidence replay; cumulative number of exports/reopens and wall time remain unmeasured',
+            amortization: 'No universal amortization assumed; inspect each attached future-task comparison', unmeasured: unknown}),
+        '09_safety_ledgers/safety.json': render({authority: [], transactionSubmission: 'not-performed-by-docket',
+            importedCodeExecution: false, rollback: 'Prior accepted campaigns and rejected/inconclusive attempts remain in the original history',
+            unresolvedAttempts: unresolved, unresolvedFutureAttempts: data.unresolvedFuture,
+            promotion: 'external explicit authorization required; no imported self-promotion'}),
+        '10_validator_reports/review.json': render({producer: 'Discovery Lab finite stage builders',
+            checker: 'Installed separately implemented finite checker and deterministic replay',
+            organizationalIndependence: 'not-established', receiverReceipts: receipts.map(item => ({
+                receiptDigest: item.receiptDigest, state: item.state, authenticity: item.authenticity})),
+            externalReview: 'pending', realTaskExecution: 'not-established'}),
+        '11_alpha_wu_calibration/status.json': render({status: 'uncalibrated', alphaWU: null,
+            reason: 'No external workload calibration or verifier; abstract resource counts are not alpha-WU or currency'}),
+        '12_summary_tables/outcome.json': render({campaigns, unresolved, unresolvedFuture: data.unresolvedFuture,
+            receiverReceiptCount: receipts.length,
+            futureEvaluationCount: data.futureEvaluations.length, realTaskRecordCount: data.realTaskRecords.length,
+            operationalAcceptance: 'not-established', authority: 'none', unknown})
+    };
+    extendDocket(files, inspection);
+    const checksums = {};
+    for (const path of DOCKET_PATHS) checksums[path] = await rawDigest(files[path]);
+    return {schema: DOCKET_SCHEMA, format: 'bounded-canonical-file-map', files, checksums};
+}
+
+async function createDiscoveryDocket(value, attachments, options = {}) {
+    options = capturedOptions(options);
+    const captured = copy(value);
+    const bound = attachments === undefined ? await emptyDocketAttachments(captured) : copy(attachments);
+    const docket = await filesFor(captured, bound, options);
+    // The complete export shares the established two-megabyte bounded input language.
+    return copy(docket);
+}
+async function exportDiscoveryDocket(value, attachments, options = {}) {
+    return contract.canonical(await createDiscoveryDocket(value, attachments, options));
+}
+async function verifyDiscoveryDocket(input, options = {}) {
+    options = capturedOptions(options);
+    const docket = typeof input === 'string' ? contract.parseBounded(input) : copy(input);
+    need(exact(docket, ['schema', 'format', 'files', 'checksums']) && docket.schema === DOCKET_SCHEMA
+        && docket.format === 'bounded-canonical-file-map' && exact(docket.files, DOCKET_PATHS)
+        && exact(docket.checksums, DOCKET_PATHS), 'Docket paths, format or fields differ.');
+    for (const path of DOCKET_PATHS) {
+        need(typeof docket.files[path] === 'string' && docket.checksums[path] === await rawDigest(docket.files[path]),
+            'Docket file checksum differs: ' + path);
+    }
+    const run = contract.parseBounded(docket.files['05_agialpha_runs/run.json']);
+    need(exact(run, ['schema', 'workspace', 'attachments']) && run.schema === DOCKET_SCHEMA, 'Unsupported docket run.');
+    const expected = await filesFor(run.workspace, run.attachments, options);
+    need(same(docket, expected), 'Docket content differs from finite replay or omits retained evidence.');
+    return {verified: true, scope: 'complete-local-synthetic-history-and-bound-attachments',
+        missionId: run.workspace.missionId, workspaceHead: run.attachments.workspaceHead,
+        authority: 'none', externalReplication: 'pending', settlement: 'not-performed'};
+}
+
+return {DOCKET_SCHEMA,ATTACHMENT_SCHEMA,DOCKET_PATHS,rawDigest,emptyDocketAttachments,createDiscoveryDocket,exportDiscoveryDocket,verifyDiscoveryDocket};
+})();
+const capability_module_36=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+const {canonical, parseBounded, payloadDigest} = capability_module_7;
+
+const DEPLOYMENT_INVENTORY_DIGEST = "9638704a60477c383c3e9cf684a099f087fd9d926f498fc67acaa93639ed9492";
+const handles = new WeakSet();
+const address = /^0x[0-9a-fA-F]{40}$/;
+const hash = /^0x[0-9a-fA-F]{64}$/;
+const digest = /^[0-9a-f]{64}$/;
+const snapshot = value => parseBounded(typeof value === 'string' ? value : canonical(value));
+const same = (a, b) => typeof a === 'string' && typeof b === 'string' && a.toLowerCase() === b.toLowerCase();
+function requireValue(condition, message) { if (!condition) throw Error(message); }
+function freeze(value) {
+    if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
+    return value;
+}
+function trusted(handle) { requireValue(handles.has(handle), 'A source-authenticated inventory handle is required'); return handle; }
+function routeFor(handle, route) {
+    trusted(handle);
+    requireValue(Object.hasOwn(handle.inventory.routes, route), 'Unknown deployment route');
+    const selected = handle.inventory.routes[route], deployment = handle.inventory.deployments[selected.deployment];
+    const contract = deployment.contracts.find(row => row.name === selected.contract);
+    return {selected, deployment, contract, token: handle.inventory.tokens[selected.currency]};
+}
+
+async function loadDeploymentInventory(raw, expectedDigest = DEPLOYMENT_INVENTORY_DIGEST) {
+    const inventory = snapshot(raw);
+    requireValue(digest.test(expectedDigest), 'A trusted inventory digest is required');
+    requireValue(await payloadDigest(inventory) === expectedDigest, 'Deployment inventory source mismatch');
+    requireValue(inventory.schema === 'successor-deployment-compatibility/v1' && inventory.chainId === 1
+        && inventory.authority === 'none' && inventory.operationallyReady === false, 'Invalid deployment inventory');
+    for (const [name, count] of Object.entries({alpha: 5, manager: 9, jobs: 25})) {
+        const deployment = inventory.deployments[name];
+        requireValue(deployment.contracts.length === count && deployment.liveObservation.status === 'NOT_RUN', 'Invalid recorded deployment scope');
+        requireValue(deployment.contracts.every(row => address.test(row.address) && hash.test(row.runtimeKeccak256)), 'Invalid contract identity');
+        requireValue(new Set(deployment.contracts.map(row => row.address.toLowerCase())).size === count, 'Duplicate deployment contract');
+    }
+    for (const [route, currency] of [['manager-usdc', 'USDC6'], ['jobs-agialpha', 'AGIALPHA18']]) {
+        requireValue(inventory.routes[route].currency === currency && address.test(inventory.tokens[currency].address), 'Mixed token route');
+    }
+    const handle = freeze({inventory, digest: expectedDigest}); handles.add(handle); return handle;
+}
+
+function deploymentSummary(handle) {
+    trusted(handle);
+    return freeze({schema: 'successor-deployment-summary/v1', inventoryDigest: handle.digest,
+        recordedContracts: Object.values(handle.inventory.deployments).reduce((n, row) => n + row.contracts.length, 0),
+        liveObservation: 'NOT_RUN', operationallyReady: false, authority: 'none',
+        routes: Object.fromEntries(Object.keys(handle.inventory.routes).map(route => {
+            const {selected, contract, token, deployment} = routeFor(handle, route);
+            return [route, {address: contract.address, currency: selected.currency, token: token.address,
+                decimals: token.decimals, directOwner: selected.owner, ultimateGovernor: selected.ultimateGovernor,
+                ownerContract: selected.ownerContract, operatorPath: selected.operatorPath, historicalObservation: deployment.historicalObservation,
+                missingAbiPin: contract.abiSha256 === null, ensRoots: selected.ensRoots}];
+        })), fleetCompatibility: handle.inventory.fleetCompatibility, unresolved: handle.inventory.unresolved});
+}
+
+function assessDeploymentContext(handle, route, raw) {
+    const context = snapshot(raw), {selected, contract, token} = routeFor(handle, route), reasons = [];
+    if (context.chainId !== handle.inventory.chainId) reasons.push('WRONG_CHAIN');
+    if (!same(context.deploymentAddress, contract.address)) reasons.push('STALE_OR_WRONG_DEPLOYMENT');
+    if (context.currency !== selected.currency || !same(context.tokenAddress, token.address)
+        || context.tokenDecimals !== token.decimals) reasons.push('WRONG_TOKEN_ROUTE');
+    if (!same(context.runtimeKeccak256, contract.runtimeKeccak256)) reasons.push('WRONG_RUNTIME_CODE');
+    if (contract.abiSha256 === null) reasons.push('ABI_PIN_UNAVAILABLE');
+    else if (context.abiSha256 !== contract.abiSha256) reasons.push('WRONG_ABI');
+    if (!same(context.owner, selected.owner)) reasons.push('WRONG_ROLE');
+    if (selected.ensRoots === null) reasons.push('IDENTITY_ROOTS_UNAVAILABLE');
+    else if (canonical(context.ensRoots ?? null) !== canonical(selected.ensRoots)) reasons.push('WRONG_IDENTITY_ROOT');
+    return freeze({schema: 'successor-deployment-context-assessment/v1', inventoryDigest: handle.digest,
+        route, compatible: reasons.length === 0, reasons, operationallyReady: false, authority: 'none'});
+}
+
+/** Caller supplies trusted read-only transport and Keccak implementation; imported data cannot install either. */
+async function inspectReadOnlyDeployment(handle, deploymentName, {rpc, keccak256, provider, signal,
+    maxDurationMs = 30000} = {}) {
+    trusted(handle);
+    const initial = {schema: 'successor-deployment-observation/v1', inventoryDigest: handle.digest,
+        deployment: deploymentName, authority: 'none', operationallyReady: false};
+    requireValue(Object.hasOwn(handle.inventory.deployments, deploymentName), 'Unknown deployment');
+    if (typeof rpc !== 'function' || typeof keccak256 !== 'function') return freeze({...initial, status: 'NOT_RUN', reasons: ['READ_ONLY_PROVIDER_OR_KECCAK_UNAVAILABLE']});
+    requireValue(typeof provider === 'string' && /^[a-zA-Z0-9._-]{1,128}$/.test(provider), 'Use a public provider label without a credential or URL');
+    requireValue(Number.isSafeInteger(maxDurationMs) && maxDurationMs >= 1 && maxDurationMs <= 60000, 'Bound the observation duration');
+    const start = performance.now(), calls = [], rows = [], deployment = handle.inventory.deployments[deploymentName];
+    const controller = new AbortController(), ownedSignal = controller.signal;
+    let observedBlock = null, phase = 'chain', callerAbort, observation, beforeCleanupElapsed;
+    function guardDeadline(deadline) {
+        if (performance.now() > deadline) {
+            controller.abort();
+            throw Error('Observation deadline exceeded');
+        }
+        requireValue(!ownedSignal.aborted, 'Observation cancelled');
+    }
+    async function call(method, params) {
+        requireValue(['eth_chainId', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call'].includes(method), 'Read-only RPC method required');
+        guardDeadline(start + maxDurationMs);
+        requireValue(calls.length < 100, 'Observation call budget exhausted');
+        calls.push({method, params});
+        const result = parseBounded(canonical(await bounded(() => rpc({method, params, signal: ownedSignal}))));
+        guardDeadline(start + maxDurationMs);
+        return result;
+    }
+    async function bounded(operation) {
+        let timer, abort;
+        const operationDeadline = Math.min(start + maxDurationMs, performance.now() + 5000);
+        try {
+            guardDeadline(operationDeadline);
+            const result = await Promise.race([Promise.resolve().then(() => {
+                guardDeadline(operationDeadline);
+                return operation();
+            }), new Promise((_, reject) => {
+                abort = () => reject(Error('Observation cancelled'));
+                ownedSignal.addEventListener('abort', abort, {once: true});
+                if (ownedSignal.aborted) abort();
+                timer = setTimeout(() => {
+                    controller.abort();
+                    reject(Error('Bounded observation timeout'));
+                }, Math.max(0, operationDeadline - performance.now()));
+            })]);
+            guardDeadline(operationDeadline);
+            return result;
+        } finally { clearTimeout(timer); if (abort) ownedSignal.removeEventListener('abort', abort); }
+    }
+    try {
+        if (signal) {
+            callerAbort = () => controller.abort();
+            signal.addEventListener('abort', callerAbort, {once: true});
+            if (signal.aborted) callerAbort();
+        }
+        const chain = await call('eth_chainId', []); requireValue(chain === '0x1', 'Wrong chain');
+        phase = 'block';
+        const block = await call('eth_getBlockByNumber', ['finalized', false]);
+        requireValue(hash.test(block.hash) && /^0x[0-9a-f]+$/i.test(block.number) && /^0x[0-9a-f]+$/i.test(block.timestamp), 'Invalid observation block');
+        observedBlock = {number: block.number, hash: block.hash, timestamp: block.timestamp};
+        for (const contract of deployment.contracts) {
+            phase = 'runtime:' + contract.name;
+            const code = await call('eth_getCode', [contract.address, block.number]);
+            requireValue(typeof code === 'string' && code.length <= 200000 && /^0x(?:[0-9a-fA-F]{2})+$/.test(code), 'Invalid or absent contract code');
+            const actualHash = await bounded(() => keccak256(code)); requireValue(typeof actualHash === 'string' && hash.test(actualHash), 'Invalid Keccak result');
+            const row = {name: contract.name, address: contract.address, runtimeKeccak256: actualHash,
+                codeMatches: same(actualHash, contract.runtimeKeccak256), actualOwner: null, ownerMatches: null,
+                completion: 'CODE_CHECKED', ownerStatus: contract.recordedOwner ? 'NOT_RUN' : 'NOT_APPLICABLE'};
+            rows.push(row);
+            if (contract.recordedOwner) {
+                phase = 'owner:' + contract.name;
+                const encoded = await call('eth_call', [{to: contract.address, data: '0x8da5cb5b'}, block.number]);
+                requireValue(typeof encoded === 'string' && /^0x0{24}[0-9a-fA-F]{40}$/.test(encoded), 'Invalid owner response');
+                row.actualOwner = '0x' + encoded.slice(-40); row.ownerMatches = same(row.actualOwner, contract.recordedOwner);
+                row.ownerStatus = 'OBSERVED';
+            }
+            row.completion = 'CODE_AND_RECORDED_OWNER_CHECKS_COMPLETE';
+        }
+        phase = 'block-recheck';
+        const recheck = await call('eth_getBlockByNumber', [block.number, false]);
+        requireValue(same(recheck.hash, block.hash), 'Observation block changed');
+        guardDeadline(start + maxDurationMs);
+        const accepted = rows.every(row => row.codeMatches && row.ownerMatches !== false);
+        observation = {...initial, provider, status: accepted ? 'OBSERVED_CODE_AND_RECORDED_OWNERS' : 'REJECTED_IDENTITY_MISMATCH',
+            block: observedBlock, contracts: rows, calls,
+            incomplete: ['ABI_AND_COMPILER_SOURCE', 'PROXY_AND_EXTERNAL_AUTHORITY', 'TOKEN_AND_IDENTITY_ROOTS',
+                'PAUSE_BALANCES_ALLOWANCES_AND_POLICY', 'INDEPENDENT_OPERATOR_AND_ACTIVATION_APPROVAL']};
+    } catch {
+        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
+            block: observedBlock, partialContracts: rows, stoppedAt: phase, observationComplete: false,
+            reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
+    } finally {
+        beforeCleanupElapsed = performance.now() - start;
+        controller.abort();
+        if (callerAbort) signal.removeEventListener('abort', callerAbort);
+    }
+    const elapsed = performance.now() - start;
+    if (signal?.aborted || elapsed > maxDurationMs) {
+        observation = {...initial, provider, status: signal?.aborted ? 'CANCELLED' : 'INCONCLUSIVE', calls,
+            block: observedBlock, partialContracts: rows,
+            stoppedAt: beforeCleanupElapsed <= maxDurationMs && elapsed > maxDurationMs ? 'cleanup' : observation.stoppedAt ?? phase,
+            observationComplete: false, reasons: ['READ_ONLY_OBSERVATION_INCOMPLETE']};
+    }
+    return freeze({...observation, costs: {rpcCalls: calls.length, elapsedMs: Math.max(0, Math.ceil(elapsed))}});
+}
+
+function prepareOperatorIntent(handle, route, raw) {
+    const input = snapshot(raw), {selected, contract} = routeFor(handle, route);
+    requireValue(Object.keys(input).sort().join(',') === 'abiSha256,actor,consequences,currency,data', 'Exact operator intent fields required');
+    requireValue(address.test(input.actor) && typeof input.data === 'string' && input.data.length <= 32770
+        && /^0x(?:[0-9a-fA-F]{2}){4,}$/.test(input.data), 'Invalid unsigned intent');
+    requireValue(typeof input.consequences === 'string' && input.consequences.length >= 10 && input.consequences.length <= 2048, 'Explicit consequences required');
+    const reasons = ['CURRENT_READBACK_AND_OPERATOR_APPROVAL_REQUIRED'];
+    if (!same(input.actor, selected.owner)) reasons.push('WRONG_ROLE');
+    if (selected.ownerContract !== null) reasons.push('CONTRACT_OWNER_EXECUTION_PATH_UNQUALIFIED');
+    if (input.currency !== selected.currency) reasons.push('WRONG_TOKEN_ROUTE');
+    if (contract.abiSha256 === null || input.abiSha256 !== contract.abiSha256) reasons.push('ABI_PIN_UNAVAILABLE_OR_MISMATCHED');
+    return freeze({schema: 'successor-unsigned-operator-intent/v1', route, inventoryDigest: handle.digest,
+        status: 'BLOCKED_OPERATOR_REVIEW_REQUIRED', executable: false, authority: 'none', reasons,
+        requiredActor: selected.owner, ultimateGovernor: selected.ultimateGovernor, ownerContract: selected.ownerContract,
+        operatorPath: selected.operatorPath, consequences: input.consequences,
+        unsignedDraft: selected.ownerContract !== null ? null
+            : {chainId: handle.inventory.chainId, to: contract.address, from: input.actor, value: '0', data: input.data},
+        proposedCall: {chainId: handle.inventory.chainId, target: contract.address, data: input.data},
+        callsPerformed: 0, signed: false, submitted: false});
+}
+
+return {DEPLOYMENT_INVENTORY_DIGEST,loadDeploymentInventory,deploymentSummary,assessDeploymentContext,inspectReadOnlyDeployment,prepareOperatorIntent};
+})();
+const capability_module_37=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+const {MODEL_SCHEMA, SEMANTICS, clone} = capability_module_29;
+function containment(flipped = false) {
+    return {schema: MODEL_SCHEMA, semantics: SEMANTICS,
+        variables: ['b', 'x', 'y'].map(id => ({id, domain: [0, 1]})),
+        factors: [{id: 'outside', scope: ['b'], costs: [1, 4]},
+            {id: 'first', scope: ['b', 'x'], costs: flipped ? [3, 0, 0, 3] : [0, 3, 3, 0]},
+            {id: 'second', scope: ['b', 'y'], costs: [0, 2, 2, 0]}]};
+}
+function scalarCounterexample(flipped = false) {
+    return {schema: MODEL_SCHEMA, semantics: SEMANTICS,
+        variables: ['b', 'x'].map(id => ({id, domain: [0, 1]})),
+        factors: [{id: 'pin', scope: ['b'], costs: [0, null]},
+            {id: 'component', scope: ['b', 'x'], costs: flipped ? [2, 3, 0, 1] : [0, 1, 2, 3]}]};
+}
+function interactingPaths(colors = 3) {
+    const domain = Array.from({length: colors}, (_, i) => i);
+    return {schema: MODEL_SCHEMA, semantics: SEMANTICS,
+        variables: ['u', 'a', 'v', 'b', 'c'].map(id => ({id, domain})),
+        factors: [['u', 'a'], ['a', 'v'], ['u', 'b'], ['b', 'c'], ['c', 'v']].map((scope, i) => ({
+            id: `edge${i}`, scope, costs: domain.flatMap(a => domain.map(b => a === b ? null : 0))}))};
+}
+// Explicit xorshift32 protocol, not the unavailable manuscript companion's Python RNG.
+function random(seed) {
+    let state = seed >>> 0;
+    return limit => { state ^= state << 13; state ^= state >>> 17; state ^= state << 5; return (state >>> 0) % limit; };
+}
+function weightedStream(seed, updates = 8) {
+    const next = random(seed), domain = [0, 1, 2];
+    const ids = ['b0', 'b1', ...Array.from({length: 3}, (_, i) => [`m${i}x0`, `m${i}x1`]).flat()];
+    const scopes = ids.map(id => [id]); scopes.push(['b0', 'b1']);
+    for (let i = 0; i < 3; i++) {
+        scopes.push([`m${i}x0`, `m${i}x1`]);
+        for (const id of [`m${i}x0`, `m${i}x1`]) for (const b of ['b0', 'b1']) scopes.push([b, id]);
+    }
+    const model = {schema: MODEL_SCHEMA, semantics: SEMANTICS, variables: ids.map(id => ({id, domain})),
+        factors: scopes.map((scope, i) => ({id: `factor${String(i).padStart(3, '0')}`, scope,
+            costs: Array.from({length: 3 ** scope.length}, () => scope.length === 1 ? next(6) : next(10) === 0 ? null : next(5))}))};
+    const snapshots = [clone(model)], revise = random(seed + 1000000);
+    for (let i = 0; i < updates; i++) {
+        const factor = model.factors[revise(model.factors.length)], entry = revise(factor.costs.length);
+        const values = [null, 0, 1, 2, 3, 4, 5].filter(value => value !== factor.costs[entry]);
+        factor.costs[entry] = values[revise(values.length)]; snapshots.push(clone(model));
+    }
+    return snapshots;
+}
+
+return {containment,scalarCounterexample,interactingPaths,random,weightedStream};
+})();
+const capability_module_38=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+/** Inert compatibility proposal. No existing target accepts this new schema yet. */
+const {canonical} = capability_module_24;
+const {sha256} = capability_module_27;
+const {inspectArchive} = capability_module_28;
+const {fields, same, clone, requireValue, seal, checkSeal, bounded} = capability_module_29;
+const REQUEST_SCHEMA = 'out-execute-commissioning-draft/v1';
+const TARGETS = Object.freeze({
+    'manager-usdc': {repository: 'MontrealAI/AGIJobManager', commit: '4d4c32685eebf23b0aa35dbb45abe23ac8a261cb',
+        path: 'site/assets/successor/jobs.mjs', interface: 'agijobmanager/successor-improvement-draft/v1',
+        asset: 'USDC', decimals: 6, role: 'bounded-construction-or-independent-evaluation'},
+    'jobs-agialpha': {repository: 'MontrealAI/AGIJobsv0', commit: '83065adf18a6ee987f8fa479a496a052d35db682',
+        path: 'packages/successor-core/src/compiler.mjs', interface: 'SealedWorkOrder / JobGraph',
+        asset: 'AGIALPHA', decimals: 18, role: 'bounded-construction-or-independent-evaluation'},
+    'fleet-qualified-review': {repository: 'MontrealAI/AGI-Fleet-Linux', commit: '45759fb096faf8988f58ae5ea71248d0f35a97c7',
+        path: 'local-runtime/schemas/client-v1.d.ts', interface: 'local-task/admission/prepared-grant',
+        asset: null, decimals: null, role: 'separately-qualified-execution-and-review'}
+});
+const constraints = Object.freeze({authority: 'none', signed: false, funded: false, executionApproved: false,
+    independentProof: false, settlement: 'not-connected', spendBaseUnits: '0', reservations: [],
+    deployments: [], transactions: [], modelCalls: 0, tokenConversion: 'none', membershipChanges: []});
+
+async function prepareWorkRequest(archiveRaw, {projectId, target, expectedSource, purpose = 'independent-evaluation'} = {}) {
+    requireValue(typeof projectId === 'string' && /^[a-zA-Z0-9-]{8,80}$/.test(projectId), 'PROJECT_ID');
+    requireValue(Object.hasOwn(TARGETS, target) && ['bounded-construction', 'independent-evaluation'].includes(purpose), 'TARGET_PURPOSE');
+    const archive = bounded(archiveRaw);
+    const inspected = await inspectArchive(archive), candidate = inspected.archive?.completions.at(-1);
+    requireValue(candidate && expectedSource && same(candidate.source, expectedSource), 'INDEPENDENT_EXPECTED_SOURCE_REQUIRED');
+    const raw = canonical(archive);
+    const body = {schema: REQUEST_SCHEMA, projectId, purpose, target, targetInterface: clone(TARGETS[target]),
+        archiveRaw: raw, archiveSha256: await sha256(raw), candidateDigest: candidate.digest,
+        incumbentDigest: candidate.parentDigest, expectedSource: clone(expectedSource),
+        acceptance: {scope: 'complete-declared-finite-model-only', independentEvaluator: null, acceptanceOwner: null,
+            baseline: 'full-enumeration-and-equally-capable-incremental-contracts',
+            obligations: ['Every factor and domain bound to current source', 'All profile rows and witnesses independently checked',
+                'Current whole artifact accepted', 'Failures, unknowns and complete cost ledgers retained',
+                'No source hash treated as behavioral or operational proof']},
+        adapterStatus: target === 'fleet-qualified-review' ? 'BLOCKED_UNPROVISIONED_NOT_EXECUTABLE' : 'DRAFT_NEW_SCHEMA_ADAPTER_NOT_INSTALLED',
+        unresolved: ['Explicit owner, producer and independent reviewer assignment', 'Exact target adapter and runtime qualification',
+            'Current source/package/host admission and expiry', 'Rights and protocol-specific membership checks',
+            'External budget, acceptance and any action authorization remain separate'],
+        limits: clone(constraints)};
+    return seal(body);
+}
+
+async function inspectWorkRequest(input, {expectedSource, projectId, target} = {}) {
+    const request = bounded(input);
+    fields(request, ['schema', 'projectId', 'purpose', 'target', 'targetInterface', 'archiveRaw', 'archiveSha256',
+        'candidateDigest', 'incumbentDigest', 'expectedSource', 'acceptance', 'adapterStatus', 'unresolved', 'limits', 'digest']);
+    requireValue(request.schema === REQUEST_SCHEMA && request.projectId === projectId && request.target === target,
+        'EXPECTED_REQUEST_CONTEXT_REQUIRED');
+    const rebuilt = await prepareWorkRequest(request.archiveRaw, {projectId, target, expectedSource, purpose: request.purpose});
+    requireValue(same(request, rebuilt), 'WORK_REQUEST_BINDING'); await checkSeal(request);
+    return {request, authority: [], executable: false, externalEvidence: 'not-established'};
+}
+
+return {REQUEST_SCHEMA,TARGETS,prepareWorkRequest,inspectWorkRequest};
+})();
+const capability_module_39=(()=>{
+// SPDX-License-Identifier: Apache-2.0
+const workspace = capability_module_0;
+const {copy, need, same, validateCharter, makeFreeze, makeTaskBank, completeConstructionWork} = capability_module_16;
+const {buildFoundry, constructInverse} = capability_module_19;
+const {qualifyArtifact} = capability_module_17;
+const {evaluateFuture, TREATMENTS} = capability_module_18;
+const constructionLeases = new WeakSet(), invocationLeases = new WeakSet(), successorLeases = new WeakSet();
+
+async function start(workspaceInput, charterInput) {
+    const charter = validateCharter(charterInput), value = copy(workspaceInput);
+    const inspected = await workspace.inspectWorkspace(value);
+    need(!inspected.enterprises?.active, 'Reconcile the earlier enterprise reservation first.');
+    need(!inspected.enterprises?.attempts.some(row => row.unresolvedReservation || row.unknownSpent
+        || row.state === 'INVOCATION_RESERVED'), 'Unknown historical spent work must be reconciled before another attempt in this mission.');
+    need(workspace.LIMITS.events - value.events.length >= 11, 'Reserve history space for construction, future tasks and recovery.');
+    const result = await workspace.recordEnterpriseEvent(value, 'enterprise-started',
+        {attempt: 'enterprise-' + crypto.randomUUID(), charter});
+    constructionLeases.add(result); return result;
+}
+async function state(value) {
+    const checked = await workspace.inspectWorkspace(value), current = checked.enterprises?.active;
+    const stages = {RESERVED: 'construct', ACCEPTED_CONSTRUCTION: 'freeze', FROZEN: 'supply-future-tasks',
+        TASKS_COMMITTED: 'reserve-invocation', INVOCATION_RESERVED: 'RECONCILE_UNCERTAIN_EXECUTION',
+        INVOCATION_RECONCILED: 'reconcile-simulated-work', READY_FOR_SUCCESSOR: 'reserve-successor',
+        SUCCESSOR_RESERVED: 'construct-successor'};
+    return {current, next: current ? stages[current.state] : 'STOPPED', history: checked.enterprises?.attempts || [],
+        externalAuthority: false};
+}
+async function next(valueInput, optionsInput = {}) {
+    const value = copy(valueInput), options = copy(optionsInput);
+    const {seed = 20261021, expectedSource} = options;
+    const inputSource = copy(expectedSource);
+    const inspected = await state(value), current = inspected.current;
+    need(current, 'No active bounded enterprise attempt.');
+    need(same(current.charter.source, inputSource), 'Installed source changed; keep history and requalify before continuation.');
+    const payload = {attempt: current.attempt};
+    if (inspected.next === 'construct') {
+        need(constructionLeases.has(valueInput), 'Recovered construction is uncertain; retain and reconcile its reservation instead of retrying.');
+        constructionLeases.delete(valueInput);
+        const completeReservation = Math.ceil(2_000_000 * (current.charter.maxN / 32) ** 2);
+        if (current.charter.constructionLimit < completeReservation) {
+            return workspace.recordEnterpriseEvent(value, 'enterprise-budget-refused', {attempt: current.attempt,
+                reservationBound: completeReservation});
+        }
+        const bundle = await buildFoundry({qualifyArtifact, maxN: current.charter.maxN});
+        return workspace.recordEnterpriseEvent(value, 'enterprise-constructed', {...payload, bundle});
+    }
+    if (inspected.next === 'freeze') return workspace.recordEnterpriseEvent(value, 'enterprise-frozen', {...payload,
+        freeze: await makeFreeze(current.charter, current.bundle, current.acceptedAt)});
+    if (inspected.next === 'supply-future-tasks') return workspace.recordEnterpriseEvent(value, 'enterprise-tasks', {...payload,
+        bank: await makeTaskBank(current.freeze, seed, current.charter.maxN, current.charter.taskLimit)});
+    if (inspected.next === 'reserve-invocation') {
+        const totalTreatmentReservation = current.bank.tasks.length * TREATMENTS.length * current.charter.perTaskLimit;
+        const currentAdmissionReserve = completeConstructionWork(current.bundle);
+        const result = await workspace.recordEnterpriseEvent(value, 'enterprise-run-reserved', {...payload,
+            invocationId: 'invocation-' + crypto.randomUUID(), bankDigest: current.bank.digest, workLimit: current.charter.perTaskLimit,
+            totalTreatmentReservation, currentAdmissionReserve,
+            verificationReplayReserve: totalTreatmentReservation + currentAdmissionReserve});
+        invocationLeases.add(result); return result;
+    }
+    if (inspected.next === 'reconcile-simulated-work') return workspace.recordEnterpriseEvent(value, 'enterprise-settled', {...payload,
+        settlement: {status: 'SIMULATED_ONLY', currency: 'none', collectedCash: '0', externalSubmission: 'NOT_SUBMITTED',
+            obligations: [], recordedWork: current.actualConstructionWork + current.futureSpent}});
+    if (inspected.next === 'reserve-successor') {
+        if (!current.future.runs.every(run => run.state === 'ACCEPTED')) {
+            return workspace.recordEnterpriseEvent(value, 'enterprise-stopped', {attempt: current.attempt,
+                reason: 'Rejected or inconclusive comparison retains all earlier outcomes and holds successor construction.', outcome: 'REJECTED'});
+        }
+        const result = await workspace.recordEnterpriseEvent(value, 'enterprise-successor-reserved', {attempt: current.attempt,
+            parentFreezeDigest: current.freeze.digest, constructionReservation: current.charter.constructionLimit});
+        successorLeases.add(result); return result;
+    }
+    if (inspected.next === 'construct-successor') {
+        need(successorLeases.has(valueInput), 'Recovered successor construction needs reconciliation; no automatic retry.');
+        successorLeases.delete(valueInput);
+        const n = current.charter.maxN;
+        const construction = await constructInverse(current.bundle.transforms.at(-1).envelope,
+            current.bundle.envelopes, qualifyArtifact, {reference: 'inherited',
+                convolutionDigest: current.bundle.convolution.envelope.digest,
+                kernel: Array.from({length: n}, (_, i) => String(i ? 1 : n + 3))});
+        return workspace.recordEnterpriseEvent(value, 'enterprise-successor', {...payload,
+            construction, parentFreezeDigest: current.freeze.digest});
+    }
+    throw Error('Execution outcome is uncertain. Import its exact result or explicitly stop; it will not be retried automatically.');
+}
+async function invokeReserved(valueInput, expectedSource) {
+    need(invocationLeases.has(valueInput), 'This recovered or already attempted invocation requires exact-result reconciliation; no automatic retry.');
+    invocationLeases.delete(valueInput);
+    const value = copy(valueInput), source = copy(expectedSource), {current} = await state(value);
+    need(current?.state === 'INVOCATION_RESERVED' && same(source, current.charter.source),
+        'An exact persisted current-source invocation reservation is required.');
+    const report = await evaluateFuture(current.bundle, current.freeze, current.bank, current.charter.perTaskLimit);
+    return workspace.recordEnterpriseEvent(value, 'enterprise-invoked', {attempt: current.attempt,
+        invocationId: current.invocation.invocationId, report});
+}
+async function stop(valueInput, reason) {
+    const value = copy(valueInput), {current} = await state(value);
+    need(current, 'No active attempt to stop.');
+    return workspace.recordEnterpriseEvent(value, 'enterprise-stopped', {attempt: current.attempt,
+        reason, outcome: 'CANCELLED'});
+}
+
+return {start,state,next,invokeReserved,stop};
+})();
 const capability=capability_module_0;
 const storage=capability_module_22;
 const outEvolve=capability_module_23;
@@ -10240,17 +10275,17 @@ const discoveryEvidence=capability_module_9;
 const discoveryFuture=capability_module_10;
 const discoveryDocket=capability_module_33;
 const discoveryReceipts=capability_module_13;
-const discoveryDeployments=capability_module_35;
+const discoveryDeployments=capability_module_36;
 const discoveryRealTask=capability_module_12;
 const outExecute=capability_module_28;
 const outExecuteModel=capability_module_29;
-const outExecuteFixtures=capability_module_36;
-const outExecuteTransport=capability_module_37;
-const enterpriseController=capability_module_38;
+const outExecuteFixtures=capability_module_37;
+const outExecuteTransport=capability_module_38;
+const enterpriseController=capability_module_39;
 const enterpriseProtocol=capability_module_16;
 const enterpriseHistory=capability_module_15;
-const enterpriseCapital=capability_module_39;
-const SOURCE_HASH='844d98a7a7a529943f5d52e232dbf8bc3f040132868bc30fc8928acaf6946b9b';
+const enterpriseCapital=capability_module_35;
+const SOURCE_HASH='bae61e59ad39ea53af3c293c0833a7a9e64e3ef0bf50f22e27b60d66c4c1cf6f';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -11559,7 +11594,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "844d98a7a7a529943f5d52e232dbf8bc3f040132868bc30fc8928acaf6946b9b"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "bae61e59ad39ea53af3c293c0833a7a9e64e3ef0bf50f22e27b60d66c4c1cf6f"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {
@@ -12416,7 +12451,7 @@ const REAL_TASK_SOURCES={"adapterSourceDigest": "86aae1d8e0ad8c072957567cf5c5f19
 })();
 
 
-const ENTERPRISE_SOURCES={"checker": "049fa7904664686e2ef7b59dc38768608401879eaabd07eb8ef5703f9f362a75", "closure": "844d98a7a7a529943f5d52e232dbf8bc3f040132868bc30fc8928acaf6946b9b", "constructor": "3369219a306f69bf446d8d1cd343624686d2eba101e9be5be3afa9af463ee615"};
+const ENTERPRISE_SOURCES={"checker": "52735ba95b2f4be8580fffc957e9d8f910c9e08b6458c5bb847f3f74a500bf7d", "closure": "bae61e59ad39ea53af3c293c0833a7a9e64e3ef0bf50f22e27b60d66c4c1cf6f", "constructor": "3369219a306f69bf446d8d1cd343624686d2eba101e9be5be3afa9af463ee615"};
 // SPDX-License-Identifier: Apache-2.0
 (() => {
     const el = id => document.getElementById('enterprise-' + id);

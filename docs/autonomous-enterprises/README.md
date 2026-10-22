@@ -27,8 +27,10 @@ or recent release assets. This is **an independent reimplementation**, not repro
 
 ## Reproduce and inspect
 
-The repository pins Node 22.17.1. The retained local runs use Node 24.19.0 and 22.23.3; they do not qualify the pinned
-runtime or the hosted release. No model, wallet, account, package installation or network access is needed for this study.
+The repository pins Node 22.17.1. The original hosted candidate passed all 516 Node tests on that runtime, then failed
+a workflow-policy assertion; its archive and logs remain retained. The repaired source passes 89 enterprise tests locally
+on Node 24.19.0 and 22.23.3, with a freshly completed browser journey and docket replay. Fresh exact-source hosted
+acceptance remains required. No model, wallet, account, package installation or network access is needed for this study.
 
 ```bash
 node --test examples/autonomous-enterprises/*.test.mjs
@@ -93,9 +95,9 @@ tables are bounded to seven capabilities. It does not prove a rational-price, ti
 
 | Lane | Existing owner work | Remaining dependency |
 | --- | --- | --- |
-| Alpha | #4853 stacked on #4851; parent fa349004 | Exact-source hosted checks/review; qualified normal integrations and fresh main release |
+| Alpha | #4853 stacked on #4851; owner parent 5173078a | Exact-source hosted checks/review; qualified normal integrations and fresh main release |
 | Manager | #1613; maintenance v1.19.6 is separate | Final installed Discovery/enterprise source and compatible profile; USDC6 only |
-| Jobs | #4010; rc.17 prerequisite owner #4007 | Its source publication, final installed receivers and compatible profile; AGIALPHA18 only |
+| Jobs | #4010; prerequisite rc.17 is now published | Final installed receivers and a later compatible profile; AGIALPHA18 only |
 | Fleet | #64; held #61 remains separate | Eligible owner/custody review, final installed acceptance and compatible publication |
 
 This foundry increment does not implement or qualify enterprise-specific installed receivers in the other three
@@ -107,3 +109,9 @@ is represented as the complete four-repository launch.
 
 The controller reconciles only simulated work and has no external payment, publication or transaction authority.
 Its imported evidence cannot approve spending, create customers, collect invoices or promote itself.
+
+The configured review of the original integrated child found two real issues: unchecked bundle disclosure metadata
+and unrecorded partial work when successor qualification throws. The repair closes the complete bundle/disclosure
+frames and records failed successor replay. Retained fail-before/pass-after controls cover inert metadata alterations,
+a late stale-work-bound exception, a fully counted negative spectrum certificate and known-zero budget refusal.
+These source fixes require fresh review; the original findings are not erased or represented as organizational approval.
