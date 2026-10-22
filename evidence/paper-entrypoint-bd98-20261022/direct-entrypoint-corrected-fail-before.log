@@ -1,0 +1,97 @@
+F.FFF                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_clean_diff_and_valid_catalog_addition_run_without_inherited_pythonpath[direct-script] _
+
+history = (PosixPath('/tmp/pytest-of-root/pytest-41/test_clean_diff_and_valid_cata0/repo'), '2950636a6d648595201e603fb712184dd60c9bb6', PosixPath('/tmp/pytest-of-root/pytest-41/test_clean_diff_and_valid_cata0/event.json'))
+module = False
+
+    @pytest.mark.parametrize("module", [False, True], ids=["direct-script", "module"])
+    def test_clean_diff_and_valid_catalog_addition_run_without_inherited_pythonpath(
+        history: tuple[Path, str, Path], module: bool
+    ) -> None:
+        root, _, event = history
+        clean = run_gate(root, event, module=module)
+>       assert clean.returncode == 0, clean.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "/tmp/pytest-of-root/pytest-41/test_clean_diff_and_valid_cata0/repo/scripts/check_no_binary_diff.py", line 300, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/pytest-of-root/pytest-41/test_clean_diff_and_valid_cata0/repo/scripts/check_no_binary_diff.py", line 265, in main
+E             from scripts.research_papers import (
+E         ModuleNotFoundError: No module named 'scripts'
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/workspace/scratch/ce7e013c0938/qualification-venv/bin/python', 'scripts/check_no_binary_diff....py", line 265, in main\n    from scripts.research_papers import (\nModuleNotFoundError: No module named \'scripts\'\n').returncode
+
+tests/test_no_binary_diff_entrypoint.py:67: AssertionError
+_ test_direct_entrypoint_rejects_binary_changes_with_the_binary_gate_diagnostic[unauthorized.bin] _
+
+history = (PosixPath('/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects0/repo'), '2950636a6d648595201e603fb712184dd60c9bb6', PosixPath('/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects0/event.json'))
+name = 'unauthorized.bin'
+
+    @pytest.mark.parametrize("name", ["unauthorized.bin", "extensionless"])
+    def test_direct_entrypoint_rejects_binary_changes_with_the_binary_gate_diagnostic(
+        history: tuple[Path, str, Path], name: str
+    ) -> None:
+        root, _, event = history
+        (root / name).write_bytes(b"unauthorized\x00binary\n")
+        save(root)
+        result = run_gate(root, event)
+        assert result.returncode == 1
+>       assert result.stdout.splitlines() == ["ERROR: Binary files changed in diff:", "  - " + name]
+E       AssertionError: assert [] == ['ERROR: Bina...thorized.bin']
+E         
+E         Right contains 2 more items, first extra item: 'ERROR: Binary files changed in diff:'
+E         Use -v to get more diff
+
+tests/test_no_binary_diff_entrypoint.py:90: AssertionError
+_ test_direct_entrypoint_rejects_binary_changes_with_the_binary_gate_diagnostic[extensionless] _
+
+history = (PosixPath('/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects1/repo'), '5991dcdbc2839edca85295f5ac5a3546d237bee7', PosixPath('/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects1/event.json'))
+name = 'extensionless'
+
+    @pytest.mark.parametrize("name", ["unauthorized.bin", "extensionless"])
+    def test_direct_entrypoint_rejects_binary_changes_with_the_binary_gate_diagnostic(
+        history: tuple[Path, str, Path], name: str
+    ) -> None:
+        root, _, event = history
+        (root / name).write_bytes(b"unauthorized\x00binary\n")
+        save(root)
+        result = run_gate(root, event)
+        assert result.returncode == 1
+>       assert result.stdout.splitlines() == ["ERROR: Binary files changed in diff:", "  - " + name]
+E       AssertionError: assert [] == ['ERROR: Bina...xtensionless']
+E         
+E         Right contains 2 more items, first extra item: 'ERROR: Binary files changed in diff:'
+E         Use -v to get more diff
+
+tests/test_no_binary_diff_entrypoint.py:90: AssertionError
+_ test_direct_entrypoint_rejects_original_pdf_tampering_even_with_updated_catalog_hash _
+
+history = (PosixPath('/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects2/repo'), '5991dcdbc2839edca85295f5ac5a3546d237bee7', PosixPath('/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects2/event.json'))
+
+    def test_direct_entrypoint_rejects_original_pdf_tampering_even_with_updated_catalog_hash(
+        history: tuple[Path, str, Path],
+    ) -> None:
+        root, _, event = history
+        data = papers.load_catalog(root)
+        row = data["papers"][0]
+        original = root / row["pdf"]["path"]
+        changed = original.read_bytes() + b"\nchanged original\n"
+        original.write_bytes(changed)
+        row["pdf"]["sha256"] = hashlib.sha256(changed).hexdigest()
+        refresh_fixture(root, data)
+        save(root)
+        result = run_gate(root, event)
+        assert result.returncode == 1
+>       assert "Historical paper paths and bytes are immutable" in result.stderr
+E       assert 'Historical paper paths and bytes are immutable' in 'Traceback (most recent call last):\n  File "/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects2/repo/script....py", line 265, in main\n    from scripts.research_papers import (\nModuleNotFoundError: No module named \'scripts\'\n'
+E        +  where 'Traceback (most recent call last):\n  File "/tmp/pytest-of-root/pytest-41/test_direct_entrypoint_rejects2/repo/script....py", line 265, in main\n    from scripts.research_papers import (\nModuleNotFoundError: No module named \'scripts\'\n' = CompletedProcess(args=['/workspace/scratch/ce7e013c0938/qualification-venv/bin/python', 'scripts/check_no_binary_diff....py", line 265, in main\n    from scripts.research_papers import (\nModuleNotFoundError: No module named \'scripts\'\n').stderr
+
+tests/test_no_binary_diff_entrypoint.py:108: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../../dev::test_clean_diff_and_valid_catalog_addition_run_without_inherited_pythonpath[direct-script]
+FAILED ../../../../dev::test_direct_entrypoint_rejects_binary_changes_with_the_binary_gate_diagnostic[unauthorized.bin]
+FAILED ../../../../dev::test_direct_entrypoint_rejects_binary_changes_with_the_binary_gate_diagnostic[extensionless]
+FAILED ../../../../dev::test_direct_entrypoint_rejects_original_pdf_tampering_even_with_updated_catalog_hash
+4 failed, 1 passed in 0.71s

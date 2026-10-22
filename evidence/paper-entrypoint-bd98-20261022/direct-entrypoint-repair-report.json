@@ -1,0 +1,122 @@
+{
+  "schema": "alpha-direct-binary-entrypoint-repair/v1",
+  "localCommit": "ecc2e2227a2e6b0f361ee7b3fc8c512ef62df606",
+  "tree": "f4bd8fd71e915fce76a7c476fef11943249002c1",
+  "parent": "d90fc57fc6bdd2e206fe0ab2b53f7371ee77cfdd",
+  "publicWrites": false,
+  "sourceCommitsUnsigned": true,
+  "checkout": "/workspace/scratch/32717074a7f1/paper-entrypoint-fix",
+  "ownerRequests": [
+    "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4854#issuecomment-6329730653",
+    "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4854#issuecomment-6329873943"
+  ],
+  "changes": [
+    "Guarded direct-entrypoint-only repository import path bootstrap; all binary/catalog/history validation AST otherwise identical",
+    "AST-identical line wrap preserving exact log_url value",
+    "Five actual subprocess regressions with PYTHONPATH/PYTHONHOME removed: direct/module clean+validpaperaddition, unauthorized.bin, extensionlessbinary andoriginalPDFtamperwithupdatedcataloghash"
+  ],
+  "unchangedPredecessorGuard": [
+    "scripts/publish_paper_site.py",
+    "tests/test_paper_publication.py"
+  ],
+  "regressions": {
+    "correctedBefore": {
+      "failed": 4,
+      "passed": 1,
+      "diagnostic": "Direct script raises ModuleNotFoundError; module positive path passes"
+    },
+    "after": {
+      "passed": 307,
+      "durationSeconds": 8.38
+    },
+    "initialFixtureFailure": "First run accidentally committed Python __pycache__ in module-positive fixture; retained and corrected with the real repository-style __pycache__ ignore. No production gate changed."
+  },
+  "checks": {
+    "configuredPrecommit": "4.2.0 PASS on all three changed paths, all applicable hooks; nonmatching shell/action/ESLint hooks skipped",
+    "strictTypingNewLogic": "PASS scripts/check_no_binary_diff.py and tests/test_no_binary_diff_entrypoint.py",
+    "strictTypingAllThree": "FAIL: 9 inherited errors solely in AST-identical tests/test_paper_link_repair.py; no waiver or annotation churn",
+    "additionalSemgrep": "151 Python rules, 3 files, 0 findings; tool also reports 2 ignore-pattern skips",
+    "diffCheck": "PASS",
+    "worktree": "clean; only three explicit paths committed"
+  },
+  "sourceChecks": {
+    "base": "d90fc57fc6bdd2e206fe0ab2b53f7371ee77cfdd",
+    "logUrlWrapAstIdentical": true,
+    "binaryGuardAstIdenticalAfterRemovingOnlyDirectEntrypointBootstrap": true,
+    "files": [
+      {
+        "path": "scripts/check_no_binary_diff.py",
+        "sha256": "fbe11d6536dda272f139fb556a60bfb51d9750feb326ea37a006c4c55627a1c4",
+        "bytes": 11469
+      },
+      {
+        "path": "tests/test_no_binary_diff_entrypoint.py",
+        "sha256": "d8462e1ad9d626a2f1bf8f968d70784fdf627e76690c653fb52a665a8218a9e3",
+        "bytes": 4587
+      },
+      {
+        "path": "tests/test_paper_link_repair.py",
+        "sha256": "a87becfaa3593be4f77cea88b9d0ff51975888c38cb4d19e7962b529e838c5bf",
+        "bytes": 15907
+      }
+    ]
+  },
+  "environment": {
+    "python": "/workspace/scratch/ce7e013c0938/qualification-venv/bin/python",
+    "parentPytestPath": "PYTHONPATH=.:/workspace/scratch/32717074a7f1/integration-python-deps; PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+    "fixtureParser": "separate requirements-papers.lock hash-verified pypdf6.21.1 target; no owner venv mutation",
+    "precommitRuntime": "separate /workspace/scratch/32717074a7f1/paper-entrypoint-runtime; all env-check installs confined there"
+  },
+  "evidence": [
+    {
+      "path": "direct-entrypoint-fail-before.log",
+      "bytes": 8144,
+      "sha256": "6ceb7856b2afa8bbdd4b41357a338223b3c26659b268e61d7e61cb8d17099fb2"
+    },
+    {
+      "path": "direct-entrypoint-corrected-fail-before.log",
+      "bytes": 6489,
+      "sha256": "10194f402c50e0a356fffd4d2431e61c3e2047416fcfe370d733f9e0e573a3ec"
+    },
+    {
+      "path": "direct-entrypoint-focused.log",
+      "bytes": 420,
+      "sha256": "2a024dc1ba02dbc478b5a04dd0763887019e22fa83f2b78feeacd1b598918961"
+    },
+    {
+      "path": "direct-entrypoint-final-focused.log",
+      "bytes": 420,
+      "sha256": "180c5932cedb372f9df00d5597d4c84aee96564d2821acce1b32e0bde452334c"
+    },
+    {
+      "path": "direct-entrypoint-precommit.log",
+      "bytes": 1440,
+      "sha256": "0800924478e7c44b5037f33c744b7a11703ac79ef768f9fe0db2297c2788b605"
+    },
+    {
+      "path": "direct-entrypoint-strict-typing.log",
+      "bytes": 43,
+      "sha256": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8"
+    },
+    {
+      "path": "direct-entrypoint-all-three-typing.log",
+      "bytes": 1112,
+      "sha256": "86f87f0056959d93aaa18f274a63e09f1fa5395b1388becda8c9d32d15183c9a"
+    },
+    {
+      "path": "direct-entrypoint-semgrep-python.log",
+      "bytes": 1303,
+      "sha256": "4eb614f039db138cd720b91410c347a8673724ad944fd6fb090b1fbbc0b3c2c5"
+    },
+    {
+      "path": "direct-entrypoint-source-check.json",
+      "bytes": 693,
+      "sha256": "c8356329f6857d83c1dd9aee14fa10b01f05b4c4b4c5e2d46bb5b4b45a7426cd"
+    }
+  ],
+  "pending": [
+    "Root independent exact-source review and actual public commit readback",
+    "Original producer custody and safe ordinary leased PR head advance",
+    "Fresh configured review and required hosted checks; actual integrated-main release acceptance"
+  ]
+}

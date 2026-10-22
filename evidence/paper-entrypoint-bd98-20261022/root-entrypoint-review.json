@@ -1,0 +1,37 @@
+{
+  "schema": "independent-direct-entrypoint-review/v1",
+  "reviewer": "root AI technical review",
+  "parent": "d90fc57fc6bdd2e206fe0ab2b53f7371ee77cfdd",
+  "candidateCommit": "ecc2e2227a2e6b0f361ee7b3fc8c512ef62df606",
+  "candidateTree": "f4bd8fd71e915fce76a7c476fef11943249002c1",
+  "files": [
+    {
+      "path": "scripts/check_no_binary_diff.py",
+      "sha256": "fbe11d6536dda272f139fb556a60bfb51d9750feb326ea37a006c4c55627a1c4",
+      "bytes": 11469
+    },
+    {
+      "path": "tests/test_paper_link_repair.py",
+      "sha256": "a87becfaa3593be4f77cea88b9d0ff51975888c38cb4d19e7962b529e838c5bf",
+      "bytes": 15907
+    },
+    {
+      "path": "tests/test_no_binary_diff_entrypoint.py",
+      "sha256": "d8462e1ad9d626a2f1bf8f968d70784fdf627e76690c653fb52a665a8218a9e3",
+      "bytes": 4587
+    }
+  ],
+  "semanticReview": "Only conditional direct-entrypoint import-root bootstrap changes script AST. Module invocation and every binary/catalog/history validation branch unchanged; original PDF and arbitrary binary refusals tested by actual subprocess. Repair URL wrap independently AST-identical.",
+  "actualSubprocessTests": ".....                                                                    [100%]\n5 passed in 0.72s\n",
+  "initialIndependentTestAttempt": {
+    "status": "collection-failed",
+    "reason": "clean pytest environment missing pypdf dependency imported by fixture helper",
+    "retainedIn": "tool transcript; no test execution claimed"
+  },
+  "initialReviewHarnessAttempt": {
+    "status": "assertion-failed",
+    "reason": "Mutable HEAD advanced from d90 to ecc during review; fixed by explicitly comparing original d90 baseline. No source change caused by review."
+  },
+  "rerun": "separate exact-pinned pypdf6.21.1 target, own clean pytest8.4.1; tested child subprocess removes PYTHONPATH/PYTHONHOME",
+  "authority": "AI technical assessment; not human or organizational approval"
+}
