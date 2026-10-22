@@ -49,8 +49,9 @@ def bundle(root: Path = ROOT) -> tuple[str, str, str]:
 
     engine = visit(root / "examples/successor-workbench/engine.mjs")
     transport = visit(root / "docs/assets/successor/engine.mjs")
+    native = visit(root / "examples/successor-workbench/native.mjs")
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    code = "\n".join(chunks) + f"\nconst workbench={engine},transport={transport};\n"
+    code = "\n".join(chunks) + f"\nconst workbench={engine},transport={transport},nativeWorkbench={native};\n"
     code += f"const SOURCE_HASH='{source_hash}';\n"
     return code, source_hash, json.dumps(sources, sort_keys=True)
 
@@ -70,11 +71,11 @@ for await (const chunk of process.stdin) {
 }
 const request=transport.parseBounded(raw);
 let result;
-if(request.operation==='registry')result={schema:workbench.VERSION,sourceHash:SOURCE_HASH,families:workbench.REGISTRY};
-else if(request.operation==='example')result=workbench.example(request.family);
-else if(request.operation==='run')result=await workbench.run(request.spec,{sourceHash:SOURCE_HASH});
-else if(request.operation==='plan')result=await workbench.plan(request.spec);
-else if(request.operation==='inspect')result=await workbench.inspectPack(request.pack);
+if(request.operation==='registry')result={schema:nativeWorkbench.VERSION,sourceHash:SOURCE_HASH,families:nativeWorkbench.REGISTRY};
+else if(request.operation==='example')result=nativeWorkbench.example(request.family);
+else if(request.operation==='run')result=await nativeWorkbench.run(request.spec,{sourceHash:SOURCE_HASH});
+else if(request.operation==='plan')result=await nativeWorkbench.plan(request.spec);
+else if(request.operation==='inspect')result=await nativeWorkbench.inspectPack(request.pack);
 else throw Error('UNKNOWN_OPERATION');
 process.stdout.write(transport.canonical(result)+'\\n');
 """
