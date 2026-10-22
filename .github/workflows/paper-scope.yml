@@ -4,7 +4,7 @@ on:
   workflow_call:
     outputs:
       mode:
-        description: paper only after trusted history and passive PDF checks; full otherwise
+        description: paper/editorial scope only after trusted history and passive checks; full otherwise
         value: ${{ jobs.classify.outputs.mode }}
 permissions:
   contents: read
@@ -38,7 +38,7 @@ jobs:
             echo 'mode=full' >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          for file in scripts/paper_changes.py scripts/research_papers.py scripts/build_service_worker.py requirements-papers.lock; do
+          for file in scripts/paper_changes.py scripts/release_plan.py scripts/research_papers.py scripts/build_service_worker.py requirements-papers.lock; do
             if ! git --no-replace-objects show "$BASE:$file" > "$policy/$file"; then
               echo 'mode=full' >> "$GITHUB_OUTPUT"
               exit 0
@@ -50,7 +50,7 @@ jobs:
           if python -c 'import json; raise SystemExit(json.load(open("scope.json"))["mode"] != "paper")'; then
             python -m pip install --require-hashes --only-binary=:all: -r requirements-papers.lock
             python -m scripts.research_papers --root "$GITHUB_WORKSPACE" check
-            echo 'Scope: paper/site checks only; NO full runtime qualification.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Scope: proved paper/editorial inputs only; NO new software qualification.' >> "$GITHUB_STEP_SUMMARY"
           else
             echo 'Scope: full software qualification required.' >> "$GITHUB_STEP_SUMMARY"
           fi

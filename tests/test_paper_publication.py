@@ -71,10 +71,13 @@ def staged(source: tuple[Path, str, str], site: Path) -> tuple[dict[str, Any], d
 
 def test_overlay_preserves_complete_software_inventory(source: tuple[Path, str, str], tmp_path: Path) -> None:
     root, software, _ = source
+    write(root, "docs/CHANGELOG.md", b"<details>Ordinary editorial HTML must not be published.</details>")
     site = tmp_path / "site"
     before, old, new = staged(source, site)
     delta = papers.compose_site(root, site, software_commit=software, baseline=before, old_assets=old, new_assets=new)
     after = papers.inventory(site)
+    assert "CHANGELOG.md" not in after
+    assert "CHANGELOG.md" not in papers.SOURCE_OVERLAY
     assert {row["path"] for row in delta["files"]} == set(papers.SOURCE_OVERLAY) | {
         "research/fresh.pdf",
         "research/fresh.tex",
@@ -203,6 +206,29 @@ def test_superseded_main_defers_under_lock_before_other_reads(
     monkeypatch.setattr(papers, "public_release", lambda *_: pytest.fail("must not inspect release after stale main"))
     with pytest.raises(papers.Deferred, match="Main advanced"):
         papers.guard(root, plan_for(source))
+
+
+def test_editorial_only_preparation_defers_before_downloading_or_changing_site(
+    source: tuple[Path, str, str], monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    from scripts.release_plan import plan_for_proved_scope
+
+    root, software, head = source
+    write(root, "pyproject.toml", b'[project]\nversion = "1.2.3"\n')
+    head = commit(root, "Fixture version")
+    module = types.ModuleType("scripts.paper_changes")
+    module.prove_paper_descendants = lambda *_: {  # type: ignore[attr-defined]
+        "mode": "paper",
+        "release_plan": plan_for_proved_scope(software, head, has_paper_changes=False).to_dict(),
+    }
+    monkeypatch.setitem(sys.modules, "scripts.paper_changes", module)
+    monkeypatch.setattr(papers, "current_main", lambda: head)
+    monkeypatch.setattr(papers, "public_release", lambda *_: ({"id": 123}, software))
+    monkeypatch.setattr(papers, "download_release_assets", lambda *_: pytest.fail("editorial is not site publication"))
+    site = tmp_path / "site"
+    with pytest.raises(papers.Deferred, match="Editorial-only"):
+        papers.prepare(root, tmp_path / "downloads", site)
+    assert not site.exists()
 
 
 def trusted_event() -> tuple[dict[str, Any], dict[str, str]]:

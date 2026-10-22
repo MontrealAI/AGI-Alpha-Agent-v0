@@ -160,6 +160,7 @@ def test_paper_scope_executes_only_extracted_prechange_policy() -> None:
     assert 'git --no-replace-objects show "$BASE:$file" > "$policy/$file"' in script
     assert 'cd "$policy"' in script
     assert script.index('cd "$policy"') < script.index("python scripts/paper_changes.py")
+    assert "scripts/release_plan.py" in script.split("for file in", 1)[1].split("; do", 1)[0]
     assert '--root "$GITHUB_WORKSPACE" --base "$BASE" --head "$HEAD"' in script
     assert 'python -m scripts.research_papers --root "$GITHUB_WORKSPACE" check' in script
     assert "--require-hashes --only-binary=:all: -r requirements-papers.lock" in script
@@ -205,6 +206,40 @@ def test_both_deployment_lanes_share_lock_and_recheck_immediately_before_deploy(
             index for index, step in enumerate(steps) if step.get("uses", "").startswith("actions/deploy-pages@")
         )
         assert steps[index - 1]["run"] == command
+
+
+def test_missing_prechange_release_policy_falls_back_full_before_branch_code(tmp_path: Path) -> None:
+    from tests.test_paper_changes import git, save
+
+    git(tmp_path, "init", "-b", "main")
+    git(tmp_path, "config", "user.name", "Fixture")
+    git(tmp_path, "config", "user.email", "fixture@example.invalid")
+    (tmp_path / "scripts").mkdir()
+    # The first old-policy file would fail if executed. The next requested file
+    # is absent from the trusted base, even though the branch supplies one.
+    (tmp_path / "scripts/paper_changes.py").write_text("raise AssertionError('must not execute')\n")
+    base = save(tmp_path)
+    (tmp_path / "scripts/release_plan.py").write_text("raise AssertionError('untrusted branch policy')\n")
+    head = save(tmp_path)
+    step = next(step for step in workflow("paper-scope.yml")["jobs"]["classify"]["steps"] if step.get("id") == "scope")
+    output = tmp_path / "output"
+    result = subprocess.run(
+        ["bash", "-eu", "-o", "pipefail", "-c", step["run"]],
+        cwd=tmp_path,
+        env={
+            **os.environ,
+            "RUNNER_TEMP": str(tmp_path),
+            "GITHUB_OUTPUT": str(output),
+            "GITHUB_WORKSPACE": str(tmp_path),
+            "EVENT": "push",
+            "BASE": base,
+            "HEAD": head,
+        },
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    assert output.read_text() == "mode=full\n"
 
 
 def test_descendant_check_fetches_objects_without_executing_new_source(
