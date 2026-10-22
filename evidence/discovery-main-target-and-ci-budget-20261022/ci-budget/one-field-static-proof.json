@@ -1,0 +1,20 @@
+{
+  "workflowPath": ".github/workflows/agent-release.yml",
+  "reviewedBaseCommit": "70122e2d7fdb170cf09495165fd793767ee1e4f7",
+  "currentHeadAtProof": "70122e2d7fdb170cf09495165fd793767ee1e4f7",
+  "baselineWorkflowSha256": "9495395898f4e4914a308634de42367dc5a365e79c7a2a72c4772693af20b8af",
+  "sameWorkflowBytesAsPublicOriginalFa": true,
+  "originalFaPublicWorkflowSha256": "9495395898f4e4914a308634de42367dc5a365e79c7a2a72c4772693af20b8af",
+  "proposedWorkflowSha256": "aef1b3a199a4b6f2003c2a3ae25b8d052241c0cceecb2f5ace3ab4c4618c435c",
+  "workingMatchesBaseline": true,
+  "workingMatchesProposal": false,
+  "actionUseLines": 73,
+  "actionPinsByteIdentical": true,
+  "parsedYamlOnlyDifference": "jobs.regression.timeout-minutes:60->90",
+  "patch": "--- a/.github/workflows/agent-release.yml\n+++ b/.github/workflows/agent-release.yml\n@@ -230,7 +230,7 @@\n     needs: [paper-scope, publication-preflight]\n     runs-on: ubuntu-latest\n     # Allow the complete locked suite plus cold strict-type checks to finish.\n-    timeout-minutes: 60\n+    timeout-minutes: 90\n     steps:\n       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n         with:\n",
+  "actionlint": {
+    "exitCode": 0,
+    "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "readOnly": true
+}

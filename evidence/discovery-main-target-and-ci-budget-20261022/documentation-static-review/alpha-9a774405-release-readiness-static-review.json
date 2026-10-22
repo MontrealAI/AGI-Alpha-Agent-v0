@@ -1,0 +1,103 @@
+{
+  "schema": "alpha/independent-release-readiness-doc-review/v1",
+  "result": "CLEAR_SCOPED_STATIC_DOCUMENTATION_REVIEW",
+  "commit": "9a7744059451cebd70b9fba2aeb46c56818d7fcb",
+  "tree": "ffa3d663519e713eca31a9840b8bf6816e53e12a",
+  "parent": "f3193c343a54a2ae034261d91ead1bd9f96bb0b6",
+  "observedWorkingTree": "CLEAN_AT_INITIAL_AND_FINAL_READ",
+  "configuredFinding": {
+    "reviewId": 5609403046,
+    "commentId": 4344660451,
+    "reviewedPublicCommit": "33b19714e1219c812d451e4d736fcb34b722ceff",
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4851#discussion_r4344660451",
+    "priority": "P2",
+    "finding": "Release runbook retained two60-minute references after Agent Release regression job moved to90minutes."
+  },
+  "delta": {
+    "paths": [
+      "docs/agent/RELEASE_READINESS.md"
+    ],
+    "changedMarkdownParagraphs": 1,
+    "before": {
+      "path": "docs/agent/RELEASE_READINESS.md",
+      "mode": "100644",
+      "type": "blob",
+      "gitBlob": "dd400e4f21fc623277bb7ef6ca5e937158e677ab",
+      "sha256": "a543b0ab240786caf83ef3c530de2f75436bd23c890b2c6e273fc2aab054500e",
+      "bytes": 39588
+    },
+    "after": {
+      "path": "docs/agent/RELEASE_READINESS.md",
+      "mode": "100644",
+      "type": "blob",
+      "gitBlob": "6e1b7295e8f54347dd312dc29f74cf57819f272d",
+      "sha256": "2c7049b859d017add56c0d86bff106c459614cdbab58a53f37c52e4450660cf0",
+      "bytes": 39737
+    },
+    "newParagraph": "The Agent Release regression job allows 90 minutes for the complete locked test suite, cold\nstrict-type checks and repository validation. Test commands, coverage requirements and functional\nruntime deadlines are unchanged. The historical CI waiter retains its separate 120-minute bounded\nwait and 125-minute enclosing job, reserving five minutes for evidence upload and cleanup. Its wait\naccommodates runner queues and the existing execution limits of CI, PR CI and Smoke workflows.\nDeadlines still fail closed: successful tests cannot replace an incomplete job. The successful waiter supplies\nits unique attempt-specific artifact name to packaging, and the download verifies its SHA-256 digest.\nThe report must identify the same commit and successful main-push runs of every required workflow.\nPackaging rejects missing, failed or stale reports. Package and public-site evidence downloads also\nuse the producing job's unique artifact name. Artifact IDs are opaque identifiers: a larger number\ndoes not prove a newer attempt. Earlier attempt artifacts remain available as diagnostic history."
+  },
+  "staticSourceAgreement": {
+    "agentReleaseRegressionMinutes": 90,
+    "historicalWaitSeconds": 7200,
+    "historicalWaitMinutes": 120,
+    "historicalEnclosingJobMinutes": 125,
+    "evidenceCleanupMarginMinutes": 5,
+    "requiredHistoricalWorkflows": [
+      "ci.yml",
+      "pr-ci.yml",
+      "smoke.yml"
+    ],
+    "waiterConsumesConstant": "deadline = time.monotonic() + WAIT_SECONDS",
+    "allSourceFilesUnchangedFromParent": [
+      {
+        "path": ".github/workflows/agent-release.yml",
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "b472a73d21a55d3ce32703491b65ce622f577e81",
+        "sha256": "aef1b3a199a4b6f2003c2a3ae25b8d052241c0cceecb2f5ace3ab4c4618c435c",
+        "bytes": 68185
+      },
+      {
+        "path": "scripts/wait_for_release_ci.py",
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "e2539fdd2a94c381bbadd19561f8a59b0f4ff1cd",
+        "sha256": "a27a9ae6567504ec5219dffa28db7605d1103cbb7d91989ae8c43f5570322364",
+        "bytes": 13535
+      },
+      {
+        "path": ".github/workflows/ci.yml",
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "cb3eddddd9e7b87dce4462178d4f4d260f39ea97",
+        "sha256": "a2dd907c534c778bd863e6119bade16bbf57f435e072b9e5cf7bba23c4934d29",
+        "bytes": 56938
+      },
+      {
+        "path": ".github/workflows/pr-ci.yml",
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "fb6628925acfae2dedef5f0c98d8ee189dd9b30e",
+        "sha256": "68a3fb90490041ab4b811d07cc107a52d40c5da05863ecdf447cbe075cd0f3c0",
+        "bytes": 6892
+      },
+      {
+        "path": ".github/workflows/smoke.yml",
+        "mode": "100644",
+        "type": "blob",
+        "gitBlob": "26c096ea6d815424467a3b7261cf7169a6bb6f3a",
+        "sha256": "a20a3cbfe569235b06096ce0d928e9ad1d5a9b2fa4e52ac6a78d317423d845f9",
+        "bytes": 7639
+      }
+    ],
+    "commandsCoverageFunctionalDeadlinesUnchanged": true,
+    "historicalWaitAndJobLimitsChanged": false
+  },
+  "instructions": "Read repositoryAGENTS.md; root explicitly requested static-only review without edits, tests or installs.",
+  "findings": [],
+  "limits": [
+    "Only the one documentation paragraph and cited unchanged timing sources were reviewed.",
+    "No tests, browser/native execution, workflow reruns, runtime/dependency installs, source edits or public writes.",
+    "This source/documentation review grants no release, qualification, merge or organizational approval."
+  ]
+}

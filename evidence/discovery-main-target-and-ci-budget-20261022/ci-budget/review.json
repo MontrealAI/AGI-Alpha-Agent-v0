@@ -1,0 +1,156 @@
+{
+  "schema": "successor/agent-regression-ci-wall-budget-independent-review/v1",
+  "reviewer": {
+    "identity": "/root/windows_cleanup_review",
+    "role": "independent-technical-review-agent",
+    "organizationalIndependence": false,
+    "economicApproval": false
+  },
+  "status": "RECOMMEND_EXACT_ONE_FIELD_60_TO_90_MINUTES_WITH_ALL_ACCEPTANCE_GATES_UNCHANGED",
+  "readOnly": true,
+  "reviewedBaseCommit": "70122e2d7fdb170cf09495165fd793767ee1e4f7",
+  "confirmedCause": {
+    "cause": "GitHub Actions job maximum execution-time watchdog",
+    "authoritativeAnnotation": "The job has exceeded the maximum execution time of 1h0m0s",
+    "annotationObservedBy": "/root through existing authenticated cloud GitHub UI; supplied directly to this reviewer",
+    "annotationURL": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/39715159595/job/119618803796",
+    "childIndependentAPICorroboration": {
+      "run": 39715159595,
+      "attempt": 1,
+      "head": "fa34900431fecd0d5432e163c41f896f97cfe5bc",
+      "runConclusion": "failure",
+      "job": 119618803796,
+      "jobConclusion": "cancelled",
+      "startedAt": "2026-10-22T03:22:15Z",
+      "completedAt": "2026-10-22T04:22:36Z",
+      "elapsedSeconds": 3621.0,
+      "checkAnnotationsCount": 3,
+      "fullSuiteStep": {
+        "name": "Full offline regression including notebooks",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "number": 8,
+        "started_at": "2026-10-22T03:25:43Z",
+        "completed_at": "2026-10-22T04:22:33Z"
+      },
+      "strictStep": {
+        "name": "Strict types and repository checks",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 9,
+        "started_at": "2026-10-22T04:22:33Z",
+        "completed_at": "2026-10-22T04:22:33Z"
+      }
+    },
+    "log": {
+      "path": "/dev/shm/alpha-main-target-other-custody/fa-regression-original-job.log",
+      "bytes": 953244,
+      "sha256": "fb13022606ed1fa2623b0994c2e20cbf59ac0bb509eeebcb9009a7e7c6df98ab",
+      "lastProgress": {
+        "timestamp": "2026-10-22T04:22:04.9937595Z",
+        "percent": 93,
+        "markers": "..................................s....................................."
+      },
+      "progressRows": 56,
+      "failureOrErrorMarkersObservedInProgress": false,
+      "cancellation": "2026-10-22T04:22:33.3836819Z ##[error]The operation was canceled."
+    },
+    "causeClassification": "Confirmed by the platform annotation. Progress/timing alone was initially inference and is not used as the sole proof. No Ubuntu image-causation claim is made.",
+    "primaryUIObservation": {
+      "file": "/dev/shm/alpha-fa-original-timeout-browser-observation.json",
+      "sha256": "6d143499f63506716528976beb70359cf0b3ffc15ec799718218753f5fe619f4",
+      "bytes": 723,
+      "observedBy": "/root; independently verified saved observation bytes by this reviewer"
+    }
+  },
+  "assessment": {
+    "recommendation": "Change only jobs.regression.timeout-minutes from 60 to 90. Retain the same runner, dependency setup, complete pytest/notebook command, coverage threshold/output, strict checks, upload-on-failure, matrices, permissions, concurrency and release dependency gates.",
+    "basis": "The confirmed 60-minute job limit interrupted a still-progressing full suite at 93%, before coverage finalization and all strict checks. Setup consumed 208 seconds; the full regression step consumed 3410 seconds before cancellation. A bounded extra 30 minutes permits the unchanged remaining work to finish rather than removing work.",
+    "inferenceAndLimits": "Uniform-cost extrapolation from the observed 93% suggests about 64.1 total minutes through suite completion, before coverage finalization and strict checks. Test costs are uneven and strict-step time is unobserved; 90 minutes is reasonable headroom, not a guarantee or a pass claim.",
+    "fullCoverage": "The original run did not establish a complete test pass or >=80% coverage; cancelled outputs must remain failed/incomplete evidence.",
+    "securityHooks": "Full pre-commit/security hooks live in the separate quality job with its unchanged 30-minute limit. In original fa run that job passed 03:24:55-03:33:36, including both full repository hook report and every release-change hook step. This budget change does not alter or waive that gate.",
+    "runtimeSeparation": "This is the outer CI job wall-clock limit only. Functional 2.5-second regression assertions, runtime/session/read deadlines, mission budgets, costs, coverage, security rules and production resource limits are untouched.",
+    "freshSourceRequirement": "Any subsequent committed source needs fresh exact-source required checks and complete artifacts. Do not rerun, cancel, replace or relabel the preserved original fa attempt. Coordinate with the original current producers before advancing source."
+  },
+  "oneFieldStaticProof": {
+    "workflowPath": ".github/workflows/agent-release.yml",
+    "reviewedBaseCommit": "70122e2d7fdb170cf09495165fd793767ee1e4f7",
+    "currentHeadAtProof": "70122e2d7fdb170cf09495165fd793767ee1e4f7",
+    "baselineWorkflowSha256": "9495395898f4e4914a308634de42367dc5a365e79c7a2a72c4772693af20b8af",
+    "sameWorkflowBytesAsPublicOriginalFa": true,
+    "originalFaPublicWorkflowSha256": "9495395898f4e4914a308634de42367dc5a365e79c7a2a72c4772693af20b8af",
+    "proposedWorkflowSha256": "aef1b3a199a4b6f2003c2a3ae25b8d052241c0cceecb2f5ace3ab4c4618c435c",
+    "workingMatchesBaseline": true,
+    "workingMatchesProposal": false,
+    "actionUseLines": 73,
+    "actionPinsByteIdentical": true,
+    "parsedYamlOnlyDifference": "jobs.regression.timeout-minutes:60->90",
+    "patch": "--- a/.github/workflows/agent-release.yml\n+++ b/.github/workflows/agent-release.yml\n@@ -230,7 +230,7 @@\n     needs: [paper-scope, publication-preflight]\n     runs-on: ubuntu-latest\n     # Allow the complete locked suite plus cold strict-type checks to finish.\n-    timeout-minutes: 60\n+    timeout-minutes: 90\n     steps:\n       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2\n         with:\n",
+    "actionlint": {
+      "exitCode": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "readOnly": true
+  },
+  "concurrentOwnerCheck": {
+    "file": "/dev/shm/alpha-ci-budget-independent-review/concurrent-pr-check.json",
+    "sha256": "18e05ede36ded1af827697c415bb3de50d180bf76501820df975f5487f06fd07",
+    "sameSourceWorkflowRuns": 9,
+    "sameSourceAgentReleaseRuns": 1,
+    "finding": "No competing current regression-budget owner found in 100 most recent open PR metadata, public exact-timeout search, current 4855/4857 changed-file inventories and the exact 4855 agent-release workflow. Enterprise workflow still has 60 minutes; its changed workflow is successor-capability, not agent-release. Search is bounded, not an exhaustive historical-diff proof."
+  },
+  "repositoryInstructions": {
+    "AGENTSsha256": "3bb97502232512ef505b48273336ea80b47626d96274d7f320a3987d85c383d0",
+    "instruction": "Run python tools/update_actions.py before committing workflow changes to refresh action versions.",
+    "helperSha256": "36dc5f803b292e550b302348d8f7823192c250bf08b8fb9ce9a28eebb6b84172",
+    "applicability": "This helper hardcodes only .github/workflows/ci.yml and rewrites action SHA uses to latest mutable tags with SHA comments. It has no read-only/check or target-path option. It does not update the agent-release timeout. It was not run because the explicit scoped task requires preserving every existing action pin and prohibits unrelated updates/installs; do not claim it passed. Existing hosted quality invokes the unchanged helper as its own required gate.",
+    "appropriateValidation": "Exact parsed YAML comparison proves one changed field; all 73 uses lines and all other nodes are byte/structurally preserved. Pinned actionlint accepts the in-memory proposed workflow. No new implementation tests or suite execution are needed for this review."
+  },
+  "evidenceFiles": [
+    {
+      "file": "concurrent-pr-check.json",
+      "bytes": 2033,
+      "sha256": "18e05ede36ded1af827697c415bb3de50d180bf76501820df975f5487f06fd07"
+    },
+    {
+      "file": "one-field-static-proof.json",
+      "bytes": 1330,
+      "sha256": "674a11fafb4f5bd6206780720ceb1c8726c1a171d2c9c6435d69fc4f834a4de4"
+    },
+    {
+      "file": "proposed-actionlint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "original-fa-workflow.txt",
+      "bytes": 68185,
+      "sha256": "9495395898f4e4914a308634de42367dc5a365e79c7a2a72c4772693af20b8af"
+    },
+    {
+      "file": "same_source_runs.json",
+      "bytes": 145021,
+      "sha256": "b7b8b7b2c421a99473a659f6ee0458b4da2daa5b1935d5a5a7e231ac008c9815"
+    },
+    {
+      "file": "check.json",
+      "bytes": 3848,
+      "sha256": "d43ee90ffd9141050a39e9b62910d8892a49f41ae337c2928872eebc2601e2a5"
+    },
+    {
+      "file": "run.json",
+      "bytes": 16202,
+      "sha256": "0ee5dbe0eac557d560e5179d73f54c1133dd4a7226734cd6e7248026d12f2a54"
+    },
+    {
+      "file": "job.json",
+      "bytes": 4571,
+      "sha256": "55ec49a08b433c8bc702476ba099305dde9e414623232cb32100f973bbbe65e0"
+    }
+  ],
+  "limitations": [
+    "The child did not open the cloud browser; the exact watchdog annotation is the parent reviewer primary UI observation, corroborated independently here by API job/check/run metadata and original logs.",
+    "GitHub connector direct job/check/annotation endpoints were unsupported; run/attempt jobs and commit check-runs were read through supported public endpoints. No unsupported action was bypassed.",
+    "No source edits, installs, tests, browser, local Chromium, execution probes, workflow operations, repository settings or public writes were performed. Only static parsing/actionlint and read-only retrieval ran."
+  ]
+}
