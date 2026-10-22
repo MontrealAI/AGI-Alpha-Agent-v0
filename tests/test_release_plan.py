@@ -98,3 +98,32 @@ def test_full_fallback_retains_required_checks_and_does_not_claim_acceptance() -
 def test_plan_requires_distinct_exact_identities(sha: object) -> None:
     with pytest.raises(ValueError):
         plan_for_proved_scope(sha, "b" * 40, has_paper_changes=False)  # type: ignore[arg-type]
+
+
+class _IntegerSubclass(int):
+    pass
+
+
+class _BooleanImpostor:
+    def __bool__(self) -> bool:
+        raise AssertionError("Classification must not coerce arbitrary objects")
+
+    def __eq__(self, other: object) -> bool:
+        raise AssertionError("Classification must not compare arbitrary objects")
+
+
+@pytest.mark.parametrize(
+    "value", [0, 1, 0.0, 1.0, None, "", "true", [], {}, _IntegerSubclass(0), _IntegerSubclass(1), _BooleanImpostor()]
+)
+def test_classification_requires_bool_singletons(value: object) -> None:
+    with pytest.raises(ValueError, match="real, classified transition"):
+        plan_for_proved_scope("a" * 40, "b" * 40, has_paper_changes=value)  # type: ignore[arg-type]
+
+
+def test_verified_plan_rejects_equal_string_subclass() -> None:
+    class StringSubclass(str):
+        pass
+
+    expected = plan_for_proved_scope("a" * 40, "b" * 40, has_paper_changes=False)
+    with pytest.raises(ValueError, match="claims differ"):
+        verify_plan({**expected.to_dict(), "tier": StringSubclass(expected.tier)}, expected)
