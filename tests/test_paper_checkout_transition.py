@@ -20,7 +20,7 @@ PAPERS = ("docs/Out_Learn.tex", "docs/Autonomous_Enterprises.tex", "docs/papers/
 
 def git(root: Path, *args: str) -> bytes:
     env = {key: value for key, value in os.environ.items() if not key.upper().startswith("GIT_")}
-    env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1")
+    env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1", GIT_ATTR_NOSYSTEM="1")
     return subprocess.check_output(
         [
             "git",
@@ -30,6 +30,10 @@ def git(root: Path, *args: str) -> bytes:
             "core.autocrlf=true",
             "-c",
             "core.safecrlf=false",
+            "-c",
+            f"core.attributesFile={os.devnull}",
+            "-c",
+            f"core.excludesFile={os.devnull}",
             "-c",
             "user.name=Checkout Fixture",
             "-c",
@@ -68,6 +72,28 @@ def history(root: Path) -> tuple[str, str]:
 
 
 class PaperCheckoutTransitionTests(unittest.TestCase):
+    def test_fixture_ignores_hostile_global_attributes_and_ignore(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="paper-git-attributes-") as directory:
+            parent = Path(directory).resolve()
+            attributes = parent / "xdg/git/attributes"
+            attributes.parent.mkdir(parents=True)
+            attributes.write_bytes(b"*.tex -text\n")
+            ignored = attributes.with_name("ignore")
+            ignored.write_bytes(b"*.tex\n")
+            with patch.dict(os.environ, {"XDG_CONFIG_HOME": str(parent / "xdg")}):
+                origin, existing, fresh = (parent / name for name in ("origin", "existing", "fresh"))
+                old, new = history(origin)
+                git(origin, "worktree", "add", "--detach", str(existing), old)
+                for name in PAPERS:
+                    self.assertEqual((existing / name).read_bytes(), ORIGINAL.replace(b"\n", b"\r\n"))
+                git(existing, "checkout", "--detach", new)
+                git(existing, "worktree", "add", "--detach", str(fresh), new)
+                for name in PAPERS:
+                    self.assertEqual((fresh / name).read_bytes(), ORIGINAL)
+                    self.assertEqual(git(fresh, "show", ":" + name), ORIGINAL)
+            self.assertEqual(attributes.read_bytes(), b"*.tex -text\n")
+            self.assertEqual(ignored.read_bytes(), b"*.tex\n")
+
     def test_fixture_ignores_inherited_git_routing_and_config(self) -> None:
         with tempfile.TemporaryDirectory(prefix="paper-git-env-") as directory:
             parent = Path(directory).resolve()

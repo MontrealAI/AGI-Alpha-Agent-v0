@@ -21,7 +21,7 @@ class PaperCheckoutBytesTests(unittest.TestCase):
 
             def git(*args: str) -> bytes:
                 env = {key: value for key, value in os.environ.items() if not key.upper().startswith("GIT_")}
-                env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1")
+                env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1", GIT_ATTR_NOSYSTEM="1")
                 return subprocess.check_output(
                     [
                         "git",
@@ -31,6 +31,10 @@ class PaperCheckoutBytesTests(unittest.TestCase):
                         "core.autocrlf=true",
                         "-c",
                         "core.safecrlf=false",
+                        "-c",
+                        f"core.attributesFile={os.devnull}",
+                        "-c",
+                        f"core.excludesFile={os.devnull}",
                         "-c",
                         f"core.hooksPath={os.devnull}",
                         *args,
