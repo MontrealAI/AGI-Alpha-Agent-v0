@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Tests for generate_gallery_html.py."""
+
 from pathlib import Path
 import re
 import pytest
@@ -125,6 +126,23 @@ def test_generated_homepage_retains_successor_discovery_and_existing_workspaces(
     assert 'name="application-version" content="9.8.7"' in generated
     assert "{{" not in generated
     assert ggh.build_portal_html(entries, "9.8.7", decision_cards) == generated
+
+
+def test_paper_refresh_preserves_enterprise_preview_and_gallery_bytes() -> None:
+    from scripts import research_papers as papers
+
+    page = ggh.build_portal_html([], "1.39.0", "")
+    refreshed = papers.replace_block(
+        page, papers.HTML_START, papers.HTML_END, papers.render_section(papers.load_catalog(ggh.REPO_ROOT))
+    )
+    assert refreshed == page
+    preview = re.search(r'<section\b[^>]*id="autonomous-enterprise-preview"[^>]*>.*?</section>', page, re.S)
+    assert preview is not None
+    assert preview.group() in refreshed
+    assert page.index('id="autonomous-enterprise-preview"') < page.index(papers.HTML_START)
+    assert 'href="successor/capabilities/#autonomous-enterprises"' in preview.group()
+    assert 'href="Autonomous_Enterprises.pdf"' in preview.group()
+    assert 'lang="fr"' in preview.group()
 
 
 def test_generated_homepage_features_beginner_onboarding():
