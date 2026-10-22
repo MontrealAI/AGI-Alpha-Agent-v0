@@ -58,3 +58,6 @@ native worker, local EVM and installed-release checks.
 Coordination: https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850
 
 License: Apache-2.0, as the repository.
+
+Observation input accepts integers or exact {numerator, denominator} pairs. Bounds are compared with BigInt arithmetic.
+Raw floating-point JSON observations are refused, preserving exact safe-integer transport. The structural cache is limited to eight libraries.

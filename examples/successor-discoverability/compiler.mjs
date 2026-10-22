@@ -38,7 +38,7 @@ const dot = (a,b) => a.reduce((s,x,i) => s + x*b[i], 0);
 const gcd = (a,b) => b ? gcd(b,a%b) : Math.abs(a);
 function validate(p) {
   exact(p,['schema','id','channels','worlds','nuisance','grammar','missionBudget'],'problem fields');
-  if(p.schema !== SCHEMA || !/^[a-z][a-z0-9-]{1,79}$/.test(p.id)) fail('problem identity');
+  if(p.schema !== SCHEMA || typeof p.id !== 'string' || !/^[a-z][a-z0-9-]{1,79}$/.test(p.id)) fail('problem identity');
   if(!Array.isArray(p.channels) || p.channels.length<1 || p.channels.length>10) fail('channel count');
   const n=p.channels.length, ids=new Set();
   for(const c of p.channels){
@@ -128,7 +128,7 @@ export function createCompiler({strategy='cached'}={}){
         await meter.cooperate(true);
         meter.step('frame',p.channels.length+p.worlds.length+pairs.length);
         if(strategy==='cached'&&cache.has(key)){templates=cache.get(key);libraryHit=true;hits++;meter.step('libraryLookup');}
-        else{templates=await construct(p,meter);misses++;if(strategy==='cached')cache.set(key,templates);}
+        else{templates=await construct(p,meter);misses++;if(strategy==='cached'){if(cache.size>=8)cache.delete(cache.keys().next().value);cache.set(key,templates);}}
         for(const weights of templates){
           meter.step('responseEvaluation',p.worlds.length*p.channels.length);
           const e=observationsFor(p,weights);
@@ -226,8 +226,17 @@ export function inspectProgram(input,raw){
 export function executeProgram(input,raw,observations){
   const {problem:p,program}=inspectProgram(input,raw),ys=snapshot(observations);
   if(!Array.isArray(ys)||ys.length!==program.experiments.length)fail('observation count');
-  for(const y of ys)integer(y,-1000000000,1000000000,'observation');
-  const compatible=p.worlds.filter((w,i)=>program.experiments.every((e,j)=>Math.abs(ys[j]-e.responses[i].center)<=e.radius));
+  const rational=ys.map(y=>{
+    if(Number.isSafeInteger(y)) return {n:BigInt(y),d:1n};
+    exact(y,['numerator','denominator'],'rational observation');
+    integer(y.numerator,-Number.MAX_SAFE_INTEGER,Number.MAX_SAFE_INTEGER,'observation numerator');
+    integer(y.denominator,1,1000000000,'observation denominator');
+    return {n:BigInt(y.numerator),d:BigInt(y.denominator)};
+  });
+  const compatible=p.worlds.filter((w,i)=>program.experiments.every((e,j)=>{
+    const {n,d}=rational[j],center=BigInt(e.responses[i].center)*d,delta=n-center;
+    return (delta<0n?-delta:delta)<=BigInt(e.radius)*d;
+  }));
   const goals=[...new Set(compatible.map(w=>w.goal))];
   return {status:goals.length===1?'DECIDED':goals.length===0?'OUT_OF_SCOPE':'AMBIGUOUS',decision:goals.length===1?goals[0]:null,compatibleWorlds:compatible.map(w=>w.id)};
 }
