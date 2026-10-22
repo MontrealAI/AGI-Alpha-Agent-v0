@@ -2,7 +2,24 @@
 
 <a id="release-readiness-1360-source-candidate"></a>
 
-# Release readiness — 1.37.1 combined software candidate
+# Release readiness — 1.38.0 local integration candidate
+
+The proposed additive minor version **1.38.0** joins the paper/OUT-EXECUTE predecessor with the six-stage
+Discovery Lab continuation, frozen future-task protocol, shared history and Evidence Docket. It is a local
+review candidate, not a published or operational release. [Current scope](RELEASE_NOTES_1.38.0.md).
+
+Both predecessor PRs retain their own checks and evidence. The complete integrated source, canonical and mirror
+pages, source catalog, cache workers and package identities need fresh qualification. Every existing full-software
+workflow, security, recovery, accessibility, exact-main, saved-package, public-byte and publication gate remains.
+No historical green result qualifies changed bytes, and no branch is cleared while required checks are pending.
+
+The **1.37.1** discussion below remains the paper predecessor's dated scope. Its original documents, original
+PDF/TEX bytes and historical tags/assets remain unchanged. No mainnet transaction, signing, funding, activation,
+settlement or live paid work is authorized by this software candidate.
+
+## Preserved paper predecessor readiness record
+
+## Release readiness — 1.37.1 combined software candidate
 
 Version **1.37.1** combines the existing capability/Out-Evolve source, the bounded OUT-EXECUTE implementation,
 seven original featured papers and the simpler paper-publication lane. The [release notes](RELEASE_NOTES_1.37.1.md)
@@ -377,11 +394,12 @@ assistive technologies.
 4. Confirm packaging, public Pages acceptance and publication all succeed. A successful test run alone
    does not establish that the public website or release assets have been published.
 
-The regression job allows 60 minutes for the complete locked test suite, cold strict-type checks and
-repository validation. The historical waiter reserves five additional minutes in its enclosing job
-for evidence upload and cleanup; its bounded wait accommodates runner queues and the historical test
-jobs' 60-minute execution limit. Deadlines still fail closed: successful tests cannot replace an
-incomplete job. The successful waiter supplies
+The Agent Release regression job allows 90 minutes for the complete locked test suite, cold
+strict-type checks and repository validation. Test commands, coverage requirements and functional
+runtime deadlines are unchanged. The historical CI waiter retains its separate 120-minute bounded
+wait and 125-minute enclosing job, reserving five minutes for evidence upload and cleanup. Its wait
+accommodates runner queues and the existing execution limits of CI, PR CI and Smoke workflows.
+Deadlines still fail closed: successful tests cannot replace an incomplete job. The successful waiter supplies
 its unique attempt-specific artifact name to packaging, and the download verifies its SHA-256 digest.
 The report must identify the same commit and successful main-push runs of every required workflow.
 Packaging rejects missing, failed or stale reports. Package and public-site evidence downloads also

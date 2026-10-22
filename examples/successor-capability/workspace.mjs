@@ -2,6 +2,7 @@
 /** Append-only capability-development records. No execution or payment authority. */
 import * as protocol from '../../docs/assets/successor/engine.mjs';
 import * as witness from './witness.mjs';
+import * as discoveryHistory from './discovery-lab-history.mjs';
 
 export const SCHEMA = 'successor-capability-workspace/v1';
 export const LIMITS = Object.freeze({versions: 8, events: 24, bytes: 2_000_000});
@@ -33,6 +34,14 @@ const exact = (value, keys) => value && typeof value === 'object' && !Array.isAr
 const fail = message => { throw Error(message); };
 const equal = (left, right) => canonical(left) === canonical(right);
 const idPattern = /^capability-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const verifiedExtendedWorkspaces = new WeakMap();
+function freezeGraph(value) {
+    if (value && typeof value === 'object') {
+        for (const child of Object.values(value)) freezeGraph(child);
+        if (!Object.isFrozen(value)) Object.freeze(value);
+    }
+    return value;
+}
 
 export function validateBrief(brief) {
     if (!exact(brief, BRIEF_KEYS)) fail('Unsupported capability brief fields.');
@@ -79,16 +88,23 @@ async function eventDigest(missionId, event) {
         previous: event.previous, payload: event.payload});
 }
 
-/** Recompute all admitted synthetic evidence, not just its hash. Imports grant no trust. */
-export async function inspectWorkspace(input) {
-    canonical(input);
+/** Retain one private frame for both semantic inspection and subsequent checked appends. */
+async function inspectOwnedWorkspace(input) {
+    const original = input;
+    const fingerprint = discoveryHistory.validateHistoryData(input);
+    const cached = verifiedExtendedWorkspaces.get(original);
+    if (cached?.fingerprint === fingerprint) return cached;
+    input = JSON.parse(fingerprint);
+    if (input?.schema === discoveryHistory.EXTENDED_SCHEMA) freezeGraph(input);
     if (!exact(input, ['schema', 'missionId', 'revision', 'events', 'authority', 'paymentRoute'])
-        || input.schema !== SCHEMA || typeof input.missionId !== 'string' || !idPattern.test(input.missionId)
+        || ![SCHEMA, discoveryHistory.EXTENDED_SCHEMA].includes(input.schema)
+        || typeof input.missionId !== 'string' || !idPattern.test(input.missionId)
         || !Array.isArray(input.events) || input.events.length < 1 || input.events.length > LIMITS.events
         || input.revision !== input.events.length - 1 || !equal(input.authority, []) || input.paymentRoute !== 'none') {
         fail('Unsupported capability workspace or authority.');
     }
     const versions = [];
+    const discovery = discoveryHistory.emptyDiscoveryState();
     let previous = null;
     for (const [sequence, event] of input.events.entries()) {
         if (!exact(event, ['sequence', 'kind', 'previous', 'payload', 'digest'])
@@ -131,11 +147,28 @@ export async function inspectWorkspace(input) {
             version[payload.phase] = clone(payload);
             version.witnessAcceptance = [version.development, version.heldout].some(record => record?.report.verdict === 'fail')
                 ? 'fail' : version.development && version.heldout ? 'pass' : 'incomplete';
+        } else if (discoveryHistory.EVENT_KINDS.includes(event.kind)
+            && input.schema === discoveryHistory.EXTENDED_SCHEMA) {
+            if (!versions.length) fail('Discovery Lab needs a frozen capability version.');
+            await discoveryHistory.inspectDiscoveryEvent(discovery, event,
+                {missionId: input.missionId, version: versions.at(-1).number});
         } else fail('Unsupported capability event.');
         previous = event.digest;
     }
     if (!versions.length) fail('Capability version is missing.');
-    return {versions, latest: versions.at(-1), head: previous};
+    const inspection = {versions, latest: versions.at(-1), head: previous, discovery};
+    const checked = {fingerprint, workspace: input, inspection};
+    if (input.schema === discoveryHistory.EXTENDED_SCHEMA) {
+        freezeGraph(inspection);
+        verifiedExtendedWorkspaces.set(original, checked);
+        verifiedExtendedWorkspaces.set(input, checked);
+    }
+    return checked;
+}
+
+/** Recompute all admitted synthetic evidence, not just its hash. Imports grant no trust. */
+export async function inspectWorkspace(input) {
+    return (await inspectOwnedWorkspace(input)).inspection;
 }
 
 async function append(workspace, kind, payload) {
@@ -145,8 +178,7 @@ async function append(workspace, kind, payload) {
     event.digest = await eventDigest(next.missionId, event);
     next.events.push(event);
     next.revision = next.events.length - 1;
-    await inspectWorkspace(next);
-    return next;
+    return (await inspectOwnedWorkspace(next)).workspace;
 }
 
 async function versionPayload(number, parent, brief, experiment, reason) {
@@ -162,17 +194,19 @@ export async function createWorkspace(brief = DEFAULT_BRIEF, experiment = null) 
 }
 
 export async function addSuccessor(workspace, brief, experiment, reason) {
-    const {latest, versions} = await inspectWorkspace(workspace);
+    brief = JSON.parse(discoveryHistory.validateHistoryData(brief));
+    experiment = JSON.parse(discoveryHistory.validateHistoryData(experiment));
+    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
     if (versions.length >= LIMITS.versions) fail('Version capacity reached; preserve this complete workspace.');
     if (equal(latest.brief, brief) && equal(latest.experiment, experiment)) {
         fail('A successor needs an explicit change to the proposal or experiment; prior evidence stays historical.');
     }
-    return append(workspace, 'version', await versionPayload(latest.number + 1, latest.frozenDigest,
+    return append(owned, 'version', await versionPayload(latest.number + 1, latest.frozenDigest,
         brief, experiment, reason));
 }
 
 export async function recordEvaluation(workspace, phase) {
-    const {latest, versions} = await inspectWorkspace(workspace);
+    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
     if (!['development', 'heldout'].includes(phase)) fail('Unsupported evaluation phase.');
     if (latest.experiment === null) fail('This proposal has no implemented evaluator. No capability has been executed.');
     if (latest[phase]) fail('This version already contains that evaluation. Retuning requires a new successor.');
@@ -180,7 +214,7 @@ export async function recordEvaluation(workspace, phase) {
     const construction = phase === 'development'
         ? witness.construct(latest.experiment) : latest.development.construction;
     const report = witness.evaluateConstruction(latest.experiment, construction, phase);
-    return append(workspace, 'evaluation', {number: latest.number, phase, frozenDigest: latest.frozenDigest,
+    return append(owned, 'evaluation', {number: latest.number, phase, frozenDigest: latest.frozenDigest,
         construction, report, exposure: exposureFor(versions, latest, phase, report)});
 }
 
@@ -190,6 +224,16 @@ export function parseExperiment(text) {
 
 export async function parseWorkspace(text) {
     const value = clone(protocol.parseBounded(text));
-    await inspectWorkspace(value);
-    return clone(value);
+    const {workspace: owned} = await inspectOwnedWorkspace(value);
+    return owned.schema === discoveryHistory.EXTENDED_SCHEMA ? owned : clone(owned);
+}
+
+/** Add a checked event to the existing hash chain; prior v1 events retain exact bytes. */
+export async function recordDiscoveryEvent(workspace, kind, payload) {
+    payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
+    const {workspace: owned} = await inspectOwnedWorkspace(workspace);
+    if (!discoveryHistory.EVENT_KINDS.includes(kind)) fail('Unsupported Discovery Lab event.');
+    const next = clone(owned);
+    next.schema = discoveryHistory.EXTENDED_SCHEMA;
+    return append(next, kind, payload);
 }

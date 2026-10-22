@@ -1,0 +1,694 @@
+{
+  "schema": "successor-discovery-model-review/v1",
+  "date": "2026-10-21",
+  "review_scope": "Independent software model review against the seven pinned research sources and supplied flagship assignment. This is not external scientific peer review or maintainer approval.",
+  "inspected_sources": [
+    {
+      "path": "examples/successor-capability/discovery-lab.mjs",
+      "sha256": "c4ca31262eae0d98b15b784eae2f41742f6645ec409dfb1ea9f20da84cd8aaef"
+    },
+    {
+      "path": "examples/successor-capability/discovery-lab-checker.mjs",
+      "sha256": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099"
+    },
+    {
+      "path": "examples/successor-capability/discovery-lab-contract.mjs",
+      "sha256": "bfa38a9312a90730f7f35eaed3d5d5dcca2b1c0cc7e51657413670145d2da2e3"
+    },
+    {
+      "path": "examples/successor-capability/discovery-lab-baselines.mjs",
+      "sha256": "91123c8c471224910ae420f3ec140a31fb0e1ad09862cbf85132ebc7993232ce"
+    },
+    {
+      "path": "examples/successor-capability/discovery-lab-baselines.test.mjs",
+      "sha256": "809d4ce44d74c7daad8a9a295d46ddc16afb0c7efd6c2d3dc7f284d8d7bcf857"
+    }
+  ],
+  "repeatable_tests": [
+    "node --test examples/successor-capability/discovery-lab-baselines.test.mjs"
+  ],
+  "baseline_tests": {
+    "passed": 5,
+    "failed": 0,
+    "observed_exit_code": 0,
+    "runner": "v22.23.3"
+  },
+  "model_checks": {
+    "cases": [
+      {
+        "name": "default",
+        "expected": "accepted",
+        "state": "accepted",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "accepted"
+          },
+          {
+            "kind": "think",
+            "state": "accepted"
+          },
+          {
+            "kind": "design",
+            "state": "accepted"
+          },
+          {
+            "kind": "strategise",
+            "state": "accepted"
+          },
+          {
+            "kind": "execute",
+            "state": "accepted"
+          },
+          {
+            "kind": "evolve",
+            "state": "accepted"
+          }
+        ],
+        "resources": {
+          "acquisitions": 906,
+          "search": 6601,
+          "checking": 97015,
+          "memoryWords": 30,
+          "storageBytes": 29295,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "ambiguity": 0
+      },
+      {
+        "name": "missing-reference",
+        "expected": "rejected",
+        "state": "rejected",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "rejected"
+          },
+          {
+            "kind": "think",
+            "state": "paused"
+          },
+          {
+            "kind": "design",
+            "state": "paused"
+          },
+          {
+            "kind": "strategise",
+            "state": "paused"
+          },
+          {
+            "kind": "execute",
+            "state": "paused"
+          },
+          {
+            "kind": "evolve",
+            "state": "paused"
+          }
+        ],
+        "resources": {
+          "acquisitions": 0,
+          "search": 0,
+          "checking": 0,
+          "memoryWords": 0,
+          "storageBytes": 5712,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "ambiguity": 0
+      },
+      {
+        "name": "wrong-location",
+        "expected": "rejected",
+        "state": "rejected",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "accepted"
+          },
+          {
+            "kind": "think",
+            "state": "accepted"
+          },
+          {
+            "kind": "design",
+            "state": "accepted"
+          },
+          {
+            "kind": "strategise",
+            "state": "rejected"
+          },
+          {
+            "kind": "execute",
+            "state": "paused"
+          },
+          {
+            "kind": "evolve",
+            "state": "paused"
+          }
+        ],
+        "resources": {
+          "acquisitions": 78,
+          "search": 78,
+          "checking": 1871,
+          "memoryWords": 22,
+          "storageBytes": 11909,
+          "workerSlots": 3,
+          "installations": 1
+        },
+        "ambiguity": 0
+      },
+      {
+        "name": "unadmitted-drift",
+        "expected": "rejected",
+        "state": "rejected",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "rejected"
+          },
+          {
+            "kind": "think",
+            "state": "paused"
+          },
+          {
+            "kind": "design",
+            "state": "paused"
+          },
+          {
+            "kind": "strategise",
+            "state": "paused"
+          },
+          {
+            "kind": "execute",
+            "state": "paused"
+          },
+          {
+            "kind": "evolve",
+            "state": "paused"
+          }
+        ],
+        "resources": {
+          "acquisitions": 54,
+          "search": 26,
+          "checking": 0,
+          "memoryWords": 0,
+          "storageBytes": 9412,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "ambiguity": 0
+      },
+      {
+        "name": "hidden-coupling",
+        "expected": "rejected",
+        "state": "rejected",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "accepted"
+          },
+          {
+            "kind": "think",
+            "state": "accepted"
+          },
+          {
+            "kind": "design",
+            "state": "accepted"
+          },
+          {
+            "kind": "strategise",
+            "state": "accepted"
+          },
+          {
+            "kind": "execute",
+            "state": "rejected"
+          },
+          {
+            "kind": "evolve",
+            "state": "paused"
+          }
+        ],
+        "resources": {
+          "acquisitions": 78,
+          "search": 176,
+          "checking": 4573,
+          "memoryWords": 30,
+          "storageBytes": 17553,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "ambiguity": 0
+      },
+      {
+        "name": "insufficient-resident-memory",
+        "expected": "rejected",
+        "state": "rejected",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "accepted"
+          },
+          {
+            "kind": "think",
+            "state": "rejected"
+          },
+          {
+            "kind": "design",
+            "state": "paused"
+          },
+          {
+            "kind": "strategise",
+            "state": "paused"
+          },
+          {
+            "kind": "execute",
+            "state": "paused"
+          },
+          {
+            "kind": "evolve",
+            "state": "paused"
+          }
+        ],
+        "resources": {
+          "acquisitions": 78,
+          "search": 42,
+          "checking": 826,
+          "memoryWords": 12,
+          "storageBytes": 10472,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "ambiguity": 0
+      },
+      {
+        "name": "nonzero-uncertainty",
+        "expected": "accepted",
+        "state": "accepted",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "accepted"
+          },
+          {
+            "kind": "think",
+            "state": "accepted"
+          },
+          {
+            "kind": "design",
+            "state": "accepted"
+          },
+          {
+            "kind": "strategise",
+            "state": "accepted"
+          },
+          {
+            "kind": "execute",
+            "state": "accepted"
+          },
+          {
+            "kind": "evolve",
+            "state": "accepted"
+          }
+        ],
+        "resources": {
+          "acquisitions": 474,
+          "search": 1565,
+          "checking": 23276,
+          "memoryWords": 30,
+          "storageBytes": 29477,
+          "workerSlots": 3,
+          "installations": 4
+        },
+        "ambiguity": 4
+      },
+      {
+        "name": "insufficient-search",
+        "expected": "inconclusive",
+        "state": "inconclusive",
+        "pass": true,
+        "stages": [
+          {
+            "kind": "learn",
+            "state": "inconclusive"
+          },
+          {
+            "kind": "think",
+            "state": "paused"
+          },
+          {
+            "kind": "design",
+            "state": "paused"
+          },
+          {
+            "kind": "strategise",
+            "state": "paused"
+          },
+          {
+            "kind": "execute",
+            "state": "paused"
+          },
+          {
+            "kind": "evolve",
+            "state": "paused"
+          }
+        ],
+        "resources": {
+          "acquisitions": 9,
+          "search": 5,
+          "checking": 0,
+          "memoryWords": 0,
+          "storageBytes": 6353,
+          "workerSlots": 0,
+          "installations": 0
+        },
+        "ambiguity": 0
+      }
+    ],
+    "mutations": [
+      {
+        "kind": "learn",
+        "accepted": false,
+        "reason": "Interval ambiguity was changed or erased.",
+        "pass": true
+      },
+      {
+        "kind": "think",
+        "accepted": false,
+        "reason": "An answer-preserving summary cannot execute this update.",
+        "pass": true
+      },
+      {
+        "kind": "design",
+        "accepted": false,
+        "reason": "The joint program fails a complete independent-input service case.",
+        "pass": true
+      },
+      {
+        "kind": "strategise",
+        "accepted": false,
+        "reason": "The route omits an actual checkpoint visit or its construction action.",
+        "pass": true
+      },
+      {
+        "kind": "execute",
+        "accepted": false,
+        "reason": "A local complete boundary row or its current attaining witness is wrong.",
+        "pass": true
+      },
+      {
+        "kind": "evolve",
+        "accepted": false,
+        "reason": "A claimed interaction coefficient does not match full-cube semantics.",
+        "pass": true
+      }
+    ],
+    "profileContinuation": {
+      "previousState": "accepted",
+      "currentState": "accepted",
+      "oldRoutes": [
+        "R"
+      ],
+      "newRoutes": [
+        "L"
+      ],
+      "oldProfiles": [
+        [
+          "installation",
+          [
+            4,
+            24
+          ]
+        ],
+        [
+          "routing",
+          [
+            2,
+            6
+          ]
+        ]
+      ],
+      "currentProfiles": [
+        [
+          "installation",
+          [
+            4,
+            24
+          ]
+        ],
+        [
+          "routing",
+          [
+            2,
+            6
+          ]
+        ]
+      ],
+      "decisions": [
+        {
+          "component": "installation",
+          "status": "retained",
+          "completeProfileEqual": true,
+          "propagation": "stopped"
+        },
+        {
+          "component": "routing",
+          "status": "rebuilt",
+          "completeProfileEqual": true,
+          "propagation": "stopped"
+        }
+      ],
+      "staleWitnessRejected": true
+    },
+    "successor": {
+      "state": "accepted",
+      "oldSlicePreserved": true,
+      "controls": 4,
+      "retainedFactors": [
+        "prepare",
+        "reference",
+        "capacity",
+        "route",
+        "checkpoint"
+      ]
+    },
+    "cumulative": [
+      {
+        "resource": "acquisitions",
+        "pass": true
+      },
+      {
+        "resource": "search",
+        "pass": true
+      },
+      {
+        "resource": "checking",
+        "pass": true
+      },
+      {
+        "resource": "storageBytes",
+        "pass": true
+      },
+      {
+        "resource": "installations",
+        "pass": true
+      }
+    ],
+    "strictData": {
+      "accessorRejected": true,
+      "getterCalls": 0
+    },
+    "defaultComparisons": [
+      {
+        "name": "Unrestricted same-primitive finite reference",
+        "status": "accepted",
+        "relation": "tie",
+        "measuredWork": {
+          "search": 6073,
+          "checking": 83166,
+          "acquisitions": 540,
+          "installations": 0
+        },
+        "completeCampaignCandidates": 54,
+        "independentlyQualifiedCampaigns": 54
+      },
+      {
+        "name": "Fixed architecture with more search",
+        "status": "accepted",
+        "relation": null,
+        "measuredWork": {
+          "search": 96,
+          "checking": 96,
+          "acquisitions": 288,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "Full-state reasoning",
+        "status": "accepted",
+        "relation": null,
+        "measuredWork": {
+          "search": 8,
+          "checking": 642,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "Separate service realization",
+        "status": "rejected",
+        "relation": null,
+        "measuredWork": {
+          "search": 0,
+          "checking": 3,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "Full diagnosis",
+        "status": "accepted",
+        "relation": null,
+        "measuredWork": {
+          "search": 0,
+          "checking": 1120,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "No-diagnosis construction",
+        "status": "accepted",
+        "relation": null,
+        "measuredWork": {
+          "search": 0,
+          "checking": 1081,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "Full recomputation",
+        "status": "accepted",
+        "relation": null,
+        "measuredWork": {
+          "search": 28,
+          "checking": 1902,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "Equally capable incremental contracts",
+        "status": "accepted",
+        "relation": null,
+        "measuredWork": {
+          "search": 28,
+          "checking": 1902,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "Fixed complete certificate",
+        "status": "unsupported",
+        "relation": null,
+        "measuredWork": {
+          "search": 0,
+          "checking": 0,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      },
+      {
+        "name": "Successor from scratch",
+        "status": "accepted",
+        "relation": null,
+        "measuredWork": {
+          "search": 0,
+          "checking": 1,
+          "acquisitions": 0,
+          "installations": 0
+        },
+        "completeCampaignCandidates": null,
+        "independentlyQualifiedCampaigns": null
+      }
+    ]
+  },
+  "findings_resolved": [
+    "Measurement uncertainty retained through finite interval reasoning and query decisions.",
+    "Compiled services consume the actual emitted decoder/updater on independently varied service inputs.",
+    "Current policy, worker vacancy and resource reservation determine execution factors and installed platform actions.",
+    "Two explicit private components expose complete checkpoint-boundary value profiles and current witnesses.",
+    "Equal complete profiles retain continuation while the current executable route changes; stale route witness is rejected.",
+    "An independently constructed six-stage finite reference replaces declarative comparator ties.",
+    "Accessors are refused by the strict charter boundary before invocation.",
+    "Joint realization now compiles and checks every admitted updater; empty operation sets receive an explicit identity service. No-op and multioperation controls are covered by the baseline tests."
+  ],
+  "remaining_release_gates": [
+    "Final source commit and tree binding; rerun affected qualification after source changes.",
+    "Full required regressions, browser/accessibility/mobile/recovery tests and scanner qualification.",
+    "Separate receiver/Fleet admission and current source/runtime identity checks.",
+    "Public review, qualified merge/release and downloaded/published live-entry verification."
+  ],
+  "limitations": [
+    "Supplied finite synthetic semantics and bounded grammars; no physical materials or industrial deployment.",
+    "The full finite response cube is acquired and checked; no sparse end-to-end acquisition saving.",
+    "Research headline counts from different models are not combined.",
+    "Public deterministic fixtures are regressions, not independently protected holdouts.",
+    "Independent code/checker roles share an authoring environment and do not constitute external scientific replication."
+  ],
+  "source_unchanged_during_model_checks": true,
+  "all_operation_dispatch_review": {
+    "runner": "v22.23.3",
+    "acceptedState": "accepted",
+    "operations": [
+      "flip-x",
+      "flip-y",
+      "flip-z",
+      "flip-w",
+      "mix"
+    ],
+    "representationLabels": 16,
+    "stateOperationCases": 80,
+    "independentServiceOperationCases": 1280,
+    "oldDomainCases": 8,
+    "oldObligationsPreserved": true,
+    "nonFirstUpdaterAndMatchingRowsForgeryRejected": true,
+    "forgeryReason": "The compiled services are not the accepted contextual decoder and updater.",
+    "identityServiceAccepted": true,
+    "resources": {
+      "acquisitions": 1650,
+      "search": 59848,
+      "checking": 318424,
+      "memoryWords": 124,
+      "storageBytes": 43958,
+      "workerSlots": 3,
+      "installations": 4
+    },
+    "source_unchanged_during_checks": true
+  }
+}

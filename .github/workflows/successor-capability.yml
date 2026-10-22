@@ -8,15 +8,28 @@ on:
       - examples/successor-workbench/mission-store.mjs
       - docs/assets/successor/engine.mjs
       - docs/successor/capabilities/**
+      - docs/alpha_factory_v1/demos/successor/capabilities/**
+      - docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json
       - scripts/generate_successor_capability.py
+      - scripts/run_local_tests.py
+      - scripts/validate_discovery_lab.py
       - scripts/generate_gallery_html.py
       - scripts/templates/successor-capability/**
       - tests/browser/test_successor_capability_browser.py
       - tests/browser/test_out_evolve_browser.py
+      - tests/browser/test_discovery_lab_browser.py
       - tests/browser/test_out_execute_browser.py
       - tests/browser/out_evolve_recovery.py
       - tests/browser/test_successor_capability_accessibility.py
       - tests/test_successor_capability_delivery.py
+      - tests/test_discovery_lab_validation.py
+      - tests/test_run_local_tests_environment.py
+      - tests/browser/test_discovery_lab_continuation.py
+      - tests/browser/fleet_receipt_native.mjs
+      - tests/browser/fleet_module_boundary.mjs
+      - tests/browser/fleet_module_boundary.test.mjs
+      - tests/browser/fleet_git_metadata.mjs
+      - tests/browser/fleet_git_metadata.test.mjs
   push:
     branches: [main, additive/successor-capability-review-20261020]
   workflow_dispatch:
@@ -38,6 +51,13 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          persist-credentials: false
+      - name: Capture pinned public Fleet native review source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: MontrealAI/AGI-Fleet-Linux
+          ref: 0dd352fdd2b1af00bc8358e0ac7f96682fd6f796
+          path: .ci-fleet-discovery
           persist-credentials: false
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
@@ -67,18 +87,19 @@ jobs:
       - name: Computation, history and delivery gates
         run: |
           set -o pipefail
-          node --test examples/successor-capability/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
+          node --test examples/successor-capability/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs tests/browser/fleet_module_boundary.test.mjs tests/browser/fleet_git_metadata.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
       - name: Strict typing with retained actual output
         run: |
           set -o pipefail
           python -m mypy --version | tee capability-evidence/logs/typing-version.log
-          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py tests/browser/test_out_evolve_browser.py tests/browser/test_out_execute_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
+          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py scripts/run_local_tests.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/browser/test_discovery_lab_continuation.py tests/test_discovery_lab_validation.py tests/test_run_local_tests_environment.py tests/browser/test_out_evolve_browser.py tests/browser/test_out_execute_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py
+          python scripts/mirror_demo_pages.py
           python scripts/build_service_worker.py
-          git diff --exit-code -- docs/successor/capabilities docs/service-worker.js docs/assets/service-worker.js docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js
+          git diff --exit-code -- docs/successor/capabilities docs/alpha_factory_v1/demos/successor/capabilities docs/service-worker.js docs/assets/service-worker.js docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js
       - name: Browser journey, accessibility and durable recovery
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
@@ -105,6 +126,24 @@ jobs:
           set -o pipefail
           node examples/successor-capability/out-execute/reproduce.mjs capability-evidence/out-execute-study 4 2>&1 | tee capability-evidence/logs/out-execute-study.log
           python tests/browser/test_out_execute_browser.py 2>&1 | tee capability-evidence/logs/out-execute-browser.log
+      - name: Connected Discovery Lab replay and browser acceptance
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          DISCOVERY_LAB_EVIDENCE: ${{ github.workspace }}/capability-evidence/discovery-lab-browser
+          DISCOVERY_LAB_REPLAY_EVIDENCE: ${{ runner.temp }}/discovery-lab-replay
+        run: |
+          set -o pipefail
+          node examples/successor-capability/discovery-lab-reproduce.mjs --output "$DISCOVERY_LAB_REPLAY_EVIDENCE" 2>&1 | tee capability-evidence/logs/discovery-lab-replay.log
+          python -m scripts.validate_discovery_lab --site docs --output capability-evidence/discovery-lab-browser 2>&1 | tee capability-evidence/logs/discovery-lab-browser.log
+      - name: Saved future-task protocol, docket and real-task boundary acceptance
+        env:
+          AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
+          DISCOVERY_CONTINUATION_EVIDENCE: ${{ github.workspace }}/capability-evidence/discovery-continuation
+          DISCOVERY_FLEET_ROOT: ${{ github.workspace }}/.ci-fleet-discovery
+          DISCOVERY_FLEET_REQUIRED: '1'
+        run: |
+          set -o pipefail
+          python tests/browser/test_discovery_lab_continuation.py 2>&1 | tee capability-evidence/logs/discovery-continuation-browser.log
       - name: Review ARIA and every contrast incomplete
         env:
           AXE_SCRIPT: ${{ github.workspace }}/tests/browser/node_modules/axe-core/axe.min.js
@@ -112,6 +151,12 @@ jobs:
         run: |
           set -o pipefail
           python tests/browser/test_successor_capability_accessibility.py 2>&1 | tee capability-evidence/logs/accessibility-review.log
+      - name: Collect external Discovery Lab replay output
+        if: always()
+        run: |
+          if [ -d "$RUNNER_TEMP/discovery-lab-replay" ]; then
+            cp -a "$RUNNER_TEMP/discovery-lab-replay" capability-evidence/discovery-lab
+          fi
       - name: Retain exact-source screenshots and journey evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
