@@ -93,20 +93,23 @@ produced by an authenticated external party. Receiver receipts do not promote
 a capability, establish organizational independence, prove remote execution,
 reserve funds or establish settlement.
 
-Every retained receipt has a semantic `receiptId` and a separate exact-byte
-`receiptDigest`. Different stages or retries can share one logical commission
-and currency route while retaining their separate inspection costs. Reframing
-one receipt with whitespace or property-order changes cannot charge it twice.
-Identity version `discovery-lab-receipt-identity/v2` binds the parsed canonical
-work request and the validated inspection. It excludes the raw request hash and
-framing-derived receiver/reservation/allowance/total memory and storage fields
-from identity only. Exact raw hashes and all validated reported resource charges
-remain in the retained evidence and ledger. Native work, stage, request limits,
-outcome and diagnostics remain bound to the identity.
+Every retained receipt has a semantic `receiptId` for logical work and a separate exact-byte
+`receiptDigest`. Identity version `discovery-lab-receipt-identity/v3` binds only
+the parsed canonical work request, validated receipt schema and code source,
+fixed admission checking charge, and exact validated native logical work prefix
+(acquisitions, search, checking, storage, installations and worker capacity).
+Different stages or early/full native replay prefixes retain distinct work and
+costs within one logical commission and route. Whitespace, property order, units
+labels, diagnostics, timers, permissive memory, reservations, derived allowances
+and outcome/envelope flags cannot mint another identity. All exact raw hashes,
+states, diagnostics and validated reported resource charges remain in the
+retained evidence and ledger; they establish no authenticated invocation count.
 The commission's alternative routes are still listed once each. The receiver
-schema has no authenticated invocation nonce; identical semantic receipts from
-two actual invocations cannot be distinguished without a separately retained
-invocation trace. No such trace or missing cost is invented retrospectively.
+schema has no authenticated invocation nonce; two actual invocations with the
+same request and logical prefix cannot be distinguished without a separately
+retained authenticated invocation trace, even if their timing or outcome reports
+differ. Such invocation counts and missing costs remain unknown. No trace is
+invented retrospectively.
 
 ## Cost interpretation
 

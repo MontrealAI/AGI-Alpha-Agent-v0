@@ -47,19 +47,16 @@ function receiverSource(input, route) {
     return input;
 }
 function semanticReceipt(receipt, request) {
-    const inspection = copy(receipt);
-    // Raw JSON framing has its own exact-byte digest. It cannot mint another
-    // inspection identity, including through sizes derived from that framing.
-    delete inspection.original; delete inspection.requestSha256;
-    for (const key of ['receiverUsed', 'receiverReservation', 'nativeLimits', 'totalUsed']) {
-        if (inspection.resources[key] === null) continue;
-        delete inspection.resources[key].storageBytes;
-        delete inspection.resources[key].memoryBytes;
-    }
-    // Native work, limits in the parsed request, stage, outcome and diagnostics
-    // remain bound. Without an invocation nonce identical executions cannot be
-    // distinguished; no caller-supplied identity is invented for them.
-    return {schema: 'discovery-lab-receipt-identity/v2', request, inspection};
+    // Only the request, installed code identity and exact validated logical
+    // replay prefix identify semantic work. Free diagnostics, measured timers,
+    // permissive memory and derived outcome/envelope flags do not authenticate
+    // another invocation. Their full values remain in the raw evidence/ledger.
+    const nativeWork = Object.fromEntries(['acquisitions', 'search', 'checking',
+        'storageBytes', 'installations', 'workerCapacity']
+        .map(key => [key, receipt.resources.checkerUsed[key]]));
+    return {schema: 'discovery-lab-receipt-identity/v3', request,
+        receiptSchema: receipt.schema, source: copy(receipt.source),
+        receiverAdmissionChecks: 10_000, nativeWork};
 }
 export async function inspectReceiverReceipt(input, context, options = {}) {
     const frame = JSON.parse(contract.canonical({input, context, options}));

@@ -73,6 +73,45 @@ async function reframeEmbeddedRequest(wrapper, pretty) {
     }
     return {...wrapper, raw: JSON.stringify(receipt)};
 }
+function sameWorkReceiptVariants(wrapper) {
+    const changes = {
+        units: receipt => {receipt.resources.units = 'x'.repeat(receipt.resources.units.length);},
+        diagnostics: receipt => {receipt.checker.report.reasons = ['UNATTESTED_DIAGNOSTIC_TEXT'];},
+        nativeOutcome: receipt => {receipt.checker.report.accepted = false; receipt.checker.report.reasons = ['ELAPSED_REPLAY_CHECK_INCOMPLETE'];},
+        elapsed: receipt => {receipt.resources.receiverUsed.elapsedMs += 5; receipt.resources.checkerUsed.elapsedMs += 2;},
+        checkerMemory: receipt => {receipt.resources.checkerUsed.memoryBytes += 7;},
+        receiverMemory: receipt => {receipt.resources.receiverUsed.memoryBytes += 11;},
+        reservation: receipt => {receipt.resources.receiverReservation.memoryBytes += 13; receipt.resources.receiverReservation.storageBytes += 17;},
+        allowanceState: receipt => {
+            const request = JSON.parse(receipt.original);
+            receipt.resources.receiverReservation.memoryBytes = request.resourceLimits.memoryBytes - receipt.resources.checkerUsed.memoryBytes + 1;
+        }
+    };
+    return Object.entries(changes).map(([name, change]) => {
+        const receipt = JSON.parse(wrapper.raw); change(receipt);
+        const request = JSON.parse(receipt.original), resources = receipt.resources;
+        const workingBytes = resources.receiverUsed.memoryBytes - resources.receiverUsed.storageBytes;
+        receipt.checker.report.resourceUsed = {...resources.checkerUsed};
+        for (const key of contract.RESOURCE_KEYS) resources.nativeLimits[key]
+            = request.resourceLimits[key] - resources.receiverReservation[key];
+        const fits = (used, limits) => contract.RESOURCE_KEYS.every(key => used[key] <= limits[key]);
+        receipt.checker.nativeWithinResourceEnvelope = fits(resources.checkerUsed, resources.nativeLimits);
+        receipt.reason = receipt.checker.nativeWithinResourceEnvelope ? null : 'NATIVE_RESOURCE_ENVELOPE_EXCEEDED';
+        for (let index = 0; index < 16; index++) {
+            resources.receiverUsed.storageBytes = new TextEncoder().encode(JSON.stringify(receipt)).length;
+            resources.receiverUsed.memoryBytes = workingBytes + resources.receiverUsed.storageBytes;
+            for (const key of contract.RESOURCE_KEYS) resources.totalUsed[key] = key === 'elapsedMs'
+                ? Math.max(resources.receiverUsed[key], resources.checkerUsed[key])
+                : resources.receiverUsed[key] + resources.checkerUsed[key];
+            receipt.checker.withinResourceEnvelope = fits(resources.totalUsed, request.resourceLimits);
+            const incomplete = !receipt.checker.report.accepted && receipt.checker.report.reasons
+                .some(reason => /(?:BUDGET_EXHAUSTED|SEARCH_TRUNCATED|CHECK_INCOMPLETE)$/.test(reason));
+            receipt.state = !receipt.checker.nativeWithinResourceEnvelope || !receipt.checker.withinResourceEnvelope || incomplete
+                ? 'inconclusive' : receipt.checker.report.accepted ? 'local-checked' : 'local-rejected';
+        }
+        return {name, wrapper: {...wrapper, raw: JSON.stringify(receipt)}};
+    });
+}
 test('pure receipt inspection binds replayed context while retaining unattested content identity', async () => {
     const record = await campaign(), wrapper = await modeledReceipt(record), context = receipts.makeReceiverContext(record);
     const checked = await receipts.inspectReceiverReceipt(wrapper, context, {expectedReceiverSources: [wrapper.source]});
@@ -119,4 +158,14 @@ test('pure context refuses cycles and imported authority rather than executing s
     const wrapper = await modeledReceipt(record), altered = JSON.parse(wrapper.raw); altered.authority = 'settle';
     wrapper.raw = JSON.stringify(altered);
     await assert.rejects(receipts.inspectReceiverReceipt(wrapper, receipts.makeReceiverContext(record)));
+});
+
+test('free diagnostic and accounting fields cannot mint another same-work semantic identity', async t => {
+    const record = await campaign(), wrapper = await modeledReceipt(record), context = receipts.makeReceiverContext(record);
+    const first = await receipts.inspectReceiverReceipt(wrapper, context);
+    for (const variant of sameWorkReceiptVariants(wrapper)) await t.test(variant.name, async () => {
+        const checked = await receipts.inspectReceiverReceipt(variant.wrapper, context);
+        assert.notEqual(checked.receiptDigest, first.receiptDigest);
+        assert.equal(checked.receiptId, first.receiptId);
+    });
 });

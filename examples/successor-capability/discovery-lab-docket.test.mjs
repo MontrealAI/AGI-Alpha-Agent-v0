@@ -79,6 +79,45 @@ async function reframeEmbeddedRequest(wrapper, pretty) {
     }
     return {...wrapper, raw: JSON.stringify(receipt)};
 }
+function sameWorkReceiptVariants(wrapper) {
+    const changes = {
+        units: receipt => {receipt.resources.units = 'x'.repeat(receipt.resources.units.length);},
+        diagnostics: receipt => {receipt.checker.report.reasons = ['UNATTESTED_DIAGNOSTIC_TEXT'];},
+        nativeOutcome: receipt => {receipt.checker.report.accepted = false; receipt.checker.report.reasons = ['ELAPSED_REPLAY_CHECK_INCOMPLETE'];},
+        elapsed: receipt => {receipt.resources.receiverUsed.elapsedMs += 5; receipt.resources.checkerUsed.elapsedMs += 2;},
+        checkerMemory: receipt => {receipt.resources.checkerUsed.memoryBytes += 7;},
+        receiverMemory: receipt => {receipt.resources.receiverUsed.memoryBytes += 11;},
+        reservation: receipt => {receipt.resources.receiverReservation.memoryBytes += 13; receipt.resources.receiverReservation.storageBytes += 17;},
+        allowanceState: receipt => {
+            const request = JSON.parse(receipt.original);
+            receipt.resources.receiverReservation.memoryBytes = request.resourceLimits.memoryBytes - receipt.resources.checkerUsed.memoryBytes + 1;
+        }
+    };
+    return Object.entries(changes).map(([name, change]) => {
+        const receipt = JSON.parse(wrapper.raw); change(receipt);
+        const request = JSON.parse(receipt.original), resources = receipt.resources;
+        const workingBytes = resources.receiverUsed.memoryBytes - resources.receiverUsed.storageBytes;
+        receipt.checker.report.resourceUsed = {...resources.checkerUsed};
+        for (const key of contract.RESOURCE_KEYS) resources.nativeLimits[key]
+            = request.resourceLimits[key] - resources.receiverReservation[key];
+        const fits = (used, limits) => contract.RESOURCE_KEYS.every(key => used[key] <= limits[key]);
+        receipt.checker.nativeWithinResourceEnvelope = fits(resources.checkerUsed, resources.nativeLimits);
+        receipt.reason = receipt.checker.nativeWithinResourceEnvelope ? null : 'NATIVE_RESOURCE_ENVELOPE_EXCEEDED';
+        for (let index = 0; index < 16; index++) {
+            resources.receiverUsed.storageBytes = new TextEncoder().encode(JSON.stringify(receipt)).length;
+            resources.receiverUsed.memoryBytes = workingBytes + resources.receiverUsed.storageBytes;
+            for (const key of contract.RESOURCE_KEYS) resources.totalUsed[key] = key === 'elapsedMs'
+                ? Math.max(resources.receiverUsed[key], resources.checkerUsed[key])
+                : resources.receiverUsed[key] + resources.checkerUsed[key];
+            receipt.checker.withinResourceEnvelope = fits(resources.totalUsed, request.resourceLimits);
+            const incomplete = !receipt.checker.report.accepted && receipt.checker.report.reasons
+                .some(reason => /(?:BUDGET_EXHAUSTED|SEARCH_TRUNCATED|CHECK_INCOMPLETE)$/.test(reason));
+            receipt.state = !receipt.checker.nativeWithinResourceEnvelope || !receipt.checker.withinResourceEnvelope || incomplete
+                ? 'inconclusive' : receipt.checker.report.accepted ? 'local-checked' : 'local-rejected';
+        }
+        return {name, wrapper: {...wrapper, raw: JSON.stringify(receipt)}};
+    });
+}
 async function rehashFiles(value) {
     for (const path of docket.DOCKET_PATHS) value.checksums[path] = await docket.rawDigest(value.files[path]);
     return value;
@@ -353,4 +392,20 @@ test('separate proposals bind identical work to distinct identities and retain b
     assert.notEqual(costs.realTaskContractChecks[0].proposalIdentity, costs.realTaskContractChecks[1].proposalIdentity);
     assert.equal(costs.realTaskContractChecks.reduce((total, item) => total + item.contractChecker.checking, 0), 4);
     assert.equal((await docket.verifyDiscoveryDocket(exported, {expectedWorkspaceHead: value.events.at(-1).digest})).verified, true);
+});
+
+test('free-text and accounting variants reject across history and both docket attachment paths', async t => {
+    const built = await campaign(), receipt = await modeledReceipt(built.record);
+    const value = await workspace.recordDiscoveryEvent(built.value, 'lab-evidence-attached',
+        await evidence.evidencePayload(built.record.campaignDigest, 'receiver-receipt', receipt));
+    for (const variant of sameWorkReceiptVariants(receipt)) await t.test(variant.name, async () => {
+        const single = await docket.emptyDocketAttachments(built.value); single.receipts = [variant.wrapper];
+        await docket.createDiscoveryDocket(built.value, single);
+        await assert.rejects(workspace.recordDiscoveryEvent(value, 'lab-evidence-attached',
+            await evidence.evidencePayload(built.record.campaignDigest, 'receiver-receipt', variant.wrapper)), /Duplicate semantic receipt/, variant.name);
+        const external = await docket.emptyDocketAttachments(value); external.receipts = [variant.wrapper];
+        await assert.rejects(docket.createDiscoveryDocket(value, external), /repeats a semantic receipt/, variant.name);
+        const externalOnly = await docket.emptyDocketAttachments(built.value); externalOnly.receipts = [receipt, variant.wrapper];
+        await assert.rejects(docket.createDiscoveryDocket(built.value, externalOnly), /repeats a semantic receipt/, variant.name);
+    });
 });

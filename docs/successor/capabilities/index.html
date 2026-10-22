@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#160c2f">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-nCkrfrhJrYh04dBAMymmK6ZCBy3CUQYEuXsZV9Hq5SE='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-W1gZKPk5KhWr5eelNWIpCo+ZQ8uyw/UOYaAWg2MtLrE='; style-src 'sha256-s+Vk7SFUzOF6b63hHkR7rJAlL/o0+pkLyx7lnhqNCN4='; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
     <title>SUCCESSOR Ω · Capability workshop</title>
     <style>
 /* SPDX-License-Identifier: Apache-2.0 */
@@ -492,7 +492,7 @@ pre { max-height: 450px; overflow: auto; padding: 1rem; border: 1px solid var(--
     </section>
     <section class="research-section" aria-labelledby="research-heading"><p class="eyebrow">RESEARCH CONTEXT, NOT PRODUCT PROOF</p><h2 id="research-heading">Ideas behind the ambition.</h2><p>These research PDFs motivate the direction. They are not evidence that this browser implements every proposal, has discovered a novel capability, or has produced a viable business. Out Evolve and The World as an Output describe synthetic/theoretical work, not physical validation.</p><div class="research-links"><a href="../../Transformational_Intelligence.pdf">Transformational Intelligence <span>PDF ↗</span></a><a href="../../The_World_as_an_Output.pdf">The World as an Output <span>PDF ↗</span></a><a href="../../Out_Evolve.pdf">Out Evolve <span>PDF ↗</span></a><a href="../../Invent_the_Economy.pdf">Invent the Economy <span>PDF ↗</span></a></div></section>
 </main>
-<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
+<footer class="wrap site-footer"><div><a class="brand" href="../">SUCCESSOR Ω</a><p>Ambition in the brief. Precision in the evidence.</p></div><div class="footer-links"><a href="../../DISCLAIMER_SNIPPET/" title="See docs/DISCLAIMER_SNIPPET.md">Project notice</a><details><summary>Exact bundled source identity</summary><code>bb7690a5f2d72498726382f22b7c3fae5a6ac5f00ccd737f6301453ceb5f2172</code><p><a href="sources.json">Exact build source manifest</a>. Byte consistency is not authenticity or independent approval.</p></details></div></footer>
 <script>
 (()=>{
 'use strict';
@@ -3752,19 +3752,16 @@ function receiverSource(input, route) {
     return input;
 }
 function semanticReceipt(receipt, request) {
-    const inspection = copy(receipt);
-    // Raw JSON framing has its own exact-byte digest. It cannot mint another
-    // inspection identity, including through sizes derived from that framing.
-    delete inspection.original; delete inspection.requestSha256;
-    for (const key of ['receiverUsed', 'receiverReservation', 'nativeLimits', 'totalUsed']) {
-        if (inspection.resources[key] === null) continue;
-        delete inspection.resources[key].storageBytes;
-        delete inspection.resources[key].memoryBytes;
-    }
-    // Native work, limits in the parsed request, stage, outcome and diagnostics
-    // remain bound. Without an invocation nonce identical executions cannot be
-    // distinguished; no caller-supplied identity is invented for them.
-    return {schema: 'discovery-lab-receipt-identity/v2', request, inspection};
+    // Only the request, installed code identity and exact validated logical
+    // replay prefix identify semantic work. Free diagnostics, measured timers,
+    // permissive memory and derived outcome/envelope flags do not authenticate
+    // another invocation. Their full values remain in the raw evidence/ledger.
+    const nativeWork = Object.fromEntries(['acquisitions', 'search', 'checking',
+        'storageBytes', 'installations', 'workerCapacity']
+        .map(key => [key, receipt.resources.checkerUsed[key]]));
+    return {schema: 'discovery-lab-receipt-identity/v3', request,
+        receiptSchema: receipt.schema, source: copy(receipt.source),
+        receiverAdmissionChecks: 10_000, nativeWork};
 }
 async function inspectReceiverReceipt(input, context, options = {}) {
     const frame = JSON.parse(contract.canonical({input, context, options}));
@@ -7233,7 +7230,7 @@ const discoveryFuture=capability_module_10;
 const discoveryDocket=capability_module_22;
 const discoveryDeployments=capability_module_23;
 const discoveryRealTask=capability_module_12;
-const SOURCE_HASH='99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d';
+const SOURCE_HASH='bb7690a5f2d72498726382f22b7c3fae5a6ac5f00ccd737f6301453ceb5f2172';
 // SPDX-License-Identifier: Apache-2.0
 // The injected capability model owns construction, validation and evidence replay.
 // User-authored descriptions and imported text are data, never executable code.
@@ -8397,7 +8394,7 @@ window.addEventListener('beforeunload', event => {
     })();
 })();
 
-const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "99b14150b2ee503198687a2ff45b8adddf48acbbeadfa57151cd57a6442a0b0d"};
+const DISCOVERY_SOURCES={"evaluatorDigest": "ba46c89d42defc9d78ac61090f5ccc793549c4c072a5afe825bc7b434b3f7099", "modelDigest": "16655c0cce276415f4f08bf9ced35cec04c086545adc4d72122e038b29244506", "sourceDigest": "bb7690a5f2d72498726382f22b7c3fae5a6ac5f00ccd737f6301453ceb5f2172"};
 // SPDX-License-Identifier: Apache-2.0
 // The existing workspace bridge owns reservation, execution, verification and persistence.
 function mountDiscoveryLab({runtime, history}) {
