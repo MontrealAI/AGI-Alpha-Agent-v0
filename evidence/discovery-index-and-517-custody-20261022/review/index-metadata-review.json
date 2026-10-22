@@ -1,0 +1,89 @@
+{
+  "schema": "successor/alpha-ignored-sparse-index-independent-review/v1",
+  "reviewer": {
+    "identity": "/root/windows_cleanup_review",
+    "role": "independent-technical-review-agent",
+    "organizationalIndependence": false,
+    "economicApproval": false
+  },
+  "status": "NO_UNRESOLVED_FINDINGS_ON_EXACT_TWO_FILE_PATCH",
+  "baseCommit": "5c2a30e583d2d745ebc8de5d1385d9b5e8c8adfa",
+  "baseTree": "d2e99a72b66e1b1e56324779b576cc77b1ee3f45",
+  "patchSha256": "5a3409ac493abbf17887e3f15465c3381922c958db1b14f1367747bb753ed9fa",
+  "patchBytes": 6464,
+  "sourceFiles": [
+    {
+      "path": "tests/browser/fleet_git_metadata.mjs",
+      "bytes": 4323,
+      "sha256": "6f778aef9b870b4560a507ca6479f9f004932f453b2d2c25ac27bec4153a4686",
+      "gitBlob": "47f91385755e74783cc1ad652f690fdcc439d5fa",
+      "baselineSha256": "573a846fd1c6617df212b523ad1a5f3fc3a8030ad34e444163ad81451f89da5e",
+      "mode": "100644"
+    },
+    {
+      "path": "tests/browser/fleet_git_metadata.test.mjs",
+      "bytes": 7682,
+      "sha256": "87416a736699183528f9118c35093771a3f7f4758522a2ffe15a7a6438e98429",
+      "gitBlob": "7e256638fe52f9c0167ce68845f2f8223bb902a2",
+      "baselineSha256": "3a5d5efcf846adc927c99ea01a5198134403482071f15a9dddfe6f80b270df3d",
+      "mode": "100644"
+    }
+  ],
+  "findings": [],
+  "assessment": [
+    "The parser admits the index section only when its private ignoredWorktree argument is true. The main-config call still omits that flag, so index in main config remains rejected.",
+    "The ignored-file audit then requires no subsection, exactly index.sparse or the prior three core residue keys, and an explicit recognized false value. Bare, active, quoted/unknown, unexpected key/subsection, or any duplicate active value refuses. Every row is checked, so later false values cannot hide earlier active values.",
+    "Syntax, control-byte/size bounds, escapes/continuations, denied keys, other section restrictions, disabled extension proof and all native helper root/owned-byte/Git environment checks remain unchanged.",
+    "The normal local Git fixture creates a plain text repository, runs sparse-checkout disable then removes only the activation extension as checkout does, reads the unchanged resulting metadata, verifies index.sparse is not loaded, and leaves ignored bytes intact. No custom executable fixture, execution payload or network command is used."
+  ],
+  "validation": {
+    "runtimes": [
+      {
+        "label": "node22",
+        "nodeVersion": "v22.17.1",
+        "exitCode": 0,
+        "logSha256": "2d6f04cfcce625e1514e3854e49d9863b04247aa1005adfcddf559ebd6497659",
+        "summary": [
+          "# tests 47",
+          "# suites 0",
+          "# pass 47",
+          "# fail 0",
+          "# cancelled 0",
+          "# skipped 0",
+          "# todo 0",
+          "# duration_ms 170.454702"
+        ]
+      },
+      {
+        "label": "node24",
+        "nodeVersion": "v24.21.0",
+        "exitCode": 0,
+        "logSha256": "d98379fd234785e49e8f586b18bbf8117fcde39a6169ba7b13c6f2acdbdad5b8",
+        "summary": [
+          "\u2139 tests 47",
+          "\u2139 suites 0",
+          "\u2139 pass 47",
+          "\u2139 fail 0",
+          "\u2139 cancelled 0",
+          "\u2139 skipped 0",
+          "\u2139 todo 0",
+          "\u2139 duration_ms 167.726466"
+        ]
+      }
+    ],
+    "gitDiffCheck": "PASS",
+    "rootOrdinaryObservation": {
+      "file": "/dev/shm/sparse-disable-inert-observation.json",
+      "sha256": "98c4e8a7c5a46697b930d20404f834860c56819a3bf6f33ec8641013dc4b93e2",
+      "gitVersion": "2.51.1",
+      "ignoredResidue": "core.sparseCheckout=false, core.sparseCheckoutCone=false, index.sparse=false; extension absent"
+    }
+  },
+  "limits": [
+    "The review covers the exact recorded two source files; their bytes were committed concurrently during review and match reviewedCommit. No public commit or hosted workflow result is claimed.",
+    "Both 47-case runs are ordinary inert metadata/local Git fixtures, not browser or native receiver acceptance.",
+    "No source edits, network, browser, installs, blocked execution probes, workflow reruns/cancels or public writes were performed."
+  ],
+  "reviewedCommit": "7fcf94d362aefaba21641974652589901c108097",
+  "reviewedTree": "80fc1df5d46b7a27d40efed1c8ee3f2b4d08a301"
+}
