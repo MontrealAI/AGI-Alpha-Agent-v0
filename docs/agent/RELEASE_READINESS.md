@@ -394,11 +394,12 @@ assistive technologies.
 4. Confirm packaging, public Pages acceptance and publication all succeed. A successful test run alone
    does not establish that the public website or release assets have been published.
 
-The regression job allows 60 minutes for the complete locked test suite, cold strict-type checks and
-repository validation. The historical waiter reserves five additional minutes in its enclosing job
-for evidence upload and cleanup; its bounded wait accommodates runner queues and the historical test
-jobs' 60-minute execution limit. Deadlines still fail closed: successful tests cannot replace an
-incomplete job. The successful waiter supplies
+The Agent Release regression job allows 90 minutes for the complete locked test suite, cold
+strict-type checks and repository validation. Test commands, coverage requirements and functional
+runtime deadlines are unchanged. The historical CI waiter retains its separate 120-minute bounded
+wait and 125-minute enclosing job, reserving five minutes for evidence upload and cleanup. Its wait
+accommodates runner queues and the existing execution limits of CI, PR CI and Smoke workflows.
+Deadlines still fail closed: successful tests cannot replace an incomplete job. The successful waiter supplies
 its unique attempt-specific artifact name to packaging, and the download verifies its SHA-256 digest.
 The report must identify the same commit and successful main-push runs of every required workflow.
 Packaging rejects missing, failed or stale reports. Package and public-site evidence downloads also
