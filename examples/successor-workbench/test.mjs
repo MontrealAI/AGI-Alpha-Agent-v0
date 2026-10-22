@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import './thermal-witness.test.mjs';
 import { createWorkbench, example, run, validate, semanticIdentity, inspectPack } from './engine.mjs';
 import { digest } from '../../docs/assets/successor/engine.mjs';
 const sourceHash='a'.repeat(64);

@@ -1,0 +1,93 @@
+{
+  "schema": "thermal-witness-portable-execution/v1",
+  "executionEnvironment": "functions.exec V8 isolate; no Node, filesystem, network, native harness or EVM",
+  "method": "Exact in-memory module source; export declarations removed only for function evaluation. Portable cases executed without replacing production arithmetic.",
+  "status": "PASSED_WITH_EXPLICIT_SCOPE",
+  "portable": {
+    "passed": 42,
+    "cases": [
+      "constant measured volume defeats command gain error with exact units",
+      "hidden truth is not an input field",
+      "missing independent volume does not qualify",
+      "command-derived volume does not qualify",
+      "shared source labels do not establish independence",
+      "unknown whole-flow coverage does not qualify",
+      "unbounded temperature does not qualify",
+      "relative uncertainty uses the true-heat lower bound",
+      "zero-crossing aggregate heat is unidentifiable",
+      "signed intervals are retained and integrated",
+      "work exhaustion is incomplete, never a completed negative",
+      "interrupted checkpoint propagates without an accepted result",
+      "caller mutation after checkpoint cannot change the captured inputs",
+      "reject duplicate sequence",
+      "reject missing acquisition window",
+      "reject noninteger volume",
+      "reject negative zero",
+      "reject negative duration",
+      "reject unknown schema",
+      "reject loosened five percent policy",
+      "reject oversized decimal",
+      "reject accessor input",
+      "reject sparse interval array",
+      "reject symbol property",
+      "heat capacity is derived from independent loss and container bounds",
+      "heat capacity refuses an absent independent reference",
+      "zero lower temperature rise is not regularized",
+      "downstream heat capacity uncertainty is separately constrained",
+      "impossible loss budget remains inconsistent",
+      "recovery accounts for stored energy with exact rational result",
+      "recovery with zero denominator lower bound is unidentifiable",
+      "impossible recovery is preserved above one rather than clamped",
+      "submicrojoule results round bounds outward",
+      "published metrology failure is reproduced by independent ODE reference",
+      "independent containment nominal history -10",
+      "independent containment nominal history 0",
+      "independent containment nominal history 10",
+      "independent containment flow-power-uncertainty history -10",
+      "independent containment flow-power-uncertainty history 0",
+      "independent containment flow-power-uncertainty history 10",
+      "too-wide differential calibration fails useful accuracy",
+      "a conventional equivalent instrument ties, not universal superiority"
+    ]
+  },
+  "reference": {
+    "trueHeatJ": "5009.624457673767",
+    "legacyCommandHeatJ": "5445.281559253151",
+    "newWitnessHeatMicroJ": {
+      "name": "delivered heat",
+      "unit": "microjoules",
+      "low": "4943354615",
+      "estimate": "5035816195",
+      "high": "5129056527"
+    },
+    "uncertainty": {
+      "radiusMicroJ": "93240332",
+      "worstRelativeErrorPpm": "18862"
+    },
+    "rk4Steps": 28800,
+    "rhsCalls": 115200
+  },
+  "notRun": [
+    "Node workbench integration and CLI",
+    "native worker and harness registration",
+    "local EVM",
+    "browser/mobile/keyboard",
+    "installed four-repository compatibility",
+    "new release/download-byte verification"
+  ],
+  "sourceFiles": [
+    {
+      "path": "examples/successor-workbench/thermal-witness.mjs"
+    },
+    {
+      "path": "examples/successor-workbench/thermal-witness-reference.mjs"
+    },
+    {
+      "path": "examples/successor-workbench/thermal-witness-fixtures.mjs"
+    },
+    {
+      "path": "examples/successor-workbench/thermal-witness-cases.mjs"
+    }
+  ],
+  "note": "This receipt accompanies the matching source changes. Public readback and independent source review must verify exact code; this is not a release attestation."
+}
