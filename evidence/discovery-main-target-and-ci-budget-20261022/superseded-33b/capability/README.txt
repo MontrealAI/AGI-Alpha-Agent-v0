@@ -1,0 +1,11 @@
+Original33b capability custody — NONFINAL / superseded by24d
+
+Original workflow39724342613 attempt1 completed SUCCESS at runhead33b19714e1219c812d451e4d736fcb34b722ceff. Actual checkout c0773f99623d7ab8d82f3a978c76b41cd596dfa7, treeb310ec7fe96000668f7be2d1b1866245b255d56b, ordered parents [main5a5340a15698165bceb21e252f3bec58d7fd8298,33b]. Immutable localf3193c343a54a2ae034261d91ead1bd9f96bb0b6 has exactly that tree. Live run.pull_requests metadata can show the newer24d head; that dynamic field does not rebind the original run or artifact.
+
+The main ZIP was downloaded only to RAM. Its digest,233 unique safe member paths, every CRC/member hash,41 fresh source bindings, generated page/catalog/CSP, native source pins, actual two UI exports, journal prefix/digests,11 UI refusal docket identities,13-section docket checksums/reopen, and retained ARIA observations passed independent inert authentication. Exactly11 canonical raw UTF8 artifact members plus small reports/API snapshots and the original decoded UTF8 job log are retained. The native success is the USDC source-module local review. The AGIALPHA request is an actual UI download from the identical pre-Fleet workspace; this report does not claim an AGIALPHA installed-service invocation.
+
+The first five observation variants and framing alternatives can retain native semantic receipt identity; the hosted UI refused all11 after canonical import while preserving the docket/history. This is not a claim that the native parser rejects every equivalent framing.
+
+The retained finite Chromium accessibility observations include unresolved manual-review requirements. Screenshot hashes were authenticated, without independent visual review or a universal WCAG claim.
+
+This source was superseded by public24d58598f896106323f2c120487586bdf5104612 before this audit completed. No result transfers to24d, accepted main, exact-main release, installed released services, operational/economic claims, or current qualification. The newer source has a separate owner. Historical failures/reports/archives remain untouched. No rerun/cancel/dispatch, local browser, installation/runtime/cache change, public/source write, artifact/repository execution or ZIP persistence occurred.
