@@ -92,8 +92,10 @@ Git transport over the explicit local path, without a network fetch, rather than
 copying local object-store links or alternates. Do not use `--shared` or `--reference`:
 
 Use Bash or Git Bash, not a generic POSIX shell. Run the entire parenthesized block:
-its subshell clears inherited `GIT_*` variables before any Git command, including
-source-SHA resolution. Otherwise variables such as `GIT_OBJECT_DIRECTORY` can
+its subshell clears inherited Git-prefixed variables regardless of letter case
+before any Git command, including source-SHA resolution. Native Windows Git
+also recognizes names such as `git_object_directory` or `Git_Dir`; an uppercase-only
+Bash prefix match would leave them behind. Otherwise routing variables can
 redirect writes outside the clone or leave it dependent on external objects.
 It then disables global and system Git configuration for every Git command in
 the subshell using `GIT_CONFIG_GLOBAL=/dev/null` and `GIT_CONFIG_NOSYSTEM=1`.
@@ -113,9 +115,12 @@ rewriting files during clone or checkout, without editing or deleting those hook
 
 ```sh
 (
-  for git_var in "${!GIT_@}"; do
-    unset "$git_var" || exit 1
-  done
+  recovery_env_vars=$(compgen -A variable) || exit 1
+  while IFS= read -r recovery_var; do
+    case "$recovery_var" in
+      [gG][iI][tT]_*) unset "$recovery_var" || exit 1 ;;
+    esac
+  done <<< "$recovery_env_vars"
   export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 || exit 1
   source_sha=FULL_VERIFIED_COMMIT_SHA
   resolved_sha=$(git rev-parse --verify "$source_sha^{commit}") || exit 1

@@ -87,7 +87,9 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
         if bash is None:
             self.skipTest("Bash/Git Bash is required to exercise the documented shell recipe")
         document = (ROOT / "docs/agent/PAPER_UPLOADS.md").read_text(encoding="utf-8")
-        recipe = next(block for block in re.findall(r"```sh\n(.*?)```", document, re.S) if "${!GIT_@}" in block)
+        recipe = next(
+            block for block in re.findall(r"```sh\n(.*?)```", document, re.S) if "compgen -A variable" in block
+        )
         with tempfile.TemporaryDirectory(prefix="paper-routing-") as directory:
             parent = Path(directory).resolve()
             origin = parent / "origin"
@@ -174,7 +176,11 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             self.assertIn(b"fsmonitor invoked", monitor_log.read_bytes())
             protected.append(monitor_log)
             original[monitor_log] = monitor_log.read_bytes()
-            for case in ("success", "readonly", "missing-commit", "occupied"):
+            mixed_index = parent / "mixed.index"
+            mixed_index.write_bytes(b"Preserve external mixed-case index\n")
+            protected.append(mixed_index)
+            original[mixed_index] = mixed_index.read_bytes()
+            for case in ("success", "readonly", "readonly-mixed", "enumeration-error", "missing-commit", "occupied"):
                 with self.subTest(case=case):
                     fresh = parent / case
                     if case == "occupied":
@@ -184,12 +190,29 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                     script = recipe.replace("FULL_VERIFIED_COMMIT_SHA", chosen).replace(
                         "../AGI-Alpha-Agent-byte-clean", shlex.quote(fresh.as_posix())
                     )
-                    prefix = "readonly GIT_OBJECT_DIRECTORY\n" if case == "readonly" else ""
+                    # Bash can retain these spellings even on case-sensitive hosts.
+                    # Native Windows routing remains a separate hosted qualification.
+                    prefix = (
+                        f"export git_object_directory={shlex.quote(external.as_posix())}\n"
+                        f"export Git_Dir={shlex.quote((parent / 'unrelated.git').as_posix())}\n"
+                        f"export gIt_InDeX_fIlE={shlex.quote(mixed_index.as_posix())}\n"
+                    )
+                    if case == "readonly":
+                        prefix += "readonly GIT_OBJECT_DIRECTORY\n"
+                    elif case == "readonly-mixed":
+                        prefix += "readonly Git_Dir\n"
+                    elif case == "enumeration-error":
+                        prefix += "compgen() { return 1; }\n"
+                    script = script.replace(
+                        "  source_sha=",
+                        '  [ -z "${git_object_directory+x}${Git_Dir+x}${gIt_InDeX_fIlE+x}" ] || exit 98\n  source_sha=',
+                    )
+                    snapshot = 'declare -p "${!GIT_@}" git_object_directory Git_Dir gIt_InDeX_fIlE'
                     script = (
                         prefix
-                        + 'caller_before=$(declare -p "${!GIT_@}")\n'
+                        + f"caller_before=$({snapshot})\n"
                         + script
-                        + '\nresult=$?\ncaller_after=$(declare -p "${!GIT_@}")\n'
+                        + f"\nresult=$?\ncaller_after=$({snapshot})\n"
                         + '[ "$caller_before" = "$caller_after" ] || exit 99\nexit "$result"\n'
                     )
                     result = subprocess.run(
@@ -202,6 +225,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                         check=False,
                     )
                     self.assertNotEqual(result.returncode, 99, result.stderr)
+                    self.assertNotEqual(result.returncode, 98, result.stderr)
                     if case == "success":
                         self.assertEqual(result.returncode, 0, result.stderr)
                         self.assertEqual(result.stdout.decode().strip(), new)
