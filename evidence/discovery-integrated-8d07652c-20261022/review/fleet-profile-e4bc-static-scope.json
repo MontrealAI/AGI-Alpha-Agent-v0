@@ -1,0 +1,31 @@
+{
+  "schema": "root-static-owned-source-review/v1",
+  "source": {
+    "repository": "MontrealAI/AGI-Fleet-Linux",
+    "localCommit": "e4bc09db09f7b2b0bf5e1fd20dfd88d6791fe5ad",
+    "localTree": "fbddd07f38a9ca0316eb846c1e15fda36dddfa12",
+    "moduleClosureSha256": "8d3575ece582c158c30f3cc1c5f438b9b32ad2a31f190d6867acf9712beedad5"
+  },
+  "review": {
+    "methods": [
+      "direct static inspection of module-closure.mjs, installed-review.mjs, engineering/discovery_release.py and profile.json",
+      "ordinary existing 14-case installed-review suite repeated on Node22.17.1 and24.21.0"
+    ],
+    "parser": "SourceTextModule constructed in bounded child; no linking/evaluation; static records explicitly exclude dynamic imports",
+    "runtime": "registerHooks serves deep-copied captured bytes; resolver constrains every request originating inside captured namespace; fixed per-parent builtins; closing retains denying tombstone",
+    "scope": "An import/source boundary around reviewed fixed application code, not a general JavaScript sandbox",
+    "openBlockingFindings": [],
+    "results": {
+      "node22": 14,
+      "node24": 14
+    }
+  },
+  "limitations": [
+    "stopped independent executable-probe reviews remain NOT_COMPLETED; no retries performed",
+    "Alpha pin null; builder deliberately refuses; actual installed package/native invocation and fresh hosted acceptance NOT_RUN",
+    "this technical static/ordinary-test review is not eligible human or organization approval",
+    "source parser and capture/coordination costs remain unmeasured"
+  ],
+  "authority": "none",
+  "totalComplete": false
+}
