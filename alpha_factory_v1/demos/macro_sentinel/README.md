@@ -21,7 +21,7 @@ trade is invented. No broker or transaction is called by these tools.
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.1
+## Current runnable path — 1.38.0
 
 **Mode:** Offline simulation. Computes Monte Carlo risk metrics from bundled macro samples.
 

@@ -42,10 +42,12 @@ Research proposals and bounded studies, not claims of general autonomous capabil
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current source candidate · 1.37.1.** [Research-feature release notes](docs/agent/RELEASE_NOTES_1.37.1.md).
-This combined software candidate adds bounded OUT-EXECUTE execution, simpler paper publication and seven featured
-research manuscripts. The paper collection is not a claim that every proposed capability is implemented.
-Existing release records below keep their original scope. Exact-source acceptance and publication remain required.
+**Current source candidate · 1.38.0.** [Integrated flagship release notes](docs/agent/RELEASE_NOTES_1.38.0.md).
+This combined software candidate adds bounded OUT-EXECUTE execution and brings the seven original papers together
+with the six-stage Discovery Lab, frozen future-task experiments and one replayed evidence docket. It preserves
+existing proposal and Out-Evolve journeys. This is not a claim that every proposed capability is implemented.
+Synthetic results and unsigned work drafts grant no operational authority.
+Predecessor qualification, independent integration review and exact-source publication checks remain required.
 
 ## Choose your next step
 
