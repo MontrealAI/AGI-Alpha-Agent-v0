@@ -230,7 +230,7 @@ jobs:
     needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     # Allow the complete locked suite plus cold strict-type checks to finish.
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
