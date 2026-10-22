@@ -42,9 +42,15 @@ class CacheBoundary(unittest.TestCase):
         from scripts.build_service_worker import build, gather_assets
 
         with tempfile.TemporaryDirectory() as temporary:
-            docs = Path(temporary)
+            root = Path(temporary)
+            docs = root / "docs"
+            docs.mkdir()
+            catalog = root / "alpha_factory_v1/demos/catalog.json"
+            catalog.parent.mkdir(parents=True)
+            catalog.write_text('{"release": "wallet-cache-fixture"}')
             (docs / "index.html").write_text("demo")
             original = build(docs)
+            self.assertIn('const RELEASE = "wallet-cache-fixture";', (docs / "service-worker.js").read_text())
             for name in [
                 "assets/ascension-wallet/profile.json",
                 "assets/ascension-wallet/app.mjs",

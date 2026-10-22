@@ -15,6 +15,10 @@
     let unsaved = false;
     let readyNow = false;
     let pendingEvaluation = null;
+    let executionCheckpoint = null;
+    let executionCancel = false;
+    let executionUnsaved = null;
+    let executionRestored = false;
     const json = value => JSON.stringify(value, null, 2);
     const pause = () => new Promise(resolve => setTimeout(resolve, 16));
     const freshSeed = () => globalThis.crypto.getRandomValues(new Uint32Array(1))[0];
@@ -75,7 +79,7 @@
         return capacity;
     }
     function controls() {
-        const reportBlocked = pendingEvaluation && !pendingEvaluation.exported;
+        const reportBlocked = pendingEvaluation && !pendingEvaluation.exported || Boolean(executionUnsaved);
         view('form').setAttribute('aria-busy', String(busyNow));
         for (const name of ['purpose', 'constraints', 'topology', 'budget', 'apparatus', 'construct', 'import']) {
             view(name).disabled = !readyNow || busyNow || unsaved || reportBlocked;
@@ -106,6 +110,7 @@
         view('export-package').disabled = !packageValue;
         view('export-history').disabled = !record.events.length;
         view('retry-save').hidden = !unsaved;
+        executionControls();
     }
     function renderHistory() {
         const list = view('events');
@@ -115,16 +120,17 @@
             'search-stopped': 'Construction search stopped', 'search-paused': 'Unfinished search retained at the storage bound',
             'package-frozen': 'Executable capability frozen',
             reuse: 'Frozen package tested on new uses', comparison: 'Matched comparisons recorded',
-            successor: 'Scope-expanding successor accepted', failure: 'Failed attempt retained'
+            successor: 'Scope-expanding successor accepted', failure: 'Failed attempt retained', execution: 'Out-Execute completion progress'
         };
         let failures = 0;
         let inconclusive = 0;
         for (const event of record.events) {
             const payload = event.payload;
+            const outcome = event.kind === 'execution' ? {status: payload.checkpoint.status} : payload;
             const item = node('li', list);
             if (event.kind === 'failure' && resultStatus(payload) !== 'inconclusive'
-                || failedStatus(payload)) { item.dataset.result = 'fail'; failures += 1; }
-            else if (resultStatus(payload) === 'inconclusive') { inconclusive += 1; }
+                || failedStatus(outcome)) { item.dataset.result = 'fail'; failures += 1; }
+            else if (['inconclusive', 'cancelled'].includes(resultStatus(outcome))) { inconclusive += 1; }
             else if (['qualified', 'pass'].includes(resultStatus(payload)) || event.kind === 'package-frozen') item.dataset.result = 'pass';
             const label = event.kind === 'failure' && resultStatus(payload) === 'inconclusive'
                 ? 'Inconclusive attempt retained' : event.kind === 'search-stopped' && payload.status === 'searching'
@@ -132,7 +138,7 @@
                     ? 'Scope-expanding successor evaluated' : labels[event.kind] || event.kind;
             node('h4', item, `${event.sequence + 1}. ${label}`);
             const description = payload.message || payload.reason || payload.purpose
-                || payload.status || payload.package?.digest || 'Frozen, append-only event.';
+                || payload.checkpoint?.status || payload.status || payload.package?.digest || 'Frozen, append-only event.';
             node('p', item, String(description));
             if (event.kind === 'successor') node('p', item, payload.oldScope?.status === 'FAIL'
                 ? 'The old package is insufficient for the expanded scope. Its failure and the new obligations remain in this record.'
@@ -371,6 +377,7 @@
             || event.kind === 'failure' && event.payload.report?.kind === 'scope-expanding-successor')
             && event.sequence >= (latestFrozen?.sequence ?? 0)).at(-1);
         renderExperimentWork(latestWork?.payload.report || latestWork?.payload);
+        renderExecution();
         renderHistory();
     }
     function exposedCases() {
@@ -439,7 +446,7 @@
         }
     }
     async function withWork(action, evaluation = null) {
-        if (busyNow || unsaved || !readyNow || pendingEvaluation && !pendingEvaluation.exported) return;
+        if (busyNow || unsaved || !readyNow || executionUnsaved || pendingEvaluation && !pendingEvaluation.exported) return;
         clearProblem(); busyNow = true; cancelled = false; controls();
         try { await action(); }
         catch (error) {
@@ -454,6 +461,134 @@
             setStatus(failureRetained ? 'This attempt failed. Its evidence remains in the history.'
                 : 'This attempt failed and its failure record could not be added. The existing history is retained; export it or start a separate history.');
         } finally { busyNow = false; controls(); }
+    }
+    const executionSource = () => ({compilerSha256: SOURCE_HASH, checkerSha256: SOURCE_HASH,
+        evaluatorVersion: outExecuteModel.CHECKER_VERSION});
+    const executionPending = () => ['PAUSED', 'CANCELLED'].includes(executionCheckpoint?.status);
+    function executionControls() {
+        const blocked = !readyNow || busyNow || unsaved || Boolean(executionUnsaved)
+            || pendingEvaluation && !pendingEvaluation.exported;
+        for (const name of ['base', 'change', 'outside', 'extend', 'model']) byId(`execute-${name}`).disabled = blocked || executionPending();
+        byId('execute-start').disabled = blocked || executionPending();
+        for (const name of ['step', 'finish']) byId(`execute-${name}`).disabled = blocked || !executionPending();
+        byId('execute-pause').disabled = !executionPending() || unsaved || executionCancel || executionCheckpoint?.status === 'CANCELLED';
+        byId('execute-export').disabled = !executionCheckpoint && !executionUnsaved;
+        for (const name of ['manager', 'jobs', 'fleet']) byId(`execute-${name}`).disabled = blocked || executionCheckpoint?.status !== 'COMPLETE';
+    }
+    function renderExecution() {
+        const latest = executionCheckpoint || outEvolve.latestOutEvolveEvent(record, 'execution')?.payload.checkpoint;
+        byId('execute-result').hidden = !latest;
+        if (!latest) { byId('execute-status').textContent = 'No completion run yet. This work shares the construction history below.'; return; }
+        const complete = latest.completion;
+        byId('execute-status').textContent = `${latest.status}: ${latest.next} of ${latest.contracts.length} components processed. ${latest.reason || ''}`;
+        byId('execute-acceptance').textContent = complete && (executionRestored || !outExecuteModel.same(latest.source, executionSource()))
+            ? 'Historical finite-model acceptance rechecked. No new execution or external authority was created by reopening.'
+            : complete ? complete.selection.status === 'OPTIMAL'
+            ? `Current finite-model optimum accepted: ${complete.selection.cost}.`
+            : 'Current finite model proved infeasible; no artifact delivered.' : 'Unfinished: no current accepted artifact.';
+        const change = complete?.change || latest.plan;
+        byId('execute-changes').textContent = `Preserved: ${change.retained.join(', ') || 'none'}. Rebuild: ${change.invalidated.map(item => `${item.module} (${item.reason})`).join('; ') || 'none'}. `
+            + (complete?.change.semanticStop ? 'Complete external values agree. The outside optimization stopped; current acceptance was still checked.' : 'No semantic stopping claim.');
+        const work = latest.work, counted = Object.values(work).reduce((a, b) => a + b, 0);
+        const admission = record.events.filter(event => event.kind === 'execution').reduce((total, event) => total
+            + event.payload.admissionVerification.total + event.payload.admissionVerification.historyRecheckTotal, 0);
+        byId('execute-costs').textContent = `Run work: ${counted} counted model operations. Construction assignments: ${work.constructionAssignments}. Independent local checks: ${work.qualificationAssignments}. Import audit assignments: ${work.reuseAuditAssignments}. Coordinator boundary choices: ${work.boundaryAssignments}. Acceptance boundary choices: ${work.acceptanceBoundaryAssignments}. History admission and recheck work: ${admission} additional operations. These are not money, energy or wall-clock savings; JSON, hashing and host bookkeeping are excluded.`;
+        byId('execute-lineage').textContent = `Same project: ${record.id}. Attempt: ${latest.attemptId}. Parent completion: ${complete?.parentDigest || latest.archive.completions.at(-1)?.digest || 'none'}. Historical acceptance does not authorize external execution.`;
+        byId('execute-contract').textContent = json({source: latest.source, selector: latest.selection,
+            contracts: latest.contracts, selection: complete?.selection || null, artifact: complete?.artifact || null,
+            ledger: latest.work, cumulativeCountedWork: complete?.cumulativeCountedWork || null});
+        byId('execute-recovery').textContent = executionUnsaved
+            ? 'New work could not enter the saved history. Export its complete recovery record before leaving.'
+            : 'Progress, failures and acceptance travel in the same whole-history export below. Reopening independently rechecks evidence; it never resumes automatically.';
+    }
+    function executionCapacity(model = executionCheckpoint?.model, archive = executionCheckpoint?.archive,
+        remaining = null) {
+        if (!model) throw Error('A complete finite model is required for capacity reservation.');
+        const selected = outExecute.selectBoundary(model), domains = outExecuteModel.domainMap(model);
+        const rowBytes = selected.decomposition.modules.reduce((total, module) => total
+            + outExecuteModel.cardinality(module.interface, domains) * (128 + 8 * (module.interface.length + module.private.length)), 0);
+        const bytes = value => new TextEncoder().encode(outEvolveConstructor.canonical(value)).length;
+        const checkpointReserve = 25000 + 3 * bytes(model) + 3 * bytes(selected) + 2 * rowBytes + bytes(archive || null);
+        const events = (remaining ?? selected.decomposition.modules.length) + 3;
+        if (record.events.length + events > outEvolve.WORKSPACE_LIMITS.events
+            || bytes(record) + checkpointReserve * events > outEvolve.WORKSPACE_LIMITS.bytes) {
+            throw Error('This history cannot reserve complete execution progress and recovery. Export it before starting a separate history. No new execution was started.');
+        }
+    }
+    async function retainExecution(state) {
+        executionCheckpoint = state; executionRestored = false;
+        executionUnsaved = {schema: 'out-execute-unsaved-recovery/v1', history: record, checkpoint: state};
+        try {
+            const saved = await append('execution', {projectId: record.id, checkpoint: state});
+            // If persistence fails, the appended in-memory history is the retryable authoritative copy.
+            executionUnsaved = null;
+            renderExecution(); renderHistory(); return saved;
+        } catch (error) { renderExecution(); throw error; }
+    }
+    async function advanceExecutionRun(all) {
+        if (!executionPending()) return;
+        executionCapacity(executionCheckpoint.model, executionCheckpoint.archive, executionCheckpoint.contracts.length - executionCheckpoint.next);
+        if (!outExecuteModel.same(executionCheckpoint.source, executionSource())) {
+            throw Error('Installed execution source changed. Export this historical checkpoint; do not resume it under another source.');
+        }
+        executionCancel = false;
+        do {
+            const state = await outExecute.advanceExecution(executionCheckpoint, {modules: 1, cancel: executionCancel});
+            if (!await retainExecution(state)) return;
+            if (state.status !== 'PAUSED' || !all) break;
+            await pause();
+        } while (true);
+    }
+    byId('execute-base').addEventListener('click', () => { byId('execute-model').value = json(outExecuteFixtures.containment()); });
+    byId('execute-change').addEventListener('click', () => { byId('execute-model').value = json(outExecuteFixtures.containment(true)); });
+    byId('execute-outside').addEventListener('click', () => {
+        const model = outExecuteModel.clone(executionCheckpoint?.model || outExecuteFixtures.containment());
+        const outside = model.factors.find(factor => factor.id === 'outside');
+        if (outside) outside.costs = [9, 0];
+        byId('execute-model').value = json(model);
+    });
+    byId('execute-extend').addEventListener('click', () => {
+        const model = outExecuteModel.clone(executionCheckpoint?.model || outExecuteFixtures.containment());
+        if (!model.variables.some(variable => variable.id === 'z')) {
+            model.variables.push({id: 'z', domain: [0, 1]});
+            model.factors.push({id: 'newModule', scope: ['b', 'z'], costs: [0, 4, 4, 0]});
+        }
+        byId('execute-model').value = json(model);
+    });
+    byId('execute-start').addEventListener('click', () => { void withWork(async () => {
+        if (executionPending()) throw Error('Resume the existing attempt, or export it and start a separate history; its frozen inputs cannot be replaced.');
+        const raw = byId('execute-model').value;
+        if (raw.length > 100000) throw Error('Execution input exceeds the local UI bound.');
+        const model = outExecuteModel.validateModel(JSON.parse(raw));
+        if (model.variables.length > 8) throw Error('This browser panel admits at most eight variables. Use the separately bounded typed backend for larger models.');
+        const completions = record.events.filter(event => event.kind === 'execution' && event.payload.checkpoint.status === 'COMPLETE')
+            .map(event => event.payload.checkpoint.completion);
+        const archive = {schema: outExecute.ARCHIVE_SCHEMA, completions};
+        executionCapacity(model, archive);
+        const state = await outExecute.startExecution(model, {source: executionSource(), budget: 1000000, archive});
+        await retainExecution(state);
+    }, 'out-execute'); });
+    byId('execute-step').addEventListener('click', () => { void withWork(() => advanceExecutionRun(false), 'out-execute'); });
+    byId('execute-finish').addEventListener('click', () => { void withWork(() => advanceExecutionRun(true), 'out-execute'); });
+    byId('execute-pause').addEventListener('click', () => {
+        executionCancel = true;
+        if (!busyNow) void withWork(async () => {
+            if (executionPending()) await retainExecution(await outExecute.advanceExecution(executionCheckpoint, {cancel: true}));
+        }, 'out-execute');
+        controls();
+    });
+    byId('execute-export').addEventListener('click', () => {
+        download(executionUnsaved ? {...executionUnsaved, history: record}
+            : {schema: 'out-execute-recovery/v1', history: record, checkpoint: executionCheckpoint}, 'out-execute-recovery.json');
+    });
+    for (const [name, target] of [['manager', 'manager-usdc'], ['jobs', 'jobs-agialpha'], ['fleet', 'fleet-qualified-review']]) {
+        byId(`execute-${name}`).addEventListener('click', () => { void withWork(async () => {
+            const draft = await outExecuteTransport.prepareWorkRequest(await outExecute.retainCompletion(executionCheckpoint),
+                {projectId: record.id, target, expectedSource: executionSource()});
+            byId('execute-draft').textContent = json(draft);
+            await append('comparison', {kind: 'out-execute-inert-work-request', status: 'DRAFT_NOT_SUBMITTED', draft});
+            renderHistory(); download(draft, `${target}-unsubmitted-draft.json`);
+        }, 'out-execute-draft'); });
     }
     view('form').addEventListener('submit', event => {
         event.preventDefault();
@@ -481,7 +616,7 @@
             return;
         }
         record = outEvolve.createOutEvolveWorkspace();
-        checkpoint = null; packageValue = null; runningApparatus = null;
+        checkpoint = null; packageValue = null; runningApparatus = null; executionCheckpoint = null; executionRestored = false; executionCancel = false;
         restoreView();
         if (!await persist()) {
             setStatus('The separate empty history has not been saved. Retry saving; the previous history remains saved and can be reopened.');
@@ -543,7 +678,7 @@
             if (!await persist()) return;
             clearProblem();
             const inspected = await outEvolve.inspectOutEvolveWorkspace(record);
-            record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
+            record = inspected.workspace; executionCheckpoint = inspected.latestExecution; executionRestored = Boolean(executionCheckpoint); checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
             runningApparatus = checkpointApparatus(); restoreView();
             setStatus(checkpoint?.status === 'qualified'
                 ? qualifiedRecoveryStatus()
@@ -559,7 +694,7 @@
         });
         const inspected = await outEvolve.inspectOutEvolveWorkspace(saved);
         outEvolve.requireHistoryContinuation(record, inspected.workspace);
-        record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
+        record = inspected.workspace; executionCheckpoint = inspected.latestExecution; executionRestored = Boolean(executionCheckpoint); checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
         runningApparatus = checkpointApparatus(); restoreView();
         if (!await persist()) { setStatus('This history has not been saved. Export this copy or retry saving.'); return; }
         setStatus('Saved history opened after semantic checks. Its original events remain intact.');
@@ -568,13 +703,23 @@
         const file = event.target.files?.[0];
         if (!file) return;
         void withWork(async () => {
-            if (file.size > outEvolve.WORKSPACE_LIMITS.bytes) throw Error('Import exceeds the bounded history size.');
+            if (file.size > outEvolve.EXECUTION_RECOVERY_MAX_BYTES) throw Error('Import exceeds the bounded recovery size.');
             const value = JSON.parse(await file.text());
-            if (value.schema === outEvolve.WORKSPACE_SCHEMA) {
+            if (outEvolve.EXECUTION_RECOVERY_SCHEMAS.includes(value.schema)) {
+                const inspected = await outEvolve.inspectExecutionRecovery(value, {current: record});
+                await requireSavedContinuation(inspected.workspace);
+                record = inspected.workspace; executionCheckpoint = inspected.latestExecution; executionRestored = true;
+                checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage; runningApparatus = checkpointApparatus();
+                restoreView();
+                if (!await persist()) { setStatus('Recovered history is not saved. Export this copy or retry saving.'); return; }
+                setStatus(inspected.recovery.appended
+                    ? 'Unsaved execution progress independently checked and appended to its original history. No new execution was run.'
+                    : 'Execution checkpoint reopened with its complete original history. Historical acceptance is not new execution.');
+            } else if (value.schema === outEvolve.WORKSPACE_SCHEMA) {
                 const inspected = await outEvolve.inspectOutEvolveWorkspace(value);
                 outEvolve.requireHistoryContinuation(record, inspected.workspace);
                 await requireSavedContinuation(inspected.workspace);
-                record = inspected.workspace; checkpoint = inspected.checkpoint;
+                record = inspected.workspace; executionCheckpoint = inspected.latestExecution; executionRestored = Boolean(executionCheckpoint); checkpoint = inspected.checkpoint;
                 packageValue = inspected.latestPackage; runningApparatus = checkpointApparatus();
                 restoreView();
                 if (!await persist()) { setStatus('Imported history has not been saved. Export this copy or retry saving.'); return; }
@@ -595,10 +740,10 @@
         }).finally(() => { event.target.value = ''; });
     });
     window.addEventListener('beforeunload', event => {
-        if (busyNow || unsaved || pendingEvaluation && !pendingEvaluation.exported) { event.preventDefault(); event.returnValue = ''; }
+        if (busyNow || unsaved || executionUnsaved || pendingEvaluation && !pendingEvaluation.exported) { event.preventDefault(); event.returnValue = ''; }
     });
     void (async () => {
-        fillDefault(); controls();
+        fillDefault(); byId('execute-model').value = json(outExecuteFixtures.containment()); controls();
         try {
             database = await openDatabase();
             const saved = await readSaved();
@@ -606,7 +751,7 @@
                 storedRevision = saved.revision;
                 storedIdentity = saved.id;
                 const inspected = await outEvolve.inspectOutEvolveWorkspace(saved);
-                record = inspected.workspace; checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
+                record = inspected.workspace; executionCheckpoint = inspected.latestExecution; executionRestored = Boolean(executionCheckpoint); checkpoint = inspected.checkpoint; packageValue = inspected.latestPackage;
                 storedRevision = record.revision; storedIdentity = record.id;
                 runningApparatus = checkpointApparatus();
                 restoreView();
@@ -617,6 +762,6 @@
             view('storage').textContent = 'History is stored locally on this device. Export a copy for backup.';
             await refreshHistories();
         } catch (error) { problem(error); view('storage').textContent = 'Saved history could not be opened. Import an exported copy to recover it.'; }
-        readyNow = true; renderHistory();
+        readyNow = true; renderExecution(); renderHistory();
     })();
 })();

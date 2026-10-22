@@ -2,6 +2,7 @@
 // Pure structural receipt checks. Caller supplies already replayed campaign context.
 // Content identity is not authenticated invocation identity or execution authority.
 import * as contract from './discovery-lab-contract.mjs';
+import {FLEET_RETURN_SCHEMA, fleetReceiptBindings, inspectFleetReceipt} from './discovery-lab-fleet-receipts.mjs';
 const same = (left, right) => contract.canonical(left) === contract.canonical(right);
 const copy = value => JSON.parse(contract.canonical(value));
 const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
@@ -39,6 +40,14 @@ export function makeReceiverContext(campaign) {
     return JSON.parse(contract.canonical(context));
 }
 const sourceKeys = ['repository', 'commit', 'tree', 'adapterSha256', 'contractSha256'];
+/** Select the original typed request bindings without executing imported receipt code. */
+export async function receiptRequestBindings(input) {
+    input = copy(input);
+    need(exact(input, ['raw', 'source']), 'Receipt wrapper fields differ.');
+    const parsed = contract.parseBounded(input.raw);
+    return parsed.schema === FLEET_RETURN_SCHEMA ? fleetReceiptBindings(input.raw)
+        : copy(contract.validateBindings(parsed.bindings));
+}
 function receiverSource(input, route) {
     need(exact(input, sourceKeys) && git(input.commit) && git(input.tree)
         && hash(input.adapterSha256) && hash(input.contractSha256)
@@ -64,6 +73,7 @@ export async function inspectReceiverReceipt(input, context, options = {}) {
     need(exact(options, []) || exact(options, ['expectedReceiverSources']), 'Unsupported receiver inspection options.');
     const expectedReceiverSources = options.expectedReceiverSources;
     need(exact(context, CONTEXT_KEYS), 'Receiver needs an independently replayed campaign context.');
+    if (contract.parseBounded(input.raw).schema === FLEET_RETURN_SCHEMA) return inspectFleetReceipt(input, context, options);
     contract.validateBindings(context.bindings);
     need(hash(context.campaignDigest) && typeof context.attempt === 'string' && Array.isArray(context.ancestors)
         && context.ancestors.length <= 8 && Array.isArray(context.artifacts) && context.artifacts.length === 6,

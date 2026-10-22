@@ -93,6 +93,25 @@ produced by an authenticated external party. Receiver receipts do not promote
 a capability, establish organizational independence, prove remote execution,
 reserve funds or establish settlement.
 
+Fleet uses this same wrapper and event chain. Its `raw` value is an inert
+`agi-fleet/discovery-review-return/v1` envelope with exactly `schema`, `original`
+(the original typed request text), and `receiptRaw` (the unchanged serialized
+`agi-fleet/discovery-review/v1` native receipt). The underlying Fleet receiver
+schema is preserved. The docket retains independent digests for the envelope,
+original request and native receipt. It checks the actual Fleet serializer's one
+admission check, native replay prefix and canonical receipt storage charge.
+Malformed, swapped, source-mismatched or authority-bearing returns reject.
+`receiptRequestBindings(wrapper)` selects the campaign from the original typed
+request without executing receipt content.
+
+Fleet identity `discovery-lab-fleet-receipt-identity/v1` binds the canonical typed
+request, adapter/contract code and exact logical prefix. Free executor/runtime
+declarations, timers, diagnostic/outcome flags and request/receipt formatting
+cannot create another same-work invocation identity. Those declarations remain
+visibly unattested; installed provenance requires independent package/source
+qualification. Overflow receipts whose exact cost cannot be reconstructed are
+not silently admitted; preserve them outside the bounded history for review.
+
 Every retained receipt has a semantic `receiptId` for logical work and a separate exact-byte
 `receiptDigest`. Identity version `discovery-lab-receipt-identity/v3` binds only
 the parsed canonical work request, validated receipt schema and code source,
@@ -120,6 +139,18 @@ work is retained separately for Manager/USDC6 and Jobs/AGIALPHA18; alternative
 routes create no duplicate payment obligation, currency conversion or combined
 balance. Each logical commission stays `DRAFT_NOT_SUBMITTED` with zero reserved
 base units.
+
+Fleet observations have a separate `fleetLocalReviewObservations` bucket. They
+do not create another commission, alter USDC6/AGIALPHA18 alternatives, or add
+their overlapping Alpha checker work to a combined system total. Each retained
+observation describes a distinct reported Fleet invocation; without authenticated
+invocation custody, multiplicity and total completeness remain unknown. A local
+Fleet checker is not remote execution or independent institutional validation.
+The original typed work-reference branch remains consistent across all receipts.
+A contradictory reference is refused without changing history or costs. This
+preservation rule creates no additional commission, route, reservation, currency
+balance or authority. An intentional revision needs a separately identified
+authorized history revision; changing an imported reference is not that revision.
 
 `knownHistoryTotal` covers Discovery Lab campaigns and their recorded checks.
 Preserved v1 witness metrics and unique real-task contract checker charges have

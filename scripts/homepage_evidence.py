@@ -23,6 +23,10 @@ ASSETS = (
     "assets/ecosystem/guide.mjs",
     "assets/ecosystem/contracts.json",
 )
+# The catalog is data: new originals do not require verifier code edits.
+from scripts.research_papers import load_catalog, pdf_hashes
+
+PAPER_ASSETS = pdf_hashes(load_catalog(ROOT))
 ECOSYSTEM_CHECKS = {
     "all-recorded-addresses",
     "bilingual-responsive-layouts",
@@ -74,6 +78,10 @@ def asset_hashes(site: Path = ROOT / "docs") -> dict[str, str]:
 def verify_report(report: dict[str, Any], commit: str, version: str, origin: str) -> None:
     """Require successful exact-origin journeys and every measured accessibility layout."""
     required_checks = set(REQUIRED_CHECKS)
+    if tuple(int(part) for part in version.split(".")) >= (1, 37, 1):
+        required_checks.add("original-paper-bytes")
+        if report.get("paper_assets") != PAPER_ASSETS:
+            raise ValueError("Featured papers require the exact catalogued original PDF digests")
     if tuple(int(part) for part in version.split(".")) >= (1, 26, 3):
         required_checks.add("direct-plan-entry")
     if tuple(int(part) for part in version.split(".")) >= (1, 27, 2):

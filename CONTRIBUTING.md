@@ -262,3 +262,7 @@ so GitHub blocks merges until CI completes:
 These names stay stable because each workflow job sets an explicit `name`
 value. The list above matches the branch-protection validation performed in
 `scripts/verify_branch_protection.py`.
+
+## Publishing research papers
+
+Use the [paper upload guide](docs/agent/PAPER_UPLOADS.md) to add an immutable PDF and optional TeX source with one catalog import. Paper-only validation is separate from software release acceptance.

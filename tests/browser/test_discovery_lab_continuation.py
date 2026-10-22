@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import shutil
+import subprocess
 import threading
 import traceback
 from contextlib import contextmanager
@@ -23,6 +24,112 @@ else:
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = Path(os.environ.get("DISCOVERY_CONTINUATION_EVIDENCE", "/tmp/discovery-continuation"))
+FLEET_VARIANTS = (
+    "executor",
+    "runtime",
+    "elapsed",
+    "memory",
+    "outcome",
+    "raw-framing",
+    "receipt-framing",
+    "request-framing",
+    "source-repository",
+    "forged-authority",
+    "swapped-mission",
+)
+
+
+def fleet_return(page: Page) -> dict[str, Any]:
+    """Return actual pinned Fleet native bytes to the browser's existing saved mission."""
+    fleet_root = os.environ.get("DISCOVERY_FLEET_ROOT")
+    required = os.environ.get("DISCOVERY_FLEET_REQUIRED") == "1"
+    if not fleet_root:
+        if required:
+            raise RuntimeError("Required native Fleet acceptance has no pinned checkout")
+        return {"state": "NOT_RUN", "checks": [], "scope": "Standalone run did not request native Fleet acceptance"}
+    output = OUTPUT / "fleet-native"
+    workspace_path, request_path = OUTPUT / "fleet-browser-workspace.json", OUTPUT / "fleet-browser-request.json"
+    original_workspace = preserved.download_json(page, "#export", workspace_path)
+    preserved.download_request(page, request_path, "USDC")
+    try:
+        native = subprocess.run(
+            [
+                "node",
+                str(ROOT / "tests/browser/fleet_receipt_native.mjs"),
+                str(Path(fleet_root).resolve()),
+                str(workspace_path.resolve()),
+                str(request_path.resolve()),
+                str(output.resolve()),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=180,
+            env={**os.environ, "NODE_OPTIONS": "", "NODE_PATH": ""},
+        )
+    except subprocess.TimeoutExpired as error:
+        stdout = error.stdout.decode(errors="replace") if isinstance(error.stdout, bytes) else error.stdout or ""
+        stderr = error.stderr.decode(errors="replace") if isinstance(error.stderr, bytes) else error.stderr or ""
+        (OUTPUT / "fleet-native.log").write_text(
+            f"Native helper exceeded its 180-second process deadline: {error}\n{stdout}{stderr}"
+        )
+        raise
+    (OUTPUT / "fleet-native.log").write_text(native.stdout + native.stderr)
+    native.check_returncode()
+    proof = json.loads((output / "native-proof.json").read_text())
+    assert proof["variants"] == list(
+        FLEET_VARIANTS
+    ), "Every predeclared native receipt attack case is required exactly once"
+    assert proof["workspaceSha256"] == hashlib.sha256(workspace_path.read_bytes()).hexdigest()
+    assert proof["requestSha256"] == hashlib.sha256(request_path.read_bytes()).hexdigest()
+    assert proof["sourceHash"] == json.loads((OUTPUT / "served/sources.json").read_text())["sourceHash"]
+    page.locator("#lab-import-receipt").set_input_files(output / "wrapper.json")
+    expect(page.locator("#lab-receipt-status")).to_contain_text("Receiver receipt retained", timeout=120000)
+    accepted_path = OUTPUT / "fleet-return-docket.json"
+    accepted = preserved.download_json(page, "#lab-export-docket", accepted_path)
+    costs = json.loads(accepted["files"]["08_cost_ledgers/costs.json"])
+    assert costs["commissions"] == [] and costs["receiverInspectionByRoute"] == {}
+    assert costs["fleetLocalReviewObservations"] == proof["receipt"]["resources"]
+    assert costs["totalComplete"] is False
+    returned = json.loads(accepted["files"]["05_agialpha_runs/run.json"])["workspace"]
+    assert returned["missionId"] == proof["missionId"]
+    assert len(returned["events"]) == len(original_workspace["events"]) + 1
+    assert json.dumps(returned["events"][:-1], sort_keys=True) == json.dumps(
+        original_workspace["events"], sort_keys=True
+    )
+    assert returned["revision"] == original_workspace["revision"] + 1
+    assert returned["events"][-1]["kind"] == "lab-evidence-attached"
+    assert returned["events"][-1]["previous"] == original_workspace["events"][-1]["digest"]
+    assert returned["events"][-1]["payload"]["kind"] == "receiver-receipt"
+    assert returned["events"][-1]["payload"]["campaignDigest"] == proof["campaignDigest"]
+    assert returned["events"][-1]["payload"]["record"] == json.loads((output / "wrapper.json").read_text())
+    exported = preserved.download_json(page, "#export", OUTPUT / "fleet-return-workspace.json")
+    assert json.dumps(exported, sort_keys=True) == json.dumps(returned, sort_keys=True)
+    expected_bytes = accepted_path.read_bytes()
+    for name in FLEET_VARIANTS:
+        page.locator("#lab-import-receipt").set_input_files(output / f"{name}.json")
+        expect(page.locator("#lab-receipt-status")).to_contain_text("Receiver receipt rejected:", timeout=120000)
+        path = OUTPUT / f"fleet-refused-{name}-docket.json"
+        preserved.download_json(page, "#lab-export-docket", path)
+        assert path.read_bytes() == expected_bytes, name
+    response = page.reload()
+    assert response is not None and response.body() == (OUTPUT / "served/index.html").read_bytes()
+    expect(page.locator("#lab-export-docket")).to_be_enabled(timeout=120000)
+    reopened = OUTPUT / "fleet-reopened-docket.json"
+    preserved.download_json(page, "#lab-export-docket", reopened)
+    assert reopened.read_bytes() == expected_bytes
+    return {
+        "state": "source-module-browser-return-passed",
+        "checks": [
+            "actual-native-return",
+            "separate-cost-ledger",
+            "raw-request-and-receipt-retained",
+            *["refused-" + name for name in FLEET_VARIANTS],
+            "reload-byte-identity",
+        ],
+        "docketSha256": hashlib.sha256(expected_bytes).hexdigest(),
+        "scope": proof["scope"],
+    }
 
 
 @contextmanager
@@ -152,6 +259,7 @@ def main() -> None:
                 expect(page.locator("#lab-run-future")).to_be_disabled()
                 expect(page.locator("#lab-real-task-report")).to_contain_text("NOT_RUN")
                 expect(page.locator("#lab-deployment-summary")).to_contain_text('"recordedContracts": 39')
+                fleet = fleet_return(page)
                 preserved.OUTPUT = OUTPUT
                 preserved.audit(page, "continuation-desktop")
                 page.set_viewport_size({"width": 320, "height": 900})
@@ -180,10 +288,20 @@ def main() -> None:
                         "320px",
                     ],
                     "pageErrors": errors,
+                    "fleetLocalReview": fleet,
                     "scope": "local-generated-synthetic; no public release or operational pilot",
                 }
                 (OUTPUT / "journey.json").write_text(json.dumps(receipt, indent=2))
-                print(json.dumps({"passed": True, "checks": len(receipt["checks"])}))
+                print(
+                    json.dumps(
+                        {
+                            "passed": True,
+                            "checks": len(receipt["checks"]),
+                            "fleetState": fleet["state"],
+                            "fleetChecks": len(fleet["checks"]),
+                        }
+                    )
+                )
                 browser.close()
     finally:
         server.shutdown()

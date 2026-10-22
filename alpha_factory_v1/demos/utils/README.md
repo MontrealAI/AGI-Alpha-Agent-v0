@@ -1,7 +1,9 @@
 [See docs/DISCLAIMER_SNIPPET.md](../../../docs/DISCLAIMER_SNIPPET.md)
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.38.0
 
 **Mode:** Library. Shared notices and isolated demo code evaluation helpers.
 

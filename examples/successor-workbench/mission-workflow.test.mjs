@@ -32,7 +32,10 @@ test('mission PR gate retains pinned dependencies and all substantive suites',()
   const artifactMarker='      - name: Retain discovery browser screenshots\n';
   const parts=workflow.split('\n  guided-cross-repository:')[0].split(artifactMarker);
   assert.equal(parts.length,2);
-  assert.doesNotMatch(parts[0],/continue-on-error|\n\s+if:/);
+  const scopeGate="    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}\n";
+  assert.ok(parts[0].includes('  paper-scope:\n    uses: ./.github/workflows/paper-scope.yml\n'));
+  assert.ok(parts[0].includes('  mission:\n'+scopeGate+'    needs: paper-scope\n'));
+  assert.doesNotMatch(parts[0].replace(scopeGate,''),/continue-on-error|\n\s+if:/);
   assert.match(parts[1],/^        if: always\(\)\n        uses: actions\/upload-artifact@[a-f0-9]{40}/);
   assert.doesNotMatch(parts[1],/continue-on-error|\n\s+run:|\n      - /);
   assert.match(parts[1],/path: discovery-screenshots\//);

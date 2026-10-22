@@ -26,7 +26,12 @@ env:
   AGIALPHA_DECIMALS: 18
 
 jobs:
+  paper-scope:
+    uses: ./.github/workflows/paper-scope.yml
+
   smoke:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
     runs-on: ${{ matrix.os }}
     # Windows runtime tests take about 42 minutes; allow dependency setup and runner headroom.
     # Keep the complete installed-runtime suite on every platform and Python version.
@@ -141,8 +146,8 @@ jobs:
 
   smoke-result:
     name: Smoke matrix
-    needs: smoke
-    if: always()
+    needs: [paper-scope, smoke]
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && (!cancelled()) }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -150,3 +155,23 @@ jobs:
         env:
           MATRIX_RESULT: ${{ needs.smoke.result }}
         run: test "$MATRIX_RESULT" = success
+
+  full-software-qualification:
+    name: Full software qualification
+    needs: [paper-scope, smoke, smoke-result]
+    if: ${{ !cancelled() && needs.paper-scope.outputs.mode == 'full' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Bind full-runtime scope to successful exact-source jobs
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python - <<'PYTHON'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          failed = {name: row['result'] for name, row in results.items() if row['result'] != 'success'}
+          if failed:
+              raise SystemExit(f'Full software qualification incomplete: {failed}')
+          print('Full software qualification, not paper-only validation.')
+          PYTHON

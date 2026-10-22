@@ -102,10 +102,14 @@ export async function inspectEvidence(state, event, context, chargeReplay = () =
         const prior = attachments.filter(item => item.kind === 'receiver-receipt');
         need(!prior.some(item => item.receipt.receiptId === receipt.receiptId),
             'Duplicate semantic receipt cannot be admitted or charged twice.');
-        need(!prior.some(item => item.receipt.commission.id === receipt.commission.id
+        // Fleet retains the original typed work reference; this consistency
+        // guard does not create another commission or reserve its currency.
+        const conflict = prior.find(item => item.receipt.commission.id === receipt.commission.id
             && item.receipt.commission.route === receipt.commission.route
-            && !same(item.receipt.commission, receipt.commission)),
-            'A logical commission route cannot silently change currency or obligations.');
+            && !same(item.receipt.commission, receipt.commission));
+        need(!conflict, receipt.inspectionKind === 'fleet-local-review' || conflict?.receipt.inspectionKind === 'fleet-local-review'
+            ? 'Contradictory original work reference: Fleet review cannot change its retained request branch or obligations.'
+            : 'A logical commission route cannot silently change currency or obligations.');
     } else {
         const record = await validateRealTaskRecord(payload.record,
             {workspaceHead: event.previous, missionId: context.missionId, campaignDigest: campaign.campaignDigest});

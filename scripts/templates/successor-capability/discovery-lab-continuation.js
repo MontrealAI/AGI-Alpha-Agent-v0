@@ -221,8 +221,7 @@
                 if (file.size > 2000000) throw Error('Receiver receipt wrapper exceeds the two-megabyte input bound.');
                 const wrapper = discoveryContract.parseBounded(await file.text());
                 if (typeof wrapper.raw !== 'string') throw Error('A wrapper with original raw receiver bytes is required.');
-                const receipt = discoveryContract.parseBounded(wrapper.raw);
-                const bindings = discoveryContract.validateBindings(receipt.bindings);
+                const bindings = await discoveryReceipts.receiptRequestBindings(wrapper);
                 const matching = inspected.discovery.campaigns.filter(record => record.state === 'accepted'
                     && record.lineageQualified !== false && canonical(record.bindings) === canonical(bindings));
                 if (matching.length !== 1) throw Error('The receipt does not identify one retained accepted source-bound campaign.');

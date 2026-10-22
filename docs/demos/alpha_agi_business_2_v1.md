@@ -6,8 +6,10 @@
 
 [Launch Demo](../alpha_agi_business_2_v1/index.html){.md-button}
 
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.38.0
 
 **Mode:** Supplied-input planning. Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work.
 

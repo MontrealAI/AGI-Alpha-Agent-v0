@@ -1,3 +1,22 @@
+## 1.38.0 — Connected capability development (local integration candidate)
+
+- Bring the original seven papers and independently checked OUT-EXECUTE workspace together with all six Discovery Lab stages.
+- Freeze an accepted finite capability, commit later tasks and retain every baseline/control outcome, interruption and cost in one mission history.
+- Export a thirteen-section evidence docket with typed native receipts and source/lineage reconciliation.
+- Keep recorded deployment inspection, unsigned operator intents and the public-software adapter distinct from operational acceptance.
+- Preserve original PDF paths/bytes, proposal and Out-Evolve journeys, v1/v2 histories, separate currency routes and every release gate.
+- This additive minor version is locally proposed; predecessor checks, independent integration review, fresh hosted acceptance and publication remain pending.
+- See [release notes](docs/agent/RELEASE_NOTES_1.38.0.md) for scope and remaining qualification.
+
+## 1.37.1 — Featured research papers (source candidate)
+
+- Lead with Transformational Intelligence, alongside Out-Strategise, Out-Execute and Out-Evolve, near the README top and homepage hero.
+- Add English/French summaries, accessible direct PDF links and responsive research cards without changing the originals.
+- Preserve the free-start flagship, historical README and mission, current capabilities, project history and payment routes.
+- Refresh only documentation release metadata and generated identities; retain all existing review and publication gates.
+- Require fresh exact-source browser, release and public-site acceptance before claiming publication.
+- See [release notes](docs/agent/RELEASE_NOTES_1.37.1.md) for the documentation-only scope and verification requirements.
+
 ## 1.37.0 — Bounded reusable capability construction (source candidate)
 
 - Include the additive capability workspace and generated Out-Evolve compositions over finite synthetic apparatus models.

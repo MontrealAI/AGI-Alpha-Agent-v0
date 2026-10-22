@@ -60,8 +60,13 @@ def build(root: Path = ROOT) -> None:
         "discoveryEvidence": visit(root / "examples/successor-capability/discovery-lab-evidence-history.mjs"),
         "discoveryFuture": visit(root / "examples/successor-capability/discovery-lab-future.mjs"),
         "discoveryDocket": visit(root / "examples/successor-capability/discovery-lab-docket.mjs"),
+        "discoveryReceipts": visit(root / "examples/successor-capability/discovery-lab-receipts.mjs"),
         "discoveryDeployments": visit(root / "examples/successor-capability/discovery-lab-deployments.mjs"),
         "discoveryRealTask": visit(root / "examples/successor-capability/discovery-lab-real-task.mjs"),
+        "outExecute": visit(root / "examples/successor-capability/out-execute/engine.mjs"),
+        "outExecuteModel": visit(root / "examples/successor-capability/out-execute/model.mjs"),
+        "outExecuteFixtures": visit(root / "examples/successor-capability/out-execute/fixtures.mjs"),
+        "outExecuteTransport": visit(root / "examples/successor-capability/out-execute/transport.mjs"),
     }
     deployment_path = root / "docs/discovery-lab/DEPLOYMENT_COMPATIBILITY.json"
     deployment_bytes = deployment_path.read_bytes()

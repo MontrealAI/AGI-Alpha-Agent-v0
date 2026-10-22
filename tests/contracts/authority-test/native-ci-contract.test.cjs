@@ -14,7 +14,9 @@ const source = file => fs.readFileSync(path.join(root, file), 'utf8');
 const workflow = source('.github/workflows/alpha-authority-v2.yml');
 // The original native job retains its exact action/shard contract. Global
 // permission and dangerous-command checks still inspect the entire workflow.
-const offlineWorkflow = workflow.split('\n  conventional-qualification:\n')[0];
+const offlineSections = workflow.split('\n  offline-qualification:\n');
+assert.equal(offlineSections.length, 2);
+const offlineWorkflow = offlineSections[1].split('\n  conventional-qualification:\n')[0];
 const harness = source('tests/contracts/authority-test/clean-checkout-cli.cjs');
 async function child(args, env) {
     return new Promise((resolve, reject) => {
@@ -25,6 +27,9 @@ async function child(args, env) {
     });
 }
 test('native workflow has only exact reviewed action pins and read-only checkout permission', () => {
+    assert.ok(workflow.includes('  paper-scope:\n    uses: ./.github/workflows/paper-scope.yml\n\n  offline-qualification:'));
+    assert.ok(offlineWorkflow.startsWith(
+        "    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}\n    needs: paper-scope\n"));
     const actions = [...offlineWorkflow.matchAll(/uses: ([^\s]+)(?: # ([^\n]+))?/g)].map(m => m[1]);
     assert.deepEqual(actions, ['actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd',
         'actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f',

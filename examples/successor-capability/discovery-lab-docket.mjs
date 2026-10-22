@@ -2,7 +2,7 @@
 // A derived export of the existing mission history; importing it grants no authority.
 import * as contract from './discovery-lab-contract.mjs';
 import * as workspace from './workspace.mjs';
-import {inspectReceiverReceipt, makeReceiverContext, rawReceiptDigest} from './discovery-lab-receipts.mjs';
+import {inspectReceiverReceipt, makeReceiverContext, rawReceiptDigest, receiptRequestBindings} from './discovery-lab-receipts.mjs';
 
 export const DOCKET_SCHEMA = 'successor-discovery-evidence-docket/v1';
 export const ATTACHMENT_SCHEMA = 'successor-discovery-docket-attachments/v1';
@@ -84,16 +84,19 @@ async function derive(value, attachments, options) {
     const combinedReceipts = [...historyAttachments.filter(item => item.kind === 'receiver-receipt').map(item => item.record),
         ...attachments.receipts];
     for (const item of combinedReceipts) {
-        const parsed = contract.parseBounded(item.raw);
-        const campaign = inspection.discovery.campaigns.find(record => same(record.bindings, parsed.bindings));
+        const bindings = await receiptRequestBindings(item);
+        const campaign = inspection.discovery.campaigns.find(record => same(record.bindings, bindings));
         need(campaign, 'Receipt has no independently replayed campaign.');
         const checked = await inspectReceiverReceipt(item, makeReceiverContext(campaign),
             receiverSources === undefined ? {} : {expectedReceiverSources: receiverSources});
         const branch = checked.commission.id + ':' + checked.commission.route;
         need(!receiptIds.has(checked.receiptId), 'Docket repeats a semantic receipt.');
         const branchIdentity = {branch: checked.commission.branch, currency: checked.commission.currency};
-        need(!branches.has(branch) || same(branches.get(branch), branchIdentity), 'Docket commission route changes its frozen branch.');
-        receiptIds.add(checked.receiptId); branches.set(branch, branchIdentity); receipts.push(checked);
+        const previous = branches.get(branch), fleet = checked.inspectionKind === 'fleet-local-review' || previous?.fleet;
+        need(!previous || same(previous.identity, branchIdentity), fleet
+            ? 'Contradictory original work reference: Fleet review cannot change the retained request branch.'
+            : 'Docket commission route changes its frozen branch.');
+        receiptIds.add(checked.receiptId); branches.set(branch, {identity: branchIdentity, fleet}); receipts.push(checked);
     }
     // These records have already passed the installed event replay. They can only
     // enter through original ordered hash-chain events, never caller aggregates.
@@ -149,20 +152,25 @@ async function derive(value, attachments, options) {
         attempt: record.attempt, state: record.state, reservation: record.reservation,
         spent: 'unknown', disposition: record.resourceDisposition || 'active-reservation-retained'}));
     const total = zero(); sum(total, construction, ['memoryWords', 'workerSlots']); sum(total, recordedReplay, ['memoryWords', 'workerSlots']);
-    const routeCosts = {};
+    const routeCosts = {}, fleetCosts = receiptZero();
     for (const receipt of receipts) {
+        if (receipt.inspectionKind === 'fleet-local-review') {
+            sum(fleetCosts, receipt.resources, ['memoryBytes', 'workerCapacity']);
+            continue;
+        }
         routeCosts[receipt.commission.route] ||= receiptZero();
         sum(routeCosts[receipt.commission.route], receipt.resources, ['memoryBytes', 'workerCapacity']);
     }
-    const commissions = [...new Set(receipts.map(item => item.commission.id))].map(id => ({id,
-        alternatives: [...new Set(receipts.filter(item => item.commission.id === id).map(item => item.commission.route))].map(route => {
-            const inspected = receipts.filter(item => item.commission.id === id && item.commission.route === route);
+    const commissioned = receipts.filter(item => item.inspectionKind !== 'fleet-local-review');
+    const commissions = [...new Set(commissioned.map(item => item.commission.id))].map(id => ({id,
+        alternatives: [...new Set(commissioned.filter(item => item.commission.id === id).map(item => item.commission.route))].map(route => {
+            const inspected = commissioned.filter(item => item.commission.id === id && item.commission.route === route);
             return {route, currency: inspected[0].commission.currency, reservedBaseUnits: '0', status: 'DRAFT_NOT_SUBMITTED',
                 inspectionReceiptIds: inspected.map(item => item.receiptId)};
         }),
         interpretation: 'alternative routes; no currency conversion or duplicate payment obligation'}));
     return {value, attachments, inspection, campaigns, receipts, unresolved, construction, recordedReplay,
-        total, routeCosts, commissions, futureEvaluations, realTaskRecords, historyAttachments, unresolvedFuture,
+        total, routeCosts, fleetCosts, commissions, futureEvaluations, realTaskRecords, historyAttachments, unresolvedFuture,
         evidenceReplayLogical, legacyWitnessCosts, realTaskChecks};
 }
 
@@ -213,7 +221,9 @@ async function filesFor(value, attachments, options = {}) {
             unresolvedFutureAttempts: data.unresolvedFuture,
             knownAttemptOutcomesComplete: unresolved.length === 0 && data.unresolvedFuture.length === 0,
             totalComplete: false, totalCompletenessReason: 'Review, coordination, energy, monetary and aggregate export/reopen overhead remain unmeasured',
-            receiverInspectionByRoute: data.routeCosts, commissions: data.commissions, currenciesCombined: false,
+            receiverInspectionByRoute: data.routeCosts, fleetLocalReviewObservations: data.fleetCosts,
+            fleetAccounting: 'Separate observed invocation costs, not combined with commission routes or a complete system total',
+            commissions: data.commissions, currenciesCombined: false,
             futureTaskCosts: data.futureEvaluations.map(item => ({eventDigest: item.eventDigest,
                 freezeDigest: item.result.freezeDigest, taskBankDigest: item.result.taskBankDigest,
                 summaries: item.result.summaries, accounting: item.result.accounting})),

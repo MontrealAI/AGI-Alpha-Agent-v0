@@ -3,8 +3,10 @@
 # Alpha Super Planner V1 👁️✨
 
 ![preview](../alpha_super_planner_v1/assets/preview.svg){.demo-preview}
+<a id="current-runnable-path-1360"></a>
+
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.37.0
+## Current runnable path — 1.38.0
 
 **Mode:** Interface illustration. Shows the stages and progress display of a planning interface.
 

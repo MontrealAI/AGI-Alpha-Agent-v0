@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+# Exact builtin schema types reject numeric coercion and subclasses (E721 sites below).
+
 import argparse
 import json
 import os
@@ -22,25 +24,140 @@ REPOSITORY = "MontrealAI/AGI-Alpha-Agent-v0"
 # Keep a finite wait without treating a slow successful run as failed evidence.
 WAIT_SECONDS = 120 * 60
 MAX_SNAPSHOT_BYTES = 8 * 1024 * 1024
+QUALIFICATION_JOB = "Full software qualification"
+MAX_JOBS = 10_000
 
 
-def assess_runs(runs: list[dict[str, Any]], sha: str) -> bool:
-    """Wait for the latest matching push, and reject every unsuccessful result."""
+def latest_main_run(runs: list[dict[str, Any]], sha: str) -> dict[str, Any] | None:
+    """Keep the exact-SHA, main, push selection used by historical acceptance."""
     matching = [
         run
         for run in runs
         if run.get("head_sha") == sha and run.get("head_branch") == "main" and run.get("event") == "push"
     ]
-    if not matching:
-        return False
-    latest = max(matching, key=lambda run: int(run["id"]))
-    if latest.get("status") != "completed":
+    return max(matching, key=lambda run: int(run["id"])) if matching else None
+
+
+def assess_runs(runs: list[dict[str, Any]], sha: str) -> bool:
+    """Wait for the latest matching push, and reject every unsuccessful result."""
+    latest = latest_main_run(runs, sha)
+    if latest is None or latest.get("status") != "completed":
         return False
     if latest.get("conclusion") != "success":
         raise RuntimeError(
             f"Required historical CI did not pass: {latest.get('html_url')} ({latest.get('conclusion')})"
         )
     return True
+
+
+def jobs_endpoint(repository: str, run: dict[str, Any]) -> str:
+    """Bind job evidence to one run attempt, not the API's default mixed view."""
+    keys = ("id", "run_attempt")
+    if repository != REPOSITORY or any(type(run.get(key)) is not int or run[key] <= 0 for key in keys):  # noqa: E721
+        raise ValueError("Qualification requires exact positive run and attempt IDs")
+    return f"repos/{repository}/actions/runs/{run['id']}/attempts/{run['run_attempt']}/jobs"
+
+
+def fetch_qualification_jobs(repository: str, run: dict[str, Any]) -> dict[str, Any]:
+    """Fetch every page of the exact attempt; never cherry-pick an older green job."""
+    endpoint = jobs_endpoint(repository, run)
+    jobs: list[dict[str, Any]] = []
+    seen: set[int] = set()
+    total: int | None = None
+    for page in range(1, MAX_JOBS // 100 + 2):
+        response = subprocess.check_output(
+            ["gh", "api", f"{endpoint}?per_page=100&page={page}"],
+            text=True,
+            timeout=30,
+        )
+        data = json.loads(response)
+        count, rows = data.get("total_count"), data.get("jobs")
+        if (
+            type(count) is not int  # noqa: E721
+            or not 0 <= count <= MAX_JOBS
+            or not isinstance(rows, list)
+            or len(rows) > 100
+            or (total is not None and count != total)
+        ):
+            raise ValueError("Invalid or changing paginated qualification-job inventory")
+        total = count
+        for job in rows:
+            if (
+                not isinstance(job, dict)
+                or type(job.get("id")) is not int  # noqa: E721
+                or job["id"] <= 0
+                or job["id"] in seen
+                or type(job.get("run_id")) is not int  # noqa: E721
+                or job.get("run_id") != run["id"]
+                or job.get("head_sha") != run["head_sha"]
+                or type(job.get("run_attempt", run["run_attempt"])) is not int  # noqa: E721
+                or job.get("run_attempt", run["run_attempt"]) != run["run_attempt"]
+            ):
+                raise ValueError("Qualification job is not bound to the requested run, attempt and SHA")
+            seen.add(job["id"])
+            # The attempt-specific API documents run_id/head_sha, but not always
+            # run_attempt. Its exact endpoint binds the latter explicitly here.
+            jobs.append(
+                {key: job.get(key) for key in ("id", "run_id", "head_sha", "name", "status", "conclusion")}
+                | {"run_attempt": run["run_attempt"]}
+            )
+        if len(jobs) == total:
+            return {
+                "run_id": run["id"],
+                "run_attempt": run["run_attempt"],
+                "head_sha": run["head_sha"],
+                "endpoint": endpoint,
+                "total_count": total,
+                "jobs": jobs,
+            }
+        if len(jobs) > total or not rows:
+            raise ValueError("Incomplete paginated qualification-job inventory")
+    raise ValueError("Qualification-job pagination exceeds supported bounds")
+
+
+def validate_qualification(record: Any, run: dict[str, Any], repository: str) -> None:
+    """A green paper-scope workflow is never a successful full-runtime gate."""
+    if (
+        not isinstance(record, dict)
+        or type(record.get("run_id")) is not int  # noqa: E721
+        or type(record.get("run_attempt")) is not int  # noqa: E721
+        or any(
+            record.get(key) != expected
+            for key, expected in {
+                "run_id": run["id"],
+                "run_attempt": run["run_attempt"],
+                "head_sha": run["head_sha"],
+                "endpoint": jobs_endpoint(repository, run),
+            }.items()
+        )
+    ):
+        raise ValueError("Qualification evidence differs from the latest exact run, attempt or SHA")
+    jobs = record.get("jobs")
+    if (
+        not isinstance(jobs, list)
+        or type(record.get("total_count")) is not int  # noqa: E721
+        or record["total_count"] != len(jobs)
+        or not 0 <= len(jobs) <= MAX_JOBS
+    ):
+        raise ValueError("Qualification evidence must retain the complete job inventory")
+    seen = set()
+    for job in jobs:
+        if (
+            not isinstance(job, dict)
+            or type(job.get("id")) is not int  # noqa: E721
+            or job["id"] <= 0
+            or job["id"] in seen
+            or type(job.get("run_id")) is not int  # noqa: E721
+            or job["run_id"] != run["id"]
+            or type(job.get("run_attempt")) is not int  # noqa: E721
+            or job["run_attempt"] != run["run_attempt"]
+            or job.get("head_sha") != run["head_sha"]
+        ):
+            raise ValueError("Qualification job is not bound to the latest run, attempt and SHA")
+        seen.add(job["id"])
+    markers = [job for job in jobs if job.get("name") == QUALIFICATION_JOB]
+    if len(markers) != 1 or markers[0].get("status") != "completed" or markers[0].get("conclusion") != "success":
+        raise RuntimeError("Historical CI requires exactly one completed successful Full software qualification job")
 
 
 def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> None:
@@ -52,7 +169,11 @@ def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> Non
     if not re.fullmatch(r"[0-9a-f]{40}", sha) or not ref.startswith("refs/heads/"):
         raise ValueError("Historical CI evidence requires a committed branch context")
     if ref != "refs/heads/main":
-        if snapshot.get("required") is not False or snapshot.get("workflows") != {}:
+        if (
+            snapshot.get("required") is not False
+            or snapshot.get("workflows") != {}
+            or snapshot.get("qualification_jobs", {}) != {}
+        ):
             raise ValueError("Branch candidate evidence must explicitly record its non-publishing scope")
         return
     if repository != REPOSITORY or snapshot.get("required") is not True:
@@ -60,6 +181,9 @@ def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> Non
     workflows = snapshot.get("workflows")
     if not isinstance(workflows, dict) or set(workflows) != set(WORKFLOWS):
         raise ValueError("Historical CI evidence must contain all three required workflows")
+    qualifications = snapshot.get("qualification_jobs")
+    if not isinstance(qualifications, dict) or set(qualifications) != set(WORKFLOWS):
+        raise ValueError("Historical CI requires full software qualification-job evidence for every workflow")
     for workflow in WORKFLOWS:
         runs = workflows[workflow]
         if not isinstance(runs, list) or any(
@@ -67,6 +191,8 @@ def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> Non
             or not isinstance(run.get("id"), int)
             or isinstance(run["id"], bool)
             or run["id"] <= 0
+            or type(run.get("run_attempt")) is not int  # noqa: E721
+            or run["run_attempt"] <= 0
             for run in runs
         ):
             raise ValueError(f"Malformed historical CI workflow evidence: {workflow}")
@@ -74,6 +200,9 @@ def validate_snapshot(snapshot: Any, sha: str, repository: str, ref: str) -> Non
             raise ValueError(f"Historical CI workflow identity mismatch: {workflow}")
         if not assess_runs(runs, sha):
             raise ValueError(f"Historical CI evidence is missing a completed successful main push: {workflow}")
+        latest = latest_main_run(runs, sha)
+        assert latest is not None
+        validate_qualification(qualifications[workflow], latest, repository)
 
 
 def require_historical_evidence(evidence: Path, sha: str) -> dict[str, Any]:
@@ -113,7 +242,7 @@ def main() -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     context = {"commit": sha, "repository": repo, "ref": ref, "required": not args.candidate}
     if args.candidate:
-        candidate = {**context, "workflows": {}}
+        candidate = {**context, "workflows": {}, "qualification_jobs": {}}
         validate_snapshot(candidate, sha, repo, ref)
         output.write_text(json.dumps(candidate, indent=2) + "\n", encoding="utf-8")
         print("Branch candidate only; publication requires successful historical checks on main")
@@ -123,6 +252,7 @@ def main() -> None:
     deadline = time.monotonic() + WAIT_SECONDS
     while True:
         snapshots = {}
+        qualifications: dict[str, dict[str, Any] | None] = {}
         for workflow in WORKFLOWS:
             response = subprocess.check_output(
                 ["gh", "api", f"repos/{repo}/actions/workflows/{workflow}/runs?head_sha={sha}&per_page=100"],
@@ -130,9 +260,18 @@ def main() -> None:
                 timeout=30,
             )
             snapshots[workflow] = json.loads(response)["workflow_runs"]
-        snapshot = {**context, "workflows": snapshots}
+            latest = latest_main_run(snapshots[workflow], sha)
+            qualifications[workflow] = None
+            if latest and latest.get("status") == "completed" and latest.get("conclusion") == "success":
+                qualifications[workflow] = fetch_qualification_jobs(repo, latest)
+        snapshot = {**context, "workflows": snapshots, "qualification_jobs": qualifications}
         output.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")
         results = [assess_runs(runs, sha) for runs in snapshots.values()]
+        for workflow, passed in zip(WORKFLOWS, results):
+            if passed:
+                latest = latest_main_run(snapshots[workflow], sha)
+                assert latest is not None
+                validate_qualification(qualifications[workflow], latest, repo)
         if all(results):
             validate_snapshot(snapshot, sha, repo, ref)
             print(f"Historical CI passed for {sha}")
