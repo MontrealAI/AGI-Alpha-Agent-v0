@@ -7,6 +7,7 @@ import hashlib
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -72,6 +73,74 @@ def history(root: Path) -> tuple[str, str]:
 
 
 class PaperCheckoutTransitionTests(unittest.TestCase):
+    def test_recovery_commands_disable_global_filters_and_template_attributes(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="paper-filter-template-") as directory:
+            parent = Path(directory).resolve()
+            origin = parent / "origin"
+            _, new = history(origin)
+            template = parent / "template"
+            (template / "info").mkdir(parents=True)
+            template_attributes = template / "info/attributes"
+            template_attributes.write_bytes(b"*.tex filter=mutate\n")
+            attributes = parent / "attributes"
+            attributes.write_bytes(b"*.tex filter=mutate\n")
+            smudge = parent / "smudge.py"
+            smudge.write_text(
+                "import sys\nsys.stdout.buffer.write(sys.stdin.buffer.read().replace(b'Immutable', b'Mutated'))\n",
+                encoding="utf-8",
+            )
+            config = parent / "global.config"
+            for key, value in (
+                ("core.attributesFile", attributes.as_posix()),
+                ("init.templateDir", template.as_posix()),
+                ("filter.mutate.smudge", f'"{Path(sys.executable).as_posix()}" "{smudge.as_posix()}"'),
+            ):
+                git(origin, "config", "--file", str(config), key, value)
+            # These commands intentionally retain the hostile fixture configuration.
+            # The normal git() helper would mask the defect being tested.
+            env = {key: value for key, value in os.environ.items() if not key.upper().startswith("GIT_")}
+            env.update(
+                GIT_CONFIG_GLOBAL=str(config),
+                GIT_CONFIG_NOSYSTEM="1",
+                GIT_ATTR_NOSYSTEM="1",
+                GIT_TEMPLATE_DIR=str(template),
+            )
+            (origin / "notes.txt").write_bytes(b"Staged\n")
+            git(origin, "add", "notes.txt")
+            (origin / "notes.txt").write_bytes(b"Staged\nUnstaged\n")
+            (origin / "untracked.txt").write_bytes(b"Keep\n")
+            (origin / PAPERS[0]).write_bytes(ORIGINAL + b"% Author revision\n")
+            protected = [config, attributes, template_attributes, smudge, origin / ".git/index", origin / ".git/config"]
+            protected += [origin / name for name in (*PAPERS, "notes.txt", "untracked.txt")]
+            before = {path: path.read_bytes() for path in protected}
+            cases = (
+                ("global-filter", [], ["--template="], False),
+                ("template-filter", ["-c", "core.attributesFile="], [], False),
+                ("isolated-empty", ["-c", "core.attributesFile="], ["--template="], True),
+                ("isolated-null", ["-c", f"core.attributesFile={os.devnull}"], ["--template="], True),
+            )
+            for label, settings, templates, isolated in cases:
+                with self.subTest(case=label):
+                    fresh = parent / label
+                    for cwd, args in (
+                        (origin, ["clone", *templates, "--no-local", "--no-checkout", ".", str(fresh)]),
+                        (fresh, ["checkout", "--detach", new]),
+                    ):
+                        subprocess.check_output(
+                            ["git", "-C", str(cwd), *settings, *args],
+                            env=env,
+                            stderr=subprocess.PIPE,
+                            timeout=30,
+                        )
+                    expected = ORIGINAL if isolated else ORIGINAL.replace(b"Immutable", b"Mutated")
+                    for name in PAPERS:
+                        self.assertEqual((fresh / name).read_bytes(), expected)
+                        self.assertEqual(git(fresh, "show", ":" + name), ORIGINAL)
+                    self.assertEqual(git(fresh, "rev-parse", "HEAD").decode().strip(), new)
+                    if isolated:
+                        self.assertFalse((fresh / ".git/info/attributes").exists())
+                    self.assertEqual({path: path.read_bytes() for path in protected}, before)
+
     def test_fixture_ignores_hostile_global_attributes_and_ignore(self) -> None:
         with tempfile.TemporaryDirectory(prefix="paper-git-attributes-") as directory:
             parent = Path(directory).resolve()
@@ -87,7 +156,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                 for name in PAPERS:
                     self.assertEqual((existing / name).read_bytes(), ORIGINAL.replace(b"\n", b"\r\n"))
                 git(existing, "checkout", "--detach", new)
-                git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(fresh))
+                git(existing, "clone", "--template=", "--no-local", "--no-checkout", str(existing), str(fresh))
                 git(fresh, "checkout", "--detach", new)
                 for name in PAPERS:
                     self.assertEqual((fresh / name).read_bytes(), ORIGINAL)
@@ -167,7 +236,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             occupied.mkdir()
             (occupied / "keep.txt").write_bytes(b"Existing destination contents\n")
             with self.assertRaises(subprocess.CalledProcessError):
-                git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(occupied))
+                git(existing, "clone", "--template=", "--no-local", "--no-checkout", str(existing), str(occupied))
             self.assertEqual(list(occupied.iterdir()), [occupied / "keep.txt"])
             self.assertEqual((occupied / "keep.txt").read_bytes(), b"Existing destination contents\n")
             self.assertEqual(git(existing, "worktree", "list", "--porcelain"), registered)
@@ -176,7 +245,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             self.assertEqual(info_attributes.read_bytes(), attributes_bytes)
             self.assertEqual(alternates.read_bytes(), alternates_bytes)
             self.assertEqual({name: (existing / name).read_bytes() for name in files}, files)
-            git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(fresh))
+            git(existing, "clone", "--template=", "--no-local", "--no-checkout", str(existing), str(fresh))
             self.assertTrue((fresh / ".git").is_dir())
             self.assertFalse((fresh / ".git/info/attributes").exists())
             self.assertFalse((fresh / ".git/objects/info/alternates").exists())
@@ -203,7 +272,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             git(existing, "checkout", "--force", "--detach", new)
             for name in PAPERS:
                 self.assertIn((existing / name).read_bytes(), (ORIGINAL, ORIGINAL.replace(b"\n", b"\r\n")))
-            git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(fresh))
+            git(existing, "clone", "--template=", "--no-local", "--no-checkout", str(existing), str(fresh))
             git(fresh, "checkout", "--detach", new)
             for name in PAPERS:
                 self.assertEqual((fresh / name).read_bytes(), ORIGINAL)

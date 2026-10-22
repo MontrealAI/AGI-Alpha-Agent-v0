@@ -90,11 +90,17 @@ original worktree's files, index or local configuration. `--no-local` uses
 Git transport over the explicit local path, without a network fetch, rather than
 copying local object-store links or alternates. Do not use `--shared` or `--reference`:
 
-Run each command in order and stop on any error.
+Use a POSIX shell or Git Bash for these command-local environment assignments.
+Run each command in order and stop on any error. The empty `core.attributesFile`
+setting disables global attributes, `GIT_ATTR_NOSYSTEM=1` disables system
+attributes, and `--template=` prevents configured templates from installing
+`info/attributes` in the clone. Apply the attribute settings to both clone and
+checkout: `-text` alone does not disable a global smudge filter. These settings
+apply only to the commands below and do not change the original configuration.
 
 ```sh
-git clone --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean
-git -C ../AGI-Alpha-Agent-byte-clean checkout --detach FULL_VERIFIED_COMMIT_SHA
+GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= clone --template= --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean
+GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -C ../AGI-Alpha-Agent-byte-clean checkout --detach FULL_VERIFIED_COMMIT_SHA
 git -C ../AGI-Alpha-Agent-byte-clean rev-parse HEAD
 ```
 
