@@ -79,10 +79,11 @@ committed manuscript attributes and convert even a fresh sibling's bytes. Do not
 edit those local rules as part of recovery; the independent clone leaves them
 untouched and does not copy them. First choose a
 specific, verified source commit containing the byte-preserving attributes, or a
-previously qualified tag that contains them. Resolve that choice to its full
-commit SHA with `git rev-parse --verify "YOUR_CHOSEN_REF^{commit}"` and independently
-check its provenance. Do not assume the latest main commit is a qualified release.
-The commit must already be available locally; stop if it cannot be resolved.
+previously qualified tag that contains them. Obtain its full commit SHA from a
+trusted source and independently check its provenance. Do not assume the latest
+main commit is a qualified release. The block below resolves and checks that
+explicit SHA locally only after clearing inherited Git routing; it stops if the
+commit cannot be resolved.
 
 From the existing repository, substitute that full SHA and choose a unique sibling
 destination that does not exist. These commands work without changing the
@@ -90,8 +91,13 @@ original worktree's files, index or local configuration. `--no-local` uses
 Git transport over the explicit local path, without a network fetch, rather than
 copying local object-store links or alternates. Do not use `--shared` or `--reference`:
 
-Use a POSIX shell or Git Bash for these command-local environment assignments.
-Run each command in order and stop on any error. The empty `core.attributesFile`
+Use Bash or Git Bash, not a generic POSIX shell. Run the entire parenthesized block:
+its subshell clears inherited `GIT_*` variables before any Git command, including
+source-SHA resolution. Otherwise variables such as `GIT_OBJECT_DIRECTORY` can
+redirect writes outside the clone or leave it dependent on external objects.
+The caller's environment is unchanged. If a variable cannot be unset, or any
+Git command or SHA comparison fails, the block stops with a nonzero exit status.
+Do not continue to validation after a failed block. The empty `core.attributesFile`
 setting disables global attributes, `GIT_ATTR_NOSYSTEM=1` disables system
 attributes, and `--template=` prevents configured templates from installing
 `info/attributes` in the clone. Apply the attribute settings to both clone and
@@ -101,11 +107,21 @@ The command-local `core.hooksPath=/dev/null` also prevents configured hooks from
 rewriting files during clone or checkout, without editing or deleting those hooks.
 
 ```sh
-GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
-  clone --template= --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean
-GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
-  -C ../AGI-Alpha-Agent-byte-clean checkout --detach FULL_VERIFIED_COMMIT_SHA
-git -C ../AGI-Alpha-Agent-byte-clean rev-parse HEAD
+(
+  for git_var in "${!GIT_@}"; do
+    unset "$git_var" || exit 1
+  done
+  source_sha=FULL_VERIFIED_COMMIT_SHA
+  resolved_sha=$(git rev-parse --verify "$source_sha^{commit}") || exit 1
+  [ "$resolved_sha" = "$source_sha" ] || exit 1
+  GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
+    clone --template= --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean || exit 1
+  GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
+    -C ../AGI-Alpha-Agent-byte-clean checkout --detach "$source_sha" || exit 1
+  recovered_sha=$(git -C ../AGI-Alpha-Agent-byte-clean rev-parse --verify HEAD) || exit 1
+  [ "$recovered_sha" = "$source_sha" ] || exit 1
+  printf '%s\n' "$recovered_sha"
+)
 ```
 
 Confirm the reported SHA is exactly the chosen commit. Do not add `--force`, reuse

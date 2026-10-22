@@ -6,6 +6,9 @@ from __future__ import annotations
 import hashlib
 import os
 from pathlib import Path
+import re
+import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -73,6 +76,109 @@ def history(root: Path) -> tuple[str, str]:
 
 
 class PaperCheckoutTransitionTests(unittest.TestCase):
+    def test_documented_subshell_isolates_routing_and_preserves_caller_environment(self) -> None:
+        bash = shutil.which("bash")
+        if os.name == "nt":
+            git_path = shutil.which("git")
+            if git_path:
+                bundled = Path(git_path).resolve().parent.parent / "bin/bash.exe"
+                if bundled.is_file():
+                    bash = str(bundled)
+        if bash is None:
+            self.skipTest("Bash/Git Bash is required to exercise the documented shell recipe")
+        document = (ROOT / "docs/agent/PAPER_UPLOADS.md").read_text(encoding="utf-8")
+        recipe = next(block for block in re.findall(r"```sh\n(.*?)```", document, re.S) if "${!GIT_@}" in block)
+        with tempfile.TemporaryDirectory(prefix="paper-routing-") as directory:
+            parent = Path(directory).resolve()
+            origin = parent / "origin"
+            _, new = history(origin)
+            external = parent / "external-objects"
+            shutil.copytree(origin / ".git/objects", external)
+            home = parent / "home"
+            home.mkdir()
+            env = {key: value for key, value in os.environ.items() if not key.upper().startswith("GIT_")}
+            env.pop("BASH_ENV", None)
+            env.pop("ENV", None)
+            env.update(
+                HOME=str(home),
+                XDG_CONFIG_HOME=str(home / "config"),
+                GIT_CONFIG_GLOBAL=os.devnull,
+                GIT_CONFIG_NOSYSTEM="1",
+                GIT_ATTR_NOSYSTEM="1",
+                GIT_OBJECT_DIRECTORY=str(external),
+            )
+            (origin / "notes.txt").write_bytes(b"Staged\n")
+            git(origin, "add", "notes.txt")
+            (origin / "notes.txt").write_bytes(b"Staged\nUnstaged\n")
+            (origin / "untracked.txt").write_bytes(b"Keep\n")
+            (origin / PAPERS[0]).write_bytes(ORIGINAL + b"% Author revision\n")
+            protected = [origin / name for name in (*PAPERS, ".gitattributes", "notes.txt", "untracked.txt")]
+            protected += [path for path in (origin / ".git").rglob("*") if path.is_file()]
+            original = {path: path.read_bytes() for path in protected}
+            objects_before = {path: path.read_bytes() for path in external.rglob("*") if path.is_file()}
+            unsafe = parent / "unsafe"
+            for cwd, args in (
+                (origin, ["clone", "--template=", "--no-local", "--no-checkout", ".", str(unsafe)]),
+                (unsafe, ["checkout", "--detach", new]),
+            ):
+                subprocess.check_output(
+                    ["git", "-C", str(cwd), "-c", "core.attributesFile=", "-c", f"core.hooksPath={os.devnull}", *args],
+                    env=env,
+                    stderr=subprocess.PIPE,
+                    timeout=30,
+                )
+            objects_after = {path: path.read_bytes() for path in external.rglob("*") if path.is_file()}
+            self.assertNotEqual(objects_after, objects_before)
+            with self.assertRaises(subprocess.CalledProcessError):
+                git(unsafe, "cat-file", "-e", new + "^{commit}")
+            for case in ("success", "readonly", "missing-commit", "occupied"):
+                with self.subTest(case=case):
+                    fresh = parent / case
+                    if case == "occupied":
+                        fresh.mkdir()
+                        (fresh / "keep.txt").write_bytes(b"Do not replace\n")
+                    chosen = "0" * 40 if case == "missing-commit" else new
+                    script = recipe.replace("FULL_VERIFIED_COMMIT_SHA", chosen).replace(
+                        "../AGI-Alpha-Agent-byte-clean", shlex.quote(fresh.as_posix())
+                    )
+                    prefix = "readonly GIT_OBJECT_DIRECTORY\n" if case == "readonly" else ""
+                    script = (
+                        prefix
+                        + 'caller_before=$(declare -p "${!GIT_@}")\n'
+                        + script
+                        + '\nresult=$?\ncaller_after=$(declare -p "${!GIT_@}")\n'
+                        + '[ "$caller_before" = "$caller_after" ] || exit 99\nexit "$result"\n'
+                    )
+                    result = subprocess.run(
+                        [bash, "--noprofile", "--norc", "-c", script],
+                        cwd=origin,
+                        env=env,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        timeout=30,
+                        check=False,
+                    )
+                    self.assertNotEqual(result.returncode, 99, result.stderr)
+                    if case == "success":
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                        self.assertEqual(result.stdout.decode().strip(), new)
+                        self.assertEqual(git(fresh, "rev-parse", "HEAD").decode().strip(), new)
+                        self.assertFalse((fresh / ".git/objects/info/alternates").exists())
+                        for name in PAPERS:
+                            self.assertEqual((fresh / name).read_bytes(), ORIGINAL)
+                            self.assertEqual(git(fresh, "show", ":" + name), ORIGINAL)
+                    else:
+                        self.assertNotEqual(result.returncode, 0)
+                        if case == "occupied":
+                            self.assertEqual(list(fresh.iterdir()), [fresh / "keep.txt"])
+                            self.assertEqual((fresh / "keep.txt").read_bytes(), b"Do not replace\n")
+                        else:
+                            self.assertFalse(fresh.exists())
+                    self.assertEqual({path: path.read_bytes() for path in protected}, original)
+                    self.assertEqual(
+                        {path: path.read_bytes() for path in external.rglob("*") if path.is_file()}, objects_after
+                    )
+
     def test_recovery_commands_disable_global_filters_templates_and_hooks(self) -> None:
         with tempfile.TemporaryDirectory(prefix="paper-filter-template-") as directory:
             parent = Path(directory).resolve()
