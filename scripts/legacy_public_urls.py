@@ -19,13 +19,17 @@ from __future__ import annotations
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
+import http.client
 from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
+import sys
+import time
 import tomllib
 from typing import Any
 from urllib.parse import quote
+import urllib.error
 import urllib.request
 
 from scripts import release_packs
@@ -262,32 +266,48 @@ def _fetch(url: str, method: str, size: int) -> tuple[int, str, dict[str, str], 
             "Cache-Control": "no-cache",
         },
     )
-    with urllib.request.build_opener(_NoRedirect()).open(request, timeout=60) as response:
-        headers = {key.lower(): value for key, value in response.headers.items()}
-        raw = response.read(size + 1) if method == "GET" else b""
-        return response.status, response.geturl(), headers, raw
+    try:
+        for attempt in range(1, 4):
+            try:
+                response = urllib.request.build_opener(_NoRedirect()).open(request, timeout=60)
+            except urllib.error.HTTPError as exc:
+                exc.close()
+                if exc.code != 503:
+                    raise
+                print(f"Legacy URL HTTP 503: {method} {url} (attempt {attempt}/3)", file=sys.stderr, flush=True)
+                if attempt == 3:
+                    raise
+                time.sleep(attempt)
+                continue
+            with response:
+                headers = {key.lower(): value for key, value in response.headers.items()}
+                raw = response.read(size + 1) if method == "GET" else b""
+                return response.status, response.geturl(), headers, raw
+    except (OSError, http.client.HTTPException) as exc:
+        raise RuntimeError(f"{method} {url}: public request failed: {exc}") from exc
+    raise RuntimeError(f"{method} {url}: public request attempts exhausted")
 
 
 def _observe(route: str, name: str, row: dict[str, Any], manifest: dict[str, Any]) -> dict[str, Any]:
     html = name.lower().endswith((".html", ".htm"))
     pdf = name.lower().endswith(".pdf")
     method = "GET" if html or pdf or name == manifest["receipt"]["path"] else "HEAD"
-    if method == "GET" and row["bytes"] > MAX_BODY:
-        raise ValueError(f"Public body exceeds bounded size: {name}")
     url = ORIGIN + quote(route, safe="/")
+    if method == "GET" and row["bytes"] > MAX_BODY:
+        raise ValueError(f"{method} {url}: Public body exceeds bounded size: {name}")
     status, final_url, headers, raw = _fetch(url, method, row["bytes"])
     if status != 200 or final_url != url or "location" in headers or "refresh" in headers:
-        raise ValueError(f"Expected direct HTTP 200 without redirection: {route}")
+        raise ValueError(f"{method} {url}: Expected direct HTTP 200 without redirection: {route}")
     if headers.get("content-encoding", "identity").lower() not in {"identity", ""}:
-        raise ValueError(f"Unexpected transformed response: {route}")
+        raise ValueError(f"{method} {url}: Unexpected transformed response: {route}")
     length = headers.get("content-length", "")
     if not re.fullmatch(r"\d+", length) or int(length) != row["bytes"]:
-        raise ValueError(f"Exact Content-Length required: {route}")
+        raise ValueError(f"{method} {url}: Exact Content-Length required: {route}")
     content_type = headers.get("content-type", "").split(";", 1)[0].strip().lower()
     if (html and content_type != "text/html") or (pdf and content_type != "application/pdf"):
-        raise ValueError(f"Wrong public content type: {route}")
+        raise ValueError(f"{method} {url}: Wrong public content type: {route}")
     if not html and (not content_type or content_type in {"text/html", "application/xhtml+xml"}):
-        raise ValueError(f"Non-HTML asset substituted or missing content type: {route}")
+        raise ValueError(f"{method} {url}: Non-HTML asset substituted or missing content type: {route}")
     observation = {
         "path": route,
         "target": name,
@@ -299,12 +319,15 @@ def _observe(route: str, name: str, row: dict[str, Any], manifest: dict[str, Any
     }
     if method == "GET":
         if len(raw) != row["bytes"] or _sha(raw) != row["sha256"]:
-            raise ValueError(f"Public bytes differ from the candidate: {route}")
+            raise ValueError(f"{method} {url}: Public bytes differ from the candidate: {route}")
         if pdf and not raw.startswith(b"%PDF-"):
-            raise ValueError(f"Expected original PDF bytes: {route}")
+            raise ValueError(f"{method} {url}: Expected original PDF bytes: {route}")
         observation.update(bytes=len(raw), sha256=_sha(raw))
         if html:
-            observation.update(_html(raw, name, manifest))
+            try:
+                observation.update(_html(raw, name, manifest))
+            except ValueError as exc:
+                raise ValueError(f"{method} {url}: {exc}") from exc
     return observation
 
 

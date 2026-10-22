@@ -5,9 +5,12 @@ from __future__ import annotations
 
 from copy import deepcopy
 import hashlib
+from io import BytesIO
 import json
 from pathlib import Path
+import time
 from typing import Any
+from urllib.error import HTTPError, URLError
 from urllib.parse import unquote
 
 import pytest
@@ -403,3 +406,180 @@ def test_candidate_inventory_rejects_integer_subclasses(candidate: Any, monkeypa
     monkeypatch.setattr(checker, "_json", lambda path: data)
     with pytest.raises(ValueError, match="Invalid or duplicate candidate path"):
         checker._pack(pack, manifest, COMMIT, VERSION)
+
+
+def scripted_opener(monkeypatch, outcomes, *, url, raw=b"abc", headers=None, final_url=None, read_error=None):
+    trace = {"calls": [], "failed_bodies": [], "reads": [], "closed_responses": [], "sleeps": []}
+
+    class ErrorBody(BytesIO):
+        def read(self, *args):
+            pytest.fail("An HTTP error body must not be downloaded")
+
+    class Response:
+        status = 200
+
+        def __init__(self):
+            self.headers = headers or {"content-type": "application/octet-stream", "content-length": str(len(raw))}
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            trace["closed_responses"].append(True)
+
+        def geturl(self):
+            return final_url or url
+
+        def read(self, size):
+            trace["reads"].append(size)
+            if read_error is not None:
+                raise read_error
+            return raw
+
+    class Opener:
+        def open(self, request, timeout):
+            assert request.get_header("Accept-encoding") == "identity"
+            assert request.get_header("Cache-control") == "no-cache"
+            assert request.get_header("User-agent") == "AGIAlpha-Legacy-URL-Acceptance"
+            trace["calls"].append((request.get_method(), request.full_url, timeout))
+            outcome = outcomes[len(trace["calls"]) - 1]
+            if isinstance(outcome, BaseException):
+                raise outcome
+            if outcome != 200:
+                body = ErrorBody(b"transient error page")
+                trace["failed_bodies"].append(body)
+                raise HTTPError(request.full_url, outcome, "Injected HTTP failure", {}, body)
+            return Response()
+
+    def build(handler):
+        assert isinstance(handler, checker._NoRedirect)
+        assert handler.redirect_request(None, None, 302, "Found", {}, "https://example.invalid/") is None
+        return Opener()
+
+    monkeypatch.setattr(checker.urllib.request, "build_opener", build)
+    monkeypatch.setattr(time, "sleep", trace["sleeps"].append)
+    return trace
+
+
+@pytest.mark.parametrize("method", ["GET", "HEAD"])
+def test_fetch_retries_only_503_with_fixed_delays_and_unchanged_request(monkeypatch, capsys, method):
+    url = checker.ORIGIN + "assets/a%20space.svg"
+    trace = scripted_opener(monkeypatch, [503, 503, 200], url=url)
+    status, final_url, _, raw = checker._fetch(url, method, 3)
+    assert (status, final_url, raw) == (200, url, b"abc" if method == "GET" else b"")
+    assert trace["calls"] == [(method, url, 60)] * 3
+    assert trace["sleeps"] == [1, 2]
+    assert all(body.closed for body in trace["failed_bodies"])
+    assert trace["reads"] == ([4] if method == "GET" else [])
+    assert trace["closed_responses"] == [True]
+    lines = capsys.readouterr().err.splitlines()
+    assert len(lines) == 2
+    for attempt, line in enumerate(lines, 1):
+        assert method + " " + url in line and "503" in line and f"attempt {attempt}/3" in line
+
+
+@pytest.mark.parametrize("method", ["GET", "HEAD"])
+def test_fetch_stops_after_three_503s_and_retains_request_context(monkeypatch, capsys, method):
+    url = checker.ORIGIN + "assets/a%20space.svg"
+    trace = scripted_opener(monkeypatch, [503, 503, 503, 200], url=url)
+    with pytest.raises(Exception) as failure:
+        checker._fetch(url, method, 3)
+    assert trace["calls"] == [(method, url, 60)] * 3
+    assert trace["sleeps"] == [1, 2]
+    assert all(body.closed for body in trace["failed_bodies"])
+    assert method + " " + url in str(failure.value)
+    assert isinstance(failure.value.__cause__, HTTPError) and failure.value.__cause__.code == 503
+    lines = capsys.readouterr().err.splitlines()
+    assert len(lines) == 3 and "attempt 3/3" in lines[-1]
+    assert all(method + " " + url in line and "503" in line for line in lines)
+
+
+@pytest.mark.parametrize("status", [301, 302, 403, 404, 500, 502, 504])
+def test_fetch_other_http_errors_fail_immediately_with_request_context(monkeypatch, status):
+    url = checker.ORIGIN + "models/a%20model.onnx"
+    trace = scripted_opener(monkeypatch, [status, 200], url=url)
+    with pytest.raises(Exception) as failure:
+        checker._fetch(url, "HEAD", 10)
+    assert trace["calls"] == [("HEAD", url, 60)] and trace["sleeps"] == []
+    assert all(body.closed for body in trace["failed_bodies"])
+    assert "HEAD " + url in str(failure.value)
+    assert isinstance(failure.value.__cause__, HTTPError) and failure.value.__cause__.code == status
+
+
+@pytest.mark.parametrize("kind", ["url", "timeout"])
+def test_fetch_network_errors_fail_immediately_with_request_context(monkeypatch, kind):
+    url = checker.ORIGIN + "paper.pdf"
+    error = URLError("injected transport failure") if kind == "url" else TimeoutError("injected timeout")
+    trace = scripted_opener(monkeypatch, [error, 200], url=url)
+    with pytest.raises(Exception) as failure:
+        checker._fetch(url, "GET", 3)
+    assert trace["calls"] == [("GET", url, 60)] and trace["sleeps"] == []
+    assert "GET " + url in str(failure.value) and failure.value.__cause__ is error
+
+
+@pytest.mark.parametrize("kind", ["redirect", "not-found", "url", "timeout"])
+def test_503_followed_by_other_failure_is_not_retried(monkeypatch, kind):
+    url = checker.ORIGIN + "paper.pdf"
+    error = {"redirect": 302, "not-found": 404, "url": URLError("offline"), "timeout": TimeoutError("timeout")}[kind]
+    trace = scripted_opener(monkeypatch, [503, error, 200], url=url)
+    with pytest.raises(Exception) as failure:
+        checker._fetch(url, "GET", 3)
+    assert trace["calls"] == [("GET", url, 60)] * 2 and trace["sleeps"] == [1]
+    assert all(body.closed for body in trace["failed_bodies"])
+    assert "GET " + url in str(failure.value)
+
+
+def test_successful_response_read_timeout_is_not_retried(monkeypatch):
+    url = checker.ORIGIN + "paper.pdf"
+    error = TimeoutError("body read timeout")
+    trace = scripted_opener(monkeypatch, [200, 200], url=url, read_error=error)
+    with pytest.raises(Exception) as failure:
+        checker._fetch(url, "GET", 3)
+    assert trace["calls"] == [("GET", url, 60)] and trace["sleeps"] == []
+    assert trace["closed_responses"] == [True]
+    assert "GET " + url in str(failure.value) and failure.value.__cause__ is error
+
+
+@pytest.mark.parametrize("damage", [None, "length", "type", "encoding", "location", "refresh", "bytes", "final-url"])
+def test_503_retry_preserves_all_public_content_and_redirect_checks(candidate, monkeypatch, damage):
+    row = candidate[3]["pdfs"]["paper.pdf"]
+    raw = (candidate[1] / "paper.pdf").read_bytes()
+    url = checker.ORIGIN + "a%20space/paper.pdf"
+    headers = {"content-type": "application/pdf", "content-length": str(len(raw))}
+    body, final_url = raw, url
+    if damage == "length":
+        headers["content-length"] = "0"
+    elif damage == "type":
+        headers["content-type"] = "text/html"
+    elif damage == "encoding":
+        headers["content-encoding"] = "gzip"
+    elif damage in {"location", "refresh"}:
+        headers[damage] = "https://example.invalid/replacement"
+    elif damage == "bytes":
+        body = raw[:-1] + b"X"
+    elif damage == "final-url":
+        final_url += "?redirected=1"
+    trace = scripted_opener(monkeypatch, [503, 200, 200], url=url, raw=body, headers=headers, final_url=final_url)
+    if damage is None:
+        observation = checker._observe("a space/paper.pdf", "paper.pdf", row, candidate[3])
+        assert observation["sha256"] == row["sha256"] and observation["content_length"] == len(raw)
+    else:
+        with pytest.raises(ValueError, match="GET " + url):
+            checker._observe("a space/paper.pdf", "paper.pdf", row, candidate[3])
+    assert trace["calls"] == [("GET", url, 60)] * 2 and trace["sleeps"] == [1]
+    assert all(body.closed for body in trace["failed_bodies"])
+
+
+def test_public_html_semantic_failure_includes_exact_method_and_url(candidate, monkeypatch):
+    raw = b"<html>Missing required anchors</html>"
+    url = checker.ORIGIN + "a%20space/index.html"
+    trace = scripted_opener(
+        monkeypatch,
+        [200, 200],
+        url=url,
+        raw=raw,
+        headers={"content-type": "text/html", "content-length": str(len(raw))},
+    )
+    with pytest.raises(ValueError, match="GET " + url):
+        checker._observe("a space/index.html", "index.html", record(raw), candidate[3])
+    assert trace["calls"] == [("GET", url, 60)] and trace["sleeps"] == []
