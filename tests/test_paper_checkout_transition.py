@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Fresh sibling recovery preserves work when old checkout conversions survive."""
+"""Independent clone recovery preserves work and avoids shared local attributes."""
 
 from __future__ import annotations
 
@@ -87,7 +87,8 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                 for name in PAPERS:
                     self.assertEqual((existing / name).read_bytes(), ORIGINAL.replace(b"\n", b"\r\n"))
                 git(existing, "checkout", "--detach", new)
-                git(existing, "worktree", "add", "--detach", str(fresh), new)
+                git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(fresh))
+                git(fresh, "checkout", "--detach", new)
                 for name in PAPERS:
                     self.assertEqual((fresh / name).read_bytes(), ORIGINAL)
                     self.assertEqual(git(fresh, "show", ":" + name), ORIGINAL)
@@ -114,11 +115,20 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             self.assertFalse((parent / "unrelated.git").exists())
             self.assertFalse((parent / "unrelated-worktree").exists())
 
-    def test_upgrade_recovery_preserves_staged_unstaged_and_untracked_work(self) -> None:
+    def test_independent_clone_avoids_shared_attributes_and_preserves_original_work(self) -> None:
         with tempfile.TemporaryDirectory(prefix="paper-upgrade-") as directory:
             parent = Path(directory).resolve()
             origin, existing, fresh = (parent / name for name in ("origin", "existing", "fresh"))
-            old, new = history(origin)
+            donor = parent / "donor"
+            old, new = history(donor)
+            # Only this disposable source fixture deliberately borrows objects.
+            git(donor, "clone", "--shared", "--no-checkout", str(donor), str(origin))
+            git(origin, "checkout", "--detach", new)
+            alternates = origin / ".git/objects/info/alternates"
+            self.assertTrue(alternates.is_file())
+            alternates_bytes = alternates.read_bytes()
+            info_attributes = origin / ".git/info/attributes"
+            info_attributes.write_bytes(b"*.tex text\n")
             git(origin, "worktree", "add", "--detach", str(existing), old)
             for name in PAPERS:
                 self.assertEqual((existing / name).read_bytes(), ORIGINAL.replace(b"\n", b"\r\n"))
@@ -134,6 +144,10 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             # Current Git can retain CRLF here; versions that refresh it are also safe.
             for name in PAPERS:
                 self.assertIn((existing / name).read_bytes(), (ORIGINAL, ORIGINAL.replace(b"\n", b"\r\n")))
+            linked = parent / "linked-counterexample"
+            git(existing, "worktree", "add", "--detach", str(linked), new)
+            for name in PAPERS:
+                self.assertEqual((linked / name).read_bytes(), ORIGINAL.replace(b"\n", b"\r\n"))
             # Recovery must also preserve a genuine manuscript edit, not only conversion.
             edited = existing / PAPERS[0]
             edited.write_bytes(edited.read_bytes() + b"% Uncommitted author revision\n")
@@ -145,22 +159,37 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             if not index.is_absolute():
                 index = existing / index
             index_bytes = index.read_bytes()
+            config = origin / ".git/config"
+            config_bytes = config.read_bytes()
+            attributes_bytes = info_attributes.read_bytes()
             registered = git(existing, "worktree", "list", "--porcelain")
             occupied = parent / "occupied"
             occupied.mkdir()
             (occupied / "keep.txt").write_bytes(b"Existing destination contents\n")
             with self.assertRaises(subprocess.CalledProcessError):
-                git(existing, "worktree", "add", "--detach", str(occupied), new)
+                git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(occupied))
             self.assertEqual(list(occupied.iterdir()), [occupied / "keep.txt"])
             self.assertEqual((occupied / "keep.txt").read_bytes(), b"Existing destination contents\n")
             self.assertEqual(git(existing, "worktree", "list", "--porcelain"), registered)
             self.assertEqual(index.read_bytes(), index_bytes)
-            git(existing, "worktree", "add", "--detach", str(fresh), new)
+            self.assertEqual(config.read_bytes(), config_bytes)
+            self.assertEqual(info_attributes.read_bytes(), attributes_bytes)
+            self.assertEqual(alternates.read_bytes(), alternates_bytes)
+            self.assertEqual({name: (existing / name).read_bytes() for name in files}, files)
+            git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(fresh))
+            self.assertTrue((fresh / ".git").is_dir())
+            self.assertFalse((fresh / ".git/info/attributes").exists())
+            self.assertFalse((fresh / ".git/objects/info/alternates").exists())
+            git(fresh, "checkout", "--detach", new)
             self.assertEqual(git(fresh, "rev-parse", "HEAD").decode().strip(), new)
             for name in PAPERS:
                 self.assertEqual((fresh / name).read_bytes(), ORIGINAL)
                 self.assertEqual(git(fresh, "show", ":" + name), ORIGINAL)
             self.assertEqual(index.read_bytes(), index_bytes)
+            self.assertEqual(config.read_bytes(), config_bytes)
+            self.assertEqual(info_attributes.read_bytes(), attributes_bytes)
+            self.assertEqual(alternates.read_bytes(), alternates_bytes)
+            self.assertEqual(git(existing, "worktree", "list", "--porcelain"), registered)
             self.assertEqual({name: (existing / name).read_bytes() for name in files}, files)
             self.assertEqual(git(existing, "show", ":notes.txt"), staged)
 
@@ -174,7 +203,8 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             git(existing, "checkout", "--force", "--detach", new)
             for name in PAPERS:
                 self.assertIn((existing / name).read_bytes(), (ORIGINAL, ORIGINAL.replace(b"\n", b"\r\n")))
-            git(existing, "worktree", "add", "--detach", str(fresh), new)
+            git(existing, "clone", "--no-local", "--no-checkout", str(existing), str(fresh))
+            git(fresh, "checkout", "--detach", new)
             for name in PAPERS:
                 self.assertEqual((fresh / name).read_bytes(), ORIGINAL)
 

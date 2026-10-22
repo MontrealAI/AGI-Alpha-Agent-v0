@@ -73,7 +73,11 @@ Do not normalize a manuscript, change its catalog hash, or force-reset/clean the
 existing worktree to make validation pass. Preserve staged, unstaged and untracked
 work there, including any intentionally revised originals that need a new ID.
 
-Use a fresh, detached sibling worktree for inspection instead. First choose a
+Use an independent local clone for inspection instead. Linked worktrees share
+the original repository's `.git/info/attributes`, whose rules can override the
+committed manuscript attributes and convert even a fresh sibling's bytes. Do not
+edit those local rules as part of recovery; the independent clone leaves them
+untouched and does not copy them. First choose a
 specific, verified source commit containing the byte-preserving attributes, or a
 previously qualified tag that contains them. Resolve that choice to its full
 commit SHA with `git rev-parse --verify "YOUR_CHOSEN_REF^{commit}"` and independently
@@ -82,19 +86,27 @@ The commit must already be available locally; stop if it cannot be resolved.
 
 From the existing repository, substitute that full SHA and choose a unique sibling
 destination that does not exist. These commands work without changing the
-original worktree's files or index:
+original worktree's files, index or local configuration. `--no-local` uses
+Git transport over the explicit local path, without a network fetch, rather than
+copying local object-store links or alternates. Do not use `--shared` or `--reference`:
+
+Run each command in order and stop on any error.
 
 ```sh
-git worktree add --detach ../AGI-Alpha-Agent-byte-clean FULL_VERIFIED_COMMIT_SHA
+git clone --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean
+git -C ../AGI-Alpha-Agent-byte-clean checkout --detach FULL_VERIFIED_COMMIT_SHA
 git -C ../AGI-Alpha-Agent-byte-clean rev-parse HEAD
 ```
 
 Confirm the reported SHA is exactly the chosen commit. Do not add `--force`, reuse
 an occupied directory, or delete existing work to clear a destination error;
 choose another nonexistent sibling path. Git refuses a nonempty destination.
+If the chosen commit is unavailable in the clone, stop rather than checking out a
+different source. The clone contains committed source, not the old checkout's
+staged, unstaged or untracked edits.
 Activate a Python environment containing the hash-locked validator dependencies
 from `requirements-papers.lock` (see the installation command above); a fresh
-worktree does not install dependencies. Then enter the new sibling and invoke the
+clone does not install dependencies. Then enter the new sibling and invoke the
 validator as a module from that repository root:
 
 ```sh
