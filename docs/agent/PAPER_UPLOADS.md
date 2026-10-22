@@ -62,6 +62,53 @@ embedded files are rejected. The existing bounded passive C2PA content-credentia
 attachment is preserved but is not treated as verification of its claims. A PDF rejection never rewrites the
 original; correct the source document explicitly and give revisions a new ID.
 
+## Recovering a byte-mismatched checkout
+
+Catalog hashes always describe the exact original bytes. A digest mismatch can
+mean a local edit or corruption; an older checkout with `core.autocrlf=true` is
+another possible cause. The new manuscript attributes protect fresh checkouts,
+but updating an existing checkout may retain its previously converted CRLF bytes.
+Even the first forced checkout of the new commit may leave those bytes unchanged.
+Do not normalize a manuscript, change its catalog hash, or force-reset/clean the
+existing worktree to make validation pass. Preserve staged, unstaged and untracked
+work there, including any intentionally revised originals that need a new ID.
+
+Use a fresh, detached sibling worktree for inspection instead. First choose a
+specific, verified source commit containing the byte-preserving attributes, or a
+previously qualified tag that contains them. Resolve that choice to its full
+commit SHA with `git rev-parse --verify "YOUR_CHOSEN_REF^{commit}"` and independently
+check its provenance. Do not assume the latest main commit is a qualified release.
+The commit must already be available locally; stop if it cannot be resolved.
+
+From the existing repository, substitute that full SHA and choose a unique sibling
+destination that does not exist. These commands work without changing the
+original worktree's files or index:
+
+```sh
+git worktree add --detach ../AGI-Alpha-Agent-byte-clean FULL_VERIFIED_COMMIT_SHA
+git -C ../AGI-Alpha-Agent-byte-clean rev-parse HEAD
+```
+
+Confirm the reported SHA is exactly the chosen commit. Do not add `--force`, reuse
+an occupied directory, or delete existing work to clear a destination error;
+choose another nonexistent sibling path. Git refuses a nonempty destination.
+Activate a Python environment containing the hash-locked validator dependencies
+from `requirements-papers.lock` (see the installation command above); a fresh
+worktree does not install dependencies. Then enter the new sibling and invoke the
+validator as a module from that repository root:
+
+```sh
+cd ../AGI-Alpha-Agent-byte-clean
+python -m scripts.research_papers check
+```
+
+Passing there establishes that checkout's manuscript validation, not software
+release qualification. If the fresh sibling still fails, stop and investigate
+the exact file, source commit and catalog instead of rewriting originals or
+accepting a different hash. Keep the old worktree and review its local changes
+separately; this procedure neither migrates nor discards them. Fresh hosted
+Windows checks and all required source-specific release checks remain mandatory.
+
 ## GitHub web editor alternative
 
 Do not upload a bare paper directly to main expecting the fast lane. Create a

@@ -373,7 +373,11 @@ def verify_files(root: Path, catalog: dict[str, Any], *, pdf_checks: bool = True
                 raise ValueError("Paper files must be bounded and non-executable")
             raw = path.read_bytes()
             if hashlib.sha256(raw).hexdigest() != item["sha256"]:
-                raise ValueError(f"Paper digest mismatch: {item['path']}")
+                raise ValueError(
+                    f"Paper digest mismatch: {item['path']}. Original bytes are required; "
+                    "local edits, corruption, or an older text-converting checkout may be responsible. "
+                    "Preserve this worktree and see docs/agent/PAPER_UPLOADS.md#recovering-a-byte-mismatched-checkout."
+                )
             if kind == "pdf":
                 if not raw.startswith(b"%PDF-"):
                     raise ValueError("Catalog PDF is not a PDF")

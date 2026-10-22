@@ -20,6 +20,8 @@ class PaperCheckoutBytesTests(unittest.TestCase):
             root = Path(directory)
 
             def git(*args: str) -> bytes:
+                env = {key: value for key, value in os.environ.items() if not key.upper().startswith("GIT_")}
+                env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1")
                 return subprocess.check_output(
                     [
                         "git",
@@ -35,6 +37,7 @@ class PaperCheckoutBytesTests(unittest.TestCase):
                     ],
                     stderr=subprocess.PIPE,
                     timeout=30,
+                    env=env,
                 )
 
             git("init", "--quiet")
