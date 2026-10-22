@@ -79,7 +79,21 @@ binds compressed and decoded original bytes. Reproduction helpers retain origina
 paths for traceability; adapt paths in an isolated exact checkout and retain raw
 inputs. Never reanchor an old history to another source.
 
-Configured review and new-head hosted results are pending. Complete hooks/full
+The original current-head capability run [39699545097](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/39699545097)
+completed successfully. Downloaded artifact 12392916698 is 24,068,099 bytes, SHA256
+`54f4158aab04ca196fc0dae68eb033a588929d73b40c8724196089e7f84cf48c`.
+All 184 entries pass CRC with unique safe paths. Public Git metadata authenticates
+checkout `965bb6df2bf2860b15c989e78b0dde0204006a1d`, its ordered parents 0c0bbcd4 and
+f73820b4, and the exact current source tree. All 35 archived source digests and the
+served page match the independent frozen bytes. Its actual retained output records
+383 Node, 16 delivery, mypy 2.4.0 on 10 files, primary browser 12 and continuation
+browser 14 passing checks, plus the preserved v1/Out-Evolve/recovery/accessibility
+journeys. [Custody records and raw logs](hosted-f738/) retain these exact claims.
+Transformational Intelligence run 39699545085 also completed successfully. These
+are PR synthetic-merge results; integrated main, installed release and public-site
+acceptance remain separate.
+
+Configured review is pending. Complete hooks/full
 Python, paper/main integration, versioned installed receiver profiles, final-main
 checks, releases/Pages and actual public served-byte acceptance remain separate
 required gates. Live chain observation and qualified operational real-task work
