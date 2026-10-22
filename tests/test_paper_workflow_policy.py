@@ -86,6 +86,9 @@ def test_runtime_gates_preserve_original_permissions_dependencies_and_failure_se
             # capability/browser/recovery gate. The delivery test binds that call.
             added_dependencies.add("successor-capability")
         expected_dependencies = dependencies(before) | added_dependencies
+        if (name, key) == ("agent-release.yml", "historical-ci"):
+            # Waiting is deferred until every substantive package prerequisite completes.
+            expected_dependencies |= dependencies(new["jobs"]["package"]) - {"historical-ci"}
         if (name, key) == ("pr-ci.yml", "smoke"):
             # Lint and smoke independently feed their required verdicts.
             expected_dependencies.discard("lint")

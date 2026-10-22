@@ -903,7 +903,28 @@ jobs:
 
   historical-ci:
     if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
-    needs: [paper-scope, publication-preflight]
+    # Queue this final proof only after all substantive release producers finish.
+    # Job dependencies wait without occupying a runner; failures still block publication.
+    needs:
+      - paper-scope
+      - publication-preflight
+      - mark-wallet
+      - runtime
+      - regression
+      - browser-contracts
+      - real-model
+      - gallery
+      - native-demos
+      - sovereign-lab
+      - finance-lab
+      - muzero-lab
+      - demo-distribution
+      - quality
+      - dependency-audit
+      - successor-workbench
+      - successor-journey
+      - transformational-intelligence
+      - successor-capability
     runs-on: ubuntu-latest
     timeout-minutes: 125
     outputs:
