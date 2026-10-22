@@ -97,10 +97,14 @@ attributes, and `--template=` prevents configured templates from installing
 `info/attributes` in the clone. Apply the attribute settings to both clone and
 checkout: `-text` alone does not disable a global smudge filter. These settings
 apply only to the commands below and do not change the original configuration.
+The command-local `core.hooksPath=/dev/null` also prevents configured hooks from
+rewriting files during clone or checkout, without editing or deleting those hooks.
 
 ```sh
-GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= clone --template= --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean
-GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -C ../AGI-Alpha-Agent-byte-clean checkout --detach FULL_VERIFIED_COMMIT_SHA
+GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
+  clone --template= --no-local --no-checkout . ../AGI-Alpha-Agent-byte-clean
+GIT_ATTR_NOSYSTEM=1 git -c core.attributesFile= -c core.hooksPath=/dev/null \
+  -C ../AGI-Alpha-Agent-byte-clean checkout --detach FULL_VERIFIED_COMMIT_SHA
 git -C ../AGI-Alpha-Agent-byte-clean rev-parse HEAD
 ```
 

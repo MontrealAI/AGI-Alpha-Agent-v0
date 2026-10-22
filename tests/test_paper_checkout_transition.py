@@ -73,7 +73,7 @@ def history(root: Path) -> tuple[str, str]:
 
 
 class PaperCheckoutTransitionTests(unittest.TestCase):
-    def test_recovery_commands_disable_global_filters_and_template_attributes(self) -> None:
+    def test_recovery_commands_disable_global_filters_templates_and_hooks(self) -> None:
         with tempfile.TemporaryDirectory(prefix="paper-filter-template-") as directory:
             parent = Path(directory).resolve()
             origin = parent / "origin"
@@ -89,10 +89,27 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                 "import sys\nsys.stdout.buffer.write(sys.stdin.buffer.read().replace(b'Immutable', b'Mutated'))\n",
                 encoding="utf-8",
             )
+            hooks = parent / "hooks"
+            hooks.mkdir()
+            hook_script = parent / "post_checkout.py"
+            hook_script.write_text(
+                "from pathlib import Path\n"
+                f"for name in {PAPERS!r}:\n"
+                "    path = Path(name)\n"
+                "    path.write_bytes(path.read_bytes().replace(b'Immutable', b'Hooked'))\n"
+                "Path('hook-ran').write_bytes(b'Benign fixture hook ran\\n')\n",
+                encoding="utf-8",
+            )
+            hook = hooks / "post-checkout"
+            hook.write_bytes(
+                f'#!/bin/sh\nexec "{Path(sys.executable).as_posix()}" "{hook_script.as_posix()}"\n'.encode()
+            )
+            hook.chmod(0o755)
             config = parent / "global.config"
             for key, value in (
                 ("core.attributesFile", attributes.as_posix()),
                 ("init.templateDir", template.as_posix()),
+                ("core.hooksPath", hooks.as_posix()),
                 ("filter.mutate.smudge", f'"{Path(sys.executable).as_posix()}" "{smudge.as_posix()}"'),
             ):
                 git(origin, "config", "--file", str(config), key, value)
@@ -111,13 +128,16 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
             (origin / "untracked.txt").write_bytes(b"Keep\n")
             (origin / PAPERS[0]).write_bytes(ORIGINAL + b"% Author revision\n")
             protected = [config, attributes, template_attributes, smudge, origin / ".git/index", origin / ".git/config"]
+            protected += [hook, hook_script]
             protected += [origin / name for name in (*PAPERS, "notes.txt", "untracked.txt")]
             before = {path: path.read_bytes() for path in protected}
+            no_hooks = ["-c", f"core.hooksPath={os.devnull}"]
             cases = (
-                ("global-filter", [], ["--template="], False),
-                ("template-filter", ["-c", "core.attributesFile="], [], False),
-                ("isolated-empty", ["-c", "core.attributesFile="], ["--template="], True),
-                ("isolated-null", ["-c", f"core.attributesFile={os.devnull}"], ["--template="], True),
+                ("global-filter", no_hooks, ["--template="], False),
+                ("template-filter", [*no_hooks, "-c", "core.attributesFile="], [], False),
+                ("checkout-hook", ["-c", "core.attributesFile="], ["--template="], False),
+                ("isolated-empty", [*no_hooks, "-c", "core.attributesFile="], ["--template="], True),
+                ("isolated-null", [*no_hooks, "-c", f"core.attributesFile={os.devnull}"], ["--template="], True),
             )
             for label, settings, templates, isolated in cases:
                 with self.subTest(case=label):
@@ -132,7 +152,9 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                             stderr=subprocess.PIPE,
                             timeout=30,
                         )
-                    expected = ORIGINAL if isolated else ORIGINAL.replace(b"Immutable", b"Mutated")
+                    marker = b"Hooked" if label == "checkout-hook" else b"Mutated"
+                    expected = ORIGINAL if isolated else ORIGINAL.replace(b"Immutable", marker)
+                    self.assertEqual((fresh / "hook-ran").exists(), label == "checkout-hook")
                     for name in PAPERS:
                         self.assertEqual((fresh / name).read_bytes(), expected)
                         self.assertEqual(git(fresh, "show", ":" + name), ORIGINAL)
@@ -140,6 +162,7 @@ class PaperCheckoutTransitionTests(unittest.TestCase):
                     if isolated:
                         self.assertFalse((fresh / ".git/info/attributes").exists())
                     self.assertEqual({path: path.read_bytes() for path in protected}, before)
+                    self.assertFalse((origin / "hook-ran").exists())
 
     def test_fixture_ignores_hostile_global_attributes_and_ignore(self) -> None:
         with tempfile.TemporaryDirectory(prefix="paper-git-attributes-") as directory:
