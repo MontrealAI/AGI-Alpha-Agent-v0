@@ -90,8 +90,11 @@ export function createMissionDelivery({ repositories, check, concurrency = 2, ma
         const expectedGroups = prepared.rows.map(row => ({ group: row.group, total: Number(row.amount) }));
         requireThat(canonical(admission.artifact.output?.groups) === canonical(expectedGroups) && String(admission.artifact.output?.total) === prepared.total, 'ARTIFACT_OUTPUT_BINDING', 'Canonical artifact differs from the exact normalized output groups.');
         requireThat(!signal?.aborted, 'INTERRUPTED', 'Caller stopped this delivery before native execution.');
-        bridgePromise ??= createBridge(repositories);
-        const bridge = await bridgePromise;
+        const loading = bridgePromise ??= createBridge(repositories);
+        let bridge;
+        try { bridge = await loading; }
+        catch (error) { if (bridgePromise === loading) bridgePromise = null; throw error; }
+        requireThat(!signal?.aborted, 'INTERRUPTED', 'Caller stopped this delivery during bridge initialization.');
         const native = await bridge.run({ csv: prepared.csv, missionId: mission.missionId, projectId, cycleId, parentProject, language, unit: mission.kind === 'bom-demand' ? 'exact required part units' : mission.kind === 'remediation-impact' ? 'unique affected-service indicators' : 'declared integer units' });
         const actualGroups = native.result.groups.map(group => ({ group: group.group, total: group.total })).sort((a, b) => compare(a.group, b.group));
         requireThat(canonical(actualGroups) === canonical(expectedGroups) && String(native.result.total) === prepared.total, 'NATIVE_GROUP_MISMATCH', 'Native results differ from at least one canonical output group or the signed total.');
