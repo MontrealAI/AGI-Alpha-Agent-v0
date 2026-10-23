@@ -1,0 +1,216 @@
+{
+  "schema": "writer4.contract-readonly-observation.v1",
+  "startedUtc": "2026-10-23T16:05:54.200Z",
+  "sourceProjection": "examples/successor-alpha/deployment.json",
+  "projectionSourceCommit": "c0fc5217e364a39a4cd123d17a8317c06b80f820",
+  "provider": "https://ethereum.publicnode.com",
+  "methods": [
+    "eth_chainId",
+    "eth_getBlockByNumber",
+    "eth_getCode",
+    "eth_call"
+  ],
+  "authorityGranted": false,
+  "fundsMoved": false,
+  "contracts": {
+    "AscensionAccess": {
+      "address": "0x9ee41df6d076fa4f89b102b76def1c503a1e7c3a",
+      "byteLength": 3266,
+      "codeHash": "0x17e65ef078f4afc473c5a8448b0d148c1289d23e188cef00192d894a9a981886",
+      "expectedHistoricalHash": "0x17e65ef078f4afc473c5a8448b0d148c1289d23e188cef00192d894a9a981886",
+      "getters": {
+        "owner": {
+          "value": "0xd76AD27a1Bcf8652e7e46BE603FA742FD1c10A99",
+          "historicalValue": "0xd76AD27a1Bcf8652e7e46BE603FA742FD1c10A99",
+          "unchanged": true
+        },
+        "pendingOwner": {
+          "value": "0x0000000000000000000000000000000000000000",
+          "historicalValue": "0x0000000000000000000000000000000000000000",
+          "unchanged": true
+        },
+        "ens": {
+          "value": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+          "historicalValue": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+          "unchanged": true
+        },
+        "wrapper": {
+          "value": "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401",
+          "historicalValue": "0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401",
+          "unchanged": true
+        }
+      },
+      "codeMatchesRetainedHash": true
+    },
+    "NovaSeed": {
+      "address": "0x31bd0736dcd55da2f9a2bb586c8a98695f86f19e",
+      "byteLength": 5044,
+      "codeHash": "0xffd60a8b78addcb4a28767f74f13ec5c7cf67091351c8dcd6f41c498d747daaf",
+      "expectedHistoricalHash": "0xffd60a8b78addcb4a28767f74f13ec5c7cf67091351c8dcd6f41c498d747daaf",
+      "getters": {
+        "access": {
+          "value": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "historicalValue": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "unchanged": true
+        },
+        "nextId": {
+          "value": "0",
+          "historicalValue": "0",
+          "unchanged": true
+        }
+      },
+      "codeMatchesRetainedHash": true
+    },
+    "AscensionRiskOracle": {
+      "address": "0x198fc6ebee21c6a0b34e4d055afd6d811aa6de58",
+      "byteLength": 8306,
+      "codeHash": "0xbefcd9d7b9d9fadeef1d1839779fbca4d418135475d1c4392a09d3ecc25305bd",
+      "expectedHistoricalHash": "0xbefcd9d7b9d9fadeef1d1839779fbca4d418135475d1c4392a09d3ecc25305bd",
+      "getters": {
+        "owner": {
+          "value": "0xd76AD27a1Bcf8652e7e46BE603FA742FD1c10A99",
+          "historicalValue": "0xd76AD27a1Bcf8652e7e46BE603FA742FD1c10A99",
+          "unchanged": true
+        },
+        "pendingOwner": {
+          "value": "0x0000000000000000000000000000000000000000",
+          "historicalValue": "0x0000000000000000000000000000000000000000",
+          "unchanged": true
+        },
+        "access": {
+          "value": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "historicalValue": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "unchanged": true
+        },
+        "seed": {
+          "value": "0x31BD0736DcD55DA2f9a2BB586C8a98695F86f19E",
+          "historicalValue": "0x31BD0736DcD55DA2f9a2BB586C8a98695F86f19E",
+          "unchanged": true
+        },
+        "token": {
+          "value": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "historicalValue": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "unchanged": true
+        },
+        "marketplace": {
+          "value": "0xc1d3d7fb064C23c46C4EB20d24ab6EA650FF0ceE",
+          "historicalValue": "0xc1d3d7fb064C23c46C4EB20d24ab6EA650FF0ceE",
+          "unchanged": true
+        },
+        "minimumStake": {
+          "value": "10000000000000000000",
+          "historicalValue": "10000000000000000000",
+          "unchanged": true
+        },
+        "quorum": {
+          "value": "2",
+          "historicalValue": "2",
+          "unchanged": true
+        },
+        "maximumRiskBps": {
+          "value": "2000",
+          "historicalValue": "2000",
+          "unchanged": true
+        }
+      },
+      "codeMatchesRetainedHash": true
+    },
+    "AscensionJobMarket": {
+      "address": "0xc1d3d7fb064c23c46c4eb20d24ab6ea650ff0cee",
+      "byteLength": 17612,
+      "codeHash": "0x0eb4d4a47d60690208e7a62f741e383ceb9f8d84da14af848593b7748634bf90",
+      "expectedHistoricalHash": "0x0eb4d4a47d60690208e7a62f741e383ceb9f8d84da14af848593b7748634bf90",
+      "getters": {
+        "owner": {
+          "value": "0xd76AD27a1Bcf8652e7e46BE603FA742FD1c10A99",
+          "historicalValue": "0xd76AD27a1Bcf8652e7e46BE603FA742FD1c10A99",
+          "unchanged": true
+        },
+        "pendingOwner": {
+          "value": "0x0000000000000000000000000000000000000000",
+          "historicalValue": "0x0000000000000000000000000000000000000000",
+          "unchanged": true
+        },
+        "access": {
+          "value": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "historicalValue": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "unchanged": true
+        },
+        "oracle": {
+          "value": "0x198FC6EBee21c6A0B34E4d055AFD6D811AA6dE58",
+          "historicalValue": "0x198FC6EBee21c6A0B34E4d055AFD6D811AA6dE58",
+          "unchanged": true
+        },
+        "token": {
+          "value": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "historicalValue": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "unchanged": true
+        },
+        "mark": {
+          "value": "0x6D5323b2609E36fDc4dB3B2501B7BcF0E131033c",
+          "historicalValue": "0x6D5323b2609E36fDc4dB3B2501B7BcF0E131033c",
+          "unchanged": true
+        },
+        "minimumStake": {
+          "value": "10000000000000000000",
+          "historicalValue": "10000000000000000000",
+          "unchanged": true
+        },
+        "nextId": {
+          "value": "0",
+          "historicalValue": "0",
+          "unchanged": true
+        }
+      },
+      "codeMatchesRetainedHash": true
+    },
+    "AscensionMark": {
+      "address": "0x6d5323b2609e36fdc4db3b2501b7bcf0e131033c",
+      "byteLength": 12606,
+      "codeHash": "0x86e9ae58547af1967459b7926678d4600587adf139b211e581c1f4ea191a2df7",
+      "expectedHistoricalHash": "0x86e9ae58547af1967459b7926678d4600587adf139b211e581c1f4ea191a2df7",
+      "getters": {
+        "seed": {
+          "value": "0x31BD0736DcD55DA2f9a2BB586C8a98695F86f19E",
+          "historicalValue": "0x31BD0736DcD55DA2f9a2BB586C8a98695F86f19E",
+          "unchanged": true
+        },
+        "access": {
+          "value": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "historicalValue": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+          "unchanged": true
+        },
+        "oracle": {
+          "value": "0x198FC6EBee21c6A0B34E4d055AFD6D811AA6dE58",
+          "historicalValue": "0x198FC6EBee21c6A0B34E4d055AFD6D811AA6dE58",
+          "unchanged": true
+        },
+        "jobs": {
+          "value": "0xc1d3d7fb064C23c46C4EB20d24ab6EA650FF0ceE",
+          "historicalValue": "0xc1d3d7fb064C23c46C4EB20d24ab6EA650FF0ceE",
+          "unchanged": true
+        },
+        "token": {
+          "value": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "historicalValue": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "unchanged": true
+        }
+      },
+      "codeMatchesRetainedHash": true
+    }
+  },
+  "status": "OBSERVED",
+  "chainId": "1",
+  "block": {
+    "number": "26256334",
+    "hash": "0x8958690cf55caf43194a8e03e1ce1db7d905d6d5d77c2e90198cbeb2850b9be3",
+    "timestamp": "1792770647"
+  },
+  "finishedUtc": "2026-10-23T16:05:57.320Z",
+  "limitations": [
+    "Trusted-provider, point-in-time read-only observation; no mainnet readiness or activation approval.",
+    "No participant identity or admission inventory is inferred from graph owner getters.",
+    "Published graph sources are direct contracts, not proxies; this read does not audit external dependencies.",
+    "Funding or economic value is not established by bytecode identity or contract balances."
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "tae.archive-check.v1",
+  "archiveSha256": "a622657df828aefb4a081d1e0f5d1fb665fcf69991383245b6ece7cb66bee7ee",
+  "elapsedSeconds": 0.8641135310026584,
+  "commands": [
+    {
+      "args": [
+        "python3",
+        "VERIFY.py"
+      ],
+      "exitCode": 0,
+      "stdout": "Checked 457 original files; 0 mismatches. New run files are not part of this manifest.\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "node",
+        "study/reproduce.mjs",
+        "--smoke"
+      ],
+      "exitCode": 0,
+      "stdout": "Running development.test.mjs in a fresh evidence directory\nRunning control-tests.mjs in a fresh evidence directory\nComplete: /workspace/scratch/23333b05d88e/package-check/Successor_Omega_Harness/study/reproductions/smoke-2026-10-23T17-08-56-800Z\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Fresh archive extraction, file integrity, candidate development and queue/checker controls; not a fresh four-repository dependency installation",
+  "passed": true
+}

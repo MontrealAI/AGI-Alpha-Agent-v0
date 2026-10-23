@@ -1,0 +1,69 @@
+{
+  "schema": "tae.root-integration-readonly-review.v1",
+  "files": [
+    "study/run-demo.mjs",
+    "study/setup.mjs",
+    "study/server.mjs",
+    "study/verify-journey.mjs",
+    "study/reproduce.mjs"
+  ],
+  "scope": "Read-only source audit plus in-memory negative controls; no repository/native/browser/chain action",
+  "results": [
+    {
+      "name": "original",
+      "accepted": true
+    },
+    {
+      "name": "input-binding-rebound",
+      "accepted": true
+    },
+    {
+      "name": "empty-lifecycle",
+      "accepted": true
+    }
+  ],
+  "requiredLifecycleStages": [
+    "Commit mission and evaluator bytes",
+    "Open local risk review",
+    "Local staked risk attestation",
+    "Local staked risk attestation",
+    "Open plan-restricted funding",
+    "Fund with local fixture tokens",
+    "Activate local plan treasury",
+    "Route committed bounded job",
+    "Collateral-backed local bid",
+    "Assign the bounded job",
+    "Deliver exact checked artifact",
+    "Local exact-artifact validator vote",
+    "Local exact-artifact validator vote",
+    "Collect unused job escrow",
+    "Close completed campaign",
+    "Return unused local capital"
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "file": "study/verify-journey.mjs",
+      "issue": "Rebound top-level input identity passes while the hash-bound scientific artifact/proof input fields remain different.",
+      "fix": "Cross-check artifact.inputHash and proof.inputSha256 against binding and EVM input, and check graphBindingSha256 against recomputed binding."
+    },
+    {
+      "id": "R2",
+      "file": "study/verify-journey.mjs",
+      "issue": "Empty lifecycle transaction lists pass every() and retain accepted=true.",
+      "fix": "Require declared nonempty exact lifecycle stages/count before accepting statuses."
+    },
+    {
+      "id": "R3",
+      "file": "study/run-demo.mjs",
+      "issue": "execFile failure console is only written on success; failure.json omits child stdout/stderr.",
+      "fix": "Persist child stdout/stderr and available execution metadata in the failure path."
+    },
+    {
+      "id": "R4",
+      "file": "study/setup.mjs",
+      "issue": "Existing node_modules directory alone suppresses npm ci and can make incomplete dependency state appear ready when artifacts also exist.",
+      "fix": "Check actual required dependency installation against lock before reporting ready; refuse or repair only declared owned dependencies."
+    }
+  ]
+}

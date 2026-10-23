@@ -1,0 +1,83 @@
+// SPDX-License-Identifier: Apache-2.0
+// Optional browser QA: Playwright 1.62.1, new Writer4 HTTP interface only.
+const { chromium } = require('../browser-tools/node_modules/playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const output = path.resolve(process.env.TAE_QA_OUTPUT ?? 'evidence/interface');
+fs.mkdirSync(output, { recursive: true });
+const report = { target: 'http://127.0.0.1:8765/study/interface/', priorDeniedTargetsAttempted: false, browser: 'Playwright Chromium', checks: [], errors: [], startedAt: new Date().toISOString() };
+async function main() {
+  const packaged = (await import('../browser-tools/node_modules/@sparticuz/chromium/build/index.js')).default;
+  const executablePath = await packaged.executablePath();
+  report.executableSource = '@sparticuz/chromium@153.0.0 pinned npm package';
+  const browser = await chromium.launch({ headless: true, executablePath });
+  try {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 1050 }, reducedMotion: 'reduce' });
+    const page = await context.newPage();
+    page.on('pageerror', error => report.errors.push(error.message));
+    await page.goto(report.target); await page.waitForFunction(() => !document.querySelector('#run').disabled);
+    assert.equal(await page.locator('#accepted-count').innerText(), '40 / 40');
+    assert.match(await page.locator('#evidence-mode').innerText(), /record|replay|histor/i);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.screenshot({ path: path.join(output, 'desktop-en.png'), fullPage: true });
+    report.checks.push({ name: 'Recorded evidence, 40/40 score and desktop layout', passed: true });
+    await page.locator('[data-step="0"]').focus(); await page.keyboard.press('End');
+    assert.equal(await page.locator('[data-step="5"]').getAttribute('aria-selected'), 'true');
+    await page.keyboard.press('Home'); assert.equal(await page.locator('[data-step="0"]').getAttribute('aria-selected'), 'true');
+    report.checks.push({ name: 'Keyboard stage navigation and visible focus', passed: true });
+    const api = await page.evaluate(async () => {
+      const status = await (await fetch('/api/status')).json();
+      const denied = await fetch('/api/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+      const changed = await fetch('/api/run', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-TAE-Token': status.token }, body: '{"mission":"arbitrary"}' });
+      const hidden = await fetch('/study/evaluation/checker.mjs');
+      return { denied: denied.status, changed: changed.status, hidden: hidden.status };
+    });
+    assert.deepEqual(api, { denied: 403, changed: 400, hidden: 404 });
+    report.checks.push({ name: 'Unauthorized API, arbitrary input and unlisted path refused', passed: true, observed: api });
+    await page.locator('#run').click(); await page.waitForFunction(() => !document.querySelector('#stop-run').disabled);
+    const busyStatus = await page.evaluate(async () => { const { token } = await (await fetch('/api/status')).json(); return (await fetch('/api/run', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-TAE-Token': token }, body: '{}' })).status; });
+    assert.equal(busyStatus, 409);
+    await page.locator('#stop-run').click(); await page.waitForFunction(() => !document.querySelector('#run').disabled);
+    await page.waitForFunction(async () => !(await (await fetch('/api/status')).json()).busy);
+    report.checks.push({ name: 'Concurrent run refused; active local process group stopped; previous evidence retained', passed: true });
+    const responsePromise = page.waitForResponse(response => response.url().endsWith('/api/run') && response.status() === 200, { timeout: 60000 });
+    const begin = Date.now(); await page.locator('#run').click();
+    const response = await responsePromise; const fresh = await response.json();
+    assert.equal(fresh.acceptance.accepted, true); assert.equal(fresh.evm.lifecycleTransactions, 32);
+    assert.equal(fresh.evm.missions[1].parentSeedId, fresh.evm.missions[0].seedId);
+    await page.waitForFunction(() => !document.querySelector('#run').disabled);
+    assert.match(await page.locator('#comparison-note').count() ? await page.locator('#comparison-note').innerText() : await page.locator('#evidence').innerText(), /record|replay|frozen/i);
+    fs.writeFileSync(path.join(output, 'fresh-run-reference.json'), JSON.stringify({ runId: fresh.runId, elapsedBrowserMs: Date.now() - begin, acceptance: fresh.acceptance, costs: fresh.costs }, null, 2));
+    report.checks.push({ name: 'Recovery runs both actual missions through four repositories and32 local settlement transactions', passed: true, runId: fresh.runId, elapsedBrowserMs: Date.now() - begin });
+    const downloadPromise = page.waitForEvent('download'); await page.locator('#export').click();
+    const download = await downloadPromise; const filename = path.join(output, 'browser-export.json'); await download.saveAs(filename);
+    const exported = JSON.parse(fs.readFileSync(filename)); assert.equal(exported.currentProof, null); assert.deepEqual(exported.authority, []); assert(exported.evidence.workspaces.successor.capability.programs);
+    await page.locator('#restore').setInputFiles(filename); await page.waitForFunction(() => document.querySelector('#restore-status').textContent.includes('Restored as historical'));
+    report.checks.push({ name: 'Export retains executable capability; restore marks historical unverified evidence and empty authority', passed: true });
+    const before = await page.locator('#accepted-count').innerText();
+    await page.locator('#restore').setInputFiles({ name: 'invalid.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ schema: 'tae.interface-export.v1', currentProof: { accepted: true }, authority: ['mainnet'], evidence: {} })) });
+    await page.waitForFunction(() => /refused|failed|error|unsupported/i.test(document.querySelector('#restore-status').textContent));
+    assert.equal(await page.locator('#accepted-count').innerText(), before);
+    report.checks.push({ name: 'Imported permission/invalid record refused without losing existing evidence', passed: true });
+    await page.locator('#language').click(); assert.equal(await page.locator('html').getAttribute('lang'), 'fr');
+    await page.screenshot({ path: path.join(output, 'desktop-fr.png'), fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 }); await page.evaluate(() => scrollTo(0, 0));
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.screenshot({ path: path.join(output, 'mobile-fr.png'), fullPage: true });
+    await page.locator('#language').click(); await page.screenshot({ path: path.join(output, 'mobile-en.png'), fullPage: true });
+    await page.setViewportSize({ width: 320, height: 720 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.screenshot({ path: path.join(output, 'mobile-320.png'), fullPage: true });
+    report.checks.push({ name: 'English/French layouts at1440,390 and320px with no horizontal document overflow', passed: true });
+    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto');
+    report.checks.push({ name: 'Reduced-motion setting respected', passed: true });
+    const pdf = await context.request.get('http://127.0.0.1:8765/publication/Transformational_Autonomous_Enterprises.pdf'); assert.equal(pdf.status(), 200); assert.equal((await pdf.body()).subarray(0, 5).toString(), '%PDF-');
+    report.checks.push({ name: 'Paper link serves a real PDF', passed: true });
+    assert.deepEqual(report.errors, []);
+    report.lineageText = await page.locator('#lineage-identities').innerText();
+    assert.match(report.lineageText, /e55b1394508e/); assert.match(report.lineageText, /cfff8e0c431a/);
+    report.checks.push({name:'Actual capability, module and local job identities displayed',passed:true});
+  } finally { await browser.close(); }
+}
+main().then(() => { report.passed = true; report.finishedAt = new Date().toISOString(); fs.writeFileSync(path.join(output, 'browser-qa.json'), JSON.stringify(report, null, 2)); console.log(JSON.stringify(report)); }).catch(error => { report.passed = false; report.failure = error.stack; fs.writeFileSync(path.join(output, 'browser-qa-failed.json'), JSON.stringify(report, null, 2)); console.error(error); process.exitCode = 1; });

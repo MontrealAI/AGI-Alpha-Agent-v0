@@ -1,0 +1,517 @@
+{
+  "schema": "tae.local-evm-summary.v1",
+  "mode": "Actual disposable local EVM execution; recorded evidence replay in the interface",
+  "chainId": "31337",
+  "sourceAlphaCommit": "9cb90e8c189f146eff7d166e249d9474792c4864",
+  "setupTransactions": 70,
+  "setupGasUsed": "15015015",
+  "lifecycleTransactions": 32,
+  "lifecycleGasUsed": "5137741",
+  "commandElapsedSeconds": 1.385619170992868,
+  "priorFailedAttemptSeconds": 0.16090908300247975,
+  "missions": [
+    {
+      "kind": "parent",
+      "missionId": "bom-demand-00",
+      "seedId": "1",
+      "parentSeedId": "0",
+      "jobId": "1",
+      "output": {
+        "groups": [
+          {
+            "group": "n4",
+            "total": 25
+          },
+          {
+            "group": "n5",
+            "total": 25
+          },
+          {
+            "group": "n6",
+            "total": 25
+          },
+          {
+            "group": "n7",
+            "total": 50
+          }
+        ],
+        "total": 125
+      },
+      "artifactSha256": "d17d45bb353d1d8c1ad49bc555425e619b51b41f60248f10763eb690f9d75a3e",
+      "proofSha256": "af0184f18a8fb69a675cc54f7f14f64eda03893c3b3208a20ab869a8f6b51ae7",
+      "inputSha256": "e4554fd444d61c01952588c048e967572a7350bf36932d3a23286bb521542146",
+      "capabilityHash": "e55b1394508ed26242f645aea204326ba2b8ac571c3ac540868f4d07a78f4802",
+      "bundleCommitment": "0x27b55a4ac1b78b5cd75ab9fc5d9ff3357ea8a1c3e2ea78813698ffd060fc008c",
+      "resultHash": "0x62d28bf77612e6d48c7fb1c9e790b55745f171c6f24a7494652fb2fcd75b8467",
+      "candidateBinding": {
+        "candidateFileSha256": "d2e3c238ca3c2c2f83785cc67b73d3e53933f3b38b98c35d6a0e63ca99d28270",
+        "frozenSourceManifestSha256": "7c25e93b04ed72764824241db825e38b185672625746253bc61abb0318850352",
+        "sourceCatalogSha256": "71fed4b4befecc4f5d142b4b9bcfb7123aa737991b84d5f243f22aeeb87ee592",
+        "capabilityHash": "e55b1394508ed26242f645aea204326ba2b8ac571c3ac540868f4d07a78f4802",
+        "declaredModules": [
+          {
+            "name": "protocol.mjs",
+            "sha256": "72ee27c947c9ac052f4647ded2414de3c42cc65214b0c02a74327602667a865c"
+          },
+          {
+            "name": "representation.mjs",
+            "sha256": "067fa125cf5e19e3a38d16d86364a9d46f5cf71af279a4cefcf4bbcb94ae5c01"
+          },
+          {
+            "name": "kernel-weighted.mjs",
+            "sha256": "97dd87f775e04b994cc216b7ea1b26c23dbf333863d0c81dfc73e7c398aebc6f"
+          },
+          {
+            "name": "normalizer.mjs",
+            "sha256": "2db9bf5e5018c4b44ba2eccb22eca262487e7a22637b919428499750749ae19b"
+          }
+        ],
+        "scope": "Captured identity and declared-module binding; execution semantics established by fresh independent output check, not this hash alone"
+      },
+      "lineageBeforeReview": {
+        "currentProof": null,
+        "authority": [],
+        "riskApproved": false,
+        "parentSeedId": "0",
+        "onChainParentVerified": true,
+        "onChainByteCommitmentsVerified": true
+      },
+      "transactions": 16,
+      "gasUsed": "2617560",
+      "accountingRaw18": {
+        "token": "AGIALPHA",
+        "decimals": 18,
+        "mode": "mock local tokens",
+        "funded": "158000000000000000000",
+        "acceptedPrice": "80000000000000000000",
+        "workerNet": "75240000000000000000",
+        "validatorsNet": "3960000000000000000",
+        "burned": "800000000000000000",
+        "refunded": "78000000000000000000",
+        "remainingReserve": "0"
+      },
+      "accountingTokens": {
+        "funded": "158.0",
+        "acceptedPrice": "80.0",
+        "workerNet": "75.24",
+        "validatorsNet": "3.96",
+        "burned": "0.8",
+        "refunded": "78.0",
+        "remainingReserve": "0.0"
+      },
+      "steps": [
+        {
+          "stage": "Commit mission and evaluator bytes",
+          "transactionHash": "0x4161de7ae32f294cdfd6b99b853281d6b529cf1724d6129f8e20c5e7afe1f2e1",
+          "block": 71,
+          "events": [
+            "NovaSeed.Transfer",
+            "NovaSeed.MetadataUpdate",
+            "NovaSeed.SeedSealed"
+          ]
+        },
+        {
+          "stage": "Open local risk review",
+          "transactionHash": "0x3f318f9dc3a079a783351c1f3f27b727f04ee47444151e413edb15b079f7f3bb",
+          "block": 72,
+          "events": [
+            "AscensionRiskOracle.ReviewOpened"
+          ]
+        },
+        {
+          "stage": "Local staked risk attestation",
+          "transactionHash": "0x790598a4a5f5e997bb71045b2e572c12adc2a16ba409341d4ab04e47a6d1bf9e",
+          "block": 73,
+          "events": [
+            "AscensionRiskOracle.RiskAttested"
+          ]
+        },
+        {
+          "stage": "Local staked risk attestation",
+          "transactionHash": "0x274a3eeebc2a00f824b5fca56a81106bde43c84109a978742fc82b79ceec499a",
+          "block": 74,
+          "events": [
+            "AscensionRiskOracle.RiskAttested"
+          ]
+        },
+        {
+          "stage": "Open plan-restricted funding",
+          "transactionHash": "0x2cfae600da2c088e6b437ad73bcb9af34f5d9cec70da0e1b0628d1f43d62103d",
+          "block": 75,
+          "events": [
+            "AscensionMark.MarketOpened"
+          ]
+        },
+        {
+          "stage": "Fund with local fixture tokens",
+          "transactionHash": "0x2b69b78d4b0a63aa83ea1d099a3ead14be24175ec554cd140a03e6c4e1dc7b23",
+          "block": 76,
+          "events": [
+            "AGIALPHA_fixture.Transfer",
+            "AscensionMark.Traded"
+          ]
+        },
+        {
+          "stage": "Activate local plan treasury",
+          "transactionHash": "0x232525f38022b2a0d1ea454dc21ccaa4ae899959188a072cf56df020773d278b",
+          "block": 77,
+          "events": [
+            "AscensionMark.Bloomed"
+          ]
+        },
+        {
+          "stage": "Route committed bounded job",
+          "transactionHash": "0x3296c9e9681022d59d75dd35fec79cd687fc944b48e3df72f9a2435ce564276a",
+          "block": 78,
+          "events": [
+            "AGIALPHA_fixture.Approval",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.JobPosted",
+            "AGIALPHA_fixture.Approval",
+            "AscensionMark.MissionRouted"
+          ]
+        },
+        {
+          "stage": "Collateral-backed local bid",
+          "transactionHash": "0xf5dd1b3de3f0a697afd8eb494c0a005f421e1e27fd73cebcc91cd3716ba3c5d4",
+          "block": 79,
+          "events": [
+            "AscensionJobMarket.BidPlaced"
+          ]
+        },
+        {
+          "stage": "Assign the bounded job",
+          "transactionHash": "0xf7797120ffc277b0d58bbc3e890d598caf212743a3be9a6991a6ed915f752a0c",
+          "block": 81,
+          "events": [
+            "AscensionJobMarket.Assigned"
+          ]
+        },
+        {
+          "stage": "Deliver exact checked artifact",
+          "transactionHash": "0x0db4227262702f11ccb9c040274cab0e5c85986bc6be2530ce10981dc4c14d62",
+          "block": 82,
+          "events": [
+            "AscensionJobMarket.Delivered"
+          ]
+        },
+        {
+          "stage": "Local exact-artifact validator vote",
+          "transactionHash": "0x958de1d7cb31a281c968edb5a28a750933ddeda9f87c03e0a8d24f2b05c51bcc",
+          "block": 83,
+          "events": [
+            "AscensionJobMarket.Validated"
+          ]
+        },
+        {
+          "stage": "Local exact-artifact validator vote",
+          "transactionHash": "0x1104e5a026d204fb3fc0ccf74284849cebab50215b13a7bc447e583e16cf9110",
+          "block": 84,
+          "events": [
+            "AscensionJobMarket.Validated",
+            "AGIALPHA_fixture.Transfer",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.Payout",
+            "AGIALPHA_fixture.Transfer",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.Payout",
+            "AGIALPHA_fixture.Transfer",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.Payout",
+            "AscensionJobMarket.Closed"
+          ]
+        },
+        {
+          "stage": "Collect unused job escrow",
+          "transactionHash": "0x432ec54c4be1e90275c6460b7c287344fcc32e41111a582524fc6b9a59c610a7",
+          "block": 85,
+          "events": [
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.RefundClaimed",
+            "AscensionMark.MissionCollected"
+          ]
+        },
+        {
+          "stage": "Close completed campaign",
+          "transactionHash": "0x96e8c2861b5ad5cfaf20222e55cd10e8cf51dcd975b19092b9d14f0e5d68add4",
+          "block": 86,
+          "events": [
+            "AscensionMark.CampaignClosed"
+          ]
+        },
+        {
+          "stage": "Return unused local capital",
+          "transactionHash": "0xf1926cf5d8bc13a5fe95cb513a149900075f8a4d46ed6751c4fedb6bca78e44a",
+          "block": 87,
+          "events": [
+            "AGIALPHA_fixture.Transfer",
+            "AscensionMark.CapitalReturned"
+          ]
+        }
+      ],
+      "receiptPath": "evidence/contracts/writer4-parent-lifecycle.json",
+      "receiptSha256": "d30b08391b936177b8eaefff16b2232324dfd9ffe6e25fea6f5bc254992cd75d"
+    },
+    {
+      "kind": "successor",
+      "missionId": "remediation-impact-03",
+      "seedId": "2",
+      "parentSeedId": "1",
+      "jobId": "2",
+      "output": {
+        "groups": [
+          {
+            "group": "n1",
+            "total": 1
+          },
+          {
+            "group": "n10",
+            "total": 0
+          },
+          {
+            "group": "n4",
+            "total": 1
+          },
+          {
+            "group": "n9",
+            "total": 0
+          }
+        ],
+        "total": 2
+      },
+      "artifactSha256": "86926380eb15446362af906d086e85d0e57e87297427cc06212243fb9267336d",
+      "proofSha256": "deda6cc14cfc62f856dc1436817708e1e229056e52497e9a4e2bead6a6629809",
+      "inputSha256": "90bf1ce8f8da0cdbf5ff8637f5a115e28c13ca49ed73405e2ec6d6dbe4227012",
+      "capabilityHash": "cfff8e0c431a4d6d3e6655590072922e180ae5ed45284a336cae28245ac9ee43",
+      "bundleCommitment": "0x9058c9cb1f160d0d3ffb7de59b6e7be266597916c1e307638651fcc8fb6aa863",
+      "resultHash": "0x616b97d9e096a3ba098914879ac9edb7c1504dac427bf1c6e588658422d76053",
+      "candidateBinding": {
+        "candidateFileSha256": "d54a8521b20a7bc8abbb0ce74a7eb22e8018b24c79d61d2969ced9a3ecd2481e",
+        "frozenSourceManifestSha256": "7c25e93b04ed72764824241db825e38b185672625746253bc61abb0318850352",
+        "sourceCatalogSha256": "71fed4b4befecc4f5d142b4b9bcfb7123aa737991b84d5f243f22aeeb87ee592",
+        "capabilityHash": "cfff8e0c431a4d6d3e6655590072922e180ae5ed45284a336cae28245ac9ee43",
+        "declaredModules": [
+          {
+            "name": "protocol.mjs",
+            "sha256": "72ee27c947c9ac052f4647ded2414de3c42cc65214b0c02a74327602667a865c"
+          },
+          {
+            "name": "representation.mjs",
+            "sha256": "067fa125cf5e19e3a38d16d86364a9d46f5cf71af279a4cefcf4bbcb94ae5c01"
+          },
+          {
+            "name": "kernel-weighted.mjs",
+            "sha256": "97dd87f775e04b994cc216b7ea1b26c23dbf333863d0c81dfc73e7c398aebc6f"
+          },
+          {
+            "name": "kernel-boolean.mjs",
+            "sha256": "43d6a9f6d18619fd0ade94f2e35a04944e7220d8526f9626aa8ba965dcfc899d"
+          },
+          {
+            "name": "normalizer.mjs",
+            "sha256": "2db9bf5e5018c4b44ba2eccb22eca262487e7a22637b919428499750749ae19b"
+          }
+        ],
+        "scope": "Captured identity and declared-module binding; execution semantics established by fresh independent output check, not this hash alone"
+      },
+      "lineageBeforeReview": {
+        "currentProof": null,
+        "authority": [],
+        "riskApproved": false,
+        "parentSeedId": "1",
+        "onChainParentVerified": true,
+        "onChainByteCommitmentsVerified": true
+      },
+      "transactions": 16,
+      "gasUsed": "2520181",
+      "accountingRaw18": {
+        "token": "AGIALPHA",
+        "decimals": 18,
+        "mode": "mock local tokens",
+        "funded": "158000000000000000000",
+        "acceptedPrice": "80000000000000000000",
+        "workerNet": "75240000000000000000",
+        "validatorsNet": "3960000000000000000",
+        "burned": "800000000000000000",
+        "refunded": "78000000000000000000",
+        "remainingReserve": "0"
+      },
+      "accountingTokens": {
+        "funded": "158.0",
+        "acceptedPrice": "80.0",
+        "workerNet": "75.24",
+        "validatorsNet": "3.96",
+        "burned": "0.8",
+        "refunded": "78.0",
+        "remainingReserve": "0.0"
+      },
+      "steps": [
+        {
+          "stage": "Commit mission and evaluator bytes",
+          "transactionHash": "0x5f6cf24e050d93629d351fecc54773ee5372292ec7f1c824d50b63ba695e971f",
+          "block": 88,
+          "events": [
+            "NovaSeed.Transfer",
+            "NovaSeed.MetadataUpdate",
+            "NovaSeed.SeedSealed"
+          ]
+        },
+        {
+          "stage": "Open local risk review",
+          "transactionHash": "0xb77389b16eed3b12005a8c8a2ba35c812ead48bbc9b2c3a4754981e57427bad0",
+          "block": 89,
+          "events": [
+            "AscensionRiskOracle.ReviewOpened"
+          ]
+        },
+        {
+          "stage": "Local staked risk attestation",
+          "transactionHash": "0xe9b26b5062adef683179a72da52e2ac2efb4b01e1dba9010621fbc1e638372e0",
+          "block": 90,
+          "events": [
+            "AscensionRiskOracle.RiskAttested"
+          ]
+        },
+        {
+          "stage": "Local staked risk attestation",
+          "transactionHash": "0x6c84c078d3c9bb43f651b8473922e31ca42e1eee0d64d83ff1e5e75a7cd1799c",
+          "block": 91,
+          "events": [
+            "AscensionRiskOracle.RiskAttested"
+          ]
+        },
+        {
+          "stage": "Open plan-restricted funding",
+          "transactionHash": "0x4d001bf34583e44f23459c7fa2a38adf6d7820c91b857c20043659d0e1f3d2ad",
+          "block": 92,
+          "events": [
+            "AscensionMark.MarketOpened"
+          ]
+        },
+        {
+          "stage": "Fund with local fixture tokens",
+          "transactionHash": "0x8886deabf18030c38d32dbe0c2ab9fa9cd7815aceb645067d0b200428294ab52",
+          "block": 93,
+          "events": [
+            "AGIALPHA_fixture.Transfer",
+            "AscensionMark.Traded"
+          ]
+        },
+        {
+          "stage": "Activate local plan treasury",
+          "transactionHash": "0x72ed89205721e139fc05bb02c34028ba1808f91fb9fd441073cfc587b1ae56ad",
+          "block": 94,
+          "events": [
+            "AscensionMark.Bloomed"
+          ]
+        },
+        {
+          "stage": "Route committed bounded job",
+          "transactionHash": "0x146af8614cca3fcb51f51e157ffa17dfb0cd614268c9f226d3b38b336a2f0ebd",
+          "block": 95,
+          "events": [
+            "AGIALPHA_fixture.Approval",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.JobPosted",
+            "AGIALPHA_fixture.Approval",
+            "AscensionMark.MissionRouted"
+          ]
+        },
+        {
+          "stage": "Collateral-backed local bid",
+          "transactionHash": "0x5d5414d09b09800d3d6b142e45800a24e919f2b8437bfac1cdf37fa57c5292fa",
+          "block": 96,
+          "events": [
+            "AscensionJobMarket.BidPlaced"
+          ]
+        },
+        {
+          "stage": "Assign the bounded job",
+          "transactionHash": "0x635a9d3d47be29bb15e39fc9a1db82369e037073d8bcaf570ad4cadbbf5504c9",
+          "block": 98,
+          "events": [
+            "AscensionJobMarket.Assigned"
+          ]
+        },
+        {
+          "stage": "Deliver exact checked artifact",
+          "transactionHash": "0xb78e0187279eafce9503d324fd6a8c460685843034546d848986debe2a5c873c",
+          "block": 99,
+          "events": [
+            "AscensionJobMarket.Delivered"
+          ]
+        },
+        {
+          "stage": "Local exact-artifact validator vote",
+          "transactionHash": "0xd244bca535e393bfe0893a6a05b3f64337dd9c0931507df9449d676acba463b7",
+          "block": 100,
+          "events": [
+            "AscensionJobMarket.Validated"
+          ]
+        },
+        {
+          "stage": "Local exact-artifact validator vote",
+          "transactionHash": "0x3ab7a51b2c2efbf1ae7dbed04f8ca9c819d59b2370d6d073185e25099255b0bb",
+          "block": 101,
+          "events": [
+            "AscensionJobMarket.Validated",
+            "AGIALPHA_fixture.Transfer",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.Payout",
+            "AGIALPHA_fixture.Transfer",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.Payout",
+            "AGIALPHA_fixture.Transfer",
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.Payout",
+            "AscensionJobMarket.Closed"
+          ]
+        },
+        {
+          "stage": "Collect unused job escrow",
+          "transactionHash": "0x97f57dfc9295ceb5010f3e150436e40828b81ff9c7e406def4de86fc11686dc4",
+          "block": 102,
+          "events": [
+            "AGIALPHA_fixture.Transfer",
+            "AscensionJobMarket.RefundClaimed",
+            "AscensionMark.MissionCollected"
+          ]
+        },
+        {
+          "stage": "Close completed campaign",
+          "transactionHash": "0x635cfa193c6f5d29d9a27c6957d26f5d3a517d234a63eccfb15c9eba091710b8",
+          "block": 103,
+          "events": [
+            "AscensionMark.CampaignClosed"
+          ]
+        },
+        {
+          "stage": "Return unused local capital",
+          "transactionHash": "0x87fb1663029d1ad18b35e6b3850913ac40529a89e6e45cd739ea9d778711bb3b",
+          "block": 104,
+          "events": [
+            "AGIALPHA_fixture.Transfer",
+            "AscensionMark.CapitalReturned"
+          ]
+        }
+      ],
+      "receiptPath": "evidence/contracts/writer4-successor-lifecycle.json",
+      "receiptSha256": "bfbb80394a9eaad71fc23b15eb7f3abb439a17e28fd000481f230ab049e21e69"
+    }
+  ],
+  "checks": {
+    "negativeGatePassed": 17,
+    "negativeGateTotal": 17,
+    "sameChainParentRelation": true,
+    "bothBeginWithoutRiskApproval": true,
+    "allReceiptStatusesSuccessful": true
+  },
+  "limitations": [
+    "All tokens, ENS and signers are local fixtures. No live payment, mainnet signing, realized revenue or profit.",
+    "The finite checker is independently implemented and owned by a separate lane under the same controller; no external institutional review or hostile-process isolation claim.",
+    "EVM settlement verifies contract roles, commitments and votes. It does not prove the graph semantics itself. The adapter freshly reruns the pinned checker before local execution.",
+    "The test-governor admissions and operator local-only scope are separate from artifact evidence; no production authority is granted.",
+    "Gas units are measured local EVM work, not real transaction cost or a cash-value estimate.",
+    "Inherited module qualification is historical evidence; both missions get fresh input/output proof."
+  ]
+}
