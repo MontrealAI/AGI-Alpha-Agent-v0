@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_SITE = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
 RELEASE_SITE = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/"
 RESOURCE_LABELS = {
+    "reading": {"en": "Read the edition and resources", "fr": "Lire l’édition et ses ressources"},
     "experience": {"en": "Explore the interactive foundry", "fr": "Explorer la fonderie interactive"},
     "companion": {"en": "Download the research companion", "fr": "Télécharger le compagnon de recherche"},
     "source_evidence": {"en": "View source and evidence", "fr": "Consulter les sources et les preuves"},
@@ -96,13 +97,14 @@ def resource_records(value: Any) -> dict[str, Any]:
         if not isinstance(item, dict):
             raise ValueError("Invalid research resource record")
         expected = {
+            "reading": {"path", "sha256"},
             "experience": {"path", "sha256"},
             "companion": {"url", "sha256", "bytes"},
             "source_evidence": {"url"},
         }[role]
         if set(item) != expected:
             raise ValueError("Unexpected research resource fields")
-        if role == "experience":
+        if role in {"reading", "experience"}:
             if not isinstance(item["path"], str) or not re.fullmatch(
                 r"docs/reports/[a-z][a-z0-9-]{0,63}/[A-Za-z0-9][A-Za-z0-9_-]{0,119}\.html", item["path"]
             ):
@@ -132,7 +134,7 @@ def resource_records(value: Any) -> dict[str, Any]:
 def resource_href(role: str, record: dict[str, Any], *, readme: bool = False) -> str:
     """Return a validated navigation target; local experiences are never paper assets."""
     item = resource_records({role: record})[role]
-    if role == "experience":
+    if role in {"reading", "experience"}:
         return (PUBLIC_SITE if readme else "") + str(item["path"]).removeprefix("docs/")
     return str(item["url"])
 
@@ -162,8 +164,10 @@ def parse_catalog(raw: bytes) -> dict[str, Any]:
             raise ValueError("Unexpected paper fields")
         if "resources" in row:
             resources = resource_records(row["resources"])
-            if "experience" in resources:
-                item = resources["experience"]
+            for role in ("reading", "experience"):
+                if role not in resources:
+                    continue
+                item = resources[role]
                 key = item["path"].casefold()
                 identity = (item["path"], item["sha256"])
                 if key in experiences and experiences[key] != identity:
@@ -242,11 +246,12 @@ def pdf_hashes(catalog: dict[str, Any]) -> dict[str, str]:
 
 
 def experience_hashes(catalog: dict[str, Any]) -> dict[str, str]:
-    """Identify declared site code separately from passive paper originals."""
+    """Identify declared reading/experience pages separately from paper originals."""
     return {
-        row["resources"]["experience"]["path"]: row["resources"]["experience"]["sha256"]
+        row["resources"][role]["path"]: row["resources"][role]["sha256"]
         for row in catalog["papers"]
-        if "experience" in row.get("resources", {})
+        for role in ("reading", "experience")
+        if role in row.get("resources", {})
     }
 
 

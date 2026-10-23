@@ -1,0 +1,57 @@
+
+> contract-tests@1.0.0 test
+> hardhat test test/ascension/lifecycle.test.js test/ascension/marketplace.test.js test/ascension/settlement.test.js test/ascension/successor-adapter.test.js
+
+
+
+  Ascension: Nova-Seed → MARK → Sovereign → jobs
+    ✔ rejects cross-wired protocol modules before they can accept capital (83ms)
+    ✔ executes the complete immutable plan, burns every payout and refunds unused capital exactly (61ms)
+    ✔ verifies nontrivial Merkle proofs and rejects altered goals, metrics, budgets and replay (80ms)
+    ✔ rejects an unbudgeted plan without moving tokens
+    ✔ requires an evidence-bound successor and preserves its parent and independent review gate
+    ✔ allows only the bound MARK to post on behalf of a business
+    ✔ closes an abandoned enterprise after its horizon and returns every unspent unit
+    ✔ suspends new treasury spending when the NFT is transferred after bloom
+
+  Ascension identity and risk oracle
+    ✔ uses exactly the three requested ENS namespaces (215ms)
+    ✔ rejects wrong roots, resolver-only assertions and noncanonical or compound labels
+    ✔ rechecks live ownership and wrapped-name expiry
+    ✔ fails closed on absent, expired and revoked admission; only governance can attest admission
+    ✔ requires two staked validators, rejects duplicate votes and locks risk stake until expiry
+    ✔ rejects high risk or denied-policy quorum, empty evidence, and seed-owner self-review
+    ✔ revokes green status when any approving validator loses admission or the NFT changes owners
+
+  Ascension auctions, delivery and failure recovery
+    ✔ reserves opted-in reviewer capacity and releases it at terminal state
+    ✔ selects the minimum published price/time/reputation score, independent of bid order
+    ✔ rejects duplicate bids, empty or impossible missions, unbonded workers and conflicting committees (44ms)
+    ✔ skips expired ENS bidders and releases their collateral
+    ✔ returns unawarded escrow without slashing when no bidder fits the remaining horizon
+    ✔ binds reviews to the exact artifact and selected committee; a single vote cannot release payment
+    ✔ rechecks earlier approvals before payout when a validator is revoked
+    ✔ slashes failed work once, burns 1% of compensation, and returns escrow plus net collateral
+    ✔ slashes missed delivery but never slashes submitted work merely because reviewers disappear
+    ✔ uses integer base units and floors 1% separately for every actual payout
+
+  MARK curve, admission and capital recovery
+    ✔ quotes exact independent per-lot sums and reverses each batch (79ms)
+    ✔ enforces slippage, trading admission and funding target without partial mutation
+    ✔ keeps exits available after policy revocation while blocking new exposure
+    ✔ transfers funding lots only between admitted accounts and conserves all closed reserve including dust
+    ✔ stops redemption at bloom and prevents a transferred NFT from taking committed capital
+
+  Ascension settlement conservation
+    ✔ requires the recipient and sender balances to change by the exact payment
+    ✔ requires burns to destroy the paying contract's own balance and total supply
+    ✔ never slashes on a rejection whose earlier validator has lost eligibility (200ms)
+
+  SUCCESSOR: exact Ascension adapter and honest local settlement
+    ✔ refuses fixture/reset authority for URL-backed or forked providers regardless of chain ID
+    ✔ accepts and pays a correct FAIL report at nonzero plan index without admitting the candidate (2885ms)
+    ✔ returns bounty and unlocks a delivered report when review quorum is missing (1661ms)
+
+
+  36 passing (12s)
+

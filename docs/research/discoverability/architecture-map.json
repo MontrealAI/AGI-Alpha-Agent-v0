@@ -1,0 +1,483 @@
+{
+  "schema": "successor-discoverability.architecture-map.v1",
+  "candidatePr": 4872,
+  "sourceObservation": "2026-10-22",
+  "candidateSource": "fbae88cb82b97d309eefea5c6937a3229cb0db18",
+  "baseline": "61532fb82621a065e668fd11e57289dcfb65c67b",
+  "completeArchitectureImplemented": false,
+  "independentOrganizationalReview": false,
+  "evidenceRule": "Source presence and named tests do not establish tests run or candidate integration. Each future execution must name source, runtime, inputs, outputs and review owner.",
+  "components": [
+    {
+      "id": "A",
+      "name": "Insight",
+      "owner": "Existing Insight/planning owner in #4850; discoverability candidate owner only for new inverse-model construction",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/demos/alpha_agi_insight_v0/discovery.py",
+          "gitBlob": "79d0f5d0c591f8bc5e05225d7c70265d1b0701b0",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/demos/alpha_agi_insight_v0/discovery.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/ascension.py",
+          "gitBlob": "804a44f65f55167e5916471fbd27f69d9c842ef5",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/ascension.py"
+        }
+      ],
+      "interfaces": [
+        "evaluate/verify/artifacts",
+        "compile_plan"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/test_insight_discovery.py",
+          "gitBlob": "43575a04f677398194a61d5d4f87f3aa4fcc0233",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/test_insight_discovery.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/native-handoff.test.js",
+          "gitBlob": "bcd4270cde8b45ea1322728641fd49b97307bcc7",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/native-handoff.test.js"
+        }
+      ],
+      "evidence": "Bounded supplied-excerpt scores and exact review-budget selection; source inspected, not newly rerun here.",
+      "candidateRole": "Declare required decisions, competing finite models, authorized channels and falsification; produce actual newly constructed measurement program.",
+      "gaps": [
+        "Supplied sources not authenticated by existing screener",
+        "New inverse problem has no end-to-end verified Insight-to-FusionPlan commissioning yet",
+        "No forecast probability, customer demand or economic value implied"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Nova-Seeds",
+      "owner": "Existing Nova Studio / Ascension owner",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "contracts/ascension/NovaSeed.sol",
+          "gitBlob": "b4c555e2109b569d67a0a6e71f0ef1dbeeccabbd",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/contracts/ascension/NovaSeed.sol"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/ascension.py",
+          "gitBlob": "804a44f65f55167e5916471fbd27f69d9c842ef5",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/ascension.py"
+        }
+      ],
+      "interfaces": [
+        "seal(capsuleHash, planRoot, jobs, metadataURI, parent, evidenceHash)",
+        "plan",
+        "creatorOf"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/native-handoff.test.js",
+          "gitBlob": "bcd4270cde8b45ea1322728641fd49b97307bcc7",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/native-handoff.test.js"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/lifecycle.test.js",
+          "gitBlob": "494f496221238b84d6f6696a27fb9a874a21e8cd",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/lifecycle.test.js"
+        }
+      ],
+      "evidence": "Current and deployed source blobs match; local test implementations exist; no new candidate EVM run.",
+      "candidateRole": "Bind exact plan, capability/parent lineage and evidence after legitimate integration.",
+      "gaps": [
+        "Candidate capsule/plan/evidence not sealed in actual EVM in this audit",
+        "Token transfer does not transfer decryption key, IP rights or existing campaign business authority",
+        "Actual encryption/recovery exists in Studio; contract itself only commits bytes"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "MARK and risk oracle",
+      "owner": "Existing Ascension adapter owner / PR4865",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "contracts/ascension/AscensionRiskOracle.sol",
+          "gitBlob": "f7013301e749a7efc67f36639a693c98cacbf254",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/contracts/ascension/AscensionRiskOracle.sol"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "contracts/ascension/AscensionMark.sol",
+          "gitBlob": "86d0f526f2c9d7ff3d62f250a0c54b84e59a2b9f",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/contracts/ascension/AscensionMark.sol"
+        }
+      ],
+      "interfaces": [
+        "openReview/attest/green",
+        "open/buy/sell/transferLots/bloom/route/collect/close/reclaim"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/lifecycle.test.js",
+          "gitBlob": "494f496221238b84d6f6696a27fb9a874a21e8cd",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/lifecycle.test.js"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/settlement.test.js",
+          "gitBlob": "b8805d0175ab79b086ef769eb30d68752528dbcb",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/settlement.test.js"
+        }
+      ],
+      "evidence": "Actual protocol is source-inspected; historical deployment manifest retained.",
+      "candidateRole": "Selected backend would fund/risk-review and route exact committed work with local simulated funds for evidence.",
+      "gaps": [
+        "No fresh candidate funding/route/expiry/recovery execution",
+        "No current authorized mainnet activation",
+        "No invented DEX/equity/compliance/reinvestment guarantees"
+      ]
+    },
+    {
+      "id": "D",
+      "name": "Sovereign / Business",
+      "owner": "Existing native runtime/harness owner PR4863, with explicit hold preserved",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/workbench.py",
+          "gitBlob": "d90d6321cb9b75b3cfc466945874b72c2c8ebdfa",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/workbench.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/state.py",
+          "gitBlob": "c008688e5e0ab8301d8a6062992660129497867e",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/state.py"
+        }
+      ],
+      "interfaces": [
+        "execute/freeze/review/control/export",
+        "SuccessorStore institution/release/grant lifecycle",
+        "Held enterprise facade; not copied here"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_workbench.py",
+          "gitBlob": "0f7a4b5fe662ada50a02403a9b2b857fe54f2ff0",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_workbench.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_state.py",
+          "gitBlob": "ed28e0a4bf7fea24b229b127d2cce6532d8864b1",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_state.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_recovery.py",
+          "gitBlob": "715c505cf12f5825e0b440976a7665bfd15e3b23",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_recovery.py"
+        }
+      ],
+      "evidence": "Released fixed worker uses existing signed Journal, bounded attempts, leases, stop/recovery. Candidate registration not demonstrated.",
+      "candidateRole": "Attach a new bounded work family to existing enterprise inventory and history.",
+      "gaps": [
+        "Native registration must use legitimate owner route",
+        "No new service, queue or authority implementation in candidate",
+        "Legal sovereignty not established by name"
+      ]
+    },
+    {
+      "id": "E",
+      "name": "Large Scale Marketplace",
+      "owner": "Alpha Ascension owner; separate Jobs and Manager owners retain their backends",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "contracts/ascension/AscensionJobMarket.sol",
+          "gitBlob": "a50a5cc584ccb6c096c6df6aa862aa48d27d9ffe",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/contracts/ascension/AscensionJobMarket.sol"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/ascension.py",
+          "gitBlob": "f962d8a25f63b127c21f360301360975ef73c48e",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/ascension.py"
+        }
+      ],
+      "interfaces": [
+        "post/bid/award/submit/validate/timeout/claimRefund",
+        "seal_terms/bind_assignment/bind_delivery/import_settlement"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/successor-adapter.test.js",
+          "gitBlob": "7ca01e45d6e290ffeabb39a19c1374d5efc44694",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/successor-adapter.test.js"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/marketplace.test.js",
+          "gitBlob": "20c964785a21188e4cc96618dcffa7dbc0687705",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/marketplace.test.js"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_ascension.py",
+          "gitBlob": "095ed591b45803cac737e3aadffdb2766d80a097",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_ascension.py"
+        }
+      ],
+      "evidence": "Actual Solidity/adapter integration test exists. It is not rerun by this dossier.",
+      "candidateRole": "Commission exact probe program or evaluation without conflating candidate approval and work acceptance.",
+      "gaps": [
+        "Candidate result not bound to actual selected market here",
+        "Alpha auction differs from Jobs first-eligible apply",
+        "Manager USD price must be a separate explicit USDC quote"
+      ]
+    },
+    {
+      "id": "F",
+      "name": "Agents and Jobs",
+      "owner": "Existing fixed-worker/runtime and Fleet owners; held Fleet61 unchanged",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/workbench.py",
+          "gitBlob": "d90d6321cb9b75b3cfc466945874b72c2c8ebdfa",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/workbench.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/jobs.py",
+          "gitBlob": "30a7ebbab4fdffc6e6651b982c86384932c25dea",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/jobs.py"
+        }
+      ],
+      "interfaces": [
+        "Shipped fixed Node worker; bounded inputs/output/attempts",
+        "Existing typed Jobs dispatch and externally authorized Fleet envelope"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_workbench.py",
+          "gitBlob": "0f7a4b5fe662ada50a02403a9b2b857fe54f2ff0",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_workbench.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_jobs.py",
+          "gitBlob": "902dc0bfe33a40ab1d18866946c3560daa49a439",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_jobs.py"
+        }
+      ],
+      "evidence": "Source confirms no imported arbitrary host code; Fleet's internal review is explicitly not externally independent.",
+      "candidateRole": "Execute generated bounded probe weights against new observations and report undecidable/out-of-scope/failure outcomes.",
+      "gaps": [
+        "New native worker registry path not accepted",
+        "Independent external Fleet agents/reviewers unprovisioned",
+        "Human engineering and rescues remain attributable overhead"
+      ]
+    },
+    {
+      "id": "G",
+      "name": "Architect",
+      "owner": "Existing successor evaluation/state owner; candidate owner for bounded compiler improvements only",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/evaluation.py",
+          "gitBlob": "82c4ec77191a763fd41100c264077290fc58d721",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/evaluation.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/mission.py",
+          "gitBlob": "fe4a40415e8c795d6f4a822db47a0d1925ebcaa2",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/mission.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "alpha_factory_v1/core/runtime/successor/state.py",
+          "gitBlob": "c008688e5e0ab8301d8a6062992660129497867e",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/alpha_factory_v1/core/runtime/successor/state.py"
+        }
+      ],
+      "interfaces": [
+        "Frozen acceptance/proof and separately reviewed promotion",
+        "Candidate release lineage, memory and empty-authority succession"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_mission.py",
+          "gitBlob": "9c9d177236301c0c1662936b8e6c2430986d068a",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_mission.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_state.py",
+          "gitBlob": "ed28e0a4bf7fea24b229b127d2cce6532d8864b1",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_state.py"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/runtime/test_successor_recovery.py",
+          "gitBlob": "715c505cf12f5825e0b440976a7665bfd15e3b23",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/runtime/test_successor_recovery.py"
+        }
+      ],
+      "evidence": "Existing source separates candidate result, work acceptance, admission and authority.",
+      "candidateRole": "Reuse structural templates, recompute decision/response requirements, reject invalid inheritance and measure full reconstruction overhead.",
+      "gaps": [
+        "General autonomous RSI not claimed",
+        "Unchanged held-out acceptance, rejected regression/accepted improvement and rollback need actual source-bound run records",
+        "No accepted scientific/commercial capability inferred from compile status"
+      ]
+    },
+    {
+      "id": "H",
+      "name": "Validator Council / CLUB",
+      "owner": "Existing AscensionAccess/RiskOracle/JobMarket owners and real operational validator principals",
+      "sources": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "contracts/ascension/AscensionAccess.sol",
+          "gitBlob": "e3555663da7ac4c4e0371c787b8cbb4519800961",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/contracts/ascension/AscensionAccess.sol"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "contracts/ascension/AscensionRiskOracle.sol",
+          "gitBlob": "f7013301e749a7efc67f36639a693c98cacbf254",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/contracts/ascension/AscensionRiskOracle.sol"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "contracts/ascension/AscensionJobMarket.sol",
+          "gitBlob": "a50a5cc584ccb6c096c6df6aa862aa48d27d9ffe",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/contracts/ascension/AscensionJobMarket.sol"
+        }
+      ],
+      "interfaces": [
+        "register/admission/eligible",
+        "isValidator/availability/lock/release",
+        "Exact selected committee2-of3 votes"
+      ],
+      "tests": [
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/marketplace.test.js",
+          "gitBlob": "20c964785a21188e4cc96618dcffa7dbc0687705",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/marketplace.test.js"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/lifecycle.test.js",
+          "gitBlob": "494f496221238b84d6f6696a27fb9a874a21e8cd",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/lifecycle.test.js"
+        },
+        {
+          "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+          "revision": "61532fb82621a065e668fd11e57289dcfb65c67b",
+          "path": "tests/contracts/test/ascension/successor-adapter.test.js",
+          "gitBlob": "7ca01e45d6e290ffeabb39a19c1374d5efc44694",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/61532fb82621a065e668fd11e57289dcfb65c67b/tests/contracts/test/ascension/successor-adapter.test.js"
+        }
+      ],
+      "evidence": "Strict fixed Alpha ENS roots plus expiring admission and stake; conflict/capacity rules implemented.",
+      "candidateRole": "Preserve separately attributed producer/acceptance decisions; no self-issued review.",
+      "gaps": [
+        "Different local addresses do not prove beneficial-control independence",
+        "Token ownership is not validator eligibility",
+        "No fresh commissioned independent council review for candidate"
+      ]
+    }
+  ],
+  "outStages": [
+    {
+      "stage": "Out-Learn",
+      "causalRole": "Choose and acquire informative bounded measurements; preserve raw synthetic acquisition and error assumptions.",
+      "ablation": "Retain supplied raw observation interface only; show incompatible decisions sharing observations."
+    },
+    {
+      "stage": "Out-Think",
+      "causalRole": "Represent worlds by the beneficiary decision quotient while preserving relevant decisions.",
+      "ablation": "Require full latent-world identification under the same grammar and compare cost; do not weaken required decision."
+    },
+    {
+      "stage": "Out-Design",
+      "causalRole": "Synthesize bounded integer contrast programs that cancel declared nuisance.",
+      "ablation": "Disable constructed contrasts while keeping the same primitive channels and budgets."
+    },
+    {
+      "stage": "Out-Strategise",
+      "causalRole": "Check disjoint decision intervals against the full admitted nuisance/noise class and select a feasible minimum-cost set.",
+      "ablation": "Nominal-fit-only acceptance tested against declared nuisance/noise counterexamples."
+    },
+    {
+      "stage": "Out-Execute",
+      "causalRole": "Reuse only still-valid structural templates; recheck scope, target responses, separation and budget.",
+      "ablation": "Fresh non-inheriting reconstruction with complete construction and acquisition cost included."
+    },
+    {
+      "stage": "Out-Evolve",
+      "causalRole": "Apply inherited reusable construction to a changed held-out successor requirement; reject or rebuild invalid scope.",
+      "ablation": "Remove inherited templates; retain unchanged acceptance and compare all overhead."
+    }
+  ],
+  "allowedNewNamespace": "docs/research/discoverability-compiler",
+  "sharedComponentsChangedByThisDossier": [],
+  "openRequirements": [
+    "Actual candidate native integration",
+    "Actual-source disposable local EVM journey",
+    "Independent Fleet execution/acceptance",
+    "Fresh chain observations",
+    "Commercial validation",
+    "Qualified release and public/live bytes after existing source lease"
+  ]
+}
