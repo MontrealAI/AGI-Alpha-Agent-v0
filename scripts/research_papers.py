@@ -22,9 +22,19 @@ from typing import Any
 
 CATALOG = "docs/research-papers.json"
 SCHEMA = "agialpha.research-papers.v1"
+RESOURCE_SCHEMA = "agialpha.research-papers.v2"
 MAX_CATALOG = 512_000
 MAX_PAPER = 25_000_000
+MAX_EXPERIENCE = 25_000_000
+MAX_COMPANION = (2**31) - 1
 ROOT = Path(__file__).resolve().parents[1]
+PUBLIC_SITE = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
+RELEASE_SITE = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/"
+RESOURCE_LABELS = {
+    "experience": {"en": "Explore the interactive foundry", "fr": "Explorer la fonderie interactive"},
+    "companion": {"en": "Download the research companion", "fr": "Télécharger le compagnon de recherche"},
+    "source_evidence": {"en": "View source and evidence", "fr": "Consulter les sources et les preuves"},
+}
 README_START = "<!-- featured-research-papers -->"
 README_END = "<!-- /featured-research-papers -->"
 HTML_START = "<!-- research-papers:start -->"
@@ -78,21 +88,93 @@ def file_record(value: Any, suffix: str) -> dict[str, str]:
     return value
 
 
+def resource_records(value: Any) -> dict[str, Any]:
+    """Validate closed navigation metadata, without fetching or executing targets."""
+    if not isinstance(value, dict) or not value or set(value) - RESOURCE_LABELS.keys():
+        raise ValueError("Unexpected research resource roles")
+    for role, item in value.items():
+        if not isinstance(item, dict):
+            raise ValueError("Invalid research resource record")
+        expected = {
+            "experience": {"path", "sha256"},
+            "companion": {"url", "sha256", "bytes"},
+            "source_evidence": {"url"},
+        }[role]
+        if set(item) != expected:
+            raise ValueError("Unexpected research resource fields")
+        if role == "experience":
+            if not isinstance(item["path"], str) or not re.fullmatch(
+                r"docs/reports/[a-z][a-z0-9-]{0,63}/[A-Za-z0-9][A-Za-z0-9_-]{0,119}\.html", item["path"]
+            ):
+                raise ValueError("Research experiences require a simple versioned local HTML path")
+        else:
+            tag = r"[A-Za-z0-9][A-Za-z0-9._-]{0,119}"
+            route = "tag/" + tag
+            if role == "companion":
+                route = "download/" + tag + r"/[A-Za-z0-9][A-Za-z0-9._-]{0,179}\.zip"
+            if not isinstance(item["url"], str) or not re.fullmatch(re.escape(RELEASE_SITE) + route, item["url"]):
+                raise ValueError("Research resources require a canonical release URL in this repository")
+        if role != "source_evidence" and (
+            not isinstance(item["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", item["sha256"])
+        ):
+            raise ValueError("Invalid research resource digest")
+        if role == "companion" and (
+            type(item["bytes"]) is not int or not 0 < item["bytes"] <= MAX_COMPANION  # noqa: E721
+        ):
+            raise ValueError("Invalid bounded research companion size")
+    if "companion" in value and "source_evidence" in value:
+        companion_tag = value["companion"]["url"].removeprefix(RELEASE_SITE + "download/").split("/")[0]
+        if value["source_evidence"]["url"] != RELEASE_SITE + "tag/" + companion_tag:
+            raise ValueError("Companion and source/evidence must identify the same research release")
+    return value
+
+
+def resource_href(role: str, record: dict[str, Any], *, readme: bool = False) -> str:
+    """Return a validated navigation target; local experiences are never paper assets."""
+    item = resource_records({role: record})[role]
+    if role == "experience":
+        return (PUBLIC_SITE if readme else "") + str(item["path"]).removeprefix("docs/")
+    return str(item["url"])
+
+
 def parse_catalog(raw: bytes) -> dict[str, Any]:
     if len(raw) > MAX_CATALOG:
         raise ValueError("Paper catalog exceeds size limit")
     data = json.loads(raw, object_pairs_hook=unique_object)
-    if not isinstance(data, dict) or set(data) != {"schema", "papers"} or data["schema"] != SCHEMA:
+    if (
+        not isinstance(data, dict)
+        or set(data) != {"schema", "papers"}
+        or not isinstance(data["schema"], str)
+        or data["schema"] not in {SCHEMA, RESOURCE_SCHEMA}
+    ):
         raise ValueError("Unsupported paper catalog")
     rows = data["papers"]
     if not isinstance(rows, list) or not 1 <= len(rows) <= 100:
         raise ValueError("Paper catalog must contain 1–100 records")
     identifiers: set[str] = set()
     paths: set[str] = set()
+    experiences: dict[str, tuple[str, str]] = {}
+    companions: dict[str, tuple[str, int]] = {}
     featured = 0
     for row in rows:
-        if not isinstance(row, dict) or set(row) != RECORD_KEYS:
+        allowed = RECORD_KEYS | ({"resources"} if data["schema"] == RESOURCE_SCHEMA else set())
+        if not isinstance(row, dict) or not RECORD_KEYS <= set(row) or set(row) - allowed:
             raise ValueError("Unexpected paper fields")
+        if "resources" in row:
+            resources = resource_records(row["resources"])
+            if "experience" in resources:
+                item = resources["experience"]
+                key = item["path"].casefold()
+                identity = (item["path"], item["sha256"])
+                if key in experiences and experiences[key] != identity:
+                    raise ValueError("Ambiguous research experience identity")
+                experiences[key] = identity
+            if "companion" in resources:
+                item = resources["companion"]
+                companion_identity = (item["sha256"], item["bytes"])
+                if item["url"] in companions and companions[item["url"]] != companion_identity:
+                    raise ValueError("Ambiguous research companion identity")
+                companions[item["url"]] = companion_identity
         slug = row["id"]
         if not isinstance(slug, str) or not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", slug) or slug in identifiers:
             raise ValueError("Invalid or duplicate paper ID")
@@ -159,6 +241,15 @@ def pdf_hashes(catalog: dict[str, Any]) -> dict[str, str]:
     return {row["pdf"]["path"].removeprefix("docs/"): row["pdf"]["sha256"] for row in catalog["papers"]}
 
 
+def experience_hashes(catalog: dict[str, Any]) -> dict[str, str]:
+    """Identify declared site code separately from passive paper originals."""
+    return {
+        row["resources"]["experience"]["path"]: row["resources"]["experience"]["sha256"]
+        for row in catalog["papers"]
+        if "experience" in row.get("resources", {})
+    }
+
+
 def preserve_catalog(previous: dict[str, Any], current: dict[str, Any]) -> None:
     """Published IDs and original file identities cannot be removed or retargeted."""
     old = {row["id"]: row for row in previous["papers"]}
@@ -169,6 +260,9 @@ def preserve_catalog(previous: dict[str, Any], current: dict[str, Any]) -> None:
         for key in ("pdf", "tex"):
             if row[key] is not None and new[slug][key] != row[key]:
                 raise ValueError("Historical paper paths and bytes are immutable; add a versioned record")
+        for role, resource in row.get("resources", {}).items():
+            if new[slug].get("resources", {}).get(role) != resource:
+                raise ValueError("Historical research resource identities are immutable; add a versioned record")
     for slug, row in new.items():
         for key in ("pdf", "tex"):
             if row[key] and (slug not in old or old[slug][key] is None):
@@ -385,6 +479,14 @@ def verify_files(root: Path, catalog: dict[str, Any], *, pdf_checks: bool = True
                     verify_pdf(raw, row["pdf_title"])
             else:
                 raw.decode("utf-8")  # Opaque downloadable source, never evaluated or compiled.
+    for name, expected in experience_hashes(catalog).items():
+        path = ordinary_path(root, name)
+        if not 0 < path.stat().st_size <= MAX_EXPERIENCE:
+            raise ValueError("Research experience exceeds the declared local-file bound")
+        raw = path.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != expected:
+            raise ValueError(f"Research experience differs from its catalogued source: {name}")
+        raw.decode("utf-8")  # Hash-check the code as text; this does not qualify or execute it.
 
 
 def translated(tag: str, key: str, text: dict[str, str], attrs: str = "") -> str:
@@ -453,6 +555,17 @@ def render_section(catalog: dict[str, Any]) -> str:
             )
             + '<span aria-hidden="true">↗</span></a>'
         )
+        for role, labels in RESOURCE_LABELS.items():
+            if role not in row.get("resources", {}):
+                continue
+            href = resource_href(role, row["resources"][role])
+            lines.append(
+                f'      <a class="paper-resource-link" data-paper-resource="{role}" href="{escape(href, quote=True)}">'
+                + translated("span", f"{slug}-{role}", labels)
+                + '<span class="sr-only" lang="en">: '
+                + escape(row["title"])
+                + '</span><span aria-hidden="true">↗</span></a>'
+            )
         lines.append("    </article>")
     lines.extend(
         [
@@ -493,6 +606,14 @@ def render_readme(catalog: dict[str, Any]) -> str:
                 f"- **[{markdown_text(row['display_title'])}]({target})** · {markdown_text(row['summary']['en'])}"
             )
             lines.append(f"  {markdown_text(row['author'])} · {row['date']} · English PDF.")
+        resources = row.get("resources", {})
+        if resources:
+            links = [
+                f"[{labels['en']}]({resource_href(role, resources[role], readme=True)})"
+                for role, labels in RESOURCE_LABELS.items()
+                if role in resources
+            ]
+            lines.append("  " + " · ".join(links))
     lines.extend(
         [
             "",
@@ -556,7 +677,11 @@ def add_paper(root: Path, pdf: Path, metadata: Path, tex: Path | None = None) ->
     catalog = load_catalog(root)
     row = json.loads(metadata.read_bytes(), object_pairs_hook=unique_object)
     required = {"id", "title", "author", "date", "topic", "summary"}
-    if not isinstance(row, dict) or not required <= set(row) or set(row) - (RECORD_KEYS - {"pdf", "tex"}):
+    if (
+        not isinstance(row, dict)
+        or not required <= set(row)
+        or set(row) - ((RECORD_KEYS - {"pdf", "tex"}) | {"resources"})
+    ):
         raise ValueError("Metadata requires id/title/author/date/topic/summary and only documented fields")
     from pypdf import PdfReader
 
@@ -581,8 +706,17 @@ def add_paper(root: Path, pdf: Path, metadata: Path, tex: Path | None = None) ->
         # Inspect original metadata, never alter or compile the supplied document.
         reader = PdfReader(io.BytesIO(pdf.read_bytes()), strict=True)
         row["pdf_title"] = str(reader.metadata.title or "") if reader.metadata else ""
-    candidate = parse_catalog(json.dumps({"schema": SCHEMA, "papers": [*catalog["papers"], row]}).encode())
+    schema = RESOURCE_SCHEMA if "resources" in row else catalog["schema"]
+    candidate = parse_catalog(json.dumps({"schema": schema, "papers": [*catalog["papers"], row]}).encode())
     preserve_catalog(catalog, candidate)
+    for name, expected in experience_hashes(candidate).items():
+        target = ordinary_path(root, name)
+        if not 0 < target.stat().st_size <= MAX_EXPERIENCE:
+            raise ValueError("Research experience exceeds the declared local-file bound")
+        raw = target.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != expected:
+            raise ValueError("Import requires the exact existing catalogued research experience")
+        raw.decode("utf-8")  # Reject invalid text before mutating the paper/catalog destinations.
     verify_pdf(pdf.read_bytes(), row["pdf_title"])
     if tex:
         tex.read_bytes().decode("utf-8")

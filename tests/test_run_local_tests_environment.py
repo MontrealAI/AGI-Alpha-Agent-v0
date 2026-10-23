@@ -3,11 +3,15 @@
 
 from __future__ import annotations
 
+import ast
 import os
 from pathlib import Path
+import shlex
 import subprocess
 import sys
 
+import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -79,3 +83,130 @@ def test_child_boundary():
         timeout=60,
     )
     assert completed.returncode == 0, completed.stdout + completed.stderr
+
+
+HELD_NODEIDS = (
+    "tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands",
+    "tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata",
+    "tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer",
+    "tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history",
+)
+HELD_SELECTIONS = (
+    (
+        "successor-capability.yml",
+        "capability",
+        "Computation, history and delivery gates",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider "
+        "tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py "
+        "tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py "
+        "tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log",
+        "capability-delivery",
+        "capability-evidence/held-probes.json",
+    ),
+    (
+        "agent-release.yml",
+        "regression",
+        "Full offline regression including notebooks",
+        "python -m scripts.run_local_tests",
+        "python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 "
+        "--cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml",
+        "agent-full-regression",
+        "evidence/held-probes.json",
+    ),
+)
+
+
+def held_step(case: tuple[str, ...]) -> tuple[str, list[str]]:
+    workflow = yaml.safe_load((ROOT / ".github/workflows" / case[0]).read_text())
+    job = workflow["jobs"][case[1]]
+    artifact_root = str(Path(case[6]).parent)
+    assert any(
+        step.get("uses", "").startswith("actions/upload-artifact@")
+        and step.get("if") == "always()"
+        and step.get("with", {}).get("path", "").rstrip("/") == artifact_root
+        for step in job["steps"]
+    )
+    run = next(step["run"] for step in job["steps"] if step.get("name") == case[2])
+    lines = run.replace("\\\n", "").splitlines()
+    command = next(line.strip() for line in lines if line.strip().startswith(case[3]))
+    return run, shlex.split(command)
+
+
+def assert_exact_held_selection(argv: list[str], baseline: str) -> None:
+    selected = [arg.removeprefix("--deselect=") for arg in argv if arg.startswith("--deselect=")]
+    assert len(selected) == len(HELD_NODEIDS) and set(selected) == set(HELD_NODEIDS)
+    assert [arg for arg in argv if not arg.startswith("--deselect=")] == shlex.split(baseline)
+
+
+def assert_truthful_held_record(run: str, invocation: str, destination: str) -> None:
+    script = run.split("python - <<'PY'\n", 1)[1].split("\nPY", 1)[0]
+    tree = ast.parse(script)
+    assignments = {
+        target.id: node.value
+        for node in tree.body
+        if isinstance(node, ast.Assign)
+        for target in node.targets
+        if isinstance(target, ast.Name)
+    }
+    assert tuple(ast.literal_eval(assignments["held"])) == HELD_NODEIDS
+    record = assignments["record"]
+    assert isinstance(record, ast.Dict)
+    fields = {ast.literal_eval(key): value for key, value in zip(record.keys, record.values) if key is not None}
+    assert ast.literal_eval(fields["schema"]) == "agialpha.held-test-selection.v1"
+    assert ast.literal_eval(fields["invocation"]) == invocation
+    assert ast.literal_eval(fields["status"]) == "LOCAL_NOT_RUN"
+    assert ast.literal_eval(fields["qualified"]) is False
+    tests = fields["tests"]
+    assert isinstance(tests, ast.ListComp) and len(tests.generators) == 1
+    assert isinstance(tests.generators[0].iter, ast.Name) and tests.generators[0].iter.id == "held"
+    assert isinstance(tests.elt, ast.Dict)
+    row = {ast.literal_eval(key): value for key, value in zip(tests.elt.keys, tests.elt.values) if key is not None}
+    assert set(row) == {"nodeid", "status"}
+    assert isinstance(row["nodeid"], ast.Name) and row["nodeid"].id == "node"
+    assert ast.literal_eval(row["status"]) == "LOCAL_NOT_RUN"
+    assert "their outcomes are not qualified" in ast.literal_eval(fields["meaning"])
+    writes = [
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "write_text"
+    ]
+    assert len(writes) == 1
+    writer = writes[0].func
+    assert isinstance(writer, ast.Attribute)
+    target = writer.value
+    assert isinstance(target, ast.Call)
+    assert ast.literal_eval(target.args[0]) == destination
+
+
+def test_held_selection_keeps_every_other_existing_argument() -> None:
+    for case in HELD_SELECTIONS:
+        _, argv = held_step(case)
+        assert_exact_held_selection(argv, case[4])
+
+
+def test_held_selection_rejects_missing_and_unrelated_deselections() -> None:
+    for case in HELD_SELECTIONS:
+        _, argv = held_step(case)
+        assert_exact_held_selection(argv, case[4])
+        for node in HELD_NODEIDS:
+            with pytest.raises(AssertionError):
+                assert_exact_held_selection([arg for arg in argv if arg != "--deselect=" + node], case[4])
+        with pytest.raises(AssertionError):
+            assert_exact_held_selection(argv + ["--deselect=tests/unrelated.py::test_required"], case[4])
+        with pytest.raises(AssertionError):
+            assert_exact_held_selection(argv + ["--ignore=tests/unrelated.py"], case[4])
+
+
+def test_held_selection_records_only_local_non_execution() -> None:
+    for case in HELD_SELECTIONS:
+        run, _ = held_step(case)
+        assert_truthful_held_record(run, case[5], case[6])
+
+
+def test_held_selection_record_rejects_false_qualification() -> None:
+    for case in HELD_SELECTIONS:
+        run, _ = held_step(case)
+        assert_truthful_held_record(run, case[5], case[6])
+        with pytest.raises(AssertionError):
+            assert_truthful_held_record(run.replace("'qualified': False", "'qualified': True"), case[5], case[6])

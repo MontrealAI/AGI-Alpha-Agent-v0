@@ -33,6 +33,15 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 
 **Companion papers · reading order**
 
+- **[Autonomous Enterprises — Build the Means of Building](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/autonomous-enterprises.pdf)** · A bounded certifying computation constructs a checked transform–convolution–inverse solver and studies exact capital and capability retention under declared concatenability assumptions\. The finite examples compare shared construction with isolated tasks and show when cash\-only pruning loses useful capability\. Research constructions and exact models, not a new Fourier algorithm, physical deployment or realized commercial growth\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-21 · English PDF.
+- **[Autonomous Enterprises — Activate\. Evolve\. Scale\.](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/autonomous-enterprises-activate-evolve-scale.pdf)** · Three deterministic local offerings study reusable launch kits and transfer of rejection experience while leaving full acceptance checks unchanged\. Retained limits include a conventional ordering that wins one comparison, a rejected second learned update and a four\-worker run slower than two workers\. A bounded local study, not general recursive self\-improvement or evidence of three paying businesses\.
+  Vincent Boucher · MONTREAL\.AI · QUEBEC\.AI · 2026-10-22 · English PDF.
+- **[Autonomous Enterprises — SUCCESSOR Ω Harness](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/autonomous-enterprises-successor-omega.pdf)** · A source\-grounded integration specification and bounded interval\-measurement experiment compare independent setup, ordinary harness reuse and instrument reuse, including verification, failed transfer and recovery\. The manuscript distinguishes deployed inventory, an open Harness candidate, replayed examples and new simulations\. It does not establish autonomous incorporation, observed demand, investment performance or approved mainnet execution\. The Harness implementation remains separately tracked in unresolved PR \#4863; this paper listing does not claim that it has shipped\.
+  Vincent Boucher · MONTREAL\.AI · QUEBEC\.AI · 2026-10-22 · English PDF.
+- **[Autonomous Enterprises — Foundry v2](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/autonomous-enterprises-foundry-v2.pdf)** · A simulated thermal\-fluid foundry constructs fixtures, a calibration station and a qualified research instrument, then a new calorimetry method and a distinct simulated successor\. A retained failure: the 4\.9477% predicted/observed heat difference passes the 5% runtime rule, while the calorimeter has 8\.6964% error against reference\-model true heat\. Conventional engineering ties useful accuracy with 384 versus 672 readings; a centralized lab is CAD 460 cheaper\. Participant withdrawal and underutilization fail in the tested economic cases\. Finite search, modeled economics and Python contract checks; physical construction and deployment NOT RUN\. Reproduction requires the full research companion; standalone TeX requires the full LaTeX source ZIP\. Explore the retained\-evidence journey online or download the self\-contained HTML\.
+  Vincent Boucher · MONTREAL\.AI · QUEBEC\.AI · Montréal, Québec, Canada · 2026-10-22 · English PDF.
+  [Explore the interactive foundry](https://montrealai.github.io/AGI-Alpha-Agent-v0/reports/thermal-fluid-foundry-v2/experience.html) · [Download the research companion](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/download/study-foundry-v2-2026-10-22-r1/Autonomous_Enterprises_Foundry_v2_Research_Companion.zip) · [View source and evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/study-foundry-v2-2026-10-22-r1)
 - **[Out\-Learn 📚](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Learn.pdf)** · Studies how to construct measurement protocols and learn reusable calibration, with error guarantees under declared drift and measurement\-error assumptions in exact synthetic studies\.
   Vincent Boucher · MONTREAL\.AI · 2026-10-21 · English PDF.
 - **[Out\-Think 🧠](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Think.pdf)** · Studies executable reasoning representations that preserve required answers and operations, and when to replace rather than refine inherited internal codes, in exact finite models\.
@@ -50,17 +59,18 @@ Research proposals and bounded studies, not claims of general autonomous capabil
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current experimental source candidate · 1.39.0.** [Autonomous Enterprises preview notes](docs/agent/RELEASE_NOTES_1.39.0.md).
-The additive enterprise workspace develops a bounded finite capability, freezes it and compares later tasks
-while retaining rejected alternatives, declared costs and recoverable history. It extends the existing six-stage
-Discovery Lab, OUT-EXECUTE and thirteen-section evidence docket. Supplied synthetic semantics and zero-cap
-inspection drafts describe the supported preview; installed native compatibility, external model/tool pilots
-and observed organizational benefit retain separate qualification. Fresh exact-source release gates remain pending.
+**Current experimental source candidate · 1.40.0.** [Foundry v2 research integration notes](docs/agent/RELEASE_NOTES_1.40.0.md).
+The existing research catalogue now connects the Foundry v2 paper, retained-evidence interactive experience,
+named reproducible companion and source release. The inherited enterprise workspace develops a bounded finite
+capability, freezes it and compares later tasks while retaining rejected alternatives, declared costs and history.
+Finite synthetic studies and zero-cap inspection drafts describe this preview; physical construction,
+installed enterprise compatibility, external model/tool pilots and observed organizational benefit retain
+separate qualification. Fresh exact-source release gates and the preceding 1.39 publication sequence remain pending.
+
 
 This combined software candidate adds bounded OUT-EXECUTE execution to the preserved proposal and Out-Evolve journeys.
 This is not a claim that every proposed capability is implemented. Synthetic results and unsigned work drafts grant
 no operational authority.
-
 ## Choose your next step
 
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**

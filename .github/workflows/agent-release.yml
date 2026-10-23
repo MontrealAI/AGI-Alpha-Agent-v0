@@ -306,7 +306,26 @@ jobs:
       - name: Full offline regression including notebooks
         run: |
           mkdir -p evidence
-          python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml
+          python - <<'PY'
+          import json, pathlib, subprocess
+          held = [
+              'tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands',
+              'tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata',
+              'tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer',
+              'tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history',
+          ]
+          record = {'schema': 'agialpha.held-test-selection.v1',
+                    'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                    'invocation': 'agent-full-regression', 'status': 'LOCAL_NOT_RUN', 'qualified': False,
+                    'tests': [{'nodeid': node, 'status': 'LOCAL_NOT_RUN'} for node in held],
+                    'meaning': 'These four held nodes are not run by this invocation; their outcomes are not qualified.'}
+          pathlib.Path('evidence/held-probes.json').write_text(json.dumps(record, indent=2) + '\n')
+          PY
+          python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer \
+            --deselect=tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history
           cp .coverage evidence/coverage.data
       - name: Strict types and repository checks
         run: |

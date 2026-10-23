@@ -1,5 +1,30 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.40.0 experimental Foundry integration candidate
+
+This local prospective edition composes the existing Foundry v2 paper/resource stack with the
+corrected enterprise homepage boundary. It preserves the original research implementation,
+all historical paper identities and the complete earlier software source. The eighth-paper
+inventory/index failure is corrected by the catalogue-driven assertions; the failing parent
+must never be merged alone. [Current scope and remaining work](RELEASE_NOTES_1.40.0.md).
+
+The existing 1.39 owner retains its publication lease. Shared branch integration requires its
+actual safe closure, a fresh current-main comparison and a live unused-version check. Normal
+configured review, applicable PR checks and fresh full exact-main software/site qualification
+must cover the complete combined source. Old branch checks do not qualify this edition.
+
+The checkout helper retains all six earlier exact 49/61-file editions and adds one complete
+61-file edition for the final generated 1.40 workers. The same 53-source scientific catalogue
+and source hash are preserved. Mixed editions, private edits, unknown catalogue bytes, unsafe
+paths and incomplete closures still refuse before backup or replacement. The existing explicit
+repair remains opt-in; normal generators never repair checkout bytes automatically.
+
+Installed enterprise compatibility, external model/tool pilots, physical construction and
+commercial/EVM execution remain separately unqualified. The research edition and named assets
+do not replace a software release, move an existing tag or waive the normal qualification lane.
+
+## Preserved 1.39 preparation record
+
 # Release readiness — 1.39.0 experimental enterprise candidate
 
 The proposed additive version **1.39.0** combines the enterprise workspace and public-append
