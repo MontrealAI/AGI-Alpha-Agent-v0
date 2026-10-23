@@ -1,0 +1,16 @@
+--- a/study/evaluation/queue.mjs
++++ b/study/evaluation/queue.mjs
+@@ -15,11 +15,11 @@
+   submit(id,mission,{failFirst=false}={}){
+     if(this.role!=='executor')return Promise.reject(Error('ROLE_DENIED'));
+     if(this.stopped)return Promise.reject(Error('KILL_SWITCH_ACTIVE'));
+-    const digest=sha256(stable(mission));const old=this.records.get(id);
++    const serialized=stable(mission),snapshot=JSON.parse(serialized),digest=sha256(serialized);const old=this.records.get(id);
+     if(old){if(old.digest!==digest)return Promise.reject(Error('IDEMPOTENCY_INPUT_MISMATCH'));this.history.push({id,event:'duplicate-returned-existing-promise'});return old.promise;}
+     if(this.records.size>=this.capacity)return Promise.reject(Error('QUEUE_CAPACITY'));
+     let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});
+-    const job={id,mission,digest,failFirst,attempt:0,promise,resolve,reject,queuedAt:performance.now()};this.records.set(id,job);this.pending.push(job);this.history.push({id,event:'queued',inputSha256:digest});this.pump();return promise;
++    const job={id,mission:snapshot,digest,failFirst,attempt:0,promise,resolve,reject,queuedAt:performance.now()};this.records.set(id,job);this.pending.push(job);this.history.push({id,event:'queued',inputSha256:digest});this.pump();return promise;
+   }
+   pump(){if(this.stopped)return;for(const slot of this.slots){if(slot.ready&&!slot.job&&this.pending.length){const job=this.pending.shift();slot.job=job;this.history.push({id:job.id,event:'started',attempt:job.attempt});slot.worker.postMessage({id:job.id,mission:job.mission,failFirst:job.failFirst,attempt:job.attempt});}}}
+   finish(slot,message){
