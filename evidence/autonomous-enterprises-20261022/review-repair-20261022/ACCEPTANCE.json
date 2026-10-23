@@ -1,0 +1,56 @@
+{
+  "schema": "autonomous-enterprise-review-repair-acceptance/v1",
+  "sourceClosure": "bae61e59ad39ea53af3c293c0833a7a9e64e3ef0bf50f22e27b60d66c4c1cf6f",
+  "inputs": 53,
+  "previousPublicHead": "cca1eed93439504b8fdc40404bb9545cd0e3ccbd",
+  "hostedFinalSource": "PENDING",
+  "reviewFinalSource": "PENDING",
+  "localNode": {
+    "24.19.0": {
+      "tests": 89,
+      "passed": 89
+    },
+    "22.23.3": {
+      "tests": 89,
+      "passed": 89
+    }
+  },
+  "n32Journey": "SUCCESSOR_ACCEPTED_LOCAL",
+  "browser": {
+    "checks": 11,
+    "status": "PASSED",
+    "chromium": "139.0.7258.5",
+    "axe": "4.10.3",
+    "desktopViolations": 0,
+    "mobileViolations": 0
+  },
+  "targetedPython": {
+    "passed": 3,
+    "commands": "tests/test_autonomous_enterprises_source.py; test_portable_bundle_reproduces_and_gallery_preserves_exact_bytes; test_acceptance_is_mandatory_read_only_and_retains_evidence"
+  },
+  "sparseFullDeliveryAttempt": {
+    "passed": 8,
+    "failed": 2,
+    "cause": "Native helper absent from this sparse worktree; no native runtime claim. Raw failure retained."
+  },
+  "preCommit": {
+    "status": "FAILED",
+    "cause": "Configured global hook inputs absent from sparse worktree; actual 4.2.0 log retained, no full-hook pass claimed."
+  },
+  "scopedPythonChecks": [
+    "Black on all 3 changed Python files",
+    "Ruff check and format on same 3",
+    "strict mypy same 3: success",
+    "actionlint on successor-capability.yml: success",
+    "git diff --check: success"
+  ],
+  "sourceGeneration": {
+    "cacheAssets": 432,
+    "workers": 3,
+    "cache": "agialpha-gallery-fe8c375e8040011a",
+    "canonicalPageSHA256": "d29a67dd1eb39b484f78085eddbbbf7527e6114e4dd2b768381f566069ba8174",
+    "mirrorPageSHA256": "399d6047e925ca928d569bbfd1cd891463a6a7c08a04adffd81fff95786260ff",
+    "inlineCSPBodies": "VERIFIED"
+  },
+  "scope": "Independent deterministic bounded implementation and local browser; no native installed receiver, main, release, live-chain or real-task-pilot qualification."
+}

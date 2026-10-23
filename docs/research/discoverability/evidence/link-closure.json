@@ -1,0 +1,116 @@
+{
+  "schema": "discoverability.static-link-closure.v1",
+  "runId": "discoverability-20261022-v1",
+  "observedAtUtc": "2026-10-23T02:01:39.771873+00:00",
+  "html": {
+    "path": "index.html",
+    "bytes": 177515,
+    "sha256": "7acea15e6e98a6a8912a9ac891895674878d795f6c3cf9d71e3e6c7e9cfeef03"
+  },
+  "method": "Python html.parser over retained final HTML; resolve static href/src and same-document IDs without network or a browser.",
+  "status": "PASS_STATIC_LOCAL_TARGETS_ONLY",
+  "summary": {
+    "explicitLinks": 10,
+    "documentFragmentLinks": 4,
+    "relativeEvidenceTargets": 3,
+    "externalUrlsNotFetched": 3,
+    "missingLocalTargets": 0
+  },
+  "links": [
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "#operate",
+      "downloadAttribute": null,
+      "kind": "document-fragment",
+      "status": "PASS"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "#operate",
+      "downloadAttribute": null,
+      "kind": "document-fragment",
+      "status": "PASS"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "#evidence",
+      "downloadAttribute": null,
+      "kind": "document-fragment",
+      "status": "PASS"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "#research",
+      "downloadAttribute": null,
+      "kind": "document-fragment",
+      "status": "PASS"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "commercial-preregistration.json",
+      "downloadAttribute": null,
+      "kind": "relative-file",
+      "status": "PASS",
+      "resolvedPath": "commercial-preregistration.json",
+      "bytes": 14078,
+      "sha256": "446213af9c72e4d596d52332565a577db2681ab31d5412b16760753c094c221b"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "paper.pdf",
+      "downloadAttribute": null,
+      "kind": "relative-file",
+      "status": "PASS",
+      "resolvedPath": "paper.pdf",
+      "bytes": 340817,
+      "sha256": "be098557b4582c750bee6003ddf9366257d79cf172819f2bb710b1ea3ef89a61"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "evidence/manifest.json",
+      "downloadAttribute": null,
+      "kind": "relative-file",
+      "status": "PASS",
+      "resolvedPath": "evidence/manifest.json",
+      "bytes": 20324,
+      "sha256": "e75e3ec489749bf4853f7aaed38555a7202042b3a6ce8084c8d6931aa9b3e79e"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4872",
+      "downloadAttribute": null,
+      "kind": "external",
+      "status": "NOT_FETCHED"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850",
+      "downloadAttribute": null,
+      "kind": "external",
+      "status": "NOT_FETCHED"
+    },
+    {
+      "tag": "a",
+      "attribute": "href",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/DISCLAIMER_SNIPPET.md",
+      "downloadAttribute": null,
+      "kind": "external",
+      "status": "NOT_FETCHED"
+    }
+  ],
+  "limitations": [
+    "No desktop/mobile rendering, keyboard use, live navigation or download transfer tested.",
+    "Dynamic Blob module loading and generated export downloads require runtime checks; prior DOM-test-double results are separate evidence, not browser acceptance.",
+    "Complete folder/archive is required for relative evidence links. A separately copied HTML file does not carry its paper/manifest/commercial JSON.",
+    "External GitHub URLs are listed without new network verification in this check."
+  ]
+}

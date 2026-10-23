@@ -3,9 +3,12 @@
 import * as protocol from '../../docs/assets/successor/engine.mjs';
 import * as witness from './witness.mjs';
 import * as discoveryHistory from './discovery-lab-history.mjs';
+import * as enterpriseHistory from '../autonomous-enterprises/history.mjs';
 
 export const SCHEMA = 'successor-capability-workspace/v1';
 export const LIMITS = Object.freeze({versions: 8, events: 24, bytes: 2_000_000});
+const enterpriseContinuationStates = Object.freeze(['RESERVED', 'ACCEPTED_CONSTRUCTION', 'FROZEN', 'TASKS_COMMITTED',
+    'INVOCATION_RESERVED', 'INVOCATION_RECONCILED', 'READY_FOR_SUCCESSOR', 'SUCCESSOR_RESERVED']);
 export const canonical = protocol.canonical;
 export const defaultExperiment = witness.defaultExperiment;
 export const DEFAULT_BRIEF = Object.freeze({
@@ -105,6 +108,7 @@ async function inspectOwnedWorkspace(input) {
     }
     const versions = [];
     const discovery = discoveryHistory.emptyDiscoveryState();
+    const enterprises = enterpriseHistory.emptyState();
     let previous = null;
     for (const [sequence, event] of input.events.entries()) {
         if (!exact(event, ['sequence', 'kind', 'previous', 'payload', 'digest'])
@@ -112,6 +116,7 @@ async function inspectOwnedWorkspace(input) {
             || event.digest !== await eventDigest(input.missionId, event)) fail('Capability history binding mismatch.');
         const payload = event.payload;
         if (event.kind === 'version') {
+            if (enterprises.active) fail('Finish or stop the active enterprise attempt before saving a successor version.');
             if (!exact(payload, ['number', 'parent', 'reason', 'specification', 'frozenDigest'])
                 || payload.number !== versions.length + 1 || versions.length >= LIMITS.versions
                 || payload.parent !== (versions.length ? versions.at(-1).frozenDigest : null)
@@ -147,6 +152,11 @@ async function inspectOwnedWorkspace(input) {
             version[payload.phase] = clone(payload);
             version.witnessAcceptance = [version.development, version.heldout].some(record => record?.report.verdict === 'fail')
                 ? 'fail' : version.development && version.heldout ? 'pass' : 'incomplete';
+        } else if (enterpriseHistory.EVENT_KINDS.includes(event.kind)
+            && input.schema === discoveryHistory.EXTENDED_SCHEMA) {
+            if (!versions.length) fail('Enterprise construction needs a frozen capability version.');
+            await enterpriseHistory.inspectEvent(enterprises, event,
+                {missionId: input.missionId, version: versions.at(-1).number});
         } else if (discoveryHistory.EVENT_KINDS.includes(event.kind)
             && input.schema === discoveryHistory.EXTENDED_SCHEMA) {
             if (!versions.length) fail('Discovery Lab needs a frozen capability version.');
@@ -157,6 +167,7 @@ async function inspectOwnedWorkspace(input) {
     }
     if (!versions.length) fail('Capability version is missing.');
     const inspection = {versions, latest: versions.at(-1), head: previous, discovery};
+    if (enterprises.attempts.length) inspection.enterprises = enterprises;
     const checked = {fingerprint, workspace: input, inspection};
     if (input.schema === discoveryHistory.EXTENDED_SCHEMA) {
         freezeGraph(inspection);
@@ -172,6 +183,11 @@ export async function inspectWorkspace(input) {
 }
 
 async function append(workspace, kind, payload) {
+    // Historical interleavings remain inspectable; new unrelated events must not spend recovery slots.
+    if (workspace.events.length && !enterpriseHistory.EVENT_KINDS.includes(kind)) {
+        const {inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
+        if (enterprises?.active) fail('Finish or stop the active enterprise attempt before recording other mission history.');
+    }
     if (workspace.events.length >= LIMITS.events) fail('History capacity reached; preserve this complete workspace.');
     const next = clone(workspace), event = {sequence: next.events.length, kind,
         previous: next.events.at(-1)?.digest || null, payload: clone(payload)};
@@ -196,7 +212,8 @@ export async function createWorkspace(brief = DEFAULT_BRIEF, experiment = null) 
 export async function addSuccessor(workspace, brief, experiment, reason) {
     brief = JSON.parse(discoveryHistory.validateHistoryData(brief));
     experiment = JSON.parse(discoveryHistory.validateHistoryData(experiment));
-    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {latest, versions, enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before saving a successor version.');
     if (versions.length >= LIMITS.versions) fail('Version capacity reached; preserve this complete workspace.');
     if (equal(latest.brief, brief) && equal(latest.experiment, experiment)) {
         fail('A successor needs an explicit change to the proposal or experiment; prior evidence stays historical.');
@@ -206,7 +223,8 @@ export async function addSuccessor(workspace, brief, experiment, reason) {
 }
 
 export async function recordEvaluation(workspace, phase) {
-    const {workspace: owned, inspection: {latest, versions}} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {latest, versions, enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before evaluating a synthetic witness.');
     if (!['development', 'heldout'].includes(phase)) fail('Unsupported evaluation phase.');
     if (latest.experiment === null) fail('This proposal has no implemented evaluator. No capability has been executed.');
     if (latest[phase]) fail('This version already contains that evaluation. Retuning requires a new successor.');
@@ -231,8 +249,37 @@ export async function parseWorkspace(text) {
 /** Add a checked event to the existing hash chain; prior v1 events retain exact bytes. */
 export async function recordDiscoveryEvent(workspace, kind, payload) {
     payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
-    const {workspace: owned} = await inspectOwnedWorkspace(workspace);
+    const {workspace: owned, inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (enterprises?.active) fail('Finish or stop the active enterprise attempt before recording Discovery Lab work.');
     if (!discoveryHistory.EVENT_KINDS.includes(kind)) fail('Unsupported Discovery Lab event.');
+    const next = clone(owned);
+    next.schema = discoveryHistory.EXTENDED_SCHEMA;
+    return append(next, kind, payload);
+}
+
+/** Keep the full accepted continuation and one explicit Stop available before new work. */
+export function requireEnterpriseHistorySpace(workspace, current = null) {
+    const available = LIMITS.events - workspace.events.length;
+    if (current === null) {
+        if (available < 11) fail('Reserve history space for construction, future tasks and recovery.');
+        return;
+    }
+    const position = enterpriseContinuationStates.indexOf(current.state);
+    if (position < 0) fail('No supported active enterprise continuation.');
+    const remaining = enterpriseContinuationStates.length - position;
+    if (available < remaining + 1) fail(
+        `History capacity needs ${remaining} continuation events and one recovery event; retain this history or stop the active attempt.`);
+}
+
+/** Append enterprise evidence to the same bounded mission chain and recovery format. */
+export async function recordEnterpriseEvent(workspace, kind, payload) {
+    payload = JSON.parse(discoveryHistory.validateHistoryData(payload));
+    const {workspace: owned, inspection: {enterprises}} = await inspectOwnedWorkspace(workspace);
+    if (!enterpriseHistory.EVENT_KINDS.includes(kind)) fail('Unsupported enterprise event.');
+    if (kind === 'enterprise-started') requireEnterpriseHistorySpace(owned);
+    else if (enterprises?.active && !['enterprise-stopped', 'enterprise-budget-refused', 'enterprise-successor'].includes(kind)) {
+        requireEnterpriseHistorySpace(owned, enterprises.active);
+    }
     const next = clone(owned);
     next.schema = discoveryHistory.EXTENDED_SCHEMA;
     return append(next, kind, payload);

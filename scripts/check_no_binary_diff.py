@@ -7,9 +7,15 @@ from __future__ import annotations
 import json
 import hashlib
 import os
+import re
+import stat
+import struct
 import subprocess
 import sys
-from pathlib import Path
+import zipfile
+import zlib
+from pathlib import Path, PurePosixPath
+from typing import Any
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -257,8 +263,175 @@ AUTHORIZED_FLAGSHIP_ARTWORK = {
 }
 
 
+ENTERPRISE_MANIFEST = "scripts/data/autonomous_enterprise_evidence.json"
+ENTERPRISE_MANIFEST_SHA256 = "cbb2744071352b4204500b43e849b9d8b6df7b1f522d26f7b4d5e48fc9d67118"
+ENTERPRISE_PREFIX = "evidence/autonomous-enterprises-20261022/"
+
+
+def _regular_path(root: Path, name: str) -> Path:
+    path = root
+    for part in PurePosixPath(name).parts:
+        path /= part
+        mode = path.lstat().st_mode
+        if stat.S_ISLNK(mode):
+            raise ValueError(f"Evidence symlink is not admitted: {name}")
+    if not stat.S_ISREG(mode):
+        raise ValueError(f"Evidence must be a regular file: {name}")
+    return path
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"Duplicate evidence manifest key: {key}")
+        result[key] = value
+    return result
+
+
+def _load_enterprise_manifest(root: Path) -> dict[str, dict[str, Any]]:
+    raw = _regular_path(root, ENTERPRISE_MANIFEST).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != ENTERPRISE_MANIFEST_SHA256:
+        raise ValueError("Enterprise evidence manifest differs from its reviewed bytes")
+    data = json.loads(raw, object_pairs_hook=_unique_object)
+    if not isinstance(data, dict) or set(data) != {"schema", "source_commit", "source_tree", "files"}:
+        raise ValueError("Invalid enterprise evidence manifest schema")
+    if (
+        data["schema"] != "autonomous-enterprise-evidence/v1"
+        or data["source_commit"] != "91298676775e2958f010906a96edfb176f5b1709"
+        or data["source_tree"] != "8d1972503af365b9a70770ee7e1d8e711ba5330f"
+        or not isinstance(data["files"], list)
+        or len(data["files"]) != 16
+    ):
+        raise ValueError("Invalid enterprise evidence source or inventory")
+    rows: dict[str, dict[str, Any]] = {}
+    for row in data["files"]:
+        if not isinstance(row, dict) or set(row) != {"path", "size", "sha256", "git_blob", "media_type"}:
+            raise ValueError("Invalid enterprise evidence record")
+        name = row["path"]
+        if (
+            not isinstance(name, str)
+            or not name.startswith(ENTERPRISE_PREFIX)
+            or "\\" in name
+            or "\x00" in name
+            or PurePosixPath(name).as_posix() != name
+            or ".." in PurePosixPath(name).parts
+            or name in rows
+            or not isinstance(row["size"], int)
+            or isinstance(row["size"], bool)
+            or row["size"] <= 0
+            or not isinstance(row["sha256"], str)
+            or re.fullmatch(r"[0-9a-f]{64}", row["sha256"]) is None
+            or not isinstance(row["git_blob"], str)
+            or re.fullmatch(r"[0-9a-f]{40}", row["git_blob"]) is None
+            or not isinstance(row["media_type"], str)
+            or (PurePosixPath(name).suffix, row["media_type"])
+            not in {(".png", "image/png"), (".zip", "application/zip")}
+        ):
+            raise ValueError("Invalid enterprise evidence path, identity or media type")
+        rows[name] = row
+    if sum(row["size"] for row in rows.values()) != 13_510_902:
+        raise ValueError("Invalid enterprise evidence total byte length")
+    return rows
+
+
+def _valid_png(raw: bytes) -> bool:
+    if not raw.startswith(b"\x89PNG\r\n\x1a\n"):
+        return False
+    offset, chunks, image_data = 8, 0, False
+    while offset + 12 <= len(raw):
+        size = int.from_bytes(raw[offset : offset + 4], "big")
+        kind = raw[offset + 4 : offset + 8]
+        end = offset + 8 + size
+        if end + 4 > len(raw) or not re.fullmatch(b"[A-Za-z]{4}", kind):
+            return False
+        body = raw[offset + 8 : end]
+        if zlib.crc32(kind + body) != int.from_bytes(raw[end : end + 4], "big"):
+            return False
+        if chunks == 0:
+            if kind != b"IHDR" or size != 13:
+                return False
+            width, height, depth, color, compression, filtering, interlace = struct.unpack(">IIBBBBB", body)
+            depths = {0: {1, 2, 4, 8, 16}, 2: {8, 16}, 3: {1, 2, 4, 8}, 4: {8, 16}, 6: {8, 16}}
+            if (
+                not 0 < width < 2**31
+                or not 0 < height < 2**31
+                or depth not in depths.get(color, set())
+                or compression != 0
+                or filtering != 0
+                or interlace not in {0, 1}
+            ):
+                return False
+        elif kind == b"IHDR":
+            return False
+        if kind == b"IDAT":
+            image_data = image_data or size > 0
+        if kind == b"IEND":
+            return size == 0 and image_data and end + 4 == len(raw)
+        offset, chunks = end + 4, chunks + 1
+    return False
+
+
+def _valid_zip(path: Path, raw: bytes) -> bool:
+    if not raw.startswith(b"PK\x03\x04"):
+        return False
+    try:
+        with zipfile.ZipFile(path) as archive:
+            members = archive.infolist()
+            names: set[str] = set()
+            for member in members:
+                name = member.filename.rstrip("/")
+                parts = PurePosixPath(name)
+                if (
+                    not name
+                    or parts.is_absolute()
+                    or parts.as_posix() != name
+                    or ".." in parts.parts
+                    or "\\" in name
+                    or "\x00" in member.orig_filename
+                    or name in names
+                    or stat.S_ISLNK(member.external_attr >> 16)
+                    or member.flag_bits & 1
+                    or member.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}
+                ):
+                    return False
+                names.add(name)
+            return bool(members)
+    except (OSError, ValueError, zipfile.BadZipFile):
+        return False
+
+
+def _enterprise_admissions(root: Path, paths: list[str]) -> set[str]:
+    candidates = {name for name in paths if name.startswith(ENTERPRISE_PREFIX)}
+    if not candidates:
+        return set()
+    manifest = _load_enterprise_manifest(root)
+    admitted: set[str] = set()
+    for name in candidates:
+        row = manifest.get(name)
+        if row is None:
+            continue
+        try:
+            path = _regular_path(root, name)
+            if path.stat().st_size != row["size"]:
+                continue
+            raw = path.read_bytes()
+            if (
+                len(raw) != row["size"]
+                or hashlib.sha256(raw).hexdigest() != row["sha256"]
+                or hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest() != row["git_blob"]
+            ):
+                continue
+            valid_type = _valid_png(raw) if row["media_type"] == "image/png" else _valid_zip(path, raw)
+            if valid_type:
+                admitted.add(name)
+        except (OSError, ValueError):
+            continue
+    return admitted
+
+
 def main() -> int:
-    _git_root()
+    root = _git_root()
     base_ref = _base_ref()
     changed_paths = _iter_changed_paths(base_ref)
     binary_paths = [path for path in changed_paths if _matches_binary_extension(path)]
@@ -281,13 +454,21 @@ def main() -> int:
     if previous.returncode == 0:
         preserve_catalog(parse_catalog(previous.stdout.encode()), catalog)
     authorized |= asset_hashes(catalog)
+    try:
+        admitted_evidence = _enterprise_admissions(root, binary_paths)
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: Enterprise binary admission failed: {exc}")
+        return 1
     binary_paths = sorted(
         {
             path
             for path in binary_paths
-            if path not in authorized
-            or not Path(path).is_file()
-            or hashlib.sha256(Path(path).read_bytes()).hexdigest() != authorized[path]
+            if path not in admitted_evidence
+            and (
+                path not in authorized
+                or not Path(path).is_file()
+                or hashlib.sha256(Path(path).read_bytes()).hexdigest() != authorized[path]
+            )
         }
     )
     if binary_paths:
