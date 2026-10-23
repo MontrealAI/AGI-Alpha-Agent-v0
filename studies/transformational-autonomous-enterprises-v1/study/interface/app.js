@@ -11,7 +11,10 @@ Object.assign(text.en,{testtokens:'PER MISSION · TEST TOKENS',capabilityidentit
 Object.assign(text.fr,{testtokens:'PAR MISSION · JETONS DE TEST',capabilityidentity:'Capacité',modules:'modules',localseed:'NovaSeed local',localjob:'Tâche locale',tokenscope:'Par mission, en $AGIALPHA fictif : les montants affichés ne sont pas le total des deux missions. Ils proviennent des reçus de l’EVM locale. Les transferts fictifs ne sont pas des revenus. La voie USDC non signée de Manager reste une alternative distincte. Un NFT NovaSeed ne confère ni propriété intellectuelle ni capital.'});
 stages.en[0][4]='Instrumented source hashing and candidate events are recorded; authoring and full monetary costs remain separate.';
 stages.fr[0][4]='Les empreintes de source et événements du candidat sont mesurés; rédaction et coûts monétaires complets restent séparés.';
+Object.assign(text.en,{badstatus:'The runtime returned an invalid status.',statusfailed:'Status refresh failed. The server may still be running; retrying.'});
+Object.assign(text.fr,{badstatus:'L’environnement a renvoyé un état invalide.',statusfailed:'Échec de l’actualisation. Le serveur est peut-être toujours actif; nouvelle tentative à venir.'});
 let language='en',step=0,evidence=window.TAE_EVIDENCE||null,fresh=false,local=false,busy=false,statusKnown=false,stopping=false,token=null,lastError='',lastState='',runSequence=0,runController=null,toastTimer=null;
+let statusTimer=null,statusController=null,statusEpoch=0,pageActive=true,statusError='';
 const $=id=>document.getElementById(id),t=key=>text[language][key]||key;
 const finite=value=>typeof value==='number'&&Number.isFinite(value);
 const number=value=>finite(Number(value))?new Intl.NumberFormat(language==='fr'?'fr-CA':'en-CA',{maximumFractionDigits:2}).format(Number(value)):'—';
@@ -25,7 +28,7 @@ function validateEvidence(value){
 }
 function notify(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').style.display='block';toastTimer=setTimeout(()=>$('toast').style.display='none',8000);}
 function clearToast(){clearTimeout(toastTimer);toastTimer=null;$('toast').textContent='';$('toast').style.display='none';}
-function setConnection(){let key=!statusKnown?'starting':stopping?'stopping':busy?'running':lastState|| (fresh?'finished':local?'ready':evidence?'recorded':'emptyruntime');$('connection').textContent=t(key)+(lastError?' '+lastError:'');$('connection').dataset.state=lastError?'error':busy?'busy':'ready';}
+function setConnection(){let key=!statusKnown?'starting':stopping?'stopping':busy?'running':lastState|| (fresh?'finished':local?'ready':evidence?'recorded':'emptyruntime');$('connection').textContent=t(key)+(lastError?' '+lastError:'')+(statusError?' '+t('statusfailed')+' '+statusError:'');$('connection').dataset.state=lastError||statusError?'error':busy?'busy':'ready';}
 function render(){
   document.documentElement.lang=language;
   document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(key==='headline')el.innerHTML=t(key);else el.textContent=t(key);});
@@ -87,17 +90,41 @@ document.querySelectorAll('[data-step]').forEach(button=>{button.addEventListene
 $('next').onclick=()=>{if(step<5)selectStep(step+1);else $('evidence').scrollIntoView();};$('previous').onclick=()=>{if(step>0)selectStep(step-1);};
 $('guide').onclick=()=>{selectStep(0);$('journey').scrollIntoView();$('stage').focus({preventScroll:true});notify(t('tour'));};$('language').onclick=()=>{clearToast();language=language==='en'?'fr':'en';render();};
 async function requestJSON(url,options={}){const response=await fetch(url,{cache:'no-store',...options});let data;try{data=await response.json();}catch{throw Error(`${response.status}: ${language==='fr'?'Réponse JSON attendue.':'Expected a JSON response.'}`);}if(!response.ok)throw Error(data.error||`${response.status}: ${t('error')}`);return data;}
+function cancelStatusWatch(){statusEpoch++;clearTimeout(statusTimer);statusTimer=null;statusController?.abort();statusController=null;}
+function watchExistingRun(){
+  if(!pageActive||!busy||runController||stopping||statusTimer!==null||statusController)return;
+  statusTimer=setTimeout(()=>{statusTimer=null;refreshStatus();},1000);
+}
+async function refreshStatus(initial=false){
+  if(!pageActive||statusController)return;
+  const epoch=statusEpoch,controller=statusController=new AbortController();
+  try{
+    const data=await requestJSON('/api/status',{signal:controller.signal});
+    if(epoch!==statusEpoch||!pageActive)return;
+    if(data?.local!==true||typeof data.busy!=='boolean'||typeof data.token!=='string'||!data.token)throw Error(t('badstatus'));
+    local=true;token=data.token;busy=data.busy;statusKnown=true;statusError='';render();
+  }catch(error){
+    if(epoch!==statusEpoch||!pageActive)return;
+    if(initial){local=false;token=null;statusKnown=true;}else statusError=error.message;
+    render();
+  }finally{
+    if(statusController===controller)statusController=null;
+    if(epoch===statusEpoch)watchExistingRun();
+  }
+}
+window.addEventListener('pagehide',()=>{pageActive=false;cancelStatusWatch();});
+window.addEventListener('pageshow',()=>{if(!pageActive){pageActive=true;if(!runController)refreshStatus(!statusKnown);}});
 $('run').onclick=async()=>{
   if(!local||!token){notify(t('unavailable'));return;}if(busy)return;
-  const run=++runSequence;busy=true;fresh=false;lastError='';lastState='';runController=new AbortController();render();
+  cancelStatusWatch();statusError='';const run=++runSequence;busy=true;fresh=false;lastError='';lastState='';runController=new AbortController();render();
   try{const result=await requestJSON('/api/run',{method:'POST',headers:{'Content-Type':'application/json','X-TAE-Token':token},body:'{}',signal:runController.signal});if(run!==runSequence)return;evidence=validateEvidence(result);fresh=true;step=5;lastState='finished';$('restore-status').textContent='';notify(t('finished'));}
   catch(error){if(run!==runSequence)return;lastError=error.message;lastState='runfailed';notify(t('error')+' '+error.message);}
   finally{if(run===runSequence){busy=false;stopping=false;runController=null;render();}}
 };
 if($('stop-run'))$('stop-run').onclick=async()=>{
-  if(!busy||stopping||!token)return;stopping=true;render();
+  if(!busy||stopping||!token)return;cancelStatusWatch();statusError='';stopping=true;render();
   try{await requestJSON('/api/stop',{method:'POST',headers:{'Content-Type':'application/json','X-TAE-Token':token},body:'{}'});runSequence++;runController?.abort();runController=null;busy=false;stopping=false;fresh=false;lastError='';lastState='stopped';render();notify(t('stopped'));}
-  catch(error){stopping=false;lastError=error.message;lastState='stopfailed';render();notify(t('stopfailed')+' '+error.message);}
+  catch(error){stopping=false;lastError=error.message;lastState='stopfailed';render();notify(t('stopfailed')+' '+error.message);watchExistingRun();}
 };
 function download(value,name){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'}));a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
 $('export').onclick=()=>{if(!evidence){notify(t('noevidence'));return;}download({schema:'tae.interface-export.v1',evidence,currentProof:null,authority:[]},'Transformational_Enterprise_Evidence.json');};
@@ -110,4 +137,4 @@ $('restore').onchange=async event=>{
   }catch(error){$('restore-status').textContent=t('error')+' '+error.message;}finally{event.target.value='';}
 };
 try{if(evidence)validateEvidence(evidence);}catch(error){evidence=null;lastError=t('booterror')+' '+error.message;}
-render();requestJSON('/api/status').then(data=>{local=data?.local===true;token=typeof data?.token==='string'&&data.token.length>0?data.token:null;busy=data?.busy===true;statusKnown=true;render();}).catch(()=>{local=false;token=null;statusKnown=true;render();});
+render();refreshStatus(true);
