@@ -10,12 +10,13 @@ This additive draft accompanies [paper PR #4877](https://github.com/MontrealAI/A
 
 The complete companion is supplied as one ZIP in the assignment handoff. In this GitHub proposal it is stored as three [checksum-bound parts](archive-parts.json) because the upload connector limits each request to 16 MiB. Download [ASSEMBLE.py](ASSEMBLE.py) with **Download raw file**, then run `python3 ASSEMBLE.py --download` to fetch the public parts, verify each part and the complete ZIP, and create `Successor_Omega_Harness_Companion.zip`. Extract that ZIP. If the parts already sit beside the script, run `python3 ASSEMBLE.py` without network access. The archive contains the complete executable study, original and confirmation result campaigns, all earlier failures, interface, publication sources and PDF, bibliography, editable figures, desktop/mobile screenshots and all 29 final PDF page renders. It excludes cloned repositories, installed dependencies, caches and complete earlier papers.
 
-From the extracted `Successor_Omega_Harness` directory, with Linux, Git, npm, Python 3 and Node 24.19.0:
+Download [APPLY_QUEUE_INPUT_FIX.py](APPLY_QUEUE_INPUT_FIX.py) with **Download raw file**. From the directory containing that helper and the extracted `Successor_Omega_Harness` folder, with Linux, Git, npm, Python 3 and Node 24.19.0, run:
 
 ```sh
-python3 VERIFY.py
-node study/quickstart.mjs
+python3 APPLY_QUEUE_INPUT_FIX.py --download Successor_Omega_Harness Successor_Omega_Harness_Queue_Fixed && node Successor_Omega_Harness_Queue_Fixed/study/quickstart.mjs
 ```
+
+The helper verifies all 457 original manifest files, obtains only two small fixed-commit checksum-bound correction files anonymously, and creates a **separate** corrected full companion. It refuses changed original bytes, changed correction bytes and an existing destination. The original extracted folder and immutable ZIP remain intact. No token, credential, automatic retry or download fallback is used. If the two correction files already sit beside the helper under `study/evaluation/`, omit `--download` for an offline overlay.
 
 Open <http://127.0.0.1:8765/study/interface/> and select **Run the local journey**. Initial public dependency downloads are required. No wallet, real token purchase or paid infrastructure is required.
 
@@ -44,4 +45,10 @@ The companion preserves all four source checkout pins; setup fetches them afresh
 
 ## Queue input correction after the research freeze
 
-The public queue correction and its two regression tests are proposed through the existing software lane. They do not change the saved scientific banks or results. To apply the correction to a fresh extracted companion, first run its original `python3 VERIFY.py`, then apply `patch -p1 < /path/to/queue-input-capture.patch` from that extracted root. This deliberately creates a new source state: the original 457-file manifest will then identify the queue difference. Preserve the ZIP, manifest and correction record rather than claiming original-byte identity. The fixed review copy passed all 22 selected candidate/admission/input-capture tests plus all nine existing queue/checker controls. This is local research queue qualification; it does not establish installed Fleet dispatch, a production admission, institutional independence or external economic value.
+The maintained queue correction and its two regression tests are proposed through the existing software lane. [APPLY_QUEUE_INPUT_FIX.py](APPLY_QUEUE_INPUT_FIX.py) installs them into a new full companion copy; it does not relabel the immutable research ZIP as corrected. `QUEUE_INPUT_OVERLAY.json` records the exact original manifest and queue digests, correction source and both new digests. The original `MANIFEST.sha256` is retained verbatim as historical evidence. Its original `VERIFY.py` will accurately report the queue difference in the derived copy; use the explicit overlay verifier for that new source state:
+
+```sh
+python3 APPLY_QUEUE_INPUT_FIX.py --verify Successor_Omega_Harness_Queue_Fixed
+```
+
+Verification checks all 457 original manifest entries with the one declared queue replacement, plus the added regression. Later local run files remain additional evidence rather than original-source identities. The helper never edits the original extraction, replaces an existing derived directory or changes frozen banks/scored records. Its four apply/repeat/tamper regressions pass. A real complete derived copy passed all 30 selected candidate/admission/input-capture/saved-join cases and a separate fresh 12-candidate + nine-control smoke run. Standalone `--download` overlay assembly and post-overlay verification also passed. This review did not rerun the UI's full four-source/EVM driver. These are local research source checks, not installed Fleet dispatch, production admission, institutional independence or external economic value. [Overlay evidence](queue-input-overlay-review.json).
