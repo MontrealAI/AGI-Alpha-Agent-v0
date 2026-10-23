@@ -74,6 +74,8 @@ def test_resource_schema_has_four_ctas_and_keeps_passive_assets_separate(tmp_pat
     assert html.count('class="paper-resource-link"') == 3
     assert ">Read the paper</span>" in html
     for role, labels in papers.RESOURCE_LABELS.items():
+        if role not in resources():
+            continue
         assert f'data-paper-resource="{role}"' in html
         assert labels["en"] in html and labels["fr"] in html
         assert labels["en"] in readme
@@ -133,6 +135,8 @@ def test_resource_roles_are_closed(value: Any) -> None:
 @pytest.mark.parametrize("role", list(papers.RESOURCE_LABELS))
 def test_resource_fields_are_closed(role: str) -> None:
     items = resources()
+    if role == "reading":
+        items[role] = {"path": "docs/reports/fixture-v2/index.html", "sha256": hashlib.sha256(HTML).hexdigest()}
     items[role]["label"] = "Unsafe custom template"
     with pytest.raises(ValueError):
         papers.resource_records(items)

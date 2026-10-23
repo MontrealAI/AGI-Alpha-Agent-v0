@@ -142,6 +142,16 @@ FOUNDRY_140_EXTRA_FILES = ENTERPRISE_139_PRESENTATION_EXTRA_FILES | {
         "4154e0b378cd411eca9e1f9630cd191632f96f06fdc1492a9bfd10d719db0907",
     ),
 }
+# The three bilingual guides and reconciled Discoverability add four cache inputs.
+# Admit only this complete generated worker edition; all older editions remain exact.
+RESEARCH_GUIDES_140_EXTRA_FILES = FOUNDRY_140_EXTRA_FILES | {
+    "docs/service-worker.js": (23479, "123462416d9487651465128e1417e4b849412889d9e9bc240d14111c77f12817"),
+    "docs/assets/service-worker.js": (23915, "14bcee725288f1e3d9d33608f8ab363b2331b7646f3bd4dd0006ddd3903a6a53"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26531,
+        "bc6bc7aba1a36ee1521f5f74693fa3f451c1212941bb25f1fcc9ad88a109418b",
+    ),
+}
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -211,6 +221,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_RELEASE_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_PRESENTATION_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, FOUNDRY_140_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, RESEARCH_GUIDES_140_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))
