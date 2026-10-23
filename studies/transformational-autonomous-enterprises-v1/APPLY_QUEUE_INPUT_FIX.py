@@ -114,6 +114,7 @@ def apply_overlay(source: Path, output: Path, *, download: bool = False) -> dict
     """Capture verified source and create a new copy; never edit the input tree."""
     source = source.resolve(strict=True)
     output = output.absolute()
+    output = output.parent.resolve(strict=True) / output.name
     if output.exists() or output.is_symlink():
         raise ValueError("Output already exists; previous copies are preserved")
     if source == output or source in output.parents:

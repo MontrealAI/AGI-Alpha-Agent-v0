@@ -86,6 +86,21 @@ class OverlayTests(unittest.TestCase):
         finally:
             overlay.__file__ = original_file
 
+    def test_parent_alias_into_original_is_refused_without_source_changes(self) -> None:
+        """A linked output parent cannot place the derived copy inside its input."""
+        alias = self.root / "original-alias"
+        alias.symlink_to(self.source, target_is_directory=True)
+        name = "forbidden-derived-" + self.root.name
+        output = alias / name
+        before = {str(path.relative_to(self.source)) for path in self.source.rglob("*")}
+        manifest_before = (self.source / "MANIFEST.sha256").read_bytes()
+        with self.assertRaisesRegex(ValueError, "outside the original companion"):
+            overlay.apply_overlay(self.source, output)
+        self.assertFalse(output.exists())
+        self.assertFalse((self.source / name).exists())
+        self.assertEqual({str(path.relative_to(self.source)) for path in self.source.rglob("*")}, before)
+        self.assertEqual((self.source / "MANIFEST.sha256").read_bytes(), manifest_before)
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
