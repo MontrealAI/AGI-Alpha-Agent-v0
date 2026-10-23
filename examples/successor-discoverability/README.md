@@ -1,7 +1,9 @@
 # Discoverability Compiler · SUCCESSOR Ω
 
 **AUTONOMOUS ENTERPRISES: ACTIVATE. EVOLVE. SCALE.**  
-*Constructing measurements that make a decision possible.*
+*Decision-separating measurements and scope-checked successors.*
+
+Powered by TRANSFORMATIONAL INTELLIGENCE ∞ and the applicable $AGIALPHA utility. The new compiler's settlement is not connected; the paper specifies the separate existing Alpha contract utility and local-EVM qualification.
 
 This additive experiment constructs a reusable measurement method, executes new synthetic acquisitions, and reuses valid construction structure under changed requirements. It extends Alpha's existing `createWorkbench(adapters)` interface. Its bounded construction, observation-only decoder and evidence exports work; native enterprise admission, installed Fleet execution, contract settlement and independently realizable revenue are **not established by this candidate**.
 
@@ -46,7 +48,7 @@ Touching measurement intervals are ambiguous. Complete finite-grammar failure re
 
 ## Evidence and unfavorable results
 
-The frozen compiler is commit `ece8f2aa1480ec7b50f633b7893a11c3f22de894`, SHA-256 `746853fe817f7f98e4e41a6534c87f1949acc150e9742d935637d56b6e03f898`.
+The original scientific compiler is frozen at commit `ece8f2aa1480ec7b50f633b7893a11c3f22de894`, SHA-256 `746853fe817f7f98e4e41a6534c87f1949acc150e9742d935637d56b6e03f898`. Its exact bytes are retained in `docs/research/discoverability/evidence/frozen-source/compiler.mjs.txt`. The current **1.0.1-experimental** implementation adds a separately tested early return when every world has the same required decision. Its results and source identities are in `evidence/post-review/`; original load timings and held-out evidence are unchanged. See [REPRODUCTION.md](../../docs/research/discoverability/REPRODUCTION.md) for isolated restoration of the original scientific revision.
 
 Run the meaningful direct suites separately:
 
@@ -56,7 +58,7 @@ node examples/successor-discoverability/workbench-adapter.test.mjs
 node examples/successor-discoverability/execution.test.mjs
 ```
 
-Observed results are 21 core, 13 adapter and 7 delivery checks passing on Node **24.19.0**. The audited Alpha615 source pins **22.17.1**; these observations do not qualify that pinned installed runtime. The compiler, builder and runner add no third-party Node dependencies. The seven imported SDK files remain inherited source with their own provenance.
+The current post-review source passes **22 core, 13 adapter and 7 delivery checks** on Node **24.19.0**. The frozen scientific source recorded **21,13,7**. A low-budget same-goal control now returns the valid zero-measurement program in 248 logical work units, where the frozen implementation exhausted 2,000. Re-executing 128 already-public cases retains all programs; 111 nontrivial results match except version. This is a review-assisted correction, not a second blinded study. The audited Alpha615 source pins **22.17.1**; these observations do not qualify that pinned installed runtime. The compiler, builder and runner add no third-party Node dependencies. The seven imported SDK files remain inherited source with their own provenance.
 
 Two separately retained 333-mission campaigns each completed the nine load/treatment conditions with no failed sampled-world decisions or independent program checks. They are two executions of the same finite workload family, not 666 independent domains. The second campaign resolves complete execution-source binding; it does not replace the first timings.
 

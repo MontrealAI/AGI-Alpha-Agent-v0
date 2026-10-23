@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 export const SCHEMA = 'discoverability.problem.v1';
-export const COMPILER_VERSION = '1.0.0-experimental';
+export const COMPILER_VERSION = '1.0.1-experimental';
 const fail = m => { throw new TypeError(m); };
 const integer = (v, lo, hi, label) => { if (!Number.isSafeInteger(v) || v < lo || v > hi) fail(label); return v; };
 const exact = (o, keys, label) => { if (!o || typeof o !== 'object' || Array.isArray(o) || Object.keys(o).sort().join('|') !== [...keys].sort().join('|')) fail(label); };
@@ -145,6 +145,13 @@ export function createCompiler({strategy='cached'}={}){
         p=frozen(validate(snapshot(input,meter)));key=structural(p);pairs=pairsFor(p);
         await meter.cooperate(true);
         meter.step('frame',p.channels.length+p.worlds.length+pairs.length);
+        if(!pairs.length){
+          const program={schema:'discoverability.program.v1',problemKey:canonical(p),experiments:[],totalCost:0,
+            protocol:'fresh-independent-bounded-read-errors; shared additive nuisance cancelled within each experiment'};
+          return finish({compilerVersion:COMPILER_VERSION,problemId:p.id,libraryHit:false,templateCount:0,goalPairCount:0,
+            status:'COMPILED',program,
+            certificate:{decisionIdentifiable:true,optimalWithinGrammar:true,searchComplete:true,acceptedForBudget:true}},meter);
+        }
         if(strategy==='cached'&&cache.has(key)){templates=cache.get(key);libraryHit=true;hits++;meter.step('libraryLookup');}
         else{templates=await construct(p,meter);misses++;if(strategy==='cached'){if(cache.size>=8)cache.delete(cache.keys().next().value);cache.set(key,templates);}}
         for(const weights of templates){

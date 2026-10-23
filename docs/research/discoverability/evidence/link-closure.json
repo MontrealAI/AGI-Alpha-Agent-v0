@@ -1,11 +1,11 @@
 {
   "schema": "discoverability.static-link-closure.v1",
   "runId": "discoverability-20261022-v1",
-  "observedAtUtc": "2026-10-23T02:01:39.771873+00:00",
+  "observedAtUtc": "2026-10-23T02:41:51.140336+00:00",
   "html": {
     "path": "index.html",
-    "bytes": 177515,
-    "sha256": "7acea15e6e98a6a8912a9ac891895674878d795f6c3cf9d71e3e6c7e9cfeef03"
+    "bytes": 178265,
+    "sha256": "d05061845df5b2e2ae09f180850935cd03be570e7316be1fcea08ba406713908"
   },
   "method": "Python html.parser over retained final HTML; resolve static href/src and same-document IDs without network or a browser.",
   "status": "PASS_STATIC_LOCAL_TARGETS_ONLY",
@@ -68,8 +68,8 @@
       "kind": "relative-file",
       "status": "PASS",
       "resolvedPath": "paper.pdf",
-      "bytes": 340817,
-      "sha256": "be098557b4582c750bee6003ddf9366257d79cf172819f2bb710b1ea3ef89a61"
+      "bytes": 371606,
+      "sha256": "cf3a0463a26ebb61a8c17f89ddc1ad77f4da612b585f0f82639896bebd147941"
     },
     {
       "tag": "a",
@@ -79,8 +79,8 @@
       "kind": "relative-file",
       "status": "PASS",
       "resolvedPath": "evidence/manifest.json",
-      "bytes": 20324,
-      "sha256": "e75e3ec489749bf4853f7aaed38555a7202042b3a6ce8084c8d6931aa9b3e79e"
+      "bytes": 29119,
+      "sha256": "3715bde3f18eb0d1181754d0a05db99bea54bef5506339cebe8e74174a333db5"
     },
     {
       "tag": "a",
@@ -112,5 +112,6 @@
     "Dynamic Blob module loading and generated export downloads require runtime checks; prior DOM-test-double results are separate evidence, not browser acceptance.",
     "Complete folder/archive is required for relative evidence links. A separately copied HTML file does not carry its paper/manifest/commercial JSON.",
     "External GitHub URLs are listed without new network verification in this check."
-  ]
+  ],
+  "postReviewRecheck": "Parsed current generated HTML, confirmed identical static links and valid local fragments/targets, and refreshed target byte identities. No browser/network acceptance claim."
 }

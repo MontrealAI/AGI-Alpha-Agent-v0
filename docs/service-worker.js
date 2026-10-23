@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-b7ed6252f973467b";
+const CACHE = "agialpha-gallery-a09b16791b6c70ca";
 const RELEASE = "1.39.0";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",
@@ -400,6 +400,7 @@ const ASSETS = [
   "./omni_factory_demo/assets/style.css",
   "./omni_factory_demo/index.html",
   "./presentation/assets/preview.svg",
+  "./research/discoverability/index.html",
   "./self_healing_repo/assets/logs.json",
   "./self_healing_repo/assets/preview.svg",
   "./self_healing_repo/assets/script.js",

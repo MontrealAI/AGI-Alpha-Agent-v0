@@ -37,8 +37,11 @@ axes[1].legend(handles=[Patch(facecolor="#6c6377",label="First campaign"),
                         Patch(facecolor="#b5adbc",edgecolor="#6c6377",hatch="//",label="Source qualification")],
                loc="upper left",frameon=False,fontsize=8)
 for ax in axes:
- ax.set_xticks(range(3),labels);ax.set_axisbelow(True);ax.grid(axis="y",alpha=.2)
+ ax.set_xticks(range(3),labels)
+ ax.set_axisbelow(True)
+ ax.grid(axis="y",alpha=.2)
 fig.suptitle("Same quality target · 34 digital + 33 mixture + 33 network missions",fontsize=12)
-out=HERE/"figures";out.mkdir(exist_ok=True)
+out=HERE/"figures"
+out.mkdir(exist_ok=True)
 fig.savefig(out/"load-results.png",dpi=240,bbox_inches="tight",metadata={"Software":"Discoverability Compiler figure script"})
 fig.savefig(out/"load-results.svg",bbox_inches="tight",metadata={"Date":None})

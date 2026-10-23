@@ -33,8 +33,12 @@ Prepared copy for the existing flagship catalogue owner:
 
 Candidate assets already live in the additive `docs/research/discoverability/` namespace: `index.html`, `paper.pdf`, complete LaTeX and bibliography, and `evidence/manifest.json`. Keep these assets together so the relative evidence downloads resolve. Preserve every older paper URL and file. Use the existing reviewed catalogue/site generator and release sequence; do not create an alternate publisher or redirect historical URLs.
 
-Before claiming a live launch, the existing publisher must verify the actual deployed HTML/PDF bytes and evidence links, then perform desktop, mobile and keyboard interaction checks. The current package has static link-closure checks, a minimal DOM control test, and visual review of all 22 final PDF pages. Its local browser opening was denied by the supplied browser policy; that denial was not bypassed. No public deployed route is claimed here.
+Before claiming a live launch, the existing publisher must verify the actual deployed HTML/PDF bytes and evidence links, then perform desktop, mobile and keyboard interaction checks. The current package has static link-closure checks, a minimal DOM control test, and visual review of all 24 final PDF pages. Its local browser opening was denied by the supplied browser policy; that denial was not bypassed. No public deployed route is claimed here.
 
 ## Smallest economically useful pilot
 
 Prepare one owner-supplied diagnostic acceptance packet with lawful real inputs, a concrete beneficiary decision, an unchanged acceptance criterion, a competent conventional comparator, a separate acceptor and complete cost recording. The detailed one-bundle protocol is in [VALUE-MECHANISM.md](VALUE-MECHANISM.md). Any customer outreach, executable purchase offer, financial signing or payment needs separately scoped authorization. No demand or price is presumed by this source handoff.
+
+## Generated asset correction for the existing CI gate
+
+The unchanged repository generator was run against an isolated public checkout at `5aef0c1a` with the corrected Discoverability HTML. This PR includes only its three required generated outputs: `docs/service-worker.js`, `docs/assets/service-worker.js`, and `docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js`. Their program and cache policy are unchanged after normalizing the generated cache and asset constants. The existing publisher retains deployment and release authority. `evidence/generated-service-workers.json` binds the 433 inputs and exact outputs; no alternate publisher or workflow was introduced.

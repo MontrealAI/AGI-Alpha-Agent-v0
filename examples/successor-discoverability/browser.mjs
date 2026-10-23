@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Public local UI: actual workbench construction; synthetic observations; inert imports.
-import { createCompiler, inspectProgram, executeProgram, canonical } from './compiler.mjs';
+import { COMPILER_VERSION, createCompiler, inspectProgram, executeProgram, canonical } from './compiler.mjs';
 import { digitalFault, mixtureAssay, acquireSynthetic } from './domains.mjs';
 import { networkProblem, acquireNetwork } from './heldout.mjs';
 import { createDiscoverabilityWorkbench, discoverabilityMission } from './workbench-adapter.mjs';
@@ -184,7 +184,7 @@ export async function boot({sourceHash,sourceManifest}) {
     }catch(error){status('Import rejected: '+error.message);}
     finally{active=null;setBusy(false);event.target.value='';}
   });
-  $('source-identity').textContent='Run discoverability-20261022-v1 · source closure SHA-256 '+sourceHash+' · frozen compiler ece8f2aa1480';
+  $('source-identity').textContent='Run discoverability-20261022-v1 · source closure SHA-256 '+sourceHash+' · current compiler '+COMPILER_VERSION+' · frozen scientific predecessor ece8f2aa1480';
   details({sourceHash,sourceManifest,admission:'HOLD',settlement:'NOT_CONNECTED'});
   status('Ready. The next click runs the compiler on this device.');setBusy(false);
 }

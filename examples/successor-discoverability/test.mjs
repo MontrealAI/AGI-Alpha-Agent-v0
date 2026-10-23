@@ -123,3 +123,20 @@ test('JSON frame refuses hidden or unsupported transport values',()=>{
  const b={value:1};Object.defineProperty(b,'hidden',{value:1});assert.throws(()=>snapshot(b),/non-JSON/);
  assert.throws(()=>snapshot(-0),/integer/);assert.throws(()=>snapshot('\ud800'),/surrogate/);
 });
+
+test('same-goal low-budget mission needs no grammar but still pays framing and serialization',async()=>{
+ const p=clone(digitalFault());for(const w of p.worlds)w.goal='retain-for-secondary-check';
+ for(const strategy of ['cached','fresh']){
+  const compiler=createCompiler({strategy}),r=await compiler.compile(p,{budget:2000});
+  assert.equal(r.status,'COMPILED');assert.equal(r.program.totalCost,0);assert.deepEqual(r.program.experiments,[]);
+  assert.deepEqual(r.certificate,{decisionIdentifiable:true,optimalWithinGrammar:true,searchComplete:true,acceptedForBudget:true});
+  assert.equal(r.goalPairCount,0);assert.equal(r.templateCount,0);assert.equal(r.libraryHit,false);
+  assert.deepEqual(compiler.stats(),{hits:0,misses:0,entries:0});
+  assert.equal(r.work.counters.grammarNodes,undefined);assert.equal(r.work.counters.responseEvaluation,undefined);
+  assert.ok(r.work.counters.frame>0);assert.ok(r.work.counters.serializedUnits>0);assert.ok(r.work.used<=2000);
+  assert.equal(Object.values(r.work.counters).reduce((s,x)=>s+x,0),r.work.used);
+  assert.equal(executeProgram(p,r.program,[]).decision,'retain-for-secondary-check');
+  const exhausted=await createCompiler({strategy}).compile(p,{budget:r.work.used-1});
+  assert.equal(exhausted.status,'BUDGET_EXHAUSTED');assert.equal(exhausted.program,undefined);
+ }
+});
