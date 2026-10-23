@@ -77,8 +77,8 @@ EDITIONS: tuple[dict[str, Any], ...] = (
         "journey": "../../successor/work/",
         "action": ("Open the existing capability workbench", "Ouvrir l’atelier de capacités existant"),
         "scope": (
-            "Use the existing browser workbench for its supported mathematical families and evidence packs. The new thermal-witness adapter is a separate native candidate in PR#4871; it is not made browser-executable by this guide.",
-            "Utiliser l’atelier Web existant pour ses familles mathématiques prises en charge et ses paquets de preuves. Le nouvel adaptateur thermal-witness est un candidat natif distinct dans la PR nº4871; ce guide ne le rend pas exécutable dans le navigateur.",
+            "Use the existing browser workbench for its supported mathematical families and evidence packs. The new thermal-witness adapter is a separate native candidate in PR#4871; it is not made browser-executable by this guide. The complete source ZIP includes the original vector figures, bibliography and selected evidence.",
+            "Utiliser l’atelier Web existant pour ses familles mathématiques prises en charge et ses paquets de preuves. Le nouvel adaptateur thermal-witness est un candidat natif distinct dans la PR nº4871; ce guide ne le rend pas exécutable dans le navigateur. Le ZIP complet des sources contient les figures vectorielles originales, la bibliographie et les preuves sélectionnées.",
         ),
         "steps": (
             (
@@ -99,11 +99,6 @@ EDITIONS: tuple[dict[str, Any], ...] = (
                 "Complete supplied source and evidence ZIP",
                 "Sources et preuves complètes fournies ZIP",
                 ARCHIVE + "Autonomous_Enterprises_SUCCESSOR_Omega_Complete_Source.zip",
-            ),
-            (
-                "Original vector figures ZIP",
-                "Figures vectorielles originales ZIP",
-                ARCHIVE + "Autonomous_Enterprises_SUCCESSOR_Omega_Figures.zip",
             ),
             ("Original implementation and evidence", "Implémentation et preuves originales", REPO + "pull/4871"),
         ),

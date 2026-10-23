@@ -145,13 +145,14 @@ FOUNDRY_140_EXTRA_FILES = ENTERPRISE_139_PRESENTATION_EXTRA_FILES | {
 # The three bilingual guides and reconciled Discoverability add four cache inputs.
 # Admit only this complete generated worker edition; all older editions remain exact.
 RESEARCH_GUIDES_140_EXTRA_FILES = FOUNDRY_140_EXTRA_FILES | {
-    "docs/service-worker.js": (23479, "123462416d9487651465128e1417e4b849412889d9e9bc240d14111c77f12817"),
-    "docs/assets/service-worker.js": (23915, "14bcee725288f1e3d9d33608f8ab363b2331b7646f3bd4dd0006ddd3903a6a53"),
+    "docs/service-worker.js": (23479, "5f05b38dad6d87cce42acbe67ff2a8c725bec3d463086cc3a593045c36db7628"),
+    "docs/assets/service-worker.js": (23915, "0f85ed279fbe56ba0d7976354254fa7699fce0f962ac8778161bcddc33513cc3"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26531,
-        "bc6bc7aba1a36ee1521f5f74693fa3f451c1212941bb25f1fcc9ad88a109418b",
+        "927e55a84b0ef762931ca864c7695f4156b11fcca6e8c2dde72c261d0c99f3e4",
     ),
 }
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 

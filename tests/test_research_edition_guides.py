@@ -3,6 +3,7 @@
 
 import copy
 import hashlib
+import json
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
@@ -64,3 +65,15 @@ def test_edition_generator_and_catalogue_identities_are_current() -> None:
     for bad_path in ("docs/reports/../index.html", "https://example.com/guide.html", "docs/reports/guide/run.py"):
         with pytest.raises(ValueError):
             resource_records({"reading": {**resource, "path": bad_path}})
+
+
+def test_archive_actions_have_published_download_bindings() -> None:
+    bindings = json.loads((ROOT / "docs/reports/research-editions-20261023/DOWNLOAD_BINDINGS.json").read_text())
+    urls = {url for edition in EDITIONS for _, _, url in edition["downloads"] if url.endswith(".zip")}
+    assert urls == set(bindings["archives"])
+    for url in urls:
+        record = bindings["archives"][url]
+        assert record["published"] is True
+        assert record["bytes"] > 0
+        assert len(bytes.fromhex(record["sha256"])) == 32
+        assert record["availability"] and record["verification"] and record["record"].startswith("https://github.com/")
