@@ -37,7 +37,7 @@ class OverlayTests(unittest.TestCase):
         target = self.root / "derived"
         result = overlay.apply_overlay(self.source, target)
         self.assertTrue(result["verified"])
-        self.assertEqual(result["derivedMembersChecked"], 458)
+        self.assertEqual(result["derivedMembersChecked"], 459)
         self.assertEqual(overlay.digest((self.source / "study/evaluation/queue.mjs").read_bytes()), before)
         self.assertEqual(before, overlay.ORIGINAL_QUEUE_SHA256)
         self.assertEqual(overlay.verify_overlay(target), result)
@@ -100,6 +100,20 @@ class OverlayTests(unittest.TestCase):
         self.assertFalse((self.source / name).exists())
         self.assertEqual({str(path.relative_to(self.source)) for path in self.source.rglob("*")}, before)
         self.assertEqual((self.source / "MANIFEST.sha256").read_bytes(), manifest_before)
+
+    def test_every_runtime_correction_is_installed_and_originals_remain_exact(self) -> None:
+        """Both runtime fixes and both regressions reach the complete derived copy."""
+        target = self.root / "all-corrections"
+        overlay.apply_overlay(self.source, target)
+        for relative, expected in overlay.OVERRIDES.items():
+            with self.subTest(derived=relative):
+                self.assertEqual(overlay.digest((target / relative).read_bytes()), expected)
+        for relative, expected in overlay.ORIGINAL_REPLACEMENTS.items():
+            with self.subTest(original=relative):
+                self.assertEqual(overlay.digest((self.source / relative).read_bytes()), expected)
+        receipt = overlay.verify_overlay(target)["receipt"]
+        self.assertEqual(receipt["schema"], "tae.research-runtime-overlay.v2")
+        self.assertEqual(len(receipt["overrides"]), 4)
 
 
 if __name__ == "__main__":

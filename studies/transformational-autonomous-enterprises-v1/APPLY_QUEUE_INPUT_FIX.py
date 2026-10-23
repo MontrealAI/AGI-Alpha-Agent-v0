@@ -11,11 +11,17 @@ import urllib.request
 ARCHIVE_SHA256 = "a622657df828aefb4a081d1e0f5d1fb665fcf69991383245b6ece7cb66bee7ee"
 MANIFEST_SHA256 = "c7f6b7fa6c0ef674106d6428e675fd4a91bdb0c61391f2251852e9fab1f8cdb4"
 ORIGINAL_QUEUE_SHA256 = "6569a7fd1d749283f5959343465bc41c812f36446ec16266016042120e46878a"
+ORIGINAL_REPLACEMENTS = {
+    "study/evaluation/queue.mjs": ORIGINAL_QUEUE_SHA256,
+    "study/integration/mission-delivery.mjs": "8346eed178d93a96a445b4bf5ea5c0b1921fe2807d0cb9371325dc2c5f11439f",
+}
 OVERRIDES = {
     "study/evaluation/queue.mjs": "f9d637b607a31c16160254659f6a29cd262373c4201d65a5aba570b48475ea80",
     "study/evaluation/queue-input.test.mjs": "1a47f6004e395f99e375a920b663c5c41563aff8ad0ce5c402eca6a765c58d7e",
+    "study/integration/mission-delivery.mjs": "cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487",
+    "study/integration/execution-identity.test.mjs": "1eb36919630bac62eb7d4e96456abbb440480cddb95dde32a88599fdcadfc4cb",
 }
-OVERLAY_COMMIT = "ca5cb19fbff9fff2bc4cfc6ea232dd07760b9581"
+OVERLAY_COMMIT = "344155708afce8fa4790d7826b68568ae64d0edf"
 BASE = (
     "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
     + OVERLAY_COMMIT
@@ -54,7 +60,7 @@ def original_inventory(root: Path) -> tuple[bytes, dict[str, str]]:
         if relative in entries:
             raise ValueError("Duplicate manifest member")
         entries[relative] = expected
-    if len(entries) != 457 or entries.get("study/evaluation/queue.mjs") != ORIGINAL_QUEUE_SHA256:
+    if len(entries) != 457 or any(entries.get(name) != expected for name, expected in ORIGINAL_REPLACEMENTS.items()):
         raise ValueError("Original companion inventory differs")
     return raw, entries
 
@@ -97,14 +103,15 @@ def verify_overlay(root: Path) -> dict[str, object]:
 def overlay_receipt() -> dict[str, object]:
     """Describe the separate source epoch without relabeling frozen evidence."""
     return {
-        "schema": "tae.queue-input-overlay.v1",
+        "schema": "tae.research-runtime-overlay.v2",
         "originalArchiveSha256": ARCHIVE_SHA256,
         "originalManifestSha256": MANIFEST_SHA256,
         "originalQueueSha256": ORIGINAL_QUEUE_SHA256,
+        "originalReplacedFiles": ORIGINAL_REPLACEMENTS,
         "correctionSourceCommit": OVERLAY_COMMIT,
         "overrides": OVERRIDES,
         "originalManifestIsHistorical": True,
-        "scope": "Derived local research queue source; frozen scored results and archive remain unchanged",
+        "scope": "Derived local queue and source-bound admission corrections; frozen scored results stay unchanged",
         "installedFourRepositoryAcceptance": False,
         "authority": [],
     }
