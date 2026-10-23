@@ -21,6 +21,65 @@ capabilities, freeze their bytes, then invoke them on later tasks in the same mi
 This additive source preview preserves SUCCESSOR Ω, Discovery Lab and all six research stages.
 Installed cross-repository receivers, public deployment and the operational real-task pilot remain unqualified.
 
+<!-- featured-mission-intelligence -->
+## Foundation: AGI ALPHA
+### A Scalable Substrate for Intelligence Organizations
+
+**AGI ALPHA organizes intelligence. TRANSFORMATIONAL INTELLIGENCE changes the conditions of discovery.**
+The AGI ALPHA paper proposes a testable architecture and evaluation program for coordinated, governed,
+evidence-producing work across agents, jobs, validators, tools, memory, markets, settlement and capacity allocation.
+It does not claim achieved AGI, ASI, empirical state of the art, autonomous sovereignty, energy abundance
+or civilization-scale capability.
+
+**[Read the foundational AGI ALPHA paper →](https://github.com/MontrealAI/agialpha-first-real-loop/blob/main/docs/manuscript/AGI_ALPHA_Unified_Publication_Final.pdf)** ·
+[Announcement on X](https://x.com/Montreal_AI/status/2064731302524330046) ·
+[TRANSFORMATIONAL INTELLIGENCE and the research series](#featured-research)
+
+## Related architecture research
+
+### Mission-Sovereign Successor · v5.0.0
+A proposed design for governed mission capability: manufacture useful capability, require fresh proof for
+mission-bounded superiority, and keep authority within that proof. A research doctrine, not a report of achieved
+general capability or deployed mission sovereignty.
+
+**[Read Mission-Sovereign Successor (v5.0.0 PDF) →](https://montrealai.github.io/goalos-singularity-navigator-omega-seize-agi-alpha-or-agi-club-owner-access-v1/research/GoalOS_Singularity_Navigator_Omega_SEIZE_Mission_Sovereign_Successors_v5_0_0_A4.pdf)** ·
+[Paper announcement on X](https://x.com/Montreal_AI/status/2086510829629768005)
+
+### NEURAL-SYMBOLIC SUCCESSOR Ω
+**Customer-Owned Mission Intelligence · Current edition: v1**
+
+A proposed portable mission institution with four distinct programs: **WORLD** maintains beliefs,
+**POLICY** proposes actions, **PROOF** records independently demonstrated claims, and **AUTHORITY**
+defines permitted actions. A successor may inherit memory, provenance, failures, program lineage
+and operating history, but proof status and production authority start empty and must be earned anew.
+Architecture and product constitution, not a claim of complete implementation or achieved general autonomous capability.
+
+**[Read the current architecture paper (v1 PDF) →](https://montrealai.github.io/neuralsymbolicsuccessoromegav1.pdf)** ·
+[v1 announcement on X](https://x.com/Montreal_AI/status/2092617366785908841) ·
+[Earlier edition (v0 PDF)](https://montrealai.github.io/neuralsymbolicsuccessoromegav0.pdf) ·
+[v0 announcement](https://x.com/Montreal_AI/status/2092451554049540118)
+
+### SUCCESSOR Ω × AGI JOBS
+A proposed connection between mission-governed intelligence and sealed work orders that manufacture, test,
+operate and renew capabilities. The paper connects institutional design with a work-order mechanism;
+it does not establish a fully deployed or commercially proven autonomous institution.
+
+**[Read SUCCESSOR Ω × AGI JOBS (v2 PDF) →](https://montrealai.github.io/successor-omega-x-agi-jobs-v2.pdf)** ·
+[Paper announcement on X](https://x.com/Montreal_AI/status/2087522091868283128)
+
+### Gym, Specialist ASI & Successor Ω
+A proposed institutional separation: Mission Gym supplies controlled, versioned, rights-cleared mission environments;
+Specialist ASI is an earned, mission-bounded designation requiring comparison against strong alternatives on fresh
+protected work; Successor Ω requires separate admission with scoped, expiring, revocable authority.
+Training is not certification, and descendants may inherit memory, not authority. These are research design requirements,
+not a claim that the designation or deployed institution has been achieved.
+
+**[Read Gym, Specialist ASI & Successor Ω (v2.1.0 PDF) →](https://montrealai.github.io/GoalOS_Gym_Specialist_ASI_Successor_Omega_v2_1_0_US_LETTER.pdf)** ·
+[Paper announcement on X](https://x.com/Montreal_AI/status/2086933432563622391)
+
+**[Featured thread from MONTREAL.AI →](https://x.com/Montreal_AI/status/2096976110479175692)**
+<!-- /featured-mission-intelligence -->
+
 <!-- featured-research-papers -->
 ## Featured research
 
