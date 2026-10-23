@@ -107,7 +107,7 @@ HELD_SELECTIONS = (
     (
         "agent-release.yml",
         "regression",
-        "Full offline regression including notebooks",
+        "Offline regression including notebooks (four held native tests excluded)",
         "python -m scripts.run_local_tests",
         "python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 "
         "--cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml",
