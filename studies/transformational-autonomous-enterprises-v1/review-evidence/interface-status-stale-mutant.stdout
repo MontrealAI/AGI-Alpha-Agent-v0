@@ -1,0 +1,47 @@
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✔ a page observing an existing run returns idle without claiming its result or posting an action (23.01191ms)
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✔ slow status reads never overlap and a still-busy reply schedules one next read (16.62799ms)
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✔ failed or malformed refreshes retain busy guards and report uncertainty until recovery (20.430797ms)
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✔ leaving before a refresh cancels its timer and returning reads current state (3.974298ms)
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✔ page lifecycle aborts an in-flight refresh, fences stale replies and refreshes on return (9.488167ms)
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✖ stop cancels observation and a stale busy response cannot undo the stopped state (9.107647ms)
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✔ a run owned by this page keeps its existing request lifecycle without status polling (14.855025ms)
+Controlled DOM/fetch/time; exact interface script SHA256 f777f5af824bce7f6c584f0f6a5f141c14b9dde9eb2d33cfcdcbfc579d769152
+✔ a failed stop keeps busy guards and resumes observation without claiming a stop (13.472855ms)
+✔ restore stays guarded during observation and keeps historical proof and authority requirements (10.795969ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 456.566718
+
+✖ failing tests:
+
+test at ../../../dev/shm/companion-review/interface-status-stale-mutant/status.test.mjs:136:1
+✖ stop cancels observation and a stale busy response cannot undo the stopped state (9.107647ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-status-stale-mutant/status.test.mjs:146:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

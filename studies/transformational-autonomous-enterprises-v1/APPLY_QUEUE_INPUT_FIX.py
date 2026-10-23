@@ -14,6 +14,7 @@ ORIGINAL_QUEUE_SHA256 = "6569a7fd1d749283f5959343465bc41c812f36446ec162660160421
 ORIGINAL_REPLACEMENTS = {
     "study/evaluation/queue.mjs": ORIGINAL_QUEUE_SHA256,
     "study/integration/mission-delivery.mjs": "8346eed178d93a96a445b4bf5ea5c0b1921fe2807d0cb9371325dc2c5f11439f",
+    "study/interface/app.js": "55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66",
 }
 OVERRIDES = {
     "study/evaluation/queue.mjs": "f9d637b607a31c16160254659f6a29cd262373c4201d65a5aba570b48475ea80",
@@ -21,8 +22,10 @@ OVERRIDES = {
     "study/integration/mission-delivery.mjs": "14f46a110f182b462963fb39619c9dcd3a87a2f24a9e0b92b842b7a4ad20ea68",
     "study/integration/execution-identity.test.mjs": "1eb36919630bac62eb7d4e96456abbb440480cddb95dde32a88599fdcadfc4cb",
     "study/integration/bridge-lifecycle.test.mjs": "e7109d59dcafe8a29b3f7498fa805f4876f3b586ab80ee8dc00dc8e80149fe3d",
+    "study/interface/app.js": "003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c",
+    "study/interface/status.test.mjs": "efc671d0c998d7843a88be38e264880f655ddf7ed6baa71f9f0ae067e6f539d3",
 }
-OVERLAY_COMMIT = "7620b474de18a61a36ca09f6e11e3f33ad42e1da"
+OVERLAY_COMMIT = "aaf2074de0c3df4dda27547468d5a57efb3ac39a"
 BASE = (
     "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
     + OVERLAY_COMMIT
@@ -104,7 +107,7 @@ def verify_overlay(root: Path) -> dict[str, object]:
 def overlay_receipt() -> dict[str, object]:
     """Describe the separate source epoch without relabeling frozen evidence."""
     return {
-        "schema": "tae.research-runtime-overlay.v3",
+        "schema": "tae.research-runtime-overlay.v4",
         "originalArchiveSha256": ARCHIVE_SHA256,
         "originalManifestSha256": MANIFEST_SHA256,
         "originalQueueSha256": ORIGINAL_QUEUE_SHA256,
@@ -112,7 +115,7 @@ def overlay_receipt() -> dict[str, object]:
         "correctionSourceCommit": OVERLAY_COMMIT,
         "overrides": OVERRIDES,
         "originalManifestIsHistorical": True,
-        "scope": "Derived queue, source-bound admission, captured inputs and bridge lifecycle corrections; frozen scores unchanged",
+        "scope": "Derived queue, admission, input, bridge lifecycle and UI status corrections; frozen scores unchanged",
         "installedFourRepositoryAcceptance": False,
         "authority": [],
     }
