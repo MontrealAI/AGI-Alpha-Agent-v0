@@ -51,6 +51,8 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
   Vincent Boucher · MONTREAL\.AI · 2026-10-21 · English PDF.
 - **[Out\-Evolve ♾️](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/Out_Evolve.pdf)** · A proposed architecture for building experimentation and production capabilities that make further discoveries and successor capabilities possible\.
   Vincent Boucher · MONTREAL\.AI · 2026-10-20 · English PDF.
+- **[TRANSFORMATIONAL AUTONOMOUS ENTERPRISES](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/transformational-autonomous-enterprises-v1.pdf)** · A finite graph\-capability study connects four source runtimes and five local\-EVM contracts: fresh mission checks remain, repeated qualification work falls, direct\-specialist wins and unproven economic value are retained\.
+  MONTREAL\.AI — Writer \#4 research edition · 2026-10-23 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
