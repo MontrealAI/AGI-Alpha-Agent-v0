@@ -1,0 +1,434 @@
+{
+  "schema": "tae.bridge-lifecycle-review.v1",
+  "recordedAt": "2026-10-23T19:37:08.582701+00:00",
+  "baseCommit": "5bbc8eae8fb53a75caf044065f1349eb8ad16c7f",
+  "productiveSourceCommit": "7620b474de18a61a36ca09f6e11e3f33ad42e1da",
+  "productiveSourceTree": "1ee7b334ee555c31825479fc9ddb59a0cc72e9c2",
+  "formalFindings": [
+    {
+      "thread": "PRRT_kwDONwDjTc6vvggS",
+      "commentId": 4363365163,
+      "priority": "P2",
+      "problem": "Cancellation during awaited first bridge initialization was observed only after bridge.run launched.",
+      "correction": "Recheck the same live AbortSignal immediately after initialization and before run."
+    },
+    {
+      "thread": "PRRT_kwDONwDjTc6vvggd",
+      "commentId": 4363365179,
+      "priority": "P2",
+      "problem": "A rejected cached initializer permanently poisoned all later attempts.",
+      "correction": "On rejection clear only the identical cached initializer. Retain successful initialization and do not clear a newer promise when a stale waiter fails."
+    }
+  ],
+  "additionalCoordinatorFinding": {
+    "problem": "deliver prepared a binding from caller objects, then reused the mutable mission/result across asynchronous admission and bridge initialization. Changing missionId/kind during loading sent and recorded a replacement ID while keeping original binding/proof.",
+    "reproduced": true,
+    "oldObserved": {
+      "admitted": "bridge-input-capture",
+      "execution": "caller-replaced-mission",
+      "record": "caller-replaced-mission",
+      "binding": "bridge-input-capture",
+      "proof": "bridge-input-capture",
+      "history": [
+        "caller-replaced-mission"
+      ]
+    },
+    "correction": "Capture mission and result at entry with the existing canonical clone before prepareDelivery and every await. Keep the original AbortSignal live.",
+    "scope": "Ordinary source-level caller-input race; the controlled fixture is not native/installed acceptance.",
+    "parentInterfaceInspection": {
+      "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+      "commit": "9cb90e8c189f146eff7d166e249d9474792c4864",
+      "path": "examples/successor-project/engine.mjs",
+      "gitBlob": "a1cec5ce7be78492f740bae2ba2e004ed0089fda",
+      "observation": "Project validation accepts serialized JSON strings or objects; delivery key hashing accepts strings/bytes, making serialized JSON strings the verified common representation. Strings are immutable. Existing parent validation remains unchanged; no new Buffer/view/object acceptance or limitation is introduced."
+    }
+  },
+  "change": {
+    "file": "study/integration/mission-delivery.mjs",
+    "beforeSha256": "cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487",
+    "lifecycleOnlySha256": "50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39",
+    "afterSha256": "14f46a110f182b462963fb39619c9dcd3a87a2f24a9e0b92b842b7a4ad20ea68",
+    "testFile": "study/integration/bridge-lifecycle.test.mjs",
+    "testSha256": "e7109d59dcafe8a29b3f7498fa805f4876f3b586ab80ee8dc00dc8e80149fe3d",
+    "allSourceOutsideTwoCorrectionSitesExact": true,
+    "preserved": [
+      "Capability-free exact source identity and real capability definition identity",
+      "All original input/output/authority/proof assertions",
+      "Resource ceilings and bounded queue",
+      "Live AbortSignal before admission/prelaunch/after bounded execution",
+      "Original parent-project validation and serialized JSON byte strings"
+    ],
+    "noProductionDependencyInjectionOrAlternateSourceRoute": true
+  },
+  "tests": {
+    "runtime": "v24.19.0",
+    "exactSourceFixture": {
+      "scope": "The test copies exact productive module bytes, asserts equality and prints SHA-256, then supplies a marked controlled source-bridge import dependency. It runs the real mission solver and independent artifact checker. No repository bridge, native worker, Git operation, EVM, held browser/native objective or installed pipeline is executed. Two marked controlled returns exercise only record identity/history construction.",
+      "cases": [
+        "Abort during initialization stops prelaunch and a later fresh delivery can use cached success",
+        "First initializer rejection permits a retry; later success is retained",
+        "Concurrent Promise waiters share one rejection then one fresh initializer",
+        "A delayed stale thenable waiter cannot clear a newer initializer",
+        "Caller mutation during bridge initialization cannot alter execution, transfer records, proof-bound identity or retained history",
+        "Caller mutation while admission waits cannot replace captured mission/result or inject authority"
+      ],
+      "bindingDiagnostics": "review-evidence/bridge-input-capture-observed-original.stdout"
+    },
+    "preCorrectionSix": {
+      "passed": 0,
+      "failed": 6,
+      "sourceSha256": "cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487",
+      "stdout": "review-evidence/bridge-six-baseline.stdout",
+      "stderr": "review-evidence/bridge-six-baseline.stderr"
+    },
+    "lifecycleOnlyInputRaceProbe": {
+      "passed": 4,
+      "failed": 2,
+      "sourceSha256": "50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39",
+      "stdout": "review-evidence/bridge-input-capture-observed-original.stdout",
+      "stderr": "review-evidence/bridge-input-capture-observed-original.stderr"
+    },
+    "correctedSix": {
+      "passed": 6,
+      "failed": 0,
+      "stdout": "review-evidence/bridge-input-capture-fixed.stdout",
+      "stderr": "review-evidence/bridge-input-capture-fixed.stderr"
+    },
+    "unconditionalResetMutationControl": {
+      "passed": 5,
+      "failed": 1,
+      "expectedFailure": "The stale-waiter regression fails if the promise identity guard is removed. This is a disposable test mutant, not productive source.",
+      "stdout": "review-evidence/bridge-six-unconditional-reset.stdout",
+      "stderr": "review-evidence/bridge-six-unconditional-reset.stderr"
+    },
+    "preliminaryTestSetupFailure": {
+      "reason": "The initial mutation test tried to change solve()s frozen result. Retained separately; the meaningful original/corrected regression uses a mutable structuredClone and then reproduces/refuses real caller mutation.",
+      "stdout": "review-evidence/bridge-input-capture-preliminary-test-setup-failure.stdout",
+      "stderr": "review-evidence/bridge-input-capture-preliminary-test-setup-failure.stderr"
+    },
+    "completeDerivedSelected": {
+      "passed": 44,
+      "failed": 0,
+      "denominators": {
+        "candidate": 12,
+        "admission": 8,
+        "queueInput": 2,
+        "capabilityFreeIdentity": 8,
+        "bridgeLifecycleAndInputCapture": 6,
+        "savedEvidenceJoin": 8
+      },
+      "command": "node --test study/enterprise/development.test.mjs study/integration/admission.test.mjs study/evaluation/queue-input.test.mjs study/integration/execution-identity.test.mjs study/integration/bridge-lifecycle.test.mjs study/integration/join.test.mjs",
+      "stdout": "review-evidence/bridge-capture-derived-selected.stdout",
+      "stderr": "review-evidence/bridge-capture-derived-selected.stderr"
+    },
+    "freshDerivedSmoke": {
+      "passed": true,
+      "candidate": 12,
+      "queueAndCheckerControls": 9,
+      "command": "node study/reproduce.mjs --smoke",
+      "stdout": "review-evidence/bridge-capture-derived-smoke.stdout",
+      "commands": [
+        "review-evidence/bridge-capture-smoke-command-1.txt",
+        "review-evidence/bridge-capture-smoke-command-2.txt"
+      ],
+      "receipt": "review-evidence/bridge-capture-smoke-reproduction.json"
+    },
+    "overlay": {
+      "passed": 6,
+      "failed": 0,
+      "stdout": "review-evidence/bridge-capture-overlay-tests.stdout",
+      "stderr": "review-evidence/bridge-capture-overlay-tests.stderr"
+    },
+    "localCompleteApply": {
+      "passed": true,
+      "stdout": "review-evidence/bridge-capture-overlay-apply.stdout"
+    },
+    "localCompleteVerify": {
+      "passed": true,
+      "checked": 460,
+      "stdout": "review-evidence/bridge-capture-overlay-verify.stdout"
+    },
+    "standaloneAnonymousPinnedDownload": {
+      "passed": true,
+      "allFiveOverrideFilesDownloaded": true,
+      "stdout": "review-evidence/bridge-capture-overlay-download.stdout"
+    },
+    "downloadedCompleteVerify": {
+      "passed": true,
+      "checked": 460,
+      "stdout": "review-evidence/bridge-capture-overlay-download-verify.stdout"
+    },
+    "originalManifest": {
+      "passed": true,
+      "originalFiles": 457,
+      "mismatches": 0,
+      "stdout": "review-evidence/bridge-capture-original-manifest.stdout"
+    },
+    "ruff": {
+      "version": "0.12.5",
+      "repositoryConfigGitBlob": "09d97eb0e052072dbc748bbd72b7cbddfc4515be",
+      "passed": true,
+      "stdout": "review-evidence/bridge-capture-overlay-ruff.stdout"
+    },
+    "pythonSyntax": {
+      "passed": true,
+      "command": "python3 -m py_compile APPLY_QUEUE_INPUT_FIX.py test_queue_input_overlay.py"
+    },
+    "strictMypy": {
+      "run": false,
+      "reason": "Unavailable in known runtimes; prior disclosure retained"
+    },
+    "notRun": "Full setup/UI/four-source/native/EVM driver, held native or browser objectives, production installation or public-site acceptance"
+  },
+  "completeOverlay": {
+    "schema": "tae.research-runtime-overlay.v3",
+    "helper": "APPLY_QUEUE_INPUT_FIX.py",
+    "helperSha256": "c563fb5bb2c0f9be2f2893a1a80d6fa73afe740aed1917762043a722472aae90",
+    "testSha256": "e3d55e5b52b565355926e734019fe8182be7349bed8e01bb0139b81e7c3842db",
+    "readmeSha256": "63ad715d177635053e74a392b0c760159dd6db58c4954e23db545aefb3198280",
+    "sourceCommit": "7620b474de18a61a36ca09f6e11e3f33ad42e1da",
+    "verifiedOriginalManifestFiles": 457,
+    "derivedFileIdentitiesChecked": 460,
+    "replacedRuntimeFiles": [
+      "study/evaluation/queue.mjs",
+      "study/integration/mission-delivery.mjs"
+    ],
+    "addedRegressions": [
+      "study/evaluation/queue-input.test.mjs",
+      "study/integration/execution-identity.test.mjs",
+      "study/integration/bridge-lifecycle.test.mjs"
+    ],
+    "allProductiveCorrectionsReachSeparateActualCompleteCompanion": true,
+    "parentAliasRefusalRetained": true,
+    "frozenZipAndOldManifestUnchanged": true,
+    "primaryRunCommand": "python3 APPLY_QUEUE_INPUT_FIX.py --download Successor_Omega_Harness Successor_Omega_Harness_Engineering_Fixed && node Successor_Omega_Harness_Engineering_Fixed/study/quickstart.mjs"
+  },
+  "preserved": {
+    "frozenArchiveSha256": "a622657df828aefb4a081d1e0f5d1fb665fcf69991383245b6ece7cb66bee7ee",
+    "originalManifestSha256": "c7f6b7fa6c0ef674106d6428e675fd4a91bdb0c61391f2251852e9fab1f8cdb4",
+    "originalArchiveSourceBanksScoredRecordsAndPartsUnchanged": true,
+    "priorQueueOverlayParentAliasAndAdmissionEvidenceRetained": true,
+    "earlierFailuresNotRemoved": true,
+    "existingHeldOperationsUnchanged": true
+  },
+  "rawEvidence": [
+    {
+      "path": "review-evidence/bridge-capture-derived-selected.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-derived-selected.stdout",
+      "bytes": 5330,
+      "sha256": "a98117431f2d2a95a2049bab231ffb7c958b781f8f514d51caae84e1b58812a8"
+    },
+    {
+      "path": "review-evidence/bridge-capture-derived-smoke.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-derived-smoke.stdout",
+      "bytes": 240,
+      "sha256": "1fd640866698d1c769fb282dd59edc63fd0381e2c26b6cf5eb051e49671bb40f"
+    },
+    {
+      "path": "review-evidence/bridge-capture-original-manifest.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-original-manifest.stdout",
+      "bytes": 87,
+      "sha256": "7c13f75beb6b0bd0190c58c1d71b9ec08f7e57bf926a3b20a4d5ab4ec9cbccaa"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-apply.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-apply.stdout",
+      "bytes": 1622,
+      "sha256": "5e2d1404e1167063196d4641258d54568e136d05190602da6af53df65b37fecc"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-download-verify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-download-verify.stdout",
+      "bytes": 1622,
+      "sha256": "5e2d1404e1167063196d4641258d54568e136d05190602da6af53df65b37fecc"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-download.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-download.stdout",
+      "bytes": 1622,
+      "sha256": "5e2d1404e1167063196d4641258d54568e136d05190602da6af53df65b37fecc"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-ruff.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-ruff.stdout",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-tests.stderr",
+      "bytes": 104,
+      "sha256": "a36400c65a2a29b59f15180cd5ccf98617cc6c81cbdf42fa72654875237479f1"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-tests.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-verify.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-overlay-verify.stdout",
+      "bytes": 1622,
+      "sha256": "5e2d1404e1167063196d4641258d54568e136d05190602da6af53df65b37fecc"
+    },
+    {
+      "path": "review-evidence/bridge-capture-selected.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-capture-selected.stdout",
+      "bytes": 4607,
+      "sha256": "8036b974112a4e4202a25a8dee941c30d5733a06455145e6e05dee23e0b60c4d"
+    },
+    {
+      "path": "review-evidence/bridge-capture-smoke-command-1.txt",
+      "bytes": 1292,
+      "sha256": "e3f272f4ff8b186acaff7245244868c1603fee9f9fc88b437543d0a2231388e2"
+    },
+    {
+      "path": "review-evidence/bridge-capture-smoke-command-2.txt",
+      "bytes": 1532,
+      "sha256": "cef9ef6d74ae384462d24b0654ab7876abc3bb4da9e112100591f66010ea1277"
+    },
+    {
+      "path": "review-evidence/bridge-capture-smoke-reproduction.json",
+      "bytes": 700,
+      "sha256": "d8b2775bdc98c6a7393814484ded7a58da74a50883468a5f50dabef61cb6619e"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-fixed.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-fixed.stdout",
+      "bytes": 1673,
+      "sha256": "91414b185c3bc5f3a4f20b29899ed6c9fa3a9ebd80168647d588acd6f4f5b1b7"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-observed-original.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-observed-original.stdout",
+      "bytes": 4497,
+      "sha256": "7ffbdd5cbef08b8a05d85b5910942a891e570f34622e55eeb939a520d2600f8f"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-original.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-original.stdout",
+      "bytes": 4260,
+      "sha256": "33ddefd81c2a61137e65b5b363858dc84d1e384500d5152935ddd06f9e8a3860"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-preliminary-test-setup-failure.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-input-capture-preliminary-test-setup-failure.stdout",
+      "bytes": 2958,
+      "sha256": "ec8cbe5d8fc5db83c6b11595b1f7eedff7882325cc79a6260e3c10dd934f7af6"
+    },
+    {
+      "path": "review-evidence/bridge-lifecycle-fixed.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-lifecycle-fixed.stdout",
+      "bytes": 993,
+      "sha256": "f7922576609b3baf164d714ef0eb7b16fbfbd96596f8f9ff30222a49019d6982"
+    },
+    {
+      "path": "review-evidence/bridge-lifecycle-original.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-lifecycle-original.stdout",
+      "bytes": 3942,
+      "sha256": "c839ccc4a0dc8119994150dc465b6fa68fc879cb294dfaa8702278ef158fb9fc"
+    },
+    {
+      "path": "review-evidence/bridge-lifecycle-unconditional-reset.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-lifecycle-unconditional-reset.stdout",
+      "bytes": 1687,
+      "sha256": "9ed0ef97f5e646d5617e4ece56b35cf247975674b642e08b4d063d8a39b6f93c"
+    },
+    {
+      "path": "review-evidence/bridge-six-baseline.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-six-baseline.stdout",
+      "bytes": 7744,
+      "sha256": "fd114beaf86243a24c049c11d4f658d0240141ec15eb53f954ef329dc59e9913"
+    },
+    {
+      "path": "review-evidence/bridge-six-unconditional-reset.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "review-evidence/bridge-six-unconditional-reset.stdout",
+      "bytes": 2429,
+      "sha256": "3fa810c767b06a738f2377b78588f74dd6a0692f4f0f50c942d62c46d9977485"
+    }
+  ],
+  "status": {
+    "unreferencedProposalOnly": true,
+    "sameOriginalPr": 4878,
+    "branchAdvancedByThisAgent": false,
+    "reviewThreadsSelfResolved": false,
+    "configuredReviewTriggered": false,
+    "mainMerged": false,
+    "publishedOrInstalled": false,
+    "siteIntegrated": false,
+    "installedFourRepositoryAcceptance": false,
+    "economicTarget": "UNPROVEN",
+    "next": "Coordinator independently reviews complete proposal and may CAS-adopt the same original PR branch. Applicable review and original held main/site acceptance operations remain held until legitimate disposition."
+  }
+}

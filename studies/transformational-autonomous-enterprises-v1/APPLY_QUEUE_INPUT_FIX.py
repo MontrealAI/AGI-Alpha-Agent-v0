@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Create and verify a separate companion copy with the reviewed queue correction."""
+"""Create and verify a separate companion copy with the reviewed runtime corrections."""
 from __future__ import annotations
 
 import argparse
@@ -18,10 +18,11 @@ ORIGINAL_REPLACEMENTS = {
 OVERRIDES = {
     "study/evaluation/queue.mjs": "f9d637b607a31c16160254659f6a29cd262373c4201d65a5aba570b48475ea80",
     "study/evaluation/queue-input.test.mjs": "1a47f6004e395f99e375a920b663c5c41563aff8ad0ce5c402eca6a765c58d7e",
-    "study/integration/mission-delivery.mjs": "cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487",
+    "study/integration/mission-delivery.mjs": "14f46a110f182b462963fb39619c9dcd3a87a2f24a9e0b92b842b7a4ad20ea68",
     "study/integration/execution-identity.test.mjs": "1eb36919630bac62eb7d4e96456abbb440480cddb95dde32a88599fdcadfc4cb",
+    "study/integration/bridge-lifecycle.test.mjs": "e7109d59dcafe8a29b3f7498fa805f4876f3b586ab80ee8dc00dc8e80149fe3d",
 }
-OVERLAY_COMMIT = "344155708afce8fa4790d7826b68568ae64d0edf"
+OVERLAY_COMMIT = "7620b474de18a61a36ca09f6e11e3f33ad42e1da"
 BASE = (
     "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
     + OVERLAY_COMMIT
@@ -103,7 +104,7 @@ def verify_overlay(root: Path) -> dict[str, object]:
 def overlay_receipt() -> dict[str, object]:
     """Describe the separate source epoch without relabeling frozen evidence."""
     return {
-        "schema": "tae.research-runtime-overlay.v2",
+        "schema": "tae.research-runtime-overlay.v3",
         "originalArchiveSha256": ARCHIVE_SHA256,
         "originalManifestSha256": MANIFEST_SHA256,
         "originalQueueSha256": ORIGINAL_QUEUE_SHA256,
@@ -111,7 +112,7 @@ def overlay_receipt() -> dict[str, object]:
         "correctionSourceCommit": OVERLAY_COMMIT,
         "overrides": OVERRIDES,
         "originalManifestIsHistorical": True,
-        "scope": "Derived local queue and source-bound admission corrections; frozen scored results stay unchanged",
+        "scope": "Derived queue, source-bound admission, captured inputs and bridge lifecycle corrections; frozen scores unchanged",
         "installedFourRepositoryAcceptance": False,
         "authority": [],
     }

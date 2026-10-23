@@ -1,0 +1,49 @@
+Controlled dependency; exact delivery module SHA256 50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39
+Controlled dependency; exact delivery module SHA256 50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39
+Controlled dependency; exact delivery module SHA256 50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39
+Controlled dependency; exact delivery module SHA256 50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39
+Controlled dependency; exact delivery module SHA256 50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39
+✔ abort during initialization prevents native launch and permits a later fresh delivery (14.003151ms)
+✖ caller mutation during bridge initialization cannot change admitted execution or retained history (7.8168ms)
+✖ caller mutation while admission waits cannot replace its captured mission or result (5.915632ms)
+✔ failed initialization is retried while a successful initializer remains cached (6.751464ms)
+Controlled dependency; exact delivery module SHA256 50fe7d0630df21f2f680a079ea0f0028a679bd67bb28d84109dab641b25e4a39
+✔ concurrent Promise waiters share failure, then share exactly one fresh initializer (13.495125ms)
+✔ a delayed stale waiter cannot clear a newer initializer under a controlled thenable schedule (6.849337ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 4
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 236.378777
+
+✖ failing tests:
+
+test at ../../../dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:95:1
+✖ caller mutation during bridge initialization cannot change admitted execution or retained history (7.8168ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'caller-replaced-mission'
+  - 'bridge-input-capture'
+  
+      at assertCapturedRecord (file:///dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:81:10)
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:108:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'caller-replaced-mission',
+    expected: 'bridge-input-capture',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:112:1
+✖ caller mutation while admission waits cannot replace its captured mission or result (5.915632ms)
+  TypeError: Cannot assign to read only property 'amount' of object '#<Object>'
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:127:33)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
