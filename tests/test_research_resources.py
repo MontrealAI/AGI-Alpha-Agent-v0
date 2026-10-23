@@ -38,6 +38,25 @@ def resources() -> dict[str, Any]:
     }
 
 
+def source_download_resources() -> dict[str, Any]:
+    return {
+        "tex_source": {"path": "docs/papers/paper-0.tex", "sha256": "b" * 64},
+        "experimental_source": {
+            "url": papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/README.md",
+        },
+        "source_archive": {
+            "url": papers.RELEASE_SITE + "download/study-fixture-v2-r1/Complete_Source.zip",
+            "sha256": "c" * 64,
+            "bytes": 2345,
+        },
+        "visual_signature": {
+            "url": papers.RELEASE_SITE + "download/study-fixture-v2-r1/Visual_Signature.png",
+            "sha256": "d" * 64,
+            "bytes": 3456,
+        },
+    }
+
+
 def with_resources(data: dict[str, Any]) -> dict[str, Any]:
     data = deepcopy(data)
     data["schema"] = papers.RESOURCE_SCHEMA
@@ -135,6 +154,7 @@ def test_resource_roles_are_closed(value: Any) -> None:
 @pytest.mark.parametrize("role", list(papers.RESOURCE_LABELS))
 def test_resource_fields_are_closed(role: str) -> None:
     items = resources()
+    items.update(source_download_resources())
     if role == "reading":
         items[role] = {"path": "docs/reports/fixture-v2/index.html", "sha256": hashlib.sha256(HTML).hexdigest()}
     items[role]["label"] = "Unsafe custom template"
@@ -144,6 +164,90 @@ def test_resource_fields_are_closed(role: str) -> None:
     items[role].pop(next(iter(items[role])))
     with pytest.raises(ValueError):
         papers.resource_records(items)
+
+
+@pytest.mark.parametrize(
+    "role,field,value",
+    [
+        ("tex_source", "path", "docs/papers/../paper.tex"),
+        ("tex_source", "path", "docs/papers/paper.html"),
+        ("tex_source", "path", "https://example.org/paper.tex"),
+        ("tex_source", "sha256", "B" * 64),
+        ("experimental_source", "url", papers.SOURCE_SITE + "main/studies/fixture-v1/README.md"),
+        ("experimental_source", "url", papers.SOURCE_SITE + "a" * 39 + "/studies/fixture-v1/README.md"),
+        ("experimental_source", "url", papers.SOURCE_SITE + "A" * 40 + "/studies/fixture-v1/README.md"),
+        ("experimental_source", "url", papers.SOURCE_SITE + "a" * 40 + "/studies/../README.md"),
+        ("experimental_source", "url", papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/ASSEMBLE.py"),
+        ("experimental_source", "url", papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/README.md?x=1"),
+        ("experimental_source", "url", papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/README.md#run"),
+        ("experimental_source", "url", "https://github.com@evil.example/blob/" + "a" * 40 + "/studies/x/README.md"),
+        ("source_archive", "url", papers.RELEASE_SITE + "download/study-fixture-v2-r1/Complete_Source.exe"),
+        ("source_archive", "url", "https://example.org/Complete_Source.zip"),
+        ("source_archive", "bytes", True),
+        ("source_archive", "bytes", papers.MAX_COMPANION + 1),
+        ("source_archive", "sha256", "C" * 64),
+        ("visual_signature", "url", papers.RELEASE_SITE + "download/study-fixture-v2-r1/Visual_Signature.svg"),
+        ("visual_signature", "url", papers.RELEASE_SITE + "download/study-fixture-v2-r1/Visual_Signature.png#x"),
+        ("visual_signature", "bytes", True),
+        ("visual_signature", "bytes", 0),
+        ("visual_signature", "bytes", papers.MAX_PAPER + 1),
+        ("visual_signature", "sha256", "d" * 63),
+    ],
+)
+def test_source_download_navigation_rejects_unpinned_or_unsafe_metadata(role: str, field: str, value: Any) -> None:
+    items = source_download_resources()
+    items[role][field] = value
+    with pytest.raises(ValueError):
+        papers.resource_records(items)
+
+
+@pytest.mark.parametrize("role", ["source_archive", "visual_signature"])
+def test_source_downloads_require_the_declared_publication_release(role: str) -> None:
+    items = source_download_resources()
+    items["source_evidence"] = {"url": RELEASE}
+    items[role]["url"] = items[role]["url"].replace("study-fixture-v2-r1", "study-other-v1")
+    with pytest.raises(ValueError, match="same research release"):
+        papers.resource_records(items)
+
+
+@pytest.mark.parametrize("damage", ["path", "sha256", "absent"])
+def test_standalone_tex_navigation_cannot_substitute_another_original(damage: str) -> None:
+    data = catalog()
+    data["schema"] = papers.RESOURCE_SCHEMA
+    row = data["papers"][0]
+    row["tex"] = {"path": "docs/papers/first.tex", "sha256": "b" * 64}
+    row["resources"] = {"tex_source": deepcopy(row["tex"])}
+    if damage == "absent":
+        row["tex"] = None
+    else:
+        row["resources"]["tex_source"][damage] = "docs/papers/other.tex" if damage == "path" else "e" * 64
+    with pytest.raises(ValueError, match="exact original"):
+        papers.parse_catalog(encoded(data))
+
+
+def test_source_downloads_are_bilingual_navigation_without_executable_import(tmp_path: Path) -> None:
+    data = write_paper_fixture(tmp_path)
+    data["schema"] = papers.RESOURCE_SCHEMA
+    row = data["papers"][0]
+    tex = b"% Opaque original TeX; never compiled\n"
+    row["tex"] = {"path": "docs/papers/paper-0.tex", "sha256": hashlib.sha256(tex).hexdigest()}
+    (tmp_path / row["tex"]["path"]).write_bytes(tex)
+    row["resources"] = source_download_resources() | {"source_evidence": {"url": RELEASE}}
+    row["resources"]["tex_source"] = deepcopy(row["tex"])
+    parsed = papers.parse_catalog(encoded(data))
+    papers.verify_files(tmp_path, parsed)
+    html = papers.render_section(parsed)
+    readme = papers.render_readme(parsed)
+    assert papers.experience_hashes(parsed) == {}
+    assert papers.asset_hashes(parsed) == {row[kind]["path"]: row[kind]["sha256"] for kind in ("pdf", "tex")}
+    assert '<script' not in html and '<iframe' not in html
+    for role, item in row["resources"].items():
+        labels = papers.RESOURCE_LABELS[role]
+        assert f'href="{papers.resource_href(role, item)}"' in html
+        assert labels["en"] in html and labels["fr"] in html
+        assert papers.resource_href(role, item, readme=True) in readme
+    assert "(unmerged)" in html and "(non fusionné)" in html
+    assert "not cryptographic" in html and "non cryptographique" in html
 
 
 def test_v1_rejects_resources_and_v2_rejects_case_ambiguous_identities(tmp_path: Path) -> None:

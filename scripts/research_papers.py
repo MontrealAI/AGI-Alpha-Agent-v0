@@ -30,10 +30,24 @@ MAX_COMPANION = (2**31) - 1
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_SITE = "https://montrealai.github.io/AGI-Alpha-Agent-v0/"
 RELEASE_SITE = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/"
+SOURCE_SITE = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/"
 RESOURCE_LABELS = {
     "reading": {"en": "Read the edition and resources", "fr": "Lire l’édition et ses ressources"},
+    "tex_source": {"en": "Download standalone TeX", "fr": "Télécharger le TeX autonome"},
+    "experimental_source": {
+        "en": "Experimental companion source and assembly (unmerged)",
+        "fr": "Sources et assemblage du compagnon expérimental (non fusionné)",
+    },
     "experience": {"en": "Explore the interactive foundry", "fr": "Explorer la fonderie interactive"},
     "companion": {"en": "Download the research companion", "fr": "Télécharger le compagnon de recherche"},
+    "source_archive": {
+        "en": "Download complete research source ZIP",
+        "fr": "Télécharger les sources de recherche complètes ZIP",
+    },
+    "visual_signature": {
+        "en": "Download visual signature (not cryptographic)",
+        "fr": "Télécharger la signature visuelle (non cryptographique)",
+    },
     "source_evidence": {"en": "View source and evidence", "fr": "Consulter les sources et les preuves"},
 }
 README_START = "<!-- featured-research-papers -->"
@@ -98,12 +112,25 @@ def resource_records(value: Any) -> dict[str, Any]:
             raise ValueError("Invalid research resource record")
         expected = {
             "reading": {"path", "sha256"},
+            "tex_source": {"path", "sha256"},
+            "experimental_source": {"url"},
             "experience": {"path", "sha256"},
             "companion": {"url", "sha256", "bytes"},
+            "source_archive": {"url", "sha256", "bytes"},
+            "visual_signature": {"url", "sha256", "bytes"},
             "source_evidence": {"url"},
         }[role]
         if set(item) != expected:
             raise ValueError("Unexpected research resource fields")
+        if role == "tex_source":
+            file_record(item, ".tex")
+            continue
+        if role == "experimental_source":
+            if not isinstance(item["url"], str) or not re.fullmatch(
+                re.escape(SOURCE_SITE) + r"[0-9a-f]{40}/studies/[a-z][a-z0-9-]{0,63}/README\.md", item["url"]
+            ):
+                raise ValueError("Experimental source requires a commit-pinned study README in this repository")
+            continue
         if role in {"reading", "experience"}:
             if not isinstance(item["path"], str) or not re.fullmatch(
                 r"docs/reports/[a-z][a-z0-9-]{0,63}/[A-Za-z0-9][A-Za-z0-9_-]{0,119}\.html", item["path"]
@@ -112,29 +139,34 @@ def resource_records(value: Any) -> dict[str, Any]:
         else:
             tag = r"[A-Za-z0-9][A-Za-z0-9._-]{0,119}"
             route = "tag/" + tag
-            if role == "companion":
+            if role in {"companion", "source_archive"}:
                 route = "download/" + tag + r"/[A-Za-z0-9][A-Za-z0-9._-]{0,179}\.zip"
+            elif role == "visual_signature":
+                route = "download/" + tag + r"/[A-Za-z0-9][A-Za-z0-9._-]{0,179}\.png"
             if not isinstance(item["url"], str) or not re.fullmatch(re.escape(RELEASE_SITE) + route, item["url"]):
                 raise ValueError("Research resources require a canonical release URL in this repository")
         if role != "source_evidence" and (
             not isinstance(item["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", item["sha256"])
         ):
             raise ValueError("Invalid research resource digest")
-        if role == "companion" and (
-            type(item["bytes"]) is not int or not 0 < item["bytes"] <= MAX_COMPANION  # noqa: E721
+        if role in {"companion", "source_archive", "visual_signature"} and (
+            type(item["bytes"]) is not int  # noqa: E721
+            or not 0 < item["bytes"] <= (MAX_PAPER if role == "visual_signature" else MAX_COMPANION)
         ):
             raise ValueError("Invalid bounded research companion size")
-    if "companion" in value and "source_evidence" in value:
-        companion_tag = value["companion"]["url"].removeprefix(RELEASE_SITE + "download/").split("/")[0]
-        if value["source_evidence"]["url"] != RELEASE_SITE + "tag/" + companion_tag:
-            raise ValueError("Companion and source/evidence must identify the same research release")
+    if "source_evidence" in value:
+        for role in ("companion", "source_archive", "visual_signature"):
+            if role in value:
+                download_tag = value[role]["url"].removeprefix(RELEASE_SITE + "download/").split("/")[0]
+                if value["source_evidence"]["url"] != RELEASE_SITE + "tag/" + download_tag:
+                    raise ValueError("Companion and source/evidence must identify the same research release")
     return value
 
 
 def resource_href(role: str, record: dict[str, Any], *, readme: bool = False) -> str:
     """Return a validated navigation target; local experiences are never paper assets."""
     item = resource_records({role: record})[role]
-    if role in {"reading", "experience"}:
+    if role in {"reading", "experience", "tex_source"}:
         return (PUBLIC_SITE if readme else "") + str(item["path"]).removeprefix("docs/")
     return str(item["url"])
 
@@ -173,8 +205,10 @@ def parse_catalog(raw: bytes) -> dict[str, Any]:
                 if key in experiences and experiences[key] != identity:
                     raise ValueError("Ambiguous research experience identity")
                 experiences[key] = identity
-            if "companion" in resources:
-                item = resources["companion"]
+            for role in ("companion", "source_archive", "visual_signature"):
+                if role not in resources:
+                    continue
+                item = resources[role]
                 companion_identity = (item["sha256"], item["bytes"])
                 if item["url"] in companions and companions[item["url"]] != companion_identity:
                     raise ValueError("Ambiguous research companion identity")
@@ -211,6 +245,8 @@ def parse_catalog(raw: bytes) -> dict[str, Any]:
             if item["path"].casefold() in paths:
                 raise ValueError("Duplicate or case-ambiguous paper path")
             paths.add(item["path"].casefold())
+        if "tex_source" in row.get("resources", {}) and row["resources"]["tex_source"] != row["tex"]:
+            raise ValueError("Standalone TeX navigation must match the paper's exact original")
     if featured != 1 or not rows[0]["featured"]:
         raise ValueError("Exactly the first paper must be featured")
     return data

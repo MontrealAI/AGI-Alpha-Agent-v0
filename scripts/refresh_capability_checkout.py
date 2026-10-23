@@ -145,11 +145,11 @@ FOUNDRY_140_EXTRA_FILES = ENTERPRISE_139_PRESENTATION_EXTRA_FILES | {
 # The three bilingual guides and reconciled Discoverability add four cache inputs.
 # Admit only this complete generated worker edition; all older editions remain exact.
 RESEARCH_GUIDES_140_EXTRA_FILES = FOUNDRY_140_EXTRA_FILES | {
-    "docs/service-worker.js": (23479, "532e1b98c1bc38774cd7f5f32888dbedecd9c1a3394f184a71cfec75ad66e8d9"),
-    "docs/assets/service-worker.js": (23915, "b2cc29e5d841af00391eb6d38bbcc547f67649f56a96f848d70b328a402a7423"),
+    "docs/service-worker.js": (23479, "6a7d7a7b226a9fc4cd1293e4de891a120b843024b6ab9ae2dd6fc6cb773f5269"),
+    "docs/assets/service-worker.js": (23915, "f0fa0894af4f9388a6a0145d6ab660b394b8250c595c6d6d7c60ff529c83fda2"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26531,
-        "76d7ddc2bd702da4fa8b22a70d2c0beedc5974c2766cb1b0d6883f96a3d9c4a6",
+        "857aa6fbb8549585329634c1c57865d2b25045daf9c5baf8fb5e9350841752ae",
     ),
 }
 
