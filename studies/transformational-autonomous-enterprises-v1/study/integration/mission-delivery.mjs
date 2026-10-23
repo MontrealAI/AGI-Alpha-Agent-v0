@@ -73,6 +73,8 @@ export function createMissionDelivery({ repositories, check, concurrency = 2, ma
   }
   function release() { const next = queue.shift(); if (next) next(); else active--; }
   async function deliver(mission, result, { projectId = 'writer4-graph-enterprise', cycleId = mission?.missionId, parentProject = null, language = 'en', signal } = {}) {
+    // Bind admission, execution and history to private canonical caller inputs.
+    mission = clone(mission); result = clone(result);
     const prepared = prepareDelivery(mission, result);
     const key = hash({ bindingSha256: prepared.bindingSha256, projectId, cycleId, parentProjectSha256: parentProject === null ? null : hashBytes(parentProject), language });
     if (jobs.has(key)) { reused++; return jobs.get(key); }

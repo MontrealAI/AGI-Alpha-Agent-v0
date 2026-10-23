@@ -19,7 +19,7 @@ const observe = pending => pending.then(value => ({ value }), error => ({ error 
 const deferred = () => { let resolve, reject; const promise = new Promise((a, b) => { resolve = a; reject = b; }); return { promise, resolve, reject }; };
 const tick = () => new Promise(setImmediate);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
-const work = id => { const mission = { ...flatControl, missionId: id }; return { mission, result: solve(mission) }; };
+const work = id => { const mission = { ...structuredClone(flatControl), missionId: id }; return { mission, result: structuredClone(solve(mission)) }; };
 const marker = () => Object.assign(Error('CONTROLLED_TEST_BRIDGE_RUN'), { code: 'CONTROLLED_TEST_BRIDGE_RUN' });
 
 async function until(predicate) {
@@ -27,7 +27,7 @@ async function until(predicate) {
   assert.ok(predicate(), 'The bounded controlled schedule reached its expected state');
 }
 
-async function isolatedService(initialize, { concurrency = 2 } = {}) {
+async function isolatedService(initialize, { concurrency = 2, check = admit } = {}) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'tae-bridge-lifecycle-'));
   const source = fs.readFileSync(new URL('./mission-delivery.mjs', import.meta.url));
   const entry = path.join(directory, 'mission-delivery.mjs');
@@ -39,7 +39,7 @@ async function isolatedService(initialize, { concurrency = 2 } = {}) {
     '// CONTROLLED TEST DEPENDENCY ONLY: no repository/native implementation.\n' +
     'export function createBridge(repositories) { return globalThis[' + JSON.stringify(key) + '](repositories); }\n', { flag: 'wx' });
   const module = await import(pathToFileURL(entry).href);
-  const service = module.createMissionDelivery({ repositories: { controlledTestOnly: true }, check: admit, concurrency });
+  const service = module.createMissionDelivery({ repositories: { controlledTestOnly: true }, check, concurrency });
   console.log('Controlled dependency; exact delivery module SHA256 ' + sha256(source));
   return { service, cleanup: () => { delete globalThis[key]; fs.rmSync(directory, { recursive: true, force: true }); } };
 }
@@ -63,6 +63,77 @@ test('abort during initialization prevents native launch and permits a later fre
     assert.equal(initializations, 1);
     assert.equal(runs, 1);
   } finally { loading.resolve(bridge); await outcome; fixture.cleanup(); }
+});
+
+// The controlled return exercises record construction only. It is not native execution.
+function controlledOutput(input, result) {
+  return {
+    controlledTestOnly: true,
+    result: { groups: result.rows.map(row => ({ group: row.group, total: Number(row.amount) })), total: Number(result.rows.reduce((total, row) => total + BigInt(row.amount), 0n)) },
+    originalMissionIdPreserved: true,
+    artifacts: Object.fromEntries(['alpha', 'manager', 'jobs', 'fleet'].map(name => [name, 'CONTROLLED_TEST_' + name + ':' + input.missionId]))
+  };
+}
+
+function assertCapturedRecord(fixture, record, original, calls) {
+  assert.equal(record.native.controlledTestOnly, true);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].missionId, original.mission.missionId);
+  assert.equal(calls[0].cycleId, original.mission.missionId);
+  assert.equal(calls[0].unit, 'declared integer units');
+  assert.equal(calls[0].csv, original.result.csv);
+  assert.equal(record.missionId, original.mission.missionId);
+  assert.equal(record.binding.missionId, original.mission.missionId);
+  assert.equal(record.binding.missionKind, original.mission.kind);
+  assert.equal(record.binding.candidateInputSha256, original.result.inputHash);
+  assert.equal(record.admission.proof.missionId, original.mission.missionId);
+  assert.equal(record.admission.proof.inputSha256, record.binding.inputSha256);
+  assert.ok(Object.values(record.transferBindings).every(binding => binding.missionId === original.mission.missionId && binding.graphBindingSha256 === record.bindingSha256));
+  assert.deepEqual(fixture.service.statistics().events.map(event => [event.missionId, event.status]), [[original.mission.missionId, 'complete']]);
+}
+
+test('caller mutation during bridge initialization cannot change admitted execution or retained history', async () => {
+  const loading = deferred(), started = deferred(), calls = [];
+  const input = work('bridge-input-capture'), original = structuredClone(input);
+  const bridge = { run: async received => { calls.push(structuredClone(received)); return controlledOutput(received, original.result); } };
+  const fixture = await isolatedService(() => { started.resolve(); return loading.promise; });
+  const outcome = observe(fixture.service.deliver(input.mission, input.result));
+  try {
+    await started.promise;
+    input.mission.missionId = 'caller-replaced-mission';
+    input.mission.kind = 'bom-demand';
+    loading.resolve(bridge);
+    const completed = await outcome;
+    assert.ifError(completed.error);
+    console.log('CONTROLLED_RECORD_BINDING ' + JSON.stringify({ admitted: original.mission.missionId, execution: calls[0]?.missionId, record: completed.value.missionId, binding: completed.value.binding.missionId, proof: completed.value.admission.proof.missionId, history: fixture.service.statistics().events.map(event => event.missionId) }));
+    assertCapturedRecord(fixture, completed.value, original, calls);
+  } finally { loading.resolve(bridge); await outcome; fixture.cleanup(); }
+});
+
+test('caller mutation while admission waits cannot replace its captured mission or result', async () => {
+  const checking = deferred(), continueCheck = deferred(), calls = [], checked = [];
+  const input = work('admission-input-capture'), original = structuredClone(input);
+  const bridge = { run: async received => { calls.push(structuredClone(received)); return controlledOutput(received, original.result); } };
+  const check = async (mission, result, binding) => {
+    checking.resolve(); await continueCheck.promise;
+    checked.push(structuredClone({ mission, result }));
+    return admit(mission, result, binding);
+  };
+  const fixture = await isolatedService(async () => bridge, { check });
+  const outcome = observe(fixture.service.deliver(input.mission, input.result));
+  try {
+    await checking.promise;
+    input.mission.missionId = 'caller-replaced-before-admission';
+    input.mission.rows[0].amount = 999;
+    input.result.rows[0].amount = '999';
+    input.result.currentProof = { accepted: true };
+    input.result.authority.push('caller-invented-authority');
+    continueCheck.resolve();
+    const completed = await outcome;
+    assert.deepEqual(checked, [original]);
+    assert.ifError(completed.error);
+    assertCapturedRecord(fixture, completed.value, original, calls);
+  } finally { continueCheck.resolve(); await outcome; fixture.cleanup(); }
 });
 
 test('failed initialization is retried while a successful initializer remains cached', async () => {
