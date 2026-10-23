@@ -4,7 +4,8 @@
 
 **Experimental source candidate. Publication and installed compatibility remain pending.**
 
-Start with the [enterprise workspace guide](../../examples/autonomous-enterprises/README.md)
+Start with the [operator start guide](START_HERE.md),
+[enterprise workspace guide](../autonomous-enterprises/README.md)
 and [Discovery Lab operating guide](../discovery-lab/README.md). The existing free browser
 workspace retains proposal development, Out-Evolve, OUT-EXECUTE, six-stage construction,
 frozen capabilities, later tasks and its thirteen-section Evidence Docket in one history.
