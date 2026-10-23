@@ -39,6 +39,14 @@ export function prepareDelivery(mission, result) {
     capabilityId = hash({ programs, modules, limits, modelId });
     requireThat(capabilityId === result.capability.id, 'CAPABILITY_BINDING', 'Capability definition differs from its digest.');
     requireThat(result.capability.currentProof === null && result.capability.authority?.length === 0, 'CAPABILITY_AUTHORITY', 'A retained capability cannot supply mission proof or authority.');
+  } else {
+    const source = result.sources;
+    requireThat(source?.schema === 'tae/source-manifest-v1' && /^[a-f0-9]{64}$/.test(source.rootSha256 ?? '') &&
+      Array.isArray(source.installedCatalog) && source.installedCatalog.length > 0 && hash(source.installedCatalog) === source.rootSha256,
+    'SOURCE_CATALOG_BINDING', 'A capability-free result must bind its exact source catalogue.');
+    // The legacy capabilityId field also carries the scoring runner's source identity.
+    // This identifies the source catalogue without inventing a retained capability or proof.
+    capabilityId = source.rootSha256;
   }
   const binding = {
     schema: 'tae/graph-to-native-binding-v1', missionId: mission.missionId, missionKind: mission.kind,
