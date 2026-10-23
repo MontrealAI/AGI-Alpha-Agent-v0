@@ -57,6 +57,10 @@ Discovery Lab, OUT-EXECUTE and thirteen-section evidence docket. Supplied synthe
 inspection drafts describe the supported preview; installed native compatibility, external model/tool pilots
 and observed organizational benefit retain separate qualification. Fresh exact-source release gates remain pending.
 
+This combined software candidate adds bounded OUT-EXECUTE execution to the preserved proposal and Out-Evolve journeys.
+This is not a claim that every proposed capability is implemented. Synthetic results and unsigned work drafts grant
+no operational authority.
+
 ## Choose your next step
 
 **[Open the guided website →](https://montrealai.github.io/AGI-Alpha-Agent-v0/)** · **[Commencer en français →](https://montrealai.github.io/AGI-Alpha-Agent-v0/?lang=fr)**

@@ -1,0 +1,91 @@
+diff --git a/scripts/refresh_capability_checkout.py b/scripts/refresh_capability_checkout.py
+index 924a320e..f20dd65d 100644
+--- a/scripts/refresh_capability_checkout.py
++++ b/scripts/refresh_capability_checkout.py
+@@ -131,6 +131,17 @@ ENTERPRISE_139_PRESENTATION_EXTRA_FILES = ENTERPRISE_139_RELEASE_EXTRA_FILES | {
+         "be9396acf43738b48a233c24517e8a3d06a8b1a36a00448b50be7e8792b7b8a3",
+     ),
+ }
++# The thermal workbench candidate retains this scientific source closure. Only
++# its three gallery worker bodies differ within the checkout-repair profile;
++# this exact candidate edition does not grant release or scientific admission.
++ENTERPRISE_139_THERMAL_EXTRA_FILES = ENTERPRISE_139_PRESENTATION_EXTRA_FILES | {
++    "docs/service-worker.js": (23275, "8f91b2bf683f1900781fad3a1d3d44be5505421835ccc19720eec5cd723fd07a"),
++    "docs/assets/service-worker.js": (23707, "095b9ad247d5f35312d38c5e45af315b5ca60064c74996eba87c2da1bf30c852"),
++    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
++        26299,
++        "9797d68a0e81db6c69649eef060cbef861f78d80ef85f56e57cf283fc6a5e0cd",
++    ),
++}
+ SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
+ 
+ 
+@@ -199,6 +210,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
+         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_EXTRA_FILES),
+         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_RELEASE_EXTRA_FILES),
+         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_PRESENTATION_EXTRA_FILES),
++        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_THERMAL_EXTRA_FILES),
+     ):
+         if digest == extra[CATALOG][1]:
+             profiles.append((source_hash, source_count, file_count, extra))
+diff --git a/tests/test_successor_capability_delivery.py b/tests/test_successor_capability_delivery.py
+index 55db6bac..7eeda293 100644
+--- a/tests/test_successor_capability_delivery.py
++++ b/tests/test_successor_capability_delivery.py
+@@ -636,7 +636,30 @@ def _enterprise_139_metadata_workers() -> dict[str, bytes]:
+     return workers
+ 
+ 
+-@pytest.mark.parametrize("edition", ["current", "1.38", "1.39-initial", "1.39-metadata"])
++def _enterprise_139_presentation_workers() -> dict[str, bytes]:
++    helper = load_script("refresh_capability_checkout")
++    fixture = json.loads(
++        (ROOT / "tests/fixtures/capability-checkout-enterprise-139-presentation-workers.json").read_bytes()
++    )
++    assert fixture["sourceCommit"] == "e7fbd7e7fd0599f66c70ea8fe5e26b178e04f541"
++    assert fixture["sourceTree"] == "d76f2b6f5772e773fcae261b8a595e5e0f58aa41"
++    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
++    changed = {
++        name
++        for name, record in helper.ENTERPRISE_139_THERMAL_EXTRA_FILES.items()
++        if record != helper.ENTERPRISE_139_PRESENTATION_EXTRA_FILES[name]
++    }
++    assert set(fixture["files"]) == changed
++    workers = {}
++    for name, entry in fixture["files"].items():
++        raw = entry["text"].encode()
++        assert (len(raw), hashlib.sha256(raw).hexdigest()) == (entry["bytes"], entry["sha256"])
++        assert (entry["bytes"], entry["sha256"]) == helper.ENTERPRISE_139_PRESENTATION_EXTRA_FILES[name]
++        workers[name] = raw
++    return workers
++
++
++@pytest.mark.parametrize("edition", ["current", "1.38", "1.39-initial", "1.39-metadata", "1.39-presentation"])
+ def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path: Path, edition: str) -> None:
+     helper = load_script("refresh_capability_checkout")
+     root = _refresh_copy(tmp_path)
+@@ -645,6 +668,7 @@ def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path
+             "1.38": _enterprise_138_workers,
+             "1.39-initial": _enterprise_139_initial_workers,
+             "1.39-metadata": _enterprise_139_metadata_workers,
++            "1.39-presentation": _enterprise_139_presentation_workers,
+         }[edition]()
+         for name, raw in workers.items():
+             (root / name).write_bytes(raw.replace(b"\n", b"\r\n"))
+@@ -661,7 +685,7 @@ def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path
+     assert helper.refresh(root)["needsRefresh"] == []
+ 
+ 
+-@pytest.mark.parametrize("edition", ["1.38", "1.39-initial", "1.39-metadata"])
++@pytest.mark.parametrize("edition", ["1.38", "1.39-initial", "1.39-metadata", "1.39-presentation"])
+ @pytest.mark.parametrize("edit", ["mixed-root", "mixed-assets", "mixed-insight", "unknown", "old-tampered"])
+ def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_writes(
+     tmp_path: Path, edit: str, edition: str
+@@ -672,6 +696,7 @@ def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_wri
+         "1.38": _enterprise_138_workers,
+         "1.39-initial": _enterprise_139_initial_workers,
+         "1.39-metadata": _enterprise_139_metadata_workers,
++        "1.39-presentation": _enterprise_139_presentation_workers,
+     }[edition]()
+     names = list(old)
+     if edit.startswith("mixed-"):

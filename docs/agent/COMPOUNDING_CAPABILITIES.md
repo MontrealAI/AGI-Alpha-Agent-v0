@@ -1,8 +1,10 @@
 # Compounding useful capabilities: operating guide and evidence
 
-**AGI ALPHA now has a source-executed example of a bounded enterprise whose accepted software assets support later work and a distinct successor.** Its benefit is concrete: it preserves executable programs, checks their continued applicability, and avoids repeating valid construction. The experiment also exposes where that approach loses: a supplied expert implementation is cheaper, and inherited validation can cost more than direct validation.
+**AGI ALPHA now has a source-executed example of a bounded enterprise whose accepted software assets support later work and a distinct successor.** Its benefit is concrete: it preserves executable programs, checks their continued applicability, and avoids repeating valid construction. The experiment also exposes where that approach loses: a supplied expert implementation uses fewer counted arithmetic units, and inherited validation can require more counted work than direct validation.
 
 This guide separates three layers. **Layer 1 is executed software and retained evidence. Layer 2 is an economic hypothesis requiring a voluntary payer and measured costs. Layer 3 is a proposed progression into physical instruments and productive infrastructure.** Success in one layer does not establish the next. AGI ALPHA is the project identity; this work establishes neither achieved AGI nor guaranteed commercial success.
+
+The [23 October execution follow-up](ASCENSION_EXECUTION_FOLLOWUP_2026-10-23.md) adds real local-contract execution, thermal enterprise composition, an observed Studio refusal and a recovery correction. Those results retain their own versions and do not change this frozen mathematical experiment or establish physical/commercial validity.
 
 ## Layer 1 — the bounded enterprise that actually ran
 
@@ -57,7 +59,7 @@ All numbers below use `paper-declared-arithmetic-work/v1`. Each round contains t
 | 4 | 12 | 58,396 | 228,784 | 1,440 |
 | 16 | 48 | 63,196 | 915,136 | 5,760 |
 
-Retention saves 170,388 counted units at four rounds and 851,940 at sixteen against rebuilding. At a declared 60,000-unit allowance, retention completes twelve tasks while rebuilding does not; at 250,000 units, retention completes forty-eight while rebuilding does not. The specialist also fits those workloads and is cheaper. These are feasibility witnesses for supplied paths, not a search proving that no better path exists.
+Retention saves 170,388 counted units at four rounds and 851,940 at sixteen against rebuilding. At a declared 60,000-unit allowance, retention completes twelve tasks while rebuilding does not; at 250,000 units, retention completes forty-eight while rebuilding does not. The specialist also fits those workloads and uses fewer counted units. These are feasibility witnesses for supplied paths, not a search proving that no better path exists.
 
 The specialist ties generated Walsh and convolution operating counts, at 24 and 88 arithmetic operations. Its fixed-kernel inverse uses 24 operations against the generated inverse's 64. Its exposed extra arithmetic preparation is zero; supplied authorship, proof and institutional qualification costs are unknown, not zero. No tested workload establishes an overall economic advantage over that expert alternative.
 

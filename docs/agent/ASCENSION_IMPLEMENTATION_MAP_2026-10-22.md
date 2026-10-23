@@ -12,6 +12,14 @@ as history. See the [native evidence and commands](../../evidence/thermal-witnes
 
 Coordination: [#4850](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850).
 
+**23 October follow-up:** the table below preserves the 22 October acceptance map.
+The [dated execution follow-up](ASCENSION_EXECUTION_FOLLOWUP_2026-10-23.md) and
+[evidence index](../../evidence/thermal-native-followup-20261023/README.md) add actual
+local-EVM execution, disposable thermal enterprise composition, the observed
+Studio refusal, configured-review recovery correction and source-download proof.
+The complete connected journey remains incomplete; the newer evidence does not
+silently convert the historical table into release or mainnet qualification.
+
 ## Components, actual interfaces and remaining acceptance
 
 | Component | Existing interface and persisted state | Responsible repository / owner lane | Current scope and next executable acceptance |
@@ -139,3 +147,26 @@ enterprise authority/budget/history; selected-backend allocation and settlement/
 controlled improvement with rollback; and independent council acceptance with adversarial review cases. The same
 project history must connect those components, preserve their evidence and recover without duplicate side effects.
 The implementation target has not been reduced to the successful native slice or the bounded exact-math probe.
+
+## Dated execution follow-up — 23 October 2026
+
+| Component / boundary | New evidence | Remaining acceptance |
+| --- | --- | --- |
+| B/C/E/H: Alpha contract lifecycle | Unchanged f1ac source: 38 local-EVM tests and native-allocation demo passed; seed recovery, eligible fixture reviews, MARK funding/routing, delivery, settlement/refund and successor reference executed. Nine literal integer cases passed, then passed from the explicit qualification path. | Simulated balances, mocked admission and local signer separation. The native allocation runs before the chain sequence; this is not the connected thermal lifecycle or organizationally independent acceptance. |
+| D/F: thermal enterprise | Disposable f1ac + held 6bb361 composition executed all three thermal families, exact local reviews, three fresh-process reopens and a distinct successor without inherited acceptance/authority. No held implementation was imported here. | Both Studio entry points actually refuse thermal before persistence. Existing #4863/#4865 owners must add typed admission, verdict semantics and CLI/catalog recognition through the legitimate path; independent thermal acceptance remains missing. |
+| Native recovery | Configured P2 finding reproduced in review/accepted/rejected states, then corrected; 19 Node groups and 26 Python cases pass. | Record recovery avoids the current worker; artifact re-export still uses its inspection boundary. No arbitrary format migration or new authority is claimed. |
+| Four-repository source composition | Existing hosted job passed seven EN/FR and two-route/adversarial/source cases against the exact pinned Manager/Jobs/Fleet sources. All 67 vendored file hashes reverified. | This is source composition, not all-four current-release installation. No thermal, live money, ENS admission or independent review occurred in that job. |
+| Present chain state | One bounded read-only eth_chainId request attempted; zero successful responses. Historical Solidity source equality preserved. | No pinned block/code/proxy/roles observed. Underlying network cause unavailable. Activation/public-funding readiness remains false. |
+| Source/publication | All 60 f1ac changed files were actually downloaded and verified, totaling 12,634,155 bytes. All eight ordinary f1ac PR workflows passed; configured review produced P2. Current Alpha main e7fbd7 includes #4873 corrections; Jobs main 86c964 includes #4021. | Subsequent fixes require their own normal review. Alpha v1.39 and Jobs rc.18 remain with existing publishers. Fleet composition and #61 restriction remain separate. The public thermal flagship and its installed release are not yet qualified. |
+
+Each row links through the dated evidence index above to exact commands, raw
+receipts and source identities. The existing [single delivery record](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6352930563)
+remains authoritative for cross-repository publication coordination; this supplement
+is supporting evidence, not a competing release manifest or new publisher gate.
+
+The #4863 summary still reports RUNNING at c455ad4, and its explicit restriction
+remains unresolved. Only its existing configured-review owner can expose the
+original task's terminal result/failure. Local compatibility, passing tests or
+elapsed time do not provide clearance. No financial transactions, approvals,
+mainnet signing, live contract deployment or governance changes are authorized
+by these local results.

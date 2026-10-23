@@ -592,12 +592,85 @@ def _enterprise_138_workers() -> dict[str, bytes]:
     return workers
 
 
-@pytest.mark.parametrize("historical", [False, True])
-def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path: Path, historical: bool) -> None:
+def _enterprise_139_initial_workers() -> dict[str, bytes]:
+    helper = load_script("refresh_capability_checkout")
+    fixture = json.loads((ROOT / "tests/fixtures/capability-checkout-enterprise-139-initial-workers.json").read_bytes())
+    assert fixture["sourceCommit"] == "8f13b39ed1718f5e8141ac1b37a10bb05c0f2900"
+    assert fixture["sourceTree"] == "d81806c883a4553d7dd5f7400bad0d277392c251"
+    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    changed = {
+        name
+        for name, record in helper.ENTERPRISE_139_RELEASE_EXTRA_FILES.items()
+        if record != helper.ENTERPRISE_139_EXTRA_FILES[name]
+    }
+    assert set(fixture["files"]) == changed
+    workers = {}
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == (entry["bytes"], entry["sha256"])
+        assert (entry["bytes"], entry["sha256"]) == helper.ENTERPRISE_139_EXTRA_FILES[name]
+        workers[name] = raw
+    return workers
+
+
+def _enterprise_139_metadata_workers() -> dict[str, bytes]:
+    helper = load_script("refresh_capability_checkout")
+    fixture = json.loads(
+        (ROOT / "tests/fixtures/capability-checkout-enterprise-139-metadata-workers.json").read_bytes()
+    )
+    assert fixture["sourceCommit"] == "d97d064b03e450588f67bf135da1c50a1737be10"
+    assert fixture["sourceTree"] == "a0ce11eb87aa54d0e7ff992186d6b183f962d4ac"
+    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    changed = {
+        name
+        for name, record in helper.ENTERPRISE_139_PRESENTATION_EXTRA_FILES.items()
+        if record != helper.ENTERPRISE_139_RELEASE_EXTRA_FILES[name]
+    }
+    assert set(fixture["files"]) == changed
+    workers = {}
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == (entry["bytes"], entry["sha256"])
+        assert (entry["bytes"], entry["sha256"]) == helper.ENTERPRISE_139_RELEASE_EXTRA_FILES[name]
+        workers[name] = raw
+    return workers
+
+
+def _enterprise_139_presentation_workers() -> dict[str, bytes]:
+    helper = load_script("refresh_capability_checkout")
+    fixture = json.loads(
+        (ROOT / "tests/fixtures/capability-checkout-enterprise-139-presentation-workers.json").read_bytes()
+    )
+    assert fixture["sourceCommit"] == "e7fbd7e7fd0599f66c70ea8fe5e26b178e04f541"
+    assert fixture["sourceTree"] == "d76f2b6f5772e773fcae261b8a595e5e0f58aa41"
+    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    changed = {
+        name
+        for name, record in helper.ENTERPRISE_139_THERMAL_EXTRA_FILES.items()
+        if record != helper.ENTERPRISE_139_PRESENTATION_EXTRA_FILES[name]
+    }
+    assert set(fixture["files"]) == changed
+    workers = {}
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == (entry["bytes"], entry["sha256"])
+        assert (entry["bytes"], entry["sha256"]) == helper.ENTERPRISE_139_PRESENTATION_EXTRA_FILES[name]
+        workers[name] = raw
+    return workers
+
+
+@pytest.mark.parametrize("edition", ["current", "1.38", "1.39-initial", "1.39-metadata", "1.39-presentation"])
+def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path: Path, edition: str) -> None:
     helper = load_script("refresh_capability_checkout")
     root = _refresh_copy(tmp_path)
-    if historical:
-        for name, raw in _enterprise_138_workers().items():
+    if edition != "current":
+        workers = {
+            "1.38": _enterprise_138_workers,
+            "1.39-initial": _enterprise_139_initial_workers,
+            "1.39-metadata": _enterprise_139_metadata_workers,
+            "1.39-presentation": _enterprise_139_presentation_workers,
+        }[edition]()
+        for name, raw in workers.items():
             (root / name).write_bytes(raw.replace(b"\n", b"\r\n"))
     originals = {name: (root / name).read_bytes() for name in capability_checkout_paths()}
     backups = tmp_path / "backups"
@@ -612,11 +685,19 @@ def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path
     assert helper.refresh(root)["needsRefresh"] == []
 
 
+@pytest.mark.parametrize("edition", ["1.38", "1.39-initial", "1.39-metadata", "1.39-presentation"])
 @pytest.mark.parametrize("edit", ["mixed-root", "mixed-assets", "mixed-insight", "unknown", "old-tampered"])
-def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_writes(tmp_path: Path, edit: str) -> None:
+def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_writes(
+    tmp_path: Path, edit: str, edition: str
+) -> None:
     helper = load_script("refresh_capability_checkout")
     root = _refresh_copy(tmp_path)
-    old = _enterprise_138_workers()
+    old = {
+        "1.38": _enterprise_138_workers,
+        "1.39-initial": _enterprise_139_initial_workers,
+        "1.39-metadata": _enterprise_139_metadata_workers,
+        "1.39-presentation": _enterprise_139_presentation_workers,
+    }[edition]()
     names = list(old)
     if edit.startswith("mixed-"):
         name = names[["mixed-root", "mixed-assets", "mixed-insight"].index(edit)]

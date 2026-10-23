@@ -111,6 +111,37 @@ ENTERPRISE_139_EXTRA_FILES = ENTERPRISE_EXTRA_FILES | {
         "a36cc805ecbbefad9ac5b393c9aa42312f60d952802aa8ae7ff896d536d49549",
     ),
 }
+# The corrected 1.39 release metadata changes the gallery cache digest. Retain
+# the initial edition and admit this complete, separately reviewed byte closure.
+ENTERPRISE_139_RELEASE_EXTRA_FILES = ENTERPRISE_139_EXTRA_FILES | {
+    "docs/service-worker.js": (23275, "93f8bf1fdab5d1af5cc4940f71617033ba35892cf19f8ea943cd147f877e77ad"),
+    "docs/assets/service-worker.js": (23707, "00f8c57a5914aa30e686a72ce1954199262546ecb6ee22e4fb6e33f2b58b278f"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26299,
+        "ec3b9aacbbe712af09575219d9164f5058970c70fa4900c0e0daa2b028e516d0",
+    ),
+}
+# Moving the retained enterprise preview outside the paper renderer's markers
+# creates one further exact cache edition; every prior edition stays admitted.
+ENTERPRISE_139_PRESENTATION_EXTRA_FILES = ENTERPRISE_139_RELEASE_EXTRA_FILES | {
+    "docs/service-worker.js": (23275, "ac1621a5e9efd104e56ff3865c0784e22a968975dc7b8465682b5528e9e967fd"),
+    "docs/assets/service-worker.js": (23707, "64654fce9864c5f792e6b7e5bb595d85366ae4491ba179f7595e1bfa24d5e161"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26299,
+        "be9396acf43738b48a233c24517e8a3d06a8b1a36a00448b50be7e8792b7b8a3",
+    ),
+}
+# The thermal workbench candidate retains this scientific source closure. Only
+# its three gallery worker bodies differ within the checkout-repair profile;
+# this exact candidate edition does not grant release or scientific admission.
+ENTERPRISE_139_THERMAL_EXTRA_FILES = ENTERPRISE_139_PRESENTATION_EXTRA_FILES | {
+    "docs/service-worker.js": (23275, "8f91b2bf683f1900781fad3a1d3d44be5505421835ccc19720eec5cd723fd07a"),
+    "docs/assets/service-worker.js": (23707, "095b9ad247d5f35312d38c5e45af315b5ca60064c74996eba87c2da1bf30c852"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26299,
+        "9797d68a0e81db6c69649eef060cbef861f78d80ef85f56e57cf283fc6a5e0cd",
+    ),
+}
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -177,6 +208,9 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_PARENT_SOURCE_HASH, 53, 61, ENTERPRISE_PARENT_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_RELEASE_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_PRESENTATION_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_THERMAL_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

@@ -1,0 +1,16 @@
+{
+  "schema": "agialpha.readonly-observation.execution.v1",
+  "command": "env NODE_PATH=/workspace/scratch/5d02e86cc826/ascension-evm-local/source/tests/contracts/node_modules /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node /workspace/scratch/5d02e86cc826/mainnet-readonly-observation-20261023/observe.cjs",
+  "sandboxPermissions": "require_escalated",
+  "initialExecution": true,
+  "retries": 0,
+  "fallbackEndpoints": [],
+  "toolResult": {
+    "chunk_id": "7fda4f",
+    "wall_time_seconds": 2.12215786,
+    "exit_code": 2,
+    "original_token_count": 334,
+    "output": "{\n  \"status\": \"INCOMPLETE_STOPPED\",\n  \"startedAt\": \"2026-10-23T00:17:55.236Z\",\n  \"completedAt\": \"2026-10-23T00:17:55.469Z\",\n  \"successfulRpcCalls\": 0,\n  \"attemptedRpcCalls\": 1,\n  \"pinnedBlock\": null,\n  \"canonicalFinalBracket\": false,\n  \"codeObserved\": 0,\n  \"getterObservations\": 0,\n  \"proxySlotObservations\": 0,\n  \"actorSampleObservations\": 0,\n  \"stopReason\": {\n    \"message\": \"Read-only RPC network failure\",\n    \"publicTransportMessage\": true,\n    \"lastAttempt\": 1,\n    \"retried\": false,\n    \"fallbackUsed\": false,\n    \"failedTransportDetailNotAvailable\": true\n  },\n  \"transportStats\": {\n    \"requests\": 1,\n    \"totalBytes\": 59,\n    \"stopped\": true,\n    \"elapsedMs\": 37\n  },\n  \"activationAllowed\": false,\n  \"readyForPublicFunding\": false,\n  \"productionReady\": false,\n  \"reportPath\": \"/workspace/scratch/5d02e86cc826/mainnet-readonly-observation-20261023/observation.json\",\n  \"reportSha256\": \"a4893bfaa56e281c49f6d511e1f5d72e3fa58b9ad2299c540b558c3ee809c9b7\",\n  \"tracePath\": \"/workspace/scratch/5d02e86cc826/mainnet-readonly-observation-20261023/rpc-trace.jsonl\",\n  \"traceSha256\": \"239dc36fa9beb57908cebf10fe6d91c536f225976bb8ed88f0b5499e88a9cd52\",\n  \"sourceBindingsSha256\": \"2c655f34d6f6bad7adf1731d2015a70635d271357a503c928efde25a0427e62d\",\n  \"observerSha256\": \"15fc92accd786e5acfb76822884e10ee5c1229b30ff4eb788b2463f114623b53\"\n}\n"
+  },
+  "limitation": "The read-only transport exposes a redacted network failure. No successful provider response or underlying network-error detail is available; this does not establish a provider access refusal or any chain state."
+}

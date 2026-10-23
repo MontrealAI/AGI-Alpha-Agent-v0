@@ -184,24 +184,24 @@ def _change(journal: Journal, key: str, revision: int, **values: Any) -> dict[st
 def execute(home: Path, spec: dict[str, Any], run_id: str, *, resume: bool = False) -> dict[str, Any]:
     """Checkpoint bounded pure work; interruption never silently replays an external effect."""
     key = _key(run_id)
-    # Validate and compile before creating a new operator identity or durable run.
-    invoke({"operation": "plan", "spec": spec})
-    journal = Journal(home) if home.exists() else Journal.initialize(home)
-    journal.verify()
     identity = digest("workbench-request", spec)
-    retained: dict[str, Any] | None
-    with journal.transaction() as connection:
-        try:
-            retained = journal.latest(key, connection)
-        except KeyError:
-            retained = None
-        if retained is not None:
-            if retained["request_digest"] != identity:
-                raise Conflict("Run ID already belongs to a different request")
-            if retained["state"] in {"review", "accepted", "rejected"}:
-                # Historical completed work remains exact across software upgrades.
-                # Do not refreeze its source, rewrite its review, or replay execution.
-                return retained
+    journal: Journal | None = None
+    retained: dict[str, Any] | None = None
+    if home.exists():
+        journal = Journal(home)
+        journal.verify()
+        with journal.transaction() as connection:
+            try:
+                retained = journal.latest(key, connection)
+            except KeyError:
+                pass
+            if retained is not None:
+                if retained["request_digest"] != identity:
+                    raise Conflict("Run ID already belongs to a different request")
+                if retained["state"] in {"review", "accepted", "rejected"}:
+                    # Return verified history even if the current worker removed its family or schema.
+                    # This grants no new review, qualification, authority, or execution.
+                    return retained
     if retained is not None:
         source = json.loads(WORKER.with_name("workbench_sources.json").read_text(encoding="utf-8"))
         frozen_sources = [
@@ -214,6 +214,11 @@ def execute(home: Path, spec: dict[str, Any], run_id: str, *, resume: bool = Fal
                 "Work adapter source changed; unfinished work cannot resume. "
                 "Restore the previous software or create a new run; retained history is unchanged"
             )
+    # Validate new/unfinished work before creating an identity, freezing source or consuming an attempt.
+    invoke({"operation": "plan", "spec": spec})
+    if journal is None:
+        journal = Journal.initialize(home)
+        journal.verify()
     lifecycle = freeze(journal, spec, run_id)
     with journal.transaction() as connection:
         try:

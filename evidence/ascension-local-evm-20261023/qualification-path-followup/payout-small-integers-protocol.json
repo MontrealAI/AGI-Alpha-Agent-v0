@@ -1,0 +1,107 @@
+{
+  "schema": "ascension-small-integer-protocol/v1",
+  "frozenAt": "2026-10-23T00:15:58.259446+00:00",
+  "source": {
+    "path": "contracts/ascension/AscensionJobMarket.sol",
+    "sha256": "db3865d4564fc53a47357ed31b17a5446319ff185218643d3232cb5e91bbd23c",
+    "minimumBountyBaseUnits": "100",
+    "minimumBidBaseUnits": "100",
+    "minimumSourceLines": [
+      110,
+      135
+    ],
+    "payoutSourceLines": [
+      201,
+      202,
+      203,
+      209,
+      216,
+      217,
+      218
+    ]
+  },
+  "units": "Literal integer token base units, not whole AGIALPHA tokens",
+  "formula": "eachGross = floor(p/40); workerGross = p - 2*eachGross; recipientBurn = floor(recipientGross/100); recipientNet = recipientGross - recipientBurn",
+  "cases": [
+    {
+      "p": "1",
+      "workerNet": "1",
+      "eachQualifyingValidatorNet": "0",
+      "totalBurn": "0",
+      "expectedContractOutcome": "post-and-bid-rejected",
+      "arithmeticOnlyPayout": true
+    },
+    {
+      "p": "39",
+      "workerNet": "39",
+      "eachQualifyingValidatorNet": "0",
+      "totalBurn": "0",
+      "expectedContractOutcome": "post-and-bid-rejected",
+      "arithmeticOnlyPayout": true
+    },
+    {
+      "p": "40",
+      "workerNet": "38",
+      "eachQualifyingValidatorNet": "1",
+      "totalBurn": "0",
+      "expectedContractOutcome": "post-and-bid-rejected",
+      "arithmeticOnlyPayout": true
+    },
+    {
+      "p": "99",
+      "workerNet": "95",
+      "eachQualifyingValidatorNet": "2",
+      "totalBurn": "0",
+      "expectedContractOutcome": "post-and-bid-rejected",
+      "arithmeticOnlyPayout": true
+    },
+    {
+      "p": "100",
+      "workerNet": "96",
+      "eachQualifyingValidatorNet": "2",
+      "totalBurn": "0",
+      "expectedContractOutcome": "paid",
+      "arithmeticOnlyPayout": false
+    },
+    {
+      "p": "103",
+      "workerNet": "99",
+      "eachQualifyingValidatorNet": "2",
+      "totalBurn": "0",
+      "expectedContractOutcome": "paid",
+      "arithmeticOnlyPayout": false
+    },
+    {
+      "p": "104",
+      "workerNet": "99",
+      "eachQualifyingValidatorNet": "2",
+      "totalBurn": "1",
+      "expectedContractOutcome": "paid",
+      "arithmeticOnlyPayout": false
+    },
+    {
+      "p": "3999",
+      "workerNet": "3763",
+      "eachQualifyingValidatorNet": "99",
+      "totalBurn": "38",
+      "expectedContractOutcome": "paid",
+      "arithmeticOnlyPayout": false
+    },
+    {
+      "p": "4000",
+      "workerNet": "3762",
+      "eachQualifyingValidatorNet": "99",
+      "totalBurn": "40",
+      "expectedContractOutcome": "paid",
+      "arithmeticOnlyPayout": false
+    }
+  ],
+  "criteria": [
+    "All nine arithmetic vectors must match independent BigInt arithmetic, with per-recipient flooring.",
+    "For p below100, actual source must reject post with job bounds and reject bid with bid bounds on a separate valid bounty100 job; token balances, supply, escrow, stake and lock state must remain unchanged across each rejection. These are not settlement receipts.",
+    "For p at least100, use unchanged fixture and production-equivalent source, post price=bounty=p, bid, award, deliver, and approve using distinct local actors. Two affirmative validators qualify, third abstains.",
+    "Check worker and each validator balance deltas separately, third validator unchanged, total supply decrease, market escrow conservation, no surplus refund, worker collateral unlock, and exactly three Payout events matching per-recipient gross and burn.",
+    "Keep every attempted case including failures. Run only this added file with --no-compile after existing38 tests and unchanged demo."
+  ],
+  "scope": "Independent local integer-boundary test of the existing production-equivalent Alpha five-suite source. Simulated tokens, mock ENS and admission, local actors. No live provider, signing credentials, financial authority, physical qualification, independent organizational review, or thermal harness acceptance."
+}

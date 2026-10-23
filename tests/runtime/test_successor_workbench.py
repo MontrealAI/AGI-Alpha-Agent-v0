@@ -340,7 +340,7 @@ def test_thermal_local_review_binds_exact_result_without_independence(decision: 
 
 
 @pytest.mark.parametrize("state", ["review", "accepted", "rejected"])
-def test_completed_thermal_result_is_exact_after_source_change(
+def test_completed_thermal_result_is_exact_without_current_worker(
     state: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     home, run_id = tmp_path / "operator", str(uuid.uuid4())
@@ -361,6 +361,11 @@ def test_completed_thermal_result_is_exact_after_source_change(
     head = journal.verify()
     changed_worker = _changed_source_worker(tmp_path / "changed-package")
     monkeypatch.setattr(workbench, "WORKER", changed_worker)
+
+    def removed_family(*_args: object, **_kwargs: object) -> dict[str, object]:
+        raise ValueError("The upgraded worker no longer supports this request family or schema")
+
+    monkeypatch.setattr(workbench, "invoke", removed_family)
     assert workbench.execute(home, spec, run_id) == record
     assert journal.verify() == head
     assert record["state"] == state and record["authority"] == []

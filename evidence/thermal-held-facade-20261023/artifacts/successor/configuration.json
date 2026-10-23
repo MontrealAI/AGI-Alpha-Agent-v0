@@ -1,0 +1,88 @@
+{
+  "enterprise_id": "30e68a59-9bfb-4e9d-9491-50e995744546",
+  "name": "Distinct heat-capacity successor",
+  "parent": {
+    "configuration_digest": "a5f24367bde52cbcdbbe4d4db4441d154a82e58d62fff4c4c51b848312fd9494",
+    "enterprise_id": "26851d44-766d-48c6-a2fa-79e1daa98880",
+    "result_digest": "1dca63e1463bf261e0cbe3c5731278fb93e880fc44713f783ce4c8584a6d20f0"
+  },
+  "schema": "successor-enterprise/v1",
+  "work": {
+    "family": "thermal-witness",
+    "inputs": {
+      "extension": {
+        "containerEnergyMicroJ": {
+          "estimate": "80000000",
+          "high": "80000000",
+          "low": "80000000"
+        },
+        "kind": "INDEPENDENT_SIMULATED",
+        "lossEnergyMicroJ": {
+          "estimate": "600000000",
+          "high": "600000000",
+          "low": "600000000"
+        },
+        "sourceId": "sample-acceptance-fixture",
+        "temperatureRiseUK": {
+          "estimate": 20000000,
+          "high": 20000000,
+          "low": 20000000
+        }
+      },
+      "family": "heat-capacity",
+      "maxWorkUnits": 960,
+      "measurement": {
+        "commandSourceId": "controller-telemetry",
+        "coverage": "WHOLE_FLOW_DECLARED_BOUNDS",
+        "densityKgPerM3": {
+          "estimate": 1000,
+          "high": 1000,
+          "low": 1000
+        },
+        "intervals": [
+          {
+            "commandFlowNLPerMin": 100000000,
+            "deltaTemperatureUK": 10000000,
+            "deltaTemperatureUncertaintyUK": 0,
+            "durationMs": 60000,
+            "sequence": 0,
+            "startMs": 0,
+            "volumeNL": 92000000,
+            "volumeUncertaintyNL": 0
+          }
+        ],
+        "mode": "SIMULATED_MEASUREMENTS",
+        "propertyModel": "CONSTANT_WITHIN_INTERVAL",
+        "specificHeatJPerKgK": {
+          "estimate": 4000,
+          "high": 4000,
+          "low": 4000
+        },
+        "temperatureWitness": {
+          "kind": "BOUNDED_SIMULATED",
+          "sourceId": "differential-reference"
+        },
+        "volumeWitness": {
+          "kind": "INDEPENDENT_SIMULATED",
+          "sourceId": "independent-volume"
+        },
+        "windowMs": 60000
+      },
+      "policy": {
+        "maxRelativeErrorPpm": 50000,
+        "minimumHeatMicroJ": "1000000"
+      },
+      "schema": "thermal-witness/v1"
+    },
+    "language": "en",
+    "name": "Witnessed thermal measurement",
+    "owner": "local-owner",
+    "reviewMinutes": 10,
+    "rights": {
+      "dataClass": "synthetic",
+      "license": "Apache-2.0",
+      "source": "Declared simulated whole-flow fixture"
+    },
+    "schema": "successor-workbench/v1"
+  }
+}

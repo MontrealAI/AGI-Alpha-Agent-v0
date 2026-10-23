@@ -1,0 +1,50 @@
+{
+  "schema": "ascension-local-evm-phase/v1",
+  "phase": "install",
+  "label": "npm-install-1",
+  "executionContext": "ordinary-workspace-sandbox",
+  "startedAt": "2026-10-23T00:04:46.813980+00:00",
+  "command": [
+    "/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node",
+    "/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/lib/node_modules/npm/bin/npm-cli.js",
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--userconfig=/dev/null",
+    "--globalconfig=/dev/null",
+    "--cache=/workspace/scratch/5d02e86cc826/ascension-evm-local/npm-cache",
+    "--fetch-retries=0",
+    "--fetch-timeout=60000"
+  ],
+  "workingDirectory": "/workspace/scratch/5d02e86cc826/ascension-evm-local/source/tests/contracts",
+  "environment": {
+    "PATH": "/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin:/usr/bin:/bin",
+    "CI": "1",
+    "HARDHAT_DISABLE_TELEMETRY_PROMPT": "true",
+    "ALPHA_PYTHON": "/workspace/scratch/5d02e86cc826/thermal-python/bin/python",
+    "PYTHONPATH": "/workspace/scratch/5d02e86cc826/ascension-evm-local/source",
+    "PYTHONNOUSERSITE": "1",
+    "NO_DISCLAIMER": "1",
+    "OPENAI_AGENTS_DISABLE_TRACING": "true"
+  },
+  "timeoutSeconds": 180,
+  "sourceManifestSha256": "48bd265582c1977358446116db1eb0ecd5fefb8c4ee1ea465b82f2ff9766b548",
+  "runnerSha256": "c2338a55099940463fbf9bf8f82e72d2a44195a9b8f8d3fa1fb87da089ee59d4",
+  "nodeExecutableSha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+  "pythonExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+  "networkBoundary": "Application guards require an unforked in-process Hardhat provider. This is not OS-wide egress isolation. Initial dependency acquisition may use the public npm registry.",
+  "credentialsOrExternalProviderSupplied": false,
+  "exitCode": 1,
+  "finishedAt": "2026-10-23T00:04:47.292624+00:00",
+  "stdout": {
+    "path": "npm-install-1.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "npm-install-1.stderr.txt",
+    "bytes": 117,
+    "sha256": "250e369d730a46c4d41df37449a5c58c169b4b1d2ab546951a8bed0285805a95"
+  }
+}
