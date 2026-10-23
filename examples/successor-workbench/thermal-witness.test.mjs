@@ -166,7 +166,7 @@ test('native Python journal preserves identity, reviews and source-bound recover
   const root = fileURLToPath(new URL('../../', import.meta.url));
   const python = process.platform === 'win32' ? 'python' : 'python3';
   const result = spawnSync(python, ['-m', 'pytest', '--noconftest', '-c', devNull, '-p', 'no:cacheprovider',
-    'tests/runtime/test_successor_workbench.py', '-v'],
+    'tests/runtime/test_successor_workbench.py', 'tests/runtime/test_successor_workbench_generation.py', '-v'],
     { cwd: root, encoding: 'utf8', timeout: 180000, maxBuffer: 2000000,
       env: { ...process.env, PYTHONPATH: root, PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1', PYTHONDONTWRITEBYTECODE: '1' } });
   assert.equal(result.error, undefined, 'Native acceptance requires the documented Python/runtime setup');

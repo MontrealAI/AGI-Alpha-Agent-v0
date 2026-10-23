@@ -170,3 +170,15 @@ original task's terminal result/failure. Local compatibility, passing tests or
 elapsed time do not provide clearance. No financial transactions, approvals,
 mainnet signing, live contract deployment or governance changes are authorized
 by these local results.
+
+### Subsequent recovery review correction
+
+The [new recovery evidence](../../evidence/thermal-recovery-20261023/README.md)
+supersedes the artifact-export limitation in the dated table above. Verified
+terminal v1 history now exports without the current worker. Imported packs still
+use its inspector. Unfinished work requires both module and complete executable
+commitments; wrapper-only changes and missing legacy worker commitments are
+refused before planning or another attempt. The complete native selector passed
+19 Node groups including 39 Python cases; no historical scientific or commercial
+claim changes. The full thermal Studio/Ascension and independent-review boundaries,
+existing owner restrictions and publication responsibilities remain unchanged.

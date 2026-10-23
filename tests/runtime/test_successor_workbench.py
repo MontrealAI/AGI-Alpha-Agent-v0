@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import subprocess
@@ -371,6 +372,37 @@ def test_completed_thermal_result_is_exact_without_current_worker(
     assert record["state"] == state and record["authority"] == []
     if state != "review":
         assert record["review"]["independent"] is False
+    mission = tmp_path / "retained-mission.json"
+    mission.write_bytes(workbench.canonical(spec))
+    for command in ("run", "export"):
+        output = tmp_path / command
+        exported = workbench.handle(
+            argparse.Namespace(
+                home=home,
+                run_id=run_id,
+                work_command=command,
+                file=mission,
+                output=output,
+                resume=False,
+            )
+        )
+        assert exported["authority"] == [] and exported["settlement"] == "NOT_CONNECTED"
+        assert json.loads((output / "evidence.json").read_text()) == record["result"]
+        assert json.loads((output / "lifecycle.json").read_text()) == record["lifecycle"]
+        verified = workbench.handle(
+            argparse.Namespace(
+                work_command="verify-receipt", file=output / "signed-receipt.json", source_key=journal.public
+            )
+        )
+        assert verified["state"] == state and verified["independentProof"] is False
+        assert verified["authority"] == []
+        for artifact in record["result"]["result"]["artifacts"]:
+            assert (output / artifact["name"]).read_bytes() == artifact["content"].encode()
+        assert journal.verify() == head
+    # Imported packs still pass the current inspector; only authenticated journal history bypasses it.
+    with pytest.raises(ValueError, match="upgraded worker"):
+        workbench.write_artifacts(record["result"], tmp_path / "untrusted")
+    assert not (tmp_path / "untrusted").exists()
     altered = json.loads(json.dumps(spec))
     altered["inputs"]["policy"]["minimumHeatMicroJ"] = "2000000"
     with pytest.raises(Conflict, match="different request"):
@@ -398,6 +430,145 @@ def test_changed_source_refuses_unfinished_thermal_without_consuming_attempt(
     resumed = workbench.execute(home, spec, run_id, resume=True)
     assert resumed["state"] == "review" and resumed["attempts"] == 2
     assert resumed["lifecycle"] == interrupted["lifecycle"]
+
+
+@pytest.mark.parametrize(
+    "fault", ["result-binding", "pack-integrity", "request-types", "unsafe-name", "case-collision"]
+)
+def test_retained_export_refuses_inconsistent_or_unsafe_signed_storage(
+    fault: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    spec = _thermal_spec()
+    spec["reviewMinutes"] = 1
+    record = workbench.execute(home, spec, run_id)
+    journal = Journal(home)
+    pack = json.loads(json.dumps(record["result"]))
+    if fault in {"result-binding", "pack-integrity"}:
+        pack["result"]["summary"]["acceptedCapability"] = True
+    elif fault == "request-types":
+        pack["spec"]["reviewMinutes"] = True
+        assert pack["spec"] == record["request"]  # Python equality alone does not preserve this protocol's types.
+        pack["integrityDigest"] = workbench.digest(
+            "workbench-pack", {key: value for key, value in pack.items() if key != "integrityDigest"}
+        )
+    else:
+        artifact = pack["result"]["artifacts"][0]
+        if fault == "unsafe-name":
+            artifact["name"] = "../escape.json"
+        else:
+            artifact = {**artifact, "name": artifact["name"].upper()}
+            pack["result"]["artifacts"].append(artifact)
+        artifact["digest"] = workbench.digest(
+            "workbench-artifact", {key: value for key, value in artifact.items() if key != "digest"}
+        )
+        pack["integrityDigest"] = workbench.digest(
+            "workbench-pack", {key: value for key, value in pack.items() if key != "integrityDigest"}
+        )
+    # A valid local signature authenticates bytes; it must not authorize unsafe filesystem paths.
+    changed = workbench._change(
+        journal,
+        workbench._key(run_id),
+        record["revision"],
+        result=pack,
+        result_digest=(
+            record["result_digest"] if fault == "result-binding" else workbench.digest("workbench-result", pack)
+        ),
+    )
+    head = journal.verify()
+
+    def no_worker(*_args: object, **_kwargs: object) -> dict[str, object]:
+        pytest.fail("Historical export must not call the current worker")
+
+    monkeypatch.setattr(workbench, "invoke", no_worker)
+    output = tmp_path / "artifacts"
+    with pytest.raises(ValueError, match="binding mismatch|integrity mismatch|Unsafe or duplicate"):
+        workbench.handle(argparse.Namespace(home=home, run_id=run_id, work_command="export", output=output))
+    assert not output.exists() and not (tmp_path / "escape.json").exists()
+    assert journal.latest(workbench._key(run_id)) == changed
+    assert journal.verify() == head
+
+
+def test_retained_export_refuses_a_tampered_journal_before_writing(tmp_path: Path) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    record = workbench.execute(home, _thermal_spec(), run_id)
+    journal = Journal(home)
+    with journal.transaction() as connection:
+        row = connection.execute("SELECT body FROM events WHERE seq=?", (record["revision"],)).fetchone()
+        body = json.loads(row[0])
+        body["document"]["state"] = "accepted"
+        connection.execute("UPDATE events SET body=? WHERE seq=?", (json.dumps(body), record["revision"]))
+    output = tmp_path / "artifacts"
+    with pytest.raises(ValueError, match="journal identity or content mismatch"):
+        workbench.handle(argparse.Namespace(home=home, run_id=run_id, work_command="export", output=output))
+    assert not output.exists()
+
+
+@pytest.mark.parametrize("change", ["wrapper-only", "missing-legacy-binding"])
+def test_unfinished_work_requires_its_complete_worker_identity(
+    change: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    spec = _thermal_spec()
+    _interrupt_thermal(home, spec, run_id, monkeypatch)
+    journal = Journal(home)
+    retained = journal.latest(workbench._key(run_id))
+    changed_worker = workbench.WORKER
+    if change == "wrapper-only":
+        package = tmp_path / "changed-package"
+        package.mkdir()
+        changed_worker = package / "workbench_worker.mjs"
+        original = workbench.WORKER.read_text()
+        altered = original.replace("Buffer.byteLength(raw)>2000000", "Buffer.byteLength(raw)>1999999")
+        assert altered != original
+        changed_worker.write_text(altered)
+        manifest = json.loads(workbench.WORKER.with_name("workbench_sources.json").read_text())
+        previous = manifest["workerSHA256"]
+        manifest["workerSHA256"] = hashlib.sha256(changed_worker.read_bytes()).hexdigest()
+        assert manifest["workerSHA256"] != previous
+        changed_worker.with_name("workbench_sources.json").write_text(json.dumps(manifest))
+    else:
+        lifecycle = json.loads(json.dumps(retained["lifecycle"]))
+        lifecycle["candidate"]["artifacts"] = [
+            artifact for artifact in lifecycle["candidate"]["artifacts"] if artifact["name"] != "adapter-worker"
+        ]
+        retained = workbench._change(journal, workbench._key(run_id), retained["revision"], lifecycle=lifecycle)
+    head = journal.verify()
+
+    def no_planning(*_args: object, **_kwargs: object) -> dict[str, object]:
+        pytest.fail("A changed or incomplete worker identity must refuse before current-worker invocation")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(workbench, "WORKER", changed_worker)
+        patch.setattr(workbench, "invoke", no_planning)
+        with pytest.raises(Conflict, match="adapter source changed; unfinished work cannot resume"):
+            workbench.execute(home, spec, run_id, resume=True)
+    assert journal.latest(workbench._key(run_id)) == retained
+    assert journal.verify() == head and retained["attempts"] == 1
+    if change == "wrapper-only":
+        resumed = workbench.execute(home, spec, run_id, resume=True)
+        assert resumed["state"] == "review" and resumed["attempts"] == 2
+        assert resumed["lifecycle"] == retained["lifecycle"]
+
+
+def test_worker_manifest_mismatch_refuses_before_new_persistence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    spec = _thermal_spec()
+    worker = _changed_source_worker(tmp_path / "changed-package")
+    worker.write_text(worker.read_text() + "\n// Unrecorded executable change.\n")
+    monkeypatch.setattr(workbench, "WORKER", worker)
+    home = tmp_path / "must-not-exist"
+    with pytest.raises(ValueError, match="executable differs from its source manifest"):
+        workbench.execute(home, spec, str(uuid.uuid4()))
+    assert not home.exists()
+
+
+def test_execution_and_freeze_ignore_inherited_node_preloads(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    spec = _thermal_spec()
+    monkeypatch.setenv("NODE_OPTIONS", "--require=/nonexistent/unapproved-workbench-preload.cjs")
+    result = workbench.execute(tmp_path / "operator", spec, str(uuid.uuid4()))
+    assert result["state"] == "review" and result["authority"] == []
 
 
 def test_native_thermal_recovery_keeps_the_three_attempt_budget(

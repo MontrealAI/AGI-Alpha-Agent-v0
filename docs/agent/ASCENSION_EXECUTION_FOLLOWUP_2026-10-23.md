@@ -119,7 +119,7 @@ signers do not establish organizational independence. This actual local integrat
 is separate from the thermal facade refusal; the two must not be narrated as one
 connected end-to-end thermal journey.
 
-## Recovery correction and source compatibility
+## First recovery correction and source compatibility, through e5314c0
 
 Configured review of `f1ac7df` found that completed work was planned against the
 current worker before retained history was retrieved. A removed family or tighter
@@ -151,6 +151,40 @@ earlier profiles and the unchanged 53-source scientific catalogue. **35 existing
 repair/edition/mixed/tamper cases passed**, with no failures or skips. This supports
 the new candidate's source checkout; it is neither thermal scientific admission
 nor publication approval. No frozen mathematical campaign was rerun for it.
+
+## Subsequent review: complete retained exports and worker identity
+
+The configured review of `e5314c0` identified two remaining P2 defects. The CLI
+still passed retained results to the current worker's inspector during `run` and
+`export`; additionally, the module-only source hash did not bind generated wrapper
+semantics. Both are corrected in the same existing PR, with the failed reproduction
+and passing checks in the [recovery evidence](../../evidence/thermal-recovery-20261023/README.md).
+
+Completed `review`, `accepted` and `rejected` records now export without the old
+worker or its family remaining installed. Export verifies the signed journal,
+exact request/result commitments, pack/artifact hashes and bounded inert filenames
+before writing. It does not rerun the work, append acceptance or grant authority.
+Untrusted imported packs still use the current worker inspector. Changed evidence,
+scalar-type mismatches, corrupted journals and unsafe or colliding filenames are
+refused before an output directory is created.
+
+New frozen work additionally records `adapter-worker`, the SHA-256 of the entire
+generated executable. The source manifest carries the same digest and is checked
+against actual worker bytes. Unfinished work needs both its module and worker
+commitments to match before planning or another attempt. A wrapper-only change or
+a legacy unfinished record without that commitment is refused; terminal history
+remains readable and exportable. Both Node version probes and execution scrub
+inherited preloads and credential settings.
+
+The corrected complete native selector passed **19 Node groups and 39 Python
+cases**, with no failures or skips, using Node 22.17.1/Python 3.12.14. Runtime mypy
+passed on 54 files; strict typing passed for the generator and its regression
+file; affected Ruff lint/format checks passed. Three generator cases cover exact
+reproduction and wrapper-only input-limit/dispatch changes. The original worker
+bytes, nine-module source closure, 53-source mathematical catalogue, browser pages
+and service workers remain unchanged. These are recovery and integrity results;
+they do not requalify historical scientific, EVM, facade, release or live-browser
+campaigns. The new source still needs its own configured review and hosted checks.
 
 ## Testable next steps
 

@@ -1,0 +1,113 @@
+{
+  "schema": "workbench-recovery-review-followup/v1",
+  "observedAt": "2026-10-23T01:04:35.085763+00:00",
+  "parent": "e5314c0676b64ce58ea21c12846ff95ac729ea73",
+  "findings": [
+    4355004521,
+    4355004532
+  ],
+  "sourceFiles": {
+    "alpha_factory_v1/core/runtime/successor/workbench.py": {
+      "bytes": 24608,
+      "sha256": "5219c4a1a52f9b6cf576fa1c353569cafd1ccc6d5c1638a8ffc8d31c5af460f1"
+    },
+    "alpha_factory_v1/core/runtime/successor/workbench_sources.json": {
+      "bytes": 1321,
+      "sha256": "7e31b3cfec0c32864a6b02d988e4ef5d6531cd526de1fbc02cbaeb121e26df14"
+    },
+    "scripts/generate_successor_workbench.py": {
+      "bytes": 5821,
+      "sha256": "24fede4bfb4de12e64d06b07c586201cea839bed3931715931bee4031f38f79f"
+    },
+    "tests/runtime/test_successor_workbench.py": {
+      "bytes": 27695,
+      "sha256": "1973be7b0a9827d33e68d7b192e8c047f1dd06a57837aedeee883146261ac059"
+    },
+    "tests/runtime/test_successor_workbench_generation.py": {
+      "bytes": 3996,
+      "sha256": "70ad9842736a5e8068a60c39cf219006a5f2616b7cb1e0899f524af17e1d32fe"
+    },
+    "examples/successor-workbench/thermal-witness.test.mjs": {
+      "bytes": 10355,
+      "sha256": "33b3592c9afc58664679132afc1f1c22d82e25e65622b129ffdf57cd7c7f1001"
+    }
+  },
+  "actualChecks": {
+    "beforeExportFix": {
+      "failed": 3,
+      "deselected": 23,
+      "file": "export-before-fix.log"
+    },
+    "focusedExportAfterFix": {
+      "passed": 8,
+      "deselected": 23,
+      "seconds": 3.12,
+      "file": "export-after-fix.log",
+      "scope": "Before complete-worker binding and final bool/int regression were added"
+    },
+    "combinedNative": {
+      "command": "node examples/successor-workbench/test.mjs",
+      "node": "22.17.1",
+      "python": "3.12.14",
+      "nodeGroups": 19,
+      "pythonCases": 39,
+      "failed": 0,
+      "skipped": 0,
+      "durationMilliseconds": 17713.398714,
+      "file": "native-selector.log",
+      "generatorTestSHA256": "11718b5878e0e8c58c59e93ca6b2babdb6e67602ecf5c3c23b21ff26132025c7"
+    },
+    "finalTypedFixture": {
+      "passed": 3,
+      "failed": 0,
+      "seconds": 0.66,
+      "file": "generator-final-typed-fixture.log",
+      "scope": "Only a type narrowing assertion in the generator test helper changed after the combined selector; production bytes are unchanged",
+      "generatorTestSHA256": "70ad9842736a5e8068a60c39cf219006a5f2616b7cb1e0899f524af17e1d32fe"
+    },
+    "runtimeMypy": {
+      "files": 54,
+      "outcome": "PASS",
+      "file": "runtime-identity-mypy.log"
+    },
+    "narrowReadOnlySourceAudit": {
+      "outcome": "no new blocking defect found",
+      "independence": "separate same-session agent; not institutional or configured-review approval",
+      "correctionApplied": "canonical request digest instead of Python bool/int equality"
+    },
+    "ruff": {
+      "check": "PASS",
+      "format": "PASS",
+      "files": [
+        "alpha_factory_v1/core/runtime/successor/workbench.py",
+        "scripts/generate_successor_workbench.py",
+        "tests/runtime/test_successor_workbench.py",
+        "tests/runtime/test_successor_workbench_generation.py"
+      ],
+      "curatedRepositoryCheck": "PASS: eight selected Ruff invocations"
+    },
+    "strictGeneratorMypy": {
+      "files": 2,
+      "outcome": "PASS",
+      "file": "generator-mypy.log"
+    },
+    "whitespace": {
+      "codeAndDocuments": "PASS",
+      "fullStagedDiff": "FAIL: original pytest failure traceback contains trailing whitespace; raw evidence retained without alteration or policy changes"
+    }
+  },
+  "behavior": {
+    "terminalHistory": "Journal verification, exact request/result commitments and bounded inert artifact checks; no current-worker invocation in CLI run/export",
+    "unfinishedHistory": "Must retain both module and exact-worker commitments; wrapper change, corrupt manifest and missing legacy worker commitment refuse before plan/attempt",
+    "untrustedImport": "Still uses the current worker inspector",
+    "nodeEnvironment": "Both worker and freeze-time version probe scrub inherited preloads and credentials"
+  },
+  "limits": [
+    "Local pure-work execution and historical evidence only; no authority, independent acceptance or settlement",
+    "No arbitrary stored-format migration or inferred legacy unfinished qualification",
+    "No rerun or requalification of old scientific, held-facade, EVM, release or public-browser campaigns",
+    "Actual costs of these later verification runs are not included in the earlier exact-math unit ledger"
+  ],
+  "publishedPredecessorReceipt": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4871#issuecomment-6354686911",
+  "coordination": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6354732374"
+}

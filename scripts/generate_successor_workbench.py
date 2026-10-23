@@ -79,8 +79,17 @@ else if(request.operation==='inspect')result=await nativeWorkbench.inspectPack(r
 else throw Error('UNKNOWN_OPERATION');
 process.stdout.write(transport.canonical(result)+'\\n');
 """
-    (package / "workbench_worker.mjs").write_text(worker, encoding="utf-8")
-    manifest = {"schema": "successor-workbench-source/v1", "sourceHash": source_hash, "sources": json.loads(sources)}
+    # The module closure is shared with the browser. Bind the complete native
+    # program separately so dispatch, limits and emitted wrapper changes cannot
+    # resume unfinished work under an unchanged module-only identity.
+    worker_bytes = worker.encode("utf-8")
+    (package / "workbench_worker.mjs").write_bytes(worker_bytes)
+    manifest = {
+        "schema": "successor-workbench-source/v1",
+        "sourceHash": source_hash,
+        "workerSHA256": hashlib.sha256(worker_bytes).hexdigest(),
+        "sources": json.loads(sources),
+    }
     (package / "workbench_sources.json").write_text(json.dumps(manifest, indent=2) + "\n")
     licenses = (
         (root / "LICENSE").read_text()

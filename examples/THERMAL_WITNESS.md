@@ -25,7 +25,7 @@ The other three examples are exact synthetic fixtures with distinct extra measur
 
 The optional input file uses the exact schema returned by `thermalExample()`. Integers express nanolitres, microkelvin and milliseconds; large energy values use decimal strings. Unknown fields, unsafe integers, accessors, sparse arrays, wrong versions, duplicate intervals, gaps and incomplete windows are rejected. The import limit reuses the workbench's 2 MB bound. The CLI opens a nonblocking read-only descriptor and requires a regular file; directories, named pipes and oversized files are rejected before parsing.
 
-The repository-owned `native.mjs` installs the fixed adapter with `createWorkbench([thermalWitnessAdapter])` and exports the existing registry/example/validate/plan/run/inspect interface. The packaged native worker now exposes six families; the original five remain. The shared generator hashes the complete nine-source closure and regenerates the worker and browser artifacts. The existing browser still uses its original five-family registry; this increment does not advertise a deployed thermal UI. No arbitrary module-loading interface is added.
+The repository-owned `native.mjs` installs the fixed adapter with `createWorkbench([thermalWitnessAdapter])` and exports the existing registry/example/validate/plan/run/inspect interface. The packaged native worker now exposes six families; the original five remain. The shared generator hashes the complete nine-source closure and regenerates the worker and browser artifacts. Its additive `workerSHA256` field separately commits the complete native executable, including dispatch and limits. The existing browser still uses its original five-family registry; this increment does not advertise a deployed thermal UI. No arbitrary module-loading interface is added.
 
 ## The construction and the retained failure
 
@@ -88,7 +88,7 @@ One work unit is one bounded interval reduction. Up to 960 intervals and a one-h
 
 Every reduction calls the existing checkpoint. Cancellation propagates without producing accepted evidence. Budget exhaustion returns explicit partial coverage and `EXHAUSTED`; it cannot masquerade as a completed negative experiment. A private input snapshot prevents later caller mutation from changing an in-progress computation.
 
-The existing workbench supplies source and mission commitments, artifact hashes, zero-funded job compilation, time/cancellation controls and inert import. Reloading an exported pack verifies its integrity and restores **no authority or proof**. This is evidence-pack recovery. The Python runtime additionally persists signed run records, verifies exact request identity, retains local review, and exercises explicit interruption/resume. Completed records remain reusable under schema-compatible source upgrades without refreezing or rerunning them; unfinished work refuses changed executable-source identity before consuming another attempt. These tests do not establish payment recovery, independent review, or the held enterprise facade.
+The existing workbench supplies source and mission commitments, artifact hashes, zero-funded job compilation, time/cancellation controls and inert import. Reloading an exported pack verifies its integrity and restores **no authority or proof**. This is evidence-pack recovery. The Python runtime additionally persists signed run records, verifies exact request identity, retains local review, and exercises explicit interruption/resume. Completed v1 records remain readable and exportable from their authenticated journal even if the installed worker removes their original family or tightens its schema. This does not refreeze or rerun them. Unfinished work needs both its original module commitment and complete-worker commitment; changed bytes or a missing legacy worker commitment refuse before another attempt. These tests do not establish payment recovery, independent review, or the held enterprise facade.
 
 The worker's most favorable decision is `CONDITIONAL_BOUNDS_MET`. Its proposal still sets `acceptedCapability:false`. Independent acceptance remains an external obligation. The workbench retains `admission:HOLD`, `independentProof:false` and `settlement:NOT_CONNECTED`.
 
@@ -106,6 +106,17 @@ python -m alpha_factory_v1.core.runtime.cli --home ./thermal-operator successor-
 Choose new mission/output paths; existing files are preserved. `successor-work control RUN_ID --state paused|stopped|retired` uses the existing controls. An interrupted run requires explicit `--resume` and a fresh output directory; stopped or retired work cannot resume. The original three-attempt limit remains. The exact-result `review` command records a **local** operator decision with `independent:false`; it creates no council approval or capability/financial authority. `export` preserves the result and receipt.
 
 ## Test status and integration boundary
+
+The [23 October recovery follow-up](../evidence/thermal-recovery-20261023/README.md)
+adds the actual failed CLI-export reproduction and its correction, complete-worker
+identity checks, inert-export refusals and **19 passing Node groups / 39 Python
+cases** on Node 22.17.1 and Python 3.12.14. The worker, scientific module closures
+and browser bytes remain unchanged; this result qualifies the affected local
+recovery behavior, not historical campaign source or public deployment. The
+[dated execution report](../docs/agent/ASCENSION_EXECUTION_FOLLOWUP_2026-10-23.md)
+also records the separately executed local-EVM lifecycle and the disposable
+enterprise composition's actual Studio refusal. The older results below retain
+their original source scope.
 
 The original portable 51-case result remains [historical V8 evidence](../docs/agent/thermal-witness-portable-execution.json). On public head175d8a5, the actual hosted mission workflow passed17 workbench groups with no failures/skips; [run39863200779](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/39863200779) is a different source boundary from this native candidate.
 
