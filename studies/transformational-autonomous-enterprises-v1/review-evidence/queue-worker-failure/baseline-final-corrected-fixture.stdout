@@ -1,0 +1,90 @@
+✖ uncaught worker failure retries on a replacement with the admitted input (1521.510846ms)
+✖ exhausted worker retry rejects while a later queued job still settles (1516.862192ms)
+✖ late retired-worker messages errors and exit cannot affect its replacement (1513.305284ms)
+✖ exit without a result retires the slot and preserves the bounded retry (1508.563993ms)
+✖ startup failure rejects pending and future work rather than restarting forever (1506.408617ms)
+✖ Stop cancels work queued during replacement initialization (1571.794247ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9231.783094
+
+✖ failing tests:
+
+test at ../../../dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:62:1
+✖ uncaught worker failure retries on a replacement with the admitted input (1521.510846ms)
+  Error: QUEUE_TEST_TIMEOUT:crash-retry
+      at Timeout.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:28:68)
+      at listOnTimeout (node:internal/timers:635:17)
+      at process.processTimers (node:internal/timers:571:7)
+
+test at ../../../dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:75:1
+✖ exhausted worker retry rejects while a later queued job still settles (1516.862192ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /WORKER_FAILURE:CONTROLLED_WORKER_CRASH/. Input:
+  
+  'Error: QUEUE_TEST_TIMEOUT:exhausted-retry'
+  
+      at runNextTicks (node:internal/process/task_queues:65:5)
+      at listOnTimeout (node:internal/timers:597:9)
+      at process.processTimers (node:internal/timers:571:7)
+      at async Promise.all (index 0)
+      at async TestContext.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:79:22)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: QUEUE_TEST_TIMEOUT:exhausted-retry
+        at Timeout.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:28:68)
+        at listOnTimeout (node:internal/timers:635:17)
+        at process.processTimers (node:internal/timers:571:7),
+    expected: /WORKER_FAILURE:CONTROLLED_WORKER_CRASH/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:88:1
+✖ late retired-worker messages errors and exit cannot affect its replacement (1513.305284ms)
+  Error: QUEUE_TEST_TIMEOUT:replacement-active
+      at until (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:36:46)
+      at async TestContext.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:93:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ../../../dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:106:1
+✖ exit without a result retires the slot and preserves the bounded retry (1508.563993ms)
+  Error: QUEUE_TEST_TIMEOUT:unexpected-exit
+      at Timeout.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:28:68)
+      at listOnTimeout (node:internal/timers:635:17)
+      at process.processTimers (node:internal/timers:571:7)
+
+test at ../../../dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:114:1
+✖ startup failure rejects pending and future work rather than restarting forever (1506.408617ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /WORKER_UNAVAILABLE/. Input:
+  
+  'Error: QUEUE_TEST_TIMEOUT:startup-failure'
+  
+      at async TestContext.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:116:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: QUEUE_TEST_TIMEOUT:startup-failure
+        at Timeout.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:28:68)
+        at listOnTimeout (node:internal/timers:635:17)
+        at process.processTimers (node:internal/timers:571:7),
+    expected: /WORKER_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:121:1
+✖ Stop cancels work queued during replacement initialization (1571.794247ms)
+  Error: QUEUE_TEST_TIMEOUT:replacement-created
+      at until (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:36:46)
+      at async TestContext.<anonymous> (file:///dev/shm/companion-review/queue-worker-recovery/baseline/study/evaluation/queue-worker-failure.test.mjs:131:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

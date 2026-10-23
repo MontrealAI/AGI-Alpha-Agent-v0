@@ -17,15 +17,16 @@ ORIGINAL_REPLACEMENTS = {
     "study/interface/app.js": "55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66",
 }
 OVERRIDES = {
-    "study/evaluation/queue.mjs": "f9d637b607a31c16160254659f6a29cd262373c4201d65a5aba570b48475ea80",
+    "study/evaluation/queue.mjs": "805f7d6ea27ea66ee0e2a5c23a35fd0e18c411b8f12507192dc76e18990077a4",
     "study/evaluation/queue-input.test.mjs": "1a47f6004e395f99e375a920b663c5c41563aff8ad0ce5c402eca6a765c58d7e",
+    "study/evaluation/queue-worker-failure.test.mjs": "8bfef6b7d7fde5873ebcdad81acc39e603c63b3325947949241cdc4032ec4e39",
     "study/integration/mission-delivery.mjs": "14f46a110f182b462963fb39619c9dcd3a87a2f24a9e0b92b842b7a4ad20ea68",
     "study/integration/execution-identity.test.mjs": "1eb36919630bac62eb7d4e96456abbb440480cddb95dde32a88599fdcadfc4cb",
     "study/integration/bridge-lifecycle.test.mjs": "e7109d59dcafe8a29b3f7498fa805f4876f3b586ab80ee8dc00dc8e80149fe3d",
     "study/interface/app.js": "003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c",
     "study/interface/status.test.mjs": "efc671d0c998d7843a88be38e264880f655ddf7ed6baa71f9f0ae067e6f539d3",
 }
-OVERLAY_COMMIT = "aaf2074de0c3df4dda27547468d5a57efb3ac39a"
+OVERLAY_COMMIT = "95c8d98538f37c0807b00b2f6eef03f9c7fb6d2b"
 BASE = (
     "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
     + OVERLAY_COMMIT
@@ -107,7 +108,7 @@ def verify_overlay(root: Path) -> dict[str, object]:
 def overlay_receipt() -> dict[str, object]:
     """Describe the separate source epoch without relabeling frozen evidence."""
     return {
-        "schema": "tae.research-runtime-overlay.v4",
+        "schema": "tae.research-runtime-overlay.v5",
         "originalArchiveSha256": ARCHIVE_SHA256,
         "originalManifestSha256": MANIFEST_SHA256,
         "originalQueueSha256": ORIGINAL_QUEUE_SHA256,
@@ -115,7 +116,7 @@ def overlay_receipt() -> dict[str, object]:
         "correctionSourceCommit": OVERLAY_COMMIT,
         "overrides": OVERRIDES,
         "originalManifestIsHistorical": True,
-        "scope": "Derived queue, admission, input, bridge lifecycle and UI status corrections; frozen scores unchanged",
+        "scope": "Derived queue input/worker recovery, admission, bridge lifecycle and UI status corrections; frozen scores unchanged",
         "installedFourRepositoryAcceptance": False,
         "authority": [],
     }

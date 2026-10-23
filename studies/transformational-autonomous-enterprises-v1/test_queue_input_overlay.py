@@ -37,7 +37,7 @@ class OverlayTests(unittest.TestCase):
         target = self.root / "derived"
         result = overlay.apply_overlay(self.source, target)
         self.assertTrue(result["verified"])
-        self.assertEqual(result["derivedMembersChecked"], 461)
+        self.assertEqual(result["derivedMembersChecked"], 462)
         self.assertEqual(overlay.digest((self.source / "study/evaluation/queue.mjs").read_bytes()), before)
         self.assertEqual(before, overlay.ORIGINAL_QUEUE_SHA256)
         self.assertEqual(overlay.verify_overlay(target), result)
@@ -112,8 +112,8 @@ class OverlayTests(unittest.TestCase):
             with self.subTest(original=relative):
                 self.assertEqual(overlay.digest((self.source / relative).read_bytes()), expected)
         receipt = overlay.verify_overlay(target)["receipt"]
-        self.assertEqual(receipt["schema"], "tae.research-runtime-overlay.v4")
-        self.assertEqual(len(receipt["overrides"]), 7)
+        self.assertEqual(receipt["schema"], "tae.research-runtime-overlay.v5")
+        self.assertEqual(len(receipt["overrides"]), 8)
 
 
 if __name__ == "__main__":
