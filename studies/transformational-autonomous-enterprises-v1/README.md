@@ -41,7 +41,7 @@ See [acceptance](evidence/ACCEPTANCE.md), [claims](evidence/CLAIMS.json), [costs
 - Files: 458
 - Archive CRC and every file's byte comparison: passed.
 
-The companion preserves all four source checkout pins; setup fetches them afresh. This PR changes only its new `studies/transformational-autonomous-enterprises-v1/` subtree. No workflow selectors, existing runtime, previous paper, release tag or owner's site files are changed. Keep the proposal draft until the ordinary software review and applicable held main-branch acceptance actions are resolved by their owners.
+The companion preserves all four source checkout pins; setup fetches them afresh. This PR changes only its new `studies/transformational-autonomous-enterprises-v1/` subtree. No workflow selectors, existing runtime, previous paper, release tag or owner's site files are changed. The same proposal is open for ordinary software review. Main integration and publication remain held until applicable review and original main-branch acceptance restrictions receive their legitimate owner disposition.
 
 ## Runtime corrections after the research freeze
 
