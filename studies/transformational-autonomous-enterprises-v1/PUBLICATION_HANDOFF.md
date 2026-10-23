@@ -2,9 +2,11 @@
 
 This is the Writer #4 research edition of **TRANSFORMATIONAL AUTONOMOUS ENTERPRISES — SUCCESSOR Ω Harness**. The demonstrated scope is a finite, locally executed research integration. It is not a production release or an achieved economic target.
 
+This maintained public handoff updates the original archive's publication snapshot. The immutable ZIP and its internal README/handoff retain their historical bytes and status statements; use this document and the [primary README](README.md) for the current correction path.
+
 ## Paper
 
-[Paper PR #4877](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4877) proposes the new immutable edition `transformational-autonomous-enterprises-v1`. Its exact head is `3f5f4f5b0ee4c3d2490b21b8bc958cdc48135ad5`, based on `9cb90e8c189f146eff7d166e249d9474792c4864`.
+[Paper PR #4877](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4877) merged the immutable edition `transformational-autonomous-enterprises-v1` at `886c0ff99d73544bb28db532790f21d460fe888f`. The [29-page PDF](https://montrealai.github.io/AGI-Alpha-Agent-v0/papers/transformational-autonomous-enterprises-v1.pdf) and [exact standalone TeX](https://montrealai.github.io/AGI-Alpha-Agent-v0/papers/transformational-autonomous-enterprises-v1.tex) are public at their existing URLs. The original proposal head `3f5f4f5b0ee4c3d2490b21b8bc958cdc48135ad5`, based on `9cb90e8c189f146eff7d166e249d9474792c4864`, remains historical provenance.
 
 The trusted pre-change classifier accepted the complete eight-path import as `mode: paper`. The catalog validator passed. The 29-page PDF has complete visual signoff; the standalone TEX compiles without external figures or bibliography processing. The full source archive also contains the modular source, bibliography, build scripts and editable vector figures.
 
@@ -14,34 +16,55 @@ The trusted pre-change classifier accepted the complete eight-path import as `mo
 | Single-file TEX | `4b7b02547832079988d5032231bd69e7d9e86d11a2142b7ca5e4f4c3b6fc5d8a` |
 | Publication source ZIP | `643a4ca8db7a915d646ab7ae2bdfaf5be02ccbacee1583f824ca6608048fabc1` |
 
-The PR must pass existing hosted checks and normal review before the documented squash-merge/paper-overlay process can publish it. Opening the PR and passing local paper checks do not establish public-site deployment. Prior editions and the published software identity are preserved. No merge, release-tag move or Pages deployment is part of this artifact's acceptance claim.
+The paper's publication is independent of executable companion readiness. The complete companion ZIP contains the separate publication source ZIP named above, modular source, bibliography, figures and retained visual QA. Those bulky assets are not all present in the selected GitHub review mirrors. Prior editions and the published software identity remain preserved; a live paper does not qualify a new software release or clear the held integration operations.
 
 ## Executable companion
 
-The ordinary software proposal uses branch [`research/writer4-transformational-enterprises-v1-20261023`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/research/writer4-transformational-enterprises-v1-20261023/studies/transformational-autonomous-enterprises-v1). The complete downloadable archive is the runnable deliverable; readable source and summary files accompany it for review. `MANIFEST.sha256` identifies every included file. Public branch/PR identities and current review status are recorded in [coordination issue #4850](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850).
+The ordinary software proposal remains in the same [PR #4878](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4878) and branch [`research/writer4-transformational-enterprises-v1-20261023`](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/tree/research/writer4-transformational-enterprises-v1-20261023/studies/transformational-autonomous-enterprises-v1). [ASSEMBLE.py](ASSEMBLE.py) reconstructs the original complete ZIP from [three checksum-bound parts](archive-parts.json). Its original `MANIFEST.sha256` identifies 457 historical files. Apply [APPLY_QUEUE_INPUT_FIX.py](APPLY_QUEUE_INPUT_FIX.py) to a separate extraction before starting the maintained runtime: the v4 overlay pins seven runtime/regression files at `aaf2074de0c3df4dda27547468d5a57efb3ac39a` and verifies 461 derived identities. It leaves the original ZIP, banks, scored results and manifest unchanged.
 
-The code proposal remains a draft. It does not qualify for the passive-paper lane. No existing workflow, repository source pin or unrelated owner file is changed by it. An owner must resolve the applicable existing software-review restrictions before any main-branch merge that would trigger those held tests. This handoff does not invent an alternative test route or imply those restrictions are cleared.
+The PR is ready for ordinary software review and remains unmerged. Its runtime correction head `d266fdda52c3b67830cc964f4d16b4df44cae891` completed configured ordinary review without findings and all six hosted workflow groups successfully. Existing evidence covers 53 selected cases, six overlay cases and the verified derived copy; the complete corrected setup/UI/four-source/EVM driver has not been freshly rerun. This documentation follow-through does not relabel that evidence as new installed acceptance. The companion does not qualify for the passive-paper lane. Main integration remains independently held because a full-scope main push would execute the original four held native outcomes. Their legitimate disposition is still required; ordinary review clearance does not clear that restriction.
 
 ## Restrictions preserved
 
-- Fleet PR #61's stopped review and exact-head restrictions remain owned by its original participants.
+- Fleet PR #61's original review and exact-head restrictions remain with their existing owners; this handoff does not change their disposition.
 - Harness PR #4863 and dependent PR #4865 retain their review/merge restrictions. This companion does not replace the pending original reviewer or trigger a duplicate review.
 - Site PR #4869 retains ownership of its site work and the four held native/browser probes. None of those probes was attempted for this study.
 - The earlier denied Discoverability local-file browser objective and downloaded Manager-file objective remain denied. This study's separate new HTTP interface was explicitly scoped and tested as its own objective; see `evidence/runtime/browser-denial-scope.json`.
-- Jobs PR #4026 and the rc20 publisher correction remain with their existing owners.
+- Jobs publication and rc20 recovery remain with the existing coordinated release owner; this companion does not publish or install that release.
 
-The exact public evidence and distinction between held objectives are preserved in `evidence/runtime/browser-denial-scope.json`, the source audits and issue #4850. No financial signing, mainnet transaction, paid infrastructure purchase or new commercial commitment is authorized or performed by this demonstration.
+The exact evidence and distinction between held objectives are preserved in `evidence/runtime/browser-denial-scope.json` inside the complete companion, the source audits and issue #4850. No financial signing, mainnet transaction, paid infrastructure purchase or new commercial commitment is authorized or performed by this demonstration.
 
-## Ready-to-run handoff
+## Use the separate corrected companion
 
-1. Extract the companion, use the recorded Linux / Node 24.19.0 environment, and run `python3 VERIFY.py`.
-2. Run `node study/quickstart.mjs`. It fetches public pinned dependencies into new local directories and starts the fixed local server.
-3. Open `http://127.0.0.1:8765/study/interface/`, then choose **Run the local journey**. No wallet is needed.
-4. Inspect the new run directory, `joined-acceptance.json`, source pins, local contract receipts and cost record. Reproduction commands in `README.md` preserve the original evidence.
-5. For a paper release, finish the existing hosted PR review and publish through the existing paper-only workflow. Verify the served PDF hash and the explicit paper-publication pointer after deployment. For executable public hosting, first resolve the applicable software/site-owner review gate; this archive does not assert that gate passed.
+Download ASSEMBLE.py and APPLY_QUEUE_INPUT_FIX.py from this PR with **Download raw file** into a new working directory. With Python 3, reconstruct and extract the complete original, then verify its historical files:
+
+```sh
+python3 ASSEMBLE.py --download
+python3 -m zipfile -e Successor_Omega_Harness_Companion.zip .
+python3 Successor_Omega_Harness/VERIFY.py
+```
+
+From that same working directory, create and verify a new corrected copy:
+
+```sh
+python3 APPLY_QUEUE_INPUT_FIX.py --download Successor_Omega_Harness Successor_Omega_Harness_Engineering_Fixed
+python3 APPLY_QUEUE_INPUT_FIX.py --verify Successor_Omega_Harness_Engineering_Fixed
+```
+
+Choose another new destination if one already exists; do not overwrite earlier evidence. The original verifier remains appropriate for the untouched extraction. The derived copy intentionally differs in three declared runtime files, so use the overlay verifier for its engineering state. The raw archive's README and commands remain historical and are not the current setup instructions.
+
+With Linux, Git, npm, Python 3 and the recorded Node 24.19.0 runtime, the existing full local user route is:
+
+```sh
+node Successor_Omega_Harness_Engineering_Fixed/study/quickstart.mjs
+```
+
+Setup fetches the recorded public source revisions and lockfile dependencies, compiles the existing local contract fixture and starts the loopback server. Open `http://127.0.0.1:8765/study/interface/`, then choose **Run the local journey**. That action runs the fixed source-API composition and disposable local EVM; no wallet is needed. It is not an installed four-repository, live settlement or hosted Pages experience. Focused engineering checks also passed on Node 24.21.0; the complete corrected setup/UI/four-source/EVM driver has not been freshly rerun. No qualification of other Node releases is asserted.
+
+Inspect the new run directory, `joined-acceptance.json`, source pins, local contract receipts and cost record. Existing output directories are refused. The runtime retains the research pins (Alpha `9cb90e8c189f146eff7d166e249d9474792c4864`, Manager `3153ac394d37eeecb03e825ecce37559427bc6c3`, Jobs `ca6cfb74a36c233e5f04bd591a5e2179299774a1`, Fleet `45759fb096faf8988f58ae5ea71248d0f35a97c7`); these are not a qualification of today's final delivered combination. USDC6 and AGIALPHA18 remain separate routes. Executable main integration or public hosting still requires the original software/site-owner gate disposition; this guide does not assert it passed.
 
 ## Remaining scientific acceptance gaps
 
-The technical qualification threshold passed. The requested economic or equivalently compelling external practical-value target did not. There is no verified customer demand, realized sale or profit, actionable firm offer, recruited human expert comparison, complete development cost, learned-model-provider swap, hostile-process evaluator isolation or installed four-system dispatch qualification. The strongest supplied direct specialist remains competitive and wins the final median timing.
+The retained research passed its declared generic-qualification threshold. Its 96% reduction concerns generic test cases, with fresh semantic checks still required; it is not a reduction in semantic verification or complete cost. The requested economic or equivalently compelling external practical-value target did not pass. There is no verified customer demand, realized sale or profit, actionable firm offer, recruited human expert comparison, complete development cost, learned-model-provider swap, hostile-process evaluator isolation or installed four-system dispatch qualification. The supplied direct specialist wins the final median timing.
 
 The next small experiment is one externally supplied useful dependency task, a frozen customer acceptance rule, a separately timed expert solution and end-to-end cost metering. Its result should be an accepted deliverable or documented avoided cost, with a changed source/policy test of the retained qualification mechanism.

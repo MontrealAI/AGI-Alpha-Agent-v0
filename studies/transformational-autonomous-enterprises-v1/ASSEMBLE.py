@@ -39,4 +39,8 @@ else:
     with target.open("xb") as stream:
         stream.write(assembled)
     print(f"Assembled and verified: {target}")
-print("Extract the ZIP, open its README, then verify and start the local demonstration. No archive content was executed.")
+print(
+    "Extract the ZIP, then follow the maintained README in PR #4878 to apply "
+    "APPLY_QUEUE_INPUT_FIX.py before starting the separate corrected copy. "
+    "The ZIP's README is historical. No archive content was executed."
+)

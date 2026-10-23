@@ -4,17 +4,27 @@
 
 **Reuse stable structure, check the new meaning, and grant authority separately.**
 
-This additive draft accompanies [paper PR #4877](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4877) and [coordination issue #4850](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850). It is not a passive paper change, a main-branch release, an installed Fleet qualification, or a claim that the economic target passed. Existing owners, denied objectives and review restrictions remain intact.
+This additive research proposal accompanies [merged paper PR #4877](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4877) and [coordination issue #4850](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850). The separate [software PR #4878](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4878) is ready for review and remains unmerged. It is not a passive paper change, a main-branch release, an installed Fleet qualification, or a claim that the economic target passed. Existing owners, denied objectives and review restrictions remain intact.
+
+## Paper, source and evidence
+
+- [Read the published 29-page paper](https://montrealai.github.io/AGI-Alpha-Agent-v0/papers/transformational-autonomous-enterprises-v1.pdf) or [download its exact standalone TeX](https://montrealai.github.io/AGI-Alpha-Agent-v0/papers/transformational-autonomous-enterprises-v1.tex). Their original URLs and bytes remain preserved.
+- [Assemble the complete experimental companion](archive-parts.json) using [ASSEMBLE.py](ASSEMBLE.py), then follow the corrected-copy instructions below. The full archive contains the publication source ZIP, editable figures and bulky retained evidence omitted from the selected review mirrors.
+- [Read the current publication handoff](PUBLICATION_HANDOFF.md), [retained acceptance](evidence/ACCEPTANCE.md), [claim limits](evidence/CLAIMS.json) and [cost ledger](evidence/COST_LEDGER.json).
+
+The archive's README (also preserved in [COMPANION_README.md](COMPANION_README.md)) and handoff describe the original research freeze and contain historical PR/publication status and commands. Use this maintained README and the current handoff for assembly and the separate v4 engineering overlay. The original ZIP is not the corrected runtime, and public source availability is not a deployed interactive experience.
 
 ## Run the complete deliverable
 
 The complete companion is supplied as one ZIP in the assignment handoff. In this GitHub proposal it is stored as three [checksum-bound parts](archive-parts.json) because the upload connector limits each request to 16 MiB. Download [ASSEMBLE.py](ASSEMBLE.py) with **Download raw file**, then run `python3 ASSEMBLE.py --download` to fetch the public parts, verify each part and the complete ZIP, and create `Successor_Omega_Harness_Companion.zip`. Extract that ZIP. If the parts already sit beside the script, run `python3 ASSEMBLE.py` without network access. The archive contains the complete executable study, original and confirmation result campaigns, all earlier failures, interface, publication sources and PDF, bibliography, editable figures, desktop/mobile screenshots and all 29 final PDF page renders. It excludes cloned repositories, installed dependencies, caches and complete earlier papers.
 
-Download [APPLY_QUEUE_INPUT_FIX.py](APPLY_QUEUE_INPUT_FIX.py) with **Download raw file**. From the directory containing that helper and the extracted `Successor_Omega_Harness` folder, with Linux, Git, npm, Python 3 and Node 24.19.0, run:
+Download [APPLY_QUEUE_INPUT_FIX.py](APPLY_QUEUE_INPUT_FIX.py) with **Download raw file**. From the directory containing that helper and the extracted `Successor_Omega_Harness` folder, with Linux, Git, npm, Python 3 and the recorded Node 24.19.0 runtime, run:
 
 ```sh
 python3 APPLY_QUEUE_INPUT_FIX.py --download Successor_Omega_Harness Successor_Omega_Harness_Engineering_Fixed && node Successor_Omega_Harness_Engineering_Fixed/study/quickstart.mjs
 ```
+
+Focused engineering checks also passed on Node 24.21.0. The complete corrected setup/UI/four-source/EVM driver has not been freshly rerun; no qualification of other Node releases is asserted.
 
 The helper verifies all 457 original manifest files, obtains only seven small fixed-commit checksum-bound runtime and regression files anonymously, and creates a **separate** corrected full companion. It refuses changed original bytes, changed correction bytes and an existing destination. The original extracted folder and immutable ZIP remain intact. No token, credential, automatic retry or download fallback is used. If the seven declared runtime/regression files already sit beside the helper under their `study/` paths, omit `--download` for an offline overlay.
 
