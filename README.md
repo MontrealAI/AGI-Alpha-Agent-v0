@@ -65,7 +65,7 @@ named reproducible companion and source release. The inherited enterprise worksp
 capability, freezes it and compares later tasks while retaining rejected alternatives, declared costs and history.
 Finite synthetic studies and zero-cap inspection drafts describe this preview; physical construction,
 installed enterprise compatibility, external model/tool pilots and observed organizational benefit retain
-separate qualification. Fresh exact-source release gates and the preceding 1.39 publication sequence remain pending.
+separate qualification. Fresh exact-source 1.40 release gates remain pending; the preceding 1.39 publication sequence is complete.
 
 
 This combined software candidate adds bounded OUT-EXECUTE execution to the preserved proposal and Out-Evolve journeys.
