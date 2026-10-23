@@ -4,6 +4,31 @@ import test from 'node:test';
 import {createCompiler,validateProblem,executeProgram,inspectProgram,canonical,snapshot} from './compiler.mjs';
 import {digitalFault,mixtureAssay,acquireSynthetic} from './domains.mjs';
 const clone=x=>JSON.parse(JSON.stringify(x));
+test('declared decision modes retain their intended decisions and defaults',()=>{
+ const repair=digitalFault({goal:'repair'}),health=digitalFault({goal:'health'});
+ assert.deepEqual(digitalFault(),repair);
+ assert.deepEqual(digitalFault({goal:undefined}),repair);
+ assert.equal(repair.id,'digital-fault-repair');assert.equal(health.id,'digital-fault-health');
+ assert.deepEqual(repair.worlds.map(w=>w.goal),['retain','replace-and','replace-or','replace-nand','replace-stucklow','replace-stuckhigh']);
+ assert.deepEqual(health.worlds.map(w=>w.goal),['retain','replace','replace','replace','replace','replace']);
+ const disposition=mixtureAssay({goal:'disposition'}),quantify=mixtureAssay({goal:'quantify'});
+ assert.deepEqual(mixtureAssay(),disposition);
+ assert.deepEqual(mixtureAssay({goal:undefined}),disposition);
+ assert.equal(disposition.id,'mixture-assay-disposition');assert.equal(quantify.id,'mixture-assay-quantify');
+ assert.deepEqual(disposition.worlds.map(w=>w.goal),['clear','recover-b','recover-b','quarantine-a','quarantine-a','quarantine-a','quarantine-a','quarantine-a','quarantine-a']);
+ assert.deepEqual(quantify.worlds.map(w=>w.goal),['a0b0','a0b1','a0b2','a1b0','a1b1','a1b2','a2b0','a2b1','a2b2']);
+});
+for(const [name,builder,otherMode,message] of [
+ ['digitalFault',digitalFault,'disposition','digitalFault goal must be health or repair'],
+ ['mixtureAssay',mixtureAssay,'health','mixtureAssay goal must be disposition or quantify']
+])test(name+' rejects unsupported decision modes without coercion',()=>{
+ let coercions=0;
+ const coercible={[Symbol.toPrimitive](){coercions++;return name==='digitalFault'?'health':'quantify';}};
+ for(const goal of ['heath','quantfy','',otherMode,'HEALTH','health ',' quantify',null,false,0,[],{},new String('health'),Symbol('health'),coercible]){
+  assert.throws(()=>builder({goal}),{name:'TypeError',message});
+ }
+ assert.equal(coercions,0);
+});
 test('newly executed acquisitions recover every development decision at both error extremes',async()=>{
  for(const p of [digitalFault(),mixtureAssay()]){
   const r=await createCompiler().compile(p);assert.equal(r.status,'COMPILED');assert.equal(r.certificate.optimalWithinGrammar,true);

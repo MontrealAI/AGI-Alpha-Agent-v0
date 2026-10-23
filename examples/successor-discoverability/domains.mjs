@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {SCHEMA,validateProblem} from './compiler.mjs';
 export function digitalFault({noise=1,goal='repair',drift=1,missionBudget=40}={}){
+  if(!['health','repair'].includes(goal))throw new TypeError('digitalFault goal must be health or repair');
   const stimuli=[[0,0],[0,1],[1,0],[1,1]];
   const gates={xor:(a,b)=>a^b,and:(a,b)=>a&b,or:(a,b)=>a|b,nand:(a,b)=>1-(a&b),stucklow:()=>0,stuckhigh:()=>1};
   const channels=['reference-before','input-00','input-01','input-10','input-11','reference-after'].map(id=>({id,cost:1,noise}));
@@ -9,6 +10,7 @@ export function digitalFault({noise=1,goal='repair',drift=1,missionBudget=40}={}
     nuisance:channels.map((_,i)=>drift?[1,i]:[1]),grammar:{maxSupport:3,weightLimit:2,maxL1:4},missionBudget});
 }
 export function mixtureAssay({noise=1,goal='disposition',drift=1,missionBudget=48}={}){
+  if(!['disposition','quantify'].includes(goal))throw new TypeError('mixtureAssay goal must be disposition or quantify');
   const a=[1,4,2,0],b=[3,0,1,4],worlds=[];
   for(let ca=0;ca<=2;ca++)for(let cb=0;cb<=2;cb++)worlds.push({id:'a'+ca+'b'+cb,
     goal:goal==='quantify'?'a'+ca+'b'+cb:ca>0?'quarantine-a':cb>0?'recover-b':'clear',

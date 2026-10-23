@@ -25,7 +25,7 @@ node examples/successor-discoverability/workbench-adapter.test.mjs
 node examples/successor-discoverability/execution.test.mjs
 ```
 
-Current observed counts: **22,13,7 passing** on Node24.19.0. The original frozen revision recorded **21,13,7**. The extra regression checks the zero-measurement optimum when all worlds require the same decision and construction work is bounded. The repository's intended pin is22.17.1; that pin was not newly qualified for this candidate. The core and runtime-wrapper files add no npm dependencies.
+The decision-mode amendment records **25 focused core checks passing** on Node24.19.0, including supported decision modes and rejection without coercion. Its exact source and bundle identities are in `evidence/decision-mode-correction-20261023.json`. The preceding post-review source recorded **22,13,7 passing**; adapter and delivery suites were not rerun for this amendment. The original frozen revision recorded **21,13,7**. The extra regression checks the zero-measurement optimum when all worlds require the same decision and construction work is bounded. The repository's intended pin is22.17.1; that pin was not newly qualified for this candidate. The core and runtime-wrapper files add no npm dependencies.
 
 The compiler/reference were frozen before the network requirement was revealed. Rerunning now-public inputs verifies behavior but cannot recreate original withholding or independent preregistration.
 
