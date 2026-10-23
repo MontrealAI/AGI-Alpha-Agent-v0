@@ -101,13 +101,13 @@ jobs:
           ]
           record = {'schema': 'agialpha.held-test-selection.v1',
                     'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
-                    'invocation': 'capability-delivery', 'status': 'LOCAL_NOT_RUN', 'qualified': False,
-                    'tests': [{'nodeid': node, 'status': 'LOCAL_NOT_RUN'} for node in held],
-                    'meaning': 'These four held nodes are not run by this invocation; their outcomes are not qualified.'}
+                    'invocation': 'capability-delivery', 'status': 'EXCLUSION_PLANNED', 'qualified': False,
+                    'tests': [{'nodeid': node, 'status': 'EXCLUSION_PLANNED'} for node in held],
+                    'meaning': 'These four nodes are planned for exclusion by this invocation; this pre-run record states selection intention only. Actual deselection requires observed job output; their outcomes are not qualified.'}
           pathlib.Path('capability-evidence/held-probes.json').write_text(json.dumps(record, indent=2) + '\n')
           PY
           node --test examples/successor-capability/*.test.mjs examples/autonomous-enterprises/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs tests/browser/fleet_module_boundary.test.mjs tests/browser/fleet_git_metadata.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/test_successor_capability_delivery.py -q \
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null --rootdir=. -p no:cacheprovider tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/test_successor_capability_delivery.py -q \
             --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands \
             --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata \
             --deselect=tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer \

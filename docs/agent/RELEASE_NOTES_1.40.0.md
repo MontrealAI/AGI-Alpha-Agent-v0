@@ -59,9 +59,12 @@ promotion, commissioning, funding, signing, payment or settlement authority. USD
 AGIALPHA18 stay separate zero-cap inspection routes. Installed enterprise receivers,
 same-original-mission native return/reopen, external model/tool pilots and real-user outcomes
 each retain their own unfinished acceptance. The four held native-source helper/browser
-tests are explicitly deselected from the two current release invocations and disclosed as
-locally NOT_RUN with unqualified outcomes. Their original restriction is not cleared;
-earlier recorded hosted outcomes remain separate historical facts. All other selected
+tests are listed for exclusion from the two current release invocations. Pre-run
+`EXCLUSION_PLANNED` records describe intention only and leave their outcomes unqualified;
+actual deselection requires observed job output. Their original restriction is not cleared.
+The earlier [6d capability attempt](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/39897542978)
+is retained as a failed selection safeguard; its pre-run record does not prove nonexecution.
+Earlier hosted outcomes remain separate historical facts. All other selected
 tests and existing named release-job requirements remain applicable.
 
 ## Integration and release sequence

@@ -316,9 +316,9 @@ jobs:
           ]
           record = {'schema': 'agialpha.held-test-selection.v1',
                     'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
-                    'invocation': 'agent-full-regression', 'status': 'LOCAL_NOT_RUN', 'qualified': False,
-                    'tests': [{'nodeid': node, 'status': 'LOCAL_NOT_RUN'} for node in held],
-                    'meaning': 'These four held nodes are not run by this invocation; their outcomes are not qualified.'}
+                    'invocation': 'agent-full-regression', 'status': 'EXCLUSION_PLANNED', 'qualified': False,
+                    'tests': [{'nodeid': node, 'status': 'EXCLUSION_PLANNED'} for node in held],
+                    'meaning': 'These four nodes are planned for exclusion by this invocation; this pre-run record states selection intention only. Actual deselection requires observed job output; their outcomes are not qualified.'}
           pathlib.Path('evidence/held-probes.json').write_text(json.dumps(record, indent=2) + '\n')
           PY
           python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml \

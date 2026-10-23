@@ -97,7 +97,7 @@ HELD_SELECTIONS = (
         "capability",
         "Computation, history and delivery gates",
         "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest",
-        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider "
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null --rootdir=. -p no:cacheprovider "
         "tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py "
         "tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py "
         "tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log",
@@ -155,7 +155,7 @@ def assert_truthful_held_record(run: str, invocation: str, destination: str) -> 
     fields = {ast.literal_eval(key): value for key, value in zip(record.keys, record.values) if key is not None}
     assert ast.literal_eval(fields["schema"]) == "agialpha.held-test-selection.v1"
     assert ast.literal_eval(fields["invocation"]) == invocation
-    assert ast.literal_eval(fields["status"]) == "LOCAL_NOT_RUN"
+    assert ast.literal_eval(fields["status"]) == "EXCLUSION_PLANNED"
     assert ast.literal_eval(fields["qualified"]) is False
     tests = fields["tests"]
     assert isinstance(tests, ast.ListComp) and len(tests.generators) == 1
@@ -164,8 +164,11 @@ def assert_truthful_held_record(run: str, invocation: str, destination: str) -> 
     row = {ast.literal_eval(key): value for key, value in zip(tests.elt.keys, tests.elt.values) if key is not None}
     assert set(row) == {"nodeid", "status"}
     assert isinstance(row["nodeid"], ast.Name) and row["nodeid"].id == "node"
-    assert ast.literal_eval(row["status"]) == "LOCAL_NOT_RUN"
-    assert "their outcomes are not qualified" in ast.literal_eval(fields["meaning"])
+    assert ast.literal_eval(row["status"]) == "EXCLUSION_PLANNED"
+    meaning = ast.literal_eval(fields["meaning"])
+    assert "selection intention only" in meaning
+    assert "Actual deselection requires observed job output" in meaning
+    assert "their outcomes are not qualified" in meaning
     writes = [
         node
         for node in ast.walk(tree)
@@ -198,7 +201,7 @@ def test_held_selection_rejects_missing_and_unrelated_deselections() -> None:
             assert_exact_held_selection(argv + ["--ignore=tests/unrelated.py"], case[4])
 
 
-def test_held_selection_records_only_local_non_execution() -> None:
+def test_held_selection_records_only_planned_exclusion() -> None:
     for case in HELD_SELECTIONS:
         run, _ = held_step(case)
         assert_truthful_held_record(run, case[5], case[6])
@@ -210,3 +213,56 @@ def test_held_selection_record_rejects_false_qualification() -> None:
         assert_truthful_held_record(run, case[5], case[6])
         with pytest.raises(AssertionError):
             assert_truthful_held_record(run.replace("'qualified': False", "'qualified': True"), case[5], case[6])
+
+
+def test_pre_run_selection_record_rejects_completed_nonexecution_claim() -> None:
+    for case in HELD_SELECTIONS:
+        run, _ = held_step(case)
+        with pytest.raises(AssertionError):
+            assert_truthful_held_record(
+                run.replace("'status': 'EXCLUSION_PLANNED'", "'status': 'LOCAL_NOT_RUN'"), case[5], case[6]
+            )
+
+
+def test_capability_deselection_uses_the_owned_checkout_root(tmp_path: Path) -> None:
+    """Only two newly written assert-True controls run; no product test is imported."""
+    _, argv = held_step(HELD_SELECTIONS[0])
+    root_options = [arg for arg in argv if arg.startswith("--rootdir=")]
+    assert root_options == ["--rootdir=."]
+    root = tmp_path / "owned selection"
+    (root / "tests").mkdir(parents=True)
+    (root / "tests/test_owned_selection.py").write_text(
+        "def test_control_one():\n    assert True\n\ndef test_control_two():\n    assert True\n"
+    )
+    env = {**os.environ, "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1", "PYTHONDONTWRITEBYTECODE": "1"}
+    for label, options, expected in (
+        ("unfixed", [], "2 passed"),
+        ("fixed", root_options, "1 passed, 1 deselected"),
+    ):
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pytest",
+                "--noconftest",
+                "-c",
+                "/dev/null",
+                "-p",
+                "no:cacheprovider",
+                *options,
+                "tests/test_owned_selection.py",
+                "-q",
+                "--deselect=tests/test_owned_selection.py::test_control_two",
+            ],
+            cwd=root,
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=30,
+            check=False,
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+        assert expected in result.stdout
+        if label == "unfixed":
+            assert "deselected" not in result.stdout
+        print(f"Owned inert selection {label}: {result.stdout.strip()}")
