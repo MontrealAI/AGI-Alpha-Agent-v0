@@ -303,7 +303,7 @@ jobs:
           ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests tests/test_orchestrator_backoff.py tests/test_insight_orchestrator_restart.py -q --junitxml=evidence/restarts.xml
       - name: Execute the complete catalog finite launch contracts
         run: python -m scripts.validate_demo_catalog --smoke --output evidence/demo-catalog.json
-      - name: Full offline regression including notebooks
+      - name: Offline regression including notebooks (four held native tests excluded)
         run: |
           mkdir -p evidence
           python - <<'PY'

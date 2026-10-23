@@ -158,7 +158,7 @@ def test_acceptance_commands_remain_separate_required_and_unchanged():
     install = named(regression, "Original locked development environment")
     assert "python -m pip install --require-hashes -r requirements.lock -r requirements-dev.lock" in install["run"]
     for job, name in [
-        (regression, "Full offline regression including notebooks"),
+        (regression, "Offline regression including notebooks (four held native tests excluded)"),
         (regression, "Strict types and repository checks"),
         (gallery, "Verify independent browser algorithm contracts"),
     ]:
@@ -166,7 +166,7 @@ def test_acceptance_commands_remain_separate_required_and_unchanged():
         assert not step.get("continue-on-error", False)
         assert "if" not in step
         assert "npm ci" not in step["run"] and "pip install" not in step["run"]
-    full = named(regression, "Full offline regression including notebooks")["run"]
+    full = named(regression, "Offline regression including notebooks (four held native tests excluded)")["run"]
     assert "--cov-fail-under=80" in full and "--junitxml=evidence/regression.xml" in full
     assert (
         "node --test tests/browser/portal_engine.test.mjs"

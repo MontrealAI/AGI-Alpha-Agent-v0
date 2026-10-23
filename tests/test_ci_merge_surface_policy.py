@@ -29,7 +29,9 @@ def test_integration_smoke_defers_full_coverage_to_primary_release_regression() 
     release = yaml.safe_load(Path(".github/workflows/agent-release.yml").read_text(encoding="utf-8"))
     regression = release["jobs"]["regression"]
     primary = next(
-        step for step in regression["steps"] if step.get("name") == "Full offline regression including notebooks"
+        step
+        for step in regression["steps"]
+        if step.get("name") == "Offline regression including notebooks (four held native tests excluded)"
     )
     assert "--cov-fail-under=80" in primary["run"]
     assert "--ignore" not in primary["run"]
