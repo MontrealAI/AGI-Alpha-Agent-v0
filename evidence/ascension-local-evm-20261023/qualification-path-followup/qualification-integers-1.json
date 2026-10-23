@@ -1,0 +1,50 @@
+{
+  "schema": "ascension-local-evm-phase/v1",
+  "phase": "qualification-rounding",
+  "label": "qualification-integers-1",
+  "executionContext": "approved-local-simulation",
+  "startedAt": "2026-10-23T00:27:02.940572+00:00",
+  "command": [
+    "/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node",
+    "node_modules/.bin/hardhat",
+    "--config",
+    "hardhat.config.js",
+    "--network",
+    "hardhat",
+    "test",
+    "--no-compile",
+    "qualification/ascension/payout-small-integers.local.test.js"
+  ],
+  "workingDirectory": "/workspace/scratch/5d02e86cc826/ascension-evm-local/source/tests/contracts",
+  "environment": {
+    "PATH": "/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin:/usr/bin:/bin",
+    "CI": "1",
+    "HARDHAT_DISABLE_TELEMETRY_PROMPT": "true",
+    "ALPHA_PYTHON": "/workspace/scratch/5d02e86cc826/thermal-python/bin/python",
+    "PYTHONPATH": "/workspace/scratch/5d02e86cc826/ascension-evm-local/source",
+    "PYTHONNOUSERSITE": "1",
+    "NO_DISCLAIMER": "1",
+    "OPENAI_AGENTS_DISABLE_TRACING": "true",
+    "ASCENSION_SMALL_INTEGER_PROTOCOL": "/workspace/scratch/5d02e86cc826/ascension-evm-local/evidence/payout-small-integers-protocol.json",
+    "ASCENSION_SMALL_INTEGER_OUTPUT": "/workspace/scratch/5d02e86cc826/ascension-evm-local/evidence/small-integers/qualification-integers-1"
+  },
+  "timeoutSeconds": 180,
+  "sourceManifestSha256": "48bd265582c1977358446116db1eb0ecd5fefb8c4ee1ea465b82f2ff9766b548",
+  "runnerSha256": "c68764005b5c2703d21dbc9bbec1a7b90051006e50ea76514869fd0d8e487795",
+  "nodeExecutableSha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+  "pythonExecutable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+  "networkBoundary": "Application guards require an unforked in-process Hardhat provider. This is not OS-wide egress isolation. Initial dependency acquisition may use the public npm registry.",
+  "credentialsOrExternalProviderSupplied": false,
+  "exitCode": 0,
+  "finishedAt": "2026-10-23T00:27:06.912751+00:00",
+  "stdout": {
+    "path": "qualification-integers-1.stdout.txt",
+    "bytes": 423,
+    "sha256": "9b89e3e5d313621aa7e6b201067d3dda6ae8b7ce1c90a8e8d44822eb99692fb2"
+  },
+  "stderr": {
+    "path": "qualification-integers-1.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

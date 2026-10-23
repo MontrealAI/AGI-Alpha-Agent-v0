@@ -1,0 +1,1638 @@
+{
+  "attempts": 1,
+  "authority": [],
+  "digest": "ffb25a65c3124ef16b79134525f3b9a6bf270044d6c5e6095908911dd87824e8",
+  "error": null,
+  "id": "@successor-work:c0851a5a-3102-456d-b2f5-1026cc4341ff",
+  "lease_until": 1792714987,
+  "lifecycle": {
+    "active_authority": [],
+    "active_proof": [],
+    "candidate": {
+      "artifacts": [
+        {
+          "digest": "eb6fe3fb48bce89d83bde3aeaaa14af58777d87845ba3a3bcc19808f90c8c876",
+          "location": null,
+          "name": "input",
+          "role": "other",
+          "schema_version": 1
+        },
+        {
+          "digest": "f36d67ba20115cd1b42c31abcb9c36c7db0c07732fce309ec1e7274b554776cb",
+          "location": null,
+          "name": "adapter-sources",
+          "role": "source",
+          "schema_version": 1
+        }
+      ],
+      "budget": {
+        "enforceable": [
+          "attempts",
+          "milliseconds"
+        ],
+        "limits": {
+          "attempts": 3,
+          "milliseconds": 60000
+        },
+        "schema_version": 1,
+        "stop_loss": {},
+        "units": {
+          "attempts": "pure work attempts",
+          "milliseconds": "wall time per attempt"
+        },
+        "unknown_costs": [
+          "compute",
+          "human-review"
+        ]
+      },
+      "configuration": {
+        "family": "thermal-witness",
+        "independent": false,
+        "network": false
+      },
+      "development_evaluator_digest": null,
+      "environment_digest": "fc1b255df55bf277b9bc6b722c63f8ea63378fdf8cb1d49a632b77a4bd61affb",
+      "final_proof_interface_digest": null,
+      "immutable_trial": true,
+      "institution_id": "work-c0851a5a-3102-456d-b2f5-1026cc4341ff",
+      "memory_digests": [],
+      "mission_id": "mission-eb6fe3fb48bce89d83bde3aeaaa14af58777d87845ba3a3bcc19808f90c8c876",
+      "mutable_state_classes": [],
+      "parent_release_digest": null,
+      "policy_digest": null,
+      "producer": "local-producer",
+      "providers": [],
+      "release_id": "work-method-v1",
+      "schema_version": 1,
+      "world_digest": null
+    },
+    "institution": {
+      "constitution": {
+        "accounting_rule": "each measured cost deducted once; unknown costs remain unknown",
+        "alternatives": [],
+        "authority_ceiling": "none",
+        "beneficiary": null,
+        "budget": {
+          "enforceable": [
+            "attempts",
+            "milliseconds"
+          ],
+          "limits": {
+            "attempts": 3,
+            "milliseconds": 60000
+          },
+          "schema_version": 1,
+          "stop_loss": {},
+          "units": {
+            "attempts": "pure work attempts",
+            "milliseconds": "wall time per attempt"
+          },
+          "unknown_costs": [
+            "compute",
+            "human-review"
+          ]
+        },
+        "constraints": [
+          "Declared owner: local-owner",
+          "Frozen maintained adapter; no arbitrary supplied code"
+        ],
+        "evidence_rights": [
+          "synthetic",
+          "Declared simulated whole-flow fixture",
+          "Apache-2.0"
+        ],
+        "incumbent": null,
+        "mission_distribution": "Exact user-supplied inputs committed by eb6fe3fb48bce89d83bde3aeaaa14af58777d87845ba3a3bcc19808f90c8c876",
+        "mission_id": "mission-eb6fe3fb48bce89d83bde3aeaaa14af58777d87845ba3a3bcc19808f90c8c876",
+        "objective": "Produce and inspect bounded thermal-witness work",
+        "outcome_measures": [],
+        "owner": "local-controller",
+        "prohibited_actions": [
+          "live-settlement",
+          "network",
+          "host-code",
+          "automatic-admission"
+        ],
+        "proof_requirements": [],
+        "reviewer_budget_minutes": 10,
+        "schema_version": 1,
+        "scope": "public local work; no independent qualification or live settlement",
+        "stop_conditions": [
+          "Cancellation, budget exhaustion, invalid inputs, corrupted persistence"
+        ],
+        "utility_rule": "hard correctness gates before measured cost and performance",
+        "validity": null
+      },
+      "controller": "local-controller",
+      "discovery_locations": [],
+      "id": "work-c0851a5a-3102-456d-b2f5-1026cc4341ff",
+      "nominated_release_digest": null,
+      "predecessor_id": null,
+      "schema_version": 1,
+      "serving_release_digest": null
+    },
+    "release_digest": "fad0b1a905486e65790a273a078a1ae9281871d7907d689213b6d412aa6d4e6a"
+  },
+  "request": {
+    "family": "thermal-witness",
+    "inputs": {
+      "extension": {
+        "inputEnergyMicroJ": {
+          "estimate": "5000000000",
+          "high": "5000000000",
+          "low": "5000000000"
+        },
+        "kind": "INDEPENDENT_SIMULATED",
+        "minimumRecoveryPpm": 700000,
+        "sourceId": "energy-acceptance-fixture",
+        "storageReleaseMicroJ": {
+          "estimate": "180000000",
+          "high": "180000000",
+          "low": "180000000"
+        }
+      },
+      "family": "heat-recovery",
+      "maxWorkUnits": 960,
+      "measurement": {
+        "commandSourceId": "controller-telemetry",
+        "coverage": "WHOLE_FLOW_DECLARED_BOUNDS",
+        "densityKgPerM3": {
+          "estimate": 1000,
+          "high": 1000,
+          "low": 1000
+        },
+        "intervals": [
+          {
+            "commandFlowNLPerMin": 100000000,
+            "deltaTemperatureUK": 10000000,
+            "deltaTemperatureUncertaintyUK": 0,
+            "durationMs": 60000,
+            "sequence": 0,
+            "startMs": 0,
+            "volumeNL": 92000000,
+            "volumeUncertaintyNL": 0
+          }
+        ],
+        "mode": "SIMULATED_MEASUREMENTS",
+        "propertyModel": "CONSTANT_WITHIN_INTERVAL",
+        "specificHeatJPerKgK": {
+          "estimate": 4000,
+          "high": 4000,
+          "low": 4000
+        },
+        "temperatureWitness": {
+          "kind": "BOUNDED_SIMULATED",
+          "sourceId": "differential-reference"
+        },
+        "volumeWitness": {
+          "kind": "INDEPENDENT_SIMULATED",
+          "sourceId": "independent-volume"
+        },
+        "windowMs": 60000
+      },
+      "policy": {
+        "maxRelativeErrorPpm": 50000,
+        "minimumHeatMicroJ": "1000000"
+      },
+      "schema": "thermal-witness/v1"
+    },
+    "language": "en",
+    "name": "Witnessed thermal measurement",
+    "owner": "local-owner",
+    "reviewMinutes": 10,
+    "rights": {
+      "dataClass": "synthetic",
+      "license": "Apache-2.0",
+      "source": "Declared simulated whole-flow fixture"
+    },
+    "schema": "successor-workbench/v1"
+  },
+  "request_digest": "eb6fe3fb48bce89d83bde3aeaaa14af58777d87845ba3a3bcc19808f90c8c876",
+  "result": {
+    "chronicle": [
+      {
+        "decision": "CONDITIONAL_BOUNDS_MET",
+        "inheritedAuthority": false,
+        "inheritedProof": false,
+        "kind": "local-result",
+        "missionDigest": "878ab4c19c90728123959377684286d21016ca144b7ee4993db77147794bca7e",
+        "releaseDigest": "d85cf75a7e1ff7c36eb6d4346cd13ace31255f6093c728ff0cd425e6e8c178db"
+      }
+    ],
+    "compilation": {
+      "authorityCreated": "NONE",
+      "budgetReservations": {
+        "includesRetries": true,
+        "limitBaseUnits": "0",
+        "reservedBaseUnits": "0",
+        "unit": "AGIALPHA"
+      },
+      "capabilityRequests": [
+        {
+          "actions": [
+            "inspect-local"
+          ],
+          "actor": "example-producer",
+          "jobId": "work-878ab4c19c90728123959377:constitution",
+          "status": "REQUESTED_NOT_GRANTED",
+          "tools": [
+            "fixed-workbench-thermal-witness"
+          ]
+        },
+        {
+          "actions": [
+            "inspect-local"
+          ],
+          "actor": "example-producer",
+          "jobId": "work-878ab4c19c90728123959377:evidence",
+          "status": "REQUESTED_NOT_GRANTED",
+          "tools": [
+            "fixed-workbench-thermal-witness"
+          ]
+        },
+        {
+          "actions": [
+            "inspect-local"
+          ],
+          "actor": "example-producer",
+          "jobId": "work-878ab4c19c90728123959377:formation",
+          "status": "REQUESTED_NOT_GRANTED",
+          "tools": [
+            "fixed-workbench-thermal-witness"
+          ]
+        },
+        {
+          "actions": [
+            "inspect-local"
+          ],
+          "actor": "example-producer",
+          "jobId": "work-878ab4c19c90728123959377:challenge",
+          "status": "REQUESTED_NOT_GRANTED",
+          "tools": [
+            "fixed-workbench-thermal-witness"
+          ]
+        },
+        {
+          "actions": [
+            "inspect-local"
+          ],
+          "actor": "example-producer",
+          "jobId": "work-878ab4c19c90728123959377:verification",
+          "status": "REQUESTED_NOT_GRANTED",
+          "tools": [
+            "fixed-workbench-thermal-witness"
+          ]
+        },
+        {
+          "actions": [
+            "inspect-local"
+          ],
+          "actor": "example-producer",
+          "jobId": "work-878ab4c19c90728123959377:admission",
+          "status": "REQUESTED_NOT_GRANTED",
+          "tools": [
+            "fixed-workbench-thermal-witness"
+          ]
+        },
+        {
+          "actions": [
+            "inspect-local"
+          ],
+          "actor": "example-producer",
+          "jobId": "work-878ab4c19c90728123959377:renewal",
+          "status": "REQUESTED_NOT_GRANTED",
+          "tools": [
+            "fixed-workbench-thermal-witness"
+          ]
+        }
+      ],
+      "constitution": {
+        "allowedActions": [
+          "inspect-local"
+        ],
+        "allowedTools": [
+          "fixed-workbench-thermal-witness"
+        ],
+        "alternatives": [
+          {
+            "description": "Measured deterministic sort-and-reduce baseline; not a frontier AI comparator.",
+            "id": "alpha-beta",
+            "version": "successor-browser-v1"
+          }
+        ],
+        "authorityCeiling": {
+          "externalEffects": false,
+          "level": "A0",
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ]
+        },
+        "beneficiary": "Owner of this local synthetic mission",
+        "budget": {
+          "limitBaseUnits": "0",
+          "maxDurationMs": 60000,
+          "maxJobs": 7,
+          "maxRetries": 0,
+          "unit": "AGIALPHA"
+        },
+        "criticalFunctions": [
+          "mission-constitution",
+          "incumbent-baseline",
+          "alternative-set",
+          "rights-data",
+          "mission-gym",
+          "oracle-teacher",
+          "failure-taxonomy",
+          "architecture-frontier",
+          "experience-formation",
+          "specialist-formation",
+          "tools-retrieval",
+          "verifier-formation",
+          "security-privacy",
+          "complete-economics",
+          "human-agency",
+          "resilience-rollback",
+          "fresh-evaluation",
+          "independent-validation",
+          "accountable-acceptance",
+          "chronicle-authority",
+          "capital-requalification"
+        ],
+        "expiresAt": "2026-10-30T00:21:57.464Z",
+        "hardGates": [
+          {
+            "description": "All grouped counts and durations agree exactly.",
+            "id": "exact-output",
+            "maxViolations": 0
+          },
+          {
+            "description": "Malformed and unsupported records are rejected.",
+            "id": "invalid-input",
+            "maxViolations": 0
+          },
+          {
+            "description": "No network request, live job, payment or authority grant.",
+            "id": "no-external-effect",
+            "maxViolations": 0
+          }
+        ],
+        "incumbent": {
+          "description": "Measured one-pass Map baseline.",
+          "id": "alpha-current",
+          "version": "successor-browser-v1"
+        },
+        "institutionId": "local-successor-workshop",
+        "kind": "MissionConstitution",
+        "missionId": "work-878ab4c19c90728123959377",
+        "objective": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority.",
+        "principal": "example-human-principal",
+        "proofProtocol": {
+          "criticalErrorCeiling": 0,
+          "custodian": "example-verifier",
+          "formationOwner": "example-producer",
+          "id": "public-local-rehearsal",
+          "minimumMargin": 0,
+          "mode": "SYNTHETIC_REHEARSAL",
+          "requiredIndependence": "I0",
+          "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+          "version": "1"
+        },
+        "rights": [
+          {
+            "dataClass": "synthetic",
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "license": "Apache-2.0",
+            "permittedUses": [
+              "mission-evaluation",
+              "fixture-export"
+            ],
+            "sourceId": "mission-input"
+          }
+        ],
+        "roles": {
+          "acceptor": "example-acceptor",
+          "admitter": "example-admitter",
+          "producer": "example-producer",
+          "verifier": "example-verifier"
+        },
+        "rollback": {
+          "available": true,
+          "reason": "Discard the local candidate and return to the retained fixed baseline.",
+          "target": "alpha-current"
+        },
+        "schemaVersion": "1.0.0",
+        "title": "Witnessed thermal measurement",
+        "version": "1"
+      },
+      "coverage": [
+        {
+          "functionId": "mission-constitution",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "incumbent-baseline",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:evidence"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "alternative-set",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "rights-data",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "mission-gym",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "oracle-teacher",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:evidence"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "failure-taxonomy",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:challenge"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "architecture-frontier",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "experience-formation",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "specialist-formation",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "tools-retrieval",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "verifier-formation",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "security-privacy",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "complete-economics",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:evidence"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "human-agency",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "resilience-rollback",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "fresh-evaluation",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "independent-validation",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "accountable-acceptance",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:admission"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "chronicle-authority",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:admission"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "capital-requalification",
+          "jobIds": [
+            "work-878ab4c19c90728123959377:renewal"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        }
+      ],
+      "criticalEvidenceCuts": [
+        {
+          "exhaustive": false,
+          "functionId": "mission-constitution",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "incumbent-baseline",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:evidence"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "alternative-set",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "rights-data",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "mission-gym",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "oracle-teacher",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:evidence"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "failure-taxonomy",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:challenge"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "architecture-frontier",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "experience-formation",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "specialist-formation",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "tools-retrieval",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:formation"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "verifier-formation",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "security-privacy",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "complete-economics",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:evidence"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "human-agency",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:constitution"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "resilience-rollback",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "fresh-evaluation",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "independent-validation",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:verification"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "accountable-acceptance",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:admission"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "chronicle-authority",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:admission"
+          ]
+        },
+        {
+          "exhaustive": false,
+          "functionId": "capital-requalification",
+          "removeJobIds": [
+            "work-878ab4c19c90728123959377:renewal"
+          ]
+        }
+      ],
+      "dependencyMap": {
+        "work-878ab4c19c90728123959377:admission": [
+          {
+            "jobId": "work-878ab4c19c90728123959377:verification",
+            "kind": "evidence"
+          }
+        ],
+        "work-878ab4c19c90728123959377:challenge": [
+          {
+            "jobId": "work-878ab4c19c90728123959377:formation",
+            "kind": "evidence"
+          }
+        ],
+        "work-878ab4c19c90728123959377:constitution": [],
+        "work-878ab4c19c90728123959377:evidence": [
+          {
+            "jobId": "work-878ab4c19c90728123959377:constitution",
+            "kind": "evidence"
+          }
+        ],
+        "work-878ab4c19c90728123959377:formation": [
+          {
+            "jobId": "work-878ab4c19c90728123959377:evidence",
+            "kind": "evidence"
+          }
+        ],
+        "work-878ab4c19c90728123959377:renewal": [
+          {
+            "jobId": "work-878ab4c19c90728123959377:admission",
+            "kind": "evidence"
+          }
+        ],
+        "work-878ab4c19c90728123959377:verification": [
+          {
+            "jobId": "work-878ab4c19c90728123959377:challenge",
+            "kind": "evidence"
+          }
+        ]
+      },
+      "digest": "sha256:228e4b27b7a83d72c723f116e7f1d8aae57bad3a9dff3e34d27756af48d21a54",
+      "evaluationPlan": {
+        "criticalErrorCeiling": 0,
+        "custodian": "example-verifier",
+        "formationOwner": "example-producer",
+        "id": "public-local-rehearsal",
+        "minimumMargin": 0,
+        "mode": "SYNTHETIC_REHEARSAL",
+        "requiredIndependence": "I0",
+        "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+        "version": "1"
+      },
+      "executionOrder": [
+        "work-878ab4c19c90728123959377:constitution",
+        "work-878ab4c19c90728123959377:evidence",
+        "work-878ab4c19c90728123959377:formation",
+        "work-878ab4c19c90728123959377:challenge",
+        "work-878ab4c19c90728123959377:verification",
+        "work-878ab4c19c90728123959377:admission",
+        "work-878ab4c19c90728123959377:renewal"
+      ],
+      "graph": {
+        "authorityCreated": "NONE",
+        "digest": "sha256:a09702fd7e45a49f8c5f658e7e0d98673257be43e08c146eb82b61fd0788c975",
+        "edges": [
+          {
+            "from": "work-878ab4c19c90728123959377:constitution",
+            "kind": "evidence",
+            "to": "work-878ab4c19c90728123959377:evidence"
+          },
+          {
+            "from": "work-878ab4c19c90728123959377:evidence",
+            "kind": "evidence",
+            "to": "work-878ab4c19c90728123959377:formation"
+          },
+          {
+            "from": "work-878ab4c19c90728123959377:formation",
+            "kind": "evidence",
+            "to": "work-878ab4c19c90728123959377:challenge"
+          },
+          {
+            "from": "work-878ab4c19c90728123959377:challenge",
+            "kind": "evidence",
+            "to": "work-878ab4c19c90728123959377:verification"
+          },
+          {
+            "from": "work-878ab4c19c90728123959377:verification",
+            "kind": "evidence",
+            "to": "work-878ab4c19c90728123959377:admission"
+          },
+          {
+            "from": "work-878ab4c19c90728123959377:admission",
+            "kind": "evidence",
+            "to": "work-878ab4c19c90728123959377:renewal"
+          }
+        ],
+        "graphId": "work-878ab4c19c90728123959377:graph",
+        "kind": "JobGraph",
+        "missionId": "work-878ab4c19c90728123959377",
+        "nodes": [
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-10-30T00:21:57.464Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority."
+            },
+            "covers": [
+              "mission-constitution",
+              "alternative-set",
+              "rights-data",
+              "human-agency"
+            ],
+            "digest": "sha256:8da20326ccb66bdd4bfafb4c13c57731d968e855725f7595dbf4213f517b929e",
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "family": "constitution",
+            "jobId": "work-878ab4c19c90728123959377:constitution",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-878ab4c19c90728123959377",
+            "objective": "Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-thermal-witness"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-878ab4c19c90728123959377:constitution"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-10-30T00:21:57.464Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority."
+            },
+            "covers": [
+              "incumbent-baseline",
+              "oracle-teacher",
+              "complete-economics"
+            ],
+            "digest": "sha256:a82758c24d3271fd0d9d5abb14759318be9af9d8482a3980463eda8264516ef3",
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "family": "evidence",
+            "jobId": "work-878ab4c19c90728123959377:evidence",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-878ab4c19c90728123959377",
+            "objective": "Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-thermal-witness"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-878ab4c19c90728123959377:evidence"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-10-30T00:21:57.464Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority."
+            },
+            "covers": [
+              "mission-gym",
+              "architecture-frontier",
+              "experience-formation",
+              "specialist-formation",
+              "tools-retrieval"
+            ],
+            "digest": "sha256:9b188ce0081e3aafe13350355c56a2eca90a666e5998bea9b4a0ae2302d201c7",
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "family": "formation",
+            "jobId": "work-878ab4c19c90728123959377:formation",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-878ab4c19c90728123959377",
+            "objective": "Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-thermal-witness"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Classify errors, severity, causes, abstention, adversarial cases and stop conditions."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-878ab4c19c90728123959377:formation"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-10-30T00:21:57.464Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority."
+            },
+            "covers": [
+              "failure-taxonomy"
+            ],
+            "digest": "sha256:9714d7289d5731994d0aeed39657152b510cf5ddc0d34cbe0ed5ddb51a0b7ad4",
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "family": "challenge",
+            "jobId": "work-878ab4c19c90728123959377:challenge",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-878ab4c19c90728123959377",
+            "objective": "Classify errors, severity, causes, abstention, adversarial cases and stop conditions.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-thermal-witness"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-878ab4c19c90728123959377:challenge"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-10-30T00:21:57.464Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority."
+            },
+            "covers": [
+              "verifier-formation",
+              "security-privacy",
+              "resilience-rollback",
+              "fresh-evaluation",
+              "independent-validation"
+            ],
+            "digest": "sha256:3ed610e536a9fffec74f38a6583bb23a12137209518b09f020097ec2e9700fd2",
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "family": "verification",
+            "jobId": "work-878ab4c19c90728123959377:verification",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-878ab4c19c90728123959377",
+            "objective": "Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-thermal-witness"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-878ab4c19c90728123959377:verification"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-10-30T00:21:57.464Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority."
+            },
+            "covers": [
+              "accountable-acceptance",
+              "chronicle-authority"
+            ],
+            "digest": "sha256:d18e9e68df70848038c195eb3868837e9adac8c441a5827ac42cebe325c01daf",
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "family": "admission",
+            "jobId": "work-878ab4c19c90728123959377:admission",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-878ab4c19c90728123959377",
+            "objective": "Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-thermal-witness"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Allocate verified available value and define next-successor and fresh-transfer triggers."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-878ab4c19c90728123959377:admission"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-10-30T00:21:57.464Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Bounded simulated whole-flow calorimetry and conditional downstream quantities; no physical or financial authority."
+            },
+            "covers": [
+              "capital-requalification"
+            ],
+            "digest": "sha256:51c1c9717038f08616f6ce35dce16a2c6db5c09a52060bf9dada62f48defe205",
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-10-30T00:21:57.464Z",
+            "family": "renewal",
+            "jobId": "work-878ab4c19c90728123959377:renewal",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-878ab4c19c90728123959377",
+            "objective": "Allocate verified available value and define next-successor and fresh-transfer triggers.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-thermal-witness"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1"
+          }
+        ],
+        "schemaVersion": "1.0.0",
+        "version": "1"
+      },
+      "invalidationMap": {
+        "mission-input": [
+          "work-878ab4c19c90728123959377:constitution",
+          "work-878ab4c19c90728123959377:evidence",
+          "work-878ab4c19c90728123959377:formation",
+          "work-878ab4c19c90728123959377:challenge",
+          "work-878ab4c19c90728123959377:verification",
+          "work-878ab4c19c90728123959377:admission",
+          "work-878ab4c19c90728123959377:renewal"
+        ],
+        "work-878ab4c19c90728123959377:admission": [
+          "work-878ab4c19c90728123959377:renewal"
+        ],
+        "work-878ab4c19c90728123959377:challenge": [
+          "work-878ab4c19c90728123959377:verification"
+        ],
+        "work-878ab4c19c90728123959377:constitution": [
+          "work-878ab4c19c90728123959377:evidence"
+        ],
+        "work-878ab4c19c90728123959377:evidence": [
+          "work-878ab4c19c90728123959377:formation"
+        ],
+        "work-878ab4c19c90728123959377:formation": [
+          "work-878ab4c19c90728123959377:challenge"
+        ],
+        "work-878ab4c19c90728123959377:renewal": [],
+        "work-878ab4c19c90728123959377:verification": [
+          "work-878ab4c19c90728123959377:admission"
+        ]
+      },
+      "mode": "SYNTHETIC_REHEARSAL",
+      "schemaVersion": "1.0.0",
+      "signatureStatus": "UNSIGNED_COMMITMENT",
+      "status": "SEALED"
+    },
+    "createdAt": "2026-10-23T00:21:57.464Z",
+    "economics": {
+      "allowanceIs": "UNFUNDED",
+      "computeCost": null,
+      "elapsedMilliseconds": 32,
+      "humanMinutes": null,
+      "providerSpendBaseUnits": "0",
+      "reviewCapacityMinutes": 10,
+      "settlementSpendBaseUnits": "0"
+    },
+    "evaluation": {
+      "admission": "HOLD",
+      "authority": [],
+      "independentProof": false,
+      "scope": "PUBLIC_LOCAL_EXECUTION",
+      "settlement": "NOT_CONNECTED"
+    },
+    "frozen": {
+      "adapter": "thermal-witness",
+      "adapterVersion": 1,
+      "authority": [],
+      "inputPolicy": {
+        "dataClass": "synthetic",
+        "license": "Apache-2.0",
+        "source": "Declared simulated whole-flow fixture"
+      },
+      "missionDigest": "878ab4c19c90728123959377684286d21016ca144b7ee4993db77147794bca7e",
+      "model": null,
+      "provider": null,
+      "reviewMinutes": 10,
+      "schema": "successor-workbench/v1",
+      "sourceHash": "f36d67ba20115cd1b42c31abcb9c36c7db0c07732fce309ec1e7274b554776cb"
+    },
+    "integrityDigest": "06190cd22488ace67e83522385574e66dd2460a65a15d13291ade7d7198a494e",
+    "releaseDigest": "d85cf75a7e1ff7c36eb6d4346cd13ace31255f6093c728ff0cd425e6e8c178db",
+    "result": {
+      "artifacts": [
+        {
+          "content": "{\n  \"schema\": \"thermal-witness/v1\",\n  \"family\": \"heat-recovery\",\n  \"completion\": \"COMPLETE\",\n  \"intervalsProcessed\": 1,\n  \"intervalsDeclared\": 1,\n  \"workUnits\": 1,\n  \"workUnitDefinition\": \"One bounded interval reduction; validation and fixed final arithmetic are outside this counter.\",\n  \"coverageMs\": 60000,\n  \"simulation\": true,\n  \"physicalValidity\": \"NOT_ESTABLISHED\",\n  \"independentReview\": false,\n  \"witnessIndependence\": \"Declared synthetic channel separation, not authenticated metrological or organizational independence.\",\n  \"propertyModel\": \"CONSTANT_WITHIN_INTERVAL\",\n  \"acquisitionAssumption\": \"Density and specific heat are constant within each interval. The temperature bound covers its volume-weighted mean differential; property-temperature covariance is not modeled.\",\n  \"observable\": true,\n  \"quantity\": {\n    \"name\": \"delivered heat\",\n    \"unit\": \"microjoules\",\n    \"low\": \"3680000000\",\n    \"estimate\": \"3680000000\",\n    \"high\": \"3680000000\"\n  },\n  \"uncertainty\": {\n    \"radiusMicroJ\": \"0\",\n    \"worstRelativeErrorPpm\": \"0\"\n  },\n  \"downstream\": {\n    \"name\": \"storage-adjusted heat recovery\",\n    \"unit\": \"dimensionless\",\n    \"netHeatMicroJ\": {\n      \"low\": \"3500000000\",\n      \"estimate\": \"3500000000\",\n      \"high\": \"3500000000\"\n    },\n    \"inputEnergyMicroJ\": {\n      \"estimate\": \"5000000000\",\n      \"high\": \"5000000000\",\n      \"low\": \"5000000000\"\n    },\n    \"minimumRecoveryPpm\": 700000,\n    \"low\": \"7/10\",\n    \"estimate\": \"7/10\",\n    \"high\": \"7/10\",\n    \"worstRelativeErrorPpm\": \"0\",\n    \"ratioDomain\": \"POSITIVE_DENOMINATOR\",\n    \"assumption\": \"The independent input bound covers every energy input; stored-energy release is separately bounded.\"\n  },\n  \"commandOnlyBaseline\": {\n    \"heatMicroJ\": \"4000000000\",\n    \"errorVsWitnessEstimateMicroJ\": \"320000000\",\n    \"canBoundHiddenFlowError\": false\n  },\n  \"inheritedFailure\": {\n    \"status\": \"RETAINED_UNDETECTED_FAILURE\",\n    \"release\": \"study-foundry-v2-2026-10-22-r1\",\n    \"predictedHeatJ\": \"5175.8646948056885\",\n    \"commandFlowCalorimeterHeatJ\": \"5445.281559253128\",\n    \"independentReferenceHeatJ\": \"5009.6244576737745\",\n    \"runtimeRelativeResidual\": \"0.049477122810963045\",\n    \"trueRelativeHeatError\": \"0.08696402400224054\",\n    \"scope\": \"Historical simulated result; a new witness run does not rewrite or qualify it.\"\n  },\n  \"calculation\": \"rho[kg/m3] * cp[J/kg/K] * volume[nL] * deltaT[microK] / 10^12 = microjoules; interval extrema rounded outwards.\"\n}\n",
+          "digest": "76bd97dd9b34c043c3b21e67bcecc652b1a2dfa9cd68df0c0cc5e2e66858a88a",
+          "name": "thermal-bounds.json",
+          "type": "application/json"
+        },
+        {
+          "content": "{\n  \"schema\": \"thermal-capability-proposal/v1\",\n  \"family\": \"heat-recovery\",\n  \"decision\": \"CONDITIONAL_BOUNDS_MET\",\n  \"boundedArithmeticAccepted\": true,\n  \"acceptedCapability\": false,\n  \"authority\": [],\n  \"settlement\": \"NOT_CONNECTED\",\n  \"requires\": [\n    \"Independent result acceptance\",\n    \"Authenticated witness acquisition\",\n    \"Actual harness execution and recovery receipt\"\n  ]\n}\n",
+          "digest": "5aa0d37c3890ac0bad2ce0decce48ec4abbee4b862bf519d8ed9926f14fcf714",
+          "name": "thermal-capability-proposal.json",
+          "type": "application/json"
+        }
+      ],
+      "decision": "CONDITIONAL_BOUNDS_MET",
+      "evidence": {
+        "acquisitionAssumption": "Density and specific heat are constant within each interval. The temperature bound covers its volume-weighted mean differential; property-temperature covariance is not modeled.",
+        "calculation": "rho[kg/m3] * cp[J/kg/K] * volume[nL] * deltaT[microK] / 10^12 = microjoules; interval extrema rounded outwards.",
+        "commandOnlyBaseline": {
+          "canBoundHiddenFlowError": false,
+          "errorVsWitnessEstimateMicroJ": "320000000",
+          "heatMicroJ": "4000000000"
+        },
+        "completion": "COMPLETE",
+        "coverageMs": 60000,
+        "downstream": {
+          "assumption": "The independent input bound covers every energy input; stored-energy release is separately bounded.",
+          "estimate": "7/10",
+          "high": "7/10",
+          "inputEnergyMicroJ": {
+            "estimate": "5000000000",
+            "high": "5000000000",
+            "low": "5000000000"
+          },
+          "low": "7/10",
+          "minimumRecoveryPpm": 700000,
+          "name": "storage-adjusted heat recovery",
+          "netHeatMicroJ": {
+            "estimate": "3500000000",
+            "high": "3500000000",
+            "low": "3500000000"
+          },
+          "ratioDomain": "POSITIVE_DENOMINATOR",
+          "unit": "dimensionless",
+          "worstRelativeErrorPpm": "0"
+        },
+        "family": "heat-recovery",
+        "independentReview": false,
+        "inheritedFailure": {
+          "commandFlowCalorimeterHeatJ": "5445.281559253128",
+          "independentReferenceHeatJ": "5009.6244576737745",
+          "predictedHeatJ": "5175.8646948056885",
+          "release": "study-foundry-v2-2026-10-22-r1",
+          "runtimeRelativeResidual": "0.049477122810963045",
+          "scope": "Historical simulated result; a new witness run does not rewrite or qualify it.",
+          "status": "RETAINED_UNDETECTED_FAILURE",
+          "trueRelativeHeatError": "0.08696402400224054"
+        },
+        "intervalsDeclared": 1,
+        "intervalsProcessed": 1,
+        "observable": true,
+        "physicalValidity": "NOT_ESTABLISHED",
+        "propertyModel": "CONSTANT_WITHIN_INTERVAL",
+        "quantity": {
+          "estimate": "3680000000",
+          "high": "3680000000",
+          "low": "3680000000",
+          "name": "delivered heat",
+          "unit": "microjoules"
+        },
+        "schema": "thermal-witness/v1",
+        "simulation": true,
+        "uncertainty": {
+          "radiusMicroJ": "0",
+          "worstRelativeErrorPpm": "0"
+        },
+        "witnessIndependence": "Declared synthetic channel separation, not authenticated metrological or organizational independence.",
+        "workUnitDefinition": "One bounded interval reduction; validation and fixed final arithmetic are outside this counter.",
+        "workUnits": 1
+      },
+      "limits": [
+        "Executed fixed calorimetry arithmetic over simulated measurement inputs; no physical instrument is controlled.",
+        "Bounds assume complete participating-flow coverage, fixed properties within each interval and honest calibration limits. Unmodeled property-temperature covariance or omitted errors can invalidate them.",
+        "A command-derived volume cannot observe actuator bias. Different source labels alone do not prove independence.",
+        "The historical Foundry failure remains retained; this new computation is not a rerun of the original full study.",
+        "A source or packaged-worker result alone does not establish SUCCESSOR harness recovery, independent Fleet acceptance or contract settlement."
+      ],
+      "summary": {
+        "acceptedCapability": false,
+        "completion": "COMPLETE",
+        "family": "heat-recovery",
+        "intervalsProcessed": 1,
+        "physicalValidity": "NOT_ESTABLISHED"
+      }
+    },
+    "schema": "successor-workbench/v1",
+    "spec": {
+      "family": "thermal-witness",
+      "inputs": {
+        "extension": {
+          "inputEnergyMicroJ": {
+            "estimate": "5000000000",
+            "high": "5000000000",
+            "low": "5000000000"
+          },
+          "kind": "INDEPENDENT_SIMULATED",
+          "minimumRecoveryPpm": 700000,
+          "sourceId": "energy-acceptance-fixture",
+          "storageReleaseMicroJ": {
+            "estimate": "180000000",
+            "high": "180000000",
+            "low": "180000000"
+          }
+        },
+        "family": "heat-recovery",
+        "maxWorkUnits": 960,
+        "measurement": {
+          "commandSourceId": "controller-telemetry",
+          "coverage": "WHOLE_FLOW_DECLARED_BOUNDS",
+          "densityKgPerM3": {
+            "estimate": 1000,
+            "high": 1000,
+            "low": 1000
+          },
+          "intervals": [
+            {
+              "commandFlowNLPerMin": 100000000,
+              "deltaTemperatureUK": 10000000,
+              "deltaTemperatureUncertaintyUK": 0,
+              "durationMs": 60000,
+              "sequence": 0,
+              "startMs": 0,
+              "volumeNL": 92000000,
+              "volumeUncertaintyNL": 0
+            }
+          ],
+          "mode": "SIMULATED_MEASUREMENTS",
+          "propertyModel": "CONSTANT_WITHIN_INTERVAL",
+          "specificHeatJPerKgK": {
+            "estimate": 4000,
+            "high": 4000,
+            "low": 4000
+          },
+          "temperatureWitness": {
+            "kind": "BOUNDED_SIMULATED",
+            "sourceId": "differential-reference"
+          },
+          "volumeWitness": {
+            "kind": "INDEPENDENT_SIMULATED",
+            "sourceId": "independent-volume"
+          },
+          "windowMs": 60000
+        },
+        "policy": {
+          "maxRelativeErrorPpm": 50000,
+          "minimumHeatMicroJ": "1000000"
+        },
+        "schema": "thermal-witness/v1"
+      },
+      "language": "en",
+      "name": "Witnessed thermal measurement",
+      "owner": "local-owner",
+      "reviewMinutes": 10,
+      "rights": {
+        "dataClass": "synthetic",
+        "license": "Apache-2.0",
+        "source": "Declared simulated whole-flow fixture"
+      },
+      "schema": "successor-workbench/v1"
+    }
+  },
+  "result_digest": "4d6e7ad57664e3709de265022c2b6d568360067cca7d4eccb52537b15f6963d6",
+  "review": {
+    "independent": false,
+    "note": "Local operator inspection of the declared simulated fixture; no independent qualification",
+    "operator": "urn:agialpha:ed25519:fc40c0feeb17a2fb573133b971f26f81d5ecfdd38f580202d398432a9c63feca"
+  },
+  "revision": 8,
+  "run_id": "c0851a5a-3102-456d-b2f5-1026cc4341ff",
+  "settlement": "NOT_CONNECTED",
+  "state": "accepted"
+}

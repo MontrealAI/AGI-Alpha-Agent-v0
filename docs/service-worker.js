@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-b7ed6252f973467b";
+const CACHE = "agialpha-gallery-400a5b0cbc1b5684";
 const RELEASE = "1.39.0";
 const ASSETS = [
   "./TERMS_AND_CONDITIONS/assets/preview.svg",

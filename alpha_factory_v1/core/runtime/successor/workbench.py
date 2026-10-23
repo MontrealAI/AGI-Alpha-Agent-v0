@@ -4,8 +4,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 import platform
+import re
 import shutil
 import subprocess
 import tempfile
@@ -32,13 +35,31 @@ from .trust import SignedEnvelope, TrustAnchor, TrustRegistry, retained_local_pr
 WORKER = Path(__file__).with_name("workbench_worker.mjs")
 
 
+def _environment() -> dict[str, str]:
+    """Pass only execution paths, never inherited Node preloads or credential settings."""
+    return {key: value for key, value in os.environ.items() if key in {"PATH", "SYSTEMROOT", "WINDIR", "TMPDIR"}}
+
+
+def _worker_source() -> dict[str, Any]:
+    """Bind the installed module manifest to the exact generated executable bytes."""
+    source = json.loads(WORKER.with_name("workbench_sources.json").read_text(encoding="utf-8"))
+    if not isinstance(source, dict) or any(
+        not isinstance(source.get(field), str) or re.fullmatch(r"[0-9a-f]{64}", source[field]) is None
+        for field in ("sourceHash", "workerSHA256")
+    ):
+        raise ValueError("Work adapter lacks a complete executable identity; restore matching software")
+    if source["workerSHA256"] != hashlib.sha256(WORKER.read_bytes()).hexdigest():
+        raise ValueError("Work adapter executable differs from its source manifest")
+    return source
+
+
 def freeze(journal: Journal, spec: dict[str, Any], run_id: str) -> dict[str, Any]:
     """Register this work method in the existing lifecycle without granting proof or operation."""
     trust, _ = retained_local_principals(journal.root / "workbench-principals")
     store = SuccessorStore(journal, trust)
     institution_id = "work-" + run_id
     spec_digest = digest("workbench-request", spec)
-    source = json.loads(WORKER.with_name("workbench_sources.json").read_text())
+    source = _worker_source()
     budget = ResourceBudget(
         limits={"attempts": 3, "milliseconds": 60000},
         units={"attempts": "pure work attempts", "milliseconds": "wall time per attempt"},
@@ -76,7 +97,12 @@ def freeze(journal: Journal, spec: dict[str, Any], run_id: str) -> dict[str, Any
             "workbench-environment",
             {
                 "runtime": subprocess.run(
-                    [shutil.which("node") or "node", "--version"], capture_output=True, text=True, timeout=5, check=True
+                    [shutil.which("node") or "node", "--version"],
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                    check=True,
+                    env=_environment(),
                 ).stdout.strip(),
                 "platform": platform.system(),
                 "architecture": platform.machine(),
@@ -86,6 +112,7 @@ def freeze(journal: Journal, spec: dict[str, Any], run_id: str) -> dict[str, Any
         artifacts=[
             BehaviorArtifact(name="input", role="other", digest=spec_digest),
             BehaviorArtifact(name="adapter-sources", role="source", digest=source["sourceHash"]),
+            BehaviorArtifact(name="adapter-worker", role="source", digest=source["workerSHA256"]),
         ],
         configuration={"family": spec["family"], "independent": False, "network": False},
     )
@@ -119,9 +146,7 @@ def invoke(request: dict[str, Any], checkpoint: Callable[[], None] = lambda: Non
     if node is None:
         raise ValueError("Node.js 22 or later is required for the optional workbench; legacy commands are unchanged")
     # Scrub the version probe as well as the worker: no inherited preload or credential paths.
-    import os
-
-    environment = {key: value for key, value in os.environ.items() if key in {"PATH", "SYSTEMROOT", "WINDIR", "TMPDIR"}}
+    environment = _environment()
     version = subprocess.run(
         [node, "--version"], capture_output=True, text=True, timeout=5, check=True, env=environment
     ).stdout
@@ -184,12 +209,48 @@ def _change(journal: Journal, key: str, revision: int, **values: Any) -> dict[st
 def execute(home: Path, spec: dict[str, Any], run_id: str, *, resume: bool = False) -> dict[str, Any]:
     """Checkpoint bounded pure work; interruption never silently replays an external effect."""
     key = _key(run_id)
-    # Validate and compile before creating a new operator identity or durable run.
-    invoke({"operation": "plan", "spec": spec})
-    journal = Journal(home) if home.exists() else Journal.initialize(home)
-    journal.verify()
-    lifecycle = freeze(journal, spec, run_id)
     identity = digest("workbench-request", spec)
+    journal: Journal | None = None
+    retained: dict[str, Any] | None = None
+    if home.exists():
+        journal = Journal(home)
+        journal.verify()
+        with journal.transaction() as connection:
+            try:
+                retained = journal.latest(key, connection)
+            except KeyError:
+                pass
+            if retained is not None:
+                if retained["request_digest"] != identity:
+                    raise Conflict("Run ID already belongs to a different request")
+                if retained["state"] in {"review", "accepted", "rejected"}:
+                    # Return verified history even if the current worker removed its family or schema.
+                    # This grants no new review, qualification, authority, or execution.
+                    return retained
+    source = _worker_source()
+    if retained is not None:
+        frozen_sources = [
+            artifact["digest"]
+            for artifact in retained["lifecycle"]["candidate"]["artifacts"]
+            if artifact["name"] == "adapter-sources"
+        ]
+        frozen_workers = [
+            artifact["digest"]
+            for artifact in retained["lifecycle"]["candidate"]["artifacts"]
+            if artifact["name"] == "adapter-worker"
+        ]
+        if frozen_sources != [source["sourceHash"]] or frozen_workers != [source["workerSHA256"]]:
+            raise Conflict(
+                "Work adapter source changed; unfinished work cannot resume. "
+                "Restore the previous software or create a new run; retained history is unchanged. "
+                "Legacy unfinished records without a complete worker identity cannot be requalified by inference"
+            )
+    # Validate new/unfinished work before creating an identity, freezing source or consuming an attempt.
+    invoke({"operation": "plan", "spec": spec})
+    if journal is None:
+        journal = Journal.initialize(home)
+        journal.verify()
+    lifecycle = freeze(journal, spec, run_id)
     with journal.transaction() as connection:
         try:
             record = journal.latest(key, connection)
@@ -254,16 +315,58 @@ def execute(home: Path, spec: dict[str, Any], run_id: str, *, resume: bool = Fal
         raise
 
 
-def write_artifacts(pack: dict[str, Any], destination: Path) -> dict[str, Any]:
-    """Export bounded inert records and inspectable source into a new directory only."""
-    invoke({"operation": "inspect", "pack": pack})
+def _artifact_files(pack: dict[str, Any]) -> list[tuple[str, bytes]]:
+    """Check the retained v1 storage envelope without reinterpreting its adapter inputs."""
+    canonical(pack)  # Bound the entire document before preparing any filesystem side effect.
+    if pack.get("schema") != "successor-workbench/v1" or not isinstance(pack.get("spec"), dict):
+        raise ValueError("Unsupported retained work artifact format")
+    body = {key: value for key, value in pack.items() if key != "integrityDigest"}
+    if pack.get("integrityDigest") != digest("workbench-pack", body):
+        raise ValueError("Retained work pack integrity mismatch")
+    result = pack.get("result")
+    artifacts = result.get("artifacts") if isinstance(result, dict) else None
+    if not isinstance(artifacts, list) or len(artifacts) > 12:
+        raise ValueError("Retained work artifact count exceeds its limit")
+    names = {"mission.json", "evidence.json", "read_me.txt", "lifecycle.json", "signed-receipt.json", "source-key.txt"}
+    files: list[tuple[str, bytes]] = []
+    for artifact in artifacts:
+        if not isinstance(artifact, dict) or set(artifact) != {"name", "type", "content", "digest"}:
+            raise ValueError("Invalid retained work artifact envelope")
+        name, content = artifact["name"], artifact["content"]
+        if (
+            not isinstance(name, str)
+            or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,79}", name) is None
+            or name.endswith(".")
+            or re.match(r"^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\.|$)", name, re.I)
+            or name.casefold() in names
+        ):
+            raise ValueError("Unsafe or duplicate retained work artifact name")
+        if (
+            artifact["type"]
+            not in ("text/javascript", "text/plain", "text/csv", "text/html", "text/markdown", "application/json")
+            or not isinstance(content, str)
+            or len(content.encode("utf-16-le")) // 2 > 200_000
+        ):
+            raise ValueError("Retained work artifact content exceeds its policy")
+        if artifact["digest"] != digest(
+            "workbench-artifact", {key: value for key, value in artifact.items() if key != "digest"}
+        ):
+            raise ValueError("Retained work artifact integrity mismatch")
+        names.add(name.casefold())
+        files.append((name, content.encode()))
+    return files
+
+
+def _write_artifacts(pack: dict[str, Any], destination: Path) -> dict[str, Any]:
+    """Write only validated inert names and bytes; never execute an exported artifact."""
+    files = _artifact_files(pack)
     if destination.exists() or destination.is_symlink():
         raise FileExistsError("Choose a new output directory; existing files are preserved")
     destination.mkdir(parents=True, mode=0o700)
     private_write(destination / "mission.json", canonical(pack["spec"]))
     private_write(destination / "evidence.json", canonical(pack))
-    for artifact in pack["result"]["artifacts"]:
-        private_write(destination / artifact["name"], artifact["content"].encode())
+    for name, content in files:
+        private_write(destination / name, content)
     private_write(
         destination / "READ_ME.txt",
         (
@@ -271,15 +374,45 @@ def write_artifacts(pack: dict[str, Any], destination: Path) -> dict[str, Any]:
             "No live permission or settlement is included.\n"
             "Reproduce: alpha-agent successor-work run mission.json --output NEW_DIRECTORY\n"
             "mission.json binds the original inputs; evidence.json retains all local results and limitations.\n"
+            "A signed retained-history export authenticates the saved observation, not current-worker compatibility.\n"
+            "It does not repeat execution or establish independent acceptance, current eligibility, or physical validity.\n"
         ).encode(),
     )
     return {
         "output": str(destination.resolve()),
-        "files": len(pack["result"]["artifacts"]) + 3,
+        "files": len(files) + 3,
         "scope": "local-public-work",
         "authority": [],
         "settlement": "NOT_CONNECTED",
     }
+
+
+def write_artifacts(pack: dict[str, Any], destination: Path) -> dict[str, Any]:
+    """Inspect an untrusted pack with the current adapter before exporting its inert files."""
+    invoke({"operation": "inspect", "pack": pack})
+    return _write_artifacts(pack, destination)
+
+
+def write_retained_artifacts(journal: Journal, record: dict[str, Any], destination: Path) -> dict[str, Any]:
+    """Export exact authenticated history without requiring its original worker to remain installed."""
+    journal.verify()
+    retained = journal.latest(_key(record["run_id"]))
+    if retained != record:
+        raise Conflict("Work changed before export; inspect its current state")
+    pack = retained.get("result")
+    if not isinstance(pack, dict):
+        raise Conflict("There is no completed result to export")
+    if retained.get("result_digest") != digest("workbench-result", pack):
+        raise ValueError("Retained work result binding mismatch")
+    if (
+        retained.get("request_digest") != digest("workbench-request", retained["request"])
+        or digest("workbench-request", pack.get("spec")) != retained["request_digest"]
+    ):
+        raise ValueError("Retained work request binding mismatch")
+    exported = _write_artifacts(pack, destination)
+    write_receipt(journal, retained, destination, "workbench-receipt")
+    private_write(destination / "lifecycle.json", canonical(retained["lifecycle"]))
+    return {**exported, "files": exported["files"] + 3, "validation": "authenticated-retained-history"}
 
 
 def add_commands(commands: Any) -> None:
@@ -291,7 +424,9 @@ def add_commands(commands: Any) -> None:
     verify.add_argument("file", type=Path)
     verify.add_argument("--source-key", required=True)
     example = sub.add_parser("example")
-    example.add_argument("family", choices=["reliability", "performance", "documentation", "public-data", "numerical"])
+    example.add_argument(
+        "family", choices=["reliability", "performance", "documentation", "public-data", "numerical", "thermal-witness"]
+    )
     example.add_argument("--output", type=Path, required=True)
     for name in ("plan", "run", "restore"):
         command = sub.add_parser(name)
@@ -353,12 +488,9 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             raise FileExistsError("Choose a new output directory")
         run_id = args.run_id or str(uuid.uuid4())
         result = execute(args.home, read_document(args.file), run_id, resume=args.resume)
-        exported = write_artifacts(result["result"], args.output)
-        write_receipt(Journal(args.home), result, args.output, "workbench-receipt")
-        private_write(args.output / "lifecycle.json", canonical(result["lifecycle"]))
+        exported = write_retained_artifacts(Journal(args.home), result, args.output)
         return {
             **exported,
-            "files": exported["files"] + 3,
             "run_id": run_id,
             "state": result["state"],
             "result_digest": result["result_digest"],
@@ -389,10 +521,5 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
             authority=[],
         )
     if command == "export":
-        if record.get("result") is None:
-            raise Conflict("There is no completed result to export")
-        exported = write_artifacts(record["result"], args.output)
-        write_receipt(journal, record, args.output, "workbench-receipt")
-        private_write(args.output / "lifecycle.json", canonical(record["lifecycle"]))
-        return {**exported, "files": exported["files"] + 3}
+        return write_retained_artifacts(journal, record, args.output)
     raise ValueError("Unknown work command")

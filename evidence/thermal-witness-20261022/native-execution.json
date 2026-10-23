@@ -1,0 +1,181 @@
+{
+  "schema": "thermal-native-local-execution/v1",
+  "recordedAt": "2026-10-22T23:53:54.879205+00:00",
+  "sourceParents": [
+    "30021f8659c1ecdf483dd07bd8154b7fb8362a42",
+    "8f13b39ed1718f5e8141ac1b37a10bb05c0f2900"
+  ],
+  "sourceComposition": "Actual conflict-free local merge; source hashes below identify later local runtime and test changes. The future published commit is not assumed.",
+  "environment": {
+    "node": "v22.17.1",
+    "python": "3.12.14",
+    "pytest": "8.4.1",
+    "ruff": "0.12.5",
+    "mypy": "1.17.0",
+    "operatorDependencies": "requirements-agent.lock installed with --require-hashes into a fresh venv",
+    "nodeArchive": "node-toolchain.json",
+    "platform": "linux/x64",
+    "hermetic": false
+  },
+  "sources": {
+    "examples/successor-workbench/native.mjs": {
+      "bytes": 880,
+      "sha256": "9535a7944225c7d1985b1d3b44183ab29ce1b49ed8fa746b7039728478e4eca6"
+    },
+    "examples/successor-workbench/thermal-witness.mjs": {
+      "bytes": 19366,
+      "sha256": "5f951404633af3d6f2d1dc6727f62a96a7d5fa69f77773cabab36f51da661a4b"
+    },
+    "examples/successor-workbench/thermal-witness-reference.mjs": {
+      "bytes": 7208,
+      "sha256": "623b396ec4d4cf72329811d9eaee5092e79b3df41225322b0a39db454612a01a"
+    },
+    "examples/successor-workbench/thermal-witness-fixtures.mjs": {
+      "bytes": 1167,
+      "sha256": "5644b9325eef1c54444357a3ddb22f55ad230dbb98180ff87fe851829ef12ad4"
+    },
+    "examples/successor-workbench/thermal-witness-cases.mjs": {
+      "bytes": 16595,
+      "sha256": "9ceb534a97539b91baa7258d870a0f0668714ae516c69c6d612db795a342134e"
+    },
+    "examples/successor-workbench/thermal-witness-demo.mjs": {
+      "bytes": 3791,
+      "sha256": "24dae1810737b7884ef5484aa4444c8285b67f679d463a9a1d0ad4ffe84adb95"
+    },
+    "examples/successor-workbench/thermal-witness.test.mjs": {
+      "bytes": 10299,
+      "sha256": "261f66b39623c582ef6bb243203c56ca6378a90c461be8efe2133f64911b89f0"
+    },
+    "examples/successor-workbench/test.mjs": {
+      "bytes": 4642,
+      "sha256": "77716703bd6b73b115e8e3cf445119bfd9a86128c361dac8211e82a28addce53"
+    },
+    "examples/successor-workbench/compounding-probe.mjs": {
+      "bytes": 21690,
+      "sha256": "d4d559cc229239ace1bffeb366d8357ae26b8ece35ad093be3656ded539b6600"
+    },
+    "examples/successor-workbench/compounding-probe.test.mjs": {
+      "bytes": 4032,
+      "sha256": "baefafef5eb50c1979070a15105d8e33fcfc21fe7764c704b51837edbebe075e"
+    },
+    "alpha_factory_v1/core/runtime/successor/workbench.py": {
+      "bytes": 19531,
+      "sha256": "97b179e23214545576b41f19007859eebfdcb368db1a4a4959e696a5b0f40132"
+    },
+    "alpha_factory_v1/core/runtime/successor/workbench_sources.json": {
+      "bytes": 1235,
+      "sha256": "5154c0bc6be7e3f13169fa01c447f430d17854bb61a48d23f229298e939592dc"
+    },
+    "alpha_factory_v1/core/runtime/successor/workbench_worker.mjs": {
+      "bytes": 125843,
+      "sha256": "50f09fdfb9b8b1f5a9e03e6a30af99181daf633a14c7e46a9c06154fd27c6ad9"
+    },
+    "scripts/generate_successor_workbench.py": {
+      "bytes": 5465,
+      "sha256": "8c6575cbc826ae420b4a018cd4142d86d5319d2febb1b775b2cbb61cdcc75feb"
+    },
+    "tests/runtime/test_successor_workbench.py": {
+      "bytes": 18940,
+      "sha256": "013dd13fa4dcc63ae96269a6f8dfd8e371707a036ad3cc6598cf9b52296d4c03"
+    },
+    "docs/successor/work/index.html": {
+      "bytes": 166037,
+      "sha256": "d5fca5f907fb974f44eb91c6e11bee3ece9e270d53bdad3abb52ab670d1e97a5"
+    },
+    "docs/alpha_factory_v1/demos/successor/work/index.html": {
+      "bytes": 166037,
+      "sha256": "d5fca5f907fb974f44eb91c6e11bee3ece9e270d53bdad3abb52ab670d1e97a5"
+    },
+    "docs/service-worker.js": {
+      "bytes": 23275,
+      "sha256": "261ef36a70938933763afd7dcee7cc58344750d8090054c633fa7b506c9c61a2"
+    },
+    "docs/assets/service-worker.js": {
+      "bytes": 23707,
+      "sha256": "a85564d330efeac29a120115f58a9e11ddb2fd2fec80c0df7c3eeffc93c26b1b"
+    },
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": {
+      "bytes": 26299,
+      "sha256": "6b670cb8eb015e6f7513d8c5f0b8d4e0ed72751f736b247e0dd6692932532e96"
+    }
+  },
+  "checks": [
+    {
+      "command": "node examples/successor-workbench/test.mjs",
+      "scope": "Native workbench selector with thermal tests, before standalone compounding selector experiment",
+      "groups": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "nestedPythonCases": 26,
+      "nestedPythonPassed": 26,
+      "log": "native-workbench-passed.tap"
+    },
+    {
+      "command": "node examples/successor-workbench/test.mjs",
+      "scope": "Temporary combined local selector: nineteen workbench groups plus standalone frozen compounding test. After this successful run the compounding import was removed from the ordinary selector; the test remains independently invocable to avoid a permanent historical-source lock on ordinary CI. No implementation or assertion changed.",
+      "groups": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "nestedPythonCases": 26,
+      "nestedPythonPassed": 26,
+      "log": "native-and-frozen-probe-passed.tap"
+    },
+    {
+      "command": "ruff check alpha_factory_v1/core/runtime/successor/workbench.py tests/runtime/test_successor_workbench.py scripts/generate_successor_workbench.py",
+      "exit": 0,
+      "observedStdout": "All checks passed!",
+      "evidenceKind": "Actual tool output transcribed; no separate raw log was retained."
+    },
+    {
+      "command": "mypy --config-file mypy-runtime.ini --cache-dir /tmp/thermal-mypy-cache",
+      "exit": 0,
+      "observedStdout": "Success: no issues found in 54 source files",
+      "evidenceKind": "Actual tool output transcribed; no separate raw log was retained."
+    },
+    {
+      "command": "python3 scripts/generate_successor_workbench.py",
+      "exit": 0,
+      "byteReproduction": true
+    },
+    {
+      "command": "python3 scripts/build_service_worker.py",
+      "exit": 0,
+      "independentVerification": "cache-byte-verification.json"
+    },
+    {
+      "command": "git diff --check 8f13b39ed1718f5e8141ac1b37a10bb05c0f2900",
+      "exit": 0,
+      "scope": "Actual tracked-source check before new raw evidence files were staged; untracked raw TAP whitespace was not included."
+    }
+  ],
+  "retainedFailures": [
+    {
+      "log": "native-sandbox-failure.tap",
+      "nodeGroupsPassed": 14,
+      "nodeGroupsFailed": 5,
+      "cause": "Ordinary sandbox denied child process/FIFO execution; no runtime checks were disabled."
+    },
+    {
+      "log": "native-test-expectation-failure.tap",
+      "nodeGroupsPassed": 18,
+      "nodeGroupsFailed": 1,
+      "pythonPassed": 25,
+      "pythonFailed": 1,
+      "cause": "New invalid-input test expected adapter error, but canonical transport rejected empty keys earlier. Test now asserts the precise expected layer per input; runtime unchanged."
+    }
+  ],
+  "qualification": {
+    "nativeTypedWorker": "IMPLEMENTED_AND_EXERCISED",
+    "sourceJournalInterruptionResume": "IMPLEMENTED_AND_EXERCISED",
+    "completedSchemaCompatibleUpgradeReuse": "IMPLEMENTED_AND_EXERCISED",
+    "independentAcceptance": "NOT_ESTABLISHED",
+    "heldEnterpriseFacade": "NOT_INTEGRATED",
+    "thermalBrowser": "NOT_DEPLOYED",
+    "localEvm": "NOT_RUN",
+    "fourRepositoryInstalledCompatibility": "NOT_ESTABLISHED",
+    "releaseQualification": "OWNER_PENDING",
+    "authority": []
+  }
+}

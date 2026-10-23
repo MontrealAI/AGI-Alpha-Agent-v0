@@ -1,0 +1,358 @@
+﻿2026-10-23T00:03:18.3956122Z Current runner version: '2.338.0'
+2026-10-23T00:03:18.4005670Z ##[group]Runner Image Provisioner
+2026-10-23T00:03:18.4006703Z Hosted Compute Agent
+2026-10-23T00:03:18.4007304Z Version: 20261012.601
+2026-10-23T00:03:18.4008013Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-23T00:03:18.4008771Z Build Date: 2026-10-12T17:48:21Z
+2026-10-23T00:03:18.4009898Z Worker ID: {6cfa94e8-bd97-4bf3-bddb-5dd871471660}
+2026-10-23T00:03:18.4010758Z Region: eastus
+2026-10-23T00:03:18.4011310Z Cloud: Azure
+2026-10-23T00:03:18.4011907Z ##[endgroup]
+2026-10-23T00:03:18.4013455Z ##[group]Operating System
+2026-10-23T00:03:18.4014110Z Ubuntu
+2026-10-23T00:03:18.4014753Z 24.04.5
+2026-10-23T00:03:18.4015270Z LTS
+2026-10-23T00:03:18.4015840Z ##[endgroup]
+2026-10-23T00:03:18.4016409Z ##[group]Runner Image
+2026-10-23T00:03:18.4017021Z Image: ubuntu-24.04
+2026-10-23T00:03:18.4017651Z Version: 20261012.334.1
+2026-10-23T00:03:18.4018969Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-23T00:03:18.4021064Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-23T00:03:18.4022035Z ##[endgroup]
+2026-10-23T00:03:18.4023253Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T00:03:18.4025417Z Contents: read
+2026-10-23T00:03:18.4026182Z Metadata: read
+2026-10-23T00:03:18.4026753Z ##[endgroup]
+2026-10-23T00:03:18.4029746Z Secret source: Actions
+2026-10-23T00:03:18.4030818Z Cache mode: write
+2026-10-23T00:03:18.4031605Z Prepare workflow directory
+2026-10-23T00:03:18.4360168Z Prepare all required actions
+2026-10-23T00:03:18.4407322Z Getting action download info
+2026-10-23T00:03:18.6608421Z Download action repository 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd' (SHA:de0fac2e4500dabe0009e67214ff5f5447ce83dd)
+2026-10-23T00:03:18.7706121Z Download action repository 'actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f' (SHA:53b83947a5a98c8d113130e565377fae1a50d02f)
+2026-10-23T00:03:19.0629483Z Complete job name: guided-cross-repository
+2026-10-23T00:03:19.1457620Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+2026-10-23T00:03:19.1458686Z with:
+2026-10-23T00:03:19.1459132Z   persist-credentials: false
+2026-10-23T00:03:19.1459926Z   repository: MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T00:03:19.1463691Z   token: ***
+2026-10-23T00:03:19.1464121Z   ssh-strict: true
+2026-10-23T00:03:19.1464555Z   ssh-user: git
+2026-10-23T00:03:19.1464984Z   clean: true
+2026-10-23T00:03:19.1465435Z   sparse-checkout-cone-mode: true
+2026-10-23T00:03:19.1465967Z   fetch-depth: 1
+2026-10-23T00:03:19.1466397Z   fetch-tags: false
+2026-10-23T00:03:19.1466841Z   show-progress: true
+2026-10-23T00:03:19.1467292Z   lfs: false
+2026-10-23T00:03:19.1467701Z   submodules: false
+2026-10-23T00:03:19.1468153Z   set-safe-directory: true
+2026-10-23T00:03:19.1468947Z ##[endgroup]
+2026-10-23T00:03:19.2433291Z Syncing repository: MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T00:03:19.2435590Z ##[group]Getting Git version info
+2026-10-23T00:03:19.2436562Z Working directory is '/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0'
+2026-10-23T00:03:19.2437727Z [command]/usr/bin/git version
+2026-10-23T00:03:19.2499002Z git version 2.55.0
+2026-10-23T00:03:19.2521543Z ##[endgroup]
+2026-10-23T00:03:19.2536053Z Temporarily overriding HOME='/home/runner/work/_temp/56fd60c7-332c-42ad-ba94-434c18af895b' before making global git config changes
+2026-10-23T00:03:19.2538353Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T00:03:19.2541902Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0
+2026-10-23T00:03:19.2587005Z Deleting the contents of '/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0'
+2026-10-23T00:03:19.2591699Z ##[group]Initializing the repository
+2026-10-23T00:03:19.2596662Z [command]/usr/bin/git init /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0
+2026-10-23T00:03:19.2701894Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-23T00:03:19.2703320Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-23T00:03:19.2704304Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-23T00:03:19.2705068Z hint: call:
+2026-10-23T00:03:19.2705471Z hint:
+2026-10-23T00:03:19.2706114Z hint: 	git config --global init.defaultBranch <name>
+2026-10-23T00:03:19.2706737Z hint:
+2026-10-23T00:03:19.2707322Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-23T00:03:19.2708273Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-23T00:03:19.2709025Z hint:
+2026-10-23T00:03:19.2709770Z hint: 	git branch -m <name>
+2026-10-23T00:03:19.2710265Z hint:
+2026-10-23T00:03:19.2710903Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-23T00:03:19.2716302Z Initialized empty Git repository in /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/
+2026-10-23T00:03:19.2725344Z [command]/usr/bin/git remote add origin https://github.com/MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T00:03:19.2770947Z ##[endgroup]
+2026-10-23T00:03:19.2772291Z ##[group]Disabling automatic garbage collection
+2026-10-23T00:03:19.2775609Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-23T00:03:19.2805674Z ##[endgroup]
+2026-10-23T00:03:19.2807063Z ##[group]Setting up auth
+2026-10-23T00:03:19.2808095Z Removing SSH command configuration
+2026-10-23T00:03:19.2813777Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T00:03:19.2845799Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T00:03:19.3164287Z Removing HTTP extra header
+2026-10-23T00:03:19.3170126Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T00:03:19.3201962Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T00:03:19.3408422Z Removing includeIf entries pointing to credentials config files
+2026-10-23T00:03:19.3414704Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T00:03:19.3447117Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T00:03:19.3668851Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-23T00:03:19.3707355Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path /home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:19.3737401Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:19.3779680Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:19.3808310Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:19.3835030Z ##[endgroup]
+2026-10-23T00:03:19.3835793Z ##[group]Fetching the repository
+2026-10-23T00:03:19.3843580Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +311cf9569fe22f994d9c9b1e3a50e2b88f5e63b6:refs/remotes/pull/4871/merge
+2026-10-23T00:03:27.6433179Z From https://github.com/MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T00:03:27.6435840Z  * [new ref]         311cf9569fe22f994d9c9b1e3a50e2b88f5e63b6 -> pull/4871/merge
+2026-10-23T00:03:27.6442282Z ##[endgroup]
+2026-10-23T00:03:27.6443850Z ##[group]Determining the checkout info
+2026-10-23T00:03:27.6445431Z ##[endgroup]
+2026-10-23T00:03:27.6450449Z [command]/usr/bin/git sparse-checkout disable
+2026-10-23T00:03:27.6501150Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-23T00:03:27.6532986Z ##[group]Checking out the ref
+2026-10-23T00:03:27.6536084Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/4871/merge
+2026-10-23T00:03:28.3763984Z Note: switching to 'refs/remotes/pull/4871/merge'.
+2026-10-23T00:03:28.3764470Z 
+2026-10-23T00:03:28.3766532Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T00:03:28.3767214Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T00:03:28.3767865Z state without impacting any branches by switching back to a branch.
+2026-10-23T00:03:28.3768297Z 
+2026-10-23T00:03:28.3768593Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T00:03:28.3769169Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T00:03:28.3769803Z 
+2026-10-23T00:03:28.3769972Z   git switch -c <new-branch-name>
+2026-10-23T00:03:28.3770230Z 
+2026-10-23T00:03:28.3770393Z Or undo this operation with:
+2026-10-23T00:03:28.3770611Z 
+2026-10-23T00:03:28.3770745Z   git switch -
+2026-10-23T00:03:28.3770940Z 
+2026-10-23T00:03:28.3771277Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T00:03:28.3771688Z 
+2026-10-23T00:03:28.3772108Z HEAD is now at 311cf95 Merge f1ac7df95d802b12bf194b3fa7be6f4c30a62ef4 into 8f13b39ed1718f5e8141ac1b37a10bb05c0f2900
+2026-10-23T00:03:28.3813895Z ##[endgroup]
+2026-10-23T00:03:28.3858477Z [command]/usr/bin/git log -1 --format=%H
+2026-10-23T00:03:28.3882554Z 311cf9569fe22f994d9c9b1e3a50e2b88f5e63b6
+2026-10-23T00:03:28.3892999Z ##[group]Removing auth
+2026-10-23T00:03:28.3893985Z Removing SSH command configuration
+2026-10-23T00:03:28.3898415Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T00:03:28.3930292Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T00:03:28.4173561Z Removing HTTP extra header
+2026-10-23T00:03:28.4175636Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T00:03:28.4205930Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T00:03:28.4421797Z Removing includeIf entries pointing to credentials config files
+2026-10-23T00:03:28.4425712Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T00:03:28.4451713Z includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path
+2026-10-23T00:03:28.4452718Z includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path
+2026-10-23T00:03:28.4453297Z includeif.gitdir:/github/workspace/.git.path
+2026-10-23T00:03:28.4453722Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T00:03:28.4460451Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path
+2026-10-23T00:03:28.4480851Z /home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4491227Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path /home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4604651Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path
+2026-10-23T00:03:28.4605825Z /home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4607412Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4609033Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-23T00:03:28.4616385Z /github/runner_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4625266Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4657715Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T00:03:28.4679690Z /github/runner_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4689679Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config
+2026-10-23T00:03:28.4721641Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T00:03:28.4934105Z Removing credentials config '/home/runner/work/_temp/git-credentials-1d3326ae-2a86-4811-9335-d7d5007c9707.config'
+2026-10-23T00:03:28.4942964Z ##[endgroup]
+2026-10-23T00:03:28.5195835Z ##[group]Run actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+2026-10-23T00:03:28.5196328Z with:
+2026-10-23T00:03:28.5196599Z   node-version: 24.21.0
+2026-10-23T00:03:28.5196910Z   check-latest: false
+2026-10-23T00:03:28.5199833Z   token: ***
+2026-10-23T00:03:28.5200172Z   package-manager-cache: true
+2026-10-23T00:03:28.5200512Z ##[endgroup]
+2026-10-23T00:03:28.6679404Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-23T00:03:28.6683119Z ##[group]Environment details
+2026-10-23T00:03:29.0713075Z node: v24.21.0
+2026-10-23T00:03:29.0713524Z npm: 11.19.0
+2026-10-23T00:03:29.0713812Z yarn: 1.22.22
+2026-10-23T00:03:29.0715168Z ##[endgroup]
+2026-10-23T00:03:29.0864129Z ##[group]Run node --input-type=module -e "import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync('examples/successor-project/vendor/provenance.json')); if(!/^[a-f0-9]{40}$/.test(p.sources.fleet.commit)||p.sources.fleet.publication!=='published-exact-source')process.exit(1); fs.appendFileSync(process.env.GITHUB_OUTPUT,'commit='+p.sources.fleet.commit+'\n');"
+2026-10-23T00:03:29.0866676Z [36;1mnode --input-type=module -e "import fs from 'node:fs'; const p=JSON.parse(fs.readFileSync('examples/successor-project/vendor/provenance.json')); if(!/^[a-f0-9]{40}$/.test(p.sources.fleet.commit)||p.sources.fleet.publication!=='published-exact-source')process.exit(1); fs.appendFileSync(process.env.GITHUB_OUTPUT,'commit='+p.sources.fleet.commit+'\n');"[0m
+2026-10-23T00:03:29.1137867Z shell: /usr/bin/bash -e {0}
+2026-10-23T00:03:29.1138236Z ##[endgroup]
+2026-10-23T00:03:29.1690615Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+2026-10-23T00:03:29.1691017Z with:
+2026-10-23T00:03:29.1691241Z   repository: MontrealAI/AGI-Fleet-Linux
+2026-10-23T00:03:29.1691561Z   ref: e7c909df6f226280bb7cf21da072bac65be9496f
+2026-10-23T00:03:29.1691870Z   path: build/guided-fleet-source
+2026-10-23T00:03:29.1692139Z   persist-credentials: false
+2026-10-23T00:03:29.1694636Z   token: ***
+2026-10-23T00:03:29.1694854Z   ssh-strict: true
+2026-10-23T00:03:29.1695062Z   ssh-user: git
+2026-10-23T00:03:29.1695258Z   clean: true
+2026-10-23T00:03:29.1695478Z   sparse-checkout-cone-mode: true
+2026-10-23T00:03:29.1695735Z   fetch-depth: 1
+2026-10-23T00:03:29.1695933Z   fetch-tags: false
+2026-10-23T00:03:29.1696142Z   show-progress: true
+2026-10-23T00:03:29.1696354Z   lfs: false
+2026-10-23T00:03:29.1696724Z   submodules: false
+2026-10-23T00:03:29.1696934Z   set-safe-directory: true
+2026-10-23T00:03:29.1697161Z ##[endgroup]
+2026-10-23T00:03:29.2532026Z Syncing repository: MontrealAI/AGI-Fleet-Linux
+2026-10-23T00:03:29.2533039Z ##[group]Getting Git version info
+2026-10-23T00:03:29.2534116Z Working directory is '/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source'
+2026-10-23T00:03:29.2567408Z [command]/usr/bin/git version
+2026-10-23T00:03:29.2603699Z git version 2.55.0
+2026-10-23T00:03:29.2625505Z ##[endgroup]
+2026-10-23T00:03:29.2638039Z Temporarily overriding HOME='/home/runner/work/_temp/0b9b3cb3-c343-47dd-b049-f0595ef4f3b5' before making global git config changes
+2026-10-23T00:03:29.2639996Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T00:03:29.2643339Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source
+2026-10-23T00:03:29.2675617Z ##[group]Initializing the repository
+2026-10-23T00:03:29.2681290Z [command]/usr/bin/git init /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source
+2026-10-23T00:03:29.2722338Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-23T00:03:29.2723403Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-23T00:03:29.2724153Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-23T00:03:29.2724634Z hint: call:
+2026-10-23T00:03:29.2724867Z hint:
+2026-10-23T00:03:29.2725253Z hint: 	git config --global init.defaultBranch <name>
+2026-10-23T00:03:29.2725628Z hint:
+2026-10-23T00:03:29.2726100Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-23T00:03:29.2727242Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-23T00:03:29.2727976Z hint:
+2026-10-23T00:03:29.2728598Z hint: 	git branch -m <name>
+2026-10-23T00:03:29.2729189Z hint:
+2026-10-23T00:03:29.2730760Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-23T00:03:29.2733036Z Initialized empty Git repository in /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git/
+2026-10-23T00:03:29.2737118Z [command]/usr/bin/git remote add origin https://github.com/MontrealAI/AGI-Fleet-Linux
+2026-10-23T00:03:29.2767889Z ##[endgroup]
+2026-10-23T00:03:29.2768545Z ##[group]Disabling automatic garbage collection
+2026-10-23T00:03:29.2773219Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-23T00:03:29.2800606Z ##[endgroup]
+2026-10-23T00:03:29.2801169Z ##[group]Setting up auth
+2026-10-23T00:03:29.2802845Z Removing SSH command configuration
+2026-10-23T00:03:29.2811186Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T00:03:29.2842904Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T00:03:29.3056810Z Removing HTTP extra header
+2026-10-23T00:03:29.3062912Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T00:03:29.3091554Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T00:03:29.3303899Z Removing includeIf entries pointing to credentials config files
+2026-10-23T00:03:29.3309146Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T00:03:29.3340391Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T00:03:29.3557165Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-23T00:03:29.3594352Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git.path /home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:29.3623901Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:29.3657545Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/build/guided-fleet-source/.git.path /github/runner_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:29.3686724Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/build/guided-fleet-source/.git/worktrees/*.path /github/runner_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:29.3712692Z ##[endgroup]
+2026-10-23T00:03:29.3713577Z ##[group]Fetching the repository
+2026-10-23T00:03:29.3720434Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin e7c909df6f226280bb7cf21da072bac65be9496f
+2026-10-23T00:03:29.8481834Z From https://github.com/MontrealAI/AGI-Fleet-Linux
+2026-10-23T00:03:29.8482427Z  * branch            e7c909df6f226280bb7cf21da072bac65be9496f -> FETCH_HEAD
+2026-10-23T00:03:29.8497907Z [command]/usr/bin/git rev-parse --verify --quiet e7c909df6f226280bb7cf21da072bac65be9496f^{object}
+2026-10-23T00:03:29.8523194Z e7c909df6f226280bb7cf21da072bac65be9496f
+2026-10-23T00:03:29.8526800Z ##[endgroup]
+2026-10-23T00:03:29.8527438Z ##[group]Determining the checkout info
+2026-10-23T00:03:29.8528322Z ##[endgroup]
+2026-10-23T00:03:29.8533319Z [command]/usr/bin/git sparse-checkout disable
+2026-10-23T00:03:29.8571643Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-23T00:03:29.8598664Z ##[group]Checking out the ref
+2026-10-23T00:03:29.8602679Z [command]/usr/bin/git checkout --progress --force e7c909df6f226280bb7cf21da072bac65be9496f
+2026-10-23T00:03:30.4070977Z Note: switching to 'e7c909df6f226280bb7cf21da072bac65be9496f'.
+2026-10-23T00:03:30.4071493Z 
+2026-10-23T00:03:30.4071999Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T00:03:30.4073047Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T00:03:30.4074016Z state without impacting any branches by switching back to a branch.
+2026-10-23T00:03:30.4074476Z 
+2026-10-23T00:03:30.4074950Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T00:03:30.4075862Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T00:03:30.4076286Z 
+2026-10-23T00:03:30.4076511Z   git switch -c <new-branch-name>
+2026-10-23T00:03:30.4076816Z 
+2026-10-23T00:03:30.4077044Z Or undo this operation with:
+2026-10-23T00:03:30.4077325Z 
+2026-10-23T00:03:30.4077475Z   git switch -
+2026-10-23T00:03:30.4077697Z 
+2026-10-23T00:03:30.4078229Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T00:03:30.4079034Z 
+2026-10-23T00:03:30.4079898Z HEAD is now at e7c909d Strengthen project capacity boundaries and state-aware refusals
+2026-10-23T00:03:30.4086425Z ##[endgroup]
+2026-10-23T00:03:30.4127030Z [command]/usr/bin/git log -1 --format=%H
+2026-10-23T00:03:30.4151814Z e7c909df6f226280bb7cf21da072bac65be9496f
+2026-10-23T00:03:30.4161035Z ##[group]Removing auth
+2026-10-23T00:03:30.4161571Z Removing SSH command configuration
+2026-10-23T00:03:30.4164885Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T00:03:30.4195056Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T00:03:30.4416391Z Removing HTTP extra header
+2026-10-23T00:03:30.4421027Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T00:03:30.4451810Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T00:03:30.4675518Z Removing includeIf entries pointing to credentials config files
+2026-10-23T00:03:30.4678514Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T00:03:30.4701215Z includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git.path
+2026-10-23T00:03:30.4703437Z includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git/worktrees/*.path
+2026-10-23T00:03:30.4705465Z includeif.gitdir:/github/workspace/build/guided-fleet-source/.git.path
+2026-10-23T00:03:30.4706679Z includeif.gitdir:/github/workspace/build/guided-fleet-source/.git/worktrees/*.path
+2026-10-23T00:03:30.4711704Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git.path
+2026-10-23T00:03:30.4740401Z /home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4753595Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git.path /home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4786053Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git/worktrees/*.path
+2026-10-23T00:03:30.4806602Z /home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4815913Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4848076Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/build/guided-fleet-source/.git.path
+2026-10-23T00:03:30.4869746Z /github/runner_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4879117Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/build/guided-fleet-source/.git.path /github/runner_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4911100Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/build/guided-fleet-source/.git/worktrees/*.path
+2026-10-23T00:03:30.4931638Z /github/runner_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4939805Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/build/guided-fleet-source/.git/worktrees/*.path /github/runner_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config
+2026-10-23T00:03:30.4972519Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T00:03:30.5192282Z Removing credentials config '/home/runner/work/_temp/git-credentials-ef261739-e471-436f-9fc2-6f7c7858c405.config'
+2026-10-23T00:03:30.5200457Z ##[endgroup]
+2026-10-23T00:03:30.5334334Z ##[group]Run npm ci --prefix build/guided-fleet-source/fleet --omit=dev --ignore-scripts --no-audit --no-fund
+2026-10-23T00:03:30.5335155Z [36;1mnpm ci --prefix build/guided-fleet-source/fleet --omit=dev --ignore-scripts --no-audit --no-fund[0m
+2026-10-23T00:03:30.5400110Z shell: /usr/bin/bash -e {0}
+2026-10-23T00:03:30.5400389Z ##[endgroup]
+2026-10-23T00:03:32.1359071Z 
+2026-10-23T00:03:32.1359512Z added 14 packages in 2s
+2026-10-23T00:03:32.1833842Z ##[group]Run node --test examples/successor-project/journey.test.mjs examples/successor-project/source-immutability.test.mjs
+2026-10-23T00:03:32.1834935Z [36;1mnode --test examples/successor-project/journey.test.mjs examples/successor-project/source-immutability.test.mjs[0m
+2026-10-23T00:03:32.1897372Z shell: /usr/bin/bash -e {0}
+2026-10-23T00:03:32.1897643Z env:
+2026-10-23T00:03:32.1898118Z   GUIDED_FLEET_SOURCE: /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source
+2026-10-23T00:03:32.1898694Z ##[endgroup]
+2026-10-23T00:03:41.9883425Z ✔ en/manager-usdc: actual Alpha→separately priced Jobs→Fleet execution/internal check→changed Alpha cycle (9398.187249ms)
+2026-10-23T00:04:00.0598967Z ✔ en/agijobsv0-jobregistry-v2: actual Alpha→separately priced Jobs→Fleet execution/internal check→changed Alpha cycle (18071.728668ms)
+2026-10-23T00:04:08.6234970Z ✔ fr/manager-usdc: actual Alpha→separately priced Jobs→Fleet execution/internal check→changed Alpha cycle (8563.142953ms)
+2026-10-23T00:04:26.3531956Z ✔ fr/agijobsv0-jobregistry-v2: actual Alpha→separately priced Jobs→Fleet execution/internal check→changed Alpha cycle (17728.904367ms)
+2026-10-23T00:04:31.1921250Z ✔ outer resealing cannot rewrite route, native work, project or settlement authority (4839.742396ms)
+2026-10-23T00:04:36.0073913Z ✔ route switching cannot roll back retained checkpoints or silently reprice a proposal (4815.570212ms)
+2026-10-23T00:04:36.0463630Z ✔ cold owned receiver contexts cannot be mutated into a false complete source inventory (1016.411723ms)
+2026-10-23T00:04:36.0466594Z ℹ tests 7
+2026-10-23T00:04:36.0468267Z ℹ suites 0
+2026-10-23T00:04:36.0468713Z ℹ pass 7
+2026-10-23T00:04:36.0468953Z ℹ fail 0
+2026-10-23T00:04:36.0469166Z ℹ cancelled 0
+2026-10-23T00:04:36.0469705Z ℹ skipped 0
+2026-10-23T00:04:36.0469920Z ℹ todo 0
+2026-10-23T00:04:36.0470168Z ℹ duration_ms 63819.62227
+2026-10-23T00:04:36.0619135Z Post job cleanup.
+2026-10-23T00:04:36.1464270Z [command]/usr/bin/git version
+2026-10-23T00:04:36.1504638Z git version 2.55.0
+2026-10-23T00:04:36.1548935Z Temporarily overriding HOME='/home/runner/work/_temp/60cc2a31-8675-4714-a517-ce7ef8568a25' before making global git config changes
+2026-10-23T00:04:36.1550611Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T00:04:36.1555737Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/build/guided-fleet-source
+2026-10-23T00:04:36.1588677Z Removing SSH command configuration
+2026-10-23T00:04:36.1596221Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T00:04:36.1633200Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T00:04:36.1863797Z Removing HTTP extra header
+2026-10-23T00:04:36.1870190Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T00:04:36.1903745Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T00:04:36.2126463Z Removing includeIf entries pointing to credentials config files
+2026-10-23T00:04:36.2133574Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T00:04:36.2163675Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T00:04:36.2520101Z Post job cleanup.
+2026-10-23T00:04:36.4035171Z Post job cleanup.
+2026-10-23T00:04:36.4958550Z [command]/usr/bin/git version
+2026-10-23T00:04:36.4999085Z git version 2.55.0
+2026-10-23T00:04:36.5040246Z Temporarily overriding HOME='/home/runner/work/_temp/36282c53-3a50-49b6-bb7f-dc97f819b8b4' before making global git config changes
+2026-10-23T00:04:36.5041892Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T00:04:36.5045917Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0
+2026-10-23T00:04:36.5076247Z Removing SSH command configuration
+2026-10-23T00:04:36.5083525Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T00:04:36.5120306Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T00:04:36.5360079Z Removing HTTP extra header
+2026-10-23T00:04:36.5364727Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T00:04:36.5397708Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T00:04:36.5610369Z Removing includeIf entries pointing to credentials config files
+2026-10-23T00:04:36.5616303Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T00:04:36.5646647Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T00:04:36.6008131Z Cleaning up orphan processes

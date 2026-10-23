@@ -1,0 +1,64 @@
+{
+  "schema": "thermal-witness/v1",
+  "family": "heat-capacity",
+  "completion": "COMPLETE",
+  "intervalsProcessed": 1,
+  "intervalsDeclared": 1,
+  "workUnits": 1,
+  "workUnitDefinition": "One bounded interval reduction; validation and fixed final arithmetic are outside this counter.",
+  "coverageMs": 60000,
+  "simulation": true,
+  "physicalValidity": "NOT_ESTABLISHED",
+  "independentReview": false,
+  "witnessIndependence": "Declared synthetic channel separation, not authenticated metrological or organizational independence.",
+  "propertyModel": "CONSTANT_WITHIN_INTERVAL",
+  "acquisitionAssumption": "Density and specific heat are constant within each interval. The temperature bound covers its volume-weighted mean differential; property-temperature covariance is not modeled.",
+  "observable": true,
+  "quantity": {
+    "name": "delivered heat",
+    "unit": "microjoules",
+    "low": "3680000000",
+    "estimate": "3680000000",
+    "high": "3680000000"
+  },
+  "uncertainty": {
+    "radiusMicroJ": "0",
+    "worstRelativeErrorPpm": "0"
+  },
+  "downstream": {
+    "name": "single-sample heat capacity",
+    "unit": "joules per kelvin",
+    "netEnergyMicroJ": {
+      "low": "3000000000",
+      "estimate": "3000000000",
+      "high": "3000000000"
+    },
+    "temperatureRiseUK": {
+      "estimate": 20000000,
+      "high": 20000000,
+      "low": 20000000
+    },
+    "low": "150/1",
+    "estimate": "150/1",
+    "high": "150/1",
+    "worstRelativeErrorPpm": "0",
+    "ratioDomain": "POSITIVE_DENOMINATOR",
+    "assumption": "All residual measured heat enters one sample; losses and container storage are independently bounded."
+  },
+  "commandOnlyBaseline": {
+    "heatMicroJ": "4000000000",
+    "errorVsWitnessEstimateMicroJ": "320000000",
+    "canBoundHiddenFlowError": false
+  },
+  "inheritedFailure": {
+    "status": "RETAINED_UNDETECTED_FAILURE",
+    "release": "study-foundry-v2-2026-10-22-r1",
+    "predictedHeatJ": "5175.8646948056885",
+    "commandFlowCalorimeterHeatJ": "5445.281559253128",
+    "independentReferenceHeatJ": "5009.6244576737745",
+    "runtimeRelativeResidual": "0.049477122810963045",
+    "trueRelativeHeatError": "0.08696402400224054",
+    "scope": "Historical simulated result; a new witness run does not rewrite or qualify it."
+  },
+  "calculation": "rho[kg/m3] * cp[J/kg/K] * volume[nL] * deltaT[microK] / 10^12 = microjoules; interval extrema rounded outwards."
+}

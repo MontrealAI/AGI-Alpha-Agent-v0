@@ -1,0 +1,21 @@
+{
+  "schema": "thermal-held-facade-preparation-observations/v1",
+  "scope": "Disposable local composition only; no review clearance or publication of held code",
+  "authorizedParents": ["f1ac7df95d802b12bf194b3fa7be6f4c30a62ef4", "6bb361d522d80dc900cc2a480014531c6a44b66e"],
+  "setupFailures": [
+    {
+      "command": ["git", "cat-file", "-t", "6bb361d522d80dc900cc2a480014531c6a44b66e"],
+      "cwd": "/workspace/scratch/5d02e86cc826/alpha-thermal-native",
+      "exit": 128,
+      "stderr": "fatal: unable to access 'https://github.com/MontrealAI/AGI-Alpha-Agent-v0.git/': Failed to connect to browser-proxy port 8889 after 0 ms: Couldn't connect to server\nfatal: git cat-file: could not get object info\n",
+      "interpretation": "Read-only missing-object lookup caused the existing partial clone to attempt its configured public lazy fetch. No source or ref mutation was requested."
+    },
+    {
+      "command": ["rg", "--files", "-g", "AGENTS.md", "-g", "*native-execution*", "-g", "*requirements*", "-g", "*venv*", "/workspace/scratch/5d02e86cc826", "/tmp"],
+      "exit": 2,
+      "stderr": "rg: /tmp/codex-daemon-0: Permission denied (os error 13)\n",
+      "interpretation": "Inventory returned the required local dependency paths; the denied unrelated directory was not retried."
+    }
+  ],
+  "limits": ["No full campaign rerun", "No edits to held source", "No Studio family whitelist monkeypatch", "No network use by runtime probe", "Not qualification of a forthcoming recovery fix"]
+}

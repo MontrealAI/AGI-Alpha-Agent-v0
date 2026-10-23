@@ -1,0 +1,145 @@
+{
+  "schema": "enterprise-compounding-independent-data-review/v1",
+  "reviewedAt": "2026-10-22T23:48:33.628161+00:00",
+  "reviewer": {
+    "type": "separate-ai-review-agent",
+    "role": "source and stored-evidence inspection",
+    "institutionalApproval": false,
+    "ownerApproval": false,
+    "reviewRestrictionOverride": false
+  },
+  "scope": {
+    "method": "Read source and retained JSON; independently recompute file, receipt and saved-workspace hashes; reconcile ledger arithmetic and compare initial/corrected records.",
+    "decisiveExecutionByReviewer": false,
+    "runtimeReplayByReviewer": false,
+    "repositoryChanges": [
+      "evidence/thermal-witness-20261022/compounding-review.json"
+    ],
+    "engineBase": "8f13b39ed1718f5e8141ac1b37a10bb05c0f2900",
+    "countedMetric": "paper-declared-arithmetic-work/v1",
+    "notEstablished": [
+      "physical qualification",
+      "thermal acceptance",
+      "live settlement",
+      "installed service custody",
+      "pending-invocation OS crash recovery",
+      "institutional or required owner approval"
+    ]
+  },
+  "artifacts": {
+    "evidence/thermal-witness-20261022/compounding-initial-runner.mjs": {
+      "sha256": "db4b6e0fff63c21ff50be2d5825df93e06ac7336cd013a2c17078ed5a6f0b1f9",
+      "bytes": 21497
+    },
+    "evidence/thermal-witness-20261022/compounding-initial-protocol.json": {
+      "sha256": "3b40234995522bae5f810493214200b28dfd3dd38031382ae3b7cbacde5645ce",
+      "bytes": 6889
+    },
+    "evidence/thermal-witness-20261022/compounding-initial-result.json": {
+      "sha256": "9af2ee1263e2920c2a0f4e5def35b77a20d82defc2cc610ddf6eef80a4f4bcbb",
+      "bytes": 899295
+    },
+    "examples/successor-workbench/compounding-probe.mjs": {
+      "sha256": "d4d559cc229239ace1bffeb366d8357ae26b8ece35ad093be3656ded539b6600",
+      "bytes": 21690
+    },
+    "docs/agent/compounding-probe-2026-10-22.json": {
+      "sha256": "732e26f9e8e0b7d2dae00b8c07cd6e2d89975537f44bec43aad96853d238020c",
+      "bytes": 7991
+    },
+    "evidence/thermal-witness-20261022/compounding-native-result.json": {
+      "sha256": "38867a8b9c593f91b2221c9828c3d260cfa50f26a2d390af8af85f4c9bfcf3f2",
+      "bytes": 935180
+    },
+    "docs/successor/capabilities/sources.json": {
+      "sha256": "d1c3cb9a5c3eb96e9e5eb111b83a713786ec18ed1213a407cd77bbaf018c5adb",
+      "bytes": 6894
+    }
+  },
+  "sourceBinding": {
+    "sourceClosure": "54769dbfde99ae13708a33292866f0ca7e6b8b7792a7a944f76bf2fbf1de1358",
+    "verifiedFileCount": 53,
+    "allActualSourceBytesMatch": true,
+    "unchangedAcrossRuns": true,
+    "selectedSourceSHA256": {
+      "examples/autonomous-enterprises/foundry.mjs": "3369219a306f69bf446d8d1cd343624686d2eba101e9be5be3afa9af463ee615",
+      "examples/autonomous-enterprises/checker.mjs": "52735ba95b2f4be8580fffc957e9d8f910c9e08b6458c5bb847f3f74a500bf7d",
+      "examples/autonomous-enterprises/controller.mjs": "5cd7cc26d13fc6311ee08068c198f874fa65849a3e2ddc9f9835a9345f7069ba",
+      "examples/autonomous-enterprises/future.mjs": "ddb11d1af87e090ba79cd0f9cb6eb6d138e03a04551d8ba62c5673646bf20c1f",
+      "examples/autonomous-enterprises/history.mjs": "53b4bdc397b3bc56f6972b39a1da565d30ab046cb84b014490564e92bfbbd327",
+      "examples/autonomous-enterprises/protocol.mjs": "9105e6680d22e3dd93d194fdfd6e0b884394f2f40d6aa514cf447321f3626c7e",
+      "examples/autonomous-enterprises/specialist.mjs": "0e98d14fbcc9bb80f8acf05c3a551d4fd08ad29d50bb818e5455c1c9263283f5",
+      "examples/successor-capability/workspace.mjs": "1eaf463ba9b0b0f0661a1c45c65bab6912cf4ff8f722c9d66f2ecf6f7ce2332e"
+    }
+  },
+  "historicalFindings": [
+    {
+      "id": "specialist-provenance",
+      "severity": "P2",
+      "initialState": "Generated artifact digest was attributed to applySpecialist execution.",
+      "resolution": "Corrected receipt uses artifactDigest=null and the actual specialist source path.",
+      "status": "CORRECTED_AND_STORED_RESULT_VERIFIED",
+      "amendedAt": "2026-10-22T23:46:02.115740+00:00",
+      "criteriaChanged": false,
+      "dispatchChanged": false,
+      "countedCostDefinitionChanged": false,
+      "initialArtifactsRetained": true
+    }
+  ],
+  "correctionVerification": {
+    "sourceDiffOnlyReceiptLabels": true,
+    "specialistExecutionLabelsVerified": 63,
+    "generatedExecutionIdentitiesPreserved": 128,
+    "allResolvedReceiptsDifferOnlyByExpectedProvenanceLabels": true,
+    "criteriaIdenticalToInitialFreeze": true,
+    "scenarioResultsUnchanged": true,
+    "controllerOperationalResultsUnchanged": true,
+    "workspaceIdentityComparison": "Separate executions have distinct mission, enterprise and invocation identifiers and dependent hashes; each saved workspace hash verifies.",
+    "initialRawReceiptBodies": 72,
+    "correctedRawReceiptBodies": 104,
+    "allCorrectedRawReceiptHashesVerified": true
+  },
+  "accounting": {
+    "uniqueActualChargeIds": 241,
+    "actualComponentCampaignKnownWorkPerRun": 1348918,
+    "controllerOriginalExecutionWorkPerRun": 151892,
+    "controllerReplayWorkPerRun": {
+      "bundleReplayWork": 709950,
+      "futureReplayWork": 924608,
+      "successorReplayWork": 15772
+    },
+    "actualControllerKnownWorkPerRun": 1802222,
+    "actualNativeKnownWorkPerRun": 3151140,
+    "twoRetainedNativeEvaluationsKnownWork": 6302280,
+    "priorV8KnownTotal": null,
+    "scenarioTotalsAreAlternativeAttributions": true,
+    "historicalLineageIsNotAddedToObservedExecution": true,
+    "failedCandidatesRetainedAndChargedPerCompleteBuild": 187,
+    "searchedCandidatesPerCompleteBuild": 196,
+    "singularRejectionSpentWork": 32,
+    "economicCostComplete": false,
+    "unknownCostFieldsRemainNull": true
+  },
+  "recovery": {
+    "scope": "Completed-workspace file roundtrip only; not a pending-invocation OS crash test.",
+    "reportedFinalState": "SUCCESSOR_ACCEPTED_LOCAL",
+    "reportedRecoveredState": "SUCCESSOR_ACCEPTED_LOCAL",
+    "fileRoundtripIdentical": true,
+    "savedWorkspaceSHA256": "6db8ac0b0fe2bbd42d5dacd073b86bc73f225315244baac3e6e2c7c23f27ef19",
+    "savedWorkspaceHashIndependentlyVerified": true,
+    "restoredAuthority": [],
+    "paymentRoute": "none",
+    "externalAuthority": false,
+    "institutionalAcceptance": false
+  },
+  "interpretation": {
+    "retentionVersusRebuild": "One-round tie; retained generated capabilities cost less counted work for four and sixteen rounds.",
+    "competentSpecialist": "Lower counted work in all three workloads; supplied authoring and institutional qualification costs remain unknown.",
+    "changedConstructionFullKnownWork": {
+      "direct": 2030,
+      "inherited": 7918
+    },
+    "successorClaim": "Changed-kernel successor is valid; full inherited construction loses to direct construction and no superiority to an adapted expert inverse is established.",
+    "additionalUnresolvedConcreteFindings": []
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "thermal-heldout-native-attempts/v1",
+  "sourceCommit": "175d8a50473ea94f8c63d20959c22c95dfc6b886",
+  "protocolPermalink": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4871#issuecomment-6352588248",
+  "sameRunnerSha256": "d2e0ef8bba178ff288970c3db67663bd16bf1044bf7d2b71b7618af988bc4c38",
+  "workingDirectory": "directory containing runner.mjs and all bundled files",
+  "attempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-22T23:45:04.320Z",
+      "finishedAt": "2026-10-22T23:45:05.340Z",
+      "executionContext": "ordinary workspace sandbox",
+      "exitCode": 1,
+      "command": [
+        "node",
+        "runner.mjs"
+      ],
+      "stdoutFile": "native-run.stdout.json",
+      "stderrFile": "native-run.stderr.log",
+      "receipt": {
+        "path": "native-receipt.json",
+        "bytes": 4535024,
+        "sha256": "412558c166c99963b966390441e552c3cbc156fba9ead9da7ffcb3590eb621a1"
+      },
+      "declaredCases": 12,
+      "workerLaunchesAttempted": 12,
+      "completedWorkers": 0,
+      "passed": 0,
+      "failed": 12,
+      "failure": "spawnSync of the pinned Node executable denied with EPERM for every case before adapter execution; retained as an environment failure, not a numerical result"
+    },
+    {
+      "attempt": 2,
+      "startedAt": "2026-10-22T23:46:40.075Z",
+      "finishedAt": "2026-10-22T23:46:41.215Z",
+      "executionContext": "approved local execution permitting the same bounded child processes",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "runner.mjs",
+        "native-receipt-approved.json"
+      ],
+      "stdoutFile": "native-run-approved.stdout.json",
+      "stderrFile": "native-run-approved.stderr.log",
+      "receipt": {
+        "path": "native-receipt-approved.json",
+        "bytes": 4796728,
+        "sha256": "66a29e45419fd3248af4c98b949e10771f88ccc8508e4644131a67a85df16f10"
+      },
+      "declaredCases": 12,
+      "workerLaunchesAttempted": 12,
+      "completedWorkers": 12,
+      "passed": 12,
+      "failed": 0,
+      "failure": null
+    }
+  ],
+  "interpretation": "The runner and three source files were unchanged between attempts. All twelve frozen cases were retained. The first receipt is not replaced by the passing second receipt. No post-result case replacement, tolerance change, capability acceptance, review authority, or financial action occurred."
+}

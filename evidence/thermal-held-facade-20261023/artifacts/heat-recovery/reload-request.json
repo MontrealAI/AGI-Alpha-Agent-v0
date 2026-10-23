@@ -1,0 +1,116 @@
+{
+  "checkpoint": {
+    "events": 8,
+    "head": "ffb25a65c3124ef16b79134525f3b9a6bf270044d6c5e6095908911dd87824e8",
+    "identity": "urn:agialpha:ed25519:fc40c0feeb17a2fb573133b971f26f81d5ecfdd38f580202d398432a9c63feca",
+    "valid": true
+  },
+  "enterpriseId": "c0851a5a-3102-456d-b2f5-1026cc4341ff",
+  "expected": {
+    "attempts": 1,
+    "authority": [],
+    "configuration": {
+      "enterprise_id": "c0851a5a-3102-456d-b2f5-1026cc4341ff",
+      "name": "Thermal held-facade probe: heat-recovery",
+      "parent": null,
+      "schema": "successor-enterprise/v1",
+      "work": {
+        "family": "thermal-witness",
+        "inputs": {
+          "extension": {
+            "inputEnergyMicroJ": {
+              "estimate": "5000000000",
+              "high": "5000000000",
+              "low": "5000000000"
+            },
+            "kind": "INDEPENDENT_SIMULATED",
+            "minimumRecoveryPpm": 700000,
+            "sourceId": "energy-acceptance-fixture",
+            "storageReleaseMicroJ": {
+              "estimate": "180000000",
+              "high": "180000000",
+              "low": "180000000"
+            }
+          },
+          "family": "heat-recovery",
+          "maxWorkUnits": 960,
+          "measurement": {
+            "commandSourceId": "controller-telemetry",
+            "coverage": "WHOLE_FLOW_DECLARED_BOUNDS",
+            "densityKgPerM3": {
+              "estimate": 1000,
+              "high": 1000,
+              "low": 1000
+            },
+            "intervals": [
+              {
+                "commandFlowNLPerMin": 100000000,
+                "deltaTemperatureUK": 10000000,
+                "deltaTemperatureUncertaintyUK": 0,
+                "durationMs": 60000,
+                "sequence": 0,
+                "startMs": 0,
+                "volumeNL": 92000000,
+                "volumeUncertaintyNL": 0
+              }
+            ],
+            "mode": "SIMULATED_MEASUREMENTS",
+            "propertyModel": "CONSTANT_WITHIN_INTERVAL",
+            "specificHeatJPerKgK": {
+              "estimate": 4000,
+              "high": 4000,
+              "low": 4000
+            },
+            "temperatureWitness": {
+              "kind": "BOUNDED_SIMULATED",
+              "sourceId": "differential-reference"
+            },
+            "volumeWitness": {
+              "kind": "INDEPENDENT_SIMULATED",
+              "sourceId": "independent-volume"
+            },
+            "windowMs": 60000
+          },
+          "policy": {
+            "maxRelativeErrorPpm": 50000,
+            "minimumHeatMicroJ": "1000000"
+          },
+          "schema": "thermal-witness/v1"
+        },
+        "language": "en",
+        "name": "Witnessed thermal measurement",
+        "owner": "local-owner",
+        "reviewMinutes": 10,
+        "rights": {
+          "dataClass": "synthetic",
+          "license": "Apache-2.0",
+          "source": "Declared simulated whole-flow fixture"
+        },
+        "schema": "successor-workbench/v1"
+      }
+    },
+    "configuration_digest": "e3ad96397cd4d3f148c5260340b60e515df4dd86cf454097284c5372d492eb12",
+    "economics": {
+      "allowanceIs": "UNFUNDED",
+      "computeCost": null,
+      "elapsedMilliseconds": 32,
+      "humanMinutes": null,
+      "providerSpendBaseUnits": "0",
+      "reviewCapacityMinutes": 10,
+      "settlementSpendBaseUnits": "0"
+    },
+    "error": null,
+    "independent_qualification": false,
+    "result_digest": "4d6e7ad57664e3709de265022c2b6d568360067cca7d4eccb52537b15f6963d6",
+    "review": {
+      "independent": false,
+      "note": "Local operator inspection of the declared simulated fixture; no independent qualification",
+      "operator": "urn:agialpha:ed25519:fc40c0feeb17a2fb573133b971f26f81d5ecfdd38f580202d398432a9c63feca"
+    },
+    "run_id": "c0851a5a-3102-456d-b2f5-1026cc4341ff",
+    "scope": "local fixed-work execution; not a commissioned commercial enterprise",
+    "settlement": "NOT_CONNECTED",
+    "state": "accepted"
+  },
+  "home": "/workspace/scratch/5d02e86cc826/thermal-held-facade-f1ac-6bb361/private-homes/heat-recovery"
+}

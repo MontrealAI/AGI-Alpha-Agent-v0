@@ -1,0 +1,102 @@
+{
+  "checkpoint": {
+    "events": 8,
+    "head": "f9fd9b9b14c2104ac572b7b8b29139ac45da45ffedad73bf020bd08d944fd3e8",
+    "identity": "urn:agialpha:ed25519:4ca67a50f7990f84908f1dda26f54dbc1e20df2c46597c9c1d495e85cadfb17e",
+    "valid": true
+  },
+  "enterpriseId": "26851d44-766d-48c6-a2fa-79e1daa98880",
+  "expected": {
+    "attempts": 1,
+    "authority": [],
+    "configuration": {
+      "enterprise_id": "26851d44-766d-48c6-a2fa-79e1daa98880",
+      "name": "Thermal held-facade probe: delivered-heat",
+      "parent": null,
+      "schema": "successor-enterprise/v1",
+      "work": {
+        "family": "thermal-witness",
+        "inputs": {
+          "extension": {},
+          "family": "delivered-heat",
+          "maxWorkUnits": 960,
+          "measurement": {
+            "commandSourceId": "controller-telemetry",
+            "coverage": "WHOLE_FLOW_DECLARED_BOUNDS",
+            "densityKgPerM3": {
+              "estimate": 1000,
+              "high": 1000,
+              "low": 1000
+            },
+            "intervals": [
+              {
+                "commandFlowNLPerMin": 100000000,
+                "deltaTemperatureUK": 10000000,
+                "deltaTemperatureUncertaintyUK": 0,
+                "durationMs": 60000,
+                "sequence": 0,
+                "startMs": 0,
+                "volumeNL": 92000000,
+                "volumeUncertaintyNL": 0
+              }
+            ],
+            "mode": "SIMULATED_MEASUREMENTS",
+            "propertyModel": "CONSTANT_WITHIN_INTERVAL",
+            "specificHeatJPerKgK": {
+              "estimate": 4000,
+              "high": 4000,
+              "low": 4000
+            },
+            "temperatureWitness": {
+              "kind": "BOUNDED_SIMULATED",
+              "sourceId": "differential-reference"
+            },
+            "volumeWitness": {
+              "kind": "INDEPENDENT_SIMULATED",
+              "sourceId": "independent-volume"
+            },
+            "windowMs": 60000
+          },
+          "policy": {
+            "maxRelativeErrorPpm": 50000,
+            "minimumHeatMicroJ": "1000000"
+          },
+          "schema": "thermal-witness/v1"
+        },
+        "language": "en",
+        "name": "Witnessed thermal measurement",
+        "owner": "local-owner",
+        "reviewMinutes": 10,
+        "rights": {
+          "dataClass": "synthetic",
+          "license": "Apache-2.0",
+          "source": "Declared simulated whole-flow fixture"
+        },
+        "schema": "successor-workbench/v1"
+      }
+    },
+    "configuration_digest": "a5f24367bde52cbcdbbe4d4db4441d154a82e58d62fff4c4c51b848312fd9494",
+    "economics": {
+      "allowanceIs": "UNFUNDED",
+      "computeCost": null,
+      "elapsedMilliseconds": 31,
+      "humanMinutes": null,
+      "providerSpendBaseUnits": "0",
+      "reviewCapacityMinutes": 10,
+      "settlementSpendBaseUnits": "0"
+    },
+    "error": null,
+    "independent_qualification": false,
+    "result_digest": "1dca63e1463bf261e0cbe3c5731278fb93e880fc44713f783ce4c8584a6d20f0",
+    "review": {
+      "independent": false,
+      "note": "Local operator inspection of the declared simulated fixture; no independent qualification",
+      "operator": "urn:agialpha:ed25519:4ca67a50f7990f84908f1dda26f54dbc1e20df2c46597c9c1d495e85cadfb17e"
+    },
+    "run_id": "26851d44-766d-48c6-a2fa-79e1daa98880",
+    "scope": "local fixed-work execution; not a commissioned commercial enterprise",
+    "settlement": "NOT_CONNECTED",
+    "state": "accepted"
+  },
+  "home": "/workspace/scratch/5d02e86cc826/thermal-held-facade-f1ac-6bb361/private-homes/delivered-heat"
+}

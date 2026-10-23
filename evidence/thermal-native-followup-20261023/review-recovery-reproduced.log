@@ -1,0 +1,157 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+____ test_completed_thermal_result_is_exact_without_current_worker[review] _____
+
+state = 'review'
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-16/test_completed_thermal_result_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f452e0c2e40>
+
+    @pytest.mark.parametrize("state", ["review", "accepted", "rejected"])
+    def test_completed_thermal_result_is_exact_without_current_worker(
+        state: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        home, run_id = tmp_path / "operator", str(uuid.uuid4())
+        spec = _thermal_spec()
+        record = workbench.execute(home, spec, run_id)
+        if state != "review":
+            record = workbench.handle(
+                argparse.Namespace(
+                    home=home,
+                    run_id=run_id,
+                    work_command="review",
+                    result_digest=record["result_digest"],
+                    decision=state,
+                    note="Local review before the simulated software upgrade.",
+                )
+            )
+        journal = Journal(home)
+        head = journal.verify()
+        changed_worker = _changed_source_worker(tmp_path / "changed-package")
+        monkeypatch.setattr(workbench, "WORKER", changed_worker)
+    
+        def removed_family(*_args: object, **_kwargs: object) -> dict[str, object]:
+            raise ValueError("The upgraded worker no longer supports this request family or schema")
+    
+        monkeypatch.setattr(workbench, "invoke", removed_family)
+>       assert workbench.execute(home, spec, run_id) == record
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_successor_workbench.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/workbench.py:188: in execute
+    invoke({"operation": "plan", "spec": spec})
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_args = ({'operation': 'plan', 'spec': {'family': 'thermal-witness', 'inputs': {'extension': {}, 'family': 'delivered-heat', '...000, 'low': 1000}, 'intervals': [{...}], ...}, ...}, 'language': 'en', 'name': 'Witnessed thermal measurement', ...}},)
+_kwargs = {}
+
+    def removed_family(*_args: object, **_kwargs: object) -> dict[str, object]:
+>       raise ValueError("The upgraded worker no longer supports this request family or schema")
+E       ValueError: The upgraded worker no longer supports this request family or schema
+
+tests/runtime/test_successor_workbench.py:366: ValueError
+___ test_completed_thermal_result_is_exact_without_current_worker[accepted] ____
+
+state = 'accepted'
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-16/test_completed_thermal_result_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f452df0b2c0>
+
+    @pytest.mark.parametrize("state", ["review", "accepted", "rejected"])
+    def test_completed_thermal_result_is_exact_without_current_worker(
+        state: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        home, run_id = tmp_path / "operator", str(uuid.uuid4())
+        spec = _thermal_spec()
+        record = workbench.execute(home, spec, run_id)
+        if state != "review":
+            record = workbench.handle(
+                argparse.Namespace(
+                    home=home,
+                    run_id=run_id,
+                    work_command="review",
+                    result_digest=record["result_digest"],
+                    decision=state,
+                    note="Local review before the simulated software upgrade.",
+                )
+            )
+        journal = Journal(home)
+        head = journal.verify()
+        changed_worker = _changed_source_worker(tmp_path / "changed-package")
+        monkeypatch.setattr(workbench, "WORKER", changed_worker)
+    
+        def removed_family(*_args: object, **_kwargs: object) -> dict[str, object]:
+            raise ValueError("The upgraded worker no longer supports this request family or schema")
+    
+        monkeypatch.setattr(workbench, "invoke", removed_family)
+>       assert workbench.execute(home, spec, run_id) == record
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_successor_workbench.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/workbench.py:188: in execute
+    invoke({"operation": "plan", "spec": spec})
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_args = ({'operation': 'plan', 'spec': {'family': 'thermal-witness', 'inputs': {'extension': {}, 'family': 'delivered-heat', '...000, 'low': 1000}, 'intervals': [{...}], ...}, ...}, 'language': 'en', 'name': 'Witnessed thermal measurement', ...}},)
+_kwargs = {}
+
+    def removed_family(*_args: object, **_kwargs: object) -> dict[str, object]:
+>       raise ValueError("The upgraded worker no longer supports this request family or schema")
+E       ValueError: The upgraded worker no longer supports this request family or schema
+
+tests/runtime/test_successor_workbench.py:366: ValueError
+___ test_completed_thermal_result_is_exact_without_current_worker[rejected] ____
+
+state = 'rejected'
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-16/test_completed_thermal_result_2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f452df0b260>
+
+    @pytest.mark.parametrize("state", ["review", "accepted", "rejected"])
+    def test_completed_thermal_result_is_exact_without_current_worker(
+        state: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        home, run_id = tmp_path / "operator", str(uuid.uuid4())
+        spec = _thermal_spec()
+        record = workbench.execute(home, spec, run_id)
+        if state != "review":
+            record = workbench.handle(
+                argparse.Namespace(
+                    home=home,
+                    run_id=run_id,
+                    work_command="review",
+                    result_digest=record["result_digest"],
+                    decision=state,
+                    note="Local review before the simulated software upgrade.",
+                )
+            )
+        journal = Journal(home)
+        head = journal.verify()
+        changed_worker = _changed_source_worker(tmp_path / "changed-package")
+        monkeypatch.setattr(workbench, "WORKER", changed_worker)
+    
+        def removed_family(*_args: object, **_kwargs: object) -> dict[str, object]:
+            raise ValueError("The upgraded worker no longer supports this request family or schema")
+    
+        monkeypatch.setattr(workbench, "invoke", removed_family)
+>       assert workbench.execute(home, spec, run_id) == record
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/runtime/test_successor_workbench.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/workbench.py:188: in execute
+    invoke({"operation": "plan", "spec": spec})
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_args = ({'operation': 'plan', 'spec': {'family': 'thermal-witness', 'inputs': {'extension': {}, 'family': 'delivered-heat', '...000, 'low': 1000}, 'intervals': [{...}], ...}, ...}, 'language': 'en', 'name': 'Witnessed thermal measurement', ...}},)
+_kwargs = {}
+
+    def removed_family(*_args: object, **_kwargs: object) -> dict[str, object]:
+>       raise ValueError("The upgraded worker no longer supports this request family or schema")
+E       ValueError: The upgraded worker no longer supports this request family or schema
+
+tests/runtime/test_successor_workbench.py:366: ValueError
+=========================== short test summary info ============================
+FAILED ../../../../dev::test_completed_thermal_result_is_exact_without_current_worker[review]
+FAILED ../../../../dev::test_completed_thermal_result_is_exact_without_current_worker[accepted]
+FAILED ../../../../dev::test_completed_thermal_result_is_exact_without_current_worker[rejected]
+3 failed, 23 deselected in 1.59s

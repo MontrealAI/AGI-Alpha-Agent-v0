@@ -1,0 +1,59 @@
+{
+  "schema": "workbench-review-recovery-fix/v1",
+  "recordedAt": "2026-10-23T00:20:16.969547+00:00",
+  "reviewedCommit": "f1ac7df95d802b12bf194b3fa7be6f4c30a62ef4",
+  "finding": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4871#discussion_r4354819176",
+  "sources": {
+    "alpha_factory_v1/core/runtime/successor/workbench.py": {
+      "bytes": 19720,
+      "sha256": "cd73b3e6d9298b0ee32325d2f7e6a528c97e620c3eaf06f8037eca93a9ed0bdd"
+    },
+    "tests/runtime/test_successor_workbench.py": {
+      "bytes": 19183,
+      "sha256": "cdd3b5d8ca8668e50b22249728ae1ffed1dc63f3a27b17f3b719eded767a790b"
+    }
+  },
+  "reproduction": {
+    "command": "python -m pytest --noconftest -c /dev/null -q tests/runtime/test_successor_workbench.py -k completed_thermal_result_is_exact_without_current_worker",
+    "node": "24.19.0 (ambient runtime used for actual failure reproduction)",
+    "python": "3.12.14",
+    "failed": 3,
+    "deselected": 23,
+    "cause": "Current plan invocation rejected the completed historical request before the retained-record lookup.",
+    "log": "review-recovery-reproduced.log"
+  },
+  "fix": "Verify existing journal and exact request digest, then return terminal historical record before consulting current worker. Validate new/unfinished work before identity creation, source freeze or attempt consumption. No fresh approval, authority or execution is implied.",
+  "verification": [
+    {
+      "command": "PATH=<isolated Python bin>:<Node22.17.1 bin>:/usr/bin:/bin node examples/successor-workbench/test.mjs",
+      "node": "22.17.1",
+      "python": "3.12.14",
+      "nodeGroups": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "pythonCases": 26,
+      "pythonPassed": 26,
+      "log": "review-recovery-corrected.tap"
+    },
+    {
+      "command": "ruff check alpha_factory_v1/core/runtime/successor/workbench.py tests/runtime/test_successor_workbench.py",
+      "exit": 0,
+      "observedStdout": "All checks passed!",
+      "kind": "Actual tool output transcribed; separate raw log not retained"
+    },
+    {
+      "command": "mypy --config-file mypy-runtime.ini --cache-dir /tmp/thermal-mypy-review-cache",
+      "exit": 0,
+      "observedStdout": "Success: no issues found in 54 source files",
+      "kind": "Actual tool output transcribed; separate raw log not retained"
+    }
+  ],
+  "limits": [
+    "This preserves historical execute() records when the current worker family or schema is unavailable; it does not requalify them.",
+    "Artifact export/import still uses its own integrity and current inspection boundary.",
+    "The earlier f1ac hosted success and source-download observation are retained separately and do not establish hosted qualification of this change.",
+    "The mathematical campaign was not rerun; its prior finite cost account is unchanged.",
+    "Focused second-agent code review found no blocking defect. CLI run/export still invokes write_artifacts -> current worker inspect, so worker-free re-export is not established. No additional recovery or mathematical campaign was run by that inspection."
+  ]
+}

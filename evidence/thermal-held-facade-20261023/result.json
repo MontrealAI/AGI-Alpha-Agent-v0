@@ -1,0 +1,193 @@
+{
+  "actualWorkExecutions": 4,
+  "candidate": "f1ac7df95d802b12bf194b3fa7be6f4c30a62ef4",
+  "criteriaSha256": "65ca1a8af92467ab28a5d4190919250ccf73a7e9f156fa6e9a7506ceb41e4123",
+  "dependencies": {
+    "cryptography": "50.0.1",
+    "eth-hash": "0.8.0",
+    "fastapi": "0.141.1",
+    "pydantic": "2.13.5"
+  },
+  "executable": "/workspace/scratch/5d02e86cc826/thermal-python/bin/python",
+  "families": [
+    {
+      "attempts": 1,
+      "checkpoint": {
+        "events": 8,
+        "head": "f9fd9b9b14c2104ac572b7b8b29139ac45da45ffedad73bf020bd08d944fd3e8",
+        "identity": "urn:agialpha:ed25519:4ca67a50f7990f84908f1dda26f54dbc1e20df2c46597c9c1d495e85cadfb17e",
+        "valid": true
+      },
+      "decision": "CONDITIONAL_BOUNDS_MET",
+      "downstream": null,
+      "enterpriseId": "26851d44-766d-48c6-a2fa-79e1daa98880",
+      "family": "delivered-heat",
+      "quantity": {
+        "estimate": "3680000000",
+        "high": "3680000000",
+        "low": "3680000000",
+        "name": "delivered heat",
+        "unit": "microjoules"
+      },
+      "resultDigest": "1dca63e1463bf261e0cbe3c5731278fb93e880fc44713f783ce4c8584a6d20f0",
+      "state": "accepted"
+    },
+    {
+      "attempts": 1,
+      "checkpoint": {
+        "events": 8,
+        "head": "bfef431154ce87df673e889963a0fa97c8e3bc835aaffb36e677bd4061fdc7a3",
+        "identity": "urn:agialpha:ed25519:1747e58e9ac6e799385e9f6b40707157c7f9f13da1208218c0bfdbae24009af9",
+        "valid": true
+      },
+      "decision": "CONDITIONAL_BOUNDS_MET",
+      "downstream": {
+        "assumption": "All residual measured heat enters one sample; losses and container storage are independently bounded.",
+        "estimate": "150/1",
+        "high": "150/1",
+        "low": "150/1",
+        "name": "single-sample heat capacity",
+        "netEnergyMicroJ": {
+          "estimate": "3000000000",
+          "high": "3000000000",
+          "low": "3000000000"
+        },
+        "ratioDomain": "POSITIVE_DENOMINATOR",
+        "temperatureRiseUK": {
+          "estimate": 20000000,
+          "high": 20000000,
+          "low": 20000000
+        },
+        "unit": "joules per kelvin",
+        "worstRelativeErrorPpm": "0"
+      },
+      "enterpriseId": "2b8a4fef-49c0-44e3-9820-872889aef012",
+      "family": "heat-capacity",
+      "quantity": {
+        "estimate": "3680000000",
+        "high": "3680000000",
+        "low": "3680000000",
+        "name": "delivered heat",
+        "unit": "microjoules"
+      },
+      "resultDigest": "e98c52ca203bb84adfae9da10d6a7137c38416d2e5173255865548f087c92ca9",
+      "state": "accepted"
+    },
+    {
+      "attempts": 1,
+      "checkpoint": {
+        "events": 8,
+        "head": "ffb25a65c3124ef16b79134525f3b9a6bf270044d6c5e6095908911dd87824e8",
+        "identity": "urn:agialpha:ed25519:fc40c0feeb17a2fb573133b971f26f81d5ecfdd38f580202d398432a9c63feca",
+        "valid": true
+      },
+      "decision": "CONDITIONAL_BOUNDS_MET",
+      "downstream": {
+        "assumption": "The independent input bound covers every energy input; stored-energy release is separately bounded.",
+        "estimate": "7/10",
+        "high": "7/10",
+        "inputEnergyMicroJ": {
+          "estimate": "5000000000",
+          "high": "5000000000",
+          "low": "5000000000"
+        },
+        "low": "7/10",
+        "minimumRecoveryPpm": 700000,
+        "name": "storage-adjusted heat recovery",
+        "netHeatMicroJ": {
+          "estimate": "3500000000",
+          "high": "3500000000",
+          "low": "3500000000"
+        },
+        "ratioDomain": "POSITIVE_DENOMINATOR",
+        "unit": "dimensionless",
+        "worstRelativeErrorPpm": "0"
+      },
+      "enterpriseId": "c0851a5a-3102-456d-b2f5-1026cc4341ff",
+      "family": "heat-recovery",
+      "quantity": {
+        "estimate": "3680000000",
+        "high": "3680000000",
+        "low": "3680000000",
+        "name": "delivered heat",
+        "unit": "microjoules"
+      },
+      "resultDigest": "4d6e7ad57664e3709de265022c2b6d568360067cca7d4eccb52537b15f6963d6",
+      "state": "accepted"
+    }
+  ],
+  "finishedAt": "2026-10-23T00:21:59.146696+00:00",
+  "freshProcessReopens": 3,
+  "heldHead": "6bb361d522d80dc900cc2a480014531c6a44b66e",
+  "node": "v22.17.1",
+  "prospectiveTree": "abc12184debbdd7f2c8ecf9928cc5482dc7b09f8",
+  "python": "3.12.14",
+  "qualification": {
+    "forthcomingRecoveryFixQualified": false,
+    "independentInstitutionalAcceptance": false,
+    "mainnetOrEvmUsed": false,
+    "physicalValidation": false,
+    "releaseQualification": false,
+    "reviewRestrictionCleared": false,
+    "thermalAscensionFacade": "BLOCKED_BY_EXISTING_FAMILY_ALLOWLIST",
+    "thermalEnterpriseFacade": "LOCAL_COMPOSITION_EXERCISED"
+  },
+  "runnerSha256": "dba0b9b5b1532e4e43d337027989fd5a09153e8e2f8660bca5419d1a0c652ada",
+  "schema": "thermal-held-facade-local-composition/v1",
+  "startedAt": "2026-10-23T00:21:54.414747+00:00",
+  "status": "PASS_WITH_EXPECTED_STUDIO_REJECTION",
+  "studioBoundary": {
+    "filesUnchanged": true,
+    "journalUnchanged": true,
+    "outcomes": [
+      {
+        "errorType": "ValueError",
+        "message": "This executor supports only the installed fixed workbench families",
+        "operation": "enterprise.handoff"
+      },
+      {
+        "errorType": "ValueError",
+        "message": "This executor supports only the installed fixed workbench families",
+        "operation": "enterprise_ascension.prepare"
+      }
+    ],
+    "studioRecordsCreated": 0,
+    "transactionsSent": false
+  },
+  "successor": {
+    "child": "30e68a59-9bfb-4e9d-9491-50e995744546",
+    "childState": "review",
+    "decision": "CONDITIONAL_BOUNDS_MET",
+    "downstream": {
+      "assumption": "All residual measured heat enters one sample; losses and container storage are independently bounded.",
+      "estimate": "150/1",
+      "high": "150/1",
+      "low": "150/1",
+      "name": "single-sample heat capacity",
+      "netEnergyMicroJ": {
+        "estimate": "3000000000",
+        "high": "3000000000",
+        "low": "3000000000"
+      },
+      "ratioDomain": "POSITIVE_DENOMINATOR",
+      "temperatureRiseUK": {
+        "estimate": 20000000,
+        "high": 20000000,
+        "low": 20000000
+      },
+      "unit": "joules per kelvin",
+      "worstRelativeErrorPpm": "0"
+    },
+    "inheritedAcceptance": false,
+    "inheritedAuthority": false,
+    "parent": "26851d44-766d-48c6-a2fa-79e1daa98880",
+    "parentState": "accepted",
+    "quantity": {
+      "estimate": "3680000000",
+      "high": "3680000000",
+      "low": "3680000000",
+      "name": "delivered heat",
+      "unit": "microjoules"
+    }
+  }
+}
