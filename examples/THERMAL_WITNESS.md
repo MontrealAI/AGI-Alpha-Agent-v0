@@ -2,7 +2,7 @@
 
 [Research prototype notice](../docs/DISCLAIMER_SNIPPET.md)
 
-This is an additive fixed adapter for the **existing** SUCCESSOR workbench. It computes heat and downstream quantities from typed simulated measurement intervals. It is not the completed AGI ALPHA product, an installed native thermal worker, a physical instrument, or an operating Ascension enterprise.
+This is an additive fixed adapter for the **existing** SUCCESSOR workbench and its packaged native worker. It computes heat and downstream quantities from typed simulated measurement intervals. The source candidate executes through the released Python runtime and durable journal. It is not the completed AGI ALPHA product, a physically qualified instrument, or an operating Ascension enterprise.
 
 The complete Ascension target and remaining owners are recorded in [the implementation map](../docs/agent/ASCENSION_IMPLEMENTATION_MAP_2026-10-22.md). The four-source snapshot there is **not a tested compatibility manifest**.
 
@@ -19,13 +19,13 @@ node examples/successor-workbench/thermal-witness-demo.mjs --input measurement-i
 node --test examples/successor-workbench/thermal-witness.test.mjs
 ~~~
 
-The first command generates the fixed simulated acquisition, then passes **only observations** to the existing workbench and the fixed adapter. The output contains a local source descriptor and a regular workbench evidence pack. The source descriptor covers the actual seven-file workbench closure, its manifest, the adapter, fixture generator, independent reference and demo. Every existing manifest member is checked before and after execution. This is a local source snapshot, not an installed-release attestation.
+The first command generates the fixed simulated acquisition, then passes **only observations** to the existing workbench and the fixed adapter. The output contains a local source descriptor and a regular workbench evidence pack. The source descriptor covers the actual nine-file native workbench closure, its manifest, the adapter, fixture generator, independent reference and demo. Every existing manifest member is checked before and after execution. This is a local source snapshot, not an installed-release attestation.
 
 The other three examples are exact synthetic fixtures with distinct extra measurement requirements. They do not estimate the original research model's wall heat capacity or establish a physical recovery efficiency.
 
 The optional input file uses the exact schema returned by `thermalExample()`. Integers express nanolitres, microkelvin and milliseconds; large energy values use decimal strings. Unknown fields, unsafe integers, accessors, sparse arrays, wrong versions, duplicate intervals, gaps and incomplete windows are rejected. The import limit reuses the workbench's 2 MB bound. The CLI opens a nonblocking read-only descriptor and requires a regular file; directories, named pipes and oversized files are rejected before parsing.
 
-The adapter is installed explicitly with `createWorkbench([thermalWitnessAdapter])`. It is not silently added to the native worker registry. Existing examples, browser experiences and generated workers are preserved.
+The repository-owned `native.mjs` installs the fixed adapter with `createWorkbench([thermalWitnessAdapter])` and exports the existing registry/example/validate/plan/run/inspect interface. The packaged native worker now exposes six families; the original five remain. The shared generator hashes the complete nine-source closure and regenerates the worker and browser artifacts. The existing browser still uses its original five-family registry; this increment does not advertise a deployed thermal UI. No arbitrary module-loading interface is added.
 
 ## The construction and the retained failure
 
@@ -78,9 +78,9 @@ A wider +/-0.05 K differential-temperature uncertainty fails the 5% useful-accur
 
 Downstream ratios compute all four signed numerator/positive-denominator endpoint combinations, preserving ordered bounds even for rejected negative-energy cases. A denominator interval containing zero has null finite bounds. `ENERGY_BOUNDARY_NOT_RESOLVED` means uncertainty includes both feasible and infeasible balances; `ENERGY_BOUNDARY_INCONSISTENT` means the modeled bounds exclude every feasible balance. Both prevent qualification.
 
-Downstream uncertainty is evaluated independently of calorimeter precision. A precise heat estimate does not automatically qualify an imprecise capacity or recovery estimate. The existing-workbench integration is designed to give each changed mission a distinct semantic commitment; the native test for this behavior is pending until an exact-head hosted result is available. No result inherits capability acceptance or authority.
+Downstream uncertainty is evaluated independently of calorimeter precision. A precise heat estimate does not automatically qualify an imprecise capacity or recovery estimate. The existing-workbench integration is designed to give each changed mission a distinct semantic commitment; the actual Node integration test for this behavior passes. Hosted acceptance for a later source head remains separately required. No result inherits capability acceptance or authority.
 
-These are computed mission families around one measurement capability. The complete enterprise successor lifecycle, accepted capability inventory and cumulative ancestor/search/maintenance cost ledger still require the existing native and enterprise integration path.
+These are computed mission families around one measurement capability. The thermal enterprise successor lifecycle and independent promotion still require the existing enterprise integration path. The separate [compounding experiment](../docs/agent/COMPOUNDING_CAPABILITIES.md) actually exercises the merged mathematical enterprise controller; its accepted AST inventory cannot be replaced by attaching thermal JSON.
 
 ## Execution, recovery and evidence
 
@@ -88,17 +88,32 @@ One work unit is one bounded interval reduction. Up to 960 intervals and a one-h
 
 Every reduction calls the existing checkpoint. Cancellation propagates without producing accepted evidence. Budget exhaustion returns explicit partial coverage and `EXHAUSTED`; it cannot masquerade as a completed negative experiment. A private input snapshot prevents later caller mutation from changing an in-progress computation.
 
-The existing workbench supplies source and mission commitments, artifact hashes, zero-funded job compilation, time/cancellation controls and inert import. Reloading an exported pack verifies its integrity and restores **no authority or proof**. This is evidence-pack recovery, not native process restart, a durable enterprise journal or exactly-once payment recovery.
+The existing workbench supplies source and mission commitments, artifact hashes, zero-funded job compilation, time/cancellation controls and inert import. Reloading an exported pack verifies its integrity and restores **no authority or proof**. This is evidence-pack recovery. The Python runtime additionally persists signed run records, verifies exact request identity, retains local review, and exercises explicit interruption/resume. Completed records remain reusable under schema-compatible source upgrades without refreezing or rerunning them; unfinished work refuses changed executable-source identity before consuming another attempt. These tests do not establish payment recovery, independent review, or the held enterprise facade.
 
 The worker's most favorable decision is `CONDITIONAL_BOUNDS_MET`. Its proposal still sets `acceptedCapability:false`. Independent acceptance remains an external obligation. The workbench retains `admission:HOLD`, `independentProof:false` and `settlement:NOT_CONNECTED`.
 
+## Native operation and evidence
+
+This registration is in the source candidate, not the historical v1.38.0 package. After the repository setup (Python operator dependencies from `requirements-agent.lock` and Node 22.17.1), run:
+
+~~~sh
+python -m alpha_factory_v1.core.runtime.cli successor-work registry
+python -m alpha_factory_v1.core.runtime.cli successor-work example thermal-witness --output thermal-mission.json
+python -m alpha_factory_v1.core.runtime.cli --home ./thermal-operator successor-work run thermal-mission.json --run-id 7dd5a437-9c44-468c-8ea6-8d68d402d700 --output thermal-run
+python -m alpha_factory_v1.core.runtime.cli --home ./thermal-operator successor-work show 7dd5a437-9c44-468c-8ea6-8d68d402d700
+~~~
+
+Choose new mission/output paths; existing files are preserved. `successor-work control RUN_ID --state paused|stopped|retired` uses the existing controls. An interrupted run requires explicit `--resume` and a fresh output directory; stopped or retired work cannot resume. The original three-attempt limit remains. The exact-result `review` command records a **local** operator decision with `independent:false`; it creates no council approval or capability/financial authority. `export` preserves the result and receipt.
+
 ## Test status and integration boundary
 
-The portable 51-case suite and independent reference were executed in the available V8 JavaScript tool runtime against the exact source text. The selected execution workspace failed before connection, so that observation does not claim native Node, browser, installed package or EVM execution.
+The original portable 51-case result remains [historical V8 evidence](../docs/agent/thermal-witness-portable-execution.json). On public head175d8a5, the actual hosted mission workflow passed17 workbench groups with no failures/skips; [run39863200779](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/39863200779) is a different source boundary from this native candidate.
 
-The new Node tests exercise the real workbench, its canonical transport, pack/artifact tampering, inert import, distinct mission identity, the one-command source demo, and regular-file/oversize/nonregular input handling. The POSIX FIFO regression treats a subprocess timeout as a failure, never a successful rejection. A single static import in the existing workbench test entry selects them in the ordinary existing workbench workflows. Hosted results must be read from the exact PR head; a green unrelated workflow is insufficient.
+After the workspace recovered, pinned Node22.17.1 and Python3.12.14 executed the native candidate: **19 Node groups and26 Python cases passed**, including all three quantities, actual packaged-worker process invocation, canonical transport, inert imports, mission identities, filesystem refusal, signed journal idempotency, exact-result local review, interruption/resume, source-change refusal and the three-attempt bound. Independent source review and generator/cache byte reconciliation are retained in [the evidence directory](../evidence/thermal-witness-20261022/README.md). Initial sandbox process refusals and a test expecting the wrong rejection layer are retained alongside corrected results. Required hosted/release checks are not replaced by local tests.
 
-No workflow, permission, dependency, deployment, payment adapter, existing source manifest or generated worker was changed. Native worker registration, actual SUCCESSOR harness invocation and recovery, independent Fleet review, local-EVM lifecycle, browser placement and software release qualification remain outstanding. PR #4863's existing review restriction and the #4855/#4869/#4870 source leases are preserved.
+Twelve predeclared additional numerical cases also ran as actual Node child processes against unchanged public source175d8a5. All twelve passed the six frozen criteria: maximum conservative error bound1.9398%, maximum observed reference error1.0872567589%. These are public bias-corner cases across two fixed regimes, not unseen physical trials or a broad dynamics benchmark. The 180-second reset almost erases the tested initial-history differences. The exact source bundle, original protocol, failed sandbox receipt and approved process receipts are [retained together](../evidence/thermal-witness-20261022/heldout-node/README.md).
+
+No workflow, dependency, permission, contract, credential or live provider was changed. Actual enterprise-facade integration, independent Fleet acceptance, real-source local-EVM lifecycle, tested four-package installation, thermal browser placement and software release qualification remain outstanding. PR#4863's explicit review restriction and the current publication owners remain respected. Native execution and durable journal recovery are implemented and exercised; that does not clear the separate full-product obligations.
 
 ## Scientific provenance
 

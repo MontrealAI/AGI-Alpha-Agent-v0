@@ -1,0 +1,14 @@
+{
+  "schema": "configured-source-review-observation/v1",
+  "reviewedHead": "3db43f9a1f177c099af9c6b900ae7664eae5d727",
+  "findings": [
+    {
+      "id": 4344417828,
+      "commit": "3db43f9a1f177c099af9c6b900ae7664eae5d727",
+      "path": "scripts/templates/successor-capability/autonomous-enterprises.js",
+      "line": 11,
+      "body": "**<sub><sub>![P2 Badge](https://img.shields.io/badge/P2-yellow?style=flat)</sub></sub>  Enable continuation from accepted construction**\n\nIf the page reloads or closes after the constructed event is persisted but before the next loop iteration freezes it, the restored attempt is in `ACCEPTED_CONSTRUCTION`. The controller explicitly maps that state to the safe `freeze` transition, but this whitelist disables Continue while Build is also disabled because an attempt is active, leaving Stop as the only UI action and preventing recovery of an already accepted construction. Include `ACCEPTED_CONSTRUCTION` among the continuable states.\n\nUseful? React with 👍 / 👎.\n\n<!-- codex-code-review-finding:v1 -->",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4855#discussion_r4344417828"
+    }
+  ]
+}

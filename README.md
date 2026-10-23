@@ -13,6 +13,14 @@ problem formulations that unnecessarily limit the outcome. Keep the attempts, ev
 Planning and the catalog example are free in your browser. Computer execution uses a separately configured
 native model and isolated runner. [What works now and how to begin](docs/agent/SUCCESSOR_ALPHA.md).
 
+**Autonomous Enterprises · Build the means of building.** Construct checked Walsh, XOR-convolution and inverse
+capabilities, freeze their bytes, then invoke them on later tasks in the same mission history.
+[Free local foundry and evidence guide](docs/autonomous-enterprises/README.md) ·
+[Selected 23-page paper](docs/Autonomous_Enterprises.pdf) ·
+[Source candidate and qualification](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4855).
+This additive source preview preserves SUCCESSOR Ω, Discovery Lab and all six research stages.
+Installed cross-repository receivers, public deployment and the operational real-task pilot remain unqualified.
+
 <!-- featured-research-papers -->
 ## Featured research
 
@@ -42,12 +50,12 @@ Research proposals and bounded studies, not claims of general autonomous capabil
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current source candidate · 1.38.0.** [Integrated flagship release notes](docs/agent/RELEASE_NOTES_1.38.0.md).
-This combined software candidate adds bounded OUT-EXECUTE execution and brings the seven original papers together
-with the six-stage Discovery Lab, frozen future-task experiments and one replayed evidence docket. It preserves
-existing proposal and Out-Evolve journeys. This is not a claim that every proposed capability is implemented.
-Synthetic results and unsigned work drafts grant no operational authority.
-Predecessor qualification, independent integration review and exact-source publication checks remain required.
+**Current experimental source candidate · 1.39.0.** [Autonomous Enterprises preview notes](docs/agent/RELEASE_NOTES_1.39.0.md).
+The additive enterprise workspace develops a bounded finite capability, freezes it and compares later tasks
+while retaining rejected alternatives, declared costs and recoverable history. It extends the existing six-stage
+Discovery Lab, OUT-EXECUTE and thirteen-section evidence docket. Supplied synthetic semantics and zero-cap
+inspection drafts describe the supported preview; installed native compatibility, external model/tool pilots
+and observed organizational benefit retain separate qualification. Fresh exact-source release gates remain pending.
 
 ## Choose your next step
 

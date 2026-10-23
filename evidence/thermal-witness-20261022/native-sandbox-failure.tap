@@ -1,0 +1,383 @@
+TAP version 13
+# Subtest: thermal numerical, scientific-reference and refusal cases
+ok 1 - thermal numerical, scientific-reference and refusal cases
+  ---
+  duration_ms: 847.529799
+  type: 'test'
+  ...
+# Subtest: three thermal quantities run through the existing workbench with inert recovery
+ok 2 - three thermal quantities run through the existing workbench with inert recovery
+  ---
+  duration_ms: 277.107411
+  type: 'test'
+  ...
+# Subtest: full witnessed Foundry acquisition crosses the actual canonical and artifact boundaries
+ok 3 - full witnessed Foundry acquisition crosses the actual canonical and artifact boundaries
+  ---
+  duration_ms: 525.828781
+  type: 'test'
+  ...
+# Subtest: altered observations and artifact bytes fail existing pack integrity
+ok 4 - altered observations and artifact bytes fail existing pack integrity
+  ---
+  duration_ms: 32.31579
+  type: 'test'
+  ...
+# Subtest: new observation and downstream requirement receive distinct mission commitments
+ok 5 - new observation and downstream requirement receive distinct mission commitments
+  ---
+  duration_ms: 39.287979
+  type: 'test'
+  ...
+# Subtest: one-command local demo verifies actual source closure and emits a valid workbench pack
+not ok 6 - one-command local demo verifies actual source closure and emits a valid workbench pack
+  ---
+  duration_ms: 828.104935
+  type: 'test'
+  location: '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:66:1'
+  failureType: 'testCodeFailure'
+  error: 'Unexpected end of JSON input'
+  code: 'ERR_TEST_FAILURE'
+  name: 'SyntaxError'
+  stack: |-
+    JSON.parse (<anonymous>)
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:70:23)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: input file accepts regular JSON and rejects directories and oversized bytes
+not ok 7 - input file accepts regular JSON and rejects directories and oversized bytes
+  ---
+  duration_ms: 157.991904
+  type: 'test'
+  location: '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:91:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + Error: spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1120:20)
+    +     at spawnSync (node:child_process:869:24)
+    +     at inputCommand (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:80:10)
+    +     at TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:96:19)
+    +     at Test.runInAsyncScope (node:async_hooks:214:14)
+    +     at Test.run (node:internal/test_runner/test:1047:25)
+    +     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    +     at Test.postRun (node:internal/test_runner/test:1173:19)
+    +     at Test.run (node:internal/test_runner/test:1101:12)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness-demo.mjs',
+    +     '--input',
+    +     '/tmp/thermal-input-aMxp34/measurement.json'
+    +   ],
+    +   syscall: 'spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node'
+    path: '/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node'
+    spawnargs:
+      0: '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness-demo.mjs'
+      1: '--input'
+      2: '/tmp/thermal-input-aMxp34/measurement.json'
+  error: 'spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1120:20)
+    spawnSync (node:child_process:869:24)
+    inputCommand (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:80:10)
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:96:19)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:97:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: input FIFO without a writer is rejected without waiting
+not ok 8 - input FIFO without a writer is rejected without waiting
+  ---
+  duration_ms: 4.928273
+  type: 'test'
+  location: '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:108:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + Error: spawnSync mkfifo EPERM
+    +     at Object.spawnSync (node:internal/child_process:1120:20)
+    +     at spawnSync (node:child_process:869:24)
+    +     at TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:113:20)
+    +     at Test.runInAsyncScope (node:async_hooks:214:14)
+    +     at Test.run (node:internal/test_runner/test:1047:25)
+    +     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    +     at Test.postRun (node:internal/test_runner/test:1173:19)
+    +     at Test.run (node:internal/test_runner/test:1101:12)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: 'mkfifo',
+    +   spawnargs: [
+    +     '/tmp/thermal-fifo-xvt86E/measurement.fifo'
+    +   ],
+    +   syscall: 'spawnSync mkfifo'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync mkfifo'
+    path: 'mkfifo'
+    spawnargs:
+      0: '/tmp/thermal-fifo-xvt86E/measurement.fifo'
+  error: 'spawnSync mkfifo EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1120:20)
+    spawnSync (node:child_process:869:24)
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:113:20)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:114:14)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: packaged native worker is self-contained and registers all three thermal missions
+not ok 9 - packaged native worker is self-contained and registers all three thermal missions
+  ---
+  duration_ms: 69.882514
+  type: 'test'
+  location: '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:121:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + Error: spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1120:20)
+    +     at spawnSync (node:child_process:869:24)
+    +     at invoke (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:129:22)
+    +     at TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:136:22)
+    +     at Test.runInAsyncScope (node:async_hooks:214:14)
+    +     at Test.run (node:internal/test_runner/test:1047:25)
+    +     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    +     at Test.postRun (node:internal/test_runner/test:1173:19)
+    +     at Test.run (node:internal/test_runner/test:1101:12)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/tmp/thermal-native-cgZlOI/worker.mjs'
+    +   ],
+    +   syscall: 'spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node'
+    path: '/workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node'
+    spawnargs:
+      0: '/tmp/thermal-native-cgZlOI/worker.mjs'
+  error: 'spawnSync /workspace/scratch/5d02e86cc826/thermal-toolchain/node-v22.17.1-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1120:20)
+    spawnSync (node:child_process:869:24)
+    invoke (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:129:22)
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:136:22)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'strictEqual'
+  stack: |-
+    invoke (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:131:14)
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:136:22)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: native Python journal preserves identity, reviews and source-bound recovery
+not ok 10 - native Python journal preserves identity, reviews and source-bound recovery
+  ---
+  duration_ms: 11873.813287
+  type: 'test'
+  location: '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:165:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Native acceptance requires the documented Python/runtime setup
+    + actual - expected
+    
+    + Error: spawnSync python3 EPERM
+    +     at Object.spawnSync (node:internal/child_process:1120:20)
+    +     at spawnSync (node:child_process:869:24)
+    +     at TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:168:18)
+    +     at Test.runInAsyncScope (node:async_hooks:214:14)
+    +     at Test.run (node:internal/test_runner/test:1047:25)
+    +     at Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    +     at Test.postRun (node:internal/test_runner/test:1173:19)
+    +     at Test.run (node:internal/test_runner/test:1101:12)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:744:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: 'python3',
+    +   spawnargs: [
+    +     '-m',
+    +     'pytest',
+    +     '--noconftest',
+    +     '-c',
+    +     '/dev/null',
+    +     '-p',
+    +     'no:cacheprovider',
+    +     'tests/runtime/test_successor_workbench.py',
+    +     '-v'
+    +   ],
+    +   syscall: 'spawnSync python3'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync python3'
+    path: 'python3'
+    spawnargs:
+      0: '-m'
+      1: 'pytest'
+      2: '--noconftest'
+      3: '-c'
+      4: '/dev/null'
+      5: '-p'
+      6: 'no:cacheprovider'
+      7: 'tests/runtime/test_successor_workbench.py'
+      8: '-v'
+  error: 'spawnSync python3 EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1120:20)
+    spawnSync (node:child_process:869:24)
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:168:18)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:172:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public and licensed input rights compile into the pinned Jobs vocabulary
+ok 11 - public and licensed input rights compile into the pinned Jobs vocabulary
+  ---
+  duration_ms: 72.601473
+  type: 'test'
+  ...
+# Subtest: strong comparator retains an already correct incumbent
+ok 12 - strong comparator retains an already correct incumbent
+  ---
+  duration_ms: 20.203076
+  type: 'test'
+  ...
+# Subtest: negative numerical result is retained without admission
+ok 13 - negative numerical result is retained without admission
+  ---
+  duration_ms: 18.856324
+  type: 'test'
+  ...
+# Subtest: public CSV quotation, reconciliation and formula escaping
+ok 14 - public CSV quotation, reconciliation and formula escaping
+  ---
+  duration_ms: 19.578667
+  type: 'test'
+  ...
+# Subtest: malformed input and absent review capacity fail before work
+ok 15 - malformed input and absent review capacity fail before work
+  ---
+  duration_ms: 0.349328
+  type: 'test'
+  ...
+# Subtest: cancellation and elapsed deadline do not produce accepted evidence
+ok 16 - cancellation and elapsed deadline do not produce accepted evidence
+  ---
+  duration_ms: 0.695519
+  type: 'test'
+  ...
+# Subtest: semantic identity excludes cosmetics, includes rights and inputs
+ok 17 - semantic identity excludes cosmetics, includes rights and inputs
+  ---
+  duration_ms: 1.201657
+  type: 'test'
+  ...
+# Subtest: rehashed hostile artifact paths and copied results remain inert
+ok 18 - rehashed hostile artifact paths and copied results remain inert
+  ---
+  duration_ms: 21.421336
+  type: 'test'
+  ...
+# Subtest: installed extension uses the same binding and refuses unknown imports
+ok 19 - installed extension uses the same binding and refuses unknown imports
+  ---
+  duration_ms: 28.067053
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 14
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14848.457469

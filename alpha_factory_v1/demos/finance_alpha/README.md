@@ -11,7 +11,7 @@ fill, risk block and equity mark is available for review. No API key, model, Doc
 <a id="start-locally-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Start locally — 1.38.0
+## Start locally — 1.39.0
 
 From the repository root with **Python 3.11–3.13**, run:
 

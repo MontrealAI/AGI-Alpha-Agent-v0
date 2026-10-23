@@ -1,0 +1,266 @@
+TAP version 13
+# Subtest: thermal numerical, scientific-reference and refusal cases
+ok 1 - thermal numerical, scientific-reference and refusal cases
+  ---
+  duration_ms: 414.008886
+  type: 'test'
+  ...
+# Subtest: three thermal quantities run through the existing workbench with inert recovery
+ok 2 - three thermal quantities run through the existing workbench with inert recovery
+  ---
+  duration_ms: 150.37218
+  type: 'test'
+  ...
+# Subtest: full witnessed Foundry acquisition crosses the actual canonical and artifact boundaries
+ok 3 - full witnessed Foundry acquisition crosses the actual canonical and artifact boundaries
+  ---
+  duration_ms: 482.646752
+  type: 'test'
+  ...
+# Subtest: altered observations and artifact bytes fail existing pack integrity
+ok 4 - altered observations and artifact bytes fail existing pack integrity
+  ---
+  duration_ms: 25.341279
+  type: 'test'
+  ...
+# Subtest: new observation and downstream requirement receive distinct mission commitments
+ok 5 - new observation and downstream requirement receive distinct mission commitments
+  ---
+  duration_ms: 38.998193
+  type: 'test'
+  ...
+# Subtest: one-command local demo verifies actual source closure and emits a valid workbench pack
+ok 6 - one-command local demo verifies actual source closure and emits a valid workbench pack
+  ---
+  duration_ms: 863.750994
+  type: 'test'
+  ...
+# Subtest: input file accepts regular JSON and rejects directories and oversized bytes
+ok 7 - input file accepts regular JSON and rejects directories and oversized bytes
+  ---
+  duration_ms: 328.598825
+  type: 'test'
+  ...
+# Subtest: input FIFO without a writer is rejected without waiting
+ok 8 - input FIFO without a writer is rejected without waiting
+  ---
+  duration_ms: 59.736436
+  type: 'test'
+  ...
+# Subtest: packaged native worker is self-contained and registers all three thermal missions
+ok 9 - packaged native worker is self-contained and registers all three thermal missions
+  ---
+  duration_ms: 1483.116689
+  type: 'test'
+  ...
+# Subtest: native Python journal preserves identity, reviews and source-bound recovery
+not ok 10 - native Python journal preserves identity, reviews and source-bound recovery
+  ---
+  duration_ms: 10915.144072
+  type: 'test'
+  location: '/workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:165:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    ============================= test session starts ==============================
+    platform linux -- Python 3.12.14, pytest-8.4.1, pluggy-1.7.0 -- /workspace/scratch/5d02e86cc826/thermal-python/bin/python3
+    rootdir: /dev
+    configfile: null
+    collecting ... collected 26 items
+    
+    ../../../../dev::test_large_input_reaches_a_slow_reader_while_checkpoints_continue PASSED [  3%]
+    ../../../../dev::test_real_domain_artifacts_and_seven_job_binding[reliability] PASSED [  7%]
+    ../../../../dev::test_real_domain_artifacts_and_seven_job_binding[performance] PASSED [ 11%]
+    ../../../../dev::test_real_domain_artifacts_and_seven_job_binding[documentation] PASSED [ 15%]
+    ../../../../dev::test_real_domain_artifacts_and_seven_job_binding[public-data] PASSED [ 19%]
+    ../../../../dev::test_real_domain_artifacts_and_seven_job_binding[numerical] PASSED [ 23%]
+    ../../../../dev::test_input_identity_and_cosmetic_edit PASSED            [ 26%]
+    ../../../../dev::test_poisoned_import_and_code_are_rejected PASSED       [ 30%]
+    ../../../../dev::test_signed_journal_idempotency_review_and_no_overwrite PASSED [ 34%]
+    ../../../../dev::test_interrupted_pure_work_requires_explicit_resume PASSED [ 38%]
+    ../../../../dev::test_worker_source_is_reproducible PASSED               [ 42%]
+    ../../../../dev::test_stopped_work_cannot_resume_through_pause PASSED    [ 46%]
+    ../../../../dev::test_thermal_example_is_available_through_existing_cli PASSED [ 50%]
+    ../../../../dev::test_native_thermal_quantities_and_retained_idempotency[delivered-heat] PASSED [ 53%]
+    ../../../../dev::test_native_thermal_quantities_and_retained_idempotency[heat-capacity] PASSED [ 57%]
+    ../../../../dev::test_native_thermal_quantities_and_retained_idempotency[heat-recovery] PASSED [ 61%]
+    ../../../../dev::test_malformed_thermal_request_creates_no_operator[missing-property-model] PASSED [ 65%]
+    ../../../../dev::test_malformed_thermal_request_creates_no_operator[empty-extension-key] FAILED [ 69%]
+    ../../../../dev::test_native_thermal_interruption_requires_explicit_same_source_resume PASSED [ 73%]
+    ../../../../dev::test_thermal_local_review_binds_exact_result_without_independence[accepted] PASSED [ 76%]
+    ../../../../dev::test_thermal_local_review_binds_exact_result_without_independence[rejected] PASSED [ 80%]
+    ../../../../dev::test_completed_thermal_result_is_exact_after_source_change[review] PASSED [ 84%]
+    ../../../../dev::test_completed_thermal_result_is_exact_after_source_change[accepted] PASSED [ 88%]
+    ../../../../dev::test_completed_thermal_result_is_exact_after_source_change[rejected] PASSED [ 92%]
+    ../../../../dev::test_changed_source_refuses_unfinished_thermal_without_consuming_attempt PASSED [ 96%]
+    ../../../../dev::test_native_thermal_recovery_keeps_the_three_attempt_budget PASSED [100%]
+    
+    =================================== FAILURES ===================================
+    ___ test_malformed_thermal_request_creates_no_operator[empty-extension-key] ____
+    
+    malformed = 'empty-extension-key'
+    tmp_path = PosixPath('/tmp/pytest-of-root/pytest-10/test_malformed_thermal_request1')
+    
+        @pytest.mark.parametrize("malformed", ["missing-property-model", "empty-extension-key"])
+        def test_malformed_thermal_request_creates_no_operator(malformed: str, tmp_path: Path) -> None:
+            spec = _thermal_spec()
+            if malformed == "missing-property-model":
+                del spec["inputs"]["measurement"]["propertyModel"]
+            else:
+                spec["inputs"]["extension"] = {"": {"unexpected": True}}
+            home = tmp_path / "must-not-exist"
+            with pytest.raises(ValueError, match="Work adapter rejected"):
+    >           workbench.execute(home, spec, str(uuid.uuid4()))
+    
+    tests/runtime/test_successor_workbench.py:280: 
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+    alpha_factory_v1/core/runtime/successor/workbench.py:188: in execute
+        invoke({"operation": "plan", "spec": spec})
+    alpha_factory_v1/core/runtime/successor/workbench.py:130: in invoke
+        payload = canonical(request)
+                  ^^^^^^^^^^^^^^^^^^
+    alpha_factory_v1/core/runtime/successor/protocol.py:90: in canonical
+        _validate_json(value)
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+    
+    value = {'operation': 'plan', 'spec': {'family': 'thermal-witness', 'inputs': {'extension': {'': {'unexpected': True}}, 'famil...rtaintyUK': 0, 'durationMs': 60000, ...}], ...}, ...}, 'language': 'en', 'name': 'Witnessed thermal measurement', ...}}
+    
+        def _validate_json(value: Any, *, max_depth: int = MAX_JSON_DEPTH) -> None:
+            """Bound every node before serialization, including manually constructed values."""
+            pending = [(value, 0)]
+            count = 0
+            while pending:
+                item, depth = pending.pop()
+                count += 1
+                if count > MAX_JSON_NODES or depth > max_depth:
+                    raise ValueError("JSON structure exceeds node or depth limit")
+                if isinstance(item, BaseModel):
+                    pending.append((item.model_dump(mode="python"), depth))
+                    continue
+                # Exact builtin types reject bool/int substitution and arbitrary subclasses.
+                elif item is None or type(item) is bool:  # noqa: E721
+                    continue
+                if type(item) is int:  # noqa: E721
+                    if abs(item) > MAX_SAFE_INT:
+                        raise ValueError("integer exceeds exact JavaScript-safe range")
+                elif type(item) is str:  # noqa: E721
+                    if any(0xD800 <= ord(char) <= 0xDFFF for char in item):
+                        raise ValueError("surrogate Unicode is not permitted")
+                elif type(item) is list:  # noqa: E721
+                    pending.extend((child, depth + 1) for child in item)
+                elif type(item) is dict:  # noqa: E721
+                    for key, child in item.items():
+                        if (
+                            (type(key) is not str)  # noqa: E721
+                            or not key
+                            or any(ord(char) < 32 or ord(char) > 126 for char in key)
+                        ):
+    >                       raise ValueError("object keys must be nonempty printable ASCII strings")
+    E                       ValueError: object keys must be nonempty printable ASCII strings
+    
+    alpha_factory_v1/core/runtime/successor/protocol.py:80: ValueError
+    
+    During handling of the above exception, another exception occurred:
+    
+    malformed = 'empty-extension-key'
+    tmp_path = PosixPath('/tmp/pytest-of-root/pytest-10/test_malformed_thermal_request1')
+    
+        @pytest.mark.parametrize("malformed", ["missing-property-model", "empty-extension-key"])
+        def test_malformed_thermal_request_creates_no_operator(malformed: str, tmp_path: Path) -> None:
+            spec = _thermal_spec()
+            if malformed == "missing-property-model":
+                del spec["inputs"]["measurement"]["propertyModel"]
+            else:
+                spec["inputs"]["extension"] = {"": {"unexpected": True}}
+            home = tmp_path / "must-not-exist"
+    >       with pytest.raises(ValueError, match="Work adapter rejected"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    E       AssertionError: Regex pattern did not match.
+    E        Regex: 'Work adapter rejected'
+    E        Input: 'object keys must be nonempty printable ASCII strings'
+    
+    tests/runtime/test_successor_workbench.py:279: AssertionError
+    =========================== short test summary info ============================
+    FAILED ../../../../dev::test_malformed_thermal_request_creates_no_operator[empty-extension-key]
+    ======================== 1 failed, 25 passed in 10.28s =========================
+    
+    
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/5d02e86cc826/alpha-thermal-native/examples/successor-workbench/thermal-witness.test.mjs:174:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: public and licensed input rights compile into the pinned Jobs vocabulary
+ok 11 - public and licensed input rights compile into the pinned Jobs vocabulary
+  ---
+  duration_ms: 58.979133
+  type: 'test'
+  ...
+# Subtest: strong comparator retains an already correct incumbent
+ok 12 - strong comparator retains an already correct incumbent
+  ---
+  duration_ms: 18.419528
+  type: 'test'
+  ...
+# Subtest: negative numerical result is retained without admission
+ok 13 - negative numerical result is retained without admission
+  ---
+  duration_ms: 16.984652
+  type: 'test'
+  ...
+# Subtest: public CSV quotation, reconciliation and formula escaping
+ok 14 - public CSV quotation, reconciliation and formula escaping
+  ---
+  duration_ms: 16.080258
+  type: 'test'
+  ...
+# Subtest: malformed input and absent review capacity fail before work
+ok 15 - malformed input and absent review capacity fail before work
+  ---
+  duration_ms: 0.363403
+  type: 'test'
+  ...
+# Subtest: cancellation and elapsed deadline do not produce accepted evidence
+ok 16 - cancellation and elapsed deadline do not produce accepted evidence
+  ---
+  duration_ms: 0.567647
+  type: 'test'
+  ...
+# Subtest: semantic identity excludes cosmetics, includes rights and inputs
+ok 17 - semantic identity excludes cosmetics, includes rights and inputs
+  ---
+  duration_ms: 1.838658
+  type: 'test'
+  ...
+# Subtest: rehashed hostile artifact paths and copied results remain inert
+ok 18 - rehashed hostile artifact paths and copied results remain inert
+  ---
+  duration_ms: 18.834019
+  type: 'test'
+  ...
+# Subtest: installed extension uses the same binding and refuses unknown imports
+ok 19 - installed extension uses the same binding and refuses unknown imports
+  ---
+  duration_ms: 24.063689
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 18
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14926.453313

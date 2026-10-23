@@ -188,8 +188,33 @@ def execute(home: Path, spec: dict[str, Any], run_id: str, *, resume: bool = Fal
     invoke({"operation": "plan", "spec": spec})
     journal = Journal(home) if home.exists() else Journal.initialize(home)
     journal.verify()
-    lifecycle = freeze(journal, spec, run_id)
     identity = digest("workbench-request", spec)
+    retained: dict[str, Any] | None
+    with journal.transaction() as connection:
+        try:
+            retained = journal.latest(key, connection)
+        except KeyError:
+            retained = None
+        if retained is not None:
+            if retained["request_digest"] != identity:
+                raise Conflict("Run ID already belongs to a different request")
+            if retained["state"] in {"review", "accepted", "rejected"}:
+                # Historical completed work remains exact across software upgrades.
+                # Do not refreeze its source, rewrite its review, or replay execution.
+                return retained
+    if retained is not None:
+        source = json.loads(WORKER.with_name("workbench_sources.json").read_text(encoding="utf-8"))
+        frozen_sources = [
+            artifact["digest"]
+            for artifact in retained["lifecycle"]["candidate"]["artifacts"]
+            if artifact["name"] == "adapter-sources"
+        ]
+        if frozen_sources != [source["sourceHash"]]:
+            raise Conflict(
+                "Work adapter source changed; unfinished work cannot resume. "
+                "Restore the previous software or create a new run; retained history is unchanged"
+            )
+    lifecycle = freeze(journal, spec, run_id)
     with journal.transaction() as connection:
         try:
             record = journal.latest(key, connection)
@@ -291,7 +316,9 @@ def add_commands(commands: Any) -> None:
     verify.add_argument("file", type=Path)
     verify.add_argument("--source-key", required=True)
     example = sub.add_parser("example")
-    example.add_argument("family", choices=["reliability", "performance", "documentation", "public-data", "numerical"])
+    example.add_argument(
+        "family", choices=["reliability", "performance", "documentation", "public-data", "numerical", "thermal-witness"]
+    )
     example.add_argument("--output", type=Path, required=True)
     for name in ("plan", "run", "restore"):
         command = sub.add_parser(name)

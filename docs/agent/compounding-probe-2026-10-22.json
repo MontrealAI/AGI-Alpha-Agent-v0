@@ -1,0 +1,155 @@
+{
+  "schema": "enterprise-compounding-frozen-protocol/v1",
+  "status": "FROZEN_BEFORE_ADDITIONAL_WORKLOAD_EVALUATION",
+  "frozenAt": "2026-10-22T23:40:39.270Z",
+  "runner": "examples/successor-workbench/compounding-probe.mjs",
+  "runnerSHA256": "db4b6e0fff63c21ff50be2d5825df93e06ac7336cd013a2c17078ed5a6f0b1f9",
+  "criteria": {
+    "schema": "enterprise-compounding-evaluation/v1",
+    "engineBase": "8f13b39ed1718f5e8141ac1b37a10bb05c0f2900",
+    "sourceManifest": "docs/successor/capabilities/sources.json",
+    "sourceManifestSHA256": "d1c3cb9a5c3eb96e9e5eb111b83a713786ec18ed1213a407cd77bbaf018c5adb",
+    "sourceClosure": "54769dbfde99ae13708a33292866f0ca7e6b8b7792a7a944f76bf2fbf1de1358",
+    "maxN": 8,
+    "rounds": [
+      1,
+      4,
+      16
+    ],
+    "seed": 20261022,
+    "kinds": [
+      "walsh",
+      "xor-convolution",
+      "inverse"
+    ],
+    "arms": [
+      "retained-assets",
+      "rebuild-per-round",
+      "competent-static-specialist"
+    ],
+    "workBudgets": [
+      1000,
+      60000,
+      250000
+    ],
+    "changedKernel": [
+      "11",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "singularKernel": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "metric": "paper-declared-arithmetic-work/v1",
+    "loadScope": "Sequential batches in one process; not concurrent load, throughput or a statistical benchmark.",
+    "inputRule": "Reset public LCG seed for each workload; state=(imul(state,1664525)+1013904223)>>>0; value=String(state%15-7). Eight entries per vector; convolution has two vectors.",
+    "costRule": "Retain every actual construction, rejected candidate, selected qualification, dependency/scope check, current admission, productive arithmetic, independent reference arithmetic and comparison. Scenario attribution reuses the same ancestor charge; do not sum alternative scenario totals. Actual campaign totals deduplicate charge identities, not repeated execution.",
+    "specialistPreparation": "Zero additional arithmetic preparation exposed by this fixed implementation. Supplied authorship, proof, parsing and institutional qualification costs are unknown, not zero.",
+    "breakEven": "For identical checked task families, B=complete counted build, V=current complete admission, W(R)=checked execution. Retained=B+V+W(R); rebuilding=R*(B+V)+W(R). Difference=(R-1)*(B+V); R=1 ties. Unknown costs are excluded; this is not monetary break-even.",
+    "criteria": [
+      "Every base task output in all three arms equals the independently implemented exact specification; retain every failure.",
+      "Every construction and admission is actually executed; full observed ledgers, including search failures and direct/inherited controls, remain in evidence. Never substitute selected-path cost for campaign cost.",
+      "All nine alternative scenario costs and budget fits are reported, including losses and ties. No required economic advantage or budget fit.",
+      "Changed kernel: independently qualified direct/inherited constructions agree in artifact identity; stale inverse fails the new residual; successor passes. Singular kernel is rejected and its spent work retained. Ancestors remain charged.",
+      "Observed rebuilding-minus-retention equals the predeclared formula for each workload. Specialist comparison counts its exposed preparation and keeps unknown preparation explicit.",
+      "Existing source-bound controller reaches SUCCESSOR_ACCEPTED_LOCAL, writes a completed workspace, reads and validates it, and retains identical canonical bytes and final state. No external approval, physical qualification, payment or thermal acceptance is inferred."
+    ],
+    "unknownCosts": [
+      "humanActiveMilliseconds",
+      "authoringAndEngineering",
+      "institutionalReview",
+      "moneyByCurrency",
+      "energy",
+      "peakMemory",
+      "maintenanceOutsideThisRun",
+      "bitComplexity",
+      "framingHashingSerialization"
+    ],
+    "recoveryScope": "Completed-workspace file roundtrip only; not a pending-invocation OS crash test."
+  },
+  "additionalWorkloadEvaluation": {
+    "status": "NOT_RUN"
+  },
+  "nativeControllerJourney": {
+    "status": "NOT_RUN"
+  },
+  "priorV8ComponentProbe": {
+    "status": "EXECUTED_COMPONENTS_ONLY",
+    "environment": "V8 functions tool with independent UTF-8/SHA-256 compatibility shim; not Node, not controller, not native custody",
+    "executedAt": "2026-10-22T23:10:55Z",
+    "sourceBase": "8f13b39ed1718f5e8141ac1b37a10bb05c0f2900",
+    "recordIntegrity": "This numerical summary is reconstructed from the preserved tool transcript after the environment refresh cleared the tool store. Complete raw V8 receipts were not retained; new Node results must be kept separately.",
+    "maxN": 8,
+    "bundleVerified": true,
+    "observedWorkLedger": {
+      "constructorPreparation": 11480,
+      "selectedQualifications": 9356,
+      "additionalCurrentDependencyAndScopeChecks": 7560,
+      "identityResearchAdmission": 2,
+      "totalCountedCampaignWork": 28398
+    },
+    "currentBundleReplayWork": 28398,
+    "selectedCounts": {
+      "transformChain": 11424,
+      "incrementalConvolution": 6532,
+      "inverseDirect": 1568,
+      "inverseInherited": 1312,
+      "inverseOnlyViaNewConvolution": 7844,
+      "isolated": 42372,
+      "joint": 19268,
+      "operating": {
+        "transform": 24,
+        "convolution": 88,
+        "inverse": 64
+      },
+      "unrestrictedSamePrimitiveJointPlanner": 19268
+    },
+    "futureTreatments": {
+      "count": 15,
+      "accepted": 15,
+      "knownFutureTreatmentWork": 115576,
+      "scope": "One existing three-task component evaluation, not the new workloads."
+    },
+    "changedChild": {
+      "selectedConstructionAndQualificationWork": 1312,
+      "scope": "Selected-path number only; additional dependency/scope checking not retained in this summary. Not a complete campaign cost.",
+      "artifactDigest": "48273c603477dbc0e8309b090b1f370948bf817c801e960d7b4c4f81f1151df0"
+    },
+    "singularRejection": {
+      "state": "REJECTED",
+      "knownSpentWork": 32
+    },
+    "controller": "NOT_RUN",
+    "institutionalAcceptance": false,
+    "externalAuthority": false
+  },
+  "limitations": [
+    "Exact rational synthetic software tasks only; no thermal capability admission or physical experiment.",
+    "The workload criteria were prepared before additional workload execution; the earlier n=8 component observations informed this post-implementation evaluation. This is not a blind statistical benchmark.",
+    "Source verification binds actual bytes from the accepted published manifest. Installed service custody, live settlement and external approval remain unestablished.",
+    "The completed-workspace reload does not exercise a pending invocation crash; the engine separately refuses uncertain automatic retries."
+  ],
+  "amendment": {
+    "recordedAt": "2026-10-22T23:46:02.115740+00:00",
+    "reason": "Independent review found the specialist arm emitted an ancestor artifact digest although it executed the supplied specialist. Corrected provenance label only; execution dispatch, criteria, inputs, and counted-cost definitions are unchanged.",
+    "originalRunnerSHA256": "db4b6e0fff63c21ff50be2d5825df93e06ac7336cd013a2c17078ed5a6f0b1f9",
+    "correctedRunnerSHA256": "d4d559cc229239ace1bffeb366d8357ae26b8ece35ad093be3656ded539b6600",
+    "originalProtocol": "evidence/thermal-witness-20261022/compounding-initial-protocol.json",
+    "originalResult": "evidence/thermal-witness-20261022/compounding-initial-result.json",
+    "originalResultSHA256": "9af2ee1263e2920c2a0f4e5def35b77a20d82defc2cc610ddf6eef80a4f4bcbb",
+    "independentReview": "All241 charge IDs,72receipt digests,189base results,source bytes and controller replay accounting reconciled. P2 specialist provenance label corrected; source review is not institutional or required owner approval.",
+    "correctedEvaluation": "NOT_RUN_AT_AMENDMENT"
+  }
+}

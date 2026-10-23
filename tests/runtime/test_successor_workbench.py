@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import uuid
 from pathlib import Path
@@ -150,3 +151,262 @@ def test_stopped_work_cannot_resume_through_pause(tmp_path: Path, monkeypatch: p
         workbench.execute(home, spec, run_id, resume=True)
     command.state = "retired"
     assert workbench.handle(command)["state"] == "retired"
+
+
+def _thermal_spec(family: str = "delivered-heat") -> dict[str, Any]:
+    spec = workbench.invoke({"operation": "example", "family": "thermal-witness"})
+    spec["inputs"]["family"] = family
+    if family == "heat-capacity":
+        spec["inputs"]["extension"] = {
+            "sourceId": "sample-acceptance-fixture",
+            "kind": "INDEPENDENT_SIMULATED",
+            "temperatureRiseUK": {"low": 20_000_000, "estimate": 20_000_000, "high": 20_000_000},
+            "lossEnergyMicroJ": {"low": "600000000", "estimate": "600000000", "high": "600000000"},
+            "containerEnergyMicroJ": {"low": "80000000", "estimate": "80000000", "high": "80000000"},
+        }
+    elif family == "heat-recovery":
+        spec["inputs"]["extension"] = {
+            "sourceId": "energy-acceptance-fixture",
+            "kind": "INDEPENDENT_SIMULATED",
+            "inputEnergyMicroJ": {"low": "5000000000", "estimate": "5000000000", "high": "5000000000"},
+            "storageReleaseMicroJ": {"low": "180000000", "estimate": "180000000", "high": "180000000"},
+            "minimumRecoveryPpm": 700_000,
+        }
+    return spec
+
+
+def _interrupt_thermal(
+    home: Path,
+    spec: dict[str, Any],
+    run_id: str,
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    resume: bool = False,
+) -> None:
+    """Interrupt the actual packaged subprocess at its first execution checkpoint."""
+    original = workbench.invoke
+
+    def interrupt(request: dict[str, Any], *args: Any) -> dict[str, Any]:
+        if request["operation"] == "run":
+
+            def stop() -> None:
+                raise KeyboardInterrupt()
+
+            return original(request, stop)
+        return original(request, *args)
+
+    with monkeypatch.context() as patch:
+        patch.setattr(workbench, "invoke", interrupt)
+        with pytest.raises(KeyboardInterrupt):
+            workbench.execute(home, spec, run_id, resume=resume)
+
+
+def _changed_source_worker(destination: Path) -> Path:
+    """Model a changed shipped source manifest without rewriting the retained journal."""
+    destination.mkdir()
+    worker = destination / "workbench_worker.mjs"
+    shutil.copyfile(workbench.WORKER, worker)
+    manifest = json.loads(workbench.WORKER.with_name("workbench_sources.json").read_text())
+    previous = manifest["sourceHash"]
+    manifest["sourceHash"] = workbench.digest("test-changed-workbench-source", manifest)
+    assert manifest["sourceHash"] != previous
+    worker.with_name("workbench_sources.json").write_text(json.dumps(manifest), encoding="utf-8")
+    return worker
+
+
+def test_thermal_example_is_available_through_existing_cli(tmp_path: Path) -> None:
+    parser = argparse.ArgumentParser()
+    workbench.add_commands(parser.add_subparsers(dest="command", required=True))
+    output = tmp_path / "thermal.json"
+    args = parser.parse_args(["successor-work", "example", "thermal-witness", "--output", str(output)])
+    assert workbench.handle(args) == {"output": str(output.resolve())}
+    spec = json.loads(output.read_text())
+    assert spec["family"] == "thermal-witness"
+    assert spec["inputs"]["family"] == "delivered-heat"
+    assert spec["inputs"]["measurement"]["propertyModel"] == "CONSTANT_WITHIN_INTERVAL"
+
+
+@pytest.mark.parametrize("family", ["delivered-heat", "heat-capacity", "heat-recovery"])
+def test_native_thermal_quantities_and_retained_idempotency(family: str, tmp_path: Path) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    spec = _thermal_spec(family)
+    record = workbench.execute(home, spec, run_id)
+    pack = record["result"]
+    result = pack["result"]
+    evidence = result["evidence"]
+    assert record["state"] == "review" and record["attempts"] == 1
+    assert result["decision"] == "CONDITIONAL_BOUNDS_MET"
+    assert evidence["family"] == family and evidence["completion"] == "COMPLETE"
+    # 0.000092 m3 * 1000 kg/m3 * 4000 J/kg/K * 10 K = 3680 J.
+    assert evidence["quantity"]["low"] == evidence["quantity"]["estimate"] == "3680000000"
+    assert evidence["quantity"]["high"] == "3680000000"
+    if family == "delivered-heat":
+        assert evidence["downstream"] is None
+    else:
+        expected = "150/1" if family == "heat-capacity" else "7/10"
+        assert evidence["downstream"]["low"] == evidence["downstream"]["estimate"] == expected
+        assert evidence["downstream"]["high"] == expected
+    assert evidence["simulation"] is True
+    assert evidence["physicalValidity"] == "NOT_ESTABLISHED"
+    assert evidence["independentReview"] is False
+    assert result["summary"]["acceptedCapability"] is False
+    assert record["authority"] == [] and record["settlement"] == "NOT_CONNECTED"
+    assert pack["evaluation"]["independentProof"] is False
+    assert pack["evaluation"]["admission"] == "HOLD"
+    manifest = json.loads(workbench.WORKER.with_name("workbench_sources.json").read_text())
+    assert pack["frozen"]["sourceHash"] == manifest["sourceHash"]
+    assert len(pack["compilation"]["graph"]["nodes"]) == 7
+    journal = Journal(home)
+    head = journal.verify()
+    assert workbench.execute(home, spec, run_id) == record
+    assert journal.verify() == head
+    output = tmp_path / "artifacts"
+    workbench.write_artifacts(pack, output)
+    assert json.loads((output / "thermal-bounds.json").read_text()) == evidence
+    restored = workbench.invoke({"operation": "inspect", "pack": pack})
+    assert restored["spec"] == spec
+    assert restored["activeProof"] == restored["activeAuthority"] == []
+
+
+@pytest.mark.parametrize(
+    ("malformed", "expected_error"),
+    [
+        ("missing-property-model", "Work adapter rejected"),
+        ("empty-extension-key", "object keys must be nonempty printable ASCII strings"),
+    ],
+)
+def test_malformed_thermal_request_creates_no_operator(malformed: str, expected_error: str, tmp_path: Path) -> None:
+    spec = _thermal_spec()
+    if malformed == "missing-property-model":
+        del spec["inputs"]["measurement"]["propertyModel"]
+    else:
+        spec["inputs"]["extension"] = {"": {"unexpected": True}}
+    home = tmp_path / "must-not-exist"
+    with pytest.raises(ValueError, match=expected_error):
+        workbench.execute(home, spec, str(uuid.uuid4()))
+    assert not home.exists()
+
+
+def test_native_thermal_interruption_requires_explicit_same_source_resume(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    spec = _thermal_spec()
+    _interrupt_thermal(home, spec, run_id, monkeypatch)
+    journal = Journal(home)
+    interrupted = journal.latest("@successor-work:" + run_id)
+    assert interrupted["state"] == "interrupted"
+    assert interrupted["attempts"] == 1 and interrupted["result"] is None
+    head = journal.verify()
+    with pytest.raises(Conflict, match="--resume"):
+        workbench.execute(home, spec, run_id)
+    assert journal.verify() == head
+    resumed = workbench.execute(home, spec, run_id, resume=True)
+    assert resumed["state"] == "review" and resumed["attempts"] == 2
+    assert resumed["request_digest"] == interrupted["request_digest"]
+    assert resumed["lifecycle"] == interrupted["lifecycle"]
+    assert resumed["result"]["result"]["evidence"]["quantity"]["estimate"] == "3680000000"
+
+
+@pytest.mark.parametrize("decision", ["accepted", "rejected"])
+def test_thermal_local_review_binds_exact_result_without_independence(decision: str, tmp_path: Path) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    record = workbench.execute(home, _thermal_spec(), run_id)
+    journal = Journal(home)
+    head = journal.verify()
+    command = argparse.Namespace(
+        home=home,
+        run_id=run_id,
+        work_command="review",
+        result_digest="0" * 64,
+        decision=decision,
+        note="Inspected the exact simulated bounds and retained limitations.",
+    )
+    with pytest.raises(Conflict, match="Review must bind"):
+        workbench.handle(command)
+    assert journal.verify() == head
+    command.result_digest = record["result_digest"]
+    reviewed = workbench.handle(command)
+    assert reviewed["state"] == decision
+    assert reviewed["review"] == {"note": command.note, "operator": journal.identity, "independent": False}
+    assert reviewed["authority"] == [] and reviewed["settlement"] == "NOT_CONNECTED"
+    assert reviewed["result"] == record["result"]
+    assert reviewed["result_digest"] == record["result_digest"]
+    assert reviewed["result"]["result"]["summary"]["acceptedCapability"] is False
+    head = journal.verify()
+    with pytest.raises(Conflict, match="Review must bind"):
+        workbench.handle(command)
+    assert journal.verify() == head
+
+
+@pytest.mark.parametrize("state", ["review", "accepted", "rejected"])
+def test_completed_thermal_result_is_exact_after_source_change(
+    state: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    spec = _thermal_spec()
+    record = workbench.execute(home, spec, run_id)
+    if state != "review":
+        record = workbench.handle(
+            argparse.Namespace(
+                home=home,
+                run_id=run_id,
+                work_command="review",
+                result_digest=record["result_digest"],
+                decision=state,
+                note="Local review before the simulated software upgrade.",
+            )
+        )
+    journal = Journal(home)
+    head = journal.verify()
+    changed_worker = _changed_source_worker(tmp_path / "changed-package")
+    monkeypatch.setattr(workbench, "WORKER", changed_worker)
+    assert workbench.execute(home, spec, run_id) == record
+    assert journal.verify() == head
+    assert record["state"] == state and record["authority"] == []
+    if state != "review":
+        assert record["review"]["independent"] is False
+    altered = json.loads(json.dumps(spec))
+    altered["inputs"]["policy"]["minimumHeatMicroJ"] = "2000000"
+    with pytest.raises(Conflict, match="different request"):
+        workbench.execute(home, altered, run_id)
+    assert journal.verify() == head
+
+
+def test_changed_source_refuses_unfinished_thermal_without_consuming_attempt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    spec = _thermal_spec()
+    _interrupt_thermal(home, spec, run_id, monkeypatch)
+    journal = Journal(home)
+    interrupted = journal.latest("@successor-work:" + run_id)
+    head = journal.verify()
+    changed_worker = _changed_source_worker(tmp_path / "changed-package")
+    with monkeypatch.context() as patch:
+        patch.setattr(workbench, "WORKER", changed_worker)
+        with pytest.raises(Conflict, match="adapter source changed; unfinished work cannot resume"):
+            workbench.execute(home, spec, run_id, resume=True)
+        assert journal.latest("@successor-work:" + run_id) == interrupted
+        assert journal.verify() == head
+    # Restoring the previous software allows explicit recovery of its same frozen run.
+    resumed = workbench.execute(home, spec, run_id, resume=True)
+    assert resumed["state"] == "review" and resumed["attempts"] == 2
+    assert resumed["lifecycle"] == interrupted["lifecycle"]
+
+
+def test_native_thermal_recovery_keeps_the_three_attempt_budget(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home, run_id = tmp_path / "operator", str(uuid.uuid4())
+    spec = _thermal_spec()
+    for attempt in range(3):
+        _interrupt_thermal(home, spec, run_id, monkeypatch, resume=attempt > 0)
+    journal = Journal(home)
+    record = journal.latest("@successor-work:" + run_id)
+    assert record["state"] == "interrupted" and record["attempts"] == 3
+    head = journal.verify()
+    with pytest.raises(Conflict, match="three-attempt budget"):
+        workbench.execute(home, spec, run_id, resume=True)
+    assert journal.latest("@successor-work:" + run_id) == record
+    assert journal.verify() == head

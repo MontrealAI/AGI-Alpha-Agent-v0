@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { mkdtempSync, writeFileSync, rmSync, copyFileSync, readFileSync } from 'node:fs';
+import { tmpdir, devNull } from 'node:os';
 import { join } from 'node:path';
 import { createWorkbench, example, inspectPack } from './engine.mjs';
 import { canonical } from '../../docs/assets/successor/engine.mjs';
@@ -117,3 +117,60 @@ test('input FIFO without a writer is rejected without waiting',
       rejectedInput(fifo, /INPUT_REGULAR_FILE_REQUIRED/);
     } finally { rmSync(directory, { recursive: true, force: true }); }
   });
+
+test('packaged native worker is self-contained and registers all three thermal missions', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'thermal-native-'));
+  const shipped = fileURLToPath(new URL('../../alpha_factory_v1/core/runtime/successor/workbench_worker.mjs', import.meta.url));
+  const manifest = JSON.parse(readFileSync(new URL('../../alpha_factory_v1/core/runtime/successor/workbench_sources.json', import.meta.url), 'utf8'));
+  const worker = join(directory, 'worker.mjs');
+  try {
+    copyFileSync(shipped, worker);
+    const invoke = request => {
+      const result = spawnSync(process.execPath, [worker], { cwd: directory, input: JSON.stringify(request),
+        encoding: 'utf8', timeout: 30000, maxBuffer: 2000000 });
+      assert.equal(result.error, undefined);
+      assert.equal(result.signal, null);
+      assert.equal(result.status, 0, result.stderr);
+      return JSON.parse(result.stdout);
+    };
+    const registry = invoke({ operation: 'registry' });
+    assert.equal(registry.sourceHash, manifest.sourceHash);
+    for (const family of ['reliability', 'performance', 'documentation', 'public-data', 'numerical', 'thermal-witness']) {
+      assert.equal(registry.families.filter(item => item.id === family).length, 1);
+    }
+    const native = invoke({ operation: 'example', family: 'thermal-witness' });
+    assert.equal(native.family, 'thermal-witness');
+    for (const family of ['delivered-heat', 'heat-capacity', 'heat-recovery']) {
+      const spec = { ...native, inputs: thermalExample(family) };
+      const planned = invoke({ operation: 'plan', spec });
+      assert.equal(planned.executionOrder.length, 7);
+      assert.equal(planned.authorityCreated, 'NONE');
+      const pack = invoke({ operation: 'run', spec });
+      assert.equal(pack.frozen.sourceHash, manifest.sourceHash);
+      assert.equal(pack.result.decision, 'CONDITIONAL_BOUNDS_MET');
+      assert.equal(pack.result.summary.acceptedCapability, false);
+      assert.equal(pack.evaluation.admission, 'HOLD');
+      assert.equal(pack.evaluation.settlement, 'NOT_CONNECTED');
+      const restored = invoke({ operation: 'inspect', pack });
+      assert.deepEqual(restored.activeAuthority, []);
+      assert.deepEqual(restored.activeProof, []);
+    }
+    const foundry = invoke({ operation: 'run', spec: { ...native, inputs: foundryWitnessFixture().input } });
+    assert.equal(foundry.result.evidence.intervalsProcessed, 720);
+    assert.equal(foundry.result.evidence.quantity.low, '4943354615');
+    assert.equal(foundry.result.evidence.quantity.high, '5129056527');
+  } finally { rmSync(directory, { recursive: true, force: true }); }
+});
+
+test('native Python journal preserves identity, reviews and source-bound recovery', t => {
+  const root = fileURLToPath(new URL('../../', import.meta.url));
+  const python = process.platform === 'win32' ? 'python' : 'python3';
+  const result = spawnSync(python, ['-m', 'pytest', '--noconftest', '-c', devNull, '-p', 'no:cacheprovider',
+    'tests/runtime/test_successor_workbench.py', '-v'],
+    { cwd: root, encoding: 'utf8', timeout: 180000, maxBuffer: 2000000,
+      env: { ...process.env, PYTHONPATH: root, PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1', PYTHONDONTWRITEBYTECODE: '1' } });
+  assert.equal(result.error, undefined, 'Native acceptance requires the documented Python/runtime setup');
+  assert.equal(result.signal, null);
+  assert.equal(result.status, 0, result.stdout + '\n' + result.stderr);
+  t.diagnostic(result.stdout.trim());
+});
