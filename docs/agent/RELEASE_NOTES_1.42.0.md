@@ -21,6 +21,8 @@ The homepage and README feature **Try it now**. The original flagship, source-un
 papers, release history and all original Harness/Fleet restrictions are retained. The 1.41.1 workbench
 input snapshot fix remains in the ancestry. No held capability or new external executor is introduced.
 
+The [release installation and first-run guide](START_HERE.md) covers the existing native operator.
+
 This source candidate requires its own normal PR review/checks and exact-main release/site acceptance.
 The existing homepage validator also tests actual guide downloads, two-file import, evidence coverage,
 saved-workspace restoration, changed inputs, negative cases, keyboard flow, EN/FR and phone layouts.
