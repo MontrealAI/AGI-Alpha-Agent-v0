@@ -11,7 +11,7 @@ This candidate requires its own configured source review, applicable PR checks a
 exact-main software/site acceptance before publication. The existing flagship browser validator
 also requires the new guide journey, actual downloads, new CSV imports, exact saved-result checks,
 recomputation, keyboard, EN/FR, phone and accessibility checks. A test definition is not a pass.
-See [feature scope and acceptance](../../examples/ti-guide/README.md).
+See [feature scope and acceptance](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/55627cba47316a9b42ff44a75af7049838207917/examples/ti-guide/README.md).
 
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
