@@ -71,15 +71,16 @@ const french = {
     "nav-questions": "Questions",
     "nav-explore": "Explorer les outils",
     "larger-text": "Texte plus grand",
-    "hero-eyebrow": "LE PROJET PHARE · COMPUTER USE",
+    "hero-eyebrow": "INTELLIGENCE TRANSFORMATIONNELLE · UN PREMIER RÉSULTAT UTILE",
+    "ti-start": "Essayer maintenant",
     "hero-title-first": "Trouvez votre Alpha.",
     "hero-title-second": "Construisez votre SUCCESSOR Ω.",
     "hero-description":
-        "Trouvez un travail de valeur. Développez la capacité pour le réaliser. Raisonnement de pointe et Computer Use aident à améliorer les stratégies et à découvrir un jeu fondamentalement différent.",
+        "Comparez deux listes. Repérez ce qui mérite attention. Rassemblez les écarts dans un plan d’action et conservez un espace réutilisable.",
     "hero-start": "Commencer — créer un plan",
     "hero-how": "Voir comment ça marche",
     "hero-reassurance":
-        "Commencez gratuitement par une mission qui compte. L’exécution utilise votre exécuteur natif et votre modèle configurés ; les résultats utiles exigent un examen.",
+        "Sans compte, installation, portefeuille ni clé API. L’exemple et vos CSV autorisés sont traités localement dans votre navigateur.",
     "trust-account": "Départ gratuit dans le navigateur",
     "trust-payment": "Aucun portefeuille pour planifier",
     "trust-install": "Enregistrez votre espace",
@@ -202,7 +203,7 @@ function render() {
         const fragment = new URL(link.href).hash;
         link.setAttribute("href", `start/${query.size ? `?${query}` : ""}${fragment}`);
     }
-    for (const [attribute, path] of [["data-alpha-link", "successor/alpha/"], ["data-catalog-link", "successor/alpha/"], ["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
+    for (const [attribute, path] of [["data-ti-link", "try/"], ["data-alpha-link", "successor/alpha/"], ["data-catalog-link", "successor/alpha/"], ["data-discovery-link", "successor/discover/"], ["data-mission-link", "successor/mission/"]]) {
         for (const link of document.querySelectorAll(`[${attribute}]`)) {
             const fragment = new URL(link.href).hash;
             link.setAttribute("href", `${path}${query.size ? `?${query}` : ""}${fragment}`);

@@ -1,5 +1,20 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.42.0 browser-first catalogue guide
+
+The additive `/try/` guide reuses the unchanged released catalogue engine and discrepancy grouping.
+One-click sample computation, explicit column previews, original and grouped views, safe CSV exports
+and a strictly rechecked standalone workspace remain entirely local. No native Harness or Fleet
+capability is imported. The 1.41.1 patch, publications and all original action restrictions are preserved.
+
+This candidate requires its own configured source review, applicable PR checks and all existing
+exact-main software/site acceptance before publication. The existing flagship browser validator
+also requires the new guide journey, actual downloads, new CSV imports, exact saved-result checks,
+recomputation, keyboard, EN/FR, phone and accessibility checks. A test definition is not a pass.
+See [feature scope and acceptance](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/55627cba47316a9b42ff44a75af7049838207917/examples/ti-guide/README.md).
+
+[Project notice](../DISCLAIMER_SNIPPET.md)
+
 # Release readiness — 1.41.1 workbench input snapshot patch
 
 This patch continues #4886 on the accepted 1.41.0 source. One canonical JSON snapshot
