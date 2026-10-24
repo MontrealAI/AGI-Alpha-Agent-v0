@@ -3,6 +3,7 @@
 - Add a no-setup browser-first catalogue guide using the released comparison and grouping machinery.
 - Preserve every underlying exception; export an action plan, full differences and reusable standalone workspace.
 - Feature the guide on the homepage and README, with EN/FR support and bounded local-only processing.
+- Serialize the existing native workbench's first-use role inventory setup; retain rejection of incomplete local state.
 - Keep all original Harness/Fleet restrictions and existing publication checks.
 
 ## 1.41.1 — Immutable workbench submissions

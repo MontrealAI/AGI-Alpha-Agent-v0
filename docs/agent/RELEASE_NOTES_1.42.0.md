@@ -22,6 +22,11 @@ papers, release history and all original Harness/Fleet restrictions are retained
 input snapshot fix remains in the ancestry. No held capability or new external executor is introduced.
 
 The [release installation and first-run guide](START_HERE.md) covers the existing native operator.
+The runtime owner's retained first-use concurrency correction also serializes creation/read of the
+existing local role inventory within the journal transaction. Concurrent work proceeds after setup;
+genuinely incomplete inventories still refuse without replacing keys. The browser guide does not
+invoke this native path or create credentials. Public-package concurrency verification remains a
+separate recorded acceptance step; the earlier 1.41.1 load failure remains retained.
 
 This source candidate requires its own normal PR review/checks and exact-main release/site acceptance.
 The existing homepage validator also tests actual guide downloads, two-file import, evidence coverage,
