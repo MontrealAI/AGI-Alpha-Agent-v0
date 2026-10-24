@@ -45,6 +45,8 @@ unproven. Manager's USDC6 route and applicable $AGIALPHA18 routes remain separat
 and disconnected from live settlement. No mainnet transaction, contract change, new credential,
 security-setting change or paid infrastructure is included.
 
+Start with the [operating guide](START_HERE.md) for installation and local operation.
+
 Publication requires source-specific review, the selected security/integrity/typing/browser
 gates and exact-main packaging checks. Public delivery is established by authenticated release
 artifacts, a verified public installation and deployed-site acceptance. Consult

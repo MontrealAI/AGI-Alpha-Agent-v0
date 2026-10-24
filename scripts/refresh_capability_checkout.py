@@ -157,11 +157,11 @@ RESEARCH_GUIDES_140_EXTRA_FILES = FOUNDRY_140_EXTRA_FILES | {
 # gallery workers. Admit this one complete 1.41 edition, retaining all eight
 # historical editions and refusing mixtures of their otherwise valid bytes.
 COMPANION_141_EXTRA_FILES = RESEARCH_GUIDES_140_EXTRA_FILES | {
-    "docs/service-worker.js": (23479, "d5824f7055e9e28c585787f1d5e394390784796a15833466a3cab3c64c971da9"),
-    "docs/assets/service-worker.js": (23915, "0c20170b252a9925cc96c621ffd2a6a61edff6ddbae73d254862f809513d6225"),
+    "docs/service-worker.js": (23479, "fbaf34fa291db4b564447f3ab2973ab0cc8d888499647f494d33c907cdcd8c77"),
+    "docs/assets/service-worker.js": (23915, "ef26e24e1f8121fab9e6d0d7e060e163f2f8fd2692805fba9d52424371c6ab81"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26531,
-        "fe87290ffb614fe25979220cb7078d620ae57bbc1290f226d2f08a0ab612c0b0",
+        "19084de384bd92618dc3078f9b10e7f97a74207403026c3812751ab4f9107039",
     ),
 }
 
