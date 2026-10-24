@@ -16,6 +16,7 @@ from playwright.sync_api import Page, expect, sync_playwright
 
 def run_acceptance(entry: str, output: Path, expected: bytes, axe_script: Path) -> dict[str, Any]:
     """Require the complete browser-first workflow against the packaged guide."""
+    output = output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     checks: list[str] = []
     downloads: list[str] = []
@@ -73,7 +74,10 @@ def run_acceptance(entry: str, output: Path, expected: bytes, axe_script: Path) 
         checks.append("no-network-after-page-load")
 
         page.close()
-        context.set_offline(True)
+        context.close()
+        browser.close()
+        browser = playwright.chromium.launch()
+        context = browser.new_context(accept_downloads=True, viewport={"width": 1440, "height": 1100}, offline=True)
         offline = context.new_page()
         offline.goto((output / "sample-workspace.html").as_uri())
         expect(offline.locator("#step-title")).to_have_text("Use the result.")
