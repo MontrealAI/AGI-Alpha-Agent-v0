@@ -180,7 +180,7 @@ test('a failed stop keeps busy guards and resumes observation without claiming a
     assert.equal(page.element('restore').disabled, false);
     assert.equal(page.pending(), 0);
     assert.equal(page.requests[1].url, '/api/stop');
-    assert.equal(page.requests[2].url, '/api/status');
+    assert.equal(page.requests[2]?.url, '/api/status');
   } finally { page.cleanup(); }
 });
 
@@ -200,4 +200,77 @@ test('restore stays guarded during observation and keeps historical proof and au
     assert.match(page.element('restore-status').textContent, /historical evidence.*proof and authority are empty/i);
     assert.equal(page.element('export').disabled, false);
   } finally { page.cleanup(); }
+});
+
+test('a rejected run reconciles server ownership before releasing busy guards', async () => {
+  for (const failure of [
+    () => response({ error: 'CONTROLLED_OTHER_TAB_OWNS_RUN' }, 409),
+    () => { throw Error('CONTROLLED_RUN_RESPONSE_LOST'); },
+  ]) {
+    const waiting = deferred();
+    const page = await fixture([status(false), failure, () => waiting.promise, status(true), status(false)]);
+    try {
+      const running = page.element('run').onclick(); await flush();
+      assert.equal(page.requests[1].url, '/api/run');
+      assert.equal(page.requests[2]?.url, '/api/status');
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.element('restore').disabled, true);
+      assert.equal(page.element('stop-run').disabled, false);
+      assert.equal(page.pending(), 0);
+      waiting.resolve(response(status(true))); await running;
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.element('restore').disabled, true);
+      assert.equal(page.pending(), 1); await page.poll();
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.pending(), 1); await page.poll();
+      assert.equal(page.element('run').disabled, false);
+      assert.equal(page.element('restore').disabled, false);
+      assert.equal(page.element('stop-run').disabled, true);
+      assert.equal(page.element('export').disabled, true);
+      assert.doesNotMatch(page.element('connection').textContent, /completed/i);
+      assert.equal(page.pending(), 0);
+    } finally { waiting.resolve(response(status(false))); await flush(); page.cleanup(); }
+  }
+});
+
+test('failed reconciliation after a rejected run retains guards and retry until verified idle', async () => {
+  for (const failure of [
+    () => { throw Error('CONTROLLED_RECONCILIATION_NETWORK_FAILURE'); },
+    () => response({ error: 'CONTROLLED_RECONCILIATION_HTTP_FAILURE' }, 503),
+    { local: true, token: 'CONTROLLED_TEST_ONLY_TOKEN' },
+  ]) {
+    const page = await fixture([status(false), () => response({ error: 'CONTROLLED_OTHER_TAB_OWNS_RUN' }, 409), failure, status(false)]);
+    try {
+      await page.element('run').onclick();
+      assert.equal(page.requests[2]?.url, '/api/status');
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.element('restore').disabled, true);
+      assert.equal(page.element('stop-run').disabled, false);
+      assert.match(page.element('connection').textContent, /may still be running/i);
+      page.element('language').onclick();
+      assert.match(page.element('connection').textContent, /serveur est peut-être toujours actif/i);
+      assert.equal(page.pending(), 1); await page.poll();
+      assert.equal(page.element('run').disabled, false);
+      assert.equal(page.element('restore').disabled, false);
+      assert.equal(page.pending(), 0);
+      assert.doesNotMatch(page.element('connection').textContent, /CONTROLLED_RECONCILIATION/);
+    } finally { page.cleanup(); }
+  }
+});
+
+test('stop fences an in-flight reconciliation after a rejected run', async () => {
+  const waiting = deferred();
+  const page = await fixture([status(false), () => response({ error: 'CONTROLLED_OTHER_TAB_OWNS_RUN' }, 409), () => waiting.promise, { stopped: true }]);
+  try {
+    const running = page.element('run').onclick(); await flush();
+    assert.equal(page.requests[2]?.url, '/api/status');
+    await page.element('stop-run').onclick();
+    assert.equal(page.requests[2].options.signal.aborted, true);
+    assert.equal(page.requests[3].url, '/api/stop');
+    waiting.resolve(response(status(true))); await running; await flush();
+    assert.equal(page.element('run').disabled, false);
+    assert.equal(page.element('restore').disabled, false);
+    assert.match(page.element('connection').textContent, /run stopped/i);
+    assert.equal(page.pending(), 0);
+  } finally { waiting.resolve(response(status(false))); await flush(); page.cleanup(); }
 });
