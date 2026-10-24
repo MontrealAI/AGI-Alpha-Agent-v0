@@ -167,7 +167,9 @@ def study_request(spec: PolicyStudy, unit: CampaignUnit, policy: DiscoveryPolicy
     return DiscoveryRequest.model_validate(request)
 
 
-def validate_child_lease(parent: dict[str, Any], request: DiscoveryRequest) -> None:
+def validate_child_lease(
+    parent: dict[str, Any], request: DiscoveryRequest, *, journal: Journal | None = None, cx: Any = None
+) -> None:
     """A parent lease covers only its exact planned child, inputs and allowances."""
     phase = request.configuration["ti_parent_phase"]
     plans = [item for item in parent[phase]["planned_campaigns"] if item["campaign_id"] == request.campaign_id]
@@ -183,8 +185,11 @@ def validate_child_lease(parent: dict[str, Any], request: DiscoveryRequest) -> N
     if request != expected:
         raise Conflict("parent study lease cannot change its child's purpose, inputs, code or budget")
     if parent.get("operation"):
-        from .campaign_operation import validate_child
+        from .campaign_operation import validate_authority, validate_child
 
+        if journal is None or cx is None or not cx.in_transaction:
+            raise Conflict("operation child requires authority validation in its own transaction")
+        validate_authority(journal, parent, cx)
         validate_child(parent, request)
 
 
@@ -370,6 +375,10 @@ class CampaignExperiment:
         with self.journal.transaction() as cx:
             record = self.journal.latest(self._key(study_id), cx)
             spec = self._ready(record, cx)
+            if record.get("operation"):
+                from .campaign_operation import validate_batch
+
+                validate_batch(self.journal, record, units, phase, cx)
             if any(unit.request.charter != spec.charter for unit in units):
                 raise PermissionError("campaign changed the authorized study purpose, permissions or budget")
             input_digest = digest("study-units", units)

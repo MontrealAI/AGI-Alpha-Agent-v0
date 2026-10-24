@@ -218,3 +218,76 @@ def test_repeated_process_death_consumes_finite_attempt_allowance(tmp_path, monk
     assert stopped["failure"]["type"] == "AttemptBudgetExhausted"
     assert len(stopped["attempts"]) == spec.max_attempts
     assert operation.status(spec.operation_id)["needs_attention"] is True
+
+
+@pytest.mark.parametrize("entry", ["approve", "step"])
+@pytest.mark.parametrize("invalid", ["expiry", "restored-home"])
+def test_base_loop_entry_points_recheck_operation_permit(tmp_path, monkeypatch, entry, invalid):
+    from alpha_factory_v1.core.runtime.successor.transformation import DiscoveryLoop
+
+    operation, spec, clock = setup(tmp_path, monkeypatch)
+
+    def die(*args, **kwargs):
+        raise SystemExit("interrupted with a queued approved native child")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(DiscoveryLoop, "step", die)
+        with pytest.raises(SystemExit):
+            operation.advance(spec.operation_id)
+    parent = operation.experiment.show(spec.study.study_id)
+    child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+    journal = operation.journal
+    if invalid == "expiry":
+        clock[0] = operation.show(spec.operation_id)["expires_ms"]
+    else:
+        backup = tmp_path / "boundary.zip"
+        journal.backup(backup)
+        journal = Journal.restore(backup, tmp_path / "elsewhere")
+    base = DiscoveryLoop(journal)
+    child = base.show(child_id)
+    with pytest.raises(Conflict):
+        if entry == "approve":
+            base.approve(child_id, child["binding_digest"])
+        else:
+            base.step(child_id, operation_id="stale-base-entry")
+    assert base.show(child_id)["digest"] == child["digest"]
+
+
+def test_base_study_cannot_replace_operation_batch_after_pre_reservation_crash(tmp_path, monkeypatch):
+    from alpha_factory_v1.core.runtime.successor.campaign_experiment import CampaignUnit
+
+    operation, spec, clock = setup(tmp_path, monkeypatch)
+
+    def die(*args, **kwargs):
+        raise SystemExit("interrupted after assigning due child, before reserving inputs")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(operation.experiment, "_reserve", die)
+        with pytest.raises(SystemExit):
+            operation.advance(spec.operation_id)
+    raw = spec.training[0].unit.model_dump()
+    raw["request"]["development"][0]["claims"][0]["text"] = "Substituted outside the approved submitted operation."
+    with pytest.raises(Conflict, match="submitted|approved"):
+        operation.experiment.train(spec.study.study_id, [CampaignUnit.model_validate(raw)])
+    assert operation.experiment.show(spec.study.study_id)["training"] is None
+
+
+def test_reconcile_committed_child_on_final_allowed_attempt(tmp_path, monkeypatch):
+    operation, spec, clock = setup(tmp_path, monkeypatch, max_attempts=1)
+    original = operation.experiment._campaign
+    committed = []
+
+    def die(*args):
+        result = original(*args)
+        committed.append(operation.experiment.loop.show(result["campaign_id"]))
+        raise SystemExit("last-attempt committed child; parent not attached")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(operation.experiment, "_campaign", die)
+        with pytest.raises(SystemExit):
+            operation.advance(spec.operation_id)
+    restarted = CampaignOperation(Journal(operation.journal.root))
+    restarted.advance(spec.operation_id)
+    assert restarted.show(spec.operation_id)["state"] == "running"
+    assert restarted.experiment.loop.show(committed[0]["request"]["campaign_id"])["digest"] == committed[0]["digest"]
+    assert len(restarted.experiment.show(spec.study.study_id)["training"]["runs"]) == 1

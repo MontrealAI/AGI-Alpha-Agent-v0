@@ -191,6 +191,15 @@ def validate_child(parent: dict[str, Any], request: Any) -> None:
         raise Conflict("child is not the due operation mission")
 
 
+def validate_batch(journal: Journal, parent: dict[str, Any], units: list[CampaignUnit], phase: str, cx: Any) -> None:
+    """Bind every reservation entry point to the approved submitted arrival commitments."""
+    record = validate_authority(journal, parent, cx)
+    expected = [(item["unit_id"], item["input_digest"]) for item in record["spec"][phase]]
+    actual = [(unit.unit_id, digest("operation-unit", unit)) for unit in units]
+    if actual != expected:
+        raise Conflict("reserved batch differs from the approved submitted operation inputs")
+
+
 class CampaignOperation:
     """Drive preapproved existing phases; no second queue, generated code or production cutover."""
 
@@ -327,12 +336,22 @@ class CampaignOperation:
             self.experiment._ready(parent, cx)
             data = Journal.document(record)
             attempts = [
-                attempt for attempt in data["attempts"] if attempt["child"] == child and attempt["phase"] == phase
+                attempt
+                for attempt in data["attempts"]
+                if attempt["child"] == child
+                and attempt["phase"] == phase
+                and attempt.get("kind", "execute") != "reconcile"
             ]
             for attempt in attempts:
                 if attempt["state"] == "running":
                     attempt["state"], attempt["unmeasured_crash_work"] = "interrupted", True
-            if len(attempts) >= spec.max_attempts:
+            reconcile = False
+            if child:
+                try:
+                    reconcile = self.experiment.loop.show(child)["state"] == "completed"
+                except KeyError:
+                    pass
+            if not reconcile and len(attempts) >= spec.max_attempts:
                 data["state"] = "hold"
                 data["failure"] = {
                     "type": "AttemptBudgetExhausted",
@@ -340,7 +359,15 @@ class CampaignOperation:
                     "action": "inspect retained attempts; new approval required",
                 }
                 return self.journal.append(cx, KEY + operation_id, data)
-            data["attempts"].append({"phase": phase, "child": child, "state": "running", "started_ms": _now()})
+            data["attempts"].append(
+                {
+                    "phase": phase,
+                    "child": child,
+                    "state": "running",
+                    "started_ms": _now(),
+                    "kind": "reconcile" if reconcile else "execute",
+                }
+            )
             record = self.journal.append(cx, KEY + operation_id, data)
             parent_data = Journal.document(parent)
             parent_data["operation"].update(child=child, due_ms=due)
