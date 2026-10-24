@@ -3,7 +3,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.42.0
+## Current runnable path — 1.43.0
 
 **Mode:** Supplied-input planning. Reviews supplied observations and selects an exact effort-bounded portfolio of proposed work.
 

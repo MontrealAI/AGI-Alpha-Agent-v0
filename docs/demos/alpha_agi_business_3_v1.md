@@ -9,7 +9,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.42.0
+## Current runnable path — 1.43.0
 
 **Mode:** Reproducible planning. Select a constrained enterprise portfolio, stress the downside,
 and export reviewable Ascension jobs.

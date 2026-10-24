@@ -6,7 +6,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.42.0
+## Current runnable path — 1.43.0
 
 **Mode:** Reference. Preserved slide deck and PDF for the original demo vision.
 

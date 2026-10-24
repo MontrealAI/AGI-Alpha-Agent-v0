@@ -2,6 +2,9 @@
 
 [Research disclaimer](../DISCLAIMER_SNIPPET.md)
 
+For a finite recurring native source-analysis campaign, see
+[Operate a bounded source-analysis campaign](SUCCESSOR_SOURCE_OPERATION.md).
+
 ## Develop a capability, not just a task
 
 [Open the additive capability workshop](../successor/capabilities/index.html) to describe an unmet problem family,

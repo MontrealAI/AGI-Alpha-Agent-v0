@@ -1,0 +1,24 @@
+{
+  "schema": "source-operation-qualification-plan/v1",
+  "created_utc": "2026-10-24T19:12:50.959729+00:00",
+  "workloads_sha256": {
+    "continuous.json": "c8ff58519f19a4166dd7b306a5f2da5c0b98c56795b4fb8fd5a39b86e909b839",
+    "active-stop.json": "2929c215c39cdb0c58285336e8cba0ddd445d3563e98f974cef3abd555797f8e",
+    "load-4.json": "4a9f8ef17da5e093ec1ccebe4139d02a8eec1ebaab744c03a48dab528e00f68a",
+    "load-8.json": "15bce87e13935d9aecab14771b9b118bc606f860790d940b3abf8a831581f53a",
+    "load-10.json": "db1b0f9b1ccb65c9a3b1d657f6a8fe239629f6799d84c8706fd278ed57a9a2be",
+    "deadline-10.json": "f98f78904a4789fefb2d2b10112a9e28174c6cdb7a3db2bd090cf7c60754f666"
+  },
+  "runtime_sources": {
+    "alpha_factory_v1.core.runtime.successor.campaign_operation": "2e5455df23a7c786e6cdae6f275331219cdfc570f08bad1d6e15da892afa3988",
+    "alpha_factory_v1.core.runtime.successor.campaign_experiment": "bae3c0567837ff57ac0e713f80ed8c43c975aebb3b2fb3c5b22b371d1b30ecf0",
+    "alpha_factory_v1.core.runtime.successor.transformation": "47cda31b6e8d50f469e73bdc3470758c8b786746dd2dce40812ce6006d33456e"
+  },
+  "maximum_campaign_seconds": 60,
+  "workload_fixed_before_execution": true,
+  "fault": "SIGKILL after first retained confirmation child, otherwise first training child; before parent attachment; one unchanged CLI restart",
+  "stop": "permanent operation-stop during first child handoff; stale handoff must fail",
+  "load": "4, 8 and 10 whole units, three policies, concurrency one; separate 1-second 10-unit deadline case",
+  "claim": "Public-paper example plus changed synthetic graphs when retained artifacts are enabled; otherwise synthetic mechanism only. Same operator; no independent custody or commercial outcome.",
+  "human_effort": "Setup/engineering/review minutes unmeasured; fault controller and restart disclosed."
+}

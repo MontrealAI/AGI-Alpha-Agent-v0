@@ -1,3 +1,11 @@
+## 1.43.0 — Finite recurring source studies (source candidate)
+
+- Continue the existing source-study runtime with bounded timed arrivals, exact authorization, durable history and Stop/recovery.
+- Trial retained closed executable programs on fresh changed inputs with equal conventional artifact access and incumbent retention.
+- Preserve failed campaigns, rejected candidates and unknown costs; equal conventional reuse ties, so growth and acceleration are not established.
+- Compose published 1.42 and preferred Edition 02 without overwriting prior releases or adopting held Harness/Fleet paths.
+- Require fresh final-source qualification and actual public package installation; see [release notes](docs/agent/RELEASE_NOTES_1.43.0.md).
+
 ## 1.42.0 — Two lists. A clear next step.
 
 - Add a no-setup browser-first catalogue guide using the released comparison and grouping machinery.

@@ -33,6 +33,22 @@ def test_historical_document_lists_are_unchanged(version: str, digest: str) -> N
     assert hashlib.sha256(encoded).hexdigest() == digest
 
 
+def test_source_operation_documents_start_at_their_first_release() -> None:
+    introduced = (
+        "docs/agent/SUCCESSOR_SOURCE_OPERATION.md",
+        "docs/agent/FLYWHEEL_COMPATIBILITY.json",
+        "docs/agent/FLYWHEEL_CAPABILITIES.json",
+    )
+    previous = packaging.release_documents("1.42.0")
+    current = packaging.release_documents("1.43.0")
+    assert not set(introduced).intersection(previous)
+    assert current[-3:] == introduced
+    assert len(current) == len(set(current))
+    assert set(current) - {"docs/agent/RELEASE_NOTES_1.43.0.md"} == (
+        set(previous) - {"docs/agent/RELEASE_NOTES_1.42.0.md"}
+    ) | set(introduced)
+
+
 def test_new_guide_set_covers_the_complete_operating_documents_without_name_collisions() -> None:
     expected = {path.relative_to(ROOT).as_posix() for path in (ROOT / "docs/discovery-lab").iterdir() if path.is_file()}
     expected.update({"examples/successor-capability/README.md", "examples/successor-capability/out-execute/README.md"})

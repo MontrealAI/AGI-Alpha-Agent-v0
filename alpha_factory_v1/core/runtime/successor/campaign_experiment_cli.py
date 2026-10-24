@@ -37,14 +37,58 @@ def add_commands(commands: Any) -> None:
     for name in ("show", "export", "pause", "resume", "cancel"):
         action = actions.add_parser(name, help="Inspect or control the durable study")
         action.add_argument("study_id")
+    sample = actions.add_parser("operation-example", help="Write a finite synthetic source-operation envelope")
+    sample.add_argument(
+        "--retained-artifacts",
+        action="store_true",
+        help="Trial a retained program with equally enabled conventional reuse",
+    )
+    start = actions.add_parser("operation-start", help="Approve and run one exact bounded source operation")
+    start.add_argument("spec", type=Path)
+    for name in ("run", "status", "export", "stop"):
+        action = actions.add_parser(
+            "operation-" + name, help="Run, inspect, export or permanently stop the existing operation"
+        )
+        action.add_argument("operation_id")
 
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
     """Retain full evidence without granting promotion, payment or execution authority."""
     if args.output.exists() or args.output.is_symlink():
         raise FileExistsError("choose a new output path; existing evidence is never replaced")
-    experiment = CampaignExperiment(Journal(args.home))
     action = args.study_action
+    if action.startswith("operation-"):
+        from .campaign_operation import CampaignOperation, OperationSpec, example
+
+        if action == "operation-example":
+            result = example(retained_artifacts=args.retained_artifacts).model_dump()
+        else:
+            operation = CampaignOperation(Journal(args.home))
+            if action == "operation-start":
+                proposed = OperationSpec.model_validate(read_document(args.spec))
+                operation.start(proposed)
+                result = operation.run(proposed.operation_id)
+            elif action == "operation-run":
+                result = operation.run(args.operation_id)
+            elif action == "operation-status":
+                result = operation.status(args.operation_id)
+            elif action == "operation-export":
+                result = operation.export(args.operation_id)
+            else:
+                result = operation.stop(args.operation_id)
+        private_write(args.output, canonical(result))
+        if action == "operation-example":
+            return {
+                "output": str(args.output.resolve()),
+                "operation_id": result["operation_id"],
+                "next": "Review the finite envelope, then use operation-start with this file.",
+            }
+        return (
+            {"output": str(args.output.resolve()), **result}
+            if action != "operation-export"
+            else {"output": str(args.output.resolve()), "active_authority": []}
+        )
+    experiment = CampaignExperiment(Journal(args.home))
     if action == "create":
         result = experiment.create(PolicyStudy.model_validate(read_document(args.spec)))
     elif action == "approve":

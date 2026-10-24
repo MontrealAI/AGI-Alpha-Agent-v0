@@ -27,6 +27,10 @@ For command discovery, use `alpha-agent successor-help --language en` (or `fr`),
 
 ## One-command native mission
 
+For timed recurring source work, use the [source-operation guide](SUCCESSOR_SOURCE_OPERATION.md).
+It drives the existing maintained study queue with bounded arrivals, STOP and restart reconciliation.
+Its local scope remains separate from the preserved research scheduler and held enterprise/Fleet integration.
+
 ```sh
 alpha-agent --home ./successor-state successor-demo --output ./successor-evidence
 ```
