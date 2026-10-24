@@ -49,7 +49,7 @@ jobs:
         run: |
           python -m unittest discover -s tests -p test_writer4_http_reuse.py
           python scripts/reuse_writer4_http.py
-      - name: Run unchanged full companion HTTP QA
+      - name: Run full companion HTTP QA
         if: steps.reuse.outputs.reused != 'true'
         env:
           TAE_EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}

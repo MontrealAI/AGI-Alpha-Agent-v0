@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""CI orchestration for the unchanged Writer4 full HTTP QA, not a new browser test."""
+"""CI orchestration for the Writer4 derived-copy full HTTP QA."""
 
 from __future__ import annotations
 
@@ -87,7 +87,7 @@ def main() -> int:
         if toolchain["node"] != "v24.19.0":
             raise RuntimeError("The documented Node24.19.0 QA context is required")
         shutil.copytree(source, bundle)
-        # Reuse checkout-contained, checksum-bound parts and eight corrections.
+        # Use checkout-contained, checksum-bound parts and declared corrections.
         # No --download fallback or branch-selected replacement archive is used.
         run("assemble", [sys.executable, "ASSEMBLE.py"], bundle)
         run("extract", [sys.executable, "-m", "zipfile", "-e", "Successor_Omega_Harness_Companion.zip", "."], bundle)
@@ -278,7 +278,7 @@ def main() -> int:
             "toolchain": toolchain,
             "httpServedSourceBytes": served,
             "originalArchiveSha256": "a622657df828aefb4a081d1e0f5d1fb665fcf69991383245b6ece7cb66bee7ee",
-            "scope": "Existing full HTTP QA and focused overlay/UI controls on corrected v7 research copy; source APIs/disposable local EVM. "
+            "scope": "Full HTTP QA and focused overlay/UI controls on the current derived research copy; source APIs/disposable local EVM. "
             "No installed four-release, held native-host, economic-value or production settlement claim.",
             "omittedOriginalFourQualified": False,
             "priorDeniedObjectivesAttempted": False,
