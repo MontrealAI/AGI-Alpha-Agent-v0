@@ -1,0 +1,531 @@
+{
+  "schema": "bloom-post-study-economics/v1",
+  "generated_at_utc": "2026-10-24T02:25:26.237Z",
+  "freeze_manifest_sha256": "ecd3df2706d034d17a1441c62fd4dba0c7c92f5ea4d22327011bf5e1116bcfbe",
+  "classification": "Derived reporting; frozen science/analysis unchanged",
+  "recorded_compute": {
+    "campaign_cpu_ns": 47887703197,
+    "native_cpu_ns": 6198259305,
+    "early_summary_cpu_ns": 180152431,
+    "documented_cpu_subtotal_ns": 54266114933,
+    "campaign_wall_ns": 47924352542,
+    "native_wall_ns": 6499445446,
+    "early_wall_ns": null,
+    "external_audit_cpu_ns_included": 5383102129,
+    "replacement_cpu_ns_included": 225669263,
+    "operational_trial_cpu_ns_included": 36964895993
+  },
+  "campaigns": [
+    {
+      "id": "development_v2_smoke",
+      "source": "development/v2-smoke/campaign.json",
+      "cpu_ns": 470741244,
+      "wall_ns": 470760539,
+      "audit_cpu_ns": 39546477,
+      "replacement_cpu_ns": 2772467,
+      "operational_trial_cpu_ns": 376137997,
+      "residual_cpu_ns": 52284303,
+      "trials": 106,
+      "worlds": 2,
+      "fresh_scientific_worlds": 0
+    },
+    {
+      "id": "development_v2_rest",
+      "source": "development/v2-rest/campaign.json",
+      "cpu_ns": 3372391890,
+      "wall_ns": 3396263075,
+      "audit_cpu_ns": 423475748,
+      "replacement_cpu_ns": 25185202,
+      "operational_trial_cpu_ns": 2520525352,
+      "residual_cpu_ns": 403205588,
+      "trials": 530,
+      "worlds": 10,
+      "fresh_scientific_worlds": 0
+    },
+    {
+      "id": "confirmation",
+      "source": "results/confirmation/campaign.json",
+      "cpu_ns": 14703954967,
+      "wall_ns": 14705404093,
+      "audit_cpu_ns": 1588246344,
+      "replacement_cpu_ns": 65621510,
+      "operational_trial_cpu_ns": 11345963607,
+      "residual_cpu_ns": 1704123506,
+      "trials": 2544,
+      "worlds": 48,
+      "fresh_scientific_worlds": 48
+    },
+    {
+      "id": "fresh_reproduction",
+      "source": "results/reproduction/campaign.json",
+      "cpu_ns": 8109308537,
+      "wall_ns": 8114178006,
+      "audit_cpu_ns": 793962055,
+      "replacement_cpu_ns": 39669165,
+      "operational_trial_cpu_ns": 6439896230,
+      "residual_cpu_ns": 835781087,
+      "trials": 1272,
+      "worlds": 24,
+      "fresh_scientific_worlds": 24
+    },
+    {
+      "id": "confirmation_replay",
+      "source": "results/confirmation_replay/campaign.json",
+      "cpu_ns": 21231306559,
+      "wall_ns": 21237746829,
+      "audit_cpu_ns": 2537871505,
+      "replacement_cpu_ns": 92420919,
+      "operational_trial_cpu_ns": 16282372807,
+      "residual_cpu_ns": 2318641328,
+      "trials": 2544,
+      "worlds": 48,
+      "fresh_scientific_worlds": 0
+    }
+  ],
+  "native_runs": [
+    {
+      "id": "integration_smoke_initial",
+      "source": "integration/smoke/native/native_workflow_receipt.json",
+      "cpu_ns": 1168108906,
+      "wall_ns": 1258478048,
+      "created_at": "2026-10-24T01:48:02Z",
+      "status": "completed",
+      "cost_scope": "Includes source checks, journal setup, dispatch, callbacks, local acceptance, backup and restoration; excludes final receipt serialization and caller work."
+    },
+    {
+      "id": "integration_smoke_verified",
+      "source": "integration/smoke/native-verified/native_workflow_receipt.json",
+      "cpu_ns": 1294671288,
+      "wall_ns": 1362835411,
+      "created_at": "2026-10-24T01:50:25Z",
+      "status": "completed",
+      "cost_scope": "Includes source checks, journal setup, dispatch, callbacks, local acceptance, backup and restoration; excludes final receipt serialization and caller work."
+    },
+    {
+      "id": "integration_smoke_final",
+      "source": "integration/smoke/native-final/native_workflow_receipt.json",
+      "cpu_ns": 1423016531,
+      "wall_ns": 1499726943,
+      "created_at": "2026-10-24T01:51:51Z",
+      "status": "completed",
+      "cost_scope": "Includes source checks, journal setup, dispatch, callbacks, local acceptance, backup and restoration; excludes final receipt serialization and caller work."
+    },
+    {
+      "id": "development_native_demo",
+      "source": "development/native-demo-v1/native/native_workflow_receipt.json",
+      "cpu_ns": 1184735042,
+      "wall_ns": 1250685545,
+      "created_at": "2026-10-24T01:58:03Z",
+      "status": "completed",
+      "cost_scope": "Includes source checks, journal setup, dispatch, callbacks, local acceptance, backup and restoration; excludes final receipt serialization and caller work."
+    },
+    {
+      "id": "public_manifest_native_demo",
+      "source": "results/public-demo/native/native_workflow_receipt.json",
+      "cpu_ns": 1127727538,
+      "wall_ns": 1127719499,
+      "created_at": "2026-10-24T02:06:39Z",
+      "status": "completed",
+      "cost_scope": "Includes source checks, journal setup, dispatch, callbacks, local acceptance, backup and restoration; excludes final receipt serialization and caller work."
+    }
+  ],
+  "initial_development": {
+    "classification": "development-only; no confirmation opened",
+    "seed": 101,
+    "command": "run_trial(make_case(101),method) for bloom,expert,reverse",
+    "exit_code": 0,
+    "observations": [
+      {
+        "method": "bloom",
+        "status": "COMPLETED",
+        "strategy": "scc",
+        "cpu_ms": 52.615608
+      },
+      {
+        "method": "expert",
+        "status": "COMPLETED",
+        "strategy": "scc",
+        "cpu_ms": 50.50838
+      },
+      {
+        "method": "reverse",
+        "status": "COMPLETED",
+        "strategy": "reverse",
+        "cpu_ms": 77.028443
+      }
+    ],
+    "retention_limit": "First three engineering calls retained console outputs but did not serialize full raw return values. Exact source/generator/reference are preserved here. No unretained values are represented as original raw records.",
+    "action": "Optimize common independent coverage checker before freeze; maintain its exact exhaustive semantics. Record every subsequent call fully."
+  },
+  "scientific_sampling": {
+    "confirmation_worlds": 48,
+    "reproduction_worlds": 24,
+    "fresh_scientific_worlds": 72,
+    "fresh_trials": 3816,
+    "replay_worlds_repeated": 48,
+    "replay_trials": 2544,
+    "development_worlds": 12,
+    "development_v2_trials": 636,
+    "development_v1_retained_calls": 3
+  },
+  "phase_sums": {
+    "construction": {
+      "cpu_ns": 2227983203,
+      "wall_ns": 2233290038,
+      "calls": 10354
+    },
+    "export": {
+      "cpu_ns": 332850660,
+      "wall_ns": 335169917,
+      "calls": 6996
+    },
+    "impact_execution": {
+      "cpu_ns": 1815311934,
+      "wall_ns": 1818930835,
+      "calls": 6204
+    },
+    "input_validation": {
+      "cpu_ns": 672046773,
+      "wall_ns": 673425181,
+      "calls": 6600
+    },
+    "parse": {
+      "cpu_ns": 2197929719,
+      "wall_ns": 2206559335,
+      "calls": 10164
+    },
+    "producer_qualification": {
+      "cpu_ns": 5638421455,
+      "wall_ns": 5645569180,
+      "calls": 6996
+    },
+    "receiver_revalidation": {
+      "cpu_ns": 5575263777,
+      "wall_ns": 5583860189,
+      "calls": 7656
+    },
+    "restore": {
+      "cpu_ns": 409454386,
+      "wall_ns": 411802623,
+      "calls": 6996
+    },
+    "result_checking": {
+      "cpu_ns": 7214527172,
+      "wall_ns": 7228341655,
+      "calls": 38652
+    },
+    "selection": {
+      "cpu_ns": 260313721,
+      "wall_ns": 263567312,
+      "calls": 6732
+    },
+    "serialization": {
+      "cpu_ns": 530135632,
+      "wall_ns": 531571843,
+      "calls": 10354
+    },
+    "successor_construction": {
+      "cpu_ns": 2242109418,
+      "wall_ns": 2248708072,
+      "calls": 6204
+    },
+    "replacement_export": {
+      "cpu_ns": 16216359,
+      "wall_ns": 16284257,
+      "calls": 396
+    },
+    "replacement_restore": {
+      "cpu_ns": 14479697,
+      "wall_ns": 14576870,
+      "calls": 396
+    }
+  },
+  "software_counters": {
+    "bit_operations": 3246100,
+    "closed_edges_checked": 673372,
+    "constructions": 10354,
+    "cover_transitions": 1871133,
+    "edge_reads": 6600937,
+    "failed_constructions": 190,
+    "node_visits": 2934634,
+    "verifier_edge_visits": 6944132,
+    "verifier_node_visits": 2912266,
+    "witness_cells_checked": 2012100
+  },
+  "public_source_acquisitions": {
+    "files": 3,
+    "bytes": 1779145,
+    "graph_files": 2,
+    "graph_bytes": 553950,
+    "total_request_count": null
+  },
+  "oracle": {
+    "confirmation": {
+      "worlds": 48,
+      "oracle_mean_cpu_seconds": 0.00407313525,
+      "bloom_over_oracle_geometric_mean_ratio": 0.9983419580340775,
+      "expert_min_worlds": 25,
+      "reverse_min_worlds": 23,
+      "oracle_minus_bloom_mean_cpu_seconds": -0.000013174999999999819,
+      "oracle_ns_by_world": [
+        3171741,
+        3032281,
+        3573918,
+        3785707,
+        3648464,
+        4292121,
+        4421660,
+        4308903,
+        4795387,
+        5047078,
+        5594103,
+        6206054,
+        3006155,
+        2933312,
+        3686039,
+        3601123,
+        4065698,
+        4119176,
+        4237526,
+        4287666,
+        4853620,
+        5131996,
+        6052260,
+        6221731,
+        2955606,
+        3223684,
+        3503833,
+        3740816,
+        3316788,
+        3924213,
+        3805355,
+        4400233,
+        4454173,
+        4893936,
+        4478559,
+        5002242,
+        2833692,
+        3462409,
+        3449628,
+        2956227,
+        3289895,
+        3695138,
+        3323819,
+        3751360,
+        4356627,
+        4075267,
+        4066812,
+        4476461
+      ],
+      "classification": "Post-study descriptive completion of a preregistered reporting item; no new interval or hypothesis test. Hindsight minimum is not executable selection; its selection cost is unknown."
+    },
+    "fresh_reproduction": {
+      "worlds": 24,
+      "oracle_mean_cpu_seconds": 0.004497706416666667,
+      "bloom_over_oracle_geometric_mean_ratio": 1.0377667853966341,
+      "expert_min_worlds": 12,
+      "reverse_min_worlds": 12,
+      "oracle_minus_bloom_mean_cpu_seconds": -0.0002016133749999996,
+      "oracle_ns_by_world": [
+        3349535,
+        3486679,
+        3585275,
+        5679119,
+        5472309,
+        6007670,
+        3362377,
+        3380429,
+        4005459,
+        6024257,
+        6591725,
+        6658457,
+        2933063,
+        3090198,
+        3555595,
+        5262497,
+        5356157,
+        5535977,
+        4386091,
+        2731214,
+        3356062,
+        4627981,
+        4312716,
+        5194112
+      ],
+      "classification": "Post-study descriptive completion of a preregistered reporting item; no new interval or hypothesis test. Hindsight minimum is not executable selection; its selection cost is unknown."
+    },
+    "confirmation_replay": {
+      "worlds": 48,
+      "oracle_mean_cpu_seconds": 0.005977289479166667,
+      "bloom_over_oracle_geometric_mean_ratio": 1.0075666018021736,
+      "expert_min_worlds": 28,
+      "reverse_min_worlds": 20,
+      "oracle_minus_bloom_mean_cpu_seconds": -0.00004336845833333332,
+      "oracle_ns_by_world": [
+        5305016,
+        6272384,
+        6266600,
+        6582774,
+        6757620,
+        7653796,
+        8123777,
+        7999458,
+        8453519,
+        9105168,
+        9471001,
+        10279593,
+        5302149,
+        5689235,
+        6284685,
+        6633063,
+        6813862,
+        7297444,
+        7645408,
+        7810064,
+        8364997,
+        9528985,
+        9717007,
+        10068269,
+        4813225,
+        5284995,
+        5786351,
+        5980181,
+        6329574,
+        7110890,
+        6729464,
+        4028631,
+        3985577,
+        4007019,
+        4785805,
+        4976607,
+        2368768,
+        2877148,
+        3386225,
+        2751829,
+        2984678,
+        3384798,
+        3362437,
+        3145345,
+        4018474,
+        3611506,
+        3692482,
+        4082012
+      ],
+      "classification": "Post-study descriptive completion of a preregistered reporting item; no new interval or hypothesis test. Hindsight minimum is not executable selection; its selection cost is unknown."
+    }
+  },
+  "full_monetary_cost_complete": false,
+  "proven_commerce": false,
+  "actual_revenue_usd": 0,
+  "external_transactions": 0,
+  "firm_offers": 0,
+  "physical_detector_acquisitions": 0,
+  "independent_customer_acceptance": 0,
+  "ledger_rows": 629,
+  "source_files": {
+    "development/v2-smoke/campaign.json": {
+      "sha256": "1fec96318a3694186dea7293936908b8fb7b0aabe491711e8c91f47c0721cd86",
+      "bytes": 4012
+    },
+    "development/v2-smoke/records.jsonl.gz": {
+      "sha256": "60d2f765a77e473ee5c5ca45eceaace2843a4774cff91557352f38be5be59d06",
+      "bytes": 31881
+    },
+    "development/v2-rest/campaign.json": {
+      "sha256": "d73ee361aa0c0f3fff92c04e8c1fbbed338601317219fb1d8324c12b2636ee5d",
+      "bytes": 16133
+    },
+    "development/v2-rest/records.jsonl.gz": {
+      "sha256": "39aff3f26181454c8e56fcf64a5e3801521e9c0cea1653be63da4d3b82f04bf7",
+      "bytes": 193606
+    },
+    "results/confirmation/campaign.json": {
+      "sha256": "69a164c962c39d97f83bd5a739e15418bd470b250667538644dbe5ae787c2cb3",
+      "bytes": 75238
+    },
+    "results/confirmation/records.jsonl.gz": {
+      "sha256": "9266a79ed102de5734bc0ec21b6a2f42f58cb6ac7a94e0cf6993070994374ca8",
+      "bytes": 910047
+    },
+    "results/reproduction/campaign.json": {
+      "sha256": "d915f9e5a02b954ad043ebcb62fe4511eeda1ce0a99e0e40481a4e3dd9b67368",
+      "bytes": 38453
+    },
+    "results/reproduction/records.jsonl.gz": {
+      "sha256": "eb39dcf6f359d33210ec952aa0d70f4bb4cd5e0d85c8a0ff0270b04b0c853d6b",
+      "bytes": 453601
+    },
+    "results/confirmation_replay/campaign.json": {
+      "sha256": "08189627df395278e5a48fb6ddbf85933654a4a4315b5e25be971025fed64515",
+      "bytes": 75372
+    },
+    "results/confirmation_replay/records.jsonl.gz": {
+      "sha256": "bf51f680c2cf7e41c049a66c0f2a31d7b1f67e64a71d4342dfc331e36e63a8e8",
+      "bytes": 912929
+    },
+    "integration/smoke/native/native_workflow_receipt.json": {
+      "sha256": "d0e4ca968bc8c978a0d6abd1d67d8fba795f03043b28b7957064099a7eed6332",
+      "bytes": 6797
+    },
+    "integration/smoke/native-verified/native_workflow_receipt.json": {
+      "sha256": "73d919a40b5d8d401e065d7b64ccd10602f1fdca253444a77ed9f7cfa7a31040",
+      "bytes": 6818
+    },
+    "integration/smoke/native-final/native_workflow_receipt.json": {
+      "sha256": "f51676447ed7b19d9e2c9f4ef7006bf315cfdc0cd97202dc7a7300935ab2c6f4",
+      "bytes": 6820
+    },
+    "development/native-demo-v1/native/native_workflow_receipt.json": {
+      "sha256": "2d5ed623d8e33dc078832d2d30412608965364658ba2eadee711e1059b7e69de",
+      "bytes": 6830
+    },
+    "results/public-demo/native/native_workflow_receipt.json": {
+      "sha256": "4507c3c9522b8dd87332ac1e6f64a5c2bfd185523741d89cc2588b60e4343c7d",
+      "bytes": 6832
+    },
+    "development/v1/INITIAL_SMOKE.json": {
+      "sha256": "4798d0ebdd88cd9dd68c6abf377d06ca8b2f320d1d4931719a080a51e632a6f6",
+      "bytes": 792
+    },
+    "results/public-demo/summary.json": {
+      "sha256": "8a8319de7ee2fe739e90f0d9b9284cf9db294e591255f39a194a4dc95ab0fa22",
+      "bytes": 11841
+    },
+    "public_case/source_receipt.json": {
+      "sha256": "7eb222802f72f476307dc27cc583ec30decd063f47fe2c2898d1d4ca502c422c",
+      "bytes": 2731
+    },
+    "public_case/raw/alpha-web-package-lock.json": {
+      "sha256": "efaf9dbd949c5325c90156fe5658515fab3f80bfa18c759638c624c55cff9430",
+      "bytes": 444815
+    },
+    "public_case/raw/manager-package-lock.json": {
+      "sha256": "26e66d9b9ceeea702cac9f4cf1d01d67f73c0f6c0b4a3acba821b1cc12003987",
+      "bytes": 109135
+    },
+    "public_case/raw/jobs-package-lock.json": {
+      "sha256": "d0bf0d1bfe02919131b97cd9480265b6fe20ddbf0f1d9fd670b86c40674f7f62",
+      "bytes": 1225195
+    },
+    "results/confirmation/analysis.json": {
+      "sha256": "078ddf02375278c6fc077bc0f3aeaf1227f117f15704075727bd1d0bae98f69e",
+      "bytes": 21362
+    },
+    "results/reproduction/analysis.json": {
+      "sha256": "5cb59f3ab233ffe1d33269aa3ff4caf5475248332b3842a805c600d4c2b0db2e",
+      "bytes": 20637
+    },
+    "results/confirmation_replay/analysis.json": {
+      "sha256": "d0a6f616ed143181cdeadecff6c0796de8c7065bef7e66e2d01f9d1954ea1935",
+      "bytes": 21327
+    },
+    "protocol/FREEZE.json": {
+      "sha256": "ecd3df2706d034d17a1441c62fd4dba0c7c92f5ea4d22327011bf5e1116bcfbe",
+      "bytes": 4554
+    },
+    "protocol/PROTOCOL.md": {
+      "sha256": "41c363fafa89c387f941aca9338689443f1c5cf1eae705659fd88d818993e625",
+      "bytes": 17323
+    }
+  }
+}
