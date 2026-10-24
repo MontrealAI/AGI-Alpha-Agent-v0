@@ -86,6 +86,8 @@ def release_documents(version: str) -> tuple[str, ...]:
         "docs/agent/SUCCESSOR.md",
         "docs/agent/SUCCESSOR_OPERATIONS.md",
         "docs/agent/SUCCESSOR_SOURCE_OPERATION.md",
+        "docs/agent/FLYWHEEL_COMPATIBILITY.json",
+        "docs/agent/FLYWHEEL_CAPABILITIES.json",
         "docs/agent/SUCCESSOR_ACCEPTANCE.md",
         "docs/agent/SUCCESSOR_ASCENSION.md",
         "docs/agent/SUCCESSOR_SOURCES.json",

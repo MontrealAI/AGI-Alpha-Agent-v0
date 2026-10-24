@@ -6,6 +6,11 @@ The maintained `alpha-agent successor-study` path drives the existing `CampaignE
 fixed selectors and signed transactional Journal. The preserved `backend.agent_manager.AgentManager` research
 scheduler is separate; `ALPHA_CYCLE_SECONDS` does not start this operation. Original Harness/Fleet holds remain.
 
+Current integration candidate: **1.43.0**. It includes this operation after published 1.42; final-source
+review, exact-main qualification and actual public installation are still required. Consult the dated
+[compatibility matrix](FLYWHEEL_COMPATIBILITY.json) and [capability matrix](FLYWHEEL_CAPABILITIES.json).
+Unknown combinations are unqualified; no row grants authority or clears an original held action.
+
 ## Delivery and first run
 
 Inspected public base: Alpha **1.41.1**, commit `787bc547f8c44854931b316d7286b8bc9f9c8bba`, Python 3.11–3.13.

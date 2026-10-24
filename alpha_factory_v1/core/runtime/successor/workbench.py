@@ -34,7 +34,9 @@ WORKER = Path(__file__).with_name("workbench_worker.mjs")
 
 def freeze(journal: Journal, spec: dict[str, Any], run_id: str) -> dict[str, Any]:
     """Register this work method in the existing lifecycle without granting proof or operation."""
-    trust, _ = retained_local_principals(journal.root / "workbench-principals")
+    # First-use workers must wait for the same complete local role inventory.
+    with journal.transaction():
+        trust, _ = retained_local_principals(journal.root / "workbench-principals")
     store = SuccessorStore(journal, trust)
     institution_id = "work-" + run_id
     spec_digest = digest("workbench-request", spec)

@@ -1,4 +1,16 @@
 <!-- current-entrypoints -->
+# Two lists. A clear next step.
+
+**[Try it now →](https://montrealai.github.io/AGI-Alpha-Agent-v0/try/)** ·
+**[Essayer maintenant →](https://montrealai.github.io/AGI-Alpha-Agent-v0/try/?lang=fr)**
+
+Compare two nonpersonal CSV lists locally, see missing matches and conflicting values, and group every
+exception into an action plan without losing its source references. Download the plan, full differences
+and an offline reusable workspace. No account, installation, wallet, API key or model service.
+Grouping measures records and evidence coverage; it does not establish time saved or decide which source is correct.
+[Foundation: Transformational Intelligence](https://montrealai.github.io/AGI-Alpha-Agent-v0/Transformational_Intelligence.pdf) ·
+[Implementation and acceptance](examples/ti-guide/README.md).
+
 # Find your Alpha. Build your SUCCESSOR Ω.
 
 **MONTREAL.AI FLAGSHIP · Computer Use · Level 3 strategy development · Level 4 problem reframing**
@@ -128,18 +140,29 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[SUCCESSOR Ω HARNESS](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/successor-omega-harness-detector-v1.pdf)** · A 28\-page simulated detector study with a runnable research companion: retained construction ties conventional caching, while expert construction uses fewer counted rational calls\. Physical validity, settlement and profit are not established\.
   MONTREAL\.AI · AGI ALPHA Research &amp; Engineering · 2026-10-24 · English PDF.
   [Download the research companion](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/download/study-successor-omega-harness-detector-v1-2026-10-24/SUCCESSOR_Omega_Research_Companion.zip) · [Download complete research source ZIP](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/download/study-successor-omega-harness-detector-v1-2026-10-24/SUCCESSOR_Omega_Harness_LaTeX_Source.zip) · [View source and evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/study-successor-omega-harness-detector-v1-2026-10-24)
+- **[AGI ALPHA FLYWHEEL](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-flywheel-acceleration-v2.pdf)** · An 18\-page bounded study of retained executable component bases\. All four workflows qualify 864/864 tasks; conventional caching ties the flywheel, the authored expert costs less, and none of eight streams demonstrates sustained acceleration\. Computational counts do not establish commercial value\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-24 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current experimental source candidate · 1.41.1.** [Immutable workbench submission patch](docs/agent/RELEASE_NOTES_1.41.1.md).
+**Current experimental source candidate · 1.43.0.** [Finite recurring source studies](docs/agent/RELEASE_NOTES_1.43.0.md).
+The existing `alpha-agent successor-study` entry point can run an explicitly approved finite operation,
+retain a closed executable source-selection program and test it on later changed inputs. Pause/Stop,
+lease expiry, bounded retries and committed-child recovery keep their existing journal history.
+The installed study tied equally enabled conventional reuse; capability growth and self-acceleration
+remain unestablished. [Operating guide](docs/agent/SUCCESSOR_SOURCE_OPERATION.md).
+The published [1.42.0 browser-first catalogue guide](docs/agent/RELEASE_NOTES_1.42.0.md) is preserved.
+Preserves the [immutable workbench submission patch](docs/agent/RELEASE_NOTES_1.41.1.md).
 The existing research catalogue now connects the Foundry v2 paper, retained-evidence interactive experience,
 named reproducible companion and source release. The inherited enterprise workspace develops a bounded finite
 capability, freezes it and compares later tasks while retaining rejected alternatives, declared costs and history.
 Finite synthetic studies and zero-cap inspection drafts describe this preview; physical construction,
 installed enterprise compatibility, external model/tool pilots and observed organizational benefit retain
-separate qualification. The corrected companion retains its non-UI source-API/local-EVM evidence and adds a separate full HTTP QA gate. The 1.41.0 standalone publication is preserved. This 1.41.1 patch captures submitted workbench inputs before validation and execution; its own exact-source release gates remain required.
+separate qualification. The corrected companion retains its non-UI source-API/local-EVM evidence and its full HTTP QA gate.
+The 1.41.0 standalone publication and 1.41.1 immutable submissions remain preserved. This 1.42.0 guide adds
+local catalogue usability; its own exact-source release and public browser gates remain required.
 
 
 This combined software candidate adds bounded OUT-EXECUTE execution to the preserved proposal and Out-Evolve journeys.

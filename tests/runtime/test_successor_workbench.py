@@ -4,8 +4,11 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
+import hashlib
 import json
 import subprocess
+import threading
 import uuid
 from pathlib import Path
 from typing import Any
@@ -16,6 +19,68 @@ from alpha_factory_v1.core.runtime.store import Conflict, Journal
 from alpha_factory_v1.core.runtime.successor import workbench
 
 FAMILIES = ["reliability", "performance", "documentation", "public-data", "numerical"]
+
+
+def test_concurrent_first_use_waits_for_complete_local_roles(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """A second real request must not mistake an in-progress first initialization for corruption."""
+    from alpha_factory_v1.core.runtime import store
+
+    home = tmp_path / "home"
+    journal = Journal.initialize(home)
+    spec = workbench.invoke({"operation": "example", "family": "numerical"})
+    first_id, second_id = str(uuid.uuid4()), str(uuid.uuid4())
+    first_writing, release_writer, second_freezing = threading.Event(), threading.Event(), threading.Event()
+    write, freeze = store.private_write, workbench.freeze
+
+    def pause_first_key(path: Path, data: bytes) -> None:
+        if path == home / "workbench-principals/local-controller.key":
+            first_writing.set()
+            assert release_writer.wait(10), "Test driver must release the first creator"
+        write(path, data)
+
+    def observe_freeze(current: Journal, submitted: dict[str, Any], run_id: str) -> dict[str, Any]:
+        if run_id == second_id:
+            second_freezing.set()
+        return freeze(current, submitted, run_id)
+
+    monkeypatch.setattr(store, "private_write", pause_first_key)
+    monkeypatch.setattr(workbench, "freeze", observe_freeze)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        first = pool.submit(workbench.execute, home, spec, first_id)
+        try:
+            assert first_writing.wait(5)
+            second = pool.submit(workbench.execute, home, spec, second_id)
+            assert second_freezing.wait(5)
+            try:
+                second.result(timeout=0.5)
+            except FutureTimeoutError:
+                pass
+        finally:
+            release_writer.set()
+        records = [first.result(timeout=10), second.result(timeout=10)]
+    assert [record["state"] for record in records] == ["review", "review"]
+    assert {record["run_id"] for record in records} == {first_id, second_id}
+    assert all(record["request"] == record["result"]["spec"] == spec for record in records)
+    assert journal.verify()["valid"]
+
+
+@pytest.mark.parametrize("missing", ["principals.json", "local-verifier.key"])
+def test_genuinely_partial_work_roles_remain_rejected(missing: str, tmp_path: Path) -> None:
+    """Serialization must not turn damaged retained key state into permission to regenerate it."""
+    home = tmp_path / "home"
+    spec = workbench.invoke({"operation": "example", "family": "numerical"})
+    retained_work = workbench.execute(home, spec, str(uuid.uuid4()))
+    journal = Journal(home)
+    checkpoint = journal.verify()
+    roles = home / "workbench-principals"
+    (roles / missing).unlink()
+    remaining = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in roles.iterdir()}
+    with pytest.raises(ValueError, match="incomplete"):
+        workbench.execute(home, spec, str(uuid.uuid4()))
+    assert not (roles / missing).exists()
+    assert {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in roles.iterdir()} == remaining
+    assert journal.verify() == checkpoint
+    assert journal.latest("@successor-work:" + retained_work["run_id"])["state"] == "review"
 
 
 @pytest.mark.parametrize("mutation_phase", ["plan", "run"])

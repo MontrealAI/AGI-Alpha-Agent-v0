@@ -198,7 +198,7 @@ def insert_back_link(pages: Iterable[Path], *, preserved_pages: Iterable[Path] =
     for page in pages:
         if not page.is_file() or page in preserved:
             continue
-        if page.parts[-2:] == ("transformational-intelligence", "index.html"):
+        if page.parts[-2:] in (("transformational-intelligence", "index.html"), ("try", "index.html")):
             continue  # Its generator owns the exact inline script, CSP and return links.
         if page.parts[-3:] in (
             ("reports", "research-foundry-v2", "index.html"),
@@ -441,6 +441,9 @@ def main() -> None:
             else "generate_transformational_intelligence"
         )
         understanding.build(REPO_ROOT)
+    if (REPO_ROOT / "scripts/templates/ti-guide/index.html").is_file():
+        guide = importlib.import_module("scripts.generate_ti_guide" if __package__ else "generate_ti_guide")
+        guide.build(REPO_ROOT)
     if (REPO_ROOT / "examples/successor-workbench/engine.mjs").is_file():
         workbench = importlib.import_module(
             "scripts.generate_successor_workbench" if __package__ else "generate_successor_workbench"

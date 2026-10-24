@@ -176,6 +176,28 @@ WORKBENCH_1411_EXTRA_FILES = COMPANION_141_EXTRA_FILES | {
     ),
 }
 
+
+# The additive browser guide retains the scientific sources and admits one whole cache edition.
+TI_GUIDE_142_EXTRA_FILES = WORKBENCH_1411_EXTRA_FILES | {
+    "docs/service-worker.js": (23501, "5c44f328bff2ee3837eef10b755aabad609492e556a9099fe67185457b4bbde8"),
+    "docs/assets/service-worker.js": (23938, "237ecc3ce3c8d82b0ada7c856d68ee1b7a7e154f222e6886af3f45ca8dc9f9d6"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26560,
+        "2e6fd8bdacfe80d99f017a692a4545d7fdf3c1751367288f385d588a7479a5ab",
+    ),
+}
+
+
+# This finite-operation edition preserves the scientific closure and every earlier cache edition.
+SOURCE_OPERATION_143_EXTRA_FILES = TI_GUIDE_142_EXTRA_FILES | {
+    "docs/service-worker.js": (23501, "7387c1e7ece8b4f6a7fa39c096678ba2ecccbfd1d59da23ac15bed58c03041a5"),
+    "docs/assets/service-worker.js": (23938, "35ee39e25c24b61df9bc21b67596017cadd3e236da1b6c1bc47252b276d4dba0"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26560,
+        "2153db651113b5b9cb317c60615f548e0b6bff3ea56f2e6ce0910688c516cad6",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -248,6 +270,8 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, RESEARCH_GUIDES_140_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, COMPANION_141_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, WORKBENCH_1411_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, TI_GUIDE_142_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, SOURCE_OPERATION_143_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

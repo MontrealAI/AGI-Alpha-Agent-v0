@@ -1,5 +1,42 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.43.0 finite source operations
+
+This additive candidate integrates the existing #4891 source-operation lineage with published 1.42 and
+the preferred Edition 02 research PDF. It reuses CampaignExperiment, DiscoveryLoop, OperatorRegistry,
+the mission journal and existing `successor-study` CLI. No held Harness/Fleet source is adopted.
+
+The final composed source requires its own configured review and applicable PR checks, followed by
+all existing exact-main regression, security, integrity, source, package, site and public-byte acceptance.
+The earlier source-71e5963 installed campaign and review remain accurately attributed; they do not
+qualify this changed version. Download the actual new public package and install outside checkout
+before claiming release acceptance. Keep prior releases immutable and verify rollback with their
+existing paused-home procedure. See [scope and limitations](RELEASE_NOTES_1.43.0.md) and the
+[operation Start/Stop/recovery guide](SUCCESSOR_SOURCE_OPERATION.md).
+
+The shared-artifact study tied conventional reuse. A productive repository-maintenance flywheel,
+general computer execution, an Alpha1.42-plus-adapters tuple and the original four-product installation
+remain unqualified. Original action restrictions and five protected source pins stay unchanged.
+
+## Preserved 1.42.0 preparation record
+
+[Project notice](../DISCLAIMER_SNIPPET.md)
+
+# Release readiness — 1.42.0 browser-first catalogue guide
+
+The additive `/try/` guide reuses the unchanged released catalogue engine and discrepancy grouping.
+One-click sample computation, explicit column previews, original and grouped views, safe CSV exports
+and a strictly rechecked standalone workspace remain entirely local. No native Harness or Fleet
+capability is imported. The 1.41.1 patch, publications and all original action restrictions are preserved.
+
+This candidate requires its own configured source review, applicable PR checks and all existing
+exact-main software/site acceptance before publication. The existing flagship browser validator
+also requires the new guide journey, actual downloads, new CSV imports, exact saved-result checks,
+recomputation, keyboard, EN/FR, phone and accessibility checks. A test definition is not a pass.
+See [feature scope and acceptance](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/55627cba47316a9b42ff44a75af7049838207917/examples/ti-guide/README.md).
+
+[Project notice](../DISCLAIMER_SNIPPET.md)
+
 # Release readiness — 1.41.1 workbench input snapshot patch
 
 This patch continues #4886 on the accepted 1.41.0 source. One canonical JSON snapshot
