@@ -1,17 +1,30 @@
 # Publication scope and receiving boundary
 
-This uniquely versioned Writer #10 source/artifact proposal is confined to `studies/nova-seeds-abundance-v1/`. It preserves the complete original PDF, standalone TeX, figure sources, scientific source, raw evidence, negative controls and reproduction package. The archive manifest describes the archive payload; the external ZIP and independent custody receipts are additional review artifacts.
+This Writer #10 proposal is confined to `studies/nova-seeds-abundance-v1/`. It publishes an immutable, complete research archive and directly readable paper, figures and selected evidence. The experimental implementation is source material inside that archive; it is not admitted into the repository runtime.
 
-The study is complete; publication qualification remains separate. All scientific resources are synthetic or locally measured, and no production authority, live financial action or physical-instrument validation is claimed. The core experiment was run once under the frozen protocol. All 20 final PDF pages were rendered and reviewed.
+## Frozen study and publication layout
 
-The existing coordinator named in issue #4850 comment 6377105309 retains shared catalogue, review/merge and Pages ownership. This proposal does not modify the shared catalogue, homepage, service workers, workflows, runtime admission or an existing publication URL. It does not bypass the original Fleet/Harness restrictions.
+The canonical 20-page PDF, standalone TeX, complete ZIP and all archived payload bytes are unchanged. The ZIP contains the full implementation, pinned source, licenses, protocol, raw records, adverse results, bibliography, figure-generation source and reproduction guides. `ARCHIVE_MANIFEST.json` inventories the extracted archive, not this smaller publication directory.
 
-The live site was read at 2026-10-24 03:19 UTC: software v1.39.0 at e7fbd7e7fd0599f66c70ea8fe5e26b178e04f541, paper provenance dfc79c4ae81ac612cbff9865a0af8389b6ff3de9. Writer #10 was absent. Current inspected repository main is 197147ffd22c5ae13113162afffaf3ce9c10aa2e. Source branch availability does not establish a qualified merge, GitHub Release or Pages deployment.
+The original fully unpacked review witness remains publicly readable at source commit `afcdeedd7d7e744cd09d0d4280a4f0f9537c2ee8`. Its hosted Ruff check reported 109 style findings in nine newly introduced Python files. The publication layout removes those loose frozen implementation copies and retains their exact bytes in the canonical archive. This does not correct their style findings, establish archived-code lint conformance or erase the failed check. `HISTORICAL_LINT_FAILURE.json` preserves the recorded diagnostics.
 
-The existing importer can receive the canonical PDF and standalone TeX as a passive paper, with bilingual metadata supplied through issue #4850. Shared edits require the coordinator's acknowledged current-main base. Complete ZIP release assets and source references need their own reviewed identities; the source/archive proposal is not misclassified as a paper-only change. Actual required reviews, hosted checks and final-source qualification remain necessary.
+No Ruff configuration, exclusions, workflows, source predicates or required gates change. Introduced history and the current study namespace remain outside the passive paper-only allowlist. The corrected publication head must receive the normal full qualification and review. Scientific verification and custody checks are distinct from repository integration acceptance.
 
-The canonical PDF is 480,978 bytes, SHA-256 405a7f2fdd6d5e3929f9eeb263499a36613d9cc26ecedcc059d113f6c1b3eaf9. The saved complete ZIP was reopened with all 343 payloads verified; its canonical PDF is exact. The separate saved PDF acquired passive service provenance, while all 20 page-content streams remained equal. Public publication uses the canonical bytes from inside the ZIP.
+## Reproduction and transport
 
-## Archive transport
+The public connector has a 16 MiB request-body limit. Two consecutive archive parts preserve the complete ZIP byte for byte. `python ASSEMBLE_ARCHIVE.py` verifies both parts and reconstructs the original ZIP; `README.md` then extracts it into a new directory before running any scientific command. The canonical PDF inside that ZIP is the original compiled edition.
 
-The publication connector limits request bodies to 16 MiB, so the review branch distributes the unchanged complete ZIP in two consecutive, hash-verified parts. `python ASSEMBLE_ARCHIVE.py` reconstructs exactly the canonical ZIP; all individual source/evidence files are also present. `DOWNLOADS.md` explains this transport. Each request remains within the supported limit. This changes no archival byte, research result, owner, review gate or publication permission. The existing coordinator can publish the single ZIP as the separately reviewed research-release asset.
+Canonical PDF: 480978 bytes, SHA-256 `405a7f2fdd6d5e3929f9eeb263499a36613d9cc26ecedcc059d113f6c1b3eaf9`.
+
+Canonical complete ZIP: 15317764 bytes, SHA-256 `b8785b08bf0a7d66e50dd28a5729e25705579a8774feb55aa02427710d2dba51`.
+
+Before public upload, the private backup was reopened and all 343 payload digests verified. The separately saved PDF received passive provenance metadata; the public PDF and archive retain the canonical original bytes. Every final PDF page was rendered and inspected. All physical instrument outcomes are simulations.
+
+## Receiving, review and release ownership
+
+Issue #4850 comment 6377105309 reserves shared catalogue, merge and Pages publication to the existing coordinator. Comment 6379384418 excludes Writers #7–#11 from the ongoing software release. The final artifact set and current-main receiving base still need acknowledgement.
+
+This proposal changes no shared catalogue, homepage, service worker, workflow, production authority or historical publication URL. It does not retry held Fleet/Harness objectives. Source-branch accessibility does not establish qualified merge, research-release attachment or live Pages publication.
+
+The coordinator can receive the unchanged PDF and standalone TeX through the existing passive-paper importer and separately review the complete source archive. No archive, scientific-test or PDF-parser receipt waives the applicable review, hosted-check, exact-main release or served-byte acceptance gates.
+
