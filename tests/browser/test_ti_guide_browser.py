@@ -126,6 +126,8 @@ def run_acceptance(entry: str, output: Path, expected: bytes, axe_script: Path) 
 
         offline.locator("#left-csv").fill("id,value\n=evil,<img src=x onerror=alert(1)>\n")
         offline.locator("#right-csv").fill("id,value\n=evil,@danger\n")
+        offline.locator("#left-key").select_option("id")
+        offline.locator("#right-key").select_option("id")
         assert offline.locator("#left-preview img").count() == 0
         offline.locator("#try").click()
         expect(offline.locator("#step-title")).to_have_text("What makes this difficult?")

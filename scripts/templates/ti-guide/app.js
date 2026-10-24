@@ -73,11 +73,13 @@ function updatePreview(side) {
         if(fileErrors[side])throw Error(fileErrors[side]);
         const data = guide.preview($(side+'-csv').value), previous = select.value || input[side+'Key'];
         select.replaceChildren();
+        if(!data.headers.includes(previous)){const option=node('option',select,say('Choose an identifying column','Choisir une colonne d’identification'));option.value='';}
         for (const key of data.headers) { const option = node('option',select,key); option.value = key; }
-        select.value = data.headers.includes(previous) ? previous : data.headers[0];
+        select.value = data.headers.includes(previous) ? previous : '';
         table(target,data.headers,data.rows.slice(0,4));
         if (data.rows.length > 4) node('p',target,say(`Showing 4 of ${data.rows.length} rows.`, `Aperçu : 4 lignes sur ${data.rows.length}.`));
         $(side+'-count').textContent = say(`${data.rows.length} data rows`,`${data.rows.length} lignes`);
+        if(!select.value){$(side+'-error').textContent=say(`The previous identifying column “${previous}” is missing. Choose the column that identifies each item.`,`La colonne d’identification précédente « ${previous} » est absente. Choisissez la colonne qui identifie chaque article.`);$(side+'-error').hidden=false;return false;}
         return true;
     } catch (error) {
         $(side+'-count').textContent = say('Needs attention','À vérifier'); select.replaceChildren();
@@ -92,6 +94,7 @@ function refreshPreviews() {
 }
 function applyInput(value) {
     fileErrors={left:null,right:null};
+    $('left-key').replaceChildren();$('right-key').replaceChildren();
     input = {...value}; $('left-csv').value = value.leftCsv; $('right-csv').value = value.rightCsv;
     refreshPreviews(); $('left-key').value = value.leftKey; $('right-key').value = value.rightKey;
 }
@@ -191,6 +194,7 @@ function render(focus = true) {
         if (step === 3) { resultView($('step3-view'),view); $('view-grouped').setAttribute('aria-pressed',String(view==='grouped')); $('view-detail').setAttribute('aria-pressed',String(view==='original')); }
         if (step === 4) {
             text('result-summary',`${m.actionGroups} items need attention; ${m.evidenceReferences} original exception references retained.`,`${m.actionGroups} articles à examiner ; ${m.evidenceReferences} références d’exception conservées.`);
+            text('final-scope',`Compared value columns: ${m.comparedColumns.join(', ') || 'none'}. Unexamined columns: A [${m.unsharedLeft.join(', ')}]; B [${m.unsharedRight.join(', ')}]. No reported difference does not establish that both lists are correct or that unexamined columns agree.`,`Colonnes de valeurs comparées : ${m.comparedColumns.join(', ') || 'aucune'}. Colonnes non examinées : A [${m.unsharedLeft.join(', ')}] ; B [${m.unsharedRight.join(', ')}]. L’absence d’écart signalé ne prouve ni que les listes sont correctes ni que les colonnes non examinées concordent.`);
             text('choice-summary',approach==='grouped' ? 'One action record per affected identifier, with the original detailed view retained.' : 'You kept the original detailed approach. The grouped action plan remains an optional companion.',approach==='grouped' ? 'Une fiche d’action par identifiant concerné, avec la vue détaillée originale conservée.' : 'Vous avez conservé la méthode détaillée originale. Le plan regroupé reste un complément facultatif.');
             text('supports-summary',`${m.leftRows} + ${m.rightRows} input rows; ${m.unmatchedKeys} unmatched identifiers; ${m.conflictingPairs} conflicting pairs; ${m.fieldDifferences} conflicting field values. ${m.evidenceReferences}/${r.coverage.originalOccurrences} exception references preserved in ${m.actionGroups} action groups.`,`${m.leftRows} + ${m.rightRows} lignes en entrée ; ${m.unmatchedKeys} identifiants sans correspondance ; ${m.conflictingPairs} paires divergentes ; ${m.fieldDifferences} valeurs de champ divergentes. ${m.evidenceReferences}/${r.coverage.originalOccurrences} références conservées dans ${m.actionGroups} groupes d’action.`);
             resultView($('step4-view'),approach);
