@@ -18,6 +18,33 @@ from alpha_factory_v1.core.runtime.successor import workbench
 FAMILIES = ["reliability", "performance", "documentation", "public-data", "numerical"]
 
 
+@pytest.mark.parametrize("mutation_phase", ["plan", "run"])
+def test_submission_captures_nested_inputs_before_validation(
+    mutation_phase: str, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    spec = workbench.invoke({"operation": "example", "family": "documentation"})
+    submitted = json.loads(json.dumps(spec))
+    original = workbench.invoke
+
+    def mutate_caller(request: dict[str, Any], *args: Any) -> dict[str, Any]:
+        if request["operation"] == mutation_phase:
+            spec["inputs"]["markdown"] += "\nCaller changed the submitted document."
+        return original(request, *args)
+
+    monkeypatch.setattr(workbench, "invoke", mutate_caller)
+    home, run_id = tmp_path / "home", str(uuid.uuid4())
+    record = workbench.execute(home, spec, run_id)
+    assert spec != submitted
+    assert record["request"] == submitted
+    assert record["request_digest"] == workbench.digest("workbench-request", submitted)
+    assert record["result"]["spec"] == submitted
+    retained = Journal(home).latest("@successor-work:" + run_id)
+    assert retained["request"] == retained["result"]["spec"] == submitted
+    assert workbench.execute(home, submitted, run_id)["result_digest"] == record["result_digest"]
+    with pytest.raises(Conflict, match="different request"):
+        workbench.execute(home, spec, run_id)
+
+
 def test_large_input_reaches_a_slow_reader_while_checkpoints_continue(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
