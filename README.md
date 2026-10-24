@@ -133,13 +133,13 @@ Research proposals and bounded studies, not claims of general autonomous capabil
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current experimental source candidate · 1.41.0.** [Corrected companion and research-site delivery notes](docs/agent/RELEASE_NOTES_1.41.0.md).
+**Current experimental source candidate · 1.41.1.** [Immutable workbench submission patch](docs/agent/RELEASE_NOTES_1.41.1.md).
 The existing research catalogue now connects the Foundry v2 paper, retained-evidence interactive experience,
 named reproducible companion and source release. The inherited enterprise workspace develops a bounded finite
 capability, freezes it and compares later tasks while retaining rejected alternatives, declared costs and history.
 Finite synthetic studies and zero-cap inspection drafts describe this preview; physical construction,
 installed enterprise compatibility, external model/tool pilots and observed organizational benefit retain
-separate qualification. The corrected companion retains its non-UI source-API/local-EVM evidence and adds a separate full HTTP QA gate. Fresh exact-source 1.41 release gates remain pending; the preceding 1.39 publication sequence is complete.
+separate qualification. The corrected companion retains its non-UI source-API/local-EVM evidence and adds a separate full HTTP QA gate. The 1.41.0 standalone publication is preserved. This 1.41.1 patch captures submitted workbench inputs before validation and execution; its own exact-source release gates remain required.
 
 
 This combined software candidate adds bounded OUT-EXECUTE execution to the preserved proposal and Out-Evolve journeys.

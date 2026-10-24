@@ -1,5 +1,26 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.41.1 workbench input snapshot patch
+
+This patch continues #4886 on the accepted 1.41.0 source. One canonical JSON snapshot
+feeds workbench validation, identity, lifecycle, persistence and fixed-worker execution.
+The two new mutation regressions fail on the original source and pass with the fix.
+
+Version 1.41.1 requires its own exact-source review, applicable PR checks, full resulting-main
+software/site acceptance, immutable public artifacts and fresh installed verification.
+Local hook initialization remains incomplete; the actual runtime type configuration passes.
+No historical acceptance is transferred to the new release.
+
+The original Harness #4863 review and separate merge restriction, #4865 dependency, Fleet
+restriction and four excluded native outcomes remain with their original owners.
+This patch does not adopt their source or qualify a new connected installed tuple.
+The research catalogue, original papers, companion evidence and earlier checkout editions
+are preserved. See [patch scope](RELEASE_NOTES_1.41.1.md).
+
+## Preserved 1.41.0 preparation record
+
+[Project notice](../DISCLAIMER_SNIPPET.md)
+
 # Release readiness — 1.41.0 experimental corrected companion/site candidate
 
 This prospective edition reconciles the existing Writer #4 companion branch with guarded main

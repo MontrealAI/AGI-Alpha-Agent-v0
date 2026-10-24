@@ -184,6 +184,8 @@ def _change(journal: Journal, key: str, revision: int, **values: Any) -> dict[st
 def execute(home: Path, spec: dict[str, Any], run_id: str, *, resume: bool = False) -> dict[str, Any]:
     """Checkpoint bounded pure work; interruption never silently replays an external effect."""
     key = _key(run_id)
+    # All stages must consume one detached JSON submission, including nested caller inputs.
+    spec = safe_json_loads(canonical(spec))
     # Validate and compile before creating a new operator identity or durable run.
     invoke({"operation": "plan", "spec": spec})
     journal = Journal(home) if home.exists() else Journal.initialize(home)
