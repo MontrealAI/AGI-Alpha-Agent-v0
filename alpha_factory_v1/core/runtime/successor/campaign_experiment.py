@@ -182,6 +182,10 @@ def validate_child_lease(parent: dict[str, Any], request: DiscoveryRequest) -> N
     expected = study_request(spec, CampaignUnit.model_validate(units[0]), policies[0], phase)
     if request != expected:
         raise Conflict("parent study lease cannot change its child's purpose, inputs, code or budget")
+    if parent.get("operation"):
+        from .campaign_operation import validate_child
+
+        validate_child(parent, request)
 
 
 class CampaignExperiment:
@@ -206,6 +210,10 @@ class CampaignExperiment:
         spec = PolicyStudy.model_validate(record["spec"])
         if record["binding"] != _binding(spec):
             raise Conflict("study code or comparison basis changed; new study required")
+        if record.get("operation"):
+            from .campaign_operation import validate_authority
+
+            validate_authority(self.journal, record, cx)
         return spec
 
     def create(self, spec: PolicyStudy) -> dict[str, Any]:
@@ -478,7 +486,7 @@ class CampaignExperiment:
             raise ValueError("export exceeds byte budget; inspect referenced child campaigns separately")
         return result
 
-    def _run(self, study_id: str, phase: str) -> dict[str, Any]:
+    def _run(self, study_id: str, phase: str, *, max_runs: int | None = None) -> dict[str, Any]:
         record = self.show(study_id)
         finished = {"trained", "confirming", "completed"} if phase == "training" else {"completed"}
         if record["state"] in finished:
@@ -488,6 +496,7 @@ class CampaignExperiment:
             raise Conflict("study phase is out of order")
         spec = PolicyStudy.model_validate(record["spec"])
         units = [CampaignUnit.model_validate(unit) for unit in record[phase]["units"]]
+        completed_runs = 0
         for unit in units:
             for policy in spec.policies:
                 with self.journal.transaction() as cx:
@@ -497,6 +506,8 @@ class CampaignExperiment:
                         r["unit_id"] == unit.unit_id and r["policy"] == policy.identity for r in current[phase]["runs"]
                     ):
                         continue
+                if max_runs is not None and completed_runs >= max_runs:
+                    return self.show(study_id)
                 run = self._campaign(spec, unit, policy, phase)
                 with self.journal.transaction() as cx:
                     current = self.journal.latest(self._key(study_id), cx)
@@ -507,6 +518,7 @@ class CampaignExperiment:
                     ):
                         data[phase]["runs"].append(run)
                         self.journal.append(cx, self._key(study_id), data)
+                completed_runs += 1
         with self.journal.transaction() as cx:
             current = self.journal.latest(self._key(study_id), cx)
             self._ready(current, cx)
