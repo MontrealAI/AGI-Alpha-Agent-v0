@@ -85,9 +85,6 @@ def release_documents(version: str) -> tuple[str, ...]:
         "scripts/release_packs.py",
         "docs/agent/SUCCESSOR.md",
         "docs/agent/SUCCESSOR_OPERATIONS.md",
-        "docs/agent/SUCCESSOR_SOURCE_OPERATION.md",
-        "docs/agent/FLYWHEEL_COMPATIBILITY.json",
-        "docs/agent/FLYWHEEL_CAPABILITIES.json",
         "docs/agent/SUCCESSOR_ACCEPTANCE.md",
         "docs/agent/SUCCESSOR_ASCENSION.md",
         "docs/agent/SUCCESSOR_SOURCES.json",
@@ -153,6 +150,12 @@ def release_documents(version: str) -> tuple[str, ...]:
         )
     if tuple(map(int, version.split("."))) >= (1, 38, 0):
         documents += (*CAPABILITY_GUIDES, "docs/agent/PAPER_UPLOADS.md")
+    if tuple(map(int, version.split("."))) >= (1, 43, 0):
+        documents += (
+            "docs/agent/SUCCESSOR_SOURCE_OPERATION.md",
+            "docs/agent/FLYWHEEL_COMPATIBILITY.json",
+            "docs/agent/FLYWHEEL_CAPABILITIES.json",
+        )
     return documents
 
 
