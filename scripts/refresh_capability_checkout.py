@@ -165,6 +165,17 @@ COMPANION_141_EXTRA_FILES = RESEARCH_GUIDES_140_EXTRA_FILES | {
     ),
 }
 
+# The 1.41.1 input-snapshot patch changes only this complete generated cache edition.
+# Retain every prior edition; source admission still rejects mixed worker bytes.
+WORKBENCH_1411_EXTRA_FILES = COMPANION_141_EXTRA_FILES | {
+    "docs/service-worker.js": (23479, "b1a52ce0de55629d56fe6dc755a435d6f94c23fd456277092a1d94c151d2cc9d"),
+    "docs/assets/service-worker.js": (23915, "0f44cecfc4eb20112824991566d9e05737a6901c87a50401dba8751525052e95"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26531,
+        "1249abc6d2cb8265e4632c57655c8b8dabc5f320129112ee72ca482fc5ab2aea",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -236,6 +247,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, FOUNDRY_140_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, RESEARCH_GUIDES_140_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, COMPANION_141_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, WORKBENCH_1411_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

@@ -3,7 +3,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.41.0
+## Current runnable path — 1.41.1
 
 **Mode:** Browser + simulation. Explores scenarios and Pareto search; optional browser GPT-2 performs real local text completion.
 

@@ -1,3 +1,11 @@
+## 1.41.1 — Immutable workbench submissions
+
+- Capture one detached canonical JSON input snapshot before planning, request identity, persistence and execution. Caller mutation cannot change submitted mission meaning or cause the result to disagree with its recorded inputs.
+- Preserve the existing runtime, signed journal, recovery, bounded workers and local authority boundaries. Add two deterministic regressions using the real shipped documentation worker.
+- Refresh current version, generated presentation and cache metadata through existing generators. Prior releases, research bytes and source profiles remain retained.
+- This patch does not integrate held Harness #4863/#4865 or qualify Fleet or a new connected installed package set.
+- See [release notes](docs/agent/RELEASE_NOTES_1.41.1.md).
+
 ## 1.41.0 — Corrected companion and research-site delivery (experimental source candidate)
 
 - Reconcile the existing Writer #4 companion lineage with guarded main, preserving the frozen research archive, all eight v5 correction inputs and original paper/source URLs.
