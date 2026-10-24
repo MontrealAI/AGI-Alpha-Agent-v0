@@ -1,0 +1,32 @@
+black....................................................................Passed
+ruff.....................................................................Failed
+- hook id: ruff
+- exit code: 1
+
+alpha_factory_v1/core/runtime/successor/campaign_operation.py:131:71: E721 Do not compare types, use `isinstance()`
+alpha_factory_v1/core/runtime/successor/campaign_operation.py:137:12: E721 Do not compare types, use `isinstance()`
+Found 2 errors.
+
+ruff-format..............................................................Passed
+flake8...................................................................Failed
+- hook id: flake8
+- exit code: 1
+
+alpha_factory_v1/core/runtime/successor/campaign_operation.py:90:121: E501 line too long (191 > 120 characters)
+alpha_factory_v1/core/runtime/successor/campaign_operation.py:474:121: E501 line too long (124 > 120 characters)
+alpha_factory_v1/core/runtime/successor/campaign_operation.py:477:121: E501 line too long (158 > 120 characters)
+
+semgrep..................................................................Passed
+shellcheck...........................................(no files to check)Skipped
+Lint GitHub Actions workflow files...................(no files to check)Skipped
+Verify protobuf files are up to date.....................................Passed
+Verify environment docs and runbook checklist............................Passed
+Detect private text in commit............................................Passed
+Verify required Python packages are installed............................Passed
+Ensure scripts import disclaimer helper..................................Passed
+Verify demo gallery preview assets exist.................................Passed
+Verify HTML pages reference the disclaimer snippet.......................Passed
+Block binary diffs.......................................................Passed
+Update workflow action versions......................(no files to check)Skipped
+Validate Python syntax with py_compile...................................Passed
+Lint Insight Browser with ESLint.....................(no files to check)Skipped
