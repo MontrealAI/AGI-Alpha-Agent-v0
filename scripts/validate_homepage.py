@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 from functools import partial
 import hashlib
 from http.server import ThreadingHTTPServer
@@ -207,6 +208,7 @@ def assert_handoff(page: Page, language: str, large: bool) -> None:
     assert_paper_links(page, language)
     assert_reading_links(page, language)
     for selector, path, fragments in (
+        ("[data-ti-link]", "try/", {""}),
         ("[data-alpha-link]", "successor/alpha/", {"", "computer-mission"}),
         ("[data-discovery-link]", "successor/discover/", {""}),
         ("[data-mission-link]", "successor/mission/", {"guided-journey"}),
@@ -710,8 +712,18 @@ def validate(
             assert_research_edition_guides(page, origin, output)
             report["checks"].append("bilingual-research-edition-guides")
             assert not report["browser_errors"], report["browser_errors"]
-            report["passed"] = True
             browser.close()
+        guide_spec = importlib.util.spec_from_file_location(
+            "ti_guide_browser_acceptance", root / "tests/browser/test_ti_guide_browser.py"
+        )
+        if guide_spec is None or guide_spec.loader is None:
+            raise RuntimeError("Catalogue guide browser acceptance is unavailable")
+        guide_module = importlib.util.module_from_spec(guide_spec)
+        guide_spec.loader.exec_module(guide_module)
+        guide_module.run_acceptance(
+            origin + "try/", output / "ti-guide", (site / "try/index.html").read_bytes(), axe_script
+        )
+        report["passed"] = True
     finally:
         (output / "homepage.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         if server:
