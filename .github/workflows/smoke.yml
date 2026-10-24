@@ -94,6 +94,7 @@ jobs:
           python -m pytest --noconftest -o addopts= tests/test_macro_simulation_boundaries.py -q --junitxml=evidence/macro-boundaries.xml
           python -m pytest --noconftest -o addopts= tests/test_openai_bridge_integration.py -q --junitxml=evidence/business1-sum-binding.xml
           python -m pytest --noconftest -o addopts= tests/test_legacy_public_urls.py -m smoke -q --junitxml=evidence/legacy-public-urls.xml
+          python -m pytest --noconftest -o addopts= tests/test_release_publication.py::test_every_current_workspace_uses_the_release_version tests/test_release_publication.py::test_release_guides_have_working_flattened_links_and_preserve_the_manuscript -q --junitxml=evidence/release-version-guides.xml
       - name: Verify dependency-light cross-industry ledger locking on every platform
         env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
