@@ -1,0 +1,47 @@
+{
+  "schema": "agialpha.cold-start-fix-handoff.v1",
+  "parent": "787bc547f8c44854931b316d7286b8bc9f9c8bba",
+  "commit": "5ab92e5f4d2199ccfbfe2dd7e68e5a10205d07ee",
+  "tree": "c2e18a8a28006331c4268a378963db1c1d614090",
+  "files": [
+    "alpha_factory_v1/core/runtime/successor/workbench.py",
+    "tests/runtime/test_successor_workbench.py"
+  ],
+  "module_sha256": "87ad9f365ebf1b5c1e93edc275e6fe933b6c247e51b848b52dc66c34344a8492",
+  "regression_before_fix": {
+    "failed": 1,
+    "seconds": 0.58,
+    "cause": "local principal state is incomplete; do not silently replace role keys"
+  },
+  "corrected_slice": {
+    "passed": 57,
+    "seconds": 9.49
+  },
+  "runtime_mypy": {
+    "passed": true,
+    "files": 54
+  },
+  "ruff": true,
+  "black": true,
+  "diff_check": true,
+  "source_readback": true,
+  "target_pr": 4890,
+  "handoff_record": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4890#issuecomment-6387767490",
+  "owner_acknowledged": true,
+  "owner_branch_changed": false,
+  "main_changed": false,
+  "merged": false,
+  "published": false,
+  "installed_fixed_version_qualified": false,
+  "source_edition_hash_change_required": false,
+  "original_harness_fleet_hold_cleared": false,
+  "owner_ack_record": 6387898937,
+  "owner_adopted_head": "d671adc03ed8029d72031ba5944638b56704b81e",
+  "owner_adopted_tree": "22d11bd0bf799d000c8f82dc9cc108cd5c01ec42",
+  "owner_source_readback": true,
+  "combined_review_receipt": 6387951578,
+  "stacked_contribution_pr": 4892,
+  "stacked_contribution_closed_as_redundant": true,
+  "owner_parent_pr": 4890,
+  "canonical_main_merged": false
+}

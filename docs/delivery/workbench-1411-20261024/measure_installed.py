@@ -5,6 +5,8 @@ import argparse
 import concurrent.futures
 import copy
 from datetime import datetime, timezone
+import hashlib
+from importlib.metadata import version
 import json
 import math
 import os
@@ -58,6 +60,11 @@ def main():
     args = parser.parse_args()
     module = pathlib.Path(workbench.__file__).resolve()
     assert module.is_relative_to(pathlib.Path(sys.prefix).resolve()), str(module)
+    assert version("alpha-factory-v1") == "1.41.1"
+    assert (
+        hashlib.sha256(module.read_bytes()).hexdigest()
+        == "6efb59f24b67dbaf0932166ba8161eb9797b9866cbc36c123015b4465bfd737c"
+    )
     root = args.output.resolve()
     root.mkdir(mode=0o700)
     spec = workbench.invoke({"operation": "example", "family": "numerical"})

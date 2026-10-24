@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.576" timestamp="2026-10-25T03:06:16.211445+09:00" hostname="467b1f56c7aa"><testcase classname="tests.runtime.test_successor_workbench" name="test_concurrent_first_use_waits_for_complete_local_roles" time="0.303"><failure message="ValueError: local principal state is incomplete; do not silently replace role keys">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-18/test_concurrent_first_use_wait0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f59e3b3aa50&gt;
+
+    def test_concurrent_first_use_waits_for_complete_local_roles(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -&gt; None:
+        """A second real request must not mistake an in-progress first initialization for corruption."""
+        from alpha_factory_v1.core.runtime import store
+    
+        home = tmp_path / "home"
+        journal = Journal.initialize(home)
+        spec = workbench.invoke({"operation": "example", "family": "numerical"})
+        first_id, second_id = str(uuid.uuid4()), str(uuid.uuid4())
+        first_writing, release_writer, second_freezing = threading.Event(), threading.Event(), threading.Event()
+        write, freeze = store.private_write, workbench.freeze
+    
+        def pause_first_key(path: Path, data: bytes) -&gt; None:
+            if path == home / "workbench-principals/local-controller.key":
+                first_writing.set()
+                assert release_writer.wait(10), "Test driver must release the first creator"
+            write(path, data)
+    
+        def observe_freeze(current: Journal, submitted: dict[str, Any], run_id: str) -&gt; dict[str, Any]:
+            if run_id == second_id:
+                second_freezing.set()
+            return freeze(current, submitted, run_id)
+    
+        monkeypatch.setattr(store, "private_write", pause_first_key)
+        monkeypatch.setattr(workbench, "freeze", observe_freeze)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            first = pool.submit(workbench.execute, home, spec, first_id)
+            try:
+                assert first_writing.wait(5)
+                second = pool.submit(workbench.execute, home, spec, second_id)
+                assert second_freezing.wait(5)
+                try:
+&gt;                   second.result(timeout=0.5)
+
+tests/runtime/test_successor_workbench.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/concurrent/futures/thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/workbench.py:193: in execute
+    lifecycle = freeze(journal, spec, run_id)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/runtime/test_successor_workbench.py:44: in observe_freeze
+    return freeze(current, submitted, run_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/workbench.py:37: in freeze
+    trust, _ = retained_local_principals(journal.root / "workbench-principals")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+directory = PosixPath('/tmp/pytest-of-root/pytest-18/test_concurrent_first_use_wait0/home/workbench-principals')
+
+    def retained_local_principals(directory: str | Any) -&gt; tuple[TrustRegistry, dict[str, Ed25519PrivateKey]]:
+        """Keep local rehearsal roles private; refuse partial or changed credential state."""
+        import os
+        from pathlib import Path
+    
+        from cryptography.hazmat.primitives.serialization import NoEncryption, PrivateFormat
+    
+        from ..store import private_write, restrict_access
+        from .protocol import safe_json_loads
+    
+        root = Path(directory)
+        if root.is_symlink():
+            raise ValueError("principal directory must not be a symbolic link")
+        registry, fresh = local_principals()
+        try:
+            root.mkdir(mode=0o700, parents=True, exist_ok=False)
+        except FileExistsError:
+            if not root.is_dir():
+                raise ValueError("principal destination is not a directory")
+        else:
+            restrict_access(root)
+            public_keys = {}
+            for principal, generated in fresh.items():
+                private_write(
+                    root / (principal + ".key"),
+                    generated.private_bytes(Encoding.Raw, PrivateFormat.Raw, NoEncryption()),
+                )
+                public_keys[principal] = generated.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw).hex()
+            private_write(root / "principals.json", canonical({"scope": "local-rehearsal", "public_keys": public_keys}))
+        manifest_path = root / "principals.json"
+        if manifest_path.is_symlink() or not manifest_path.is_file():
+&gt;           raise ValueError("local principal state is incomplete; do not silently replace role keys")
+E           ValueError: local principal state is incomplete; do not silently replace role keys
+
+alpha_factory_v1/core/runtime/successor/trust.py:182: ValueError</failure></testcase></testsuite></testsuites>

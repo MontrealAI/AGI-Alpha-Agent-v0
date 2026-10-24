@@ -1,0 +1,25 @@
+{
+  "schema": "agialpha.public-cold-start-reproduction.v1",
+  "observed_at_utc": "2026-10-24T18:03:18.425570+00:00",
+  "version": "1.41.1",
+  "commit": "787bc547f8c44854931b316d7286b8bc9f9c8bba",
+  "module_sha256": "6efb59f24b67dbaf0932166ba8161eb9797b9866cbc36c123015b4465bfd737c",
+  "trust_module_sha256": "f1aae20d7ddf8e97ff9eadf9411dae6dea3c8dfd72dc04940341227e6698684e",
+  "procedure_sha256": "b68e2d8d506b5e951039efef68d28da4d20ee2f8073403646efb330653ace447",
+  "fault": "Pause the original first role-key write after its directory is created; do not alter any key bytes",
+  "concurrent_request": {
+    "type": "ValueError",
+    "message": "local principal state is incomplete; do not silently replace role keys"
+  },
+  "earlier_success_retained": "review",
+  "journal": {
+    "valid": true,
+    "events": 6,
+    "head": "6267274da0474ca373e6f243beb9eec5db7ab3e78eec38c39b934fd78f52e513",
+    "identity": "urn:agialpha:ed25519:23b2169acf3662d830b3ce542e5afbedf30950d7a2fc861f6303c25a7766e4cd"
+  },
+  "confirmed": true,
+  "original_load_sample_attribution": "Consistent with its ValueError; the original sample did not capture its exact message",
+  "authority": [],
+  "transactions_sent": false
+}

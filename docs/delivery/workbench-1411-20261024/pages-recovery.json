@@ -1,0 +1,64 @@
+{
+  "schema": "agialpha.pages-recovery.v1",
+  "commit": "787bc547f8c44854931b316d7286b8bc9f9c8bba",
+  "run": 40106911750,
+  "first_attempt": {
+    "job": 120927982567,
+    "conclusion": "cancelled",
+    "completed_at": "2026-10-24T17:08:14Z",
+    "annotation": "The job has exceeded the maximum execution time of 20m0s",
+    "browser_command_completed": "2026-10-24T16:54:19Z",
+    "artifact": {
+      "id": 12567542507,
+      "files": 465,
+      "bytes": 142758612,
+      "sha256": "db1ee193c39b2d90d9791e6f8b55318f96cf26fab1914683bc70acf473763e3d",
+      "finalized_at": "2026-10-24T16:54:24Z",
+      "body_independently_downloaded": false
+    },
+    "publisher_job": 120933590305,
+    "publisher_conclusion": "skipped"
+  },
+  "retry_request": {
+    "tool": "github.rerun_workflow_job",
+    "target_job": 120927982567,
+    "result": "403 workflow run already running",
+    "extra_requests": 0
+  },
+  "reconciled_second_attempt": {
+    "attempt": 2,
+    "job": 120934534390,
+    "started_at": "2026-10-24T17:13:36Z",
+    "status": "completed",
+    "conclusion": "success",
+    "initiator_attribution": "shared GitHub identity only; not independently established",
+    "completed_at": "2026-10-24T17:30:17Z",
+    "artifact": {
+      "id": 12568960152,
+      "files": 465,
+      "bytes": 142765025,
+      "sha256": "f5a5e4f680a10f21676c5df37a6f9ddda9eae78fb6176f21411d97cff30322d9",
+      "created_at": "2026-10-24T17:30:13Z",
+      "body_independently_downloaded": false
+    }
+  },
+  "normal_process": true,
+  "source_or_gate_changes": false,
+  "public_release_verified": true,
+  "public_installed_verified": true,
+  "second_attempt_predecessor_stages_observation": {
+    "observed_at": "2026-10-24T17:23:23Z",
+    "successful_stages_listed": 36,
+    "pages_job": 120934534390,
+    "public_capture_artifact_count": 0,
+    "qualification": "not a claim of rerunning all earlier computation"
+  },
+  "dependent_publisher": {
+    "job": 120938514043,
+    "status": "completed",
+    "started_at": "2026-10-24T17:31:31Z",
+    "conclusion": "success",
+    "completed_at": "2026-10-24T17:42:37Z"
+  },
+  "original_failure_preserved": true
+}

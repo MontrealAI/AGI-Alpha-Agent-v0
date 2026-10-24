@@ -4,13 +4,37 @@
     "version": "1.41.1",
     "commit": "787bc547f8c44854931b316d7286b8bc9f9c8bba",
     "tree": "fddf8462e4508462e2bb0a591a1e940aa9da97ee",
-    "status": "MERGED_SOURCE_ACCEPTED_SITE_GATE_NONTERMINAL",
-    "public_installed_verified": false,
+    "status": "PUBLIC_INSTALLED_CORE_VERIFIED_COLD_CONCURRENCY_DEFECT",
+    "public_installed_verified": true,
     "scope": "Five maintained local fixed-worker families; no wallet or provider",
     "source_manifest": "alpha_factory_v1/core/runtime/successor/workbench_sources.json",
     "source_manifest_sha256": "34e704e73188cfa12f5ce857aed6045b8cd77929b6b5fd531ef2e9a53984a4af",
     "worker_source_hash": "7ab63a685fdd28fe220350418df5f240960c7788f6405da4ed24a7c3902123c1",
-    "expected_installed_module_sha256": "6efb59f24b67dbaf0932166ba8161eb9797b9866cbc36c123015b4465bfd737c"
+    "expected_installed_module_sha256": "6efb59f24b67dbaf0932166ba8161eb9797b9866cbc36c123015b4465bfd737c",
+    "public_release": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.41.1",
+    "release_id": 422882471,
+    "release_published_at": "2026-10-24T17:42:33Z",
+    "installed_acceptance": "installed-acceptance.json",
+    "cold_concurrent_qualification": false,
+    "cold_concurrency_limit": {
+      "original_sample": "installed-load-failed-samples.json",
+      "completed": 20,
+      "submitted": 21,
+      "failed_level": {
+        "missions": 4,
+        "in_flight": 2,
+        "errors": 1,
+        "error_type": "ValueError"
+      },
+      "journal_valid": true,
+      "deterministic_public_reproduction": "cold-start-public-reproduction.json",
+      "explicit_recovery": "failed-load-explicit-recovery.json",
+      "correction_commit": "5ab92e5f4d2199ccfbfe2dd7e68e5a10205d07ee",
+      "correction_status": "ADOPTED_IN_EXISTING_1_42_PR_REVIEWED_HOSTED_CHECKS_PENDING",
+      "target_owner_pr": 4890,
+      "correction_owner_head": "d671adc03ed8029d72031ba5944638b56704b81e",
+      "owner_ack_record": 6387898937
+    }
   },
   "retained_historical_api_route": {
     "status": "API_EVIDENCE_RETAINED_NOT_REMEASURED",
@@ -90,9 +114,10 @@
   "full_harness_complete": false,
   "new_four_installed_tuple_qualified": false,
   "verification_tools": {
-    "verify_public.py": "Prepared, not run; anonymous public metadata/tag/body/SHA256 verification, four concurrent streams",
-    "accept_installed.py": "Prepared, not run; workbench identity/recovery plus existing two-generation native rehearsal and explicit stopped restore",
-    "measure_installed.py": "Prepared, not run; standalone numerical load samples at1/4/16missions with1/2/4in-flight limit; latency, throughput, sampled RSS, storage, CPU and review backlog. No Fleet/held/native4 probe."
+    "verify_public.py": "PASS:106anonymousfullassetbodies2851918924bytes;186.112s;4streams;fourpublicbrowserreportaudits",
+    "accept_installed.py": "PASS:16CLIcommands,2caller-mutationcases,explicitinterruptionrecovery,existingtwo-generationRETAIN_INCUMBENT/HOLD/empty-authority/stoppedrestore",
+    "measure_installed.py": "FAIL:20/21completed;oneValueErrorincold4mission/2workerlevel;threevalidjournals;originalsamplepreserved",
+    "verify_site.py": "PASS:eightanonymoussource-boundroutes;originalPDFbytesretained"
   },
   "public_companion_metadata_observation": {
     "observed_at": "2026-10-24T16:35:18Z",
@@ -100,5 +125,11 @@
     "Manager_public_latest": "v1.20.1",
     "Fleet_combined_candidate_published": false,
     "bodies_reverified": false
-  }
+  },
+  "measurement_limits": [
+    "Single load sample per level; no general scale qualification",
+    "20ms RSS sampling recorded no increase; combined child peak memory was not established and remains unqualified",
+    "Allocated machine price and human review time unknown",
+    "Successful work remains awaiting local review; one explicit recovery intervention was needed"
+  ]
 }

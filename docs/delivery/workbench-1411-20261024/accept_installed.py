@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import argparse, copy, hashlib, json, os, pathlib, subprocess, sys, uuid
 from datetime import datetime, timezone
+import platform
 
 p = argparse.ArgumentParser()
 p.add_argument("--commit", required=True)
@@ -175,10 +176,12 @@ recovered = workbench.execute(recovery_home, spec, recovery_id, resume=True)
 assert recovered["state"] == "review" and recovered["attempts"] == 2
 receipt = {
     "schema": "agialpha.workbench-patch-installed.v1",
+    "passed": True,
     "version": "1.41.1",
     "observed_at_utc": datetime.now(timezone.utc).isoformat(),
     "commit": a.commit,
     "python": sys.version,
+    "platform": platform.platform(),
     "module": str(module),
     "module_sha256": a.module_sha256,
     "node": subprocess.check_output(["node", "--version"], text=True).strip(),
