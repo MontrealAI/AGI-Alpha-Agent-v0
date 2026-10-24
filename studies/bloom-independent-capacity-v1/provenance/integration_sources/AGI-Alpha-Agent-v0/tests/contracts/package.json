@@ -1,0 +1,48 @@
+{
+  "name": "contract-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:plan": "node scripts/deployment.js",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "ascension:demo": "hardhat run scripts/demo.js",
+    "mainnet:plan": "node scripts/mainnet.js plan",
+    "mainnet:preflight": "node scripts/mainnet.js preflight",
+    "audit": "npm audit --audit-level=moderate",
+    "mainnet:verify": "node scripts/mainnet.js verify",
+    "mainnet:record-check": "node scripts/mainnet-record.js check",
+    "mainnet:record-verify": "node scripts/mainnet-record.js verify",
+    "compile:strict": "npm run compile:production && hardhat compile --force",
+    "mainnet:verification-package": "node scripts/verification-package.js",
+    "compile:production": "node scripts/compile-production.js",
+    "test:authority": "hardhat test --no-compile --config hardhat.authority.config.js authority-test/mainnet-authority.test.js authority-test/authority-io.test.js authority-test/authority-session-relay.test.js",
+    "mainnet:authority-plan": "node scripts/mainnet-authority.js plan",
+    "mainnet:authority-preflight": "node scripts/authority-cli.js preflight",
+    "mainnet:authority-verify": "node scripts/authority-cli.js verify",
+    "mainnet:authority-package": "node scripts/authority-verification-package.js",
+    "mainnet:authority-session": "node scripts/authority-session.js",
+    "mainnet:creator": "hardhat run --no-compile --config hardhat.creator.config.js --network mainnet scripts/deploy-mainnet-creator.js",
+    "test:creator-terminal": "node --test authority-test/creator-terminal.test.cjs authority-test/ephemeral-key.test.cjs"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "2.1.2",
+    "@nomicfoundation/hardhat-ethers": "3.1.3",
+    "@openzeppelin/contracts": "5.6.1",
+    "chai": "4.5.0",
+    "ethers": "6.17.0",
+    "hardhat": "2.29.1",
+    "solc": "0.8.37"
+  },
+  "overrides": {
+    "adm-zip": "0.6.1",
+    "undici": "6.28.1",
+    "@fastify/busboy": "3.2.2",
+    "serialize-javascript": "7.0.5",
+    "tmp": "0.2.7",
+    "uuid": "11.1.1",
+    "cookie": "0.7.2",
+    "diff": "8.0.3"
+  }
+}

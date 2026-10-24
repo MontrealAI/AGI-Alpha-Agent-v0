@@ -1,0 +1,175 @@
+{
+  "analysis_refit": false,
+  "command": "python3 paper/make_figures.py --results results --out build/figures",
+  "environment": {
+    "matplotlib": "3.10.8",
+    "numpy": "2.3.5",
+    "python": "3.12.14"
+  },
+  "figures": {
+    "fig01_effects": {
+      "aggregation": "Frozen preregistered ratio and CI transformed by saving = 100*(1-ratio); CI endpoints reverse. No recomputation or pooling.",
+      "data": [
+        "fig01_effects.data.csv"
+      ],
+      "interpretation": "Neither competitive superiority nor the receiver benefit threshold passed in confirmation or fresh reproduction.",
+      "outputs": [
+        "fig01_effects.pdf",
+        "fig01_effects.svg",
+        "fig01_effects.png"
+      ]
+    },
+    "fig02_cpu_phases": {
+      "aggregation": "For each method, treatment and world select the middle of three total-CPU cold replicates. Sum phases from that same record; residual is total minus all recorded phases. Plot unweighted means over 48 worlds. Stable totals exactly reconcile with frozen primary means.",
+      "data": [
+        "fig02_cpu_phases.data.csv",
+        "fig02_cpu_phases.worlds.csv"
+      ],
+      "interpretation": "Operational CPU is measured; these bars do not establish complete monetary cost. All predecessor work is included; symmetric external scientific audit is separate.",
+      "outputs": [
+        "fig02_cpu_phases.pdf",
+        "fig02_cpu_phases.svg",
+        "fig02_cpu_phases.png"
+      ]
+    },
+    "fig03_robustness": {
+      "aggregation": "Confirmation only. Group by method, treatment, verification and world; repeated outcomes must agree. A cell denominator is 48 worlds, not independent queries or the number of logical replicates. Unsafe bypass was run only for BLOOM.",
+      "data": [
+        "fig03_robustness.data.csv",
+        "fig03_robustness.worlds.csv"
+      ],
+      "interpretation": "Qualified plans, correct infeasibility and correct refusal are distinct. The missing-edge arm is correct only relative to supplied incomplete input; every world omits some complete-graph impact. Unsafe bypass accepts corrupt artifacts and produces wrong outputs.",
+      "outputs": [
+        "fig03_robustness.pdf",
+        "fig03_robustness.svg",
+        "fig03_robustness.png"
+      ]
+    },
+    "fig04_operator_choices": {
+      "aggregation": "Confirmation only. One final operator choice per method, treatment and world; choices must agree across repeated stable trials. Show counts and fractions, without inferential claims.",
+      "data": [
+        "fig04_operator_choices.data.csv",
+        "fig04_operator_choices.worlds.csv"
+      ],
+      "interpretation": "The stable result is a comparison of selection and surrounding costs with a shared SCC capability. Under storage or constructor constraints conventional memoization and walking remain useful fallbacks.",
+      "outputs": [
+        "fig04_operator_choices.pdf",
+        "fig04_operator_choices.svg",
+        "fig04_operator_choices.png"
+      ]
+    }
+  },
+  "freeze_sha256": "ecd3df2706d034d17a1441c62fd4dba0c7c92f5ea4d22327011bf5e1116bcfbe",
+  "fresh_reproduction_pooled_with_confirmation": false,
+  "g1_independent_receipt_verdict": "PASS",
+  "g1_note": "Independent receipt is an overlay; the frozen analysis field remains unchanged.",
+  "g1_original_analysis_field": "PENDING_INDEPENDENT_REPLAY",
+  "generated_at_utc": "2026-10-24T02:12:22.572071+00:00",
+  "inputs": {
+    "results/confirmation/analysis.json": {
+      "bytes": 21362,
+      "sha256": "078ddf02375278c6fc077bc0f3aeaf1227f117f15704075727bd1d0bae98f69e"
+    },
+    "results/confirmation/records.jsonl.gz": {
+      "bytes": 910047,
+      "sha256": "9266a79ed102de5734bc0ec21b6a2f42f58cb6ac7a94e0cf6993070994374ca8"
+    },
+    "results/independent_reproduction_review/INDEPENDENT_REPRODUCTION_REVIEW.json": {
+      "bytes": 194830,
+      "sha256": "d2b4d83ac724f6d5f523cadef9706ac3a8d89aa393ea793dc7c81744eb60f2dc"
+    },
+    "results/reproduction/analysis.json": {
+      "bytes": 20637,
+      "sha256": "5cb59f3ab233ffe1d33269aa3ff4caf5475248332b3842a805c600d4c2b0db2e"
+    },
+    "results/reproduction/records.jsonl.gz": {
+      "bytes": 453601,
+      "sha256": "eb39dcf6f359d33210ec952aa0d70f4bb4cd5e0d85c8a0ff0270b04b0c853d6b"
+    }
+  },
+  "outputs": {
+    "fig01_effects.data.csv": {
+      "bytes": 1849,
+      "sha256": "5c6107969c6c9c81f4f59357c52e24f672eb3e5fb0735aa5470ef22f58a6281d"
+    },
+    "fig01_effects.pdf": {
+      "bytes": 25582,
+      "sha256": "e5c7a6ef82582b940731a19b489bbbd25fc8dee170e0253c736d16340227866e"
+    },
+    "fig01_effects.png": {
+      "bytes": 132782,
+      "sha256": "b2156618bb7636e46578850092677fe78accdd0734f0c266876797ae7e4b3f2c"
+    },
+    "fig01_effects.svg": {
+      "bytes": 21230,
+      "sha256": "aa7cda16674c8fdcd2bb80e183dc610eae0079f725d156a00b54bb5e0437980e"
+    },
+    "fig02_cpu_phases.data.csv": {
+      "bytes": 3511,
+      "sha256": "37e09a386346897742a0c8423dbe0ceb1a7cb65f5a40d870d575d35f67a6ea80"
+    },
+    "fig02_cpu_phases.pdf": {
+      "bytes": 23736,
+      "sha256": "67ce1a3037d3ba33fdf014c29a8f795aa6881ab76f5f9c6a538960480a8127d4"
+    },
+    "fig02_cpu_phases.png": {
+      "bytes": 93425,
+      "sha256": "16a7dda048b1f323623c8a633dc8b37d92e1156983dfd6d9ae4ac95819f8d5cd"
+    },
+    "fig02_cpu_phases.svg": {
+      "bytes": 17380,
+      "sha256": "a7d0f741fecc79935c4cbf6a0485a81d21134b2359d796e7829ccec52e5068cf"
+    },
+    "fig02_cpu_phases.worlds.csv": {
+      "bytes": 38602,
+      "sha256": "8abfede54df77236c9ec65fee9933ca7acff7ac855c13df099cd0f5e24f74759"
+    },
+    "fig03_robustness.data.csv": {
+      "bytes": 3034,
+      "sha256": "1339f08b42919286e1e3ed6f731931d2ab794ccb4cd4b9ab8b4e38ed87fcaace"
+    },
+    "fig03_robustness.pdf": {
+      "bytes": 24440,
+      "sha256": "6d267177a84764fcf2d37e09e69785afbaa47af09b2d716bbc35d2a0f541a4b1"
+    },
+    "fig03_robustness.png": {
+      "bytes": 171033,
+      "sha256": "07f012c1de37ebcfdef8a434912f6d41d8e365dda5fe51bae9ad78ea40663404"
+    },
+    "fig03_robustness.svg": {
+      "bytes": 28398,
+      "sha256": "f107a4575ddeccf25e46da493d71a2cf3689d9a584567fa8293db0a44d32599a"
+    },
+    "fig03_robustness.worlds.csv": {
+      "bytes": 256434,
+      "sha256": "25d612e006ab2d2a0097ca201d3e495e24cea354c4c2c35a7d5ec268edfad248"
+    },
+    "fig04_operator_choices.data.csv": {
+      "bytes": 1865,
+      "sha256": "fe695ac05451eb51688f35c30a8352f940f5aabb1d8c6f6c614ad060555de903"
+    },
+    "fig04_operator_choices.pdf": {
+      "bytes": 23606,
+      "sha256": "ea6a944cbfbbb4cb9506028dff3185f986614b9c34fb5eb8d6d58bc0589d562f"
+    },
+    "fig04_operator_choices.png": {
+      "bytes": 103454,
+      "sha256": "1d68e7591981a7858f08b82d2b0628eb5db126ac8152a9ecfcdad444fab9f416"
+    },
+    "fig04_operator_choices.svg": {
+      "bytes": 26774,
+      "sha256": "bca3d041096d171f033c3f8d469d29ad6032e355425fd810f6bcd62d46f9f5e6"
+    },
+    "fig04_operator_choices.worlds.csv": {
+      "bytes": 48288,
+      "sha256": "35a2c46e57b983a854d1214eaa27c9968dc370d35e16410fc7b48001e60c0312"
+    }
+  },
+  "schema": "bloom-publication-figure-provenance/v1",
+  "scope": "Synthetic dependency graphs and coverage plans. These figures establish no actual test runtime savings, revenue, market demand, complete monetary cost or unrestricted regression safety.",
+  "script": {
+    "path": "paper/make_figures.py",
+    "sha256": "1eefbfc9c704a8f350b7f02bce7b9496f58ae34ef187b2e179f721e023665fe2"
+  },
+  "total_output_bytes": 1045423
+}
