@@ -25,6 +25,7 @@ EXCLUDE = {
     # A portable source-bound document has one canonical route; rewriting its
     # embedded executable/data strings would invalidate its CSP and identities.
     "transformational-intelligence",
+    "try",
     "stylesheets",
     "assets",
     "utils",
