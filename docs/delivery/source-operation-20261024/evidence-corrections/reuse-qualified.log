@@ -1,0 +1,32 @@
+..........................F............................................. [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_retained_program_survives_restart_and_is_equally_available_to_both_methods _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-33/test_retained_program_survives0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fadbe1629c0>
+
+    def test_retained_program_survives_restart_and_is_equally_available_to_both_methods(tmp_path, monkeypatch):
+        operation, spec, clock = prepare_reuse(tmp_path, monkeypatch)
+        for _ in range(3):
+            operation.advance(spec.operation_id)
+        trained = operation.experiment.show(spec.study.study_id)
+        artifact = trained["freeze"]["manifest"]["retained_program"]
+        assert artifact["state"] == "fresh-trial-only" and artifact["authority_granted"] is False
+        assert all(run["retained_artifact_digest"] is None for run in trained["training"]["runs"])
+        restarted = CampaignOperation(Journal(operation.journal.root))
+        drain(restarted, spec, clock)
+        final = restarted.experiment.show(spec.study.study_id)
+        runs = final["confirmation"]["runs"]
+        for policy in ("conventional-reuse", "successor-reuse"):
+            inherited = [run for run in runs if run["policy"] == policy]
+            assert all(run["retained_artifact_digest"] == artifact["digest"] for run in inherited)
+>           assert all(run["retained_program_tested"] for run in inherited)
+E           assert False
+E            +  where False = all(<generator object test_retained_program_survives_restart_and_is_equally_available_to_both_methods.<locals>.<genexpr> at 0x7fadbde38d40>)
+
+tests/runtime/test_campaign_operation.py:381: AssertionError
+- generated xml file: /workspace/scratch/0ff75974e577/evidence/reuse-qualified.xml -
+=========================== short test summary info ============================
+FAILED tests/runtime/test_campaign_operation.py::test_retained_program_survives_restart_and_is_equally_available_to_both_methods
+1 failed, 72 passed in 39.97s

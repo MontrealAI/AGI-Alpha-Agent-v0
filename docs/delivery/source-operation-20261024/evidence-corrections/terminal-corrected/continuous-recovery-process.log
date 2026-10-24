@@ -1,0 +1,95 @@
+{
+  "output": "/workspace/scratch/0ff75974e577/qualification-terminal/continuous/resumed-status.json",
+  "operation_id": "0c2b2792-4726-5717-82f1-40a1fe6c3cde",
+  "state": "completed",
+  "executor_active": false,
+  "operator_paused": false,
+  "what_is_running": "finite local source summaries; foreground executor only",
+  "operator": "Codex bounded qualification controller; human labor unmeasured",
+  "expires_ms": 1792866404529,
+  "completed_mission_comparisons": 12,
+  "inconclusive": 0,
+  "changed_since_training": {
+    "digest": "365f3477e32b8c2ff48946d114632e71f05c2f40ec20d5dd1fe893c858aa3c5e",
+    "journal_predecessor": "29eb62f0e2f06f62ebab9ad0d6d47090d8518967ef4aa658bf3bbad9314d3343",
+    "manifest": {
+      "archive_access": "none",
+      "binding": "647cf5072ae64d32209a14dd7292b7143e00bbced8cbd246ea37cbe7fd619104",
+      "initial_agent": "lead-source-selector/v1",
+      "sampling_unit": "complete-campaign",
+      "selected_policy": "direct-pair",
+      "terminal_campaigns": 3,
+      "training_digest": "6c36e5b311a9576960d745cd622edb73f44191ace454c7ebe19668f3b89bdab0"
+    }
+  },
+  "improvement_evidence": 8,
+  "costs": {
+    "search_units_including_ancestors": 260,
+    "execution_units_including_ancestors": 450,
+    "reserved_search_ceiling": 1000000,
+    "reserved_execution_ceiling": 1000000,
+    "measured_process_cpu_ns": 6373664884,
+    "measured_session_wall_ns": 12307932357,
+    "unclean_sessions": 1,
+    "human_minutes": "not measured",
+    "engineering_and_review": "not measured",
+    "USDCBaseUnits": "0",
+    "AGIALPHABaseUnits": "0"
+  },
+  "needs_attention": false,
+  "failure": null,
+  "interventions": [
+    {
+      "action": "approve-envelope",
+      "actor": "Codex bounded qualification controller; human labor unmeasured",
+      "at_ms": 1792866344529
+    },
+    {
+      "action": "start-process",
+      "actor": "operator-or-service",
+      "at_ms": 1792866344532
+    },
+    {
+      "action": "start-process",
+      "actor": "operator-or-service",
+      "at_ms": 1792866345669
+    }
+  ],
+  "useful_output": "Source notes and checks: operation-export evidence.campaigns.*.result",
+  "latest_output": {
+    "unit": "continuous-unit-3",
+    "policy": "fixed-frame",
+    "notes": [
+      {
+        "covered_weight": 13,
+        "program_digest": "b2176b77a0fa916cd25cb6eed21cbf7cbe5a4795d98a93a35e48f98b47298e7c",
+        "references": [
+          {
+            "id": "a",
+            "provenance": "Constructed mechanism fixture; local weights and dependencies, no fetched source."
+          },
+          {
+            "id": "b",
+            "provenance": "Constructed mechanism fixture; local weights and dependencies, no fetched source."
+          }
+        ],
+        "score_millionths": 812500,
+        "selected": [
+          "a",
+          "b"
+        ],
+        "source_digest": "6eb875825d38d536ed660fda25660f41e16aa3b735054ba9f20641d5d96ca406",
+        "supported_claims": [
+          "a",
+          "b"
+        ],
+        "text": "Constructed continuous-unit-3 fresh: Synthetic arrival-3 fresh requirement a; graph variant 3.\nConstructed continuous-unit-3 fresh: Synthetic arrival-3 fresh requirement b; graph variant 3.",
+        "total_weight": 16,
+        "unsupported_claims": []
+      }
+    ]
+  },
+  "stop": "alpha-agent --home HOME successor-study --output NEW.json operation-stop 0c2b2792-4726-5717-82f1-40a1fe6c3cde",
+  "evidence_scope": "synthetic mechanism when synthetic inputs are used; local structural checking; no commercial, comprehension or physical claim",
+  "authority_granted": false
+}

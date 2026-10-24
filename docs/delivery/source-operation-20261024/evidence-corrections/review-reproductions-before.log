@@ -1,0 +1,263 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+_____ test_base_loop_entry_points_recheck_operation_permit[expiry-approve] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_base_loop_entry_points_re0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5fc445b020>
+entry = 'approve', invalid = 'expiry'
+
+    @pytest.mark.parametrize("entry", ["approve", "step"])
+    @pytest.mark.parametrize("invalid", ["expiry", "restored-home"])
+    def test_base_loop_entry_points_recheck_operation_permit(tmp_path, monkeypatch, entry, invalid):
+        from alpha_factory_v1.core.runtime.successor.transformation import DiscoveryLoop
+    
+        operation, spec, clock = setup(tmp_path, monkeypatch)
+    
+        def die(*args, **kwargs):
+            raise SystemExit("interrupted with a queued approved native child")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(DiscoveryLoop, "step", die)
+            with pytest.raises(SystemExit):
+                operation.advance(spec.operation_id)
+        parent = operation.experiment.show(spec.study.study_id)
+        child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+        journal = operation.journal
+        if invalid == "expiry":
+            clock[0] = operation.show(spec.operation_id)["expires_ms"]
+        else:
+            backup = tmp_path / "boundary.zip"
+            journal.backup(backup)
+            journal = Journal.restore(backup, tmp_path / "elsewhere")
+        base = DiscoveryLoop(journal)
+        child = base.show(child_id)
+>       with pytest.raises(Conflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_campaign_operation.py:248: Failed
+______ test_base_loop_entry_points_recheck_operation_permit[expiry-step] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_base_loop_entry_points_re1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5fc4294ad0>
+entry = 'step', invalid = 'expiry'
+
+    @pytest.mark.parametrize("entry", ["approve", "step"])
+    @pytest.mark.parametrize("invalid", ["expiry", "restored-home"])
+    def test_base_loop_entry_points_recheck_operation_permit(tmp_path, monkeypatch, entry, invalid):
+        from alpha_factory_v1.core.runtime.successor.transformation import DiscoveryLoop
+    
+        operation, spec, clock = setup(tmp_path, monkeypatch)
+    
+        def die(*args, **kwargs):
+            raise SystemExit("interrupted with a queued approved native child")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(DiscoveryLoop, "step", die)
+            with pytest.raises(SystemExit):
+                operation.advance(spec.operation_id)
+        parent = operation.experiment.show(spec.study.study_id)
+        child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+        journal = operation.journal
+        if invalid == "expiry":
+            clock[0] = operation.show(spec.operation_id)["expires_ms"]
+        else:
+            backup = tmp_path / "boundary.zip"
+            journal.backup(backup)
+            journal = Journal.restore(backup, tmp_path / "elsewhere")
+        base = DiscoveryLoop(journal)
+        child = base.show(child_id)
+>       with pytest.raises(Conflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_campaign_operation.py:248: Failed
+_ test_base_loop_entry_points_recheck_operation_permit[restored-home-approve] __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_base_loop_entry_points_re2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5fc42966f0>
+entry = 'approve', invalid = 'restored-home'
+
+    @pytest.mark.parametrize("entry", ["approve", "step"])
+    @pytest.mark.parametrize("invalid", ["expiry", "restored-home"])
+    def test_base_loop_entry_points_recheck_operation_permit(tmp_path, monkeypatch, entry, invalid):
+        from alpha_factory_v1.core.runtime.successor.transformation import DiscoveryLoop
+    
+        operation, spec, clock = setup(tmp_path, monkeypatch)
+    
+        def die(*args, **kwargs):
+            raise SystemExit("interrupted with a queued approved native child")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(DiscoveryLoop, "step", die)
+            with pytest.raises(SystemExit):
+                operation.advance(spec.operation_id)
+        parent = operation.experiment.show(spec.study.study_id)
+        child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+        journal = operation.journal
+        if invalid == "expiry":
+            clock[0] = operation.show(spec.operation_id)["expires_ms"]
+        else:
+            backup = tmp_path / "boundary.zip"
+            journal.backup(backup)
+            journal = Journal.restore(backup, tmp_path / "elsewhere")
+        base = DiscoveryLoop(journal)
+        child = base.show(child_id)
+>       with pytest.raises(Conflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_campaign_operation.py:248: Failed
+___ test_base_loop_entry_points_recheck_operation_permit[restored-home-step] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_base_loop_entry_points_re3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5fc4295550>
+entry = 'step', invalid = 'restored-home'
+
+    @pytest.mark.parametrize("entry", ["approve", "step"])
+    @pytest.mark.parametrize("invalid", ["expiry", "restored-home"])
+    def test_base_loop_entry_points_recheck_operation_permit(tmp_path, monkeypatch, entry, invalid):
+        from alpha_factory_v1.core.runtime.successor.transformation import DiscoveryLoop
+    
+        operation, spec, clock = setup(tmp_path, monkeypatch)
+    
+        def die(*args, **kwargs):
+            raise SystemExit("interrupted with a queued approved native child")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(DiscoveryLoop, "step", die)
+            with pytest.raises(SystemExit):
+                operation.advance(spec.operation_id)
+        parent = operation.experiment.show(spec.study.study_id)
+        child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+        journal = operation.journal
+        if invalid == "expiry":
+            clock[0] = operation.show(spec.operation_id)["expires_ms"]
+        else:
+            backup = tmp_path / "boundary.zip"
+            journal.backup(backup)
+            journal = Journal.restore(backup, tmp_path / "elsewhere")
+        base = DiscoveryLoop(journal)
+        child = base.show(child_id)
+>       with pytest.raises(Conflict):
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'alpha_factory_v1.core.runtime.store.Conflict'>
+
+tests/runtime/test_campaign_operation.py:248: Failed
+__ test_base_study_cannot_replace_operation_batch_after_pre_reservation_crash __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_base_study_cannot_replace0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5fc42958e0>
+
+    def test_base_study_cannot_replace_operation_batch_after_pre_reservation_crash(tmp_path, monkeypatch):
+        from alpha_factory_v1.core.runtime.successor.campaign_experiment import CampaignUnit
+    
+        operation, spec, clock = setup(tmp_path, monkeypatch)
+    
+        def die(*args, **kwargs):
+            raise SystemExit("interrupted after assigning due child, before reserving inputs")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(operation.experiment, "_reserve", die)
+            with pytest.raises(SystemExit):
+                operation.advance(spec.operation_id)
+        raw = spec.training[0].unit.model_dump()
+        raw["request"]["development"][0]["claims"][0]["text"] = "Substituted outside the approved submitted operation."
+        with pytest.raises(Conflict, match="submitted|approved"):
+>           operation.experiment.train(spec.study.study_id, [CampaignUnit.model_validate(raw)])
+
+tests/runtime/test_campaign_operation.py:271: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/runtime/successor/campaign_experiment.py:607: in train
+    return self._run(study_id, "training")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/campaign_experiment.py:511: in _run
+    run = self._campaign(spec, unit, policy, phase)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/campaign_experiment.py:427: in _campaign
+    loop.approve(campaign_id, current["binding_digest"])
+alpha_factory_v1/core/runtime/successor/transformation.py:976: in approve
+    return self._update(campaign_id, "approve", binding_digest=binding_digest)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alpha_factory_v1/core/runtime/successor/transformation.py:990: in _update
+    self._current(data, cx)
+alpha_factory_v1/core/runtime/successor/transformation.py:1044: in _current
+    validate_child_lease(parent, request)
+alpha_factory_v1/core/runtime/successor/campaign_experiment.py:188: in validate_child_lease
+    validate_child(parent, request)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+parent = {'approval': '7862ed5def0bdd31a4a24a38c8a85f39120306651fc8d96c8e771611245d41ae', 'binding': '7862ed5def0bdd31a4a24a38c...1611245d41ae', 'confirmation': None, 'digest': 'b7f86fc2709b8bec6613d18dcf382b7aa76b79976b590c178f02e980fb19c84b', ...}
+request = DiscoveryRequest(schema_version=1, campaign_id='f264f2c2-4d07-505c-89f4-dfaf82ae6780', charter=IntentCharter(schema_ve...651fc8d96c8e771611245d41ae', 'ti_parent_phase': 'training', 'ti_parent_study': 'a93ebfba-ff7f-4eac-9e00-58cdd13141e2'})
+
+    def validate_child(parent: dict[str, Any], request: Any) -> None:
+        """Only the currently due child receives the existing exact parent study lease."""
+        link = parent["operation"]
+        if request.campaign_id != link.get("child") or _now() < link.get("due_ms", 2**63):
+>           raise Conflict("child is not the due operation mission")
+E           alpha_factory_v1.core.runtime.store.Conflict: child is not the due operation mission
+
+alpha_factory_v1/core/runtime/successor/campaign_operation.py:191: Conflict
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_base_study_cannot_replace0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5fc42958e0>
+
+    def test_base_study_cannot_replace_operation_batch_after_pre_reservation_crash(tmp_path, monkeypatch):
+        from alpha_factory_v1.core.runtime.successor.campaign_experiment import CampaignUnit
+    
+        operation, spec, clock = setup(tmp_path, monkeypatch)
+    
+        def die(*args, **kwargs):
+            raise SystemExit("interrupted after assigning due child, before reserving inputs")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(operation.experiment, "_reserve", die)
+            with pytest.raises(SystemExit):
+                operation.advance(spec.operation_id)
+        raw = spec.training[0].unit.model_dump()
+        raw["request"]["development"][0]["claims"][0]["text"] = "Substituted outside the approved submitted operation."
+>       with pytest.raises(Conflict, match="submitted|approved"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'submitted|approved'
+E        Input: 'child is not the due operation mission'
+
+tests/runtime/test_campaign_operation.py:270: AssertionError
+___________ test_reconcile_committed_child_on_final_allowed_attempt ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-21/test_reconcile_committed_child0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f5fc4273ec0>
+
+    def test_reconcile_committed_child_on_final_allowed_attempt(tmp_path, monkeypatch):
+        operation, spec, clock = setup(tmp_path, monkeypatch, max_attempts=1)
+        original = operation.experiment._campaign
+        committed = []
+    
+        def die(*args):
+            result = original(*args)
+            committed.append(operation.experiment.loop.show(result["campaign_id"]))
+            raise SystemExit("last-attempt committed child; parent not attached")
+    
+        with monkeypatch.context() as patch:
+            patch.setattr(operation.experiment, "_campaign", die)
+            with pytest.raises(SystemExit):
+                operation.advance(spec.operation_id)
+        restarted = CampaignOperation(Journal(operation.journal.root))
+        restarted.advance(spec.operation_id)
+>       assert restarted.show(spec.operation_id)["state"] == "running"
+E       AssertionError: assert 'hold' == 'running'
+E         
+E         - running
+E         + hold
+
+tests/runtime/test_campaign_operation.py:291: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_campaign_operation.py::test_base_loop_entry_points_recheck_operation_permit[expiry-approve]
+FAILED tests/runtime/test_campaign_operation.py::test_base_loop_entry_points_recheck_operation_permit[expiry-step]
+FAILED tests/runtime/test_campaign_operation.py::test_base_loop_entry_points_recheck_operation_permit[restored-home-approve]
+FAILED tests/runtime/test_campaign_operation.py::test_base_loop_entry_points_recheck_operation_permit[restored-home-step]
+FAILED tests/runtime/test_campaign_operation.py::test_base_study_cannot_replace_operation_batch_after_pre_reservation_crash
+FAILED tests/runtime/test_campaign_operation.py::test_reconcile_committed_child_on_final_allowed_attempt
+6 failed, 17 deselected in 2.33s

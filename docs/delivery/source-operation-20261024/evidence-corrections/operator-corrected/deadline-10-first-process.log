@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "<string>", line 19, in <module>
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_operation.py", line 434, in run
+    self.advance(operation_id)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_operation.py", line 401, in advance
+    raise error
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_operation.py", line 380, in advance
+    self.experiment._run(spec.study.study_id, phase, max_runs=1)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_experiment.py", line 528, in _run
+    run = self._campaign(spec, unit, policy, phase)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 12, in fault
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_experiment.py", line 446, in _campaign
+    current = loop.step(campaign_id, operation_id="study-" + step)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/transformation.py", line 1052, in step
+    self._running(cx)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_experiment.py", line 55, in _running
+    self.experiment._ready(parent, cx)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_experiment.py", line 229, in _ready
+    validate_authority(self.journal, record, cx)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_operation.py", line 183, in validate_authority
+    raise Conflict("operation stopped, expired, restored elsewhere or changed; no authority is inherited")
+alpha_factory_v1.core.runtime.store.Conflict: operation stopped, expired, restored elsewhere or changed; no authority is inherited

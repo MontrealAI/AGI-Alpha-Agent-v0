@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "<string>", line 19, in <module>
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_operation.py", line 434, in run
+    self.advance(operation_id)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_operation.py", line 401, in advance
+    raise error
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_operation.py", line 380, in advance
+    self.experiment._run(spec.study.study_id, phase, max_runs=1)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_experiment.py", line 531, in _run
+    self._ready(current, cx)
+  File "/workspace/scratch/0ff75974e577/candidate-env/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/campaign_experiment.py", line 222, in _ready
+    raise Conflict("study is paused or canceled")
+alpha_factory_v1.core.runtime.store.Conflict: study is paused or canceled

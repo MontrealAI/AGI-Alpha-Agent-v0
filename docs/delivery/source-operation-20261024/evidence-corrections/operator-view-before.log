@@ -1,0 +1,25 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_operator_notes_use_the_frozen_policy_on_changed_requirements _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-28/test_operator_notes_use_the_fr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f6d63c3b800>
+
+    def test_operator_notes_use_the_frozen_policy_on_changed_requirements(tmp_path, monkeypatch):
+        operation, spec, clock = setup(tmp_path, monkeypatch)
+        for _ in range(3):
+            operation.advance(spec.operation_id)
+        clock[0] += 8000
+        for _ in range(6):
+            operation.advance(spec.operation_id)
+        status = operation.status(spec.operation_id)
+>       assert status["latest_output"]["policy"] == status["changed_since_training"]["manifest"]["selected_policy"]
+E       AssertionError: assert 'fixed-frame' == 'direct-pair'
+E         
+E         - direct-pair
+E         + fixed-frame
+
+tests/runtime/test_campaign_operation.py:356: AssertionError
+=========================== short test summary info ============================
+FAILED tests/runtime/test_campaign_operation.py::test_operator_notes_use_the_frozen_policy_on_changed_requirements
+1 failed, 25 deselected in 2.96s
