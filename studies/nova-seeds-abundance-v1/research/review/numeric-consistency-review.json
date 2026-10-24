@@ -1,0 +1,176 @@
+{
+  "schema": "nova-seeds-numeric-consistency-review/v1",
+  "recordedAt": "2026-10-24T03:11:14.040272+00:00",
+  "scope": "Read-only consistency checks; no rerun of experiment or frozen analysis",
+  "independentMeanChecks": 336,
+  "sensitivityArithmeticChecks": 960,
+  "sensitivityComparisons": 240,
+  "errorCount": 0,
+  "errors": [],
+  "passed": true,
+  "primary": {
+    "condition": "ordinary",
+    "reference": "idea",
+    "utilityDifference": 8.875,
+    "utilityDifferenceCI95": [
+      8.21875,
+      9.5625
+    ],
+    "relativeUtilityDifference": 0.37270341207349084,
+    "relativeUtilityDifferenceCI95": [
+      0.34926900438447217,
+      0.3944025425017488
+    ],
+    "cpuDifferenceMs": 68.36896614583333,
+    "cpuDifferenceCI95": [
+      63.74198554687501,
+      73.62717376302083
+    ],
+    "interpretation": "primary"
+  },
+  "exactComparisons": {
+    "clone": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 0,
+      "utilityMismatches": 0,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 0,
+      "firstExamples": []
+    },
+    "expert": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 0,
+      "utilityMismatches": 0,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 0,
+      "firstExamples": []
+    },
+    "disclosed": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 0,
+      "utilityMismatches": 0,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 0,
+      "firstExamples": []
+    },
+    "greedy": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 2658,
+      "utilityMismatches": 344,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 2658,
+      "firstExamples": [
+        {
+          "identity": [
+            "ordinary",
+            101,
+            0
+          ],
+          "differences": {
+            "objectiveMismatches": false,
+            "planMismatches": true,
+            "utilityMismatches": false,
+            "completedCountMismatches": false,
+            "fullOutcomeMismatches": true
+          },
+          "utility": 37,
+          "verifiedUtility": 37
+        },
+        {
+          "identity": [
+            "ordinary",
+            101,
+            1
+          ],
+          "differences": {
+            "objectiveMismatches": false,
+            "planMismatches": true,
+            "utilityMismatches": false,
+            "completedCountMismatches": false,
+            "fullOutcomeMismatches": true
+          },
+          "utility": 37,
+          "verifiedUtility": 37
+        },
+        {
+          "identity": [
+            "ordinary",
+            101,
+            2
+          ],
+          "differences": {
+            "objectiveMismatches": false,
+            "planMismatches": true,
+            "utilityMismatches": false,
+            "completedCountMismatches": false,
+            "fullOutcomeMismatches": true
+          },
+          "utility": 37,
+          "verifiedUtility": 37
+        }
+      ]
+    }
+  },
+  "editorialSnapshot": {
+    "pilotScopeClarified": true,
+    "registryStructuralEqualityClarified": true,
+    "unqualifiedAdaptiveWinsPhrasePresent": false,
+    "ambiguousDiagnosticHorizonCaptionPresent": false
+  },
+  "sources": {
+    "research/results/holdout-01/analysis/summary.json": {
+      "sha256": "9a9d29fd5c3ac2e4d49743d954d4bf21755d12c48021b0c26914fc2eb3e14456",
+      "bytes": 295636
+    },
+    "research/review/comparator-diagnostic-review.json": {
+      "sha256": "3438e93bbfcf8ed96eba31872450349876e2f8de8a2e2473a4015903c25e6c37",
+      "bytes": 44463
+    },
+    "research/evidence/hypothetical-sensitivity.json": {
+      "sha256": "116e02ff1d3272a25b63d70f75c96755fe7503e00ad74f448b41af6da166936f",
+      "bytes": 103400
+    },
+    "research/paper/paper.tex": {
+      "sha256": "a4abe568881b46b7a9f845152487e03261140107d89a7249bd947aee9b40e59f",
+      "bytes": 19096
+    },
+    "research/paper/generated.tex": {
+      "sha256": "f6cef13c34c003ad4d3a2a02a572ac90173e0c85ca41b54834336f42b9fc3b14",
+      "bytes": 11159
+    },
+    "research/paper/sections/economics.tex": {
+      "sha256": "22e6429f8d46281e05b7808a9c64ebef05d8bf009adc75321bc5d6f066aeb257",
+      "bytes": 4611
+    },
+    "research/paper/sections/integration.tex": {
+      "sha256": "86d30c1f0450424c247e52f025ac64f5b0d3cf7126a54a5eee7fc2d363c302a2",
+      "bytes": 6397
+    },
+    "research/paper/sections/protocol-results.tex": {
+      "sha256": "4d2c373baf7c9fb8b0ba4f4e4e3012aeb1ef9edc7221db7eea18b027fb6e5af1",
+      "bytes": 6223
+    },
+    "research/paper/sections/registry.tex": {
+      "sha256": "577379870b02c1d682930ff667ee1bb3b8c5a253569240b9a98eba92427d7dc5",
+      "bytes": 7447
+    },
+    "research/paper/sections/reproduction.tex": {
+      "sha256": "2a542872e85befd2ffc4f76ea0b06ec0c5fc2e0b75ef85dc62310874763ce068",
+      "bytes": 7171
+    },
+    "research/evidence/holdout-independent-audit.json": {
+      "sha256": "3a4e876b7a00b4e948b6fb7b10a9103c20ee642ccf819c3d970fac798307b601",
+      "bytes": 23704
+    },
+    "research/evidence/holdout-nominal-bound-audit.json": {
+      "sha256": "ce1fd5c16401983e97a039f1d10450640e785af54b444438682ad53614881efc",
+      "bytes": 3901
+    }
+  },
+  "fullCostProfitEstablished": false,
+  "externalPeerReview": false
+}

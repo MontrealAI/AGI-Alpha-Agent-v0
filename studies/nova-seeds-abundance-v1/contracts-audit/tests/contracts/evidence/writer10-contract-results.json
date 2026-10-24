@@ -1,0 +1,1094 @@
+{
+  "schema": "nova-seeds.writer10.contract-evidence.v1",
+  "environment": {
+    "scope": "isolated local unforked EVM; simulated tokens and ENS; no live financial action",
+    "chainId": "31337",
+    "network": "hardhat",
+    "node": "v24.19.0",
+    "solc": "0.8.37+commit.f401782d.Emscripten.clang",
+    "sourceCommit": "197147ffd22c5ae13113162afffaf3ce9c10aa2e",
+    "deployedSourceCompared": "c0fc5217e364a39a4cd123d17a8317c06b80f820"
+  },
+  "input": {
+    "filename": "pilot-03-binding-summary.json",
+    "bytes": 2646,
+    "keccak256": "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4",
+    "sha256": "1d0a79fc3f5f7f63a76e6bbf6e6f3b9a8de9b4eb752782f54d19aaf0843e2113"
+  },
+  "plan": {
+    "schema": "agialpha.ascension.fusion-plan.v1",
+    "token": "AGIALPHA",
+    "decimals": 18,
+    "planRoot": "0x44ed1afdb0c375bf492d9ca8a0677b8bb889290dfc10ddd28c266bdd781a8026",
+    "totalBounty": "200000000000000000000",
+    "jobs": [
+      {
+        "index": 0,
+        "spec": {
+          "goal": "Allocate synthetic calibration-constrained instrument work",
+          "successMetric": "Public ledger replay verifies validity, service output and resource accounting",
+          "bounty": "100000000000000000000",
+          "duration": 86400,
+          "priceWeight": 6000
+        },
+        "leaf": "0x161bd251f6efd7863051092d37a48f2bc6829d7c84256ac907def30e3dd6a0f2",
+        "proof": [
+          "0x84d35b7802c603cdcb1f6d7f84bc60a2a6ac1d505e4394630a475303b8174e35"
+        ]
+      },
+      {
+        "index": 1,
+        "spec": {
+          "goal": "Independently replay disclosed resource ledger",
+          "successMetric": "Exact input digest, plan and replay outcomes match the delivered bytes",
+          "bounty": "100000000000000000000",
+          "duration": 86400,
+          "priceWeight": 6000
+        },
+        "leaf": "0x84d35b7802c603cdcb1f6d7f84bc60a2a6ac1d505e4394630a475303b8174e35",
+        "proof": [
+          "0x161bd251f6efd7863051092d37a48f2bc6829d7c84256ac907def30e3dd6a0f2"
+        ]
+      }
+    ]
+  },
+  "seed": "1",
+  "successor": "2",
+  "checks": [
+    {
+      "label": "zero_jobs",
+      "passed": true,
+      "expected": "job bound"
+    },
+    {
+      "label": "129_jobs",
+      "passed": true,
+      "expected": "job bound"
+    },
+    {
+      "label": "duplicate_attestation",
+      "passed": true,
+      "expected": "duplicate vote"
+    },
+    {
+      "label": "bloom_keeps_same_nft",
+      "passed": true
+    },
+    {
+      "label": "buy_after_bloom",
+      "passed": true,
+      "expected": "funding closed"
+    },
+    {
+      "label": "sell_after_bloom",
+      "passed": true,
+      "expected": "not redeemable"
+    },
+    {
+      "label": "altered_metric_0",
+      "passed": true,
+      "expected": "FusionPlan proof"
+    },
+    {
+      "label": "duplicate_route_0",
+      "passed": true,
+      "expected": "FusionPlan proof"
+    },
+    {
+      "label": "wrong_artifact_0",
+      "passed": true,
+      "expected": "artifact binding"
+    },
+    {
+      "label": "duplicate_collect_0",
+      "passed": true,
+      "expected": "not collectible"
+    },
+    {
+      "label": "altered_metric_1",
+      "passed": true,
+      "expected": "FusionPlan proof"
+    },
+    {
+      "label": "duplicate_route_1",
+      "passed": true,
+      "expected": "FusionPlan proof"
+    },
+    {
+      "label": "wrong_artifact_1",
+      "passed": true,
+      "expected": "artifact binding"
+    },
+    {
+      "label": "duplicate_collect_1",
+      "passed": true,
+      "expected": "not collectible"
+    },
+    {
+      "label": "successor_requires_fresh_review",
+      "passed": true
+    },
+    {
+      "label": "bloom_at_funding_deadline",
+      "passed": true,
+      "expected": "not funded"
+    },
+    {
+      "label": "offchain_duplicate_route_0",
+      "passed": true,
+      "expected": "FusionPlan proof"
+    },
+    {
+      "label": "offchain_duplicate_route_1",
+      "passed": true,
+      "expected": "FusionPlan proof"
+    },
+    {
+      "label": "offchain_tamper_rejected",
+      "passed": true
+    },
+    {
+      "label": "offchain_middle_omission_rejected",
+      "passed": true
+    },
+    {
+      "label": "unflattering_truncated_prefix_accepted_without_pinned_terminal_checkpoint",
+      "passed": true,
+      "limitation": true
+    }
+  ],
+  "transactions": [
+    {
+      "label": "seal",
+      "hash": "0x9c57262050604ad9be28b88f1d2270dbbc63838610b8ea7c3e5b0600094729b3",
+      "blockNumber": 71,
+      "gasUsed": "268829",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+          "name": "Transfer",
+          "args": [
+            "0x0000000000000000000000000000000000000000",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "1"
+          ]
+        },
+        {
+          "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+          "name": "MetadataUpdate",
+          "args": [
+            "1"
+          ]
+        },
+        {
+          "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+          "name": "SeedSealed",
+          "args": [
+            "1",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "0x954ab5a836e9f7f6e56f5be7ef686a81c5332257f5ee61f91680213538d30e45",
+            "0x44ed1afdb0c375bf492d9ca8a0677b8bb889290dfc10ddd28c266bdd781a8026",
+            "0",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "open_review",
+      "hash": "0xf10c256d5c5c930880d270b5cc013e1993f7b73db00ea1f5eb9b8b57e36d0173",
+      "blockNumber": 74,
+      "gasUsed": "87830",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+          "name": "ReviewOpened",
+          "args": [
+            "1",
+            "1",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "1793414878"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "attest_1",
+      "hash": "0x90aa3fcaeebead76327c28b8336ce35c56b764ddd99d0fa87ee30ff717930405",
+      "blockNumber": 75,
+      "gasUsed": "148287",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+          "name": "RiskAttested",
+          "args": [
+            "1",
+            "1",
+            "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "1000",
+            true,
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "attest_2",
+      "hash": "0x9a3cdc552f5c62ee9b2df63da7d958494678c8c202efb8b54b3889e0782039cd",
+      "blockNumber": 77,
+      "gasUsed": "131187",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+          "name": "RiskAttested",
+          "args": [
+            "1",
+            "1",
+            "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "1000",
+            true,
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "open_funding",
+      "hash": "0xcdf6af913aeaca24453ad69d5143c901b9c7cd233a58c723fd707bb1c8d02b47",
+      "blockNumber": 78,
+      "gasUsed": "199350",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "MarketOpened",
+          "args": [
+            "1",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "2000000000000000000",
+            "100000000000000000",
+            "200000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "fund_local",
+      "hash": "0x027b8310065b83c32813095981ac5efc29f57f7efd2569256abaa42298144006",
+      "blockNumber": 79,
+      "gasUsed": "181508",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "297000000000000000000"
+          ]
+        },
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "Traded",
+          "args": [
+            "1",
+            "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            true,
+            "60",
+            "297000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "bloom",
+      "hash": "0x509b41d257a40f296a36189f8d6b77fade5a081ee6d01c82b9db6f3f29c9830f",
+      "blockNumber": 80,
+      "gasUsed": "108001",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "Bloomed",
+          "args": [
+            "1",
+            "0x31c4ca61bbfca972b07dbc91632692e62d47bc5958f4687b7b8a88dff89ff216",
+            "0x44ed1afdb0c375bf492d9ca8a0677b8bb889290dfc10ddd28c266bdd781a8026",
+            "297000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "route_0",
+      "hash": "0xec74287718a7b14283c1991d187d29a0ce837a4514d0ff498c9ad1d05a1ce7cb",
+      "blockNumber": 84,
+      "gasUsed": "601928",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Approval",
+          "args": [
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "100000000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "100000000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "JobPosted",
+          "args": [
+            "1",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "0x161bd251f6efd7863051092d37a48f2bc6829d7c84256ac907def30e3dd6a0f2",
+            "Allocate synthetic calibration-constrained instrument work",
+            "Public ledger replay verifies validity, service output and resource accounting",
+            "100000000000000000000",
+            "1792810148",
+            "1793155748"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Approval",
+          "args": [
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0"
+          ]
+        },
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "MissionRouted",
+          "args": [
+            "1",
+            "0",
+            "1",
+            "0x161bd251f6efd7863051092d37a48f2bc6829d7c84256ac907def30e3dd6a0f2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "bid_0",
+      "hash": "0x40109a88706eae87fa57368fb42469132edebcf5ca2a4bb5cc11d252f225b1f6",
+      "blockNumber": 86,
+      "gasUsed": "172910",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "BidPlaced",
+          "args": [
+            "1",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "80000000000000000000",
+            "3600",
+            "0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "award_0",
+      "hash": "0x8e6d7bc073c630e1f1d218bc0a9f1b8594c249eb2374d2f2ae29da92cf69be20",
+      "blockNumber": 88,
+      "gasUsed": "67582",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Assigned",
+          "args": [
+            "1",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "80000000000000000000",
+            "1792813749"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "submit_0",
+      "hash": "0xdaa8d7ca2106f2b872316c2bfaa3f039407a0c8218d86a795751f238dd90c59b",
+      "blockNumber": 89,
+      "gasUsed": "71260",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Delivered",
+          "args": [
+            "1",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4",
+            "urn:nova-seeds:writer10:exact-input-bytes"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "validate_1_0",
+      "hash": "0x4ae4ea562c5dd9a24435e35063367a793981675117e3671f8d0d83416d32bc83",
+      "blockNumber": 91,
+      "gasUsed": "86813",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Validated",
+          "args": [
+            "1",
+            "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            true,
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "validate_2_0",
+      "hash": "0xc40d2aca8e379b8002feb4db02a7c6194da6b9d0d50378018e22ca9d48f878b0",
+      "blockNumber": 92,
+      "gasUsed": "250082",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Validated",
+          "args": [
+            "1",
+            "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            true,
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x0000000000000000000000000000000000000000",
+            "760000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "75240000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Payout",
+          "args": [
+            "1",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "76000000000000000000",
+            "760000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x0000000000000000000000000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "1980000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Payout",
+          "args": [
+            "1",
+            "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "2000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x0000000000000000000000000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "1980000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Payout",
+          "args": [
+            "1",
+            "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "2000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Closed",
+          "args": [
+            "1",
+            "4",
+            "20000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "collect_0",
+      "hash": "0xd2bef5e2c48a71a411bbe7e2bb8aac694a71a9a128f0d215f0b64804ee769839",
+      "blockNumber": 93,
+      "gasUsed": "118053",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "20000000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "RefundClaimed",
+          "args": [
+            "1",
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "20000000000000000000"
+          ]
+        },
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "MissionCollected",
+          "args": [
+            "1",
+            "1",
+            "20000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "route_1",
+      "hash": "0x3ab633bcd04ddc12da570b879ee7dee883ada6669ae83a72a7e1b2a1119c2f96",
+      "blockNumber": 96,
+      "gasUsed": "567515",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Approval",
+          "args": [
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "100000000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "100000000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "JobPosted",
+          "args": [
+            "2",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "0xffa10832110b6f3197d1bef13e6fd0727fb21fff41f7f150d2ab7ad357c37d6a",
+            "Independently replay disclosed resource ledger",
+            "Exact input digest, plan and replay outcomes match the delivered bytes",
+            "100000000000000000000",
+            "1792810217",
+            "1793155817"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Approval",
+          "args": [
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0"
+          ]
+        },
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "MissionRouted",
+          "args": [
+            "1",
+            "1",
+            "2",
+            "0x84d35b7802c603cdcb1f6d7f84bc60a2a6ac1d505e4394630a475303b8174e35"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "bid_1",
+      "hash": "0x12d7ecf9f82c8af3374f775c1ebb0dd3b87324867228327a942e47b091b4ebe3",
+      "blockNumber": 98,
+      "gasUsed": "172910",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "BidPlaced",
+          "args": [
+            "2",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "80000000000000000000",
+            "3600",
+            "1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "award_1",
+      "hash": "0x5d0e296585e85cf1d9df52ade8769e3d82a1271500a5b5fe1c93bfd4784682fa",
+      "blockNumber": 100,
+      "gasUsed": "67582",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Assigned",
+          "args": [
+            "2",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "80000000000000000000",
+            "1792813818"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "submit_1",
+      "hash": "0x31e68ee89eaad5673975b7a39ce5526d040622916a1eeed3c88413bc145f1818",
+      "blockNumber": 101,
+      "gasUsed": "71260",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Delivered",
+          "args": [
+            "2",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4",
+            "urn:nova-seeds:writer10:exact-input-bytes"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "validate_1_1",
+      "hash": "0xe06b58288eec628fb6817f4c2fb5f5d0912e1954ef9694f11c68e1d525734bd7",
+      "blockNumber": 103,
+      "gasUsed": "86813",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Validated",
+          "args": [
+            "2",
+            "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            true,
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "validate_2_1",
+      "hash": "0xcb7f0caa3e2d9cc1e7e4ad1bc8d660bd9e443e5f5f128ddd1b52f153cb05449e",
+      "blockNumber": 104,
+      "gasUsed": "232982",
+      "status": 1,
+      "events": [
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Validated",
+          "args": [
+            "2",
+            "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            true,
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x0000000000000000000000000000000000000000",
+            "760000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "75240000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Payout",
+          "args": [
+            "2",
+            "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+            "76000000000000000000",
+            "760000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x0000000000000000000000000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "1980000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Payout",
+          "args": [
+            "2",
+            "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+            "2000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x0000000000000000000000000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "1980000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Payout",
+          "args": [
+            "2",
+            "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+            "2000000000000000000",
+            "20000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "Closed",
+          "args": [
+            "2",
+            "4",
+            "20000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "collect_1",
+      "hash": "0x0602a2e170a2e46de86e3ba3de5d4359eca494f0ce9681e653ed45fb01a8c273",
+      "blockNumber": 105,
+      "gasUsed": "118053",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "20000000000000000000"
+          ]
+        },
+        {
+          "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+          "name": "RefundClaimed",
+          "args": [
+            "2",
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "20000000000000000000"
+          ]
+        },
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "MissionCollected",
+          "args": [
+            "1",
+            "2",
+            "20000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "close",
+      "hash": "0xb0eeccd9de1f18e57a3e422cefe3096c74715d35197a466a68567b7fa0a31907",
+      "blockNumber": 107,
+      "gasUsed": "45086",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "CampaignClosed",
+          "args": [
+            "1",
+            "137000000000000000000",
+            "60"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "reclaim",
+      "hash": "0x20076c6c7fe5e4c4585b9ac55a8756fcd0939815ecbfce68cb9baab0b3c2376a",
+      "blockNumber": 108,
+      "gasUsed": "52992",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            "137000000000000000000"
+          ]
+        },
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "CapitalReturned",
+          "args": [
+            "1",
+            "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            "137000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "fresh_successor",
+      "hash": "0xf62f5ce5eac2596c4eba1fee121963a9d86a2542264b4574a0574c90f50971be",
+      "blockNumber": 109,
+      "gasUsed": "256710",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+          "name": "Transfer",
+          "args": [
+            "0x0000000000000000000000000000000000000000",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "2"
+          ]
+        },
+        {
+          "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+          "name": "MetadataUpdate",
+          "args": [
+            "2"
+          ]
+        },
+        {
+          "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+          "name": "SeedSealed",
+          "args": [
+            "2",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "0x954ab5a836e9f7f6e56f5be7ef686a81c5332257f5ee61f91680213538d30e45",
+            "0x44ed1afdb0c375bf492d9ca8a0677b8bb889290dfc10ddd28c266bdd781a8026",
+            "1",
+            "0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "deadline_open",
+      "hash": "0x5a293fff7332fd0a2232de5083c316978ec915053a43fbe7b88d24b65ba7d230",
+      "blockNumber": 113,
+      "gasUsed": "199278",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "MarketOpened",
+          "args": [
+            "2",
+            "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            "2000000000000000000",
+            "0",
+            "100000000000000000000"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "deadline_fund_local",
+      "hash": "0x49485175d1824c341b925177c3efbc5f90f9311465915755c783aa1197afced8",
+      "blockNumber": 114,
+      "gasUsed": "181508",
+      "status": 1,
+      "events": [
+        {
+          "address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+          "name": "Transfer",
+          "args": [
+            "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+            "100000000000000000000"
+          ]
+        },
+        {
+          "address": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+          "name": "Traded",
+          "args": [
+            "2",
+            "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955",
+            true,
+            "50",
+            "100000000000000000000"
+          ]
+        }
+      ]
+    }
+  ],
+  "costs": {
+    "wallMs": 2220.123066,
+    "cpuUserMs": 1889.007,
+    "cpuSystemMs": 196.276,
+    "localChainTotalGasIncludingFixturesAndNegativeCases": "20701896",
+    "localChainTransactionCount": 113,
+    "trackedLifecycleGas": "4546309",
+    "gasPriceCurrencyConversion": null,
+    "liveMoneySpent": 0,
+    "humanEffortAndCommercialDemand": "not measured"
+  },
+  "localAccounting": {
+    "fundingTokens": "297",
+    "twoJobsGrossTokens": "160",
+    "burnTokens": "1.6",
+    "workerNetTokens": "150.48",
+    "reviewersNetTokens": "7.92",
+    "principalReturnedTokens": "137000000000000000000",
+    "scaleDecimals": 18
+  },
+  "offchainRegistry": {
+    "scope": "equivalent evidence/lineage/route-once interface, not decentralized custody or escrow; same external productive workload bytes",
+    "trust": "central operator with independently pinned Ed25519 key; signed prefixes can be withheld; no consensus guarantee",
+    "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEALzDGF4mdYUXZzMPzSx+WWgdR+tBd02i0+SQiivVl+uA=\n-----END PUBLIC KEY-----\n",
+    "records": [
+      {
+        "payload": "{\"sequence\":0,\"previous\":null,\"event\":{\"type\":\"sealed\",\"id\":1,\"owner\":\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\",\"capsuleHash\":\"0x954ab5a836e9f7f6e56f5be7ef686a81c5332257f5ee61f91680213538d30e45\",\"planRoot\":\"0x44ed1afdb0c375bf492d9ca8a0677b8bb889290dfc10ddd28c266bdd781a8026\",\"evidenceHash\":\"0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4\",\"parent\":0,\"jobs\":2,\"metadataURI\":\"urn:nova-seeds:writer10:synthetic-evidence\"}}",
+        "signature": "2P5aisDv5O3W/PRt3FtoT3e58jlzwUH1aET5QtqbBPriuK+qnWdpvt/pX2deOoIV0Bl+GAbZSIoG2qmB5UtDAg==",
+        "digest": "d0a3f0463d3b854f8a23da7708ec467532e6af20836d40d5666f1d71fe900a01"
+      },
+      {
+        "payload": "{\"sequence\":1,\"previous\":\"d0a3f0463d3b854f8a23da7708ec467532e6af20836d40d5666f1d71fe900a01\",\"event\":{\"type\":\"approved\",\"id\":1,\"owner\":\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\",\"authority\":{\"owner\":\"0x70997970C51812dc3A010C7d01b50e0d17dc79C8\",\"role\":\"business\",\"mission\":\"writer10-synthetic-replay\",\"now\":0,\"until\":1000}}}",
+        "signature": "cLlyfrzxpNm4HzPOpUliSqsVUObzgBQoN1fx+Xf42KmZiOoBwnT54rYLacjsvtPJ2YONp6leCNKZX8YShEqqAA==",
+        "digest": "5f714ed75e57920ece464b29be290ec04f97fd87ba4e7205fdce64087309b008"
+      },
+      {
+        "payload": "{\"sequence\":2,\"previous\":\"5f714ed75e57920ece464b29be290ec04f97fd87ba4e7205fdce64087309b008\",\"event\":{\"type\":\"routed\",\"id\":1,\"index\":0,\"spec\":{\"goal\":\"Allocate synthetic calibration-constrained instrument work\",\"successMetric\":\"Public ledger replay verifies validity, service output and resource accounting\",\"bounty\":\"100000000000000000000\",\"duration\":86400,\"priceWeight\":6000},\"leaf\":\"0x161bd251f6efd7863051092d37a48f2bc6829d7c84256ac907def30e3dd6a0f2\"}}",
+        "signature": "Y8CnYQKvZyS3C1/COqT94+g5OGdE6R/7+evHS81lVnC+0RjwtAfc9+H9dlj/e+7uo+Zj/3ZEdSiK1E3JUw9uBg==",
+        "digest": "ad28b365516f7e680fa0cafaeb762b9dc8b7e6c6f2d84631809a7d465adecc7e"
+      },
+      {
+        "payload": "{\"sequence\":3,\"previous\":\"ad28b365516f7e680fa0cafaeb762b9dc8b7e6c6f2d84631809a7d465adecc7e\",\"event\":{\"type\":\"delivered\",\"id\":1,\"index\":0,\"resultHash\":\"0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4\",\"resultSha256\":\"1d0a79fc3f5f7f63a76e6bbf6e6f3b9a8de9b4eb752782f54d19aaf0843e2113\"}}",
+        "signature": "LP+1Snpz3Tq2jli+7Z8Y2KkGomud/x4Csw8YYPch3CvtjYxXReP2s6KQZM3CwWysIKp6D7J1mF/5buQE3SbkCA==",
+        "digest": "b87773bea50b5abfe79e4b21e0d83287a4c8a85813ba097311752e499a92a446"
+      },
+      {
+        "payload": "{\"sequence\":4,\"previous\":\"b87773bea50b5abfe79e4b21e0d83287a4c8a85813ba097311752e499a92a446\",\"event\":{\"type\":\"routed\",\"id\":1,\"index\":1,\"spec\":{\"goal\":\"Independently replay disclosed resource ledger\",\"successMetric\":\"Exact input digest, plan and replay outcomes match the delivered bytes\",\"bounty\":\"100000000000000000000\",\"duration\":86400,\"priceWeight\":6000},\"leaf\":\"0x84d35b7802c603cdcb1f6d7f84bc60a2a6ac1d505e4394630a475303b8174e35\"}}",
+        "signature": "mu3JrSj7yBeadS+dPTzQW5X0G2zUISHxRx1Mb1lmCAhvNC5Q68FrJblvfrxnKbXRA6FUt+HmhTONpR7Q9a5TDw==",
+        "digest": "a86a035307922dcea1a0bdc0db52026c435159b900401d2a708dd14702e3a49b"
+      },
+      {
+        "payload": "{\"sequence\":5,\"previous\":\"a86a035307922dcea1a0bdc0db52026c435159b900401d2a708dd14702e3a49b\",\"event\":{\"type\":\"delivered\",\"id\":1,\"index\":1,\"resultHash\":\"0xdc1c56b299a75bc6bef03485bc01279713f41ae661a6e21106824e63c677ecb4\",\"resultSha256\":\"1d0a79fc3f5f7f63a76e6bbf6e6f3b9a8de9b4eb752782f54d19aaf0843e2113\"}}",
+        "signature": "eKJ0E8OyTz1lse7EWHBQYH4cxnFcWkOCvqgsVH6RtvNr9kKppNtbGbB8TSkeL3r83Pe4XGCiYAco1FggwMf5Dw==",
+        "digest": "ea4d074df806bbcd402a096a4e1dac577c8904ed5387401362d4c3bf0b7781f1"
+      }
+    ],
+    "sourceBindingMatches": true,
+    "registryConstructionMs": 4.110435999999936,
+    "verify1000Ms": 958.907516,
+    "recordBytes": 3619,
+    "validPrefixAcceptedWithoutPinnedTerminalCheckpoint": true,
+    "keyPersistence": "private key generated in memory only and not written"
+  }
+}

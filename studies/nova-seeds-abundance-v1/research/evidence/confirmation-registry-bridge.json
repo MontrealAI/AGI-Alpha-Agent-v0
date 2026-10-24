@@ -1,0 +1,246 @@
+{
+  "schema": "nova-seeds-foundations-bridge/v1",
+  "scope": "Actual Jobs signature and Fleet ledger modules; local fixture, no external execution or authority.",
+  "context": {
+    "institutionId": "nova-seeds-research-fixture",
+    "missionId": "nova-seeds-research-local-v1",
+    "environment": "local-synthetic-research",
+    "mode": "fixture"
+  },
+  "record": {
+    "schemaVersion": 1,
+    "keyId": "ephemeral-local-receipt-key",
+    "purpose": "nova-seeds-synthetic-execution-receipt/v1",
+    "context": {
+      "institutionId": "nova-seeds-research-fixture",
+      "missionId": "nova-seeds-research-local-v1",
+      "environment": "local-synthetic-research",
+      "mode": "fixture"
+    },
+    "issuedAt": "2026-10-24T03:08:51.818Z",
+    "payload": {
+      "schema": "nova-seeds-confirmation-binding/v1",
+      "sourceInventoryHash": "0011228ddfd4a2e822659a0286864211b6c8eb99b93a3e39b9ba2cd3a582d08a",
+      "analysisSha256": "9a9d29fd5c3ac2e4d49743d954d4bf21755d12c48021b0c26914fc2eb3e14456",
+      "rawSha256": "e72c76fa3621eaf7e831f69de26c8fe56d71b83c1946b5c196819081af25724a",
+      "ledgerSha256": "04e49da20f841e94b469f69f031ce476701ac845b4738a9871bfe56f619ea94a",
+      "worlds": 3072,
+      "records": 21504,
+      "cloneMismatches": 0,
+      "primary": {
+        "condition": "ordinary",
+        "reference": "idea",
+        "utilityDifference": 8.875,
+        "utilityDifferenceCI95": [
+          8.21875,
+          9.5625
+        ],
+        "relativeUtilityDifference": 0.37270341207349084,
+        "relativeUtilityDifferenceCI95": [
+          0.34926900438447217,
+          0.3944025425017488
+        ],
+        "cpuDifferenceMs": 68.36896614583333,
+        "cpuDifferenceCI95": [
+          63.74198554687501,
+          73.62717376302083
+        ],
+        "interpretation": "primary"
+      },
+      "physicalResource": "synthetic",
+      "productionAuthority": "none",
+      "monetaryProfit": null
+    },
+    "signature": "mQ1Gu2ktfJeiSgMFZeZb573JpVLrwq0ZDxxFoZX1O00xcW4SLnfcUofP91v/p+a8/GDZgRRlwJXGyqYNt/+iCQ=="
+  },
+  "trustStore": {
+    "schemaVersion": 1,
+    "keys": [
+      {
+        "keyId": "ephemeral-local-receipt-key",
+        "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAX3ORnet26O8ZqQ/LNlXA9g2I5WPS9BFr0mDLdomoXxk=\n-----END PUBLIC KEY-----\n",
+        "organizationId": "single-research-operator",
+        "custodyId": "same-process-fixture",
+        "fixture": true,
+        "roles": [
+          "research-recorder"
+        ],
+        "context": {
+          "institutionId": "nova-seeds-research-fixture",
+          "missionId": "nova-seeds-research-local-v1",
+          "environment": "local-synthetic-research",
+          "mode": "fixture"
+        },
+        "notBefore": "2026-10-24T03:08:50.818Z",
+        "expiresAt": "2026-10-24T03:09:51.818Z",
+        "maxIndependence": "I0",
+        "principals": []
+      }
+    ]
+  },
+  "signMs": 2.9182720000000018,
+  "verifyMs": 4.279634999999999,
+  "receiptBytes": 1298,
+  "negativeTests": [
+    {
+      "case": "payload-tamper",
+      "rejected": true,
+      "code": "INVALID_SIGNATURE"
+    },
+    {
+      "case": "cross-mission-replay",
+      "rejected": true,
+      "code": "CONTEXT_MISMATCH"
+    },
+    {
+      "case": "expired-key",
+      "rejected": true,
+      "code": "SIGNER_EXPIRED"
+    },
+    {
+      "case": "wrong-purpose",
+      "rejected": true,
+      "code": "SIGNATURE_PURPOSE_MISMATCH"
+    },
+    {
+      "case": "untrusted-signer",
+      "rejected": true,
+      "code": "UNKNOWN_SIGNER"
+    },
+    {
+      "case": "revoked-key",
+      "rejected": true,
+      "code": "SIGNER_REVOKED"
+    }
+  ],
+  "ledgerTamperRejected": true,
+  "falseSignedAssertionAccepted": true,
+  "physicalTruthEstablished": false,
+  "independence": "I0",
+  "persistentPrivateKeys": false,
+  "observations": [
+    {
+      "event": {
+        "at": 1792811331818,
+        "attempt": "aefaa8b7521f8fc6fc12d8e6712d907c7d67db80e4b47acc8bf675520933bed0",
+        "data": {
+          "inputHashes": [
+            "0cb019a29f5ece2b2d893a4a0a3d679903f2cd9bf8a3b49260f9b9b1db7dae35"
+          ],
+          "method": "nova-seeds-research-local-v1",
+          "outputHashes": [],
+          "projectSha256": "c28307981de278aeda595a0fe6b017a5734ef041c21b32ce41c0b7b1ee40187c",
+          "runtimeSha256": "69f651adc1d8970b39efe3cc5f0a473e00f06907079a1cb60453b457ae8f38ce",
+          "state": "reserved"
+        },
+        "evidenceSha256": "0f107a6500462f9c81ca1de475d8cfe5255d6c6c035982ccf225211d0a7cc748",
+        "type": "attempt"
+      },
+      "previous": null,
+      "sequence": 0,
+      "sha256": "af8877a2d9623074ffc60cc8946d2428dd099018f8fece83a9e00ca1a053258c"
+    },
+    {
+      "event": {
+        "at": 1792811331818,
+        "attempt": "aefaa8b7521f8fc6fc12d8e6712d907c7d67db80e4b47acc8bf675520933bed0",
+        "data": {
+          "amountMicros": null,
+          "basis": "unknown",
+          "billingReferenceSha256": null,
+          "category": "compute",
+          "currency": "USD",
+          "id": "attributable-human-and-provider-cost"
+        },
+        "evidenceSha256": "0f107a6500462f9c81ca1de475d8cfe5255d6c6c035982ccf225211d0a7cc748",
+        "type": "cost"
+      },
+      "previous": "af8877a2d9623074ffc60cc8946d2428dd099018f8fece83a9e00ca1a053258c",
+      "sequence": 1,
+      "sha256": "340e337bba2ec6a81487c0858c4e36b9f33f89365f9aa212334700d0b641a91b"
+    },
+    {
+      "event": {
+        "at": 1792811331819,
+        "attempt": "aefaa8b7521f8fc6fc12d8e6712d907c7d67db80e4b47acc8bf675520933bed0",
+        "data": {
+          "inputHashes": [
+            "0cb019a29f5ece2b2d893a4a0a3d679903f2cd9bf8a3b49260f9b9b1db7dae35"
+          ],
+          "method": "nova-seeds-research-local-v1",
+          "outputHashes": [
+            "0f107a6500462f9c81ca1de475d8cfe5255d6c6c035982ccf225211d0a7cc748"
+          ],
+          "projectSha256": "c28307981de278aeda595a0fe6b017a5734ef041c21b32ce41c0b7b1ee40187c",
+          "runtimeSha256": "69f651adc1d8970b39efe3cc5f0a473e00f06907079a1cb60453b457ae8f38ce",
+          "state": "completed"
+        },
+        "evidenceSha256": "0f107a6500462f9c81ca1de475d8cfe5255d6c6c035982ccf225211d0a7cc748",
+        "type": "attempt"
+      },
+      "previous": "340e337bba2ec6a81487c0858c4e36b9f33f89365f9aa212334700d0b641a91b",
+      "sequence": 2,
+      "sha256": "0f7e9f9de7c097540434828013c46a4b155b3fe4a915342a75b2ea77ff005f61"
+    },
+    {
+      "event": {
+        "at": 1792811331819,
+        "attempt": "aefaa8b7521f8fc6fc12d8e6712d907c7d67db80e4b47acc8bf675520933bed0",
+        "data": {
+          "control": "internal",
+          "deliverySha256": "0cb019a29f5ece2b2d893a4a0a3d679903f2cd9bf8a3b49260f9b9b1db7dae35",
+          "eligibilityEvidenceSha256": null,
+          "verdict": "accepted"
+        },
+        "evidenceSha256": "0f107a6500462f9c81ca1de475d8cfe5255d6c6c035982ccf225211d0a7cc748",
+        "type": "review"
+      },
+      "previous": "0f7e9f9de7c097540434828013c46a4b155b3fe4a915342a75b2ea77ff005f61",
+      "sequence": 3,
+      "sha256": "fae733e040b31ecb4ea785f0ba27e3cfefca54eb7da210a51cf342500e569421"
+    }
+  ],
+  "summary": {
+    "attempts": 1,
+    "externallyAttestedAccepted": 0,
+    "funnel": {
+      "offered": 0,
+      "admissible": 0,
+      "attempted": 0,
+      "firstPassAccepted": 0,
+      "repaired": 0,
+      "rejected": 0,
+      "abandoned": 0,
+      "repeated": 0
+    },
+    "acceptanceAssertionsByControl": {
+      "internal": 1,
+      "unverified": 0,
+      "externally-attested": 0
+    },
+    "eligibilityAuditAcceptedAssertions": 0,
+    "unclassifiedAcceptedAssertions": 1,
+    "independentlyAcceptedUsefulOutcomes": null,
+    "funnelScope": "Distinct task hashes with explicit observations; first-pass counts review assertions, not independently accepted useful jobs. Node review work is excluded from task counts. Repetitions remain separate.",
+    "costMicrosByCurrencyAndBasis": {},
+    "selectedExpenseMicrosByCurrency": {},
+    "selectedExpenseBasisCounts": {},
+    "costSelection": "One basis per attempt/expense ID: invoiced, then metered, subscription-allocated, estimated. Reuse an ID for the same expense; different IDs are distinct charges. Totals can mix bases and exclude unknowns; completeness is not established.",
+    "humanTimeByStage": {},
+    "humanTimeByActorAndStage": {},
+    "unknownCosts": [
+      {
+        "attempt": "aefaa8b7521f8fc6fc12d8e6712d907c7d67db80e4b47acc8bf675520933bed0",
+        "id": "attributable-human-and-provider-cost",
+        "category": "compute",
+        "currency": "USD"
+      }
+    ],
+    "costPerIndependentlyAcceptedOutcome": null,
+    "activeMinutesPerIndependentlyAcceptedOutcome": null,
+    "independentControl": "Eligibility audit records are assertions with external evidence hashes; verify the actual audit and reviewer control before reporting independently accepted useful outcomes.",
+    "economics": "NOT_EVALUATED",
+    "humanEffort": "NOT_EVALUATED",
+    "productionQualified": false
+  }
+}
