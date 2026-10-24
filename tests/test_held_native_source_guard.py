@@ -11,7 +11,6 @@ import sys
 from pathlib import Path
 from types import ModuleType
 
-import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -76,26 +75,7 @@ def test_fixed_cli_reports_only_static_identity_and_refuses_selectors() -> None:
     assert refused.returncode == 2
 
 
-@pytest.mark.parametrize(
-    ("filename", "job_name", "scope_name", "folder", "budget"),
-    [
-        (
-            "agent-release.yml",
-            "regression",
-            "Offline regression including notebooks (four held native tests excluded)",
-            "evidence",
-            90,
-        ),
-        (
-            "successor-capability.yml",
-            "capability",
-            "Computation, history and delivery gates",
-            "capability-evidence",
-            25,
-        ),
-    ],
-)
-def test_identity_guard_precedes_each_scoped_invocation_without_weakening_it(
+def assert_scoped_invocation(
     filename: str, job_name: str, scope_name: str, folder: str, budget: int
 ) -> None:
     workflow = yaml.safe_load((ROOT / ".github/workflows" / filename).read_text())
@@ -117,3 +97,19 @@ def test_identity_guard_precedes_each_scoped_invocation_without_weakening_it(
     else:
         assert "--rootdir=." in run
         assert "tests/test_held_native_source_guard.py" in run
+
+
+def test_identity_guard_precedes_agent_invocation_without_weakening_it() -> None:
+    assert_scoped_invocation(
+        "agent-release.yml",
+        "regression",
+        "Offline regression including notebooks (four held native tests excluded)",
+        "evidence",
+        90,
+    )
+
+
+def test_identity_guard_precedes_capability_invocation_without_weakening_it() -> None:
+    assert_scoped_invocation(
+        "successor-capability.yml", "capability", "Computation, history and delivery gates", "capability-evidence", 25
+    )
