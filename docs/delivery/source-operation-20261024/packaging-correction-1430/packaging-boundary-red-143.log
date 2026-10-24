@@ -1,0 +1,22 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________ test_source_operation_documents_start_at_their_first_release _________
+
+    def test_source_operation_documents_start_at_their_first_release() -> None:
+        introduced = (
+            "docs/agent/SUCCESSOR_SOURCE_OPERATION.md",
+            "docs/agent/FLYWHEEL_COMPATIBILITY.json",
+            "docs/agent/FLYWHEEL_CAPABILITIES.json",
+        )
+        previous = packaging.release_documents("1.42.0")
+        current = packaging.release_documents("1.43.0")
+>       assert not set(introduced).intersection(previous)
+E       AssertionError: assert not {'docs/agent/FLYWHEEL_CAPABILITIES.json', 'docs/agent/FLYWHEEL_COMPATIBILITY.json', 'docs/agent/SUCCESSOR_SOURCE_OPERATION.md'}
+E        +  where {'docs/agent/FLYWHEEL_CAPABILITIES.json', 'docs/agent/FLYWHEEL_COMPATIBILITY.json', 'docs/agent/SUCCESSOR_SOURCE_OPERATION.md'} = <built-in method intersection of set object at 0x7f3b27437ae0>(('requirements-agent.lock', 'scripts/install_agent.py', 'scripts/release_packs.py', 'docs/agent/SUCCESSOR.md', 'docs/agent/SUCCESSOR_OPERATIONS.md', 'docs/agent/SUCCESSOR_SOURCE_OPERATION.md', ...))
+E        +    where <built-in method intersection of set object at 0x7f3b27437ae0> = {'docs/agent/FLYWHEEL_CAPABILITIES.json', 'docs/agent/FLYWHEEL_COMPATIBILITY.json', 'docs/agent/SUCCESSOR_SOURCE_OPERATION.md'}.intersection
+E        +      where {'docs/agent/FLYWHEEL_CAPABILITIES.json', 'docs/agent/FLYWHEEL_COMPATIBILITY.json', 'docs/agent/SUCCESSOR_SOURCE_OPERATION.md'} = set(('docs/agent/SUCCESSOR_SOURCE_OPERATION.md', 'docs/agent/FLYWHEEL_COMPATIBILITY.json', 'docs/agent/FLYWHEEL_CAPABILITIES.json'))
+
+tests/test_capability_release_packaging.py:45: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_capability_release_packaging.py::test_source_operation_documents_start_at_their_first_release
+1 failed in 0.23s

@@ -1,0 +1,73 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_historical_document_lists_are_unchanged[1.35.0-c6a9f2f36a28fdae93360bb6bc7faf69c731860e742f59d97cad1009544480c7] _
+
+version = '1.35.0'
+digest = 'c6a9f2f36a28fdae93360bb6bc7faf69c731860e742f59d97cad1009544480c7'
+
+    @pytest.mark.parametrize(
+        "version,digest",
+        [
+            ("1.35.0", "c6a9f2f36a28fdae93360bb6bc7faf69c731860e742f59d97cad1009544480c7"),
+            ("1.36.0", "81f4175f36bb46d63fccc76d28fcd3b338d80540ca19fb47e91aa1ca70554bd8"),
+            ("1.37.1", "e37828e5cefe15a660b4930b6bbdb1cedeae854c5d4d97761091e555c842d9e7"),
+        ],
+    )
+    def test_historical_document_lists_are_unchanged(version: str, digest: str) -> None:
+        encoded = json.dumps(packaging.release_documents(version), separators=(",", ":")).encode()
+>       assert hashlib.sha256(encoded).hexdigest() == digest
+E       AssertionError: assert '1270ebf4d630...cdbe75f7e886e' == 'c6a9f2f36a28...d1009544480c7'
+E         
+E         - c6a9f2f36a28fdae93360bb6bc7faf69c731860e742f59d97cad1009544480c7
+E         + 1270ebf4d630c3e180d2b71ed338618df4c2d036004138f8169cdbe75f7e886e
+
+tests/test_capability_release_packaging.py:33: AssertionError
+_ test_historical_document_lists_are_unchanged[1.36.0-81f4175f36bb46d63fccc76d28fcd3b338d80540ca19fb47e91aa1ca70554bd8] _
+
+version = '1.36.0'
+digest = '81f4175f36bb46d63fccc76d28fcd3b338d80540ca19fb47e91aa1ca70554bd8'
+
+    @pytest.mark.parametrize(
+        "version,digest",
+        [
+            ("1.35.0", "c6a9f2f36a28fdae93360bb6bc7faf69c731860e742f59d97cad1009544480c7"),
+            ("1.36.0", "81f4175f36bb46d63fccc76d28fcd3b338d80540ca19fb47e91aa1ca70554bd8"),
+            ("1.37.1", "e37828e5cefe15a660b4930b6bbdb1cedeae854c5d4d97761091e555c842d9e7"),
+        ],
+    )
+    def test_historical_document_lists_are_unchanged(version: str, digest: str) -> None:
+        encoded = json.dumps(packaging.release_documents(version), separators=(",", ":")).encode()
+>       assert hashlib.sha256(encoded).hexdigest() == digest
+E       AssertionError: assert '019d657af2ea...6f47472fb4f22' == '81f4175f36bb...aa1ca70554bd8'
+E         
+E         - 81f4175f36bb46d63fccc76d28fcd3b338d80540ca19fb47e91aa1ca70554bd8
+E         + 019d657af2ea8a0e626a951dd7e9f2967128df0f39cd84a4ddb6f47472fb4f22
+
+tests/test_capability_release_packaging.py:33: AssertionError
+_ test_historical_document_lists_are_unchanged[1.37.1-e37828e5cefe15a660b4930b6bbdb1cedeae854c5d4d97761091e555c842d9e7] _
+
+version = '1.37.1'
+digest = 'e37828e5cefe15a660b4930b6bbdb1cedeae854c5d4d97761091e555c842d9e7'
+
+    @pytest.mark.parametrize(
+        "version,digest",
+        [
+            ("1.35.0", "c6a9f2f36a28fdae93360bb6bc7faf69c731860e742f59d97cad1009544480c7"),
+            ("1.36.0", "81f4175f36bb46d63fccc76d28fcd3b338d80540ca19fb47e91aa1ca70554bd8"),
+            ("1.37.1", "e37828e5cefe15a660b4930b6bbdb1cedeae854c5d4d97761091e555c842d9e7"),
+        ],
+    )
+    def test_historical_document_lists_are_unchanged(version: str, digest: str) -> None:
+        encoded = json.dumps(packaging.release_documents(version), separators=(",", ":")).encode()
+>       assert hashlib.sha256(encoded).hexdigest() == digest
+E       AssertionError: assert '6698378e80d3...d6d97c4228408' == 'e37828e5cefe...1e555c842d9e7'
+E         
+E         - e37828e5cefe15a660b4930b6bbdb1cedeae854c5d4d97761091e555c842d9e7
+E         + 6698378e80d339cd9fbdc09bf87d620ee0409a03552c3002235d6d97c4228408
+
+tests/test_capability_release_packaging.py:33: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_capability_release_packaging.py::test_historical_document_lists_are_unchanged[1.35.0-c6a9f2f36a28fdae93360bb6bc7faf69c731860e742f59d97cad1009544480c7]
+FAILED tests/test_capability_release_packaging.py::test_historical_document_lists_are_unchanged[1.36.0-81f4175f36bb46d63fccc76d28fcd3b338d80540ca19fb47e91aa1ca70554bd8]
+FAILED tests/test_capability_release_packaging.py::test_historical_document_lists_are_unchanged[1.37.1-e37828e5cefe15a660b4930b6bbdb1cedeae854c5d4d97761091e555c842d9e7]
+3 failed in 0.21s
