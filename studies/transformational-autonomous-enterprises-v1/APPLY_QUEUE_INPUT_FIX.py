@@ -15,6 +15,7 @@ ORIGINAL_REPLACEMENTS = {
     "study/evaluation/queue.mjs": ORIGINAL_QUEUE_SHA256,
     "study/integration/mission-delivery.mjs": "8346eed178d93a96a445b4bf5ea5c0b1921fe2807d0cb9371325dc2c5f11439f",
     "study/interface/app.js": "55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66",
+    "study/interface/qa.cjs": "ec0b9798171b2123cd90de6bda650cd68f2b79f367accf13c9e2fc02b66ead6d",
 }
 OVERRIDES = {
     "study/evaluation/queue.mjs": "805f7d6ea27ea66ee0e2a5c23a35fd0e18c411b8f12507192dc76e18990077a4",
@@ -23,10 +24,11 @@ OVERRIDES = {
     "study/integration/mission-delivery.mjs": "14f46a110f182b462963fb39619c9dcd3a87a2f24a9e0b92b842b7a4ad20ea68",
     "study/integration/execution-identity.test.mjs": "1eb36919630bac62eb7d4e96456abbb440480cddb95dde32a88599fdcadfc4cb",
     "study/integration/bridge-lifecycle.test.mjs": "e7109d59dcafe8a29b3f7498fa805f4876f3b586ab80ee8dc00dc8e80149fe3d",
-    "study/interface/app.js": "0328e8f591c48b91729554c5ba43318cf7e4eb458243a669395a996c4df689b2",
-    "study/interface/status.test.mjs": "5cc129f29b15200244cc767db3de1d4b9c7fee9250a2e61a13bbf3b6cf5f94c2",
+    "study/interface/app.js": "d9f9b7379c2185de2c573a3cd56aaf116588d1ba2c7e9bc6dd838624f139da42",
+    "study/interface/status.test.mjs": "80d1c9f2aa912dc9dd907c9795557cbcb9395eefe32a1e6c3d5af2168f4b3806",
+    "study/interface/qa.cjs": "7981a825b320d8073b2e88802ce46132f96c47dc4786e3149502c54c2c54576c",
 }
-OVERLAY_COMMIT = "da61a6319aada0b408ea16f05a87a8f5b105e81d"
+OVERLAY_COMMIT = "32d45529b5d69d39ff41e8b15ffe1180e6e7f5e9"
 BASE = (
     "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
     + OVERLAY_COMMIT
@@ -113,7 +115,7 @@ def verify_overlay(root: Path) -> dict[str, object]:
 def overlay_receipt() -> dict[str, object]:
     """Describe the separate source epoch without relabeling frozen evidence."""
     return {
-        "schema": "tae.research-runtime-overlay.v7",
+        "schema": "tae.research-runtime-overlay.v8",
         "originalArchiveSha256": ARCHIVE_SHA256,
         "originalManifestSha256": MANIFEST_SHA256,
         "originalQueueSha256": ORIGINAL_QUEUE_SHA256,
@@ -121,7 +123,7 @@ def overlay_receipt() -> dict[str, object]:
         "correctionSourceCommit": OVERLAY_COMMIT,
         "overrides": OVERRIDES,
         "originalManifestIsHistorical": True,
-        "scope": "Derived queue input/worker recovery, admission, bridge lifecycle and UI status/rejected-run reconciliation corrections; frozen scores unchanged",
+        "scope": "Derived queue input/worker recovery, admission, bridge lifecycle, Run/Stop status reconciliation and HTTP QA corrections; frozen scores unchanged",
         "installedFourRepositoryAcceptance": False,
         "authority": [],
     }

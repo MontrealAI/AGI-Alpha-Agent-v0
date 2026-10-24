@@ -112,8 +112,8 @@ class OverlayTests(unittest.TestCase):
             with self.subTest(original=relative):
                 self.assertEqual(overlay.digest((self.source / relative).read_bytes()), expected)
         receipt = overlay.verify_overlay(target)["receipt"]
-        self.assertEqual(receipt["schema"], "tae.research-runtime-overlay.v7")
-        self.assertEqual(len(receipt["overrides"]), 8)
+        self.assertEqual(receipt["schema"], "tae.research-runtime-overlay.v8")
+        self.assertEqual(len(receipt["overrides"]), 9)
 
 
 if __name__ == "__main__":
