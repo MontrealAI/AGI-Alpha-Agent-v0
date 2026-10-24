@@ -168,7 +168,12 @@ def study_request(spec: PolicyStudy, unit: CampaignUnit, policy: DiscoveryPolicy
 
 
 def validate_child_lease(
-    parent: dict[str, Any], request: DiscoveryRequest, *, journal: Journal | None = None, cx: Any = None
+    parent: dict[str, Any],
+    request: DiscoveryRequest,
+    *,
+    journal: Journal | None = None,
+    cx: Any = None,
+    terminal: list[SourceDocument] | None = None,
 ) -> None:
     """A parent lease covers only its exact planned child, inputs and allowances."""
     phase = request.configuration["ti_parent_phase"]
@@ -181,9 +186,12 @@ def validate_child_lease(
     policies = [policy for policy in spec.policies if policy.identity == plan["policy"]]
     if len(units) != 1 or len(policies) != 1:
         raise Conflict("parent study lease has no unique unit and policy")
-    expected = study_request(spec, CampaignUnit.model_validate(units[0]), policies[0], phase)
+    unit = CampaignUnit.model_validate(units[0])
+    expected = study_request(spec, unit, policies[0], phase)
     if request != expected:
         raise Conflict("parent study lease cannot change its child's purpose, inputs, code or budget")
+    if terminal is not None and terminal != unit.terminal:
+        raise Conflict("terminal documents differ from the approved submitted campaign inputs")
     if parent.get("operation"):
         from .campaign_operation import validate_authority, validate_child
 

@@ -291,3 +291,55 @@ def test_reconcile_committed_child_on_final_allowed_attempt(tmp_path, monkeypatc
     assert restarted.show(spec.operation_id)["state"] == "running"
     assert restarted.experiment.loop.show(committed[0]["request"]["campaign_id"])["digest"] == committed[0]["digest"]
     assert len(restarted.experiment.show(spec.study.study_id)["training"]["runs"]) == 1
+
+
+def test_base_confirmation_cannot_substitute_reserved_terminal_inputs(tmp_path, monkeypatch):
+    from alpha_factory_v1.core.runtime.successor.transformation import DiscoveryLoop, SourceDocument
+
+    operation, spec, clock = setup(tmp_path, monkeypatch)
+
+    def die(*args, **kwargs):
+        raise SystemExit("interrupted with a frozen child before terminal checking")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(DiscoveryLoop, "confirm", die)
+        with pytest.raises(SystemExit):
+            operation.advance(spec.operation_id)
+    parent = operation.experiment.show(spec.study.study_id)
+    child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+    base = DiscoveryLoop(operation.journal)
+    child = base.show(child_id)
+    substituted = spec.training[0].unit.terminal[0].model_dump()
+    substituted["claims"][0]["text"] = "Terminal content outside the exact approved operation."
+    with pytest.raises(Conflict, match="terminal"):
+        base.confirm(child_id, [SourceDocument.model_validate(substituted)], child["freeze"]["digest"])
+    assert base.show(child_id)["digest"] == child["digest"]
+
+
+def test_terminal_execution_consumes_one_detached_submission(tmp_path, monkeypatch):
+    from alpha_factory_v1.core.runtime.successor import transformation
+
+    operation, spec, clock = setup(tmp_path, monkeypatch)
+
+    def die(*args, **kwargs):
+        raise SystemExit("frozen native child awaiting confirmation")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(transformation.DiscoveryLoop, "confirm", die)
+        with pytest.raises(SystemExit):
+            operation.advance(spec.operation_id)
+    parent = operation.experiment.show(spec.study.study_id)
+    child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+    base = transformation.DiscoveryLoop(operation.journal)
+    child = base.show(child_id)
+    submitted = list(spec.training[0].unit.terminal)
+    original = transformation.validate_fresh_sources
+
+    def mutate_caller(development, captured):
+        submitted.clear()
+        return original(development, captured)
+
+    monkeypatch.setattr(transformation, "validate_fresh_sources", mutate_caller)
+    result = base.confirm(child_id, submitted, child["freeze"]["digest"])
+    assert submitted == []
+    assert result["result"]["fresh_sources"] == [document.model_dump() for document in spec.training[0].unit.terminal]

@@ -1012,7 +1012,9 @@ class DiscoveryLoop:
             data["history"].append({"action": action, "from_revision": record["revision"]})
             return self.journal.append(cx, self._key(campaign_id), data)
 
-    def _current(self, data: dict[str, Any], cx: Any = None) -> DiscoveryRequest:
+    def _current(
+        self, data: dict[str, Any], cx: Any = None, *, terminal: list[SourceDocument] | None = None
+    ) -> DiscoveryRequest:
         request = DiscoveryRequest.model_validate(data["request"])
         if digest("ti-bindings", self.bindings(request)) != data["binding_digest"]:
             raise Conflict(
@@ -1041,7 +1043,7 @@ class DiscoveryLoop:
                 or parent["binding"] != _binding(spec)
             ):
                 raise Conflict("parent study lease is inactive, consumed or changed")
-            validate_child_lease(parent, request, journal=self.journal, cx=cx)
+            validate_child_lease(parent, request, journal=self.journal, cx=cx, terminal=terminal)
         return request
 
     def step(self, campaign_id: str, *, operation_id: str) -> dict[str, Any]:
@@ -1184,6 +1186,7 @@ class DiscoveryLoop:
 
     def confirm(self, campaign_id: str, fresh: list[SourceDocument], freeze_digest: str) -> dict[str, Any]:
         """Execute a frozen terminal comparison once; freshness custody is an explicit limitation."""
+        fresh = [SourceDocument.model_validate(item) for item in safe_json_loads(canonical(fresh))]
         if not 1 <= len(fresh) <= 8:
             raise ValueError("terminal evaluation requires one to eight complete fresh documents")
         with self.journal.transaction() as cx:
@@ -1203,7 +1206,7 @@ class DiscoveryLoop:
                 raise Conflict("completed confirmation cannot be replaced or repeatedly inspected")
             if data["state"] != "frozen":
                 raise Conflict("freeze finalists before supplying terminal evidence")
-            request = self._current(data, cx)
+            request = self._current(data, cx, terminal=fresh)
             frozen = data["freeze"]
             if frozen["digest"] != freeze_digest or digest("ti-finalist-freeze", frozen["manifest"]) != freeze_digest:
                 raise Conflict("finalist, comparison or confirmation commitment mismatch")
