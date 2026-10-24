@@ -20,6 +20,7 @@ const french = {
 let language = 'en', step = 1, input = {...guide.SAMPLE}, result = null, approach = 'grouped', view = 'grouped';
 let worker = null, workerUrl = null, token = 0, busy = false, runId = '', createdAt = '', restored = false;
 let reading = 0, fileVersions = {left:0,right:0}, restoreVersion = 0, trace = [];
+let fileErrors = {left:null,right:null};
 const say = (en, fr) => language === 'fr' ? fr : en;
 const text = (id, en, fr) => { $(id).textContent = say(en, fr); };
 function node(tag, parent, value, className) {
@@ -69,6 +70,7 @@ function table(parent, headers, rows) {
 function updatePreview(side) {
     const target = $(side+'-preview'), select = $(side+'-key'); target.replaceChildren(); $(side+'-error').hidden = true;
     try {
+        if(fileErrors[side])throw Error(fileErrors[side]);
         const data = guide.preview($(side+'-csv').value), previous = select.value || input[side+'Key'];
         select.replaceChildren();
         for (const key of data.headers) { const option = node('option',select,key); option.value = key; }
@@ -89,6 +91,7 @@ function refreshPreviews() {
     $('try').textContent = $('own-data').open ? say('Compare my lists','Comparer mes listes') : say('Try it now','Essayer maintenant');
 }
 function applyInput(value) {
+    fileErrors={left:null,right:null};
     input = {...value}; $('left-csv').value = value.leftCsv; $('right-csv').value = value.rightCsv;
     refreshPreviews(); $('left-key').value = value.leftKey; $('right-key').value = value.rightKey;
 }
@@ -206,6 +209,7 @@ function safeDownload(action) { try { clearError(); action(); } catch (error) { 
 function savePortable() {
     const raw = JSON.stringify(workspace()); if(new TextEncoder().encode(raw).length>8000000)throw Error('Workspace exceeds 8 MB.');
     const clone = document.documentElement.cloneNode(true);
+    for(const el of clone.querySelectorAll('details'))el.removeAttribute('open');
     clone.querySelector('#saved-workspace').textContent = raw.replaceAll('<','\\u003c');
     for (const el of clone.querySelectorAll('[data-t]')) el.innerHTML = english[el.dataset.t];
     for (const id of ['left-csv','right-csv','left-preview','right-preview','step3-view','step4-view','receipt','status','error']) clone.querySelector('#'+id).textContent='';
@@ -220,21 +224,25 @@ $('use-grouped').addEventListener('click',()=>{approach='grouped';step=4;render(
 for(const [id,value] of [['view-grouped','grouped'],['view-detail','original']])$(id).addEventListener('click',()=>{view=value;render(false);});
 $('back').addEventListener('click',()=>{step=Math.max(1,step-1);render();});
 $('cancel').addEventListener('click',()=>{stop();text('status','Canceled. No partial result was retained. Your inputs are still here.','Annulé. Aucun résultat partiel conservé. Vos données sont toujours présentes.');});
-function reset() { restoreVersion++; fileVersions.left++; fileVersions.right++; stop(); result=null;step=1;restored=false;runId='';trace=[];clearError();applyInput(guide.SAMPLE);$('own-data').open=false;for(const s of ['left','right'])$(s+'-file').value='';render(); }
+function reset() { restoreVersion++; fileVersions.left++; fileVersions.right++; fileErrors={left:null,right:null}; stop(); result=null;step=1;restored=false;runId='';trace=[];clearError();applyInput(guide.SAMPLE);$('own-data').open=false;for(const s of ['left','right'])$(s+'-file').value='';render(); }
 $('reset').addEventListener('click',reset); $('sample').addEventListener('click',reset);
 $('reuse').addEventListener('click',()=>{restoreVersion++;stop();result=null;step=1;restored=false;runId='';clearError();$('own-data').open=true;render();text('status','Replace either list. The next comparison computes a new result; this run is not reused. Save first if you want to keep it.','Remplacez une liste. La comparaison suivante calcule un nouveau résultat sans réutiliser celui-ci. Sauvegardez d’abord pour le conserver.');});
-$('own-data').addEventListener('toggle',refreshPreviews);
+$('own-data').addEventListener('toggle',()=>{
+    if($('own-data').open)$('own-data').after($('step1-actions'));
+    else document.querySelector('.preview-grid').before($('step1-actions'));
+    refreshPreviews();
+});
 for(const side of ['left','right']) {
-    $(side+'-csv').addEventListener('input',()=>{fileVersions[side]++;invalidate();refreshPreviews();});
+    $(side+'-csv').addEventListener('input',()=>{fileErrors[side]=null;fileVersions[side]++;invalidate();refreshPreviews();});
     $(side+'-key').addEventListener('change',invalidate);
     $(side+'-file').addEventListener('change',async event=>{
-        const file = event.target.files[0]; if(!file)return;invalidate(); const version = ++fileVersions[side];reading++;refreshPreviews();
+        const file = event.target.files[0]; if(!file)return;fileErrors[side]=null;invalidate(); const version = ++fileVersions[side];reading++;refreshPreviews();
         try {
             if(file.size>200000)throw Error(say('Choose a CSV no larger than 200 KB. Split a larger list first.','Choisissez un CSV de 200 Ko maximum. Divisez d’abord une liste plus grande.'));
-            const raw = new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());
+            const raw = new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await file.arrayBuffer());
             if(version!==fileVersions[side])return;
             $(side+'-csv').value=raw; refreshPreviews();
-        } catch(error) {if(version===fileVersions[side]) {$(side+'-csv').value='';refreshPreviews();showError(error instanceof TypeError ? say('This file is not valid UTF-8 CSV. Export it as CSV UTF-8 and try again.','Ce fichier n’est pas un CSV UTF-8 valide. Exportez-le en CSV UTF-8 puis réessayez.') : error.message,side+'-error');}}
+        } catch(error) {if(version===fileVersions[side]) {$(side+'-csv').value='';fileErrors[side]=error instanceof TypeError ? say('This file is not valid UTF-8 CSV. Export it as CSV UTF-8 and try again.','Ce fichier n’est pas un CSV UTF-8 valide. Exportez-le en CSV UTF-8 puis réessayez.') : error.message;}}
         finally {reading--;refreshPreviews();}
     });
 }
