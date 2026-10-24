@@ -178,7 +178,8 @@ def assert_research_edition_guides(page: Page, origin: str, output: Path) -> Non
                     expect(page.locator('main [data-language="fr"]').first).to_be_visible()
                 if (width, language) in {(1440, "en"), (320, "fr")}:
                     page.screenshot(
-                        path=str(output / f"homepage-research-guide-{record['id']}-{language}-{width}.png"), full_page=True
+                        path=str(output / f"homepage-research-guide-{record['id']}-{language}-{width}.png"),
+                        full_page=True,
                     )
 
 
