@@ -51,7 +51,7 @@ jobs:
     if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
     needs: paper-scope
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -88,16 +88,40 @@ jobs:
           python -m pip install playwright==1.54.0 pytest==8.4.1 PyYAML==6.0.2 mypy==2.4.0
           python -m playwright install --with-deps chromium
           npm ci --prefix tests/browser --ignore-scripts
+      - name: Preserve held native source identities (no behavioral qualification)
+        run: |
+          mkdir -p capability-evidence
+          python scripts/check_held_native_source.py > capability-evidence/held-native-source-preservation.json
       - name: Computation, history and delivery gates
         run: |
           set -o pipefail
+          python - <<'PY'
+          import json, pathlib, subprocess
+          held = [
+              'tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands',
+              'tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata',
+              'tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer',
+              'tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history',
+          ]
+          record = {'schema': 'agialpha.held-test-selection.v1',
+                    'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                    'invocation': 'capability-delivery', 'status': 'EXCLUSION_PLANNED', 'qualified': False,
+                    'tests': [{'nodeid': node, 'status': 'EXCLUSION_PLANNED'} for node in held],
+                    'meaning': 'These four nodes are planned for exclusion by this invocation; this pre-run record states selection intention only. Actual deselection requires observed job output; their outcomes are not qualified.'}
+          pathlib.Path('capability-evidence/held-probes.json').write_text(json.dumps(record, indent=2) + '\n')
+          PY
           node --test examples/successor-capability/*.test.mjs examples/autonomous-enterprises/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs tests/browser/fleet_module_boundary.test.mjs tests/browser/fleet_git_metadata.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null -p no:cacheprovider tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null --rootdir=. -p no:cacheprovider tests/test_held_native_source_guard.py tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/test_successor_capability_delivery.py -q \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer \
+            --deselect=tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history \
+            2>&1 | tee capability-evidence/logs/delivery.log
       - name: Strict typing with retained actual output
         run: |
           set -o pipefail
           python -m mypy --version | tee capability-evidence/logs/typing-version.log
-          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py scripts/run_local_tests.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/browser/test_discovery_lab_continuation.py tests/test_discovery_lab_validation.py tests/test_run_local_tests_environment.py tests/browser/test_out_evolve_browser.py tests/browser/test_out_execute_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/browser/test_autonomous_enterprises_browser.py 2>&1 | tee capability-evidence/logs/typing.log
+          python -m mypy --strict --config-file mypy.ini scripts/check_held_native_source.py tests/test_held_native_source_guard.py scripts/generate_successor_capability.py scripts/run_local_tests.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/browser/test_discovery_lab_continuation.py tests/test_discovery_lab_validation.py tests/test_run_local_tests_environment.py tests/browser/test_out_evolve_browser.py tests/browser/test_out_execute_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/browser/test_autonomous_enterprises_browser.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py

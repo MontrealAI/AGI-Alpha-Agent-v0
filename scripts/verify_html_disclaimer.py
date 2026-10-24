@@ -5,9 +5,36 @@
 from __future__ import annotations
 
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlsplit
 
 SNIPPET = "docs/DISCLAIMER_SNIPPET.md"
+
+
+def has_disclaimer(text: str, page: Path, docs_dir: Path) -> bool:
+    """Accept the documented marker or an actual link to the same local notice."""
+    if SNIPPET in text:
+        return True
+
+    class NoticeLinks(HTMLParser):
+        found = False
+
+        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+            if tag != "a":
+                return
+            for name, value in attrs:
+                if name != "href" or value is None:
+                    continue
+                link = urlsplit(value)
+                if not link.scheme and not link.netloc and link.path:
+                    target = (page.parent / link.path).resolve()
+                    if target == (docs_dir / "DISCLAIMER_SNIPPET.md").resolve():
+                        self.found = True
+
+    links = NoticeLinks()
+    links.feed(text)
+    return links.found
 
 
 def main() -> int:
@@ -19,7 +46,7 @@ def main() -> int:
         if html.parent.name == "DISCLAIMER_SNIPPET":
             continue
         text = html.read_text(encoding="utf-8", errors="ignore")
-        if SNIPPET not in text:
+        if not has_disclaimer(text, html, docs_dir):
             missing.append(html.relative_to(repo_root))
 
     if missing:

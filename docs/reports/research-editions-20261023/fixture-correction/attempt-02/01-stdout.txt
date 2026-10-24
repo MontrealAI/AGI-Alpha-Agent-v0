@@ -1,0 +1,1307 @@
+........................................................................ [ 12%]
+........................................................................ [ 25%]
+........................................................................ [ 37%]
+........................................................................ [ 50%]
+........................................................................ [ 63%]
+........................................................................ [ 75%]
+........................................................................ [ 88%]
+.............................................FFFFFFFFFFFFFFFFFFFF        [100%]
+=================================== FAILURES ===================================
+______ test_actual_preview_ignores_untrusted_modules_and_dependency_lock _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_ignores_un0')
+
+    def test_actual_preview_ignores_untrusted_modules_and_dependency_lock(tmp_path: Path) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:526: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_ignores_un0/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+____ test_actual_preview_without_exact_available_base_is_an_optional_noop[] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex0')
+base = ''
+
+    @pytest.mark.parametrize("base", ["", "0" * 40, "NOT_A_SHA", "$(touch SOURCE_EXECUTED)"])
+    def test_actual_preview_without_exact_available_base_is_an_optional_noop(tmp_path: Path, base: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:542: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex0/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_without_exact_available_base_is_an_optional_noop[0000000000000000000000000000000000000000] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex1')
+base = '0000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize("base", ["", "0" * 40, "NOT_A_SHA", "$(touch SOURCE_EXECUTED)"])
+    def test_actual_preview_without_exact_available_base_is_an_optional_noop(tmp_path: Path, base: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:542: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex1/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_without_exact_available_base_is_an_optional_noop[NOT_A_SHA] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex2')
+base = 'NOT_A_SHA'
+
+    @pytest.mark.parametrize("base", ["", "0" * 40, "NOT_A_SHA", "$(touch SOURCE_EXECUTED)"])
+    def test_actual_preview_without_exact_available_base_is_an_optional_noop(tmp_path: Path, base: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:542: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex2/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_without_exact_available_base_is_an_optional_noop[$(touch SOURCE_EXECUTED)] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex3')
+base = '$(touch SOURCE_EXECUTED)'
+
+    @pytest.mark.parametrize("base", ["", "0" * 40, "NOT_A_SHA", "$(touch SOURCE_EXECUTED)"])
+    def test_actual_preview_without_exact_available_base_is_an_optional_noop(tmp_path: Path, base: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:542: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_without_ex3/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_first_install_without_base_policy_is_an_optional_noop[scripts/research_papers.py] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_first_inst0')
+missing = 'scripts/research_papers.py'
+
+    @pytest.mark.parametrize(
+        "missing", ["scripts/research_papers.py", "scripts/build_service_worker.py", "requirements-papers.lock"]
+    )
+    def test_actual_preview_first_install_without_base_policy_is_an_optional_noop(tmp_path: Path, missing: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:555: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_first_inst0/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_first_install_without_base_policy_is_an_optional_noop[scripts/build_service_worker.py] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_first_inst1')
+missing = 'scripts/build_service_worker.py'
+
+    @pytest.mark.parametrize(
+        "missing", ["scripts/research_papers.py", "scripts/build_service_worker.py", "requirements-papers.lock"]
+    )
+    def test_actual_preview_first_install_without_base_policy_is_an_optional_noop(tmp_path: Path, missing: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:555: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_first_inst1/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_first_install_without_base_policy_is_an_optional_noop[requirements-papers.lock] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_first_inst2')
+missing = 'requirements-papers.lock'
+
+    @pytest.mark.parametrize(
+        "missing", ["scripts/research_papers.py", "scripts/build_service_worker.py", "requirements-papers.lock"]
+    )
+    def test_actual_preview_first_install_without_base_policy_is_an_optional_noop(tmp_path: Path, missing: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:555: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_first_inst2/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[README.md] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy0')
+target = 'README.md'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy0/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/index.html] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy1')
+target = 'docs/index.html'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy1/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/research-papers.json] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy2')
+target = 'docs/research-papers.json'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy2/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/service-worker.js] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy3')
+target = 'docs/service-worker.js'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy3/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/assets/service-worker.js] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy4')
+target = 'docs/assets/service-worker.js'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy4/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy5')
+target = 'docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy5/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[alpha_factory_v1/demos/catalog.json] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy6')
+target = 'alpha_factory_v1/demos/catalog.json'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy6/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/assets/secret.json] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy7')
+target = 'docs/assets/secret.json'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy7/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/papers/paper-0.pdf] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy8')
+target = 'docs/papers/paper-0.pdf'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy8/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/assets] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy9')
+target = 'docs/assets'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy9/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/papers] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy10')
+target = 'docs/papers'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy10/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+_ test_actual_preview_rejects_symlinks_without_uploading_or_escaping[alpha_factory_v1/demos] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy11')
+target = 'alpha_factory_v1/demos'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "README.md",
+            "docs/index.html",
+            "docs/research-papers.json",
+            "docs/service-worker.js",
+            "docs/assets/service-worker.js",
+            "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js",
+            "alpha_factory_v1/demos/catalog.json",
+            "docs/assets/secret.json",
+            "docs/papers/paper-0.pdf",
+            "docs/assets",
+            "docs/papers",
+            "alpha_factory_v1/demos",
+        ],
+    )
+    def test_actual_preview_rejects_symlinks_without_uploading_or_escaping(tmp_path: Path, target: str) -> None:
+>       workspace, environment = preview_environment(tmp_path)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_workflow_policy.py:601: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_paper_workflow_policy.py:456: in preview_environment
+    shutil.copyfile(ROOT / "requirements-papers.lock", workspace / "requirements-papers.lock")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock')
+dst = PosixPath('/tmp/pytest-of-root/pytest-35/test_actual_preview_rejects_sy11/untrusted-checkout/requirements-papers.lock')
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+>           with open(src, 'rb') as fsrc:
+                 ^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/52ba4e7aa389/site-integration/requirements-papers.lock'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_ignores_untrusted_modules_and_dependency_lock
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_without_exact_available_base_is_an_optional_noop[]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_without_exact_available_base_is_an_optional_noop[0000000000000000000000000000000000000000]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_without_exact_available_base_is_an_optional_noop[NOT_A_SHA]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_without_exact_available_base_is_an_optional_noop[$(touch SOURCE_EXECUTED)]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_first_install_without_base_policy_is_an_optional_noop[scripts/research_papers.py]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_first_install_without_base_policy_is_an_optional_noop[scripts/build_service_worker.py]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_first_install_without_base_policy_is_an_optional_noop[requirements-papers.lock]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[README.md]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/index.html]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/research-papers.json]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/service-worker.js]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/assets/service-worker.js]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[alpha_factory_v1/demos/catalog.json]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/assets/secret.json]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/papers/paper-0.pdf]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/assets]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[docs/papers]
+FAILED tests/test_paper_workflow_policy.py::test_actual_preview_rejects_symlinks_without_uploading_or_escaping[alpha_factory_v1/demos]
+20 failed, 549 passed in 49.67s

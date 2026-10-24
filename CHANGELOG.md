@@ -1,3 +1,23 @@
+## 1.41.0 — Corrected companion and research-site delivery (experimental source candidate)
+
+- Reconcile the existing Writer #4 companion lineage with guarded main, preserving the frozen research archive, all eight v5 correction inputs and original paper/source URLs.
+- Record the already completed corrected non-UI source-API/local-EVM qualification separately from a new PR-only full HTTP Run/Stop/export/restore browser gate.
+- Accept real relative disclaimer links, preserve catalogue-bound reading/experience HTML during generic gallery generation, retain its exact LF bytes on Windows and include every gallery-precached entry page in core restores.
+- Update prospective version metadata, bilingual presentation and deterministic cache identities through the existing generators. Original manuscripts, archives, historical profiles and all four unqualified restricted outcomes remain preserved.
+- Exact-source review, applicable hosted gates, public release/installation and actual website deployment remain required; source preparation does not claim those outcomes.
+- See [release notes](docs/agent/RELEASE_NOTES_1.41.0.md).
+
+## 1.40.0 — Foundry v2 research integration (experimental source candidate)
+
+- Compose the existing Foundry paper and interactive-resource stack with the corrected enterprise homepage boundary; preserve every original paper and retained source commit.
+- Fix the eighth-paper inventory and reading-index assertions through the existing catalogue-driven implementation while retaining the seven historical blob assertions and reading order.
+- Connect the paper, exact interactive HTML, named research companion and distinct source/evidence release through one bilingual catalogue.
+- Prominently include all three existing Autonomous Enterprises manuscripts through byte-identical PDF/TeX serving copies, preserving their root URLs and independently fixed original identities alongside Foundry and the historical seven papers.
+- Preserve strict full-source qualification for executable HTML and require any later passive overlay to find identical already-qualified HTML without copying it.
+- Advance current release metadata and deterministic generated identities together; retain all six earlier checkout-helper editions and add one exact complete 61-file edition.
+- This is a local prospective edition after the accepted 1.39 publication sequence. Configured review, applicable CI, full exact-main acceptance, installed/public bytes and deployed browser qualification remain pending. Four held native-source helper/browser tests remain explicitly deselected and unqualified; physical, commercial and external enterprise capabilities remain separately scoped.
+- See [release notes](docs/agent/RELEASE_NOTES_1.40.0.md).
+
 ## 1.39.0 — Autonomous Enterprises (experimental source candidate)
 
 - Add the finite enterprise workspace, capability freeze, later-task comparisons and retained thirteen-section docket to the existing Discovery Lab.

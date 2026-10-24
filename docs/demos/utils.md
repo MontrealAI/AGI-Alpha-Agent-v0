@@ -9,7 +9,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.39.0
+## Current runnable path — 1.41.0
 
 **Mode:** Library. Shared notices and isolated demo code evaluation helpers.
 

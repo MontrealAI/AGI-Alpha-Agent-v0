@@ -1,0 +1,1045 @@
+﻿2026-10-23T02:05:13.8976311Z Current runner version: '2.338.0'
+2026-10-23T02:05:13.8992949Z ##[group]Runner Image Provisioner
+2026-10-23T02:05:13.8993557Z Hosted Compute Agent
+2026-10-23T02:05:13.8993974Z Version: 20261012.601
+2026-10-23T02:05:13.8994389Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-23T02:05:13.8994806Z Build Date: 2026-10-12T17:48:21Z
+2026-10-23T02:05:13.8995234Z Worker ID: {9422598e-ace3-4bd9-a083-71fa3b5267b6}
+2026-10-23T02:05:13.8995641Z Region: centralus
+2026-10-23T02:05:13.8995962Z Cloud: Azure
+2026-10-23T02:05:13.8996353Z ##[endgroup]
+2026-10-23T02:05:13.8997084Z ##[group]Operating System
+2026-10-23T02:05:13.8997464Z Ubuntu
+2026-10-23T02:05:13.8997783Z 24.04.5
+2026-10-23T02:05:13.8998099Z LTS
+2026-10-23T02:05:13.8998473Z ##[endgroup]
+2026-10-23T02:05:13.8998797Z ##[group]Runner Image
+2026-10-23T02:05:13.8999175Z Image: ubuntu-24.04
+2026-10-23T02:05:13.8999522Z Version: 20261012.334.1
+2026-10-23T02:05:13.9000284Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-23T02:05:13.9001158Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-23T02:05:13.9001730Z ##[endgroup]
+2026-10-23T02:05:13.9002478Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T02:05:13.9003768Z Contents: read
+2026-10-23T02:05:13.9004161Z Metadata: read
+2026-10-23T02:05:13.9004489Z ##[endgroup]
+2026-10-23T02:05:13.9005769Z Secret source: Actions
+2026-10-23T02:05:13.9006311Z Cache mode: write
+2026-10-23T02:05:13.9006986Z Prepare workflow directory
+2026-10-23T02:05:13.9241677Z Prepare all required actions
+2026-10-23T02:05:13.9271298Z Getting action download info
+2026-10-23T02:05:14.1533861Z Download action repository 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd' (SHA:de0fac2e4500dabe0009e67214ff5f5447ce83dd)
+2026-10-23T02:05:14.2433234Z Download action repository 'actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405' (SHA:a309ff8b426b58ec0e2a45f0f869d46889d02405)
+2026-10-23T02:05:14.3803374Z Complete job name: Full lint (ruff)
+2026-10-23T02:05:14.4260178Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+2026-10-23T02:05:14.4260663Z with:
+2026-10-23T02:05:14.4260911Z   repository: MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T02:05:14.4263196Z   token: ***
+2026-10-23T02:05:14.4263421Z   ssh-strict: true
+2026-10-23T02:05:14.4263655Z   ssh-user: git
+2026-10-23T02:05:14.4263893Z   persist-credentials: true
+2026-10-23T02:05:14.4264147Z   clean: true
+2026-10-23T02:05:14.4264383Z   sparse-checkout-cone-mode: true
+2026-10-23T02:05:14.4264659Z   fetch-depth: 1
+2026-10-23T02:05:14.4264888Z   fetch-tags: false
+2026-10-23T02:05:14.4265126Z   show-progress: true
+2026-10-23T02:05:14.4265364Z   lfs: false
+2026-10-23T02:05:14.4265582Z   submodules: false
+2026-10-23T02:05:14.4265821Z   set-safe-directory: true
+2026-10-23T02:05:14.4266141Z env:
+2026-10-23T02:05:14.4266354Z   PYTHON_VERSION: 3.12
+2026-10-23T02:05:14.4266612Z   PIP_DISABLE_PIP_VERSION_CHECK: 1
+2026-10-23T02:05:14.4266970Z   AGIALPHA_ADDRESS: 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa
+2026-10-23T02:05:14.4267327Z   AGIALPHA_DECIMALS: 18
+2026-10-23T02:05:14.4267570Z ##[endgroup]
+2026-10-23T02:05:14.4854769Z Syncing repository: MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T02:05:14.4855836Z ##[group]Getting Git version info
+2026-10-23T02:05:14.4856256Z Working directory is '/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0'
+2026-10-23T02:05:14.4856842Z [command]/usr/bin/git version
+2026-10-23T02:05:14.4916697Z git version 2.55.0
+2026-10-23T02:05:14.4928423Z ##[endgroup]
+2026-10-23T02:05:14.4936910Z Temporarily overriding HOME='/home/runner/work/_temp/870c0ca6-28fa-4236-b662-58b435990053' before making global git config changes
+2026-10-23T02:05:14.4939710Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T02:05:14.4940340Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0
+2026-10-23T02:05:14.4976842Z Deleting the contents of '/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0'
+2026-10-23T02:05:14.4978799Z ##[group]Initializing the repository
+2026-10-23T02:05:14.4981022Z [command]/usr/bin/git init /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0
+2026-10-23T02:05:14.5118535Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-23T02:05:14.5119374Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-23T02:05:14.5120136Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-23T02:05:14.5120724Z hint: call:
+2026-10-23T02:05:14.5121042Z hint:
+2026-10-23T02:05:14.5121447Z hint: 	git config --global init.defaultBranch <name>
+2026-10-23T02:05:14.5121932Z hint:
+2026-10-23T02:05:14.5122515Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-23T02:05:14.5123199Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-23T02:05:14.5123574Z hint:
+2026-10-23T02:05:14.5123789Z hint: 	git branch -m <name>
+2026-10-23T02:05:14.5124054Z hint:
+2026-10-23T02:05:14.5124411Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-23T02:05:14.5125262Z Initialized empty Git repository in /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/
+2026-10-23T02:05:14.5127597Z [command]/usr/bin/git remote add origin https://github.com/MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T02:05:14.5166581Z ##[endgroup]
+2026-10-23T02:05:14.5166984Z ##[group]Disabling automatic garbage collection
+2026-10-23T02:05:14.5168782Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-23T02:05:14.5190179Z ##[endgroup]
+2026-10-23T02:05:14.5190560Z ##[group]Setting up auth
+2026-10-23T02:05:14.5190967Z Removing SSH command configuration
+2026-10-23T02:05:14.5195598Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T02:05:14.5217635Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T02:05:14.5496826Z Removing HTTP extra header
+2026-10-23T02:05:14.5499819Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T02:05:14.5522522Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T02:05:14.5674296Z Removing includeIf entries pointing to credentials config files
+2026-10-23T02:05:14.5678016Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T02:05:14.5699555Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T02:05:14.5856907Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-23T02:05:14.5881458Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path /home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:05:14.5903372Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:05:14.5928368Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:05:14.5949757Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:05:14.5969173Z ##[endgroup]
+2026-10-23T02:05:14.5969575Z ##[group]Fetching the repository
+2026-10-23T02:05:14.5974189Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e29f79f3c07e62d65a719f3f6f8626caa19498a4:refs/remotes/pull/4872/merge
+2026-10-23T02:05:19.2813863Z From https://github.com/MontrealAI/AGI-Alpha-Agent-v0
+2026-10-23T02:05:19.2814517Z  * [new ref]         e29f79f3c07e62d65a719f3f6f8626caa19498a4 -> pull/4872/merge
+2026-10-23T02:05:19.2818972Z ##[endgroup]
+2026-10-23T02:05:19.2819480Z ##[group]Determining the checkout info
+2026-10-23T02:05:19.2819971Z ##[endgroup]
+2026-10-23T02:05:19.2823890Z [command]/usr/bin/git sparse-checkout disable
+2026-10-23T02:05:19.3025944Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-23T02:05:19.3235424Z ##[group]Checking out the ref
+2026-10-23T02:05:19.3236007Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/4872/merge
+2026-10-23T02:05:19.9536694Z Note: switching to 'refs/remotes/pull/4872/merge'.
+2026-10-23T02:05:19.9538118Z 
+2026-10-23T02:05:19.9538607Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T02:05:19.9539225Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T02:05:19.9539803Z state without impacting any branches by switching back to a branch.
+2026-10-23T02:05:19.9540124Z 
+2026-10-23T02:05:19.9540393Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T02:05:19.9540816Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T02:05:19.9541072Z 
+2026-10-23T02:05:19.9541277Z   git switch -c <new-branch-name>
+2026-10-23T02:05:19.9541496Z 
+2026-10-23T02:05:19.9541688Z Or undo this operation with:
+2026-10-23T02:05:19.9541906Z 
+2026-10-23T02:05:19.9542314Z   git switch -
+2026-10-23T02:05:19.9542641Z 
+2026-10-23T02:05:19.9543080Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T02:05:19.9543354Z 
+2026-10-23T02:05:19.9543929Z HEAD is now at e29f79f Merge 5aef0c1a0bbbd254b228cc309922ef5934445e22 into e7fbd7e7fd0599f66c70ea8fe5e26b178e04f541
+2026-10-23T02:05:19.9580964Z ##[endgroup]
+2026-10-23T02:05:19.9616123Z [command]/usr/bin/git log -1 --format=%H
+2026-10-23T02:05:19.9634335Z e29f79f3c07e62d65a719f3f6f8626caa19498a4
+2026-10-23T02:05:20.0161064Z ##[group]Run bash scripts/ci_free_disk.sh
+2026-10-23T02:05:20.0161342Z [36;1mbash scripts/ci_free_disk.sh[0m
+2026-10-23T02:05:20.0390047Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T02:05:20.0390278Z env:
+2026-10-23T02:05:20.0390425Z   PYTHON_VERSION: 3.12
+2026-10-23T02:05:20.0390633Z   PIP_DISABLE_PIP_VERSION_CHECK: 1
+2026-10-23T02:05:20.0390850Z   AGIALPHA_ADDRESS: 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa
+2026-10-23T02:05:20.0391086Z   AGIALPHA_DECIMALS: 18
+2026-10-23T02:05:20.0391240Z ##[endgroup]
+2026-10-23T02:05:20.0528337Z Disk usage before cleanup:
+2026-10-23T02:05:20.0632361Z Filesystem       Size  Used Avail Use% Mounted on
+2026-10-23T02:05:20.0632575Z /dev/root        145G   59G   86G  41% /
+2026-10-23T02:05:20.0632798Z tmpfs            7.9G   84K  7.9G   1% /dev/shm
+2026-10-23T02:05:20.0632997Z tmpfs            3.2G 1008K  3.2G   1% /run
+2026-10-23T02:05:20.0633192Z tmpfs            5.0M     0  5.0M   0% /run/lock
+2026-10-23T02:05:20.0633420Z /dev/nvme0n1p16  881M   64M  756M   8% /boot
+2026-10-23T02:05:20.0633619Z /dev/nvme0n1p15  105M  6.2M   99M   6% /boot/efi
+2026-10-23T02:05:20.0633827Z tmpfs            1.6G   12K  1.6G   1% /run/user/1001
+2026-10-23T02:06:54.0129534Z Deleted Images:
+2026-10-23T02:06:54.0132544Z untagged: ghcr.io/github/gh-aw-firewall/squid:latest
+2026-10-23T02:06:54.0140727Z untagged: ghcr.io/github/gh-aw-firewall/squid@sha256:2840a2246adf055974e13753cdbf9ec712bc6b470b9e37740ebea0fcfc851cc0
+2026-10-23T02:06:54.0141288Z deleted: sha256:dc17fe4244715333045de96cd877dc373d701f790100a33ff57a55d523c5fd43
+2026-10-23T02:06:54.0141708Z deleted: sha256:7b343203a40bd9052ab60f3ac187160f204fc16c0359502f1ea3f0ba8ba979ab
+2026-10-23T02:06:54.0142248Z deleted: sha256:e45aa24818a347d4102cd3e8c90d17032a7e5dad6d078c5e56ed208572f0ef26
+2026-10-23T02:06:54.0143131Z deleted: sha256:2cf336166cfb412c1393d59cec3dc02407b9a0e7c1b0e6a5dfef1b03473270a0
+2026-10-23T02:06:54.0143583Z deleted: sha256:17b0094a813d97c34ca729739326189c9afdd4610bc44d121b69608ca549051f
+2026-10-23T02:06:54.0144017Z deleted: sha256:8ccd9236e1fc745540569864e5e03aa2976fda968ebc44d2bfbe7a2a2cc3824c
+2026-10-23T02:06:54.0144416Z untagged: ghcr.io/dependabot/dependabot-updater-core:latest
+2026-10-23T02:06:54.0144945Z untagged: ghcr.io/dependabot/dependabot-updater-core@sha256:a4a43b17333aeb1e93c42781bee8f1da2a110c049fcf1cace04d621bcd3efc4b
+2026-10-23T02:06:54.0145503Z deleted: sha256:759e96ae5997ebc7d6d903ed56ba9dc0f3f2b1bb2c6a2ced5c0501f5cbf12529
+2026-10-23T02:06:54.0145949Z deleted: sha256:f057cee81f4bda97675e49c0f8da3d06667f179d8609affbe28cd3ad2cd5cf7b
+2026-10-23T02:06:54.0146392Z deleted: sha256:eb25577ea5536752c29ce44b9cc970435fd8ed1253cd5d99d5ec9fd753c5d8d1
+2026-10-23T02:06:54.0146851Z deleted: sha256:3f199fe2d372fd6082b164e7486ef15b870dea908f4c5979e4ce2a385ae5dd83
+2026-10-23T02:06:54.0147313Z deleted: sha256:f809c4d00f6cdf9bb6a28fbd470912bb57527a94648bcdfbd2c8a6f7c90d9beb
+2026-10-23T02:06:54.0147736Z deleted: sha256:847eed0e47917518a85fd7802fb6f4b057973ca261666f82137729f68226a68f
+2026-10-23T02:06:54.0148146Z deleted: sha256:e597ea81c894020692bb317e0f4e8342086d8c8314bf94cc059912de959f384b
+2026-10-23T02:06:54.0148609Z deleted: sha256:c912b2690b9f11d87758385a8e7e3f2ed8351d83606513deea02bc70cb3f064b
+2026-10-23T02:06:54.0149039Z deleted: sha256:5cd21116521a0ff45368e47fc60011cde24c52bc07115a71d99efd50d16297ce
+2026-10-23T02:06:54.0149467Z deleted: sha256:2ba1a742a18cc38baf9f012568c8581e816ca8b80bcddba8c902468e9256949d
+2026-10-23T02:06:54.0149899Z deleted: sha256:4b4eaa989ad960bc55ff36108b05bd8af516ac7d582cbb61f52ef213df6f4a61
+2026-10-23T02:06:54.0150328Z deleted: sha256:47779ce4a9e8bf3748119cad01e494c20997fd3322fc4c306f14820ed28c514c
+2026-10-23T02:06:54.0150923Z deleted: sha256:d81fb2a7c6ee3be05fdefaa7fd223be219c1ab172083ec1b994c3ecda33ac0a8
+2026-10-23T02:06:54.0151239Z untagged: ghcr.io/github/gh-aw-mcpg:latest
+2026-10-23T02:06:54.0151511Z untagged: ghcr.io/github/gh-aw-mcpg@sha256:ab5a436a1490438db473e4e3d4c973cb1d75e3cb233fb08b73d31b42d7d18fba
+2026-10-23T02:06:54.0152012Z deleted: sha256:808996e3d4773c7d3b0c383e6a590a086a28ecc216b853912c083c16c379b48a
+2026-10-23T02:06:54.0152432Z deleted: sha256:833d17b0898218516f91394a061452432f5a5e81424cc06099bffcdacacde330
+2026-10-23T02:06:54.0152710Z deleted: sha256:d987e51419de6f3a8dc290b78bdae16dba2a9c0c717c3121a912126522ca85df
+2026-10-23T02:06:54.0153065Z deleted: sha256:fbc2da059c4c135100ce6f4db532f5e0d80fdc9a1ede4d4bb2b2e82bb5dc9cc0
+2026-10-23T02:06:54.0153388Z deleted: sha256:6d715b8fec8118d84bfe0fa12b7c846e40de665401e061706f0c163043832ee4
+2026-10-23T02:06:54.0153661Z deleted: sha256:482a9dd60e2bf508688075611b808c7b909438b5e561ba879b671333780ffab3
+2026-10-23T02:06:54.0153934Z deleted: sha256:09df3d36d3df02c2be99898ac9e632f91e02fb8262d715c6c0e25927ed2e5dd6
+2026-10-23T02:06:54.0154212Z deleted: sha256:6ccd0f9257b0a94f3e50f50a9cdc766408da9d5ded13721abdac5fc34f663f49
+2026-10-23T02:06:54.0154490Z deleted: sha256:4b35d13cdd93533c08ba296080135dfc555c64a3a0a4284ac739b93e53ee63f6
+2026-10-23T02:06:54.0154766Z deleted: sha256:70834cf3bba44803e61e4c9d424992d91e06c34dcbfa92d388fc493c51c26e3a
+2026-10-23T02:06:54.0155045Z deleted: sha256:1a597abbdca4511eb22f2e0b00a5d8b6d6129e7669ed56d751b9d1d611d80bfa
+2026-10-23T02:06:54.0155321Z deleted: sha256:d5c28ed9f7e287d23038493d8b2dbea75a712162b907ec2fab74295d6bbf77fc
+2026-10-23T02:06:54.0155596Z deleted: sha256:34884abbe92863fce933ed7c39c0e045631af0ed86d5cc0dfbdf9fdca426ce3c
+2026-10-23T02:06:54.0155835Z untagged: ghcr.io/github/gh-aw-firewall/agent:latest
+2026-10-23T02:06:54.0156136Z untagged: ghcr.io/github/gh-aw-firewall/agent@sha256:0be6162362c5e8c910021c8ef249cacb0e5bdc57e017aa6c21e2000276efc2ac
+2026-10-23T02:06:54.0156472Z deleted: sha256:91d6360941a32d1f242a4354a8f1001ef6274505b5a7f589d4450a8cbff21883
+2026-10-23T02:06:54.0156745Z deleted: sha256:865486c2d57bdaba57933dcdfd7e0c46ac34dc88d21c622287b141af6eb841b4
+2026-10-23T02:06:54.0157116Z deleted: sha256:de37d965744bdd51e4748164bbb3f5ba0c526f722ba6de42ec6ec5da61a68169
+2026-10-23T02:06:54.0157400Z deleted: sha256:9dfed4cb7f4d053ace0d6e3580ff6002b32732b264aec213057a91ea8175c662
+2026-10-23T02:06:54.0157675Z deleted: sha256:f2d5806fc843be813cd68cbcb3a3725929f68225ffa391a6ec04ea6131ad8cea
+2026-10-23T02:06:54.0157952Z deleted: sha256:250ccd192bc273bf5d7ccbd0a8b2e478e581ce5985cb8e847beaa6215b37f879
+2026-10-23T02:06:54.0158227Z deleted: sha256:6ebc019e0f7ca40b73993049d0019b03055338b64bb89ff8d804580a4da71406
+2026-10-23T02:06:54.0158495Z deleted: sha256:b3620ac8ebcd189711225310c58896cfa4514d5102a007a38579c80b81c4f8b3
+2026-10-23T02:06:54.0158761Z deleted: sha256:2fa797a136696494fc2481718b46d64348939998a156cbe83e0b839e219305e9
+2026-10-23T02:06:54.0159035Z deleted: sha256:abd3aab198256ed4269d1bdafcaccaca4675157dbfd604912887d8df3fc36e50
+2026-10-23T02:06:54.0159312Z deleted: sha256:4bcbe2517ce543cf4419da5854761477a9cdab68993b141d5ddd166d084beaa8
+2026-10-23T02:06:54.0159594Z deleted: sha256:bcd2f152e37d3172f56d4651d397565cb70d423ea6bf7adfc8c294dacb280abe
+2026-10-23T02:06:54.0159867Z deleted: sha256:f71a129f9cd7cd6b157bf622032505299aa93cbe514110b9cd83c5f84994c0fd
+2026-10-23T02:06:54.0160144Z deleted: sha256:823d8bf28a535199fc9ca2b8037f8cabfbfb963f6f0d96dc8a868be9560d71a3
+2026-10-23T02:06:54.0160421Z deleted: sha256:956abe18d77d571e2a91b0b9a753457faa88145773cfed363223c8aac35f9dca
+2026-10-23T02:06:54.0160692Z deleted: sha256:810a066c7817e92ac3718b776df772fe10e52bf0bbfe5f8b45f97964664a6ffe
+2026-10-23T02:06:54.0160965Z deleted: sha256:f7a265ae9b3baa3a93f28433d73765d69f3bbaf854f271bba2fa75119346e99d
+2026-10-23T02:06:54.0161244Z deleted: sha256:50651efa57bd82ffb2e52f1eb52a6cee64d6b6b6f1edaf96510b318f5ef2ea2d
+2026-10-23T02:06:54.0161523Z deleted: sha256:cbaf391e670933f026c05c7dedec3faf8f194b6c2d83b0d5694ad68323c8077c
+2026-10-23T02:06:54.0161806Z untagged: ghcr.io/github/gh-aw-firewall/api-proxy:latest
+2026-10-23T02:06:54.0162512Z untagged: ghcr.io/github/gh-aw-firewall/api-proxy@sha256:aa5447df401dcac74ae591db78236790b9d5f7e8ec6be5e8ce7d7b57676642f9
+2026-10-23T02:06:54.0162869Z deleted: sha256:986b9bc056a95591724d198db403c3ff79ebc2a9eb678370eb849225e6cb6e14
+2026-10-23T02:06:54.0163252Z deleted: sha256:845473bd2c72941c1de8a0bbaf9cf9bccded3a177053f2e4ebb61b998153adba
+2026-10-23T02:06:54.0163528Z deleted: sha256:fe1381a944465ca08c94076501efb2c5af02880c370a665c2d67911a016c51ee
+2026-10-23T02:06:54.0163813Z deleted: sha256:1cda3198dc33d301b8b112f26e5628bc90e5e5c26d79ea0a6a6174fd918eac23
+2026-10-23T02:06:54.0164122Z deleted: sha256:ae4fd9037b501dec5cfb05e1f83ca04c636133e998d89d520411b36a947a5e7d
+2026-10-23T02:06:54.0164403Z deleted: sha256:9fecf9037d5d4b425a7db95b9e9db896f2c786bf517be6accef04d9b1858fcf4
+2026-10-23T02:06:54.0164684Z deleted: sha256:74fbe05a3fb74eabc46606fb21bfcdd547ca31892af3577c3388abee99709ee0
+2026-10-23T02:06:54.0164963Z deleted: sha256:d4cfb75713e7cfcd135cc71b3c80caadc432d96f2ddd0a2ea8475e117893399b
+2026-10-23T02:06:54.0165241Z deleted: sha256:9c745b5bd5a166422f81bb165ae5b0d11faf4a7d12384cd8a33d866e56bf2e5d
+2026-10-23T02:06:54.0165515Z deleted: sha256:7bef4835a0bbba6744a4c9b2708597845518261ee6db084bae1f40dcffecca97
+2026-10-23T02:06:54.0165795Z deleted: sha256:f49d3aa361fffa2b2e94a63d2b3e6c2673485c02a7b18dbcfb4d164a12cad5cc
+2026-10-23T02:06:54.0166069Z deleted: sha256:1fc800ab7c27044f68113e1c7f474000aa447219dbd77479447ab6ad1b86b2d7
+2026-10-23T02:06:54.0166340Z deleted: sha256:9c1e16c1243231b6b2b3f73fb3dadefc3d37c0c7c539e99409b3b1f5d41ee184
+2026-10-23T02:06:54.0166614Z deleted: sha256:ff9b85e5f9ce82bac83d2f8e3097d4b731eb1c268226154012db9a54f9da2cb2
+2026-10-23T02:06:54.0166890Z deleted: sha256:a8aabe94b66ee52be2cc5a04366a49ff3fc40c2945530afcced3919350ddfdf5
+2026-10-23T02:06:54.0167162Z deleted: sha256:74d97c428c51a828f9051a7a40a53ff1fc99e54fc30323ce36760701b0b7f711
+2026-10-23T02:06:54.0167392Z untagged: ghcr.io/github/github-mcp-server:latest
+2026-10-23T02:06:54.0167686Z untagged: ghcr.io/github/github-mcp-server@sha256:ffced0d76e77428532a2ced185516992d77fd146d69eec2f244e6237d1a97796
+2026-10-23T02:06:54.0168113Z deleted: sha256:9875fef5aa1fd407321d23d9a47d78f1515bfd794bcae2ce8fb1957627849146
+2026-10-23T02:06:54.0168391Z deleted: sha256:ecd8dd113ce637aabb894a9b03943b5c115c1804a2795f2f8ec102d01d4b9ec4
+2026-10-23T02:06:54.0168670Z deleted: sha256:1e1cabb4a65e50fb84bc4612619b0025e4a1d06d5e38699d1e67e5a8e4f333db
+2026-10-23T02:06:54.0168941Z deleted: sha256:86766d6a6e947f4a599c6e23307470f8f75732fc3d143ec1f3260e4406202bee
+2026-10-23T02:06:54.0169209Z deleted: sha256:2944471a0bbdfb4985f84f8d287edb5cd982d1060589e707a6cb0cbe82cdfe89
+2026-10-23T02:06:54.0169480Z deleted: sha256:5e555e7975e2202f21fb93d460d701a340ade876f3afccb70d702f1dc5ab80db
+2026-10-23T02:06:54.0169749Z deleted: sha256:2a080d78a1c5e3615170178f1c6f4c726340da9d5ff2926cb66e2fd97851da9d
+2026-10-23T02:06:54.0170023Z deleted: sha256:af4a114029fbf94a3cf75c5cfaa5e947019cd6faae4b800c9306ac9079363def
+2026-10-23T02:06:54.0170295Z deleted: sha256:c7b875d3de914680ec64ba55be5865955ec595e7370812894ee68a502e2e8391
+2026-10-23T02:06:54.0170574Z deleted: sha256:85d9b4c1ef131ee259952a35027e942f79626303ab143eff7ef00d55201bd06f
+2026-10-23T02:06:54.0170844Z deleted: sha256:492c6420fd79f4cd4e761bec1e74db6044d45adb5b073a82289af68aa3162e3f
+2026-10-23T02:06:54.0171116Z deleted: sha256:14b282df61c0316a80216cec27e753777da93de1d7e062072ef3b517f984fcf1
+2026-10-23T02:06:54.0171389Z deleted: sha256:fdaace00fc3f072b9060f703047b30a2c14d8bde7dbbf31a396802c032923732
+2026-10-23T02:06:54.0171666Z deleted: sha256:7f73eafc455b691b504d4d3c3f3c7be90e135c1d0ba4988b2cac29579cd6b567
+2026-10-23T02:06:54.0171939Z deleted: sha256:32a12b65383df6b6553c8d59f691675ca1980f8cec9c51cce163c3c8f7665a41
+2026-10-23T02:06:54.0172529Z deleted: sha256:5217b01660b515ac25ea055a8bd04a20790c7d6bd6085374b59b9081283911af
+2026-10-23T02:06:54.0172805Z deleted: sha256:7223ea1323e8c1159ec17f07d35acc27bdd1cc2bc3ed425b44ef21dac9915db0
+2026-10-23T02:06:54.0172975Z 
+2026-10-23T02:06:54.0173037Z Total reclaimed space: 1.869GB
+2026-10-23T02:06:54.4781389Z Total:	0B
+2026-10-23T02:06:54.4948979Z Total reclaimed space: 0B
+2026-10-23T02:06:54.4964294Z Disk usage after cleanup:
+2026-10-23T02:06:54.4973724Z Filesystem       Size  Used Avail Use% Mounted on
+2026-10-23T02:06:54.4973988Z /dev/root        145G   34G  111G  24% /
+2026-10-23T02:06:54.4974464Z tmpfs            7.9G   84K  7.9G   1% /dev/shm
+2026-10-23T02:06:54.4974625Z tmpfs            3.2G 1008K  3.2G   1% /run
+2026-10-23T02:06:54.4974780Z tmpfs            5.0M     0  5.0M   0% /run/lock
+2026-10-23T02:06:54.4974937Z /dev/nvme0n1p16  881M   64M  756M   8% /boot
+2026-10-23T02:06:54.4975095Z /dev/nvme0n1p15  105M  6.2M   99M   6% /boot/efi
+2026-10-23T02:06:54.4975259Z tmpfs            1.6G   12K  1.6G   1% /run/user/1001
+2026-10-23T02:06:54.5048853Z ##[group]Run actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+2026-10-23T02:06:54.5049064Z with:
+2026-10-23T02:06:54.5049185Z   python-version: 3.12
+2026-10-23T02:06:54.5049305Z   cache: pip
+2026-10-23T02:06:54.5049475Z   cache-dependency-path: requirements.lock
+requirements-dev.lock
+
+2026-10-23T02:06:54.5049691Z   check-latest: false
+2026-10-23T02:06:54.5051191Z   token: ***
+2026-10-23T02:06:54.5051306Z   update-environment: true
+2026-10-23T02:06:54.5051439Z   allow-prereleases: false
+2026-10-23T02:06:54.5051565Z   freethreaded: false
+2026-10-23T02:06:54.5051679Z env:
+2026-10-23T02:06:54.5051784Z   PYTHON_VERSION: 3.12
+2026-10-23T02:06:54.5051911Z   PIP_DISABLE_PIP_VERSION_CHECK: 1
+2026-10-23T02:06:54.5052264Z   AGIALPHA_ADDRESS: 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa
+2026-10-23T02:06:54.5052449Z   AGIALPHA_DECIMALS: 18
+2026-10-23T02:06:54.5052568Z ##[endgroup]
+2026-10-23T02:06:54.5826833Z ##[group]Installed versions
+2026-10-23T02:06:54.5889898Z Successfully set up CPython (3.12.15)
+2026-10-23T02:06:54.5890307Z ##[endgroup]
+2026-10-23T02:06:54.6066100Z [command]/opt/hostedtoolcache/Python/3.12.15/x64/bin/pip cache dir
+2026-10-23T02:06:54.8209788Z /home/runner/.cache/pip
+2026-10-23T02:06:54.9692463Z Cache hit for restore-key: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.15-pip-e6a296d7aab5447bca0c7c9b0e7795cd4cc677b9947954af88292996d3e4369e
+2026-10-23T02:06:56.0928972Z Received 121634816 of 1050633972 (11.6%), 116.0 MBs/sec
+2026-10-23T02:06:57.0953685Z Received 343932928 of 1050633972 (32.7%), 164.0 MBs/sec
+2026-10-23T02:06:58.0928306Z Received 536870912 of 1050633972 (51.1%), 170.7 MBs/sec
+2026-10-23T02:06:59.0929658Z Received 746586112 of 1050633972 (71.1%), 178.0 MBs/sec
+2026-10-23T02:07:00.0929480Z Received 926941184 of 1050633972 (88.2%), 176.8 MBs/sec
+2026-10-23T02:07:00.8585963Z Received 1050633972 of 1050633972 (100.0%), 173.8 MBs/sec
+2026-10-23T02:07:00.8586468Z Cache Size: ~1002 MB (1050633972 B)
+2026-10-23T02:07:00.8608811Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6a075f52-6311-4615-9b97-b6f2bb641689/cache.tzst -P -C /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0 --use-compress-program unzstd
+2026-10-23T02:07:01.8201630Z Cache restored successfully
+2026-10-23T02:07:01.8864043Z Cache restored from key: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.15-pip-e6a296d7aab5447bca0c7c9b0e7795cd4cc677b9947954af88292996d3e4369e
+2026-10-23T02:07:01.9566623Z ##[group]Run python scripts/check_agialpha_config.py
+2026-10-23T02:07:01.9566884Z [36;1mpython scripts/check_agialpha_config.py[0m
+2026-10-23T02:07:01.9621500Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T02:07:01.9621688Z env:
+2026-10-23T02:07:01.9621806Z   PYTHON_VERSION: 3.12
+2026-10-23T02:07:01.9621941Z   PIP_DISABLE_PIP_VERSION_CHECK: 1
+2026-10-23T02:07:01.9622194Z   AGIALPHA_ADDRESS: 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa
+2026-10-23T02:07:01.9622383Z   AGIALPHA_DECIMALS: 18
+2026-10-23T02:07:01.9622547Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:01.9622799Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-23T02:07:01.9623031Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:01.9623239Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:01.9623451Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:01.9623709Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-23T02:07:01.9623888Z ##[endgroup]
+2026-10-23T02:07:02.5680825Z AGIALPHA configuration is consistent:
+2026-10-23T02:07:02.5681134Z   address: 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA
+2026-10-23T02:07:02.5681328Z   decimals: 18
+2026-10-23T02:07:02.5779579Z ##[group]Run python -m pip install --upgrade pip
+2026-10-23T02:07:02.5779821Z [36;1mpython -m pip install --upgrade pip[0m
+2026-10-23T02:07:02.5780003Z [36;1mpip install -r requirements.lock[0m
+2026-10-23T02:07:02.5780182Z [36;1mpip install -r requirements-dev.lock[0m
+2026-10-23T02:07:02.5831901Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T02:07:02.5832159Z env:
+2026-10-23T02:07:02.5832282Z   PYTHON_VERSION: 3.12
+2026-10-23T02:07:02.5832419Z   PIP_DISABLE_PIP_VERSION_CHECK: 1
+2026-10-23T02:07:02.5832616Z   AGIALPHA_ADDRESS: 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa
+2026-10-23T02:07:02.5832824Z   AGIALPHA_DECIMALS: 18
+2026-10-23T02:07:02.5832993Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:02.5833233Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-23T02:07:02.5833469Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:02.5833709Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:02.5833929Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:02.5834146Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-23T02:07:02.5834332Z ##[endgroup]
+2026-10-23T02:07:02.9862947Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (26.2.1)
+2026-10-23T02:07:03.1318417Z Collecting pip
+2026-10-23T02:07:03.1328563Z   Using cached pip-26.2.2-py3-none-any.whl.metadata (4.6 kB)
+2026-10-23T02:07:03.1349353Z Using cached pip-26.2.2-py3-none-any.whl (1.8 MB)
+2026-10-23T02:07:03.1676186Z Installing collected packages: pip
+2026-10-23T02:07:03.1691396Z   Attempting uninstall: pip
+2026-10-23T02:07:03.1691593Z     Found existing installation: pip 26.2.1
+2026-10-23T02:07:03.2319883Z     Uninstalling pip-26.2.1:
+2026-10-23T02:07:03.2359621Z       Successfully uninstalled pip-26.2.1
+2026-10-23T02:07:03.8971482Z Successfully installed pip-26.2.2
+2026-10-23T02:07:04.1753409Z Ignoring pywin32: markers 'platform_system == "Windows"' don't match your environment
+2026-10-23T02:07:04.2437329Z Collecting aiohappyeyeballs==2.6.1 (from -r requirements.lock (line 7))
+2026-10-23T02:07:04.2445956Z   Using cached aiohappyeyeballs-2.6.1-py3-none-any.whl (15 kB)
+2026-10-23T02:07:04.5110556Z Collecting aiohttp==3.12.14 (from -r requirements.lock (line 11))
+2026-10-23T02:07:04.5121471Z   Using cached aiohttp-3.12.14-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.7 MB)
+2026-10-23T02:07:04.5309642Z Collecting aiosignal==1.4.0 (from -r requirements.lock (line 101))
+2026-10-23T02:07:04.5317510Z   Using cached aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+2026-10-23T02:07:04.5478706Z Collecting annotated-types==0.7.0 (from -r requirements.lock (line 105))
+2026-10-23T02:07:04.5486290Z   Using cached annotated_types-0.7.0-py3-none-any.whl (13 kB)
+2026-10-23T02:07:04.5735893Z Collecting anthropic==0.59.0 (from -r requirements.lock (line 109))
+2026-10-23T02:07:04.5744523Z   Using cached anthropic-0.59.0-py3-none-any.whl (293 kB)
+2026-10-23T02:07:04.5957997Z Collecting anyio==4.9.0 (from -r requirements.lock (line 113))
+2026-10-23T02:07:04.5966117Z   Using cached anyio-4.9.0-py3-none-any.whl (100 kB)
+2026-10-23T02:07:04.6150096Z Collecting attrs==25.3.0 (from -r requirements.lock (line 125))
+2026-10-23T02:07:04.6158643Z   Using cached attrs-25.3.0-py3-none-any.whl (63 kB)
+2026-10-23T02:07:04.6364203Z Collecting authlib==1.6.1 (from -r requirements.lock (line 132))
+2026-10-23T02:07:04.6375135Z   Using cached authlib-1.6.1-py2.py3-none-any.whl (239 kB)
+2026-10-23T02:07:04.6558931Z Collecting backoff==2.2.1 (from -r requirements.lock (line 136))
+2026-10-23T02:07:04.6566784Z   Using cached backoff-2.2.1-py3-none-any.whl (15 kB)
+2026-10-23T02:07:04.6733575Z Collecting better-profanity==0.7.0 (from -r requirements.lock (line 140))
+2026-10-23T02:07:04.6742722Z   Using cached better_profanity-0.7.0-py3-none-any.whl (46 kB)
+2026-10-23T02:07:04.6896691Z Collecting blinker==1.9.0 (from -r requirements.lock (line 144))
+2026-10-23T02:07:04.6903348Z   Using cached blinker-1.9.0-py3-none-any.whl (8.5 kB)
+2026-10-23T02:07:04.7081012Z Collecting cachetools==5.5.2 (from -r requirements.lock (line 148))
+2026-10-23T02:07:04.7088373Z   Using cached cachetools-5.5.2-py3-none-any.whl (10 kB)
+2026-10-23T02:07:04.7278595Z Collecting certifi==2025.7.14 (from -r requirements.lock (line 154))
+2026-10-23T02:07:04.7285725Z   Using cached certifi-2025.7.14-py3-none-any.whl (162 kB)
+2026-10-23T02:07:04.7853066Z Collecting cffi==1.17.1 (from -r requirements.lock (line 161))
+2026-10-23T02:07:04.7860539Z   Using cached cffi-1.17.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (479 kB)
+2026-10-23T02:07:04.8653444Z Collecting charset-normalizer==3.4.2 (from -r requirements.lock (line 230))
+2026-10-23T02:07:04.8662324Z   Using cached charset_normalizer-3.4.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (148 kB)
+2026-10-23T02:07:04.8849557Z Collecting click==8.2.1 (from -r requirements.lock (line 324))
+2026-10-23T02:07:04.8858237Z   Using cached click-8.2.1-py3-none-any.whl (102 kB)
+2026-10-23T02:07:04.9022712Z Collecting cloudpickle==3.1.1 (from -r requirements.lock (line 333))
+2026-10-23T02:07:04.9029506Z   Using cached cloudpickle-3.1.1-py3-none-any.whl (20 kB)
+2026-10-23T02:07:04.9197472Z Collecting colorama==0.4.6 (from -r requirements.lock (line 337))
+2026-10-23T02:07:04.9204535Z   Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+2026-10-23T02:07:05.0093792Z Collecting cryptography==45.0.5 (from -r requirements.lock (line 341))
+2026-10-23T02:07:05.0102695Z   Using cached cryptography-45.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+2026-10-23T02:07:05.0316900Z Collecting distro==1.9.0 (from -r requirements.lock (line 382))
+2026-10-23T02:07:05.0324434Z   Using cached distro-1.9.0-py3-none-any.whl (20 kB)
+2026-10-23T02:07:05.0479365Z Collecting docstring-parser==0.17.0 (from -r requirements.lock (line 388))
+2026-10-23T02:07:05.0486638Z   Using cached docstring_parser-0.17.0-py3-none-any.whl (36 kB)
+2026-10-23T02:07:05.0815863Z Collecting fastapi==0.116.1 (from -r requirements.lock (line 392))
+2026-10-23T02:07:05.0823235Z   Using cached fastapi-0.116.1-py3-none-any.whl (95 kB)
+2026-10-23T02:07:05.1034107Z Collecting filelock==3.18.0 (from -r requirements.lock (line 398))
+2026-10-23T02:07:05.1041181Z   Using cached filelock-3.18.0-py3-none-any.whl (16 kB)
+2026-10-23T02:07:05.1222298Z Collecting flask==3.1.1 (from -r requirements.lock (line 402))
+2026-10-23T02:07:05.1229250Z   Using cached flask-3.1.1-py3-none-any.whl (103 kB)
+2026-10-23T02:07:05.1615909Z Collecting frozenlist==1.7.0 (from -r requirements.lock (line 406))
+2026-10-23T02:07:05.1623564Z   Using cached frozenlist-1.7.0-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (241 kB)
+2026-10-23T02:07:05.1814164Z Collecting fsspec==2025.7.0 (from -r requirements.lock (line 514))
+2026-10-23T02:07:05.1821403Z   Using cached fsspec-2025.7.0-py3-none-any.whl (199 kB)
+2026-10-23T02:07:05.2053266Z Collecting gitdb==4.0.12 (from -r requirements.lock (line 518))
+2026-10-23T02:07:05.2060394Z   Using cached gitdb-4.0.12-py3-none-any.whl (62 kB)
+2026-10-23T02:07:05.2255050Z Collecting gitpython==3.1.45 (from -r requirements.lock (line 522))
+2026-10-23T02:07:05.2263648Z   Using cached gitpython-3.1.45-py3-none-any.whl (208 kB)
+2026-10-23T02:07:05.2472706Z Collecting google-adk==1.8.0 (from -r requirements.lock (line 526))
+2026-10-23T02:07:05.2481567Z   Using cached google_adk-1.8.0-py3-none-any.whl (1.8 MB)
+2026-10-23T02:07:05.2764270Z Collecting google-api-core==2.25.1 (from google-api-core[grpc]==2.25.1->-r requirements.lock (line 530))
+2026-10-23T02:07:05.2773801Z   Using cached google_api_core-2.25.1-py3-none-any.whl (160 kB)
+2026-10-23T02:07:05.3064565Z Collecting google-api-python-client==2.177.0 (from -r requirements.lock (line 545))
+2026-10-23T02:07:05.3074230Z   Using cached google_api_python_client-2.177.0-py3-none-any.whl (13.7 MB)
+2026-10-23T02:07:05.3446279Z Collecting google-auth==2.40.3 (from -r requirements.lock (line 549))
+2026-10-23T02:07:05.3454953Z   Using cached google_auth-2.40.3-py2.py3-none-any.whl (216 kB)
+2026-10-23T02:07:05.3638831Z Collecting google-auth-httplib2==0.2.0 (from -r requirements.lock (line 567))
+2026-10-23T02:07:05.3646953Z   Using cached google_auth_httplib2-0.2.0-py2.py3-none-any.whl (9.3 kB)
+2026-10-23T02:07:05.3896282Z Collecting google-cloud-aiplatform==1.105.0 (from google-cloud-aiplatform[agent-engines]==1.105.0->-r requirements.lock (line 571))
+2026-10-23T02:07:05.3905531Z   Using cached google_cloud_aiplatform-1.105.0-py2.py3-none-any.whl (7.9 MB)
+2026-10-23T02:07:05.4719790Z Collecting google-cloud-appengine-logging==1.6.2 (from -r requirements.lock (line 575))
+2026-10-23T02:07:05.4729209Z   Using cached google_cloud_appengine_logging-1.6.2-py3-none-any.whl (16 kB)
+2026-10-23T02:07:05.4900011Z Collecting google-cloud-audit-log==0.3.2 (from -r requirements.lock (line 579))
+2026-10-23T02:07:05.4908183Z   Using cached google_cloud_audit_log-0.3.2-py3-none-any.whl (32 kB)
+2026-10-23T02:07:05.5152342Z Collecting google-cloud-bigquery==3.35.1 (from -r requirements.lock (line 583))
+2026-10-23T02:07:05.5160367Z   Using cached google_cloud_bigquery-3.35.1-py3-none-any.whl (256 kB)
+2026-10-23T02:07:05.5354290Z Collecting google-cloud-core==2.4.3 (from -r requirements.lock (line 587))
+2026-10-23T02:07:05.5361610Z   Using cached google_cloud_core-2.4.3-py2.py3-none-any.whl (29 kB)
+2026-10-23T02:07:05.5547988Z Collecting google-cloud-logging==3.12.1 (from -r requirements.lock (line 594))
+2026-10-23T02:07:05.5555994Z   Using cached google_cloud_logging-3.12.1-py2.py3-none-any.whl (229 kB)
+2026-10-23T02:07:05.5737714Z Collecting google-cloud-resource-manager==1.14.2 (from -r requirements.lock (line 598))
+2026-10-23T02:07:05.5744917Z   Using cached google_cloud_resource_manager-1.14.2-py3-none-any.whl (394 kB)
+2026-10-23T02:07:05.5940710Z Collecting google-cloud-secret-manager==2.24.0 (from -r requirements.lock (line 602))
+2026-10-23T02:07:05.5948466Z   Using cached google_cloud_secret_manager-2.24.0-py3-none-any.whl (218 kB)
+2026-10-23T02:07:05.6140554Z Collecting google-cloud-speech==2.33.0 (from -r requirements.lock (line 606))
+2026-10-23T02:07:05.6147710Z   Using cached google_cloud_speech-2.33.0-py3-none-any.whl (335 kB)
+2026-10-23T02:07:05.6350510Z Collecting google-cloud-storage==2.19.0 (from -r requirements.lock (line 610))
+2026-10-23T02:07:05.6357838Z   Using cached google_cloud_storage-2.19.0-py2.py3-none-any.whl (131 kB)
+2026-10-23T02:07:05.6531782Z Collecting google-cloud-trace==1.16.2 (from -r requirements.lock (line 616))
+2026-10-23T02:07:05.6539631Z   Using cached google_cloud_trace-1.16.2-py3-none-any.whl (103 kB)
+2026-10-23T02:07:05.6863819Z Collecting google-crc32c==1.7.1 (from -r requirements.lock (line 622))
+2026-10-23T02:07:05.6871116Z   Using cached google_crc32c-1.7.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (32 kB)
+2026-10-23T02:07:05.7090269Z Collecting google-genai==1.27.0 (from -r requirements.lock (line 660))
+2026-10-23T02:07:05.7097284Z   Using cached google_genai-1.27.0-py3-none-any.whl (218 kB)
+2026-10-23T02:07:05.7282970Z Collecting google-resumable-media==2.7.2 (from -r requirements.lock (line 666))
+2026-10-23T02:07:05.7290005Z   Using cached google_resumable_media-2.7.2-py2.py3-none-any.whl (81 kB)
+2026-10-23T02:07:05.7467809Z Collecting googleapis-common-protos==1.70.0 (from googleapis-common-protos[grpc]==1.70.0->-r requirements.lock (line 672))
+2026-10-23T02:07:05.7474922Z   Using cached googleapis_common_protos-1.70.0-py3-none-any.whl (294 kB)
+2026-10-23T02:07:05.7659282Z Collecting graphviz==0.21 (from -r requirements.lock (line 680))
+2026-10-23T02:07:05.7666353Z   Using cached graphviz-0.21-py3-none-any.whl (47 kB)
+2026-10-23T02:07:05.8416918Z Collecting greenlet==3.2.3 (from -r requirements.lock (line 684))
+2026-10-23T02:07:05.8425101Z   Using cached greenlet-3.2.3-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (605 kB)
+2026-10-23T02:07:05.8642359Z Collecting griffe==1.8.0 (from -r requirements.lock (line 742))
+2026-10-23T02:07:05.8649731Z   Using cached griffe-1.8.0-py3-none-any.whl (132 kB)
+2026-10-23T02:07:05.8811547Z Collecting grpc-google-iam-v1==0.14.2 (from -r requirements.lock (line 746))
+2026-10-23T02:07:05.8818724Z   Using cached grpc_google_iam_v1-0.14.2-py3-none-any.whl (19 kB)
+2026-10-23T02:07:06.1907826Z Collecting grpcio==1.74.0 (from -r requirements.lock (line 753))
+2026-10-23T02:07:06.1918853Z   Using cached grpcio-1.74.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (6.2 MB)
+2026-10-23T02:07:06.2204863Z Collecting grpcio-status==1.74.0 (from -r requirements.lock (line 812))
+2026-10-23T02:07:06.2213941Z   Using cached grpcio_status-1.74.0-py3-none-any.whl (14 kB)
+2026-10-23T02:07:06.5558601Z Collecting grpcio-tools==1.74.0 (from -r requirements.lock (line 816))
+2026-10-23T02:07:06.5568952Z   Using cached grpcio_tools-1.74.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.7 MB)
+2026-10-23T02:07:06.5773094Z Collecting gunicorn==21.2.0 (from -r requirements.lock (line 869))
+2026-10-23T02:07:06.5781167Z   Using cached gunicorn-21.2.0-py3-none-any.whl (80 kB)
+2026-10-23T02:07:06.5940064Z Collecting h11==0.16.0 (from -r requirements.lock (line 873))
+2026-10-23T02:07:06.5947555Z   Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+2026-10-23T02:07:06.6251571Z Collecting hf-xet==1.1.5 (from -r requirements.lock (line 879))
+2026-10-23T02:07:06.6259441Z   Using cached hf_xet-1.1.5-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.1 MB)
+2026-10-23T02:07:06.6454839Z Collecting httpcore==1.0.9 (from -r requirements.lock (line 889))
+2026-10-23T02:07:06.6462245Z   Using cached httpcore-1.0.9-py3-none-any.whl (78 kB)
+2026-10-23T02:07:06.6632641Z Collecting httplib2==0.22.0 (from -r requirements.lock (line 893))
+2026-10-23T02:07:06.6640352Z   Using cached httplib2-0.22.0-py3-none-any.whl (96 kB)
+2026-10-23T02:07:06.6817337Z Collecting httpx==0.28.1 (from -r requirements.lock (line 899))
+2026-10-23T02:07:06.6824532Z   Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+2026-10-23T02:07:06.6979643Z Collecting httpx-sse==0.4.1 (from -r requirements.lock (line 909))
+2026-10-23T02:07:06.6986674Z   Using cached httpx_sse-0.4.1-py3-none-any.whl (8.1 kB)
+2026-10-23T02:07:06.7282818Z Collecting huggingface-hub==0.34.1 (from -r requirements.lock (line 913))
+2026-10-23T02:07:06.7290620Z   Using cached huggingface_hub-0.34.1-py3-none-any.whl (558 kB)
+2026-10-23T02:07:06.7521531Z Collecting idna==3.10 (from -r requirements.lock (line 917))
+2026-10-23T02:07:06.7528895Z   Using cached idna-3.10-py3-none-any.whl (70 kB)
+2026-10-23T02:07:06.7735228Z Collecting importlib-metadata==8.7.0 (from -r requirements.lock (line 925))
+2026-10-23T02:07:06.7742510Z   Using cached importlib_metadata-8.7.0-py3-none-any.whl (27 kB)
+2026-10-23T02:07:06.7904281Z Collecting iniconfig==2.1.0 (from -r requirements.lock (line 931))
+2026-10-23T02:07:06.7911329Z   Using cached iniconfig-2.1.0-py3-none-any.whl (6.0 kB)
+2026-10-23T02:07:06.8064516Z Collecting itsdangerous==2.2.0 (from -r requirements.lock (line 935))
+2026-10-23T02:07:06.8071500Z   Using cached itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+2026-10-23T02:07:06.8235913Z Collecting jinja2==3.1.6 (from -r requirements.lock (line 939))
+2026-10-23T02:07:06.8243286Z   Using cached jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-10-23T02:07:06.8809094Z Collecting jiter==0.10.0 (from -r requirements.lock (line 945))
+2026-10-23T02:07:06.8819662Z   Using cached jiter-0.10.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (352 kB)
+2026-10-23T02:07:06.9026784Z Collecting jsonschema==4.25.0 (from -r requirements.lock (line 1026))
+2026-10-23T02:07:06.9036068Z   Using cached jsonschema-4.25.0-py3-none-any.whl (89 kB)
+2026-10-23T02:07:06.9216092Z Collecting jsonschema-specifications==2025.4.1 (from -r requirements.lock (line 1032))
+2026-10-23T02:07:06.9224530Z   Using cached jsonschema_specifications-2025.4.1-py3-none-any.whl (18 kB)
+2026-10-23T02:07:07.0007424Z Collecting litellm==1.74.8 (from -r requirements.lock (line 1036))
+2026-10-23T02:07:07.0020302Z   Using cached litellm-1.74.8-py3-none-any.whl (8.7 MB)
+2026-10-23T02:07:07.0322926Z Collecting markdown-it-py==3.0.0 (from -r requirements.lock (line 1040))
+2026-10-23T02:07:07.0331537Z   Using cached markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
+2026-10-23T02:07:07.0732350Z Collecting markupsafe==3.0.2 (from -r requirements.lock (line 1044))
+2026-10-23T02:07:07.0742526Z   Using cached MarkupSafe-3.0.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (23 kB)
+2026-10-23T02:07:07.1511681Z Collecting mcp==1.12.2 (from -r requirements.lock (line 1110))
+2026-10-23T02:07:07.1521598Z   Using cached mcp-1.12.2-py3-none-any.whl (158 kB)
+2026-10-23T02:07:07.2573744Z Collecting mdurl==0.1.2 (from -r requirements.lock (line 1116))
+2026-10-23T02:07:07.2583261Z   Using cached mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+2026-10-23T02:07:07.5113089Z Collecting multidict==6.6.3 (from -r requirements.lock (line 1120))
+2026-10-23T02:07:07.5122585Z   Using cached multidict-6.6.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (256 kB)
+2026-10-23T02:07:07.7344307Z Collecting numpy==2.3.2 (from -r requirements.lock (line 1234))
+2026-10-23T02:07:07.7354475Z   Using cached numpy-2.3.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+2026-10-23T02:07:07.9039390Z Collecting openai==1.97.1 (from -r requirements.lock (line 1313))
+2026-10-23T02:07:07.9048059Z   Using cached openai-1.97.1-py3-none-any.whl (764 kB)
+2026-10-23T02:07:07.9943386Z Collecting openai-agents==0.0.17 (from -r requirements.lock (line 1320))
+2026-10-23T02:07:07.9950999Z   Using cached openai_agents-0.0.17-py3-none-any.whl (121 kB)
+2026-10-23T02:07:08.2217141Z Collecting opentelemetry-api==1.35.0 (from -r requirements.lock (line 1324))
+2026-10-23T02:07:08.2224550Z   Using cached opentelemetry_api-1.35.0-py3-none-any.whl (65 kB)
+2026-10-23T02:07:08.3280994Z Collecting opentelemetry-exporter-gcp-trace==1.9.0 (from -r requirements.lock (line 1335))
+2026-10-23T02:07:08.3287992Z   Using cached opentelemetry_exporter_gcp_trace-1.9.0-py3-none-any.whl (13 kB)
+2026-10-23T02:07:08.4402263Z Collecting opentelemetry-resourcedetector-gcp==1.9.0a0 (from -r requirements.lock (line 1341))
+2026-10-23T02:07:08.4413143Z   Using cached opentelemetry_resourcedetector_gcp-1.9.0a0-py3-none-any.whl (20 kB)
+2026-10-23T02:07:08.5540524Z Collecting opentelemetry-sdk==1.35.0 (from -r requirements.lock (line 1345))
+2026-10-23T02:07:08.5549473Z   Using cached opentelemetry_sdk-1.35.0-py3-none-any.whl (119 kB)
+2026-10-23T02:07:08.7127421Z Collecting opentelemetry-semantic-conventions==0.56b0 (from -r requirements.lock (line 1354))
+2026-10-23T02:07:08.7135828Z   Using cached opentelemetry_semantic_conventions-0.56b0-py3-none-any.whl (201 kB)
+2026-10-23T02:07:09.0921766Z Collecting orjson==3.11.1 (from -r requirements.lock (line 1358))
+2026-10-23T02:07:09.0931715Z   Using cached orjson-3.11.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (131 kB)
+2026-10-23T02:07:09.1118581Z Collecting packaging==25.0 (from -r requirements.lock (line 1443))
+2026-10-23T02:07:09.1126202Z   Using cached packaging-25.0-py3-none-any.whl (66 kB)
+2026-10-23T02:07:09.1787138Z Collecting pandas==2.3.1 (from -r requirements.lock (line 1452))
+2026-10-23T02:07:09.1797889Z   Using cached pandas-2.3.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.0 MB)
+2026-10-23T02:07:09.2336627Z Collecting playwright==1.54.0 (from -r requirements.lock (line 1496))
+2026-10-23T02:07:09.2345784Z   Using cached playwright-1.54.0-py3-none-manylinux1_x86_64.whl (45.9 MB)
+2026-10-23T02:07:09.2860300Z Collecting pluggy==1.6.0 (from -r requirements.lock (line 1506))
+2026-10-23T02:07:09.2870185Z   Using cached pluggy-1.6.0-py3-none-any.whl (20 kB)
+2026-10-23T02:07:09.3046816Z Collecting prometheus-client==0.22.1 (from -r requirements.lock (line 1510))
+2026-10-23T02:07:09.3054185Z   Using cached prometheus_client-0.22.1-py3-none-any.whl (58 kB)
+2026-10-23T02:07:09.3505516Z Collecting propcache==0.3.2 (from -r requirements.lock (line 1514))
+2026-10-23T02:07:09.3515554Z   Using cached propcache-0.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (224 kB)
+2026-10-23T02:07:09.3726474Z Collecting proto-plus==1.26.1 (from -r requirements.lock (line 1616))
+2026-10-23T02:07:09.3734267Z   Using cached proto_plus-1.26.1-py3-none-any.whl (50 kB)
+2026-10-23T02:07:09.4566512Z Collecting protobuf==6.31.1 (from -r requirements.lock (line 1628))
+2026-10-23T02:07:09.4576710Z   Using cached protobuf-6.31.1-cp39-abi3-manylinux2014_x86_64.whl (321 kB)
+2026-10-23T02:07:09.4790156Z Collecting pyasn1==0.6.1 (from -r requirements.lock (line 1654))
+2026-10-23T02:07:09.4797746Z   Using cached pyasn1-0.6.1-py3-none-any.whl (83 kB)
+2026-10-23T02:07:09.4985702Z Collecting pyasn1-modules==0.4.2 (from -r requirements.lock (line 1660))
+2026-10-23T02:07:09.4992807Z   Using cached pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+2026-10-23T02:07:09.5157823Z Collecting pycparser==2.22 (from -r requirements.lock (line 1664))
+2026-10-23T02:07:09.5164683Z   Using cached pycparser-2.22-py3-none-any.whl (117 kB)
+2026-10-23T02:07:09.6445591Z Collecting pydantic==2.11.7 (from -r requirements.lock (line 1668))
+2026-10-23T02:07:09.6455352Z   Using cached pydantic-2.11.7-py3-none-any.whl (444 kB)
+2026-10-23T02:07:10.0970780Z Collecting pydantic-core==2.33.2 (from -r requirements.lock (line 1685))
+2026-10-23T02:07:10.0981694Z   Using cached pydantic_core-2.33.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.0 MB)
+2026-10-23T02:07:10.1182940Z Collecting pydantic-settings==2.10.1 (from -r requirements.lock (line 1786))
+2026-10-23T02:07:10.1190886Z   Using cached pydantic_settings-2.10.1-py3-none-any.whl (45 kB)
+2026-10-23T02:07:10.1370074Z Collecting pyee==13.0.0 (from -r requirements.lock (line 1792))
+2026-10-23T02:07:10.1377746Z   Using cached pyee-13.0.0-py3-none-any.whl (15 kB)
+2026-10-23T02:07:10.1574458Z Collecting pygments==2.19.2 (from -r requirements.lock (line 1796))
+2026-10-23T02:07:10.1582518Z   Using cached pygments-2.19.2-py3-none-any.whl (1.2 MB)
+2026-10-23T02:07:10.1819382Z Collecting pyparsing==3.2.3 (from -r requirements.lock (line 1802))
+2026-10-23T02:07:10.1827607Z   Using cached pyparsing-3.2.3-py3-none-any.whl (111 kB)
+2026-10-23T02:07:10.2062590Z Collecting pytest==8.4.1 (from -r requirements.lock (line 1806))
+2026-10-23T02:07:10.2070904Z   Using cached pytest-8.4.1-py3-none-any.whl (365 kB)
+2026-10-23T02:07:10.2265946Z Collecting pytest-asyncio==0.26.0 (from -r requirements.lock (line 1812))
+2026-10-23T02:07:10.2273816Z   Using cached pytest_asyncio-0.26.0-py3-none-any.whl (19 kB)
+2026-10-23T02:07:10.2444499Z Collecting python-dateutil==2.9.0.post0 (from -r requirements.lock (line 1816))
+2026-10-23T02:07:10.2452899Z   Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-10-23T02:07:10.2629221Z Collecting python-dotenv==1.1.1 (from -r requirements.lock (line 1824))
+2026-10-23T02:07:10.2636340Z   Using cached python_dotenv-1.1.1-py3-none-any.whl (20 kB)
+2026-10-23T02:07:10.2811001Z Collecting python-multipart==0.0.20 (from -r requirements.lock (line 1832))
+2026-10-23T02:07:10.2818227Z   Using cached python_multipart-0.0.20-py3-none-any.whl (24 kB)
+2026-10-23T02:07:10.3071178Z Collecting pytz==2025.2 (from -r requirements.lock (line 1836))
+2026-10-23T02:07:10.3078382Z   Using cached pytz-2025.2-py2.py3-none-any.whl (509 kB)
+2026-10-23T02:07:10.3363360Z Collecting pyyaml==6.0.2 (from -r requirements.lock (line 1862))
+2026-10-23T02:07:10.3370579Z   Using cached PyYAML-6.0.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (767 kB)
+2026-10-23T02:07:10.3543655Z Collecting redbird==0.7.1 (from -r requirements.lock (line 1920))
+2026-10-23T02:07:10.3550580Z   Using cached redbird-0.7.1-py3-none-any.whl (60 kB)
+2026-10-23T02:07:10.3746655Z Collecting referencing==0.36.2 (from -r requirements.lock (line 1924))
+2026-10-23T02:07:10.3754032Z   Using cached referencing-0.36.2-py3-none-any.whl (26 kB)
+2026-10-23T02:07:10.5638170Z Collecting regex==2024.11.6 (from -r requirements.lock (line 1930))
+2026-10-23T02:07:10.5647981Z   Using cached regex-2024.11.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (796 kB)
+2026-10-23T02:07:10.5860674Z Collecting requests==2.32.4 (from -r requirements.lock (line 2026))
+2026-10-23T02:07:10.5867835Z   Using cached requests-2.32.4-py3-none-any.whl (64 kB)
+2026-10-23T02:07:10.6117424Z Collecting rich==14.1.0 (from -r requirements.lock (line 2040))
+2026-10-23T02:07:10.6124654Z   Using cached rich-14.1.0-py3-none-any.whl (243 kB)
+2026-10-23T02:07:10.6312419Z Collecting rocketry==2.5.1 (from -r requirements.lock (line 2044))
+2026-10-23T02:07:10.6320000Z   Using cached rocketry-2.5.1-py3-none-any.whl (216 kB)
+2026-10-23T02:07:10.8917714Z Collecting rpds-py==0.26.0 (from -r requirements.lock (line 2048))
+2026-10-23T02:07:10.8928776Z   Using cached rpds_py-0.26.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (386 kB)
+2026-10-23T02:07:10.9126207Z Collecting rsa==4.9.1 (from -r requirements.lock (line 2196))
+2026-10-23T02:07:10.9135077Z   Using cached rsa-4.9.1-py3-none-any.whl (34 kB)
+2026-10-23T02:07:10.9708160Z Collecting shapely==2.1.1 (from -r requirements.lock (line 2200))
+2026-10-23T02:07:10.9718995Z   Using cached shapely-2.1.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.1 MB)
+2026-10-23T02:07:10.9920579Z Collecting six==1.17.0 (from -r requirements.lock (line 2243))
+2026-10-23T02:07:10.9928222Z   Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-10-23T02:07:11.0085332Z Collecting smmap==5.0.2 (from -r requirements.lock (line 2247))
+2026-10-23T02:07:11.0092495Z   Using cached smmap-5.0.2-py3-none-any.whl (24 kB)
+2026-10-23T02:07:11.0244803Z Collecting sniffio==1.3.1 (from -r requirements.lock (line 2251))
+2026-10-23T02:07:11.0251700Z   Using cached sniffio-1.3.1-py3-none-any.whl (10 kB)
+2026-10-23T02:07:11.1809414Z Collecting sqlalchemy==2.0.41 (from -r requirements.lock (line 2258))
+2026-10-23T02:07:11.1819319Z   Using cached sqlalchemy-2.0.41-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.3 MB)
+2026-10-23T02:07:11.2059112Z Collecting sse-starlette==3.0.0 (from -r requirements.lock (line 2317))
+2026-10-23T02:07:11.2066521Z   Using cached sse_starlette-3.0.0-py3-none-any.whl (11 kB)
+2026-10-23T02:07:11.2278160Z Collecting starlette==0.47.2 (from -r requirements.lock (line 2321))
+2026-10-23T02:07:11.2285474Z   Using cached starlette-0.47.2-py3-none-any.whl (72 kB)
+2026-10-23T02:07:11.2456701Z Collecting tenacity==8.5.0 (from -r requirements.lock (line 2328))
+2026-10-23T02:07:11.2463742Z   Using cached tenacity-8.5.0-py3-none-any.whl (28 kB)
+2026-10-23T02:07:11.2746761Z Collecting tiktoken==0.9.0 (from -r requirements.lock (line 2334))
+2026-10-23T02:07:11.2754288Z   Using cached tiktoken-0.9.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.2 MB)
+2026-10-23T02:07:11.3485962Z Collecting tokenizers==0.22.1 (from -r requirements.lock (line 2369))
+2026-10-23T02:07:11.3494300Z   Using cached tokenizers-0.22.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.3 MB)
+2026-10-23T02:07:11.3737324Z Collecting tqdm==4.67.1 (from -r requirements.lock (line 2386))
+2026-10-23T02:07:11.3744601Z   Using cached tqdm-4.67.1-py3-none-any.whl (78 kB)
+2026-10-23T02:07:11.3965214Z Collecting types-requests==2.32.4.20250611 (from -r requirements.lock (line 2393))
+2026-10-23T02:07:11.3972512Z   Using cached types_requests-2.32.4.20250611-py3-none-any.whl (20 kB)
+2026-10-23T02:07:11.5354157Z Collecting typing-extensions==4.14.1 (from -r requirements.lock (line 2397))
+2026-10-23T02:07:11.5367315Z   Using cached typing_extensions-4.14.1-py3-none-any.whl (43 kB)
+2026-10-23T02:07:11.5536031Z Collecting typing-inspection==0.4.1 (from -r requirements.lock (line 2423))
+2026-10-23T02:07:11.5544989Z   Using cached typing_inspection-0.4.1-py3-none-any.whl (14 kB)
+2026-10-23T02:07:11.5719781Z Collecting tzdata==2025.2 (from -r requirements.lock (line 2429))
+2026-10-23T02:07:11.5728777Z   Using cached tzdata-2025.2-py2.py3-none-any.whl (347 kB)
+2026-10-23T02:07:11.5926305Z Collecting tzlocal==5.3.1 (from -r requirements.lock (line 2433))
+2026-10-23T02:07:11.5934951Z   Using cached tzlocal-5.3.1-py3-none-any.whl (18 kB)
+2026-10-23T02:07:11.6107324Z Collecting uritemplate==4.2.0 (from -r requirements.lock (line 2437))
+2026-10-23T02:07:11.6115025Z   Using cached uritemplate-4.2.0-py3-none-any.whl (11 kB)
+2026-10-23T02:07:11.6310794Z Collecting urllib3==2.5.0 (from -r requirements.lock (line 2441))
+2026-10-23T02:07:11.6319300Z   Using cached urllib3-2.5.0-py3-none-any.whl (129 kB)
+2026-10-23T02:07:11.6547373Z Collecting uvicorn==0.35.0 (from -r requirements.lock (line 2447))
+2026-10-23T02:07:11.6555991Z   Using cached uvicorn-0.35.0-py3-none-any.whl (66 kB)
+2026-10-23T02:07:11.6861689Z Collecting uvloop==0.21.0 (from -r requirements.lock (line 2454))
+2026-10-23T02:07:11.6870833Z   Using cached uvloop-0.21.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.7 MB)
+2026-10-23T02:07:11.7225236Z Collecting watchdog==6.0.0 (from -r requirements.lock (line 2493))
+2026-10-23T02:07:11.7234579Z   Using cached watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl (79 kB)
+2026-10-23T02:07:11.8121966Z Collecting websockets==15.0.1 (from -r requirements.lock (line 2525))
+2026-10-23T02:07:11.8133378Z   Using cached websockets-15.0.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (182 kB)
+2026-10-23T02:07:11.8337479Z Collecting werkzeug==3.1.3 (from -r requirements.lock (line 2599))
+2026-10-23T02:07:11.8347900Z   Using cached werkzeug-3.1.3-py3-none-any.whl (224 kB)
+2026-10-23T02:07:11.8545246Z Collecting wheel==0.45.1 (from -r requirements.lock (line 2603))
+2026-10-23T02:07:11.8553637Z   Using cached wheel-0.45.1-py3-none-any.whl (72 kB)
+2026-10-23T02:07:11.9876714Z Collecting yarl==1.20.1 (from -r requirements.lock (line 2607))
+2026-10-23T02:07:11.9886582Z   Using cached yarl-1.20.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (355 kB)
+2026-10-23T02:07:12.0086234Z Collecting zipp==3.23.0 (from -r requirements.lock (line 2713))
+2026-10-23T02:07:12.0094110Z   Using cached zipp-3.23.0-py3-none-any.whl (10 kB)
+2026-10-23T02:07:12.0524398Z Collecting setuptools==80.9.0 (from -r requirements.lock (line 2719))
+2026-10-23T02:07:12.0531760Z   Using cached setuptools-80.9.0-py3-none-any.whl (1.2 MB)
+2026-10-23T02:07:12.4460376Z Installing collected packages: pytz, zipp, wheel, websockets, watchdog, uvloop, urllib3, uritemplate, tzlocal, tzdata, typing-extensions, tqdm, tenacity, sniffio, smmap, six, setuptools, rpds-py, regex, pyyaml, python-multipart, python-dotenv, pyparsing, pygments, pycparser, pyasn1, protobuf, propcache, prometheus-client, pluggy, packaging, orjson, numpy, multidict, mdurl, markupsafe, jiter, itsdangerous, iniconfig, idna, httpx-sse, hf-xet, h11, grpcio, greenlet, graphviz, google-crc32c, fsspec, frozenlist, filelock, docstring-parser, distro, colorama, cloudpickle, click, charset-normalizer, certifi, cachetools, blinker, better-profanity, backoff, attrs, annotated-types, aiohappyeyeballs, yarl, werkzeug, uvicorn, typing-inspection, types-requests, sqlalchemy, shapely, rsa, requests, referencing, python-dateutil, pytest, pyee, pydantic-core, pyasn1-modules, proto-plus, markdown-it-py, jinja2, importlib-metadata, httplib2, httpcore, gunicorn, grpcio-tools, griffe, googleapis-common-protos, google-resumable-media, gitdb, cffi, anyio, aiosignal, tiktoken, starlette, sse-starlette, rich, pytest-asyncio, pydantic, playwright, pandas, opentelemetry-api, jsonschema-specifications, huggingface-hub, httpx, grpcio-status, google-cloud-audit-log, google-auth, gitpython, flask, cryptography, aiohttp, tokenizers, redbird, pydantic-settings, opentelemetry-semantic-conventions, openai, jsonschema, grpc-google-iam-v1, google-genai, google-auth-httplib2, google-api-core, fastapi, authlib, anthropic, rocketry, opentelemetry-sdk, mcp, litellm, google-cloud-core, google-api-python-client, opentelemetry-resourcedetector-gcp, openai-agents, google-cloud-trace, google-cloud-storage, google-cloud-speech, google-cloud-secret-manager, google-cloud-resource-manager, google-cloud-bigquery, google-cloud-appengine-logging, opentelemetry-exporter-gcp-trace, google-cloud-logging, google-cloud-aiplatform, google-adk
+2026-10-23T02:07:29.1641521Z 
+2026-10-23T02:07:29.1706633Z Successfully installed aiohappyeyeballs-2.6.1 aiohttp-3.12.14 aiosignal-1.4.0 annotated-types-0.7.0 anthropic-0.59.0 anyio-4.9.0 attrs-25.3.0 authlib-1.6.1 backoff-2.2.1 better-profanity-0.7.0 blinker-1.9.0 cachetools-5.5.2 certifi-2025.7.14 cffi-1.17.1 charset-normalizer-3.4.2 click-8.2.1 cloudpickle-3.1.1 colorama-0.4.6 cryptography-45.0.5 distro-1.9.0 docstring-parser-0.17.0 fastapi-0.116.1 filelock-3.18.0 flask-3.1.1 frozenlist-1.7.0 fsspec-2025.7.0 gitdb-4.0.12 gitpython-3.1.45 google-adk-1.8.0 google-api-core-2.25.1 google-api-python-client-2.177.0 google-auth-2.40.3 google-auth-httplib2-0.2.0 google-cloud-aiplatform-1.105.0 google-cloud-appengine-logging-1.6.2 google-cloud-audit-log-0.3.2 google-cloud-bigquery-3.35.1 google-cloud-core-2.4.3 google-cloud-logging-3.12.1 google-cloud-resource-manager-1.14.2 google-cloud-secret-manager-2.24.0 google-cloud-speech-2.33.0 google-cloud-storage-2.19.0 google-cloud-trace-1.16.2 google-crc32c-1.7.1 google-genai-1.27.0 google-resumable-media-2.7.2 googleapis-common-protos-1.70.0 graphviz-0.21 greenlet-3.2.3 griffe-1.8.0 grpc-google-iam-v1-0.14.2 grpcio-1.74.0 grpcio-status-1.74.0 grpcio-tools-1.74.0 gunicorn-21.2.0 h11-0.16.0 hf-xet-1.1.5 httpcore-1.0.9 httplib2-0.22.0 httpx-0.28.1 httpx-sse-0.4.1 huggingface-hub-0.34.1 idna-3.10 importlib-metadata-8.7.0 iniconfig-2.1.0 itsdangerous-2.2.0 jinja2-3.1.6 jiter-0.10.0 jsonschema-4.25.0 jsonschema-specifications-2025.4.1 litellm-1.74.8 markdown-it-py-3.0.0 markupsafe-3.0.2 mcp-1.12.2 mdurl-0.1.2 multidict-6.6.3 numpy-2.3.2 openai-1.97.1 openai-agents-0.0.17 opentelemetry-api-1.35.0 opentelemetry-exporter-gcp-trace-1.9.0 opentelemetry-resourcedetector-gcp-1.9.0a0 opentelemetry-sdk-1.35.0 opentelemetry-semantic-conventions-0.56b0 orjson-3.11.1 packaging-25.0 pandas-2.3.1 playwright-1.54.0 pluggy-1.6.0 prometheus-client-0.22.1 propcache-0.3.2 proto-plus-1.26.1 protobuf-6.31.1 pyasn1-0.6.1 pyasn1-modules-0.4.2 pycparser-2.22 pydantic-2.11.7 pydantic-core-2.33.2 pydantic-settings-2.10.1 pyee-13.0.0 pygments-2.19.2 pyparsing-3.2.3 pytest-8.4.1 pytest-asyncio-0.26.0 python-dateutil-2.9.0.post0 python-dotenv-1.1.1 python-multipart-0.0.20 pytz-2025.2 pyyaml-6.0.2 redbird-0.7.1 referencing-0.36.2 regex-2024.11.6 requests-2.32.4 rich-14.1.0 rocketry-2.5.1 rpds-py-0.26.0 rsa-4.9.1 setuptools-80.9.0 shapely-2.1.1 six-1.17.0 smmap-5.0.2 sniffio-1.3.1 sqlalchemy-2.0.41 sse-starlette-3.0.0 starlette-0.47.2 tenacity-8.5.0 tiktoken-0.9.0 tokenizers-0.22.1 tqdm-4.67.1 types-requests-2.32.4.20250611 typing-extensions-4.14.1 typing-inspection-0.4.1 tzdata-2025.2 tzlocal-5.3.1 uritemplate-4.2.0 urllib3-2.5.0 uvicorn-0.35.0 uvloop-0.21.0 watchdog-6.0.0 websockets-15.0.1 werkzeug-3.1.3 wheel-0.45.1 yarl-1.20.1 zipp-3.23.0
+2026-10-23T02:07:30.2748051Z Collecting aiofiles==24.1.0 (from -r requirements-dev.lock (line 7))
+2026-10-23T02:07:30.2758673Z   Using cached aiofiles-24.1.0-py3-none-any.whl (15 kB)
+2026-10-23T02:07:30.2779806Z Requirement already satisfied: aiohappyeyeballs==2.6.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 11)) (2.6.1)
+2026-10-23T02:07:30.2783125Z Requirement already satisfied: aiohttp==3.12.14 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 15)) (3.12.14)
+2026-10-23T02:07:30.2785752Z Requirement already satisfied: aiosignal==1.4.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 107)) (1.4.0)
+2026-10-23T02:07:30.2788159Z Requirement already satisfied: annotated-types==0.7.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 111)) (0.7.0)
+2026-10-23T02:07:30.3015645Z Collecting ansicolors==1.1.8 (from -r requirements-dev.lock (line 115))
+2026-10-23T02:07:30.3026379Z   Using cached ansicolors-1.1.8-py2.py3-none-any.whl (13 kB)
+2026-10-23T02:07:30.3041237Z Requirement already satisfied: anthropic==0.59.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 119)) (0.59.0)
+2026-10-23T02:07:30.3044014Z Requirement already satisfied: anyio==4.9.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 123)) (4.9.0)
+2026-10-23T02:07:30.3297308Z Collecting appnope==0.1.4 (from -r requirements-dev.lock (line 136))
+2026-10-23T02:07:30.3305381Z   Using cached appnope-0.1.4-py2.py3-none-any.whl (4.3 kB)
+2026-10-23T02:07:30.3524322Z Collecting asttokens==3.0.0 (from -r requirements-dev.lock (line 139))
+2026-10-23T02:07:30.3531718Z   Using cached asttokens-3.0.0-py3-none-any.whl (26 kB)
+2026-10-23T02:07:30.3546249Z Requirement already satisfied: attrs==25.3.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 143)) (25.3.0)
+2026-10-23T02:07:30.3548832Z Requirement already satisfied: authlib==1.6.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 151)) (1.6.1)
+2026-10-23T02:07:30.3551123Z Requirement already satisfied: backoff==2.2.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 155)) (2.2.1)
+2026-10-23T02:07:30.3749611Z Collecting beautifulsoup4==4.13.4 (from -r requirements-dev.lock (line 159))
+2026-10-23T02:07:30.3757804Z   Using cached beautifulsoup4-4.13.4-py3-none-any.whl (187 kB)
+2026-10-23T02:07:30.3774553Z Requirement already satisfied: better-profanity==0.7.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 163)) (0.7.0)
+2026-10-23T02:07:30.3983402Z Collecting bleach==6.2.0 (from bleach[css]==6.2.0->-r requirements-dev.lock (line 167))
+2026-10-23T02:07:30.3992032Z   Using cached bleach-6.2.0-py3-none-any.whl (163 kB)
+2026-10-23T02:07:30.4018163Z Requirement already satisfied: blinker==1.9.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 171)) (1.9.0)
+2026-10-23T02:07:30.4344226Z Collecting brotli==1.1.0 (from -r requirements-dev.lock (line 175))
+2026-10-23T02:07:30.4352328Z   Using cached Brotli-1.1.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.9 MB)
+2026-10-23T02:07:30.4391792Z Requirement already satisfied: cachetools==5.5.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 302)) (5.5.2)
+2026-10-23T02:07:30.4394533Z Requirement already satisfied: certifi==2025.7.14 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 308)) (2025.7.14)
+2026-10-23T02:07:30.4396901Z Requirement already satisfied: cffi==1.17.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 315)) (1.17.1)
+2026-10-23T02:07:30.4577394Z Collecting cfgv==3.4.0 (from -r requirements-dev.lock (line 384))
+2026-10-23T02:07:30.4585266Z   Using cached cfgv-3.4.0-py2.py3-none-any.whl (7.2 kB)
+2026-10-23T02:07:30.4596903Z Requirement already satisfied: charset-normalizer==3.4.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 388)) (3.4.2)
+2026-10-23T02:07:30.4599340Z Requirement already satisfied: click==8.2.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 482)) (8.2.1)
+2026-10-23T02:07:30.4601629Z Requirement already satisfied: cloudpickle==3.1.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 494)) (3.1.1)
+2026-10-23T02:07:30.4604006Z Requirement already satisfied: colorama==0.4.6 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 500)) (0.4.6)
+2026-10-23T02:07:30.4783279Z Collecting comm==0.2.3 (from -r requirements-dev.lock (line 504))
+2026-10-23T02:07:30.4790230Z   Using cached comm-0.2.3-py3-none-any.whl (7.3 kB)
+2026-10-23T02:07:30.6922523Z Collecting coverage==7.10.0 (from coverage[toml]==7.10.0->-r requirements-dev.lock (line 508))
+2026-10-23T02:07:30.6932467Z   Using cached coverage-7.10.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (248 kB)
+2026-10-23T02:07:30.6951812Z Requirement already satisfied: cryptography==45.0.5 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 598)) (45.0.5)
+2026-10-23T02:07:30.7465217Z Collecting debugpy==1.8.15 (from -r requirements-dev.lock (line 639))
+2026-10-23T02:07:30.7473713Z   Using cached debugpy-1.8.15-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.2 MB)
+2026-10-23T02:07:30.7729216Z Collecting decorator==5.2.1 (from -r requirements-dev.lock (line 667))
+2026-10-23T02:07:30.7737786Z   Using cached decorator-5.2.1-py3-none-any.whl (9.2 kB)
+2026-10-23T02:07:30.7954204Z Collecting defusedxml==0.7.1 (from -r requirements-dev.lock (line 671))
+2026-10-23T02:07:30.7963596Z   Using cached defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)
+2026-10-23T02:07:30.8173440Z Collecting distlib==0.4.0 (from -r requirements-dev.lock (line 675))
+2026-10-23T02:07:30.8181653Z   Using cached distlib-0.4.0-py2.py3-none-any.whl (469 kB)
+2026-10-23T02:07:30.8198376Z Requirement already satisfied: distro==1.9.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 679)) (1.9.0)
+2026-10-23T02:07:30.8201137Z Requirement already satisfied: docstring-parser==0.17.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 685)) (0.17.0)
+2026-10-23T02:07:30.8413577Z Collecting entrypoints==0.4 (from -r requirements-dev.lock (line 689))
+2026-10-23T02:07:30.8421360Z   Using cached entrypoints-0.4-py3-none-any.whl (5.3 kB)
+2026-10-23T02:07:30.8663908Z Collecting executing==2.2.0 (from -r requirements-dev.lock (line 693))
+2026-10-23T02:07:30.8673051Z   Using cached executing-2.2.0-py2.py3-none-any.whl (26 kB)
+2026-10-23T02:07:30.8890346Z Collecting farama-notifications==0.0.4 (from -r requirements-dev.lock (line 697))
+2026-10-23T02:07:30.8898726Z   Using cached Farama_Notifications-0.0.4-py3-none-any.whl (2.5 kB)
+2026-10-23T02:07:30.8909128Z Requirement already satisfied: fastapi==0.116.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 701)) (0.116.1)
+2026-10-23T02:07:30.9098434Z Collecting fastjsonschema==2.21.1 (from -r requirements-dev.lock (line 708))
+2026-10-23T02:07:30.9107089Z   Using cached fastjsonschema-2.21.1-py3-none-any.whl (23 kB)
+2026-10-23T02:07:30.9320273Z Collecting ffmpy==0.6.1 (from -r requirements-dev.lock (line 712))
+2026-10-23T02:07:30.9328009Z   Using cached ffmpy-0.6.1-py3-none-any.whl (5.5 kB)
+2026-10-23T02:07:30.9339602Z Requirement already satisfied: filelock==3.18.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 716)) (3.18.0)
+2026-10-23T02:07:30.9342317Z Requirement already satisfied: flask==3.1.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 722)) (3.1.1)
+2026-10-23T02:07:30.9344764Z Requirement already satisfied: frozenlist==1.7.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 726)) (1.7.0)
+2026-10-23T02:07:30.9346869Z Requirement already satisfied: fsspec==2025.7.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 834)) (2025.7.0)
+2026-10-23T02:07:30.9348902Z Requirement already satisfied: gitdb==4.0.12 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 840)) (4.0.12)
+2026-10-23T02:07:30.9350915Z Requirement already satisfied: gitpython==3.1.45 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 844)) (3.1.45)
+2026-10-23T02:07:30.9353387Z Requirement already satisfied: google-adk==1.8.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 848)) (1.8.0)
+2026-10-23T02:07:30.9355622Z Requirement already satisfied: google-api-core==2.25.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from google-api-core[grpc]==2.25.1->-r requirements-dev.lock (line 852)) (2.25.1)
+2026-10-23T02:07:30.9357623Z Requirement already satisfied: google-api-python-client==2.177.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 867)) (2.177.0)
+2026-10-23T02:07:30.9359585Z Requirement already satisfied: google-auth==2.40.3 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 871)) (2.40.3)
+2026-10-23T02:07:30.9361592Z Requirement already satisfied: google-auth-httplib2==0.2.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 889)) (0.2.0)
+2026-10-23T02:07:30.9364190Z Requirement already satisfied: google-cloud-aiplatform==1.105.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from google-cloud-aiplatform[agent-engines]==1.105.0->-r requirements-dev.lock (line 893)) (1.105.0)
+2026-10-23T02:07:30.9366104Z Requirement already satisfied: google-cloud-appengine-logging==1.6.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 897)) (1.6.2)
+2026-10-23T02:07:30.9368025Z Requirement already satisfied: google-cloud-audit-log==0.3.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 901)) (0.3.2)
+2026-10-23T02:07:30.9369968Z Requirement already satisfied: google-cloud-bigquery==3.35.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 905)) (3.35.1)
+2026-10-23T02:07:30.9372558Z Requirement already satisfied: google-cloud-core==2.4.3 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 909)) (2.4.3)
+2026-10-23T02:07:30.9374703Z Requirement already satisfied: google-cloud-logging==3.12.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 916)) (3.12.1)
+2026-10-23T02:07:30.9376741Z Requirement already satisfied: google-cloud-resource-manager==1.14.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 920)) (1.14.2)
+2026-10-23T02:07:30.9378729Z Requirement already satisfied: google-cloud-secret-manager==2.24.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 924)) (2.24.0)
+2026-10-23T02:07:30.9380689Z Requirement already satisfied: google-cloud-speech==2.33.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 928)) (2.33.0)
+2026-10-23T02:07:30.9382778Z Requirement already satisfied: google-cloud-storage==2.19.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 932)) (2.19.0)
+2026-10-23T02:07:30.9384771Z Requirement already satisfied: google-cloud-trace==1.16.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 938)) (1.16.2)
+2026-10-23T02:07:30.9386728Z Requirement already satisfied: google-crc32c==1.7.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 944)) (1.7.1)
+2026-10-23T02:07:30.9388624Z Requirement already satisfied: google-genai==1.27.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 982)) (1.27.0)
+2026-10-23T02:07:30.9390707Z Requirement already satisfied: google-resumable-media==2.7.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 988)) (2.7.2)
+2026-10-23T02:07:30.9393036Z Requirement already satisfied: googleapis-common-protos==1.70.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from googleapis-common-protos[grpc]==1.70.0->-r requirements-dev.lock (line 994)) (1.70.0)
+2026-10-23T02:07:31.0100257Z Collecting gradio==5.38.2 (from -r requirements-dev.lock (line 1002))
+2026-10-23T02:07:31.0109244Z   Using cached gradio-5.38.2-py3-none-any.whl (59.5 MB)
+2026-10-23T02:07:31.0972757Z Collecting gradio-client==1.11.0 (from -r requirements-dev.lock (line 1006))
+2026-10-23T02:07:31.0981580Z   Using cached gradio_client-1.11.0-py3-none-any.whl (324 kB)
+2026-10-23T02:07:31.0998337Z Requirement already satisfied: graphviz==0.21 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1010)) (0.21)
+2026-10-23T02:07:31.1001330Z Requirement already satisfied: greenlet==3.2.3 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1014)) (3.2.3)
+2026-10-23T02:07:31.1003803Z Requirement already satisfied: griffe==1.8.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1072)) (1.8.0)
+2026-10-23T02:07:31.1206912Z Collecting groovy==0.1.2 (from -r requirements-dev.lock (line 1076))
+2026-10-23T02:07:31.1214894Z   Using cached groovy-0.1.2-py3-none-any.whl (14 kB)
+2026-10-23T02:07:31.1227639Z Requirement already satisfied: grpc-google-iam-v1==0.14.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1080)) (0.14.2)
+2026-10-23T02:07:31.1230584Z Requirement already satisfied: grpcio==1.74.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1087)) (1.74.0)
+2026-10-23T02:07:31.1233615Z Requirement already satisfied: grpcio-status==1.74.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1147)) (1.74.0)
+2026-10-23T02:07:31.1236403Z Requirement already satisfied: grpcio-tools==1.74.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1151)) (1.74.0)
+2026-10-23T02:07:31.1238989Z Requirement already satisfied: gunicorn==21.2.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1206)) (21.2.0)
+2026-10-23T02:07:31.1444550Z Collecting gymnasium==1.2.0 (from gymnasium[classic-control]==1.2.0->-r requirements-dev.lock (line 1210))
+2026-10-23T02:07:31.1451671Z   Using cached gymnasium-1.2.0-py3-none-any.whl (944 kB)
+2026-10-23T02:07:31.1503141Z Requirement already satisfied: h11==0.16.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1214)) (0.16.0)
+2026-10-23T02:07:31.1690114Z Collecting h2==4.2.0 (from -r requirements-dev.lock (line 1220))
+2026-10-23T02:07:31.1697307Z   Using cached h2-4.2.0-py3-none-any.whl (60 kB)
+2026-10-23T02:07:31.1709670Z Requirement already satisfied: hf-xet==1.1.5 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1224)) (1.1.5)
+2026-10-23T02:07:31.1900334Z Collecting hpack==4.1.0 (from -r requirements-dev.lock (line 1234))
+2026-10-23T02:07:31.1907376Z   Using cached hpack-4.1.0-py3-none-any.whl (34 kB)
+2026-10-23T02:07:31.1918713Z Requirement already satisfied: httpcore==1.0.9 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1238)) (1.0.9)
+2026-10-23T02:07:31.1921523Z Requirement already satisfied: httplib2==0.22.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1242)) (0.22.0)
+2026-10-23T02:07:31.1924756Z Requirement already satisfied: httpx==0.28.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from httpx[http2]==0.28.1->-r requirements-dev.lock (line 1248)) (0.28.1)
+2026-10-23T02:07:31.1927627Z Requirement already satisfied: httpx-sse==0.4.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1263)) (0.4.1)
+2026-10-23T02:07:31.1930093Z Requirement already satisfied: huggingface-hub==0.34.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1267)) (0.34.1)
+2026-10-23T02:07:31.2114642Z Collecting hyperframe==6.1.0 (from -r requirements-dev.lock (line 1274))
+2026-10-23T02:07:31.2121523Z   Using cached hyperframe-6.1.0-py3-none-any.whl (13 kB)
+2026-10-23T02:07:31.3874696Z Collecting hypothesis==6.136.4 (from -r requirements-dev.lock (line 1278))
+2026-10-23T02:07:31.3884695Z   Using cached hypothesis-6.136.4-py3-none-any.whl (524 kB)
+2026-10-23T02:07:31.4196557Z Collecting identify==2.6.12 (from -r requirements-dev.lock (line 1282))
+2026-10-23T02:07:31.4204216Z   Using cached identify-2.6.12-py2.py3-none-any.whl (99 kB)
+2026-10-23T02:07:31.4216638Z Requirement already satisfied: idna==3.10 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1286)) (3.10)
+2026-10-23T02:07:31.4219229Z Requirement already satisfied: importlib-metadata==8.7.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1294)) (8.7.0)
+2026-10-23T02:07:31.4221522Z Requirement already satisfied: iniconfig==2.1.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1300)) (2.1.0)
+2026-10-23T02:07:31.4451599Z Collecting ipykernel==6.30.0 (from -r requirements-dev.lock (line 1304))
+2026-10-23T02:07:31.4461687Z   Using cached ipykernel-6.30.0-py3-none-any.whl (117 kB)
+2026-10-23T02:07:31.4754282Z Collecting ipython==9.4.0 (from -r requirements-dev.lock (line 1308))
+2026-10-23T02:07:31.4761115Z   Using cached ipython-9.4.0-py3-none-any.whl (611 kB)
+2026-10-23T02:07:31.4963368Z Collecting ipython-pygments-lexers==1.1.1 (from -r requirements-dev.lock (line 1312))
+2026-10-23T02:07:31.4969984Z   Using cached ipython_pygments_lexers-1.1.1-py3-none-any.whl (8.1 kB)
+2026-10-23T02:07:31.4978346Z Requirement already satisfied: itsdangerous==2.2.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1316)) (2.2.0)
+2026-10-23T02:07:31.5169792Z Collecting jedi==0.19.2 (from -r requirements-dev.lock (line 1320))
+2026-10-23T02:07:31.5176845Z   Using cached jedi-0.19.2-py2.py3-none-any.whl (1.6 MB)
+2026-10-23T02:07:31.5487948Z Requirement already satisfied: jinja2==3.1.6 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1324)) (3.1.6)
+2026-10-23T02:07:31.5490243Z Requirement already satisfied: jiter==0.10.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1332)) (0.10.0)
+2026-10-23T02:07:31.5492619Z Requirement already satisfied: jsonschema==4.25.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1413)) (4.25.0)
+2026-10-23T02:07:31.5495007Z Requirement already satisfied: jsonschema-specifications==2025.4.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1420)) (2025.4.1)
+2026-10-23T02:07:31.5717789Z Collecting jupyter-client==8.6.3 (from -r requirements-dev.lock (line 1424))
+2026-10-23T02:07:31.5725557Z   Using cached jupyter_client-8.6.3-py3-none-any.whl (106 kB)
+2026-10-23T02:07:31.5968459Z Collecting jupyter-core==5.8.1 (from -r requirements-dev.lock (line 1430))
+2026-10-23T02:07:31.5977872Z   Using cached jupyter_core-5.8.1-py3-none-any.whl (28 kB)
+2026-10-23T02:07:31.6176186Z Collecting jupyterlab-pygments==0.3.0 (from -r requirements-dev.lock (line 1440))
+2026-10-23T02:07:31.6184555Z   Using cached jupyterlab_pygments-0.3.0-py3-none-any.whl (15 kB)
+2026-10-23T02:07:31.6805489Z Collecting libcst==1.7.0 (from -r requirements-dev.lock (line 1444))
+2026-10-23T02:07:31.6815092Z   Using cached libcst-1.7.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.3 MB)
+2026-10-23T02:07:31.7055254Z Collecting linkify-it-py==2.0.3 (from -r requirements-dev.lock (line 1482))
+2026-10-23T02:07:31.7062557Z   Using cached linkify_it_py-2.0.3-py3-none-any.whl (19 kB)
+2026-10-23T02:07:31.7079891Z Requirement already satisfied: litellm==1.74.8 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1486)) (1.74.8)
+2026-10-23T02:07:31.7083337Z Requirement already satisfied: markdown-it-py==3.0.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from markdown-it-py[linkify,plugins]==3.0.0->-r requirements-dev.lock (line 1490)) (3.0.0)
+2026-10-23T02:07:31.7086065Z Requirement already satisfied: markupsafe==3.0.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1497)) (3.0.2)
+2026-10-23T02:07:31.7288344Z Collecting matplotlib-inline==0.1.7 (from -r requirements-dev.lock (line 1565))
+2026-10-23T02:07:31.7297003Z   Using cached matplotlib_inline-0.1.7-py3-none-any.whl (9.9 kB)
+2026-10-23T02:07:31.7309473Z Requirement already satisfied: mcp==1.12.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1571)) (1.12.2)
+2026-10-23T02:07:31.7493777Z Collecting mdit-py-plugins==0.4.2 (from -r requirements-dev.lock (line 1577))
+2026-10-23T02:07:31.7501277Z   Using cached mdit_py_plugins-0.4.2-py3-none-any.whl (55 kB)
+2026-10-23T02:07:31.7519834Z Requirement already satisfied: mdurl==0.1.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1581)) (0.1.2)
+2026-10-23T02:07:31.7728236Z Collecting mistune==3.1.3 (from -r requirements-dev.lock (line 1585))
+2026-10-23T02:07:31.7737499Z   Using cached mistune-3.1.3-py3-none-any.whl (53 kB)
+2026-10-23T02:07:31.7752045Z Requirement already satisfied: multidict==6.6.3 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1589)) (6.6.3)
+2026-10-23T02:07:31.8040868Z Collecting mutmut==3.3.0 (from -r requirements-dev.lock (line 1703))
+2026-10-23T02:07:31.8048793Z   Using cached mutmut-3.3.0-py3-none-any.whl (33 kB)
+2026-10-23T02:07:31.8771190Z Collecting mypy==1.17.0 (from -r requirements-dev.lock (line 1707))
+2026-10-23T02:07:31.8781194Z   Using cached mypy-1.17.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (12.7 MB)
+2026-10-23T02:07:31.9114346Z Collecting mypy-extensions==1.1.0 (from -r requirements-dev.lock (line 1741))
+2026-10-23T02:07:31.9123194Z   Using cached mypy_extensions-1.1.0-py3-none-any.whl (5.0 kB)
+2026-10-23T02:07:31.9336933Z Collecting nbclient==0.10.2 (from -r requirements-dev.lock (line 1745))
+2026-10-23T02:07:31.9346576Z   Using cached nbclient-0.10.2-py3-none-any.whl (25 kB)
+2026-10-23T02:07:31.9592408Z Collecting nbconvert==7.16.6 (from -r requirements-dev.lock (line 1752))
+2026-10-23T02:07:31.9601807Z   Using cached nbconvert-7.16.6-py3-none-any.whl (258 kB)
+2026-10-23T02:07:31.9832643Z Collecting nbformat==5.10.4 (from -r requirements-dev.lock (line 1756))
+2026-10-23T02:07:31.9841559Z   Using cached nbformat-5.10.4-py3-none-any.whl (78 kB)
+2026-10-23T02:07:32.0076161Z Collecting nest-asyncio==1.6.0 (from -r requirements-dev.lock (line 1764))
+2026-10-23T02:07:32.0084563Z   Using cached nest_asyncio-1.6.0-py3-none-any.whl (5.2 kB)
+2026-10-23T02:07:32.0296903Z Collecting nodeenv==1.9.1 (from -r requirements-dev.lock (line 1768))
+2026-10-23T02:07:32.0305253Z   Using cached nodeenv-1.9.1-py2.py3-none-any.whl (22 kB)
+2026-10-23T02:07:32.0322600Z Requirement already satisfied: numpy==2.3.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1772)) (2.3.2)
+2026-10-23T02:07:32.0325377Z Requirement already satisfied: openai==1.97.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1854)) (1.97.1)
+2026-10-23T02:07:32.0327933Z Requirement already satisfied: openai-agents==0.0.17 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1861)) (0.0.17)
+2026-10-23T02:07:32.0329888Z Requirement already satisfied: opentelemetry-api==1.35.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1865)) (1.35.0)
+2026-10-23T02:07:32.0332021Z Requirement already satisfied: opentelemetry-exporter-gcp-trace==1.9.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1876)) (1.9.0)
+2026-10-23T02:07:32.0334467Z Requirement already satisfied: opentelemetry-resourcedetector-gcp==1.9.0a0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1882)) (1.9.0a0)
+2026-10-23T02:07:32.0336435Z Requirement already satisfied: opentelemetry-sdk==1.35.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1886)) (1.35.0)
+2026-10-23T02:07:32.0339505Z Requirement already satisfied: opentelemetry-semantic-conventions==0.56b0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1895)) (0.56b0)
+2026-10-23T02:07:32.0341530Z Requirement already satisfied: orjson==3.11.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1899)) (3.11.1)
+2026-10-23T02:07:32.0343644Z Requirement already satisfied: packaging==25.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1986)) (25.0)
+2026-10-23T02:07:32.0345714Z Requirement already satisfied: pandas==2.3.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 1999)) (2.3.1)
+2026-10-23T02:07:32.0569234Z Collecting pandocfilters==1.5.1 (from -r requirements-dev.lock (line 2045))
+2026-10-23T02:07:32.0576942Z   Using cached pandocfilters-1.5.1-py2.py3-none-any.whl (8.7 kB)
+2026-10-23T02:07:32.0807431Z Collecting papermill==2.6.0 (from -r requirements-dev.lock (line 2049))
+2026-10-23T02:07:32.0815035Z   Using cached papermill-2.6.0-py3-none-any.whl (38 kB)
+2026-10-23T02:07:32.1048130Z Collecting parso==0.8.4 (from -r requirements-dev.lock (line 2053))
+2026-10-23T02:07:32.1055131Z   Using cached parso-0.8.4-py2.py3-none-any.whl (103 kB)
+2026-10-23T02:07:32.1271394Z Collecting pathspec==0.12.1 (from -r requirements-dev.lock (line 2057))
+2026-10-23T02:07:32.1278999Z   Using cached pathspec-0.12.1-py3-none-any.whl (31 kB)
+2026-10-23T02:07:32.1466436Z Collecting pexpect==4.9.0 (from -r requirements-dev.lock (line 2061))
+2026-10-23T02:07:32.1473076Z   Using cached pexpect-4.9.0-py2.py3-none-any.whl (63 kB)
+2026-10-23T02:07:32.2401245Z Collecting pillow==11.3.0 (from -r requirements-dev.lock (line 2065))
+2026-10-23T02:07:32.2410490Z   Using cached pillow-11.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.6 MB)
+2026-10-23T02:07:32.2693753Z Collecting platformdirs==4.3.8 (from -r requirements-dev.lock (line 2173))
+2026-10-23T02:07:32.2701294Z   Using cached platformdirs-4.3.8-py3-none-any.whl (18 kB)
+2026-10-23T02:07:32.2717545Z Requirement already satisfied: playwright==1.54.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2180)) (1.54.0)
+2026-10-23T02:07:32.2719954Z Requirement already satisfied: pluggy==1.6.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2190)) (1.6.0)
+2026-10-23T02:07:32.2923993Z Collecting portalocker==3.2.0 (from -r requirements-dev.lock (line 2196))
+2026-10-23T02:07:32.2930936Z   Using cached portalocker-3.2.0-py3-none-any.whl (22 kB)
+2026-10-23T02:07:32.3212491Z Collecting pre-commit==4.2.0 (from -r requirements-dev.lock (line 2200))
+2026-10-23T02:07:32.3219555Z   Using cached pre_commit-4.2.0-py2.py3-none-any.whl (220 kB)
+2026-10-23T02:07:32.3233198Z Requirement already satisfied: prometheus-client==0.22.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2204)) (0.22.1)
+2026-10-23T02:07:32.3457658Z Collecting prompt-toolkit==3.0.51 (from -r requirements-dev.lock (line 2208))
+2026-10-23T02:07:32.3464490Z   Using cached prompt_toolkit-3.0.51-py3-none-any.whl (387 kB)
+2026-10-23T02:07:32.3481158Z Requirement already satisfied: propcache==0.3.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2212)) (0.3.2)
+2026-10-23T02:07:32.3483688Z Requirement already satisfied: proto-plus==1.26.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2314)) (1.26.1)
+2026-10-23T02:07:32.3485951Z Requirement already satisfied: protobuf==6.31.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2326)) (6.31.1)
+2026-10-23T02:07:32.3937455Z Collecting psutil==7.0.0 (from -r requirements-dev.lock (line 2353))
+2026-10-23T02:07:32.3945301Z   Using cached psutil-7.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (277 kB)
+2026-10-23T02:07:32.4140234Z Collecting ptyprocess==0.7.0 (from -r requirements-dev.lock (line 2365))
+2026-10-23T02:07:32.4147067Z   Using cached ptyprocess-0.7.0-py2.py3-none-any.whl (13 kB)
+2026-10-23T02:07:32.4321604Z Collecting pure-eval==0.2.3 (from -r requirements-dev.lock (line 2369))
+2026-10-23T02:07:32.4328331Z   Using cached pure_eval-0.2.3-py3-none-any.whl (11 kB)
+2026-10-23T02:07:32.4512397Z Collecting py-cpuinfo==9.0.0 (from -r requirements-dev.lock (line 2373))
+2026-10-23T02:07:32.4519035Z   Using cached py_cpuinfo-9.0.0-py3-none-any.whl (22 kB)
+2026-10-23T02:07:32.4527878Z Requirement already satisfied: pyasn1==0.6.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2377)) (0.6.1)
+2026-10-23T02:07:32.4530285Z Requirement already satisfied: pyasn1-modules==0.4.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2383)) (0.4.2)
+2026-10-23T02:07:32.4532701Z Requirement already satisfied: pycparser==2.22 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2387)) (2.22)
+2026-10-23T02:07:32.4535551Z Requirement already satisfied: pydantic==2.11.7 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2391)) (2.11.7)
+2026-10-23T02:07:32.4537789Z Requirement already satisfied: pydantic-core==2.33.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2410)) (2.33.2)
+2026-10-23T02:07:32.4539829Z Requirement already satisfied: pydantic-settings==2.10.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2511)) (2.10.1)
+2026-10-23T02:07:32.4773428Z Collecting pydub==0.25.1 (from -r requirements-dev.lock (line 2517))
+2026-10-23T02:07:32.4781633Z   Using cached pydub-0.25.1-py2.py3-none-any.whl (32 kB)
+2026-10-23T02:07:32.4793840Z Requirement already satisfied: pyee==13.0.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2521)) (13.0.0)
+2026-10-23T02:07:32.6026631Z Collecting pygame==2.6.1 (from -r requirements-dev.lock (line 2525))
+2026-10-23T02:07:32.6036867Z   Using cached pygame-2.6.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (14.0 MB)
+2026-10-23T02:07:32.6180893Z Requirement already satisfied: pygments==2.19.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2587)) (2.19.2)
+2026-10-23T02:07:32.6184023Z Requirement already satisfied: pyparsing==3.2.3 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2597)) (3.2.3)
+2026-10-23T02:07:32.6664185Z Collecting pypdf==6.21.1 (from -r requirements-dev.lock (line 2601))
+2026-10-23T02:07:32.6674173Z   Using cached pypdf-6.21.1-py3-none-any.whl (405 kB)
+2026-10-23T02:07:32.6708351Z Requirement already satisfied: pytest==8.4.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2605)) (8.4.1)
+2026-10-23T02:07:32.6710897Z Requirement already satisfied: pytest-asyncio==0.26.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2616)) (0.26.0)
+2026-10-23T02:07:32.7154277Z Collecting pytest-benchmark==5.1.0 (from -r requirements-dev.lock (line 2620))
+2026-10-23T02:07:32.7163982Z   Using cached pytest_benchmark-5.1.0-py3-none-any.whl (44 kB)
+2026-10-23T02:07:32.7561744Z Collecting pytest-cov==6.2.1 (from -r requirements-dev.lock (line 2624))
+2026-10-23T02:07:32.7570677Z   Using cached pytest_cov-6.2.1-py3-none-any.whl (24 kB)
+2026-10-23T02:07:32.8234266Z Collecting pytest-httpx==0.35.0 (from -r requirements-dev.lock (line 2628))
+2026-10-23T02:07:32.8242571Z   Using cached pytest_httpx-0.35.0-py3-none-any.whl (19 kB)
+2026-10-23T02:07:32.8264505Z Requirement already satisfied: python-dateutil==2.9.0.post0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2632)) (2.9.0.post0)
+2026-10-23T02:07:32.8267102Z Requirement already satisfied: python-dotenv==1.1.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2641)) (1.1.1)
+2026-10-23T02:07:32.8269442Z Requirement already satisfied: python-multipart==0.0.20 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2649)) (0.0.20)
+2026-10-23T02:07:32.8271620Z Requirement already satisfied: pytz==2025.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2655)) (2025.2)
+2026-10-23T02:07:32.8273826Z Requirement already satisfied: pyyaml==6.0.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2659)) (6.0.2)
+2026-10-23T02:07:32.9495779Z Collecting pyzmq==27.0.0 (from -r requirements-dev.lock (line 2721))
+2026-10-23T02:07:32.9505965Z   Using cached pyzmq-27.0.0-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (839 kB)
+2026-10-23T02:07:32.9970908Z Collecting qdrant-client==1.15.0 (from -r requirements-dev.lock (line 2804))
+2026-10-23T02:07:32.9978904Z   Using cached qdrant_client-1.15.0-py3-none-any.whl (337 kB)
+2026-10-23T02:07:33.0021474Z Requirement already satisfied: redbird==0.7.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2808)) (0.7.1)
+2026-10-23T02:07:33.0022569Z Requirement already satisfied: referencing==0.36.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2812)) (0.36.2)
+2026-10-23T02:07:33.0023345Z Requirement already satisfied: regex==2024.11.6 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2818)) (2024.11.6)
+2026-10-23T02:07:33.0023929Z Requirement already satisfied: requests==2.32.4 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2914)) (2.32.4)
+2026-10-23T02:07:33.0627445Z Collecting requests-mock==1.12.1 (from -r requirements-dev.lock (line 2931))
+2026-10-23T02:07:33.0636298Z   Using cached requests_mock-1.12.1-py2.py3-none-any.whl (27 kB)
+2026-10-23T02:07:33.0648739Z Requirement already satisfied: rich==14.1.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2935)) (14.1.0)
+2026-10-23T02:07:33.0651232Z Requirement already satisfied: rocketry==2.5.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2942)) (2.5.1)
+2026-10-23T02:07:33.0653852Z Requirement already satisfied: rpds-py==0.26.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 2946)) (0.26.0)
+2026-10-23T02:07:33.0656181Z Requirement already satisfied: rsa==4.9.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3094)) (4.9.1)
+2026-10-23T02:07:33.3900409Z Collecting ruff==0.12.5 (from -r requirements-dev.lock (line 3098))
+2026-10-23T02:07:33.3911047Z   Using cached ruff-0.12.5-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.9 MB)
+2026-10-23T02:07:33.4761528Z Collecting safehttpx==0.1.6 (from -r requirements-dev.lock (line 3120))
+2026-10-23T02:07:33.4770723Z   Using cached safehttpx-0.1.6-py3-none-any.whl (8.7 kB)
+2026-10-23T02:07:33.5773514Z Collecting semantic-version==2.10.0 (from -r requirements-dev.lock (line 3124))
+2026-10-23T02:07:33.5782608Z   Using cached semantic_version-2.10.0-py2.py3-none-any.whl (15 kB)
+2026-10-23T02:07:33.6241496Z Collecting setproctitle==1.3.6 (from -r requirements-dev.lock (line 3128))
+2026-10-23T02:07:33.6251671Z   Using cached setproctitle-1.3.6-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (31 kB)
+2026-10-23T02:07:33.6266889Z Requirement already satisfied: shapely==2.1.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3227)) (2.1.1)
+2026-10-23T02:07:33.6541644Z Collecting shellingham==1.5.4 (from -r requirements-dev.lock (line 3270))
+2026-10-23T02:07:33.6549413Z   Using cached shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+2026-10-23T02:07:33.6561381Z Requirement already satisfied: six==1.17.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3274)) (1.17.0)
+2026-10-23T02:07:33.6564230Z Requirement already satisfied: smmap==5.0.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3278)) (5.0.2)
+2026-10-23T02:07:33.6566600Z Requirement already satisfied: sniffio==1.3.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3282)) (1.3.1)
+2026-10-23T02:07:33.6843814Z Collecting sortedcontainers==2.4.0 (from -r requirements-dev.lock (line 3289))
+2026-10-23T02:07:33.6851449Z   Using cached sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+2026-10-23T02:07:33.7459895Z Collecting soupsieve==2.7 (from -r requirements-dev.lock (line 3293))
+2026-10-23T02:07:33.7467364Z   Using cached soupsieve-2.7-py3-none-any.whl (36 kB)
+2026-10-23T02:07:33.7478621Z Requirement already satisfied: sqlalchemy==2.0.41 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3297)) (2.0.41)
+2026-10-23T02:07:33.7481379Z Requirement already satisfied: sse-starlette==3.0.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3356)) (3.0.0)
+2026-10-23T02:07:33.8136546Z Collecting stack-data==0.6.3 (from -r requirements-dev.lock (line 3360))
+2026-10-23T02:07:33.8144178Z   Using cached stack_data-0.6.3-py3-none-any.whl (24 kB)
+2026-10-23T02:07:33.8159905Z Requirement already satisfied: starlette==0.47.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3364)) (0.47.2)
+2026-10-23T02:07:33.8162736Z Requirement already satisfied: tenacity==8.5.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3372)) (8.5.0)
+2026-10-23T02:07:33.9644115Z Collecting textual==5.0.1 (from -r requirements-dev.lock (line 3379))
+2026-10-23T02:07:33.9652321Z   Using cached textual-5.0.1-py3-none-any.whl (699 kB)
+2026-10-23T02:07:33.9691959Z Requirement already satisfied: tiktoken==0.9.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3383)) (0.9.0)
+2026-10-23T02:07:34.0848744Z Collecting tinycss2==1.4.0 (from -r requirements-dev.lock (line 3418))
+2026-10-23T02:07:34.0858550Z   Using cached tinycss2-1.4.0-py3-none-any.whl (26 kB)
+2026-10-23T02:07:34.0871915Z Requirement already satisfied: tokenizers==0.22.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3422)) (0.22.1)
+2026-10-23T02:07:34.1792600Z Collecting tomlkit==0.13.3 (from -r requirements-dev.lock (line 3439))
+2026-10-23T02:07:34.1800789Z   Using cached tomlkit-0.13.3-py3-none-any.whl (38 kB)
+2026-10-23T02:07:34.2215812Z Collecting tornado==6.5.1 (from -r requirements-dev.lock (line 3443))
+2026-10-23T02:07:34.2239274Z   Using cached tornado-6.5.1-cp39-abi3-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (443 kB)
+2026-10-23T02:07:34.2243382Z Requirement already satisfied: tqdm==4.67.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3459)) (4.67.1)
+2026-10-23T02:07:34.2561253Z Collecting traitlets==5.14.3 (from -r requirements-dev.lock (line 3467))
+2026-10-23T02:07:34.2569866Z   Using cached traitlets-5.14.3-py3-none-any.whl (85 kB)
+2026-10-23T02:07:34.3114602Z Collecting typer==0.16.0 (from -r requirements-dev.lock (line 3479))
+2026-10-23T02:07:34.3123186Z   Using cached typer-0.16.0-py3-none-any.whl (46 kB)
+2026-10-23T02:07:34.3372940Z Collecting types-pyyaml==6.0.12.20250516 (from -r requirements-dev.lock (line 3483))
+2026-10-23T02:07:34.3381365Z   Using cached types_pyyaml-6.0.12.20250516-py3-none-any.whl (20 kB)
+2026-10-23T02:07:34.3393418Z Requirement already satisfied: types-requests==2.32.4.20250611 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3487)) (2.32.4.20250611)
+2026-10-23T02:07:34.3396540Z Requirement already satisfied: typing-extensions==4.14.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3493)) (4.14.1)
+2026-10-23T02:07:34.3408947Z Requirement already satisfied: typing-inspection==0.4.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3526)) (0.4.1)
+2026-10-23T02:07:34.3410033Z Requirement already satisfied: tzdata==2025.2 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3532)) (2025.2)
+2026-10-23T02:07:34.3410980Z Requirement already satisfied: tzlocal==5.3.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3536)) (5.3.1)
+2026-10-23T02:07:34.3848565Z Collecting uc-micro-py==1.0.3 (from -r requirements-dev.lock (line 3540))
+2026-10-23T02:07:34.3857540Z   Using cached uc_micro_py-1.0.3-py3-none-any.whl (6.2 kB)
+2026-10-23T02:07:34.3870105Z Requirement already satisfied: uritemplate==4.2.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3544)) (4.2.0)
+2026-10-23T02:07:34.3873296Z Requirement already satisfied: urllib3==2.5.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3548)) (2.5.0)
+2026-10-23T02:07:34.3876066Z Requirement already satisfied: uvicorn==0.35.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3555)) (0.35.0)
+2026-10-23T02:07:34.3878650Z Requirement already satisfied: uvloop==0.21.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3563)) (0.21.0)
+2026-10-23T02:07:34.4593634Z Collecting virtualenv==20.32.0 (from -r requirements-dev.lock (line 3602))
+2026-10-23T02:07:34.4603992Z   Using cached virtualenv-20.32.0-py3-none-any.whl (6.1 MB)
+2026-10-23T02:07:34.4671401Z Requirement already satisfied: watchdog==6.0.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3606)) (6.0.0)
+2026-10-23T02:07:34.4981168Z Collecting wcwidth==0.2.13 (from -r requirements-dev.lock (line 3638))
+2026-10-23T02:07:34.4989288Z   Using cached wcwidth-0.2.13-py2.py3-none-any.whl (34 kB)
+2026-10-23T02:07:34.5672323Z Collecting webencodings==0.5.1 (from -r requirements-dev.lock (line 3642))
+2026-10-23T02:07:34.5679687Z   Using cached webencodings-0.5.1-py2.py3-none-any.whl (11 kB)
+2026-10-23T02:07:34.5691010Z Requirement already satisfied: websockets==15.0.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3648)) (15.0.1)
+2026-10-23T02:07:34.5693760Z Requirement already satisfied: werkzeug==3.1.3 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3723)) (3.1.3)
+2026-10-23T02:07:34.5696443Z Requirement already satisfied: wheel==0.45.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3727)) (0.45.1)
+2026-10-23T02:07:34.5699199Z Requirement already satisfied: yarl==1.20.1 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3731)) (1.20.1)
+2026-10-23T02:07:34.5701567Z Requirement already satisfied: zipp==3.23.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3837)) (3.23.0)
+2026-10-23T02:07:34.5704319Z Requirement already satisfied: setuptools==80.9.0 in /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages (from -r requirements-dev.lock (line 3843)) (80.9.0)
+2026-10-23T02:07:35.3175982Z Installing collected packages: webencodings, wcwidth, sortedcontainers, pydub, py-cpuinfo, pure-eval, ptyprocess, fastjsonschema, farama-notifications, distlib, brotli, ansicolors, uc-micro-py, types-pyyaml, traitlets, tornado, tomlkit, tinycss2, soupsieve, shellingham, setproctitle, semantic-version, ruff, pyzmq, pypdf, pygame, psutil, prompt-toolkit, portalocker, platformdirs, pillow, pexpect, pathspec, parso, pandocfilters, nodeenv, nest-asyncio, mypy-extensions, mistune, libcst, jupyterlab-pygments, ipython-pygments-lexers, identify, hypothesis, hyperframe, hpack, gymnasium, groovy, ffmpy, executing, entrypoints, defusedxml, decorator, debugpy, coverage, comm, cfgv, bleach, asttokens, appnope, aiofiles, virtualenv, stack-data, requests-mock, pytest-benchmark, mypy, mdit-py-plugins, matplotlib-inline, linkify-it-py, jupyter-core, jedi, h2, beautifulsoup4, typer, safehttpx, pytest-httpx, pytest-cov, pre-commit, jupyter-client, ipython, gradio-client, textual, qdrant-client, nbformat, ipykernel, gradio, nbclient, mutmut, papermill, nbconvert
+2026-10-23T02:07:43.4094551Z 
+2026-10-23T02:07:43.4174062Z Successfully installed aiofiles-24.1.0 ansicolors-1.1.8 appnope-0.1.4 asttokens-3.0.0 beautifulsoup4-4.13.4 bleach-6.2.0 brotli-1.1.0 cfgv-3.4.0 comm-0.2.3 coverage-7.10.0 debugpy-1.8.15 decorator-5.2.1 defusedxml-0.7.1 distlib-0.4.0 entrypoints-0.4 executing-2.2.0 farama-notifications-0.0.4 fastjsonschema-2.21.1 ffmpy-0.6.1 gradio-5.38.2 gradio-client-1.11.0 groovy-0.1.2 gymnasium-1.2.0 h2-4.2.0 hpack-4.1.0 hyperframe-6.1.0 hypothesis-6.136.4 identify-2.6.12 ipykernel-6.30.0 ipython-9.4.0 ipython-pygments-lexers-1.1.1 jedi-0.19.2 jupyter-client-8.6.3 jupyter-core-5.8.1 jupyterlab-pygments-0.3.0 libcst-1.7.0 linkify-it-py-2.0.3 matplotlib-inline-0.1.7 mdit-py-plugins-0.4.2 mistune-3.1.3 mutmut-3.3.0 mypy-1.17.0 mypy-extensions-1.1.0 nbclient-0.10.2 nbconvert-7.16.6 nbformat-5.10.4 nest-asyncio-1.6.0 nodeenv-1.9.1 pandocfilters-1.5.1 papermill-2.6.0 parso-0.8.4 pathspec-0.12.1 pexpect-4.9.0 pillow-11.3.0 platformdirs-4.3.8 portalocker-3.2.0 pre-commit-4.2.0 prompt-toolkit-3.0.51 psutil-7.0.0 ptyprocess-0.7.0 pure-eval-0.2.3 py-cpuinfo-9.0.0 pydub-0.25.1 pygame-2.6.1 pypdf-6.21.1 pytest-benchmark-5.1.0 pytest-cov-6.2.1 pytest-httpx-0.35.0 pyzmq-27.0.0 qdrant-client-1.15.0 requests-mock-1.12.1 ruff-0.12.5 safehttpx-0.1.6 semantic-version-2.10.0 setproctitle-1.3.6 shellingham-1.5.4 sortedcontainers-2.4.0 soupsieve-2.7 stack-data-0.6.3 textual-5.0.1 tinycss2-1.4.0 tomlkit-0.13.3 tornado-6.5.1 traitlets-5.14.3 typer-0.16.0 types-pyyaml-6.0.12.20250516 uc-micro-py-1.0.3 virtualenv-20.32.0 wcwidth-0.2.13 webencodings-0.5.1
+2026-10-23T02:07:43.6895433Z ##[group]Run python scripts/ruff_targets.py --run
+2026-10-23T02:07:43.6895683Z [36;1mpython scripts/ruff_targets.py --run[0m
+2026-10-23T02:07:43.6948666Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-23T02:07:43.6948871Z env:
+2026-10-23T02:07:43.6948999Z   PYTHON_VERSION: 3.12
+2026-10-23T02:07:43.6949138Z   PIP_DISABLE_PIP_VERSION_CHECK: 1
+2026-10-23T02:07:43.6949329Z   AGIALPHA_ADDRESS: 0xa61a3b3a130a9c20768eebf97e21515a6046a1fa
+2026-10-23T02:07:43.6949525Z   AGIALPHA_DECIMALS: 18
+2026-10-23T02:07:43.6949694Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:43.6949938Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-23T02:07:43.6950176Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:43.6950394Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:43.6950623Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-23T02:07:43.6950873Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-23T02:07:43.6951059Z ##[endgroup]
+2026-10-23T02:07:43.7750725Z All checks passed!
+2026-10-23T02:07:43.8042743Z All checks passed!
+2026-10-23T02:07:43.8287527Z All checks passed!
+2026-10-23T02:07:43.8563629Z docs/research/discoverability/render-figures.py:40:32: E702 Multiple statements on one line (semicolon)
+2026-10-23T02:07:43.8563939Z    |
+2026-10-23T02:07:43.8564094Z 38 |                loc="upper left",frameon=False,fontsize=8)
+2026-10-23T02:07:43.8564270Z 39 | for ax in axes:
+2026-10-23T02:07:43.8564467Z 40 |  ax.set_xticks(range(3),labels);ax.set_axisbelow(True);ax.grid(axis="y",alpha=.2)
+2026-10-23T02:07:43.8564693Z    |                                ^ E702
+2026-10-23T02:07:43.8565256Z 41 | fig.suptitle("Same quality target · 34 digital + 33 mixture + 33 network missions",fontsize=12)
+2026-10-23T02:07:43.8565750Z 42 | out=HERE/"figures";out.mkdir(exist_ok=True)
+2026-10-23T02:07:43.8565907Z    |
+2026-10-23T02:07:43.8565967Z 
+2026-10-23T02:07:43.8566150Z docs/research/discoverability/render-figures.py:40:55: E702 Multiple statements on one line (semicolon)
+2026-10-23T02:07:43.8566397Z    |
+2026-10-23T02:07:43.8566531Z 38 |                loc="upper left",frameon=False,fontsize=8)
+2026-10-23T02:07:43.8566698Z 39 | for ax in axes:
+2026-10-23T02:07:43.8566883Z 40 |  ax.set_xticks(range(3),labels);ax.set_axisbelow(True);ax.grid(axis="y",alpha=.2)
+2026-10-23T02:07:43.8567112Z    |                                                       ^ E702
+2026-10-23T02:07:43.8567457Z 41 | fig.suptitle("Same quality target · 34 digital + 33 mixture + 33 network missions",fontsize=12)
+2026-10-23T02:07:43.8567824Z 42 | out=HERE/"figures";out.mkdir(exist_ok=True)
+2026-10-23T02:07:43.8568042Z    |
+2026-10-23T02:07:43.8568128Z 
+2026-10-23T02:07:43.8568371Z docs/research/discoverability/render-figures.py:42:19: E702 Multiple statements on one line (semicolon)
+2026-10-23T02:07:43.8568756Z    |
+2026-10-23T02:07:43.8569011Z 40 |  ax.set_xticks(range(3),labels);ax.set_axisbelow(True);ax.grid(axis="y",alpha=.2)
+2026-10-23T02:07:43.8569525Z 41 | fig.suptitle("Same quality target · 34 digital + 33 mixture + 33 network missions",fontsize=12)
+2026-10-23T02:07:43.8569954Z 42 | out=HERE/"figures";out.mkdir(exist_ok=True)
+2026-10-23T02:07:43.8570216Z    |                   ^ E702
+2026-10-23T02:07:43.8570685Z 43 | fig.savefig(out/"load-results.png",dpi=240,bbox_inches="tight",metadata={"Software":"Discoverability Compiler figure script"})
+2026-10-23T02:07:43.8571259Z 44 | fig.savefig(out/"load-results.svg",bbox_inches="tight",metadata={"Date":None})
+2026-10-23T02:07:43.8571590Z    |
+2026-10-23T02:07:43.8571681Z 
+2026-10-23T02:07:43.8571758Z Found 3 errors.
+2026-10-23T02:07:43.8634946Z ##[error]Process completed with exit code 1.
+2026-10-23T02:07:43.8721307Z Post job cleanup.
+2026-10-23T02:07:43.9247988Z [command]/usr/bin/git version
+2026-10-23T02:07:43.9275239Z git version 2.55.0
+2026-10-23T02:07:43.9298251Z Temporarily overriding HOME='/home/runner/work/_temp/f2bc12d0-65dd-4879-a06b-624b7ff25063' before making global git config changes
+2026-10-23T02:07:43.9299147Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T02:07:43.9302005Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0
+2026-10-23T02:07:43.9326782Z Removing SSH command configuration
+2026-10-23T02:07:43.9330710Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T02:07:43.9355311Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T02:07:43.9527557Z Removing HTTP extra header
+2026-10-23T02:07:43.9531535Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T02:07:43.9556722Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T02:07:43.9726550Z Removing includeIf entries pointing to credentials config files
+2026-10-23T02:07:43.9732301Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T02:07:43.9754316Z includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path
+2026-10-23T02:07:43.9754867Z includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path
+2026-10-23T02:07:43.9755288Z includeif.gitdir:/github/workspace/.git.path
+2026-10-23T02:07:43.9755616Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T02:07:43.9761407Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path
+2026-10-23T02:07:43.9777628Z /home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9784869Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git.path /home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9812641Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path
+2026-10-23T02:07:43.9829324Z /home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9835565Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/AGI-Alpha-Agent-v0/AGI-Alpha-Agent-v0/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9858966Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-23T02:07:43.9874610Z /github/runner_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9879234Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9921997Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T02:07:43.9937585Z /github/runner_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9943493Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config
+2026-10-23T02:07:43.9968258Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T02:07:44.0136521Z Removing credentials config '/home/runner/work/_temp/git-credentials-a3795460-8bbc-4148-b0d9-b48a07b22987.config'
+2026-10-23T02:07:44.0259773Z Cleaning up orphan processes

@@ -2,7 +2,7 @@
 
 # Alpha-Factory — from first mission to Ascension evidence
 
-**Version 1.39.0.** Experimental source candidate; publication and installed native compatibility remain pending. Start with a bounded result, inspect the evidence, and extend the workflow from there.
+**Version 1.41.0.** Experimental source candidate; publication and complete installed compatibility remain pending. Start with a bounded result, inspect the evidence, and extend the workflow from there.
 The [release-readiness record](RELEASE_READINESS.md) explains how to verify the delivered version and scope.
 The `alpha_factory_v1` package retains the original domain agents, demos, blueprints and flowcharts.
 Its maintained runtime provides five bounded mission types, a signed persistent journal, explicit review,

@@ -61,6 +61,10 @@ def safe_name(name: Any) -> str:
 def classify(name: str) -> str:
     """Separate optional inference and archives from the usable small web core."""
     path = PurePosixPath(name)
+    # Gallery navigation precaches index pages even in optional research areas.
+    # Keep those entry points with the existing core assets on a core-only restore.
+    if path.name == "index.html":
+        return "core"
     if {"local-llm", "pyodide", "models", "wasm", "wasm_llm"}.intersection(path.parts):
         return "models"
     # Shared gallery assets are mandatory service-worker precache dependencies,

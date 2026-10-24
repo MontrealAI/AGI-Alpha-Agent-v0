@@ -1,5 +1,49 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.41.0 experimental corrected companion/site candidate
+
+This prospective edition reconciles the existing Writer #4 companion branch with guarded main
+`197147ffd22c5ae13113162afffaf3ce9c10aa2e`. It retains the completed corrected non-UI source-API/local-EVM
+proof and adds a separate PR-only full HTTP QA gate. The valid nested disclaimer links and all four
+catalogue-bound HTML bodies stay byte-identical; targeted checker, generator, LF-attribute and core-pack
+corrections address the observed main-197 failures without skipping integrity checks.
+[Current scope and remaining work](RELEASE_NOTES_1.41.0.md).
+
+Version metadata and current guides advance through the existing generators. The checkout helper retains
+all eight earlier exact editions and adds one complete 61-file edition for the three final generated
+1.41 workers, over the unchanged 53-source scientific catalogue. No normal generator invokes repair.
+The five critical source/test pins and four excluded, unqualified outcomes remain unchanged; their original
+action restrictions remain in force. Eligible source-specific review, every selected hosted gate, actual
+public artifacts and deployed-site/user acceptance remain required. Earlier source/API proof does not
+qualify the new HTTP UI or installed current four-product compatibility.
+
+## Preserved 1.40 preparation record
+
+# Release readiness — 1.40.0 experimental Foundry integration candidate
+
+This local prospective edition composes the existing Foundry v2 paper/resource stack with the
+corrected enterprise homepage boundary. It preserves the original research implementation,
+all historical paper identities and the complete earlier software source. The eighth-paper
+inventory/index failure is corrected by the catalogue-driven assertions; the failing parent
+must never be merged alone. [Current scope and remaining work](RELEASE_NOTES_1.40.0.md).
+
+The existing 1.39 owner retains its publication lease. Shared branch integration requires its
+actual safe closure, a fresh current-main comparison and a live unused-version check. Normal
+configured review, applicable PR checks and fresh full exact-main software/site qualification
+must cover the complete combined source. Old branch checks do not qualify this edition.
+
+The checkout helper retains all six earlier exact 49/61-file editions and adds one complete
+61-file edition for the final generated 1.40 workers. The same 53-source scientific catalogue
+and source hash are preserved. Mixed editions, private edits, unknown catalogue bytes, unsafe
+paths and incomplete closures still refuse before backup or replacement. The existing explicit
+repair remains opt-in; normal generators never repair checkout bytes automatically.
+
+Installed enterprise compatibility, external model/tool pilots, physical construction and
+commercial/EVM execution remain separately unqualified. The research edition and named assets
+do not replace a software release, move an existing tag or waive the normal qualification lane.
+
+## Preserved 1.39 preparation record
+
 # Release readiness — 1.39.0 experimental enterprise candidate
 
 The proposed additive version **1.39.0** combines the enterprise workspace and public-append

@@ -231,3 +231,58 @@ runtime evidence. Keep the current candidate and publish this improvement in a
 later fully checked version, or explicitly supersede the unpublished candidate
 and qualify the combined source as the next release. That is a release sequencing
 decision, not permission to waive checks or republish an existing version.
+
+## Optional research resources after full source qualification
+
+The same catalogue can describe a paper's interactive experience and reproducible
+companion without creating a second publication index. Schema
+`agialpha.research-papers.v1` retains its original closed fields and rendering.
+Schema `agialpha.research-papers.v2` permits one optional `resources` object per
+paper; all other record fields remain unchanged. The allowed resource roles are:
+
+| Role | Exact fields | Navigation label |
+| --- | --- | --- |
+| `experience` | `path`, `sha256` | Explore the interactive foundry |
+| `companion` | `url`, `sha256`, `bytes` | Download the research companion |
+| `source_evidence` | `url` | View source and evidence |
+
+The existing original-PDF link remains the paper's primary action. All labels have
+fixed French translations, descriptive accessible names, and static HTML links
+that remain available without JavaScript. The extra metadata cannot inject
+markup, arbitrary labels, scripts or remote image resources.
+
+An experience is a UTF-8 ordinary file at
+`docs/reports/<versioned-study-name>/<simple-name>.html`, with its exact lowercase
+SHA256. It is bounded to 25,000,000 bytes. Companion links use this repository's
+canonical `https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/download/`
+route, a simple release tag and a `.zip` asset name, with exact SHA256 and a
+positive integer byte count below 2 GiB. Source-and-evidence links use this
+repository's release `tag/` route; when both external roles are present, they must
+name the same research release. Queries, fragments, encoded path components and
+other hosts are rejected. A declared hash or URL alone is not evidence that an
+external asset exists: the publication owner must verify the actual research
+release downloads and include their source/evidence receipts before linking them.
+
+Published resource identities are immutable, like paper originals. A changed
+experience or companion requires a new versioned paper record. The local importer
+can refer to an existing exact experience, but does not install it or execute it.
+It rejects missing, changed, executable, symlinked or invalid-UTF-8 local targets
+before copying the new paper. Hash checking does not qualify executable code.
+
+**Adding this schema support, its renderer/validator changes, or any new or changed
+HTML experience requires full source qualification.** The strict classifier and
+the paper overlay's PDF/TEX allowlist are unchanged. Even an HTML change later
+reverted within the introduced history requires the full lane. The overlay does
+not copy HTML: any linked experience must already be byte-identical in the public
+software commit, restored site pack and current checkout. Otherwise preparation
+defers without altering the site. A later passive paper update can then link those
+already-qualified bytes while preserving all existing software and site files.
+
+Homepage acceptance checks the generated resource links in its existing bilingual,
+responsive and no-JavaScript journeys, and binds local/built/served experience
+bytes to the catalogue. Study-specific scientific and interaction evidence remains
+separately scoped; passing homepage checks does not establish physical correctness,
+real demand, contract execution or general autonomous capability. A distinct
+research release can distribute a companion without replacing the latest software
+release. Neither a research release nor this metadata is permission to bypass the
+current software owner's qualification, version and Pages sequencing rules.

@@ -55,7 +55,9 @@ def test_integration_smoke_is_required_and_full_coverage_has_one_owner() -> None
     regression = release["jobs"]["regression"]
     assert not regression.get("continue-on-error")
     coverage = next(
-        step for step in regression["steps"] if step.get("name") == "Full offline regression including notebooks"
+        step
+        for step in regression["steps"]
+        if step.get("name") == "Offline regression including notebooks (four held native tests excluded)"
     )
     assert "if" not in coverage and not coverage.get("continue-on-error")
     assert "python -m scripts.run_local_tests -q --cov" in coverage["run"]
