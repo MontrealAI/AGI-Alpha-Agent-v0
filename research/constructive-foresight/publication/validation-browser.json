@@ -1,0 +1,45 @@
+{
+  "schema": "writer9-browser-verification-attempt/v1",
+  "checked_utc": "2026-10-24T02:39:46.011061+00:00",
+  "scope": "Local private preview only; no public publication claim",
+  "status": "BLOCKED",
+  "browser": "Documented CUA Chrome/CDP cloud browser",
+  "requested_url": "http://127.0.0.1:48129/",
+  "local_server": {
+    "bind": "127.0.0.1",
+    "port": 48129,
+    "initial_sandbox_result": "PermissionError: socket creation not permitted",
+    "authorized_escalation_result": "Server started; read-only HTTP health check passed",
+    "http_status": 200,
+    "content_type": "text/html",
+    "html_bytes": 24725,
+    "html_sha256": "77eed772196e0ab19e1b3f41625804a6e9809d7c9f01d39ef973b75434b1b5b2",
+    "served_bytes_match_saved_html": true
+  },
+  "attempts": [
+    {
+      "operation": "Create browser tab at exact authorized local HTTP URL",
+      "result": "net::ERR_CONNECTION_REFUSED",
+      "tab_id": "63"
+    },
+    {
+      "operation": "Observe the resulting error tab through documented cua.getTab",
+      "result": "Browser URL policy blocked observation; error-page protocol not allowed. Allowed protocols: http:, https:. Tool expressly prohibits workaround, indirect execution, raw CDP, alternate browser surfaces or policy circumvention."
+    }
+  ],
+  "visual_layout": "NOT_RUN",
+  "mobile_layout": "NOT_RUN",
+  "keyboard_interaction": "NOT_RUN",
+  "inline_pdf": "NOT_RUN",
+  "browser_downloads": "NOT_RUN",
+  "structural_accessibility": "Separate static checks recorded in validation-structure.json; not a substitute for browser acceptance",
+  "actions_not_taken": [
+    "No public proxy or new Site",
+    "No alternate localhost aliases or file/data URLs",
+    "No raw CDP or browser-source inspection",
+    "No user browser profile changes",
+    "No security setting change",
+    "No claim that source HTML or HTTP checks equal browser verification"
+  ],
+  "permitted_next_boundary": "Use the intended authorized public HTTPS landing route after the receiving owner publishes qualified content; do not infer that public publication or browser acceptance has happened."
+}

@@ -1,0 +1,273 @@
+% SPDX-License-Identifier: Apache-2.0
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,headheight=15pt,footskip=12mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{P052-Roman.otf}[BoldFont=P052-Bold.otf,ItalicFont=P052-Italic.otf,BoldItalicFont=P052-BoldItalic.otf]
+\setsansfont{NimbusSans-Regular.otf}[BoldFont=NimbusSans-Bold.otf,ItalicFont=NimbusSans-Italic.otf,BoldItalicFont=NimbusSans-BoldItalic.otf]
+\setmonofont[Scale=0.82]{DejaVu Sans Mono}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,tabularx,longtable,array,multirow}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,microtype,titlesec,fancyhdr,caption}
+\usepackage{placeins}
+\usepackage[round,authoryear]{natbib}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=Plum,citecolor=Plum,urlcolor=Plum,breaklinks=true]{hyperref}
+\definecolor{Ink}{HTML}{151326}
+\definecolor{Plum}{HTML}{5530A0}
+\definecolor{Violet}{HTML}{B69BFF}
+\definecolor{Mint}{HTML}{8FE4D0}
+\definecolor{Gold}{HTML}{E7C889}
+\definecolor{Mist}{HTML}{F3F0FA}
+\definecolor{Slate}{HTML}{5A566A}
+\definecolor{Line}{HTML}{D8D1E7}
+\hypersetup{pdftitle={AGI ALPHA: The Advantage You Can Build},pdfauthor={MONTREAL.AI},
+ pdfsubject={Constructive Foresight for the Intelligence Transition},pdfkeywords={constructive foresight,readiness,mission alpha,value of information,calibration,TI,scientific computing},pdfcreator={XeLaTeX}}
+\color{Ink}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+\raggedbottom
+\renewcommand{\arraystretch}{1.16}
+\titleformat{\section}{\Large\sffamily\bfseries\color{Plum}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries}{\thesubsubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{16pt}{7pt}
+\titlespacing*{\subsection}{0pt}{11pt}{5pt}
+\setlist{nosep,leftmargin=1.5em,topsep=5pt}
+\captionsetup{font=small,labelfont={bf,sf},textfont=normalfont,skip=7pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{Slate}AGI ALPHA}
+\fancyhead[R]{\sffamily\scriptsize\color{Slate}CONSTRUCTIVE FORESIGHT}
+\fancyfoot[L]{\sffamily\scriptsize\color{Slate}MONTREAL.AI \quad Research edition 1.0}
+\fancyfoot[R]{\sffamily\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtcolorbox{claimbox}[1][]{colback=Mist,colframe=Line,colbacktitle=Plum,coltitle=white,boxrule=0.5pt,arc=2mm,left=4mm,right=4mm,top=3mm,bottom=3mm,#1}
+\newcommand{\TI}{\ensuremath{\mathrm{TI}_{\infty}}}
+\newcommand{\MA}{\ensuremath{\Delta V_{\mathrm{mission}}}}
+\newcommand{\obs}{\textsf{Observed}}
+\newcommand{\simu}{\textsf{Simulated}}
+\newcommand{\assum}{\textsf{Assumed}}
+\newcommand{\pend}{\textsf{Pending}}
+\newcommand{\source}{\textsf{Source-derived}}
+\newtheorem{proposition}{Proposition}
+\input{generated/macros.tex}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\pagecolor{Ink}\color{white}\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\fill[Plum!24!Ink] ($(current page.north east)+(-4,-5)$) circle (5.0cm);
+\draw[Violet!34, line width=0.6pt] ($(current page.north east)+(-3.8,-5.5)$) circle (4.25cm);
+\draw[Violet!14, line width=0.5pt] ($(current page.north east)+(-3.8,-5.5)$) circle (5.1cm);
+\foreach \x/\y in {2/3,6/1,13/4,3/14,17/17,8/22,16/25,1/20,10/8,18/11}{
+ \fill[white,opacity=.45] ($(current page.south west)+(\x,\y)$) circle (0.45pt);}
+\draw[Mint,line width=1.3pt] ($(current page.south west)+(2.3,6.8)$) .. controls +(4,0) and +(-3,-1) .. ($(current page.south west)+(12.5,9.2)$);
+\draw[Gold,line width=0.8pt,dashed] ($(current page.south west)+(12.5,5.7)$)--($(current page.south west)+(12.5,10.0)$);
+\fill[Mint] ($(current page.south west)+(9.6,8.2)$) circle (2.2pt);
+\node[anchor=west,text=Mint,font=\sffamily\small] at ($(current page.south west)+(2.3,6.2)$) {CAPABILITY READY};
+\node[anchor=west,text=Gold,font=\sffamily\small] at ($(current page.south west)+(12.7,6.0)$) {WINDOW CLOSES};
+\end{tikzpicture}
+{\sffamily\small\color{Mint}MONTREAL.AI \hfill RESEARCH / 09}\par
+\vspace{24mm}
+{\sffamily\fontsize{18}{22}\selectfont\color{Violet}AGI ALPHA}\par
+\vspace{6mm}
+{\sffamily\bfseries\fontsize{35}{39}\selectfont THE ADVANTAGE\\YOU CAN BUILD}\par
+\vspace{9mm}
+{\sffamily\fontsize{17}{23}\selectfont Constructive Foresight\\for the Intelligence Transition}\par
+\vspace{11mm}
+\begin{minipage}{0.77\linewidth}
+{\large The future creates no advantage until something useful is ready.}\par
+\vspace{4mm}
+{\color{Violet}Test the forecast. Build the capability. Make readiness earn its cost.}
+\end{minipage}
+\vfill
+{\sffamily\small TRANSFORMATIONAL INTELLIGENCE $\infty$ \quad / \quad SUCCESSOR $\Omega$}\par
+\vspace{4mm}
+{\small Research and engineering edition 1.0 \quad 24 October 2026 (UTC)}\par
+{\scriptsize\color{Violet}Original cover schematic. It is a conceptual relationship, not a measured forecast.}
+\end{titlepage}
+\nopagecolor\color{Ink}
+\setcounter{page}{1}
+\hypersetup{pageanchor=true}
+
+\begin{center}
+{\Large\sffamily\bfseries AGI ALPHA: The Advantage You Can Build}\par
+\vspace{3pt}
+{\large Constructive Foresight for the Intelligence Transition}\par
+\vspace{6pt}
+MONTREAL.AI \quad $\cdot$ \quad Research and engineering edition 1.0
+\end{center}
+\section*{Abstract}
+\input{generated/abstract.tex}
+
+\begin{claimbox}
+\textbf{The test.} Did foresight help build useful advantage in time, after full costs, against a credible alternative?\\[3pt]
+\textbf{The evidence boundary.} Numerical execution is measured. Demand, adoption, imitation and pricing are controlled assumptions. The dispatcher demonstration uses a public test identity. No external beneficiary acceptance, settled revenue or commercial full-cost advantage is established.
+\end{claimbox}
+\vspace{2mm}
+\textbf{Keywords:} constructive foresight; mission alpha; readiness; value of information; calibrated delivery; learning-augmented decisions; reproducible numerical instruments.
+
+\section{From a large transition to one difficult decision}
+Could a transition toward increasingly affordable machine intelligence create extraordinary opportunity? The question is reasonable, but its scale does not tell an agent what to do next. A sector can expand while a particular intervention is late, unneeded, expensive, untrusted or already available from somebody else. Predicting a change and delivering a useful response to it are different accomplishments.
+
+This paper moves the unit of analysis from a predicted winning sector to a bounded mission. An agent must identify a beneficiary's bottleneck, decide whether more information is worth acquiring, construct a capability if justified, qualify its output, and deliver before the relevant opportunity closes. The alternative may be a conventional engineer who uses exactly the same tools. The agent can also decline construction. Waiting is a substantive action, not a missing stage in a success story.
+
+The central object is a \emph{readiness certificate}: an inspectable connection among a frozen computational recipe, an input identity, finite capability evidence, a conditional delivery forecast, a cost ledger and a separate execution-authority boundary. It does not certify the future. It makes the assumptions that would justify preparing for that future explicit, and makes loss of those assumptions observable. Our artifact applies this object to repeated sparse linear solves. Its kernel is conventional SuperLU; the research contribution is the integrated, falsifiable decision and evidence procedure, not a new factorization algorithm.
+
+We test three distinct propositions. First, preparation can change which numerical investigations meet a short response deadline. Second, a probabilistic forecast can be evaluated against subsequent local computation without pretending to forecast industrial adoption. Third, timing information can change a build-or-wait decision in a finite model, but a competent conventional policy with the same information may match or exceed it. All three are needed to interpret ``advantage.'' None implies that an agent has forecast AGI, discovered a new market, earned revenue or outperformed an unrestricted human organization.
+
+\subsection{A prominent boundary around the macro scenario}
+\begin{claimbox}[title={\sffamily Assumption panel: the $\$15$ quadrillion envelope}]
+The project's original Living Treasure Map initializes an editable $\$15$ quadrillion envelope and a twenty-year horizon. Twelve weights distribute that assumed total. The current Insight Atlas explicitly calls its envelope a scenario assumption and reports verified economic value as zero. These controls are not measured wealth, a total addressable market, a forecast, a token valuation or a promise of investment return. This paper does not use the envelope to generate its experimental outcomes or economic verdict. \citep{atlas2026,treasure2026}
+\end{claimbox}
+
+The distinction also prevents an accounting error: multiplying an assumed envelope by an assumed capture fraction does not produce observed profit. The original twenty-year horizon is separate from the Atlas agent-firm planner's 120-minute default. Its original twelve weights and the current exact-integer fixture weights are different scenario inputs, not inconsistent estimates of a real economy. Appendix~\ref{app:macro} preserves the precise source distinction.
+
+\subsection{What is new, and what is inherited}
+\TI{} motivates executable changes in representation, information, construction and strategy, together with a bridge back to the authorized purpose and a comparison that pays transformation costs. The project already contains papers on learning, reasoning, design, strategy, execution and evolution. In particular, combining information with construction is not new to this project. \citep{ti2026,outlearn2026,outstrategise2026,outexecute2026}
+
+Writer 9 isolates the \emph{time-dependent decision}: whether an information acquisition and capability construction finish early enough to improve qualified delivery over an equally equipped alternative. It contributes a reusable readiness implementation, a frozen prospective local-delivery ledger, a finite timing experiment, and source-bound lifecycle evidence. It does not inherit Writer 6's experimental cases or results. It is distinct from Writer 8's opportunity-ledger and capacity-investment question: no sector ranking or allocation of a macro envelope is a primary outcome here. Earlier editions remain unchanged.
+
+\section{Prior art and the novelty boundary}
+Probability forecasts require scoring rules that reward accurate probability statements. The Brier score evaluates a binary event, while strictly proper scoring rules provide a general framework for honest probabilistic assessment. \citep{brier1950,gneiting2007} A lower score is not, by itself, a better decision: forecasting quality, correspondence to observations and value to a decision maker are separable. \citep{murphy1993} Decision-aware prediction makes this dependence on the downstream optimization problem explicit. \citep{elmachtoub2022}
+
+Value-of-information analysis evaluates an information acquisition by its effect on an explicit decision, net of acquisition costs. \citep{howard1966} The option to wait is also established: an irreversible investment under uncertainty can be inferior to postponement even when a simple expected-value calculation appears favorable. \citep{mcdonald1986} Learning-augmented online algorithms already use predictions for ski rental and scheduling. \citep{purohit2018} We therefore do not present prediction-assisted construction timing as a newly invented problem or claim competitive guarantees for our finite experimental policies.
+
+A further complication is intervention. A forecast used to change the world is not being evaluated against the world that would have existed without that action. Performative prediction formalizes cases in which the deployed predictive procedure changes its target distribution. \citep{perdomo2020} Here, preparing a factorization changes response latency; preparation is not a successful prediction that latency would have improved unaided. We keep forecasts conditional on readiness state and distinguish no-action outcomes from preparation-conditioned outcomes.
+
+Numerical reuse also has a substantial history. Sparse direct solvers reuse a factorization across right-hand sides, and Krylov-subspace recycling addresses related sequences of linear systems. \citep{davis2011,parks2006} Conjugate gradients is a classical method for suitable positive-definite systems. \citep{hestenes1952} We use standard numerical kernels and a fixed set of public Harwell--Boeing matrices. Small residuals are not universal forward-error guarantees, especially on ill-conditioned systems. \citep{higham2002} The acceptance criteria therefore expose both residual and manufactured-solution error rather than renaming a solver convergence flag as verification.
+
+The contribution should be judged as a reproducible research-and-engineering integration with a discriminating experiment. It supplies neither a new sparse numerical algorithm nor a theorem that foresight invariably creates economic value. Its useful scientific outcome can be a negative comparative result: a functioning capability, a forecast with measurable skill, and no net advantage over a competent adaptive builder.
+
+\section{Formalizing constructive foresight}
+\subsection{Mission, information and policies}
+A mission is the tuple
+\begin{equation}
+\mathcal M=(b,g,\mathcal A,\mathcal I_0,H,R,Q,U),
+\end{equation}
+where $b$ identifies the beneficiary, $g$ the bottleneck, $\mathcal A$ the feasible actions, $\mathcal I_0$ the initial information, $H$ the horizon, $R$ the resource constraint, $Q$ the acceptance predicate and $U$ the mission utility. A policy $\pi$ maps the information available at each decision time to a feasible action, including information acquisition, construction, reuse, waiting or abstention. Feasibility includes authority, not only technical possibility.
+
+Let $Y^\pi_{j,H}$ indicate that output $j$ is useful, accepted and delivered by its mission deadline under policy $\pi$. Let $C^\pi$ include inference, acquisition, search, engineering, validation, human review, failed work, maintenance, execution and orchestration without double-counting. Currency expenditures and imputed time costs remain different ledger fields. Then
+\begin{align}
+V_H(\pi)&=U_b(Y^\pi_{1,H},\ldots,Y^\pi_{m,H})-C^\pi,\\
+\MA(\pi;\pi_0)&=\mathbb E[V_H(\pi)-V_H(\pi_0)\mid\mathcal I_0].
+\end{align}
+\emph{Mission Alpha} is this incremental mission value relative to an eligible, credible alternative under comparable constraints. It is unrelated to a claim of financial-security alpha. A realized difference may be reported after outcomes occur; an expectation under an assumed world distribution remains a modeled quantity.
+
+The strongest alternative is defined by the available policy class and information boundary. For this finite study, the primary comparator is selected using calibration only and locked before confirmation. We additionally report the proposed policy against every eligible alternative. A per-episode perfect-future choice is an oracle upper reference, not an eligible real-world competitor. Unknown authoring or acceptance costs prevent a claim that a computed runtime difference is a complete commercial value difference.
+
+\subsection{A window is a joint distribution}
+Write $T_B$ for construction and qualification readiness, $T_X$ for execution time, $T_Q$ for final acceptance delay, $T_A$ for adoption, $T_C$ for competitor availability, $T_I$ for imitation and $T_D$ for demand change. These can be dependent. The joint distribution matters because the same demand information that makes construction attractive may also accelerate competing supply.
+
+For a request arriving at $t$, a conditional delivery target has the form
+\begin{equation}
+p_\pi(d\mid\mathcal I_t)=\Pr\!\left(Q=1,\;T^\pi_{\mathrm{delivery}}\leq d\mid\mathcal I_t\right).
+\end{equation}
+If the capability is already ready, $T_B$ is a sunk preparation cost and is excluded from \emph{response latency}; it is still included in the policy's \emph{total cost}. A cold-state delivery target includes the remaining preparation delay. Pooling the two would reward an unpriced change of intervention.
+
+Competitive imitation changes the best alternative available to the beneficiary. It does not destroy the fact that a solver can save CPU time. We therefore treat competitive availability as a change in the comparison and routing options, and treat price compression as an explicitly assumed economic parameter. Scientific usefulness, exclusivity, adoption and appropriable proceeds are not interchangeable columns.
+
+\subsection{Information has value only through a decision}
+For an acquisition $Z$ costing $c_Z$ and delaying the decision by $\delta_Z$, define
+\begin{equation}
+\operatorname{VOI}(Z)=\mathbb E_Z\!\left[\max_{a\in\mathcal A_{t+\delta_Z}}\mathbb E[V(a)\mid\mathcal I_t,Z]\right]
+-\max_{a\in\mathcal A_t}\mathbb E[V(a)\mid\mathcal I_t]-c_Z.
+\end{equation}
+The action set and its attainable outcomes may shrink during acquisition. A confidence score that ignores this delay is not value of information. The same calculation must be available to a credible conventional competitor; the proposed procedure does not receive free search or free measurements.
+
+\begin{proposition}[Decision invariance]
+If one feasible action maximizes expected mission value for every possible acquisition result, and the acquisition does not improve that action's implementation or feasible set, acquiring the information cannot increase expected value before cost. A positive acquisition cost strictly reduces net value.
+\end{proposition}
+\begin{proof}
+With the same maximizing action $a^*$ in every posterior state, the law of total expectation gives $\mathbb E_Z\mathbb E[V(a^*)\mid\mathcal I_t,Z]=\mathbb E[V(a^*)\mid\mathcal I_t]$. The maximization contributes no additional term. Subtract acquisition cost, and any loss caused by its delay, to obtain the claim.
+\end{proof}
+
+This simple observation supplies a falsifier. A forecast can improve Brier score yet leave the build decision unchanged. Conversely, an imprecise forecast near a consequential threshold may be valuable. Our experimental reports retain both forecast scores and policy values, and never infer one from the other.
+
+\section{Mission selection and the enabling instrument}
+\subsection{Why this mission was selected before results}
+The initial protocol examined five concrete work families before running a solver. Table~\ref{tab:missions} records the selection. The choice prioritized public inputs, finite acceptance, reproducibility and a credible baseline. It did not select the task by observed favorable effect size.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}L{28mm}YY@{}}\toprule
+Work family & Observable bottleneck & Decision before execution \\\midrule
+Scientific computing & Repeated setup and quality checking of linear solves & Selected: public matrices; direct acceptance and clocks. \\
+Energy-system design & Qualified engineering constraints and operational context & Rejected for deep execution: no operator acceptance or operating data. \\
+Research instrumentation & Physical detector calibration and access & Rejected: unavailable apparatus; avoid duplicating spectral-instrument studies. \\
+Biomedical discovery & Experimental confirmation and adoption & Rejected: no biological validation or beneficiary acceptance in scope. \\
+Release verification & Reproducible software qualification & Rejected as primary mission: overlaps active held integration lanes. \\\bottomrule
+\end{tabularx}
+\caption{\assum{} / preregistered selection judgment. These are work-family feasibility assessments, not sector forecasts or measured demand.}
+\label{tab:missions}
+\end{table}
+
+The beneficiary is a numerical researcher conducting repeated public-benchmark investigations. No external researcher agreed to accept the artifact during this study. Consequently, ``accepted'' in numerical tables means the frozen computational predicate passed. It does not mean customer acceptance. The useful artifact is a source-bound, reusable solve-and-check instrument with an inspectable reconstruction recipe and honest cost measurements. We test whether it makes a specified local deadline feasible; we do not claim that the underlying linear-system class was previously unsolvable.
+
+\subsection{Public inputs and provenance limitations}
+The four fixed matrices are HB/1138\_bus, HB/bcsstk14, HB/bcsstk18 and HB/bcsstk24. They originate in power-network or structural calculations and are cataloged in the SuiteSparse Matrix Collection. \citep{davis2011,kolodziej2019} They are small enough for finite local replication and sufficiently ill-conditioned to make careless residual-only claims inappropriate. The experiment uses manufactured right-hand sides $b=Ax_\star$, with $x_\star$ sampled from a fixed standard-normal generator. These right-hand sides are synthetic; the matrix origins do not make them real operating missions.
+
+Official file endpoints returned acquisition errors. Before any solver run, amendment A01 fixed pinned public research copies of the same four named matrices. Numeric Matrix Market payloads were preserved, transport and payload hashes recorded, and dimensions and expanded nonzero counts checked against official records. A pattern-only bcsstk14 candidate was rejected during data validation. Equality to unavailable official download bytes is \emph{not} established. The packaged data and provenance make the actual experiment reproducible despite that boundary.
+
+The collection describes these cases as positive definite; an older NIST bcsstk24 page uses an indefinite label. Our primary SuperLU comparison does not require positive definiteness. The optional Jacobi-preconditioned conjugate-gradient run is a bounded diagnostic, not a theoretical claim covering every input. No test certifies the underlying arena, power station or power network.
+
+\subsection{What the readiness instrument actually builds}
+The instrument factorizes the exact matrix with SciPy SuperLU in float64 using COLAMD ordering, performs two fixed preflight solves with separate seed 770001, checks their outputs, and binds the recipe to matrix, numerical-source and environment hashes. \citep{scipySplu} It retains the factorization in memory for subsequent right-hand sides. Every later output is checked again. A preflight success is finite evidence of that recipe, not permission to accept all future outputs.
+
+The exported recipe includes acceptance thresholds, solver and library versions, source and matrix identities, and an explicit absence of execution authority. Restoration reads and verifies those identities, then \emph{refactorizes and revalidates}. A recipe is not a serialized SuperLU factor. Reconstruction time is measured and charged. A stale source, changed matrix, changed environment or altered acceptance policy is rejected.
+
+The numerical acceptance predicate is column-wise. For every right-hand side it requires finite output, relative $\ell_2$ residual at most $10^{-9}$, normwise $\ell_\infty$ backward error at most $10^{-12}$, and manufactured relative $\ell_2$ solution error at most $10^{-4}$:
+\begin{align}
+r_j&=\frac{\|b_j-A\hat x_j\|_2}{\|b_j\|_2}, &
+\eta_j&=\frac{\|b_j-A\hat x_j\|_\infty}{\|A\|_\infty\|\hat x_j\|_\infty+\|b_j\|_\infty},\\
+e_j&=\frac{\|\hat x_j-x_{\star,j}\|_2}{\|x_{\star,j}\|_2}.&&
+\end{align}
+A batch qualifies only if every column passes. The manufactured solution permits the forward-error check in this benchmark; a user without a known answer cannot infer the same forward-error evidence from a residual alone. This limitation is retained in the interface and paper.
+
+\section{A preregistered, finite study}
+\subsection{Registration chronology and budgets}
+The initial design was written before any numerical result, saved durably and reopened with every manifest payload checked. Its SHA-256 begins \texttt{aebdfe90edf392d8}; the full identity appears in the package. The public coordination record contains the initial checkpoint identity. \citep{registration2026} A01 documents data-source changes without replacing a matrix, and A02 clarifies estimands and shared overhead. Source freezes and forecast issuance records are retained in the package.
+
+Development uses a single fixed engineering block, with at most two retained bug-fix reruns. Calibration uses eight blocks; confirmation uses twelve later blocks. Each block covers four matrices, three right-hand-side counts ($1,4,16$), and three methods, producing 288 planned calibration and 432 planned confirmation batches. The primary numerical count is $q=16$. All confirmation predictions are issued together before opening a confirmation seed. The independent finite timing model has a separate source/configuration freeze before its own trials.
+
+Each numerical phase has a 300-second wall budget, with a whole-study computational budget of 1,800 CPU seconds for the declared experimental runs. Budget stops retain the count of unexecuted planned cells. There is no replacement sampling, outcome-dependent stopping or expansion until a favorable matrix appears. Authoring and research-tool activity are outside this measured runtime cap and remain a separate, incompletely metered cost category.
+
+\subsection{Competent numerical alternatives}
+\textbf{Cold direct} refactorizes for each right-hand side. It shows the value of reuse but is deliberately labeled an ablation. \textbf{Native cached} uses a conventional single factorization and batched solves, with the same per-output acceptance predicate. It is the strong numerical comparator. \textbf{Certified ready} adds the source-bound recipe and two preflight checks to the same factorization algorithm. A specialist sparse Cholesky implementation was not installed; the comparison is bounded to the tested common SuperLU interface, not every possible sparse solver.
+
+Method order is randomized within each matrix/block/count cell and BLAS thread count is fixed to one. The ledger records setup, preflight, metadata, solve, validation, other overhead, total wall time and process time. Read/hash/parse and workload-generation effort are shared campaign overhead. A contextual generation-time field repeated in result rows is never summed as if that shared work occurred once per method. Phase wall and CPU totals retain unallocated orchestration and file-writing costs.
+
+Known historical matrices may already be familiar to language-model training. No claim of clean retrospective model forecasting is made. The local timing outcomes are produced after forecast issuance, using a deterministic numerical policy rather than an evaluating language model. Repeated right-hand sides and deadlines are correlated observations. They do not constitute independent industries or beneficiaries.
+
+\subsection{Prospective local forecasts}
+For each matrix, count, method and readiness state, the calibration data define an empirical delivery distribution. Deadline multipliers $0.5,1,2$ apply to the corresponding calibration median native-cached total time; multiplier 1 is primary. A target resolves positively only if the batch qualifies and the relevant elapsed time is at or below its frozen deadline. Cold-state targets include setup. Ready-state targets condition on both factors and manufactured right-hand sides already being available. This stage is observed inside a full-cost batch; it is not a separately observed beneficiary arrival.
+
+With $s$ calibration successes among $n=8$ observations, the issued probability is $(s+1)/(n+2)$. A calibration-only constant base rate is an explicitly weaker reference. The freeze file contains every probability, deadline, issue time, source hash and calibration hash. It permits a fixed launch window; the actual start timestamp plus the frozen elapsed deadline determines each local event time. No probability is updated after seeing an earlier confirmation result.
+
+We report Brier score $\frac1N\sum_i(p_i-y_i)^2$, descriptive reliability bins and per-state outcomes. Better scores relative to a pooled constant show conditional information about this narrow computational workload, not a validated forecasting method for industrial adoption. The decision experiment must separately show whether information changes actions and increases net mission utility.
+
+\input{decision_methods.tex}
+\input{system_mapping.tex}
+\input{generated/results.tex}
+\FloatBarrier
+\input{discussion.tex}
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+\clearpage
+\appendix
+\input{appendix.tex}
+\end{document}

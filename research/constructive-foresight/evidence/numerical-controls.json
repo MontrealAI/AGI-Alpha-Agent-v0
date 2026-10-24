@@ -1,0 +1,1183 @@
+{
+  "schema": "writer9-post-confirmation-numerical-controls/v1",
+  "issued_utc": "2026-10-24T02:38:26.020204+00:00",
+  "scope": "Post-confirmation functional controls; not prospective confirmation or independent solver validation",
+  "matrix": "1138_bus",
+  "engineering_seed": 1701,
+  "rhs_count": 16,
+  "fixed_instrument_preflight_seed": 770001,
+  "fixed_instrument_preflight_rhs_per_construction": 2,
+  "test_source_sha256": "4383785fd41e70e93c6a4d65354d38be0e5cbc3d99b90191c5a762bfec8e77fc",
+  "hashes_before": {
+    "numerics.py": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+    "protocol.json": "aebdfe90edf392d89433289f7bccc3fc1757abe7f7311381b11170af7b1ae51a",
+    "data/manifest.json": "2d814fbdc753f4474f3bcc095bc858a4872e902c01811c0ca123a329239cef3c",
+    "data/1138_bus.mtx.gz": "2bbcb12ed6c1fa33020203ba39bf4f3d45ed832c1bb85655b02b765c1848ee2b",
+    "results/forecast_freeze.json": "95ab2aec575f797f6392d6bc1d01a4e22a8815dd5c25e10a5eb0446763a8439d",
+    "results/calibration/batches.jsonl": "f37056e3263835b509672132c3fdd14c5bb6823f4ff7e80ee79fba05ab1c9025",
+    "results/confirmation/batches.jsonl": "d5a562219ebcc28e9f03f1b1a0e62f18c3e8bbeaa966b53beb2ec729bb7776c6",
+    "results/confirmation/summary.json": "faa29d94d567fd61403adc59ab6b31f1e921a7d82c06f4dcb698f42224ee8bb7"
+  },
+  "prior_observation_review": {
+    "reviewed": [
+      "tests/harness_probe.py",
+      "tests/harness_negative_probe.py",
+      "engineering",
+      "evidence"
+    ],
+    "already_observed": "Separate 2-by-2 wrong-output authority probe and native positive restoration",
+    "missing_observations": [
+      "all-zero output",
+      "NaN output",
+      "wrong matrix recipe",
+      "stale source recipe",
+      "stale environment recipe",
+      "stale acceptance recipe",
+      "unauthorized recipe envelope"
+    ],
+    "prior_restore_reference": "evidence/native-demo-001/demo-summary.json"
+  },
+  "frozen_expected_hashes": {
+    "numerics.py": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+    "protocol.json": "aebdfe90edf392d89433289f7bccc3fc1757abe7f7311381b11170af7b1ae51a",
+    "data/manifest.json": "2d814fbdc753f4474f3bcc095bc858a4872e902c01811c0ca123a329239cef3c"
+  },
+  "numerical_confirmation_completed_utc": "2026-10-24T02:20:13.536792+00:00",
+  "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+  "matrix_shape": [
+    1138,
+    1138
+  ],
+  "matrix_nnz": 4054,
+  "ingestion": {
+    "read_hash_parse_seconds": 0.005090013000881299
+  },
+  "acceptance": {
+    "finite": true,
+    "relative_residual_l2_max": 1e-09,
+    "normwise_backward_error_linf_max": 1e-12,
+    "manufactured_forward_error_l2_max": 0.0001
+  },
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "truth_sha256": "e4437cb092ddecc0412c960eabcc609368cedbfac277af72b2532f9020b769a9",
+  "rhs_sha256": "676e77145758b0931ddb543d9c58aedfef31c57a22abb57911ca7952080a7478",
+  "completed_utc": "2026-10-24T02:38:26.517799+00:00",
+  "internal_wall_seconds": 0.49761508699157275,
+  "internal_cpu_seconds": 0.49485712499999995,
+  "hashes_after": {
+    "numerics.py": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+    "protocol.json": "aebdfe90edf392d89433289f7bccc3fc1757abe7f7311381b11170af7b1ae51a",
+    "data/manifest.json": "2d814fbdc753f4474f3bcc095bc858a4872e902c01811c0ca123a329239cef3c",
+    "data/1138_bus.mtx.gz": "2bbcb12ed6c1fa33020203ba39bf4f3d45ed832c1bb85655b02b765c1848ee2b",
+    "results/forecast_freeze.json": "95ab2aec575f797f6392d6bc1d01a4e22a8815dd5c25e10a5eb0446763a8439d",
+    "results/calibration/batches.jsonl": "f37056e3263835b509672132c3fdd14c5bb6823f4ff7e80ee79fba05ab1c9025",
+    "results/confirmation/batches.jsonl": "d5a562219ebcc28e9f03f1b1a0e62f18c3e8bbeaa966b53beb2ec729bb7776c6",
+    "results/confirmation/summary.json": "faa29d94d567fd61403adc59ab6b31f1e921a7d82c06f4dcb698f42224ee8bb7"
+  },
+  "protected_files_unchanged": true,
+  "controls": [
+    {
+      "name": "valid_initial_recipe",
+      "passed": true,
+      "recipe_payload": {
+        "recipe": {
+          "schema": "readiness-recipe/v1",
+          "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+          "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+          "solver": "SuperLU/COLAMD/float64",
+          "scipy_version": "1.17.0",
+          "numpy_version": "2.3.5",
+          "preflight_seed": 770001,
+          "preflight_rhs": 2,
+          "acceptance": {
+            "finite": true,
+            "relative_residual_l2_max": 1e-09,
+            "normwise_backward_error_linf_max": 1e-12,
+            "manufactured_forward_error_l2_max": 0.0001
+          },
+          "restoration": "refactorize and revalidate; no serialized factor",
+          "authority": "none",
+          "preflight": {
+            "relative_residual_l2": [
+              1.2733322017050928e-16,
+              8.506084452061902e-17
+            ],
+            "backward_error_linf": [
+              4.0266571608130186e-17,
+              4.0223560384766065e-17
+            ],
+            "manufactured_forward_error_l2": [
+              3.581486019289339e-13,
+              6.052408280940038e-12
+            ],
+            "accepted_by_rhs": [
+              true,
+              true
+            ],
+            "qualified": true,
+            "accepted_count": 2
+          }
+        },
+        "recipe_sha256": "6245cee0fccc9683c7478308a86eb1889905d1227e8495f124072b509b94547c",
+        "proof": "preflight only; every new output requires a fresh check",
+        "authority": "none"
+      },
+      "integrity_valid": true,
+      "preflight_report": {
+        "relative_residual_l2": [
+          1.2733322017050928e-16,
+          8.506084452061902e-17
+        ],
+        "backward_error_linf": [
+          4.0266571608130186e-17,
+          4.0223560384766065e-17
+        ],
+        "manufactured_forward_error_l2": [
+          3.581486019289339e-13,
+          6.052408280940038e-12
+        ],
+        "accepted_by_rhs": [
+          true,
+          true
+        ],
+        "qualified": true,
+        "accepted_count": 2
+      },
+      "solve_report": {
+        "relative_residual_l2": [
+          1.2870143419404484e-16,
+          8.96452052328931e-17,
+          1.1052625386689944e-16,
+          1.4368130799332589e-16,
+          1.3638156318994773e-16,
+          9.756797938163551e-17,
+          1.298731926222129e-16,
+          1.4500722806339666e-16,
+          1.746881613159721e-16,
+          1.3186995451841123e-16,
+          1.0762197627258304e-16,
+          1.3761168215233406e-16,
+          1.374201959925636e-16,
+          1.102652414664191e-16,
+          1.5807096774436933e-16,
+          1.3804113653305536e-16
+        ],
+        "backward_error_linf": [
+          4.0612371061876507e-17,
+          2.1954409687437553e-17,
+          3.834301666016275e-17,
+          7.027756702553611e-17,
+          3.802741030530469e-17,
+          2.985648521518709e-17,
+          3.003653321783059e-17,
+          4.0363816311912794e-17,
+          5.998285972421415e-17,
+          5.771886101570228e-17,
+          2.2036690844317985e-17,
+          3.5262020738447774e-17,
+          7.151275478892998e-17,
+          4.299697477941839e-17,
+          4.956993508462372e-17,
+          4.078275742319495e-17
+        ],
+        "manufactured_forward_error_l2": [
+          1.5759331294109046e-12,
+          4.754437098165515e-12,
+          5.781148775026802e-12,
+          6.1425432037871556e-12,
+          7.134976952542584e-13,
+          5.8561268680180195e-12,
+          4.683459478922959e-13,
+          3.4340105370211078e-12,
+          4.44762260773077e-12,
+          4.122577213161966e-12,
+          4.138355552204835e-12,
+          1.584514153582208e-12,
+          7.834250465976754e-12,
+          9.308279590276045e-13,
+          3.454800718775352e-13,
+          5.647798096944079e-13
+        ],
+        "accepted_by_rhs": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "qualified": true,
+        "accepted_count": 16
+      },
+      "factor_seconds": 0.0016040229966165498,
+      "preflight_seconds": 0.00100229999225121,
+      "metadata_seconds": 0.00014016599743627012
+    },
+    {
+      "name": "all_zero_output",
+      "passed": true,
+      "quality_report": {
+        "relative_residual_l2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "backward_error_linf": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "manufactured_forward_error_l2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "accepted_by_rhs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "qualified": false,
+        "accepted_count": 0
+      },
+      "criterion_reports": {
+        "relative_residual_l2": {
+          "threshold": 1e-09,
+          "values": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rejected_by_rhs": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        "backward_error_linf": {
+          "threshold": 1e-12,
+          "values": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rejected_by_rhs": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        "manufactured_forward_error_l2": {
+          "threshold": 0.0001,
+          "values": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rejected_by_rhs": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      "output_finite_by_rhs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nonfinite_serialization": "Nonfinite metrics are null, as returned by the frozen checker"
+    },
+    {
+      "name": "nan_output",
+      "passed": true,
+      "quality_report": {
+        "relative_residual_l2": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "backward_error_linf": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "manufactured_forward_error_l2": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "accepted_by_rhs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "qualified": false,
+        "accepted_count": 0
+      },
+      "criterion_reports": {
+        "relative_residual_l2": {
+          "threshold": 1e-09,
+          "values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "rejected_by_rhs": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        "backward_error_linf": {
+          "threshold": 1e-12,
+          "values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "rejected_by_rhs": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        "manufactured_forward_error_l2": {
+          "threshold": 0.0001,
+          "values": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "rejected_by_rhs": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      "output_finite_by_rhs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "nonfinite_serialization": "Nonfinite metrics are null, as returned by the frozen checker"
+    },
+    {
+      "name": "wrong_matrix_hash",
+      "passed": true,
+      "changed_field": "recipe.matrix_sha256",
+      "original_value": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+      "changed_value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "recipe_payload": {
+        "recipe": {
+          "schema": "readiness-recipe/v1",
+          "matrix_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+          "solver": "SuperLU/COLAMD/float64",
+          "scipy_version": "1.17.0",
+          "numpy_version": "2.3.5",
+          "preflight_seed": 770001,
+          "preflight_rhs": 2,
+          "acceptance": {
+            "finite": true,
+            "relative_residual_l2_max": 1e-09,
+            "normwise_backward_error_linf_max": 1e-12,
+            "manufactured_forward_error_l2_max": 0.0001
+          },
+          "restoration": "refactorize and revalidate; no serialized factor",
+          "authority": "none",
+          "preflight": {
+            "relative_residual_l2": [
+              1.2733322017050928e-16,
+              8.506084452061902e-17
+            ],
+            "backward_error_linf": [
+              4.0266571608130186e-17,
+              4.0223560384766065e-17
+            ],
+            "manufactured_forward_error_l2": [
+              3.581486019289339e-13,
+              6.052408280940038e-12
+            ],
+            "accepted_by_rhs": [
+              true,
+              true
+            ],
+            "qualified": true,
+            "accepted_count": 2
+          }
+        },
+        "recipe_sha256": "3b348923926b08a4f45931a004c874e802e40eb6534f1fef6222256157ef33d7",
+        "proof": "preflight only; every new output requires a fresh check",
+        "authority": "none"
+      },
+      "recipe_integrity_recomputed": true,
+      "recipe_integrity_valid": true,
+      "expected_exception": {
+        "type": "ValueError",
+        "message": "Stale source or matrix"
+      },
+      "observed_exception": {
+        "type": "ValueError",
+        "message": "Stale source or matrix"
+      },
+      "rejection_reason_matched": true
+    },
+    {
+      "name": "stale_source",
+      "passed": true,
+      "changed_field": "recipe.source_sha256",
+      "original_value": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+      "changed_value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "recipe_payload": {
+        "recipe": {
+          "schema": "readiness-recipe/v1",
+          "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+          "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "solver": "SuperLU/COLAMD/float64",
+          "scipy_version": "1.17.0",
+          "numpy_version": "2.3.5",
+          "preflight_seed": 770001,
+          "preflight_rhs": 2,
+          "acceptance": {
+            "finite": true,
+            "relative_residual_l2_max": 1e-09,
+            "normwise_backward_error_linf_max": 1e-12,
+            "manufactured_forward_error_l2_max": 0.0001
+          },
+          "restoration": "refactorize and revalidate; no serialized factor",
+          "authority": "none",
+          "preflight": {
+            "relative_residual_l2": [
+              1.2733322017050928e-16,
+              8.506084452061902e-17
+            ],
+            "backward_error_linf": [
+              4.0266571608130186e-17,
+              4.0223560384766065e-17
+            ],
+            "manufactured_forward_error_l2": [
+              3.581486019289339e-13,
+              6.052408280940038e-12
+            ],
+            "accepted_by_rhs": [
+              true,
+              true
+            ],
+            "qualified": true,
+            "accepted_count": 2
+          }
+        },
+        "recipe_sha256": "b26db08655331d8e1d1ae12ed9fa4119bd782c62e65cf4405ee6ace302976596",
+        "proof": "preflight only; every new output requires a fresh check",
+        "authority": "none"
+      },
+      "recipe_integrity_recomputed": true,
+      "recipe_integrity_valid": true,
+      "expected_exception": {
+        "type": "ValueError",
+        "message": "Stale source or matrix"
+      },
+      "observed_exception": {
+        "type": "ValueError",
+        "message": "Stale source or matrix"
+      },
+      "rejection_reason_matched": true
+    },
+    {
+      "name": "stale_numpy_environment",
+      "passed": true,
+      "changed_field": "recipe.numpy_version",
+      "original_value": "2.3.5",
+      "changed_value": "control-stale",
+      "recipe_payload": {
+        "recipe": {
+          "schema": "readiness-recipe/v1",
+          "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+          "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+          "solver": "SuperLU/COLAMD/float64",
+          "scipy_version": "1.17.0",
+          "numpy_version": "control-stale",
+          "preflight_seed": 770001,
+          "preflight_rhs": 2,
+          "acceptance": {
+            "finite": true,
+            "relative_residual_l2_max": 1e-09,
+            "normwise_backward_error_linf_max": 1e-12,
+            "manufactured_forward_error_l2_max": 0.0001
+          },
+          "restoration": "refactorize and revalidate; no serialized factor",
+          "authority": "none",
+          "preflight": {
+            "relative_residual_l2": [
+              1.2733322017050928e-16,
+              8.506084452061902e-17
+            ],
+            "backward_error_linf": [
+              4.0266571608130186e-17,
+              4.0223560384766065e-17
+            ],
+            "manufactured_forward_error_l2": [
+              3.581486019289339e-13,
+              6.052408280940038e-12
+            ],
+            "accepted_by_rhs": [
+              true,
+              true
+            ],
+            "qualified": true,
+            "accepted_count": 2
+          }
+        },
+        "recipe_sha256": "388cb9462125487c189b7ff64a56d64f20df1cda1c31febce4e9ec8237fa815c",
+        "proof": "preflight only; every new output requires a fresh check",
+        "authority": "none"
+      },
+      "recipe_integrity_recomputed": true,
+      "recipe_integrity_valid": true,
+      "expected_exception": {
+        "type": "ValueError",
+        "message": "Stale environment"
+      },
+      "observed_exception": {
+        "type": "ValueError",
+        "message": "Stale environment"
+      },
+      "rejection_reason_matched": true
+    },
+    {
+      "name": "stale_scipy_environment",
+      "passed": true,
+      "changed_field": "recipe.scipy_version",
+      "original_value": "1.17.0",
+      "changed_value": "control-stale",
+      "recipe_payload": {
+        "recipe": {
+          "schema": "readiness-recipe/v1",
+          "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+          "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+          "solver": "SuperLU/COLAMD/float64",
+          "scipy_version": "control-stale",
+          "numpy_version": "2.3.5",
+          "preflight_seed": 770001,
+          "preflight_rhs": 2,
+          "acceptance": {
+            "finite": true,
+            "relative_residual_l2_max": 1e-09,
+            "normwise_backward_error_linf_max": 1e-12,
+            "manufactured_forward_error_l2_max": 0.0001
+          },
+          "restoration": "refactorize and revalidate; no serialized factor",
+          "authority": "none",
+          "preflight": {
+            "relative_residual_l2": [
+              1.2733322017050928e-16,
+              8.506084452061902e-17
+            ],
+            "backward_error_linf": [
+              4.0266571608130186e-17,
+              4.0223560384766065e-17
+            ],
+            "manufactured_forward_error_l2": [
+              3.581486019289339e-13,
+              6.052408280940038e-12
+            ],
+            "accepted_by_rhs": [
+              true,
+              true
+            ],
+            "qualified": true,
+            "accepted_count": 2
+          }
+        },
+        "recipe_sha256": "ab659a9fbfecf7230b2fe2caaad24863987e860e96b51c659c12ecbcd34979cc",
+        "proof": "preflight only; every new output requires a fresh check",
+        "authority": "none"
+      },
+      "recipe_integrity_recomputed": true,
+      "recipe_integrity_valid": true,
+      "expected_exception": {
+        "type": "ValueError",
+        "message": "Stale environment"
+      },
+      "observed_exception": {
+        "type": "ValueError",
+        "message": "Stale environment"
+      },
+      "rejection_reason_matched": true
+    },
+    {
+      "name": "stale_acceptance",
+      "passed": true,
+      "changed_field": "recipe.acceptance.relative_residual_l2_max",
+      "original_value": 1e-09,
+      "changed_value": 1e-08,
+      "recipe_payload": {
+        "recipe": {
+          "schema": "readiness-recipe/v1",
+          "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+          "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+          "solver": "SuperLU/COLAMD/float64",
+          "scipy_version": "1.17.0",
+          "numpy_version": "2.3.5",
+          "preflight_seed": 770001,
+          "preflight_rhs": 2,
+          "acceptance": {
+            "finite": true,
+            "relative_residual_l2_max": 1e-08,
+            "normwise_backward_error_linf_max": 1e-12,
+            "manufactured_forward_error_l2_max": 0.0001
+          },
+          "restoration": "refactorize and revalidate; no serialized factor",
+          "authority": "none",
+          "preflight": {
+            "relative_residual_l2": [
+              1.2733322017050928e-16,
+              8.506084452061902e-17
+            ],
+            "backward_error_linf": [
+              4.0266571608130186e-17,
+              4.0223560384766065e-17
+            ],
+            "manufactured_forward_error_l2": [
+              3.581486019289339e-13,
+              6.052408280940038e-12
+            ],
+            "accepted_by_rhs": [
+              true,
+              true
+            ],
+            "qualified": true,
+            "accepted_count": 2
+          }
+        },
+        "recipe_sha256": "41cf416fa267a03b553a5a905b1729070c6525b461b98a0ab36af6e91359badb",
+        "proof": "preflight only; every new output requires a fresh check",
+        "authority": "none"
+      },
+      "recipe_integrity_recomputed": true,
+      "recipe_integrity_valid": true,
+      "expected_exception": {
+        "type": "ValueError",
+        "message": "Unexpected authority or acceptance policy"
+      },
+      "observed_exception": {
+        "type": "ValueError",
+        "message": "Unexpected authority or acceptance policy"
+      },
+      "rejection_reason_matched": true
+    },
+    {
+      "name": "unauthorized_recipe_envelope",
+      "passed": true,
+      "changed_field": "authority",
+      "original_value": "none",
+      "changed_value": "control-only-unapproved",
+      "recipe_payload": {
+        "recipe": {
+          "schema": "readiness-recipe/v1",
+          "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+          "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+          "solver": "SuperLU/COLAMD/float64",
+          "scipy_version": "1.17.0",
+          "numpy_version": "2.3.5",
+          "preflight_seed": 770001,
+          "preflight_rhs": 2,
+          "acceptance": {
+            "finite": true,
+            "relative_residual_l2_max": 1e-09,
+            "normwise_backward_error_linf_max": 1e-12,
+            "manufactured_forward_error_l2_max": 0.0001
+          },
+          "restoration": "refactorize and revalidate; no serialized factor",
+          "authority": "none",
+          "preflight": {
+            "relative_residual_l2": [
+              1.2733322017050928e-16,
+              8.506084452061902e-17
+            ],
+            "backward_error_linf": [
+              4.0266571608130186e-17,
+              4.0223560384766065e-17
+            ],
+            "manufactured_forward_error_l2": [
+              3.581486019289339e-13,
+              6.052408280940038e-12
+            ],
+            "accepted_by_rhs": [
+              true,
+              true
+            ],
+            "qualified": true,
+            "accepted_count": 2
+          }
+        },
+        "recipe_sha256": "6245cee0fccc9683c7478308a86eb1889905d1227e8495f124072b509b94547c",
+        "proof": "preflight only; every new output requires a fresh check",
+        "authority": "control-only-unapproved"
+      },
+      "recipe_integrity_recomputed": true,
+      "recipe_integrity_valid": true,
+      "expected_exception": {
+        "type": "ValueError",
+        "message": "Unexpected authority or acceptance policy"
+      },
+      "observed_exception": {
+        "type": "ValueError",
+        "message": "Unexpected authority or acceptance policy"
+      },
+      "rejection_reason_matched": true
+    },
+    {
+      "name": "valid_actual_restore_with_fresh_factor_and_preflight",
+      "passed": true,
+      "distinct_instrument": true,
+      "distinct_factor_object": true,
+      "distinct_preflight_report": true,
+      "recipe": {
+        "schema": "readiness-recipe/v1",
+        "matrix_sha256": "91af071985d646ea6f0b478db765444a232a7dd79cab55b1c264b292137207ae",
+        "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+        "solver": "SuperLU/COLAMD/float64",
+        "scipy_version": "1.17.0",
+        "numpy_version": "2.3.5",
+        "preflight_seed": 770001,
+        "preflight_rhs": 2,
+        "acceptance": {
+          "finite": true,
+          "relative_residual_l2_max": 1e-09,
+          "normwise_backward_error_linf_max": 1e-12,
+          "manufactured_forward_error_l2_max": 0.0001
+        },
+        "restoration": "refactorize and revalidate; no serialized factor",
+        "authority": "none",
+        "preflight": {
+          "relative_residual_l2": [
+            1.2733322017050928e-16,
+            8.506084452061902e-17
+          ],
+          "backward_error_linf": [
+            4.0266571608130186e-17,
+            4.0223560384766065e-17
+          ],
+          "manufactured_forward_error_l2": [
+            3.581486019289339e-13,
+            6.052408280940038e-12
+          ],
+          "accepted_by_rhs": [
+            true,
+            true
+          ],
+          "qualified": true,
+          "accepted_count": 2
+        }
+      },
+      "recipe_sha256": "6245cee0fccc9683c7478308a86eb1889905d1227e8495f124072b509b94547c",
+      "preflight_report": {
+        "relative_residual_l2": [
+          1.2733322017050928e-16,
+          8.506084452061902e-17
+        ],
+        "backward_error_linf": [
+          4.0266571608130186e-17,
+          4.0223560384766065e-17
+        ],
+        "manufactured_forward_error_l2": [
+          3.581486019289339e-13,
+          6.052408280940038e-12
+        ],
+        "accepted_by_rhs": [
+          true,
+          true
+        ],
+        "qualified": true,
+        "accepted_count": 2
+      },
+      "solve_report": {
+        "relative_residual_l2": [
+          1.2870143419404484e-16,
+          8.96452052328931e-17,
+          1.1052625386689944e-16,
+          1.4368130799332589e-16,
+          1.3638156318994773e-16,
+          9.756797938163551e-17,
+          1.298731926222129e-16,
+          1.4500722806339666e-16,
+          1.746881613159721e-16,
+          1.3186995451841123e-16,
+          1.0762197627258304e-16,
+          1.3761168215233406e-16,
+          1.374201959925636e-16,
+          1.102652414664191e-16,
+          1.5807096774436933e-16,
+          1.3804113653305536e-16
+        ],
+        "backward_error_linf": [
+          4.0612371061876507e-17,
+          2.1954409687437553e-17,
+          3.834301666016275e-17,
+          7.027756702553611e-17,
+          3.802741030530469e-17,
+          2.985648521518709e-17,
+          3.003653321783059e-17,
+          4.0363816311912794e-17,
+          5.998285972421415e-17,
+          5.771886101570228e-17,
+          2.2036690844317985e-17,
+          3.5262020738447774e-17,
+          7.151275478892998e-17,
+          4.299697477941839e-17,
+          4.956993508462372e-17,
+          4.078275742319495e-17
+        ],
+        "manufactured_forward_error_l2": [
+          1.5759331294109046e-12,
+          4.754437098165515e-12,
+          5.781148775026802e-12,
+          6.1425432037871556e-12,
+          7.134976952542584e-13,
+          5.8561268680180195e-12,
+          4.683459478922959e-13,
+          3.4340105370211078e-12,
+          4.44762260773077e-12,
+          4.122577213161966e-12,
+          4.138355552204835e-12,
+          1.584514153582208e-12,
+          7.834250465976754e-12,
+          9.308279590276045e-13,
+          3.454800718775352e-13,
+          5.647798096944079e-13
+        ],
+        "accepted_by_rhs": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "qualified": true,
+        "accepted_count": 16
+      },
+      "factor_seconds": 0.001469912996981293,
+      "preflight_seconds": 0.0006991520058363676,
+      "metadata_seconds": 0.00011841800005640835,
+      "serialized_factor_used": false
+    }
+  ],
+  "controls_observed": 10,
+  "failures": [],
+  "passed": true,
+  "accounting": "Internal intervals are subsets of the external child-process timing; do not add twice"
+}

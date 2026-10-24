@@ -1,0 +1,174 @@
+{
+  "phase": "confirmation",
+  "issued_utc": "2026-10-24T02:18:16.189853+00:00",
+  "completed_utc": "2026-10-24T02:20:13.536792+00:00",
+  "source_sha256": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+  "planned_batches": 432,
+  "executed_batches": 432,
+  "qualified_batches": 432,
+  "budget_stopped": false,
+  "unexecuted_batches": 0,
+  "prior_numerical_cpu_seconds": 88.46338165200001,
+  "planned_diagnostics": 4,
+  "executed_diagnostics": 4,
+  "wall_seconds": 117.34716115999618,
+  "cpu_seconds": 117.282992538,
+  "ingestion": [
+    {
+      "matrix": "1138_bus",
+      "rows": 1138,
+      "nnz": 4054,
+      "read_hash_parse_seconds": 0.004751074986415915
+    },
+    {
+      "matrix": "bcsstk14",
+      "rows": 1806,
+      "nnz": 63454,
+      "read_hash_parse_seconds": 0.012738549994537607
+    },
+    {
+      "matrix": "bcsstk18",
+      "rows": 11948,
+      "nnz": 149090,
+      "read_hash_parse_seconds": 0.02849239599891007
+    },
+    {
+      "matrix": "bcsstk24",
+      "rows": 3562,
+      "nnz": 159910,
+      "read_hash_parse_seconds": 0.025722832986502908
+    }
+  ],
+  "cg_diagnostics": [
+    {
+      "matrix": "1138_bus",
+      "info": 400,
+      "elapsed_seconds": 0.01270723900233861,
+      "cpu_seconds": 0.012710355000000062,
+      "relative_residual_l2": [
+        2.228597966870972e-06
+      ],
+      "backward_error_linf": [
+        4.2129012303436657e-07
+      ],
+      "manufactured_forward_error_l2": [
+        0.181224043877595
+      ],
+      "accepted_by_rhs": [
+        false
+      ],
+      "qualified": false,
+      "accepted_count": 0,
+      "diagnostic_only": true,
+      "qualified_solver_exit": false,
+      "overall_qualified": false
+    },
+    {
+      "matrix": "bcsstk14",
+      "info": 400,
+      "elapsed_seconds": 0.06678607499634381,
+      "cpu_seconds": 0.06679082600000008,
+      "relative_residual_l2": [
+        7.314116591754932e-10
+      ],
+      "backward_error_linf": [
+        1.258700778134996e-10
+      ],
+      "manufactured_forward_error_l2": [
+        4.131122534863302e-06
+      ],
+      "accepted_by_rhs": [
+        false
+      ],
+      "qualified": false,
+      "accepted_count": 0,
+      "diagnostic_only": true,
+      "qualified_solver_exit": false,
+      "overall_qualified": false
+    },
+    {
+      "matrix": "bcsstk18",
+      "info": 400,
+      "elapsed_seconds": 0.22312923200661317,
+      "cpu_seconds": 0.22314019700000642,
+      "relative_residual_l2": [
+        6.542851688315266e-07
+      ],
+      "backward_error_linf": [
+        1.7039680281957165e-07
+      ],
+      "manufactured_forward_error_l2": [
+        0.04390421254584694
+      ],
+      "accepted_by_rhs": [
+        false
+      ],
+      "qualified": false,
+      "accepted_count": 0,
+      "diagnostic_only": true,
+      "qualified_solver_exit": false,
+      "overall_qualified": false
+    },
+    {
+      "matrix": "bcsstk24",
+      "info": 400,
+      "elapsed_seconds": 0.13727707600628491,
+      "cpu_seconds": 0.13728482599999836,
+      "relative_residual_l2": [
+        5.298060902026075e-06
+      ],
+      "backward_error_linf": [
+        4.1101805376537364e-07
+      ],
+      "manufactured_forward_error_l2": [
+        1.1297207632059245
+      ],
+      "accepted_by_rhs": [
+        false
+      ],
+      "qualified": false,
+      "accepted_count": 0,
+      "diagnostic_only": true,
+      "qualified_solver_exit": false,
+      "overall_qualified": false
+    }
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "scipy": "1.17.0",
+    "numpy": "2.3.5",
+    "threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/numpy.libs/libscipy_openblas64_-fdde5778.so",
+        "version": "0.3.30",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy.libs/libscipy_openblas-6cdc3b4a.so",
+        "version": "0.3.30",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "scipy",
+        "internal_api": "scipy_mmio",
+        "num_threads": 0,
+        "prefix": "_fmm_core",
+        "filepath": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/scipy/io/_fast_matrix_market/_fmm_core.cpython-312-x86_64-linux-gnu.so",
+        "version": {
+          "unserializable_type": "function"
+        }
+      }
+    ]
+  }
+}
