@@ -1,0 +1,654 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFF                                               [100%]
+=================================== FAILURES ===================================
+_ test_published_demo_alias_survives_generation[aiga_meta_evolution-Current runnable path] _
+
+name = 'aiga_meta_evolution', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 356 identical leading characters in diff, use -v to show
+E         Skipping 18044 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_agi_business_2_v1-Current runnable path] _
+
+name = 'alpha_agi_business_2_v1', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 367 identical leading characters in diff, use -v to show
+E         Skipping 16465 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_agi_business_3_v1-Current runnable path] _
+
+name = 'alpha_agi_business_3_v1', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 358 identical leading characters in diff, use -v to show
+E         Skipping 17468 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_agi_business_v1-Current runnable path] _
+
+name = 'alpha_agi_business_v1', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 310 identical leading characters in diff, use -v to show
+E         Skipping 24560 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_agi_insight_v0-Current runnable path] _
+
+name = 'alpha_agi_insight_v0', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 1523 identical leading characters in diff, use -v to show
+E         Skipping 15018 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_agi_insight_v1-Current runnable path] _
+
+name = 'alpha_agi_insight_v1', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 328 identical leading characters in diff, use -v to show
+E         Skipping 25149 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_agi_marketplace_v1-Current runnable path] _
+
+name = 'alpha_agi_marketplace_v1', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 319 identical leading characters in diff, use -v to show
+E         Skipping 12488 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_asi_world_model-Current runnable path] _
+
+name = 'alpha_asi_world_model', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 310 identical leading characters in diff, use -v to show
+E         Skipping 16037 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[alpha_super_planner_v1-Current runnable path] _
+
+name = 'alpha_super_planner_v1', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 251 identical leading characters in diff, use -v to show
+E         Skipping 1760 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[cross_industry_alpha_factory-Current runnable path] _
+
+name = 'cross_industry_alpha_factory', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 362 identical leading characters in diff, use -v to show
+E         Skipping 17761 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[era_of_experience-Current runnable path] _
+
+name = 'era_of_experience', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 1158 identical leading characters in diff, use -v to show
+E         Skipping 11932 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+__ test_published_demo_alias_survives_generation[finance_alpha-Start locally] __
+
+name = 'finance_alpha', title = 'Start locally'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 709 identical leading characters in diff, use -v to show
+E         Skipping 10018 identical trailing characters in diff, use -v to show
+E         - ally — 1.41.1
+E         ?           ^ ^
+E         + ally — 1.42.0
+E         ?           ^ ^
+E           
+E           From th
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[gpt2_small_cli-Current runnable path] _
+
+name = 'gpt2_small_cli', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 237 identical leading characters in diff, use -v to show
+E         Skipping 2115 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[macro_sentinel-Current runnable path] _
+
+name = 'macro_sentinel', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 1417 identical leading characters in diff, use -v to show
+E         Skipping 10928 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[meta_agentic_agi-Current runnable path] _
+
+name = 'meta_agentic_agi', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 336 identical leading characters in diff, use -v to show
+E         Skipping 9258 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[meta_agentic_agi_v2-Current runnable path] _
+
+name = 'meta_agentic_agi_v2', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 345 identical leading characters in diff, use -v to show
+E         Skipping 9441 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[meta_agentic_agi_v3-Start in two minutes] _
+
+name = 'meta_agentic_agi_v3', title = 'Start in two minutes'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 1078 identical leading characters in diff, use -v to show
+E         Skipping 10764 identical trailing characters in diff, use -v to show
+E         - utes — 1.41.1
+E         ?           ^ ^
+E         + utes — 1.42.0
+E         ?           ^ ^
+E           
+E           The bro
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[meta_agentic_tree_search_v0-Current runnable path] _
+
+name = 'meta_agentic_tree_search_v0', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 1305 identical leading characters in diff, use -v to show
+E         Skipping 10864 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+__ test_published_demo_alias_survives_generation[muzero_planning-Start here] ___
+
+name = 'muzero_planning', title = 'Start here'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 600 identical leading characters in diff, use -v to show
+E         Skipping 9970 identical trailing characters in diff, use -v to show
+E         - here — 1.41.1
+E         ?           ^ ^
+E         + here — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[muzeromctsllmagent_v0-Start in three steps] _
+
+name = 'muzeromctsllmagent_v0', title = 'Start in three steps'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 726 identical leading characters in diff, use -v to show
+E         Skipping 7354 identical trailing characters in diff, use -v to show
+E         - teps — 1.41.1
+E         ?           ^ ^
+E         + teps — 1.42.0
+E         ?           ^ ^
+E           
+E           From a
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[omni_factory_demo-Current runnable path] _
+
+name = 'omni_factory_demo', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 388 identical leading characters in diff, use -v to show
+E         Skipping 60199 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[presentation-Current runnable path] _
+
+name = 'presentation', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 239 identical leading characters in diff, use -v to show
+E         Skipping 1708 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[self_healing_repo-Current runnable path] _
+
+name = 'self_healing_repo', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 315 identical leading characters in diff, use -v to show
+E         Skipping 9757 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[solving_agi_governance-Current runnable path] _
+
+name = 'solving_agi_governance', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 1042 identical leading characters in diff, use -v to show
+E         Skipping 13419 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+_ test_published_demo_alias_survives_generation[sovereign_agentic_agialpha_agent_v0-Current runnable path] _
+
+name = 'sovereign_agentic_agialpha_agent_v0', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 1039 identical leading characters in diff, use -v to show
+E         Skipping 12499 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+__ test_published_demo_alias_survives_generation[utils-Current runnable path] __
+
+name = 'utils', title = 'Current runnable path'
+
+    @pytest.mark.parametrize("name, title", sorted(DEMO_HEADINGS.items()))
+    def test_published_demo_alias_survives_generation(name: str, title: str) -> None:
+        alias = title.lower().replace(" ", "-") + "-1360"
+        readme = ROOT / "alpha_factory_v1/demos" / name / "README.md"
+        assert_alias(readme.read_text(), alias, "## " + title + " — ")
+        generated = generator.build_page(readme.parent)
+        assert_alias(generated, alias, "## " + title + " — ")
+>       assert generated == (ROOT / "docs/demos" / f"{name}.md").read_text()
+E       AssertionError: assert '[See docs/DI.../README.md)\n' == '[See docs/DI.../README.md)\n'
+E         
+E         Skipping 271 identical leading characters in diff, use -v to show
+E         Skipping 1646 identical trailing characters in diff, use -v to show
+E         - path — 1.41.1
+E         ?           ^ ^
+E         + path — 1.42.0
+E         ?           ^ ^
+E           
+E           **Mode:
+
+tests/test_legacy_heading_aliases.py:47: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[aiga_meta_evolution-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_agi_business_2_v1-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_agi_business_3_v1-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_agi_business_v1-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_agi_insight_v0-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_agi_insight_v1-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_agi_marketplace_v1-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_asi_world_model-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[alpha_super_planner_v1-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[cross_industry_alpha_factory-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[era_of_experience-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[finance_alpha-Start locally]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[gpt2_small_cli-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[macro_sentinel-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[meta_agentic_agi-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[meta_agentic_agi_v2-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[meta_agentic_agi_v3-Start in two minutes]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[meta_agentic_tree_search_v0-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[muzero_planning-Start here]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[muzeromctsllmagent_v0-Start in three steps]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[omni_factory_demo-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[presentation-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[self_healing_repo-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[solving_agi_governance-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[sovereign_agentic_agialpha_agent_v0-Current runnable path]
+FAILED tests/test_legacy_heading_aliases.py::test_published_demo_alias_survives_generation[utils-Current runnable path]
+26 failed in 0.32s
