@@ -1,0 +1,123 @@
+{
+  "schema": "agialpha.fresh-public-installation.v1",
+  "version": "1.42.0",
+  "commit": "c352bad0a0941fdccd490a7224e3efd1b8de45d5",
+  "release": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.42.0",
+  "public_assets": {
+    "install_agent.py": {
+      "bytes": 6734,
+      "sha256": "e0d165632be031627e601adf6a68b2a26a1dc29ed127de4473b93212a0bb2925"
+    },
+    "requirements-agent.lock": {
+      "bytes": 85690,
+      "sha256": "d58df2a38d099f8123d7445f62fec4684d029e588ce4b615151387c4decd1392"
+    },
+    "alpha_factory_v1-1.42.0-py3-none-any.whl": {
+      "bytes": 5498450,
+      "sha256": "fff8c6c8a8dbeeebf1f91cc8e9a3fae17113baac93b6ed0d6096ecb59d072554"
+    },
+    "SHA256SUMS": {
+      "bytes": 9631,
+      "sha256": "ef704dcd7ef9d2cacf290e3873d021ba7449490e677cc9aaa4290efc00276175"
+    }
+  },
+  "outside_source_checkout": true,
+  "fresh_venv": true,
+  "base_tools_inherited": true,
+  "inherited_configuration_keys": [
+    "ALL_PROXY",
+    "HTTPS_PROXY",
+    "HTTP_PROXY",
+    "NO_PROXY",
+    "PATH",
+    "REQUESTS_CA_BUNDLE",
+    "SSL_CERT_FILE"
+  ],
+  "configuration_values_disclosed": false,
+  "node": "v24.22.1",
+  "steps": [
+    {
+      "name": "check-only",
+      "args": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-I",
+        "/workspace/scratch/01c8ba84a00b/verification-1420/public-artifacts/assets/install_agent.py",
+        "--release-dir",
+        "/workspace/scratch/01c8ba84a00b/verification-1420/public-artifacts/assets",
+        "--venv",
+        "/workspace/scratch/01c8ba84a00b/public-install-1420/venv",
+        "--check-only"
+      ],
+      "exit": 0,
+      "seconds": 0.064,
+      "log_bytes": 101,
+      "log_sha256": "039712b9ff1cb9915d138a39802176eb5b42bf2c009c5ac926964b66553821e9"
+    },
+    {
+      "name": "install",
+      "args": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-I",
+        "/workspace/scratch/01c8ba84a00b/verification-1420/public-artifacts/assets/install_agent.py",
+        "--release-dir",
+        "/workspace/scratch/01c8ba84a00b/verification-1420/public-artifacts/assets",
+        "--venv",
+        "/workspace/scratch/01c8ba84a00b/public-install-1420/venv"
+      ],
+      "exit": 0,
+      "seconds": 17.13,
+      "log_bytes": 10430,
+      "log_sha256": "7a2e50939206437adcaac53a86a1bf9e01d098261b5a5e0cacff3caca988bdd3"
+    },
+    {
+      "name": "pip-check",
+      "args": [
+        "/workspace/scratch/01c8ba84a00b/public-install-1420/venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit": 0,
+      "seconds": 0.216,
+      "log_bytes": 30,
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "name": "installed-version",
+      "args": [
+        "/workspace/scratch/01c8ba84a00b/public-install-1420/venv/bin/alpha-agent",
+        "--version"
+      ],
+      "exit": 0,
+      "seconds": 0.468,
+      "log_bytes": 7,
+      "log_sha256": "9e4da5e7c8d61435137123773fd0a7ab1b256d7569c9072bd7ea1324f8095204"
+    },
+    {
+      "name": "installed-origin",
+      "args": [
+        "/workspace/scratch/01c8ba84a00b/public-install-1420/venv/bin/python",
+        "-I",
+        "-c",
+        "import sys,json,hashlib,platform; from pathlib import Path; from importlib.metadata import version; import alpha_factory_v1 as a; from alpha_factory_v1.core.runtime.successor import workbench; p=Path(sys.prefix).resolve(); f=Path(workbench.__file__).resolve(); cfg=(p/\"pyvenv.cfg\").read_text(); assert f.is_relative_to(p); assert a.__version__==version(\"alpha-factory-v1\")==\"1.42.0\"; assert \"include-system-site-packages = false\" in cfg; sha=hashlib.sha256(f.read_bytes()).hexdigest(); assert sha==\"87ad9f365ebf1b5c1e93edc275e6fe933b6c247e51b848b52dc66c34344a8492\"; print(json.dumps({\"version\":a.__version__,\"module\":str(f),\"module_sha256\":sha,\"prefix\":str(p),\"pyvenv\":cfg,\"python\":sys.version,\"platform\":platform.platform()}))"
+      ],
+      "exit": 0,
+      "seconds": 0.266,
+      "log_bytes": 841,
+      "log_sha256": "e43235008ea60dd0226e29a46017374092a9c823663cedd2891a96e2ed398138"
+    }
+  ],
+  "passed": true,
+  "raw_installer_logs": "Private local files excluded from public evidence",
+  "observed_at_utc": "2026-10-24T21:33:44.486906+00:00",
+  "installed_origin": {
+    "version": "1.42.0",
+    "module": "/workspace/scratch/01c8ba84a00b/public-install-1420/venv/lib/python3.12/site-packages/alpha_factory_v1/core/runtime/successor/workbench.py",
+    "module_sha256": "87ad9f365ebf1b5c1e93edc275e6fe933b6c247e51b848b52dc66c34344a8492",
+    "prefix": "/workspace/scratch/01c8ba84a00b/public-install-1420/venv",
+    "pyvenv": "home = /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = false\nversion = 3.12.14\nexecutable = /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python -m venv --copies /workspace/scratch/01c8ba84a00b/public-install-1420/venv\n",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39"
+  }
+}
