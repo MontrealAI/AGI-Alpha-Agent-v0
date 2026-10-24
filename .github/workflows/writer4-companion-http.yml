@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: Apache-2.0
+# Source-only proposal. Adopt only after the existing owner reconciles guarded main
+# and the exact proposal receives its normal source-specific review.
+name: Writer4 companion HTTP acceptance
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/writer4-companion-http.yml
+      - scripts/qualify_writer4_http.py
+      - scripts/reuse_writer4_http.py
+      - tests/test_writer4_http_reuse.py
+      - studies/transformational-autonomous-enterprises-v1/**
+permissions:
+  contents: read
+concurrency:
+  group: writer4-http-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: true
+jobs:
+  paper-scope:
+    uses: ./.github/workflows/paper-scope.yml
+  http-ui:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: paper-scope
+    runs-on: ubuntu-latest
+    # Matches the existing capability job convention. The unchanged server bounds
+    # each native run to 60 seconds; setup retains its own existing command bounds.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24.19.0'
+      - name: Declare fresh task-owned evidence paths
+        run: |
+          printf 'TAE_HTTP_PUBLIC=%s\n' "$RUNNER_TEMP/writer4-http-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT/public" >> "$GITHUB_ENV"
+      - name: Verify exact prior HTTP component eligibility
+        id: reuse
+        env:
+          TAE_EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          TAE_EXPECTED_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python -m unittest discover -s tests -p test_writer4_http_reuse.py
+          python scripts/reuse_writer4_http.py
+      - name: Run full companion HTTP QA
+        if: steps.reuse.outputs.reused != 'true'
+        env:
+          TAE_EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          TAE_EXPECTED_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python scripts/qualify_writer4_http.py
+      - name: Retain source-bound public HTTP acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: writer4-http-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.TAE_HTTP_PUBLIC }}
+          if-no-files-found: error

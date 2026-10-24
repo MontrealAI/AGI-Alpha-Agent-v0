@@ -1,0 +1,154 @@
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✖ a page observing an existing run returns idle without claiming its result or posting an action (9.974326ms)
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✖ slow status reads never overlap and a still-busy reply schedules one next read (4.574854ms)
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✖ failed or malformed refreshes retain busy guards and report uncertainty until recovery (3.916437ms)
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✖ leaving before a refresh cancels its timer and returning reads current state (3.165786ms)
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✖ page lifecycle aborts an in-flight refresh, fences stale replies and refreshes on return (2.291852ms)
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✖ stop cancels observation and a stale busy response cannot undo the stopped state (2.999505ms)
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✔ a run owned by this page keeps its existing request lifecycle without status polling (3.704441ms)
+Controlled DOM/fetch/time; exact interface script SHA256 55c99dc57a7e23f9a238cfda1830ca94090646115fef3f67fb23c716a4367e66
+✖ a failed stop keeps busy guards and resumes observation without claiming a stop (2.719058ms)
+✖ restore stays guarded during observation and keeps historical proof and authority requirements (3.029795ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 1
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128.911238
+
+✖ failing tests:
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:57:1
+✖ a page observing an existing run returns idle without claiming its result or posting an action (9.974326ms)
+  AssertionError [ERR_ASSERTION]: An observed server-owned run needs a scheduled status refresh
+      at Object.poll (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:50:12)
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:62:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:74:1
+✖ slow status reads never overlap and a still-busy reply schedules one next read (4.574854ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:78:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:87:1
+✖ failed or malformed refreshes retain busy guards and report uncertainty until recovery (3.916437ms)
+  AssertionError [ERR_ASSERTION]: An observed server-owned run needs a scheduled status refresh
+      at Object.poll (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:50:12)
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:91:18)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:106:1
+✖ leaving before a refresh cancels its timer and returning reads current state (3.165786ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:109:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:119:1
+✖ page lifecycle aborts an in-flight refresh, fences stale replies and refreshes on return (2.291852ms)
+  AssertionError [ERR_ASSERTION]: An observed server-owned run needs a scheduled status refresh
+      at Object.poll (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:50:12)
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:123:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:136:1
+✖ stop cancels observation and a stale busy response cannot undo the stopped state (2.999505ms)
+  AssertionError [ERR_ASSERTION]: An observed server-owned run needs a scheduled status refresh
+      at Object.poll (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:50:12)
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:140:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:169:1
+✖ a failed stop keeps busy guards and resumes observation without claiming a stop (2.719058ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:178:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/interface-baseline/status.test.mjs:187:1
+✖ restore stays guarded during observation and keeps historical proof and authority requirements (3.029795ms)
+  AssertionError [ERR_ASSERTION]: An observed server-owned run needs a scheduled status refresh
+      at Object.poll (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:50:12)
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/interface-baseline/status.test.mjs:195:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

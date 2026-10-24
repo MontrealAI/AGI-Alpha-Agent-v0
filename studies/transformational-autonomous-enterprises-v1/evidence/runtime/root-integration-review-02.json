@@ -1,0 +1,122 @@
+{
+  "schema": "tae.root-integration-readonly-review.v2",
+  "previous": "evidence/runtime/root-integration-review-01.json",
+  "scope": "Focused saved-evidence joins and read-only source review. No new EVM, native runtime, setup, browser, or held probes.",
+  "files": [
+    {
+      "path": "study/verify-journey.mjs",
+      "sha256": "dfe929bc6622dc63ee441b192b801835b8b53addaa281e55e168a9fa4a62627e"
+    },
+    {
+      "path": "study/run-demo.mjs",
+      "sha256": "9f3b73cab0d39d93f798a23166fb6bc7b02a4e00c5b54db930a142a6b0574b2d"
+    },
+    {
+      "path": "study/setup.mjs",
+      "sha256": "ab68f6b26d02182165b7ea04e220b2ef7f1780b6dbc03dd847111df0c7874761"
+    },
+    {
+      "path": "study/integration/join.test.mjs",
+      "sha256": "3b6f93d149ca334915824ddae0c1e482235736eea62ac5e05d91d1fa9e22e63c"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "study/results/journey.json",
+      "sha256": "a08bef91ecb547cb4dea03d04e14c6c15b95349a10567a33b5aeb589436d5ee7"
+    },
+    {
+      "path": "evidence/contracts/writer4-parent-lifecycle.json",
+      "sha256": "d30b08391b936177b8eaefff16b2232324dfd9ffe6e25fea6f5bc254992cd75d"
+    }
+  ],
+  "regressions": {
+    "command": "node study/integration/join.test.mjs",
+    "rawLog": "evidence/runtime/join-tests-01.txt",
+    "tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "durationMs": 57.566785,
+    "cases": [
+      {
+        "name": "valid recorded pair",
+        "expected": "accept",
+        "observed": "accept"
+      },
+      {
+        "name": "jointly rebound input and EVM identities, derivative graph hashes refreshed",
+        "expected": "reject",
+        "observed": "reject"
+      },
+      {
+        "name": "empty lifecycle histories",
+        "expected": "reject",
+        "observed": "reject"
+      },
+      {
+        "name": "altered per-group output with unchanged aggregate",
+        "expected": "reject",
+        "observed": "reject"
+      },
+      {
+        "name": "duplicate transaction across the two missions",
+        "expected": "reject",
+        "observed": "reject"
+      },
+      {
+        "name": "proof for a different mission",
+        "expected": "reject",
+        "observed": "reject"
+      },
+      {
+        "name": "joint capability identity change with original checked artifact",
+        "expected": "reject",
+        "observed": "reject"
+      },
+      {
+        "name": "different graph digest on Fleet transfer",
+        "expected": "reject",
+        "observed": "reject"
+      }
+    ]
+  },
+  "originalControlRerun": [
+    {
+      "name": "joint input rebind with unchanged proof/artifact",
+      "accepted": false
+    },
+    {
+      "name": "empty lifecycle lists",
+      "accepted": false
+    }
+  ],
+  "intermediateFinding": {
+    "issue": "Per-transfer graphBindingSha256 was not compared with delivery.bindingSha256 in the initial R1 repair.",
+    "observedBeforeFinalRepair": "accepted mutated Fleet transfer",
+    "finalRepair": "Root added the equality in the four-repository loop; focused regression now rejects."
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "status": "resolved in tested scope",
+      "evidence": "Input, mission, capability and artifact/proof cross-bindings reject targeted mismatches. Every repository transfer graph digest now matches the recomputed delivery binding."
+    },
+    {
+      "id": "R2",
+      "status": "resolved in tested scope",
+      "evidence": "Exact 16-stage sequence, successful statuses, distinct transaction hashes, ordered blocks, positive gas and session aggregates are checked. Empty history and duplicate transaction regressions reject."
+    },
+    {
+      "id": "R3",
+      "status": "resolved by source inspection",
+      "evidence": "Child failure catches persist captured stdout/stderr to evm-console.txt and error/exitCode/signal/killed/elapsedMs to evm-failure.json before rethrowing. This review did not force a fresh child failure."
+    },
+    {
+      "id": "R4",
+      "status": "resolved by source inspection",
+      "evidence": "Setup now checks the relevant dependency tree with npm ls, exact installed direct dependency versions against the lock, and actual required imports. Fleet scope intentionally omits development-only tools; local EVM includes its development dependencies. This review did not execute setup."
+    }
+  ],
+  "remainingMustFix": [],
+  "candidate": "Unchanged; only a new integration regression file was authored in this follow-up."
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "tae.queue-input-overlay-parent-alias-review.v1",
+  "baseCommit": "ff63999dc95590bbd2e827119754bf9772030e0a",
+  "finding": {
+    "priority": "P2",
+    "identifiedBy": "Root independent review of the overlay helper",
+    "path": "APPLY_QUEUE_INPUT_FIX.py",
+    "before": "The lexical output path test allowed a parent-directory alias into the original source tree, creating the derived copy inside the original despite the separate-copy contract.",
+    "after": "Resolve the existing output parent before existence/containment checks and before any source capture or output creation. The resulting actual destination inside the original is refused.",
+    "change": "One output.parent.resolve(strict=True) assignment; no runtime, package, network, identity, source-frozen-bank or driver change."
+  },
+  "source": {
+    "oldHelperSha256": "10c1d8a8035cd194b66e93ec8ead910876f9cb3cd563cf0ca4c0b72dd08174ce",
+    "newHelperSha256": "d9c97091a33124fcd72493bb02a6958a862a368ee44c0ba19a788622f96c3ea1",
+    "newRegressionFileSha256": "1d2502ede2a29f3f6d74eb7ac1cf820a98240ec345b743f29df935e63444d38c"
+  },
+  "tests": {
+    "originalRegression": {
+      "command": "python3 test_queue_input_overlay.py <DISPOSABLE-original-fixture-copy> OverlayTests.test_parent_alias_into_original_is_refused_without_source_changes",
+      "exitCode": 1,
+      "failure": "ValueError not raised; old helper created an unexpected nested derived copy in the disposable fixture",
+      "originalArchiveAndAuthoritativeExtractionUnmodified": true,
+      "stdout": "review-evidence/overlay-parent-alias-original.stdout",
+      "stderr": "review-evidence/overlay-parent-alias-original.stderr"
+    },
+    "correctedTests": {
+      "command": "python3 test_queue_input_overlay.py <original-extracted-companion>",
+      "passed": 5,
+      "failed": 0,
+      "scope": [
+        "real full-companion apply/verify/repeat refusal",
+        "original source tamper refusal",
+        "derived source and receipt tamper refusal",
+        "wrong present override refusal without download fallback",
+        "parent alias into original refusal with original path inventory/manifest unchanged and no output"
+      ],
+      "stdout": "review-evidence/overlay-parent-alias-fixed-tests.stdout",
+      "stderr": "review-evidence/overlay-parent-alias-fixed-tests.stderr"
+    },
+    "ruff": {
+      "version": "0.12.5",
+      "exactRepositoryPyprojectGitBlob": "09d97eb0e052072dbc748bbd72b7cbddfc4515be",
+      "passed": true,
+      "stdout": "review-evidence/overlay-parent-alias-ruff.stdout",
+      "stderr": "review-evidence/overlay-parent-alias-ruff.stderr"
+    },
+    "syntax": {
+      "passed": true,
+      "command": "python3 -m py_compile APPLY_QUEUE_INPUT_FIX.py test_queue_input_overlay.py"
+    },
+    "strictMypy": {
+      "run": false,
+      "reason": "Unavailable in default and primary Python runtimes; no broad dependency install"
+    },
+    "unchangedSourceReuse": {
+      "queueSourceSha256": "f9d637b607a31c16160254659f6a29cd262373c4201d65a5aba570b48475ea80",
+      "nodeRegressionsSha256": "1a47f6004e395f99e375a920b663c5c41563aff8ad0ce5c402eca6a765c58d7e",
+      "earlier30SelectedAnd12Plus9SmokeResultsRemainSourceScoped": "queue-input-overlay-review.json",
+      "newNodeNativeEvmUiExecutionClaimed": false
+    }
+  },
+  "preservation": {
+    "frozenZipSha256": "a622657df828aefb4a081d1e0f5d1fb665fcf69991383245b6ece7cb66bee7ee",
+    "frozenArchivePartsInputsScoredResultsOldManifestUnchanged": true,
+    "originalExtractionUnchanged": true,
+    "derivedSourceEpochRemainsExplicit": true,
+    "allHeldReviewNativeBrowserObjectivesUntouched": true
+  },
+  "status": {
+    "unreferencedProposalOnly": true,
+    "branchAdvanced": false,
+    "mainMerged": false,
+    "released": false,
+    "installedFourRepositoryAcceptance": false,
+    "next": "Root independently rechecks the preserved parent-alias boundary and five tests, then reconciles original PR4878 expected-head adoption."
+  }
+}

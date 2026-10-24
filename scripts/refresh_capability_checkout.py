@@ -153,6 +153,18 @@ RESEARCH_GUIDES_140_EXTRA_FILES = FOUNDRY_140_EXTRA_FILES | {
     ),
 }
 
+# The corrected companion/site presentation advances only the three deterministic
+# gallery workers. Admit this one complete 1.41 edition, retaining all eight
+# historical editions and refusing mixtures of their otherwise valid bytes.
+COMPANION_141_EXTRA_FILES = RESEARCH_GUIDES_140_EXTRA_FILES | {
+    "docs/service-worker.js": (23479, "d5824f7055e9e28c585787f1d5e394390784796a15833466a3cab3c64c971da9"),
+    "docs/assets/service-worker.js": (23915, "0c20170b252a9925cc96c621ffd2a6a61edff6ddbae73d254862f809513d6225"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26531,
+        "fe87290ffb614fe25979220cb7078d620ae57bbc1290f226d2f08a0ab612c0b0",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -223,6 +235,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_PRESENTATION_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, FOUNDRY_140_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, RESEARCH_GUIDES_140_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, COMPANION_141_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

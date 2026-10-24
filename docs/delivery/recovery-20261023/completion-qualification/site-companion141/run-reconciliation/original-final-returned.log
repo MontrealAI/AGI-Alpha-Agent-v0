@@ -1,0 +1,92 @@
+Warning: truncated output (original token count: 1316)
+Total output lines: 93
+
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ a page observing an existing run returns idle without claiming its result or posting an action (11.383812ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ slow status reads never overlap and a still-busy reply schedules one next read (3.288651ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ failed or malformed refreshes retain busy guards and report uncertainty until recovery (9.047668ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ leaving before a refresh cancels its timer and returning reads current state (2.16499ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ page lifecycle aborts an in-flight refresh, fences stale replies and refreshes on return (2.459709ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ stop cancels observation and a stale busy response cannot undo the stopped state (3.187588ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ a run owned by this page keeps its existing request lifecycle without status polling (2.535957ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ a failed stop keeps busy guards and resumes observation without claiming a stop (4.24328ms)
+Controlled DOM/fetch/time; exact interface script SHA256 003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c
+✔ restore stays guarded during observation and keeps historical proof and authority requirements (2.991093ms)
+Controlled DOM/f…116 tokens truncated…tion after a rejected run (5.067067ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 9
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 152.229851
+
+✖ failing tests:
+
+test at ../../../dev/shm/agi-alpha-run-recovery-246f616f9449/original/status.test.mjs:205:1
+✖ a rejected run reconciles server ownership before releasing busy guards (4.757725ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - '/api/status'
+  
+      at TestContext.<anonymous> (file:///dev/shm/agi-alpha-run-recovery-246f616f9449/original/status.test.mjs:215:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '/api/status',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/agi-alpha-run-recovery-246f616f9449/original/status.test.mjs:236:1
+✖ failed reconciliation after a rejected run retains guards and retry until verified idle (3.580608ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - '/api/status'
+  
+      at TestContext.<anonymous> (file:///dev/shm/agi-alpha-run-recovery-246f616f9449/original/status.test.mjs:245:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '/api/status',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/agi-alpha-run-recovery-246f616f9449/original/status.test.mjs:261:1
+✖ stop fences an in-flight reconciliation after a rejected run (5.067067ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - '/api/status'
+  
+      at TestContext.<anonymous> (file:///dev/shm/agi-alpha-run-recovery-246f616f9449/original/status.test.mjs:266:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '/api/status',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

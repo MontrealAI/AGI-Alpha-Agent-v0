@@ -1,3 +1,12 @@
+## 1.41.0 — Corrected companion and research-site delivery (experimental source candidate)
+
+- Reconcile the existing Writer #4 companion lineage with guarded main, preserving the frozen research archive, all eight v5 correction inputs and original paper/source URLs.
+- Record the already completed corrected non-UI source-API/local-EVM qualification separately from a new PR-only full HTTP Run/Stop/export/restore browser gate.
+- Accept real relative disclaimer links, preserve catalogue-bound reading/experience HTML during generic gallery generation, retain its exact LF bytes on Windows and include every gallery-precached entry page in core restores.
+- Update prospective version metadata, bilingual presentation and deterministic cache identities through the existing generators. Original manuscripts, archives, historical profiles and all four unqualified restricted outcomes remain preserved.
+- Exact-source review, applicable hosted gates, public release/installation and actual website deployment remain required; source preparation does not claim those outcomes.
+- See [release notes](docs/agent/RELEASE_NOTES_1.41.0.md).
+
 ## 1.40.0 — Foundry v2 research integration (experimental source candidate)
 
 - Compose the existing Foundry paper and interactive-resource stack with the corrected enterprise homepage boundary; preserve every original paper and retained source commit.

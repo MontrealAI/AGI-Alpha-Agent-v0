@@ -1,0 +1,90 @@
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+✖ abort during initialization prevents native launch and permits a later fresh delivery (26.134418ms)
+✖ failed initialization is retried while a successful initializer remains cached (12.139116ms)
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+✖ concurrent Promise waiters share failure, then share exactly one fresh initializer (39.618474ms)
+✖ a delayed stale waiter cannot clear a newer initializer under a controlled thenable schedule (15.008433ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 233.562214
+
+✖ failing tests:
+
+test at integration/bridge-lifecycle.test.mjs:47:1
+✖ abort during initialization prevents native launch and permits a later fresh delivery (26.134418ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'CONTROLLED_TEST_BRIDGE_RUN'
+  - 'INTERRUPTED'
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:58:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'CONTROLLED_TEST_BRIDGE_RUN',
+    expected: 'INTERRUPTED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at integration/bridge-lifecycle.test.mjs:68:1
+✖ failed initialization is retried while a successful initializer remains cached (12.139116ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'CONTROLLED_TEST_BRIDGE_RUN'
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:76:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'CONTROLLED_TEST_BRIDGE_RUN',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at integration/bridge-lifecycle.test.mjs:85:1
+✖ concurrent Promise waiters share failure, then share exactly one fresh initializer (39.618474ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await Promise.all(retries)).every(outcome => outcome.error?.code === 'CONTROLLED_TEST_BRIDGE_RUN'))
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:100:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at integration/bridge-lifecycle.test.mjs:107:1
+✖ a delayed stale waiter cannot clear a newer initializer under a controlled thenable schedule (15.008433ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/fixed-study/integration/bridge-lifecycle.test.mjs:121:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

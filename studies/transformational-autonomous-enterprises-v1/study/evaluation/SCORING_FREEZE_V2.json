@@ -1,0 +1,142 @@
+{
+  "schema": "tae.confirmation-freeze.v2",
+  "frozenAt": "2026-10-23T16:29:45Z",
+  "candidateManifest": {
+    "schema": "tae/source-manifest-v1",
+    "language": "ECMAScript modules",
+    "runtime": "v24.19.0",
+    "installedCatalog": [
+      {
+        "name": "protocol.mjs",
+        "sha256": "72ee27c947c9ac052f4647ded2414de3c42cc65214b0c02a74327602667a865c",
+        "bytes": 6124,
+        "exports": [
+          "createMeter",
+          "canonical",
+          "digest"
+        ],
+        "dependencies": []
+      },
+      {
+        "name": "representation.mjs",
+        "sha256": "067fa125cf5e19e3a38d16d86364a9d46f5cf71af279a4cefcf4bbcb94ae5c01",
+        "bytes": 5718,
+        "exports": [
+          "parseGraph",
+          "topologicalOrder",
+          "buildRepresentation",
+          "bindQuery"
+        ],
+        "dependencies": [
+          "protocol.mjs"
+        ]
+      },
+      {
+        "name": "kernel-weighted.mjs",
+        "sha256": "97dd87f775e04b994cc216b7ea1b26c23dbf333863d0c81dfc73e7c398aebc6f",
+        "bytes": 1171,
+        "exports": [
+          "weightedReduce"
+        ],
+        "dependencies": [
+          "protocol.mjs",
+          "representation.mjs"
+        ]
+      },
+      {
+        "name": "kernel-boolean.mjs",
+        "sha256": "43d6a9f6d18619fd0ade94f2e35a04944e7220d8526f9626aa8ba965dcfc899d",
+        "bytes": 924,
+        "exports": [
+          "booleanReduce"
+        ],
+        "dependencies": [
+          "protocol.mjs",
+          "representation.mjs"
+        ]
+      },
+      {
+        "name": "normalizer.mjs",
+        "sha256": "2db9bf5e5018c4b44ba2eccb22eca262487e7a22637b919428499750749ae19b",
+        "bytes": 3113,
+        "exports": [
+          "flatReduce",
+          "normalizeRows"
+        ],
+        "dependencies": [
+          "protocol.mjs"
+        ]
+      },
+      {
+        "name": "direct-specialist.mjs",
+        "sha256": "fffbed2620339f73c758e008b1e296cbe7980fa166d82e36964bec58d3bd91b9",
+        "bytes": 2056,
+        "exports": [
+          "directReduce"
+        ],
+        "dependencies": [
+          "protocol.mjs",
+          "representation.mjs",
+          "normalizer.mjs"
+        ]
+      },
+      {
+        "name": "compiler.mjs",
+        "sha256": "aa56c7d49b765846772c7a7b52ee344da1013364092a4c10b62ee06826e075ac",
+        "bytes": 21259,
+        "exports": [
+          "createWorkspace",
+          "solve",
+          "executeProgram",
+          "exportWorkspace",
+          "restoreWorkspace",
+          "sourceManifest"
+        ],
+        "dependencies": [
+          "protocol.mjs",
+          "representation.mjs",
+          "kernel-weighted.mjs",
+          "kernel-boolean.mjs",
+          "normalizer.mjs",
+          "direct-specialist.mjs"
+        ]
+      }
+    ],
+    "rootSha256": "71fed4b4befecc4f5d142b4b9bcfb7123aa737991b84d5f243f22aeeb87ee592",
+    "qualification": "not-established-by-candidate"
+  },
+  "evaluatorFiles": [
+    {
+      "path": "criteria.json",
+      "sha256": "58dd0ba793d9277e47fdd4e0c336fc6d7b1a9502985fcea7fb117cf47b16aa33",
+      "bytes": 2680
+    },
+    {
+      "path": "missions.json",
+      "sha256": "66635281d0c50deab2e8af398e40c83a9619601d3b4c27f746952779f6e3cff8",
+      "bytes": 71513
+    },
+    {
+      "path": "qualification-bank.json",
+      "sha256": "c1f0db2cb0e3b5d9a48811c30e07fc419161f6959952348abd75daa829c7936f",
+      "bytes": 82707
+    },
+    {
+      "path": "checker.mjs",
+      "sha256": "7eebf95de7ff0b36ebf0029b3bf441e42a2fb325205723b46afc385beb2105c6",
+      "bytes": 6374
+    },
+    {
+      "path": "qualifier.mjs",
+      "sha256": "df6d832dec259079c56a4d9eda16efba136631585db693e4b11b01e9abfe42d3",
+      "bytes": 5247
+    },
+    {
+      "path": "run-study.mjs",
+      "sha256": "3ed31a743fd01c614a216e138047282d9314203f7795886a58285851508c8551",
+      "bytes": 9997
+    }
+  ],
+  "blindness": "Known-task confirmation after narrow self-parent lineage metadata correction; first blinded scored-v1 and exact source preserved.",
+  "change": "Only parentCapabilityId/provenance: retain prior ancestry for unchanged capability ID; no self-parent edge."
+}

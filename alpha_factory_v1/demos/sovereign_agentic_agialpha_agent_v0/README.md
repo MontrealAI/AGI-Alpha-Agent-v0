@@ -13,7 +13,7 @@ review, and binds the next stage to the exact approved result.
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.40.0
+## Current runnable path — 1.41.0
 
 **Mode:** Signed, review-gated workflow. Actual native planning with durable local operator control.
 

@@ -3,7 +3,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.40.0
+## Current runnable path — 1.41.0
 
 **Mode:** Research training. Evolves small networks in a curriculum environment.
 

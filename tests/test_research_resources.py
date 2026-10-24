@@ -44,6 +44,9 @@ def source_download_resources() -> dict[str, Any]:
         "experimental_source": {
             "url": papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/README.md",
         },
+        "current_companion": {
+            "url": papers.SOURCE_SITE + "main/studies/fixture-v1/README.md",
+        },
         "source_archive": {
             "url": papers.RELEASE_SITE + "download/study-fixture-v2-r1/Complete_Source.zip",
             "sha256": "c" * 64,
@@ -181,6 +184,12 @@ def test_resource_fields_are_closed(role: str) -> None:
         ("experimental_source", "url", papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/README.md?x=1"),
         ("experimental_source", "url", papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/README.md#run"),
         ("experimental_source", "url", "https://github.com@evil.example/blob/" + "a" * 40 + "/studies/x/README.md"),
+        ("current_companion", "url", papers.SOURCE_SITE + "a" * 40 + "/studies/fixture-v1/README.md"),
+        ("current_companion", "url", papers.SOURCE_SITE + "main/studies/../README.md"),
+        ("current_companion", "url", papers.SOURCE_SITE + "main/studies/fixture-v1/ASSEMBLE.py"),
+        ("current_companion", "url", papers.SOURCE_SITE + "main/studies/fixture-v1/README.md?x=1"),
+        ("current_companion", "url", papers.SOURCE_SITE + "main/studies/fixture-v1/README.md#run"),
+        ("current_companion", "url", "https://github.com@evil.example/blob/main/studies/x/README.md"),
         ("source_archive", "url", papers.RELEASE_SITE + "download/study-fixture-v2-r1/Complete_Source.exe"),
         ("source_archive", "url", "https://example.org/Complete_Source.zip"),
         ("source_archive", "bytes", True),
@@ -246,8 +255,15 @@ def test_source_downloads_are_bilingual_navigation_without_executable_import(tmp
         assert f'href="{papers.resource_href(role, item)}"' in html
         assert labels["en"] in html and labels["fr"] in html
         assert papers.resource_href(role, item, readme=True) in readme
-    assert "(unmerged)" in html and "(non fusionné)" in html
+    assert "(unmerged)" not in html and "(non fusionné)" not in html
     assert "not cryptographic" in html and "non cryptographique" in html
+    assert "Current corrected companion guide and helper" in html
+    assert "Guide et outil correctif actuels du compagnon" in html
+    assert "Historical experimental companion source and assembly" in html
+    assert "Sources et assemblage historiques du compagnon expérimental" in html
+    assert html.index('data-paper-resource="current_companion"') < html.index('data-paper-resource="experimental_source"')
+    assert papers.resource_href("experimental_source", row["resources"]["experimental_source"]) in html
+    assert papers.resource_href("current_companion", row["resources"]["current_companion"]) in html
 
 
 def test_v1_rejects_resources_and_v2_rejects_case_ambiguous_identities(tmp_path: Path) -> None:

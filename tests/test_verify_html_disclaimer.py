@@ -17,6 +17,7 @@ from scripts.verify_html_disclaimer import references_disclaimer
         "../../DISCLAIMER_SNIPPET",
         "../../DISCLAIMER_SNIPPET/index.html",
         "../../DISCLAIMER_SNIPPET.md#notice",
+        "../../DISCLAIMER_SNIPPET.md?lang=fr#notice",
         "../../DISCLAIMER%5FSNIPPET.md",
         "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/DISCLAIMER_SNIPPET.md",
         "https://montrealai.github.io/AGI-Alpha-Agent-v0/DISCLAIMER_SNIPPET/",

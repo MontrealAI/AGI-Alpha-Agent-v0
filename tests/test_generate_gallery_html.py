@@ -9,6 +9,18 @@ from scripts import generate_demo_docs as gdd
 from scripts import generate_gallery_html as ggh
 
 
+def test_gallery_return_overlay_preserves_catalogued_research_bytes(tmp_path):
+    protected = tmp_path / "reports" / "research-foundry-v2" / "index.html"
+    protected.parent.mkdir(parents=True)
+    raw = b'<html><body><a href="../../#papers">Research library</a></body></html>\n'
+    protected.write_bytes(raw)
+    ordinary = tmp_path / "index.html"
+    ordinary.write_text("<html><body>Ordinary page</body></html>")
+    ggh.insert_back_link([protected, ordinary], preserved_pages=[protected])
+    assert protected.read_bytes() == raw
+    assert "Back to Gallery" in ordinary.read_text()
+
+
 def test_gallery_return_link_preserves_portable_ti_script_and_csp_bytes(tmp_path):
     page = tmp_path / "docs" / "transformational-intelligence" / "index.html"
     page.parent.mkdir(parents=True)

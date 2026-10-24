@@ -67,14 +67,21 @@ def test_core_preserves_every_gallery_precache_dependency(tmp_path: Path) -> Non
     preview = source / "presentation/assets/preview.svg"
     preview.parent.mkdir(parents=True)
     preview.write_text("<svg></svg>")
-    research_page = source / "research/discoverability/index.html"
-    research_page.parent.mkdir(parents=True)
-    research_page.write_text("<html><body>Research navigation</body></html>")
+    reading = source / "research" / "discoverability" / "index.html"
+    reading.parent.mkdir(parents=True)
+    reading.write_text("<html><body>Bounded research reading</body></html>")
+    original = source / "research" / "original.pdf"
+    original.write_bytes(b"preserved optional research original\n")
+    model_page = source / "models/demo/index.html"
+    model_page.parent.mkdir(parents=True)
+    model_page.write_text("<html><body>Optional model entry</body></html>")
     manifest = pack(source, tmp_path / "packs", "site", commit="a" * 40, version="1.24.0")
     destination = tmp_path / "restored"
     restore(manifest, destination, groups=["core"])
     assert (destination / "presentation/assets/preview.svg").read_bytes() == preview.read_bytes()
-    assert (destination / "research/discoverability/index.html").read_bytes() == research_page.read_bytes()
+    assert (destination / "research/discoverability/index.html").read_bytes() == reading.read_bytes()
+    assert not (destination / "research/original.pdf").exists()
+    assert not (destination / "models/demo/index.html").exists()
 
 
 @pytest.mark.parametrize("damage", ["checksum", "traversal", "duplicate", "size", "unknown", "group", "file_digest"])

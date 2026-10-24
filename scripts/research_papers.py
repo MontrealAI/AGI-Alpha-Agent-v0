@@ -34,9 +34,13 @@ SOURCE_SITE = "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/"
 RESOURCE_LABELS = {
     "reading": {"en": "Read the edition and resources", "fr": "Lire l’édition et ses ressources"},
     "tex_source": {"en": "Download standalone TeX", "fr": "Télécharger le TeX autonome"},
+    "current_companion": {
+        "en": "Current corrected companion guide and helper",
+        "fr": "Guide et outil correctif actuels du compagnon",
+    },
     "experimental_source": {
-        "en": "Experimental companion source and assembly (unmerged)",
-        "fr": "Sources et assemblage du compagnon expérimental (non fusionné)",
+        "en": "Historical experimental companion source and assembly",
+        "fr": "Sources et assemblage historiques du compagnon expérimental",
     },
     "experience": {"en": "Explore the interactive foundry", "fr": "Explorer la fonderie interactive"},
     "companion": {"en": "Download the research companion", "fr": "Télécharger le compagnon de recherche"},
@@ -113,6 +117,7 @@ def resource_records(value: Any) -> dict[str, Any]:
         expected = {
             "reading": {"path", "sha256"},
             "tex_source": {"path", "sha256"},
+            "current_companion": {"url"},
             "experimental_source": {"url"},
             "experience": {"path", "sha256"},
             "companion": {"url", "sha256", "bytes"},
@@ -124,6 +129,12 @@ def resource_records(value: Any) -> dict[str, Any]:
             raise ValueError("Unexpected research resource fields")
         if role == "tex_source":
             file_record(item, ".tex")
+            continue
+        if role == "current_companion":
+            if not isinstance(item["url"], str) or not re.fullmatch(
+                re.escape(SOURCE_SITE) + r"main/studies/[a-z][a-z0-9-]{0,63}/README\.md", item["url"]
+            ):
+                raise ValueError("Current companion requires the maintained main study README in this repository")
             continue
         if role == "experimental_source":
             if not isinstance(item["url"], str) or not re.fullmatch(

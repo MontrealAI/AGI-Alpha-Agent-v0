@@ -1,0 +1,174 @@
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+CONTROLLED_RECORD_BINDING {"admitted":"bridge-input-capture","execution":"caller-replaced-mission","record":"caller-replaced-mission","binding":"bridge-input-capture","proof":"bridge-input-capture","history":["caller-replaced-mission"]}
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+✖ abort during initialization prevents native launch and permits a later fresh delivery (30.841167ms)
+✖ caller mutation during bridge initialization cannot change admitted execution or retained history (18.863031ms)
+✖ caller mutation while admission waits cannot replace its captured mission or result (18.533535ms)
+✖ failed initialization is retried while a successful initializer remains cached (9.630683ms)
+Controlled dependency; exact delivery module SHA256 cd74dba68c97f3c44cda1c3356f7e80dcad214a71feaaf4d812f337e3499d487
+✖ concurrent Promise waiters share failure, then share exactly one fresh initializer (42.485013ms)
+✖ a delayed stale waiter cannot clear a newer initializer under a controlled thenable schedule (14.781547ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 390.882553
+
+✖ failing tests:
+
+test at ../../../dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:47:1
+✖ abort during initialization prevents native launch and permits a later fresh delivery (30.841167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'CONTROLLED_TEST_BRIDGE_RUN'
+  - 'INTERRUPTED'
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:58:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'CONTROLLED_TEST_BRIDGE_RUN',
+    expected: 'INTERRUPTED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:95:1
+✖ caller mutation during bridge initialization cannot change admitted execution or retained history (18.863031ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'caller-replaced-mission'
+  - 'bridge-input-capture'
+  
+      at assertCapturedRecord (file:///dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:81:10)
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:109:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'caller-replaced-mission',
+    expected: 'bridge-input-capture',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:113:1
+✖ caller mutation while admission waits cannot replace its captured mission or result (18.533535ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        mission: {
+          kind: 'flat-reduction',
+  +       missionId: 'caller-replaced-before-admission',
+  -       missionId: 'admission-input-capture',
+          rows: [
+            {
+  +           amount: 999,
+  -           amount: 2,
+              group: 'part'
+            },
+            {
+              amount: -1,
+              group: 'part'
+  ...
+        result: {
+  +       authority: [
+  +         'caller-invented-authority'
+  +       ],
+  -       authority: [],
+          capability: null,
+          csv: 'group,amount\nother,3\npart,1\n',
+  +       currentProof: {
+  +         accepted: true
+  +       },
+  -       currentProof: null,
+          delivery: {
+            authority: 'none',
+            excessiveGroups: [],
+            nativeExecution: 'not-yet-run',
+            outputAbsLimit: '1000000',
+  ...
+            {
+  +           amount: '999',
+  -           amount: '3',
+              group: 'other'
+            },
+            {
+              amount: '1',
+              group: 'part'
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:133:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { mission: [Object], result: [Object] } ],
+    expected: [ { mission: [Object], result: [Object] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:139:1
+✖ failed initialization is retried while a successful initializer remains cached (9.630683ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'CONTROLLED_TEST_BRIDGE_RUN'
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:147:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'CONTROLLED_TEST_BRIDGE_RUN',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:156:1
+✖ concurrent Promise waiters share failure, then share exactly one fresh initializer (42.485013ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await Promise.all(retries)).every(outcome => outcome.error?.code === 'CONTROLLED_TEST_BRIDGE_RUN'))
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:171:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ../../../dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:178:1
+✖ a delayed stale waiter cannot clear a newer initializer under a controlled thenable schedule (14.781547ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///dev/shm/companion-review/bridge-baseline-study/integration/bridge-lifecycle.test.mjs:192:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

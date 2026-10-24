@@ -192,10 +192,11 @@ def collect_entries() -> list[tuple[str, str, str, str]]:
     return entries
 
 
-def insert_back_link(pages: Iterable[Path]) -> None:
+def insert_back_link(pages: Iterable[Path], *, preserved_pages: Iterable[Path] = ()) -> None:
     """Ensure a 'Back to Gallery' link exists in each HTML page."""
+    preserved = set(preserved_pages)
     for page in pages:
-        if not page.is_file():
+        if not page.is_file() or page in preserved:
             continue
         if page.parts[-2:] == ("transformational-intelligence", "index.html"):
             continue  # Its generator owns the exact inline script, CSP and return links.
@@ -212,7 +213,7 @@ def insert_back_link(pages: Iterable[Path]) -> None:
             ("successor", "evaluate", "index.html"),
             ("successor", "capabilities", "index.html"),
         ):
-            continue  # These generators own exact portable pages and their existing return links.
+            continue  # The portable lab already has absolute online return links.
         text = page.read_text(encoding="utf-8")
         rel = Path(os.path.relpath(INDEX_FILE, page.parent)).as_posix()
         link = f'<p><a href="{rel}">\u2b05\ufe0f Back to Gallery</a></p>'
@@ -530,7 +531,12 @@ def main() -> None:
         and "DISCLAIMER_SNIPPET" not in p.parts
         and "start" not in p.parts
     ]
-    insert_back_link(pages)
+    # These reading/experience bytes are independently pinned in the catalogue;
+    # their maintained navigation belongs to the page, not this generic overlay.
+    from scripts.research_papers import experience_hashes, load_catalog
+
+    preserved_pages = (REPO_ROOT / name for name in experience_hashes(load_catalog(REPO_ROOT)))
+    insert_back_link(pages, preserved_pages=preserved_pages)
 
     print(
         "Wrote",

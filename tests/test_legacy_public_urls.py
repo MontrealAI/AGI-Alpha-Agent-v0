@@ -554,3 +554,86 @@ def test_transient_retry_does_not_mask_later_permanent_failure(fetch_sequence, s
     assert len(calls) == 2
     assert sleeps == [1]
     assert outcomes == [raw]
+
+
+@pytest.mark.smoke
+@pytest.mark.parametrize("name", ["evidence/frozen/index.html.txt", "evidence/frozen/template.htm.txt"])
+def test_archived_html_text_is_preserved_by_real_pack_and_direct_public_get(candidate, tmp_path, monkeypatch, name):
+    root, site, _, _ = candidate
+    raw = b"<!doctype html>\r\n<html><body>Frozen source, not a rendered page.</body></html>\n"
+    write(site, name, raw)
+    pack = release_packs.pack(site, tmp_path / "with-source", "site", commit=COMMIT, version=VERSION)
+    report = checker.check_site(site, pack, COMMIT, VERSION, root=root)
+    checker.verify_report(report, COMMIT, VERSION, pack, mode="local", root=root)
+    patched = (root, site, pack, candidate[3])
+    calls = fake_public(patched, monkeypatch)
+    original_fetch = checker._fetch
+
+    def fetch(url, method, size):
+        status, final_url, headers, body = original_fetch(url, method, size)
+        if url.endswith(name):
+            headers["content-type"] = "text/plain"
+        return status, final_url, headers, body
+
+    monkeypatch.setattr(checker, "_fetch", fetch)
+    public_report = checker.check_public(site, pack, COMMIT, VERSION, root=root)
+    checker.verify_report(public_report, COMMIT, VERSION, pack, mode="public", root=root)
+    observed = next(item for item in public_report["observations"] if item["target"] == name)
+    assert observed["method"] == "GET"
+    assert observed["bytes"] == len(raw) and observed["sha256"] == hashlib.sha256(raw).hexdigest()
+    assert observed["content_type"] == "text/plain"
+    assert "anchors" not in observed and "meta_refresh" not in observed
+    assert (site / name).read_bytes() == raw
+    assert any(call[0].endswith(name) and call[1] == "GET" for call in calls)
+    write(site, name, raw + b"changed")
+    with pytest.raises(ValueError, match="exact candidate pack"):
+        checker.check_site(site, pack, COMMIT, VERSION, root=root)
+
+
+@pytest.mark.smoke
+@pytest.mark.parametrize("content_type", ["text/html", "application/xhtml+xml", "application/octet-stream"])
+def test_archived_html_source_refuses_a_rendered_or_untyped_response(monkeypatch, content_type):
+    name = "evidence/frozen/index.html.txt"
+    raw = b"<!doctype html>\n<html>archived source</html>\n"
+    monkeypatch.setattr(
+        checker,
+        "_fetch",
+        lambda url, *args: (
+            200,
+            url,
+            {"content-length": str(len(raw)), "content-type": content_type},
+            raw,
+        ),
+    )
+    with pytest.raises(ValueError, match="content type"):
+        checker._observe(name, name, record(raw), {"receipt": {"path": "receipt.json"}})
+
+
+@pytest.mark.smoke
+@pytest.mark.parametrize("damage", ["short", "oversized", "same-sized"])
+def test_archived_html_source_public_body_is_byte_exact(monkeypatch, damage):
+    name = "evidence/frozen/index.html.txt"
+    raw = b"<!doctype html>\n<html>archived source</html>\n"
+    body = raw[:-1] if damage == "short" else raw + b"x" if damage == "oversized" else raw[:-1] + b"x"
+    monkeypatch.setattr(
+        checker,
+        "_fetch",
+        lambda url, *args: (
+            200,
+            url,
+            {"content-length": str(len(raw)), "content-type": "text/plain"},
+            body,
+        ),
+    )
+    with pytest.raises(ValueError, match="bytes differ"):
+        checker._observe(name, name, record(raw), {"receipt": {"path": "receipt.json"}})
+
+
+@pytest.mark.smoke
+@pytest.mark.parametrize("name", ["fallback.txt", "data.json", "models/model.onnx"])
+def test_ordinary_assets_still_refuse_html_fallback_after_repacking(candidate, tmp_path, name):
+    root, site, _, _ = candidate
+    write(site, name, b"<!doctype html>\n<html>Wrong fallback</html>")
+    pack = release_packs.pack(site, tmp_path / "fallback", "site", commit=COMMIT, version=VERSION)
+    with pytest.raises(ValueError, match="Public asset replaced with HTML"):
+        checker.check_site(site, pack, COMMIT, VERSION, root=root)

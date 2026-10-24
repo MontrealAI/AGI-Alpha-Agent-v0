@@ -1,5 +1,24 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.41.0 experimental corrected companion/site candidate
+
+This prospective edition reconciles the existing Writer #4 companion branch with guarded main
+`197147ffd22c5ae13113162afffaf3ce9c10aa2e`. It retains the completed corrected non-UI source-API/local-EVM
+proof and adds a separate PR-only full HTTP QA gate. The valid nested disclaimer links and all four
+catalogue-bound HTML bodies stay byte-identical; targeted checker, generator, LF-attribute and core-pack
+corrections address the observed main-197 failures without skipping integrity checks.
+[Current scope and remaining work](RELEASE_NOTES_1.41.0.md).
+
+Version metadata and current guides advance through the existing generators. The checkout helper retains
+all eight earlier exact editions and adds one complete 61-file edition for the three final generated
+1.41 workers, over the unchanged 53-source scientific catalogue. No normal generator invokes repair.
+The five critical source/test pins and four excluded, unqualified outcomes remain unchanged; their original
+action restrictions remain in force. Eligible source-specific review, every selected hosted gate, actual
+public artifacts and deployed-site/user acceptance remain required. Earlier source/API proof does not
+qualify the new HTTP UI or installed current four-product compatibility.
+
+## Preserved 1.40 preparation record
+
 # Release readiness — 1.40.0 experimental Foundry integration candidate
 
 This local prospective edition composes the existing Foundry v2 paper/resource stack with the
