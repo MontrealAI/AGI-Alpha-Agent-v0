@@ -21,6 +21,7 @@ let language = 'en', step = 1, input = {...guide.SAMPLE}, result = null, approac
 let worker = null, workerUrl = null, token = 0, busy = false, runId = '', createdAt = '', restored = false;
 let reading = 0, fileVersions = {left:0,right:0}, restoreVersion = 0, trace = [];
 let fileErrors = {left:null,right:null};
+let csvInputs = {left:guide.SAMPLE.leftCsv,right:guide.SAMPLE.rightCsv};
 const say = (en, fr) => language === 'fr' ? fr : en;
 const text = (id, en, fr) => { $(id).textContent = say(en, fr); };
 function node(tag, parent, value, className) {
@@ -71,7 +72,7 @@ function updatePreview(side) {
     const target = $(side+'-preview'), select = $(side+'-key'); target.replaceChildren(); $(side+'-error').hidden = true;
     try {
         if(fileErrors[side])throw Error(fileErrors[side]);
-        const data = guide.preview($(side+'-csv').value), previous = select.value || input[side+'Key'];
+        const data = guide.preview(csvInputs[side]), previous = select.value || input[side+'Key'];
         select.replaceChildren();
         if(!data.headers.includes(previous)){const option=node('option',select,say('Choose an identifying column','Choisir une colonne d’identification'));option.value='';}
         for (const key of data.headers) { const option = node('option',select,key); option.value = key; }
@@ -96,9 +97,10 @@ function applyInput(value) {
     fileErrors={left:null,right:null};
     $('left-key').replaceChildren();$('right-key').replaceChildren();
     input = {...value}; $('left-csv').value = value.leftCsv; $('right-csv').value = value.rightCsv;
+    csvInputs={left:value.leftCsv,right:value.rightCsv};
     refreshPreviews(); $('left-key').value = value.leftKey; $('right-key').value = value.rightKey;
 }
-function currentInput() { return {leftCsv:$('left-csv').value,rightCsv:$('right-csv').value,leftKey:$('left-key').value,rightKey:$('right-key').value}; }
+function currentInput() { return {leftCsv:csvInputs.left,rightCsv:csvInputs.right,leftKey:$('left-key').value,rightKey:$('right-key').value}; }
 function stop() {
     token++; worker?.terminate(); worker = null; if (workerUrl) URL.revokeObjectURL(workerUrl); workerUrl = null;
     busy = false; $('busy').hidden = true;
@@ -237,7 +239,7 @@ $('own-data').addEventListener('toggle',()=>{
     refreshPreviews();
 });
 for(const side of ['left','right']) {
-    $(side+'-csv').addEventListener('input',()=>{fileErrors[side]=null;fileVersions[side]++;invalidate();refreshPreviews();});
+    $(side+'-csv').addEventListener('input',()=>{csvInputs[side]=$(side+'-csv').value;fileErrors[side]=null;fileVersions[side]++;invalidate();refreshPreviews();});
     $(side+'-key').addEventListener('change',invalidate);
     $(side+'-file').addEventListener('change',async event=>{
         const file = event.target.files[0]; if(!file)return;fileErrors[side]=null;invalidate(); const version = ++fileVersions[side];reading++;refreshPreviews();
@@ -245,8 +247,8 @@ for(const side of ['left','right']) {
             if(file.size>200000)throw Error(say('Choose a CSV no larger than 200 KB. Split a larger list first.','Choisissez un CSV de 200 Ko maximum. Divisez d’abord une liste plus grande.'));
             const raw = new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await file.arrayBuffer());
             if(version!==fileVersions[side])return;
-            $(side+'-csv').value=raw; refreshPreviews();
-        } catch(error) {if(version===fileVersions[side]) {$(side+'-csv').value='';fileErrors[side]=error instanceof TypeError ? say('This file is not valid UTF-8 CSV. Export it as CSV UTF-8 and try again.','Ce fichier n’est pas un CSV UTF-8 valide. Exportez-le en CSV UTF-8 puis réessayez.') : error.message;}}
+            csvInputs[side]=raw;$(side+'-csv').value=raw; refreshPreviews();
+        } catch(error) {if(version===fileVersions[side]) {csvInputs[side]='';$(side+'-csv').value='';fileErrors[side]=error instanceof TypeError ? say('This file is not valid UTF-8 CSV. Export it as CSV UTF-8 and try again.','Ce fichier n’est pas un CSV UTF-8 valide. Exportez-le en CSV UTF-8 puis réessayez.') : error.message;}}
         finally {reading--;refreshPreviews();}
     });
 }

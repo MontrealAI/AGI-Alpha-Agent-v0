@@ -84,8 +84,8 @@ def run_acceptance(entry: str, output: Path, expected: bytes, axe_script: Path) 
         checks.append("close-reopen-offline-same-results")
 
         offline.locator("#reuse").click()
-        left = b"code,name,value\nX,First,1\nX,First,2\nY,Extra,4\n"
-        right = b"record,name,value\nX,First,9\nZ,Other,5\n"
+        left = b'\xef\xbb\xbfcode,name,value\r\nX,"First\r\nitem",1\r\nX,First,2\r\nY,Extra,4\r\n'
+        right = b'record,name,value\nX,"First\nitem",9\nZ,Other,5\n'
         offline.locator("#left-file").set_input_files({"name": "new-a.csv", "mimeType": "text/csv", "buffer": left})
         offline.locator("#right-file").set_input_files({"name": "new-b.csv", "mimeType": "text/csv", "buffer": right})
         offline.locator("#left-key").select_option("code")
@@ -94,6 +94,9 @@ def run_acceptance(entry: str, output: Path, expected: bytes, axe_script: Path) 
         changed = json.loads(download(offline, "#download-json", "changed-workspace.json"))
         assert changed["runId"] != saved["runId"]
         assert changed["result"]["leftIdentity"]["sha256"] == hashlib.sha256(left).hexdigest()
+        assert changed["input"]["leftCsv"].encode("utf-8") == left
+        assert changed["input"]["rightCsv"].encode("utf-8") == right
+        assert changed["result"]["metrics"]["fieldDifferences"] == 4
         assert changed["result"]["metrics"]["actionGroups"] == 3
         assert changed["result"]["metrics"]["evidenceReferences"] == 4
         download(offline, "#download-actions", "new-actions.csv")
