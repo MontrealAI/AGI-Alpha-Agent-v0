@@ -190,6 +190,11 @@ def _html(raw: bytes, name: str, manifest: dict[str, Any]) -> dict[str, Any]:
     return {"anchors": sorted(parser.anchors), "meta_refresh": parser.refresh}
 
 
+def _is_html_source(name: str) -> bool:
+    """Recognize archived HTML served as exact plain text, never as a page."""
+    return name.lower().endswith((".html.txt", ".htm.txt"))
+
+
 def _routes(files: dict[str, Any]) -> dict[str, str]:
     result = {name: name for name in files}
     result.update({name[:-10]: name for name in files if name == "index.html" or name.endswith("/index.html")})
@@ -237,7 +242,7 @@ def check_site(site: Path, pack_manifest: Path, commit: str, version: str, *, ro
                 prefix = stream.read(4096).lstrip().lower()
             if name.lower().endswith(".pdf") and not prefix.startswith(b"%pdf-"):
                 raise ValueError(f"Original PDF replaced with a non-PDF: {name}")
-            if prefix.startswith((b"<!doctype html", b"<html")):
+            if prefix.startswith((b"<!doctype html", b"<html")) and not _is_html_source(name):
                 raise ValueError(f"Public asset replaced with HTML: {name}")
     observations = [
         {"path": route, "target": name, "method": "LOCAL", "status": "present", **files[name], **html.get(name, {})}
@@ -294,7 +299,8 @@ def _fetch(url: str, method: str, size: int) -> tuple[int, str, dict[str, str], 
 def _observe(route: str, name: str, row: dict[str, Any], manifest: dict[str, Any]) -> dict[str, Any]:
     html = name.lower().endswith((".html", ".htm"))
     pdf = name.lower().endswith(".pdf")
-    method = "GET" if html or pdf or name == manifest["receipt"]["path"] else "HEAD"
+    source_html = _is_html_source(name)
+    method = "GET" if html or source_html or pdf or name == manifest["receipt"]["path"] else "HEAD"
     if method == "GET" and row["bytes"] > MAX_BODY:
         raise ValueError(f"Public body exceeds bounded size: {name}")
     url = ORIGIN + quote(route, safe="/")
@@ -307,7 +313,11 @@ def _observe(route: str, name: str, row: dict[str, Any], manifest: dict[str, Any
     if not re.fullmatch(r"\d+", length) or int(length) != row["bytes"]:
         raise ValueError(f"Exact Content-Length required: {route}")
     content_type = headers.get("content-type", "").split(";", 1)[0].strip().lower()
-    if (html and content_type != "text/html") or (pdf and content_type != "application/pdf"):
+    if (
+        (html and content_type != "text/html")
+        or (pdf and content_type != "application/pdf")
+        or (source_html and content_type != "text/plain")
+    ):
         raise ValueError(f"Wrong public content type: {route}")
     if not html and (not content_type or content_type in {"text/html", "application/xhtml+xml"}):
         raise ValueError(f"Non-HTML asset substituted or missing content type: {route}")
@@ -390,11 +400,12 @@ def verify_report(
         row = files[name]
         html = name.lower().endswith((".html", ".htm"))
         pdf = name.lower().endswith(".pdf")
+        source_html = _is_html_source(name)
         fields: dict[str, Any] = {"path": route, "target": name}
         if mode == "local":
             fields.update(method="LOCAL", status="present", **row)
         else:
-            method = "GET" if html or pdf or name == manifest["receipt"]["path"] else "HEAD"
+            method = "GET" if html or source_html or pdf or name == manifest["receipt"]["path"] else "HEAD"
             fields.update(method=method, status=200, url=ORIGIN + quote(route, safe="/"), content_length=row["bytes"])
             content_type = item.get("content_type")
             if (
@@ -402,6 +413,7 @@ def verify_report(
                 or not content_type
                 or (html and content_type != "text/html")
                 or (pdf and content_type != "application/pdf")
+                or (source_html and content_type != "text/plain")
                 or (not html and content_type in {"text/html", "application/xhtml+xml"})
             ):
                 raise ValueError("Missing or substituted public content type")
