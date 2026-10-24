@@ -62,6 +62,14 @@ each retain their own unfinished acceptance. The four held native-source helper/
 tests are listed for exclusion from the two current release invocations. Pre-run
 `EXCLUSION_PLANNED` records describe intention only and leave their outcomes unqualified;
 actual deselection requires observed job output. Their original restriction is not cleared.
+
+The two scoped invocations now have a mandatory identity-only guard for the five Alpha-side
+source/test files named in [the finite coverage policy](FAST_RELEASE_POLICY.md#finite-held-native-source-coverage-boundary).
+It rejects critical source drift before the selected tests run. It neither executes nor qualifies
+the four excluded behaviors; they remain unqualified. Updating those fixed identities requires a
+new eligible exact-source coverage disposition. Every other selected gate and current budget is
+preserved. This bounded source-preservation condition addresses future silent changes without
+claiming native behavioral acceptance or clearing the original action restrictions.
 The earlier [6d capability attempt](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/39897542978)
 is retained as a failed selection safeguard; its pre-run record does not prove nonexecution.
 Earlier hosted outcomes remain separate historical facts. All other selected

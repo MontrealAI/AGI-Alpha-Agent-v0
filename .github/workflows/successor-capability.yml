@@ -88,6 +88,10 @@ jobs:
           python -m pip install playwright==1.54.0 pytest==8.4.1 PyYAML==6.0.2 mypy==2.4.0
           python -m playwright install --with-deps chromium
           npm ci --prefix tests/browser --ignore-scripts
+      - name: Preserve held native source identities (no behavioral qualification)
+        run: |
+          mkdir -p capability-evidence
+          python scripts/check_held_native_source.py > capability-evidence/held-native-source-preservation.json
       - name: Computation, history and delivery gates
         run: |
           set -o pipefail
@@ -107,7 +111,7 @@ jobs:
           pathlib.Path('capability-evidence/held-probes.json').write_text(json.dumps(record, indent=2) + '\n')
           PY
           node --test examples/successor-capability/*.test.mjs examples/autonomous-enterprises/*.test.mjs examples/successor-capability/out-execute/*.test.mjs tests/browser/successor_engine.test.mjs tests/browser/fleet_module_boundary.test.mjs tests/browser/fleet_git_metadata.test.mjs examples/successor-workbench/mission-record.test.mjs examples/successor-workbench/mission-app.test.mjs examples/successor-workbench/mission-workflow.test.mjs 2>&1 | tee capability-evidence/logs/node.log
-          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null --rootdir=. -p no:cacheprovider tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/test_successor_capability_delivery.py -q \
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null --rootdir=. -p no:cacheprovider tests/test_held_native_source_guard.py tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/test_successor_capability_delivery.py -q \
             --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands \
             --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata \
             --deselect=tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer \
@@ -117,7 +121,7 @@ jobs:
         run: |
           set -o pipefail
           python -m mypy --version | tee capability-evidence/logs/typing-version.log
-          python -m mypy --strict --config-file mypy.ini scripts/generate_successor_capability.py scripts/run_local_tests.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/browser/test_discovery_lab_continuation.py tests/test_discovery_lab_validation.py tests/test_run_local_tests_environment.py tests/browser/test_out_evolve_browser.py tests/browser/test_out_execute_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/browser/test_autonomous_enterprises_browser.py 2>&1 | tee capability-evidence/logs/typing.log
+          python -m mypy --strict --config-file mypy.ini scripts/check_held_native_source.py tests/test_held_native_source_guard.py scripts/generate_successor_capability.py scripts/run_local_tests.py scripts/validate_discovery_lab.py tests/browser/test_discovery_lab_browser.py tests/browser/test_discovery_lab_continuation.py tests/test_discovery_lab_validation.py tests/test_run_local_tests_environment.py tests/browser/test_out_evolve_browser.py tests/browser/test_out_execute_browser.py tests/browser/out_evolve_recovery.py tests/browser/test_successor_capability_accessibility.py tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py tests/browser/test_autonomous_enterprises_browser.py 2>&1 | tee capability-evidence/logs/typing.log
       - name: Exact generated source and gallery cache
         run: |
           python scripts/generate_successor_capability.py
