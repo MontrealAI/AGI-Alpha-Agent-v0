@@ -200,6 +200,9 @@ def insert_back_link(pages: Iterable[Path]) -> None:
         if page.parts[-2:] == ("transformational-intelligence", "index.html"):
             continue  # Its generator owns the exact inline script, CSP and return links.
         if page.parts[-3:] in (
+            ("reports", "research-foundry-v2", "index.html"),
+            ("reports", "research-capability-inheritance-v1", "index.html"),
+            ("reports", "research-discoverability-v1", "index.html"),
             ("successor", "alpha", "index.html"),
             ("successor", "play", "index.html"),
             ("successor", "build", "index.html"),
@@ -209,7 +212,7 @@ def insert_back_link(pages: Iterable[Path]) -> None:
             ("successor", "evaluate", "index.html"),
             ("successor", "capabilities", "index.html"),
         ):
-            continue  # The portable lab already has absolute online return links.
+            continue  # These generators own exact portable pages and their existing return links.
         text = page.read_text(encoding="utf-8")
         rel = Path(os.path.relpath(INDEX_FILE, page.parent)).as_posix()
         link = f'<p><a href="{rel}">\u2b05\ufe0f Back to Gallery</a></p>'

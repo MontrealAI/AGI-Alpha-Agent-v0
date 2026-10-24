@@ -67,10 +67,14 @@ def test_core_preserves_every_gallery_precache_dependency(tmp_path: Path) -> Non
     preview = source / "presentation/assets/preview.svg"
     preview.parent.mkdir(parents=True)
     preview.write_text("<svg></svg>")
+    research_page = source / "research/discoverability/index.html"
+    research_page.parent.mkdir(parents=True)
+    research_page.write_text("<html><body>Research navigation</body></html>")
     manifest = pack(source, tmp_path / "packs", "site", commit="a" * 40, version="1.24.0")
     destination = tmp_path / "restored"
     restore(manifest, destination, groups=["core"])
     assert (destination / "presentation/assets/preview.svg").read_bytes() == preview.read_bytes()
+    assert (destination / "research/discoverability/index.html").read_bytes() == research_page.read_bytes()
 
 
 @pytest.mark.parametrize("damage", ["checksum", "traversal", "duplicate", "size", "unknown", "group", "file_digest"])
