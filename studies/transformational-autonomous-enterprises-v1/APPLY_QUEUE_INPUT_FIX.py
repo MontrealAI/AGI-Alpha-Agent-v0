@@ -23,10 +23,10 @@ OVERRIDES = {
     "study/integration/mission-delivery.mjs": "14f46a110f182b462963fb39619c9dcd3a87a2f24a9e0b92b842b7a4ad20ea68",
     "study/integration/execution-identity.test.mjs": "1eb36919630bac62eb7d4e96456abbb440480cddb95dde32a88599fdcadfc4cb",
     "study/integration/bridge-lifecycle.test.mjs": "e7109d59dcafe8a29b3f7498fa805f4876f3b586ab80ee8dc00dc8e80149fe3d",
-    "study/interface/app.js": "4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384",
-    "study/interface/status.test.mjs": "9aff78d18296320609503fbe5aed11daa79a0b84061c6bab602b1f463762e5c6",
+    "study/interface/app.js": "0328e8f591c48b91729554c5ba43318cf7e4eb458243a669395a996c4df689b2",
+    "study/interface/status.test.mjs": "5cc129f29b15200244cc767db3de1d4b9c7fee9250a2e61a13bbf3b6cf5f94c2",
 }
-OVERLAY_COMMIT = "92de6adf485df9556e4c46b20a1e656da419426a"
+OVERLAY_COMMIT = "da61a6319aada0b408ea16f05a87a8f5b105e81d"
 BASE = (
     "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
     + OVERLAY_COMMIT
@@ -113,7 +113,7 @@ def verify_overlay(root: Path) -> dict[str, object]:
 def overlay_receipt() -> dict[str, object]:
     """Describe the separate source epoch without relabeling frozen evidence."""
     return {
-        "schema": "tae.research-runtime-overlay.v6",
+        "schema": "tae.research-runtime-overlay.v7",
         "originalArchiveSha256": ARCHIVE_SHA256,
         "originalManifestSha256": MANIFEST_SHA256,
         "originalQueueSha256": ORIGINAL_QUEUE_SHA256,

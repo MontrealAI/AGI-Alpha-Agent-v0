@@ -1,0 +1,102 @@
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ a page observing an existing run returns idle without claiming its result or posting an action (8.485421ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ slow status reads never overlap and a still-busy reply schedules one next read (2.517505ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ failed or malformed refreshes retain busy guards and report uncertainty until recovery (7.485759ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ leaving before a refresh cancels its timer and returning reads current state (1.752484ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ page lifecycle aborts an in-flight refresh, fences stale replies and refreshes on return (1.899378ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ stop cancels observation and a stale busy response cannot undo the stopped state (5.504792ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ a run owned by this page keeps its existing request lifecycle without status polling (3.235247ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ a failed stop keeps busy guards and resumes observation without claiming a stop (4.390087ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ restore stays guarded during observation and keeps historical proof and authority requirements (2.839988ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ a rejected run reconciles server ownership before releasing busy guards (5.082157ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ failed reconciliation after a rejected run retains guards and retry until verified idle (8.171934ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✔ stop fences an in-flight reconciliation after a rejected run (2.653391ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✖ Stop acknowledgement retains guards until the server confirms idle (3.18658ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✖ Stop confirmation failures retain uncertainty and retry until verified idle (2.350929ms)
+Controlled DOM/fetch/time; exact interface script SHA256 4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384
+✖ page lifecycle aborts and fences pending Stop confirmation then resumes on return (2.134605ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 12
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69.432272
+
+✖ failing tests:
+
+test at [eval1]:278:1
+✖ Stop acknowledgement retains guards until the server confirms idle (3.18658ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - '/api/status'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/246f616f9449/[eval1]:284:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '/api/status',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at [eval1]:306:1
+✖ Stop confirmation failures retain uncertainty and retry until verified idle (2.350929ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - '/api/status'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/246f616f9449/[eval1]:315:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '/api/status',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at [eval1]:332:1
+✖ page lifecycle aborts and fences pending Stop confirmation then resumes on return (2.134605ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - '/api/status'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/246f616f9449/[eval1]:337:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '/api/status',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

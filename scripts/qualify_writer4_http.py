@@ -278,7 +278,7 @@ def main() -> int:
             "toolchain": toolchain,
             "httpServedSourceBytes": served,
             "originalArchiveSha256": "a622657df828aefb4a081d1e0f5d1fb665fcf69991383245b6ece7cb66bee7ee",
-            "scope": "Existing full HTTP QA and focused overlay/UI controls on corrected v6 research copy; source APIs/disposable local EVM. "
+            "scope": "Existing full HTTP QA and focused overlay/UI controls on corrected v7 research copy; source APIs/disposable local EVM. "
             "No installed four-release, held native-host, economic-value or production settlement claim.",
             "omittedOriginalFourQualified": False,
             "priorDeniedObjectivesAttempted": False,
