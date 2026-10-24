@@ -1,0 +1,203 @@
+{
+  "base_commit": "c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a",
+  "check_script": {
+    "bytes": 12732,
+    "git_blob": "5d33a711f7e2116b292af15febc585a996202cb1",
+    "sha256": "43fdca9595e3714064b4a080c1b860a0eca111e4a142364c52967d21dc730137"
+  },
+  "date_utc": "2026-10-24",
+  "decision_and_authority": {
+    "application_status": "UNAPPLIED owner-only proposal",
+    "not_granted": [
+      "merge",
+      "index ownership",
+      "Pages publication",
+      "release inclusion",
+      "gate waiver",
+      "archive exemption",
+      "authority over held work"
+    ],
+    "required": "Receiving acknowledgment and existing coordinator review/application; applicable source and full release checks remain required."
+  },
+  "implication": "The original worker patch remains compatible with c627413 raw source inputs. Without an approved maintained-page guard or an approved revision/rebinding of both HTML pages and downstream worker hashes, the normal gallery backlink step changes the selected input dictionary before worker generation. This proposal preserves only the two exact report paths, retaining original bytes at that step; it is not proof of a full gallery build or qualification for release.",
+  "normal_build_chain": {
+    "backlink_function_lines": [
+      195,
+      243
+    ],
+    "mirror_reports_input_absent": "The complete pinned Git tree contains no docs/reports/index.html; candidate also adds no such file. mirror_demo_pages.py main() only mirrors a top-level directory if its index.html exists. It does not undo these report-source edits.",
+    "ordered_build_script_lines": {
+      "build_service_worker": 35,
+      "generate_gallery_html": 33,
+      "mirror_demo_pages": 34
+    },
+    "selection_expression_lines": [
+      526,
+      532
+    ],
+    "workflow": ".github/workflows/agent-release.yml: rebuild complete gallery via bash scripts/build_gallery_site.sh"
+  },
+  "observed_target_rewrites": [
+    {
+      "before": {
+        "bytes": 17559,
+        "git_blob": "fa12fdc972a5aecb641d9b58561a44965c65eec0",
+        "sha256": "0d5bdda959df7f6f015152b759435597261d65a0f7bd76923297df099f34daec"
+      },
+      "changed": true,
+      "inserted_link": "<p><a href=\"../../index.html\">\u2b05\ufe0f Back to Gallery</a></p>",
+      "normal_backlink_output": {
+        "bytes": 17620,
+        "git_blob": "370801ce3c735552f686d1ca38370ec59adb5ef7",
+        "sha256": "b81382c6bf1db617f669274ea701c50572c8e87481f1ed37dd491c21fe8966c0"
+      },
+      "path": "docs/reports/alpha-beyond-prediction-v1/index.html",
+      "source_function_line": 195,
+      "source_selection_line": 526
+    },
+    {
+      "before": {
+        "bytes": 34136,
+        "git_blob": "276347f161337f1d0902c0ff8591199792ffee6b",
+        "sha256": "4e4e7714ecfb1dc421d5283da864b6bb6deab22f2399c817b783993ae69216cc"
+      },
+      "changed": true,
+      "inserted_link": "<p><a href=\"../../../index.html\">\u2b05\ufe0f Back to Gallery</a></p>",
+      "normal_backlink_output": {
+        "bytes": 34200,
+        "git_blob": "d6f9aae0cbc535d815ffe3a30811243805a3388a",
+        "sha256": "bb2084d6680c8ac9bc68b2788e085b89685834e78262e0315aebfbbb66ef94bb"
+      },
+      "path": "docs/reports/alpha-beyond-prediction-v1/demo/index.html",
+      "source_function_line": 195,
+      "source_selection_line": 526
+    }
+  ],
+  "original_worker_patch_preserved": {
+    "OWNER_ONLY_GALLERY.patch": "d07f464b87756e0efcb9e431a9e9f96d4746398040685f02fc8bc75be1192e6c",
+    "OWNER_ONLY_GALLERY_RECEIPT.json": "57f7cfd63c07b9dc0922e669e203a9fa0e6767f859ab6c7fe2c6c536ecc82558"
+  },
+  "patch": {
+    "bytes": 938,
+    "git_blob": "82b84f257eb68bd6a2908ed5f53217baa98e9e6c",
+    "path": "OWNER_ONLY_MAINTAINED_REPORT_PRESERVATION.patch",
+    "sha256": "d2ee0d403cece84010d753a37f155945cff493ea030b56f74470013e54709548"
+  },
+  "proposed_generator": {
+    "bytes": 24629,
+    "git_blob": "e2a32fd0da1296d653d68fa44d6fefd9237d492b",
+    "sha256": "72ee72d19ab8f54043560933eb38822bd2c1ab0eec89d15b675ebc9ead61db8e"
+  },
+  "schema": "alpha-beyond-prediction/gallery-regeneration-disposition/v1",
+  "scope": {
+    "executed": "Exact pinned insert_back_link AST and exact main pages-selection expression on private fixture copies; proposed narrow guard tested on the same copies; patch check and application only in disposable private fixture.",
+    "not_run": [
+      "Complete scripts/generate_gallery_html.py main()",
+      "Complete scripts/build_gallery_site.sh and release CI",
+      "Any application to shared source, public overlay, source PR, deployed site, final scientific package, PDF, or ZIP"
+    ],
+    "reason": "Full gallery build installs dependencies and regenerates shared owned surfaces; this task authorizes bounded read-only source research and unapplied owner proposals only."
+  },
+  "sources": {
+    ".github/workflows/agent-release.yml": {
+      "bytes": 75776,
+      "commit": "c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a",
+      "git_blob": "98ab43503efd0aa2f8a5de4ae5407bd334b3fb8c",
+      "sha256": "cdf6fc44fa63ad9b925bf208ee35c17b4381293986fae389712ec17de8b380d8",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a/.github/workflows/agent-release.yml"
+    },
+    "scripts/build_gallery_site.sh": {
+      "bytes": 1551,
+      "commit": "c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a",
+      "git_blob": "cea3e705bb17aec298952d100ce8e3515ac95748",
+      "sha256": "c92ee82c4bb3d2290608862179203d2017ac1b3286365453557b7033caac9b43",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a/scripts/build_gallery_site.sh"
+    },
+    "scripts/generate_gallery_html.py": {
+      "bytes": 24338,
+      "commit": "c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a",
+      "git_blob": "ff84d42d3efa6485200a3f68edf3e70ae34ee963",
+      "sha256": "b407302c3c04a24bdb68a77d5f6cb5c5229b268728ce472d7fe5b31bd003f922",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a/scripts/generate_gallery_html.py"
+    },
+    "scripts/mirror_demo_pages.py": {
+      "bytes": 3670,
+      "commit": "c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a",
+      "git_blob": "7ce97915e786e3d9b41dbad01d3002170a0f357b",
+      "sha256": "b198e313dfdb2b964be890bb265d63df59658ce5f91637939a1655b4bca123ac",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/c6274131b3bfda4e3b8f8d3eb77cd11a35d9bf5a/scripts/mirror_demo_pages.py"
+    }
+  },
+  "status": "NORMAL_BACKLINK_STEP_REWRITES_BOTH_TARGETS; OWNER_ONLY_PRESERVATION_PROPOSAL_TESTED_UNAPPLIED",
+  "tests": {
+    "cases": [
+      {
+        "name": "exact_main_selection_includes_both_targets",
+        "passed": true
+      },
+      {
+        "name": "original_rewrites:docs/reports/alpha-beyond-prediction-v1/index.html",
+        "passed": true
+      },
+      {
+        "name": "original_rewrites:docs/reports/alpha-beyond-prediction-v1/demo/index.html",
+        "passed": true
+      },
+      {
+        "name": "original_function_idempotent_on_fixture",
+        "passed": true
+      },
+      {
+        "name": "proposal_changes_no_selected_paths",
+        "passed": true
+      },
+      {
+        "name": "proposal_preserves_exact_bytes:docs/reports/alpha-beyond-prediction-v1/index.html",
+        "passed": true
+      },
+      {
+        "name": "proposal_preserves_exact_bytes:docs/reports/alpha-beyond-prediction-v1/demo/index.html",
+        "passed": true
+      },
+      {
+        "backlink_added": true,
+        "name": "unchanged_control_behavior:docs/reports/unrelated-report/index.html",
+        "passed": true
+      },
+      {
+        "backlink_added": true,
+        "name": "unchanged_control_behavior:docs/reports/alpha-beyond-prediction-v1/other/index.html",
+        "passed": true
+      },
+      {
+        "backlink_added": true,
+        "name": "unchanged_control_behavior:docs/not-reports/alpha-beyond-prediction-v1/index.html",
+        "passed": true
+      },
+      {
+        "backlink_added": true,
+        "name": "unchanged_control_behavior:docs/not-reports/alpha-beyond-prediction-v1/demo/index.html",
+        "passed": true
+      },
+      {
+        "backlink_added": false,
+        "name": "unchanged_control_behavior:docs/reports/research-foundry-v2/index.html",
+        "passed": true
+      },
+      {
+        "name": "git_apply_check_private_fixture",
+        "passed": true
+      },
+      {
+        "name": "git_apply_private_fixture_exact_proposed_hash",
+        "passed": true
+      },
+      {
+        "name": "public_overlay_and_original_worker_handoff_unchanged",
+        "passed": true
+      }
+    ],
+    "failed": 0,
+    "passed": 15
+  }
+}
