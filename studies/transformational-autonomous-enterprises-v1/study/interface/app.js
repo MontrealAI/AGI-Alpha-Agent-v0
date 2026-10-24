@@ -13,7 +13,7 @@ stages.en[0][4]='Instrumented source hashing and candidate events are recorded; 
 stages.fr[0][4]='Les empreintes de source et événements du candidat sont mesurés; rédaction et coûts monétaires complets restent séparés.';
 Object.assign(text.en,{badstatus:'The runtime returned an invalid status.',statusfailed:'Status refresh failed. The server may still be running; retrying.'});
 Object.assign(text.fr,{badstatus:'L’environnement a renvoyé un état invalide.',statusfailed:'Échec de l’actualisation. Le serveur est peut-être toujours actif; nouvelle tentative à venir.'});
-let language='en',step=0,evidence=window.TAE_EVIDENCE||null,fresh=false,local=false,busy=false,statusKnown=false,stopping=false,token=null,lastError='',lastState='',runSequence=0,runController=null,toastTimer=null;
+let language='en',step=0,evidence=window.TAE_EVIDENCE||null,fresh=false,local=false,busy=false,statusKnown=false,stopping=false,stopAwaitingIdle=false,token=null,lastError='',lastState='',runSequence=0,runController=null,toastTimer=null;
 let statusTimer=null,statusController=null,statusEpoch=0,pageActive=true,statusError='';
 const $=id=>document.getElementById(id),t=key=>text[language][key]||key;
 const finite=value=>typeof value==='number'&&Number.isFinite(value);
@@ -28,14 +28,14 @@ function validateEvidence(value){
 }
 function notify(message){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').style.display='block';toastTimer=setTimeout(()=>$('toast').style.display='none',8000);}
 function clearToast(){clearTimeout(toastTimer);toastTimer=null;$('toast').textContent='';$('toast').style.display='none';}
-function setConnection(){let key=!statusKnown?'starting':stopping?'stopping':busy?'running':lastState|| (fresh?'finished':local?'ready':evidence?'recorded':'emptyruntime');$('connection').textContent=t(key)+(lastError?' '+lastError:'')+(statusError?' '+t('statusfailed')+' '+statusError:'');$('connection').dataset.state=lastError||statusError?'error':busy?'busy':'ready';}
+function setConnection(){let key=!statusKnown?'starting':stopping||stopAwaitingIdle?'stopping':busy?'running':lastState|| (fresh?'finished':local?'ready':evidence?'recorded':'emptyruntime');$('connection').textContent=t(key)+(lastError?' '+lastError:'')+(statusError?' '+t('statusfailed')+' '+statusError:'');$('connection').dataset.state=lastError||statusError?'error':busy?'busy':'ready';}
 function render(){
   document.documentElement.lang=language;
   document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(key==='headline')el.innerHTML=t(key);else el.textContent=t(key);});
   $('language').textContent=language==='en'?'FR':'EN';$('language').setAttribute('aria-label',language==='en'?'Passer en français':'Switch to English');
   document.querySelector('.skip').textContent=t('skip');document.querySelector('nav').setAttribute('aria-label',t('mainnav'));document.querySelector('[role="tablist"]').setAttribute('aria-label',t('tabnav'));$('graph-title').textContent=t('graphdescription');
   $('run').disabled=busy||!local||!token;$('run').setAttribute('aria-busy',String(busy));$('run').title=!local?t('unavailable'):t('source');
-  if($('stop-run')){$('stop-run').textContent=t(stopping?'stopping':'stop');$('stop-run').disabled=!busy||stopping||!token;}
+  if($('stop-run')){$('stop-run').textContent=t(stopping||stopAwaitingIdle?'stopping':'stop');$('stop-run').disabled=!busy||stopping||stopAwaitingIdle||!token;}
   $('export').disabled=!evidence;const restoreLabel=document.querySelector('label[for="restore"]');restoreLabel.setAttribute('aria-disabled',String(busy));$('restore').disabled=busy;
   renderStage();renderEvidence();setConnection();
   $('contracts').replaceChildren(...contracts[language].map((c,i)=>{const a=document.createElement('article');a.className='contract-card';const n=document.createElement('span');n.className='number';n.textContent=String(i+1).padStart(2,'0');const h=document.createElement('h3');h.textContent=c[0];const p=document.createElement('p');p.textContent=c[1];const s=document.createElement('small');s.textContent=c[2];a.append(n,h,p,s);return a;}));
@@ -102,7 +102,7 @@ async function refreshStatus(initial=false){
     const data=await requestJSON('/api/status',{signal:controller.signal});
     if(epoch!==statusEpoch||!pageActive)return;
     if(data?.local!==true||typeof data.busy!=='boolean'||typeof data.token!=='string'||!data.token)throw Error(t('badstatus'));
-    local=true;token=data.token;busy=data.busy;statusKnown=true;statusError='';render();
+    local=true;token=data.token;busy=data.busy;statusKnown=true;statusError='';if(stopAwaitingIdle&&!busy){stopAwaitingIdle=false;lastState='stopped';notify(t('stopped'));}render();
   }catch(error){
     if(epoch!==statusEpoch||!pageActive)return;
     if(initial){local=false;token=null;statusKnown=true;}else statusError=error.message;
@@ -122,8 +122,8 @@ $('run').onclick=async()=>{
   finally{if(run===runSequence){stopping=false;runController=null;if(completed){busy=false;render();}else{render();await refreshStatus();}}}
 };
 if($('stop-run'))$('stop-run').onclick=async()=>{
-  if(!busy||stopping||!token)return;cancelStatusWatch();statusError='';stopping=true;render();
-  try{await requestJSON('/api/stop',{method:'POST',headers:{'Content-Type':'application/json','X-TAE-Token':token},body:'{}'});runSequence++;runController?.abort();runController=null;busy=false;stopping=false;fresh=false;lastError='';lastState='stopped';render();notify(t('stopped'));}
+  if(!busy||stopping||stopAwaitingIdle||!token)return;cancelStatusWatch();statusError='';stopping=true;render();
+  try{await requestJSON('/api/stop',{method:'POST',headers:{'Content-Type':'application/json','X-TAE-Token':token},body:'{}'});runSequence++;runController?.abort();runController=null;stopping=false;stopAwaitingIdle=true;fresh=false;lastError='';lastState='';render();await refreshStatus();}
   catch(error){stopping=false;lastError=error.message;lastState='stopfailed';render();notify(t('stopfailed')+' '+error.message);watchExistingRun();}
 };
 function download(value,name){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'}));a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}

@@ -135,7 +135,7 @@ test('page lifecycle aborts an in-flight refresh, fences stale replies and refre
 
 test('stop cancels observation and a stale busy response cannot undo the stopped state', async () => {
   const waiting = deferred();
-  const page = await fixture([status(true), () => waiting.promise, { stopped: true }]);
+  const page = await fixture([status(true), () => waiting.promise, { stopped: true }, status(false)]);
   try {
     await page.poll(); await page.element('stop-run').onclick();
     assert.equal(page.requests[1].options.signal.aborted, true);
@@ -260,7 +260,7 @@ test('failed reconciliation after a rejected run retains guards and retry until 
 
 test('stop fences an in-flight reconciliation after a rejected run', async () => {
   const waiting = deferred();
-  const page = await fixture([status(false), () => response({ error: 'CONTROLLED_OTHER_TAB_OWNS_RUN' }, 409), () => waiting.promise, { stopped: true }]);
+  const page = await fixture([status(false), () => response({ error: 'CONTROLLED_OTHER_TAB_OWNS_RUN' }, 409), () => waiting.promise, { stopped: true }, status(false)]);
   try {
     const running = page.element('run').onclick(); await flush();
     assert.equal(page.requests[2]?.url, '/api/status');
@@ -268,6 +268,83 @@ test('stop fences an in-flight reconciliation after a rejected run', async () =>
     assert.equal(page.requests[2].options.signal.aborted, true);
     assert.equal(page.requests[3].url, '/api/stop');
     waiting.resolve(response(status(true))); await running; await flush();
+    assert.equal(page.element('run').disabled, false);
+    assert.equal(page.element('restore').disabled, false);
+    assert.match(page.element('connection').textContent, /run stopped/i);
+    assert.equal(page.pending(), 0);
+  } finally { waiting.resolve(response(status(false))); await flush(); page.cleanup(); }
+});
+
+test('Stop acknowledgement retains guards until the server confirms idle', async () => {
+  const waiting = deferred();
+  const page = await fixture([status(true), { stopped: true }, () => waiting.promise, status(true), status(false)]);
+  try {
+    const stopping = page.element('stop-run').onclick(); await flush();
+    assert.equal(page.requests[1].url, '/api/stop');
+    assert.equal(page.requests[2]?.url, '/api/status');
+    assert.equal(page.element('run').disabled, true);
+    assert.equal(page.element('restore').disabled, true);
+    assert.equal(page.element('stop-run').disabled, true);
+    assert.match(page.element('connection').textContent, /stopping/i);
+    assert.doesNotMatch(page.element('toast').textContent, /run stopped/i);
+    await page.element('stop-run').onclick(); await flush();
+    assert.equal(page.requests.length, 3);
+    waiting.resolve(response(status(true))); await stopping;
+    assert.equal(page.pending(), 1); await page.poll();
+    assert.equal(page.element('run').disabled, true);
+    assert.equal(page.element('restore').disabled, true);
+    assert.equal(page.pending(), 1); await page.poll();
+    assert.equal(page.element('run').disabled, false);
+    assert.equal(page.element('restore').disabled, false);
+    assert.equal(page.element('stop-run').disabled, true);
+    assert.equal(page.element('export').disabled, true);
+    assert.match(page.element('connection').textContent, /run stopped/i);
+    assert.equal(page.pending(), 0);
+  } finally { waiting.resolve(response(status(false))); await flush(); page.cleanup(); }
+});
+
+test('Stop confirmation failures retain uncertainty and retry until verified idle', async () => {
+  for (const failure of [
+    () => { throw Error('CONTROLLED_STOP_CONFIRMATION_NETWORK_FAILURE'); },
+    () => response({ error: 'CONTROLLED_STOP_CONFIRMATION_HTTP_FAILURE' }, 503),
+    { local: true, token: 'CONTROLLED_TEST_ONLY_TOKEN' },
+  ]) {
+    const page = await fixture([status(true), { stopped: true }, failure, status(false)]);
+    try {
+      await page.element('stop-run').onclick();
+      assert.equal(page.requests[2]?.url, '/api/status');
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.element('restore').disabled, true);
+      assert.equal(page.element('stop-run').disabled, true);
+      assert.match(page.element('connection').textContent, /may still be running/i);
+      assert.doesNotMatch(page.element('toast').textContent, /run stopped/i);
+      page.element('language').onclick();
+      assert.match(page.element('connection').textContent, /serveur est peut-être toujours actif/i);
+      assert.equal(page.pending(), 1); await page.poll();
+      assert.equal(page.element('run').disabled, false);
+      assert.equal(page.element('restore').disabled, false);
+      assert.doesNotMatch(page.element('connection').textContent, /CONTROLLED_STOP_CONFIRMATION/);
+      assert.equal(page.pending(), 0);
+    } finally { page.cleanup(); }
+  }
+});
+
+test('page lifecycle aborts and fences pending Stop confirmation then resumes on return', async () => {
+  const waiting = deferred();
+  const page = await fixture([status(true), { stopped: true }, () => waiting.promise, status(true), status(false)]);
+  try {
+    const stopping = page.element('stop-run').onclick(); await flush();
+    assert.equal(page.requests[2]?.url, '/api/status');
+    page.dispatch('pagehide');
+    assert.equal(page.requests[2].options.signal.aborted, true);
+    waiting.resolve(response(status(false))); await stopping;
+    assert.equal(page.element('run').disabled, true);
+    assert.equal(page.element('restore').disabled, true);
+    assert.equal(page.pending(), 0);
+    page.dispatch('pageshow'); await flush();
+    assert.equal(page.requests[3]?.url, '/api/status');
+    assert.equal(page.element('run').disabled, true);
+    assert.equal(page.pending(), 1); await page.poll();
     assert.equal(page.element('run').disabled, false);
     assert.equal(page.element('restore').disabled, false);
     assert.match(page.element('connection').textContent, /run stopped/i);
