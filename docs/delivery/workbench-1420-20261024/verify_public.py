@@ -68,13 +68,22 @@ def main():
         "install_agent.py",
         "alpha_factory_v1-1.42.0-py3-none-any.whl",
         "alpha-agent-v1.42.0-public-validation-packs.json",
-        "alpha-agent-v1.42.0-public-validation-core-001.zip",
     }
     assert selected <= set(names), selected - set(names)
     start = time.monotonic()
+    report_paths = (
+        "public-pages/successor-workbench/browser-report.json",
+        "public-pages/successor/successor.json",
+        "public-pages/successor-alpha/report.json",
+        "public-pages/homepage/homepage.json",
+        "public-pages/homepage/ti-guide/report.json",
+    )
+    preverified = {}
 
     def verify(asset):
         name = asset["name"]
+        if name in preverified:
+            return preverified[name]
         sha = hashlib.sha256()
         count = 0
         destination = assets_dir / name
@@ -95,6 +104,17 @@ def main():
             if stream is not None:
                 stream.close()
 
+    # Resolve report packs from the public inventory; do not assume a shard layout.
+    inventory_name = "alpha-agent-v1.42.0-public-validation-packs.json"
+    (inventory_asset,) = [asset for asset in assets if asset["name"] == inventory_name]
+    preverified[inventory_name] = verify(inventory_asset)
+    inventory = json.loads((assets_dir / inventory_name).read_bytes())
+    assert inventory["commit"] == args.commit and inventory["version"] == "1.42.0"
+    for relative in report_paths:
+        (row,) = [row for row in inventory["files"] if row["path"] == relative]
+        (part,) = row["parts"]
+        assert part["pack"] in names and part["member"] == relative
+        selected.add(part["pack"])
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         records = list(pool.map(verify, assets))
     sums = {}
@@ -116,21 +136,15 @@ def main():
     assert workbench["page_sha256"] == "903c2638a11f4b14a2cc2d817ed89563ac51af3545aedfc9ffc5c4f209bcb1f9"
     assert workbench["languages"] == ["en", "fr"] and workbench["viewports"] == [1440, 390, 320]
     assert workbench["axe"] == workbench["keyboard"] == workbench["offline_save_reopen"] == "PASS"
-    pack_name = "alpha-agent-v1.42.0-public-validation-core-001.zip"
-    inventory = json.loads((assets_dir / "alpha-agent-v1.42.0-public-validation-packs.json").read_bytes())
-    assert inventory["commit"] == args.commit and inventory["version"] == "1.42.0"
     audited_reports = []
-    with zipfile.ZipFile(assets_dir / pack_name) as archive:
-        for relative in (
-            "public-pages/successor-workbench/browser-report.json",
-            "public-pages/successor/successor.json",
-            "public-pages/successor-alpha/report.json",
-            "public-pages/homepage/homepage.json",
-            "public-pages/homepage/ti-guide/report.json",
-        ):
+    for relative in report_paths:
+        (row,) = [row for row in inventory["files"] if row["path"] == relative]
+        (part,) = row["parts"]
+        with zipfile.ZipFile(assets_dir / part["pack"]) as archive:
             (row,) = [row for row in inventory["files"] if row["path"] == relative]
             (part,) = row["parts"]
-            assert part["pack"] == pack_name and part["member"] == relative
+            assert part["member"] == relative
+            assert archive.getinfo(relative).file_size == row["bytes"] == part["bytes"]
             raw = archive.read(relative)
             assert len(raw) == row["bytes"] == part["bytes"]
             assert hashlib.sha256(raw).hexdigest() == row["sha256"] == part["sha256"]

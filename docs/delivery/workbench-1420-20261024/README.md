@@ -17,12 +17,24 @@ aedc92779c142bded5bf552ecfb3e0b6ba8f8fba. Normal main run40122949132 remains
 unqualified: three runtime cells first passed1055 runtime cases then failed26
 generated demo-page version assertions; a separate MARK keyboard timeout is
 retained by its owner. Correction #4894/90568ad6d2aa0155804e3bbaf72d73d3b6b5c975
-has configured review6388392560 with no findings. Its six applicable hosted
-groups, exact resulting-main qualification and public1.42 publication are pending
-at this checkpoint. No failed assertion, protected pin, historical release or
+has configured review6388392560 with no findings. All six applicable hosted
+groups passed (22 successful check records and2 expected skips), and it merged
+normally as c352bad0a0941fdccd490a7224e3efd1b8de45d5 with the exact reviewed
+treeae702f8acdec8fdf7aca62885fb096203393a72f. Fresh resulting-main qualification
+40127190760 and public1.42 publication remain pending at this checkpoint.
+No failed assertion, protected pin, historical release or
 permission control was weakened. Independent focused generated-doc validation:
 183 passed,1 skipped,12.71s; second generation byte-identical. The source owner
 separately reports933 complete publication cases and154 legacy-fragment cases.
+
+Original-lineage preparation05122217c71ec4317e822445f16e2ce9e0177460,
+treed34e2b55ca9d52107fb32fa0089f7ad20328a89b, retains ordered parentsf286 and
+actual mainc352. Its44 development cases pass in20.41s with one inherited
+Starlette warning. All8 original Harness/bridge paths are byte/mode-identical;
+all other actual-main leaves are identical;6 additions and0 removals. The five
+protected source/test pins remain unchanged. This is an unreferenced preparation,
+with no canonical adoption, replacement review, merge clearance, publication or
+installed qualification. Original review and merge decisions remain unresolved.
 
 The supplied1.42 procedures are prepared and unexecuted against public1.42:
 
@@ -33,7 +45,8 @@ The supplied1.42 procedures are prepared and unexecuted against public1.42:
    outside the source checkout; `pip check`, installed version/origin and module
    SHA25687ad9f365ebf1b5c1e93edc275e6fe933b6c247e51b848b52dc66c34344a8492.
 3. `accept_installed.py`: existing16-command CLI journey, immutable caller inputs,
-   forced two-worker first use, genuine incomplete-role refusals, interrupted
+   forced two-worker first use, concurrent duplicate refusal/later acknowledgement,
+   genuine incomplete-role refusals, interrupted
    recovery, export/explicit restore and the existing bounded successor rehearsal.
    Its retain-incumbent/HOLD outcome grants no production authority.
 4. `verify_upgrade.py`: a private copy of the stopped1.41.1 load home, consistent
@@ -42,7 +55,9 @@ The supplied1.42 procedures are prepared and unexecuted against public1.42:
 5. `measure_installed.py`: finite1/4/16/64 workloads, max1/2/4/4 in flight, fresh
    home per level; throughput, latency, errors, CPU, storage, sampled RSS and
    individual process high-water marks. One sample per level is not general scale
-   qualification. Human review time and allocated machine price remain unknown.
+   qualification. Timed execution starts after home initialization/example retrieval.
+   Construction, ancestor monetary cost, human review time and allocated machine
+   price remain unmeasured; the receipt claims operating resource samples only.
 6. `verify_site.py`: anonymous byte readback of nine actual deployed routes and
    the retained preferred PDF. Mobile/EN/FR/keyboard/axe/offline behavior belongs
    to actual source-bound public browser reports, not an HTTP-only inference.
@@ -57,6 +72,9 @@ instrument validation numbers, not mission performance. Sampled sums can miss
 peaks and double-count shared pages; individual high-water marks do not form a
 simultaneous combined peak. No speed/memory improvement is claimed over the old
 procedure. `validate_memory_sampler.py` reproduces the corrected sanity method.
+The applicability receipt verifies that this exact sampler function remains
+unchanged through later cost-metadata edits. The public verifier now resolves
+report pack names through the verified inventory, without assuming a shard ordinal.
 
 No private homes, local role keys, API tokens or SQLite stores belong in this
 public checkpoint. Only explicit public receipts/scripts/logs are selected.
@@ -68,7 +86,7 @@ the preserved1.41.1 release.
 | Route | Exact current scope | Qualification |
 |---|---|---|
 | Alpha1.41.1 /787bc547 | Public106 assets, fresh local installation and fixed-worker mission/recovery; concurrency failure retained | Standalone core accepted; load failed |
-| Alpha1.42.0 / corrected-main pending | Cold-start guard plus browser guide; normal correction #4894 | Not yet published or installed |
+| Alpha1.42.0 /c352bad0 | Cold-start guard plus browser guide; merged correction #4894 | Main qualification pending; not published or installed |
 | Jobs discovery-v2.1.0-rc.20 /f7c00e668fe31ce1ea907f0006b6c14dc9db5e01 | Historical accepted local API route; AGIALPHA path remains separate | No Alpha1.42 tuple qualification |
 | Manager1.20.1 /c5958eae872458c2f3cac48fea0b4bbfadc6ac6c | Historical accepted local commissioning/review route; USDC6 | No Alpha1.42 tuple qualification |
 | Fleet candidate d0d4459b48a6cb45b0b6393be5099484ad8c6313 | Separate unfinished combined candidate; canonical main45759fb0 | Not native/adopted/released/installed qualified |
@@ -78,6 +96,9 @@ the preserved1.41.1 release.
 Fresh metadata inspection at this checkpoint finds Jobs rc20, Manager1.20.1 and
 Fleet local-skills-preview.5 still public. Newer owner candidates are not silently
 treated as releases. Current cross-product/native qualification stays false.
+The existing Jobs rc21 and Manager1.20.2 candidates explicitly target Alpha1.41.0,
+not Alpha1.42. A new finite consumer profile requires owner-led adoption of actual
+public source/artifact identities; no historical pin is changed automatically.
 No four excluded native objectives, five protected source/test files, financial
 transactions, contract deployments or security settings are touched.
 

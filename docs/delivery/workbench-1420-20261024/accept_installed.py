@@ -156,6 +156,45 @@ assert all(record["state"] == "review" and record["authority"] == [] for record 
 assert {record["run_id"] for record in cold_results} == {first_id, second_id}
 assert cold_journal.verify()["valid"]
 
+duplicate_home = root / "concurrent-duplicate-home"
+duplicate_journal = Journal.initialize(duplicate_home)
+duplicate_id = str(uuid.uuid4())
+worker_entered, release_worker = threading.Event(), threading.Event()
+duplicate_worker_calls = []
+original_invoke = workbench.invoke
+
+
+def hold_duplicate_worker(request, *other):
+    if request["operation"] == "run":
+        duplicate_worker_calls.append(duplicate_id)
+        worker_entered.set()
+        assert release_worker.wait(10)
+    return original_invoke(request, *other)
+
+
+workbench.invoke = hold_duplicate_worker
+try:
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        first = pool.submit(workbench.execute, duplicate_home, cold_spec, duplicate_id)
+        try:
+            assert worker_entered.wait(5)
+            second = pool.submit(workbench.execute, duplicate_home, cold_spec, duplicate_id)
+            try:
+                second.result(timeout=5)
+            except Conflict:
+                pass
+            else:
+                raise AssertionError("Duplicate request escaped the existing active attempt")
+        finally:
+            release_worker.set()
+        duplicate_result = first.result(timeout=10)
+    duplicate_checkpoint = duplicate_journal.verify()
+    assert workbench.execute(duplicate_home, cold_spec, duplicate_id) == duplicate_result
+    assert duplicate_journal.verify() == duplicate_checkpoint
+    assert duplicate_worker_calls == [duplicate_id]
+finally:
+    workbench.invoke = original_invoke
+
 partial_refusals = []
 for missing in ("principals.json", "local-verifier.key"):
     partial_home = root / ("partial-" + missing)
@@ -257,6 +296,14 @@ receipt = {
     "mutation_regressions": mutation_results,
     "recovery_attempts": recovered["attempts"],
     "forced_cold_start": {"requests": 2, "completed": 2, "journal": cold_journal.verify(), "authority": []},
+    "concurrent_duplicate": {
+        "simultaneous_requests": 2,
+        "worker_executions": len(duplicate_worker_calls),
+        "active_duplicate_refused": True,
+        "later_duplicate_acknowledged": True,
+        "no_history_added_by_later_acknowledgement": True,
+        "journal": duplicate_checkpoint,
+    },
     "genuine_partial_inventory_refusals": partial_refusals,
     "successor_rehearsal": {
         "scope": "Existing bounded streaming-metrics-v1 native two-generation rehearsal; synthetic public workloads",
