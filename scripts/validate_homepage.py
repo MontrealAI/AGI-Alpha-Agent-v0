@@ -131,6 +131,57 @@ def assert_paper_links(page: Page, language: str) -> None:
     assert "undefined" not in papers.inner_text()
 
 
+def assert_research_edition_guides(page: Page, origin: str, output: Path) -> None:
+    """Exercise the catalogued reading guides on the same accepted page origin."""
+    records = [record for record in load_catalog()["papers"] if "reading" in record.get("resources", {})]
+    assert records, "The published research reading guides must remain available"
+    for record in records:
+        href = resource_href("reading", record["resources"]["reading"])
+        for width in (1440, 390, 320):
+            page.set_viewport_size({"width": width, "height": 1000})
+            page.goto(origin + href + "?lang=en", wait_until="networkidle")
+            expect(page.locator("html")).to_have_attribute("lang", "en")
+            page.keyboard.press("Tab")
+            expect(page.locator(".skip")).to_be_focused()
+            page.keyboard.press("Enter")
+            assert urlsplit(page.url).fragment == "main"
+            page.keyboard.press("Tab")
+            pdf = page.locator('.actions a[type="application/pdf"]')
+            expect(pdf).to_be_focused()
+            assert inspect(page, "parseFloat(getComputedStyle(document.activeElement).outlineWidth)") > 0
+            assert pdf.evaluate("(link) => link.href") == origin + record["pdf"]["path"].removeprefix("docs/")
+            tex = page.locator(".actions a[download]")
+            assert tex.evaluate("(link) => link.href") == origin + record["tex"]["path"].removeprefix("docs/")
+            expect(page.locator('aside a[download][href="./index.html"]')).to_be_visible()
+            history_length = inspect(page, "history.length")
+            for language in ("fr", "en"):
+                control = page.locator(f'.languages a[data-set-language="{language}"]')
+                control.focus()
+                page.keyboard.press("Enter")
+                expect(page.locator("html")).to_have_attribute("lang", language)
+                expect(page.locator("html")).to_have_attribute("data-ui-language", language)
+                expect(control).to_have_attribute("aria-current", "true")
+                expect(page.locator(f'main [data-language="{language}"]').first).to_be_visible()
+                other = "en" if language == "fr" else "fr"
+                expect(page.locator(f'main [data-language="{other}"]').first).not_to_be_visible()
+                assert parse_qs(urlsplit(page.url).query).get("lang") == [language]
+                assert inspect(page, "history.length") == history_length
+                links = page.locator("[data-site-language]")
+                assert links.count() > 0
+                for link in links.all():
+                    target = link.evaluate("(element) => element.href")
+                    assert parse_qs(urlsplit(target).query).get("lang") == [language]
+                assert inspect(page, "document.documentElement.scrollWidth <= innerWidth + 1")
+                if language == "fr":
+                    page.reload(wait_until="networkidle")
+                    expect(page.locator("html")).to_have_attribute("lang", "fr")
+                    expect(page.locator('main [data-language="fr"]').first).to_be_visible()
+                if (width, language) in {(1440, "en"), (320, "fr")}:
+                    page.screenshot(
+                        path=str(output / f"homepage-research-guide-{record['id']}-{language}-{width}.png"), full_page=True
+                    )
+
+
 def assert_reading_links(page: Page, language: str) -> None:
     """Language switches preserve each guide's visible text and hidden context."""
     guides = page.locator("#reading .reading-card .reading-guide")
@@ -655,6 +706,8 @@ def validate(
             report["checks"].append("no-javascript-content-and-navigation")
             report["ecosystem"] = validate_ecosystem(browser, origin, output / "ecosystem", axe_source)
             report["checks"].append("paired-system-guide")
+            assert_research_edition_guides(page, origin, output)
+            report["checks"].append("bilingual-research-edition-guides")
             assert not report["browser_errors"], report["browser_errors"]
             report["passed"] = True
             browser.close()

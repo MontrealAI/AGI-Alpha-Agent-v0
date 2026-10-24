@@ -94,6 +94,8 @@ def verify_report(report: dict[str, Any], commit: str, version: str, origin: str
         required_checks.add("qualified-research-experience-bytes")
         if report.get("research_experience_assets") != EXPERIENCE_ASSETS:
             raise ValueError("Research experiences require the exact catalogued source digests")
+    if tuple(int(part) for part in version.split(".")) >= (1, 41, 0):
+        required_checks.add("bilingual-research-edition-guides")
     if tuple(int(part) for part in version.split(".")) >= (1, 37, 1):
         required_checks.add("original-paper-bytes")
         if report.get("paper_assets") != PAPER_ASSETS:

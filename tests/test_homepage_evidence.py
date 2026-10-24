@@ -244,3 +244,14 @@ def test_featured_paper_evidence_rejects_each_missing_or_mismatched_digest(repor
         complete["paper_assets"][filename] = "0" * 64 if damage == "stale" else {"sha256": PAPER_ASSETS[filename]}
     with pytest.raises(ValueError, match="original PDF digests"):
         verify_report(complete, "a" * 40, "1.37.1", "https://site/")
+
+
+@pytest.mark.parametrize("prior_version", ["1.39.0", "1.40.0"])
+def test_research_guide_browser_evidence_is_required_from_1_41(report, prior_version):
+    complete = featured_paper_report(report, prior_version)
+    verify_report(complete, "a" * 40, prior_version, "https://site/")
+    complete["version"] = "1.41.0"
+    with pytest.raises(ValueError, match="every required journey"):
+        verify_report(complete, "a" * 40, "1.41.0", "https://site/")
+    complete["checks"].append("bilingual-research-edition-guides")
+    verify_report(complete, "a" * 40, "1.41.0", "https://site/")
