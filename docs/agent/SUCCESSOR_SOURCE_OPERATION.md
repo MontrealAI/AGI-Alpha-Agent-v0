@@ -19,7 +19,7 @@ Use new paths; `--home` precedes the command and `--output` precedes the study a
 
 ```sh
 alpha-agent --home ./source-state init
-alpha-agent successor-study --output source-operation.json operation-example
+alpha-agent successor-study --output source-operation.json operation-example --retained-artifacts
 alpha-agent --home ./source-state successor-study --output source-result.json operation-start source-operation.json
 ```
 
@@ -36,10 +36,30 @@ browser-first `/try/` experience explores browser-local work and does not keep a
 
 ## Useful mission and evidence
 
+The recommended example explicitly selects `shared-closed-artifacts`. A validated completed training task supplies
+one closed `SelectionProgram`, its exact source/result origin and charter to the existing study freeze. Subsequent
+tasks materialize that same program as a candidate through the installed operator registry. Its old result is never
+copied as a new answer: new inputs receive new construction observations, a new freeze and fresh terminal checks.
+Both `successor-reuse` and `conventional-reuse` receive the identical retained artifact, tools and budgets. A strong
+direct-construction control can ignore the cache and does not pay for its materialization. The incumbent remains
+when no candidate wins; a simpler program can be selected when changed requirements make reuse unhelpful.
+
+Status exposes the retained artifact/program digests, exact completed origin, fresh trials and fresh selections.
+Committed comparisons using a retained worker are recorded separately from search/checking units. Source/origin
+validation occurs at each native entry point; its work and recovery overhead are included in measured CPU, with
+unclean-exit work explicitly unknown, rather than presented as one complete logical-operation count.
+Training construction costs remain in the campaign totals. Retention permits a fresh local trial only: it contains
+no production authority, active grant, imported trust or permission to deploy itself. Unsafe/stale artifacts fail
+closed. Omitting `--retained-artifacts` preserves the earlier cold policy-only example with `archive_access='none'`;
+that earlier edition is not inheritance evidence. Equal conventional reuse can erase any apparent advantage.
+
 A technical reader uses these notes to retain prerequisite qualifications in concise release notes. An incoming
 `CampaignUnit` has annotated public/nonpersonal clauses, provenance, weights and an acyclic prerequisite graph.
-Sources are inline; URLs record provenance and are never fetched. The default example is explicitly synthetic.
-Acceptance requires at most two exact source clauses, retained references, recomputed supported coverage and visible
+Sources are inline; URLs record provenance and are never fetched. The retained-program example starts with the
+existing public-paper example at source SHA256 `9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f`,
+then changes to explicitly synthetic graphs. Source weights/dependencies are local judgments. The cold example is synthetic.
+Acceptance requires at most three exact source clauses in the retained profile (two in the cold profile), retained
+references, recomputed supported coverage and visible
 unsupported selections. The weighted coverage objective is structural. Incomplete/over-budget checks cannot support
 improvement. Source annotations, reader comprehension, physical validity, customer demand and profit remain unproven.
 

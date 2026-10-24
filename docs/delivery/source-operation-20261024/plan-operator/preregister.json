@@ -1,0 +1,23 @@
+{
+  "schema": "source-operation-qualification-plan/v1",
+  "created_utc": "2026-10-24T18:32:35.434894+00:00",
+  "workloads_sha256": {
+    "continuous.json": "00ac174d58910acbc79a24458b9c7513edf512e745b740d56f57e60233b9f0d7",
+    "active-stop.json": "309fc8343ec66a6c5c8410772d3265381abe849becf89801bb315ebbd96043c0",
+    "load-10.json": "cb0b07abd72b25316233dfd179f4564064555dc7a9f70d0a566b7933edd47609",
+    "deadline-10.json": "2a38921f54425577c746ebc9c51da16c4f87f29a1f67cf43ff278b2896f38df0"
+  },
+  "runtime_sources": {
+    "alpha_factory_v1.core.runtime.successor.campaign_operation": "738c32a9988bcbd32f94b074b68597a99d5be16f5d74948a07e2f4e0ae8dc773",
+    "alpha_factory_v1.core.runtime.successor.campaign_experiment": "69655694436f532bea22d699e9806ead26a646d6bbdba8853a326d22b80180e8",
+    "alpha_factory_v1.core.runtime.successor.transformation": "f9ad56cd15e943c31a6549e397060815839b498d1c574ce7fc5ef5800f066764"
+  },
+  "maximum_campaign_seconds": 60,
+  "workload_fixed_before_execution": true,
+  "fault": "SIGKILL after first child commits, before parent attachment; one restart through unchanged CLI",
+  "stop": "permanent operation-stop during first child handoff; stale handoff must fail",
+  "load": "Timed four-unit operation, active STOP, ten-unit burst and one-second ten-unit deadline; prior curves retained.",
+  "claim": "Final operator-view and control requalification on unchanged earlier workload bytes; not new independent capability evidence.",
+  "human_effort": "Setup/engineering/review minutes unmeasured; fault controller and restart disclosed.",
+  "qualification_phase": "operator-output-routing-regression/v1"
+}

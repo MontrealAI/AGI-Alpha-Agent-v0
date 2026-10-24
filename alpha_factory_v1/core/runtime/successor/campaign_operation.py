@@ -32,10 +32,17 @@ def _driver() -> str:
     return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
-def example() -> OperationSpec:
+def example(*, retained_artifacts: bool = False) -> OperationSpec:
     """Reuse the shipped source-selector task and grammar on visibly synthetic changed inputs."""
     from .campaign_experiment import DiscoveryPolicy
-    from .transformation import DiscoveryRequest, IntentCharter, SourceClaim, SourceDocument, pilot_request
+    from .transformation import (
+        DiscoveryRequest,
+        IntentCharter,
+        SourceClaim,
+        SourceDocument,
+        pilot_document,
+        pilot_request,
+    )
 
     raw = pilot_request().charter.model_dump()
     raw.update(
@@ -44,6 +51,12 @@ def example() -> OperationSpec:
         max_clauses=2,
     )
     raw["budgets"].update(search_units=10_000, execution_units=10_000)
+    if retained_artifacts:
+        raw[
+            "purpose"
+        ] = "Prepare prerequisite-preserving technical source notes for a reader under a three-clause limit."
+        raw["population"] = "public and synthetic annotated source graphs; no reader-comprehension claim"
+        raw["max_clauses"] = 3
     charter = IntentCharter.model_validate(raw)
 
     def unit(label: str, index: int) -> CampaignUnit:
@@ -96,11 +109,44 @@ def example() -> OperationSpec:
             "exact-search comparator sees the same inputs and budgets. No independent sampling claim."
         ),
     )
+    if retained_artifacts:
+        raw_study = study.model_dump()
+        raw_study.update(
+            archive_access="shared-closed-artifacts",
+            incumbent_policy="conventional-reuse",
+            population=(
+                "One existing public-paper example plus changed synthetic source graphs; " "local annotation judgments."
+            ),
+        )
+        raw_study["policies"] = [
+            {
+                "identity": "conventional-reuse",
+                "operator_ids": ["retained-program", "complementary"],
+                "max_candidates": 4,
+            },
+            {"identity": "successor-reuse", "operator_ids": ["retained-program", "complementary"], "max_candidates": 4},
+            {"identity": "direct-construction", "operator_ids": ["complementary"], "max_candidates": 4},
+        ]
+        study = PolicyStudy.model_validate(raw_study)
+    training = unit("training", 0)
+    if retained_artifacts:
+        public_request = pilot_request().model_dump()
+        public_request["charter"] = charter.model_dump()
+        documents = [*public_request["development"], pilot_document(confirmation=True).model_dump()]
+        for document in documents:
+            document["source_url"] = (
+                "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/"
+                "787bc547f8c44854931b316d7286b8bc9f9c8bba/docs/Transformational_Intelligence.tex"
+            )
+        public_request["development"] = documents[:-1]
+        training = CampaignUnit(
+            unit_id="training", request=DiscoveryRequest.model_validate(public_request), terminal=[documents[-1]]
+        )
     return OperationSpec(
         operation_id=str(uuid.uuid4()),
         study=study,
         accountable_operator="local-operator",
-        training=[Arrival(after_ms=0, unit=unit("training", 0))],
+        training=[Arrival(after_ms=0, unit=training)],
         confirmation=[
             Arrival(after_ms=4000 + index * 4000, unit=unit("arrival-" + str(index + 1), index + 1))
             for index in range(3)
@@ -189,6 +235,15 @@ def validate_child(parent: dict[str, Any], request: Any) -> None:
     link = parent["operation"]
     if request.campaign_id != link.get("child") or _now() < link.get("due_ms", 2**63):
         raise Conflict("child is not the due operation mission")
+
+
+def validate_batch(journal: Journal, parent: dict[str, Any], units: list[CampaignUnit], phase: str, cx: Any) -> None:
+    """Bind every reservation entry point to the approved submitted arrival commitments."""
+    record = validate_authority(journal, parent, cx)
+    expected = [(item["unit_id"], item["input_digest"]) for item in record["spec"][phase]]
+    actual = [(unit.unit_id, digest("operation-unit", unit)) for unit in units]
+    if actual != expected:
+        raise Conflict("reserved batch differs from the approved submitted operation inputs")
 
 
 class CampaignOperation:
@@ -327,12 +382,22 @@ class CampaignOperation:
             self.experiment._ready(parent, cx)
             data = Journal.document(record)
             attempts = [
-                attempt for attempt in data["attempts"] if attempt["child"] == child and attempt["phase"] == phase
+                attempt
+                for attempt in data["attempts"]
+                if attempt["child"] == child
+                and attempt["phase"] == phase
+                and attempt.get("kind", "execute") != "reconcile"
             ]
             for attempt in attempts:
                 if attempt["state"] == "running":
                     attempt["state"], attempt["unmeasured_crash_work"] = "interrupted", True
-            if len(attempts) >= spec.max_attempts:
+            reconcile = False
+            if child:
+                try:
+                    reconcile = self.experiment.loop.show(child)["state"] == "completed"
+                except KeyError:
+                    pass
+            if not reconcile and len(attempts) >= spec.max_attempts:
                 data["state"] = "hold"
                 data["failure"] = {
                     "type": "AttemptBudgetExhausted",
@@ -340,7 +405,15 @@ class CampaignOperation:
                     "action": "inspect retained attempts; new approval required",
                 }
                 return self.journal.append(cx, KEY + operation_id, data)
-            data["attempts"].append({"phase": phase, "child": child, "state": "running", "started_ms": _now()})
+            data["attempts"].append(
+                {
+                    "phase": phase,
+                    "child": child,
+                    "state": "running",
+                    "started_ms": _now(),
+                    "kind": "reconcile" if reconcile else "execute",
+                }
+            )
             record = self.journal.append(cx, KEY + operation_id, data)
             parent_data = Journal.document(parent)
             parent_data["operation"].update(child=child, due_ms=due)
@@ -424,6 +497,7 @@ class CampaignOperation:
         parent = self.experiment.show(record["spec"]["study"]["study_id"])
         phases = {phase: (parent.get(phase) or {}).get("runs", []) for phase in ("training", "confirmation")}
         runs = [run for group in phases.values() for run in group]
+        artifact = (parent.get("freeze") or {}).get("manifest", {}).get("retained_program")
         spent = {}
         for phase in ("training", "confirmation"):
             for plan in (parent.get(phase) or {}).get("planned_campaigns", []):
@@ -432,11 +506,16 @@ class CampaignOperation:
                 except KeyError:
                     continue
         latest_output = None
-        if runs:
-            child = self.experiment.loop.show(runs[-1]["campaign_id"])
+        selected = (
+            (parent.get("freeze") or {}).get("manifest", {}).get("selected_policy", parent["spec"]["incumbent_policy"])
+        )
+        selected_runs = [run for run in runs if run["policy"] == selected]
+        if selected_runs:
+            chosen = selected_runs[-1]
+            child = self.experiment.loop.show(chosen["campaign_id"])
             latest_output = {
-                "unit": runs[-1]["unit_id"],
-                "policy": runs[-1]["policy"],
+                "unit": chosen["unit_id"],
+                "policy": chosen["policy"],
                 "notes": (child.get("result") or {}).get("results", {}).get("candidate", []),
             }
         active = False
@@ -455,6 +534,16 @@ class CampaignOperation:
             "operator": record["spec"]["accountable_operator"],
             "expires_ms": record["expires_ms"],
             "completed_mission_comparisons": len(runs),
+            "retained_capability": {
+                "profile": parent["spec"]["archive_access"],
+                "program_digest": artifact["program_digest"] if artifact else None,
+                "artifact_digest": artifact["digest"] if artifact else None,
+                "origin_campaign": artifact["origin_campaign"] if artifact else None,
+                "fresh_trials": sum(bool(run.get("retained_program_tested")) for run in runs),
+                "fresh_selections": sum(bool(run.get("retained_program_selected")) for run in runs),
+                "comparisons_with_retained_worker": sum(bool(run.get("retained_worker_bound")) for run in runs),
+                "authority_granted": False,
+            },
             "inconclusive": sum(run["status"] != "complete" for run in runs),
             "changed_since_training": parent.get("freeze"),
             "improvement_evidence": (parent.get("confirmation") or {}).get("observed_policy_gain_ppm"),
