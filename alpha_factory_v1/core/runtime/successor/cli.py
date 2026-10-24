@@ -31,6 +31,9 @@ def add_commands(commands: Any) -> None:
     from .campaign_experiment_cli import add_commands as add_study_commands
     from .transformation_model_cli import add_commands as add_model_commands
 
+    from .enterprise import add_commands as add_enterprise_commands
+
+    add_enterprise_commands(commands)
     add_work_commands(commands)
     add_computer_commands(commands)
     add_transformation_commands(commands)
@@ -261,6 +264,10 @@ def _restore(args: argparse.Namespace) -> dict[str, Any]:
 
 def handle(args: argparse.Namespace) -> dict[str, Any]:
     """Validate external inputs before creating any mission state."""
+    if args.command == "successor-harness":
+        from .enterprise import handle as handle_enterprise
+
+        return handle_enterprise(args)
     if args.command == "successor-cycle":
         return _cycle(args)
     if args.command == "successor-computer":
