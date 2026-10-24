@@ -1,4 +1,4 @@
-[Project notice](../../../DISCLAIMER_SNIPPET.md)
+[Project notice](../../DISCLAIMER_SNIPPET.md)
 
 # Current-main and rejected-Run reconciliation
 
