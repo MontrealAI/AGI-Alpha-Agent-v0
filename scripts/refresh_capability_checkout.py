@@ -168,11 +168,11 @@ COMPANION_141_EXTRA_FILES = RESEARCH_GUIDES_140_EXTRA_FILES | {
 # The 1.41.1 input-snapshot patch changes only this complete generated cache edition.
 # Retain every prior edition; source admission still rejects mixed worker bytes.
 WORKBENCH_1411_EXTRA_FILES = COMPANION_141_EXTRA_FILES | {
-    "docs/service-worker.js": (23479, "b1a52ce0de55629d56fe6dc755a435d6f94c23fd456277092a1d94c151d2cc9d"),
-    "docs/assets/service-worker.js": (23915, "0f44cecfc4eb20112824991566d9e05737a6901c87a50401dba8751525052e95"),
+    "docs/service-worker.js": (23479, "96e6ff02fe1d1e19dd6c41f8bda185cfc4a04ea7fa59784704ef21a2e24f22c7"),
+    "docs/assets/service-worker.js": (23915, "810710143b37cefdcff04666da7a5026e8a88c494302f8651510c69f767f85b6"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26531,
-        "1249abc6d2cb8265e4632c57655c8b8dabc5f320129112ee72ca482fc5ab2aea",
+        "3ae68c4862b07c2c9538f2be37e5bf73f32a6161b345e0aad0b86a20d17295bf",
     ),
 }
 
