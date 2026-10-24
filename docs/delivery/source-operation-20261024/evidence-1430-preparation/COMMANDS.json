@@ -1,0 +1,196 @@
+[
+  {
+    "label": "venv",
+    "command": [
+      "$BUILD_PYTHON",
+      "-m",
+      "venv",
+      "--system-site-packages",
+      "$ACCEPTANCE_ROOT/venv"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.6950905323028564,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "install",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/python",
+      "-m",
+      "pip",
+      "install",
+      "--no-deps",
+      "$ACCEPTANCE_ROOT/wheel/alpha_factory_v1-1.43.0-py3-none-any.whl"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.1378307342529297,
+    "log_sha256": "c65a8993b539b0d866cce187ec3847ec8108e5b73ba39182c31b1b1a6472a340",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "installed-metadata",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/python",
+      "-I",
+      "-c",
+      "import alpha_factory_v1 as a,importlib.metadata as m,json,sys,pathlib,hashlib; p=pathlib.Path(a.__file__).resolve(); assert p.is_relative_to(pathlib.Path(sys.prefix)); assert a.__version__=='1.43.0'; print(json.dumps({'module':str(p),'version':a.__version__,'distribution_version':m.version('alpha-factory-v1'),'pyvenv':(pathlib.Path(sys.prefix)/'pyvenv.cfg').read_text(),'dependencies':{x:m.version(x) for x in ['cryptography','fastapi','httpx','numpy','pydantic','pydantic-settings','PyYAML','uvicorn','prometheus-client']},'module_sha256':hashlib.sha256(p.read_bytes()).hexdigest()}))"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 0.054746150970458984,
+    "log_sha256": "0866cd580e384b8056d8b49ea1166002bd2bad2bf76b2e431f19a03f20395e6f",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "installed-metadata-corrected",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/python",
+      "-I",
+      "-c",
+      "import alpha_factory_v1 as a,importlib.metadata as m,json,sys,pathlib,hashlib\np=pathlib.Path(a.__file__).resolve(); assert p.is_relative_to(pathlib.Path(sys.prefix)); assert a.__version__=='1.43.0'\ndeps={}\nfor x in ['cryptography','fastapi','httpx','numpy','pydantic','pydantic-settings','PyYAML','uvicorn','prometheus-client']:\n try: deps[x]=m.version(x)\n except m.PackageNotFoundError: deps[x]=None\nprint(json.dumps({'module':str(p),'version':a.__version__,'distribution_version':m.version('alpha-factory-v1'),'pyvenv':(pathlib.Path(sys.prefix)/'pyvenv.cfg').read_text(),'dependencies':deps,'module_sha256':hashlib.sha256(p.read_bytes()).hexdigest()}))"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.06332087516784668,
+    "log_sha256": "ae61649939ef60c30eae96c8f470a5dbcf63ec94a28be3dcabf004a4f4bd311d",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "version",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "--version"
+    ],
+    "exit": 1,
+    "elapsed_seconds": 0.15970826148986816,
+    "log_sha256": "b7738a073d7be9a5dd8c7cf3050244bea1e72c60bc7b844d503e53613b616067",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "installed-metadata-inherited",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/python",
+      "-I",
+      "-c",
+      "import alpha_factory_v1 as a,importlib.metadata as m,json,sys,pathlib,hashlib; p=pathlib.Path(a.__file__).resolve(); assert p.is_relative_to(pathlib.Path(sys.prefix)); assert a.__version__=='1.43.0'; print(json.dumps({'module':str(p),'version':a.__version__,'dependencies':{x:m.version(x) for x in ['cryptography','fastapi','httpx','numpy','pydantic','pydantic-settings','PyYAML','uvicorn','prometheus-client']},'module_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'paths':sys.path}))"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.07328581809997559,
+    "log_sha256": "ee9a212d1df5922cc5f6b76bf0468e79e52e39a7325e6e882854d37eaf472e07",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "version-inherited",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "--version"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.428727626800537,
+    "log_sha256": "a6ba533e6c4d49cd4234965e9684ec7c48746cf8f3144676aa8434090f413cf5",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "study-help",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "successor-study",
+      "--help"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.1351659297943115,
+    "log_sha256": "8764a35f3f3540796df3e5a5d6931e56c2998f0b658f34c698565129930dbad2",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "init",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "init"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.2212889194488525,
+    "log_sha256": "89beb1b9ecf91611c4e4dd82007fe1bd3322c601d9e31d30de985c2f4cc81aff",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "example",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/operation.json",
+      "operation-example",
+      "--retained-artifacts"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.506091833114624,
+    "log_sha256": "5925081d86088fe8ba1ba757b2206780be995952579546ddd2473037a54cf128",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "operation-start",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/result.json",
+      "operation-start",
+      "$ACCEPTANCE_ROOT/operation.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 15.034602880477905,
+    "log_sha256": "d1e873eb34949e7bf4951bda3f897c387205e74666d8dc9231a5e5c2793350da",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "operation-status",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/status.json",
+      "operation-status",
+      "c1857389-9921-449f-96f5-7be959a6d926"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.3273308277130127,
+    "log_sha256": "00c6e7d2fed27c3ca8a9782098218a315ad608218333ba0b2f7af6fbe7732e3b",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "operation-export",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/history.json",
+      "operation-export",
+      "c1857389-9921-449f-96f5-7be959a6d926"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.6433513164520264,
+    "log_sha256": "eee0a1fd272f2683377f2682d51179aae979eacd90b072c26fd807d7e2d95de5",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  },
+  {
+    "label": "journal-verify",
+    "command": [
+      "$ACCEPTANCE_ROOT/venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "verify"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.4831337928771973,
+    "log_sha256": "134b369a1c903c622b21e04a3304308919b05ef86cbef5bfd91ee47ca98fc9c2",
+    "command_path_display": "Explicit local-root placeholders; raw command receipt SHA recorded in provenance"
+  }
+]
