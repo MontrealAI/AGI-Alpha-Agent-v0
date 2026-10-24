@@ -1,0 +1,486 @@
+{
+  "schema": "successor-omega-package-build-and-reproduction/v1",
+  "checked_at_utc": "2026-10-24T13:06:09.986291+00:00",
+  "passed": true,
+  "review_scope": "Independent clean-path numerical/runtime reproduction and standalone PDF byte-identity rebuild. Same research effort; no organizational independence or physical instrumentation claim.",
+  "clean_copy": {
+    "source": "delivered paper/, sources/ and companion/",
+    "destination": "work/rebuild-verification/package",
+    "excluded": [
+      "__pycache__",
+      "*.pyc"
+    ],
+    "standalone_initial_files": [
+      "SUCCESSOR_Omega_Harness.tex"
+    ],
+    "original_deliverables_not_modified": true,
+    "new_evidence_outputs_only": [
+      "reproduction/BUILD_AND_REPRODUCTION.json",
+      "reproduction/rebuild/"
+    ]
+  },
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "dependency_environment": "Fresh pinned venv already verified in reproduction/setup/; no repeat installation performed.",
+    "compiler": "pdfTeX 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian)",
+    "tex_environment": {
+      "SOURCE_DATE_EPOCH": "1792800000",
+      "FORCE_SOURCE_DATE": "1",
+      "TZ": "UTC"
+    }
+  },
+  "commands": [
+    {
+      "step": "science_reproduction",
+      "command": [
+        "/workspace/scratch/ed5c9e2a4d54/work/setup-qa/venv/bin/python",
+        "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/package/companion/experiment/reproduce.py",
+        "--output",
+        "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/science"
+      ],
+      "cwd": "/workspace/scratch/ed5c9e2a4d54",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "elapsed_ns": 10390959209,
+      "log": "reproduction/rebuild/science_reproduction.log",
+      "log_sha256": "e5821e65d34ddfa6c75b7167ed3fa5727103e1c3c203db3491f3b44f24e8d0f5"
+    },
+    {
+      "step": "nominal_execution",
+      "command": [
+        "/workspace/scratch/ed5c9e2a4d54/work/setup-qa/venv/bin/python",
+        "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/package/companion/integration/run_integration.py",
+        "--output",
+        "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/nominal",
+        "--scenario",
+        "nominal"
+      ],
+      "cwd": "/workspace/scratch/ed5c9e2a4d54",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "elapsed_ns": 2783927964,
+      "log": "reproduction/rebuild/nominal_execution.log",
+      "log_sha256": "d6e847a7b02945a33b57180df064745bbea13d3f1d3ff471c5fcf5937ef843db"
+    },
+    {
+      "step": "nominal_verifier",
+      "command": [
+        "/workspace/scratch/ed5c9e2a4d54/work/setup-qa/venv/bin/python",
+        "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/package/companion/integration/verify_evidence.py",
+        "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/nominal",
+        "--output",
+        "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/nominal/independent-audit.json"
+      ],
+      "cwd": "/workspace/scratch/ed5c9e2a4d54",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "elapsed_ns": 92761185,
+      "log": "reproduction/rebuild/nominal_verifier.log",
+      "log_sha256": "f6bba249ca9743dc5fd1e21d2708f3efaeb1e3f2b593e649d117ff97034f9983"
+    },
+    {
+      "step": "pdflatex_version",
+      "command": [
+        "pdflatex",
+        "--version"
+      ],
+      "cwd": "/workspace/scratch/ed5c9e2a4d54",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "elapsed_ns": 2613317,
+      "log": "reproduction/rebuild/pdflatex_version.log",
+      "log_sha256": "64d3bedadc9885f9fbc5ebc4eb66de7dbb72dcf3f0748f5b8b6ca4030ded7062"
+    },
+    {
+      "step": "standalone_pdflatex_pass_1",
+      "command": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-no-shell-escape",
+        "SUCCESSOR_Omega_Harness.tex"
+      ],
+      "cwd": "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/standalone",
+      "environment_overrides": {
+        "SOURCE_DATE_EPOCH": "1792800000",
+        "FORCE_SOURCE_DATE": "1",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "elapsed_ns": 1347924975,
+      "log": "reproduction/rebuild/standalone_pdflatex_pass_1.log",
+      "log_sha256": "340cc3d312bd45a9c5bf492e7b88b7af25cb26e499d47a9cddaef2bf27130855"
+    },
+    {
+      "step": "standalone_pdflatex_pass_2",
+      "command": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-no-shell-escape",
+        "SUCCESSOR_Omega_Harness.tex"
+      ],
+      "cwd": "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/standalone",
+      "environment_overrides": {
+        "SOURCE_DATE_EPOCH": "1792800000",
+        "FORCE_SOURCE_DATE": "1",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "elapsed_ns": 1417794214,
+      "log": "reproduction/rebuild/standalone_pdflatex_pass_2.log",
+      "log_sha256": "a563aee5a14e2d8e0c7e8b4b216a8d0df81570a8e89ecf9273b6b42872431c1b"
+    },
+    {
+      "step": "standalone_pdflatex_pass_3",
+      "command": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-no-shell-escape",
+        "SUCCESSOR_Omega_Harness.tex"
+      ],
+      "cwd": "/workspace/scratch/ed5c9e2a4d54/work/rebuild-verification/standalone",
+      "environment_overrides": {
+        "SOURCE_DATE_EPOCH": "1792800000",
+        "FORCE_SOURCE_DATE": "1",
+        "TZ": "UTC"
+      },
+      "exit_code": 0,
+      "elapsed_ns": 1383951626,
+      "log": "reproduction/rebuild/standalone_pdflatex_pass_3.log",
+      "log_sha256": "a563aee5a14e2d8e0c7e8b4b216a8d0df81570a8e89ecf9273b6b42872431c1b"
+    }
+  ],
+  "source_checks": [
+    {
+      "path": "companion/integration/INTEGRATION.md",
+      "sha256": "85baeae8182bc7a762e0ebc51c1cbe13a1487d19219c2173c0b801fd3b19a507",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/RFC8032_PUBLIC_FIXTURES.json",
+      "sha256": "4a4e326e5deeb53230570ef3d4690d3e359abdc5549a7e8953bdc3daced09f9d",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/VENDOR_MANIFEST.json",
+      "sha256": "492515d037357411977617710034481d851bd93d4efce7bb27a284bc3cb4775d",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/audit_fixtures.py",
+      "sha256": "fa075ed0b30f3ae88a0a87f0fb30a7261d8c7542a9486c68c10f9566b29faa90",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/boundary_protocol.json",
+      "sha256": "d86b6c4c81bf3bc42719cb107a6658331412a64a0460ffa234adbfc151cc78cc",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/boundary_protocol.sha256",
+      "sha256": "bd796c845434c85195107664ddcc51f741747cfb8c4bd7eaff4bf0ea174d8ce2",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/boundary_protocol_freeze.json",
+      "sha256": "ab059f69740ab36963a0e21e4071a441c28c015b38c0a6f1b372620c4ebb5e94",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/control_protocol.json",
+      "sha256": "20c9a41b6a7ce5a593c0e632fd51fc83f1e58d420ba64d786be8fbd559792b1c",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/control_protocol.sha256",
+      "sha256": "89dba44a491275fc7763d710c3f95b473745dc547d11a9d1ff35b8472818bf65",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/development_failures.json",
+      "sha256": "2a70ca44a057004ca14c98a9823a39f6248c86ddacfc2eb9f602b3c6a47395f7",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/requirements.txt",
+      "sha256": "6a4cd748f6bdf088bdf7cb3e72c5732d488a157f6f6a52ca53a7fffc291e1207",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/run_boundary_controls.py",
+      "sha256": "be4baa88c41894206397ebe3f7998ecb97ecbbbc7beeeb20e2a1cc7b6b6aefbe",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/run_controls.py",
+      "sha256": "d0ac1470e92eb5b4ea0ead43ae6df21ca4e23443ece438ff694e99edfde03464",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/run_integration.py",
+      "sha256": "3eb1dbf406563eb79f043119820c1e0483220f5551730ec61e459d3eff91d9dd",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/LICENSE-ALPHA.txt",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/__init__.py",
+      "sha256": "58f49d47be04aeeeec2698a319fed169329e5e79f8dda4114db90fe5c135210a",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/__init__.py",
+      "sha256": "b27148c349dd088377d90c6502c1a74d093f5b69d3e3642c55686fded90c53bd",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/__init__.py",
+      "sha256": "58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/models.py",
+      "sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/store.py",
+      "sha256": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/successor/__init__.py",
+      "sha256": "d829ad18f81fdc026e820472a06837cf49acf4c577a33044b50514d566553771",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/successor/jobs.py",
+      "sha256": "ab95e2f1d50bc1c91b6c2570fc08c6c09038de81dcf6d1efcf98b24d010226f6",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "sha256": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/successor/signatures.py",
+      "sha256": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/successor/state.py",
+      "sha256": "048772bb3c311a71b19402f816f7bfbed69f80d1bc619407afb4fadedf026241",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/vendor/alpha_factory_v1/core/runtime/successor/trust.py",
+      "sha256": "f1aae20d7ddf8e97ff9eadf9411dae6dea3c8dfd72dc04940341227e6698684e",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/integration/verify_evidence.py",
+      "sha256": "cdee44f71840019f4c6d1120b9625ac975990f61e41d02a171fcabe6d58c97f1",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/experiment/protocol.json",
+      "sha256": "cb3a71483ade02deb1c835b8a5358dc728d87ed29d7df48812d97940e586f263",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/experiment/pre_main_clarification.json",
+      "sha256": "a659edf8af106a2353208175b7c903a7a021a6f449f15021e24ac826b0776f11",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/experiment/instrument.py",
+      "sha256": "ea7d3a4cc01a3733c8983899f95ed8ae93a5ca79a8efc2ae7a8e56894dc78c2b",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/experiment/run_experiments.py",
+      "sha256": "a6c1c17e840abca1d5b641871d944d789bd9dce09dcd8f6c024a7f9d277d687c",
+      "matches_frozen_and_delivered": true
+    },
+    {
+      "path": "companion/experiment/test_instrument.py",
+      "sha256": "b9ba1cb4984cf4c97ea1b3526edd119d63660075549a6d5f2a9007adee255c41",
+      "matches_frozen_and_delivered": true
+    }
+  ],
+  "scientific_reproduction": {
+    "unit_tests": {
+      "passed": 18,
+      "failed": 0,
+      "log": "reproduction/rebuild/science_tests.log"
+    },
+    "raw_method_mission_records": 768,
+    "comparison_count": 11,
+    "all_comparisons_match": true,
+    "comparisons": {
+      "summary.json": true,
+      "campaigns.json": true,
+      "failure_map.json": true,
+      "stage_ablations.json": true,
+      "recovery.json": true,
+      "demo_ancestor.json": true,
+      "demo_successor.json": true,
+      "heldout_missions.json": true,
+      "interventions.json": true,
+      "raw_results.jsonl": true,
+      "scientific_digest": true
+    },
+    "timing_free_digest": "da9d53f64df6bd369f166a42483ea60ea05c0c8c891ddc73e0d10304b07112a3",
+    "reference_timing_free_digest": "da9d53f64df6bd369f166a42483ea60ea05c0c8c891ddc73e0d10304b07112a3",
+    "timing_fields_expected_to_differ": true,
+    "reference_raw_sha256": "45857b5267c62af504c1b00f38e6891d915871d21ed68246c05240cb8ef3861f",
+    "rerun_raw_sha256": "4da6751c170170c095edb7dcf97dc8ecbb39be08745b0f8418239ef300515a1b",
+    "record": "reproduction/rebuild/scientific_reproduction_record.json"
+  },
+  "runtime_reproduction": {
+    "scenario": "nominal",
+    "executed_from_copied_package": true,
+    "events_verified": 106,
+    "accepted_job_receipts_verified": 14,
+    "role_envelopes_verified": 34,
+    "auditor_passed": true,
+    "scientific": {
+      "ancestor": {
+        "status": "verified",
+        "signals": 1,
+        "drift_degree": 2,
+        "WV_zero": true,
+        "WR_identity": true,
+        "raw_observations_recomputed": true,
+        "intervals_recomputed": true,
+        "detector_readings": 8,
+        "scope": "synthetic conditional model; oracle truth supplied by experiment"
+      },
+      "successor": {
+        "status": "verified",
+        "signals": 2,
+        "drift_degree": 2,
+        "WV_zero": true,
+        "WR_identity": true,
+        "raw_observations_recomputed": true,
+        "intervals_recomputed": true,
+        "detector_readings": 12,
+        "scope": "synthetic conditional model; oracle truth supplied by experiment"
+      }
+    },
+    "production_authority": false,
+    "artifact_auditor_imports_runtime_or_instrument": false,
+    "public_fixture_authentication": false,
+    "events_sha256": "99c7c6c149c91f5c58b807d1e1110748390539f2adde185380d346d848ea105c",
+    "demo_sha256": "30b9035b2106e6abc7e3291f6822bc3e72d38d7d1ff78936aaec4977cae28906",
+    "audit": "reproduction/rebuild/nominal_independent_audit.json",
+    "checkpoint": "reproduction/rebuild/nominal_checkpoint.json"
+  },
+  "standalone_pdf": {
+    "source_path": "SUCCESSOR_Omega_Harness.tex",
+    "expected_source_sha256": "57914c930b175c60408e2e6ef4508c411da8d974780542c5a66d0b0589afac61",
+    "rebuilt_source_sha256": "57914c930b175c60408e2e6ef4508c411da8d974780542c5a66d0b0589afac61",
+    "source_byte_identity": true,
+    "delivered_pdf_path": "SUCCESSOR_Omega_Harness.pdf",
+    "expected_pdf_sha256": "048faf3e66b03f12bf9522298b78e7ab3557d8a3bebd95f9fbab2933814a8d21",
+    "rebuilt_pdf_sha256": "048faf3e66b03f12bf9522298b78e7ab3557d8a3bebd95f9fbab2933814a8d21",
+    "pdf_byte_identity": true,
+    "passes": 3,
+    "all_passes_exit_zero": true,
+    "bytes": 531806,
+    "pages": 29,
+    "input_directory_contained_only_complete_tex": true,
+    "external_project_figures_required": false,
+    "shell_escape": false,
+    "network_required_during_build": false,
+    "final_pass_warning_counts": {
+      "overfull_box": 0,
+      "missing_character": 0,
+      "undefined_reference": 0,
+      "latex_error": 0
+    },
+    "visual_inspection": "Separate record: reproduction/PDF_VISUAL_QA.json; this build record does not substitute for page inspection."
+  },
+  "retention": {
+    "compact_new_logs_and_audit_records": "reproduction/rebuild/",
+    "original_full_scientific_raw_evidence": "companion/experiment/results/",
+    "original_full_runtime_evidence": "companion/integration/evidence/nominal/",
+    "new_full_rerun_working_artifacts": "work/rebuild-verification/science/ and nominal/ (not duplicated into delivered package)",
+    "load_benchmark": "Not rerun; original frozen measured benchmark evidence and source manifest retained."
+  },
+  "no_new_credentials_or_financial_actions": true,
+  "retained_log_hashes": [
+    {
+      "path": "reproduction/rebuild/nominal_checkpoint.json",
+      "bytes": 288,
+      "sha256": "535eb76714ac43c81d8923da1eb5d8d781f1e59784af1039698d3e87025c73e7"
+    },
+    {
+      "path": "reproduction/rebuild/nominal_execution.log",
+      "bytes": 305,
+      "sha256": "d6e847a7b02945a33b57180df064745bbea13d3f1d3ff471c5fcf5937ef843db"
+    },
+    {
+      "path": "reproduction/rebuild/nominal_independent_audit.json",
+      "bytes": 1114,
+      "sha256": "f6bba249ca9743dc5fd1e21d2708f3efaeb1e3f2b593e649d117ff97034f9983"
+    },
+    {
+      "path": "reproduction/rebuild/nominal_verifier.log",
+      "bytes": 1114,
+      "sha256": "f6bba249ca9743dc5fd1e21d2708f3efaeb1e3f2b593e649d117ff97034f9983"
+    },
+    {
+      "path": "reproduction/rebuild/pdfinfo.log",
+      "bytes": 754,
+      "sha256": "45dec8b133609db8c95c1ce9d01476bc9898647079bbcefbb64c793d3b1cc45d"
+    },
+    {
+      "path": "reproduction/rebuild/pdflatex_version.log",
+      "bytes": 541,
+      "sha256": "64d3bedadc9885f9fbc5ebc4eb66de7dbb72dcf3f0748f5b8b6ca4030ded7062"
+    },
+    {
+      "path": "reproduction/rebuild/science_reproduction.log",
+      "bytes": 1062,
+      "sha256": "e5821e65d34ddfa6c75b7167ed3fa5727103e1c3c203db3491f3b44f24e8d0f5"
+    },
+    {
+      "path": "reproduction/rebuild/science_run.log",
+      "bytes": 4797,
+      "sha256": "7e27c4f1d41e8e448b75c565bbc02469547a0638cfdd51cafe756fd2ad3d0a6d"
+    },
+    {
+      "path": "reproduction/rebuild/science_tests.log",
+      "bytes": 2335,
+      "sha256": "77755dd1ec4b0adc5393d3d94aa2bfa308c49d6271814ea7a339f96a3135805d"
+    },
+    {
+      "path": "reproduction/rebuild/scientific_reproduction_record.json",
+      "bytes": 1062,
+      "sha256": "e5821e65d34ddfa6c75b7167ed3fa5727103e1c3c203db3491f3b44f24e8d0f5"
+    },
+    {
+      "path": "reproduction/rebuild/standalone_pdflatex_pass_1.log",
+      "bytes": 22214,
+      "sha256": "340cc3d312bd45a9c5bf492e7b88b7af25cb26e499d47a9cddaef2bf27130855"
+    },
+    {
+      "path": "reproduction/rebuild/standalone_pdflatex_pass_2.log",
+      "bytes": 17439,
+      "sha256": "a563aee5a14e2d8e0c7e8b4b216a8d0df81570a8e89ecf9273b6b42872431c1b"
+    },
+    {
+      "path": "reproduction/rebuild/standalone_pdflatex_pass_3.log",
+      "bytes": 17439,
+      "sha256": "a563aee5a14e2d8e0c7e8b4b216a8d0df81570a8e89ecf9273b6b42872431c1b"
+    }
+  ]
+}
