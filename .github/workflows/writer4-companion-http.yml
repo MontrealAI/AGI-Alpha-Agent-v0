@@ -8,6 +8,8 @@ on:
     paths:
       - .github/workflows/writer4-companion-http.yml
       - scripts/qualify_writer4_http.py
+      - scripts/reuse_writer4_http.py
+      - tests/test_writer4_http_reuse.py
       - studies/transformational-autonomous-enterprises-v1/**
 permissions:
   contents: read
@@ -39,7 +41,16 @@ jobs:
       - name: Declare fresh task-owned evidence paths
         run: |
           printf 'TAE_HTTP_PUBLIC=%s\n' "$RUNNER_TEMP/writer4-http-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT/public" >> "$GITHUB_ENV"
+      - name: Verify exact prior HTTP component eligibility
+        id: reuse
+        env:
+          TAE_EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          TAE_EXPECTED_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python -m unittest discover -s tests -p test_writer4_http_reuse.py
+          python scripts/reuse_writer4_http.py
       - name: Run unchanged full companion HTTP QA
+        if: steps.reuse.outputs.reused != 'true'
         env:
           TAE_EXPECTED_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TAE_EXPECTED_BASE_SHA: ${{ github.event.pull_request.base.sha }}
