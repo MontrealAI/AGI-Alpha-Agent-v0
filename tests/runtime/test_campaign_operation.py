@@ -356,3 +356,123 @@ def test_operator_notes_use_the_frozen_policy_on_changed_requirements(tmp_path, 
     assert status["latest_output"]["policy"] == status["changed_since_training"]["manifest"]["selected_policy"]
     assert status["latest_output"]["notes"][0]["score_millionths"] == 625_000
     assert status["latest_output"]["notes"][0]["unsupported_claims"] == []
+
+
+def prepare_reuse(tmp_path, monkeypatch):
+    raw = example(retained_artifacts=True).model_dump()
+    return setup(tmp_path, monkeypatch, **raw)
+
+
+def test_retained_program_survives_restart_and_is_equally_available_to_both_methods(tmp_path, monkeypatch):
+    operation, spec, clock = prepare_reuse(tmp_path, monkeypatch)
+    for _ in range(3):
+        operation.advance(spec.operation_id)
+    trained = operation.experiment.show(spec.study.study_id)
+    artifact = trained["freeze"]["manifest"]["retained_program"]
+    assert artifact["state"] == "fresh-trial-only" and artifact["authority_granted"] is False
+    assert all(run["retained_artifact_digest"] is None for run in trained["training"]["runs"])
+    restarted = CampaignOperation(Journal(operation.journal.root))
+    drain(restarted, spec, clock)
+    final = restarted.experiment.show(spec.study.study_id)
+    runs = final["confirmation"]["runs"]
+    for policy in ("conventional-reuse", "successor-reuse"):
+        inherited = [run for run in runs if run["policy"] == policy]
+        assert all(run["retained_artifact_digest"] == artifact["digest"] for run in inherited)
+        assert all(run["retained_program_tested"] for run in inherited)
+        assert [run["retained_program_selected"] for run in inherited] == [True, True, False]
+    direct = [run for run in runs if run["policy"] == "direct-construction"]
+    assert all(run["retained_artifact_digest"] is None and not run["retained_program_tested"] for run in direct)
+    assert final["freeze"]["manifest"]["selected_policy"] == "conventional-reuse"
+    assert final["confirmation"]["observed_policy_gain_ppm"] == 0
+    assert final["approval"] is None
+    assert restarted.status(spec.operation_id)["costs"]["search_units_including_ancestors"] > 0
+    assert restarted.export(spec.operation_id)["active_authority"] == []
+    for run in runs:
+        native = restarted.experiment.loop.show(run["campaign_id"])
+        assert native["request"]["development"] != spec.training[0].unit.request.model_dump()["development"]
+        assert native["result"]["fresh_sources"]
+
+
+@pytest.mark.parametrize("damage", ["bytes", "stale", "unsafe", "origin"])
+def test_damaged_retained_program_cannot_enter_a_fresh_trial(tmp_path, monkeypatch, damage):
+    from alpha_factory_v1.core.runtime.successor.protocol import digest
+
+    operation, spec, clock = prepare_reuse(tmp_path, monkeypatch)
+    for _ in range(3):
+        operation.advance(spec.operation_id)
+    with operation.journal.transaction() as cx:
+        parent = operation.experiment.show(spec.study.study_id)
+        data = Journal.document(parent)
+        artifact = data["freeze"]["manifest"]["retained_program"]
+        if damage == "bytes":
+            artifact["program"]["production"] = "lead"
+        else:
+            if damage == "stale":
+                artifact["source_engine"] = "f" * 64
+            elif damage == "unsafe":
+                artifact["program"]["command"] = "unapproved-tool"
+            else:
+                artifact["origin_record"] = "f" * 64
+            artifact["digest"] = digest(
+                "retained-closed-program", {key: value for key, value in artifact.items() if key != "digest"}
+            )
+        data["freeze"]["digest"] = digest("discovery-policy-freeze", data["freeze"]["manifest"])
+        operation.journal.append(cx, operation.experiment._key(spec.study.study_id), data)
+    clock[0] += 4000
+    with pytest.raises((ValueError, Conflict)):
+        operation.advance(spec.operation_id)
+    assert operation.show(spec.operation_id)["state"] == "hold"
+    assert operation.experiment.show(spec.study.study_id)["confirmation"]["runs"] == []
+
+
+def test_no_retained_operator_without_explicit_profile():
+    raw = example(retained_artifacts=True).model_dump()
+    raw["study"]["archive_access"] = "none"
+    with pytest.raises(ValidationError):
+        OperationSpec.model_validate(raw)
+
+
+def test_base_loop_cannot_install_a_different_retained_operator_for_the_due_child(tmp_path, monkeypatch):
+    from alpha_factory_v1.core.runtime.successor.campaign_experiment import (
+        _RetainedProgramOperator,
+        _study_registry,
+        study_request,
+    )
+    from alpha_factory_v1.core.runtime.successor.transformation import DiscoveryLoop, SelectionProgram
+
+    operation, spec, clock = prepare_reuse(tmp_path, monkeypatch)
+    for _ in range(3):
+        operation.advance(spec.operation_id)
+    clock[0] += 4000
+
+    def die(*args, **kwargs):
+        raise SystemExit("approved due child, before native creation")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(operation.experiment, "_campaign", die)
+        with pytest.raises(SystemExit):
+            operation.advance(spec.operation_id)
+    parent = operation.experiment.show(spec.study.study_id)
+    registry = _study_registry(spec.study, parent, operation.journal)
+    artifact = copy.deepcopy(parent["freeze"]["manifest"]["retained_program"])
+    artifact["program"] = SelectionProgram().model_dump()
+    registry.operators["retained-program"] = _RetainedProgramOperator(artifact)
+    base = DiscoveryLoop(operation.journal, registry)
+    request = study_request(spec.study, spec.confirmation[0].unit, spec.study.policies[0], "confirmation")
+    queued = base.create(request)
+    with pytest.raises(Conflict, match="operators"):
+        base.approve(request.campaign_id, queued["binding_digest"])
+    assert base.show(request.campaign_id)["approval"] is None
+
+
+def test_changed_freeze_cannot_select_or_supply_a_retained_capability(tmp_path, monkeypatch):
+    operation, spec, clock = prepare_reuse(tmp_path, monkeypatch)
+    for _ in range(3):
+        operation.advance(spec.operation_id)
+    with operation.journal.transaction() as cx:
+        data = Journal.document(operation.experiment.show(spec.study.study_id))
+        data["freeze"]["manifest"]["selected_policy"] = "successor-reuse"
+        operation.journal.append(cx, operation.experiment._key(spec.study.study_id), data)
+    clock[0] += 4000
+    with pytest.raises(Conflict, match="freeze changed"):
+        operation.advance(spec.operation_id)

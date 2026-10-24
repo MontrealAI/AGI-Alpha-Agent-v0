@@ -27,6 +27,8 @@ from .transformation import (
     DiscoveryRequest,
     IntentCharter,
     OperatorRegistry,
+    SelectionProgram,
+    KEY as DISCOVERY_KEY,
     SourceDocument,
     TIModel,
     _engine_digest,
@@ -45,8 +47,10 @@ MAX_EXPOSURE_BYTES = 64 * 1024**2
 class _StudyLoop(DiscoveryLoop):
     """Check the parent permit in each native operation's own transaction."""
 
-    def __init__(self, experiment: CampaignExperiment, spec: PolicyStudy, phase: str) -> None:
-        super().__init__(experiment.journal)
+    def __init__(self, experiment: CampaignExperiment, spec: PolicyStudy, phase: str, operator_ids: list[str]) -> None:
+        reuse = "retained-program" in operator_ids
+        parent = experiment.show(spec.study_id) if phase == "confirmation" and reuse else None
+        super().__init__(experiment.journal, _study_registry(spec, parent, experiment.journal, include_history=reuse))
         self.experiment, self.spec, self.phase = experiment, spec, phase
 
     def _running(self, cx: Any) -> None:
@@ -62,7 +66,9 @@ class DiscoveryPolicy(TIModel):
     """An executable bounded search policy; it cannot change an evaluator."""
 
     identity: str = Field(pattern=r"^[a-z][a-z0-9-]{0,63}$")
-    operator_ids: list[Literal["representation", "production", "complementary"]] = Field(max_length=3)
+    operator_ids: list[Literal["representation", "production", "complementary", "retained-program"]] = Field(
+        max_length=3
+    )
     max_candidates: int = Field(ge=2, le=5, strict=True)
 
     @model_validator(mode="after")
@@ -97,7 +103,7 @@ class PolicyStudy(TIModel):
     population: str = Field(min_length=1, max_length=1000)
     sampling_protocol: str = Field(min_length=1, max_length=2000)
     initial_agent: Literal["lead-source-selector/v1"] = "lead-source-selector/v1"
-    archive_access: Literal["none"] = "none"
+    archive_access: Literal["none", "shared-closed-artifacts"] = "none"
     search_cost_ppm_per_unit: int = Field(ge=0, le=1000, strict=True)
 
     @model_validator(mode="after")
@@ -107,6 +113,8 @@ class PolicyStudy(TIModel):
         identities = [policy.identity for policy in self.policies]
         if len(set(identities)) != len(identities) or self.incumbent_policy not in identities:
             raise ValueError("declare unique policies and the unchanged discovery policy")
+        if self.archive_access == "none" and any("retained-program" in p.operator_ids for p in self.policies):
+            raise ValueError("retained programs require explicit shared closed-artifact access")
         assert_public_content(self.model_dump())
         return self
 
@@ -128,11 +136,89 @@ def _binding(spec: PolicyStudy) -> str:
             "engine": _engine_digest(),
             "driver": hashlib.sha256(content).hexdigest(),
             "operator_manifests": {
-                policy.identity: OperatorRegistry().manifest([str(identity) for identity in policy.operator_ids])
+                policy.identity: _study_registry(spec).manifest([str(identity) for identity in policy.operator_ids])
                 for policy in spec.policies
             },
         },
     )
+
+
+class _RetainedProgramOperator:
+    """Offer a checked closed program as a fresh candidate, never its old result or authority."""
+
+    def __init__(self, artifact: dict[str, Any] | None) -> None:
+        self.identity = "retained-program"
+        self.source_digest = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        self.artifact = None if artifact is None else json.loads(canonical(artifact))
+
+    def propose(self, request: DiscoveryRequest) -> list[SelectionProgram]:
+        if self.artifact is None or self.artifact["charter"] != request.charter.model_dump():
+            return []
+        return [SelectionProgram.model_validate(self.artifact["program"])]
+
+
+def _study_registry(
+    spec: PolicyStudy,
+    parent: dict[str, Any] | None = None,
+    journal: Journal | None = None,
+    cx: Any = None,
+    *,
+    include_history: bool = True,
+) -> OperatorRegistry:
+    registry = OperatorRegistry()
+    if spec.archive_access == "shared-closed-artifacts" and include_history:
+        artifact = None
+        if parent is not None:
+            freeze = parent.get("freeze")
+            if not freeze or digest("discovery-policy-freeze", freeze["manifest"]) != freeze["digest"]:
+                raise Conflict("retained program requires the exact recorded training freeze")
+            artifact = freeze["manifest"].get("retained_program")
+            if artifact is not None:
+                fields = {
+                    "program",
+                    "program_digest",
+                    "charter",
+                    "source_engine",
+                    "origin_campaign",
+                    "origin_record",
+                    "state",
+                    "authority_granted",
+                    "digest",
+                }
+                if set(artifact) != fields or artifact["digest"] != digest(
+                    "retained-closed-program", {key: value for key, value in artifact.items() if key != "digest"}
+                ):
+                    raise Conflict("retained program bytes changed")
+                program = SelectionProgram.model_validate(artifact["program"])
+                if (
+                    artifact["program_digest"] != digest("ti-program", program)
+                    or artifact["charter"] != spec.charter.model_dump()
+                    or artifact["source_engine"] != _engine_digest()
+                    or artifact["state"] != "fresh-trial-only"
+                    or artifact["authority_granted"] is not False
+                ):
+                    raise Conflict("retained program is stale, unsafe or outside the approved trial scope")
+                if journal is None:
+                    raise Conflict("retained program needs its authenticated source history")
+                origins = [
+                    run
+                    for run in parent["training"]["runs"]
+                    if run["campaign_id"] == artifact["origin_campaign"] and run["status"] == "complete"
+                ]
+                origin = journal.latest(DISCOVERY_KEY + artifact["origin_campaign"], cx)
+                if (
+                    len(origins) != 1
+                    or origins[0]["campaign_record_digest"] != artifact["origin_record"]
+                    or origin["digest"] != artifact["origin_record"]
+                    or origin["state"] != "completed"
+                    or origin["binding"]["engine_sha256"] != artifact["source_engine"]
+                    or origin["request"]["charter"] != artifact["charter"]
+                    or origin["request"]["configuration"].get("ti_parent_study") != spec.study_id
+                    or origin["freeze"]["manifest"]["selected"]["program"] != artifact["program"]
+                ):
+                    raise Conflict("retained program does not match its completed source computation")
+        registry.register(_RetainedProgramOperator(artifact))
+    return registry
 
 
 def _clause_ids(units: list[CampaignUnit]) -> list[str]:
@@ -174,6 +260,7 @@ def validate_child_lease(
     journal: Journal | None = None,
     cx: Any = None,
     terminal: list[SourceDocument] | None = None,
+    operators: dict[str, str] | None = None,
 ) -> None:
     """A parent lease covers only its exact planned child, inputs and allowances."""
     phase = request.configuration["ti_parent_phase"]
@@ -192,6 +279,15 @@ def validate_child_lease(
         raise Conflict("parent study lease cannot change its child's purpose, inputs, code or budget")
     if terminal is not None and terminal != unit.terminal:
         raise Conflict("terminal documents differ from the approved submitted campaign inputs")
+    registry = _study_registry(
+        spec,
+        parent if phase == "confirmation" else None,
+        journal,
+        cx,
+        include_history="retained-program" in request.operator_ids,
+    )
+    if operators != registry.manifest(request.operator_ids):
+        raise Conflict("native operators differ from the approved installed study profile")
     if parent.get("operation"):
         from .campaign_operation import validate_authority, validate_child
 
@@ -223,6 +319,9 @@ class CampaignExperiment:
         spec = PolicyStudy.model_validate(record["spec"])
         if record["binding"] != _binding(spec):
             raise Conflict("study code or comparison basis changed; new study required")
+        frozen = record.get("freeze")
+        if frozen is not None and frozen["digest"] != digest("discovery-policy-freeze", frozen["manifest"]):
+            raise Conflict("recorded study freeze changed; retain the incumbent and inspect history")
         if record.get("operation"):
             from .campaign_operation import validate_authority
 
@@ -233,7 +332,7 @@ class CampaignExperiment:
         spec = PolicyStudy.model_validate(spec.model_dump())
         # Explicitly bind the actual installed operators, in addition to driver code.
         for policy in spec.policies:
-            self.loop.registry.manifest([str(identity) for identity in policy.operator_ids])
+            _study_registry(spec).manifest([str(identity) for identity in policy.operator_ids])
         with self.journal.transaction() as cx:
             try:
                 previous = self.journal.latest(self._key(spec.study_id), cx)
@@ -438,7 +537,7 @@ class CampaignExperiment:
     def _campaign(self, spec: PolicyStudy, unit: CampaignUnit, policy: DiscoveryPolicy, phase: str) -> dict[str, Any]:
         native = study_request(spec, unit, policy, phase)
         campaign_id = native.campaign_id
-        loop = _StudyLoop(self, spec, phase)
+        loop = _StudyLoop(self, spec, phase, native.operator_ids)
         current = loop.create(native)
         if current["state"] not in {"frozen", "completed"}:
             loop.approve(campaign_id, current["binding_digest"])
@@ -449,6 +548,17 @@ class CampaignExperiment:
         result = current.get("result") or {}
         score = result.get("means_millionths", {}).get("candidate")
         spent = current["spent"]
+        retained = getattr(loop.registry.operators.get("retained-program"), "artifact", None)
+        reused = bool(
+            retained
+            and any(
+                item["label"] == "retained-program"
+                and item["program_digest"] == retained["program_digest"]
+                and item["status"] == "valid"
+                and item["observations"]
+                for item in current["attempts"]
+            )
+        )
         return {
             "unit_id": unit.unit_id,
             "policy": policy.identity,
@@ -459,6 +569,15 @@ class CampaignExperiment:
             "terminal_score_ppm": score,
             "search_units": spent["search_units"],
             "execution_units": spent["execution_units"],
+            "retained_artifact_digest": retained["digest"] if retained else None,
+            "retained_program_tested": reused,
+            "retained_program_selected": bool(
+                reused
+                and retained is not None
+                and current.get("freeze")
+                and current["freeze"]["manifest"]["selected"]["program_digest"] == retained["program_digest"]
+            ),
+            "retained_worker_bound": retained is not None,
             "utility_ppm": (
                 None
                 if score is None or result.get("failure")
@@ -570,6 +689,28 @@ class CampaignExperiment:
                     "initial_agent": spec.initial_agent,
                     "archive_access": spec.archive_access,
                 }
+                if spec.archive_access == "shared-closed-artifacts":
+                    complete = [run for run in data[phase]["runs"] if run["status"] == "complete"]
+                    artifact = None
+                    if complete:
+                        source = sorted(
+                            complete,
+                            key=lambda run: (-run["terminal_score_ppm"], run["search_units"], run["campaign_id"]),
+                        )[0]
+                        native = self.journal.latest(DISCOVERY_KEY + source["campaign_id"], cx)
+                        program = native["freeze"]["manifest"]["selected"]["program"]
+                        artifact = {
+                            "program": program,
+                            "program_digest": digest("ti-program", program),
+                            "charter": spec.charter.model_dump(),
+                            "source_engine": _engine_digest(),
+                            "origin_campaign": source["campaign_id"],
+                            "origin_record": native["digest"],
+                            "state": "fresh-trial-only",
+                            "authority_granted": False,
+                        }
+                        artifact["digest"] = digest("retained-closed-program", artifact)
+                    manifest["retained_program"] = artifact
                 data["freeze"] = {
                     "manifest": manifest,
                     "digest": digest("discovery-policy-freeze", manifest),
@@ -610,6 +751,9 @@ class CampaignExperiment:
                 data[phase]["costs"] = {
                     "search_units": sum(r["search_units"] for r in data[phase]["runs"]),
                     "execution_units": sum(r["execution_units"] for r in data[phase]["runs"]),
+                    "comparisons_with_retained_worker": sum(
+                        bool(r.get("retained_worker_bound")) for r in data[phase]["runs"]
+                    ),
                     "paid_model_calls": 0,
                     "USDCBaseUnits": "0",
                     "AGIALPHABaseUnits": "0",

@@ -37,7 +37,12 @@ def add_commands(commands: Any) -> None:
     for name in ("show", "export", "pause", "resume", "cancel"):
         action = actions.add_parser(name, help="Inspect or control the durable study")
         action.add_argument("study_id")
-    actions.add_parser("operation-example", help="Write a finite synthetic source-operation envelope")
+    sample = actions.add_parser("operation-example", help="Write a finite synthetic source-operation envelope")
+    sample.add_argument(
+        "--retained-artifacts",
+        action="store_true",
+        help="Trial a retained program with equally enabled conventional reuse",
+    )
     start = actions.add_parser("operation-start", help="Approve and run one exact bounded source operation")
     start.add_argument("spec", type=Path)
     for name in ("run", "status", "export", "stop"):
@@ -56,7 +61,7 @@ def handle(args: argparse.Namespace) -> dict[str, Any]:
         from .campaign_operation import CampaignOperation, OperationSpec, example
 
         if action == "operation-example":
-            result = example().model_dump()
+            result = example(retained_artifacts=args.retained_artifacts).model_dump()
         else:
             operation = CampaignOperation(Journal(args.home))
             if action == "operation-start":

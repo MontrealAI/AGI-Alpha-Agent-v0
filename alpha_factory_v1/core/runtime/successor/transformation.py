@@ -1043,7 +1043,14 @@ class DiscoveryLoop:
                 or parent["binding"] != _binding(spec)
             ):
                 raise Conflict("parent study lease is inactive, consumed or changed")
-            validate_child_lease(parent, request, journal=self.journal, cx=cx, terminal=terminal)
+            validate_child_lease(
+                parent,
+                request,
+                journal=self.journal,
+                cx=cx,
+                terminal=terminal,
+                operators=self.registry.manifest(request.operator_ids),
+            )
         return request
 
     def step(self, campaign_id: str, *, operation_id: str) -> dict[str, Any]:

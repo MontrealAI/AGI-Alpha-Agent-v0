@@ -33,6 +33,8 @@ operation.start(spec)
 original = operation.experiment._campaign
 def fault(*args):
     result = original(*args)
+    if spec.study.archive_access == 'shared-closed-artifacts' and args[-1] != 'confirmation':
+        return result
     if sys.argv[3] == 'crash':
         os.kill(os.getpid(), signal.SIGKILL)
     if sys.argv[3] == 'stop':
@@ -49,8 +51,10 @@ def write(path: Path, value: object) -> None:
         stream.write("\n")
 
 
-def configuration(name: str, training: int, confirmation: int, horizon: int, timed: bool) -> OperationSpec:
-    raw = example().model_dump()
+def configuration(
+    name: str, training: int, confirmation: int, horizon: int, timed: bool, retained: bool = False
+) -> OperationSpec:
+    raw = example(retained_artifacts=retained).model_dump()
     templates = [*raw["training"], *raw["confirmation"]]
     raw["operation_id"] = str(uuid.uuid5(NAMESPACE, name + "-operation"))
     raw["study"]["study_id"] = str(uuid.uuid5(NAMESPACE, name + "-study"))
@@ -59,7 +63,10 @@ def configuration(name: str, training: int, confirmation: int, horizon: int, tim
     raw["horizon_seconds"] = horizon
     raw["training"], raw["confirmation"] = [], []
     for index in range(training + confirmation):
-        item = copy.deepcopy(templates[index % len(templates)])
+        template = (
+            templates[0 if index == 0 else 1 + (index - 1) % 3] if retained else templates[index % len(templates)]
+        )
+        item = copy.deepcopy(template)
         label = name + "-unit-" + str(index)
         item["after_ms"] = index * 4000 if timed else 0
         item["unit"]["unit_id"] = label
@@ -69,14 +76,15 @@ def configuration(name: str, training: int, confirmation: int, horizon: int, tim
             ("fresh", item["unit"]["terminal"]),
         ):
             for document in documents:
-                document["title"] = "Synthetic " + label + " " + part
-                for claim in document["claims"]:
-                    claim["text"] = "Constructed " + label + " " + part + ": " + claim["text"]
+                if not (retained and index == 0):
+                    document["title"] = "Synthetic " + label + " " + part
+                    for claim in document["claims"]:
+                        claim["text"] = "Constructed " + label + " " + part + ": " + claim["text"]
         raw["training" if index < training else "confirmation"].append(item)
     return OperationSpec.model_validate(raw)
 
 
-def prepare(destination: Path) -> None:
+def prepare(destination: Path, *, retained: bool = False) -> None:
     destination.mkdir(parents=True, exist_ok=False)
     declarations = [
         ("continuous", 1, 3, 60, True),
@@ -88,7 +96,7 @@ def prepare(destination: Path) -> None:
     ]
     hashes = {}
     for name, training, confirmation, horizon, timed in declarations:
-        spec = configuration(name, training, confirmation, horizon, timed)
+        spec = configuration(name, training, confirmation, horizon, timed, retained)
         data = canonical(spec.model_dump())
         path = destination / (name + ".json")
         path.write_bytes(data)
@@ -109,10 +117,16 @@ def prepare(destination: Path) -> None:
             },
             "maximum_campaign_seconds": 60,
             "workload_fixed_before_execution": True,
-            "fault": "SIGKILL after first child commits, before parent attachment; one restart through unchanged CLI",
+            "fault": (
+                "SIGKILL after first retained confirmation child, otherwise first training child; "
+                "before parent attachment; one unchanged CLI restart"
+            ),
             "stop": "permanent operation-stop during first child handoff; stale handoff must fail",
             "load": "4, 8 and 10 whole units, three policies, concurrency one; separate 1-second 10-unit deadline case",
-            "claim": "synthetic local mechanism only; same operator; no independent custody or commercial outcome",
+            "claim": (
+                "Public-paper example plus changed synthetic graphs when retained artifacts are enabled; "
+                "otherwise synthetic mechanism only. Same operator; no independent custody or commercial outcome."
+            ),
             "human_effort": "Setup/engineering/review minutes unmeasured; fault controller and restart disclosed.",
         },
     )
@@ -156,9 +170,11 @@ def execute(plan: Path, destination: Path) -> None:
         recovery_exit = None
         if mode == "crash":
             parent = operation.experiment.show(spec.study.study_id)
-            child_id = parent["training"]["planned_campaigns"][0]["campaign_id"]
+            fault_phase = "confirmation" if spec.study.archive_access == "shared-closed-artifacts" else "training"
+            child_id = parent[fault_phase]["planned_campaigns"][0]["campaign_id"]
             before = operation.experiment.loop.show(child_id)
-            if first_exit != -9 or before["state"] != "completed" or parent["training"]["runs"]:
+            retained_before = copy.deepcopy((parent.get("freeze") or {}).get("manifest", {}).get("retained_program"))
+            if first_exit != -9 or before["state"] != "completed" or parent[fault_phase]["runs"]:
                 raise AssertionError("fault missed the declared committed-child handoff")
             recovery_exit = invoke(
                 [
@@ -179,6 +195,13 @@ def execute(plan: Path, destination: Path) -> None:
             after = operation.experiment.loop.show(child_id)
             if after["digest"] != before["digest"] or after["revision"] != before["revision"]:
                 raise AssertionError("restart repeated the committed measurement")
+            retained_after = (
+                (operation.experiment.show(spec.study.study_id).get("freeze") or {})
+                .get("manifest", {})
+                .get("retained_program")
+            )
+            if retained_after != retained_before:
+                raise AssertionError("restart replaced the retained program or its source evidence")
             recovered_digest = after["digest"]
         exported = operation.export(spec.operation_id)
         write(case / "public-history.json", exported)
@@ -221,9 +244,10 @@ def main() -> None:
     parser.add_argument("action", choices=["prepare", "run"])
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--retained-artifacts", action="store_true")
     args = parser.parse_args()
     if args.action == "prepare":
-        prepare(args.plan)
+        prepare(args.plan, retained=args.retained_artifacts)
     elif args.output is None:
         parser.error("run requires --output")
     else:

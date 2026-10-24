@@ -32,10 +32,17 @@ def _driver() -> str:
     return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
-def example() -> OperationSpec:
+def example(*, retained_artifacts: bool = False) -> OperationSpec:
     """Reuse the shipped source-selector task and grammar on visibly synthetic changed inputs."""
     from .campaign_experiment import DiscoveryPolicy
-    from .transformation import DiscoveryRequest, IntentCharter, SourceClaim, SourceDocument, pilot_request
+    from .transformation import (
+        DiscoveryRequest,
+        IntentCharter,
+        SourceClaim,
+        SourceDocument,
+        pilot_document,
+        pilot_request,
+    )
 
     raw = pilot_request().charter.model_dump()
     raw.update(
@@ -44,6 +51,12 @@ def example() -> OperationSpec:
         max_clauses=2,
     )
     raw["budgets"].update(search_units=10_000, execution_units=10_000)
+    if retained_artifacts:
+        raw[
+            "purpose"
+        ] = "Prepare prerequisite-preserving technical source notes for a reader under a three-clause limit."
+        raw["population"] = "public and synthetic annotated source graphs; no reader-comprehension claim"
+        raw["max_clauses"] = 3
     charter = IntentCharter.model_validate(raw)
 
     def unit(label: str, index: int) -> CampaignUnit:
@@ -96,11 +109,44 @@ def example() -> OperationSpec:
             "exact-search comparator sees the same inputs and budgets. No independent sampling claim."
         ),
     )
+    if retained_artifacts:
+        raw_study = study.model_dump()
+        raw_study.update(
+            archive_access="shared-closed-artifacts",
+            incumbent_policy="conventional-reuse",
+            population=(
+                "One existing public-paper example plus changed synthetic source graphs; " "local annotation judgments."
+            ),
+        )
+        raw_study["policies"] = [
+            {
+                "identity": "conventional-reuse",
+                "operator_ids": ["retained-program", "complementary"],
+                "max_candidates": 4,
+            },
+            {"identity": "successor-reuse", "operator_ids": ["retained-program", "complementary"], "max_candidates": 4},
+            {"identity": "direct-construction", "operator_ids": ["complementary"], "max_candidates": 4},
+        ]
+        study = PolicyStudy.model_validate(raw_study)
+    training = unit("training", 0)
+    if retained_artifacts:
+        public_request = pilot_request().model_dump()
+        public_request["charter"] = charter.model_dump()
+        documents = [*public_request["development"], pilot_document(confirmation=True).model_dump()]
+        for document in documents:
+            document["source_url"] = (
+                "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/"
+                "787bc547f8c44854931b316d7286b8bc9f9c8bba/docs/Transformational_Intelligence.tex"
+            )
+        public_request["development"] = documents[:-1]
+        training = CampaignUnit(
+            unit_id="training", request=DiscoveryRequest.model_validate(public_request), terminal=[documents[-1]]
+        )
     return OperationSpec(
         operation_id=str(uuid.uuid4()),
         study=study,
         accountable_operator="local-operator",
-        training=[Arrival(after_ms=0, unit=unit("training", 0))],
+        training=[Arrival(after_ms=0, unit=training)],
         confirmation=[
             Arrival(after_ms=4000 + index * 4000, unit=unit("arrival-" + str(index + 1), index + 1))
             for index in range(3)
@@ -451,6 +497,7 @@ class CampaignOperation:
         parent = self.experiment.show(record["spec"]["study"]["study_id"])
         phases = {phase: (parent.get(phase) or {}).get("runs", []) for phase in ("training", "confirmation")}
         runs = [run for group in phases.values() for run in group]
+        artifact = (parent.get("freeze") or {}).get("manifest", {}).get("retained_program")
         spent = {}
         for phase in ("training", "confirmation"):
             for plan in (parent.get(phase) or {}).get("planned_campaigns", []):
@@ -487,6 +534,16 @@ class CampaignOperation:
             "operator": record["spec"]["accountable_operator"],
             "expires_ms": record["expires_ms"],
             "completed_mission_comparisons": len(runs),
+            "retained_capability": {
+                "profile": parent["spec"]["archive_access"],
+                "program_digest": artifact["program_digest"] if artifact else None,
+                "artifact_digest": artifact["digest"] if artifact else None,
+                "origin_campaign": artifact["origin_campaign"] if artifact else None,
+                "fresh_trials": sum(bool(run.get("retained_program_tested")) for run in runs),
+                "fresh_selections": sum(bool(run.get("retained_program_selected")) for run in runs),
+                "comparisons_with_retained_worker": sum(bool(run.get("retained_worker_bound")) for run in runs),
+                "authority_granted": False,
+            },
             "inconclusive": sum(run["status"] != "complete" for run in runs),
             "changed_since_training": parent.get("freeze"),
             "improvement_evidence": (parent.get("confirmation") or {}).get("observed_policy_gain_ppm"),
