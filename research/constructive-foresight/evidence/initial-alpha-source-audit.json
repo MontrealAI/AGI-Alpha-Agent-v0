@@ -1,0 +1,385 @@
+{
+  "schema": "writer9.alpha-source-audit.v1",
+  "retrieval_date_utc": "2026-10-24",
+  "repository": {
+    "full_name": "MontrealAI/AGI-Alpha-Agent-v0",
+    "id": 922805069,
+    "default_branch": "main",
+    "main_sha": "dfc79c4ae81ac612cbff9865a0af8389b6ff3de9",
+    "tree_sha": "aea4336b84607b92a8fa699ef5583fc2bf5d56e3"
+  },
+  "boundary": {
+    "type": "read-only source and public-record audit",
+    "runtime_executed": false,
+    "mainnet_fresh_rpc": false,
+    "abi_compiled": false,
+    "contracts_current_vs_deployed_source": [
+      {
+        "name": "AscensionAccess.sol",
+        "current_blob": "e3555663da7ac4c4e0371c787b8cbb4519800961",
+        "deployed_source_blob": "e3555663da7ac4c4e0371c787b8cbb4519800961",
+        "source_bytes_equal": true
+      },
+      {
+        "name": "NovaSeed.sol",
+        "current_blob": "b4c555e2109b569d67a0a6e71f0ef1dbeeccabbd",
+        "deployed_source_blob": "b4c555e2109b569d67a0a6e71f0ef1dbeeccabbd",
+        "source_bytes_equal": true
+      },
+      {
+        "name": "AscensionRiskOracle.sol",
+        "current_blob": "f7013301e749a7efc67f36639a693c98cacbf254",
+        "deployed_source_blob": "f7013301e749a7efc67f36639a693c98cacbf254",
+        "source_bytes_equal": true
+      },
+      {
+        "name": "AscensionJobMarket.sol",
+        "current_blob": "a50a5cc584ccb6c096c6df6aa862aa48d27d9ffe",
+        "deployed_source_blob": "a50a5cc584ccb6c096c6df6aa862aa48d27d9ffe",
+        "source_bytes_equal": true
+      },
+      {
+        "name": "AscensionMark.sol",
+        "current_blob": "86d0f526f2c9d7ff3d62f250a0c54b84e59a2b9f",
+        "deployed_source_blob": "86d0f526f2c9d7ff3d62f250a0c54b84e59a2b9f",
+        "source_bytes_equal": true
+      }
+    ]
+  },
+  "coordination": {
+    "issue": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850",
+    "receiving_boundary": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6377105309",
+    "rule": "Isolated research may proceed. Existing publication coordinator remains sole shared-index, merge and Pages owner. Supply final exact durable PDF/TeX/archive identities and source PR/commit, then obtain current-main receiving acknowledgment before shared catalogue changes.",
+    "holds": [
+      "Alpha #4863",
+      "Alpha dependent #4865",
+      "Fleet original source/review denial"
+    ],
+    "site_status": "Latest coordination record reports eligible coverage disposition on #4869; four denied outcomes remain unqualified. Do not infer clearance of runtime holds."
+  },
+  "atlas": {
+    "source": "docs/agent/INSIGHT_ATLAS.md",
+    "implementation": "docs/assets/insight/scenarios.json",
+    "envelope_usd": "15000000000000000",
+    "envelope_status": "editable illustrative scenario assumption, not measured wealth, valuation or forecast",
+    "sector_weights_basis_points": {
+      "Energy": 1300,
+      "Compute": 1200,
+      "Science": 1200,
+      "Health": 1100,
+      "Materials": 900,
+      "Robotics": 800,
+      "Finance": 700,
+      "Climate": 700,
+      "Machine labor": 700,
+      "Infrastructure": 600,
+      "Education": 400,
+      "Governance": 400
+    },
+    "observed_default_timing": "Original macro experience defaults to20years. Current Atlas agent-firm task scheduler defaults to120minutes. These are separate assumptions and horizons.",
+    "original_macro_source": {
+      "repository": "MontrealAI/MontrealAI.github.io",
+      "commit": "2bd71648d0bb3cc752d7b36a899dece8ce6d243e",
+      "path": "goalos-v67-alpha-agi-insight-living-treasure-map-masterclass-interface.html",
+      "source_blob": "7ba5902f1ac521de891543cbbced2bfc62421863",
+      "envelope_default_quadrillion": 15,
+      "horizon_default_years": 20,
+      "horizon_range_years": [
+        3,
+        40
+      ],
+      "base_weights": {
+        "Energy": 0.15,
+        "Compute": 0.12,
+        "Science": 0.13,
+        "Health": 0.11,
+        "Materials": 0.09,
+        "Robotics": 0.08,
+        "Finance": 0.08,
+        "Climate": 0.07,
+        "Machine Labor": 0.09,
+        "Infrastructure": 0.04,
+        "Education": 0.02,
+        "Governance": 0.02
+      },
+      "caveat": "Base weights dynamically change with objective, lens, novelty, capital, coordination, seeded random pressure and posture. Illustrative scenario, not prediction. Current Atlas uses different exact basis-point weights."
+    }
+  },
+  "contracts": [
+    {
+      "name": "AscensionAccess",
+      "role": "ENS ownership and expiring attributable admission",
+      "interfaces": [
+        "register(Role,string)",
+        "owns(address,bytes32)",
+        "setAdmission(address,bytes32,uint64)",
+        "eligible(address,Role)"
+      ],
+      "constraints": [
+        "single ASCII label<=63",
+        "business name.alpha.agi.eth",
+        "agent name.alpha.agent.agi.eth",
+        "validator name.alpha.club.agi.eth",
+        "admission at most365days",
+        "wrapper expiry live",
+        "Ownable2Step governor"
+      ]
+    },
+    {
+      "name": "NovaSeed",
+      "role": "ERC721 immutable capsule, plan, evidence and optional parent commitments",
+      "interfaces": [
+        "seal(bytes32,bytes32,uint32,string,uint256,bytes32)",
+        "plan(uint256)",
+        "creatorOf(uint256)"
+      ],
+      "constraints": [
+        "eligible business",
+        "nonzero capsule/plan/evidence",
+        "1..128jobs",
+        "URI1..512bytes",
+        "parent requires current ownership",
+        "no plan update method"
+      ]
+    },
+    {
+      "name": "AscensionRiskOracle",
+      "role": "staked live validators attest seed ownership and immutable plan",
+      "interfaces": [
+        "openReview(uint256)",
+        "attest(uint256,uint16,bool,bytes32)",
+        "green(uint256)",
+        "setJobAvailability(address,uint64,uint32)",
+        "lockForJob(address,address,uint64)"
+      ],
+      "constraints": [
+        "quorum2..15",
+        "review7days",
+        "no business/creator self-vote",
+        "current eligible validator supporters",
+        "owner transfer or expiry removes green",
+        "review capacity<=128 and availability<=120days",
+        "one-time graph-checked marketplace binding"
+      ]
+    },
+    {
+      "name": "AscensionJobMarket",
+      "role": "bounded auction, exact artifact review, escrow and settlement",
+      "interfaces": [
+        "post(Spec,uint32,address[3])",
+        "postFromSeed(address,Spec,uint32,address[3])",
+        "hashSpec(uint32,Spec)",
+        "bid(uint256,uint96,uint32)",
+        "award(uint256)",
+        "submit(uint256,bytes32,string)",
+        "validate(uint256,bytes32,bool,bytes32)",
+        "timeout(uint256)"
+      ],
+      "constraints": [
+        "32bids",
+        "3selecteddistinctvalidators",
+        "2matching result-bound approvals pay",
+        "2eligible rejections or missed delivery slash",
+        "missing review quorum refunds and unlocks",
+        "bond=max(minimum,bounty/10)",
+        "review window3days",
+        "5percent gross review pool",
+        "1percent actual gross payout burn",
+        "reputation+1 accepted;-1failure;cap10000"
+      ]
+    },
+    {
+      "name": "AscensionMark",
+      "role": "reversible discrete linear funding AMM then plan-restricted treasury",
+      "interfaces": [
+        "open(uint256,uint96,uint96,uint32,uint96,uint64,uint32)",
+        "buy(uint256,uint32,uint256)",
+        "sell(uint256,uint32,uint256)",
+        "bloom(uint256)",
+        "route(uint256,uint32,Spec,bytes32[],uint32,address[3])",
+        "collect(uint256)",
+        "close(uint256)",
+        "reclaim(uint256)"
+      ],
+      "constraints": [
+        "funding<=30days",
+        "execution<=90days and>reviewwindow",
+        "<=1000000lots",
+        "bloom stops trading/redemption",
+        "route checks current business ENS/seedownership/green",
+        "indexed double-hashed Merkle plan membership",
+        "index once",
+        "reserve>=bounty",
+        "complete auction+delivery+review fits execution end",
+        "no arbitrary treasury withdrawal",
+        "unused capital pro rata"
+      ]
+    }
+  ],
+  "token": {
+    "source": "contracts/ascension/AscensionToken.sol",
+    "canonical_address": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+    "decimals": 18,
+    "boundary": "Exact received/sent balances and supply destruction enforced in source. Manager USDC6 route is separate. No new token or wealth creation established."
+  },
+  "mainnet_record": {
+    "source": "docs/agent/CURRENT_MAINNET_DEPLOYMENT.md",
+    "source_commit": "c0fc5217e364a39a4cd123d17a8317c06b80f820",
+    "authority_block": 26220072,
+    "observed_at": "2026-10-18T14:51:02.815Z",
+    "current_activation": "NOT APPROVED; no global pause",
+    "source_only_caveat": "All five current contract source blobs equal recorded deployed-source commit blobs. This is not a fresh runtime bytecode, balance, permission or deployment verification.",
+    "contracts": [
+      {
+        "name": "AscensionAccess",
+        "address": "0x9eE41dF6d076Fa4F89b102b76DEf1c503a1e7C3A",
+        "codeHash": "0x17e65ef078f4afc473c5a8448b0d148c1289d23e188cef00192d894a9a981886",
+        "publishedAbiSha256": "8be81388cf5527c2ed37d60390895f464f9e29ce149624a6ec9760ab2c3ba5ad"
+      },
+      {
+        "name": "NovaSeed",
+        "address": "0x31BD0736DcD55DA2f9a2BB586C8a98695F86f19E",
+        "codeHash": "0xffd60a8b78addcb4a28767f74f13ec5c7cf67091351c8dcd6f41c498d747daaf",
+        "publishedAbiSha256": "3ed372b9386130cacb8dc2e683daf4f581c3a52d425ef9f4beb73b66444ec3e1"
+      },
+      {
+        "name": "AscensionRiskOracle",
+        "address": "0x198FC6EBee21c6A0B34E4d055AFD6D811AA6dE58",
+        "codeHash": "0xbefcd9d7b9d9fadeef1d1839779fbca4d418135475d1c4392a09d3ecc25305bd",
+        "publishedAbiSha256": "eff648eb74feee84d935abb875578729f11bbb5b39664d832b685bae9b3738a6"
+      },
+      {
+        "name": "AscensionJobMarket",
+        "address": "0xc1d3d7fb064C23c46C4EB20d24ab6EA650FF0ceE",
+        "codeHash": "0x0eb4d4a47d60690208e7a62f741e383ceb9f8d84da14af848593b7748634bf90",
+        "publishedAbiSha256": "02181bf33d60a0bcd955449dfb601dd055fc56aca8948fa5995aec3b13a191aa"
+      },
+      {
+        "name": "AscensionMark",
+        "address": "0x6D5323b2609E36fDc4dB3B2501B7BcF0E131033c",
+        "codeHash": "0x86e9ae58547af1967459b7926678d4600587adf139b211e581c1f4ea191a2df7",
+        "publishedAbiSha256": "4f85ab6ae09ff68dbf04b7fcd88af027d8d6470cb95cab9882c71bf9f41505f1"
+      }
+    ]
+  },
+  "harness": {
+    "root": "alpha_factory_v1/core/runtime/successor/",
+    "api": "jobs.py JobDispatcher(store,institution_id); seal(JobGraph), dispatch(job_id,signedExecutionAuthorization), execute_tool(...installedPureHandler...), complete(signedJobResult)",
+    "same_controller_caveat": "Local role separation is not external institutional independence.",
+    "programs": "protocol.py WorldProgram, PolicyProgram, ProofProtocol/ProofReceipt, AdmissionDecision, AuthorityEnvelope and separate ForecastRecord/ExperimentalMeasurement/AcceptedOutcome/SettlementReceipt",
+    "guards": [
+      "sealed terms cannot change",
+      "fresh accepted dependencies at dispatch and every tool boundary",
+      "scope/rights/expiry/revocation checked",
+      "exact release/environment/worker/tool/mission bindings",
+      "budget reservation",
+      "at-most-once tool invocation",
+      "revalidation after computation suppresses invalidated result",
+      "successor inherits no proof or grant automatically",
+      "portable restore needs independent trusted source key/checkpoint"
+    ],
+    "handler_boundary": "Pure installed bounded computation only. Consequential actions use ActionGateway; arbitrary generated code needs existing explicit isolated-runner opt-in."
+  },
+  "prior_art": {
+    "ti_source": "docs/Transformational_Intelligence.tex",
+    "ti_blob": "83f834fbbabfc0680cf560e5e96852cc8f4fa9e7",
+    "operational_focus": "Identify formulation obstruction; executable transformation; purpose-preserving bridge; causal ablation; matched unrestricted competent baseline; full transformation cost. TI source explicitly says optimal conventional planner matches its finite demonstration.",
+    "writer8_boundary": "Opportunity ledger/enabling capacity investment; Writer9 should focus timing, policy-conditional predictions, decision VOI, delivery/adoption/competition windows.",
+    "prior_papers": [
+      {
+        "id": "autonomous-enterprises-foundry-v2",
+        "summary": "A simulated thermal-fluid foundry constructs fixtures, a calibration station and a qualified research instrument, then a new calorimetry method and a distinct simulated successor. A retained failure: the 4.9477% predicted/observed heat difference passes the 5% runtime rule, while the calorimeter has 8.6964% error against reference-model true heat. Conventional engineering ties useful accuracy with 384 versus 672 readings; a centralized lab is CAD 460 cheaper. Participant withdrawal and underutilization fail in the tested economic cases. Finite search, modeled economics and Python contract checks; physical construction and deployment NOT RUN. Reproduction requires the full research companion; standalone TeX requires the full LaTeX source ZIP.",
+        "pdf": {
+          "path": "docs/papers/autonomous-enterprises-foundry-v2.pdf",
+          "sha256": "67f2d38922cdaa1bf28e916a494679fabf1463ba84fe56e620dfd192b20d16b3"
+        },
+        "tex": {
+          "path": "docs/papers/autonomous-enterprises-foundry-v2.tex",
+          "sha256": "14e1da2dfa194191b94d09e9fb9d9a63f9b46ee0849f48b768c8cfd8b200b408"
+        }
+      },
+      {
+        "id": "autonomous-enterprises-capability-inheritance-v1",
+        "summary": "Retained executable capabilities serve 48 mathematical tasks using 63,196 counted work units versus 915,136 for rebuilding, but the supplied expert uses 5,760. Inherited successor qualification loses 7,918 versus 2,030 directly. A separate simulated thermal witness gives a conditional 1.8862% bound. Local-EVM and native-worker evidence remains separate from unfinished end-to-end thermal integration; physical validity and full monetary, human and energy costs are unknown. No measured profit is established. The 25-page manuscript is preserved; reproducible TeX requires its complete source package.",
+        "pdf": {
+          "path": "docs/papers/autonomous-enterprises-capability-inheritance-v1.pdf",
+          "sha256": "11b1130fc340b8ffbd3772c900c86c8a7ddceb833e3f6b54eebb62a1211fb1cd"
+        },
+        "tex": {
+          "path": "docs/papers/autonomous-enterprises-capability-inheritance-v1.tex",
+          "sha256": "2929bbc3f83704938b978fe09af589499344efc5d312d7ae1ea1f276bada7047"
+        }
+      },
+      {
+        "id": "autonomous-enterprises-discoverability-v1",
+        "summary": "A bounded compiler constructs nuisance-canceling measurement programs and checks whether they separate an authorized decision. Conventional baselines tie development acquisition costs; an adaptive control wins. Reuse reduces counted construction work, while timing is unstable and centralized execution remains faster. The ≤US$100 total-cost to US$10,000 realizable incremental-value challenge is UNPROVEN: no executable offer or customer receipt exists, and complete cost is unknown. This preserved 24-page amended paper does not qualify its open-review runnable experience or establish physical validation or installed enterprise integration. Reproducible TeX requires the complete research source.",
+        "pdf": {
+          "path": "docs/papers/autonomous-enterprises-discoverability-v1.pdf",
+          "sha256": "cf3a0463a26ebb61a8c17f89ddc1ad77f4da612b585f0f82639896bebd147941"
+        },
+        "tex": {
+          "path": "docs/papers/autonomous-enterprises-discoverability-v1.tex",
+          "sha256": "e71cd6c4d93aab4bff1f67c9751756fa7580f5f0971d874ab1009da099e1a410"
+        }
+      },
+      {
+        "id": "transformational-autonomous-enterprises-v1",
+        "summary": "A finite graph-capability study connects four source runtimes and five local-EVM contracts: fresh mission checks remain, repeated qualification work falls, direct-specialist wins and unproven economic value are retained.",
+        "pdf": {
+          "path": "docs/papers/transformational-autonomous-enterprises-v1.pdf",
+          "sha256": "640cba6e0371407577f708856efa4e4d3b685ed7349cecf48491f1660563fda0"
+        },
+        "tex": {
+          "path": "docs/papers/transformational-autonomous-enterprises-v1.tex",
+          "sha256": "4b7b02547832079988d5032231bd69e7d9e86d11a2142b7ca5e4f4c3b6fc5d8a"
+        }
+      },
+      {
+        "id": "possibility-foundry-v1",
+        "summary": "A bounded 64-channel synthetic-spectroscopy study constructs a calibrated instrument from a finite 60-plan grammar. Under the declared resource cap, 1,678/2,048 fresh missions pass quality and cost. The full scanner has better quality; both supplied software builders use less construction work than the foundry. Transfer succeeds on 204/512 tasks; narrow-line stress passes 0/128. A temporal child passes 128/128 with retained parent capital, but 0/128 with fully loaded de novo cost; a shorter conventional construction also fits its cap. Two same-seed runs are not independent replication. Retained Alpha workbench/Jobs compiler source evidence does not establish installed four-repository, physical or commercial acceptance. Full monetary and human costs are unknown; the $100-to-$10,000 target is NOT ESTABLISHED. This original 21-page paper is preserved; compiling its TeX requires the complete archive bibliography and figures.",
+        "pdf": {
+          "path": "docs/papers/possibility-foundry-v1.pdf",
+          "sha256": "906b63fe49294fc6c7fb4963f8cfea0e59863058c2f2845778e1bf8ad777ccca"
+        },
+        "tex": {
+          "path": "docs/papers/possibility-foundry-v1.tex",
+          "sha256": "e735b926ec09854142293a734f1b78b75de600e53a7416f8dc12c694ea0ac598"
+        }
+      }
+    ],
+    "out_stage_abstracts": [
+      {
+        "path": "docs/Out_Learn.tex",
+        "blob": "f4e9d16a283d62fcec12834912a939ad9372f26b",
+        "abstract": "A learner can identify hidden conditions, or construct an experiment whose answer no longer depends on them. The first Out-Learn manuscript selected between observations and supplied interfaces in a finite world catalogue. This revision constructs the measurement protocol itself and learns its calibration from numerical observations. The new setting has an unknown continuous gain, arbitrary response functions, and polynomial drift whose unrestricted coefficients can change in every measurement block. We synthesize sampling times, polarity changes and correction weights, rather than supply a finished drift-rejecting interface. Norm duality gives an exact error limit against every decoder. A sparse-construction theorem reduces the least-cost known-gain problem to $d+2$ readings for degree-$d$ drift; a zero-transcript argument shows that deterministic adaptation cannot lower its worst acquisition cost under the stated architecture. For an unknown positive gain, we derive a sharp joint calibration--use minimax law, with two different underlying signals producing identical complete raw observations. That law couples the experiment used to learn the gain to the number of future uses. In an exact synthetic quadratic-drift study, the least-cost one-use pair costs thirteen declared resource units and guarantees error $3/1003$. A different calibration becomes optimal beyond nineteen uses. The frozen interface supports adaptive queries and two downstream decision problems; a scope-changing successor retains valid gain evidence but replaces its measurement program. The earlier finite study is preserved and reproduced. The contribution is a completed experiment-construction and learning contract, not new physical primitives, a model-free learner, or an established business."
+      },
+      {
+        "path": "docs/Out_Think.tex",
+        "blob": "407d1324c41fd747b3317058103a14c8a0cabe12",
+        "abstract": "A representation can preserve every required answer and still be unable to support the next reasoning operation. Adding information to that representation is not always the best remedy: preserving an obsolete internal quantity can force a successor to retain the entire underlying state. We make the representation itself an executable construction. A finite reasoning contract specifies source states, admissible contextual information, required answers, and permitted operations. A compiler constructs distinguishing obligations, their closure under future operations, and a code with a checked decoder and update function. For a permutation acting on a conflict graph with clique orbits and uniform equal-length orbit interactions, we prove that the minimum canonical executable alphabet is $\\sum_\\ell \\ell\\chi(J_\\ell)$ and give an attaining constructor. A modular family then exposes a sharp retirement effect. An initially valid code $x+2y\\pmod p$ can be replaced by an executable $3p$-state representation, whereas any executable refinement preserving that old code requires $p^2$ states. At $p=101$, this is 303 versus 10,201 resident labels, or nine versus fourteen fixed-length bits, under the same contextual answer obligations. A separate fifteen-source example needs eight labels for static answers but nine for canonical continuation: a three-bit answer code cannot be a three-bit updating code. Executed checks cover 1,099 small conflict graphs, eighty orbit models, forty general finite systems, and all 46,584 admissible context--state cases in six prime-family instances. A portable fifteen-label interface executes five hundred checked continuation steps and supports fresh supplied query adapters. Classical functional compression and state minimization are foundations, not renamed discoveries; no neural or frontier-model gain is measured. The contribution is the explicit orbit construction, representation-retirement separation, and checked passage from answer-preserving summaries to purpose-preserving reasoning interfaces."
+      },
+      {
+        "path": "docs/Out_Design.tex",
+        "blob": "dfff73fc6d9b7bb6e935e613d7d403b62b5b34ea",
+        "abstract": "A system can have a valid future configuration and no admissible first move toward it. The earlier \\emph{Out-Design} constructed external staging access. This revision asks whether a purpose-preserving change of realization can release the needed capacity inside the existing architecture. We develop a \\emph{release certificate}: an executable replacement that preserves every required service on independent inputs, fits a declared resource envelope, and frees a resource whose location makes the desired transition reachable. A truth-table compiler constructs a joint Boolean program using established bit-parallel techniques. In the worked model, two programs costing 171 abstract instructions jointly are replaced by a checked 111-instruction realization under a 120-instruction worker limit. Eleven required services remain available on eleven worker slots, while one slot becomes vacant. A derived access criterion and an explicit route then realize all eight required endpoint configurations. Reversing which worker is released preserves the same computational saving but enables none of the seven changed endpoints. A saved capability subsequently supports twelve services on those same eleven workers. Complete-domain program checks, independent occupancy search, phase-by-phase functional audits and negative cases establish the finite results. The contribution is the constructive link from equivalent realization to usable transformation capacity, not a new bitslicing algorithm, a hardware benchmark or a claim of autonomous industrial invention."
+      },
+      {
+        "path": "docs/Out_Strategise.tex",
+        "blob": "edf77f688aca7e5bee6ca67c1b6f3a8048723fc6",
+        "abstract": "A system can spend its intelligence discovering which action to take while accepting an unnecessarily restrictive set of actions. We study a different strategic object: a conditional construction that succeeds across possibilities the system still cannot distinguish. The technical question is not only what to learn, but what to build so that less must be learned. We develop an exact finite compiler that couples observation selection to a synthesized common completion, with a normal-form result specifying when construction may be deferred until commitment. For a grouped uncertain network we derive the complete minimax cost frontier under explicit assumptions and an exact purpose-specific quotient of its belief space. In a sixteen-world instance, a coarse observation followed by a constructed bypass costs seven units, versus eleven for the optimal observation-and-repair policy and twenty for the best construction without observation. The successful policy retains four possible faults: uncertainty remains, but no longer prevents the required delivery. The same family yields a checked 1,024-world policy of cost seven, against sixty-seven and 160 for those restricted alternatives. These are abstract operational costs, not model speedups. The quotient replaces 65,535 beliefs by 69 states in the anchor case, and agrees with an unquotiented reference on 75,967 belief cases across the study. A stricter successor purpose invalidates the old route and its abstraction; retained uncertainty supports a new four-unit extension instead of a false claim of inherited success. Thirty-two further directed acyclic graph instances are checked against independent module-subset enumeration. The contribution is a constructive, purpose-grounded account of when information, intervention, and representation should change together. It builds on decision-theoretic troubleshooting and robust planning; it does not demonstrate autonomous invention, physical deployment, or superiority to AlphaEvolve. The enduring asset is a method for constructing strategies that make available intelligence more effective without making the purpose easier."
+      },
+      {
+        "path": "docs/Out_Execute.tex",
+        "blob": "19b468ae269e338adfb49d9fadfe0327a7fa026d",
+        "abstract": "A completed task can leave an answer, or it can leave a capability that changes what subsequent work must repeat. \\emph{Out-Execute} develops the second object. The earlier edition compiled a fixed result's correctness into a region of admissible input changes. Here we go beyond retaining the same answer: construct an executable boundary contract that lets a changed subproblem supply a different answer without re-solving unaffected parts. For finite, separable cost systems, the contract records the exact best completion for every admissible interface assignment. We characterize when two interiors are interchangeable in every external continuation: their complete boundary value functions must agree. This yields an exact stopping rule for propagation, while witnesses and current acceptance still change. An implemented compiler selects boundaries from factor scopes, constructs and independently checks the contracts, repairs changed modules, and assembles a globally optimal artifact. Across 576 synthetic snapshots, all optima agree with full enumeration; 158 updates leave the external contract unchanged. A saved 98-task capability extends to 101 interacting tasks by constructing one new module and retaining 32. A stronger fixed-certificate executor remains competitive and is reported without an invented speedup. Reproduced earlier studies and new local crash/retry tests complete the evidence chain. The contribution is a concrete, testable construction of execution that preserves progress through change, not a new general theory of variable elimination or a claim of autonomous industrial deployment."
+      },
+      {
+        "path": "docs/Out_Evolve.tex",
+        "blob": "d2a1abdc373076d2f872ff824878988136d75c0b",
+        "abstract": null
+      }
+    ]
+  },
+  "source_snapshots": "writer9_audit/source (new local files); root must include selected audit in durable checkpoint",
+  "infrastructure_note": "One exec_command failed before running because sandbox temporary mount marker allocation returned no space left on device; no runtime tests were attempted."
+}

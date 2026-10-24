@@ -1,0 +1,79 @@
+\section{Reproduction and evidence custody}\label{app:reproduction}
+The complete source archive is the canonical research object. Its payload manifest identifies every source file, input, result, figure and authoritative PDF by SHA-256 and byte count. The PDF inside the archive is authoritative if a standalone document service attaches provenance or otherwise changes its bytes. A separately rebuilt PDF may differ in metadata while preserving the rendered research; the build verification records its outcome explicitly.
+
+\begin{table}[ht]\centering\small
+\begin{tabularx}{\linewidth}{@{}L{45mm}Y@{}}\toprule
+Entry point & Purpose \\\midrule
+\texttt{README.md} & Environment, exact commands, source pins and interpretation boundaries. \\
+\texttt{protocol.json} / \texttt{amendments/} & Original hypotheses, fixed task selection, budget, information cutoffs and disclosed corrections. \\
+\texttt{numerics.py} / \texttt{data/} & Frozen numerical instrument and exact pinned public inputs; no network fetch needed for execution. \\
+\texttt{decision.py} / \texttt{decision\_protocol.json} & Frozen finite timing model and complete assumed distributions. \\
+\texttt{results/} & Development, calibration, freezes and complete confirmation outcomes; adverse outcomes retained. \\
+\texttt{check\_results.py} / \texttt{check\_decision.py} & Separate implementations of arithmetic, provenance, quality and accounting checks. \\
+\texttt{demo\_harness.py} / \texttt{vendored/} & Bounded native lifecycle demonstration and exact unchanged source closure. \\
+\texttt{COST\_LEDGER.json} & Measured runtime, failures and unknown cost categories without a fictional monetary total. \\
+\texttt{make\_figures.py} / \texttt{paper/} & Original vector figures, complete LaTeX, bibliography and generated result tables. \\
+\texttt{publication/} & Passive paper/source handoff; publication status is separate from research acceptance. \\\bottomrule
+\end{tabularx}
+\caption{\source{} and retained research outputs. File names describe inspectable entry points; they do not imply live deployment.}
+\end{table}
+
+The measured environment used Python 3.12.14, NumPy 2.3.5, SciPy 1.17.0 and threadpoolctl 3.6.0 with a single BLAS thread. Figures used Matplotlib 3.10.8; the native demonstration also used Pydantic 2.14.0 and cryptography 50.0.2. Exact environment records, including runtime libraries and platform, accompany each numerical phase. Host contention, caches and numerical-library builds can change timings. Reproduction means regenerating the procedure and checking its numerical outputs, not promising identical milliseconds on another machine.
+
+Research, code and manuscript preparation used an AI-assisted local workflow. Separate assistant-written checkers and source reviews improve implementation scrutiny; they do not constitute external peer review, a recruited expert evaluation or independent beneficiary acceptance. Owner review and qualified publication remain distinct gates.
+
+Read-only auditing and paper reconstruction do not rerun the science. A fresh experimental replication must use a new isolated copy, regenerate calibration, issue a new forecast freeze, and execute its own held-out runs within the declared launch interval. The original forecast window has expired; changing its timestamps would falsify the original evidence. The package provides a command that prepares a fresh run tree while preserving the archived results.
+
+The paper can be rebuilt offline with XeLaTeX, BibTeX and the supplied vector PDFs. The full \texttt{paper/} directory is the reproducible source; a convenience flattened TeX file still requires the packaged figure PDFs. No paid service, chain transaction, API key or operational credential is required for the local research demonstration. The existing public RFC 8032 test key is deliberately unsuitable for authentication.
+
+\subsection{Retained failures and amendments}
+A01 records unavailable official matrix downloads, the rejected pattern-only candidate, unchanged matrix selection, pinned mirrors, preflight seed separation, unavailable CHOLMOD and the bcsstk24 metadata disagreement. A02 makes numerical estimands and shared workload-generation accounting explicit. A03 records a JSON metadata serialization defect after all 36 development cells had finished; only metadata serialization changed. Development's batch CPU lower bound is retained rather than invented into a complete phase total. A04 corrects future-duration information leakage during engineering of the decision model: admission must use calibrated estimates and pay for actual late work. All decision calibration and confirmation occurred after that correction and source freeze.
+
+Native engineering attempts also retain an unsupported enum failure and an incompatible decimal-string representation before the successful fixture. Those attempts are evidence of development cost and correction, not extra scientific samples. The corrupted-output proof failure is an intentional negative control. Ten additional post-confirmation functional controls check zero and NaN outputs, wrong matrix identity, stale source/library recipes, changed acceptance, unauthorized restoration envelopes and valid fresh reconstruction. All pass their explicitly expected outcomes, without changing any protected source or scientific input. These controls are engineering evidence, not additional confirmatory samples. Later arithmetic and manuscript checks may improve auditing or presentation, but cannot change the frozen execution sources, inputs or observed outcomes.
+
+\section{The macro envelope remains an assumption}\label{app:macro}
+Table~\ref{tab:macro} records the two distinct source weight sets. The original macro experience starts from an editable \$15 quadrillion envelope over twenty years, with a horizon control from 3 to 40 years. Its base weights can be redistributed by interactive objectives and pressures. The later Insight Atlas fixture uses exact integer basis points and a separate 120-minute agent-firm scheduling default. Neither set predicts sector output, investable returns or adoption dates. Verified economic value in the audited Atlas is zero. \citep{atlas2026,treasure2026}
+
+\begin{table}[ht]\centering\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Sector & Original base weight (\%) & Atlas fixture (\%)\\\midrule
+Energy &15&13\\
+Compute &12&12\\
+Science &13&12\\
+Health &11&11\\
+Materials &9&9\\
+Robotics &8&8\\
+Finance &8&7\\
+Climate &7&7\\
+Machine labor &9&7\\
+Infrastructure &4&6\\
+Education &2&4\\
+Governance &2&4\\\midrule
+Total &100&100\\\bottomrule
+\end{tabular}
+\caption{\assum{} / \source{}. These weights allocate an assumed total. They are editable scenario inputs, not measured wealth, TAM, forecasts, capture probabilities or investment returns. The numerical and decision experiments do not use them.}
+\label{tab:macro}\end{table}
+
+\FloatBarrier
+\input{generated/comparison_appendix.tex}
+\FloatBarrier
+
+\section{An evidence map for every headline claim}
+\begin{longtable}{@{}L{37mm}L{24mm}L{94mm}@{}}
+\toprule Claim & Class & Exact supporting boundary\\\midrule\endhead
+Qualified repeated solves & Observed & 432 held-out batch records, 3,024 right-hand sides; fixed numerical predicate on manufactured inputs.\\
+Reuse saves execution time & Observed & Paired randomized-order comparison against repeated setup on four matrices, one host. Cached LU is the strong comparator.\\
+Delivery probabilities show skill & Prospective, then observed & Frozen local computational deadlines issued before confirmation; primary multiplier 1; correlated blocks. No industrial-adoption inference.\\
+Timing can alter modeled delivery & Simulated & Same exogenous worlds replayed for all finite policies; actual adoption and demand unobserved.\\
+Foresight has no established unique net gain & Simulated / inference & Nominal interval crosses zero; same-information conventional policy chooses identical actions with lower controller cost. Bounded to the tested policy class.\\
+Restored knowledge grants no permission & Observed fixture & Unchanged native inspect/restore, empty authority, fresh proof and explicit grant, refused stale operations; public test identity.\\
+Contracts support bounded plan states & Source-derived & Five exact source comparisons and recorded ABI identities; no fresh deployed-state or transaction claim.\\
+Commercial value or future adoption & Unobserved / pending & No recruited beneficiary acceptance, payment, firm offer or willingness-to-pay evidence. Seven- and thirty-day targets remain unmeasured, not synthetic successes.\\
+\bottomrule
+\caption{Evidence classes are not interchangeable. A source audit, simulation, computational acceptance and real beneficiary acceptance answer different questions.}
+\end{longtable}
+
+\section{Publication is a separate acceptance gate}
+The authorized repository and issue 4850 retain publication ownership and review coordination. The isolated research package and passive page are designed for a focused receiving pull request. A successful local build or a public source branch does not establish merge, release, Pages deployment or live-link acceptance. The handoff status records the current receiving base, required review and qualified publication gates. Existing research editions and owner-held runtime boundaries are preserved.
+
+The five requested contracts were inspected because they constrain future funded missions, not because this numerical experiment needs a transaction. No financial action, new credential, security-setting change or paid infrastructure commitment was made. Knowledge, capability evidence and execution authority remain three separate things all the way from the local artifact to any future deployment.

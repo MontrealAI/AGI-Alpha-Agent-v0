@@ -1,0 +1,13 @@
+\section{Every credible comparator and the uncertainty boundary}\label{app:comparisons}
+\begin{table}[ht]\centering\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Comparator & CF minus comparator & 95\% paired seed-block interval\\\midrule
+Adaptive without signal & $+0.029270$ & $[-0.031659,+0.100599]$\\
+Compiled same-information rule & $-0.000548$ & $[-0.000565,-0.000534]$\\
+Forecast-only ablation & $+0.442200$ & $[+0.318578,+0.570494]$\\
+Calibrated fixed rule (primary) & $-0.008415$ & $[-0.030491,+0.018849]$\\
+Wait-then-build ablation & $+0.880558$ & $[+0.762344,+1.010803]$\\
+\bottomrule\end{tabular}
+\caption{\simu{}. Equal-weight six-regime descriptive means in assumed mission credits per episode. The full result JSON reports every regime against every comparator. The calibrated fixed rule remains the preregistered primary comparator; the clairvoyant menu is excluded from credible alternatives. Intervals resample paired seed blocks, preserve shared worlds across regimes, and do not estimate external-beneficiary variation.}\end{table}
+
+The frozen primary intervals use the original evaluator's bootstrap stream. This additional all-comparator report uses NumPy PCG64 seed 9001 and 2,000 resamples. Differences in interval endpoints caused by the resampling stream do not change the preregistered values. The service-value sensitivity was specified after confirmation and reuses the exact fixed trajectories at credits 1, 0.75, 0.5 and 0.25 per accepted request. It is explicitly exploratory and does not refit a policy or simulate new demand.

@@ -1,0 +1,80 @@
+{
+  "schema": "writer9-independent-primary-forecast-audit/v1",
+  "created_utc": "2026-10-24T02:33:12.725077+00:00",
+  "passed": true,
+  "failures": [],
+  "scope": "Independent bounded arithmetic from retained JSON/JSONL; no experiment or analysis module imported or executed. Bootstrap resamples 12 complete block-index groups, preserving overlapping targets within each group; local run variation only.",
+  "hashes": {
+    "protocol": "aebdfe90edf392d89433289f7bccc3fc1757abe7f7311381b11170af7b1ae51a",
+    "freeze": "95ab2aec575f797f6392d6bc1d01a4e22a8815dd5c25e10a5eb0446763a8439d",
+    "calibration": "f37056e3263835b509672132c3fdd14c5bb6823f4ff7e80ee79fba05ab1c9025",
+    "confirmation": "d5a562219ebcc28e9f03f1b1a0e62f18c3e8bbeaa966b53beb2ec729bb7776c6",
+    "analysis": "61a82added5b5a22a630107d8717d47980caaf5c32349eae6d9a3c7bc0117be8",
+    "analysis_source": "fbde0c4a82a39c9e2b204fb4bb8f470996f86fa0b74f33fa43b8ca8b07ddf13c"
+  },
+  "calibration_target_observations": 1440,
+  "calibration_positive_target_observations": 862,
+  "base_probability": 0.5984743411927878,
+  "primary_deadline_multiplier": 1.0,
+  "primary_distinct_targets": 60,
+  "bootstrap": {
+    "seed": 20261023,
+    "resamples": 2000,
+    "blocks": 12,
+    "percentiles": [
+      0.025,
+      0.975
+    ],
+    "quantile_interpolation": "linear"
+  },
+  "primary": {
+    "n": 720,
+    "positive": 359,
+    "brier": 0.07205555555555555,
+    "base_brier": 0.2599707357100002,
+    "mean_difference": -0.18791518015444464,
+    "paired_block_bootstrap_95_brier_difference": [
+      -0.19147977986164144,
+      -0.1843379725723827
+    ],
+    "block_mean_differences": [
+      -0.194711296659299,
+      -0.19142881861953942,
+      -0.17496557312716773,
+      -0.1816322397938344,
+      -0.1848130072464465,
+      -0.18819719587335357,
+      -0.18491471783359398,
+      -0.1882480511669273,
+      -0.19153052920668692,
+      -0.18491471783359398,
+      -0.20137796332596566,
+      -0.1882480511669273
+    ]
+  },
+  "secondary_all_three_deadline_multipliers": {
+    "n": 2160,
+    "positive": 1270,
+    "brier": 0.03146296296296296,
+    "base_brier": 0.2423730062190668,
+    "mean_difference": -0.21091004325610388,
+    "paired_block_bootstrap_95_brier_difference": [
+      -0.2118246680056801,
+      -0.20989855265662782
+    ],
+    "block_mean_differences": [
+      -0.21336201325661755,
+      -0.21226785391003103,
+      -0.2067801054125738,
+      -0.209002327634796,
+      -0.21006258345233342,
+      -0.2111906463279691,
+      -0.21009648698138256,
+      -0.21120759809249365,
+      -0.21230175743908017,
+      -0.21009648698138256,
+      -0.21334506149209298,
+      -0.21120759809249365
+    ]
+  }
+}
