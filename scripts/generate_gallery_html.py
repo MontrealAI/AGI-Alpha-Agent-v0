@@ -201,6 +201,9 @@ def insert_back_link(pages: Iterable[Path], *, preserved_pages: Iterable[Path] =
         if page.parts[-2:] == ("transformational-intelligence", "index.html"):
             continue  # Its generator owns the exact inline script, CSP and return links.
         if page.parts[-3:] in (
+            ("reports", "research-foundry-v2", "index.html"),
+            ("reports", "research-capability-inheritance-v1", "index.html"),
+            ("reports", "research-discoverability-v1", "index.html"),
             ("successor", "alpha", "index.html"),
             ("successor", "play", "index.html"),
             ("successor", "build", "index.html"),

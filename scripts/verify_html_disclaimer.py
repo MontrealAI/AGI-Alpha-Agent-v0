@@ -7,34 +7,48 @@ from __future__ import annotations
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 SNIPPET = "docs/DISCLAIMER_SNIPPET.md"
+PUBLIC_NOTICES = {
+    "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/" + SNIPPET,
+    "https://montrealai.github.io/AGI-Alpha-Agent-v0/DISCLAIMER_SNIPPET/",
+}
 
 
-def has_disclaimer(text: str, page: Path, docs_dir: Path) -> bool:
-    """Accept the documented marker or an actual link to the same local notice."""
-    if SNIPPET in text:
-        return True
+class _Links(HTMLParser):
+    """Collect actual anchors, excluding comments and script text."""
 
-    class NoticeLinks(HTMLParser):
-        found = False
+    def __init__(self) -> None:
+        super().__init__()
+        self.targets: list[str] = []
 
-        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-            if tag != "a":
-                return
-            for name, value in attrs:
-                if name != "href" or value is None:
-                    continue
-                link = urlsplit(value)
-                if not link.scheme and not link.netloc and link.path:
-                    target = (page.parent / link.path).resolve()
-                    if target == (docs_dir / "DISCLAIMER_SNIPPET.md").resolve():
-                        self.found = True
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "a":
+            self.targets.extend(value for key, value in attrs if key == "href" and value)
 
-    links = NoticeLinks()
+
+def references_disclaimer(text: str, page: Path, docs_dir: Path) -> bool:
+    """Require a link to the source notice or its published documentation page."""
+    links = _Links()
     links.feed(text)
-    return links.found
+    local_notices = {
+        (docs_dir / "DISCLAIMER_SNIPPET.md").resolve(),
+        (docs_dir / "DISCLAIMER_SNIPPET").resolve(),
+        (docs_dir / "DISCLAIMER_SNIPPET/index.html").resolve(),
+    }
+    for target in links.targets:
+        try:
+            parsed = urlsplit(target)
+        except ValueError:
+            continue
+        if parsed.scheme or parsed.netloc:
+            if parsed._replace(query="", fragment="").geturl() in PUBLIC_NOTICES:
+                return True
+        elif parsed.path and not parsed.path.startswith("/"):
+            if (page.parent / unquote(parsed.path)).resolve() in local_notices:
+                return True
+    return False
 
 
 def main() -> int:
@@ -46,7 +60,7 @@ def main() -> int:
         if html.parent.name == "DISCLAIMER_SNIPPET":
             continue
         text = html.read_text(encoding="utf-8", errors="ignore")
-        if not has_disclaimer(text, html, docs_dir):
+        if not references_disclaimer(text, html, docs_dir):
             missing.append(html.relative_to(repo_root))
 
     if missing:

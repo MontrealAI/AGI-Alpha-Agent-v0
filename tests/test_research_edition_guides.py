@@ -4,6 +4,7 @@
 import copy
 import hashlib
 import json
+import subprocess
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
@@ -12,7 +13,9 @@ from urllib.parse import urlsplit
 import pytest
 
 from scripts.generate_research_editions import EDITIONS, generate
-from scripts.research_papers import load_catalog, resource_records
+from scripts.generate_gallery_html import insert_back_link
+from scripts.research_papers import experience_hashes, load_catalog, resource_records
+from scripts.verify_html_disclaimer import references_disclaimer
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -42,6 +45,7 @@ def test_edition_has_original_downloads_and_existing_journey(edition: dict[str, 
     assert "grid-template-columns:1fr" in page
     links = Links()
     links.feed(page)
+    assert references_disclaimer(page, path, ROOT / "docs")
     assert edition["journey"] in links.targets
     for kind in ("pdf", "tex"):
         assert "../../" + row[kind]["path"].removeprefix("docs/") in links.targets
@@ -77,3 +81,33 @@ def test_archive_actions_have_published_download_bindings() -> None:
         assert record["bytes"] > 0
         assert len(bytes.fromhex(record["sha256"])) == 32
         assert record["availability"] and record["verification"] and record["record"].startswith("https://github.com/")
+
+
+def test_catalogued_html_retains_exact_bytes_with_autocrlf_checkout(tmp_path: Path) -> None:
+    bindings = experience_hashes(load_catalog(ROOT))
+    subprocess.run(["git", "init", "--quiet", str(tmp_path)], check=True)
+    subprocess.run(["git", "-C", str(tmp_path), "config", "core.autocrlf", "true"], check=True)
+    (tmp_path / ".gitattributes").write_bytes((ROOT / ".gitattributes").read_bytes())
+    for name in bindings:
+        target = tmp_path / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / name).read_bytes())
+    subprocess.run(["git", "-C", str(tmp_path), "add", "--", ".gitattributes", *bindings], check=True)
+    for name in bindings:
+        (tmp_path / name).unlink()
+    subprocess.run(["git", "-C", str(tmp_path), "checkout-index", "--force", "--", *bindings], check=True)
+    for name, expected in bindings.items():
+        assert hashlib.sha256((tmp_path / name).read_bytes()).hexdigest() == expected, name
+
+
+@pytest.mark.parametrize("edition", EDITIONS, ids=lambda edition: edition["directory"])
+def test_gallery_backlinks_preserve_catalogued_reading_guide_bytes(tmp_path: Path, edition: dict[str, Any]) -> None:
+    rows = {row["id"]: row for row in load_catalog(ROOT)["papers"]}
+    binding = rows[edition["id"]]["resources"]["reading"]
+    page = tmp_path / binding["path"]
+    page.parent.mkdir(parents=True)
+    original = (ROOT / binding["path"]).read_bytes()
+    page.write_bytes(original)
+    insert_back_link([page])
+    assert page.read_bytes() == original
+    assert hashlib.sha256(page.read_bytes()).hexdigest() == binding["sha256"]

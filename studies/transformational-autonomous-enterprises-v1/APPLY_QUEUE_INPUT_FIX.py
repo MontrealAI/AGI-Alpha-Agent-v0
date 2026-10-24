@@ -23,10 +23,10 @@ OVERRIDES = {
     "study/integration/mission-delivery.mjs": "14f46a110f182b462963fb39619c9dcd3a87a2f24a9e0b92b842b7a4ad20ea68",
     "study/integration/execution-identity.test.mjs": "1eb36919630bac62eb7d4e96456abbb440480cddb95dde32a88599fdcadfc4cb",
     "study/integration/bridge-lifecycle.test.mjs": "e7109d59dcafe8a29b3f7498fa805f4876f3b586ab80ee8dc00dc8e80149fe3d",
-    "study/interface/app.js": "003d2eac0966ce7425f8a690bccbbe6e776957e4a4c347628d1a49e5cb57101c",
-    "study/interface/status.test.mjs": "efc671d0c998d7843a88be38e264880f655ddf7ed6baa71f9f0ae067e6f539d3",
+    "study/interface/app.js": "4dd9160507732d448b0c6f6a14a8bdbfd96b2f9fcedbe238fafdc972cf004384",
+    "study/interface/status.test.mjs": "9aff78d18296320609503fbe5aed11daa79a0b84061c6bab602b1f463762e5c6",
 }
-OVERLAY_COMMIT = "95c8d98538f37c0807b00b2f6eef03f9c7fb6d2b"
+OVERLAY_COMMIT = "92de6adf485df9556e4c46b20a1e656da419426a"
 BASE = (
     "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
     + OVERLAY_COMMIT
@@ -102,13 +102,18 @@ def verify_overlay(root: Path) -> dict[str, object]:
     for relative, sha256 in expected.items():
         if digest(read_regular(root, relative)) != sha256:
             raise ValueError("Derived source differs: " + relative)
-    return {"verified": True, "originalManifestMembers": 457, "derivedMembersChecked": len(expected), "receipt": receipt}
+    return {
+        "verified": True,
+        "originalManifestMembers": 457,
+        "derivedMembersChecked": len(expected),
+        "receipt": receipt,
+    }
 
 
 def overlay_receipt() -> dict[str, object]:
     """Describe the separate source epoch without relabeling frozen evidence."""
     return {
-        "schema": "tae.research-runtime-overlay.v5",
+        "schema": "tae.research-runtime-overlay.v6",
         "originalArchiveSha256": ARCHIVE_SHA256,
         "originalManifestSha256": MANIFEST_SHA256,
         "originalQueueSha256": ORIGINAL_QUEUE_SHA256,
@@ -116,7 +121,7 @@ def overlay_receipt() -> dict[str, object]:
         "correctionSourceCommit": OVERLAY_COMMIT,
         "overrides": OVERRIDES,
         "originalManifestIsHistorical": True,
-        "scope": "Derived queue input/worker recovery, admission, bridge lifecycle and UI status corrections; frozen scores unchanged",
+        "scope": "Derived queue input/worker recovery, admission, bridge lifecycle and UI status/rejected-run reconciliation corrections; frozen scores unchanged",
         "installedFourRepositoryAcceptance": False,
         "authority": [],
     }
@@ -163,7 +168,9 @@ def main() -> None:
         parser.error("--verify accepts only the derived source directory")
     if not args.verify and args.output is None:
         parser.error("Supply original and separate derived directories")
-    result = verify_overlay(args.source) if args.verify else apply_overlay(args.source, args.output, download=args.download)
+    result = (
+        verify_overlay(args.source) if args.verify else apply_overlay(args.source, args.output, download=args.download)
+    )
     print(json.dumps(result, indent=2))
 
 

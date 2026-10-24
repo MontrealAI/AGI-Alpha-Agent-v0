@@ -92,8 +92,10 @@ def main() -> int:
         run("assemble", [sys.executable, "ASSEMBLE.py"], bundle)
         run("extract", [sys.executable, "-m", "zipfile", "-e", "Successor_Omega_Harness_Companion.zip", "."], bundle)
         run("original-before", [sys.executable, str(original / "VERIFY.py")], bundle)
+        run("overlay-regressions", [sys.executable, "test_queue_input_overlay.py", str(original)], bundle)
         run("derive", [sys.executable, "APPLY_QUEUE_INPUT_FIX.py", str(original), str(derived)], bundle)
         run("derived-before", [sys.executable, "APPLY_QUEUE_INPUT_FIX.py", "--verify", str(derived)], bundle)
+        run("interface-recovery-controls", [node, "--test", "study/interface/status.test.mjs"], derived)
         run("setup", [node, "study/setup.mjs"], derived)
         run("setup-check", [node, "study/setup.mjs", "--check"], derived)
         run(
@@ -103,15 +105,13 @@ def main() -> int:
         )
         for package in ("playwright", "@sparticuz/chromium"):
             package_file = derived / "study/browser-tools/node_modules" / package / "package.json"
-            toolchain[package] = {
-                "version": json.loads(package_file.read_text())["version"], **identity(package_file)
-            }
+            toolchain[package] = {"version": json.loads(package_file.read_text())["version"], **identity(package_file)}
         server_log = (private / "server.log").open("wb")
         server = subprocess.Popen(
             [node, "study/server.mjs"], cwd=derived, env=environment, stdout=server_log, stderr=server_log
         )
         # The existing server stays on127.0.0.1:8765, with unchanged Host/Origin rules.
-        #30s follows the browser's normal readiness convention; no native run starts here.
+        # 30s follows the browser's normal readiness convention; no native run starts here.
         deadline = time.monotonic() + 30
         while True:
             try:
@@ -161,8 +161,10 @@ def main() -> int:
             run("original-after", [sys.executable, str(original / "VERIFY.py")], bundle, required=False)
         if derived.is_dir():
             run(
-                "derived-after", [sys.executable, "APPLY_QUEUE_INPUT_FIX.py", "--verify", str(derived)],
-                bundle, required=False,
+                "derived-after",
+                [sys.executable, "APPLY_QUEUE_INPUT_FIX.py", "--verify", str(derived)],
+                bundle,
+                required=False,
             )
 
         report = None
@@ -173,10 +175,22 @@ def main() -> int:
                 qa_files[name] = identity(path)
                 try:
                     raw = json.loads(path.read_text())
-                    report = {key: raw[key] for key in (
-                        "target", "browser", "executableSource", "checks", "errors", "startedAt", "finishedAt",
-                        "passed", "failure", "lineageText"
-                    ) if key in raw}
+                    report = {
+                        key: raw[key]
+                        for key in (
+                            "target",
+                            "browser",
+                            "executableSource",
+                            "checks",
+                            "errors",
+                            "startedAt",
+                            "finishedAt",
+                            "passed",
+                            "failure",
+                            "lineageText",
+                        )
+                        if key in raw
+                    }
                     (public / name).write_text(json.dumps(clean(report), indent=2) + "\n")
                 except (OSError, ValueError, TypeError) as error:
                     failure = failure or "Malformed QA report: " + str(error)
@@ -192,17 +206,32 @@ def main() -> int:
         if export.is_file():
             try:
                 raw = json.loads(export.read_text())
-                export_record = {**identity(export), "schema": raw.get("schema"),
-                                 "currentProof": raw.get("currentProof"), "authority": raw.get("authority")}
+                export_record = {
+                    **identity(export),
+                    "schema": raw.get("schema"),
+                    "currentProof": raw.get("currentProof"),
+                    "authority": raw.get("authority"),
+                }
             except (OSError, ValueError, AttributeError) as error:
                 failure = failure or "Malformed browser export: " + str(error)
         closure = {}
         for relative in (
-            "MANIFEST.sha256", "QUEUE_INPUT_OVERLAY.json", "study/interface/qa.cjs", "study/interface/app.js",
-            "study/interface/index.html", "study/interface/style.css", "study/interface/evidence.js",
-            "study/server.mjs", "study/setup.mjs", "study/run-demo.mjs", "study/browser-tools/package.json",
-            "study/browser-tools/package-lock.json", "study/results/source-scope.json",
-            "study/evaluation/SCORING_FREEZE_V2.json", "study/evaluation/checker.mjs", "study/evaluation/criteria.json",
+            "MANIFEST.sha256",
+            "QUEUE_INPUT_OVERLAY.json",
+            "study/interface/qa.cjs",
+            "study/interface/app.js",
+            "study/interface/index.html",
+            "study/interface/style.css",
+            "study/interface/evidence.js",
+            "study/server.mjs",
+            "study/setup.mjs",
+            "study/run-demo.mjs",
+            "study/browser-tools/package.json",
+            "study/browser-tools/package-lock.json",
+            "study/results/source-scope.json",
+            "study/evaluation/SCORING_FREEZE_V2.json",
+            "study/evaluation/checker.mjs",
+            "study/evaluation/criteria.json",
         ):
             path = derived / relative
             if path.is_file():
@@ -210,34 +239,49 @@ def main() -> int:
         setup_records = []
         for path in sorted((derived / "study/setup-attempts").glob("setup-*.json")):
             raw = json.loads(path.read_text())
-            setup_records.append({
-                key: raw[key] for key in ("node", "testedNode", "ready", "pins", "elapsedMs") if key in raw
-            })
+            setup_records.append(
+                {key: raw[key] for key in ("node", "testedNode", "ready", "pins", "elapsedMs") if key in raw}
+            )
             setup_records[-1]["dependencyLocks"] = [
                 {key: event[key] for key in ("dependencyLock", "sha256")}
-                for event in raw.get("events", []) if "dependencyLock" in event and "sha256" in event
+                for event in raw.get("events", [])
+                if "dependencyLock" in event and "sha256" in event
             ]
-        if failure is None and (report is None or report.get("passed") is not True or not all(
-            phases.get(key) == 0 for key in ("http-qa", "original-after", "derived-after")
-        )):
+        if failure is None and (
+            report is None
+            or report.get("passed") is not True
+            or not all(phases.get(key) == 0 for key in ("http-qa", "original-after", "derived-after"))
+        ):
             failure = "QA report or final source verification did not pass"
         logs = {path.name: identity(path) for path in private.iterdir() if path.is_file()}
-        passed = failure is None and report is not None and report.get("passed") is True and all(
-            phases.get(key) == 0 for key in ("http-qa", "original-after", "derived-after")
+        passed = (
+            failure is None
+            and report is not None
+            and report.get("passed") is True
+            and all(phases.get(key) == 0 for key in ("http-qa", "original-after", "derived-after"))
         )
         receipt = {
-            "schema": "tae.http-ui-ci-acceptance.v1", "passed": passed,
-            "head": expected, "base": base, "runId": os.environ["GITHUB_RUN_ID"],
-            "attempt": os.environ["GITHUB_RUN_ATTEMPT"], "phases": phases, "failure": clean(failure),
-            "report": clean(report), "browserExport": clean(export_record), "privateLogIdentities": logs,
+            "schema": "tae.http-ui-ci-acceptance.v1",
+            "passed": passed,
+            "head": expected,
+            "base": base,
+            "runId": os.environ["GITHUB_RUN_ID"],
+            "attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+            "phases": phases,
+            "failure": clean(failure),
+            "report": clean(report),
+            "browserExport": clean(export_record),
+            "privateLogIdentities": logs,
             "privateQaFileIdentities": qa_files,
-            "derivedSourceClosure": closure, "setupRecords": clean(setup_records),
+            "derivedSourceClosure": closure,
+            "setupRecords": clean(setup_records),
             "toolchain": toolchain,
             "httpServedSourceBytes": served,
             "originalArchiveSha256": "a622657df828aefb4a081d1e0f5d1fb665fcf69991383245b6ece7cb66bee7ee",
-            "scope": "Existing full HTTP QA on corrected v5 research copy; source APIs/disposable local EVM. "
-                     "No installed four-release, held native-host, economic-value or production settlement claim.",
-            "omittedOriginalFourQualified": False, "priorDeniedObjectivesAttempted": False,
+            "scope": "Existing full HTTP QA and focused overlay/UI controls on corrected v6 research copy; source APIs/disposable local EVM. "
+            "No installed four-release, held native-host, economic-value or production settlement claim.",
+            "omittedOriginalFourQualified": False,
+            "priorDeniedObjectivesAttempted": False,
             "rawLogs": "Private runner scratch; exact hashes retained. Local action token is never published.",
         }
         (public / "acceptance.json").write_text(json.dumps(receipt, indent=2) + "\n")
