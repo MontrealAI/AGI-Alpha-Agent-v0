@@ -131,6 +131,28 @@ ENTERPRISE_139_PRESENTATION_EXTRA_FILES = ENTERPRISE_139_RELEASE_EXTRA_FILES | {
         "be9396acf43738b48a233c24517e8a3d06a8b1a36a00448b50be7e8792b7b8a3",
     ),
 }
+# The complete enterprise-paper catalogue keeps the same scientific source closure.
+# Admit its final 1.40 gallery workers as one whole edition; preserve all prior
+# editions and reject combinations of their individually valid worker bytes.
+FOUNDRY_140_EXTRA_FILES = ENTERPRISE_139_PRESENTATION_EXTRA_FILES | {
+    "docs/service-worker.js": (23275, "7d0d5084198377c0c0d0cf55c6d0c7d3c1036d60781dfc8e575f58311d575823"),
+    "docs/assets/service-worker.js": (23707, "24e955673e33c603f768a84aa013e446eaa21c80c6d2f5f284f731c8c3e05816"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26299,
+        "4154e0b378cd411eca9e1f9630cd191632f96f06fdc1492a9bfd10d719db0907",
+    ),
+}
+# The three bilingual guides and reconciled Discoverability add four cache inputs.
+# Admit only this complete generated worker edition; all older editions remain exact.
+RESEARCH_GUIDES_140_EXTRA_FILES = FOUNDRY_140_EXTRA_FILES | {
+    "docs/service-worker.js": (23479, "6a7d7a7b226a9fc4cd1293e4de891a120b843024b6ab9ae2dd6fc6cb773f5269"),
+    "docs/assets/service-worker.js": (23915, "f0fa0894af4f9388a6a0145d6ab660b394b8250c595c6d6d7c60ff529c83fda2"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26531,
+        "857aa6fbb8549585329634c1c57865d2b25045daf9c5baf8fb5e9350841752ae",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -199,6 +221,8 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_RELEASE_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, ENTERPRISE_139_PRESENTATION_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, FOUNDRY_140_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, RESEARCH_GUIDES_140_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

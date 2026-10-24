@@ -139,7 +139,12 @@ jobs:
           # scope and will return 403s when querying protection rules.
           GITHUB_TOKEN: ${{ env.ADMIN_GITHUB_TOKEN }}
         run: |
+          # A PR completion may audit its base policy, but cannot repair settings.
+          protection_args=()
+          if [[ "${{ github.event_name }}" != "workflow_run" || "${{ github.event.workflow_run.event }}" != "pull_request" ]]; then
+            protection_args+=(--apply)
+          fi
           python scripts/verify_branch_protection.py \
             --branch "${CI_POLICY_BRANCH}" \
-            --apply \
+            "${protection_args[@]}" \
             --required-checks-file scripts/required_checks.json

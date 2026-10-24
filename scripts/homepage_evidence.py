@@ -24,9 +24,17 @@ ASSETS = (
     "assets/ecosystem/contracts.json",
 )
 # The catalog is data: new originals do not require verifier code edits.
-from scripts.research_papers import load_catalog, pdf_hashes
+from scripts.research_papers import experience_hashes, load_catalog, pdf_hashes, resource_href
 
 PAPER_ASSETS = pdf_hashes(load_catalog(ROOT))
+EXPERIENCE_ASSETS = {
+    name.removeprefix("docs/"): checksum for name, checksum in experience_hashes(load_catalog(ROOT)).items()
+}
+RESOURCE_LINKS = {
+    row["id"]: {role: resource_href(role, item) for role, item in row["resources"].items()}
+    for row in load_catalog(ROOT)["papers"]
+    if row.get("resources")
+}
 ECOSYSTEM_CHECKS = {
     "all-recorded-addresses",
     "bilingual-responsive-layouts",
@@ -78,6 +86,14 @@ def asset_hashes(site: Path = ROOT / "docs") -> dict[str, str]:
 def verify_report(report: dict[str, Any], commit: str, version: str, origin: str) -> None:
     """Require successful exact-origin journeys and every measured accessibility layout."""
     required_checks = set(REQUIRED_CHECKS)
+    if RESOURCE_LINKS:
+        required_checks.add("research-resource-links")
+        if report.get("research_resources") != RESOURCE_LINKS:
+            raise ValueError("Research resource navigation must match the exact catalogue")
+    if EXPERIENCE_ASSETS:
+        required_checks.add("qualified-research-experience-bytes")
+        if report.get("research_experience_assets") != EXPERIENCE_ASSETS:
+            raise ValueError("Research experiences require the exact catalogued source digests")
     if tuple(int(part) for part in version.split(".")) >= (1, 37, 1):
         required_checks.add("original-paper-bytes")
         if report.get("paper_assets") != PAPER_ASSETS:

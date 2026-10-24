@@ -13,3 +13,30 @@ The existing three historical workflow identities and qualification-marker names
 This first reduction does not implement feature-risk tiers, reusable historical test evidence, skipped feature acceptance or any change to deployment permissions. No unperformed check is reported as passed. Current release-source and artifact bindings remain intact. Future component-level reuse requires matching source, tests, toolchain, dependencies and validation policy and truthful attribution, not merely an earlier green run.
 
 This workflow change must be integrated with the package manifest's corresponding hook-scope and five-cell compatibility descriptions before publishing a release. Publication claims must describe this policy, not the superseded nine-cell matrix or all-style-hooks-required policy.
+
+## Finite held native-source coverage boundary
+
+The experimental website candidate retains four excluded native-source/browser test outcomes as
+unqualified. Their original action restrictions remain in force. Eligible review of the exact guard
+child may accept this finite coverage scope; an experimental label or a green selected run alone
+does not grant that disposition.
+
+Before both the Agent offline regression and capability delivery invocation,
+`scripts/check_held_native_source.py` must compare the following regular-file bytes with their
+independently reviewed `f9d2e3ff90ba6c8f1fcf85a3160d820e5dcb80c9` identities:
+
+- `tests/test_successor_capability_delivery.py`
+- `tests/browser/fleet_receipt_native.mjs`
+- `tests/browser/fleet_git_metadata.mjs`
+- `tests/browser/fleet_module_boundary.mjs`
+- `tests/browser/test_discovery_lab_continuation.py`
+
+Drift, missing files and symbolic links fail the gate before either scoped invocation. Any future
+pin change requires a new eligible exact-source coverage disposition; there is no automatic pin
+regenerator. The check reads inert bytes only. It does not import source, parse test behavior,
+invoke Git/native/browser code, execute omitted assertions or establish any of the four outcomes.
+Its report qualifies only the static source-preservation boundary, not earlier behavior on this or
+another tree. The four exclusions, explicit unqualified records and intention-versus-observation
+distinction remain. All other selected security, integrity, 80% coverage, artifact, browser and
+exact-main acceptance gates remain blocking with their existing budgets. This finite condition
+does not clear an action-level restriction or create a general skipped-feature acceptance policy.

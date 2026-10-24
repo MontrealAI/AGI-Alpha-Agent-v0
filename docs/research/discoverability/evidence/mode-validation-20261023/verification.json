@@ -1,0 +1,623 @@
+{
+  "schema": "discoverability-mode-correction/v1",
+  "observedAtUtc": "2026-10-23T14:41:18.036354+00:00",
+  "baselineCommit": "32485e07d943ae062f59846eb20d039c30912fef",
+  "mainParent": "9cb90e8c189f146eff7d166e249d9474792c4864",
+  "node": "v24.19.0",
+  "python": "3.12.14",
+  "commands": [
+    {
+      "argv": [
+        "node",
+        "--test",
+        "examples/successor-discoverability/test.mjs"
+      ],
+      "scope": "baseline with new regressions and old domains",
+      "exitCode": 1,
+      "tests": 25,
+      "pass": 23,
+      "fail": 2
+    },
+    {
+      "argv": [
+        "node",
+        "--test",
+        "examples/successor-discoverability/test.mjs",
+        "examples/successor-discoverability/workbench-adapter.test.mjs",
+        "examples/successor-discoverability/execution.test.mjs"
+      ],
+      "exitCode": 0,
+      "tests": 45,
+      "pass": 45,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "argv": [
+        "python",
+        "examples/successor-discoverability/qualification-runner.test.py"
+      ],
+      "exitCode": 0,
+      "tests": 7,
+      "scope": "inert subprocess-control tests; no EVM"
+    },
+    {
+      "argv": [
+        "node",
+        "docs/research/discoverability/evidence/post-review/verify-correction.mjs"
+      ],
+      "exitCode": 0,
+      "cases": 128
+    },
+    {
+      "argv": [
+        "node",
+        "examples/successor-discoverability/build.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "argv": [
+        "python",
+        "scripts/build_service_worker.py"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "files": {
+    "examples/successor-discoverability/domains.mjs": {
+      "bytes": 3171,
+      "sha256": "4856bed399303f788509db4cc7aa09c1c9e12b447844c0849e5063c811d8857c",
+      "gitBlob": "0b278e450202d244c007241938d67debb03754ba"
+    },
+    "examples/successor-discoverability/test.mjs": {
+      "bytes": 11726,
+      "sha256": "93dded4b80e766b8dd8c2e804b179d32eea8556823b1f0b08c25621a07be0efa",
+      "gitBlob": "b0015a89701b2884beeb1df851dfd7f00c0bf7b3"
+    },
+    "examples/successor-discoverability/compiler.mjs": {
+      "bytes": 17219,
+      "sha256": "2a5263fc26ff5c8347b9b490612327b78e2c87db8092856be5bc315443d91a58",
+      "gitBlob": "7f12c46a9c31753323c25cb4c7b2017a8fe801c3"
+    },
+    "examples/successor-discoverability/qualification-runner.py": {
+      "bytes": 11458,
+      "sha256": "04561dd520b9250d0d5d50d4e710f57ba9b8206d5ae67cf361f1e1d9d73e8e99",
+      "gitBlob": "52e2fc585016b62e286eda18022627d7902d0468"
+    },
+    "examples/successor-discoverability/qualification-runner.test.py": {
+      "bytes": 7296,
+      "sha256": "e54a01e8e73dab14856f604887928270dc6880b1ea56311a259cdefa087e16c6",
+      "gitBlob": "fe8588ae0115d0b733eaaba0700b4331af411d48"
+    },
+    "examples/successor-discoverability/build.mjs": {
+      "bytes": 3437,
+      "sha256": "1d9360a8a0e5112c359481b515c7408728b7c58431a0e8e6ead97d43e50d5b22",
+      "gitBlob": "968a4eb35fcc17e9e737e60cdee85e6b3ee34233"
+    },
+    "scripts/build_service_worker.py": {
+      "bytes": 5875,
+      "sha256": "9450930ae9b487385180c6481ac66da9dd196f17610cefad0fd2cda16d828d10",
+      "gitBlob": "e8c8eb729c76fa18de013ca018a89a91a2af6c38"
+    },
+    "docs/research/discoverability/index.html": {
+      "bytes": 178497,
+      "sha256": "17938b3da0f791dcb1b779aa26a57f625b0619e62cc40934105157cb71a0fdff",
+      "gitBlob": "12ad0b6f60168438f8220907a6befe4fbc69c34c"
+    },
+    "docs/research/discoverability/source-closure.json": {
+      "bytes": 1785,
+      "sha256": "82ceb2af50663160921a1611ccf29b9f9555f1d3aaf463e0a5d126cae816cb08",
+      "gitBlob": "0a334cb3200f2e14b97e286069bafc3b4552320c"
+    },
+    "docs/research/discoverability/paper.pdf": {
+      "bytes": 371606,
+      "sha256": "cf3a0463a26ebb61a8c17f89ddc1ad77f4da612b585f0f82639896bebd147941",
+      "gitBlob": "3d74a2664ffb5d79756d42e41a5c9019798da5e4"
+    },
+    "docs/research/discoverability/paper.tex": {
+      "bytes": 69394,
+      "sha256": "e71cd6c4d93aab4bff1f67c9751756fa7580f5f0971d874ab1009da099e1a410",
+      "gitBlob": "8726ce4576cfd2648a7d4f665bf8b2d632647177"
+    }
+  },
+  "cache": {
+    "assetCount": 433,
+    "release": "1.39.0",
+    "outputs": {
+      "service-worker.js": {
+        "bytes": 23318,
+        "sha256": "f746dc0cca527bd1709edec69e994878e4be7286de483cff9f4eb479bfa4487c",
+        "gitBlob": "2977c4c9a38b2ddcfe3dc387917aa397d26085f9"
+      },
+      "assets/service-worker.js": {
+        "bytes": 23751,
+        "sha256": "39c177b88d5ce359106daeafdcdd4f9135cdfb3d05ae587426a5385e20667ee9",
+        "gitBlob": "8a343d829aa31134e41c92b10233a2faf7549fdb"
+      },
+      "alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": {
+        "bytes": 26349,
+        "sha256": "e092be9dce581875a582d31a10a733608eec6fd481a2a4d19457c906539c40bb",
+        "gitBlob": "ff3e2208620e06861d72597d610654a4ee685ee5"
+      }
+    },
+    "inputInventorySha256": "dd1e8406bc30e29da5ebcf63f4a3262215b223a6f6decb2431d716caab175c78",
+    "inputInventoryReproduction": "scripts.build_service_worker.gather_assets(Path(\"docs\")); sorted path, bytes, SHA256, Git blob at this exact source"
+  },
+  "preservedMainPapers": [
+    {
+      "path": "alpha_factory_v1/demos/alpha_agi_business_3_v1/presentation/OMEGA_GRADE_Business_3_v0.pdf",
+      "mode": "100644",
+      "bytes": 2258248,
+      "sha256": "d8435724db32b92f6090460e6ab8641f600f4f48097dd6d9e8be054b65cefece",
+      "gitBlob": "29b16c00bfd19470cbea28528c95c313ce38b6dd"
+    },
+    {
+      "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/presentation/alpha_agi_insight_v1.pdf",
+      "mode": "100644",
+      "bytes": 1192385,
+      "sha256": "badf100c70aecb0556d4870a49a9026403e7b9b1cdb5659dd0d284bf6c5b21d7",
+      "gitBlob": "62833cad0a5f91809eae9ad07890821cd133b069"
+    },
+    {
+      "path": "alpha_factory_v1/demos/alpha_asi_world_model/Alpha_ASI_World_Model.pdf",
+      "mode": "100644",
+      "bytes": 219517,
+      "sha256": "33404856b6953a6bef58b0f952c71ed5a504077b3a89a6108e79c480f7f93560",
+      "gitBlob": "45f74d659280cfde00a7d1cb49034ea1a16792a6"
+    },
+    {
+      "path": "alpha_factory_v1/demos/alpha_asi_world_model/Alpha_ASI_World_Model.tex",
+      "mode": "100644",
+      "bytes": 71286,
+      "sha256": "4eff01e30049bad5c8a57ddb604a7babb3608e02cb0d43002021f1cf7059d84c",
+      "gitBlob": "73602d8125178a0d5f9a0d8e60483cf5a0b4826a"
+    },
+    {
+      "path": "alpha_factory_v1/demos/alpha_asi_world_model/presentation/alpha_asi_world_model_v0.pdf",
+      "mode": "100644",
+      "bytes": 837555,
+      "sha256": "3067e019e0f2aab95ba987e27291f4d30bd5d6c8899b541d12fcab96d6baec5e",
+      "gitBlob": "8b27b261edb45a8e7f54d1ce2eee9317a7742285"
+    },
+    {
+      "path": "alpha_factory_v1/demos/presentation/AGI-Alpha-Agent-v0_Demos_Master_v0.pdf",
+      "mode": "100644",
+      "bytes": 1695102,
+      "sha256": "57f09f1e5084bfb952aa472eb1caaa40739c8ad024b3451fc62bf35d4b3f48ba",
+      "gitBlob": "eabeca83a323b5eee5c9b1a5a5376a02ff93a893"
+    },
+    {
+      "path": "alpha_factory_v1/demos/solving_agi_governance/alpha_asi_governance_v13.pdf",
+      "mode": "100644",
+      "bytes": 599106,
+      "sha256": "f94b1b21007015532ef0930523438465f842211ba36c107271b89ae6868eab28",
+      "gitBlob": "3f16bc598a4614cc21cbb437d5c3587eda2e933a"
+    },
+    {
+      "path": "alpha_factory_v1/demos/solving_agi_governance/alpha_asi_governance_v13.tex",
+      "mode": "100644",
+      "bytes": 25654,
+      "sha256": "0e784e9826c9013c6435fd7e1eee49b74e29ff8d747777850c44d54d37e8f8ac",
+      "gitBlob": "02ade19f0a621b6337a0a6c3b6666b5ab0493082"
+    },
+    {
+      "path": "alpha_factory_v1/demos/solving_agi_governance/presentation/Solving_Alpha-AGI_Governance_v0.pdf",
+      "mode": "100644",
+      "bytes": 1059348,
+      "sha256": "e9f86339e9924b8417af6bdae55bae1e6536073d5f242796f297302e752b0830",
+      "gitBlob": "6beed60c914fcc45c40cd1912b9ed80bb593d9e3"
+    },
+    {
+      "path": "alpha_factory_v1/docs/presentation/AGI-Alpha-Agent-v0.pdf",
+      "mode": "100644",
+      "bytes": 1792094,
+      "sha256": "11aff3f2453eaeb5e4fe6c3e668db01b4b8cb8a729c4eeee2252734f7a101e8e",
+      "gitBlob": "0a74392e592aabaaa5442890922a3cab4e0c4a0c"
+    },
+    {
+      "path": "docs/Autonomous_Enterprises.pdf",
+      "mode": "100644",
+      "bytes": 352769,
+      "sha256": "a677bb4727f3af35038d1c972081f83bcc2e1019b65dea17da195c6eb078e7af",
+      "gitBlob": "8b51f6a4b0d2b1c36875c18617be3a5312c7a19d"
+    },
+    {
+      "path": "docs/Autonomous_Enterprises.tex",
+      "mode": "100644",
+      "bytes": 88517,
+      "sha256": "2d3481ebb3274f5f870cb3f445e6f6deca24ac6cd718ebd467186e40eb2fbc0d",
+      "gitBlob": "e0ba91b0de31b764ca568b1d903adb9a92f09f75"
+    },
+    {
+      "path": "docs/Autonomous_Enterprises_Activate_Evolve_Scale.pdf",
+      "mode": "100644",
+      "bytes": 308837,
+      "sha256": "9cc01c8143400dd2f4258e11b3a86295d346be0671afc19cb99249b4a47b3cd2",
+      "gitBlob": "d2e9a081bebc97aff2f3b19d6210480418a13094"
+    },
+    {
+      "path": "docs/Autonomous_Enterprises_Activate_Evolve_Scale.tex",
+      "mode": "100644",
+      "bytes": 59112,
+      "sha256": "407e27956e09b8a9af06171ac6119a119e754e76057e52957273dd4238bd31c7",
+      "gitBlob": "16c4738dd90ad57d3a9501f552e62b713820e8d5"
+    },
+    {
+      "path": "docs/Autonomous_Enterprises_SUCCESSOR_Omega.pdf",
+      "mode": "100644",
+      "bytes": 368920,
+      "sha256": "55aee29b3c8f89bbb2c5002c0874b0cc95dcb144da34f4199184c141bc40ad5f",
+      "gitBlob": "bf484b94b47bbfa0eb0d9a673062cabb6435f00b"
+    },
+    {
+      "path": "docs/Autonomous_Enterprises_SUCCESSOR_Omega.tex",
+      "mode": "100644",
+      "bytes": 98032,
+      "sha256": "297407e01609374099f00ca8b758b12c4a5b025c909df8c3181ba7b7d567ea53",
+      "gitBlob": "6f4efcf322f0c4ff892d682c3c139f4a0c28cf9e"
+    },
+    {
+      "path": "docs/Beyond_the_Original_Problem.pdf",
+      "mode": "100644",
+      "bytes": 307256,
+      "sha256": "3a8c1d3c31bd425eb1a639c2a0c61a54e5efe8bd02684f9ce0dc5f20717b6192",
+      "gitBlob": "c94c7c8643c4f3ddbd141b231364db55c5b85b35"
+    },
+    {
+      "path": "docs/Beyond_the_Original_Problem.tex",
+      "mode": "100644",
+      "bytes": 88560,
+      "sha256": "111bcbb23208b1862ca0b6f1aaece5c7efce632ccfe7075d544edf09b97f9aa3",
+      "gitBlob": "cbc2d58d74ded0a466f386bd9e4a4b7ae4a0c95c"
+    },
+    {
+      "path": "docs/Beyond_the_Production_Frontier.pdf",
+      "mode": "100644",
+      "bytes": 316308,
+      "sha256": "3e5c4bcdb8a6d70ca4bdf1e3285705650e773436555c69ef2ca8d07a5a0e3d00",
+      "gitBlob": "fce51df556c1a83cf0975b8bc6fdfbaf3b2be820"
+    },
+    {
+      "path": "docs/Beyond_the_Production_Frontier.tex",
+      "mode": "100644",
+      "bytes": 95301,
+      "sha256": "0f7d493626ca0f1d82c38911b6b0b8ad4ae87e3f8eeb8385526e855c453e8d50",
+      "gitBlob": "a78c7bba2a1de62fc69f2770d08113065b51b88e"
+    },
+    {
+      "path": "docs/Earn_the_Next_Experiment.pdf",
+      "mode": "100644",
+      "bytes": 283924,
+      "sha256": "c8c08ba28cf879863eacb9ae5dfd1f5d03b54164884d72dfe6e503a331fea32a",
+      "gitBlob": "47820f386fd29df590b428010a3fc392595a7845"
+    },
+    {
+      "path": "docs/Earn_the_Next_Experiment.tex",
+      "mode": "100644",
+      "bytes": 78021,
+      "sha256": "ed084f446a2cea95a40f5181d86f341ff7bc77c7e5a08e7afbcdae88553f6f1f",
+      "gitBlob": "699e4ae2d7b283bb9ba2e324e0ec189ed3c735f9"
+    },
+    {
+      "path": "docs/Invent_the_Economy.pdf",
+      "mode": "100644",
+      "bytes": 285994,
+      "sha256": "61e92a47b32cbca12b705094b982dddaca03b3dfe2b7f657bbf30eb8d56bba79",
+      "gitBlob": "659395102963b2683f14f0d60bbf1e8aea2250d0"
+    },
+    {
+      "path": "docs/Invent_the_Economy.tex",
+      "mode": "100644",
+      "bytes": 82693,
+      "sha256": "51605532c48edc5465b562e8699f473c42f437c4a288795a610fb61dc2a70a47",
+      "gitBlob": "36d366b57c777fc85c5cd61e9c705b2a63e76e04"
+    },
+    {
+      "path": "docs/Out_Design.pdf",
+      "mode": "100644",
+      "bytes": 165614,
+      "sha256": "65849e2f872b2dcdbc4a57baabb63e6a2644208c68dcc7c23ec0ee11ac1fe5dd",
+      "gitBlob": "84416bc596176e1648be476489c9db07b07a4062"
+    },
+    {
+      "path": "docs/Out_Design.tex",
+      "mode": "100644",
+      "bytes": 77323,
+      "sha256": "9ea67bff3035ca1a2f6a2a49e0e4f1258a4685f6e48d5cef999f9b55a56be62d",
+      "gitBlob": "dfff73fc6d9b7bb6e935e613d7d403b62b5b34ea"
+    },
+    {
+      "path": "docs/Out_Evolve.pdf",
+      "mode": "100644",
+      "bytes": 399909,
+      "sha256": "5979bcaf704934ba42e4722389cbb1a9ef0cbc889e1b286428615a82a31e99bc",
+      "gitBlob": "a2a333187388e961a91c2fd67696adc09641c3ed"
+    },
+    {
+      "path": "docs/Out_Evolve.tex",
+      "mode": "100644",
+      "bytes": 4246,
+      "sha256": "9860db55e36d18a8bab17b1dadfede7d5938449b10bb4dd48bf3be7f996e5e40",
+      "gitBlob": "d2a1abdc373076d2f872ff824878988136d75c0b"
+    },
+    {
+      "path": "docs/Out_Execute.pdf",
+      "mode": "100644",
+      "bytes": 180239,
+      "sha256": "85c6834e2dd496748f72a9099d3a70cb13047b49e09e3ed84ce911e1f1c530f3",
+      "gitBlob": "e7c2c61307a5bfe2136bf2a61c875208252ebca6"
+    },
+    {
+      "path": "docs/Out_Execute.tex",
+      "mode": "100644",
+      "bytes": 77617,
+      "sha256": "816160d176f8cbcc173290259e65837d693e3ae86d963fd184847f7899b7a175",
+      "gitBlob": "19b468ae269e338adfb49d9fadfe0327a7fa026d"
+    },
+    {
+      "path": "docs/Out_Learn.pdf",
+      "mode": "100644",
+      "bytes": 337128,
+      "sha256": "01a8ea668f4c75cd0b5fafe3c5720e445bab7986abf27baee5bbba7d5e77febb",
+      "gitBlob": "400513e691c6045112ad211b6153f80480eb7c2f"
+    },
+    {
+      "path": "docs/Out_Learn.tex",
+      "mode": "100644",
+      "bytes": 84030,
+      "sha256": "2968b08e336351c80193ddd639408584350d29e060ac8baca31f962551d5df64",
+      "gitBlob": "f4e9d16a283d62fcec12834912a939ad9372f26b"
+    },
+    {
+      "path": "docs/Out_Strategise.pdf",
+      "mode": "100644",
+      "bytes": 180818,
+      "sha256": "8a848150f14c578106633324edb54bc59713a579c1318d9ea872d3d5b3ec7e77",
+      "gitBlob": "0e89969bc920eda19c366462b69a393b018206d1"
+    },
+    {
+      "path": "docs/Out_Strategise.tex",
+      "mode": "100644",
+      "bytes": 78909,
+      "sha256": "2fa8837eab07d43874108bd376d0ba5e7cef96457c1e050ed0998b3f0d38758e",
+      "gitBlob": "edf77f688aca7e5bee6ca67c1b6f3a8048723fc6"
+    },
+    {
+      "path": "docs/Out_Think.pdf",
+      "mode": "100644",
+      "bytes": 175327,
+      "sha256": "22280da9d3c74b995b0770b3b1a633924a0849d4f72fad51facd8f78c0336029",
+      "gitBlob": "1fdb6a3b0e15d9cf57edbfde2d5ad156eabde2b6"
+    },
+    {
+      "path": "docs/Out_Think.tex",
+      "mode": "100644",
+      "bytes": 78364,
+      "sha256": "602801c836a3f385eb0456d78ee89cc5e289d1abcf546e58f6919591f69a7336",
+      "gitBlob": "407d1324c41fd747b3317058103a14c8a0cabe12"
+    },
+    {
+      "path": "docs/SUCCESSOR_Omega_Invent_the_Economy_Business_Brief.pdf",
+      "mode": "100644",
+      "bytes": 90378,
+      "sha256": "ef9248320ea3a31b2975dd3658e42c5859d0b1a63fb4f05af2d15258146e4ff4",
+      "gitBlob": "ece391a594f4c921393cc689831f57b8261e706d"
+    },
+    {
+      "path": "docs/The_World_as_an_Output.pdf",
+      "mode": "100644",
+      "bytes": 313266,
+      "sha256": "2a34c0ad813b6dddf8c6176a475d85f231ea06b53b641496de31626c3d786fde",
+      "gitBlob": "b474ad005a7c6fd8339fcbed80c51c5c5fb85284"
+    },
+    {
+      "path": "docs/The_World_as_an_Output.tex",
+      "mode": "100644",
+      "bytes": 85948,
+      "sha256": "21bd28bd6adc322c8d5a0c02183065b03971eddd89676df6310f6c3ba74b008b",
+      "gitBlob": "c351982e1159c09f196868c4f76ee31faf392a65"
+    },
+    {
+      "path": "docs/Transformational_Intelligence.pdf",
+      "mode": "100644",
+      "bytes": 305040,
+      "sha256": "d7170e8217e3bf6aa1b84868c1c76c5994c6995c5297ed092d7e72a6430c664f",
+      "gitBlob": "1f95db3b087d8dd0712012d34ba700d7dd2e1382"
+    },
+    {
+      "path": "docs/Transformational_Intelligence.tex",
+      "mode": "100644",
+      "bytes": 89775,
+      "sha256": "9d4a664d951d6b97f5136bf0b44f1ca458e90d585434a6a27a542694bb2ece5f",
+      "gitBlob": "83f834fbbabfc0680cf560e5e96852cc8f4fa9e7"
+    },
+    {
+      "path": "docs/insight_browser_quickstart.pdf",
+      "mode": "100644",
+      "bytes": 2683,
+      "sha256": "941a906ec63d11303f00b045f5a97df80eff55492cabff4d6194db5b92117802",
+      "gitBlob": "e40e0a960dd94b811e89f3ff20c2955b5b003086"
+    },
+    {
+      "path": "docs/manuscript/AGI_ALPHA_Unified_Publication_Final.pdf",
+      "mode": "100644",
+      "bytes": 5926237,
+      "sha256": "4b290d5a8232364b8808c0af8a96e7c9b152afd7ac3f5ba05668a538e073791a",
+      "gitBlob": "e07ff16f99944e2913c5160def47ff16944dee60"
+    },
+    {
+      "path": "docs/papers/autonomous-enterprises-capability-inheritance-v1.pdf",
+      "mode": "100644",
+      "bytes": 391262,
+      "sha256": "11b1130fc340b8ffbd3772c900c86c8a7ddceb833e3f6b54eebb62a1211fb1cd",
+      "gitBlob": "0574a2377368a638e9619cd9885d078b935ef736"
+    },
+    {
+      "path": "docs/papers/autonomous-enterprises-capability-inheritance-v1.tex",
+      "mode": "100644",
+      "bytes": 73588,
+      "sha256": "2929bbc3f83704938b978fe09af589499344efc5d312d7ae1ea1f276bada7047",
+      "gitBlob": "fb9303f757d7fc089d6479bbaa1efae6b50ce258"
+    },
+    {
+      "path": "docs/papers/autonomous-enterprises-discoverability-v1.pdf",
+      "mode": "100644",
+      "bytes": 371606,
+      "sha256": "cf3a0463a26ebb61a8c17f89ddc1ad77f4da612b585f0f82639896bebd147941",
+      "gitBlob": "3d74a2664ffb5d79756d42e41a5c9019798da5e4"
+    },
+    {
+      "path": "docs/papers/autonomous-enterprises-discoverability-v1.tex",
+      "mode": "100644",
+      "bytes": 69394,
+      "sha256": "e71cd6c4d93aab4bff1f67c9751756fa7580f5f0971d874ab1009da099e1a410",
+      "gitBlob": "8726ce4576cfd2648a7d4f665bf8b2d632647177"
+    },
+    {
+      "path": "docs/papers/autonomous-enterprises-foundry-v2.pdf",
+      "mode": "100644",
+      "bytes": 459457,
+      "sha256": "67f2d38922cdaa1bf28e916a494679fabf1463ba84fe56e620dfd192b20d16b3",
+      "gitBlob": "1612d013ce6bb64fa236a8e4b306a40306bbc4e5"
+    },
+    {
+      "path": "docs/papers/autonomous-enterprises-foundry-v2.tex",
+      "mode": "100644",
+      "bytes": 81453,
+      "sha256": "14e1da2dfa194191b94d09e9fb9d9a63f9b46ee0849f48b768c8cfd8b200b408",
+      "gitBlob": "3dbf2188bca12fa824fcc9d7c8e5bbaf0271073f"
+    },
+    {
+      "path": "docs/presentation/AGI_Alpha_RSI_Executive_Overview_v0.pdf",
+      "mode": "100644",
+      "bytes": 204110,
+      "sha256": "f7bb324e4e2bc2eb35352b9292137ef4994d9e3141952d6206211454fbb780e5",
+      "gitBlob": "521832f2398cf48a8461c7ef7e8db0dc50907ca3"
+    },
+    {
+      "path": "docs/presentation/AGI_Alpha_RSI_Executive_Summary_v0.pdf",
+      "mode": "100644",
+      "bytes": 148440,
+      "sha256": "65b767f7fc2a02877bed06a9494706af4841abaf06c248a430ad7774672572e5",
+      "gitBlob": "8d5f210bf278e6d58dcc315e4c7542dda054d382"
+    },
+    {
+      "path": "docs/presentation/AGI_Alpha_RSI_Move37_Breakthrough_Dossier_v0.pdf",
+      "mode": "100644",
+      "bytes": 243936,
+      "sha256": "3fd73073a2d50dade2cf409c275c9d8ea17a9fd184f7494e3b22c7c0d362c99f",
+      "gitBlob": "c9e284bbd950fbdc4b95a78f097bfe54e4106d78"
+    },
+    {
+      "path": "docs/presentation/AGI_Alpha_RSI_Sovereign_Current_Status_Snapshot_Presentation_v1.pdf",
+      "mode": "100644",
+      "bytes": 1637268,
+      "sha256": "8ddd52c67d19f0391cd6c833e717f3ae007d45cb88e1ab4eb843747973245477",
+      "gitBlob": "c787085ec0a9803cce43bd03c43a144c90cf0786"
+    },
+    {
+      "path": "docs/presentation/AGI_Alpha_RSI_Sovereign_Strategy_Brief_v0.pdf",
+      "mode": "100644",
+      "bytes": 76451,
+      "sha256": "b7912c63fe57cde538a1b8351ea28f51b2eae8647255017df054d621d338fe69",
+      "gitBlob": "6580261ca4761353af777645ca40ea845c76dd03"
+    },
+    {
+      "path": "docs/presentation/AGI_Alpha_RSI_Sovereign_v0.pdf",
+      "mode": "100644",
+      "bytes": 908098,
+      "sha256": "25fbbec0877043b664b0310dd413125560dcb5e6d29f4a54f664a509e04fd6f4",
+      "gitBlob": "f08573a821c37da7ac89c2ce27e239ac18140854"
+    },
+    {
+      "path": "docs/presentation/AGI_Eth_Institutional_v0.pdf",
+      "mode": "100644",
+      "bytes": 829852,
+      "sha256": "0f65f8572dd9f5085c2ad7304262d1312fc062b69a20d971290b0378f6ab0eed",
+      "gitBlob": "917b96365d747a22afd639d1c59a03b56aa74c6b"
+    },
+    {
+      "path": "docs/presentation/META-AGENTIC_Alpha-AGI_MASTER_PRESENTATION_v1.pdf",
+      "mode": "100644",
+      "bytes": 3535656,
+      "sha256": "12f7e7b35b7c35ac125076e7a67c96ea02e0f3576c4b142773c256e8fcf906b6",
+      "gitBlob": "2c45ccc76a4ae1eb1a4057897974d862ffb12fb4"
+    },
+    {
+      "path": "docs/presentation/META-AGENTIC_alpha-AGI-Alpha-Agent-v0.pdf",
+      "mode": "100644",
+      "bytes": 757027,
+      "sha256": "2678f43192a5d442d8ad84b69daf3a519be5dca725c3ea7dc5eef23f839905b3",
+      "gitBlob": "85ab64cae3cacfef287a5083e528cee4e205ba4d"
+    },
+    {
+      "path": "docs/presentation/MONTREALAI_x_ERC8004_v0.pdf",
+      "mode": "100644",
+      "bytes": 2173477,
+      "sha256": "dc7e45d2bd8e057207e20732da34e578d92c132ccc93a486a4d1722adc2c075b",
+      "gitBlob": "85bafa7f9eb7329eef877151a2e68e037fde21e5"
+    },
+    {
+      "path": "docs/presentation/Verified_Autonomy_Control_Plane_v0.pdf",
+      "mode": "100644",
+      "bytes": 348282,
+      "sha256": "7cd3c1a20f73b821e3748188899b023c4baf07c44a28babe41a572ae75cb5127",
+      "gitBlob": "c9fa281a509d89f5e45f84c74eb994e3d6f05fdd"
+    },
+    {
+      "path": "whitepaper_v0.1.0-alphav15.pdf",
+      "mode": "100644",
+      "bytes": 353394,
+      "sha256": "fd14d444d51e9f6ebaec13387fc8d2170615d1bbfab13edc7e84ea1f655d20aa",
+      "gitBlob": "3e7e277104adbdaf97b9b35ef60aa90f4715c08d"
+    },
+    {
+      "path": "whitepaper_v0.1.0-alphav15.tex",
+      "mode": "100644",
+      "bytes": 45011,
+      "sha256": "e760bc46e0b19e2c199b1b80b40f016ac11ecc0fb853721f46fa388689308ce3",
+      "gitBlob": "69169ce5b1f4e8f9ab8723db2105e1e2f71a7542"
+    }
+  ],
+  "retainedEvidence": {
+    "README.md": {
+      "bytes": 2866,
+      "sha256": "2401785ae5ba67012f3d7fa47369eae739e34df9b60e1957ee16da4b6cda1bf8",
+      "gitBlob": "261412f9dc06085fe29da99029f5b6aa3ce48fa3"
+    },
+    "baseline-mode.log": {
+      "bytes": 4110,
+      "sha256": "2adc24a60103ddf3e706f9c72f9bf2065f28f6de53c27492c70b40b2060077ba",
+      "gitBlob": "caaf9e607e7729c21ed7d93afc0e00dfec3d94d1"
+    },
+    "compiler-comparison.json": {
+      "bytes": 86445,
+      "sha256": "ed6da6859a834824a8d6fcb30d16466bba5ad0b7961ef21197e3e16fb3ffee6a",
+      "gitBlob": "bf45a1e3845390e4811646e2e63d2e29991fda34"
+    },
+    "focused.log": {
+      "bytes": 3931,
+      "sha256": "001b0d6ecd2ebdd7b89a930cedae8582fd159218a2775dc4b5fa3bd6451e1f75",
+      "gitBlob": "b0cd27b951041b8e3013223ba688287a163f1248"
+    },
+    "runner-control.log": {
+      "bytes": 1650,
+      "sha256": "be7a0f70dc98b921711fb7c5a82fe918bc2d5599f14402b9df86e71322a42d4c",
+      "gitBlob": "3b0ca5bcff3f4e016827bae75be6a899f32be488"
+    },
+    "supplied.patch": {
+      "bytes": 4217,
+      "sha256": "a56a1d5bf3119fcf5102bfc00ea66ba3aabde11bab3adb5767356c610db04cef",
+      "gitBlob": "2dc17dd8b9392d215cfb2c942d3d3ed74b8fef8e"
+    }
+  },
+  "limitations": [
+    "Node22.17.1 installed-runtime acceptance not executed",
+    "No browser/native/EVM/held probe execution",
+    "No deployment or public installation qualification",
+    "Commercial challenge remains UNPROVEN"
+  ],
+  "sourceOwnerParent": "ff3a8b2279f98c55c54be4bccfa60a4a11f3ff4b",
+  "evidenceReuse": "The productive 13-module closure, core test, adapter test and execution test are byte-identical to the independently checked source. Main only adds passive paper/homepage content; generated worker identities were recomputed."
+}

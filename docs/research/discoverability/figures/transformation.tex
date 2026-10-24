@@ -1,0 +1,123 @@
+% SPDX-License-Identifier: Apache-2.0
+% Signature figure for discoverability-20261022-v1.
+% Input after the opening three paragraphs of Section 1.
+% Uses the paper's existing TikZ libraries and ink/purple/violet/pale/gold palette.
+% Evidence: evidence/heldout-first-results.json
+% SHA-256: 308dd9f46807dc0c924cd6113cd25acd07687d6ec182d938abab993f4bc6ff95
+% Route producer AND independent static reference: [1,-2,1,0,0,0], radius 4,
+% cost 3; 28 different-action pairs. The two route action interval sets below
+% are the retained response centers expanded by that retained radius.
+% Affine repair producer: libraryHit=true, 6 inherited templates, 55 pairs;
+% newly selected contrasts [0,0,1,-2,1,0] and [0,0,0,1,-2,1].
+% Quadratic repair: old grammar completely refuses; supplied enlarged grammar
+% yields [1,-3,3,-1,0,0], radius 8, in producer and static reference.
+% No experiment or source regeneration is performed by this figure.
+\begin{figure}[!htbp]
+\centering
+\begingroup
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\pgfmathsetlengthmacro{\sigCardWidth}{.464\linewidth}
+\pgfmathsetlengthmacro{\sigTextWidth}{\sigCardWidth-18pt}
+\newcommand{\sigpanel}[1]{\begin{minipage}[t][6.1cm][t]{\sigTextWidth}\raggedright#1\end{minipage}}
+\begin{tikzpicture}[
+  sigcard/.style={
+    draw=violet!55, line width=.6pt, rounded corners=5pt,
+    fill=pale, text=ink, align=left,
+    text width=\sigTextWidth, minimum width=\sigCardWidth,
+    minimum height=6.75cm, inner sep=9pt, outer sep=0pt,
+    font=\sffamily\fontsize{10.1}{12.2}\selectfont
+  },
+  sigflow/.style={
+    -{Latex[length=5pt,width=4pt]}, draw=purple,
+    line width=1.15pt, shorten <=4pt, shorten >=4pt
+  },
+  siglabel/.style={
+    font=\sffamily\fontsize{7.5}{9}\selectfont,
+    text=purple, fill=white, inner sep=1.3pt
+  }
+]
+
+\node[sigcard, fill=white] (siglimit) {\sigpanel{%
+  {\fontsize{9}{10.5}\selectfont\bfseries\color{gold}01\quad THE INHERITED LIMIT}\par
+  \vspace{4pt}
+  {\fontsize{11}{13}\selectfont\bfseries A reading is not yet a decision.}\par
+  \vspace{6pt}
+  Six supplied channels; eleven modeled network states. Each raw reading mixes a link response with unknown clock offset and drift:
+  \par\vspace{5pt}
+  {\centering\(y_i=s_i(w)+\beta_0+\beta_1 i+\epsilon_i\).\par}
+  \vspace{5pt}
+  A single channel cannot certify the route. The task asks only: \textbf{retain north or divert south?} Exact fault location can remain unresolved.
+}};
+
+\node[sigcard, right=.07\linewidth of siglimit] (sigbuild) {\sigpanel{%
+  {\fontsize{9}{10.5}\selectfont\bfseries\color{purple}02\quad CONSTRUCT THE MEASUREMENT}\par
+  \vspace{4pt}
+  {\fontsize{11}{13}\selectfont\bfseries Cancel nuisance; certify the decision.}\par
+  \vspace{6pt}
+  The frozen compiler selects the actual contrast
+  \par\vspace{5pt}
+  {\centering\(\displaystyle z=y_0-2y_1+y_2,\)\par
+  \(a=(1,-2,1,0,0,0).\)\par}
+  \vspace{5pt}
+  \(\sum_i a_i=\sum_i i a_i=0\): offset and linear drift cancel. With \(|\epsilon_i|\leq1\), the remaining error radius is \(4\).
+  \par\vspace{5pt}
+  \textbf{Certificate:} all \(28\) different-action world pairs have disjoint feasible intervals.
+}};
+
+\node[sigcard, below=.65cm of sigbuild, fill=white] (sigroute) {\sigpanel{%
+  {\fontsize{9}{10.5}\selectfont\bfseries\color{purple}03\quad EXECUTE THE ROUTE MISSION}\par
+  \vspace{4pt}
+  {\fontsize{11}{13}\selectfont\bfseries Three acquisitions now suffice.}\par
+  \vspace{6pt}
+  The executable decoder distinguishes the two actions across every admitted world and bounded error:
+  \par\vspace{5pt}
+  {\bfseries\color{purple}Divert south}\par
+  \(z\in[-94,-86]\,\cup\,[-54,-46]\).
+  \par\vspace{5pt}
+  {\bfseries\color{ink}Retain north}\par
+  \(z\in[-14,-6]\,\cup\,[6,14]\,\cup\,[26,34]\).
+  \par\vspace{5pt}
+  Other transcripts are refused. Preserve the qualified construction templates and their validity boundary for the next requirement.
+}};
+
+\node[sigcard, below=.65cm of siglimit, draw=gold!75] (sigrepair) {\sigpanel{%
+  {\fontsize{9}{10.5}\selectfont\bfseries\color{gold}04\quad QUALIFY A REPAIR SUCCESSOR}\par
+  \vspace{4pt}
+  {\fontsize{11}{13}\selectfont\bfseries Inherit the method; rebuild the proof.}\par
+  \vspace{6pt}
+  Reuse \textbf{six valid templates}. For eleven exact repair labels, construct a new two-contrast program and recheck all \(55\) different-decision pairs.
+  \par\vspace{5pt}
+  \textbf{Quadratic clock drift invalidates that scope.} The old grammar completely refuses.
+  \par\vspace{5pt}
+  An authorized grammar expansion constructs
+  \par\vspace{4pt}
+  {\centering\(a'=(1,-3,3,-1,0,0),\)\par}
+  \vspace{4pt}
+  with a new scope-bound decision certificate. Reuse never substitutes for requalification.
+}};
+
+\draw[sigflow] (siglimit.east) -- node[siglabel, above=2pt] {build} (sigbuild.west);
+\draw[sigflow] (sigbuild.south) -- node[siglabel, right=2pt] {use} (sigroute.north);
+\draw[sigflow] (sigroute.west) -- node[siglabel, above=2pt] {inherit} (sigrepair.east);
+
+\node[
+  anchor=north, fill=pale, rounded corners=3pt, text=ink,
+  text width=.975\linewidth, align=center, inner sep=5pt,
+  font=\sffamily\fontsize{9}{11}\selectfont
+] at ($(sigrepair.south west)!.5!(sigroute.south east)+(0,-.25cm)$) {%
+  \textbf{EXECUTED SYNTHETIC SOFTWARE}\quad\textcolor{violet}{\(\bullet\)}\quad
+  Local technical qualification\quad\textcolor{violet}{\(\bullet\)}\quad
+  Institutional admission not established
+};
+\end{tikzpicture}
+\endgroup
+\caption{\textbf{Construct the observation that makes the decision possible.}
+The numbered path follows a retained held-out network mission and its repair successor \citep{compiler,run}.
+Channels \(0\)--\(5\) are clock-before, north, south, east-cross, west-cross and clock-after.
+The weights, intervals, inheritance and refusal are recorded results, not proposed sensors.
+Conventional static and adaptive references tie the route's three-unit acquisition cost and both repair costs.
+The enlarged grammar is supplied and the clock model changes; the rebuild is not an isolated cost or speedup comparison.
+Technical acceptance applies only to the declared finite synthetic model; it establishes neither physical calibration nor customer value.}
+\label{fig:transformation}
+\end{figure}

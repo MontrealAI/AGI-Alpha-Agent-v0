@@ -636,7 +636,52 @@ def _enterprise_139_metadata_workers() -> dict[str, bytes]:
     return workers
 
 
-@pytest.mark.parametrize("edition", ["current", "1.38", "1.39-initial", "1.39-metadata"])
+def _enterprise_139_presentation_workers() -> dict[str, bytes]:
+    helper = load_script("refresh_capability_checkout")
+    fixture = json.loads(
+        (ROOT / "tests/fixtures/capability-checkout-enterprise-139-presentation-workers.json").read_bytes()
+    )
+    assert fixture["sourceCommit"] == "75b2ec6ed4b3cdab483bb7797f8bd84df64d8ce9"
+    assert fixture["sourceTree"] == "b3491b39eebf59085c3890ca28f2ee3d561ef878"
+    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    changed = {
+        name
+        for name, record in helper.FOUNDRY_140_EXTRA_FILES.items()
+        if record != helper.ENTERPRISE_139_PRESENTATION_EXTRA_FILES[name]
+    }
+    assert set(fixture["files"]) == changed
+    workers = {}
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == (entry["bytes"], entry["sha256"])
+        assert (entry["bytes"], entry["sha256"]) == helper.ENTERPRISE_139_PRESENTATION_EXTRA_FILES[name]
+        workers[name] = raw
+    return workers
+
+
+def _foundry_140_workers() -> dict[str, bytes]:
+    helper = load_script("refresh_capability_checkout")
+    fixture = json.loads((ROOT / "tests/fixtures/capability-checkout-foundry-140-workers.json").read_bytes())
+    assert fixture["sourceCommit"] == "da3faa1cae94afb01276273abdceb39dc897bd8a"
+    assert fixture["sourceTree"] == "47e36cbec0989cab7cc28d65136b813e91a63b02"
+    assert fixture["sourceHash"] == helper.ENTERPRISE_SOURCE_HASH
+    workers = {}
+    for name, entry in fixture["files"].items():
+        raw = entry["text"].encode()
+        assert (len(raw), hashlib.sha256(raw).hexdigest()) == helper.FOUNDRY_140_EXTRA_FILES[name]
+        assert (entry["bytes"], entry["sha256"]) == helper.FOUNDRY_140_EXTRA_FILES[name]
+        workers[name] = raw
+    assert set(workers) == {
+        name
+        for name in helper.FOUNDRY_140_EXTRA_FILES
+        if helper.FOUNDRY_140_EXTRA_FILES[name] != helper.RESEARCH_GUIDES_140_EXTRA_FILES[name]
+    }
+    return workers
+
+
+@pytest.mark.parametrize(
+    "edition", ["current", "1.38", "1.39-initial", "1.39-metadata", "1.39-presentation", "1.40-foundry"]
+)
 def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path: Path, edition: str) -> None:
     helper = load_script("refresh_capability_checkout")
     root = _refresh_copy(tmp_path)
@@ -645,6 +690,8 @@ def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path
             "1.38": _enterprise_138_workers,
             "1.39-initial": _enterprise_139_initial_workers,
             "1.39-metadata": _enterprise_139_metadata_workers,
+            "1.39-presentation": _enterprise_139_presentation_workers,
+            "1.40-foundry": _foundry_140_workers,
         }[edition]()
         for name, raw in workers.items():
             (root / name).write_bytes(raw.replace(b"\n", b"\r\n"))
@@ -661,7 +708,7 @@ def test_checkout_refresh_selects_a_complete_reviewed_generated_edition(tmp_path
     assert helper.refresh(root)["needsRefresh"] == []
 
 
-@pytest.mark.parametrize("edition", ["1.38", "1.39-initial", "1.39-metadata"])
+@pytest.mark.parametrize("edition", ["1.38", "1.39-initial", "1.39-metadata", "1.39-presentation", "1.40-foundry"])
 @pytest.mark.parametrize("edit", ["mixed-root", "mixed-assets", "mixed-insight", "unknown", "old-tampered"])
 def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_writes(
     tmp_path: Path, edit: str, edition: str
@@ -672,6 +719,8 @@ def test_checkout_refresh_rejects_mixed_or_unknown_generated_editions_before_wri
         "1.38": _enterprise_138_workers,
         "1.39-initial": _enterprise_139_initial_workers,
         "1.39-metadata": _enterprise_139_metadata_workers,
+        "1.39-presentation": _enterprise_139_presentation_workers,
+        "1.40-foundry": _foundry_140_workers,
     }[edition]()
     names = list(old)
     if edit.startswith("mixed-"):

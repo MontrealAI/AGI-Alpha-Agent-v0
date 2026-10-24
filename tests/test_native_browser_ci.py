@@ -179,7 +179,11 @@ def test_complete_regression_installs_the_pinned_accessibility_auditor():
     assert len(installs) == 1
     install = installs[0]
     browser = next(step for step in steps if step.get("name") == "Install Chromium with bounded official retries")
-    acceptance = next(step for step in steps if step.get("name") == "Full offline regression including notebooks")
+    acceptance = next(
+        step
+        for step in steps
+        if step.get("name") == "Offline regression including notebooks (four held native tests excluded)"
+    )
     assert steps.index(install) < steps.index(browser) < steps.index(acceptance)
     for required in (install, browser, acceptance):
         assert "if" not in required and not required.get("continue-on-error")
@@ -370,7 +374,7 @@ def test_integration_pytest_installs_pinned_auditor_after_cleanup():
     primary = next(
         step
         for step in release["jobs"]["regression"]["steps"]
-        if step.get("name") == "Full offline regression including notebooks"
+        if step.get("name") == "Offline regression including notebooks (four held native tests excluded)"
     )
     assert "--cov-fail-under=80" in primary["run"]
     assert "--ignore" not in primary["run"]

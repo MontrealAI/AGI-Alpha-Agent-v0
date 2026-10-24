@@ -44,7 +44,7 @@ test('native workflow keeps pinned installs, all serial shards and three native 
     assert.match(workflow, /node-version: '22\.17\.1'/); assert.match(workflow, /python-version: '3\.12'/);
     assert.match(workflow, /npm ci --prefix tests\/contracts/);
     assert.match(workflow, /pip install --require-hashes -r requirements-agent\.lock/);
-    assert.match(workflow, /070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667/);
+    assert.match(workflow, /dae16bcbc91f745d6e411a7157f381d299e0e74b946f9749e36f82d260894744/);
     assert.deepEqual([...offlineWorkflow.matchAll(/^          run_check ([a-z-]+) /gm)].map(m => m[1]), CHECKS);
     assert.equal(Object.values(EXPECTED_COUNTS).reduce((sum, n) => sum + n, 0), 163);
     for (const label of ['policy', 'empty-session', 'delegated-session', 'io-relay', 'origination', 'native-contract', 'native-empty', 'native-delegated', 'native-marker'])

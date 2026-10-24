@@ -1096,7 +1096,7 @@ html.home-large-text {
     overflow-wrap: normal;
     hyphens: manual;
 }
-.paper-featured > :is(.paper-subtitle, [data-paper-key$="-summary"], .paper-link) {
+.paper-featured > :is(.paper-subtitle, [data-paper-key$="-summary"], .paper-link, .paper-resource-link) {
     grid-column: 2;
 }
 .paper-featured .paper-title-word {
@@ -1115,7 +1115,8 @@ html.home-large-text {
     font-size: max(1.2rem, 1.1em);
     font-weight: 600;
 }
-.paper-link {
+.paper-link,
+.paper-resource-link {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -1132,9 +1133,14 @@ html.home-large-text {
     text-underline-offset: 0.2em;
     overflow-wrap: anywhere;
 }
-.paper-link:hover {
+.paper-resource-link {
+    margin-top: 0;
+}
+.paper-link:hover,
+.paper-resource-link:hover {
     color: #30203f;
 }
+.paper-resource-link .sr-only,
 .paper-link .sr-only {
     position: absolute;
     width: 1px;
@@ -1147,6 +1153,7 @@ html.home-large-text {
     border: 0;
 }
 .paper-link:focus-visible,
+.paper-resource-link:focus-visible,
 .papers-index a:focus-visible,
 .paper-card h3:focus-visible {
     outline: 3px solid #60358a;

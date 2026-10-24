@@ -1,0 +1,192 @@
+{
+  "schema": "discoverability.local-evm-manifest.v1",
+  "runId": "discoverability-20261022-v1",
+  "reconciliationTimeUtc": "2026-10-23T00:35:36Z",
+  "source": {
+    "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+    "revisionReportedByExecutor": "61532fb82621a065e668fd11e57289dcfb65c67b",
+    "fiveProductionGitBlobsMatchAuditedSource": true,
+    "fullCheckoutAuthentication": "NOT_ESTABLISHED_BY_THIS_RECOVERY"
+  },
+  "mode": "ACTUAL_LOCAL_EVM_UNFORKED_IN_PROCESS_HARDHAT",
+  "chainId": "31337",
+  "wallClockExecutionObservedAt": null,
+  "timeQualification": "Saved block timestamps are simulated chain time, including explicit evm_setNextBlockTimestamp advances. Original wall-clock test timestamp was not saved separately. Npm log dates identify dependency setup only.",
+  "configuration": {
+    "source": "tests/contracts/scripts/fixture.js and hardhat.config.js in source-closure.zip",
+    "forking": false,
+    "externalNetworkUrl": null,
+    "tokenAddress": "0xa61a3b3a130a9c20768eebf97e21515a6046a1fa",
+    "tokenImplementation": "MockAGI runtime installed at canonical-address identifier in disposable local chain; not the mainnet token",
+    "tokenDecimals": 18,
+    "riskQuorum": 2,
+    "maximumRiskBps": 2000,
+    "minimumRiskStakeBaseUnits": "10000000000000000000",
+    "minimumMarketStakeBaseUnits": "10000000000000000000",
+    "signers": "Hardhat local deterministic fixtures; private keys are neither needed nor included",
+    "externalFinancialTransfers": false
+  },
+  "dependencies": {
+    "hardhat": "2.29.1",
+    "ethers": "6.17.0",
+    "solc": "0.8.37",
+    "openzeppelin": "5.6.1",
+    "nodeObservedInNpmLogs": "24.19.0",
+    "npmObservedInLogs": "11.9.0",
+    "packageLock": {
+      "bytes": 120408,
+      "sha256": "070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667"
+    },
+    "pythonRequirementsLock": {
+      "bytes": 85690,
+      "sha256": "d58df2a38d099f8123d7445f62fec4684d029e588ce4b615151387c4decd1392"
+    },
+    "pythonDependencyInstallation": "Reported hash-locked successful by original executor; full installed-environment record not recovered"
+  },
+  "contracts": [
+    {
+      "name": "AscensionAccess",
+      "sourcePath": "contracts/ascension/AscensionAccess.sol",
+      "sourceGitBlob": "e3555663da7ac4c4e0371c787b8cbb4519800961",
+      "sourceSha256": "de1f06c46d767e433356daa22dcbd039b6ca79c88d44bee4de70d5116c9b9a6e",
+      "abiPath": "abi/AscensionAccess.json",
+      "abi": {
+        "bytes": 7792,
+        "sha256": "3183b0192d10549f0a91d0e3c73fdd838a924f45c91650f70e4a3e4ecd5e112a"
+      },
+      "compiledArtifact": {
+        "bytes": 23797,
+        "sha256": "9f2ff8365e0342863355e729ac401bef605391e60c771220cbb9b7106cd5aa04"
+      },
+      "creationBytecodeKeccak256": "0x2dc93e320e72b19da3993c4e974bc877e3abf4740862832d9173c773620053c9",
+      "runtimeTemplateKeccak256": "0xd0536a3a435f112ccdde00d3a8c3ed88e4052a8d714da780f0d62207e2ede367",
+      "runtimeTemplateScope": "Compiled pre-constructor template, not deployed runtime; immutable fields are not filled.",
+      "observedLocalAddress": null,
+      "observedLocalRuntimeKeccak256": null,
+      "observationSource": null,
+      "missingObservationReason": "Address and runtime identity not retained for this contract in the saved receipts. Do not substitute mainnet addresses or inferred deployment order."
+    },
+    {
+      "name": "NovaSeed",
+      "sourcePath": "contracts/ascension/NovaSeed.sol",
+      "sourceGitBlob": "b4c555e2109b569d67a0a6e71f0ef1dbeeccabbd",
+      "sourceSha256": "d5ba49b4dd662ac4764065f0ebf03ca708c4aefc5fde1d08f7319620addf9896",
+      "abiPath": "abi/NovaSeed.json",
+      "abi": {
+        "bytes": 12695,
+        "sha256": "f8ee58e4d244284c5fc8605c9c8a2c0375a96a6324ea6ace0e2cc08c0eaaf06e"
+      },
+      "compiledArtifact": {
+        "bytes": 36268,
+        "sha256": "c405ffd1a9bd1a5f8c30fa0ced098da80e1c94e95a49765f77fcd7068b6b1170"
+      },
+      "creationBytecodeKeccak256": "0xafa862fd0dcc480465887510022430bdd649a7f6686279c311c1811311832d4b",
+      "runtimeTemplateKeccak256": "0x7c9c0209d6e7f2c981e2ce8541214c4cf6746c9d8a0ea54143acba53e2a4cf21",
+      "runtimeTemplateScope": "Compiled pre-constructor template, not deployed runtime; immutable fields are not filled.",
+      "observedLocalAddress": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+      "observedLocalRuntimeKeccak256": "0xc6384ed714005c8f41caeb3d0fe297e6f6254ce7ed159f03a138a1a549c292e4",
+      "observationSource": "receipts/accepted-negative-evaluation.json#context",
+      "missingObservationReason": null
+    },
+    {
+      "name": "AscensionRiskOracle",
+      "sourcePath": "contracts/ascension/AscensionRiskOracle.sol",
+      "sourceGitBlob": "f7013301e749a7efc67f36639a693c98cacbf254",
+      "sourceSha256": "45a0e4d3023848d2fe4a34d604d4e4928c3efacd75362d1560fb127ec9b582a9",
+      "abiPath": "abi/AscensionRiskOracle.json",
+      "abi": {
+        "bytes": 13800,
+        "sha256": "a6698db20e26f8cb0abaa99e2dc3b9042d0457335632d339c36f7d81bb801a83"
+      },
+      "compiledArtifact": {
+        "bytes": 51031,
+        "sha256": "07ad14a7ffdd9551826ecb956c43b83cecf854445cb2a1fb29cf2225fc317c55"
+      },
+      "creationBytecodeKeccak256": "0xe6cb853d38ef451213c2173f952e3bc3afef977d51b27e5b40a7579c6fe86bb3",
+      "runtimeTemplateKeccak256": "0x8b79176b467387e55932990d586cb12e18be18e72921e01e11a9fe3ca179835a",
+      "runtimeTemplateScope": "Compiled pre-constructor template, not deployed runtime; immutable fields are not filled.",
+      "observedLocalAddress": null,
+      "observedLocalRuntimeKeccak256": null,
+      "observationSource": null,
+      "missingObservationReason": "Address and runtime identity not retained for this contract in the saved receipts. Do not substitute mainnet addresses or inferred deployment order."
+    },
+    {
+      "name": "AscensionJobMarket",
+      "sourcePath": "contracts/ascension/AscensionJobMarket.sol",
+      "sourceGitBlob": "a50a5cc584ccb6c096c6df6aa862aa48d27d9ffe",
+      "sourceSha256": "db3865d4564fc53a47357ed31b17a5446319ff185218643d3232cb5e91bbd23c",
+      "abiPath": "abi/AscensionJobMarket.json",
+      "abi": {
+        "bytes": 23464,
+        "sha256": "4d4458256bef9492b0cb1dc527da3f0dfc9955d229e9e6aa5b846a19106a4205"
+      },
+      "compiledArtifact": {
+        "bytes": 98675,
+        "sha256": "3ca02c672072543b059d93e0c49d22bc1d9b8e99249aae3add4c0c9f7e5aca18"
+      },
+      "creationBytecodeKeccak256": "0xec337ab064b325212cb272360a5d42c261255ebd713353ea27ab0fc61a063c8a",
+      "runtimeTemplateKeccak256": "0xd6ce499d0906b0ccd10b6d5e4987f77b6c8be9a5a7a218a0b713f90370c48a41",
+      "runtimeTemplateScope": "Compiled pre-constructor template, not deployed runtime; immutable fields are not filled.",
+      "observedLocalAddress": "0x0165878a594ca255338adfa4d48449f69242eb8f",
+      "observedLocalRuntimeKeccak256": "0x657d9bb8d7bbe42eb306b1ac0abe2625c41e566acf8a059add0ad0a07822ab4a",
+      "observationSource": "receipts/accepted-negative-evaluation.json#context",
+      "missingObservationReason": null
+    },
+    {
+      "name": "AscensionMark",
+      "sourcePath": "contracts/ascension/AscensionMark.sol",
+      "sourceGitBlob": "86d0f526f2c9d7ff3d62f250a0c54b84e59a2b9f",
+      "sourceSha256": "8264865cdf8d0dba1e5bfe357329582e04860e3b067ff30672eebbdf69351743",
+      "abiPath": "abi/AscensionMark.json",
+      "abi": {
+        "bytes": 15401,
+        "sha256": "1b7188defd002a7c6d1bb9686ea073ceac731713e78763a227e1965a89023d32"
+      },
+      "compiledArtifact": {
+        "bytes": 70632,
+        "sha256": "fa6af3176ff995fc7e301d12b0a23bca9288e860acdf9ef8499dc414209e2275"
+      },
+      "creationBytecodeKeccak256": "0x6484d58c4e250e8a1b8f6e54201407beb29077dbe65394490a666009c136a467",
+      "runtimeTemplateKeccak256": "0xc92dbfe55c13de3677688f7bd966eb81e0a119e25a4cd9e759eaf73f8d7cb949",
+      "runtimeTemplateScope": "Compiled pre-constructor template, not deployed runtime; immutable fields are not filled.",
+      "observedLocalAddress": "0xa513e6e4b8f2a923d98304ec87f64353c4d5c853",
+      "observedLocalRuntimeKeccak256": "0x6d88148a408d9e357471b125d1201d1e3f613238a6492b582608c16dd3880d86",
+      "observationSource": "receipts/accepted-negative-evaluation.json#context",
+      "missingObservationReason": null
+    }
+  ],
+  "retainedSourceTestDefinitions": {
+    "lifecycle.test.js": 15,
+    "marketplace.test.js": 15,
+    "settlement.test.js": 3,
+    "successor-adapter.test.js": 3
+  },
+  "executionResult": "36 tests passed according to original executing agent handoff; two resulting native receipts and full compiler artifacts retained; terminal summary not retained",
+  "receiptResults": {
+    "acceptedNegativeEvaluation": "PAID_WITHOUT_CANDIDATE_ADMISSION",
+    "missingReviewQuorum": "FULL_BOUNTY_REFUND_NO_PAYOUTS"
+  },
+  "custody": "See executor-handoff.json; retained npm debug logs preserve one EPERM failure and one successful installation. Do not call this a complete terminal transcript.",
+  "limitations": [
+    "This is the existing Alpha adapter path, not Discoverability-specific commissioning.",
+    "No native Discoverability registration, installed four-repository acceptance or Fleet remote job is established.",
+    "No mainnet observation, signing, token transfer or customer revenue is established.",
+    "Access and Oracle local addresses/runtime hashes are unrecorded; compiled template hashes do not substitute for them.",
+    "Local signatures bind retained data to included keys; they do not confer institutional trust."
+  ],
+  "sourceArchive": {
+    "path": "source-closure.zip",
+    "bytes": 184002,
+    "sha256": "9b204ae83f0db930e78f32d5823e5419756e833bc65c7c957061bc6612b68a12"
+  },
+  "supplementaryQualification": {
+    "path": "qualification-02/manifest.json",
+    "testsPassed": 36,
+    "actualExitCode": 0,
+    "fullStdoutAndStderrRetained": true,
+    "sourceAndLocksUnchanged": true,
+    "newNativeReceiptsRetained": true,
+    "separateFiveContractRuntimeObservation": "qualification-02/separate-fixture-observation.json",
+    "scope": "Fresh execution with reused installed dependencies/artifacts. Original history and missing observations above are unchanged; the five-runtime snapshot is a separate fixture."
+  }
+}

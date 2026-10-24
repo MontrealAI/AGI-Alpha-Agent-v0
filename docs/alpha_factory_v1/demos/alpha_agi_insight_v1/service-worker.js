@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-a64ed22e0f302e09";
-const RELEASE = "1.39.0";
+const CACHE = "agialpha-gallery-f3bfa282e0856821";
+const RELEASE = "1.40.0";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
   "../../../aiga_meta_evolution/assets/bridge_overview.svg",
@@ -400,6 +400,10 @@ const ASSETS = [
   "../../../omni_factory_demo/assets/style.css",
   "../../../omni_factory_demo/index.html",
   "../../../presentation/assets/preview.svg",
+  "../../../reports/research-capability-inheritance-v1/index.html",
+  "../../../reports/research-discoverability-v1/index.html",
+  "../../../reports/research-foundry-v2/index.html",
+  "../../../research/discoverability/index.html",
   "../../../self_healing_repo/assets/logs.json",
   "../../../self_healing_repo/assets/preview.svg",
   "../../../self_healing_repo/assets/script.js",

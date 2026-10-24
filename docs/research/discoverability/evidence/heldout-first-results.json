@@ -1,0 +1,2758 @@
+{
+  "observedAt": "2026-10-22T22:49:16.495Z",
+  "cases": [
+    {
+      "options": {},
+      "problem": {
+        "schema": "discoverability.problem.v1",
+        "id": "network-route-clock1",
+        "channels": [
+          {
+            "id": "clock-before",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-north",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-south",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-east-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-west-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "clock-after",
+            "cost": 1,
+            "noise": 1
+          }
+        ],
+        "worlds": [
+          {
+            "id": "healthy",
+            "goal": "retain-north",
+            "signal": [
+              0,
+              10,
+              10,
+              15,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-20",
+            "goal": "divert-south",
+            "signal": [
+              0,
+              30,
+              10,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-40",
+            "goal": "divert-south",
+            "signal": [
+              0,
+              50,
+              10,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-south-20",
+            "goal": "retain-north",
+            "signal": [
+              0,
+              10,
+              30,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "source-south-40",
+            "goal": "retain-north",
+            "signal": [
+              0,
+              10,
+              50,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "north-target-20",
+            "goal": "divert-south",
+            "signal": [
+              0,
+              30,
+              10,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-target-40",
+            "goal": "divert-south",
+            "signal": [
+              0,
+              50,
+              10,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "south-target-20",
+            "goal": "retain-north",
+            "signal": [
+              0,
+              10,
+              30,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "south-target-40",
+            "goal": "retain-north",
+            "signal": [
+              0,
+              10,
+              50,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "north-south-20",
+            "goal": "retain-north",
+            "signal": [
+              0,
+              10,
+              10,
+              35,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-south-40",
+            "goal": "retain-north",
+            "signal": [
+              0,
+              10,
+              10,
+              55,
+              55,
+              0
+            ]
+          }
+        ],
+        "nuisance": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ]
+        ],
+        "grammar": {
+          "maxSupport": 3,
+          "weightLimit": 2,
+          "maxL1": 4
+        },
+        "missionBudget": 12
+      },
+      "production": {
+        "compilerVersion": "1.0.0-experimental",
+        "problemId": "network-route-clock1",
+        "libraryHit": false,
+        "templateCount": 6,
+        "goalPairCount": 28,
+        "status": "COMPILED",
+        "program": {
+          "schema": "discoverability.program.v1",
+          "problemKey": "{\"channels\":[{\"cost\":1,\"id\":\"clock-before\",\"noise\":1},{\"cost\":1,\"id\":\"route-north\",\"noise\":1},{\"cost\":1,\"id\":\"route-south\",\"noise\":1},{\"cost\":1,\"id\":\"route-east-cross\",\"noise\":1},{\"cost\":1,\"id\":\"route-west-cross\",\"noise\":1},{\"cost\":1,\"id\":\"clock-after\",\"noise\":1}],\"grammar\":{\"maxL1\":4,\"maxSupport\":3,\"weightLimit\":2},\"id\":\"network-route-clock1\",\"missionBudget\":12,\"nuisance\":[[1,0],[1,1],[1,2],[1,3],[1,4],[1,5]],\"schema\":\"discoverability.problem.v1\",\"worlds\":[{\"goal\":\"retain-north\",\"id\":\"healthy\",\"signal\":[0,10,10,15,15,0]},{\"goal\":\"divert-south\",\"id\":\"source-north-20\",\"signal\":[0,30,10,35,15,0]},{\"goal\":\"divert-south\",\"id\":\"source-north-40\",\"signal\":[0,50,10,55,15,0]},{\"goal\":\"retain-north\",\"id\":\"source-south-20\",\"signal\":[0,10,30,15,35,0]},{\"goal\":\"retain-north\",\"id\":\"source-south-40\",\"signal\":[0,10,50,15,55,0]},{\"goal\":\"divert-south\",\"id\":\"north-target-20\",\"signal\":[0,30,10,15,35,0]},{\"goal\":\"divert-south\",\"id\":\"north-target-40\",\"signal\":[0,50,10,15,55,0]},{\"goal\":\"retain-north\",\"id\":\"south-target-20\",\"signal\":[0,10,30,35,15,0]},{\"goal\":\"retain-north\",\"id\":\"south-target-40\",\"signal\":[0,10,50,55,15,0]},{\"goal\":\"retain-north\",\"id\":\"north-south-20\",\"signal\":[0,10,10,35,35,0]},{\"goal\":\"retain-north\",\"id\":\"north-south-40\",\"signal\":[0,10,10,55,55,0]}]}",
+          "experiments": [
+            {
+              "weights": [
+                1,
+                -2,
+                1,
+                0,
+                0,
+                0
+              ],
+              "cost": 3,
+              "radius": 4,
+              "responses": [
+                {
+                  "world": "healthy",
+                  "goal": "retain-north",
+                  "center": -10
+                },
+                {
+                  "world": "source-north-20",
+                  "goal": "divert-south",
+                  "center": -50
+                },
+                {
+                  "world": "source-north-40",
+                  "goal": "divert-south",
+                  "center": -90
+                },
+                {
+                  "world": "source-south-20",
+                  "goal": "retain-north",
+                  "center": 10
+                },
+                {
+                  "world": "source-south-40",
+                  "goal": "retain-north",
+                  "center": 30
+                },
+                {
+                  "world": "north-target-20",
+                  "goal": "divert-south",
+                  "center": -50
+                },
+                {
+                  "world": "north-target-40",
+                  "goal": "divert-south",
+                  "center": -90
+                },
+                {
+                  "world": "south-target-20",
+                  "goal": "retain-north",
+                  "center": 10
+                },
+                {
+                  "world": "south-target-40",
+                  "goal": "retain-north",
+                  "center": 30
+                },
+                {
+                  "world": "north-south-20",
+                  "goal": "retain-north",
+                  "center": -10
+                },
+                {
+                  "world": "north-south-40",
+                  "goal": "retain-north",
+                  "center": -10
+                }
+              ]
+            }
+          ],
+          "totalCost": 3,
+          "protocol": "fresh-independent-bounded-read-errors; shared additive nuisance cancelled within each experiment"
+        },
+        "certificate": {
+          "decisionIdentifiable": true,
+          "optimalWithinGrammar": true,
+          "searchComplete": true,
+          "acceptedForBudget": true
+        },
+        "work": {
+          "used": 2839,
+          "limit": 2000000,
+          "counters": {
+            "jsonNodes": 163,
+            "stringUnits": 32,
+            "frame": 45,
+            "grammarNodes": 889,
+            "nuisanceChecks": 832,
+            "retainedTemplateCells": 36,
+            "templateSortBound": 18,
+            "responseEvaluation": 396,
+            "decisionPairChecks": 168,
+            "coverageCollapse": 6,
+            "dominanceChecks": 26,
+            "candidateSortBound": 1,
+            "optionChecks": 28,
+            "greedySteps": 1,
+            "greedyPairBits": 28,
+            "searchNodes": 1,
+            "branchChecks": 2,
+            "serializedUnits": 167
+          }
+        },
+        "resourceLimits": {
+          "maxTemplates": 1024,
+          "maxExperiments": 128,
+          "maxSerializedCharacters": 150000,
+          "maxCacheEntries": 8
+        },
+        "workDefinition": "Metered logical operations, including framing and serialization estimates; not VM instruction count. Runtime deadline is separate."
+      },
+      "staticReference": {
+        "status": "COMPILED",
+        "complete": true,
+        "minimumCost": 3,
+        "experiments": [
+          {
+            "weights": [
+              1,
+              -2,
+              1,
+              0,
+              0,
+              0
+            ],
+            "cost": 3,
+            "radius": 4,
+            "responses": [
+              {
+                "world": "healthy",
+                "goal": "retain-north",
+                "center": -10
+              },
+              {
+                "world": "source-north-20",
+                "goal": "divert-south",
+                "center": -50
+              },
+              {
+                "world": "source-north-40",
+                "goal": "divert-south",
+                "center": -90
+              },
+              {
+                "world": "source-south-20",
+                "goal": "retain-north",
+                "center": 10
+              },
+              {
+                "world": "source-south-40",
+                "goal": "retain-north",
+                "center": 30
+              },
+              {
+                "world": "north-target-20",
+                "goal": "divert-south",
+                "center": -50
+              },
+              {
+                "world": "north-target-40",
+                "goal": "divert-south",
+                "center": -90
+              },
+              {
+                "world": "south-target-20",
+                "goal": "retain-north",
+                "center": 10
+              },
+              {
+                "world": "south-target-40",
+                "goal": "retain-north",
+                "center": 30
+              },
+              {
+                "world": "north-south-20",
+                "goal": "retain-north",
+                "center": -10
+              },
+              {
+                "world": "north-south-40",
+                "goal": "retain-north",
+                "center": -10
+              }
+            ]
+          }
+        ],
+        "templateCount": 6,
+        "subsetsChecked": 64,
+        "work": {
+          "limit": 10000000,
+          "used": 18053,
+          "counters": {
+            "cartesianVectors": 15625,
+            "referenceResponses": 396,
+            "directPairChecks": 1905,
+            "subsetNodes": 127
+          }
+        },
+        "scope": "Exact direct subset correctness reference; runtime is not an optimized conventional performance baseline."
+      },
+      "adaptiveReference": {
+        "status": "COMPILED",
+        "complete": true,
+        "worstAcquisitionCost": 3,
+        "templateCount": 6,
+        "states": 34,
+        "policy": [
+          {
+            "worldMask": "64",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "16",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "80",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "64",
+              "16"
+            ]
+          },
+          {
+            "worldMask": "1024",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "32",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "8",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1064",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "1024",
+              "32",
+              "8"
+            ]
+          },
+          {
+            "worldMask": "512",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "2",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "128",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "130",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "2",
+              "128"
+            ]
+          },
+          {
+            "worldMask": "4",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "256",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "260",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "4",
+              "256"
+            ]
+          },
+          {
+            "worldMask": "1026",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1024",
+              "2"
+            ]
+          },
+          {
+            "worldMask": "1280",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1282",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1024",
+              "2",
+              "256"
+            ]
+          },
+          {
+            "worldMask": "640",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "72",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "64",
+              "8"
+            ]
+          },
+          {
+            "worldMask": "264",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "544",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "32",
+              "512"
+            ]
+          },
+          {
+            "worldMask": "1088",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "64",
+              "1024"
+            ]
+          },
+          {
+            "worldMask": "1090",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "64",
+              "1024",
+              "2"
+            ]
+          },
+          {
+            "worldMask": "644",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "512",
+              "128",
+              "4"
+            ]
+          },
+          {
+            "worldMask": "25",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "68",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "34",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1537",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "136",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "272",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "144",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "7",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1",
+              "2",
+              "4"
+            ]
+          },
+          {
+            "worldMask": "2047",
+            "cost": 3,
+            "experiment": [
+              1,
+              -2,
+              1,
+              0,
+              0,
+              0
+            ],
+            "branches": [
+              "68",
+              "34",
+              "1537",
+              "136",
+              "272"
+            ]
+          }
+        ],
+        "work": {
+          "limit": 10000000,
+          "used": 17695,
+          "counters": {
+            "cartesianVectors": 15625,
+            "referenceResponses": 396,
+            "adaptiveCellChecks": 1562,
+            "adaptiveStates": 34,
+            "adaptiveAlternatives": 78
+          }
+        },
+        "scope": "Exact finite minimax adaptive policy; fresh independent bounded errors. Repeating a probe that can retain the entire belief cannot improve its worst-case value."
+      }
+    },
+    {
+      "options": {
+        "requirement": "repair"
+      },
+      "problem": {
+        "schema": "discoverability.problem.v1",
+        "id": "network-repair-clock1",
+        "channels": [
+          {
+            "id": "clock-before",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-north",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-south",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-east-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-west-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "clock-after",
+            "cost": 1,
+            "noise": 1
+          }
+        ],
+        "worlds": [
+          {
+            "id": "healthy",
+            "goal": "no-repair",
+            "signal": [
+              0,
+              10,
+              10,
+              15,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-20",
+            "goal": "source-north:20",
+            "signal": [
+              0,
+              30,
+              10,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-40",
+            "goal": "source-north:40",
+            "signal": [
+              0,
+              50,
+              10,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-south-20",
+            "goal": "source-south:20",
+            "signal": [
+              0,
+              10,
+              30,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "source-south-40",
+            "goal": "source-south:40",
+            "signal": [
+              0,
+              10,
+              50,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "north-target-20",
+            "goal": "north-target:20",
+            "signal": [
+              0,
+              30,
+              10,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-target-40",
+            "goal": "north-target:40",
+            "signal": [
+              0,
+              50,
+              10,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "south-target-20",
+            "goal": "south-target:20",
+            "signal": [
+              0,
+              10,
+              30,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "south-target-40",
+            "goal": "south-target:40",
+            "signal": [
+              0,
+              10,
+              50,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "north-south-20",
+            "goal": "north-south:20",
+            "signal": [
+              0,
+              10,
+              10,
+              35,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-south-40",
+            "goal": "north-south:40",
+            "signal": [
+              0,
+              10,
+              10,
+              55,
+              55,
+              0
+            ]
+          }
+        ],
+        "nuisance": [
+          [
+            1,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            1,
+            5
+          ]
+        ],
+        "grammar": {
+          "maxSupport": 3,
+          "weightLimit": 2,
+          "maxL1": 4
+        },
+        "missionBudget": 12
+      },
+      "production": {
+        "compilerVersion": "1.0.0-experimental",
+        "problemId": "network-repair-clock1",
+        "libraryHit": true,
+        "templateCount": 6,
+        "goalPairCount": 55,
+        "status": "COMPILED",
+        "program": {
+          "schema": "discoverability.program.v1",
+          "problemKey": "{\"channels\":[{\"cost\":1,\"id\":\"clock-before\",\"noise\":1},{\"cost\":1,\"id\":\"route-north\",\"noise\":1},{\"cost\":1,\"id\":\"route-south\",\"noise\":1},{\"cost\":1,\"id\":\"route-east-cross\",\"noise\":1},{\"cost\":1,\"id\":\"route-west-cross\",\"noise\":1},{\"cost\":1,\"id\":\"clock-after\",\"noise\":1}],\"grammar\":{\"maxL1\":4,\"maxSupport\":3,\"weightLimit\":2},\"id\":\"network-repair-clock1\",\"missionBudget\":12,\"nuisance\":[[1,0],[1,1],[1,2],[1,3],[1,4],[1,5]],\"schema\":\"discoverability.problem.v1\",\"worlds\":[{\"goal\":\"no-repair\",\"id\":\"healthy\",\"signal\":[0,10,10,15,15,0]},{\"goal\":\"source-north:20\",\"id\":\"source-north-20\",\"signal\":[0,30,10,35,15,0]},{\"goal\":\"source-north:40\",\"id\":\"source-north-40\",\"signal\":[0,50,10,55,15,0]},{\"goal\":\"source-south:20\",\"id\":\"source-south-20\",\"signal\":[0,10,30,15,35,0]},{\"goal\":\"source-south:40\",\"id\":\"source-south-40\",\"signal\":[0,10,50,15,55,0]},{\"goal\":\"north-target:20\",\"id\":\"north-target-20\",\"signal\":[0,30,10,15,35,0]},{\"goal\":\"north-target:40\",\"id\":\"north-target-40\",\"signal\":[0,50,10,15,55,0]},{\"goal\":\"south-target:20\",\"id\":\"south-target-20\",\"signal\":[0,10,30,35,15,0]},{\"goal\":\"south-target:40\",\"id\":\"south-target-40\",\"signal\":[0,10,50,55,15,0]},{\"goal\":\"north-south:20\",\"id\":\"north-south-20\",\"signal\":[0,10,10,35,35,0]},{\"goal\":\"north-south:40\",\"id\":\"north-south-40\",\"signal\":[0,10,10,55,55,0]}]}",
+          "experiments": [
+            {
+              "weights": [
+                0,
+                0,
+                1,
+                -2,
+                1,
+                0
+              ],
+              "cost": 3,
+              "radius": 4,
+              "responses": [
+                {
+                  "world": "healthy",
+                  "goal": "no-repair",
+                  "center": -5
+                },
+                {
+                  "world": "source-north-20",
+                  "goal": "source-north:20",
+                  "center": -45
+                },
+                {
+                  "world": "source-north-40",
+                  "goal": "source-north:40",
+                  "center": -85
+                },
+                {
+                  "world": "source-south-20",
+                  "goal": "source-south:20",
+                  "center": 35
+                },
+                {
+                  "world": "source-south-40",
+                  "goal": "source-south:40",
+                  "center": 75
+                },
+                {
+                  "world": "north-target-20",
+                  "goal": "north-target:20",
+                  "center": 15
+                },
+                {
+                  "world": "north-target-40",
+                  "goal": "north-target:40",
+                  "center": 35
+                },
+                {
+                  "world": "south-target-20",
+                  "goal": "south-target:20",
+                  "center": -25
+                },
+                {
+                  "world": "south-target-40",
+                  "goal": "south-target:40",
+                  "center": -45
+                },
+                {
+                  "world": "north-south-20",
+                  "goal": "north-south:20",
+                  "center": -25
+                },
+                {
+                  "world": "north-south-40",
+                  "goal": "north-south:40",
+                  "center": -45
+                }
+              ]
+            },
+            {
+              "weights": [
+                0,
+                0,
+                0,
+                1,
+                -2,
+                1
+              ],
+              "cost": 3,
+              "radius": 4,
+              "responses": [
+                {
+                  "world": "healthy",
+                  "goal": "no-repair",
+                  "center": -15
+                },
+                {
+                  "world": "source-north-20",
+                  "goal": "source-north:20",
+                  "center": 5
+                },
+                {
+                  "world": "source-north-40",
+                  "goal": "source-north:40",
+                  "center": 25
+                },
+                {
+                  "world": "source-south-20",
+                  "goal": "source-south:20",
+                  "center": -55
+                },
+                {
+                  "world": "source-south-40",
+                  "goal": "source-south:40",
+                  "center": -95
+                },
+                {
+                  "world": "north-target-20",
+                  "goal": "north-target:20",
+                  "center": -55
+                },
+                {
+                  "world": "north-target-40",
+                  "goal": "north-target:40",
+                  "center": -95
+                },
+                {
+                  "world": "south-target-20",
+                  "goal": "south-target:20",
+                  "center": 5
+                },
+                {
+                  "world": "south-target-40",
+                  "goal": "south-target:40",
+                  "center": 25
+                },
+                {
+                  "world": "north-south-20",
+                  "goal": "north-south:20",
+                  "center": -35
+                },
+                {
+                  "world": "north-south-40",
+                  "goal": "north-south:40",
+                  "center": -55
+                }
+              ]
+            }
+          ],
+          "totalCost": 6,
+          "protocol": "fresh-independent-bounded-read-errors; shared additive nuisance cancelled within each experiment"
+        },
+        "certificate": {
+          "decisionIdentifiable": true,
+          "optimalWithinGrammar": true,
+          "searchComplete": true,
+          "acceptedForBudget": true
+        },
+        "work": {
+          "used": 2302,
+          "limit": 2000000,
+          "counters": {
+            "jsonNodes": 163,
+            "stringUnits": 32,
+            "frame": 72,
+            "libraryLookup": 1,
+            "responseEvaluation": 396,
+            "decisionPairChecks": 330,
+            "coverageCollapse": 6,
+            "dominanceChecks": 30,
+            "candidateSortBound": 18,
+            "optionChecks": 330,
+            "greedySteps": 12,
+            "greedyPairBits": 316,
+            "searchNodes": 5,
+            "branchChecks": 373,
+            "serializedUnits": 218
+          }
+        },
+        "resourceLimits": {
+          "maxTemplates": 1024,
+          "maxExperiments": 128,
+          "maxSerializedCharacters": 150000,
+          "maxCacheEntries": 8
+        },
+        "workDefinition": "Metered logical operations, including framing and serialization estimates; not VM instruction count. Runtime deadline is separate."
+      },
+      "staticReference": {
+        "status": "COMPILED",
+        "complete": true,
+        "minimumCost": 6,
+        "experiments": [
+          {
+            "weights": [
+              1,
+              -2,
+              1,
+              0,
+              0,
+              0
+            ],
+            "cost": 3,
+            "radius": 4,
+            "responses": [
+              {
+                "world": "healthy",
+                "goal": "no-repair",
+                "center": -10
+              },
+              {
+                "world": "source-north-20",
+                "goal": "source-north:20",
+                "center": -50
+              },
+              {
+                "world": "source-north-40",
+                "goal": "source-north:40",
+                "center": -90
+              },
+              {
+                "world": "source-south-20",
+                "goal": "source-south:20",
+                "center": 10
+              },
+              {
+                "world": "source-south-40",
+                "goal": "source-south:40",
+                "center": 30
+              },
+              {
+                "world": "north-target-20",
+                "goal": "north-target:20",
+                "center": -50
+              },
+              {
+                "world": "north-target-40",
+                "goal": "north-target:40",
+                "center": -90
+              },
+              {
+                "world": "south-target-20",
+                "goal": "south-target:20",
+                "center": 10
+              },
+              {
+                "world": "south-target-40",
+                "goal": "south-target:40",
+                "center": 30
+              },
+              {
+                "world": "north-south-20",
+                "goal": "north-south:20",
+                "center": -10
+              },
+              {
+                "world": "north-south-40",
+                "goal": "north-south:40",
+                "center": -10
+              }
+            ]
+          },
+          {
+            "weights": [
+              1,
+              0,
+              -2,
+              0,
+              1,
+              0
+            ],
+            "cost": 3,
+            "radius": 4,
+            "responses": [
+              {
+                "world": "healthy",
+                "goal": "no-repair",
+                "center": -5
+              },
+              {
+                "world": "source-north-20",
+                "goal": "source-north:20",
+                "center": -5
+              },
+              {
+                "world": "source-north-40",
+                "goal": "source-north:40",
+                "center": -5
+              },
+              {
+                "world": "source-south-20",
+                "goal": "source-south:20",
+                "center": -25
+              },
+              {
+                "world": "source-south-40",
+                "goal": "source-south:40",
+                "center": -45
+              },
+              {
+                "world": "north-target-20",
+                "goal": "north-target:20",
+                "center": 15
+              },
+              {
+                "world": "north-target-40",
+                "goal": "north-target:40",
+                "center": 35
+              },
+              {
+                "world": "south-target-20",
+                "goal": "south-target:20",
+                "center": -45
+              },
+              {
+                "world": "south-target-40",
+                "goal": "south-target:40",
+                "center": -85
+              },
+              {
+                "world": "north-south-20",
+                "goal": "north-south:20",
+                "center": 15
+              },
+              {
+                "world": "north-south-40",
+                "goal": "north-south:40",
+                "center": 35
+              }
+            ]
+          }
+        ],
+        "templateCount": 6,
+        "subsetsChecked": 64,
+        "work": {
+          "limit": 10000000,
+          "used": 19686,
+          "counters": {
+            "cartesianVectors": 15625,
+            "referenceResponses": 396,
+            "directPairChecks": 3538,
+            "subsetNodes": 127
+          }
+        },
+        "scope": "Exact direct subset correctness reference; runtime is not an optimized conventional performance baseline."
+      },
+      "adaptiveReference": {
+        "status": "COMPILED",
+        "complete": true,
+        "worstAcquisitionCost": 6,
+        "templateCount": 6,
+        "states": 34,
+        "policy": [
+          {
+            "worldMask": "64",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "16",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "80",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "64",
+              "16"
+            ]
+          },
+          {
+            "worldMask": "1024",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "32",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "8",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1064",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "1024",
+              "32",
+              "8"
+            ]
+          },
+          {
+            "worldMask": "512",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "2",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "128",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "130",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "2",
+              "128"
+            ]
+          },
+          {
+            "worldMask": "4",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "256",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "260",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              1,
+              -2,
+              1,
+              0
+            ],
+            "branches": [
+              "4",
+              "256"
+            ]
+          },
+          {
+            "worldMask": "1026",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1024",
+              "2"
+            ]
+          },
+          {
+            "worldMask": "1280",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1024",
+              "256"
+            ]
+          },
+          {
+            "worldMask": "1282",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1024",
+              "2",
+              "256"
+            ]
+          },
+          {
+            "worldMask": "640",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "512",
+              "128"
+            ]
+          },
+          {
+            "worldMask": "72",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "64",
+              "8"
+            ]
+          },
+          {
+            "worldMask": "264",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "8",
+              "256"
+            ]
+          },
+          {
+            "worldMask": "544",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "32",
+              "512"
+            ]
+          },
+          {
+            "worldMask": "1088",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "64",
+              "1024"
+            ]
+          },
+          {
+            "worldMask": "1090",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "64",
+              "1024",
+              "2"
+            ]
+          },
+          {
+            "worldMask": "644",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "512",
+              "128",
+              "4"
+            ]
+          },
+          {
+            "worldMask": "25",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "16",
+              "8",
+              "1"
+            ]
+          },
+          {
+            "worldMask": "68",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "64",
+              "4"
+            ]
+          },
+          {
+            "worldMask": "34",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "32",
+              "2"
+            ]
+          },
+          {
+            "worldMask": "1537",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1024",
+              "512",
+              "1"
+            ]
+          },
+          {
+            "worldMask": "136",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "8",
+              "128"
+            ]
+          },
+          {
+            "worldMask": "272",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "16",
+              "256"
+            ]
+          },
+          {
+            "worldMask": "144",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "16",
+              "128"
+            ]
+          },
+          {
+            "worldMask": "7",
+            "cost": 3,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "1",
+              "2",
+              "4"
+            ]
+          },
+          {
+            "worldMask": "2047",
+            "cost": 6,
+            "experiment": [
+              0,
+              0,
+              0,
+              1,
+              -2,
+              1
+            ],
+            "branches": [
+              "80",
+              "1064",
+              "512",
+              "1",
+              "130",
+              "260"
+            ]
+          }
+        ],
+        "work": {
+          "limit": 10000000,
+          "used": 17755,
+          "counters": {
+            "cartesianVectors": 15625,
+            "referenceResponses": 396,
+            "adaptiveCellChecks": 1562,
+            "adaptiveStates": 34,
+            "adaptiveAlternatives": 138
+          }
+        },
+        "scope": "Exact finite minimax adaptive policy; fresh independent bounded errors. Repeating a probe that can retain the entire belief cannot improve its worst-case value."
+      }
+    },
+    {
+      "options": {
+        "requirement": "repair",
+        "clockOrder": 2
+      },
+      "problem": {
+        "schema": "discoverability.problem.v1",
+        "id": "network-repair-clock2",
+        "channels": [
+          {
+            "id": "clock-before",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-north",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-south",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-east-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-west-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "clock-after",
+            "cost": 1,
+            "noise": 1
+          }
+        ],
+        "worlds": [
+          {
+            "id": "healthy",
+            "goal": "no-repair",
+            "signal": [
+              0,
+              10,
+              10,
+              15,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-20",
+            "goal": "source-north:20",
+            "signal": [
+              0,
+              30,
+              10,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-40",
+            "goal": "source-north:40",
+            "signal": [
+              0,
+              50,
+              10,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-south-20",
+            "goal": "source-south:20",
+            "signal": [
+              0,
+              10,
+              30,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "source-south-40",
+            "goal": "source-south:40",
+            "signal": [
+              0,
+              10,
+              50,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "north-target-20",
+            "goal": "north-target:20",
+            "signal": [
+              0,
+              30,
+              10,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-target-40",
+            "goal": "north-target:40",
+            "signal": [
+              0,
+              50,
+              10,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "south-target-20",
+            "goal": "south-target:20",
+            "signal": [
+              0,
+              10,
+              30,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "south-target-40",
+            "goal": "south-target:40",
+            "signal": [
+              0,
+              10,
+              50,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "north-south-20",
+            "goal": "north-south:20",
+            "signal": [
+              0,
+              10,
+              10,
+              35,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-south-40",
+            "goal": "north-south:40",
+            "signal": [
+              0,
+              10,
+              10,
+              55,
+              55,
+              0
+            ]
+          }
+        ],
+        "nuisance": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            1,
+            3,
+            9
+          ],
+          [
+            1,
+            4,
+            16
+          ],
+          [
+            1,
+            5,
+            25
+          ]
+        ],
+        "grammar": {
+          "maxSupport": 3,
+          "weightLimit": 2,
+          "maxL1": 4
+        },
+        "missionBudget": 12
+      },
+      "production": {
+        "compilerVersion": "1.0.0-experimental",
+        "problemId": "network-repair-clock2",
+        "libraryHit": false,
+        "templateCount": 0,
+        "goalPairCount": 55,
+        "status": "UNIDENTIFIABLE_WITHIN_GRAMMAR",
+        "certificate": {
+          "decisionIdentifiable": false,
+          "optimalWithinGrammar": false,
+          "searchComplete": true
+        },
+        "witness": {
+          "left": "healthy",
+          "right": "source-north-20",
+          "leftGoal": "no-repair",
+          "rightGoal": "source-north:20",
+          "observationTwice": [],
+          "scope": "All qualified experiments in this finite grammar; fresh independent bounded errors for each acquisition. Not impossibility outside the grammar."
+        },
+        "experiments": [],
+        "work": {
+          "used": 2446,
+          "limit": 2000000,
+          "counters": {
+            "jsonNodes": 169,
+            "stringUnits": 32,
+            "frame": 72,
+            "grammarNodes": 889,
+            "nuisanceChecks": 1248,
+            "templateSortBound": 0,
+            "serializedUnits": 36
+          }
+        },
+        "resourceLimits": {
+          "maxTemplates": 1024,
+          "maxExperiments": 128,
+          "maxSerializedCharacters": 150000,
+          "maxCacheEntries": 8
+        },
+        "workDefinition": "Metered logical operations, including framing and serialization estimates; not VM instruction count. Runtime deadline is separate."
+      },
+      "staticReference": {
+        "status": "UNIDENTIFIABLE_WITHIN_GRAMMAR",
+        "complete": true,
+        "templateCount": 0,
+        "witness": {
+          "left": "healthy",
+          "right": "source-north-20",
+          "leftGoal": "no-repair",
+          "rightGoal": "source-north:20",
+          "observationTwice": []
+        },
+        "work": {
+          "limit": 10000000,
+          "used": 15625,
+          "counters": {
+            "cartesianVectors": 15625
+          }
+        }
+      },
+      "adaptiveReference": {
+        "status": "UNIDENTIFIABLE_WITHIN_GRAMMAR",
+        "complete": true,
+        "worstAcquisitionCost": null,
+        "templateCount": 0,
+        "states": 1,
+        "policy": [
+          {
+            "worldMask": "2047",
+            "cost": null,
+            "experiment": null,
+            "branches": []
+          }
+        ],
+        "work": {
+          "limit": 10000000,
+          "used": 15626,
+          "counters": {
+            "cartesianVectors": 15625,
+            "adaptiveStates": 1
+          }
+        },
+        "scope": "Exact finite minimax adaptive policy; fresh independent bounded errors. Repeating a probe that can retain the entire belief cannot improve its worst-case value."
+      }
+    },
+    {
+      "options": {
+        "requirement": "repair",
+        "clockOrder": 2,
+        "extendedGrammar": true
+      },
+      "problem": {
+        "schema": "discoverability.problem.v1",
+        "id": "network-repair-clock2-extended",
+        "channels": [
+          {
+            "id": "clock-before",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-north",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-south",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-east-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "route-west-cross",
+            "cost": 1,
+            "noise": 1
+          },
+          {
+            "id": "clock-after",
+            "cost": 1,
+            "noise": 1
+          }
+        ],
+        "worlds": [
+          {
+            "id": "healthy",
+            "goal": "no-repair",
+            "signal": [
+              0,
+              10,
+              10,
+              15,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-20",
+            "goal": "source-north:20",
+            "signal": [
+              0,
+              30,
+              10,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-north-40",
+            "goal": "source-north:40",
+            "signal": [
+              0,
+              50,
+              10,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "source-south-20",
+            "goal": "source-south:20",
+            "signal": [
+              0,
+              10,
+              30,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "source-south-40",
+            "goal": "source-south:40",
+            "signal": [
+              0,
+              10,
+              50,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "north-target-20",
+            "goal": "north-target:20",
+            "signal": [
+              0,
+              30,
+              10,
+              15,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-target-40",
+            "goal": "north-target:40",
+            "signal": [
+              0,
+              50,
+              10,
+              15,
+              55,
+              0
+            ]
+          },
+          {
+            "id": "south-target-20",
+            "goal": "south-target:20",
+            "signal": [
+              0,
+              10,
+              30,
+              35,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "south-target-40",
+            "goal": "south-target:40",
+            "signal": [
+              0,
+              10,
+              50,
+              55,
+              15,
+              0
+            ]
+          },
+          {
+            "id": "north-south-20",
+            "goal": "north-south:20",
+            "signal": [
+              0,
+              10,
+              10,
+              35,
+              35,
+              0
+            ]
+          },
+          {
+            "id": "north-south-40",
+            "goal": "north-south:40",
+            "signal": [
+              0,
+              10,
+              10,
+              55,
+              55,
+              0
+            ]
+          }
+        ],
+        "nuisance": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            2,
+            4
+          ],
+          [
+            1,
+            3,
+            9
+          ],
+          [
+            1,
+            4,
+            16
+          ],
+          [
+            1,
+            5,
+            25
+          ]
+        ],
+        "grammar": {
+          "maxSupport": 4,
+          "weightLimit": 3,
+          "maxL1": 8
+        },
+        "missionBudget": 12
+      },
+      "production": {
+        "compilerVersion": "1.0.0-experimental",
+        "problemId": "network-repair-clock2-extended",
+        "libraryHit": false,
+        "templateCount": 5,
+        "goalPairCount": 55,
+        "status": "COMPILED",
+        "program": {
+          "schema": "discoverability.program.v1",
+          "problemKey": "{\"channels\":[{\"cost\":1,\"id\":\"clock-before\",\"noise\":1},{\"cost\":1,\"id\":\"route-north\",\"noise\":1},{\"cost\":1,\"id\":\"route-south\",\"noise\":1},{\"cost\":1,\"id\":\"route-east-cross\",\"noise\":1},{\"cost\":1,\"id\":\"route-west-cross\",\"noise\":1},{\"cost\":1,\"id\":\"clock-after\",\"noise\":1}],\"grammar\":{\"maxL1\":8,\"maxSupport\":4,\"weightLimit\":3},\"id\":\"network-repair-clock2-extended\",\"missionBudget\":12,\"nuisance\":[[1,0,0],[1,1,1],[1,2,4],[1,3,9],[1,4,16],[1,5,25]],\"schema\":\"discoverability.problem.v1\",\"worlds\":[{\"goal\":\"no-repair\",\"id\":\"healthy\",\"signal\":[0,10,10,15,15,0]},{\"goal\":\"source-north:20\",\"id\":\"source-north-20\",\"signal\":[0,30,10,35,15,0]},{\"goal\":\"source-north:40\",\"id\":\"source-north-40\",\"signal\":[0,50,10,55,15,0]},{\"goal\":\"source-south:20\",\"id\":\"source-south-20\",\"signal\":[0,10,30,15,35,0]},{\"goal\":\"source-south:40\",\"id\":\"source-south-40\",\"signal\":[0,10,50,15,55,0]},{\"goal\":\"north-target:20\",\"id\":\"north-target-20\",\"signal\":[0,30,10,15,35,0]},{\"goal\":\"north-target:40\",\"id\":\"north-target-40\",\"signal\":[0,50,10,15,55,0]},{\"goal\":\"south-target:20\",\"id\":\"south-target-20\",\"signal\":[0,10,30,35,15,0]},{\"goal\":\"south-target:40\",\"id\":\"south-target-40\",\"signal\":[0,10,50,55,15,0]},{\"goal\":\"north-south:20\",\"id\":\"north-south-20\",\"signal\":[0,10,10,35,35,0]},{\"goal\":\"north-south:40\",\"id\":\"north-south-40\",\"signal\":[0,10,10,55,55,0]}]}",
+          "experiments": [
+            {
+              "weights": [
+                1,
+                -3,
+                3,
+                -1,
+                0,
+                0
+              ],
+              "cost": 4,
+              "radius": 8,
+              "responses": [
+                {
+                  "world": "healthy",
+                  "goal": "no-repair",
+                  "center": -15
+                },
+                {
+                  "world": "source-north-20",
+                  "goal": "source-north:20",
+                  "center": -95
+                },
+                {
+                  "world": "source-north-40",
+                  "goal": "source-north:40",
+                  "center": -175
+                },
+                {
+                  "world": "source-south-20",
+                  "goal": "source-south:20",
+                  "center": 45
+                },
+                {
+                  "world": "source-south-40",
+                  "goal": "source-south:40",
+                  "center": 105
+                },
+                {
+                  "world": "north-target-20",
+                  "goal": "north-target:20",
+                  "center": -75
+                },
+                {
+                  "world": "north-target-40",
+                  "goal": "north-target:40",
+                  "center": -135
+                },
+                {
+                  "world": "south-target-20",
+                  "goal": "south-target:20",
+                  "center": 25
+                },
+                {
+                  "world": "south-target-40",
+                  "goal": "south-target:40",
+                  "center": 65
+                },
+                {
+                  "world": "north-south-20",
+                  "goal": "north-south:20",
+                  "center": -35
+                },
+                {
+                  "world": "north-south-40",
+                  "goal": "north-south:40",
+                  "center": -55
+                }
+              ]
+            }
+          ],
+          "totalCost": 4,
+          "protocol": "fresh-independent-bounded-read-errors; shared additive nuisance cancelled within each experiment"
+        },
+        "certificate": {
+          "decisionIdentifiable": true,
+          "optimalWithinGrammar": true,
+          "searchComplete": true,
+          "acceptedForBudget": true
+        },
+        "work": {
+          "used": 38264,
+          "limit": 2000000,
+          "counters": {
+            "jsonNodes": 169,
+            "stringUnits": 32,
+            "frame": 72,
+            "grammarNodes": 12740,
+            "nuisanceChecks": 24288,
+            "retainedTemplateCells": 30,
+            "templateSortBound": 15,
+            "responseEvaluation": 330,
+            "decisionPairChecks": 275,
+            "coverageCollapse": 5,
+            "dominanceChecks": 20,
+            "candidateSortBound": 1,
+            "optionChecks": 55,
+            "greedySteps": 1,
+            "greedyPairBits": 55,
+            "searchNodes": 1,
+            "branchChecks": 2,
+            "serializedUnits": 173
+          }
+        },
+        "resourceLimits": {
+          "maxTemplates": 1024,
+          "maxExperiments": 128,
+          "maxSerializedCharacters": 150000,
+          "maxCacheEntries": 8
+        },
+        "workDefinition": "Metered logical operations, including framing and serialization estimates; not VM instruction count. Runtime deadline is separate."
+      },
+      "staticReference": {
+        "status": "COMPILED",
+        "complete": true,
+        "minimumCost": 4,
+        "experiments": [
+          {
+            "weights": [
+              1,
+              -3,
+              3,
+              -1,
+              0,
+              0
+            ],
+            "cost": 4,
+            "radius": 8,
+            "responses": [
+              {
+                "world": "healthy",
+                "goal": "no-repair",
+                "center": -15
+              },
+              {
+                "world": "source-north-20",
+                "goal": "source-north:20",
+                "center": -95
+              },
+              {
+                "world": "source-north-40",
+                "goal": "source-north:40",
+                "center": -175
+              },
+              {
+                "world": "source-south-20",
+                "goal": "source-south:20",
+                "center": 45
+              },
+              {
+                "world": "source-south-40",
+                "goal": "source-south:40",
+                "center": 105
+              },
+              {
+                "world": "north-target-20",
+                "goal": "north-target:20",
+                "center": -75
+              },
+              {
+                "world": "north-target-40",
+                "goal": "north-target:40",
+                "center": -135
+              },
+              {
+                "world": "south-target-20",
+                "goal": "south-target:20",
+                "center": 25
+              },
+              {
+                "world": "south-target-40",
+                "goal": "south-target:40",
+                "center": 65
+              },
+              {
+                "world": "north-south-20",
+                "goal": "north-south:20",
+                "center": -35
+              },
+              {
+                "world": "north-south-40",
+                "goal": "north-south:40",
+                "center": -55
+              }
+            ]
+          }
+        ],
+        "templateCount": 5,
+        "subsetsChecked": 32,
+        "work": {
+          "limit": 10000000,
+          "used": 119713,
+          "counters": {
+            "cartesianVectors": 117649,
+            "referenceResponses": 330,
+            "directPairChecks": 1671,
+            "subsetNodes": 63
+          }
+        },
+        "scope": "Exact direct subset correctness reference; runtime is not an optimized conventional performance baseline."
+      },
+      "adaptiveReference": {
+        "status": "COMPILED",
+        "complete": true,
+        "worstAcquisitionCost": 4,
+        "templateCount": 5,
+        "states": 19,
+        "policy": [
+          {
+            "worldMask": "4",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "256",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "2",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "128",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "512",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1024",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "1537",
+            "cost": 4,
+            "experiment": [
+              0,
+              1,
+              -2,
+              0,
+              2,
+              -1
+            ],
+            "branches": [
+              "1",
+              "512",
+              "1024"
+            ]
+          },
+          {
+            "worldMask": "32",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "8",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "64",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "16",
+            "cost": 0,
+            "experiment": null,
+            "branches": []
+          },
+          {
+            "worldMask": "25",
+            "cost": 4,
+            "experiment": [
+              0,
+              0,
+              1,
+              -3,
+              3,
+              -1
+            ],
+            "branches": [
+              "1",
+              "8",
+              "16"
+            ]
+          },
+          {
+            "worldMask": "516",
+            "cost": 4,
+            "experiment": [
+              0,
+              0,
+              1,
+              -3,
+              3,
+              -1
+            ],
+            "branches": [
+              "4",
+              "512"
+            ]
+          },
+          {
+            "worldMask": "481",
+            "cost": 4,
+            "experiment": [
+              0,
+              0,
+              1,
+              -3,
+              3,
+              -1
+            ],
+            "branches": [
+              "256",
+              "128",
+              "1",
+              "32",
+              "64"
+            ]
+          },
+          {
+            "worldMask": "1026",
+            "cost": 4,
+            "experiment": [
+              0,
+              0,
+              1,
+              -3,
+              3,
+              -1
+            ],
+            "branches": [
+              "2",
+              "1024"
+            ]
+          },
+          {
+            "worldMask": "7",
+            "cost": 4,
+            "experiment": [
+              0,
+              0,
+              1,
+              -3,
+              3,
+              -1
+            ],
+            "branches": [
+              "4",
+              "2",
+              "1"
+            ]
+          },
+          {
+            "worldMask": "1152",
+            "cost": 4,
+            "experiment": [
+              0,
+              0,
+              1,
+              -3,
+              3,
+              -1
+            ],
+            "branches": [
+              "128",
+              "1024"
+            ]
+          },
+          {
+            "worldMask": "2047",
+            "cost": 4,
+            "experiment": [
+              1,
+              -3,
+              3,
+              -1,
+              0,
+              0
+            ],
+            "branches": [
+              "4",
+              "64",
+              "2",
+              "32",
+              "1024",
+              "512",
+              "1",
+              "128",
+              "8",
+              "256",
+              "16"
+            ]
+          }
+        ],
+        "work": {
+          "limit": 10000000,
+          "used": 119831,
+          "counters": {
+            "cartesianVectors": 117649,
+            "referenceResponses": 330,
+            "adaptiveCellChecks": 1793,
+            "adaptiveStates": 19,
+            "adaptiveAlternatives": 40
+          }
+        },
+        "scope": "Exact finite minimax adaptive policy; fresh independent bounded errors. Repeating a probe that can retain the entire belief cannot improve its worst-case value."
+      }
+    }
+  ]
+}

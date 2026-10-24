@@ -19,8 +19,8 @@ from urllib.request import Request, urlopen
 
 from playwright.sync_api import Page, expect, sync_playwright
 
-from scripts.homepage_evidence import ASSETS, PAPER_ASSETS, asset_hashes
-from scripts.research_papers import load_catalog
+from scripts.homepage_evidence import ASSETS, EXPERIENCE_ASSETS, PAPER_ASSETS, RESOURCE_LINKS, asset_hashes
+from scripts.research_papers import MAX_EXPERIENCE, RESOURCE_LABELS, load_catalog, ordinary_path, resource_href
 from scripts.validate_ascension import Handler, inspect
 from scripts.validate_ecosystem import validate as validate_ecosystem
 
@@ -31,6 +31,9 @@ def assert_paper_links(page: Page, language: str) -> None:
     records = load_catalog()["papers"]
     expect(papers.locator("article")).to_have_count(len(records))
     expect(papers.locator(".paper-link")).to_have_count(len(records))
+    expect(papers.locator(".paper-resource-link")).to_have_count(
+        sum(len(record.get("resources", {})) for record in records)
+    )
     reading_index = papers.locator(".papers-index")
     expect(reading_index).to_have_accessible_name(
         "Choose your reading path" if language == "en" else "Choisissez votre parcours de lecture"
@@ -113,6 +116,17 @@ def assert_paper_links(page: Page, language: str) -> None:
         )
         assert context["position"] == "absolute" and context["clip"] == "inset(50%)", context
         assert context["width"] <= 1 and context["height"] <= 1, context
+        card = papers.locator("article").nth(index)
+        resources = record.get("resources", {})
+        expect(card.locator(".paper-resource-link")).to_have_count(len(resources))
+        for role, resource in resources.items():
+            extra = card.locator(f'[data-paper-resource="{role}"]')
+            label = RESOURCE_LABELS[role][language]
+            expect(extra).to_have_attribute("href", resource_href(role, resource))
+            expect(extra.locator("span[data-paper-key]")).to_have_text(label)
+            expect(extra.locator(".sr-only")).to_have_text(": " + title)
+            expect(extra).to_have_accessible_name(re.compile(re.escape(label) + r"\s*:\s*" + re.escape(title)))
+            expect(extra).to_be_visible()
     expect(papers.locator("[data-home-key]")).not_to_have_count(0)
     assert "undefined" not in papers.inner_text()
 
@@ -327,6 +341,8 @@ def validate(
         "accessibility": [],
         "assets": {},
         "paper_assets": {},
+        "research_experience_assets": {},
+        "research_resources": {},
     }
     try:
         expected_assets = asset_hashes()
@@ -360,6 +376,24 @@ def validate(
                 raise ValueError(f"Served research paper differs from the original: {filename}")
             report["paper_assets"][filename] = received
         report["checks"].append("original-paper-bytes")
+        for filename, expected in EXPERIENCE_ASSETS.items():
+            for folder, relative in ((root, "docs/" + filename), (site, filename)):
+                path = ordinary_path(folder, relative)
+                if (
+                    not 0 < path.stat().st_size <= MAX_EXPERIENCE
+                    or hashlib.sha256(path.read_bytes()).hexdigest() != expected
+                ):
+                    raise ValueError(f"Research experience differs from the catalogued source: {filename}")
+            request = Request(origin + filename, headers={"Cache-Control": "no-cache"})
+            with urlopen(request, timeout=20) as response:
+                if response.status != 200 or response.geturl() != origin + filename:
+                    raise ValueError(f"Unexpected research experience response: {filename}")
+                raw = response.read(MAX_EXPERIENCE + 1)
+            if len(raw) > MAX_EXPERIENCE or hashlib.sha256(raw).hexdigest() != expected:
+                raise ValueError(f"Served research experience differs from the tested source: {filename}")
+            report["research_experience_assets"][filename] = expected
+        if EXPERIENCE_ASSETS:
+            report["checks"].append("qualified-research-experience-bytes")
         axe_source = axe_script.read_text(encoding="utf-8")
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(executable_path=executable)
@@ -396,6 +430,9 @@ def validate(
                 assert len(question.inner_text().strip()) > len(summary.inner_text().strip())
                 summary.click()
             assert_handoff(page, "en", False)
+            if RESOURCE_LINKS:
+                report["research_resources"] = RESOURCE_LINKS
+                report["checks"].append("research-resource-links")
             report["checks"] += ["clear-first-step", "three-visible-steps", "readable-default-text", "working-faq"]
 
             # Index links move to focusable headings, not duplicate PDF downloads.

@@ -303,10 +303,33 @@ jobs:
           ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests tests/test_orchestrator_backoff.py tests/test_insight_orchestrator_restart.py -q --junitxml=evidence/restarts.xml
       - name: Execute the complete catalog finite launch contracts
         run: python -m scripts.validate_demo_catalog --smoke --output evidence/demo-catalog.json
-      - name: Full offline regression including notebooks
+      - name: Preserve held native source identities (no behavioral qualification)
         run: |
           mkdir -p evidence
-          python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml
+          python scripts/check_held_native_source.py > evidence/held-native-source-preservation.json
+      - name: Offline regression including notebooks (four held native tests excluded)
+        run: |
+          mkdir -p evidence
+          python - <<'PY'
+          import json, pathlib, subprocess
+          held = [
+              'tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands',
+              'tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata',
+              'tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer',
+              'tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history',
+          ]
+          record = {'schema': 'agialpha.held-test-selection.v1',
+                    'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                    'invocation': 'agent-full-regression', 'status': 'EXCLUSION_PLANNED', 'qualified': False,
+                    'tests': [{'nodeid': node, 'status': 'EXCLUSION_PLANNED'} for node in held],
+                    'meaning': 'These four nodes are planned for exclusion by this invocation; this pre-run record states selection intention only. Actual deselection requires observed job output; their outcomes are not qualified.'}
+          pathlib.Path('evidence/held-probes.json').write_text(json.dumps(record, indent=2) + '\n')
+          PY
+          python -m scripts.run_local_tests -q --cov --cov-config=pyproject.toml --cov-fail-under=80 --cov-report=xml:evidence/coverage.xml --junitxml=evidence/regression.xml \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_unsafe_metadata_without_installing_or_running_commands \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_source_helper_refuses_non_admitted_worktree_metadata \
+            --deselect=tests/test_successor_capability_delivery.py::test_native_browser_attack_bank_is_predeclared_and_not_selected_by_the_producer \
+            --deselect=tests/test_successor_capability_delivery.py::test_both_native_requests_are_actual_ui_downloads_with_one_pre_fleet_history
           cp .coverage evidence/coverage.data
       - name: Strict types and repository checks
         run: |

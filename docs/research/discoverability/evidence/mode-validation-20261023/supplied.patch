@@ -1,0 +1,56 @@
+diff --git a/examples/successor-discoverability/domains.mjs b/examples/successor-discoverability/domains.mjs
+index 22f7bbf8..0b278e45 100644
+--- a/examples/successor-discoverability/domains.mjs
++++ b/examples/successor-discoverability/domains.mjs
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: Apache-2.0
+ import {SCHEMA,validateProblem} from './compiler.mjs';
+ export function digitalFault({noise=1,goal='repair',drift=1,missionBudget=40}={}){
++  if(!['health','repair'].includes(goal))throw new TypeError('digitalFault goal must be health or repair');
+   const stimuli=[[0,0],[0,1],[1,0],[1,1]];
+   const gates={xor:(a,b)=>a^b,and:(a,b)=>a&b,or:(a,b)=>a|b,nand:(a,b)=>1-(a&b),stucklow:()=>0,stuckhigh:()=>1};
+   const channels=['reference-before','input-00','input-01','input-10','input-11','reference-after'].map(id=>({id,cost:1,noise}));
+@@ -9,6 +10,7 @@ export function digitalFault({noise=1,goal='repair',drift=1,missionBudget=40}={}
+     nuisance:channels.map((_,i)=>drift?[1,i]:[1]),grammar:{maxSupport:3,weightLimit:2,maxL1:4},missionBudget});
+ }
+ export function mixtureAssay({noise=1,goal='disposition',drift=1,missionBudget=48}={}){
++  if(!['disposition','quantify'].includes(goal))throw new TypeError('mixtureAssay goal must be disposition or quantify');
+   const a=[1,4,2,0],b=[3,0,1,4],worlds=[];
+   for(let ca=0;ca<=2;ca++)for(let cb=0;cb<=2;cb++)worlds.push({id:'a'+ca+'b'+cb,
+     goal:goal==='quantify'?'a'+ca+'b'+cb:ca>0?'quarantine-a':cb>0?'recover-b':'clear',
+diff --git a/examples/successor-discoverability/test.mjs b/examples/successor-discoverability/test.mjs
+index ba1fe2bd..b0015a89 100644
+--- a/examples/successor-discoverability/test.mjs
++++ b/examples/successor-discoverability/test.mjs
+@@ -4,6 +4,31 @@ import test from 'node:test';
+ import {createCompiler,validateProblem,executeProgram,inspectProgram,canonical,snapshot} from './compiler.mjs';
+ import {digitalFault,mixtureAssay,acquireSynthetic} from './domains.mjs';
+ const clone=x=>JSON.parse(JSON.stringify(x));
++test('declared decision modes retain their intended decisions and defaults',()=>{
++ const repair=digitalFault({goal:'repair'}),health=digitalFault({goal:'health'});
++ assert.deepEqual(digitalFault(),repair);
++ assert.deepEqual(digitalFault({goal:undefined}),repair);
++ assert.equal(repair.id,'digital-fault-repair');assert.equal(health.id,'digital-fault-health');
++ assert.deepEqual(repair.worlds.map(w=>w.goal),['retain','replace-and','replace-or','replace-nand','replace-stucklow','replace-stuckhigh']);
++ assert.deepEqual(health.worlds.map(w=>w.goal),['retain','replace','replace','replace','replace','replace']);
++ const disposition=mixtureAssay({goal:'disposition'}),quantify=mixtureAssay({goal:'quantify'});
++ assert.deepEqual(mixtureAssay(),disposition);
++ assert.deepEqual(mixtureAssay({goal:undefined}),disposition);
++ assert.equal(disposition.id,'mixture-assay-disposition');assert.equal(quantify.id,'mixture-assay-quantify');
++ assert.deepEqual(disposition.worlds.map(w=>w.goal),['clear','recover-b','recover-b','quarantine-a','quarantine-a','quarantine-a','quarantine-a','quarantine-a','quarantine-a']);
++ assert.deepEqual(quantify.worlds.map(w=>w.goal),['a0b0','a0b1','a0b2','a1b0','a1b1','a1b2','a2b0','a2b1','a2b2']);
++});
++for(const [name,builder,otherMode,message] of [
++ ['digitalFault',digitalFault,'disposition','digitalFault goal must be health or repair'],
++ ['mixtureAssay',mixtureAssay,'health','mixtureAssay goal must be disposition or quantify']
++])test(name+' rejects unsupported decision modes without coercion',()=>{
++ let coercions=0;
++ const coercible={[Symbol.toPrimitive](){coercions++;return name==='digitalFault'?'health':'quantify';}};
++ for(const goal of ['heath','quantfy','',otherMode,'HEALTH','health ',' quantify',null,false,0,[],{},new String('health'),Symbol('health'),coercible]){
++  assert.throws(()=>builder({goal}),{name:'TypeError',message});
++ }
++ assert.equal(coercions,0);
++});
+ test('newly executed acquisitions recover every development decision at both error extremes',async()=>{
+  for(const p of [digitalFault(),mixtureAssay()]){
+   const r=await createCompiler().compile(p);assert.equal(r.status,'COMPILED');assert.equal(r.certificate.optimalWithinGrammar,true);
