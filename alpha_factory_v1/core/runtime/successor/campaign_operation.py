@@ -459,11 +459,16 @@ class CampaignOperation:
                 except KeyError:
                     continue
         latest_output = None
-        if runs:
-            child = self.experiment.loop.show(runs[-1]["campaign_id"])
+        selected = (
+            (parent.get("freeze") or {}).get("manifest", {}).get("selected_policy", parent["spec"]["incumbent_policy"])
+        )
+        selected_runs = [run for run in runs if run["policy"] == selected]
+        if selected_runs:
+            chosen = selected_runs[-1]
+            child = self.experiment.loop.show(chosen["campaign_id"])
             latest_output = {
-                "unit": runs[-1]["unit_id"],
-                "policy": runs[-1]["policy"],
+                "unit": chosen["unit_id"],
+                "policy": chosen["policy"],
                 "notes": (child.get("result") or {}).get("results", {}).get("candidate", []),
             }
         active = False

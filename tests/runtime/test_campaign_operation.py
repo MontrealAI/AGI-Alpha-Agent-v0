@@ -343,3 +343,16 @@ def test_terminal_execution_consumes_one_detached_submission(tmp_path, monkeypat
     result = base.confirm(child_id, submitted, child["freeze"]["digest"])
     assert submitted == []
     assert result["result"]["fresh_sources"] == [document.model_dump() for document in spec.training[0].unit.terminal]
+
+
+def test_operator_notes_use_the_frozen_policy_on_changed_requirements(tmp_path, monkeypatch):
+    operation, spec, clock = setup(tmp_path, monkeypatch)
+    for _ in range(3):
+        operation.advance(spec.operation_id)
+    clock[0] += 8000
+    for _ in range(6):
+        operation.advance(spec.operation_id)
+    status = operation.status(spec.operation_id)
+    assert status["latest_output"]["policy"] == status["changed_since_training"]["manifest"]["selected_policy"]
+    assert status["latest_output"]["notes"][0]["score_millionths"] == 625_000
+    assert status["latest_output"]["notes"][0]["unsupported_claims"] == []
