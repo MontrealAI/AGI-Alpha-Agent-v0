@@ -98,6 +98,7 @@ HELD_SELECTIONS = (
         "Computation, history and delivery gates",
         "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest",
         "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest --noconftest -c /dev/null --rootdir=. -p no:cacheprovider "
+        "tests/test_held_native_source_guard.py "
         "tests/test_run_local_tests_environment.py tests/test_discovery_lab_validation.py "
         "tests/test_autonomous_enterprises_source.py tests/test_paper_checkout_bytes.py "
         "tests/test_successor_capability_delivery.py -q 2>&1 | tee capability-evidence/logs/delivery.log",

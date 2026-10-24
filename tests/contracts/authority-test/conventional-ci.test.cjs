@@ -20,7 +20,7 @@ test('exact actions and shards stay finite behind the trusted paper classifier',
  const sections=w.split('\n  conventional-qualification:\n');assert.equal(sections.length,2);const job=sections[1];
  const actions=[...job.matchAll(/uses: ([^\s]+)/g)].map(x=>x[1]);assert.deepEqual(actions,['actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd','actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f','actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f']);
  assert.deepEqual([...job.matchAll(/^          run_check ([a-z-]+) /gm)].map(x=>x[1]),['compile','unit','local']);
- assert.match(job,/ref: \$\{\{ github.event.pull_request.head.sha \|\| github.sha \}\}/);assert.match(job,/persist-credentials: false/);assert.match(job,/node-version: '22\.17\.1'/);assert.match(job,/npm ci --prefix tests\/contracts/);assert.match(job,/070e3c6652f4939fabe14788a0c80b38ed3d6e2ad792cebad4a5bbf842308667/);
+ assert.match(job,/ref: \$\{\{ github.event.pull_request.head.sha \|\| github.sha \}\}/);assert.match(job,/persist-credentials: false/);assert.match(job,/node-version: '22\.17\.1'/);assert.match(job,/npm ci --prefix tests\/contracts/);assert.match(job,/dae16bcbc91f745d6e411a7157f381d299e0e74b946f9749e36f82d260894744/);
  assert.match(job,/conventional-ci-evidence.cjs init/);assert.match(job,/conventional-ci-evidence.cjs finish/);assert.match(job,/path: \$\{\{ env.ALPHA_CONVENTIONAL_STATE_DIRECTORY \}\}\/public\//);
  assert.doesNotMatch(w,/pull_request_target|secrets\.|contents: write|id-token:|git push|gh release|npm publish|environment:|--invert|continue-on-error|\|\| true/);
 });
