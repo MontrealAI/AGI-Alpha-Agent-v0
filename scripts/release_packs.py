@@ -63,6 +63,8 @@ def classify(name: str) -> str:
     path = PurePosixPath(name)
     if {"local-llm", "pyodide", "models", "wasm", "wasm_llm"}.intersection(path.parts):
         return "models"
+    if path.name == "index.html" or name == "gallery.html":
+        return "core"  # Gallery navigation pages are mandatory precache dependencies.
     # Shared gallery assets are mandatory service-worker precache dependencies,
     # even when their owning page lives in an optional research directory.
     if path.suffix.lower() in {".js", ".mjs", ".css", ".svg", ".json"} and {
