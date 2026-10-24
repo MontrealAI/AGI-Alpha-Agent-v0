@@ -1,0 +1,97 @@
+{
+  "schema": "nova-independent-pre-freeze-source-review/v1",
+  "reviewed_at_utc": "2026-10-24T02:43:35.202605+00:00",
+  "source_sha256": {
+    "research/src/run_experiment.mjs": "2124ddf434d2e29ed5f6ac5dfd4cf64377a255a886c772b06b82b5573bd3eada",
+    "research/src/engine_adapter.mjs": "fb2052cadb0b0f3a4f407cffa18ecd8808cc7cdc92dc163c716aba07a9615d0d",
+    "research/src/evidence_adapter.mjs": "9aa5197ca5c6b61a658870d98a272a663d4c7436753b35bce8f1591841c857cf",
+    "research/src/native_worker.mjs": "0a87f91014928a142601b81f88745be1182bc6c2ad8020f5a191c426cc14b78b",
+    "research/src/independent_evaluator.mjs": "1a64f30a460836626f7f5a4cba07b18898debab1d1a10c3568c9f47c8dcf29b9"
+  },
+  "pilot_file_sha256": "20437011a92c9e52a4f622e61df0d443c5bc999ff5a260bd5b23a04e291185d2",
+  "review_scope": "Source inspection and completed pilot only. No confirmation results inspected.",
+  "pilot_rows": 42,
+  "pilot_failures": 0,
+  "checks": [
+    {
+      "identity": [
+        "ordinary",
+        1,
+        0
+      ],
+      "policies": 7,
+      "distinct_public_keys": 5,
+      "all_planner_visible_prior_profiles_equal": true,
+      "all_plans_valid": true
+    },
+    {
+      "identity": [
+        "ordinary",
+        1,
+        1
+      ],
+      "policies": 7,
+      "distinct_public_keys": 5,
+      "all_planner_visible_prior_profiles_equal": true,
+      "all_plans_valid": true
+    },
+    {
+      "identity": [
+        "measurement-drift",
+        1,
+        0
+      ],
+      "policies": 7,
+      "distinct_public_keys": 5,
+      "all_planner_visible_prior_profiles_equal": true,
+      "all_plans_valid": true
+    },
+    {
+      "identity": [
+        "measurement-drift",
+        1,
+        1
+      ],
+      "policies": 7,
+      "distinct_public_keys": 5,
+      "all_planner_visible_prior_profiles_equal": true,
+      "all_plans_valid": true
+    },
+    {
+      "identity": [
+        "expensive-evidence",
+        1,
+        0
+      ],
+      "policies": 7,
+      "distinct_public_keys": 5,
+      "all_planner_visible_prior_profiles_equal": true,
+      "all_plans_valid": true
+    },
+    {
+      "identity": [
+        "expensive-evidence",
+        1,
+        1
+      ],
+      "policies": 7,
+      "distinct_public_keys": 5,
+      "all_planner_visible_prior_profiles_equal": true,
+      "all_plans_valid": true
+    }
+  ],
+  "pre_freeze_findings": {
+    "equal_prior_information": "resolved: same pastQc field passed to every policy",
+    "complete_copy_evidence": "resolved with explicit boundary: copied-source module uses separate signer/ledger in shared parent process; native planner in separate copied worker",
+    "reject_invalid_plan": "resolved: method fails after invalid independent replay",
+    "preserve_disagreement": "resolved: rows/ledger persisted before fatal cross-check exception",
+    "matched_receipt_capabilities": "resolved: verified, clone, expert, adaptive and greedy all sign/verify/store independent receipts; native finite-model proof separately typed"
+  },
+  "residual_limits": [
+    "No physical calibration certification",
+    "Perfect delayed auxiliary QC is a modeled assumption and separate resource class",
+    "Copied evidence recorder shares parent OS/process; no organizational independence",
+    "Independent authoring labor/model cost not instrumented",
+    "Toy geometry; no new scheduling theory or permanent-moat claim"
+  ]
+}

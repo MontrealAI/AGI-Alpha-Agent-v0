@@ -1,0 +1,67 @@
+{
+  "schema": "nova-seeds-measured-runs/v1",
+  "runs": [
+    {
+      "run": "Confirmation campaign",
+      "cpuSeconds": 733.4158590000001,
+      "wallSeconds": 755.1681252970001,
+      "evidence": "results/holdout-01/metrics.json"
+    },
+    {
+      "run": "Independent replay/signatures/ledgers",
+      "cpuSeconds": 10.853151,
+      "wallSeconds": 10.4476193790033,
+      "evidence": "evidence/holdout-independent-audit-cost.json"
+    },
+    {
+      "run": "48 retained native completions",
+      "cpuSeconds": 3.313025,
+      "wallSeconds": 2.9461770619964227,
+      "evidence": "evidence/retained-completion-audit-resources.json"
+    },
+    {
+      "run": "Closed-form objective audit",
+      "cpuSeconds": 1.4085210000000001,
+      "wallSeconds": 1.4095422529935604,
+      "evidence": "evidence/holdout-nominal-bound-audit-cost.json"
+    },
+    {
+      "run": "Frozen statistical analysis",
+      "cpuSeconds": 8.943337,
+      "wallSeconds": 8.148395316005917,
+      "evidence": "evidence/holdout-analysis-resources.json"
+    },
+    {
+      "run": "Local EVM and registry demonstration",
+      "cpuSeconds": 2.085283,
+      "wallSeconds": 2.220123066,
+      "evidence": "../contracts-audit/tests/contracts/evidence/writer10-contract-results.json"
+    },
+    {
+      "run": "Published dispatcher graph",
+      "cpuSeconds": 3.020314,
+      "wallSeconds": 3.185404,
+      "evidence": "../contracts-audit/lifecycle/lifecycle-evidence.json"
+    },
+    {
+      "run": "Separate Node development cases",
+      "cpuSeconds": 0.676216,
+      "wallSeconds": 0.487965,
+      "evidence": "../contracts-audit/lifecycle/development-case.json"
+    }
+  ],
+  "sumOfListedCpuSeconds": 763.7157060000001,
+  "totalElapsedNotSummed": true,
+  "fullCostEstablished": false,
+  "unmetered": [
+    "dependency download/compilation",
+    "earlier development",
+    "native-route execution",
+    "authoring",
+    "layout",
+    "some startup",
+    "human effort",
+    "physical equipment",
+    "opportunity cost"
+  ]
+}

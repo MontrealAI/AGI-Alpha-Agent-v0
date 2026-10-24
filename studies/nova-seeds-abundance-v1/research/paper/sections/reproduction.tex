@@ -1,0 +1,55 @@
+\subsection{Three levels of reproduction}
+The full source archive includes this canonical compiled PDF, monolithic and structured LaTeX, bibliography, vector figure sources, executable modules, pinned upstream dependencies and licenses, raw compressed records, analysis, negative controls, source audits and a SHA-256 manifest. The source ZIP is reopened and every member checked before delivery. The original compiled PDF digest is retained inside it; a later download wrapper is not substituted for that canonical byte sequence.
+
+\textbf{Quick experiment.} Enter the archive's \code{research/} directory. With Node 24 available, run \code{node src/run\_experiment.mjs --mode pilot --out results/my-pilot}. This runs six worlds and seven methods, creates a fresh copied worker and separate signed evidence, and retains failures. The output directory must be new; originals are never overwritten.
+
+\textbf{Replay the published evidence.} Run \code{node audit/verify\_results.mjs results/holdout-01}. It recomputes outcomes, checks the public signatures, mission bindings, delayed diagnostic equality and actual ledger chains. The retained native completion files can be inspected with the unchanged Alpha checker. The archive's manifest independently detects byte changes. Historical fixture verification grants no present permission.
+
+\textbf{Repeat the entire confirmation.} From \code{research/}, run:
+\begin{quote}\small\ttfamily
+node src/run\_experiment.mjs --mode holdout --out results/my-holdout\\
+python analysis/analyze.py results/my-holdout
+\end{quote}
+The runner requires the frozen source inventory. Node 24.19.0 was used for the recorded campaign. The Python analysis uses NumPy; plotting additionally uses Matplotlib. Resource limits and model assumptions are part of the protocol. Random mission IDs, ephemeral keys, timestamps, timing and resulting signatures will differ; deterministic workload outcomes and exact comparison predicates should agree.
+
+The local EVM is a separate optional reproduction: install the hash-pinned npm lockfile in the provided contract test directory, compile using the retained Solidity 0.8.37 profile, and execute the bounded local script. The guide records the via-IR optimizer policy and the exact historical source comparison. No live RPC, key, token purchase or wallet action is required or permitted by the demonstration.
+
+The archive's root guide also links the actual published dispatcher bridge and both native routes. The dispatcher uses fresh output filenames under \code{contracts-audit/lifecycle/}. Native route reconstruction uses \code{foundations/reproduce-routes.py}, Git and network access to the exact public revisions; it does not commission the new instrument workload. Recorded environments and dependency locks accompany each lane.
+
+To rebuild the PDF, enter \code{paper/} and run \code{latexmk -pdf paper.tex}. Figure scripts and generated numerical macros are included. The original canonical PDF is preserved even when a rebuild produces different metadata or font-subset bytes.
+
+\subsection{Exact repository identities}
+\begin{table}[H]\footnotesize\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}ll@{}}\toprule
+Repository & Inspected revision\\\midrule
+AGI-Alpha-Agent-v0 & \texttt{197147ffd22c5ae13113162afffaf3ce9c10aa2e}\\
+AGIJobManager & \texttt{c5958eae872458c2f3cac48fea0b4bbfadc6ac6c}\\
+AGIJobsv0 & \texttt{9983478d42c32fe399f28dd9b0e0173f904b8a11}\\
+AGI-Fleet-Linux & \texttt{45759fb096faf8988f58ae5ea71248d0f35a97c7}\\
+Native route's selected Alpha & \texttt{0385df4c9728db19c396e039cd04678eebfddb9e}\\
+Historical five-contract comparison & \texttt{c0fc5217e364a39a4cd123d17a8317c06b80f820}\\\bottomrule
+\end{tabular}
+\caption{Immutable source snapshots, not assertions that moving main branches remain at these commits.}
+\end{table}
+
+The three foundation PDFs were read at the inspected Alpha revision: \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/docs/Transformational_Intelligence.pdf}{Transformational Intelligence}, \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/docs/Invent_the_Economy.pdf}{Invent the Economy}, and \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/docs/papers/possibility-foundry-v1.pdf}{The Possibility Foundry, v1}. Their exact digests are in the archive's \code{foundations/evidence/source-pins.json}. The recovered Foundry's actual path includes \code{docs/papers/}.
+
+\subsection{Contract source map}
+All links below pin the same inspected Alpha revision. Line ranges identify the implementation read, not a semantic guarantee about future revisions.
+
+\begin{itemize}
+\item \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/contracts/ascension/NovaSeed.sol\#L7-L37}{NovaSeed, lines 7--37}: ERC-721 commitments, parent and bounded jobs/URI.
+\item \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/contracts/ascension/AscensionAccess.sol\#L24-L77}{AscensionAccess, lines 24--77}: current ENS ownership and expiring admission.
+\item \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/contracts/ascension/AscensionRiskOracle.sol\#L39-L112}{AscensionRiskOracle, lines 39--112}: stake, review round, quorum, owner/creator exclusion and current approval.
+\item \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/contracts/ascension/AscensionMark.sol\#L52-L146}{AscensionMark, lines 52--146}: funding lots, Bloom, once-only indexed routing, closure and reserve reclaim.
+\item \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/contracts/ascension/AscensionJobMarket.sol\#L92-L242}{AscensionJobMarket, lines 92--242}: plan hashing, roles, collateral, artifact-bound votes, payouts, refunds and reputation.
+\end{itemize}
+
+\subsection{Claim--evidence--cost ledger}
+\ClaimLedger
+
+\textbf{Reproducibility identity.} \FreezeIdentity
+
+\textbf{Publication custody.} Coordination uses \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850}{issue \#4850}. The receiving boundary in comment \href{https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850\#issuecomment-6377105309}{6377105309} reserves shared catalogue, merge and Pages publication for the existing coordinator. Original runtime holds remain separate. The companion's publication record states the actual source PR, checks and served-byte status; this manuscript does not turn an uncompleted deployment into a finding.
+
+\textbf{Authoring and review.} This edition was prepared with AI-assisted research, coding, literature inspection and delegated same-session adversarial review. Separate implementations and source checks are reported precisely; they do not imply external peer review. Human authoring time and attributable model costs were not completely metered. No sensitive data, private credentials, real asset transfer or paid infrastructure was used by the local study.

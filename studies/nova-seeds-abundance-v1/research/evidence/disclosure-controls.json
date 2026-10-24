@@ -1,0 +1,44 @@
+{
+  "schema": "nova-disclosure-controls/v1",
+  "simulation": true,
+  "context": {
+    "institutionId": "nova-writer10-local",
+    "missionId": "synthetic-disclosure-test",
+    "environment": "local-simulation",
+    "mode": "fixture"
+  },
+  "threatModel": "Synthetic payload; common voluntary recipient permissions. Outsider has ciphertext, nonce, tag, AAD, length and public source. No claim that published reproducible workload is secret. No malicious-authorized-recipient protection.",
+  "primitive": "Node/OpenSSL AES-256-GCM; fresh random 256-bit ephemeral key and 96-bit nonce; key never persisted",
+  "checks": {
+    "authorizedOwnerRoundtrip": true,
+    "authorizedCompetitorRoundtrip": true,
+    "equalAuthorizedPlaintext": true,
+    "wrongKeyRejected": true,
+    "changedCiphertextRejected": true,
+    "changedMissionRejected": true
+  },
+  "passed": true,
+  "plaintextSha256": "212054ab35db9a8da81684eaff5366f4ed75e4adcf95fbb7021106fed0bbc4f7",
+  "plaintextBytes": 876,
+  "ciphertextSha256": "9af90a903fed46ba3c9a7279b83fc3ec7e6e38b7b61440b4533f1551ddf72b16",
+  "ciphertextBytes": 876,
+  "nonceHex": "1c948b7b91692282359948e6",
+  "tagHex": "2ec22ec55b9a0f111329d7eeb791edad",
+  "dictionaryAttack": {
+    "primitive": "SHA-256, unsalted public low-entropy label",
+    "candidateSpace": 16,
+    "candidatesTested": 8,
+    "recovered": 7,
+    "success": true
+  },
+  "measured": {
+    "wallMilliseconds": 1.7071619999999967,
+    "cpuMicroseconds": 1166
+  },
+  "limits": [
+    "Hash commitments do not encrypt contents.",
+    "Disclosure control grants no productive superiority.",
+    "Fresh valid authority is required in each mission.",
+    "Authorized plaintext equality is not a confidentiality proof."
+  ]
+}

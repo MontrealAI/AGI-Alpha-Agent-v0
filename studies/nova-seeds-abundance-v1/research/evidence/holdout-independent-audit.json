@@ -1,0 +1,745 @@
+{
+  "schema": "nova-independent-post-run-audit/v1",
+  "directory": "/workspace/scratch/d2868f01af13/research/results/holdout-01",
+  "inputFiles": {
+    "missions": "/workspace/scratch/d2868f01af13/research/results/holdout-01/missions.jsonl.gz",
+    "ledgers": "/workspace/scratch/d2868f01af13/research/results/holdout-01/ledgers.jsonl.gz"
+  },
+  "scope": "Read-only replay and evidence consistency; no physical truth or external organizational independence is established.",
+  "rows": 21504,
+  "missions": 3072,
+  "signedReceipts": 15360,
+  "ledgers": 15360,
+  "errors": [],
+  "errorCount": 0,
+  "totals": {
+    "ordinary:verified": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "ordinary:clone": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "ordinary:expert": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "ordinary:adaptive-expert": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "ordinary:idea": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "ordinary:greedy": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "ordinary:disclosed": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "capacity-doubled:verified": {
+      "rows": 384,
+      "utility": 15156,
+      "completedJobs": 1536,
+      "attemptedJobs": 1536,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "capacity-doubled:clone": {
+      "rows": 384,
+      "utility": 15156,
+      "completedJobs": 1536,
+      "attemptedJobs": 1536,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "capacity-doubled:expert": {
+      "rows": 384,
+      "utility": 15156,
+      "completedJobs": 1536,
+      "attemptedJobs": 1536,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "capacity-doubled:adaptive-expert": {
+      "rows": 384,
+      "utility": 15156,
+      "completedJobs": 1536,
+      "attemptedJobs": 1536,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "capacity-doubled:idea": {
+      "rows": 384,
+      "utility": 15156,
+      "completedJobs": 1536,
+      "attemptedJobs": 1536,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "capacity-doubled:greedy": {
+      "rows": 384,
+      "utility": 15156,
+      "completedJobs": 1536,
+      "attemptedJobs": 1536,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "capacity-doubled:disclosed": {
+      "rows": 384,
+      "utility": 15156,
+      "completedJobs": 1536,
+      "attemptedJobs": 1536,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "tight-validity:verified": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "tight-validity:clone": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "tight-validity:expert": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "tight-validity:adaptive-expert": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "tight-validity:idea": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "tight-validity:greedy": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "tight-validity:disclosed": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "measurement-drift:verified": {
+      "rows": 384,
+      "utility": 4272,
+      "completedJobs": 384,
+      "attemptedJobs": 1152,
+      "failures": 768,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "measurement-drift:clone": {
+      "rows": 384,
+      "utility": 4272,
+      "completedJobs": 384,
+      "attemptedJobs": 1152,
+      "failures": 768,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "measurement-drift:expert": {
+      "rows": 384,
+      "utility": 4272,
+      "completedJobs": 384,
+      "attemptedJobs": 1152,
+      "failures": 768,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "measurement-drift:adaptive-expert": {
+      "rows": 384,
+      "utility": 8738,
+      "completedJobs": 736,
+      "attemptedJobs": 800,
+      "failures": 64,
+      "calibrations": 736,
+      "diagnosticAcquisitions": 1536
+    },
+    "measurement-drift:idea": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "measurement-drift:greedy": {
+      "rows": 384,
+      "utility": 5040,
+      "completedJobs": 384,
+      "attemptedJobs": 1152,
+      "failures": 768,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "measurement-drift:disclosed": {
+      "rows": 384,
+      "utility": 4272,
+      "completedJobs": 384,
+      "attemptedJobs": 1152,
+      "failures": 768,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "demand-drift:verified": {
+      "rows": 384,
+      "utility": 12738,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "demand-drift:clone": {
+      "rows": 384,
+      "utility": 12738,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "demand-drift:expert": {
+      "rows": 384,
+      "utility": 12738,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "demand-drift:adaptive-expert": {
+      "rows": 384,
+      "utility": 12738,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "demand-drift:idea": {
+      "rows": 384,
+      "utility": 9246,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "demand-drift:greedy": {
+      "rows": 384,
+      "utility": 12738,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "demand-drift:disclosed": {
+      "rows": 384,
+      "utility": 12738,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "reliability-failure:verified": {
+      "rows": 384,
+      "utility": 9889,
+      "completedJobs": 909,
+      "attemptedJobs": 1152,
+      "failures": 243,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "reliability-failure:clone": {
+      "rows": 384,
+      "utility": 9889,
+      "completedJobs": 909,
+      "attemptedJobs": 1152,
+      "failures": 243,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "reliability-failure:expert": {
+      "rows": 384,
+      "utility": 9889,
+      "completedJobs": 909,
+      "attemptedJobs": 1152,
+      "failures": 243,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "reliability-failure:adaptive-expert": {
+      "rows": 384,
+      "utility": 9889,
+      "completedJobs": 909,
+      "attemptedJobs": 1152,
+      "failures": 243,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "reliability-failure:idea": {
+      "rows": 384,
+      "utility": 7190,
+      "completedJobs": 604,
+      "attemptedJobs": 768,
+      "failures": 164,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "reliability-failure:greedy": {
+      "rows": 384,
+      "utility": 9905,
+      "completedJobs": 909,
+      "attemptedJobs": 1152,
+      "failures": 243,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "reliability-failure:disclosed": {
+      "rows": 384,
+      "utility": 9889,
+      "completedJobs": 909,
+      "attemptedJobs": 1152,
+      "failures": 243,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "cheap-calibration:verified": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "cheap-calibration:clone": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "cheap-calibration:expert": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "cheap-calibration:adaptive-expert": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "cheap-calibration:idea": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 1152,
+      "diagnosticAcquisitions": 1536
+    },
+    "cheap-calibration:greedy": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "cheap-calibration:disclosed": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "expensive-evidence:verified": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "expensive-evidence:clone": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "expensive-evidence:expert": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "expensive-evidence:adaptive-expert": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "expensive-evidence:idea": {
+      "rows": 384,
+      "utility": 9144,
+      "completedJobs": 768,
+      "attemptedJobs": 768,
+      "failures": 0,
+      "calibrations": 768,
+      "diagnosticAcquisitions": 1536
+    },
+    "expensive-evidence:greedy": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    },
+    "expensive-evidence:disclosed": {
+      "rows": 384,
+      "utility": 12552,
+      "completedJobs": 1152,
+      "attemptedJobs": 1152,
+      "failures": 0,
+      "calibrations": 384,
+      "diagnosticAcquisitions": 1536
+    }
+  },
+  "finishedAt": "2026-10-24T03:06:04.743Z",
+  "passed": true,
+  "sourceIdentity": {
+    "freezeSha256": "caef3d4995f38326af143172a1f3153f2b5f3a796b269532830e3a3a6655193a",
+    "frozenAt": "2026-10-24T02:51:50.309559+00:00",
+    "sourceInventoryHash": "0011228ddfd4a2e822659a0286864211b6c8eb99b93a3e39b9ba2cd3a582d08a",
+    "metricsSourceInventoryMatchesFreeze": true,
+    "allFrozenFilesMatch": true,
+    "filesChecked": 29,
+    "fileChecks": [
+      {
+        "path": "src/disclosure_controls.mjs",
+        "expectedSha256": "cd37d41b71a3c3dfd7bcccce2ed2ce62cfafada20c08ee5f28b13894ea30c25c",
+        "actualSha256": "cd37d41b71a3c3dfd7bcccce2ed2ce62cfafada20c08ee5f28b13894ea30c25c",
+        "matches": true
+      },
+      {
+        "path": "src/engine_adapter.mjs",
+        "expectedSha256": "269773054ab252d6a25284f851b30e5ecd4595ee77f8e73b00897d926f1fdd0e",
+        "actualSha256": "269773054ab252d6a25284f851b30e5ecd4595ee77f8e73b00897d926f1fdd0e",
+        "matches": true
+      },
+      {
+        "path": "src/evidence_adapter.mjs",
+        "expectedSha256": "a79443cec8fbd539ec63ed43adccdafa8e32f38635e0603aeda3094738c2c2e9",
+        "actualSha256": "a79443cec8fbd539ec63ed43adccdafa8e32f38635e0603aeda3094738c2c2e9",
+        "matches": true
+      },
+      {
+        "path": "src/independent_evaluator.mjs",
+        "expectedSha256": "1a46351fab89c76429c7891097c0dd2c12a749c96c9043b594eb84ecaa8f31ba",
+        "actualSha256": "1a46351fab89c76429c7891097c0dd2c12a749c96c9043b594eb84ecaa8f31ba",
+        "matches": true
+      },
+      {
+        "path": "src/make_concept_figure.py",
+        "expectedSha256": "cd31abdb8ebe05c7b1f597999837c298e7225ab6b1a96b4e8c6cdc7f52ff6df1",
+        "actualSha256": "cd31abdb8ebe05c7b1f597999837c298e7225ab6b1a96b4e8c6cdc7f52ff6df1",
+        "matches": true
+      },
+      {
+        "path": "src/native_worker.mjs",
+        "expectedSha256": "665176f7a3fd231904273477851b638dd9f050960d521cf60975ca8fec8df0a2",
+        "actualSha256": "665176f7a3fd231904273477851b638dd9f050960d521cf60975ca8fec8df0a2",
+        "matches": true
+      },
+      {
+        "path": "src/run_experiment.mjs",
+        "expectedSha256": "8bfaa389b1dc60a3b7a66578babd86c0819deac855e07616467f5edac02afcbf",
+        "actualSha256": "8bfaa389b1dc60a3b7a66578babd86c0819deac855e07616467f5edac02afcbf",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/LICENSE",
+        "expectedSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "actualSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/SOURCE.json",
+        "expectedSha256": "ba0920b3c95ed8c33191d30b8dacdfab3aed25cd89cce1f3765078f5baf67042",
+        "actualSha256": "ba0920b3c95ed8c33191d30b8dacdfab3aed25cd89cce1f3765078f5baf67042",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/capability-package.mjs",
+        "expectedSha256": "7010c63d3529893e37c929b0f2c30b011c6ef9b96de6774bb12bd8a29e78fc86",
+        "actualSha256": "7010c63d3529893e37c929b0f2c30b011c6ef9b96de6774bb12bd8a29e78fc86",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/constructor.mjs",
+        "expectedSha256": "99feb7ca1b3be001d4aed5230d96598094ff31f58cda42be0a97dfc23f11f5e2",
+        "actualSha256": "99feb7ca1b3be001d4aed5230d96598094ff31f58cda42be0a97dfc23f11f5e2",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/independent-checker.mjs",
+        "expectedSha256": "b59034eeb73594178170d81d7b4f96625a52230e85bda94038bf7ccd4ad0d286",
+        "actualSha256": "b59034eeb73594178170d81d7b4f96625a52230e85bda94038bf7ccd4ad0d286",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/out-execute/checker.mjs",
+        "expectedSha256": "010c0b6499fd1109e40cdb91b7d5e5da8a15716120af0a9beae47fd545769d2a",
+        "actualSha256": "010c0b6499fd1109e40cdb91b7d5e5da8a15716120af0a9beae47fd545769d2a",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/out-execute/engine.mjs",
+        "expectedSha256": "146b4047dcd09f3e02733e4dd3ed6f2c170e3ff01932e18bfdbcf4ad6a764835",
+        "actualSha256": "146b4047dcd09f3e02733e4dd3ed6f2c170e3ff01932e18bfdbcf4ad6a764835",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/out-execute/model.mjs",
+        "expectedSha256": "6972396c434cde79c1580a8d661a58012018283a31b1f707b470f5a9516e41ca",
+        "actualSha256": "6972396c434cde79c1580a8d661a58012018283a31b1f707b470f5a9516e41ca",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/out-execute/source-manifest.mjs",
+        "expectedSha256": "4f4555d3b3c181b80bf95f561878212419963eb2b8da363d34d10f4f8ef7eb3f",
+        "actualSha256": "4f4555d3b3c181b80bf95f561878212419963eb2b8da363d34d10f4f8ef7eb3f",
+        "matches": true
+      },
+      {
+        "path": "vendor/alpha/examples/successor-capability/typed-runtime.mjs",
+        "expectedSha256": "6aad0ef6d64718081312160ce5bfb5669c3693dded6d401067a6229e34093b23",
+        "actualSha256": "6aad0ef6d64718081312160ce5bfb5669c3693dded6d401067a6229e34093b23",
+        "matches": true
+      },
+      {
+        "path": "vendor/fleet/LICENSE",
+        "expectedSha256": "4827c1af7eacb8f5941bd6867e74293d5f0c3a1360a567f65cfcf264c6c04a25",
+        "actualSha256": "4827c1af7eacb8f5941bd6867e74293d5f0c3a1360a567f65cfcf264c6c04a25",
+        "matches": true
+      },
+      {
+        "path": "vendor/fleet/fleet/successor/outcomes.mjs",
+        "expectedSha256": "e92db2d9c6f03b995364f5e97ee625a5fc0623a2e86c7d2401c1663b65db94c5",
+        "actualSha256": "e92db2d9c6f03b995364f5e97ee625a5fc0623a2e86c7d2401c1663b65db94c5",
+        "matches": true
+      },
+      {
+        "path": "vendor/fleet/fleet/successor/vendor/manager/site/assets/successor/safe.mjs",
+        "expectedSha256": "d15c86c61369278e0bbf2ca8d3b1bd5f4ef3091c7cc7943f06afbe95e7b99ab6",
+        "actualSha256": "d15c86c61369278e0bbf2ca8d3b1bd5f4ef3091c7cc7943f06afbe95e7b99ab6",
+        "matches": true
+      },
+      {
+        "path": "vendor/jobs/LICENSE",
+        "expectedSha256": "70842e0e7ae73b3ce65baa06a1c62b466bdb694570301969031cc48d9ac705d1",
+        "actualSha256": "70842e0e7ae73b3ce65baa06a1c62b466bdb694570301969031cc48d9ac705d1",
+        "matches": true
+      },
+      {
+        "path": "vendor/jobs/packages/successor-core/src/integrity.mjs",
+        "expectedSha256": "164000134cc9c8b54209c420a348e3e5c324ebf7ff8f71fc84dc44812345c428",
+        "actualSha256": "164000134cc9c8b54209c420a348e3e5c324ebf7ff8f71fc84dc44812345c428",
+        "matches": true
+      },
+      {
+        "path": "vendor/jobs/packages/successor-core/src/signatures.mjs",
+        "expectedSha256": "4d9bec1762806a6cc2767b07abcba7cef5ffd90546a978a8cb026ecb74282a90",
+        "actualSha256": "4d9bec1762806a6cc2767b07abcba7cef5ffd90546a978a8cb026ecb74282a90",
+        "matches": true
+      },
+      {
+        "path": "protocol/FINAL_PROTOCOL.json",
+        "expectedSha256": "31ada2d7e63ff33f4c909307fab89f89a58da0bc1311b419ae9bceeb8e7be43c",
+        "actualSha256": "31ada2d7e63ff33f4c909307fab89f89a58da0bc1311b419ae9bceeb8e7be43c",
+        "matches": true
+      },
+      {
+        "path": "protocol/INITIAL_PROTOCOL.md",
+        "expectedSha256": "24709719d4c09a5289eabee1f4dc24fca480e6f8e385aaa005290759e6f13208",
+        "actualSha256": "24709719d4c09a5289eabee1f4dc24fca480e6f8e385aaa005290759e6f13208",
+        "matches": true
+      },
+      {
+        "path": "analysis/analyze.py",
+        "expectedSha256": "39bfffb993c71a4f717300780500558168e7b873bb1a7c895fed049450a10f01",
+        "actualSha256": "39bfffb993c71a4f717300780500558168e7b873bb1a7c895fed049450a10f01",
+        "matches": true
+      },
+      {
+        "path": "audit/README.md",
+        "expectedSha256": "e094435292678b9bcd0f67c4f7c216260893c9fcc663c8fe964827017495e4a7",
+        "actualSha256": "e094435292678b9bcd0f67c4f7c216260893c9fcc663c8fe964827017495e4a7",
+        "matches": true
+      },
+      {
+        "path": "audit/verify_results.mjs",
+        "expectedSha256": "2c24746948e2c24a9c93b0d9543cf23c70564b0c6e3d4e29422a3ece4bdd20e4",
+        "actualSha256": "2c24746948e2c24a9c93b0d9543cf23c70564b0c6e3d4e29422a3ece4bdd20e4",
+        "matches": true
+      },
+      {
+        "path": "tests/experiment.test.mjs",
+        "expectedSha256": "174496014e5926e650cd26ea49978ccb4c73da24dfc21593541ea5fe80d07b21",
+        "actualSha256": "174496014e5926e650cd26ea49978ccb4c73da24dfc21593541ea5fe80d07b21",
+        "matches": true
+      }
+    ],
+    "auditorSha256": "2c24746948e2c24a9c93b0d9543cf23c70564b0c6e3d4e29422a3ece4bdd20e4"
+  },
+  "inputIdentity": {
+    "missions.jsonl.gz": {
+      "sha256": "e72c76fa3621eaf7e831f69de26c8fe56d71b83c1946b5c196819081af25724a",
+      "bytes": 7975079
+    },
+    "ledgers.jsonl.gz": {
+      "sha256": "04e49da20f841e94b469f69f031ce476701ac845b4738a9871bfe56f619ea94a",
+      "bytes": 3076805
+    },
+    "metrics.json": {
+      "sha256": "0b3c75989bfcc8dd89fe7c2d02ba3b6358d5117fd04bd6a6825d6369781df1e0",
+      "bytes": 8088
+    }
+  },
+  "inputsUnchangedAfterAudit": true,
+  "auditResourceUsage": {
+    "schema": "nova-seeds-verification-cost/v1",
+    "command": [
+      "node",
+      "research/audit/verify_results.mjs",
+      "research/results/holdout-01"
+    ],
+    "startedAt": "2026-10-24T03:05:54.312641+00:00",
+    "finishedAt": "2026-10-24T03:06:04.760294+00:00",
+    "elapsedSeconds": 10.4476193790033,
+    "userCpuSeconds": 10.212351,
+    "systemCpuSeconds": 0.6407999999999999,
+    "totalCpuSeconds": 10.853151,
+    "maxRSSKiB": 189400,
+    "exitStatus": 0,
+    "measurement": "Fresh Python driver; one Node child; monotonic subprocess elapsed and POSIX RUSAGE_CHILDREN. Linux maxRSS in KiB.",
+    "scope": "Read-only frozen replay/signature/ledger audit only; excludes driver file hashing and report serialization; concurrent host work not controlled.",
+    "auditorSha256": "2c24746948e2c24a9c93b0d9543cf23c70564b0c6e3d4e29422a3ece4bdd20e4",
+    "sourceInventoryHash": "0011228ddfd4a2e822659a0286864211b6c8eb99b93a3e39b9ba2cd3a582d08a"
+  },
+  "rawAuditOutputSha256": "b565c15fb9e577721e8472a11c8ede3cca415a8948c9f8ad363b7b348d8e830f",
+  "sourceAndInputIdentityPassed": true
+}

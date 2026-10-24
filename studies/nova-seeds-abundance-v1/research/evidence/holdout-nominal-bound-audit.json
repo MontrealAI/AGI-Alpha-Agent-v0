@@ -1,0 +1,116 @@
+{
+  "schema": "nova-independent-analytic-bound-audit/v1",
+  "reviewScope": "Post-freeze analytic verification, no source tuning; not external institutional peer review",
+  "startedAt": "2026-10-24T03:06:38.210744+00:00",
+  "auditorSha256": "17d82b61670f83ce49c87c9384e0eec99dd3a9ba0d88bd1b0843010ca6b6b523",
+  "input": "research/results/holdout-01/missions.jsonl.gz",
+  "inputSha256": "e72c76fa3621eaf7e831f69de26c8fe56d71b83c1946b5c196819081af25724a",
+  "rows": 21504,
+  "worlds": 3072,
+  "nominalObjectivesChecked": 18432,
+  "comparisonsToVerified": {
+    "clone": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 0,
+      "utilityMismatches": 0,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 0,
+      "firstExamples": []
+    },
+    "expert": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 0,
+      "utilityMismatches": 0,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 0,
+      "firstExamples": []
+    },
+    "disclosed": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 0,
+      "utilityMismatches": 0,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 0,
+      "firstExamples": []
+    },
+    "greedy": {
+      "worlds": 3072,
+      "objectiveMismatches": 0,
+      "planMismatches": 2658,
+      "utilityMismatches": 344,
+      "completedCountMismatches": 0,
+      "fullOutcomeMismatches": 2658,
+      "firstExamples": [
+        {
+          "identity": [
+            "ordinary",
+            101,
+            0
+          ],
+          "differences": {
+            "objectiveMismatches": false,
+            "planMismatches": true,
+            "utilityMismatches": false,
+            "completedCountMismatches": false,
+            "fullOutcomeMismatches": true
+          },
+          "utility": 37,
+          "verifiedUtility": 37
+        },
+        {
+          "identity": [
+            "ordinary",
+            101,
+            1
+          ],
+          "differences": {
+            "objectiveMismatches": false,
+            "planMismatches": true,
+            "utilityMismatches": false,
+            "completedCountMismatches": false,
+            "fullOutcomeMismatches": true
+          },
+          "utility": 37,
+          "verifiedUtility": 37
+        },
+        {
+          "identity": [
+            "ordinary",
+            101,
+            2
+          ],
+          "differences": {
+            "objectiveMismatches": false,
+            "planMismatches": true,
+            "utilityMismatches": false,
+            "completedCountMismatches": false,
+            "fullOutcomeMismatches": true
+          },
+          "utility": 37,
+          "verifiedUtility": 37
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "analyticalReasoning": [
+    "All offered utility weights are positive: among k attainable job slots choose the k largest weights.",
+    "One calibration at tick 0 opens three ordinary samples; capacity two admits all four jobs with one calibration.",
+    "Unit TTL or immediate-prior calibration permits sample ticks 1 and 3 with calibrations 0 and 2.",
+    "Zero-duration immediate-prior calibration permits samples 1,2,3 using calibrations 0,1,2.",
+    "After a known repeatable tick-2 bias jump, useful samples 1 and 3 require calibrations 0 and 2.",
+    "Positive weights and objective scale 100 make admitted utility primary and calibration count secondary."
+  ],
+  "limits": [
+    "Greedy is compared but not asserted to attain the analytic optimum under all worlds.",
+    "Nominal optimality does not establish true physical usefulness; replay audit checks the synthetic observations separately.",
+    "Resource and timing outcomes are not inferred from equality of objective or useful output."
+  ],
+  "finishedAt": "2026-10-24T03:06:39.568534+00:00",
+  "wallSeconds": 1.357796551004867,
+  "errorCount": 0,
+  "passed": true
+}
