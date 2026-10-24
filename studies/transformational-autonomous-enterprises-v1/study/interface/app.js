@@ -102,7 +102,7 @@ async function refreshStatus(initial=false){
     const data=await requestJSON('/api/status',{signal:controller.signal});
     if(epoch!==statusEpoch||!pageActive)return;
     if(data?.local!==true||typeof data.busy!=='boolean'||typeof data.token!=='string'||!data.token)throw Error(t('badstatus'));
-    local=true;token=data.token;busy=data.busy;statusKnown=true;statusError='';if(stopAwaitingIdle&&!busy){stopAwaitingIdle=false;lastState='stopped';notify(t('stopped'));}render();
+    local=true;token=data.token;busy=data.busy||stopping;statusKnown=true;statusError='';if(stopAwaitingIdle&&!busy){stopAwaitingIdle=false;lastState='stopped';notify(t('stopped'));}render();
   }catch(error){
     if(epoch!==statusEpoch||!pageActive)return;
     if(initial){local=false;token=null;statusKnown=true;}else statusError=error.message;
@@ -115,16 +115,16 @@ async function refreshStatus(initial=false){
 window.addEventListener('pagehide',()=>{pageActive=false;cancelStatusWatch();});
 window.addEventListener('pageshow',()=>{if(!pageActive){pageActive=true;if(!runController)refreshStatus(!statusKnown);}});
 $('run').onclick=async()=>{
-  if(!local||!token){notify(t('unavailable'));return;}if(busy)return;
+  if(!local||!token){notify(t('unavailable'));return;}if(busy||stopping||stopAwaitingIdle)return;
   cancelStatusWatch();statusError='';const run=++runSequence;busy=true;fresh=false;lastError='';lastState='';runController=new AbortController();render();let completed=false;
   try{const result=await requestJSON('/api/run',{method:'POST',headers:{'Content-Type':'application/json','X-TAE-Token':token},body:'{}',signal:runController.signal});if(run!==runSequence)return;evidence=validateEvidence(result);completed=true;fresh=true;step=5;lastState='finished';$('restore-status').textContent='';notify(t('finished'));}
   catch(error){if(run!==runSequence)return;lastError=error.message;lastState='runfailed';notify(t('error')+' '+error.message);}
-  finally{if(run===runSequence){stopping=false;runController=null;if(completed){busy=false;render();}else{render();await refreshStatus();}}}
+  finally{if(run===runSequence){runController=null;if(completed){busy=false;render();}else{busy=true;render();await refreshStatus();}}}
 };
 if($('stop-run'))$('stop-run').onclick=async()=>{
-  if(!busy||stopping||stopAwaitingIdle||!token)return;cancelStatusWatch();statusError='';stopping=true;render();
-  try{await requestJSON('/api/stop',{method:'POST',headers:{'Content-Type':'application/json','X-TAE-Token':token},body:'{}'});runSequence++;runController?.abort();runController=null;stopping=false;stopAwaitingIdle=true;fresh=false;lastError='';lastState='';render();await refreshStatus();}
-  catch(error){stopping=false;lastError=error.message;lastState='stopfailed';render();notify(t('stopfailed')+' '+error.message);watchExistingRun();}
+  if(!busy||stopping||stopAwaitingIdle||!token)return;const stop=++runSequence;cancelStatusWatch();statusError='';stopping=true;busy=true;fresh=false;runController?.abort();runController=null;render();
+  try{await requestJSON('/api/stop',{method:'POST',headers:{'Content-Type':'application/json','X-TAE-Token':token},body:'{}'});if(stop!==runSequence)return;cancelStatusWatch();stopping=false;stopAwaitingIdle=true;busy=true;lastError='';lastState='';render();await refreshStatus();}
+  catch(error){if(stop!==runSequence)return;cancelStatusWatch();stopping=false;busy=true;lastError=error.message;lastState='stopfailed';render();notify(t('stopfailed')+' '+error.message);watchExistingRun();}
 };
 function download(value,name){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'}));a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
 $('export').onclick=()=>{if(!evidence){notify(t('noevidence'));return;}download({schema:'tae.interface-export.v1',evidence,currentProof:null,authority:[]},'Transformational_Enterprise_Evidence.json');};

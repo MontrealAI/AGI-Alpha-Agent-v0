@@ -351,3 +351,113 @@ test('page lifecycle aborts and fences pending Stop confirmation then resumes on
     assert.equal(page.pending(), 0);
   } finally { waiting.resolve(response(status(false))); await flush(); page.cleanup(); }
 });
+
+// Additional inert schedule: no product, Git, browser, native or network execution.
+test('a failed Run must not unlock restore while its concurrent Stop response is pending', async () => {
+  const runFailure = deferred(), stopReply = deferred();
+  const page = await fixture([status(false), () => runFailure.promise, () => stopReply.promise, status(false)]);
+  let stopping;
+  try {
+    const running = page.element('run').onclick(); await flush();
+    stopping = page.element('stop-run').onclick(); await flush();
+    assert.equal(page.requests[2].url, '/api/stop');
+    runFailure.resolve(response({ error: 'CONTROLLED_RUN_REJECTS_DURING_STOP' }, 409));
+    await running; await flush();
+    assert.equal(page.element('run').disabled, true, 'Run stays guarded until Stop settles');
+    assert.equal(page.element('restore').disabled, true, 'Restore stays guarded until Stop settles');
+    assert.equal(page.element('stop-run').disabled, true, 'Duplicate Stop stays refused');
+  } finally {
+    runFailure.resolve(response({ error: 'CONTROLLED_RUN_REJECTS_DURING_STOP' }, 409));
+    stopReply.resolve(response({ stopped: true }));
+    if (stopping) await stopping;
+    await flush(); page.cleanup();
+  }
+});
+
+test('hidden return and idle status cannot release pending Stop or admit a late Run result', async () => {
+  const runReply = deferred(), stopReply = deferred();
+  const page = await fixture([status(false), () => runReply.promise, () => stopReply.promise, status(false), status(true), status(false)]);
+  let stopping;
+  try {
+    const retained = { schema: 'tae.interface-export.v1', evidence: { evm: { controlledTestOnly: 'prior-evidence' } }, currentProof: null, authority: [] };
+    await page.element('restore').onchange({ target: { value: 'controlled-historical-file', files: [{ size: 100, text: async () => JSON.stringify(retained) }] } });
+    assert.equal(page.element('export').disabled, false);
+    const running = page.element('run').onclick(); await flush();
+    stopping = page.element('stop-run').onclick(); await flush();
+    assert.equal(page.requests[1].options.signal.aborted, true);
+    page.dispatch('pagehide'); page.dispatch('pageshow'); await flush();
+    assert.equal(page.requests[3].url, '/api/status');
+    assert.equal(page.element('run').disabled, true);
+    assert.equal(page.element('restore').disabled, true);
+    assert.equal(page.element('stop-run').disabled, true);
+    await page.element('run').onclick(); await page.element('stop-run').onclick();
+    assert.equal(page.requests.length, 4, 'Pending Stop refuses both new and duplicate actions');
+    runReply.resolve(response({ evm: { controlledTestOnly: 'late-run-result' } })); await running; await flush();
+    assert.match(page.element('contract-data').textContent, /prior-evidence/);
+    assert.doesNotMatch(page.element('contract-data').textContent, /late-run-result/);
+    stopReply.resolve(response({ error: 'CONTROLLED_PENDING_STOP_FAILURE' }, 503)); await stopping; await flush();
+    assert.equal(page.element('run').disabled, true);
+    assert.equal(page.element('restore').disabled, true);
+    assert.equal(page.element('stop-run').disabled, false);
+    assert.match(page.element('toast').textContent, /stop request failed.*may still be running/i);
+    assert.equal(page.pending(), 1); await page.poll();
+    assert.equal(page.element('run').disabled, true);
+    assert.equal(page.element('restore').disabled, true);
+    assert.equal(page.pending(), 1); await page.poll();
+    assert.equal(page.element('restore').disabled, false);
+    assert.doesNotMatch(page.element('connection').textContent, /completed|fresh/i);
+    assert.equal(page.requests.filter(request => request.options.method === 'POST').length, 2);
+  } finally {
+    runReply.resolve(response({ evm: { controlledTestOnly: 'late-run-result' } }));
+    stopReply.resolve(response({ error: 'CONTROLLED_PENDING_STOP_FAILURE' }, 503));
+    if (stopping) await stopping;
+    await flush(); page.cleanup();
+  }
+});
+
+for (const stopFails of [false, true]) {
+  test(`a pre-ack idle read cannot release guards after Stop ${stopFails ? 'fails' : 'succeeds'}`, async () => {
+    const runReply = deferred(), stopReply = deferred(), beforeAck = deferred(), afterAck = deferred();
+    const page = await fixture([status(false), () => runReply.promise, () => stopReply.promise, () => beforeAck.promise, () => afterAck.promise, status(false)]);
+    let stopping;
+    try {
+      const running = page.element('run').onclick(); await flush();
+      stopping = page.element('stop-run').onclick(); await flush();
+      page.dispatch('pagehide'); page.dispatch('pageshow'); await flush();
+      const reading = page.requests[3]; assert.equal(reading.url, '/api/status');
+      assert.equal(page.element('stop-run').disabled, true);
+      stopReply.resolve(stopFails ? response({ error: 'CONTROLLED_STOP_SETTLES_WITH_FAILURE' }, 503) : response({ stopped: true }));
+      if (stopFails) {
+        await stopping; await flush();
+        assert.equal(page.pending(), 1); await page.poll();
+      } else { await flush(); }
+      assert.equal(reading.options.signal.aborted, true, 'A pre-ack status generation must be fenced at Stop settlement');
+      assert.equal(page.requests[4].url, '/api/status');
+      assert.equal(page.requests.length, 5, 'Only one fresh post-ack read is pending');
+      beforeAck.resolve(response(status(false))); await flush();
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.element('restore').disabled, true);
+      assert.equal(page.element('stop-run').disabled, !stopFails, 'Successful Stop keeps the accepted duplicate-Stop guard until idle');
+      assert.equal(page.pending(), 0, 'The aborted pre-ack read cannot schedule another read');
+      assert.equal(page.requests.length, 5);
+      runReply.resolve(response({ error: 'CONTROLLED_OLD_RUN_COMPLETION' }, 409)); await running; await flush();
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.element('restore').disabled, true);
+      afterAck.resolve(response(status(true))); if (!stopFails) await stopping; await flush();
+      assert.equal(page.element('run').disabled, true);
+      assert.equal(page.element('restore').disabled, true);
+      assert.equal(page.pending(), 1); await page.poll();
+      assert.equal(page.element('run').disabled, false);
+      assert.equal(page.element('restore').disabled, false);
+      assert.equal(page.element('stop-run').disabled, true);
+      assert.equal(page.pending(), 0);
+      assert.equal(page.requests.filter(request => request.options.method === 'POST').length, 2);
+      assert.doesNotMatch(page.element('connection').textContent, /completed|fresh/i);
+    } finally {
+      runReply.resolve(response({ error: 'CONTROLLED_OLD_RUN_COMPLETION' }, 409));
+      stopReply.resolve(response({ stopped: true })); beforeAck.resolve(response(status(false))); afterAck.resolve(response(status(false)));
+      if (stopping) await stopping;
+      await flush(); page.cleanup();
+    }
+  });
+}
