@@ -22,6 +22,7 @@ let worker = null, workerUrl = null, token = 0, busy = false, runId = '', create
 let reading = 0, fileVersions = {left:0,right:0}, restoreVersion = 0, trace = [];
 let fileErrors = {left:null,right:null};
 let csvInputs = {left:guide.SAMPLE.leftCsv,right:guide.SAMPLE.rightCsv};
+let keyChoices = {left:guide.SAMPLE.leftKey,right:guide.SAMPLE.rightKey};
 const say = (en, fr) => language === 'fr' ? fr : en;
 const text = (id, en, fr) => { $(id).textContent = say(en, fr); };
 function node(tag, parent, value, className) {
@@ -72,7 +73,7 @@ function updatePreview(side) {
     const target = $(side+'-preview'), select = $(side+'-key'); target.replaceChildren(); $(side+'-error').hidden = true;
     try {
         if(fileErrors[side])throw Error(fileErrors[side]);
-        const data = guide.preview(csvInputs[side]), previous = select.value || input[side+'Key'];
+        const data = guide.preview(csvInputs[side]), previous = keyChoices[side];
         select.replaceChildren();
         if(!data.headers.includes(previous)){const option=node('option',select,say('Choose an identifying column','Choisir une colonne d’identification'));option.value='';}
         for (const key of data.headers) { const option = node('option',select,key); option.value = key; }
@@ -98,6 +99,7 @@ function applyInput(value) {
     $('left-key').replaceChildren();$('right-key').replaceChildren();
     input = {...value}; $('left-csv').value = value.leftCsv; $('right-csv').value = value.rightCsv;
     csvInputs={left:value.leftCsv,right:value.rightCsv};
+    keyChoices={left:value.leftKey,right:value.rightKey};
     refreshPreviews(); $('left-key').value = value.leftKey; $('right-key').value = value.rightKey;
 }
 function currentInput() { return {leftCsv:csvInputs.left,rightCsv:csvInputs.right,leftKey:$('left-key').value,rightKey:$('right-key').value}; }
@@ -240,7 +242,7 @@ $('own-data').addEventListener('toggle',()=>{
 });
 for(const side of ['left','right']) {
     $(side+'-csv').addEventListener('input',()=>{csvInputs[side]=$(side+'-csv').value;fileErrors[side]=null;fileVersions[side]++;invalidate();refreshPreviews();});
-    $(side+'-key').addEventListener('change',invalidate);
+    $(side+'-key').addEventListener('change',()=>{keyChoices[side]=$(side+'-key').value;invalidate();});
     $(side+'-file').addEventListener('change',async event=>{
         const file = event.target.files[0]; if(!file)return;fileErrors[side]=null;invalidate(); const version = ++fileVersions[side];reading++;refreshPreviews();
         try {

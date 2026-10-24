@@ -179,11 +179,11 @@ WORKBENCH_1411_EXTRA_FILES = COMPANION_141_EXTRA_FILES | {
 
 # The additive browser guide retains the scientific sources and admits one whole cache edition.
 TI_GUIDE_142_EXTRA_FILES = WORKBENCH_1411_EXTRA_FILES | {
-    "docs/service-worker.js": (23501, "c9a1f1921627afe67812f149e066a8ee2c3291f1f7f5268626d397c5d5c74cab"),
-    "docs/assets/service-worker.js": (23938, "44ca67bd6ef479aea114d4e36b72c1cd25c991d0d1f0abc5ef284d24a95ab9d8"),
+    "docs/service-worker.js": (23501, "86c18f7a0bf971f6fe992d06b4a3d9f6e302ec199e9944eb527a461e6f8c655d"),
+    "docs/assets/service-worker.js": (23938, "353fda3801b710cfdd11dbea303f33718d8fac2cfdd7cd06c4801e5995cde784"),
     "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
         26560,
-        "d02a79bf81118d4e2cc9b374e19349bed50fc176ac596bf645fe2974321ceacf",
+        "03afa07133461ba3341ef950453bc97b5e9d7662ff14ff25b049e27b0fe1bc16",
     ),
 }
 
