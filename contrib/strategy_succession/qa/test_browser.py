@@ -167,8 +167,44 @@ def test_real_browser_approved_executor_reconnect_download_stop(tmp_path):
                 expect(page.locator("#prepare")).to_have_text("Démarrer")
                 # A narrow screen retains navigable controls, output and history.
                 page.set_viewport_size({"width": 390, "height": 844})
-                assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
                 page.screenshot(path=str(public / "browser-mobile.png"), full_page=True)
+                # Keep geometry-only failure evidence before the blocking assertion.
+                # Never serialize element text, input values, URLs or credentials.
+                overflow = page.evaluate(
+                    """() => {
+                        const limit = 30;
+                        const outside = [];
+                        let count = 0;
+                        for (const element of document.querySelectorAll('body *')) {
+                            const box = element.getBoundingClientRect();
+                            if (box.width <= 0 || box.height <= 0 ||
+                                (box.right <= innerWidth + 0.5 && box.left >= -0.5)) continue;
+                            count++;
+                            if (outside.length >= limit) continue;
+                            outside.push({
+                                tag: element.tagName.slice(0, 40),
+                                id: element.id.slice(0, 100),
+                                class: typeof element.className === 'string' ? element.className.slice(0, 200) : '',
+                                width: Math.round(box.width * 100) / 100,
+                                left: Math.round(box.left * 100) / 100,
+                                right: Math.round(box.right * 100) / 100,
+                                scroll_width: element.scrollWidth,
+                                client_width: element.clientWidth
+                            });
+                        }
+                        return {
+                            schema: 'strategy-browser-layout-observation/v1',
+                            viewport_width: innerWidth,
+                            viewport_height: innerHeight,
+                            document_scroll_width: document.documentElement.scrollWidth,
+                            document_client_width: document.documentElement.clientWidth,
+                            overflow_element_count: count,
+                            overflow_elements: outside
+                        };
+                    }"""
+                )
+                (public / "browser-mobile-layout.json").write_text(json.dumps(overflow, indent=2) + "\n")
+                assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
                 page.locator("#language").click()
                 page.locator("#pause").click()
                 expect(page.locator("#pause")).to_have_text("Resume")
