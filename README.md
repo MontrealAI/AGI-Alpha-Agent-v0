@@ -156,6 +156,8 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[AGI ALPHA FLYWHEEL](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-economic-engine-v1.pdf)** · A separately preregistered financial simulation connects useful recorded work, complete business costs, collected proceeds, reserves and bounded capability investment\. It preserves unfavorable paths, idle allocations and failed construction, with distinct source\-inspected USDC and AGIALPHA settlement routes\. Simulated gains, token realization and customer value remain conditional; no live revenue, transaction or self\-acceleration is demonstrated\.
   AGI ALPHA research engineering study · 2026-10-25 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/67e664f419511c59f41f426171614d7f425ed67f/studies/agi-alpha-economic-engine-v1/README.md)
+- **[BUILD THE NEXT ADVANTAGE](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-next-advantage-v1.pdf)** · Example\-derived quote adapters qualify on 96 fresh missions\. Active selection matches the learned recipe and LLM\-assisted constructor; complete costs and simulated financing keep the stronger incumbent and expose the limits\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-25 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
