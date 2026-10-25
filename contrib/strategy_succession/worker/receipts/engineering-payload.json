@@ -1,0 +1,142 @@
+{
+  "initial": {
+    "schema": "release-plan/v1",
+    "id": "engineering-release-project",
+    "kind": "plan",
+    "jobs": [
+      {
+        "id": "J1",
+        "duration": 2,
+        "crew": 1,
+        "deps": []
+      },
+      {
+        "id": "J2",
+        "duration": 4,
+        "crew": 2,
+        "deps": [
+          "J1"
+        ]
+      },
+      {
+        "id": "J3",
+        "duration": 3,
+        "crew": 1,
+        "deps": [
+          "J1"
+        ]
+      },
+      {
+        "id": "J4",
+        "duration": 3,
+        "crew": 2,
+        "deps": [
+          "J2"
+        ]
+      },
+      {
+        "id": "J5",
+        "duration": 2,
+        "crew": 1,
+        "deps": [
+          "J3"
+        ]
+      },
+      {
+        "id": "J6",
+        "duration": 1,
+        "crew": 1,
+        "deps": [
+          "J4",
+          "J5"
+        ]
+      }
+    ],
+    "capacity": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "deadline": 24,
+    "release": {},
+    "locked": {},
+    "public_or_synthetic": "synthetic",
+    "planning_only": true
+  },
+  "changes": {
+    "durations": {
+      "J2": 6
+    },
+    "deadline": 28
+  },
+  "repair": {
+    "observed_at": 9,
+    "capacity": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "deadline": 28
+  },
+  "construction": {
+    "enabled": true
+  }
+}
