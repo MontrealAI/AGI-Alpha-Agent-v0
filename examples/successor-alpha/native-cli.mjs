@@ -13,6 +13,7 @@ const ROOT_MODULES = Object.freeze([
     'examples/successor-alpha/research.mjs', 'examples/successor-alpha/continuity.mjs',
     'examples/successor-alpha/capability.mjs', 'examples/successor-alpha/computer.mjs',
     'examples/successor-alpha/learning.mjs',
+    'examples/successor-alpha/shadow-plan.mjs', 'examples/successor-alpha/automated-costs.mjs',
     'docs/assets/successor/engine.mjs',
 ]);
 const sha256 = value => createHash('sha256').update(value).digest('hex');

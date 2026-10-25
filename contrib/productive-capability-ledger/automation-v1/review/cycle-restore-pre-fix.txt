@@ -1,0 +1,82 @@
+✖ workspace keeps an unplanned current cycle unknown after earlier history initialized the form (10.160327ms)
+✖ workspace selects the latest matching current-cycle plan even when an earlier-cycle revision is last (25.081251ms)
+✖ ledger import keeps an unplanned current cycle unknown after earlier history initialized the form (2.426802ms)
+✖ ledger import selects the latest matching current-cycle plan even when an earlier-cycle revision is last (9.145689ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.358098
+
+✖ failing tests:
+
+test at examples/successor-alpha/shadow-ui.test.mjs:101:5
+✖ workspace keeps an unplanned current cycle unknown after earlier history initialized the form (10.160327ms)
+  AssertionError [ERR_ASSERTION]: shadow-cost
+  
+  '0.5' !== ''
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/ba16d8d248e5/alpha/examples/successor-alpha/shadow-ui.test.mjs:109:20)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '0.5',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at examples/successor-alpha/shadow-ui.test.mjs:122:5
+✖ workspace selects the latest matching current-cycle plan even when an earlier-cycle revision is last (25.081251ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '999' !== '333'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/ba16d8d248e5/alpha/examples/successor-alpha/shadow-ui.test.mjs:131:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '999',
+    expected: '333',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at examples/successor-alpha/shadow-ui.test.mjs:101:5
+✖ ledger import keeps an unplanned current cycle unknown after earlier history initialized the form (2.426802ms)
+  AssertionError [ERR_ASSERTION]: shadow-cost
+  
+  '0.5' !== ''
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/ba16d8d248e5/alpha/examples/successor-alpha/shadow-ui.test.mjs:109:20)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '0.5',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at examples/successor-alpha/shadow-ui.test.mjs:122:5
+✖ ledger import selects the latest matching current-cycle plan even when an earlier-cycle revision is last (9.145689ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '999' !== '333'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/ba16d8d248e5/alpha/examples/successor-alpha/shadow-ui.test.mjs:131:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '999',
+    expected: '333',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

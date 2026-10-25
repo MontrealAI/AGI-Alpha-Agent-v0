@@ -1,0 +1,27 @@
+✖ independent verifier and runner refuse truncated, duplicated or substituted reservation history (771.990598ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 860.450259
+
+✖ failing tests:
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-reviewed-verifier.test.mjs:360:1
+✖ independent verifier and runner refuse truncated, duplicated or substituted reservation history (771.990598ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-verifier.test.mjs:381:14
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-verifier.test.mjs:18:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-verifier.test.mjs:361:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /reservation|Reservation|attempt|Attempt/,
+    operator: 'throws',
+    diff: 'simple'
+  }

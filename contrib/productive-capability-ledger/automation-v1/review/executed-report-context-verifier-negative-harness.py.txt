@@ -1,0 +1,35 @@
+import importlib.util,json,shutil,tempfile,uuid
+from pathlib import Path
+spec=importlib.util.spec_from_file_location('verify_context','contrib/productive-capability-ledger/automation-v1/verify-run.py');v=importlib.util.module_from_spec(spec);spec.loader.exec_module(v)
+root=Path('contrib/productive-capability-ledger/automation-v1/corrected-runs')
+current=root/'report-final-successor-guide-d12'
+negative=[]
+for case in ('missing-current-context','rehashed-wrong-context','rehashed-false-report','lifetime-attempt-cap'):
+    with tempfile.TemporaryDirectory(prefix='alpha-verifier-final-negative-') as tmp:
+        d=Path(tmp)/case;shutil.copytree(current,d)
+        complete=json.loads((d/'COMPLETE.json').read_text())
+        if case=='missing-current-context':
+            (d/'report-context.json').unlink();del complete['artifacts']['report-context.json']
+        elif case=='rehashed-wrong-context':
+            context=json.loads((d/'report-context.json').read_text());context['priorStageReceipts']=6
+            (d/'report-context.json').write_text(json.dumps(context)+'\n');complete['artifacts']['report-context.json']=v.sha((d/'report-context.json').read_bytes())
+        elif case=='rehashed-false-report':
+            report=(d/'report.md').read_text().replace('0 interrupted/uncommitted attempt(s)','1 interrupted/uncommitted attempt(s)')
+            (d/'report.md').write_text(report)
+            digest=v.sha((d/'report.md').read_bytes());complete['artifacts']['report.md']=digest
+            receipt=json.loads((d/'stage-reporting.json').read_text());receipt['artifacts']['report.md']=digest
+            (d/'stage-reporting.json').write_text(json.dumps(receipt)+'\n');complete['artifacts']['stage-reporting.json']=v.sha((d/'stage-reporting.json').read_bytes());complete['stages'][-1]=receipt
+        else:
+            existing=sum(name.startswith('attempt-') and name.endswith('.json') for name in complete['artifacts'])
+            for _ in range(129-existing):
+                attempt=str(uuid.uuid4());name='attempt-'+attempt+'.json';raw=json.dumps({'attempt':attempt,'approvalDigest':complete['approvalDigest'],'state':'started'}).encode()+b'\n'
+                (d/name).write_bytes(raw);complete['artifacts'][name]=v.sha(raw)
+        (d/'COMPLETE.json').write_text(json.dumps(complete)+'\n')
+        try:v.verify(d)
+        except ValueError as error:negative.append({'case':case,'refused':True,'reason':str(error)})
+        else:raise AssertionError('Checker admitted '+case)
+legacy_names=['corrected-auto-guide-0255','corrected-auto-flagship-0255','corrected-measured-guide-0255','corrected-measured-flagship-0255']
+legacy=[v.verify(root/name) for name in legacy_names]
+new=[v.verify(root/name)for name in ['report-final-successor-guide-d12','report-final-successor-flagship-d12']]
+r={'verifierSha256':v.sha(Path(v.__file__).read_bytes()),'legacy':{'runs':4,'checks':sum(x['checks']for x in legacy),'mode':sorted({x['runnerSourceMode']for x in legacy})},'finalNewSource':{'runs':2,'checks':sum(x['checks']for x in new),'methodIdentity':new[0]['methodIdentity'],'sourceRef':new[0]['sourceRef']},'negativeCases':negative}
+Path('/tmp/report-context-verifier-final-validation.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r,indent=2))

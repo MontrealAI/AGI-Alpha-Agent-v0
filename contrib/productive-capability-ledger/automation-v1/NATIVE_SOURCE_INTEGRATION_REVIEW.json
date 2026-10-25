@@ -1,0 +1,20 @@
+{
+  "schema": "alpha-native-source-integration-review/v1",
+  "previousCandidate": "38d52686ebb6364ef88ac509325c1608540ca608",
+  "hostedFailure": {
+    "runId": 40208439599,
+    "jobId": 121214404479,
+    "case": "advanced_continuity",
+    "observed": "ALPHA_CONTINUITY_SOURCE_DRIFT"
+  },
+  "cause": "Generator and release source validator included shadow-plan and automated-costs module roots; the native CLI source closure still omitted them. Browser-source handoffs correctly refused against a different installed identity.",
+  "repair": "Bind the same two static reviewed module roots in the native installed-source hash; keep the exact source equality guard and stale-source refusal unchanged.",
+  "regression": "Independent native and Python-generated browser closure identities must agree, then an actual separate Node host process must accept the saved handoff; stale source still refuses.",
+  "sourceSha256": {
+    "examples/successor-alpha/native-cli.mjs": "412f30e6ba51b48f2c21494bdb9746485a653a7fd95aed3d9ea02361a4001fb3",
+    "examples/successor-alpha/native-cli.test.mjs": "82411e44c9d3bef4d7dd66b396ee552a37be3140d7f6e8c94aa2bd5f045f913e",
+    "docs/successor/alpha/sources.json": "243dddb80565e6ab3006007c84e3d1f88a734f983525e12a89357a2cb1f23f7d"
+  },
+  "fullBrowserAcceptance": "Fresh corrected-head hosted browser run required; no old pass transferred.",
+  "authority": "none; fixed local catalogue adapter only, no approved executor, financial or production authority"
+}

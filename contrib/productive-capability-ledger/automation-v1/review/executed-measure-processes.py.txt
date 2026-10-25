@@ -1,0 +1,126 @@
+# SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import subprocess
+import tempfile
+import time
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[2]
+CLI = HERE / "run-mission.mjs"
+REF = "0255ebf0a3289e1011f3a8fad165baf140480241"
+
+
+def measured(argv: list[str]) -> tuple[dict, dict]:
+    with tempfile.TemporaryDirectory(prefix="alpha-automation-measure-") as temporary:
+        started = time.monotonic_ns()
+        stdout_path, stderr_path = Path(temporary) / "stdout.json", Path(temporary) / "stderr.txt"
+        with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+            process = subprocess.Popen(argv, cwd=ROOT, stdout=stdout, stderr=stderr)
+            while True:
+                child, status, usage = os.wait4(process.pid, os.WNOHANG)
+                if child:
+                    process.returncode = os.waitstatus_to_exitcode(status)
+                    break
+                if time.monotonic_ns() - started > 60_000_000_000:
+                    process.kill()
+                    os.wait4(process.pid, 0)
+                    raise TimeoutError("Bounded command exceeded its outer measurement allowance")
+                time.sleep(0.005)
+        if process.returncode:
+            raise RuntimeError(stderr_path.read_text())
+        wall_microseconds = (time.monotonic_ns() - started + 999) // 1000
+        observation = {
+            "argv": argv,
+            "exitCode": process.returncode,
+            "wholeProcessWallMicroseconds": {
+                "value": wall_microseconds,
+                "basis": "measured",
+                "reference": "External Python monotonic clock around process launch, imports, Node work, waited Git children and output collection.",
+            },
+            "processAndWaitedDescendantCPUMicroseconds": {
+                "value": round((usage.ru_utime + usage.ru_stime) * 1_000_000),
+                "basis": "measured",
+                "reference": "POSIX wait4 user+system CPU for the command and descendants waited by it on this Linux host.",
+            },
+            "maximumReportedRSSKiB": {
+                "value": usage.ru_maxrss,
+                "basis": "measured",
+                "reference": "Linux wait4 maximum resident-set observation in KiB; not a measured sum of simultaneous fleet memory.",
+            },
+            "modelCalls": {
+                "value": 0,
+                "basis": "measured",
+                "reference": "The fixed source-assurance service contains no model adapter; engineering/model-assisted authorship is outside this invocation.",
+            },
+            "fullMonetaryCost": {
+                "value": None,
+                "basis": "unknown",
+                "reference": "Price compute, fixed development, maintenance, failure rates and residual exceptions separately; timing is not money.",
+            },
+        }
+        return json.loads(stdout_path.read_text()), observation
+
+
+def main() -> None:
+    reports = []
+    for manifest, run_id in (
+        ("docs/try/sources.json", "measured-guide-0255"),
+        ("docs/successor/alpha/sources.json", "measured-flagship-0255"),
+    ):
+        planned, planning = measured(
+            ["node", str(CLI), "plan", "--manifest", manifest, "--ref", REF, "--run-id", run_id]
+        )
+        arguments = [
+            "node",
+            str(CLI),
+            "run",
+            "--plan",
+            planned["planFile"],
+            "--approve",
+            planned["approvalDigest"],
+        ]
+        delivery, operation = measured(arguments)
+        reconnected, reconnect = measured(arguments)
+        assert delivery["accepted"] and reconnected["reconnected"]
+        reports.append(
+            {
+                "runId": run_id,
+                "manifestPath": manifest,
+                "sourceRef": REF,
+                "methodIdentity": delivery["methodIdentity"],
+                "dependencySha256": planned["plan"]["dependencySha256"],
+                "classification": "Operating replication of an already exercised input scope; not additional independent task diversity.",
+                "planning": planning,
+                "newDelivery": operation,
+                "reconnect": reconnect,
+            }
+        )
+    report = {
+        "schema": "alpha-automated-external-process-measurements/v1",
+        "measurementSourceSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "runnerSha256": hashlib.sha256(CLI.read_bytes()).hexdigest(),
+        "distinctTaskScopes": 2,
+        "operatingReplications": 2,
+        "reconnectRequests": 2,
+        "runs": reports,
+        "limits": [
+            "Local foreground command measurements only; no remote/browser-approved-executor connection.",
+            "These cases have no source drift; no superiority, human-work saving or self-acceleration is inferred.",
+            "Complete monetary cost and operational exception rates remain unknown; economic scenarios must label assumptions.",
+        ],
+    }
+    (HERE / "external-process-measurements.json").write_text(json.dumps(report, indent=2) + "\n")
+    print(
+        json.dumps(
+            {"distinctTaskScopes": 2, "operatingReplications": 2, "methodIdentity": reports[0]["methodIdentity"]}
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

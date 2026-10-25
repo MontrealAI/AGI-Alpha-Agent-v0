@@ -1,0 +1,29 @@
+{
+  "schema": "alpha-shadow-ledger-browser-acceptance/v1",
+  "status": "NOT_RUN_MISSING_BROWSER",
+  "scope": "Local Chromium acceptance; no approved executor or public deployment qualification",
+  "pageSha256": "f3271254f34270346c9b5279e87951058c4cb045e8c989f5d064975b49c0b22e",
+  "sourceSha256": {
+    "examples/successor-alpha/shadow-ledger.mjs": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21",
+    "examples/successor-alpha/shadow-plan.mjs": "178eb26563244e9c44fed73843c218efeda6c69e9f30d190334f3d6d7c31a069",
+    "scripts/templates/successor-alpha/shadow-app.js": "d9299dae0b753793ea5979bedfc571ff2f3ce295dada5b951c60523e921fcd9b",
+    "scripts/templates/successor-alpha/index.html": "f3b52873a26a677642c247e4c7fcf27fedcefec5703e446691a8ee7789bf4de4",
+    "scripts/templates/successor-alpha/app.js": "5a9b0ea34a6da1521009f319663727374ee9f27cf8357f98a3894ea83648cae6",
+    "scripts/templates/successor-alpha/style.css": "c893214d64f4b22bb3a5cfde5ddb7897108bc1c9d96b80e176ce657137d79248",
+    "scripts/generate_successor_alpha.py": "d8c30bbf2ba7942c55cc0f8a6ec7e4a964f9af05755b975e676654fd6fce781a",
+    "tests/browser/test_shadow_ledger_browser.py": "b53c771895680ac461ba45dbe50f896362f9f6609ba5ba4a5db46047e1e9c172"
+  },
+  "passed": 0,
+  "checks": [],
+  "blocker": "Playwright Chromium build1248 binary absent; no executable under /opt or /usr. Ordinary browser installation failed because all standard downloads returned invalid/truncated 0-MiB ZIP bytes.",
+  "testScriptSyntax": "python -m py_compile passed; entry_url, expected_page_sha256 and CHROMIUM_EXECUTABLE supported",
+  "screenshotsRetained": false,
+  "axeRun": false,
+  "connectedExecution": "NOT_RUN",
+  "cloudPreviewAttempt": {
+    "status": "NOT_RUN_CONNECTION_REFUSED",
+    "error": "net::ERR_CONNECTION_REFUSED",
+    "scope": "Cloud browser could not reach the separate local preview host; no browser acceptance or bypass was performed."
+  },
+  "qualification": "Required browser check remains unrun; missing local browser and unreachable cloud preview do not count as passes."
+}

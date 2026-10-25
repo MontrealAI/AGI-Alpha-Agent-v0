@@ -1259,6 +1259,11 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 browser.close()
         assert not errors, errors
         assert not external, external
+        from tests.browser.test_shadow_ledger_browser import run_acceptance as run_shadow_acceptance
+
+        shadow_report = run_shadow_acceptance(
+            output / "shadow-ledger.json", entry_url=entry_url, expected_page_sha256=expected_page_sha256
+        )
         return {
             "passed": True,
             "entryUrl": entry_url,
@@ -1284,8 +1289,10 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 "computer-use-public-reading-pane-and-visible-work-product",
                 "computer-use-bilingual-mission-presets-and-complete-strategy-slate",
                 "no-page-errors-no-csp-violations-no-external-dependencies",
+                "mission-shadow-ledger-and-offline-recovery",
             ],
             "accessibilityAudited": bool(os.environ.get("AXE_SCRIPT")),
+            "shadowLedger": shadow_report,
             "languages": ["en", "fr"],
             "viewports": [1440, 1363, 1280, 1024, 900, 768, 600, 390, 320],
             "errors": list(errors) + list(external),
