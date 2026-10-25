@@ -18,6 +18,26 @@ ROOT = Path(__file__).resolve().parents[3]
 HASH = re.compile(r"[0-9a-f]{64}\Z")
 COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 STAGES = ("recovery", "planning", "preparation", "execution", "verification", "correction", "packaging", "reporting")
+FIXED_ARTIFACTS = {
+    "plan.json",
+    "final-acceptance.json",
+    "report-context.json",
+    "STOP",
+    "prepared-inputs.json",
+    "declared-inventory.csv",
+    "observed-inventory.csv",
+    "result.json",
+    "acceptance.json",
+    "correction.json",
+    "differences.csv",
+    "action-plan.csv",
+    "workspace.json",
+    "report.md",
+    *("stage-" + stage + ".json" for stage in STAGES),
+}
+VARIABLE_ARTIFACT = re.compile(
+    r"(?:(?:attempt|final-revalidation|interrupted-lock)-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|reservation-[0-9]{3})\.json\Z"
+)
 DEPENDENCIES = (
     "examples/ti-guide/guide.mjs",
     "examples/successor-alpha/engine.mjs",
@@ -155,12 +175,16 @@ def verify(directory: Path) -> dict[str, Any]:
         "Unmeasured whole Agent cost cannot become zero",
     )
     artifacts = complete["artifacts"]
-    require(isinstance(artifacts, dict) and 1 <= len(artifacts) <= 256, "Artifact inventory is missing or unbounded")
+    require(
+        isinstance(artifacts, dict) and 1 <= len(artifacts) <= len(FIXED_ARTIFACTS) + 4 * 128,
+        "Artifact inventory is missing or exceeds the supported lifetime envelope",
+    )
     raw_files: dict[str, bytes] = {}
     for name, digest in artifacts.items():
         artifact_name(name)
+        require(name in FIXED_ARTIFACTS or VARIABLE_ARTIFACT.fullmatch(name) is not None, "Unknown delivery artifact")
         require(isinstance(digest, str) and HASH.fullmatch(digest) is not None, "Invalid artifact identity")
-        raw_files[name] = read_bytes(directory / name)
+        raw_files[name] = read_bytes(directory / name, 8_000_000 if name in FIXED_ARTIFACTS else 32_768)
         require(sha(raw_files[name]) == digest, "Complete-delivery artifact bytes differ: " + name)
     required = {
         "plan.json",
@@ -189,6 +213,10 @@ def verify(directory: Path) -> dict[str, Any]:
     require(complete["runId"] == plan["runId"], "Run identity changed")
     if plan["schema"] == "alpha-source-assurance-plan/v3":
         require(type(plan["maxAttempts"]) is int and 1 <= plan["maxAttempts"] <= 128, "Invalid attempt envelope")
+        require(
+            len(artifacts) <= len(FIXED_ARTIFACTS) + 4 * plan["maxAttempts"],
+            "Artifact inventory exceeds this plan's approved attempt envelope",
+        )
         require(type(plan["maxSeconds"]) is int and 1 <= plan["maxSeconds"] <= 60, "Invalid per-attempt bound")
         require(
             type(plan["maxTotalSeconds"]) is int and plan["maxSeconds"] <= plan["maxTotalSeconds"] <= 3600,
@@ -294,6 +322,11 @@ def verify(directory: Path) -> dict[str, Any]:
         and plan["methodIdentity"] == "5b3559ee139bf27f9c29f91a57ddf8b2b6e91ff0f53ed2353833eb55c81ebc1f"
     ):
         historical_commit = "2c5c393c1e5431c00d59d077c403739e789abd43"
+    if (
+        dependencies[RUNNER] == "571032112384201eb27383ef7313115f1c0737b214d022c8dbd033b48050bac4"
+        and plan["methodIdentity"] == "3e2a9cab0dd0dfe89729b3c5dda3cb2013cc7b8a7d72066f713444323e5629bd"
+    ):
+        historical_commit = "443246db37b30b83f4b9c8a854ceb226601e0155"
     for path, digest in dependencies.items():
         public_path(path)
         installed = git_blob(historical_commit, path) if historical_commit else read_bytes(ROOT / path, 4_000_000)

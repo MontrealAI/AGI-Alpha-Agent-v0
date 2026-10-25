@@ -384,3 +384,22 @@ test('independent verifier and runner refuse truncated, duplicated or substitute
     await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/Unreserved execution attempt/);
   });
 });
+
+test('the full approved attempt envelope retains more than256 artifacts and remains independently verifiable',async t=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await makePlan({manifestPath:'docs/try/sources.json',sourceRef:REF,
+      runId:'full-inventory-envelope',maxAttempts:128,maxTotalSeconds:2560});
+    const options={approvalDigest,outputRoot},directory=join(outputRoot,scope.runId);
+    await runPlan(scope,{...options,stopAfter:'planning'});await writeFile(join(directory,'STOP'),'');
+    for(let index=0;index<116;index++)await assert.rejects(()=>runPlan(scope,options),/STOP/);
+    await rm(join(directory,'STOP'));const complete=await runPlan(scope,options);
+    assert.equal(complete.accepted,true);assert.equal(complete.authorization.ordinal,118);
+    assert(Object.keys(complete.artifacts).length>256);
+    const checker=fileURLToPath(new URL('./verify-run.py',import.meta.url));
+    const acceptance=JSON.parse(execFileSync('python',[checker,directory],{encoding:'utf8',stdio:['ignore','pipe','pipe']}));
+    assert.equal(acceptance.accepted,true);assert.equal((await runPlan(scope,options)).reconnected,true);
+    t.diagnostic(JSON.stringify({fixture:'full-inventory-envelope',accepted:true,approvedMaxAttempts:128,
+      completionReservation:complete.authorization.ordinal,retainedArtifacts:Object.keys(complete.artifacts).length,
+      independentChecks:acceptance.checks,customerJobs:false}));
+  });
+});

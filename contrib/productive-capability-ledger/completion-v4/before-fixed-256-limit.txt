@@ -1,0 +1,41 @@
+✖ the full approved attempt envelope retains more than256 artifacts and remains independently verifiable (16577.551662ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16675.161895
+
+✖ failing tests:
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-inventory.test.mjs:388:1
+✖ the full approved attempt envelope retains more than256 artifacts and remains independently verifiable (16577.551662ms)
+  Error: Command failed: python /workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py /tmp/alpha-auto-source-PmTHFR/full-inventory-envelope
+  Traceback (most recent call last):
+    File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 605, in <module>
+      print(json.dumps(verify(args.run_directory), indent=2))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 158, in verify
+      require(isinstance(artifacts, dict) and 1 <= len(artifacts) <= 256, "Artifact inventory is missing or unbounded")
+    File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 129, in require
+      raise ValueError(message)
+  ValueError: Artifact inventory is missing or unbounded
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at checkExecSyncError (node:child_process:943:11)
+      at execFileSync (node:child_process:979:15)
+      at file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory.test.mjs:399:33
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory.test.mjs:18:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory.test.mjs:389:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    status: 1,
+    signal: null,
+    output: [ null, '', 'Traceback (most recent call last):\n  File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 605, in <module>\n    print(json.dumps(verify(args.run_directory), indent=2))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 158, in verify\n    require(isinstance(artifacts, dict) and 1 <= len(artifacts) <= 256, "Artifact inventory is missing or unbounded")\n  File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 129, in require\n    raise ValueError(message)\nValueError: Artifact inventory is missing or unbounded\n' ],
+    pid: 1257,
+    stdout: '',
+    stderr: 'Traceback (most recent call last):\n  File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 605, in <module>\n    print(json.dumps(verify(args.run_directory), indent=2))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 158, in verify\n    require(isinstance(artifacts, dict) and 1 <= len(artifacts) <= 256, "Artifact inventory is missing or unbounded")\n  File "/workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-inventory-verifier.py", line 129, in require\n    raise ValueError(message)\nValueError: Artifact inventory is missing or unbounded\n'
+  }

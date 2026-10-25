@@ -16,6 +16,9 @@ const STAGES=['recovery','planning','preparation','execution','verification','co
 const OUTPUTS={recovery:[],planning:[],preparation:['prepared-inputs.json','declared-inventory.csv','observed-inventory.csv'],
   execution:['result.json'],verification:['acceptance.json'],correction:['correction.json'],
   packaging:['differences.csv','action-plan.csv','workspace.json'],reporting:['report.md']};
+const FIXED_ARTIFACTS=new Set(['plan.json','final-acceptance.json','report-context.json','STOP',
+  ...STAGES.map(stage=>`stage-${stage}.json`),...Object.values(OUTPUTS).flat()]);
+const VARIABLE_ARTIFACT=/^(?:(?:attempt|final-revalidation|interrupted-lock)-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|reservation-[0-9]{3})\.json$/;
 const json=value=>JSON.stringify(value,null,2)+'\n';
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const safePath=value=>typeof value==='string' && /^[A-Za-z0-9_.\/-]+$/.test(value) &&
@@ -26,6 +29,11 @@ function git(args,timeout=5000) {
   const environment=Object.fromEntries(Object.entries(process.env).filter(([key])=>!/^git_/i.test(key)));
   return execFileSync('git',['--no-lazy-fetch','--no-replace-objects','--no-pager',...args],
     {cwd:ROOT,timeout,maxBuffer:4_000_000,env:{...environment,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0'}});
+}
+function artifactLimit(plan) {return FIXED_ARTIFACTS.size+4*(plan.schema==='alpha-source-assurance-plan/v3'?plan.maxAttempts:128);}
+function artifactMaximum(name) {
+  assert(FIXED_ARTIFACTS.has(name)||VARIABLE_ARTIFACT.test(name),'Unknown delivery artifact; preserve it for inspection.');
+  return FIXED_ARTIFACTS.has(name)?8_000_000:32_768;
 }
 function committed(ref,path,deadline=null) {
   assert.match(ref,/^[0-9a-f]{40}$/); assert(safePath(path),'Use a bounded repository-relative public source path.');
@@ -243,7 +251,8 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
       await rename(lock,join(directory,'interrupted-lock-'+randomUUID()+'.json'));
     } catch(error) {if(error.code!=='ENOENT')throw error;}
     await exclusive(lock,json({pid:process.pid,approvalDigest}));
-  } finally {await unlink(recoveryLock);}
+  } catch(error) {await unlink(recoveryLock);throw error;}
+  let recoveryOwned=true;
   const attempt=randomUUID(),bounded=plan.schema==='alpha-source-assurance-plan/v3';
   const deadline=Math.min(invokedAt+plan.maxSeconds*1000,
     bounded?performance.now()+Math.max(0,Date.parse(plan.expiresAt)-Date.now()):Infinity),traces=[];
@@ -305,6 +314,7 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
         attempt,startedAt:new Date().toISOString(),accounting:'Full attempt allowance retained, including interrupted work and reconnect.'};
       stopped();await exclusive(join(directory,`reservation-${String(ordinal).padStart(3,'0')}.json`),json(authorization));
     }
+    await unlink(recoveryLock);recoveryOwned=false;
     await checkedPlan(plan,approvalDigest,true,deadline);
     const completed=await known('COMPLETE.json');
     if(completed){const summary=parseBounded(completed.toString());assert.equal(summary.approvalDigest,approvalDigest);
@@ -324,9 +334,10 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
           'Completion omits its reserved final verification.');
       }
       const required=['plan.json','final-acceptance.json','report-context.json',...STAGES.map(stage=>`stage-${stage}.json`),...Object.values(OUTPUTS).flat()];
+      assert(Object.keys(summary.artifacts).length<=artifactLimit(plan),'Delivery inventory exceeds the approved envelope.');
       for(const name of required)assert(Object.hasOwn(summary.artifacts,name),'Completed payload is incomplete.');
       for(const [name,digest] of Object.entries(summary.artifacts)){assert(artifactName(name),'Unsafe artifact name.');
-        assert.equal(hash(await ordinary(join(directory,name),8_000_000)),digest);}
+        assert.equal(hash(await ordinary(join(directory,name),artifactMaximum(name))),digest);}
       await reverifyDelivery(directory,plan,deadline,summary.stages,stopped);
       return {...summary,reconnected:true,reconnectObservations:overhead(),...(authorization?{authorization}: {})};}
     await exclusive(join(directory,`attempt-${attempt}.json`),json({attempt,approvalDigest,state:'started',
@@ -398,9 +409,9 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
     await exclusive(join(directory,`final-revalidation-${attempt}.json`),json(finalRevalidation));
     await retain('final-acceptance.json',json({schema:'alpha-source-final-acceptance/v1',accepted:true,approvalDigest,
       sourceRef:plan.sourceRef,methodIdentity:plan.methodIdentity,check:finalRevalidation.check,authority:'none'}));
-    const artifacts={};
-    for(const name of (await readdir(directory)).filter(name=>!['writer.lock','COMPLETE.json'].includes(name) && artifactName(name)).sort())
-      artifacts[name]=hash(await ordinary(join(directory,name),8_000_000));
+    const artifacts={},names=(await readdir(directory)).filter(name=>!['writer.lock','COMPLETE.json'].includes(name) && artifactName(name)).sort();
+    assert(names.length<=artifactLimit(plan),'Delivery inventory exceeds the approved envelope.');
+    for(const name of names){stopped();artifacts[name]=hash(await ordinary(join(directory,name),artifactMaximum(name)));}
     const summary={schema:'alpha-automated-source-delivery/v2',accepted:true,approvalDigest,runId:plan.runId,
       sourceRef:plan.sourceRef,methodIdentity:plan.methodIdentity,artifacts,stages:traces,finalRevalidation,
       interruptedOrUncommittedAttempts:fact((await readdir(directory)).filter(name=>/^attempt-.*\.json$/.test(name)).length-1,
@@ -410,7 +421,10 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
       connectedExecution:'NOT RUN; foreground local Node only',commercialAcceptance:'unknown',authority:'none'};
     stopped();
     await exclusive(join(directory,'COMPLETE.json'),json(summary));return {...summary,directory,reconnected:false};
-  } finally {await unlink(lock).catch(error=>{if(error.code!=='ENOENT')throw error;});}
+  } finally {
+    if(recoveryOwned)await unlink(recoveryLock).catch(error=>{if(error.code!=='ENOENT')throw error;});
+    await unlink(lock).catch(error=>{if(error.code!=='ENOENT')throw error;});
+  }
 }
 async function main(args) {
   const command=args.shift(), options={};

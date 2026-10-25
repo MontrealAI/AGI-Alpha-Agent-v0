@@ -1,0 +1,1988 @@
+{
+  "schema": "agi-alpha.integration-security-context/v1",
+  "status": "HISTORICAL_4A_SOURCE_NOT_FINAL_REPAIR_QUALIFICATION",
+  "sourceHead": "4a491219e9c3125531b12827b2139ce575b2d33d",
+  "executedMerge": "0be8acd3d4063606abecb3968e5e2b0fe6c4d59c",
+  "verifiedIdenticalTree": "9a86827d5043a488e2f8ca3249711c930a9fe0e9",
+  "runId": 40234655626,
+  "artifactId": 12614483517,
+  "artifactZipSha256": "43aa29ead9dc7b098a7afebfaef6851d6fbad904649a1eb088b214ab31a2e30f",
+  "summary": {
+    "schema": "agialpha.official-python-security/v1",
+    "passed": false,
+    "commit": "0be8acd3d4063606abecb3968e5e2b0fe6c4d59c",
+    "selected_files": 1551,
+    "findings": 57,
+    "exit_code": 1,
+    "tool_version": "1.99.0",
+    "raw_report_sha256": "c61e141e93fb68986605f5e9da4dd6895b11fd2e13dc89aeb6ae64707c416a74",
+    "elapsed_seconds": 231.04562069499997,
+    "source_drift": [],
+    "wall_budget_expired": false,
+    "raw_scan_passed": false,
+    "raw_exit_code": 1,
+    "raw_finding_count": 57,
+    "policy_disposition": "INACTIVE",
+    "policy_accepted": false,
+    "inapplicable_finding_count": 0,
+    "repository_inventory_sha256": "35a32a36708fc5fb45b741463ced4c94fad016941a6395956df5bcb792ae5de9",
+    "repository_files": 5545,
+    "committed_context_qualified": true,
+    "observed_error_count": 0,
+    "observed_skipped_rule_count": 0
+  },
+  "officialPolicy": {
+    "sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+    "ruleCount": 151,
+    "observedAt": "2026-10-25T21:21:54.359237+00:00"
+  },
+  "priorCasesPreserved": 56,
+  "newCases": 1,
+  "priorSourceBodyChange": "tests/browser/test_successor_alpha_browser.py; appended ledger acceptance only",
+  "policyChanged": false,
+  "exceptionMapActivated": false,
+  "securityClearance": false,
+  "finalSourceRequiresNewScan": true,
+  "priorDecisionPacket": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/143920f23905e5a2d07e1bdcf6754eaa0f6c1d9f/docs/delivery/strategy-succession-20261025/official-security-history-20261025/final-source-official-2645/POLICY_DECISION_PACKET.md",
+  "cases": [
+    {
+      "caseId": "C4A-PY-001",
+      "source": {
+        "path": "alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+        "sha256": "2ad225701952de359a6faf69f9239812f3962ade671bc5a707cb58ac23da95ab",
+        "bytes": 78383,
+        "start": {
+          "line": 580,
+          "col": 12,
+          "offset": 29345
+        },
+        "end": {
+          "line": 580,
+          "col": 73,
+          "offset": 29406
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-001",
+      "findingBodyUnchanged": true,
+      "assessment": "GIT_OBJECT_COMPATIBILITY_WITH_SHA256",
+      "contextNote": "The SHA-1 operation computes Git blob framing/object IDs. The same source bytes also have an explicit SHA-256 check or fixture field; the Git identifier is not substituted for the content SHA-256.",
+      "applicabilityLimits": "Classification covers this protocol compatibility check only; it does not authorize SHA-1 as a credential, signature or sole new integrity primitive.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-002",
+      "source": {
+        "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+        "sha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+        "bytes": 20410,
+        "start": {
+          "line": 230,
+          "col": 5,
+          "offset": 8007
+        },
+        "end": {
+          "line": 230,
+          "col": 34,
+          "offset": 8036
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+        "definitionSha256": "a8215217b91be9c2122b4863001f8d037c3e7e515ff70275a729d8b879476b19",
+        "definitionStartByte": 260532,
+        "definitionEndByte": 263185
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-002",
+      "findingBodyUnchanged": true,
+      "assessment": "DIRECTORY_OWNER_TRAVERSE_PERMISSION",
+      "contextNote": "The target is a results directory created with mkdir(mode=0o700), then chmod(0o700). Owner execute supplies directory traversal; group/other receive no permissions.",
+      "applicabilityLimits": "This is a directory-mode classification, not approval to mark arbitrary regular files executable. Operator-selected results locations remain an explicit trust boundary.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-003",
+      "source": {
+        "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+        "sha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+        "bytes": 20410,
+        "start": {
+          "line": 375,
+          "col": 20,
+          "offset": 12935
+        },
+        "end": {
+          "line": 375,
+          "col": 49,
+          "offset": 12964
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-003",
+      "findingBodyUnchanged": true,
+      "assessment": "NONCRYPTO_SIMULATION_NAMESPACE",
+      "contextNote": "A locally generated simulation identifier is hashed into an island-population/scenario key. The result is used as a simulation namespace, not authentication or artifact integrity.",
+      "applicabilityLimits": "No cryptographic uniqueness or access-control claim is made for this key. Replacing the digest changes historical scenario/cache identities.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-004",
+      "source": {
+        "path": "alpha_factory_v1/demos/era_of_experience/reward_backends/curiosity_reward.py",
+        "sha256": "bc8177e8d603ed3d750abd6e7a347cc7d8c4c33da8dfa76768e41bdcd450ab9e",
+        "bytes": 3431,
+        "start": {
+          "line": 80,
+          "col": 12,
+          "offset": 2857
+        },
+        "end": {
+          "line": 80,
+          "col": 30,
+          "offset": 2875
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-004",
+      "findingBodyUnchanged": true,
+      "assessment": "NONCRYPTO_OBSERVATION_COUNTER",
+      "contextNote": "The digest indexes an in-memory novelty counter over a deliberately truncated repr; it affects a reward heuristic rather than security admission.",
+      "applicabilityLimits": "The heuristic is not collision-proof and deliberately discards bytes after4096. This review does not establish exact semantic observation identity.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-005",
+      "source": {
+        "path": "alpha_factory_v1/demos/era_of_experience/reward_backends/novel_solution_reward.py",
+        "sha256": "4ada727916aae39c61df062c2d6b3f601609b98ba552df0c4dde750e5fd24d0e",
+        "bytes": 5800,
+        "start": {
+          "line": 82,
+          "col": 28,
+          "offset": 3147
+        },
+        "end": {
+          "line": 82,
+          "col": 52,
+          "offset": 3171
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-005",
+      "findingBodyUnchanged": true,
+      "assessment": "NONCRYPTO_SIMHASH_FEATURE",
+      "contextNote": "SHA-1 supplies token bit features for a64-bit SimHash similarity heuristic. Similarity/collisions are part of that numerical representation, not an authentication decision.",
+      "applicabilityLimits": "Changing the token hash would change existing numerical signatures/rewards and is not a behavior-preserving security repair.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-006",
+      "source": {
+        "path": "alpha_factory_v1/demos/meta_agentic_agi/core/prompts.py",
+        "sha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+        "bytes": 7011,
+        "start": {
+          "line": 80,
+          "col": 9,
+          "offset": 2627
+        },
+        "end": {
+          "line": 80,
+          "col": 23,
+          "offset": 2641
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-006",
+      "findingBodyUnchanged": true,
+      "assessment": "NONCRYPTO_DISPLAY_METADATA",
+      "contextNote": "The ten-hex-character fingerprint is optional exported prompt metadata. Registration/no-overwrite and retrieval use the prompt name, not this hash; no security acceptance depends on the fingerprint.",
+      "applicabilityLimits": "This field must not be presented as cryptographic proof: callers may supply it through setdefault. The finding disposition does not validate broader provenance claims.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-007",
+      "source": {
+        "path": "alpha_factory_v1/demos/meta_agentic_agi_v2/core/prompts.py",
+        "sha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+        "bytes": 7011,
+        "start": {
+          "line": 80,
+          "col": 9,
+          "offset": 2627
+        },
+        "end": {
+          "line": 80,
+          "col": 23,
+          "offset": 2641
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-007",
+      "findingBodyUnchanged": true,
+      "assessment": "NONCRYPTO_DISPLAY_METADATA",
+      "contextNote": "The ten-hex-character fingerprint is optional exported prompt metadata. Registration/no-overwrite and retrieval use the prompt name, not this hash; no security acceptance depends on the fingerprint.",
+      "applicabilityLimits": "This field must not be presented as cryptographic proof: callers may supply it through setdefault. The finding disposition does not validate broader provenance claims.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-008",
+      "source": {
+        "path": "alpha_factory_v1/demos/meta_agentic_agi_v3/core/prompts.py",
+        "sha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+        "bytes": 7011,
+        "start": {
+          "line": 80,
+          "col": 9,
+          "offset": 2627
+        },
+        "end": {
+          "line": 80,
+          "col": 23,
+          "offset": 2641
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-008",
+      "findingBodyUnchanged": true,
+      "assessment": "NONCRYPTO_DISPLAY_METADATA",
+      "contextNote": "The ten-hex-character fingerprint is optional exported prompt metadata. Registration/no-overwrite and retrieval use the prompt name, not this hash; no security acceptance depends on the fingerprint.",
+      "applicabilityLimits": "This field must not be presented as cryptographic proof: callers may supply it through setdefault. The finding disposition does not validate broader provenance claims.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-009",
+      "source": {
+        "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+        "sha256": "50bf31ac8d85581cf2af61b0f1428826fbee95aecb1219f571c1cd6b416cf6ad",
+        "bytes": 2170,
+        "start": {
+          "line": 64,
+          "col": 29,
+          "offset": 2057
+        },
+        "end": {
+          "line": 64,
+          "col": 32,
+          "offset": 2060
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-009",
+      "findingBodyUnchanged": true,
+      "assessment": "VALIDATED_OPERATOR_DOCKER_IMAGE_ARGV",
+      "contextNote": "The environment-default image is passed through an exact image-reference validator before one Docker image operand. The subprocess uses an argv list with shell=False; current SelfHealer use supplies fixed pytest argv and a fixed local working directory.",
+      "applicabilityLimits": "Operator-selected images/mounts and the Docker daemon remain trusted explicit inputs. This is not general desktop/container-security qualification or permission to expose the Docker socket.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-010",
+      "source": {
+        "path": "check_env.py",
+        "sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "bytes": 22549,
+        "start": {
+          "line": 354,
+          "col": 36,
+          "offset": 10958
+        },
+        "end": {
+          "line": 354,
+          "col": 39,
+          "offset": 10961
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-010",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "contextNote": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicabilityLimits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-011",
+      "source": {
+        "path": "check_env.py",
+        "sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "bytes": 22549,
+        "start": {
+          "line": 372,
+          "col": 28,
+          "offset": 11700
+        },
+        "end": {
+          "line": 372,
+          "col": 31,
+          "offset": 11703
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-011",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "contextNote": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicabilityLimits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-012",
+      "source": {
+        "path": "check_env.py",
+        "sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "bytes": 22549,
+        "start": {
+          "line": 411,
+          "col": 28,
+          "offset": 13273
+        },
+        "end": {
+          "line": 411,
+          "col": 31,
+          "offset": 13276
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-012",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "contextNote": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicabilityLimits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-013",
+      "source": {
+        "path": "check_env.py",
+        "sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "bytes": 22549,
+        "start": {
+          "line": 450,
+          "col": 32,
+          "offset": 14968
+        },
+        "end": {
+          "line": 450,
+          "col": 35,
+          "offset": 14971
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-013",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "contextNote": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicabilityLimits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-014",
+      "source": {
+        "path": "check_env.py",
+        "sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "bytes": 22549,
+        "start": {
+          "line": 538,
+          "col": 21,
+          "offset": 18687
+        },
+        "end": {
+          "line": 538,
+          "col": 24,
+          "offset": 18690
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-014",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "contextNote": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicabilityLimits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-015",
+      "source": {
+        "path": "check_env.py",
+        "sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "bytes": 22549,
+        "start": {
+          "line": 613,
+          "col": 32,
+          "offset": 22133
+        },
+        "end": {
+          "line": 613,
+          "col": 35,
+          "offset": 22136
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-015",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "contextNote": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicabilityLimits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-016",
+      "source": {
+        "path": "scripts/audit_agent_dependencies.py",
+        "sha256": "271f3f7cf9617033897125059bc11c596627f2abe508a46356aed29f80217249",
+        "bytes": 2960,
+        "start": {
+          "line": 56,
+          "col": 32,
+          "offset": 2052
+        },
+        "end": {
+          "line": 56,
+          "col": 39,
+          "offset": 2059
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-016",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_AUDIT_ARGV",
+      "contextNote": "The current interpreter runs the fixed pip_audit module; lock/output paths are separate argv operands selected by the operator. No shell or downloaded command text is used.",
+      "applicabilityLimits": "The local lock, executable environment and dependency-audit provider are trusted operator inputs; their separate audit/integrity checks remain required.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-017",
+      "source": {
+        "path": "scripts/package_agent_release.py",
+        "sha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+        "bytes": 44943,
+        "start": {
+          "line": 684,
+          "col": 13,
+          "offset": 34020
+        },
+        "end": {
+          "line": 684,
+          "col": 87,
+          "offset": 34094
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-017",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_COMMITTED_BUILD_ARGV",
+      "contextNote": "A fixed current-interpreter build module operates on the source just archived from the current Git commit, using an operator-resolved absolute output directory as one operand.",
+      "applicabilityLimits": "Build backends execute reviewed repository code intentionally. This is not acceptance of arbitrary untrusted source builds or a new host-execution permission.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-018",
+      "source": {
+        "path": "scripts/package_agent_release.py",
+        "sha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+        "bytes": 44943,
+        "start": {
+          "line": 699,
+          "col": 9,
+          "offset": 34899
+        },
+        "end": {
+          "line": 699,
+          "col": 118,
+          "offset": 35008
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-018",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_WHEEL_CHECK_ARGV",
+      "contextNote": "The current interpreter invokes fixed twine check arguments. Python expands wheel/source filenames below the already-resolved output path; shell expansion is absent.",
+      "applicabilityLimits": "The interpreter, local build outputs and release source remain trusted and separately qualified; no broader package authenticity claim comes from this call.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-019",
+      "source": {
+        "path": "scripts/validate_agent_model.py",
+        "sha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+        "bytes": 9156,
+        "start": {
+          "line": 47,
+          "col": 17,
+          "offset": 1805
+        },
+        "end": {
+          "line": 62,
+          "col": 18,
+          "offset": 2298
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-019",
+      "findingBodyUnchanged": true,
+      "assessment": "EXPLICIT_OPERATOR_MODEL_SERVER_EXECUTABLE",
+      "contextNote": "The --server CLI path intentionally selects a local server executable for this validator. Remaining model/host/port arguments are separate argv values; version inspection reuses that selected executable. The actual release workflow fetches a fixed server archive and verifies its SHA-256 before invoking this script.",
+      "applicabilityLimits": "The CLI server path is an operator execution choice, not a model action. Script-level model checksum validation is not proof of arbitrary server identity; the workflow archive check remains material.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-020",
+      "source": {
+        "path": "scripts/validate_agent_model.py",
+        "sha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+        "bytes": 9156,
+        "start": {
+          "line": 163,
+          "col": 25,
+          "offset": 7613
+        },
+        "end": {
+          "line": 163,
+          "col": 56,
+          "offset": 7644
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-020",
+      "findingBodyUnchanged": true,
+      "assessment": "EXPLICIT_OPERATOR_MODEL_SERVER_EXECUTABLE",
+      "contextNote": "The --server CLI path intentionally selects a local server executable for this validator. Remaining model/host/port arguments are separate argv values; version inspection reuses that selected executable. The actual release workflow fetches a fixed server archive and verifies its SHA-256 before invoking this script.",
+      "applicabilityLimits": "The CLI server path is an operator execution choice, not a model action. Script-level model checksum validation is not proof of arbitrary server identity; the workflow archive check remains material.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-021",
+      "source": {
+        "path": "scripts/validate_nova_studio.py",
+        "sha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+        "bytes": 11413,
+        "start": {
+          "line": 55,
+          "col": 48,
+          "offset": 2431
+        },
+        "end": {
+          "line": 55,
+          "col": 76,
+          "offset": 2459
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-021",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-022",
+      "source": {
+        "path": "scripts/validate_nova_studio.py",
+        "sha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+        "bytes": 11413,
+        "start": {
+          "line": 105,
+          "col": 48,
+          "offset": 5634
+        },
+        "end": {
+          "line": 105,
+          "col": 76,
+          "offset": 5662
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-022",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-023",
+      "source": {
+        "path": "scripts/validate_onboarding.py",
+        "sha256": "78ba3f2e83d48c201682e3eb2dc33d4b14084492de3ec46a1d55f98cc5d12f5f",
+        "bytes": 13668,
+        "start": {
+          "line": 88,
+          "col": 48,
+          "offset": 4187
+        },
+        "end": {
+          "line": 88,
+          "col": 76,
+          "offset": 4215
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-023",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-024",
+      "source": {
+        "path": "scripts/validate_successor_build.py",
+        "sha256": "6e1f95ead70d845f36d6860a41997021318dc6ed3b1d7c0062dd63fc271ecca1",
+        "bytes": 5045,
+        "start": {
+          "line": 23,
+          "col": 40,
+          "offset": 835
+        },
+        "end": {
+          "line": 23,
+          "col": 68,
+          "offset": 863
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-024",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-025",
+      "source": {
+        "path": "scripts/verify_aiga_requirements_lock.py",
+        "sha256": "ed9b542af90b2c0a5ccd56439e5d50da769db3057bbfa31a133a9246ad2b9d91",
+        "bytes": 1951,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1093
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1096
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-025",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "contextNote": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicabilityLimits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-026",
+      "source": {
+        "path": "scripts/verify_alpha_colab_requirements_lock.py",
+        "sha256": "93d3bb030441e7e2f1aa1c5d0b6490494a623eb1d66e53d777c1c9fe892d2a3d",
+        "bytes": 1818,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1046
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1049
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-026",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "contextNote": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicabilityLimits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-027",
+      "source": {
+        "path": "scripts/verify_alpha_requirements_lock.py",
+        "sha256": "1b372a63d5256fa103592aa60c01ef9196b5edfa77c9f0b96963efa65bd40186",
+        "bytes": 1794,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1040
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1043
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-027",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "contextNote": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicabilityLimits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-028",
+      "source": {
+        "path": "scripts/verify_backend_requirements_lock.py",
+        "sha256": "897223c5718e9bc647136e83ef051c7682c7265cf8070ee1728f01728f350b43",
+        "bytes": 1762,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1045
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1048
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-028",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "contextNote": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicabilityLimits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-029",
+      "source": {
+        "path": "scripts/verify_era_experience_requirements_lock.py",
+        "sha256": "4a07d87669a695b7751829bd6a33a520b78f89239fd80c008f748c51c5c3c4d4",
+        "bytes": 1958,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1087
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1090
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-029",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "contextNote": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicabilityLimits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-030",
+      "source": {
+        "path": "scripts/verify_mats_requirements_lock.py",
+        "sha256": "71bf3a40686921e1cbf66d3902e24a6494e1082022e74300cdef6af8bfa5c4ca",
+        "bytes": 2037,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1117
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1120
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-030",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "contextNote": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicabilityLimits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-031",
+      "source": {
+        "path": "scripts/verify_requirements_lock.py",
+        "sha256": "72c19a3a218880a45bb178522ca01a1ebf72cbfafd94fd26087e811588a3fb44",
+        "bytes": 1732,
+        "start": {
+          "line": 33,
+          "col": 33,
+          "offset": 1041
+        },
+        "end": {
+          "line": 33,
+          "col": 36,
+          "offset": 1044
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-031",
+      "findingBodyUnchanged": true,
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "contextNote": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicabilityLimits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-032",
+      "source": {
+        "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+        "sha256": "cca163b796d173c483683d65771d625fc07668e465926d89b195165af0395978",
+        "bytes": 1188,
+        "start": {
+          "line": 8,
+          "col": 36,
+          "offset": 682
+        },
+        "end": {
+          "line": 8,
+          "col": 93,
+          "offset": 739
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-032",
+      "findingBodyUnchanged": true,
+      "assessment": "FROZEN_REPLAY_CURRENT_INTERPRETER_ARGV",
+      "contextNote": "The replay code calls the current Python interpreter on a finite literal list of named scripts in a newly copied output kit; command options are literals, not interpolated source/shell text. The verifier variant checks copied source identities before replay.",
+      "applicabilityLimits": "Historical study evidence/source is preserved. This is static triage only: no replay was executed or reauthorized; an operator-owned interpreter/environment is assumed.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-033",
+      "source": {
+        "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+        "sha256": "537f5be821c82c30d87282ef6b580308b00c39ec7c49588a8a691245c1c05abf",
+        "bytes": 14947,
+        "start": {
+          "line": 333,
+          "col": 13,
+          "offset": 14567
+        },
+        "end": {
+          "line": 333,
+          "col": 76,
+          "offset": 14630
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-033",
+      "findingBodyUnchanged": true,
+      "assessment": "FROZEN_REPLAY_CURRENT_INTERPRETER_ARGV",
+      "contextNote": "The replay code calls the current Python interpreter on a finite literal list of named scripts in a newly copied output kit; command options are literals, not interpolated source/shell text. The verifier variant checks copied source identities before replay.",
+      "applicabilityLimits": "Historical study evidence/source is preserved. This is static triage only: no replay was executed or reauthorized; an operator-owned interpreter/environment is assumed.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-034",
+      "source": {
+        "path": "tests/browser/out_evolve_recovery.py",
+        "sha256": "6af4cce631cc32c66348e4375fb9d1c87d18af724231ec8dd2ec01e1a67700f8",
+        "bytes": 35716,
+        "start": {
+          "line": 454,
+          "col": 9,
+          "offset": 23105
+        },
+        "end": {
+          "line": 461,
+          "col": 10,
+          "offset": 23440
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-034",
+      "findingBodyUnchanged": true,
+      "assessment": "EXPLICIT_OPERATOR_NODE_FIXTURE_ARGV",
+      "contextNote": "NODE_EXECUTABLE deliberately selects the test interpreter. The generated fixture script is fixed source text, and all remaining paths are separate argv operands without a shell.",
+      "applicabilityLimits": "Only this test-configuration taint is assessed. No browser/native/Fleet/Harness operation is executed or cleared; supplied interpreter/module artifacts must remain trusted and source-qualified.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-035",
+      "source": {
+        "path": "tests/browser/test_discovery_lab_browser.py",
+        "sha256": "f6255542655b74810efc672cff9d5f451fc123a6d91aea98cf08e6927830cebf",
+        "bytes": 16906,
+        "start": {
+          "line": 111,
+          "col": 51,
+          "offset": 5059
+        },
+        "end": {
+          "line": 111,
+          "col": 79,
+          "offset": 5087
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-035",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-036",
+      "source": {
+        "path": "tests/browser/test_out_evolve_browser.py",
+        "sha256": "92e04eeeafea75829eb4bae947dba1cd277eea6ac6afc73a76523a15b5600847",
+        "bytes": 35621,
+        "start": {
+          "line": 86,
+          "col": 51,
+          "offset": 3575
+        },
+        "end": {
+          "line": 86,
+          "col": 79,
+          "offset": 3603
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-036",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-037",
+      "source": {
+        "path": "tests/browser/test_out_execute_browser.py",
+        "sha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e",
+        "bytes": 8271,
+        "start": {
+          "line": 43,
+          "col": 51,
+          "offset": 1751
+        },
+        "end": {
+          "line": 43,
+          "col": 79,
+          "offset": 1779
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-037",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-038",
+      "source": {
+        "path": "tests/browser/test_shadow_ledger_browser.py",
+        "sha256": "544b1e3e5003371d3df49f8563bd80e95e5a26115f98c4b1dfb50430b4754ab0",
+        "bytes": 16349,
+        "start": {
+          "line": 68,
+          "col": 13,
+          "offset": 2375
+        },
+        "end": {
+          "line": 68,
+          "col": 41,
+          "offset": 2403
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": null,
+      "findingBodyUnchanged": false,
+      "assessment": "LIST_EVENT_CAPTURE_REQUIRES_SECURITY_DISPOSITION",
+      "contextNote": "Within run_acceptance, requests is annotated and initialized as list[str] = []; observe_request appends the observed URL to that list. This expression records unexpected browser requests; it invokes no HTTP client. The surrounding browser fixture still navigates to an operator-supplied entry and validates page identity, and its scope must be reviewed independently.",
+      "applicabilityLimits": "This operator-authored assessment is not Security clearance or a scanner waiver. The new finding remains blocking; the scanner, variable and its output are left unchanged.",
+      "currentContextReview": "Inspected list initialization, nested event observer and browser navigation/identity checks in exact4a source. No validated HTTP-request defect exists at this specific append expression; final disposition belongs to the Security owner."
+    },
+    {
+      "caseId": "C4A-PY-039",
+      "source": {
+        "path": "tests/browser/test_successor_alpha_browser.py",
+        "sha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+        "bytes": 70880,
+        "start": {
+          "line": 201,
+          "col": 9,
+          "offset": 8924
+        },
+        "end": {
+          "line": 201,
+          "col": 110,
+          "offset": 9025
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-038",
+      "findingBodyUnchanged": false,
+      "assessment": "TRUSTED_REPOSITORY_EXPORTER_OPERATOR_NODE_CONFIGURATION",
+      "contextNote": "The operator-selected Node executable runs fixed repository reconstruction code with strategy supplied only as JSON stdin. The helper checks installed source identity, schema, bounded objective/seed and complete canonical report, performs trusted same-seed rediscovery, and exports from the rediscovered report to preserve authored nested property order. This call does not import a downloaded module.",
+      "applicabilityLimits": "Trust is limited to operator executable configuration and reviewed repository modules. Full reconstructed-byte equality and document/request/source checks remain required before any subsequent host import. No arbitrary downloaded code, authority or exception is admitted.",
+      "currentContextReview": "The source body changed only by appending the source-ledger acceptance invocation/report fields. The three flagged reviewed Node subprocess fixtures and their bounded arguments remain unchanged. Added imported browser acceptance is reviewed separately below. Requires fresh Security disposition; no inherited clearance."
+    },
+    {
+      "caseId": "C4A-PY-040",
+      "source": {
+        "path": "tests/browser/test_successor_alpha_browser.py",
+        "sha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+        "bytes": 70880,
+        "start": {
+          "line": 257,
+          "col": 9,
+          "offset": 11706
+        },
+        "end": {
+          "line": 264,
+          "col": 10,
+          "offset": 11917
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-039",
+      "findingBodyUnchanged": false,
+      "assessment": "FULL_BYTE_VERIFIED_RECONSTRUCTION_OPERATOR_NODE_CONFIGURATION",
+      "contextNote": "The corrected boundary refuses document/request/source failures, bounds download size, reconstructs expected bytes from validated data and trusted source, requires complete downloaded-byte equality, writes only expected bytes, and imports that reconstruction. Canonical-order repair preserves this full-byte predicate.",
+      "applicabilityLimits": "Historical a163case38 proposed inapplicability remains WITHDRAWN. This is a new exact-source context note; no old approval transfers. Bounded diagnostics may include up to48 sampled bytes per side encodedhex, not full generated bodies. Browser acceptance is tracked separately.",
+      "currentContextReview": "The source body changed only by appending the source-ledger acceptance invocation/report fields. The three flagged reviewed Node subprocess fixtures and their bounded arguments remain unchanged. Added imported browser acceptance is reviewed separately below. Requires fresh Security disposition; no inherited clearance."
+    },
+    {
+      "caseId": "C4A-PY-041",
+      "source": {
+        "path": "tests/browser/test_successor_alpha_browser.py",
+        "sha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+        "bytes": 70880,
+        "start": {
+          "line": 652,
+          "col": 13,
+          "offset": 32418
+        },
+        "end": {
+          "line": 657,
+          "col": 14,
+          "offset": 32630
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-040",
+      "findingBodyUnchanged": false,
+      "assessment": "PINNED_REPOSITORY_NATIVE_CLI_WITH_JSON_DATA",
+      "contextNote": "The selected operator Node executable runs fixed repository native-cli.mjs with bounded JSON input/output paths. This distinct call does not import browser-downloaded code; surrounding checks validate adapter proof and installed source identity.",
+      "applicabilityLimits": "Trust is limited to operator-selected executable and reviewed checkout. No arbitrary module, provider, generated program or extra authority is admitted.",
+      "currentContextReview": "The source body changed only by appending the source-ledger acceptance invocation/report fields. The three flagged reviewed Node subprocess fixtures and their bounded arguments remain unchanged. Added imported browser acceptance is reviewed separately below. Requires fresh Security disposition; no inherited clearance."
+    },
+    {
+      "caseId": "C4A-PY-042",
+      "source": {
+        "path": "tests/browser/test_successor_capability_browser.py",
+        "sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "bytes": 21837,
+        "start": {
+          "line": 99,
+          "col": 51,
+          "offset": 4241
+        },
+        "end": {
+          "line": 99,
+          "col": 79,
+          "offset": 4269
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-041",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-043",
+      "source": {
+        "path": "tests/browser/test_successor_capability_browser.py",
+        "sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "bytes": 21837,
+        "start": {
+          "line": 215,
+          "col": 57,
+          "offset": 11449
+        },
+        "end": {
+          "line": 215,
+          "col": 85,
+          "offset": 11477
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-042",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-044",
+      "source": {
+        "path": "tests/browser/test_successor_capability_browser.py",
+        "sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "bytes": 21837,
+        "start": {
+          "line": 340,
+          "col": 51,
+          "offset": 18666
+        },
+        "end": {
+          "line": 340,
+          "col": 79,
+          "offset": 18694
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-043",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-045",
+      "source": {
+        "path": "tests/browser/test_successor_capability_browser.py",
+        "sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "bytes": 21837,
+        "start": {
+          "line": 352,
+          "col": 51,
+          "offset": 19474
+        },
+        "end": {
+          "line": 352,
+          "col": 79,
+          "offset": 19502
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-044",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-046",
+      "source": {
+        "path": "tests/contracts/authority-test/creator-pty.test.py",
+        "sha256": "f25125c29ad836e6e320b7f28e49f904e64abcda5b50d6bd5fe0c1954aa7e6d8",
+        "bytes": 3052,
+        "start": {
+          "line": 28,
+          "col": 13,
+          "offset": 660
+        },
+        "end": {
+          "line": 28,
+          "col": 31,
+          "offset": 678
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-045",
+      "findingBodyUnchanged": true,
+      "assessment": "EXPLICIT_OPERATOR_PTY_NODE_EXECUTABLE",
+      "contextNote": "The executable is the operator CLI Node argument (or literal node), not text from the PTY conversation. The child script is the fixed sibling path; arguments are a list and the child environment is an explicit PATH.",
+      "applicabilityLimits": "The chosen executable is trusted operator configuration. This static disposition grants no creator authority and does not execute a PTY or any restricted probe.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-047",
+      "source": {
+        "path": "tests/runtime/test_ecosystem_browser.py",
+        "sha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+        "bytes": 19967,
+        "start": {
+          "line": 236,
+          "col": 48,
+          "offset": 10593
+        },
+        "end": {
+          "line": 236,
+          "col": 76,
+          "offset": 10621
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-046",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-048",
+      "source": {
+        "path": "tests/runtime/test_ecosystem_browser.py",
+        "sha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+        "bytes": 19967,
+        "start": {
+          "line": 276,
+          "col": 29,
+          "offset": 12702
+        },
+        "end": {
+          "line": 276,
+          "col": 57,
+          "offset": 12730
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-047",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-049",
+      "source": {
+        "path": "tests/runtime/test_successor_studio_interruptions.py",
+        "sha256": "78739943a3821c4a7f6ec62b242d756c95593cbe79f83d639d3fa74dc766d237",
+        "bytes": 7202,
+        "start": {
+          "line": 45,
+          "col": 14,
+          "offset": 1653
+        },
+        "end": {
+          "line": 52,
+          "col": 6,
+          "offset": 1903
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+        "definitionSha256": "3ff4fd088fbfa8ee0512e67b7741e6ec1ef9afde14d27385283a8e8b5c5ee789",
+        "definitionStartByte": 443735,
+        "definitionEndByte": 446751
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-048",
+      "findingBodyUnchanged": true,
+      "assessment": "FIXED_PYTHON_SCRIPT_WITH_JSON_STDIN",
+      "contextNote": "The interpreter receives a fixed module-level Python string as -c code. Home/request/binding values go through json.dumps into stdin and are loaded as JSON; they are not concatenated into the executable code or argv.",
+      "applicabilityLimits": "This is a test-only fresh-process retained read, not approval for arbitrary journal paths or unrelated subprocess calls. No source/test was executed by triage.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-050",
+      "source": {
+        "path": "tests/runtime/test_supplier_browser_browser.py",
+        "sha256": "190ebcb9ad4634302f508d23ee27355a8038d3e7d51ed9166eef54f3b536e7b7",
+        "bytes": 11276,
+        "start": {
+          "line": 167,
+          "col": 44,
+          "offset": 7684
+        },
+        "end": {
+          "line": 167,
+          "col": 72,
+          "offset": 7712
+        }
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "definitionSha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "definitionStartByte": 167510,
+        "definitionEndByte": 176226
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-049",
+      "findingBodyUnchanged": true,
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "contextNote": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicabilityLimits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-051",
+      "source": {
+        "path": "tests/runtime/test_transformation_source_audit.py",
+        "sha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+        "bytes": 31858,
+        "start": {
+          "line": 30,
+          "col": 18,
+          "offset": 1011
+        },
+        "end": {
+          "line": 30,
+          "col": 79,
+          "offset": 1072
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-050",
+      "findingBodyUnchanged": true,
+      "assessment": "GIT_OBJECT_COMPATIBILITY_WITH_SHA256",
+      "contextNote": "The SHA-1 operation computes Git blob framing/object IDs. The same source bytes also have an explicit SHA-256 check or fixture field; the Git identifier is not substituted for the content SHA-256.",
+      "applicabilityLimits": "Classification covers this protocol compatibility check only; it does not authorize SHA-1 as a credential, signature or sole new integrity primitive.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-052",
+      "source": {
+        "path": "tests/runtime/test_transformation_source_audit.py",
+        "sha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+        "bytes": 31858,
+        "start": {
+          "line": 684,
+          "col": 18,
+          "offset": 31076
+        },
+        "end": {
+          "line": 684,
+          "col": 79,
+          "offset": 31137
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-051",
+      "findingBodyUnchanged": true,
+      "assessment": "GIT_OBJECT_COMPATIBILITY_WITH_SHA256",
+      "contextNote": "The SHA-1 operation computes Git blob framing/object IDs. The same source bytes also have an explicit SHA-256 check or fixture field; the Git identifier is not substituted for the content SHA-256.",
+      "applicabilityLimits": "Classification covers this protocol compatibility check only; it does not authorize SHA-1 as a credential, signature or sole new integrity primitive.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-053",
+      "source": {
+        "path": "tests/test_featured_research.py",
+        "sha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+        "bytes": 10342,
+        "start": {
+          "line": 57,
+          "col": 12,
+          "offset": 2453
+        },
+        "end": {
+          "line": 57,
+          "col": 67,
+          "offset": 2508
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-052",
+      "findingBodyUnchanged": true,
+      "assessment": "HISTORICAL_GIT_OBJECT_ASSERTION",
+      "contextNote": "This exact assertion checks a predeclared historical Out_Execute.tex Git blob object identity, including blob framing. It preserves the existing Git object compatibility contract; it is not a cryptographic authentication credential. There is no adjacent SHA-256 assertion in this test function.",
+      "applicabilityLimits": "The historical SHA-1 object ID alone is not a modern signature or strong general-purpose integrity proof. Separate catalogue or other test checks must not be fabricated as a dual-hash check at this assertion. No finding admission or new authority is granted.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-054",
+      "source": {
+        "path": "tests/test_featured_research.py",
+        "sha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+        "bytes": 10342,
+        "start": {
+          "line": 75,
+          "col": 12,
+          "offset": 3246
+        },
+        "end": {
+          "line": 75,
+          "col": 67,
+          "offset": 3301
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-053",
+      "findingBodyUnchanged": true,
+      "assessment": "HISTORICAL_GIT_OBJECT_ASSERTION",
+      "contextNote": "This Git blob compatibility assertion follows a separate SHA-256 assertion over the same enterprise PDF bytes at line74 and precedes destination byte equality at line76. SHA-1 preserves the declared historical Git object identity; the separate SHA-256/byte checks must remain intact.",
+      "applicabilityLimits": "This exact dual-check context does not qualify the bare historical Git assertions in current52 or54. Git SHA-1 alone is not a modern signature or general authentication proof; no finding admission is granted.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-055",
+      "source": {
+        "path": "tests/test_featured_research.py",
+        "sha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+        "bytes": 10342,
+        "start": {
+          "line": 110,
+          "col": 12,
+          "offset": 5335
+        },
+        "end": {
+          "line": 110,
+          "col": 63,
+          "offset": 5386
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "definitionSha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "definitionStartByte": 216415,
+        "definitionEndByte": 218600
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-054",
+      "findingBodyUnchanged": true,
+      "assessment": "HISTORICAL_GIT_OBJECT_ASSERTION",
+      "contextNote": "This exact assertion checks a predeclared historical PDF Git blob object identity, including blob framing. It preserves the existing Git object compatibility contract; it is not a cryptographic authentication credential. There is no adjacent SHA-256 assertion in this test function.",
+      "applicabilityLimits": "The historical SHA-1 object ID alone is not a modern signature or strong general-purpose integrity proof. Separate catalogue or other test checks must not be fabricated as a dual-hash check at this assertion. No finding admission or new authority is granted.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-056",
+      "source": {
+        "path": "tests/test_strategy_python_security.py",
+        "sha256": "608c42e215b8a287183ae483bbe95435ce973d35aa9ada103940571fa6ae5c42",
+        "bytes": 53313,
+        "start": {
+          "line": 114,
+          "col": 13,
+          "offset": 3963
+        },
+        "end": {
+          "line": 114,
+          "col": 104,
+          "offset": 4054
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-055",
+      "findingBodyUnchanged": true,
+      "assessment": "OPERATOR_OWNED_TOOL_CACHE_VERSION_PROBE",
+      "contextNote": "The test fixture deliberately probes an existing operator-owned pre-commit cache interpreter with fixed Python metadata-version code. It captures output and enforces a timeout, then requires Semgrep1.99.0. Candidate/runtime data does not supply code or paths.",
+      "applicabilityLimits": "PRE_COMMIT_HOME/cache contents are an operator trust boundary; the version probe does not authenticate arbitrary executables or make writable untrusted caches safe. No new tool installation or download occurs in this fixture.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    },
+    {
+      "caseId": "C4A-PY-057",
+      "source": {
+        "path": "tests/test_successor_capability_reconstruction.py",
+        "sha256": "09b71362d7f6eee3ff4b909a033d025f87c0e1f46abf228e59eeb5a779dc0629",
+        "bytes": 7794,
+        "start": {
+          "line": 48,
+          "col": 9,
+          "offset": 2339
+        },
+        "end": {
+          "line": 48,
+          "col": 110,
+          "offset": 2440
+        }
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "definitionSha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "definitionStartByte": 385577,
+        "definitionEndByte": 390868
+      },
+      "responsibleEngineeringOwner": "#4899 runtime/scanner owner; #4907 component owner for newly included shadow-ledger fixture",
+      "responsibleDecisionOwner": "Existing Security review/decision owner in #4850; original operator identity not exposed by the retained records",
+      "disposition": "UNAPPROVED",
+      "admitted": false,
+      "previousCaseId": "C2645-PY-056",
+      "findingBodyUnchanged": true,
+      "assessment": "FIXED_REPOSITORY_EXPORTER_FIXTURE_OPERATOR_NODE_CONFIGURATION",
+      "contextNote": "The inert regression fixture runs a fixed Node script importing reviewed repository mission/research/exporter/source-hash modules. It uses hardcoded public CSV inputs and seed17, then returns generated module strings as base64 data for comparison. Generated modules are not imported or executed; host execution-boundary tests use an inert replacement.",
+      "applicabilityLimits": "NODE_EXECUTABLE and reviewed checkout remain operator trust boundaries. This does not authenticate arbitrary executable paths or permit running downloaded/generated code. No finding admission or rule waiver is implied.",
+      "currentContextReview": "Exact source/rule/location matched; prior UNAPPROVED note retained. No new clearance or inapplicability admission."
+    }
+  ],
+  "publicScope": "Typed counts/hashes/positions and operator-authored unapproved context notes only; no raw scanner report, rule body, raw messages or artifact ZIP published."
+}

@@ -1,0 +1,407 @@
+{
+  "schema": "alpha-automated-source-delivery/v2",
+  "accepted": true,
+  "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+  "runId": "inventory-repair-replication",
+  "sourceRef": "443246db37b30b83f4b9c8a854ceb226601e0155",
+  "methodIdentity": "6171b25c611cf9d23f90a2deebf8adcb982e5733652228c653bf5671742298e0",
+  "artifacts": {
+    "acceptance.json": "5aad2b838ba15b0facc47afe5567c25a0014a94d75654fd86e152edcb9282343",
+    "action-plan.csv": "7ee85acd5a046a31a41d9298e44a18623b7ba12f090880149a2ea270fe0c3090",
+    "attempt-5da22779-7b45-4174-91a9-7126c142ace7.json": "66dc554f0425197020ad7c6e5c13fc5f870f0fea6d8922d010f7802fa727ecaf",
+    "attempt-e7e472e7-9253-4896-815a-3ad49f0a64ff.json": "abdabf3c6d00619d45e29f11da280f9125af8f2cc0c01b4864d7bea136f269a1",
+    "correction.json": "a452b48a4aff5deb410e3d74b4cb2b42dbb7d51263e2984ccb28cc759d4d5eb8",
+    "declared-inventory.csv": "fdb38bf974ac602fe02d9520523d406257f220711eb0fbea13b164c6418f3db3",
+    "differences.csv": "d86ea189a80be283a9cbb41673333b13a21c6d72d571c0d687ff8014ce064a06",
+    "final-acceptance.json": "53187bff2e30139f9e03d476674f95ad00e0f5e6ee703663435bb70ba03d85d8",
+    "final-revalidation-5da22779-7b45-4174-91a9-7126c142ace7.json": "cb6b26d54f44c8b564a29ffaa9eb83efe5f61f1997e4e232ee2c8f11d0854c5e",
+    "observed-inventory.csv": "bcac89c47f028ee527dab928516caa729f85d20bf677f86a690d51547b46001e",
+    "plan.json": "4ea1372b152492efbad7dae68b70524df34f4ec4703063dd38fd2a4e616521a1",
+    "prepared-inputs.json": "2b26c3349ffe3f13a614b1283c3fbde4d371003c6e913068220d786f948e54ae",
+    "report-context.json": "512e87416a65f1e15ba080dcfe4ae716a139d5e596f5324df284c6a1fa1f916e",
+    "report.md": "96d692a6307838542ca172067a100f80af5c50e60686df61e7ab51d361f94d82",
+    "reservation-001.json": "1ceae36b3b81527279420544b946c62a2de82a05a256cc825063143293bd8ffc",
+    "reservation-002.json": "5a43bf04da89daa7687f67fb24f9fda1d6239dad7773d2a1141fffceba607d2c",
+    "result.json": "c5de4c64a25babb372bb3beddb0510a27cb77ee346d8ab277720e6ed2db3c35b",
+    "stage-correction.json": "8e13d0e8ddef36f324c90460eb5be0d6b77e7775b4fe77c4e29b768823bb5d2d",
+    "stage-execution.json": "dc0c60822aafd8a7082d958cf34e266faf760ce019a54b20f7f0f5aa44ce022f",
+    "stage-packaging.json": "60b3a8263e1340a93b7f138c3713ed1d3b63184edef28fe3e1ca2649f56f1222",
+    "stage-planning.json": "73c99daf28662d330b9b520c818d173e7aed616dc0fd515bf4d5f7515d50f290",
+    "stage-preparation.json": "7df13e727362140529ac573dfee0bff0deffacd5d6c2cb438729c8323b1d8808",
+    "stage-recovery.json": "b27595a3df601cb21b43301d11d87e4f0b299cfea02b15ee44dbf1ab44a70080",
+    "stage-reporting.json": "f0120afed5570e4d28088150895e48a2c1ee0a4025fcf26e7d33f82805288d29",
+    "stage-verification.json": "62ecb07c036711e5bf17a9ab7e12607872e4241b3bc8b24471aca2fbb510ab51",
+    "workspace.json": "0f316e367b19c5afaccc2aa504544907b99e1466125d76d2e6600ebb8aa9a1d2"
+  },
+  "stages": [
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "recovery",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "e7e472e7-9253-4896-815a-3ad49f0a64ff",
+      "artifacts": {},
+      "wallMicroseconds": {
+        "value": 26,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 10,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    },
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "planning",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "e7e472e7-9253-4896-815a-3ad49f0a64ff",
+      "artifacts": {},
+      "wallMicroseconds": {
+        "value": 41,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 157,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    },
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "preparation",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "e7e472e7-9253-4896-815a-3ad49f0a64ff",
+      "artifacts": {
+        "prepared-inputs.json": "2b26c3349ffe3f13a614b1283c3fbde4d371003c6e913068220d786f948e54ae",
+        "declared-inventory.csv": "fdb38bf974ac602fe02d9520523d406257f220711eb0fbea13b164c6418f3db3",
+        "observed-inventory.csv": "bcac89c47f028ee527dab928516caa729f85d20bf677f86a690d51547b46001e"
+      },
+      "wallMicroseconds": {
+        "value": 42992,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 19340,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 12,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    },
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "execution",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "e7e472e7-9253-4896-815a-3ad49f0a64ff",
+      "artifacts": {
+        "result.json": "c5de4c64a25babb372bb3beddb0510a27cb77ee346d8ab277720e6ed2db3c35b"
+      },
+      "wallMicroseconds": {
+        "value": 8991,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 7438,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    },
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "verification",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "5da22779-7b45-4174-91a9-7126c142ace7",
+      "artifacts": {
+        "acceptance.json": "5aad2b838ba15b0facc47afe5567c25a0014a94d75654fd86e152edcb9282343"
+      },
+      "wallMicroseconds": {
+        "value": 8542,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 16900,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    },
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "correction",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "5da22779-7b45-4174-91a9-7126c142ace7",
+      "artifacts": {
+        "correction.json": "a452b48a4aff5deb410e3d74b4cb2b42dbb7d51263e2984ccb28cc759d4d5eb8"
+      },
+      "wallMicroseconds": {
+        "value": 1128,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 482,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    },
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "packaging",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "5da22779-7b45-4174-91a9-7126c142ace7",
+      "artifacts": {
+        "differences.csv": "d86ea189a80be283a9cbb41673333b13a21c6d72d571c0d687ff8014ce064a06",
+        "action-plan.csv": "7ee85acd5a046a31a41d9298e44a18623b7ba12f090880149a2ea270fe0c3090",
+        "workspace.json": "0f316e367b19c5afaccc2aa504544907b99e1466125d76d2e6600ebb8aa9a1d2"
+      },
+      "wallMicroseconds": {
+        "value": 3772,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 1771,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    },
+    {
+      "schema": "alpha-automated-stage/v1",
+      "stage": "reporting",
+      "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+      "attempt": "5da22779-7b45-4174-91a9-7126c142ace7",
+      "artifacts": {
+        "report.md": "96d692a6307838542ca172067a100f80af5c50e60686df61e7ab51d361f94d82"
+      },
+      "reportContext": {
+        "priorStageReceipts": 7,
+        "unknownAttempts": 1
+      },
+      "wallMicroseconds": {
+        "value": 6421,
+        "basis": "measured",
+        "reference": "Observed local Node elapsed stage time."
+      },
+      "cpuMicroseconds": {
+        "value": 4635,
+        "basis": "measured",
+        "reference": "Observed local process CPU; child Git CPU excluded."
+      },
+      "toolInvocations": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "Fixed Git read invocations in this stage."
+      },
+      "modelCalls": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No model adapter is called by this deterministic service."
+      },
+      "routineHumanMinutes": {
+        "value": 0,
+        "basis": "measured",
+        "reference": "No operator intervention inside the automated approved local run; user decisions are separate."
+      },
+      "monetaryCost": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Use separately sourced compute rates and allocated setup/maintenance; process timing alone is not money."
+      }
+    }
+  ],
+  "finalRevalidation": {
+    "schema": "alpha-source-final-revalidation/v1",
+    "accepted": true,
+    "stage": "verification",
+    "check": "Full Git-bound preparation, complete existing-guide result, workspace, all deliverable CSVs and report recomputed before completion.",
+    "wallMicroseconds": {
+      "value": 70123,
+      "basis": "measured",
+      "reference": "Observed final whole-output revalidation."
+    },
+    "cpuMicroseconds": {
+      "value": 51526,
+      "basis": "measured",
+      "reference": "Observed local Node CPU; child Git CPU excluded."
+    },
+    "toolInvocations": {
+      "value": 12,
+      "basis": "measured",
+      "reference": "Fixed Git reads in final revalidation."
+    },
+    "modelCalls": {
+      "value": 0,
+      "basis": "measured",
+      "reference": "No model adapter is called by deterministic revalidation."
+    },
+    "monetaryCost": {
+      "value": null,
+      "basis": "unknown",
+      "reference": "Complete execution timing still requires prices and amortized costs."
+    }
+  },
+  "interruptedOrUncommittedAttempts": {
+    "value": 1,
+    "basis": "measured",
+    "reference": "Observed earlier unfinished attempt records; retained costs are not automatically refunded or erased."
+  },
+  "fullAgentCost": {
+    "value": null,
+    "basis": "unknown",
+    "reference": "Execution trace is available; full monetary cost requires explicit rates/amortization."
+  },
+  "authorization": {
+    "schema": "alpha-source-reservation/v1",
+    "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+    "ordinal": 2,
+    "reservedSeconds": 20,
+    "attempt": "5da22779-7b45-4174-91a9-7126c142ace7",
+    "startedAt": "2026-10-25T21:41:14.969Z",
+    "accounting": "Full attempt allowance retained, including interrupted work and reconnect."
+  },
+  "connectedExecution": "NOT RUN; foreground local Node only",
+  "commercialAcceptance": "unknown",
+  "authority": "none"
+}
