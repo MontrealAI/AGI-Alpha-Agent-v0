@@ -1,0 +1,44 @@
+✖ a malformed reservation history and an interrupted recovery guard fail closed (537.777077ms)
+✖ source rebuild preserves the approved expiry between real Git reads under a controlled clock (92.521371ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 714.533183
+
+✖ failing tests:
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:268:1
+✖ a malformed reservation history and an interrupted recovery guard fail closed (537.777077ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:280:5
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:18:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:269:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /explicit operator inspection/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:339:1
+✖ source rebuild preserves the approved expiry between real Git reads under a controlled clock (92.521371ms)
+  AssertionError [ERR_ASSERTION]: A new Git read started after approved expiry.
+      at file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:355:28
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:18:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-reviewed-node.test.mjs:340:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

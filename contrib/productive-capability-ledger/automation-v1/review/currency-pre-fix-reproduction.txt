@@ -1,0 +1,30 @@
+✖ a foreign-currency allocation refuses without relabeling or changing any mission amounts (56.88401ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 195.751699
+
+✖ failing tests:
+
+test at examples/successor-alpha/review-pre-fix-currency.mjs:88:1
+✖ a foreign-currency allocation refuses without relabeling or changing any mission amounts (56.88401ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /currency differs/. Input:
+  
+  ''
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/ba16d8d248e5/alpha/examples/successor-alpha/review-pre-fix-currency.mjs:97:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: /currency differs/,
+    operator: 'match',
+    diff: 'simple'
+  }

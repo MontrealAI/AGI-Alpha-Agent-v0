@@ -1,0 +1,1305 @@
+{
+  "schema": "alpha-automated-offering-analysis/v1",
+  "offeringId": "committed-source-assurance",
+  "sourceHashes": {
+    "HUMAN_BENCHMARK_SOURCES.json": "79952c9d3c3ea5760d48976a123201bbaae33dcfe44e3eead08f999306494af2",
+    "execution-traces.json": "d077e94b75a8964e5ab6b5ada9a84aecb0cae53eaace36e140c9d083a93a2ab7",
+    "external-process-measurements.json": "b416016ad366b2169b969e094b2936bf22d42f5d37624ca601baa29ba9f498c2"
+  },
+  "actualExecution": {
+    "primaryMissions": 2,
+    "operatingReplications": 2,
+    "routineOperatorHandling": "Zero observed inside the approved deterministic local run; user decisions and commercial acceptance are separate.",
+    "fullMonetaryCost": null,
+    "modelProviderCalls": 0,
+    "measurementScope": "External replication includes launch/import/Git descendant CPU; stages alone exclude subprocess cost. No authenticated executor test performed."
+  },
+  "primaryModeledComparison": {
+    "schema": "alpha-automated-cost-summary/v1",
+    "offeringId": "committed-source-assurance",
+    "currency": "USD",
+    "monetaryUnit": "one million micros per currency unit; final monetary outputs rounded upward once",
+    "scenarios": [
+      {
+        "name": "base",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 500,
+          "attemptsPerMonth": 510,
+          "acceptedPerMonth": 490,
+          "utilizationBps": 5000,
+          "acceptanceBps": 9800
+        },
+        "costs": {
+          "nextRequestMicros": 604595,
+          "marginalMicrosPerAccepted": 616934,
+          "recurringMicrosPerAccepted": 923057,
+          "fullyLoadedMicrosPerAccepted": 2273550,
+          "variableMonthlyMicros": 302297467,
+          "sharedMonthlyMicros": 150000000,
+          "amortizedMonthlyMicros": 661741667
+        },
+        "residualHumanMinutesPerRequest": 1,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 1.0293664161994052,
+            "breakEvenHumanSeconds": 62
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 1.5401380218383238,
+            "breakEvenHumanSeconds": 93
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 3.7934637125150394,
+            "breakEvenHumanSeconds": 228
+          }
+        },
+        "unknownInputs": [
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "local-preparation",
+              "stage": "preparation",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 21
+            },
+            {
+              "id": "local-planning",
+              "stage": "planning",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 21
+            },
+            {
+              "id": "local-execution",
+              "stage": "execution",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 21
+            },
+            {
+              "id": "local-verification",
+              "stage": "verification",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 21
+            },
+            {
+              "id": "local-correction",
+              "stage": "correction",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 21
+            },
+            {
+              "id": "local-packaging",
+              "stage": "packaging",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 20
+            },
+            {
+              "id": "local-reporting",
+              "stage": "reporting",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 20
+            },
+            {
+              "id": "local-recovery",
+              "stage": "recovery",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 21
+            },
+            {
+              "id": "connected-admission-overhead",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 5100
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "required-user-decision",
+              "stage": "planning",
+              "costMicrosPerRequest": 599334
+            },
+            {
+              "id": "residual-exception-investigation",
+              "stage": "recovery",
+              "costMicrosPerRequest": 0
+            }
+          ],
+          "investments": [
+            {
+              "id": "initial-setup",
+              "kind": "setup",
+              "amortizedMonthlyMicros": 60158334
+            },
+            {
+              "id": "development-including-failed-work",
+              "kind": "development",
+              "amortizedMonthlyMicros": 601583334
+            }
+          ]
+        }
+      },
+      {
+        "name": "conservative",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 200,
+          "attemptsPerMonth": 230,
+          "acceptedPerMonth": 190,
+          "utilizationBps": 2000,
+          "acceptanceBps": 9500
+        },
+        "costs": {
+          "nextRequestMicros": 1372380,
+          "marginalMicrosPerAccepted": 1444611,
+          "recurringMicrosPerAccepted": 3023558,
+          "fullyLoadedMicrosPerAccepted": 9989260,
+          "variableMonthlyMicros": 274476000,
+          "sharedMonthlyMicros": 300000000,
+          "amortizedMonthlyMicros": 1323483334
+        },
+        "residualHumanMinutesPerRequest": 2.25,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 2.4103623909607164,
+            "breakEvenHumanSeconds": 145
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 5.044868567414086,
+            "breakEvenHumanSeconds": 303
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 16.66728528774662,
+            "breakEvenHumanSeconds": 1001
+          }
+        },
+        "unknownInputs": [
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "local-preparation",
+              "stage": "preparation",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 115
+            },
+            {
+              "id": "local-planning",
+              "stage": "planning",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 115
+            },
+            {
+              "id": "local-execution",
+              "stage": "execution",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 115
+            },
+            {
+              "id": "local-verification",
+              "stage": "verification",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 115
+            },
+            {
+              "id": "local-correction",
+              "stage": "correction",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 115
+            },
+            {
+              "id": "local-packaging",
+              "stage": "packaging",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 95
+            },
+            {
+              "id": "local-reporting",
+              "stage": "reporting",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 95
+            },
+            {
+              "id": "local-recovery",
+              "stage": "recovery",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 115
+            },
+            {
+              "id": "connected-admission-overhead",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 23000
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "required-user-decision",
+              "stage": "planning",
+              "costMicrosPerRequest": 1198667
+            },
+            {
+              "id": "residual-exception-investigation",
+              "stage": "recovery",
+              "costMicrosPerRequest": 149834
+            }
+          ],
+          "investments": [
+            {
+              "id": "initial-setup",
+              "kind": "setup",
+              "amortizedMonthlyMicros": 120316667
+            },
+            {
+              "id": "development-including-failed-work",
+              "kind": "development",
+              "amortizedMonthlyMicros": 1203166667
+            }
+          ]
+        }
+      },
+      {
+        "name": "stress",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 50,
+          "attemptsPerMonth": 87.5,
+          "acceptedPerMonth": 40,
+          "utilizationBps": 500,
+          "acceptanceBps": 8000
+        },
+        "costs": {
+          "nextRequestMicros": 4376384,
+          "marginalMicrosPerAccepted": 5470480,
+          "recurringMicrosPerAccepted": 20470480,
+          "fullyLoadedMicrosPerAccepted": 152818813,
+          "variableMonthlyMicros": 218819167,
+          "sharedMonthlyMicros": 600000000,
+          "amortizedMonthlyMicros": 5293933334
+        },
+        "residualHumanMinutesPerRequest": 7,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 9.127607063403781,
+            "breakEvenHumanSeconds": 548
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 34.15541573971079,
+            "breakEvenHumanSeconds": 2050
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": 254.98133342602893,
+            "breakEvenHumanSeconds": 15299
+          }
+        },
+        "unknownInputs": [
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "local-preparation",
+              "stage": "preparation",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 875
+            },
+            {
+              "id": "local-planning",
+              "stage": "planning",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 875
+            },
+            {
+              "id": "local-execution",
+              "stage": "execution",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 875
+            },
+            {
+              "id": "local-verification",
+              "stage": "verification",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 875
+            },
+            {
+              "id": "local-correction",
+              "stage": "correction",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 875
+            },
+            {
+              "id": "local-packaging",
+              "stage": "packaging",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 400
+            },
+            {
+              "id": "local-reporting",
+              "stage": "reporting",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 400
+            },
+            {
+              "id": "local-recovery",
+              "stage": "recovery",
+              "implementation": "implemented",
+              "costMicrosPerRequest": 875
+            },
+            {
+              "id": "connected-admission-overhead",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": 175000
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "required-user-decision",
+              "stage": "planning",
+              "costMicrosPerRequest": 2996667
+            },
+            {
+              "id": "residual-exception-investigation",
+              "stage": "recovery",
+              "costMicrosPerRequest": 1198667
+            }
+          ],
+          "investments": [
+            {
+              "id": "initial-setup",
+              "kind": "setup",
+              "amortizedMonthlyMicros": 481266667
+            },
+            {
+              "id": "development-including-failed-work",
+              "kind": "development",
+              "amortizedMonthlyMicros": 4812666667
+            }
+          ]
+        }
+      }
+    ],
+    "scope": "Conditional automated-configuration planning over explicitly labeled inputs. Expected failed attempts and residual exceptions are charged. Missing live execution is not qualified by this calculation; no payment, guaranteed acceptance or measured saving is established.",
+    "decisionBoundary": "Required objective, input-rights, scope and execution approvals remain user decisions. A zero routine handling scenario never grants authority."
+  },
+  "humanDurationSensitivity": [
+    {
+      "traditionalMinutes": 1,
+      "scenarios": [
+        {
+          "name": "base",
+          "humanBaselineMicrosPerAccepted": 599334,
+          "comparison": {
+            "marginal": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 1.0293664161994052,
+              "breakEvenHumanSeconds": 62
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 1.5401380218383238,
+              "breakEvenHumanSeconds": 93
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 3.7934637125150394,
+              "breakEvenHumanSeconds": 228
+            }
+          }
+        },
+        {
+          "name": "conservative",
+          "humanBaselineMicrosPerAccepted": 599334,
+          "comparison": {
+            "marginal": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 2.4103623909607164,
+              "breakEvenHumanSeconds": 145
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 5.044868567414086,
+              "breakEvenHumanSeconds": 303
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 16.66728528774662,
+              "breakEvenHumanSeconds": 1001
+            }
+          }
+        },
+        {
+          "name": "stress",
+          "humanBaselineMicrosPerAccepted": 599334,
+          "comparison": {
+            "marginal": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 9.127607063403781,
+              "breakEvenHumanSeconds": 548
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 34.15541573971079,
+              "breakEvenHumanSeconds": 2050
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 254.98133342602893,
+              "breakEvenHumanSeconds": 15299
+            }
+          }
+        }
+      ]
+    },
+    {
+      "traditionalMinutes": 2,
+      "scenarios": [
+        {
+          "name": "base",
+          "humanBaselineMicrosPerAccepted": 1198667,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.0293664161994052,
+              "breakEvenHumanSeconds": 62
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.5401380218383238,
+              "breakEvenHumanSeconds": 93
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 3.7934637125150394,
+              "breakEvenHumanSeconds": 228
+            }
+          }
+        },
+        {
+          "name": "conservative",
+          "humanBaselineMicrosPerAccepted": 1198667,
+          "comparison": {
+            "marginal": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 2.4103623909607164,
+              "breakEvenHumanSeconds": 145
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 5.044868567414086,
+              "breakEvenHumanSeconds": 303
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 16.66728528774662,
+              "breakEvenHumanSeconds": 1001
+            }
+          }
+        },
+        {
+          "name": "stress",
+          "humanBaselineMicrosPerAccepted": 1198667,
+          "comparison": {
+            "marginal": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 9.127607063403781,
+              "breakEvenHumanSeconds": 548
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 34.15541573971079,
+              "breakEvenHumanSeconds": 2050
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 254.98133342602893,
+              "breakEvenHumanSeconds": 15299
+            }
+          }
+        }
+      ]
+    },
+    {
+      "traditionalMinutes": 5,
+      "scenarios": [
+        {
+          "name": "base",
+          "humanBaselineMicrosPerAccepted": 2996667,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.0293664161994052,
+              "breakEvenHumanSeconds": 62
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.5401380218383238,
+              "breakEvenHumanSeconds": 93
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 3.7934637125150394,
+              "breakEvenHumanSeconds": 228
+            }
+          }
+        },
+        {
+          "name": "conservative",
+          "humanBaselineMicrosPerAccepted": 2996667,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 2.4103623909607164,
+              "breakEvenHumanSeconds": 145
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 5.044868567414086,
+              "breakEvenHumanSeconds": 303
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 16.66728528774662,
+              "breakEvenHumanSeconds": 1001
+            }
+          }
+        },
+        {
+          "name": "stress",
+          "humanBaselineMicrosPerAccepted": 2996667,
+          "comparison": {
+            "marginal": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 9.127607063403781,
+              "breakEvenHumanSeconds": 548
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 34.15541573971079,
+              "breakEvenHumanSeconds": 2050
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 254.98133342602893,
+              "breakEvenHumanSeconds": 15299
+            }
+          }
+        }
+      ]
+    },
+    {
+      "traditionalMinutes": 15,
+      "scenarios": [
+        {
+          "name": "base",
+          "humanBaselineMicrosPerAccepted": 8990000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.0293664161994052,
+              "breakEvenHumanSeconds": 62
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.5401380218383238,
+              "breakEvenHumanSeconds": 93
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 3.7934637125150394,
+              "breakEvenHumanSeconds": 228
+            }
+          }
+        },
+        {
+          "name": "conservative",
+          "humanBaselineMicrosPerAccepted": 8990000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 2.4103623909607164,
+              "breakEvenHumanSeconds": 145
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 5.044868567414086,
+              "breakEvenHumanSeconds": 303
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 16.66728528774662,
+              "breakEvenHumanSeconds": 1001
+            }
+          }
+        },
+        {
+          "name": "stress",
+          "humanBaselineMicrosPerAccepted": 8990000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 9.127607063403781,
+              "breakEvenHumanSeconds": 548
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 34.15541573971079,
+              "breakEvenHumanSeconds": 2050
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 254.98133342602893,
+              "breakEvenHumanSeconds": 15299
+            }
+          }
+        }
+      ]
+    },
+    {
+      "traditionalMinutes": 30,
+      "scenarios": [
+        {
+          "name": "base",
+          "humanBaselineMicrosPerAccepted": 17980000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.0293664161994052,
+              "breakEvenHumanSeconds": 62
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.5401380218383238,
+              "breakEvenHumanSeconds": 93
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 3.7934637125150394,
+              "breakEvenHumanSeconds": 228
+            }
+          }
+        },
+        {
+          "name": "conservative",
+          "humanBaselineMicrosPerAccepted": 17980000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 2.4103623909607164,
+              "breakEvenHumanSeconds": 145
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 5.044868567414086,
+              "breakEvenHumanSeconds": 303
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 16.66728528774662,
+              "breakEvenHumanSeconds": 1001
+            }
+          }
+        },
+        {
+          "name": "stress",
+          "humanBaselineMicrosPerAccepted": 17980000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 9.127607063403781,
+              "breakEvenHumanSeconds": 548
+            },
+            "recurring": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 34.15541573971079,
+              "breakEvenHumanSeconds": 2050
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 254.98133342602893,
+              "breakEvenHumanSeconds": 15299
+            }
+          }
+        }
+      ]
+    },
+    {
+      "traditionalMinutes": 60,
+      "scenarios": [
+        {
+          "name": "base",
+          "humanBaselineMicrosPerAccepted": 35960000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.0293664161994052,
+              "breakEvenHumanSeconds": 62
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.5401380218383238,
+              "breakEvenHumanSeconds": 93
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 3.7934637125150394,
+              "breakEvenHumanSeconds": 228
+            }
+          }
+        },
+        {
+          "name": "conservative",
+          "humanBaselineMicrosPerAccepted": 35960000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 2.4103623909607164,
+              "breakEvenHumanSeconds": 145
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 5.044868567414086,
+              "breakEvenHumanSeconds": 303
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 16.66728528774662,
+              "breakEvenHumanSeconds": 1001
+            }
+          }
+        },
+        {
+          "name": "stress",
+          "humanBaselineMicrosPerAccepted": 35960000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 9.127607063403781,
+              "breakEvenHumanSeconds": 548
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 34.15541573971079,
+              "breakEvenHumanSeconds": 2050
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 254.98133342602893,
+              "breakEvenHumanSeconds": 15299
+            }
+          }
+        }
+      ]
+    },
+    {
+      "traditionalMinutes": 120,
+      "scenarios": [
+        {
+          "name": "base",
+          "humanBaselineMicrosPerAccepted": 71920000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.0293664161994052,
+              "breakEvenHumanSeconds": 62
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 1.5401380218383238,
+              "breakEvenHumanSeconds": 93
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 3.7934637125150394,
+              "breakEvenHumanSeconds": 228
+            }
+          }
+        },
+        {
+          "name": "conservative",
+          "humanBaselineMicrosPerAccepted": 71920000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 2.4103623909607164,
+              "breakEvenHumanSeconds": 145
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 5.044868567414086,
+              "breakEvenHumanSeconds": 303
+            },
+            "fullyLoaded": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 16.66728528774662,
+              "breakEvenHumanSeconds": 1001
+            }
+          }
+        },
+        {
+          "name": "stress",
+          "humanBaselineMicrosPerAccepted": 71920000,
+          "comparison": {
+            "marginal": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 9.127607063403781,
+              "breakEvenHumanSeconds": 548
+            },
+            "recurring": {
+              "outcome": "win",
+              "breakEvenHumanMinutes": 34.15541573971079,
+              "breakEvenHumanSeconds": 2050
+            },
+            "fullyLoaded": {
+              "outcome": "loss",
+              "breakEvenHumanMinutes": 254.98133342602893,
+              "breakEvenHumanSeconds": 15299
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "observedCostOnly": {
+    "schema": "alpha-automated-cost-summary/v1",
+    "offeringId": "committed-source-assurance",
+    "currency": "USD",
+    "monetaryUnit": "one million micros per currency unit; final monetary outputs rounded upward once",
+    "scenarios": [
+      {
+        "name": "base",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 500,
+          "attemptsPerMonth": 510,
+          "acceptedPerMonth": 490,
+          "utilizationBps": 5000,
+          "acceptanceBps": 9800
+        },
+        "costs": {
+          "nextRequestMicros": null,
+          "marginalMicrosPerAccepted": null,
+          "recurringMicrosPerAccepted": null,
+          "fullyLoadedMicrosPerAccepted": null,
+          "variableMonthlyMicros": null,
+          "sharedMonthlyMicros": null,
+          "amortizedMonthlyMicros": null
+        },
+        "residualHumanMinutesPerRequest": 1,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "operations.0.unitCostMicros",
+          "operations.1.unitCostMicros",
+          "operations.2.unitCostMicros",
+          "operations.3.unitCostMicros",
+          "operations.4.unitCostMicros",
+          "operations.5.unitCostMicros",
+          "operations.6.unitCostMicros",
+          "operations.7.unitCostMicros",
+          "operations.8.unitCostMicros",
+          "monthly.0.amountMicros",
+          "investments.0.amountMicros",
+          "investments.1.amountMicros",
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "local-preparation",
+              "stage": "preparation",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-planning",
+              "stage": "planning",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-execution",
+              "stage": "execution",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-verification",
+              "stage": "verification",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-correction",
+              "stage": "correction",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-packaging",
+              "stage": "packaging",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-reporting",
+              "stage": "reporting",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-recovery",
+              "stage": "recovery",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "connected-admission-overhead",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "required-user-decision",
+              "stage": "planning",
+              "costMicrosPerRequest": 599334
+            },
+            {
+              "id": "residual-exception-investigation",
+              "stage": "recovery",
+              "costMicrosPerRequest": 0
+            }
+          ],
+          "investments": [
+            {
+              "id": "initial-setup",
+              "kind": "setup",
+              "amortizedMonthlyMicros": null
+            },
+            {
+              "id": "development-including-failed-work",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "conservative",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 200,
+          "attemptsPerMonth": 230,
+          "acceptedPerMonth": 190,
+          "utilizationBps": 2000,
+          "acceptanceBps": 9500
+        },
+        "costs": {
+          "nextRequestMicros": null,
+          "marginalMicrosPerAccepted": null,
+          "recurringMicrosPerAccepted": null,
+          "fullyLoadedMicrosPerAccepted": null,
+          "variableMonthlyMicros": null,
+          "sharedMonthlyMicros": null,
+          "amortizedMonthlyMicros": null
+        },
+        "residualHumanMinutesPerRequest": 2.25,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "operations.0.unitCostMicros",
+          "operations.1.unitCostMicros",
+          "operations.2.unitCostMicros",
+          "operations.3.unitCostMicros",
+          "operations.4.unitCostMicros",
+          "operations.5.unitCostMicros",
+          "operations.6.unitCostMicros",
+          "operations.7.unitCostMicros",
+          "operations.8.unitCostMicros",
+          "monthly.0.amountMicros",
+          "investments.0.amountMicros",
+          "investments.1.amountMicros",
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "local-preparation",
+              "stage": "preparation",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-planning",
+              "stage": "planning",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-execution",
+              "stage": "execution",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-verification",
+              "stage": "verification",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-correction",
+              "stage": "correction",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-packaging",
+              "stage": "packaging",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-reporting",
+              "stage": "reporting",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-recovery",
+              "stage": "recovery",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "connected-admission-overhead",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "required-user-decision",
+              "stage": "planning",
+              "costMicrosPerRequest": 1198667
+            },
+            {
+              "id": "residual-exception-investigation",
+              "stage": "recovery",
+              "costMicrosPerRequest": 149834
+            }
+          ],
+          "investments": [
+            {
+              "id": "initial-setup",
+              "kind": "setup",
+              "amortizedMonthlyMicros": null
+            },
+            {
+              "id": "development-including-failed-work",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "stress",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": 50,
+          "attemptsPerMonth": 87.5,
+          "acceptedPerMonth": 40,
+          "utilizationBps": 500,
+          "acceptanceBps": 8000
+        },
+        "costs": {
+          "nextRequestMicros": null,
+          "marginalMicrosPerAccepted": null,
+          "recurringMicrosPerAccepted": null,
+          "fullyLoadedMicrosPerAccepted": null,
+          "variableMonthlyMicros": null,
+          "sharedMonthlyMicros": null,
+          "amortizedMonthlyMicros": null
+        },
+        "residualHumanMinutesPerRequest": 7,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "operations.0.unitCostMicros",
+          "operations.1.unitCostMicros",
+          "operations.2.unitCostMicros",
+          "operations.3.unitCostMicros",
+          "operations.4.unitCostMicros",
+          "operations.5.unitCostMicros",
+          "operations.6.unitCostMicros",
+          "operations.7.unitCostMicros",
+          "operations.8.unitCostMicros",
+          "monthly.0.amountMicros",
+          "investments.0.amountMicros",
+          "investments.1.amountMicros",
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "local-preparation",
+              "stage": "preparation",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-planning",
+              "stage": "planning",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-execution",
+              "stage": "execution",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-verification",
+              "stage": "verification",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-correction",
+              "stage": "correction",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-packaging",
+              "stage": "packaging",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-reporting",
+              "stage": "reporting",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "local-recovery",
+              "stage": "recovery",
+              "implementation": "implemented",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "connected-admission-overhead",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "required-user-decision",
+              "stage": "planning",
+              "costMicrosPerRequest": 2996667
+            },
+            {
+              "id": "residual-exception-investigation",
+              "stage": "recovery",
+              "costMicrosPerRequest": 1198667
+            }
+          ],
+          "investments": [
+            {
+              "id": "initial-setup",
+              "kind": "setup",
+              "amortizedMonthlyMicros": null
+            },
+            {
+              "id": "development-including-failed-work",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            }
+          ]
+        }
+      }
+    ],
+    "scope": "Conditional automated-configuration planning over explicitly labeled inputs. Expected failed attempts and residual exceptions are charged. Missing live execution is not qualified by this calculation; no payment, guaranteed acceptance or measured saving is established.",
+    "decisionBoundary": "Required objective, input-rights, scope and execution approvals remain user decisions. A zero routine handling scenario never grants authority."
+  },
+  "limits": [
+    "This is an additive product configuration model, not a change to frozen studies or a new empirical economic endpoint.",
+    "Hourly compensation is sourced; traditional task durations, demand, failure rates, unit prices, investment hours and utilization are not measured.",
+    "Required user-decision effort is priced explicitly; no permanent routine human delivery staff is assumed.",
+    "The deterministic service has no model-provider invocation; engineering/review cost remains charged through explicit estimates, not erased.",
+    "Observed-cost-only tiers remain unknown. Fully specified scenarios are completed conditional calculations, not established real AGI ALPHA cost.",
+    "Equal acceptance, quality, revisions and scope are conditions, not an inferred human trial result.",
+    "Economic amortization is not treasury cash. No savings, token issuance, transfer or price assumption is collected revenue.",
+    "Missing authenticated admission is modeled separately. Only that live route remains unexecuted; it does not invalidate this calculation."
+  ]
+}

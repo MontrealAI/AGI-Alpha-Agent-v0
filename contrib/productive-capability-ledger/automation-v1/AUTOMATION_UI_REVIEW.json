@@ -1,0 +1,40 @@
+{
+  "schema": "alpha-automated-cost-ui-review/v1",
+  "reviewStatus": "FIVE_ACTUAL_SOURCE_VM_CASES_PASS",
+  "sourcePath": "scripts/templates/successor-alpha/automation-app.js",
+  "sourceSha256": "75c9401667b66854cc5a0e9edc393c5a0d1f19cee38e078f323a3dda437e90b0",
+  "testPath": "examples/successor-alpha/automation-ui.test.mjs",
+  "testSha256": "7219ce7ce5365a17557695965eeb0dc2c411798b52d3538070605e67d259cc7b",
+  "modelSha256": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506",
+  "finding": {
+    "id": "UI1",
+    "class": "asynchronous-input-freshness",
+    "verifiedOriginalBehavior": [
+      "Begin a permitted cost-record file import with arrayBuffer pending",
+      "Edit the current JSON textarea and trigger its input event",
+      "Resolve the older file read",
+      "Older imported record replaces newer editor text and computes its summary"
+    ],
+    "originalSourceSha256": null,
+    "originalHashStatus": "Not captured before owner correction; no retrospective source hash asserted",
+    "correction": "New editor input, validated explicit record choices, calculation intent and applying allocations invalidate older import versions; existing asynchronous version guard refuses stale reads",
+    "regression": "an older asynchronous JSON import cannot replace a newer manual edit"
+  },
+  "command": "node --test examples/successor-alpha/automation-ui.test.mjs",
+  "passed": 5,
+  "failed": 0,
+  "checks": [
+    "Unknown record is the initial editor content; no summary, download, apply or cash claim is automatically enabled",
+    "Strict JSON calculator preserves unknown three-tier costs and rejects duplicate input fields",
+    "Explicit modeled example exposes all three tiers, retains stress losses and downloads the same shared record",
+    "Copying modeled recurring cost leaves investment cash blank, complete-cost attestation unchecked and customer acceptance unknown",
+    "Older asynchronous import cannot overwrite newer user editing"
+  ],
+  "method": "Complete actual automation-app.js evaluated in a Node VM with minimal DOM mocks, real shared cost model and strict JSON parser",
+  "scopeLimits": [
+    "No Chromium viewport, visual, accessibility or file-download acceptance is claimed by these VM tests",
+    "No authenticated executor or financial path is exercised",
+    "Fact references and labels remain supplied provenance, not authenticated price/source observations"
+  ],
+  "implementationEditedByReviewer": false
+}

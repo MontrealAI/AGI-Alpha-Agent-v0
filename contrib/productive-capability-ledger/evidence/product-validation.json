@@ -1,0 +1,44 @@
+{
+  "schema": "productive-capability-product-validation/v1",
+  "baseCommit": "96eddd928eeb64d6aa45800b47024351b34b3485",
+  "sourceSha256": {
+    "examples/successor-alpha/shadow-ledger.mjs": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21",
+    "examples/successor-alpha/shadow-plan.mjs": "178eb26563244e9c44fed73843c218efeda6c69e9f30d190334f3d6d7c31a069",
+    "scripts/templates/successor-alpha/shadow-app.js": "d9299dae0b753793ea5979bedfc571ff2f3ce295dada5b951c60523e921fcd9b",
+    "scripts/generate_successor_alpha.py": "d8c30bbf2ba7942c55cc0f8a6ec7e4a964f9af05755b975e676654fd6fce781a",
+    "scripts/successor_alpha_evidence.py": "4fdf2b5941e8df2659e79f695aaff64d816581e0032ebccde10be0ff0d0632d0",
+    "tests/browser/test_shadow_ledger_browser.py": "b53c771895680ac461ba45dbe50f896362f9f6609ba5ba4a5db46047e1e9c172",
+    "tests/browser/test_successor_alpha_browser.py": "e3492841b050321b9dc5c27f442d845ca55b229f60b8c84f7406dd26e423079b",
+    "contrib/productive-capability-ledger/evidence/verify-source-missions.py": "3af5eb326e798bd78d7d0b949524742762c3c1da4987ef58269cfcdd80831ed5"
+  },
+  "commands": [
+    {
+      "command": "node --test examples/successor-alpha/*.test.mjs",
+      "passed": 123,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "python -m unittest tests.test_successor_alpha_delivery",
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "command": "python -m pytest -q tests/test_successor_alpha_release.py",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "command": "python contrib/productive-capability-ledger/evidence/verify-source-missions.py",
+      "checksPassed": 116,
+      "failed": 0
+    }
+  ],
+  "generatedPageSha256": "f3271254f34270346c9b5279e87951058c4cb045e8c989f5d064975b49c0b22e",
+  "review": "ledger-review.json: original changing-getter defect reproduced, fixed, independently rejected before any getter invocation",
+  "browser": "NOT_RUN_MISSING_BROWSER: browser-report.json; zero browser checks passed",
+  "connectedExecution": "NOT_RUN: existing approved operator home and exact installed profile unavailable to this team",
+  "publicRelease": "NOT_PUBLISHED: existing-owner integration, full browser/hosted/source qualification and normal release remain required",
+  "financialActions": false,
+  "scope": "Local bounded product and source-evidence tests, not whole-repository release/security acceptance, commercial acceptance, realized savings, or self-acceleration"
+}

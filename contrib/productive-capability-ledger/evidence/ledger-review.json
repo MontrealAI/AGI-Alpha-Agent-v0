@@ -1,0 +1,88 @@
+{
+  "schema": "productive-capability-ledger-review/v1",
+  "reviewedAt": "2026-10-25T14:26:37.486Z",
+  "accepted": true,
+  "sourceSha256": {
+    "examples/successor-alpha/shadow-ledger.mjs": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21",
+    "examples/successor-alpha/shadow-plan.mjs": "178eb26563244e9c44fed73843c218efeda6c69e9f30d190334f3d6d7c31a069",
+    "scripts/templates/successor-alpha/shadow-app.js": "d9299dae0b753793ea5979bedfc571ff2f3ce295dada5b951c60523e921fcd9b",
+    "scripts/generate_successor_alpha.py": "d8c30bbf2ba7942c55cc0f8a6ec7e4a964f9af05755b975e676654fd6fce781a"
+  },
+  "originalExploit": {
+    "status": "REFUSED",
+    "getterInvocations": 0,
+    "error": "Accounting input rejects accessors, hidden properties and serializers",
+    "priorVerifiedOutcome": {
+      "revenue": 10000,
+      "fullCost": -5000,
+      "availableSurplus": 15000
+    }
+  },
+  "reviewerRole": "Separate same-session reviewer; not independent organizational custody",
+  "observations": [
+    {
+      "name": "Original replay getter exploit is refused before getter invocation",
+      "result": "PASS"
+    },
+    {
+      "name": "appendEvent getter refused before invocation",
+      "result": "PASS"
+    },
+    {
+      "name": "planMission getter refused before invocation",
+      "result": "PASS"
+    },
+    {
+      "name": "calculateInvestment getter refused before invocation",
+      "result": "PASS"
+    },
+    {
+      "name": "replayLedger serializer refused without execution",
+      "result": "PASS"
+    },
+    {
+      "name": "appendEvent serializer refused without execution",
+      "result": "PASS"
+    },
+    {
+      "name": "planMission serializer refused without execution",
+      "result": "PASS"
+    },
+    {
+      "name": "calculateInvestment serializer refused without execution",
+      "result": "PASS"
+    },
+    {
+      "name": "Sparse, cyclic, oversized and deep frames refuse",
+      "result": "PASS"
+    },
+    {
+      "name": "Replay and append return owned event values",
+      "result": "PASS"
+    },
+    {
+      "name": "Unknown acceptance stays null in both per-mission and aggregate accounts",
+      "result": "PASS"
+    }
+  ],
+  "unitSuite": {
+    "tests": 23,
+    "pass": 23,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "scope": [
+    "Four pure accounting public APIs: owned input frame, mutable getters, serializers, output aliasing, bounds, unknown acceptance",
+    "Current ledger and planning-history unit suites: reconciliation, duplicate IDs, replay, negative margin, unknown costs, reserves, finite-reuse economics, history/source and currency boundaries",
+    "Static review of shadow UI import preservation and generated inert workspace persistence; actual browser acceptance belongs to separate browser reviewer"
+  ],
+  "remainingFindings": [],
+  "limitations": [
+    "No whole-repository security qualification",
+    "No authenticated executor test, financial operation or commercial acceptance",
+    "Finite adversarial checks do not prove all properties"
+  ],
+  "retainedMissionEvidence": "Earlier aaad476-bound source mission evidence was not regenerated or edited during this review"
+}

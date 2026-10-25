@@ -1,0 +1,102 @@
+{
+  "schema": "alpha-automated-workflow-independent-review/v1",
+  "reviewStatus": "CORRECTED_SOURCE_PASSES_BOUNDED_REVIEW",
+  "scope": "Actual local Node runner/source audit and own bounded ephemeral recovery/Git fixtures; no held Harness/Fleet operation, external executor, financial action or published ref changed",
+  "preCorrectionSource": {
+    "path": "contrib/productive-capability-ledger/automation-v1/review/pre-correction-run-mission.txt",
+    "sha256": "20ad2bd23d4526191cc65309b5eaab630742a0dbff4cce98c88ff50ead824af2",
+    "scope": "Exact inert original candidate under the two primary raw runs and two operating replications; retained separately from corrected qualification"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "class": "recovery-result-integrity",
+      "verifiedOriginalBehavior": {
+        "procedure": [
+          "Create exact approved plan for committed source0255ebf and stop after execution",
+          "Replace result.resolution.actionsCsv with marker bytes",
+          "Rehash result.json in stage-execution receipt",
+          "Resume same plan"
+        ],
+        "accepted": true,
+        "exportedActionCsv": "UNVERIFIED_ACTION_FROM_REHASHED_CHECKPOINT\n",
+        "laterReconnect": "Refused only on later completed reconnect"
+      },
+      "correction": "Rebuild Git-bound inputs and entire existing-guide result, derived CSVs, workspace and report before first COMPLETE/resumed completion",
+      "finalCheck": "Original forged checkpoint refuses before COMPLETE; no accepted delivery published"
+    },
+    {
+      "id": "F2",
+      "class": "committed-source-mode",
+      "verifiedOriginalBehavior": {
+        "gitMode": "120000",
+        "gitObjectType": "blob",
+        "accepted": true,
+        "sourceRows": 1,
+        "targetFilesystemRead": false,
+        "fixtureCommit": "e246277a7ae5316601621e979c2ecc7f5d6e46e6",
+        "refsChanged": false
+      },
+      "correction": "Inspect exact ls-tree entry and require blob mode100644 or100755",
+      "finalCheck": "Same symlink source refuses during execution without following its target"
+    },
+    {
+      "id": "F3",
+      "class": "late-checkpoint-recovery",
+      "intermediateSourceSha256": "a94db981bacf21007e3fa58b11f3a6483d6ba906225852a90209f32cb61447e4",
+      "verifiedOriginalBehavior": {
+        "procedure": [
+          "Run approved plan with stopAfter reporting",
+          "Resume normal run with the same approval digest"
+        ],
+        "checkpointState": "checkpointed",
+        "resumeError": "Report differs from the exact verified delivery."
+      },
+      "correction": "Retain reporting historical context, account later attempts separately, separate deterministic final acceptance from per-attempt timing receipts",
+      "finalCheck": "Reporting checkpoint resumes and lost final COMPLETE republishes while original report/final acceptance bytes remain unchanged"
+    }
+  ],
+  "correctedSource": {
+    "path": "contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+    "sha256": "b41247af80a42213398c82120ef481dc139c793cec457b52fb3e58df94ec7824",
+    "unchangedDuringIndependentChecks": true,
+    "version": "alpha-automated-source-delivery/v2"
+  },
+  "sourceTests": {
+    "path": "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs",
+    "sha256": "5c7ea906ec14122fc9a04ab6a2a60c855f4c820adcac0097f34901c9166a90fd",
+    "passed": 8,
+    "failed": 0,
+    "scope": [
+      "exact approval/source and malformed scope refusal",
+      "deterministic fresh completion and duplicate reconnect",
+      "checkpoint resume, STOP and preservation",
+      "rehashed saved-result/traversal refusal",
+      "fabricated rehashed action-CSV refusal before first acceptance",
+      "reporting checkpoint and lost final commit recovery",
+      "ordinary Git source mode refusal",
+      "actual SIGKILL and stale-lock recovery with unknown work retained"
+    ]
+  },
+  "independentChecks": [
+    "fabricated rehashed action CSV refused before first COMPLETE",
+    "Git120000 symlink refuses without target filesystem read",
+    "reporting checkpoint resumes without rewriting historical report",
+    "lost final COMPLETE republished preserving prior final acceptance"
+  ],
+  "reviewedBoundaries": [
+    "Plan is reconstructed against exact manifest/source/dependency identities before execution; arbitrary extra plan fields do not expand permitted operations",
+    "Git reads use fixed argv with exact40-character source refs and bounded relative paths; no shell or arbitrary source-code execution",
+    "Manifest paths remain inside fixed repository Git scope and delivery artifact references cannot use path separators",
+    "Ordinary artifact reads use descriptor checks, byte ceilings and no-follow/nonblocking flags on this Linux runtime",
+    "Individual Git invocations have finite timeouts and elapsed-budget checks; source manifests and source counts are bounded",
+    "Interrupted attempts and reconnect observations remain separate, monetary costs remain unknown rather than refunded or zero-filled"
+  ],
+  "limits": [
+    "This is bounded same-session review, not independently secured custody or general security certification",
+    "The elapsed budget is a foreground invocation guard, not a hard real-time operating-system guarantee",
+    "Local execution and quoted-zero service model calls do not establish full monetary cost, commercial acceptance or authenticated executor readiness",
+    "Original raw runs are preserved and do not inherit corrected-source qualification"
+  ],
+  "implementationEditedByReviewer": false
+}

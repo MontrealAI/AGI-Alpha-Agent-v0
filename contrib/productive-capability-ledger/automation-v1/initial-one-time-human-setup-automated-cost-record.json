@@ -1,0 +1,838 @@
+{
+  "schema": "alpha-automated-costs/v1",
+  "offeringId": "committed-source-assurance",
+  "currency": "USD",
+  "scenarios": [
+    {
+      "name": "base",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Hypothetical provisioned offering capacity, not measured fleet throughput or demand; planning assumption, not observed billing."
+      },
+      "utilizationBps": {
+        "value": 5000,
+        "basis": "estimated",
+        "reference": "Hypothetical offering utilization; no paid demand is established; planning assumption, not observed billing."
+      },
+      "acceptanceBps": {
+        "value": 9800,
+        "basis": "estimated",
+        "reference": "Expected complete-request acceptance; two deterministic jobs do not estimate production reliability; planning assumption, not observed billing."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1020000,
+        "basis": "estimated",
+        "reference": "Initial attempt plus expected failures/retries; failed work is charged; planning assumption, not observed billing."
+      },
+      "operations": [
+        {
+          "id": "local-preparation",
+          "stage": "preparation",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=preparation"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-planning",
+          "stage": "planning",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=planning"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=execution"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=verification"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-correction",
+          "stage": "correction",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=correction"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=packaging"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=reporting"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-recovery",
+          "stage": "recovery",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=recovery"
+          },
+          "unitCostMicros": {
+            "value": 20,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "connected-admission-overhead",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One authenticated admission/report transport per attempt in the modeled missing connected route; planning assumption, not observed billing."
+          },
+          "unitCostMicros": {
+            "value": 5000,
+            "basis": "estimated",
+            "reference": "Explicit missing-route software and transport budget; no provider call or approved connection executed; planning assumption, not observed billing."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "required-user-decision",
+          "stage": "planning",
+          "exceptionsPerRequestPpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One required objective/rights/scope approval; user decision, not routine staffed service; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 1,
+            "basis": "estimated",
+            "reference": "Unmeasured user-decision duration sensitivity, charged conservatively instead of erased; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        },
+        {
+          "id": "residual-exception-investigation",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "Unmeasured exceptional investigation rate after automated bounded recovery; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "Exceptional investigation effort; no permanent per-job operator assumed; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-monthly-operation",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 150000000,
+            "basis": "estimated",
+            "reference": "Combined fixed capacity, shared maintenance, support and business allocation; excludes variable operation prices and initial construction; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Entire stated offering allocation; the pool is not separately charged elsewhere in this record; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "initial-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 721900000,
+            "basis": "estimated",
+            "reference": "Estimated 10 setup/integration hours at sourced professional compensation 72190000 micros/hour; setup hours not observed; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this one-time setup pool; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected amortization horizon, not permanent reuse; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "development-including-failed-work",
+          "kind": "development",
+          "amountMicros": {
+            "value": 7219000000,
+            "basis": "estimated",
+            "reference": "Estimated 100 development/test/review hours including unsuccessful construction, at sourced professional compensation; actual historic engineering cost unknown; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in per-request or monthly costs; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected development reuse horizon; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "No matched traditional non-AI task duration observation; compute break-even and explicit sensitivity instead"
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+        }
+      }
+    },
+    {
+      "name": "conservative",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Hypothetical provisioned offering capacity, not measured fleet throughput or demand; planning assumption, not observed billing."
+      },
+      "utilizationBps": {
+        "value": 2000,
+        "basis": "estimated",
+        "reference": "Hypothetical offering utilization; no paid demand is established; planning assumption, not observed billing."
+      },
+      "acceptanceBps": {
+        "value": 9500,
+        "basis": "estimated",
+        "reference": "Expected complete-request acceptance; two deterministic jobs do not estimate production reliability; planning assumption, not observed billing."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1150000,
+        "basis": "estimated",
+        "reference": "Initial attempt plus expected failures/retries; failed work is charged; planning assumption, not observed billing."
+      },
+      "operations": [
+        {
+          "id": "local-preparation",
+          "stage": "preparation",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=preparation"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-planning",
+          "stage": "planning",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=planning"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=execution"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=verification"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-correction",
+          "stage": "correction",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=correction"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=packaging"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=reporting"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-recovery",
+          "stage": "recovery",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=recovery"
+          },
+          "unitCostMicros": {
+            "value": 100,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "connected-admission-overhead",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One authenticated admission/report transport per attempt in the modeled missing connected route; planning assumption, not observed billing."
+          },
+          "unitCostMicros": {
+            "value": 20000,
+            "basis": "estimated",
+            "reference": "Explicit missing-route software and transport budget; no provider call or approved connection executed; planning assumption, not observed billing."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "required-user-decision",
+          "stage": "planning",
+          "exceptionsPerRequestPpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One required objective/rights/scope approval; user decision, not routine staffed service; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 2,
+            "basis": "estimated",
+            "reference": "Unmeasured user-decision duration sensitivity, charged conservatively instead of erased; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        },
+        {
+          "id": "residual-exception-investigation",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 50000,
+            "basis": "estimated",
+            "reference": "Unmeasured exceptional investigation rate after automated bounded recovery; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 5,
+            "basis": "estimated",
+            "reference": "Exceptional investigation effort; no permanent per-job operator assumed; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-monthly-operation",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 300000000,
+            "basis": "estimated",
+            "reference": "Combined fixed capacity, shared maintenance, support and business allocation; excludes variable operation prices and initial construction; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Entire stated offering allocation; the pool is not separately charged elsewhere in this record; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "initial-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 1443800000,
+            "basis": "estimated",
+            "reference": "Estimated 20 setup/integration hours at sourced professional compensation 72190000 micros/hour; setup hours not observed; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this one-time setup pool; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected amortization horizon, not permanent reuse; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "development-including-failed-work",
+          "kind": "development",
+          "amountMicros": {
+            "value": 14438000000,
+            "basis": "estimated",
+            "reference": "Estimated 200 development/test/review hours including unsuccessful construction, at sourced professional compensation; actual historic engineering cost unknown; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in per-request or monthly costs; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected development reuse horizon; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "No matched traditional non-AI task duration observation; compute break-even and explicit sensitivity instead"
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+        }
+      }
+    },
+    {
+      "name": "stress",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Hypothetical provisioned offering capacity, not measured fleet throughput or demand; planning assumption, not observed billing."
+      },
+      "utilizationBps": {
+        "value": 500,
+        "basis": "estimated",
+        "reference": "Hypothetical offering utilization; no paid demand is established; planning assumption, not observed billing."
+      },
+      "acceptanceBps": {
+        "value": 8000,
+        "basis": "estimated",
+        "reference": "Expected complete-request acceptance; two deterministic jobs do not estimate production reliability; planning assumption, not observed billing."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1750000,
+        "basis": "estimated",
+        "reference": "Initial attempt plus expected failures/retries; failed work is charged; planning assumption, not observed billing."
+      },
+      "operations": [
+        {
+          "id": "local-preparation",
+          "stage": "preparation",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=preparation"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-planning",
+          "stage": "planning",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=planning"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=execution"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=verification"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-correction",
+          "stage": "correction",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=correction"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=packaging"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=reporting"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-recovery",
+          "stage": "recovery",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=recovery"
+          },
+          "unitCostMicros": {
+            "value": 500,
+            "basis": "estimated",
+            "reference": "Variable local operation electricity/tool/storage allocation; excludes the separately allocated fixed monthly capacity and maintenance; planning assumption, not observed billing."
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "connected-admission-overhead",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One authenticated admission/report transport per attempt in the modeled missing connected route; planning assumption, not observed billing."
+          },
+          "unitCostMicros": {
+            "value": 100000,
+            "basis": "estimated",
+            "reference": "Explicit missing-route software and transport budget; no provider call or approved connection executed; planning assumption, not observed billing."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "required-user-decision",
+          "stage": "planning",
+          "exceptionsPerRequestPpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One required objective/rights/scope approval; user decision, not routine staffed service; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 5,
+            "basis": "estimated",
+            "reference": "Unmeasured user-decision duration sensitivity, charged conservatively instead of erased; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        },
+        {
+          "id": "residual-exception-investigation",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 200000,
+            "basis": "estimated",
+            "reference": "Unmeasured exceptional investigation rate after automated bounded recovery; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 10,
+            "basis": "estimated",
+            "reference": "Exceptional investigation effort; no permanent per-job operator assumed; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-monthly-operation",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 600000000,
+            "basis": "estimated",
+            "reference": "Combined fixed capacity, shared maintenance, support and business allocation; excludes variable operation prices and initial construction; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Entire stated offering allocation; the pool is not separately charged elsewhere in this record; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "initial-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 2887600000,
+            "basis": "estimated",
+            "reference": "Estimated 40 setup/integration hours at sourced professional compensation 72190000 micros/hour; setup hours not observed; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this one-time setup pool; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "Finite expected amortization horizon, not permanent reuse; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "development-including-failed-work",
+          "kind": "development",
+          "amountMicros": {
+            "value": 28876000000,
+            "basis": "estimated",
+            "reference": "Estimated 400 development/test/review hours including unsuccessful construction, at sourced professional compensation; actual historic engineering cost unknown; planning assumption, not observed billing."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in per-request or monthly costs; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "Finite expected development reuse horizon; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "No matched traditional non-AI task duration observation; compute break-even and explicit sensitivity instead"
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+        }
+      }
+    }
+  ]
+}

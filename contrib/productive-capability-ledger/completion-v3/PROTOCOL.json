@@ -1,0 +1,33 @@
+{
+  "schema": "alpha-source-review-correction-protocol/v1",
+  "baselineCommit": "2c5c393c1e5431c00d59d077c403739e789abd43",
+  "reviewFindingIds": [
+    4372279681,
+    4372279687,
+    4372279688
+  ],
+  "candidateRunnerSha256": "571032112384201eb27383ef7313115f1c0737b214d022c8dbd033b48050bac4",
+  "candidateVerifierSha256": "07511369125498d9c1bfaa894ad6818c7e020bb8bf93b274fa290951e5720ebd",
+  "prospectiveRequest": "previous-published-source.json",
+  "expectedChangedPaths": [
+    "contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+    "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs",
+    "contrib/productive-capability-ledger/automation-v1/verify-run.py"
+  ],
+  "expectedUnchangedPaths": [
+    "examples/successor-alpha/automated-costs.mjs",
+    "examples/successor-alpha/shadow-ledger.mjs"
+  ],
+  "acceptance": [
+    "Full existing Git/CSV/hash/deliverable validation",
+    "Exact expected three source-version differences, with independent lossless action exports",
+    "Expiry-bounded rebuild across every read",
+    "Interrupted recovery guard refuses with and without writer lock",
+    "Unique reservation identities cover every execution and stage, including final verification",
+    "Truncated/coordinately rehashed reservation histories refuse"
+  ],
+  "clockRegression": "Simulated UTC/monotonic80ms increments around actual Git reads; a unit control, not measured operating latency.",
+  "executionStatus": "Prospective; actual fresh source-change job NOT RUN at this freeze",
+  "economicAdmission": "Not established; human-authored repair and conventional specialist retained; full cost unknown",
+  "connectedProfile": "Existing strategy profile accepts planning methods only. Source-assurance transport adapter/profile adoption is not implemented or approved; credentials alone cannot supply it."
+}
