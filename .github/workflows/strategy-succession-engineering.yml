@@ -89,6 +89,7 @@ jobs:
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q transport/test_strategy_executor.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/transport.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q worker/test_fixed_worker.py worker/test_worker_engineering.py worker/test_native_repair.py worker/test_supervisor_crash.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/worker.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q qa/test_environment.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/environment.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" qa/restore_component_fixture.py
           node review/ui_recovery.test.mjs
       - name: Build two identical wheels and install the actual candidate
         env:

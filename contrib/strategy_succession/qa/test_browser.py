@@ -117,7 +117,7 @@ def test_real_browser_approved_executor_reconnect_download_stop(tmp_path):
                     page.wait_for_timeout(100)
                 assert plan["state"] == "completed", plan["state"]
                 page.locator("#review").click()
-                expect(page.locator(".schedule")).to_have_count(3)
+                expect(page.locator(".schedule:not(.summary-table)")).to_have_count(3)
                 expect(page.locator("#keep")).to_be_enabled()
                 assert status["spent"]["native_calls"] == 6
                 assert len(plan["partial_receipts"]) == 3
