@@ -1,0 +1,66 @@
+# Cash, token and authority boundaries
+
+**Prepared 25 October 2026 from four immutable public source revisions. No transaction, contract execution, fresh RPC, current-chain verification or financial scenario evaluation was performed.** This is a bounded economic-function inspection, not a security audit or legal opinion. It preserves the earlier capability and operational-economics studies.
+
+The useful economic question is who actually receives a payment after delivery, and what resources that recipient can lawfully and practically spend on further work. A shared brand, token or repository family does not settle that question. `ROUTE_FORMULAS.md` specifies four separate payment routes; `FLOW_MATRIX.json` makes every economically relevant source claim inspectable. `ROUTE_CONSTANTS.json` distinguishes hard-coded percentages, initialized defaults, configuration examples and historical observations. All 41 retained source files reproduce their Git blob identities; `SOURCE_REGISTER.json` adds SHA-256, bytes, line counts, commit, URL and evidence class.
+
+## Current source identity
+
+| Repository | Public main revision inspected | Economic contribution |
+|---|---|---|
+| AGI-Alpha-Agent-v0 | `f836f06e8351e64db1da770e16e304b5feb01f28` | Five Ascension contracts, plan-restricted funding, admitted roles and evidence-linked work |
+| AGIJobManager | `5d5670df9dbbc79da115e0a44b71989f34df58c1` | Native-USDC job escrow, bonds, review, dispute and named-recipient settlement |
+| AGIJobsv0 | `bc4abbd5c28f3672275b13300e40ea26c820b8ee` | Separate AGIALPHA JobRegistry, StakeManager, validation and FeePool route |
+| AGI-Fleet-Linux | `45759fb096faf8988f58ae5ea71248d0f35a97c7` | Bounded execution/review adapters and separately selected contract profiles |
+
+These were refreshed through public GitHub branch reads. A current repository revision is not automatically the code of an existing deployed contract. The inspection pins each retained file rather than citing mutable `main` links.
+
+## The five Alpha contracts and what their rights mean
+
+| Contract | Implemented operation | Economic right or constraint | Right not established |
+|---|---|---|---|
+| AscensionAccess | Current ENS ownership plus expiring owner-issued admission | Role eligibility for business, agent and validator operations | A financial claim, equity right or unrestricted permission to spend |
+| NovaSeed | An ERC721 token commits an immutable plan root, evidence and parent | Seed ownership is checked by downstream review/funding operations | Automatic intellectual-property ownership, royalty, enterprise dividend or token buyback |
+| AscensionRiskOracle | Validators deposit AGIALPHA and reserve stake/capacity for attestations | Withdrawal after lock; minimum stake and live eligibility gate review | Guaranteed validator yield or a direct oracle slashing/reward mechanism |
+| AscensionJobMarket | Funded bounty, auction, delivered artifact, two eligible approvals | Successful worker/validator payouts after separate burns; source-defined refund and collateral exits | A general treasury profit share or universal tokenholder entitlement |
+| AscensionMark | Funder lots, reserve, immutable-plan spending, close and reclaim | Limited sale/transfer during Funding and pro-rata reclaim of unused closing reserve | A claim on unrelated enterprise profits, guaranteed secondary liquidity or automatic reinvestment |
+
+References: [Access](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/AscensionAccess.sol#L24-L78), [NovaSeed](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/NovaSeed.sol#L25-L44), [RiskOracle](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/AscensionRiskOracle.sol#L39-L111), [JobMarket](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/AscensionJobMarket.sol#L105-L249), [MARK](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/AscensionMark.sol#L52-L146).
+
+The canonical AGIALPHA token is an external dependency at `0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA`, eighteen decimals. The shared `AscensionToken` source is an abstract helper, not a sixth deployed contract in this graph. Its burn helper checks the payer's balance and total supply decrease by the requested amount. That mechanical reduction is not evidence that the token price rises or that holders can liquidate at a chosen price. [Token helper](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/AscensionToken.sol#L9-L38).
+
+## Which receipts could support more work?
+
+An identified worker operator could receive its job award. A separately identified validator could receive compensation for accepted review. A named Manager wallet beneficiary could receive the contract's assigned percentage. A qualifying Jobs FeePool staker could claim its computed protocol fee entitlement. A MARK funder could recover unused contributed capital. These are different recipients and different accounting categories. They must not be summed as if all belonged to one enterprise.
+
+The Manager uses native Circle USDC, six decimals. Its default completed-job example divides customer payout among validators (8%), wallet30 (30%), wallet10 (10%) and agent remainder (52%), subject to exact integer rounding and the source's review branch. The release's generic config leaves recipient identities empty. Neither that example nor the recipient names establish a research treasury or provider ownership. [Settlement implementation](https://github.com/MontrealAI/AGIJobManager/blob/5d5670df9dbbc79da115e0a44b71989f34df58c1/contracts/utils/JobSettlement.sol#L111-L165); [configuration](https://github.com/MontrealAI/AGIJobManager/blob/5d5670df9dbbc79da115e0a44b71989f34df58c1/config/usdc-deployment.json).
+
+Jobs v0 takes a reward **plus** a fee and applies distinct validator, worker-burn and FeePool rules. A worker boost consumes an existing operator reward pool. FeePool defaults to Platform-role stakers, not every tokenholder. Its owner can configure reward role and burn/treasury parameters; governance-only withdrawal can target the configured treasury or burn address. These permissions do not automatically appropriate operating profit for invention. The declared governance variable is typed as `TimelockController`, but the inspected address setter alone does not verify the runtime, delay, signers or actual authority of a chosen governance address. [Worker and reserve accounting](https://github.com/MontrealAI/AGIJobsv0/blob/bc4abbd5c28f3672275b13300e40ea26c820b8ee/contracts/v2/implementation/StakeManagerBase.sol#L2327-L2416); [FeePool rights and setters](https://github.com/MontrealAI/AGIJobsv0/blob/bc4abbd5c28f3672275b13300e40ea26c820b8ee/contracts/v2/FeePool.sol#L346-L503); [governance access check](https://github.com/MontrealAI/AGIJobsv0/blob/bc4abbd5c28f3672275b13300e40ea26c820b8ee/contracts/v2/Governable.sol#L24-L58).
+
+The 50/50 employer/treasury values in the Jobs configuration are penalty-distribution parameters. They can apply to failed-job escrow as well as slashed collateral through the corresponding call paths. They are not a 50% reinvestment rule. A zero treasury routes its share to burn in the inspected distribution function. Because that failure path depends on several parameters and differs materially from Manager's full-escrow refund, prospective financial scenarios should leave it **NOT MODELED** unless the complete branch and configuration are specified. [Failed-job calls](https://github.com/MontrealAI/AGIJobsv0/blob/bc4abbd5c28f3672275b13300e40ea26c820b8ee/contracts/v2/implementation/JobRegistryBase.sol#L2121-L2136); [actual penalty transfers](https://github.com/MontrealAI/AGIJobsv0/blob/bc4abbd5c28f3672275b13300e40ea26c820b8ee/contracts/v2/implementation/StakeManagerBase.sol#L782-L915).
+
+## Historical attestations, tests and current permission
+
+| Evidence | What the retained public source reports | Boundary for this amendment |
+|---|---|---|
+| Alpha, 18 October | Five EXACT_MATCH explorer reports, two finalized one-time bindings and a scoped graph at block 26220072; deployed source `c0fc5217e364a39a4cd123d17a8317c06b80f820` | Historical trusted-provider attestation. Activation and public funding remain unapproved; no global pause. No fresh chain verification performed here. |
+| Manager, 17 October | Nine reported creations; six exact and three retained similar explorer matches; authority snapshot at block 26214525 with intake paused; deployed source `8815ed3181778664595f951befd672afbd7a9352` | Owner-reported historical projection, explicitly not live state or default configuration. It does not establish live paid-work qualification or our enterprise's fee-wallet ownership. |
+| Jobs, 18 October | Twenty-five runtime/source-metadata matches and 46 named state checks at finalized block 26221285; all eight managed modules paused; deployed source `818b3a246871e4cd4dde86558dbb91ef82b15eef` | Historical attestation with bounded named checks. Configured deployment values and freshly observed getters are distinct; current-source equivalence is expressly not assumed. |
+| Fleet contract profiles | Source guide reports 792 Manager tests for a specifically pinned profile in an in-process chain with mock USDC | Local fixture evidence, not public-chain settlement, actual provider billing, physical installation or independent operators; no tests rerun in this amendment. |
+| Alpha / Manager payout test files | Test source contains checks for plan payouts/refunds, exact burns, split rounding, snapshot policies and deferred claims | Source inspected only. Test existence is not a new test PASS, audit or production guarantee. |
+
+Historical evidence: [Alpha guide](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/docs/agent/CURRENT_MAINNET_DEPLOYMENT.md); [Manager projection](https://github.com/MontrealAI/AGIJobManager/blob/5d5670df9dbbc79da115e0a44b71989f34df58c1/config/mainnet/manager-8815-2026-10-17.json); [Jobs projection](https://github.com/MontrealAI/AGIJobsv0/blob/bc4abbd5c28f3672275b13300e40ea26c820b8ee/docs/production/mainnet-2026-10-18/deployment-snapshot.json); [Fleet profile scope](https://github.com/MontrealAI/AGI-Fleet-Linux/blob/45759fb096faf8988f58ae5ea71248d0f35a97c7/docs/CONTRACT_PROFILES.md#L5-L34).
+
+The six inspected Ascension source files (five named contracts and token helper) have identical Git blob hashes at current main and the reported deployed-source revision. `ALPHA_SOURCE_COMPARISON.json` records that narrow identity check. It is not a full dependency/compiler/runtime comparison and does not refresh any deployed-state attestation.
+
+## Interfaces that remain to be supplied
+
+A dynamic reinvestment study can define a proposed ordinary-USD enterprise and explicitly simulate its collection, delivery, support, tax, reserve and construction decisions. Such a study must retain its assumption status. If a contract route is modeled separately, it needs a chosen role, named beneficiary, route-specific quality and refund conditions, gas and working-capital requirements, payment timing and any actually available conversion channel. An unconverted token balance is not spendable USD.
+
+The inspected sources do not implement a universal automatic USDC-to-AGIALPHA bridge, enterprise-profit sharing for all tokenholders, buyback policy or 50% retained-earnings appropriation. Those claims cannot be imported from an aspirational diagram. MARK provides a specific pre-funded, immutable-plan spending mechanism; using it for additional work would still require the appropriate plan, reserve, eligible business, review and separate execution authorization.
+
+Fleet's local project journey explicitly preserves USDC and AGIALPHA as separate planning assets and does not assign, sign, fund or settle either route. Its successful internal report/check is evidence of work, not a paid public job. Source imports, compatible ABIs and recorded histories preserve neither independent judgment nor financial authority automatically. [Fleet project boundary](https://github.com/MontrealAI/AGI-Fleet-Linux/blob/45759fb096faf8988f58ae5ea71248d0f35a97c7/docs/local-skills/PROJECT_JOURNEY.md#L1-L37); [qualification boundary](https://github.com/MontrealAI/AGI-Fleet-Linux/blob/45759fb096faf8988f58ae5ea71248d0f35a97c7/docs/local-skills/PROJECT_JOURNEY.md#L79-L94).
+
+## Reproduce this source inspection
+
+Run `python reinvestment_amendment_v1/contracts/verify_sources.py` from the workspace root to verify each retained source hash, Git blob identity, internal source reference and the narrow Alpha source comparison. `build_register.py` reconstructs only the metadata from retained snapshot inputs; it performs no network access or economic evaluation. Neither script runs contract code. The retained files include their original license headers. All conclusions remain limited to the source functions and documented reports listed in the register.

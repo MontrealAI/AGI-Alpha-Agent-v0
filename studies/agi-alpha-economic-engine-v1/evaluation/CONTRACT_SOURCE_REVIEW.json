@@ -1,0 +1,484 @@
+{
+  "byte_identity_checks": 123,
+  "financial_scenarios_calculated": 0,
+  "fresh_contract_tests_run": 0,
+  "manual_review_points": [
+    {
+      "finding": "Gross payout P funds validator budget and fixed30/10 percentages; remaining validator-pool dust goes to agent; validator/agent/dispute bond transfers are separate.",
+      "id": "manager_success",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "JobSettlement.complete and _validators"
+    },
+    {
+      "finding": "No validators sets budget zero, without independently authorizing the state transition.",
+      "id": "manager_no_review",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "JobSettlement.complete"
+    },
+    {
+      "finding": "Worker duration premium is applied after minimum, before optional maximum and payout cap; validator maximum is an unconditional cap except the all-zero disabled branch.",
+      "id": "manager_bond",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "BondMath.computeAgentBond and computeValidatorBond"
+    },
+    {
+      "finding": "Employer-win keeps buyer escrow whole and funds review reward from capped forfeited agent collateral; unanswered dispute returns escrow and bonds without judging acceptance.",
+      "id": "manager_refund",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "JobSettlement.refund and unresolved"
+    },
+    {
+      "finding": "Each reviewer share uses nested integer division; each gross recipient payout burns its own integer floor. Bounty-price remainder is separately refundable.",
+      "id": "ascension_exact",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "AscensionJobMarket._pay and _payout"
+    },
+    {
+      "finding": "Rejected or unsubmitted jobs lose worker bond; missing review quorum after submission unlocks bond without slashing. Buyer refund and burned bond conserve separately identified capital.",
+      "id": "ascension_failure",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "AscensionJobMarket._fail and timeout"
+    },
+    {
+      "finding": "Immutable-plan scope and reserve constrain spending; closure allocates remaining reserve per lot. These functions do not distribute external enterprise profits.",
+      "id": "mark_capital",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "AscensionMark.route, collect and reclaim"
+    },
+    {
+      "finding": "Quoted reward and added fee differ; reviewer allocation reduces reward, worker multiplier precedes worker burn, FeePool burns on fee. Excess worker multiplier requires prefunded operatorRewardPool.",
+      "id": "jobs_success_denominators",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "JobRegistryBase._finalize and StakeManagerBase._finalizeJobFunds"
+    },
+    {
+      "finding": "Simplified formulas require sufficient escrow, configured FeePool and permitted non-redirected settlement; values read at settlement are distinguished from posting/application snapshots.",
+      "id": "jobs_source_predicates",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "StakeManagerBase._finalizeJobFunds and JobRegistryBase._finalize"
+    },
+    {
+      "finding": "Failed jobs redistribute reward-plus-fee escrow under penalty parameters and separately slash worker stake; a generic full-buyer-refund assumption would be incorrect.",
+      "id": "jobs_failure",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "JobRegistryBase._finalize and StakeManagerBase._splitSlashAmount/_distributeEscrowPenalty"
+    },
+    {
+      "finding": "The executable no-quorum branch records failure and invokes Registry forceFinalize; it does not itself return all escrow despite the preceding comment. Non-reveal penalties have the burn-evidence exception.",
+      "id": "jobs_nonreveal",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "ValidationModuleBase._entry_forceFinalize"
+    },
+    {
+      "finding": "Fee burn and pending fees are distinct; fee entitlements depend on boosted role stake, with no-stake pending balance burned. This is not a universal passive-tokenholder profit right.",
+      "id": "fee_pool",
+      "result": "CONSISTENT_WITH_INSPECTED_SOURCE",
+      "source_functions": "FeePool.depositFee, _distributeFees and claimRewards"
+    }
+  ],
+  "mechanical_results": [
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_access",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionAccess.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_constants",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/contracts/v2/Constants.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_current_deployment_guide",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/docs/agent/CURRENT_MAINNET_DEPLOYMENT.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_deployment_example",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/examples/successor-alpha/deployment.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_deployment_guide",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/docs/agent/SUCCESSOR_ALPHA_DEPLOYMENT.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_guide",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/docs/agent/SUCCESSOR_ALPHA.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_historical",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/docs/deployments/2026-10-18/manifest.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_lifecycle_test",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/tests/contracts/test/ascension/lifecycle.test.js"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_mark",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionMark.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_market",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionJobMarket.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_oracle",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionRiskOracle.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_seed",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/NovaSeed.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_settlement_test",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/tests/contracts/test/ascension/settlement.test.js"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_tests_guide",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/tests/contracts/README.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "alpha_token",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionToken.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "fleet_integration",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Fleet-Linux/docs/JOB_INTEGRATION.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "fleet_profiles",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Fleet-Linux/docs/CONTRACT_PROFILES.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "fleet_project",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Fleet-Linux/docs/local-skills/PROJECT_JOURNEY.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "fleet_readme",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGI-Fleet-Linux/README.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_constants",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/contracts/v2/Constants.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_escrow",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/contracts/v2/implementation/StakeManagerEscrow.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_fee",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/contracts/v2/FeePool.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_fee_config",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/config/fee-pool.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_governable",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/contracts/v2/Governable.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_historical",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/docs/production/mainnet-2026-10-18/deployment-snapshot.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_readme",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/README.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_registry_base",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/contracts/v2/implementation/JobRegistryBase.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_registry_config",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/config/job-registry.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_stake_base",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/contracts/v2/implementation/StakeManagerBase.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_stake_config",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/config/stake-manager.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "jobs_validation_base",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobsv0/contracts/v2/implementation/ValidationModuleBase.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/contracts/AGIJobManager.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_bond_math",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/contracts/utils/BondMath.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_deploy",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/config/usdc-deployment.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_governance",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/docs/GOVERNANCE.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_historical",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/config/mainnet/manager-8815-2026-10-17.json"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_payout_test",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/test/payoutSplit.test.js"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_readiness",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/docs/MAINNET_READINESS.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_readme",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/README.md"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_settlement",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/contracts/utils/JobSettlement.sol"
+    },
+    {
+      "checks": {
+        "bytes": true,
+        "git_blob": true,
+        "sha256": true
+      },
+      "id": "manager_split",
+      "path": "reinvestment_amendment_v1/contracts/sources/AGIJobManager/docs/USDC_PAYOUT_SPLIT.md"
+    }
+  ],
+  "new_chain_calls_or_transactions": 0,
+  "reviewed_document_identities": [
+    {
+      "path": "reinvestment_amendment_v1/contracts/SOURCE_REGISTER.json",
+      "sha256": "a3e7aaa2626564be092027cb5c73fda8d7764c3352f6d8ba86bdb24c1f93b1c9"
+    },
+    {
+      "path": "reinvestment_amendment_v1/contracts/ROUTE_FORMULAS.md",
+      "sha256": "4eb646519dc5421dad6860924d2458256d3fa5f1ddd8a904ee800d0402ec2c5d"
+    },
+    {
+      "path": "reinvestment_amendment_v1/contracts/ROUTE_CONSTANTS.json",
+      "sha256": "743c23bf3d01496e1093935a6d4cadc6573053cde83d62f29b02e3d01adba1db"
+    },
+    {
+      "path": "reinvestment_amendment_v1/contracts/FLOW_MATRIX.json",
+      "sha256": "eb74d20887c2f3fcebbe091ffc29c02f1bda6ba066fa987816f3693ef703e621"
+    },
+    {
+      "path": "reinvestment_amendment_v1/contracts/CONTRACT_ECONOMICS.md",
+      "sha256": "09c69e802f49c547dbde5908d35f2e8e1edb42da6000e92c24e3039604f6a80b"
+    }
+  ],
+  "reviewed_utc": "2026-10-25T14:12:05.281694+00:00",
+  "schema": "cash-reinvestment-independent-source-review/v1",
+  "scope_limits": [
+    "This independent review did not repeat remote source retrieval. Local bytes were checked against the pinned register.",
+    "Not a full security audit or current-chain validation; historical deployment attestations remain historical.",
+    "Numerical financial examples are not evaluated until their separate protocol and inputs are publicly frozen.",
+    "Failed Jobs-v0 numerical economics remain unsupported unless complete parameters and branches are frozen.",
+    "Token receipts, collateral returns, burns, enterprise revenue and spendable USD remain separate."
+  ],
+  "source_files": 41,
+  "status": "PASS_BOUNDED_SOURCE_ARITHMETIC_REVIEW"
+}

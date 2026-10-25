@@ -1,0 +1,509 @@
+{
+  "schema": "agi-alpha-cash-token-flow-matrix-v1",
+  "inspection_date": "2026-10-25",
+  "scope": "Bounded economic-function inspection of four pinned public repositories and the five named Ascension contracts. No fresh contract tests, chain calls, transactions or financial scenario evaluation.",
+  "status_definitions": {
+    "SOURCE_IMPLEMENTED": "Economic behavior read in pinned source; this amendment did not execute it.",
+    "TEST_SOURCE_INSPECTED_NOT_RUN": "Test code inspected; neither execution nor PASS inferred.",
+    "REPORTED_HISTORICAL_DEPLOYMENT": "Project-maintained dated attestation inspected; no independent current-chain validation.",
+    "PROPOSED_NOT_IMPLEMENTED_BY_INSPECTED_CONTRACTS": "Commercial arrangement or reinvestment policy that requires separate adoption."
+  },
+  "units": {
+    "USDC": {
+      "decimals": 6,
+      "mainnet_token": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "AGIALPHA": {
+      "decimals": 18,
+      "mainnet_token": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA"
+    },
+    "gas": "ETH, separate unspecified price/cost; no new transaction performed"
+  },
+  "flows": [
+    {
+      "id": "ordinary_invoice",
+      "route": "ordinary_offchain",
+      "asset": "chosen fiat currency",
+      "payer": "Customer",
+      "custodian": "Chosen commercial collection provider, if any",
+      "recipients": "Named supplier and separately contracted collection/tax counterparties",
+      "mechanism": "Proposed invoice price less explicitly assumed collection charges and refunds; no inspected repository enforces this commercial arrangement.",
+      "fees_burns_collateral": "Processor fees, refund terms and any deposits must be supplied prospectively; no implicit zero fee.",
+      "authority": "A named enterprise decision-maker would approve surplus appropriations after costs, reserves and liabilities.",
+      "reinvestment_meaning": "Proposed enterprise policy only; no automatic token demand or 50% reinvestment.",
+      "status": "PROPOSED_NOT_IMPLEMENTED_BY_INSPECTED_CONTRACTS",
+      "references": []
+    },
+    {
+      "id": "manager_escrow",
+      "route": "Manager",
+      "asset": "USDC / 6 decimals",
+      "payer": "Job employer",
+      "custodian": "Configured AGIJobManager",
+      "recipients": "Reserved for job settlement/refund",
+      "mechanism": "createJob receives exact payout P, freezes validator percentage and records escrow.",
+      "fees_burns_collateral": "Employer funds gross payout; agent, validators and disputant separately provide their own bonds.",
+      "authority": "Constructor selects explicit governor; intake begins paused; role and policy controls govern admission.",
+      "reinvestment_meaning": "Escrow is an obligation, not supplier profit or free treasury cash.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "manager",
+          "start_line": 410,
+          "end_line": 440,
+          "symbol": "constructor"
+        },
+        {
+          "source": "manager",
+          "start_line": 705,
+          "end_line": 767,
+          "symbol": "createJob / applyForJob"
+        }
+      ]
+    },
+    {
+      "id": "manager_success",
+      "route": "Manager",
+      "asset": "USDC / 6 decimals",
+      "payer": "Employer escrow",
+      "custodian": "Manager settlement ledger",
+      "recipients": "Correct-side validators; wallet30; wallet10; assigned agent",
+      "mechanism": "V=floor(P*v/100) when votes exist; W30=floor(30P/100); W10=floor(10P/100); agent=P-V-W30-W10 plus unallocated validator pool. Default v=8, with no-vote authorized completion using V=0.",
+      "fees_burns_collateral": "No AGIALPHA burn or swap. Bond return and forfeiture transfers are separate from customer-paid award. Failed token sends become reserved beneficiary claims.",
+      "authority": "Posting-time validator rate; wallet rotation only owner with paused intake and zero live escrow/bond reserves; deferred claims retain original beneficiary.",
+      "reinvestment_meaning": "Only a legally/economically identified recipient's actual receipt can enter its revenue account; wallet names do not prove ownership.",
+      "status": "SOURCE_IMPLEMENTED; TEST_SOURCE_INSPECTED_NOT_RUN",
+      "references": [
+        {
+          "source": "manager_settlement",
+          "start_line": 22,
+          "end_line": 48,
+          "symbol": "_pay / claim"
+        },
+        {
+          "source": "manager_settlement",
+          "start_line": 82,
+          "end_line": 133,
+          "symbol": "_validators / complete"
+        },
+        {
+          "source": "manager",
+          "start_line": 531,
+          "end_line": 546,
+          "symbol": "setSettlementWallets"
+        },
+        {
+          "source": "manager_payout_test",
+          "start_line": 79,
+          "end_line": 158,
+          "symbol": "split / snapshots / refunds / deferred claim tests"
+        }
+      ]
+    },
+    {
+      "id": "manager_failure",
+      "route": "Manager",
+      "asset": "USDC / 6 decimals",
+      "payer": "Escrow and independently posted bonds",
+      "custodian": "Manager settlement ledger",
+      "recipients": "Employer refund, appropriate bond owners and correct reviewers",
+      "mechanism": "Employer-win refund restores full buyer escrow, funds reviewer rewards from forfeited agent bond, and sends remaining collateral/residue to employer. Neutral unanswered arbitration returns escrow and all bonds. Assigned expiry returns escrow and transfers agent bond to employer.",
+      "fees_burns_collateral": "No wallet30/wallet10 successful-job shares from refunds. No commit-reveal non-reveal penalty. Agent and validator bond formulas include caps; agent formula also has duration premium.",
+      "authority": "Source-defined cancellation, deadline, dispute and settlement-pause conditions.",
+      "reinvestment_meaning": "Refund liabilities and beneficiary claims are unavailable for discretionary investment.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "manager_bond_math",
+          "start_line": 6,
+          "end_line": 41,
+          "symbol": "computeValidatorBond / computeAgentBond"
+        },
+        {
+          "source": "manager_settlement",
+          "start_line": 135,
+          "end_line": 165,
+          "symbol": "refund / unresolved"
+        },
+        {
+          "source": "manager",
+          "start_line": 1179,
+          "end_line": 1201,
+          "symbol": "cancelJob / expireJob"
+        },
+        {
+          "source": "manager",
+          "start_line": 1328,
+          "end_line": 1348,
+          "symbol": "withdrawableUSDC / withdrawUSDC"
+        }
+      ]
+    },
+    {
+      "id": "alpha_access_and_seed",
+      "route": "Ascension five-contract graph",
+      "asset": "No payment in these two contracts; ERC721 seed ownership",
+      "payer": "No token transfer in inspected Access or NovaSeed functions",
+      "custodian": "Access role/admission records; NovaSeed immutable plan and metadata",
+      "recipients": "Operational identity and seed owner",
+      "mechanism": "Current ENS ownership plus expiring owner-issued admission; business-owned seed commits capsule, evidence, parent and immutable plan root.",
+      "fees_burns_collateral": "No inherent royalty, dividend or buyback.",
+      "authority": "Access owner controls admission; seed ownership and admitted business role govern downstream operations.",
+      "reinvestment_meaning": "A seed is not evidence of corporate equity or legal IP rights. It constrains a downstream plan; it is not spendable cash.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "alpha_access",
+          "start_line": 24,
+          "end_line": 78,
+          "symbol": "constructor / register / setAdmission / eligible"
+        },
+        {
+          "source": "alpha_seed",
+          "start_line": 25,
+          "end_line": 44,
+          "symbol": "seal / plan"
+        }
+      ]
+    },
+    {
+      "id": "alpha_oracle_stake",
+      "route": "AscensionRiskOracle",
+      "asset": "AGIALPHA / 18 decimals",
+      "payer": "Admitted validator",
+      "custodian": "RiskOracle stake ledger",
+      "recipients": "Same validator on permitted withdrawal",
+      "mechanism": "Deposit canonical AGIALPHA; eligibility requires minimum constructor stake and live identity; review and marketplace reservations lock stake and capacity.",
+      "fees_burns_collateral": "No direct validator yield or slashing function in RiskOracle. JobMarket payout is a separate operation.",
+      "authority": "Governor binds marketplace once; admitted validator publishes availability; eligible seed owner requests bounded risk review.",
+      "reinvestment_meaning": "Stake remains committed working capital, not revenue or a cost per successful job absent a loss/opportunity-cost model.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "alpha_oracle",
+          "start_line": 39,
+          "end_line": 81,
+          "symbol": "constructor / deposit / withdraw / lockForJob"
+        },
+        {
+          "source": "alpha_oracle",
+          "start_line": 82,
+          "end_line": 111,
+          "symbol": "openReview / attest / green"
+        }
+      ]
+    },
+    {
+      "id": "alpha_market_success",
+      "route": "AscensionJobMarket",
+      "asset": "AGIALPHA / 18 decimals",
+      "payer": "Business directly or MARK reserve on its behalf",
+      "custodian": "JobMarket escrow",
+      "recipients": "Worker and two approving validators; token supply burn; original-client remainder",
+      "mechanism": "Bounty B escrowed; winning price P<=B. e=floor(floor(P*500/10000)/2), worker gross=P-2e. Each recipient's gross payout separately burns floor(gross/100). B-P is claimable by original client.",
+      "fees_burns_collateral": "Worker bond=max(floor(B/10),minimumStake), locked from deposited stake. Successful bond unlock is not revenue.",
+      "authority": "Admitted ENS business/agent/validators; selected three-person committee; two eligible approvals; one-time MARK binding.",
+      "reinvestment_meaning": "Worker net token receipts may be revenue to its identified operator; usable USD requires separate realized conversion, liquidity and spending authority.",
+      "status": "SOURCE_IMPLEMENTED; TEST_SOURCE_INSPECTED_NOT_RUN",
+      "references": [
+        {
+          "source": "alpha_market",
+          "start_line": 82,
+          "end_line": 140,
+          "symbol": "deposit / post / bid"
+        },
+        {
+          "source": "alpha_market",
+          "start_line": 183,
+          "end_line": 219,
+          "symbol": "validate / _payout / _pay"
+        },
+        {
+          "source": "alpha_token",
+          "start_line": 9,
+          "end_line": 38,
+          "symbol": "exact receive/burn/send helpers"
+        },
+        {
+          "source": "alpha_lifecycle_test",
+          "start_line": 77,
+          "end_line": 125,
+          "symbol": "plan payout and refund test"
+        }
+      ]
+    },
+    {
+      "id": "alpha_market_failure",
+      "route": "AscensionJobMarket",
+      "asset": "AGIALPHA / 18 decimals",
+      "payer": "Escrow and worker bond on slashable failure",
+      "custodian": "JobMarket",
+      "recipients": "Original client refund; burn",
+      "mechanism": "Two eligible rejections or assigned non-submission by due: full B refund plus bond less floor(bond/100); worker loses full bond. Submitted result with missing review quorum: full B refund and worker bond unlock without slash. No valid winning bid refunds B.",
+      "fees_burns_collateral": "Direct votes, not commit/reveal. A missing quorum is not itself proof of failed delivered work.",
+      "authority": "Bounded deadlines and source-state transitions; original client claims once; MARK can collect its own refund.",
+      "reinvestment_meaning": "Slash receipts are penalties, not stable customer revenue. Refunded client capital cannot be counted as earned profit.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "alpha_market",
+          "start_line": 149,
+          "end_line": 173,
+          "symbol": "award"
+        },
+        {
+          "source": "alpha_market",
+          "start_line": 221,
+          "end_line": 249,
+          "symbol": "_fail / timeout / claimRefund"
+        },
+        {
+          "source": "alpha_settlement_test",
+          "start_line": 42,
+          "end_line": 59,
+          "symbol": "revoked-rejection eligibility test"
+        }
+      ]
+    },
+    {
+      "id": "alpha_mark_funding",
+      "route": "AscensionMark",
+      "asset": "AGIALPHA / 18 decimals; campaign accounting lots",
+      "payer": "Admitted campaign funder",
+      "custodian": "MARK campaign reserve",
+      "recipients": "Campaign reserve; funder on permitted sell",
+      "mechanism": "buy receives tokens on a bounded pricing curve and credits lots. During Funding, sell returns curve value and reduces lots/reserve; transferLots is limited by phase, time and admission.",
+      "fees_burns_collateral": "Capital contribution, not customer job revenue. Lots are campaign accounting claims, not an externally guaranteed liquid equity token.",
+      "authority": "Opening requires eligible seed owner and green review; selling unused funding remains possible despite revoked admission or expired risk status.",
+      "reinvestment_meaning": "Reserve is purpose-restricted contributed capital, not free retained earnings.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "alpha_mark",
+          "start_line": 52,
+          "end_line": 96,
+          "symbol": "open / quote / buy / sell / transferLots"
+        }
+      ]
+    },
+    {
+      "id": "alpha_mark_spend_and_close",
+      "route": "AscensionMark",
+      "asset": "AGIALPHA / 18 decimals",
+      "payer": "Pre-funded campaign reserve",
+      "custodian": "MARK then JobMarket escrow",
+      "recipients": "JobMarket workers/validators on accepted jobs; remaining reserve to lot holders after close",
+      "mechanism": "Business blooms and routes only immutable-plan Merkle-proved job indices within reserve and horizon; refunds return via collect. On close, each lot holder reclaims floor(reserve*holderLots/totalLots), then its lots are removed.",
+      "fees_burns_collateral": "No external-enterprise-profit intake/distribution, no buyback, no automatic revenue recycling or 50% appropriation. JobMarket burn occurs downstream.",
+      "authority": "Named original business must remain seed owner with same admitted ENS identity and green review; plan proof/index prevents arbitrary spend or replay.",
+      "reinvestment_meaning": "Unused-capital redemption is not a claim on external profits; plan-authorized construction is possible only within separately funded/approved scope.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "alpha_mark",
+          "start_line": 97,
+          "end_line": 146,
+          "symbol": "bloom / route / collect / close / reclaim"
+        }
+      ]
+    },
+    {
+      "id": "jobs_success",
+      "route": "Jobs v0 JobRegistry / StakeManager",
+      "asset": "AGIALPHA / 18 decimals",
+      "payer": "Employer reward R plus separately calculated fee F",
+      "custodian": "StakeManager job escrow and distinct operator reward pool",
+      "recipients": "Worker; weighted validators; FeePool; burn",
+      "mechanism": "F=floor(R*f/100), P=R+F. V=floor(R*v/100) when validators exist; worker modified amount M=floor((R-V)*m/100); worker net=M-floor(M*b/100). FeePool separately processes F. Extra M-(R-V), when positive, must be covered by existing operatorRewardPool.",
+      "fees_burns_collateral": "Posting snapshots fee and job stake; application snapshots worker payout percentage. Validator percentage and worker burn are read at settlement. Validator allocation is weight-based with rounding residue to highest weight.",
+      "authority": "Configured registry/modules, role identity and tax acknowledgements, sufficient stake, pause and blacklist conditions; governance-only fund/withdraw operator reward pool.",
+      "reinvestment_meaning": "A payout boost consumes prefunded capital and does not create revenue. Ship defaults are templates, not live configuration.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "jobs_registry_base",
+          "start_line": 1481,
+          "end_line": 1562,
+          "symbol": "_createJob / _fundJob"
+        },
+        {
+          "source": "jobs_registry_base",
+          "start_line": 1677,
+          "end_line": 1702,
+          "symbol": "_processStakeOnApply"
+        },
+        {
+          "source": "jobs_registry_base",
+          "start_line": 2040,
+          "end_line": 2120,
+          "symbol": "_finalize success"
+        },
+        {
+          "source": "jobs_stake_base",
+          "start_line": 2327,
+          "end_line": 2484,
+          "symbol": "_finalizeJobFunds / operator pool / validator rewards"
+        }
+      ]
+    },
+    {
+      "id": "jobs_failure_and_nonreveal",
+      "route": "Jobs v0",
+      "asset": "AGIALPHA / 18 decimals",
+      "payer": "Failed-job escrow and independently slashed role stakes",
+      "custodian": "StakeManager",
+      "recipients": "Configured employer / treasury / operator / validator shares and burn",
+      "mechanism": "Failed finalization and assigned timeout redistribute reward+fee under configured penalty shares and separately slash job stake. Unassigned cancellation instead refunds full reward+fee. No-quorum force-finalize records failed state for later settlement. Non-reveal and wrong-outcome review penalties apply separately.",
+      "fees_burns_collateral": "Source defaults: validator non-reveal 50bps of snapshot stake plus 7200-block ban; wrong-outcome vote 50% stake. Job stake=ceil(R*jobStakeBps/10000). Config example 50/50 employer/treasury is penalty distribution, not reinvestment.",
+      "authority": "Owner-adjustable review parameters, governance-defined distributions, eligible/locked stake and source phase/deadline conditions.",
+      "reinvestment_meaning": "A full-buyer-refund assumption is invalid for the general failed route. Numerical failed-route economics NOT MODELED unless every relevant parameter and branch is frozen.",
+      "status": "SOURCE_IMPLEMENTED; FAILURE_NUMERICS_NOT_MODELED",
+      "references": [
+        {
+          "source": "jobs_registry_base",
+          "start_line": 627,
+          "end_line": 640,
+          "symbol": "_quoteJobStake"
+        },
+        {
+          "source": "jobs_registry_base",
+          "start_line": 1853,
+          "end_line": 1871,
+          "symbol": "_entry_forceFinalize"
+        },
+        {
+          "source": "jobs_registry_base",
+          "start_line": 2121,
+          "end_line": 2136,
+          "symbol": "failed _finalize"
+        },
+        {
+          "source": "jobs_registry_base",
+          "start_line": 2212,
+          "end_line": 2227,
+          "symbol": "_cancelJob"
+        },
+        {
+          "source": "jobs_registry_base",
+          "start_line": 2250,
+          "end_line": 2285,
+          "symbol": "_entry_claimTimeout"
+        },
+        {
+          "source": "jobs_stake_base",
+          "start_line": 782,
+          "end_line": 915,
+          "symbol": "penalty split / distribution"
+        },
+        {
+          "source": "jobs_validation_base",
+          "start_line": 1305,
+          "end_line": 1365,
+          "symbol": "forceFinalize and non-reveal"
+        },
+        {
+          "source": "jobs_validation_base",
+          "start_line": 1437,
+          "end_line": 1458,
+          "symbol": "non-reveal and wrong-outcome slash"
+        }
+      ]
+    },
+    {
+      "id": "jobs_fee_pool",
+      "route": "Jobs v0 FeePool",
+      "asset": "AGIALPHA / 18 decimals",
+      "payer": "Job fees transferred by StakeManager; separate voluntary contributors",
+      "custodian": "FeePool",
+      "recipients": "Burn, configured boosted-stake role claimants, limited treasury dust",
+      "mechanism": "Burn floor(F*d/100), then pendingFees+=F-burn. Distribute over boosted stake in configured rewardRole (default Platform). If total stake is zero, burn pending amount; dust goes to allowed treasury or burns. Claims depend on role stake, multiplier and accumulator.",
+      "fees_burns_collateral": "FeePool burn is additional to and has a different denominator from worker-payout burn. Direct contributions are capital inflows, not additional customer earnings.",
+      "authority": "Owner sets role, burn, allowed treasury and rewarders; governance-only withdrawal target is configured treasury or burn address.",
+      "reinvestment_meaning": "Eligible staker fee rights are not an entitlement for all passive tokenholders, fixed yield, or enterprise-profit share. Permissioned treasury withdrawal is not automatic appropriation.",
+      "status": "SOURCE_IMPLEMENTED",
+      "references": [
+        {
+          "source": "jobs_fee",
+          "start_line": 180,
+          "end_line": 218,
+          "symbol": "constructor defaults"
+        },
+        {
+          "source": "jobs_fee",
+          "start_line": 239,
+          "end_line": 365,
+          "symbol": "deposit / contribute / distribute / claim"
+        },
+        {
+          "source": "jobs_fee",
+          "start_line": 395,
+          "end_line": 423,
+          "symbol": "governanceWithdraw"
+        },
+        {
+          "source": "jobs_fee",
+          "start_line": 430,
+          "end_line": 503,
+          "symbol": "role / burn / treasury / governance setters"
+        }
+      ]
+    },
+    {
+      "id": "fleet_boundary",
+      "route": "Fleet execution adapters",
+      "asset": "USDC or AGIALPHA retained as explicit planning context",
+      "payer": "No payment created by the inspected offline project journey",
+      "custodian": "Local bounded execution / review records",
+      "recipients": "Requested report and internal check; no automatic contract settlement",
+      "mechanism": "Existing source preserves separate Agent and Node authorizations, STOP/recovery and complete task/history return. Selected contract profiles bind exact graphs; local profile tests use mock USDC.",
+      "fees_burns_collateral": "No additional universal Fleet platform fee established; no automatic currency conversion or private-work settlement.",
+      "authority": "Explicit scoped local authorization and separate funded-operation commissioning; productionQualified remains false in the source preview.",
+      "reinvestment_meaning": "Useful execution evidence is not revenue, current deployment authorization or an enterprise treasury bridge.",
+      "status": "SOURCE_DOCUMENTED; REPORTED_LOCAL_TESTS_NOT_RERUN",
+      "references": [
+        {
+          "source": "fleet_project",
+          "start_line": 1,
+          "end_line": 37,
+          "symbol": "route / project journey"
+        },
+        {
+          "source": "fleet_project",
+          "start_line": 79,
+          "end_line": 94,
+          "symbol": "historical claims / qualification boundary"
+        },
+        {
+          "source": "fleet_profiles",
+          "start_line": 5,
+          "end_line": 18,
+          "symbol": "selected graphs"
+        },
+        {
+          "source": "fleet_profiles",
+          "start_line": 22,
+          "end_line": 34,
+          "symbol": "local mock-chain validation"
+        }
+      ]
+    }
+  ],
+  "not_established": [
+    "Current active deployed behavior or current state",
+    "Ownership of fee wallets by the modeled enterprise",
+    "Current customer demand, collections or retained earnings",
+    "Universal tokenholder revenue sharing or redemption",
+    "Automatic buyback or USDC-to-AGIALPHA conversion",
+    "An implemented 50% operating-surplus reinvestment policy",
+    "Token valuation, liquidation depth or spendable USD from unconverted tokens",
+    "Independent security audit or production commissioning"
+  ],
+  "accounting_rules": [
+    "Identify the enterprise's receiving role and beneficiary before recognizing a receipt.",
+    "Keep customer escrow, contributed capital, reserves, returned collateral and slashed collateral separate from ordinary operating revenue.",
+    "A token burn is destruction of token units, not cash income or proof of price appreciation.",
+    "Recognize reinvestable resources only after expenses, taxes, refunds, obligations, reserves and separately authorized appropriation.",
+    "Use exact atomic-unit integer formulas; label continuous ratios as approximations.",
+    "Do not merge Manager USDC and Jobs/Ascension AGIALPHA assets or fee conventions."
+  ]
+}
