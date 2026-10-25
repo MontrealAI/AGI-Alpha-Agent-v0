@@ -28,9 +28,17 @@ version changes, not invented vulnerabilities. The accepted deliverable must
 report exactly those differences in complete CSVs, action exports, portable
 workspace and report, with separate Python verification.
 
-At this code freeze the new request is NOT RUN. This record does not rewrite the
-earlier five local requests or count their rechecks/artifacts as new jobs. Input
-acquisition and source publication are separate from the offline execution.
+The public code/input freeze is `443246db37b30b83f4b9c8a854ceb226601e0155`;
+its source request was downloaded and byte-verified before execution. One actual
+local request now checks all five identities and reports exactly the three
+expected version differences. It passes **326 independently implemented Python
+checks**, including complete differences/actions and reservation coverage.
+The [outcome](fresh-outcomes.json), [acceptance](independent-acceptance.json) and
+[actual result package](delivery-package.zip) retain the checked files. The
+execution checkpoint and reconnect are part of that one request. The protocol's
+NOT RUN field records the earlier prospective freeze, not this later result.
+The earlier five local requests remain separate historical evidence. Input
+acquisition and source publication are separate from offline execution.
 
 ## Exact operating scope and gaps
 
@@ -73,7 +81,8 @@ self-acceleration is established.
 Les trois défauts constatés en revue sont reproduits puis corrigés : échéance
 pendant la revalidation, verrou de reprise interrompu et couverture de chaque
 tentative par sa réserve. Les résultats antérieurs restent accessibles. Le
-nouveau protocole doit vérifier cinq identités et trois changements de version
-réels; cette demande est encore NON EXÉCUTÉE à ce gel du code. L’offre Git demeure
+protocole gèle cinq identités et trois changements de version réels. La
+confirmation suivante est exécutée localement : une demande et 326 contrôles
+indépendants, avec les trois écarts attendus. L’offre Git demeure
 locale; son adaptateur connecté et son profil approuvé restent à livrer. Aucun
 coût complet, bénéfice commercial ou accroissement autonome n’est présumé.
