@@ -1,0 +1,66 @@
+{
+  "study": "Software Capability Foundry",
+  "edition": "1.0.0",
+  "status": "FROZEN_BEFORE_CONFIRMATION",
+  "source_commit": "f836f06e8351e64db1da770e16e304b5feb01f28",
+  "portfolio": [
+    "A: committed Strategy companion retrieval,37 files",
+    "B: gallery cache input retrieval and exact worker reproduction,437 assets",
+    "C: construct bound archive drift capability from accepted B bytes",
+    "D: refuse unsafe paths/modes/invalid archives"
+  ],
+  "confirmation_instances": 24,
+  "confirmation_repeats": 4,
+  "arms": [
+    "specialist",
+    "no_asset",
+    "history",
+    "conventional",
+    "flywheel",
+    "equivalent",
+    "reconstruction"
+  ],
+  "primary": "per-instance total parent+child CPU across read+child subprocesses, construction, retrieval, output verification and intermediate persistence (before final result-row write); mean paired log ratio flywheel/specialist; 95% bootstrap upper bound <0.95",
+  "secondary": "all exact byte/drift oracles pass; reader correctness and child correctness; no asset vs reconstruction and ordinary history",
+  "bootstrap": {
+    "resamples": 10000,
+    "seed": 395022,
+    "unit": "repository instance, averaging repeats before resampling; conditional on source pool/generator/host; not natural repositories"
+  },
+  "budgets": {
+    "service_seconds_per_arm_instance": 20,
+    "improvement_seconds_per_arm_instance": 10,
+    "candidate_methods": 3,
+    "qualification_passes": 1,
+    "child_templates": 1,
+    "enforcement": "30s hard worker timeout; service/improvement sums are separate admission caps, not OS CPU limits"
+  },
+  "cache_conditions": [
+    "first call in fresh Python process",
+    "three warm in-process calls"
+  ],
+  "disk_cache": "uncontrolled shared OS page cache; no disk-cold claim",
+  "stop": "one campaign only; no confirmation tuning; primary failure retained",
+  "monetary_cost": null,
+  "model_calls_in_benchmark": 0,
+  "agent_claim": "bounded deterministic constructor; capable language-model-agent superiority untested",
+  "promotion": "require zero correctness defects and primary CPU gate for flywheel-specific admission; independent operational patch decision may pass versus original",
+  "recurrence_grid": [
+    1,
+    10,
+    100,
+    1000,
+    10000,
+    100000
+  ],
+  "confirmed_cases_may_not_be_modified": true,
+  "failure_policy": "every failed attempt retained and charged; any correctness/budget/lineage failure forces HOLD regardless of timing; no case exclusions",
+  "condition_aggregation": "one fresh plus three warm reads and one fresh plus three warm diagnoses aggregated into a single instance/arm cost; repetitions not independent trials",
+  "upfront_investment": "reported separately; all development attempts charged where measured; human/model/retrieval/integration/maintenance unknowns prohibit full payback/profit claim",
+  "bounded_grammar": {
+    "reader_methods": 3,
+    "child_templates": 1,
+    "selection_trials_per_method": 5,
+    "source_revision_policy": "prefreeze engineering corrections separately logged; not counted as zero or described as four total development attempts"
+  }
+}

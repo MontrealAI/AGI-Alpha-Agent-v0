@@ -1,0 +1,1445 @@
+{
+  "schema": "successor-workbench/v1",
+  "spec": {
+    "family": "software-capability-foundry",
+    "inputs": {
+      "candidate": [
+        {
+          "mode": "100644",
+          "path": "docs/TERMS_AND_CONDITIONS/assets/preview.svg",
+          "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\">\n  <rect width=\"16\" height=\"16\" fill=\"#222\"/>\n  <text x=\"8\" y=\"12\" text-anchor=\"middle\" font-size=\"12\" fill=\"#fff\">α</text>\n</svg>\n\n/* Deliberately seeded local drift fixture. */\n"
+        },
+        {
+          "mode": "100755",
+          "path": "docs/aiga_meta_evolution/assets/bridge_overview.svg",
+          "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"620\" height=\"200\" font-family=\"Arial\" font-size=\"14\">\n  <defs>\n    <marker id=\"arrow\" markerWidth=\"10\" markerHeight=\"10\" refX=\"5\" refY=\"3\" orient=\"auto\">\n      <path d=\"M0,0 L0,6 L9,3 z\" fill=\"#000\" />\n    </marker>\n  </defs>\n  <rect x=\"20\" y=\"60\" width=\"120\" height=\"40\" fill=\"#e0e0ff\" stroke=\"#000\" />\n  <text x=\"80\" y=\"85\" text-anchor=\"middle\">MetaEvolver</text>\n\n  <line x1=\"140\" y1=\"80\" x2=\"250\" y2=\"80\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"250\" y=\"60\" width=\"140\" height=\"40\" fill=\"#ffe0e0\" stroke=\"#000\" />\n  <text x=\"320\" y=\"85\" text-anchor=\"middle\">FastAPI + Gradio</text>\n\n  <line x1=\"390\" y1=\"80\" x2=\"500\" y2=\"80\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"500\" y=\"60\" width=\"100\" height=\"40\" fill=\"#e0ffe0\" stroke=\"#000\" />\n  <text x=\"550\" y=\"85\" text-anchor=\"middle\">Agents SDK</text>\n\n  <line x1=\"550\" y1=\"100\" x2=\"550\" y2=\"140\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"480\" y=\"140\" width=\"140\" height=\"40\" fill=\"#ffffe0\" stroke=\"#000\" />\n  <text x=\"550\" y=\"165\" text-anchor=\"middle\">ADK Gateway (opt)</text>\n\n  <line x1=\"320\" y1=\"100\" x2=\"320\" y2=\"140\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"250\" y=\"140\" width=\"140\" height=\"40\" fill=\"#e0ffff\" stroke=\"#000\" />\n  <text x=\"320\" y=\"165\" text-anchor=\"middle\">Ollama / OpenAI LLMs</text>\n</svg>\n"
+        },
+        {
+          "mode": "100644",
+          "path": "docs/aiga_meta_evolution/assets/preview.svg",
+          "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\">\n  <rect width=\"16\" height=\"16\" fill=\"#222\"/>\n  <text x=\"8\" y=\"12\" text-anchor=\"middle\" font-size=\"12\" fill=\"#fff\">α</text>\n</svg>\n"
+        },
+        {
+          "mode": "100644",
+          "path": "docs/aiga_meta_evolution/assets/script.js",
+          "text": "/* SPDX-License-Identifier: Apache-2.0 */\n/* eslint-env browser */\n/* global Chart */\n/* eslint-disable no-undef */\nimport {replayChart} from '../../assets/replay_chart.js';\nreplayChart({logsUrl: 'assets/logs.json', label: 'Aiga Meta Evolution Metric', color: 'red'});\n"
+        },
+        {
+          "mode": "100644",
+          "path": "docs/aiga_meta_evolution/assets/style.css",
+          "text": "#chart{width:100%;height:300px;}\n#logs-panel{white-space:pre-wrap;background:#f4f4f4;padding:1rem;height:150px;overflow:auto;margin-top:1rem;}\n"
+        },
+        {
+          "mode": "100644",
+          "path": "docs/alpha_agi_business_2_v1/assets/app.mjs",
+          "text": "import { evaluate, validate, canonical } from \"./engine.mjs\";\nimport { parseJSON } from \"./json.mjs\";\nimport { messages } from \"./i18n.mjs\";\nconst $ = (id) => document.getElementById(id);\nlet lang = \"en\",\n    revision = 0,\n    report = null,\n    lastInput = null,\n    serial = 0;\nconst t = (k) => messages[lang][k] || k;\nconst numeric = new Set([\n    \"effortHours\",\n    \"maxProjects\",\n    \"minSupportingSources\",\n    \"baseline\",\n    \"current\",\n    \"valuePoints\",\n]);\nfunction element(tag, text) {\n    const el = document.createElement(tag);\n    if (text !== undefined) el.textContent = text;\n    return el;\n}\nfunction field(parent, key, value, options) {\n    const wrap = element(\"div\"),\n        label = element(\"label\");\n    label.dataset.t = key;\n    label.textContent = t(key);\n    const control = element(options ? \"select\" : \"input\");\n    control.id = \"field-\" + ++serial;\n    control.dataset.key = key;\n    label.htmlFor = control.id;\n    if (options)\n        for (const option of options) {\n            const el = element(\"option\", t(option));\n            el.value = option;\n            el.dataset.t = option;\n            control.append(el);\n        }\n    else {\n        control.type = \"text\";\n        if (numeric.has(key)) control.inputMode = \"numeric\";\n    }\n    control.value = value;\n    wrap.append(label, control);\n    parent.append(wrap);\n    return control;\n}\nfunction row(collection, data) {\n    const card = element(\"fieldset\");\n    card.className = \"business-row\";\n    card.dataset.collection = collection;\n    const legend = element(\"legend\", data.id);\n    card.append(legend);\n    const fields = element(\"div\");\n    fields.className = \"pair\";\n    for (const [key, value] of Object.entries(data))\n        field(\n            fields,\n            key,\n            Array.isArray(value) ? value.join(\", \") : value,\n            key === \"direction\" ? [\"increase\", \"decrease\"] : undefined\n        );\n    card.append(fields);\n    const remove = element(\"button\", t(\"remove\"));\n    remove.type = \"button\";\n    remove.dataset.t = \"remove\";\n    remove.className = \"quiet\";\n    remove.addEventListener(\"click\", () => {\n        card.remove();\n        invalidate();\n    });\n    card.append(remove);\n    card.addEventListener(\"input\", () => {\n        legend.textContent = card.querySelector('[data-key=\"id\"]').value;\n        remove.setAttribute(\n            \"aria-label\",\n            t(\"remove\") + \" \" + legend.textContent\n        );\n    });\n    remove.setAttribute(\"aria-label\", t(\"remove\") + \" \" + data.id);\n    $(collection).append(card);\n}\nfunction fill(s) {\n    validate(s);\n    $(\"metadata\").replaceChildren();\n    $(\"policy\").replaceChildren();\n    field($(\"metadata\"), \"id\", s.id);\n    field($(\"metadata\"), \"kind\", s.provenance.kind, [\n        \"constructed\",\n        \"supplied\",\n    ]);\n    field($(\"metadata\"), \"note\", s.provenance.note);\n    for (const [k, v] of Object.entries(s.policy)) field($(\"policy\"), k, v);\n    for (const collection of [\"observations\", \"opportunities\"]) {\n        $(collection).replaceChildren();\n        s[collection].forEach((r) => row(collection, r));\n    }\n}\nfunction integer(raw) {\n    if (!/^(?:0|[1-9][0-9]*)$/.test(raw))\n        throw Error(\"Whole decimal integer required\");\n    const n = Number(raw);\n    if (!Number.isSafeInteger(n)) throw Error(\"Integer too large\");\n    return n;\n}\nfunction values(container) {\n    const out = {};\n    for (const el of container.querySelectorAll(\"[data-key]\")) {\n        const key = el.dataset.key;\n        out[key] = numeric.has(key)\n            ? integer(el.value)\n            : key === \"evidenceIds\"\n            ? el.value.split(\",\").map((s) => s.trim())\n            : el.value;\n    }\n    return out;\n}\nfunction bounded(input) {\n    validate(input);\n    if (new TextEncoder().encode(canonical(input)).length > 128000)\n        throw Error(\"Input exceeds 128000 bytes\");\n    return input;\n}\nfunction read() {\n    const m = values($(\"metadata\"));\n    return bounded({\n        schema: \"agialpha.business2.input.v1\",\n        id: m.id,\n        provenance: { kind: m.kind, note: m.note },\n        policy: values($(\"policy\")),\n        observations: [...$(\"observations\").children].map(values),\n        opportunities: [...$(\"opportunities\").children].map(values),\n    });\n}\nfunction invalidate() {\n    revision++;\n    report = null;\n    lastInput = null;\n    $(\"result\").hidden = true;\n    $(\"evidence\").disabled = true;\n    $(\"download\").disabled = true;\n    $(\"error\").hidden = true;\n    $(\"status\").textContent = t(\"changed\");\n}\nfunction render() {\n    if (!report) return;\n    const p = report.plan;\n    $(\"summary\").textContent =\n        (p.selectedIds.join(\", \") || t(\"empty\")) +\n        \" · \" +\n        p.totalValuePoints +\n        \" \" +\n        t(\"points\") +\n        \" · \" +\n        p.totalEffortHours +\n        \" \" +\n        t(\"hours\") +\n        \" · \" +\n        p.remainingEffortHours +\n        \" \" +\n        t(\"remaining\");\n    $(\"review\").replaceChildren();\n    for (const r of report.research.observations) {\n        const card = element(\"article\");\n        card.className = \"report-card\";\n        card.append(\n            element(\"h3\", r.id + \" · \" + r.metric),\n            element(\n                \"p\",\n                r.baseline +\n                    \" → \" +\n                    r.current +\n                    \" \" +\n                    r.unit +\n                    \" · \" +\n                    t(\"delta\") +\n                    \": \" +\n                    r.delta\n            ),\n            element(\n                \"p\",\n                t(r.supports ? \"supports\" : \"noSupport\") + \" · \" + r.source\n            )\n        );\n        $(\"review\").append(card);\n    }\n    $(\"portfolio\").replaceChildren();\n    for (const r of report.research.opportunities) {\n        const card = element(\"article\");\n        card.className = \"report-card\";\n        card.append(\n            element(\"h3\", r.title + \" · \" + t(r.reason)),\n            element(\n                \"p\",\n                r.valuePoints +\n                    \" \" +\n                    t(\"points\") +\n                    \" · \" +\n                    r.effortHours +\n                    \" \" +\n                    t(\"hours\")\n            ),\n            element(\n                \"p\",\n                t(\"sources\") + \": \" + (r.supportingSources.join(\" · \") || \"0\")\n            )\n        );\n        $(\"portfolio\").append(card);\n    }\n    $(\"raw\").textContent = JSON.stringify(report, null, 2);\n    $(\"digest\").textContent =\n        \"SHA-256 input: \" +\n        report.inputDigest +\n        \" · report: \" +\n        report.reportDigest;\n    $(\"result\").hidden = false;\n    $(\"evidence\").disabled = false;\n    $(\"download\").disabled = false;\n}\nasync function run() {\n    invalidate();\n    const own = revision;\n    $(\"status\").textContent = t(\"pending\");\n    try {\n        const input = structuredClone(read());\n        const result = await evaluate(input);\n        if (own !== revision) return;\n        lastInput = input;\n        report = result;\n        render();\n        $(\"status\").textContent = t(\"ready\");\n    } catch {\n        if (own !== revision) return;\n        $(\"error\").textContent = t(\"invalid\");\n        $(\"error\").hidden = false;\n        $(\"status\").textContent = \"\";\n    }\n}\nfunction translate() {\n    document.documentElement.lang = lang;\n    for (const el of document.querySelectorAll(\"[data-t]\"))\n        el.textContent = t(el.dataset.t);\n    $(\"language\").textContent = lang === \"en\" ? \"FR\" : \"EN\";\n    $(\"language\").setAttribute(\n        \"aria-label\",\n        lang === \"en\" ? \"Passer en français\" : \"Switch to English\"\n    );\n    for (const card of document.querySelectorAll(\".business-row\"))\n        card.querySelector(\"button\").setAttribute(\n            \"aria-label\",\n            t(\"remove\") + \" \" + card.querySelector('[data-key=\"id\"]').value\n        );\n    if (!$(\"error\").hidden) $(\"error\").textContent = t(\"invalid\");\n    $(\"status\").textContent = t(report ? \"ready\" : \"changed\");\n    render();\n}\n$(\"language\").onclick = () => {\n    lang = lang === \"en\" ? \"fr\" : \"en\";\n    translate();\n};\n$(\"workspace\").addEventListener(\"input\", invalidate);\n$(\"workspace\").addEventListener(\"change\", invalidate);\n$(\"workspace\").onsubmit = (e) => {\n    e.preventDefault();\n    run();\n};\nconst example = parseJSON(await (await fetch(\"assets/example.json\")).text());\n$(\"reset\").onclick = () => {\n    invalidate();\n    fill(example);\n    run();\n};\n$(\"addObservation\").onclick = () => {\n    if ($(\"observations\").children.length >= 64) return;\n    row(\"observations\", {\n        id: \"observation-\" + ++serial,\n        source: \"\",\n        metric: \"\",\n        unit: \"\",\n        baseline: 0,\n        current: 0,\n        direction: \"increase\",\n    });\n    invalidate();\n};\n$(\"addOpportunity\").onclick = () => {\n    if ($(\"opportunities\").children.length >= 16) return;\n    row(\"opportunities\", {\n        id: \"project-\" + ++serial,\n        title: \"\",\n        effortHours: 1,\n        valuePoints: 0,\n        evidenceIds: [],\n    });\n    invalidate();\n};\n$(\"import\").onchange = async () => {\n    const file = $(\"import\").files[0];\n    if (!file) return;\n    invalidate();\n    const own = revision;\n    try {\n        if (file.size > 1048576) throw Error(\"Too large\");\n        const parsed = parseJSON(\n            new TextDecoder(\"utf-8\", { fatal: true, ignoreBOM: true }).decode(\n                await file.arrayBuffer()\n            ),\n            true,\n            1048576\n        );\n        let input = parsed;\n        if (\n            parsed &&\n            [\n                \"agialpha.business2.evidence.v1\",\n                \"agialpha.business2.notebook-evidence.v1\",\n            ].includes(parsed.schema)\n        ) {\n            if (Object.keys(parsed).sort().join(\"|\") !== \"input|report|schema\")\n                throw Error(\"Unknown evidence fields\");\n            input = parsed.input;\n        } else if (file.size > 128000) throw Error(\"Input exceeds byte limit\");\n        bounded(input);\n        if (own !== revision) return;\n        fill(input);\n        await run();\n    } catch {\n        if (own === revision) {\n            $(\"error\").hidden = false;\n            $(\"error\").textContent = t(\"invalid\");\n        }\n    } finally {\n        if ($(\"import\").files[0] === file) $(\"import\").value = \"\";\n    }\n};\nfunction download(value, name) {\n    const url = URL.createObjectURL(\n        new Blob([JSON.stringify(value)], {\n            type: \"application/json\",\n        })\n    );\n    const a = element(\"a\");\n    a.href = url;\n    a.download = name;\n    a.click();\n    setTimeout(() => URL.revokeObjectURL(url), 1000);\n}\n$(\"download\").onclick = () => {\n    if (lastInput && report) download(lastInput, \"observations.json\");\n};\n$(\"evidence\").onclick = () => {\n    if (lastInput && report)\n        download(\n            {\n                schema: \"agialpha.business2.evidence.v1\",\n                input: lastInput,\n                report,\n            },\n            \"business2-report.json\"\n        );\n};\nfill(example);\nawait run();\n"
+        },
+        {
+          "mode": "100644",
+          "path": "docs/alpha_agi_business_2_v1/assets/comparison.css",
+          "text": "/* SPDX-License-Identifier: Apache-2.0 */\n:root {\n    color-scheme: dark;\n    font-family: Inter, ui-sans-serif, system-ui, sans-serif;\n    background: #100b20;\n    color: #f6f0ff;\n    --muted: #c4b7da;\n    --accent: #d5b5ff;\n    --line: #584268;\n}\n* {\n    box-sizing: border-box;\n}\nbody {\n    margin: 0;\n    background: radial-gradient(ellipse at 80% 0, #54297d66, transparent 45%);\n}\nnav,\nheader,\nmain,\nfooter {\n    max-width: 1280px;\n    margin: auto;\n    padding: 24px 40px;\n    overflow-wrap: anywhere;\n}\na {\n    color: var(--accent);\n    text-underline-offset: 5px;\n}\nnav {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 20px;\n    border-bottom: 1px solid var(--line);\n}\nnav > div {\n    display: flex;\n    align-items: center;\n    gap: 20px;\n}\nnav > a {\n    text-decoration: none;\n    letter-spacing: 0.12em;\n    font-weight: 700;\n}\nbutton,\ninput {\n    font: inherit;\n}\nbutton,\na,\ninput,\nsummary {\n    outline-offset: 5px;\n}\nbutton:focus-visible,\na:focus-visible,\ninput:focus-visible,\nsummary:focus-visible {\n    outline: 3px solid #ffe1a2;\n}\nbutton {\n    min-height: 44px;\n    cursor: pointer;\n}\n#language {\n    background: transparent;\n    border: 1px solid var(--line);\n    color: var(--accent);\n    border-radius: 50%;\n    min-width: 44px;\n}\nheader {\n    display: grid;\n    grid-template-columns: 1.6fr 1fr;\n    gap: 60px;\n    padding-top: 76px;\n    padding-bottom: 62px;\n    align-items: center;\n}\n.eyebrow {\n    font-size: 0.75rem;\n    font-weight: 750;\n    letter-spacing: 0.13em;\n    color: var(--accent);\n    line-height: 1.7;\n}\nh1 {\n    font: 400 clamp(2.7rem, 6vw, 5.5rem) / 1.06 Georgia, serif;\n    letter-spacing: -0.035em;\n    margin: 22px 0;\n}\nh2 {\n    font: 400 clamp(1.8rem, 3vw, 2.6rem) / 1.2 Georgia, serif;\n    margin: 10px 0 20px;\n}\nh3 {\n    font-size: 1.1rem;\n    margin: 8px 0 16px;\n}\np {\n    line-height: 1.7;\n}\n.lead {\n    font-size: 1.12rem;\n    color: var(--muted);\n}\n.scope {\n    border: 1px solid #7c579a;\n    border-radius: 18px;\n    padding: 28px;\n    background: linear-gradient(135deg, #3b205b, #211331);\n    box-shadow: 0 20px 65px #09061266;\n}\n.scope span {\n    font-size: 0.72rem;\n    letter-spacing: 0.13em;\n    color: #ead7ff;\n    font-weight: 750;\n}\n.scope p {\n    color: #e0d0ee;\n    font-size: 0.92rem;\n}\n.panel {\n    padding: 28px;\n    border: 1px solid var(--line);\n    background: #1a122b;\n    border-radius: 18px;\n    margin-bottom: 24px;\n    min-width: 0;\n}\n.toolbar {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 20px;\n    flex-wrap: wrap;\n}\n.toolbar h3 {\n    margin-bottom: 6px;\n}\n.hint {\n    font-size: 0.88rem;\n    color: var(--muted);\n}\nlabel {\n    display: block;\n    font-size: 0.88rem;\n    margin: 8px 0;\n    line-height: 1.4;\n}\ninput:not([type=\"file\"]) {\n    width: 100%;\n    min-width: 0;\n    min-height: 46px;\n    background: #100b20;\n    border: 1px solid #85679d;\n    border-radius: 8px;\n    color: #fff;\n    padding: 12px;\n}\n.limits {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 20px;\n    margin-top: 18px;\n}\n.task {\n    display: grid;\n    grid-template-columns: 1fr 2fr repeat(4, 1fr) 1.6fr auto;\n    gap: 12px;\n    border-top: 1px solid var(--line);\n    padding: 18px 0;\n    align-items: end;\n}\n.task > div {\n    min-width: 0;\n}\n.task .remove {\n    background: transparent;\n    border: 1px solid #b293c6;\n    border-radius: 8px;\n    color: #ffe1e9;\n    padding: 10px;\n    min-width: 44px;\n}\n.actions {\n    display: flex;\n    align-items: center;\n    gap: 16px;\n    flex-wrap: wrap;\n    margin-top: 24px;\n}\n.primary,\n.quiet {\n    border-radius: 9px;\n    padding: 13px 19px;\n    line-height: 1.4;\n    font-weight: 650;\n}\n.primary {\n    color: #241036;\n    background: #d8b9ff;\n    border: 1px solid #ead9ff;\n}\n.quiet {\n    color: #ead8ff;\n    background: #2c1a42;\n    border: 1px solid #9973b5;\n}\n.file-label {\n    position: relative;\n    display: block;\n    cursor: pointer;\n    min-height: 46px;\n}\n.file-label input {\n    display: block;\n    max-width: 100%;\n    margin-top: 8px;\n    font-size: 0.85rem;\n}\n#status {\n    color: var(--muted);\n}\n#error {\n    background: #442533;\n    border: 1px solid #cb8c9b;\n    padding: 16px;\n    border-radius: 9px;\n    color: #ffe7e8;\n}\n.metrics {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 16px;\n    margin: 24px 0;\n}\n.metrics > div {\n    padding: 20px;\n    background: #302043;\n    border-radius: 12px;\n}\n.metrics strong {\n    font-size: 2rem;\n    display: block;\n    margin-top: 8px;\n}\n.metrics span {\n    color: var(--muted);\n}\n#steps {\n    padding-left: 25px;\n}\n#steps li,\n#omissions li {\n    padding: 10px 0;\n    line-height: 1.65;\n}\ndetails {\n    border-top: 1px solid var(--line);\n    padding-top: 20px;\n}\nsummary {\n    cursor: pointer;\n    min-height: 44px;\n}\npre {\n    white-space: pre-wrap;\n    overflow-wrap: anywhere;\n    background: #0e0918;\n    padding: 20px;\n    border-radius: 8px;\n    max-height: 500px;\n    overflow: auto;\n}\n.method {\n    max-width: 800px;\n    padding: 35px 0 55px;\n}\n.method p {\n    color: var(--muted);\n}\nfooter {\n    border-top: 1px solid var(--line);\n    font-size: 0.85rem;\n    color: var(--muted);\n    padding-bottom: 40px;\n}\n.skip {\n    position: fixed;\n    left: 12px;\n    top: -100px;\n    padding: 14px;\n    background: #fff;\n    color: #251334;\n    z-index: 10;\n}\n.skip:focus {\n    top: 12px;\n}\n[hidden] {\n    display: none !important;\n}\n@media (max-width: 1050px) {\n    .task {\n        grid-template-columns: repeat(4, minmax(0, 1fr));\n    }\n    .task > div:nth-child(2) {\n        grid-column: span 2;\n    }\n    .task > div:nth-child(7) {\n        grid-column: span 2;\n    }\n}\n@media (max-width: 700px) {\n    nav,\n    header,\n    main,\n    footer {\n        padding-left: 20px;\n        padding-right: 20px;\n    }\n    nav {\n        align-items: flex-start;\n    }\n    nav > div {\n        flex-wrap: wrap;\n        justify-content: flex-end;\n        gap: 12px;\n    }\n    header {\n        display: block;\n        padding-top: 35px;\n        padding-bottom: 30px;\n    }\n    .scope {\n        margin-top: 28px;\n        padding: 22px;\n    }\n    .panel {\n        padding: 20px;\n    }\n    .limits,\n    .metrics {\n        grid-template-columns: 1fr;\n    }\n    .task {\n        grid-template-columns: repeat(2, minmax(0, 1fr));\n        gap: 10px;\n    }\n    .task > div:nth-child(2) {\n        grid-column: span 1;\n    }\n    .primary,\n    .quiet {\n        max-width: 100%;\n    }\n    h1 {\n        font-size: clamp(2.6rem, 10vw, 4rem);\n    }\n}\n@media print {\n    body {\n        background: white;\n        color: black;\n    }\n    nav,\n    form,\n    .actions,\n    footer button {\n        display: none;\n    }\n    .panel,\n    .scope,\n    .metrics > div {\n        background: white;\n        color: black;\n        border: 1px solid #777;\n    }\n    .hint,\n    .lead,\n    p,\n    .eyebrow {\n        color: #222 !important;\n    }\n    header,\n    main {\n        padding: 20px;\n    }\n    #result {\n        display: block;\n    }\n    pre {\n        max-height: none;\n        color: black;\n        background: white;\n    }\n}\nheader {\n    display: block;\n    max-width: 1050px;\n    text-align: left;\n}\nheader h1 {\n    max-width: 900px;\n}\n.notice {\n    padding: 18px;\n    border: 1px solid #82629f;\n    background: #2c1c41;\n    border-radius: 12px;\n    color: #dfd0ec;\n}\n.layout {\n    display: grid;\n    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);\n    gap: 26px;\n    align-items: start;\n}\n.pair {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 16px;\n}\n.section-head {\n    display: flex;\n    gap: 16px;\n    flex-wrap: wrap;\n    justify-content: space-between;\n    align-items: center;\n}\n.section-head h2 {\n    margin: 0;\n}\n.panel h3 {\n    margin-top: 28px;\n}\nfieldset {\n    border: 1px solid var(--line);\n    border-radius: 9px;\n    margin: 24px 0 0;\n    padding: 16px;\n}\nfieldset label {\n    display: flex;\n    gap: 12px;\n    align-items: center;\n    min-height: 44px;\n}\ninput[type=\"checkbox\"] {\n    width: 22px;\n    min-height: 22px;\n    accent-color: #d8b9ff;\n}\nselect {\n    width: 100%;\n    min-height: 46px;\n    background: #100b20;\n    color: white;\n    border: 1px solid #85679d;\n    border-radius: 8px;\n    font: inherit;\n    padding: 10px;\n}\n.vote {\n    border-top: 1px solid var(--line);\n    padding: 16px 0;\n}\n.primary {\n    margin-top: 20px;\n    width: 100%;\n}\n.metrics {\n    grid-template-columns: 1fr 1fr;\n}\n.metrics strong {\n    font-size: 1.6rem;\n}\n#checks {\n    padding-left: 22px;\n}\n#checks li {\n    padding: 10px 0;\n    line-height: 1.5;\n}\n.empty {\n    padding-top: 40px;\n    padding-bottom: 40px;\n}\ndetails {\n    margin-top: 24px;\n}\nnav span {\n    font-size: 0.75rem;\n    letter-spacing: 0.12em;\n    color: var(--muted);\n}\n@media (max-width: 850px) {\n    .layout {\n        grid-template-columns: 1fr;\n    }\n}\n@media (max-width: 400px) {\n    .pair,\n    .metrics {\n        grid-template-columns: 1fr;\n    }\n}\n.panel.method {\n    padding: 28px;\n}\n.panel.method h2 {\n    font-size: 2rem;\n}\nselect:focus-visible {\n    outline: 3px solid #ffe1a2;\n    outline-offset: 5px;\n}\ninput[type=\"file\"] {\n    width: 100%;\n    max-width: 100%;\n    min-width: 0;\n    font: inherit;\n    font-size: 0.85rem;\n}\nnav > div {\n    min-width: 0;\n    display: flex;\n    flex-wrap: wrap;\n    gap: 12px;\n    justify-content: flex-end;\n    align-items: center;\n}\n.job {\n    border-top: 1px solid var(--line);\n    padding: 22px 0;\n}\n.job-grid {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 16px;\n}\n.job-grid > div {\n    min-width: 0;\n}\n.job h3 {\n    margin: 0 0 12px;\n}\n.passes {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 30px;\n}\n#result li {\n    padding: 10px 0;\n    line-height: 1.6;\n}\n#attempts li {\n    border-bottom: 1px solid var(--line);\n}\n.recovery-check {\n    display: flex;\n    gap: 12px;\n    align-items: center;\n    min-height: 44px;\n}\n#result:focus {\n    outline: none;\n}\n@media (max-width: 750px) {\n    .job-grid,\n    .passes {\n        grid-template-columns: 1fr;\n    }\n    .metrics {\n        grid-template-columns: 1fr;\n    }\n}\nbutton:disabled {\n    opacity: 0.65;\n    cursor: not-allowed;\n}\n\n.skip:not(:focus) {\n    clip-path: inset(50%);\n    width: 1px;\n    height: 1px;\n    padding: 0;\n    overflow: hidden;\n}\nh1 {\n    white-space: pre-line;\n}\nfieldset {\n    min-width: 0;\n    border: 1px solid #514267;\n    border-radius: 12px;\n    padding: 16px;\n    margin: 16px 0;\n}\nlegend {\n    padding: 0 8px;\n    color: #e9d6ff;\n}\n.job-grid {\n    display: grid;\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 12px;\n}\n@media (max-width: 600px) {\n    .job-grid {\n        grid-template-columns: 1fr;\n    }\n}\n.business-row {\n    min-width: 0;\n    margin: 20px 0;\n    padding: 20px;\n    border: 1px solid var(--line);\n    border-radius: 12px;\n}\nselect {\n    font: inherit;\n    color: #fff;\n    background: #100b20;\n    border: 1px solid #85679d;\n    border-radius: 8px;\n    min-height: 46px;\n    width: 100%;\n    padding: 10px;\n}\nselect:focus-visible {\n    outline: 3px solid #ffe1a2;\n    outline-offset: 4px;\n}\n"
+        },
+        {
+          "mode": "100644",
+          "path": "generated/NOTICE.txt",
+          "text": "New illustrative generated notice.\n"
+        }
+      ],
+      "files": [
+        {
+          "expected": "d4402093707fc6be505fb337cf918ae1827ae5bb36f2ca6b687d1b7c193666cd",
+          "mode": "100644",
+          "path": "docs/TERMS_AND_CONDITIONS/assets/preview.svg",
+          "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\">\n  <rect width=\"16\" height=\"16\" fill=\"#222\"/>\n  <text x=\"8\" y=\"12\" text-anchor=\"middle\" font-size=\"12\" fill=\"#fff\">α</text>\n</svg>\n"
+        },
+        {
+          "expected": "fcd52726a50066181c26d6ef665c29fa6b8cc227d104910adf65c85da85b8a0d",
+          "mode": "100644",
+          "path": "docs/aiga_meta_evolution/assets/bridge_overview.svg",
+          "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"620\" height=\"200\" font-family=\"Arial\" font-size=\"14\">\n  <defs>\n    <marker id=\"arrow\" markerWidth=\"10\" markerHeight=\"10\" refX=\"5\" refY=\"3\" orient=\"auto\">\n      <path d=\"M0,0 L0,6 L9,3 z\" fill=\"#000\" />\n    </marker>\n  </defs>\n  <rect x=\"20\" y=\"60\" width=\"120\" height=\"40\" fill=\"#e0e0ff\" stroke=\"#000\" />\n  <text x=\"80\" y=\"85\" text-anchor=\"middle\">MetaEvolver</text>\n\n  <line x1=\"140\" y1=\"80\" x2=\"250\" y2=\"80\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"250\" y=\"60\" width=\"140\" height=\"40\" fill=\"#ffe0e0\" stroke=\"#000\" />\n  <text x=\"320\" y=\"85\" text-anchor=\"middle\">FastAPI + Gradio</text>\n\n  <line x1=\"390\" y1=\"80\" x2=\"500\" y2=\"80\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"500\" y=\"60\" width=\"100\" height=\"40\" fill=\"#e0ffe0\" stroke=\"#000\" />\n  <text x=\"550\" y=\"85\" text-anchor=\"middle\">Agents SDK</text>\n\n  <line x1=\"550\" y1=\"100\" x2=\"550\" y2=\"140\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"480\" y=\"140\" width=\"140\" height=\"40\" fill=\"#ffffe0\" stroke=\"#000\" />\n  <text x=\"550\" y=\"165\" text-anchor=\"middle\">ADK Gateway (opt)</text>\n\n  <line x1=\"320\" y1=\"100\" x2=\"320\" y2=\"140\" stroke=\"#000\" marker-end=\"url(#arrow)\" />\n  <rect x=\"250\" y=\"140\" width=\"140\" height=\"40\" fill=\"#e0ffff\" stroke=\"#000\" />\n  <text x=\"320\" y=\"165\" text-anchor=\"middle\">Ollama / OpenAI LLMs</text>\n</svg>\n"
+        },
+        {
+          "expected": "d4402093707fc6be505fb337cf918ae1827ae5bb36f2ca6b687d1b7c193666cd",
+          "mode": "100644",
+          "path": "docs/aiga_meta_evolution/assets/preview.svg",
+          "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 16 16\">\n  <rect width=\"16\" height=\"16\" fill=\"#222\"/>\n  <text x=\"8\" y=\"12\" text-anchor=\"middle\" font-size=\"12\" fill=\"#fff\">α</text>\n</svg>\n"
+        },
+        {
+          "expected": "2c6a1fd6770f47b1e5779be2110a43f7d72a56a27fa203d6fddc0b0cc5c8f2c3",
+          "mode": "100644",
+          "path": "docs/aiga_meta_evolution/assets/script.js",
+          "text": "/* SPDX-License-Identifier: Apache-2.0 */\n/* eslint-env browser */\n/* global Chart */\n/* eslint-disable no-undef */\nimport {replayChart} from '../../assets/replay_chart.js';\nreplayChart({logsUrl: 'assets/logs.json', label: 'Aiga Meta Evolution Metric', color: 'red'});\n"
+        },
+        {
+          "expected": "2fb37b34a5aec4804ea334d5ad27eacbe21fc866439d6c8ca4a869fe291780c4",
+          "mode": "100644",
+          "path": "docs/aiga_meta_evolution/assets/style.css",
+          "text": "#chart{width:100%;height:300px;}\n#logs-panel{white-space:pre-wrap;background:#f4f4f4;padding:1rem;height:150px;overflow:auto;margin-top:1rem;}\n"
+        },
+        {
+          "expected": "4990e86ccf60f26b61217a50265ad2deb4059a610b950a632ba3a8725282c343",
+          "mode": "100644",
+          "path": "docs/alpha_agi_business_2_v1/assets/app.mjs",
+          "text": "import { evaluate, validate, canonical } from \"./engine.mjs\";\nimport { parseJSON } from \"./json.mjs\";\nimport { messages } from \"./i18n.mjs\";\nconst $ = (id) => document.getElementById(id);\nlet lang = \"en\",\n    revision = 0,\n    report = null,\n    lastInput = null,\n    serial = 0;\nconst t = (k) => messages[lang][k] || k;\nconst numeric = new Set([\n    \"effortHours\",\n    \"maxProjects\",\n    \"minSupportingSources\",\n    \"baseline\",\n    \"current\",\n    \"valuePoints\",\n]);\nfunction element(tag, text) {\n    const el = document.createElement(tag);\n    if (text !== undefined) el.textContent = text;\n    return el;\n}\nfunction field(parent, key, value, options) {\n    const wrap = element(\"div\"),\n        label = element(\"label\");\n    label.dataset.t = key;\n    label.textContent = t(key);\n    const control = element(options ? \"select\" : \"input\");\n    control.id = \"field-\" + ++serial;\n    control.dataset.key = key;\n    label.htmlFor = control.id;\n    if (options)\n        for (const option of options) {\n            const el = element(\"option\", t(option));\n            el.value = option;\n            el.dataset.t = option;\n            control.append(el);\n        }\n    else {\n        control.type = \"text\";\n        if (numeric.has(key)) control.inputMode = \"numeric\";\n    }\n    control.value = value;\n    wrap.append(label, control);\n    parent.append(wrap);\n    return control;\n}\nfunction row(collection, data) {\n    const card = element(\"fieldset\");\n    card.className = \"business-row\";\n    card.dataset.collection = collection;\n    const legend = element(\"legend\", data.id);\n    card.append(legend);\n    const fields = element(\"div\");\n    fields.className = \"pair\";\n    for (const [key, value] of Object.entries(data))\n        field(\n            fields,\n            key,\n            Array.isArray(value) ? value.join(\", \") : value,\n            key === \"direction\" ? [\"increase\", \"decrease\"] : undefined\n        );\n    card.append(fields);\n    const remove = element(\"button\", t(\"remove\"));\n    remove.type = \"button\";\n    remove.dataset.t = \"remove\";\n    remove.className = \"quiet\";\n    remove.addEventListener(\"click\", () => {\n        card.remove();\n        invalidate();\n    });\n    card.append(remove);\n    card.addEventListener(\"input\", () => {\n        legend.textContent = card.querySelector('[data-key=\"id\"]').value;\n        remove.setAttribute(\n            \"aria-label\",\n            t(\"remove\") + \" \" + legend.textContent\n        );\n    });\n    remove.setAttribute(\"aria-label\", t(\"remove\") + \" \" + data.id);\n    $(collection).append(card);\n}\nfunction fill(s) {\n    validate(s);\n    $(\"metadata\").replaceChildren();\n    $(\"policy\").replaceChildren();\n    field($(\"metadata\"), \"id\", s.id);\n    field($(\"metadata\"), \"kind\", s.provenance.kind, [\n        \"constructed\",\n        \"supplied\",\n    ]);\n    field($(\"metadata\"), \"note\", s.provenance.note);\n    for (const [k, v] of Object.entries(s.policy)) field($(\"policy\"), k, v);\n    for (const collection of [\"observations\", \"opportunities\"]) {\n        $(collection).replaceChildren();\n        s[collection].forEach((r) => row(collection, r));\n    }\n}\nfunction integer(raw) {\n    if (!/^(?:0|[1-9][0-9]*)$/.test(raw))\n        throw Error(\"Whole decimal integer required\");\n    const n = Number(raw);\n    if (!Number.isSafeInteger(n)) throw Error(\"Integer too large\");\n    return n;\n}\nfunction values(container) {\n    const out = {};\n    for (const el of container.querySelectorAll(\"[data-key]\")) {\n        const key = el.dataset.key;\n        out[key] = numeric.has(key)\n            ? integer(el.value)\n            : key === \"evidenceIds\"\n            ? el.value.split(\",\").map((s) => s.trim())\n            : el.value;\n    }\n    return out;\n}\nfunction bounded(input) {\n    validate(input);\n    if (new TextEncoder().encode(canonical(input)).length > 128000)\n        throw Error(\"Input exceeds 128000 bytes\");\n    return input;\n}\nfunction read() {\n    const m = values($(\"metadata\"));\n    return bounded({\n        schema: \"agialpha.business2.input.v1\",\n        id: m.id,\n        provenance: { kind: m.kind, note: m.note },\n        policy: values($(\"policy\")),\n        observations: [...$(\"observations\").children].map(values),\n        opportunities: [...$(\"opportunities\").children].map(values),\n    });\n}\nfunction invalidate() {\n    revision++;\n    report = null;\n    lastInput = null;\n    $(\"result\").hidden = true;\n    $(\"evidence\").disabled = true;\n    $(\"download\").disabled = true;\n    $(\"error\").hidden = true;\n    $(\"status\").textContent = t(\"changed\");\n}\nfunction render() {\n    if (!report) return;\n    const p = report.plan;\n    $(\"summary\").textContent =\n        (p.selectedIds.join(\", \") || t(\"empty\")) +\n        \" · \" +\n        p.totalValuePoints +\n        \" \" +\n        t(\"points\") +\n        \" · \" +\n        p.totalEffortHours +\n        \" \" +\n        t(\"hours\") +\n        \" · \" +\n        p.remainingEffortHours +\n        \" \" +\n        t(\"remaining\");\n    $(\"review\").replaceChildren();\n    for (const r of report.research.observations) {\n        const card = element(\"article\");\n        card.className = \"report-card\";\n        card.append(\n            element(\"h3\", r.id + \" · \" + r.metric),\n            element(\n                \"p\",\n                r.baseline +\n                    \" → \" +\n                    r.current +\n                    \" \" +\n                    r.unit +\n                    \" · \" +\n                    t(\"delta\") +\n                    \": \" +\n                    r.delta\n            ),\n            element(\n                \"p\",\n                t(r.supports ? \"supports\" : \"noSupport\") + \" · \" + r.source\n            )\n        );\n        $(\"review\").append(card);\n    }\n    $(\"portfolio\").replaceChildren();\n    for (const r of report.research.opportunities) {\n        const card = element(\"article\");\n        card.className = \"report-card\";\n        card.append(\n            element(\"h3\", r.title + \" · \" + t(r.reason)),\n            element(\n                \"p\",\n                r.valuePoints +\n                    \" \" +\n                    t(\"points\") +\n                    \" · \" +\n                    r.effortHours +\n                    \" \" +\n                    t(\"hours\")\n            ),\n            element(\n                \"p\",\n                t(\"sources\") + \": \" + (r.supportingSources.join(\" · \") || \"0\")\n            )\n        );\n        $(\"portfolio\").append(card);\n    }\n    $(\"raw\").textContent = JSON.stringify(report, null, 2);\n    $(\"digest\").textContent =\n        \"SHA-256 input: \" +\n        report.inputDigest +\n        \" · report: \" +\n        report.reportDigest;\n    $(\"result\").hidden = false;\n    $(\"evidence\").disabled = false;\n    $(\"download\").disabled = false;\n}\nasync function run() {\n    invalidate();\n    const own = revision;\n    $(\"status\").textContent = t(\"pending\");\n    try {\n        const input = structuredClone(read());\n        const result = await evaluate(input);\n        if (own !== revision) return;\n        lastInput = input;\n        report = result;\n        render();\n        $(\"status\").textContent = t(\"ready\");\n    } catch {\n        if (own !== revision) return;\n        $(\"error\").textContent = t(\"invalid\");\n        $(\"error\").hidden = false;\n        $(\"status\").textContent = \"\";\n    }\n}\nfunction translate() {\n    document.documentElement.lang = lang;\n    for (const el of document.querySelectorAll(\"[data-t]\"))\n        el.textContent = t(el.dataset.t);\n    $(\"language\").textContent = lang === \"en\" ? \"FR\" : \"EN\";\n    $(\"language\").setAttribute(\n        \"aria-label\",\n        lang === \"en\" ? \"Passer en français\" : \"Switch to English\"\n    );\n    for (const card of document.querySelectorAll(\".business-row\"))\n        card.querySelector(\"button\").setAttribute(\n            \"aria-label\",\n            t(\"remove\") + \" \" + card.querySelector('[data-key=\"id\"]').value\n        );\n    if (!$(\"error\").hidden) $(\"error\").textContent = t(\"invalid\");\n    $(\"status\").textContent = t(report ? \"ready\" : \"changed\");\n    render();\n}\n$(\"language\").onclick = () => {\n    lang = lang === \"en\" ? \"fr\" : \"en\";\n    translate();\n};\n$(\"workspace\").addEventListener(\"input\", invalidate);\n$(\"workspace\").addEventListener(\"change\", invalidate);\n$(\"workspace\").onsubmit = (e) => {\n    e.preventDefault();\n    run();\n};\nconst example = parseJSON(await (await fetch(\"assets/example.json\")).text());\n$(\"reset\").onclick = () => {\n    invalidate();\n    fill(example);\n    run();\n};\n$(\"addObservation\").onclick = () => {\n    if ($(\"observations\").children.length >= 64) return;\n    row(\"observations\", {\n        id: \"observation-\" + ++serial,\n        source: \"\",\n        metric: \"\",\n        unit: \"\",\n        baseline: 0,\n        current: 0,\n        direction: \"increase\",\n    });\n    invalidate();\n};\n$(\"addOpportunity\").onclick = () => {\n    if ($(\"opportunities\").children.length >= 16) return;\n    row(\"opportunities\", {\n        id: \"project-\" + ++serial,\n        title: \"\",\n        effortHours: 1,\n        valuePoints: 0,\n        evidenceIds: [],\n    });\n    invalidate();\n};\n$(\"import\").onchange = async () => {\n    const file = $(\"import\").files[0];\n    if (!file) return;\n    invalidate();\n    const own = revision;\n    try {\n        if (file.size > 1048576) throw Error(\"Too large\");\n        const parsed = parseJSON(\n            new TextDecoder(\"utf-8\", { fatal: true, ignoreBOM: true }).decode(\n                await file.arrayBuffer()\n            ),\n            true,\n            1048576\n        );\n        let input = parsed;\n        if (\n            parsed &&\n            [\n                \"agialpha.business2.evidence.v1\",\n                \"agialpha.business2.notebook-evidence.v1\",\n            ].includes(parsed.schema)\n        ) {\n            if (Object.keys(parsed).sort().join(\"|\") !== \"input|report|schema\")\n                throw Error(\"Unknown evidence fields\");\n            input = parsed.input;\n        } else if (file.size > 128000) throw Error(\"Input exceeds byte limit\");\n        bounded(input);\n        if (own !== revision) return;\n        fill(input);\n        await run();\n    } catch {\n        if (own === revision) {\n            $(\"error\").hidden = false;\n            $(\"error\").textContent = t(\"invalid\");\n        }\n    } finally {\n        if ($(\"import\").files[0] === file) $(\"import\").value = \"\";\n    }\n};\nfunction download(value, name) {\n    const url = URL.createObjectURL(\n        new Blob([JSON.stringify(value)], {\n            type: \"application/json\",\n        })\n    );\n    const a = element(\"a\");\n    a.href = url;\n    a.download = name;\n    a.click();\n    setTimeout(() => URL.revokeObjectURL(url), 1000);\n}\n$(\"download\").onclick = () => {\n    if (lastInput && report) download(lastInput, \"observations.json\");\n};\n$(\"evidence\").onclick = () => {\n    if (lastInput && report)\n        download(\n            {\n                schema: \"agialpha.business2.evidence.v1\",\n                input: lastInput,\n                report,\n            },\n            \"business2-report.json\"\n        );\n};\nfill(example);\nawait run();\n"
+        },
+        {
+          "expected": "6849b4b01f591356344ed5793b82e5ba7ac40cd499632229c1d12e538a36c88f",
+          "mode": "100644",
+          "path": "docs/alpha_agi_business_2_v1/assets/comparison.css",
+          "text": "/* SPDX-License-Identifier: Apache-2.0 */\n:root {\n    color-scheme: dark;\n    font-family: Inter, ui-sans-serif, system-ui, sans-serif;\n    background: #100b20;\n    color: #f6f0ff;\n    --muted: #c4b7da;\n    --accent: #d5b5ff;\n    --line: #584268;\n}\n* {\n    box-sizing: border-box;\n}\nbody {\n    margin: 0;\n    background: radial-gradient(ellipse at 80% 0, #54297d66, transparent 45%);\n}\nnav,\nheader,\nmain,\nfooter {\n    max-width: 1280px;\n    margin: auto;\n    padding: 24px 40px;\n    overflow-wrap: anywhere;\n}\na {\n    color: var(--accent);\n    text-underline-offset: 5px;\n}\nnav {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 20px;\n    border-bottom: 1px solid var(--line);\n}\nnav > div {\n    display: flex;\n    align-items: center;\n    gap: 20px;\n}\nnav > a {\n    text-decoration: none;\n    letter-spacing: 0.12em;\n    font-weight: 700;\n}\nbutton,\ninput {\n    font: inherit;\n}\nbutton,\na,\ninput,\nsummary {\n    outline-offset: 5px;\n}\nbutton:focus-visible,\na:focus-visible,\ninput:focus-visible,\nsummary:focus-visible {\n    outline: 3px solid #ffe1a2;\n}\nbutton {\n    min-height: 44px;\n    cursor: pointer;\n}\n#language {\n    background: transparent;\n    border: 1px solid var(--line);\n    color: var(--accent);\n    border-radius: 50%;\n    min-width: 44px;\n}\nheader {\n    display: grid;\n    grid-template-columns: 1.6fr 1fr;\n    gap: 60px;\n    padding-top: 76px;\n    padding-bottom: 62px;\n    align-items: center;\n}\n.eyebrow {\n    font-size: 0.75rem;\n    font-weight: 750;\n    letter-spacing: 0.13em;\n    color: var(--accent);\n    line-height: 1.7;\n}\nh1 {\n    font: 400 clamp(2.7rem, 6vw, 5.5rem) / 1.06 Georgia, serif;\n    letter-spacing: -0.035em;\n    margin: 22px 0;\n}\nh2 {\n    font: 400 clamp(1.8rem, 3vw, 2.6rem) / 1.2 Georgia, serif;\n    margin: 10px 0 20px;\n}\nh3 {\n    font-size: 1.1rem;\n    margin: 8px 0 16px;\n}\np {\n    line-height: 1.7;\n}\n.lead {\n    font-size: 1.12rem;\n    color: var(--muted);\n}\n.scope {\n    border: 1px solid #7c579a;\n    border-radius: 18px;\n    padding: 28px;\n    background: linear-gradient(135deg, #3b205b, #211331);\n    box-shadow: 0 20px 65px #09061266;\n}\n.scope span {\n    font-size: 0.72rem;\n    letter-spacing: 0.13em;\n    color: #ead7ff;\n    font-weight: 750;\n}\n.scope p {\n    color: #e0d0ee;\n    font-size: 0.92rem;\n}\n.panel {\n    padding: 28px;\n    border: 1px solid var(--line);\n    background: #1a122b;\n    border-radius: 18px;\n    margin-bottom: 24px;\n    min-width: 0;\n}\n.toolbar {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 20px;\n    flex-wrap: wrap;\n}\n.toolbar h3 {\n    margin-bottom: 6px;\n}\n.hint {\n    font-size: 0.88rem;\n    color: var(--muted);\n}\nlabel {\n    display: block;\n    font-size: 0.88rem;\n    margin: 8px 0;\n    line-height: 1.4;\n}\ninput:not([type=\"file\"]) {\n    width: 100%;\n    min-width: 0;\n    min-height: 46px;\n    background: #100b20;\n    border: 1px solid #85679d;\n    border-radius: 8px;\n    color: #fff;\n    padding: 12px;\n}\n.limits {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 20px;\n    margin-top: 18px;\n}\n.task {\n    display: grid;\n    grid-template-columns: 1fr 2fr repeat(4, 1fr) 1.6fr auto;\n    gap: 12px;\n    border-top: 1px solid var(--line);\n    padding: 18px 0;\n    align-items: end;\n}\n.task > div {\n    min-width: 0;\n}\n.task .remove {\n    background: transparent;\n    border: 1px solid #b293c6;\n    border-radius: 8px;\n    color: #ffe1e9;\n    padding: 10px;\n    min-width: 44px;\n}\n.actions {\n    display: flex;\n    align-items: center;\n    gap: 16px;\n    flex-wrap: wrap;\n    margin-top: 24px;\n}\n.primary,\n.quiet {\n    border-radius: 9px;\n    padding: 13px 19px;\n    line-height: 1.4;\n    font-weight: 650;\n}\n.primary {\n    color: #241036;\n    background: #d8b9ff;\n    border: 1px solid #ead9ff;\n}\n.quiet {\n    color: #ead8ff;\n    background: #2c1a42;\n    border: 1px solid #9973b5;\n}\n.file-label {\n    position: relative;\n    display: block;\n    cursor: pointer;\n    min-height: 46px;\n}\n.file-label input {\n    display: block;\n    max-width: 100%;\n    margin-top: 8px;\n    font-size: 0.85rem;\n}\n#status {\n    color: var(--muted);\n}\n#error {\n    background: #442533;\n    border: 1px solid #cb8c9b;\n    padding: 16px;\n    border-radius: 9px;\n    color: #ffe7e8;\n}\n.metrics {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 16px;\n    margin: 24px 0;\n}\n.metrics > div {\n    padding: 20px;\n    background: #302043;\n    border-radius: 12px;\n}\n.metrics strong {\n    font-size: 2rem;\n    display: block;\n    margin-top: 8px;\n}\n.metrics span {\n    color: var(--muted);\n}\n#steps {\n    padding-left: 25px;\n}\n#steps li,\n#omissions li {\n    padding: 10px 0;\n    line-height: 1.65;\n}\ndetails {\n    border-top: 1px solid var(--line);\n    padding-top: 20px;\n}\nsummary {\n    cursor: pointer;\n    min-height: 44px;\n}\npre {\n    white-space: pre-wrap;\n    overflow-wrap: anywhere;\n    background: #0e0918;\n    padding: 20px;\n    border-radius: 8px;\n    max-height: 500px;\n    overflow: auto;\n}\n.method {\n    max-width: 800px;\n    padding: 35px 0 55px;\n}\n.method p {\n    color: var(--muted);\n}\nfooter {\n    border-top: 1px solid var(--line);\n    font-size: 0.85rem;\n    color: var(--muted);\n    padding-bottom: 40px;\n}\n.skip {\n    position: fixed;\n    left: 12px;\n    top: -100px;\n    padding: 14px;\n    background: #fff;\n    color: #251334;\n    z-index: 10;\n}\n.skip:focus {\n    top: 12px;\n}\n[hidden] {\n    display: none !important;\n}\n@media (max-width: 1050px) {\n    .task {\n        grid-template-columns: repeat(4, minmax(0, 1fr));\n    }\n    .task > div:nth-child(2) {\n        grid-column: span 2;\n    }\n    .task > div:nth-child(7) {\n        grid-column: span 2;\n    }\n}\n@media (max-width: 700px) {\n    nav,\n    header,\n    main,\n    footer {\n        padding-left: 20px;\n        padding-right: 20px;\n    }\n    nav {\n        align-items: flex-start;\n    }\n    nav > div {\n        flex-wrap: wrap;\n        justify-content: flex-end;\n        gap: 12px;\n    }\n    header {\n        display: block;\n        padding-top: 35px;\n        padding-bottom: 30px;\n    }\n    .scope {\n        margin-top: 28px;\n        padding: 22px;\n    }\n    .panel {\n        padding: 20px;\n    }\n    .limits,\n    .metrics {\n        grid-template-columns: 1fr;\n    }\n    .task {\n        grid-template-columns: repeat(2, minmax(0, 1fr));\n        gap: 10px;\n    }\n    .task > div:nth-child(2) {\n        grid-column: span 1;\n    }\n    .primary,\n    .quiet {\n        max-width: 100%;\n    }\n    h1 {\n        font-size: clamp(2.6rem, 10vw, 4rem);\n    }\n}\n@media print {\n    body {\n        background: white;\n        color: black;\n    }\n    nav,\n    form,\n    .actions,\n    footer button {\n        display: none;\n    }\n    .panel,\n    .scope,\n    .metrics > div {\n        background: white;\n        color: black;\n        border: 1px solid #777;\n    }\n    .hint,\n    .lead,\n    p,\n    .eyebrow {\n        color: #222 !important;\n    }\n    header,\n    main {\n        padding: 20px;\n    }\n    #result {\n        display: block;\n    }\n    pre {\n        max-height: none;\n        color: black;\n        background: white;\n    }\n}\nheader {\n    display: block;\n    max-width: 1050px;\n    text-align: left;\n}\nheader h1 {\n    max-width: 900px;\n}\n.notice {\n    padding: 18px;\n    border: 1px solid #82629f;\n    background: #2c1c41;\n    border-radius: 12px;\n    color: #dfd0ec;\n}\n.layout {\n    display: grid;\n    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);\n    gap: 26px;\n    align-items: start;\n}\n.pair {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 16px;\n}\n.section-head {\n    display: flex;\n    gap: 16px;\n    flex-wrap: wrap;\n    justify-content: space-between;\n    align-items: center;\n}\n.section-head h2 {\n    margin: 0;\n}\n.panel h3 {\n    margin-top: 28px;\n}\nfieldset {\n    border: 1px solid var(--line);\n    border-radius: 9px;\n    margin: 24px 0 0;\n    padding: 16px;\n}\nfieldset label {\n    display: flex;\n    gap: 12px;\n    align-items: center;\n    min-height: 44px;\n}\ninput[type=\"checkbox\"] {\n    width: 22px;\n    min-height: 22px;\n    accent-color: #d8b9ff;\n}\nselect {\n    width: 100%;\n    min-height: 46px;\n    background: #100b20;\n    color: white;\n    border: 1px solid #85679d;\n    border-radius: 8px;\n    font: inherit;\n    padding: 10px;\n}\n.vote {\n    border-top: 1px solid var(--line);\n    padding: 16px 0;\n}\n.primary {\n    margin-top: 20px;\n    width: 100%;\n}\n.metrics {\n    grid-template-columns: 1fr 1fr;\n}\n.metrics strong {\n    font-size: 1.6rem;\n}\n#checks {\n    padding-left: 22px;\n}\n#checks li {\n    padding: 10px 0;\n    line-height: 1.5;\n}\n.empty {\n    padding-top: 40px;\n    padding-bottom: 40px;\n}\ndetails {\n    margin-top: 24px;\n}\nnav span {\n    font-size: 0.75rem;\n    letter-spacing: 0.12em;\n    color: var(--muted);\n}\n@media (max-width: 850px) {\n    .layout {\n        grid-template-columns: 1fr;\n    }\n}\n@media (max-width: 400px) {\n    .pair,\n    .metrics {\n        grid-template-columns: 1fr;\n    }\n}\n.panel.method {\n    padding: 28px;\n}\n.panel.method h2 {\n    font-size: 2rem;\n}\nselect:focus-visible {\n    outline: 3px solid #ffe1a2;\n    outline-offset: 5px;\n}\ninput[type=\"file\"] {\n    width: 100%;\n    max-width: 100%;\n    min-width: 0;\n    font: inherit;\n    font-size: 0.85rem;\n}\nnav > div {\n    min-width: 0;\n    display: flex;\n    flex-wrap: wrap;\n    gap: 12px;\n    justify-content: flex-end;\n    align-items: center;\n}\n.job {\n    border-top: 1px solid var(--line);\n    padding: 22px 0;\n}\n.job-grid {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 16px;\n}\n.job-grid > div {\n    min-width: 0;\n}\n.job h3 {\n    margin: 0 0 12px;\n}\n.passes {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 30px;\n}\n#result li {\n    padding: 10px 0;\n    line-height: 1.6;\n}\n#attempts li {\n    border-bottom: 1px solid var(--line);\n}\n.recovery-check {\n    display: flex;\n    gap: 12px;\n    align-items: center;\n    min-height: 44px;\n}\n#result:focus {\n    outline: none;\n}\n@media (max-width: 750px) {\n    .job-grid,\n    .passes {\n        grid-template-columns: 1fr;\n    }\n    .metrics {\n        grid-template-columns: 1fr;\n    }\n}\nbutton:disabled {\n    opacity: 0.65;\n    cursor: not-allowed;\n}\n\n.skip:not(:focus) {\n    clip-path: inset(50%);\n    width: 1px;\n    height: 1px;\n    padding: 0;\n    overflow: hidden;\n}\nh1 {\n    white-space: pre-line;\n}\nfieldset {\n    min-width: 0;\n    border: 1px solid #514267;\n    border-radius: 12px;\n    padding: 16px;\n    margin: 16px 0;\n}\nlegend {\n    padding: 0 8px;\n    color: #e9d6ff;\n}\n.job-grid {\n    display: grid;\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 12px;\n}\n@media (max-width: 600px) {\n    .job-grid {\n        grid-template-columns: 1fr;\n    }\n}\n.business-row {\n    min-width: 0;\n    margin: 20px 0;\n    padding: 20px;\n    border: 1px solid var(--line);\n    border-radius: 12px;\n}\nselect {\n    font: inherit;\n    color: #fff;\n    background: #100b20;\n    border: 1px solid #85679d;\n    border-radius: 8px;\n    min-height: 46px;\n    width: 100%;\n    padding: 10px;\n}\nselect:focus-visible {\n    outline: 3px solid #ffe1a2;\n    outline-offset: 4px;\n}\n"
+        },
+        {
+          "expected": "463624a3dcb35b5974d64c99eedb37a36321a824745ed732f7953c65e0bff96f",
+          "mode": "100644",
+          "path": "docs/alpha_agi_business_2_v1/assets/engine.mjs",
+          "text": "/* SPDX-License-Identifier: Apache-2.0 */\nconst strip = (v) =>\n    v.replace(\n        /^[\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]+|[\\u0009-\\u000d\\u001c-\\u0020\\u0085\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000]+$/g,\n        \"\"\n    );\nfunction codepointOrder(a, b) {\n    const aa = [...a],\n        bb = [...b];\n    for (let i = 0; i < Math.min(aa.length, bb.length); i++) {\n        const d = aa[i].codePointAt(0) - bb[i].codePointAt(0);\n        if (d) return d;\n    }\n    return aa.length - bb.length;\n}\nfunction exact(v, keys) {\n    if (\n        !v ||\n        typeof v !== \"object\" ||\n        Array.isArray(v) ||\n        Object.keys(v).sort().join(\"|\") !== keys.split(\" \").sort().join(\"|\")\n    )\n        throw Error(\"Missing or unknown fields\");\n}\nfunction integer(v, min, max) {\n    if (!Number.isSafeInteger(v) || v < min || v > max)\n        throw Error(`Integer ${min}–${max} required`);\n}\nfunction text(v, max = 200) {\n    if (\n        typeof v !== \"string\" ||\n        !strip(v) ||\n        [...v].length > max ||\n        /[\\u0000-\\u001f\\u007f-\\u009f]/.test(v)\n    )\n        throw Error(\"Invalid text\");\n    for (const c of v) {\n        const n = c.codePointAt(0);\n        if (n >= 0xd800 && n <= 0xdfff) throw Error(\"Invalid Unicode\");\n    }\n}\nfunction id(v) {\n    if (typeof v !== \"string\" || !/^[a-z][a-z0-9-]{0,39}$/.test(v))\n        throw Error(\"IDs need 1–40 lowercase letters, digits or hyphens\");\n}\nexport function validate(s) {\n    exact(s, \"schema id provenance policy observations opportunities\");\n    if (s.schema !== \"agialpha.business2.input.v1\")\n        throw Error(\"Unsupported schema\");\n    id(s.id);\n    exact(s.provenance, \"kind note\");\n    if (![\"constructed\", \"supplied\"].includes(s.provenance.kind))\n        throw Error(\"Invalid provenance\");\n    text(s.provenance.note, 500);\n    exact(s.policy, \"effortHours maxProjects minSupportingSources\");\n    integer(s.policy.effortHours, 0, 100000);\n    integer(s.policy.maxProjects, 0, 16);\n    integer(s.policy.minSupportingSources, 1, 64);\n    for (const [collection, max] of [\n        [\"observations\", 64],\n        [\"opportunities\", 16],\n    ]) {\n        const rows = s[collection];\n        if (!Array.isArray(rows) || rows.length < 1 || rows.length > max)\n            throw Error(`Invalid ${collection} count`);\n        const ids = new Set();\n        for (const r of rows) {\n            if (collection === \"observations\") {\n                exact(r, \"id source metric unit baseline current direction\");\n                for (const k of [\"source\", \"metric\", \"unit\"]) text(r[k]);\n                integer(r.baseline, 0, 1000000000);\n                integer(r.current, 0, 1000000000);\n                if (![\"increase\", \"decrease\"].includes(r.direction))\n                    throw Error(\"Invalid direction\");\n            } else {\n                exact(r, \"id title effortHours valuePoints evidenceIds\");\n                text(r.title);\n                integer(r.effortHours, 1, 100000);\n                integer(r.valuePoints, 0, 1000000);\n                if (\n                    !Array.isArray(r.evidenceIds) ||\n                    r.evidenceIds.length < 1 ||\n                    r.evidenceIds.length > 64\n                )\n                    throw Error(\"Invalid evidence count\");\n                r.evidenceIds.forEach(id);\n                if (new Set(r.evidenceIds).size !== r.evidenceIds.length)\n                    throw Error(\"Duplicate evidence\");\n            }\n            id(r.id);\n            if (ids.has(r.id)) throw Error(\"Duplicate ID\");\n            ids.add(r.id);\n        }\n    }\n    const known = new Set(s.observations.map((r) => r.id));\n    for (const r of s.opportunities)\n        if (r.evidenceIds.some((i) => !known.has(i)))\n            throw Error(\"Unknown evidence ID\");\n    return s;\n}\nexport function canonical(v) {\n    if (Array.isArray(v)) return \"[\" + v.map(canonical).join(\",\") + \"]\";\n    if (v && typeof v === \"object\")\n        return (\n            \"{\" +\n            Object.keys(v)\n                .sort(codepointOrder)\n                .map((k) => JSON.stringify(k) + \":\" + canonical(v[k]))\n                .join(\",\") +\n            \"}\"\n        );\n    return JSON.stringify(v);\n}\nexport async function digest(v) {\n    const bytes = new TextEncoder().encode(canonical(v));\n    return [...new Uint8Array(await crypto.subtle.digest(\"SHA-256\", bytes))]\n        .map((b) => b.toString(16).padStart(2, \"0\"))\n        .join(\"\");\n}\nconst scope =\n    \"Supplied observations and value-point assumptions only; sources are labels, not independently verified research. No live data, model inference, revenue forecast, execution or payment. Positive change is not causation.\";\nfunction tupleLess(a, b) {\n    for (let i = 0; i < Math.min(a.length, b.length); i++) {\n        if (a[i] !== b[i]) return a[i] < b[i];\n    }\n    return a.length < b.length;\n}\nexport async function evaluate(source) {\n    const s = structuredClone(validate(source));\n    const observations = [...s.observations]\n        .sort((a, b) => codepointOrder(a.id, b.id))\n        .map((r) => ({\n            ...r,\n            delta: r.current - r.baseline,\n            supports:\n                r.direction === \"increase\"\n                    ? r.current > r.baseline\n                    : r.current < r.baseline,\n        }));\n    const byId = new Map(observations.map((r) => [r.id, r]));\n    const reviewed = [...s.opportunities]\n        .sort((a, b) => codepointOrder(a.id, b.id))\n        .map((r) => {\n            const supportingSources = [\n                ...new Set(\n                    r.evidenceIds\n                        .filter((i) => byId.get(i).supports)\n                        .map((i) => strip(byId.get(i).source))\n                ),\n            ].sort(codepointOrder);\n            return {\n                ...r,\n                supportingSources,\n                eligible:\n                    supportingSources.length >= s.policy.minSupportingSources,\n            };\n        });\n    const eligible = reviewed.filter((r) => r.eligible);\n    let best = { score: 0, hours: 0, ids: [] };\n    for (let mask = 0; mask < 1 << eligible.length; mask++) {\n        let hours = 0,\n            score = 0;\n        const ids = [];\n        for (let i = 0; i < eligible.length; i++)\n            if (mask & (1 << i)) {\n                hours += eligible[i].effortHours;\n                score += eligible[i].valuePoints;\n                ids.push(eligible[i].id);\n            }\n        if (hours > s.policy.effortHours || ids.length > s.policy.maxProjects)\n            continue;\n        if (\n            score > best.score ||\n            (score === best.score &&\n                (hours < best.hours ||\n                    (hours === best.hours && tupleLess(ids, best.ids))))\n        )\n            best = { score, hours, ids };\n    }\n    for (const r of reviewed) {\n        r.selected = best.ids.includes(r.id);\n        r.reason = r.selected\n            ? \"selected\"\n            : !r.eligible\n            ? \"insufficient_support\"\n            : \"portfolio_tradeoff\";\n    }\n    const report = {\n        schema: \"agialpha.business2.report.v1\",\n        inputDigest: await digest(s),\n        id: s.id,\n        provenance: s.provenance,\n        scope,\n        research: { observations, opportunities: reviewed },\n        plan: {\n            selectedIds: best.ids,\n            totalValuePoints: best.score,\n            totalEffortHours: best.hours,\n            remainingEffortHours: s.policy.effortHours - best.hours,\n            policy: s.policy,\n            subsetsEvaluated: 1 << eligible.length,\n            objective:\n                \"maximize supplied valuePoints; ties: minimum effortHours, then lexicographic IDs\",\n        },\n    };\n    return { ...report, reportDigest: await digest(report) };\n}\n"
+        }
+      ],
+      "parent": "edcc4a9eb15110ce382655c45347a1c3f05f2726a417ee95e22c37172fffed56",
+      "stage": "C"
+    },
+    "language": "en",
+    "name": "Software Capability Foundry",
+    "owner": "local-browser-user",
+    "reviewMinutes": 10,
+    "rights": {
+      "dataClass": "public",
+      "license": "Apache-2.0; retained upstream notices apply",
+      "source": "Pinned public AGI ALPHA source f836f06e8351e64db1da770e16e304b5feb01f28"
+    },
+    "schema": "successor-workbench/v1"
+  },
+  "createdAt": "2026-10-25T06:18:03.419Z",
+  "frozen": {
+    "schema": "successor-workbench/v1",
+    "missionDigest": "74839a2015ced5c44804e9beaa45f078c6994b35df5b033f35bd2f991aa36b72",
+    "sourceHash": "0b32b9dad74d9b3892a9204effd6d77eee9626600f0c24aa99cd2a662f21e6d8",
+    "adapter": "software-capability-foundry",
+    "adapterVersion": 1,
+    "model": null,
+    "provider": null,
+    "authority": [],
+    "inputPolicy": {
+      "dataClass": "public",
+      "license": "Apache-2.0; retained upstream notices apply",
+      "source": "Pinned public AGI ALPHA source f836f06e8351e64db1da770e16e304b5feb01f28"
+    },
+    "reviewMinutes": 10
+  },
+  "releaseDigest": "5b30350e9a93087d59a3eaad9dcaea7e87524bd3ee198fd18e135469d78c739d",
+  "compilation": {
+    "schemaVersion": "1.0.0",
+    "status": "SEALED",
+    "mode": "SYNTHETIC_REHEARSAL",
+    "constitution": {
+      "allowedActions": [
+        "inspect-local"
+      ],
+      "allowedTools": [
+        "fixed-workbench-software-capability-foundry"
+      ],
+      "alternatives": [
+        {
+          "description": "Measured deterministic sort-and-reduce baseline; not a frontier AI comparator.",
+          "id": "alpha-beta",
+          "version": "successor-browser-v1"
+        }
+      ],
+      "authorityCeiling": {
+        "externalEffects": false,
+        "level": "A0",
+        "permittedActions": [
+          "inspect-local"
+        ],
+        "prohibitedActions": [
+          "send-payment",
+          "post-live-job",
+          "access-private-data",
+          "self-admit"
+        ]
+      },
+      "beneficiary": "Owner of this local synthetic mission",
+      "budget": {
+        "limitBaseUnits": "0",
+        "maxDurationMs": 60000,
+        "maxJobs": 7,
+        "maxRetries": 0,
+        "unit": "AGIALPHA"
+      },
+      "criticalFunctions": [
+        "mission-constitution",
+        "incumbent-baseline",
+        "alternative-set",
+        "rights-data",
+        "mission-gym",
+        "oracle-teacher",
+        "failure-taxonomy",
+        "architecture-frontier",
+        "experience-formation",
+        "specialist-formation",
+        "tools-retrieval",
+        "verifier-formation",
+        "security-privacy",
+        "complete-economics",
+        "human-agency",
+        "resilience-rollback",
+        "fresh-evaluation",
+        "independent-validation",
+        "accountable-acceptance",
+        "chronicle-authority",
+        "capital-requalification"
+      ],
+      "expiresAt": "2026-11-01T06:18:03.419Z",
+      "hardGates": [
+        {
+          "description": "All grouped counts and durations agree exactly.",
+          "id": "exact-output",
+          "maxViolations": 0
+        },
+        {
+          "description": "Malformed and unsupported records are rejected.",
+          "id": "invalid-input",
+          "maxViolations": 0
+        },
+        {
+          "description": "No network request, live job, payment or authority grant.",
+          "id": "no-external-effect",
+          "maxViolations": 0
+        }
+      ],
+      "incumbent": {
+        "description": "Measured one-pass Map baseline.",
+        "id": "alpha-current",
+        "version": "successor-browser-v1"
+      },
+      "institutionId": "local-successor-workshop",
+      "kind": "MissionConstitution",
+      "missionId": "work-74839a2015ced5c44804e9be",
+      "objective": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example.",
+      "principal": "example-human-principal",
+      "proofProtocol": {
+        "criticalErrorCeiling": 0,
+        "custodian": "example-verifier",
+        "formationOwner": "example-producer",
+        "id": "public-local-rehearsal",
+        "minimumMargin": 0,
+        "mode": "SYNTHETIC_REHEARSAL",
+        "requiredIndependence": "I0",
+        "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+        "version": "1"
+      },
+      "rights": [
+        {
+          "dataClass": "public-licensed-nonpersonal",
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "license": "Apache-2.0; retained upstream notices apply",
+          "permittedUses": [
+            "mission-evaluation",
+            "fixture-export"
+          ],
+          "sourceId": "mission-input"
+        }
+      ],
+      "roles": {
+        "acceptor": "example-acceptor",
+        "admitter": "example-admitter",
+        "producer": "example-producer",
+        "verifier": "example-verifier"
+      },
+      "rollback": {
+        "available": true,
+        "reason": "Discard the local candidate and return to the retained fixed baseline.",
+        "target": "alpha-current"
+      },
+      "schemaVersion": "1.0.0",
+      "title": "Software Capability Foundry",
+      "version": "1"
+    },
+    "graph": {
+      "authorityCreated": "NONE",
+      "edges": [
+        {
+          "from": "work-74839a2015ced5c44804e9be:constitution",
+          "kind": "evidence",
+          "to": "work-74839a2015ced5c44804e9be:evidence"
+        },
+        {
+          "from": "work-74839a2015ced5c44804e9be:evidence",
+          "kind": "evidence",
+          "to": "work-74839a2015ced5c44804e9be:formation"
+        },
+        {
+          "from": "work-74839a2015ced5c44804e9be:formation",
+          "kind": "evidence",
+          "to": "work-74839a2015ced5c44804e9be:challenge"
+        },
+        {
+          "from": "work-74839a2015ced5c44804e9be:challenge",
+          "kind": "evidence",
+          "to": "work-74839a2015ced5c44804e9be:verification"
+        },
+        {
+          "from": "work-74839a2015ced5c44804e9be:verification",
+          "kind": "evidence",
+          "to": "work-74839a2015ced5c44804e9be:admission"
+        },
+        {
+          "from": "work-74839a2015ced5c44804e9be:admission",
+          "kind": "evidence",
+          "to": "work-74839a2015ced5c44804e9be:renewal"
+        }
+      ],
+      "graphId": "work-74839a2015ced5c44804e9be:graph",
+      "kind": "JobGraph",
+      "missionId": "work-74839a2015ced5c44804e9be",
+      "nodes": [
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-01T06:18:03.419Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example."
+          },
+          "covers": [
+            "mission-constitution",
+            "alternative-set",
+            "rights-data",
+            "human-agency"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "family": "constitution",
+          "jobId": "work-74839a2015ced5c44804e9be:constitution",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-74839a2015ced5c44804e9be",
+          "objective": "Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-software-capability-foundry"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:7c2f129dcaa77476f9021077b2e6f35c9d0c7d52a94f4957ae4da65d5bb7e838"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-74839a2015ced5c44804e9be:constitution"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-01T06:18:03.419Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example."
+          },
+          "covers": [
+            "incumbent-baseline",
+            "oracle-teacher",
+            "complete-economics"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "family": "evidence",
+          "jobId": "work-74839a2015ced5c44804e9be:evidence",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-74839a2015ced5c44804e9be",
+          "objective": "Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-software-capability-foundry"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:6ec950160729598b14e9b5ec7bc365edf940979bca67c0a0bda2ed050220dd32"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-74839a2015ced5c44804e9be:evidence"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-01T06:18:03.419Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example."
+          },
+          "covers": [
+            "mission-gym",
+            "architecture-frontier",
+            "experience-formation",
+            "specialist-formation",
+            "tools-retrieval"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "family": "formation",
+          "jobId": "work-74839a2015ced5c44804e9be:formation",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-74839a2015ced5c44804e9be",
+          "objective": "Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-software-capability-foundry"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:eb1e4739718b913ebb537b16ed52959df7e36182948767a64eb6d96061e8ddd3"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Classify errors, severity, causes, abstention, adversarial cases and stop conditions."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-74839a2015ced5c44804e9be:formation"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-01T06:18:03.419Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example."
+          },
+          "covers": [
+            "failure-taxonomy"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "family": "challenge",
+          "jobId": "work-74839a2015ced5c44804e9be:challenge",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-74839a2015ced5c44804e9be",
+          "objective": "Classify errors, severity, causes, abstention, adversarial cases and stop conditions.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-software-capability-foundry"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:b2a2102b4ec64e2bd806ee5e63f8c60f2be089ec4c2b53cef4c9e29031f38b03"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-74839a2015ced5c44804e9be:challenge"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-01T06:18:03.419Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example."
+          },
+          "covers": [
+            "verifier-formation",
+            "security-privacy",
+            "resilience-rollback",
+            "fresh-evaluation",
+            "independent-validation"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "family": "verification",
+          "jobId": "work-74839a2015ced5c44804e9be:verification",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-74839a2015ced5c44804e9be",
+          "objective": "Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-software-capability-foundry"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:c721cdfc238a1c05157597e3eaa1fe41501fb3f111268aefe2bc23ca5f3a1d64"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-74839a2015ced5c44804e9be:verification"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-01T06:18:03.419Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example."
+          },
+          "covers": [
+            "accountable-acceptance",
+            "chronicle-authority"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "family": "admission",
+          "jobId": "work-74839a2015ced5c44804e9be:admission",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-74839a2015ced5c44804e9be",
+          "objective": "Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-software-capability-foundry"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:987128e8ff96b023f195d26fc2d620365a8062fc36d97b2724a39252b21775f9"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Allocate verified available value and define next-successor and fresh-transfer triggers."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-74839a2015ced5c44804e9be:admission"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-01T06:18:03.419Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Local bounded text-snapshot verification and drift diagnostics. No Git process, native executor, settlement or autonomous research is run by this browser example."
+          },
+          "covers": [
+            "capital-requalification"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-01T06:18:03.419Z",
+          "family": "renewal",
+          "jobId": "work-74839a2015ced5c44804e9be:renewal",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-74839a2015ced5c44804e9be",
+          "objective": "Allocate verified available value and define next-successor and fresh-transfer triggers.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-software-capability-foundry"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:c30be898e8c469e861e953764cd0a0239078fa9427640dfef7444cfa1d4e8986"
+        }
+      ],
+      "schemaVersion": "1.0.0",
+      "version": "1",
+      "digest": "sha256:98103f2d914a527a5ee5050ff8f3182c9352742fc4b2a7f6648d60824c698319"
+    },
+    "executionOrder": [
+      "work-74839a2015ced5c44804e9be:constitution",
+      "work-74839a2015ced5c44804e9be:evidence",
+      "work-74839a2015ced5c44804e9be:formation",
+      "work-74839a2015ced5c44804e9be:challenge",
+      "work-74839a2015ced5c44804e9be:verification",
+      "work-74839a2015ced5c44804e9be:admission",
+      "work-74839a2015ced5c44804e9be:renewal"
+    ],
+    "coverage": [
+      {
+        "functionId": "mission-constitution",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "incumbent-baseline",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:evidence"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "alternative-set",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "rights-data",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "mission-gym",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "oracle-teacher",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:evidence"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "failure-taxonomy",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:challenge"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "architecture-frontier",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "experience-formation",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "specialist-formation",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "tools-retrieval",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "verifier-formation",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "security-privacy",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "complete-economics",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:evidence"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "human-agency",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "resilience-rollback",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "fresh-evaluation",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "independent-validation",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "accountable-acceptance",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:admission"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "chronicle-authority",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:admission"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "capital-requalification",
+        "jobIds": [
+          "work-74839a2015ced5c44804e9be:renewal"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      }
+    ],
+    "criticalEvidenceCuts": [
+      {
+        "functionId": "mission-constitution",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "incumbent-baseline",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:evidence"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "alternative-set",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "rights-data",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "mission-gym",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "oracle-teacher",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:evidence"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "failure-taxonomy",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:challenge"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "architecture-frontier",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "experience-formation",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "specialist-formation",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "tools-retrieval",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "verifier-formation",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "security-privacy",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "complete-economics",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:evidence"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "human-agency",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "resilience-rollback",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "fresh-evaluation",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "independent-validation",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "accountable-acceptance",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:admission"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "chronicle-authority",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:admission"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "capital-requalification",
+        "removeJobIds": [
+          "work-74839a2015ced5c44804e9be:renewal"
+        ],
+        "exhaustive": false
+      }
+    ],
+    "budgetReservations": {
+      "unit": "AGIALPHA",
+      "reservedBaseUnits": "0",
+      "limitBaseUnits": "0",
+      "includesRetries": true
+    },
+    "dependencyMap": {
+      "work-74839a2015ced5c44804e9be:constitution": [],
+      "work-74839a2015ced5c44804e9be:evidence": [
+        {
+          "jobId": "work-74839a2015ced5c44804e9be:constitution",
+          "kind": "evidence"
+        }
+      ],
+      "work-74839a2015ced5c44804e9be:formation": [
+        {
+          "jobId": "work-74839a2015ced5c44804e9be:evidence",
+          "kind": "evidence"
+        }
+      ],
+      "work-74839a2015ced5c44804e9be:challenge": [
+        {
+          "jobId": "work-74839a2015ced5c44804e9be:formation",
+          "kind": "evidence"
+        }
+      ],
+      "work-74839a2015ced5c44804e9be:verification": [
+        {
+          "jobId": "work-74839a2015ced5c44804e9be:challenge",
+          "kind": "evidence"
+        }
+      ],
+      "work-74839a2015ced5c44804e9be:admission": [
+        {
+          "jobId": "work-74839a2015ced5c44804e9be:verification",
+          "kind": "evidence"
+        }
+      ],
+      "work-74839a2015ced5c44804e9be:renewal": [
+        {
+          "jobId": "work-74839a2015ced5c44804e9be:admission",
+          "kind": "evidence"
+        }
+      ]
+    },
+    "invalidationMap": {
+      "mission-input": [
+        "work-74839a2015ced5c44804e9be:constitution",
+        "work-74839a2015ced5c44804e9be:evidence",
+        "work-74839a2015ced5c44804e9be:formation",
+        "work-74839a2015ced5c44804e9be:challenge",
+        "work-74839a2015ced5c44804e9be:verification",
+        "work-74839a2015ced5c44804e9be:admission",
+        "work-74839a2015ced5c44804e9be:renewal"
+      ],
+      "work-74839a2015ced5c44804e9be:constitution": [
+        "work-74839a2015ced5c44804e9be:evidence"
+      ],
+      "work-74839a2015ced5c44804e9be:evidence": [
+        "work-74839a2015ced5c44804e9be:formation"
+      ],
+      "work-74839a2015ced5c44804e9be:formation": [
+        "work-74839a2015ced5c44804e9be:challenge"
+      ],
+      "work-74839a2015ced5c44804e9be:challenge": [
+        "work-74839a2015ced5c44804e9be:verification"
+      ],
+      "work-74839a2015ced5c44804e9be:verification": [
+        "work-74839a2015ced5c44804e9be:admission"
+      ],
+      "work-74839a2015ced5c44804e9be:admission": [
+        "work-74839a2015ced5c44804e9be:renewal"
+      ],
+      "work-74839a2015ced5c44804e9be:renewal": []
+    },
+    "capabilityRequests": [
+      {
+        "jobId": "work-74839a2015ced5c44804e9be:constitution",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-software-capability-foundry"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-74839a2015ced5c44804e9be:evidence",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-software-capability-foundry"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-74839a2015ced5c44804e9be:formation",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-software-capability-foundry"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-74839a2015ced5c44804e9be:challenge",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-software-capability-foundry"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-74839a2015ced5c44804e9be:verification",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-software-capability-foundry"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-74839a2015ced5c44804e9be:admission",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-software-capability-foundry"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-74839a2015ced5c44804e9be:renewal",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-software-capability-foundry"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      }
+    ],
+    "evaluationPlan": {
+      "criticalErrorCeiling": 0,
+      "custodian": "example-verifier",
+      "formationOwner": "example-producer",
+      "id": "public-local-rehearsal",
+      "minimumMargin": 0,
+      "mode": "SYNTHETIC_REHEARSAL",
+      "requiredIndependence": "I0",
+      "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+      "version": "1"
+    },
+    "authorityCreated": "NONE",
+    "signatureStatus": "UNSIGNED_COMMITMENT",
+    "digest": "sha256:a317d594d4da446500674ff6f7ca1d5f2b85741ea53700549f7c250a7a7d57c5"
+  },
+  "result": {
+    "decision": "DRIFT_LOCALIZED",
+    "summary": {
+      "stage": "C",
+      "files": 8,
+      "bytes": 31999,
+      "differences": 4,
+      "parentInvocations": 2
+    },
+    "evidence": {
+      "execution": "LIVE_LOCAL_BROWSER_COMPUTATION",
+      "codeSha256": "69cb77a7bbd7334a3aa3045565201c5b96b30e844dccf4ce0665dce48c389870",
+      "instrumentId": "edcc4a9eb15110ce382655c45347a1c3f05f2726a417ee95e22c37172fffed56",
+      "parentTrace": [
+        {
+          "instrument": "edcc4a9eb15110ce382655c45347a1c3f05f2726a417ee95e22c37172fffed56",
+          "operation": "snapshot",
+          "files": 8,
+          "invoked": true
+        },
+        {
+          "instrument": "edcc4a9eb15110ce382655c45347a1c3f05f2726a417ee95e22c37172fffed56",
+          "operation": "snapshot",
+          "files": 8,
+          "invoked": true
+        }
+      ],
+      "output": {
+        "schema": "foundry-drift-report/v1",
+        "before": "0476c10828a0dbb382cc9e5e4cc3aeb072187c40bd483cf542ac7c9f70e97e4f",
+        "after": "bc99db06b87d2ed4e4a6bbf87e51e5b50d40c054292fed976e4990064f7bd666",
+        "missing": [
+          "docs/alpha_agi_business_2_v1/assets/engine.mjs"
+        ],
+        "unexpected": [
+          "generated/NOTICE.txt"
+        ],
+        "changed": [
+          "docs/TERMS_AND_CONDITIONS/assets/preview.svg"
+        ],
+        "modeChanged": [
+          "docs/aiga_meta_evolution/assets/bridge_overview.svg"
+        ],
+        "exact": false
+      },
+      "retainedInstrument": {
+        "schema": "foundry-browser-instrument/v1",
+        "version": 1,
+        "codeSha256": "69cb77a7bbd7334a3aa3045565201c5b96b30e844dccf4ce0665dce48c389870",
+        "interface": "snapshot(files, checkpoint)",
+        "scope": "At most 128 regular UTF-8 text files, 1 MB total; public or licensed nonpersonal inputs.",
+        "construction": "Fixed code authored before this demonstration; not autonomous discovery."
+      },
+      "qualification": "Public engineering example, not protected confirmation or production admission.",
+      "construction": "Fixed code authored before this demonstration; not autonomous discovery."
+    },
+    "artifacts": [
+      {
+        "name": "snapshot.json",
+        "type": "application/json",
+        "content": "{\n  \"schema\": \"foundry-text-snapshot/v1\",\n  \"files\": [\n    {\n      \"path\": \"docs/TERMS_AND_CONDITIONS/assets/preview.svg\",\n      \"mode\": \"100644\",\n      \"bytes\": 192,\n      \"sha256\": \"d4402093707fc6be505fb337cf918ae1827ae5bb36f2ca6b687d1b7c193666cd\"\n    },\n    {\n      \"path\": \"docs/aiga_meta_evolution/assets/bridge_overview.svg\",\n      \"mode\": \"100644\",\n      \"bytes\": 1355,\n      \"sha256\": \"fcd52726a50066181c26d6ef665c29fa6b8cc227d104910adf65c85da85b8a0d\"\n    },\n    {\n      \"path\": \"docs/aiga_meta_evolution/assets/preview.svg\",\n      \"mode\": \"100644\",\n      \"bytes\": 192,\n      \"sha256\": \"d4402093707fc6be505fb337cf918ae1827ae5bb36f2ca6b687d1b7c193666cd\"\n    },\n    {\n      \"path\": \"docs/aiga_meta_evolution/assets/script.js\",\n      \"mode\": \"100644\",\n      \"bytes\": 269,\n      \"sha256\": \"2c6a1fd6770f47b1e5779be2110a43f7d72a56a27fa203d6fddc0b0cc5c8f2c3\"\n    },\n    {\n      \"path\": \"docs/aiga_meta_evolution/assets/style.css\",\n      \"mode\": \"100644\",\n      \"bytes\": 143,\n      \"sha256\": \"2fb37b34a5aec4804ea334d5ad27eacbe21fc866439d6c8ca4a869fe291780c4\"\n    },\n    {\n      \"path\": \"docs/alpha_agi_business_2_v1/assets/app.mjs\",\n      \"mode\": \"100644\",\n      \"bytes\": 10969,\n      \"sha256\": \"4990e86ccf60f26b61217a50265ad2deb4059a610b950a632ba3a8725282c343\"\n    },\n    {\n      \"path\": \"docs/alpha_agi_business_2_v1/assets/comparison.css\",\n      \"mode\": \"100644\",\n      \"bytes\": 11081,\n      \"sha256\": \"6849b4b01f591356344ed5793b82e5ba7ac40cd499632229c1d12e538a36c88f\"\n    },\n    {\n      \"path\": \"docs/alpha_agi_business_2_v1/assets/engine.mjs\",\n      \"mode\": \"100644\",\n      \"bytes\": 7798,\n      \"sha256\": \"463624a3dcb35b5974d64c99eedb37a36321a824745ed732f7953c65e0bff96f\"\n    }\n  ],\n  \"digest\": \"0476c10828a0dbb382cc9e5e4cc3aeb072187c40bd483cf542ac7c9f70e97e4f\"\n}\n",
+        "digest": "efa1385cf01e56af0ef20509b8ae1a965885d71b1f729966129227310f748a4e"
+      },
+      {
+        "name": "local-instrument.json",
+        "type": "application/json",
+        "content": "{\n  \"schema\": \"foundry-browser-instrument/v1\",\n  \"version\": 1,\n  \"codeSha256\": \"69cb77a7bbd7334a3aa3045565201c5b96b30e844dccf4ce0665dce48c389870\",\n  \"interface\": \"snapshot(files, checkpoint)\",\n  \"scope\": \"At most 128 regular UTF-8 text files, 1 MB total; public or licensed nonpersonal inputs.\",\n  \"construction\": \"Fixed code authored before this demonstration; not autonomous discovery.\",\n  \"id\": \"edcc4a9eb15110ce382655c45347a1c3f05f2726a417ee95e22c37172fffed56\"\n}\n",
+        "digest": "e197fbf63d02d1daf282462eaa3f7b1c57b70f38d569b5160e06510458f22d07"
+      },
+      {
+        "name": "result.json",
+        "type": "application/json",
+        "content": "{\n  \"schema\": \"foundry-drift-report/v1\",\n  \"before\": \"0476c10828a0dbb382cc9e5e4cc3aeb072187c40bd483cf542ac7c9f70e97e4f\",\n  \"after\": \"bc99db06b87d2ed4e4a6bbf87e51e5b50d40c054292fed976e4990064f7bd666\",\n  \"missing\": [\n    \"docs/alpha_agi_business_2_v1/assets/engine.mjs\"\n  ],\n  \"unexpected\": [\n    \"generated/NOTICE.txt\"\n  ],\n  \"changed\": [\n    \"docs/TERMS_AND_CONDITIONS/assets/preview.svg\"\n  ],\n  \"modeChanged\": [\n    \"docs/aiga_meta_evolution/assets/bridge_overview.svg\"\n  ],\n  \"exact\": false\n}\n",
+        "digest": "8c54f40d1c83fbc84e1ed5044509bdba3a68731cfcf2a4d7d15b692eab9c5416"
+      },
+      {
+        "name": "parent-trace.json",
+        "type": "application/json",
+        "content": "[\n  {\n    \"instrument\": \"edcc4a9eb15110ce382655c45347a1c3f05f2726a417ee95e22c37172fffed56\",\n    \"operation\": \"snapshot\",\n    \"files\": 8,\n    \"invoked\": true\n  },\n  {\n    \"instrument\": \"edcc4a9eb15110ce382655c45347a1c3f05f2726a417ee95e22c37172fffed56\",\n    \"operation\": \"snapshot\",\n    \"files\": 8,\n    \"invoked\": true\n  }\n]\n",
+        "digest": "ac7e80b1eb47cec9a868c56c238d8e90875c00f31822a261872700d66c4f6bd7"
+      }
+    ],
+    "limits": [
+      "This browser example does not run Git or the Python confirmation experiment.",
+      "The local instrument and constructor were authored before execution; this run does not demonstrate autonomous discovery.",
+      "Complete model, human, integration and maintenance costs are unknown.",
+      "Existing workbench proof and authority boundaries remain unchanged."
+    ]
+  },
+  "economics": {
+    "elapsedMilliseconds": 35,
+    "providerSpendBaseUnits": "0",
+    "settlementSpendBaseUnits": "0",
+    "computeCost": null,
+    "humanMinutes": null,
+    "reviewCapacityMinutes": 10,
+    "allowanceIs": "UNFUNDED"
+  },
+  "evaluation": {
+    "scope": "PUBLIC_LOCAL_EXECUTION",
+    "independentProof": false,
+    "admission": "HOLD",
+    "authority": [],
+    "settlement": "NOT_CONNECTED"
+  },
+  "chronicle": [
+    {
+      "kind": "local-result",
+      "decision": "DRIFT_LOCALIZED",
+      "missionDigest": "74839a2015ced5c44804e9beaa45f078c6994b35df5b033f35bd2f991aa36b72",
+      "releaseDigest": "5b30350e9a93087d59a3eaad9dcaea7e87524bd3ee198fd18e135469d78c739d",
+      "inheritedProof": false,
+      "inheritedAuthority": false
+    }
+  ],
+  "integrityDigest": "ea8bcc864902df1110fd29dcedb67248d774a8af0981f3cc48c283a6c98dfa43"
+}

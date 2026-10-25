@@ -1,0 +1,149 @@
+{
+  "schema": "foundry-publication-coordination-refresh/v1",
+  "retrieved_utc": "2026-10-25T10:20:23.476Z",
+  "access": "GitHub connector; read-only GETs; no external writes",
+  "sources": {
+    "issue": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850",
+    "comments_api": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/issues/4850/comments",
+    "branch_api": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/branches/main",
+    "release_api": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/releases?per_page=10",
+    "owner_pr": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4899"
+  },
+  "issue": {
+    "state": "open",
+    "updated_at": "2026-10-25T10:15:03Z",
+    "comment_count": 321
+  },
+  "main": {
+    "commit": "f836f06e8351e64db1da770e16e304b5feb01f28",
+    "tree": "6aa458f1dad73205fe61ab8277abae785cb76fe4",
+    "committed_at": "2026-10-25T03:09:27Z",
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/commit/f836f06e8351e64db1da770e16e304b5feb01f28"
+  },
+  "releases": [
+    {
+      "tag": "v1.43.0",
+      "draft": false,
+      "prerelease": false,
+      "published_at": "2026-10-25T01:19:36Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.43.0"
+    },
+    {
+      "tag": "v1.42.0",
+      "draft": false,
+      "prerelease": false,
+      "published_at": "2026-10-24T21:25:01Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.42.0"
+    },
+    {
+      "tag": "v1.41.1",
+      "draft": false,
+      "prerelease": false,
+      "published_at": "2026-10-24T17:42:33Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.41.1"
+    },
+    {
+      "tag": "v1.41.0",
+      "draft": false,
+      "prerelease": false,
+      "published_at": "2026-10-24T09:33:43Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.41.0"
+    },
+    {
+      "tag": "study-successor-omega-harness-detector-v1-2026-10-24",
+      "draft": false,
+      "prerelease": true,
+      "published_at": "2026-10-24T14:24:04Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/study-successor-omega-harness-detector-v1-2026-10-24"
+    },
+    {
+      "tag": "v1.39.0",
+      "draft": false,
+      "prerelease": false,
+      "published_at": "2026-10-23T02:19:34Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.39.0"
+    },
+    {
+      "tag": "study-possibility-foundry-v1-2026-10-23-r1",
+      "draft": false,
+      "prerelease": true,
+      "published_at": "2026-10-23T21:19:05Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/study-possibility-foundry-v1-2026-10-23-r1"
+    },
+    {
+      "tag": "v1.38.0",
+      "draft": false,
+      "prerelease": false,
+      "published_at": "2026-10-22T21:29:07Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.38.0"
+    },
+    {
+      "tag": "study-foundry-v2-2026-10-22-r1",
+      "draft": false,
+      "prerelease": true,
+      "published_at": "2026-10-22T21:17:41Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/study-foundry-v2-2026-10-22-r1"
+    },
+    {
+      "tag": "v1.36.0",
+      "draft": false,
+      "prerelease": false,
+      "published_at": "2026-10-20T22:59:45Z",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.36.0"
+    }
+  ],
+  "owner_pr": {
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4899",
+    "number": 4899,
+    "title": "Qualify Strategy release with exact source and security checks",
+    "state": "open",
+    "merged": false,
+    "draft": false,
+    "base": "main",
+    "base_sha": "f836f06e8351e64db1da770e16e304b5feb01f28",
+    "head": "codex/strategy-succession-20261025-344b3126",
+    "head_sha": "7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9",
+    "changed_files": 14,
+    "updated_at": "2026-10-25T06:05:11Z",
+    "body": "The first main-branch v1.44 qualification failed its workflow-policy test and the gallery skip-link check. This corrects those checks and closes four additional release-tooling gaps found during preflight, while preserving the Strategy runtime, scientific bodies, acceptance cases, budgets and authority.\n\n- Add the mandatory Strategy gate to the historical/package dependency contract; run the workflow-policy tests in PR smoke CI.\n- Wait for the exact skip-link destination before retaining the existing fragment, focus, viewport and bilingual assertions.\n- Pin Ruff to the existing locked 0.12.5 implementation. Preserve exact-type checks, including rejection of bool/subclass inputs.\n- Require actual Semgrep 1.99 execution on 42 explicit Python files with two pinned local rules: direct eval/exec and literal subprocess shell=True. Missing engine, missing coverage, skipped rules, errors, findings and scanner impersonation fail. This is bounded rule coverage, not a general security proof.\n- Check the committed release delta against accepted v1.43 source 5499495911bf8822ac0aa8c9007f00789c1132b5. Admit only 20 exact reviewed static scientific binary records, with path, mode, Git blob, digest, size, media and provenance checks; preserve all 239 scientific bodies. Unknown, renamed, changed or masked bodies fail.\n- Apply the unchanged local proprietary/pay-walled text heuristic to committed added UTF-8 lines. Retain the positive finding for one exact Apache-2.0 synthetic regression fixture; independent content review found no private/pay-walled excerpt in it. Only that exact path/blob/hash/mode is admitted in release mode. Copies, edits, masks and overrides fail; staged behavior is unchanged. This heuristic is neither an actual model call nor a secret scan.\n\nValidation:\n- 409 focused checks pass without skips, including actual-engine adversarial tests; independent policy review repeated 71 checks.\n- Binary admission: 118 checks pass, independently repeated.\n- 241 immutable source/configuration checks pass; full tracked Ruff 0.12.5, Black, actionlint and hook configuration validation pass.\n- Clean committed-source binary/text/security checks pass locally on tree 06bfa5ea7edbca9cc107414349aa2b0f85c44dc2. Public head 7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9 has the identical tree; final-head receipts are being recorded.\n- Old Ruff reproduced 29 findings; the old non-scanning Semgrep invocation and failed main run are preserved as failed or unqualified outcomes. Complete failed-main logs and archives are public in the existing evidence branch at 1f4bc79661a9b221c343689048208f55eefa54bd under docs/delivery/strategy-succession-20261025/failed-main-f836/.\n\nThis PR changes 14 quality/workflow paths. It grants no new runtime or production authority and does not retry held Harness/Fleet operations. Fresh configured code/security review and all applicable PR checks are required on this head. The normal main release and actual public-package browser/executor installation remain required after merge.\n\nCoordinates through #4850; continues the existing Strategy owner branch and publisher."
+  },
+  "latest_relevant_comments": [
+    {
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6393538149",
+      "user": "MontrealAI",
+      "body": "Strategy release qualification continues on the existing owner branch/PR #4899, now head 7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9, tree 06bfa5ea7edbca9cc107414349aa2b0f85c44dc2. Fresh configured code and security reviews are requested for this exact head. Four original workflow/gallery corrections plus independently reviewed committed-source, exact static-binary and actual Python-scanner checks total 14 paths; scientific/runtime sources, budgets, cases and authority remain unchanged. Focused409 and independent71 checks pass locally; final public-head guards and fresh hosted CI are required before normal merge. Previous a8 review/checks are historical. Failed f836 logs/archives remain fully readable at evidence commit1f4bc79661a9b221c343689048208f55eefa54bd, with all18 public bodies read back and hashed. v1.43 remains public/accepted; v1.44 is not yet public or qualified. Planning→changed planning→distinct repair still reports native7 versus candidate9 HOLD, cheaper inheritance than rebuilding but ordinary reuse cheaper, and unknown full monetary/human costs. No original held Harness/Fleet operation was retried; one owner and normal publisher remain in place."
+    },
+    {
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6393676138",
+      "user": "MontrealAI",
+      "body": "Evidence custody update: existing source-operation evidence branch now commit c5c12b6501a7ee18b25dbae2474d0c9d58c4bc66/tree084998c73063b140cb5f58c8f5e663488824eaf6. Exactly30 additive files (15,445,897B), all4,785 prior leaves/modes preserved. Native public Git fetch and byte readback matched all30 bodies; four regression chunks reconstructed exact13,862,948B archive SHA f637ebc47d6b34bc812a9719105702da4bc3160db4fc8ea52cbadfee660085db. Final oldmain40157168357 outcomes:32success/3fail/5skip; regression2fail4939pass80skip4deselect4xfail,82.35%coverage,3805.88s. Both regression failures are the corrected workflow edge. Under quality-7392, bounded guard receipts and cost account are explicitly HISTORICAL_PASS_GUARDS_BUT_P1_UNRESOLVED: configured review4369677532 validly found required official p/python policy had been replaced. I validated and retained that finding, and withdrew broad policy-clearance claims. Existing owners are restoring primary official scanning with the bounded Strategy check additional; fresh source review/CI required. v1.44 is not public/qualified; held Harness/Fleet decisions unchanged."
+    },
+    {
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6394339698",
+      "user": "MontrealAI",
+      "body": "Strategy qualification update: existing branch/PR #4899 remains held at public7392; its8green workflows are historical and the valid official-p/python review finding is not cleared yet. Local source4cb71e1 froze32 reviewed repair paths; its actual official scan checked1549/1549 files with0errors/skipped targets/source drift and54 remaining findings (rawexit1), down from the retained77/1537 report. No applicability map is active or approved. Independent triage distinguishes specific noncrypto/list-observation/argv/directory cases from validated source-binding, XML, identity/history, origin/transport and Docker-operand defects; those defects have focused repairs and regressions. The final matcher now binds whole tracked-repository context, with a separately reviewed exact pin exception; its code and criteria remain separate from runtime candidates. A real archive duplicate-read race and copied-base transient mismatch were reproduced and fixed without relaxing tests. SQLite rollback preserves separate old/new snapshots; PG, actualFAISS and broader legacy merging remain unqualified. Upstream rule bodies are excluded from public artifacts under their license; public hashes/IDs/results remain. Root remains sole publisher; original held Harness/Fleet actions and scientific bodies are unchanged. v1.44 has not been published or publicly installed; normal exact-source review/CI/release/public browser-to-executor acceptance are still required."
+    },
+    {
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6394683625",
+      "user": "MontrealAI",
+      "body": "Durable pre-release evidence is now appended at ebf6a871b926727ef07610f9f50de877b10e47f1/tree26c8ebcec44667d13132774abee7c471389e60be on the existing evidence branch. Exactly110 audited files/4,637,852B added; all4,815 prior leaves preserved. Root fetched the public commit and independently read back all110 bodies, matching every size/SHA256 and staged byte; receiptSHA98207eb4eb21d4c977148af5548d756842f7688d114cc6dde58c0144bd3487ac. The directory is explicitly PRE_RELEASE_NOT_PUBLICLY_INSTALLED, retaining77/54 raw failures, timeout/recovery/race evidence, skips and qualification limits. No upstream rule YAML bodies are redistributed. Local source is now frozen at83d0ada026fa322f9c7f0d548344ded2f4a3c2c8; its168 mandatory checks passed, with measured whole-repository context overhead~91s. Full primary scan is running; no map/pin is active or approved. Public owner branch/PR4899 is still7392 with its unresolved historicalP1; v1.44 is neither published nor publicly installed. Final case review, configured exact-head reviews/CI, normal main release and public browser/executor installation remain required. No original held operation or scientific source was changed or reauthorized."
+    },
+    {
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6396265939",
+      "user": "MontrealAI",
+      "body": "Additive research coordination — Software Capability Foundry (new independent edition, 25 October 2026).\n\nI am carrying out Vincent's new bounded research brief against Alpha `f836f06e8351e64db1da770e16e304b5feb01f28`, with current ecosystem/source auditing and a separate same-session evaluator reviewer. Existing Strategy/release/Fleet owners, their branches and all held operations remain authoritative. No existing papers, protected results, releases, workflow/security gates or production schedulers are being replaced.\n\nDevelopment target: reproduce repeated per-file Git-object reads in `scripts/strategy_engineering_release.py::_committed_files` and related source-preservation inspection. Test a bounded reusable snapshot reader, transfer to a different inventory, then construction/qualification of a distinct archive-drift diagnostic. Compare against direct native engineering, ordinary saved tooling, an equally funded conventional tool-selection controller, no-parent reconstruction, and an independently implemented equivalent. Batching itself will not be claimed as a novel learning mechanism. Source inspection already shows `accept_public_strategy.py::core_payload` uses efficient in-process blob checks; that strong baseline is preserved.\n\nThe study will freeze implementations, generation rules, budgets and analysis before fresh confirmation; retain unsuccessful candidates and full costs; clearly separate deterministic local execution, recorded evidence and approved connected execution. No paid resources, credentials, settings, deployed contracts, transactions, or held Harness/Fleet probes are in scope. The intended handoff is an isolated `studies/agi-alpha-software-capability-foundry-v1/` publication package through the current owner/review process. This comment establishes scope and coordination, not owner acknowledgement, review approval, release qualification or publication."
+    },
+    {
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6396383107",
+      "user": "MontrealAI",
+      "body": "Software Capability Foundry prospective boundary (independent additive research; no release-owner changes).\n\nDevelopment reproduced exact outputs on the pinned f836 source. A:37 files/456,459 bytes, original39 Git subprocesses versus four with bounded batching. B:437 assets plus catalog, original876 subprocesses versus six; all three generated workers remain byte-identical. Five interleaved trials per method are development evidence only. The independently authored two-process specialist remains available to all alternatives.\n\nThe new confirmation source/method/generator/budget/analysis boundary is SHA-256 `b3cb8d2c9926521e0a6687b0d8983496abf5eba5a6e1564d3f56a5732192fb85` (29 frozen files). The original boundary `c56e7222377b2e5f227927b8c47f48418221647bb0fdd500f9b52f59983e0a20` is preserved. Before any confirmation tasks or results, a storage-only amendment records that automatic approval review blocked durable checkpoint saving twice; local continuation is authorized, but the blocked save will require explicit user approval. No scientific source, task rule, comparator, threshold or analysis changed, and no alternate upload route was attempted.\n\nThe prospective campaign is24 generated repository instances ×seven treatments, each with first-process and warm calls. Primary gate: all byte/diagnostic/lineage/budget checks pass and the upper paired95%CPU-ratio interval against the direct specialist is below0.95. Original service checks stay intact. These are source-derived controlled instances, not24 natural projects; the constructor is deterministic template composition, not unmeasured autonomous algorithm invention. Confirmation has not yet been generated at this notice. Existing publication/release/Harness/Fleet gates remain unchanged."
+    }
+  ],
+  "limitations": [
+    "Connector comments do not expose individual creation timestamps in this response; order and canonical comment URLs are retained.",
+    "Issue body contains historical state; recent owner comments and current branch/PR/release responses govern the summarized status.",
+    "Latest ten releases are a bounded current collection; v1.44 absence agrees with latest owner's explicit unpublished status.",
+    "Research coordination and freeze notices do not establish owner acknowledgement or publication approval."
+  ]
+}
+
