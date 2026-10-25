@@ -158,6 +158,47 @@ def test_real_browser_approved_executor_reconnect_download_stop(tmp_path):
                 page.locator("#prepare").click()
                 expect(page.locator("#error")).to_contain_text("objet JSON")
                 assert control.get("/api/strategy-executor/status").json()["request_count"] == before_preflight
+                # Format checks inherit the changed calendar and never reserve work.
+                calendar_cases = (
+                    (4, 8, 8, None, True),
+                    (8, 4, 8, None, False),
+                    (4, 8, 8, 8, True),
+                    (4, 8, 4, 4, False),
+                )
+                for language in ("fr", "en"):
+                    if language == "en":
+                        page.locator("#language").click()
+                    for original, changed, deadline, repair_length, valid in calendar_cases:
+                        calendar_input = {
+                            "initial": {
+                                "schema": "release-plan/v1",
+                                "id": "calendar-regression",
+                                "kind": "plan",
+                                "public_or_synthetic": "synthetic",
+                                "planning_only": True,
+                                "jobs": [{"id": "J1", "duration": 1, "crew": 1, "deps": []}],
+                                "capacity": [1] * original,
+                                "deadline": original,
+                            },
+                            "changes": {"capacity": [1] * changed, "deadline": changed},
+                            "repair": {"observed_at": 0, "deadline": deadline},
+                            "construction": {"enabled": False},
+                        }
+                        if repair_length is not None:
+                            calendar_input["repair"]["capacity"] = [1] * repair_length
+                        page.locator("#input").fill(json.dumps(calendar_input))
+                        page.locator("#check-input").click()
+                        if valid:
+                            expect(page.locator("#error")).to_be_hidden()
+                            expect(page.locator("#input-feedback")).to_contain_text(
+                                "préliminaires" if language == "fr" else "Preliminary"
+                            )
+                        else:
+                            expect(page.locator("#error")).to_contain_text(
+                                "calendrier" if language == "fr" else "calendar"
+                            )
+                page.locator("#language").click()  # Restore French for the existing acceptance journey.
+                assert control.get("/api/strategy-executor/status").json()["request_count"] == before_preflight
                 page.locator("#input-file").set_input_files(
                     {
                         "name": "planning-mission-input.json",
@@ -347,6 +388,7 @@ def test_real_browser_approved_executor_reconnect_download_stop(tmp_path):
                         "bilingual_scope_and_recovery": True,
                         "readable_report_download": True,
                         "input_preflight_no_authority": True,
+                        "changed_calendar_preflight_cases": 8,
                         "public_preparer_input_identity": True,
                     },
                     "passed": True,
