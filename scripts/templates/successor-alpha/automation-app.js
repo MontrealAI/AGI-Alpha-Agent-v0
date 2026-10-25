@@ -106,7 +106,11 @@ $('automation-apply').addEventListener('click',()=>{
         const micros=scenario?.costs.recurringMicrosPerAccepted;
         if(!dossier?.cycles.length || micros==null)throw Error('Complete a mission and resolve the cost inputs before applying a modeled allocation.');
         if(micros>1000000000000)throw Error('Modeled amount exceeds the supported mission input range.');
-        $('shadow-currency').value=record.currency;$('shadow-cost').value=String(Math.ceil(micros/10000)/100);
+        if($('shadow-currency').value!==record.currency)throw Error(say(
+            'The cost record currency differs from the mission currency. Use a matching cost record; no amounts were copied or converted.',
+            'La devise du registre de coûts diffère de celle de la mission. Utilisez un registre dans la même devise ; aucun montant n’a été copié ni converti.'));
+        $('automation-error').hidden=true;
+        $('shadow-cost').value=String(Math.ceil(micros/10000)/100);
         $('shadow-cost-complete').checked=false;$('shadow-construction').value='';
         $('shadow-result').hidden=true;$('shadow-panel').open=true;
         $('shadow-cost').focus();

@@ -125,6 +125,30 @@ function reportMarkdown(plan,acceptance,traces,unknownAttempts) {
     `User decisions remain: approve the exact input scope, inspect the finished report and decide whether proposed source corrections should be commissioned. Those decisions do not become routine operator labor in this offering.\n\n`+
     `## Scope\n\nForeground local Node execution only. No authenticated executor, network, wallet, payment, scheduler or arbitrary source-code execution.\n`;
 }
+async function checkedReportContext(directory,approvalDigest,traces,snapshot) {
+  assert.deepEqual(Object.keys(snapshot).sort(),['approvalDigest','attempt','attempts','priorStageReceipts','schema'],
+    'Reporting snapshot fields changed.');
+  assert.equal(snapshot.schema,'alpha-source-report-context/v1');
+  assert.equal(snapshot.approvalDigest,approvalDigest,'Reporting snapshot changed the approved scope.');
+  assert.match(snapshot.attempt,/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+  assert.equal(snapshot.priorStageReceipts,7,'Reporting snapshot changed its stage boundary.');
+  assert(traces.length>=snapshot.priorStageReceipts,'Reporting snapshot precedes missing stage receipts.');
+  assert(Array.isArray(snapshot.attempts) && snapshot.attempts.length>0 && snapshot.attempts.length<=128,
+    'Reporting snapshot needs 1–128 committed attempt identities.');
+  const names=snapshot.attempts.map(row=>row.name);
+  assert.deepEqual(names,[...new Set(names)].sort(),'Reporting snapshot attempts must be unique and sorted.');
+  assert(names.includes(`attempt-${snapshot.attempt}.json`),'Reporting snapshot lost its original attempt.');
+  for(const row of snapshot.attempts) {
+    assert.deepEqual(Object.keys(row).sort(),['name','sha256']);
+    assert.match(row.name,/^attempt-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json$/);
+    assert.match(row.sha256,/^[0-9a-f]{64}$/);
+    const bytes=await ordinary(join(directory,row.name)),record=parseBounded(bytes.toString('utf8'));
+    assert.equal(hash(bytes),row.sha256,'Reporting snapshot attempt bytes changed.');
+    assert.equal(row.name,`attempt-${record.attempt}.json`,'Reporting snapshot attempt identity changed.');
+    assert.equal(record.approvalDigest,approvalDigest);assert.equal(record.state,'started');
+  }
+  return {priorStageReceipts:snapshot.priorStageReceipts,unknownAttempts:snapshot.attempts.length-1};
+}
 async function reverifyDelivery(directory,plan,deadline,traces) {
   const wall=performance.now(),cpu=process.cpuUsage(),manifest=committed(plan.sourceRef,plan.manifestPath,deadline);
   assert.equal(hash(manifest),plan.manifestSha256);
@@ -144,8 +168,9 @@ async function reverifyDelivery(directory,plan,deadline,traces) {
     'differences.csv':guide.fullDifferencesCsv(recomputed),'action-plan.csv':guide.actionPlanCsv(recomputed)}))
     assert.equal((await ordinary(join(directory,name),8_000_000)).toString('utf8'),expected,'Derived delivery differs: '+name);
   const reporting=traces.find(receipt=>receipt.stage==='reporting'),context=reporting?.reportContext;
-  assert(context && context.priorStageReceipts===7 && Number.isSafeInteger(context.unknownAttempts)
-    && context.unknownAttempts>=0 && context.unknownAttempts<128,'Reporting checkpoint context is missing.');
+  const snapshot=await loadJSON(join(directory,'report-context.json'));
+  assert.equal(guide.canonical(context),guide.canonical(await checkedReportContext(directory,
+    hash(guide.canonical(plan)),traces,snapshot)),'Reporting checkpoint differs from its committed historical context.');
   assert.equal((await ordinary(join(directory,'report.md'))).toString('utf8'),
     reportMarkdown(plan,acceptance,traces.slice(0,context.priorStageReceipts),context.unknownAttempts),
     'Report differs from its exact historical reporting checkpoint.');
@@ -194,7 +219,7 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
     await retain('plan.json',json(plan));
     const completed=await known('COMPLETE.json');
     if(completed){const summary=parseBounded(completed.toString());assert.equal(summary.approvalDigest,approvalDigest);
-      const required=['plan.json','final-acceptance.json',...STAGES.map(stage=>`stage-${stage}.json`),...Object.values(OUTPUTS).flat()];
+      const required=['plan.json','final-acceptance.json','report-context.json',...STAGES.map(stage=>`stage-${stage}.json`),...Object.values(OUTPUTS).flat()];
       for(const name of required)assert(Object.hasOwn(summary.artifacts,name),'Completed payload is incomplete.');
       for(const [name,digest] of Object.entries(summary.artifacts)){assert(artifactName(name),'Unsafe artifact name.');
         assert.equal(hash(await ordinary(join(directory,name),8_000_000)),digest);}
@@ -239,10 +264,21 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
           runId:plan.runId,createdAt:plan.createdAt,language:'en'}));
       } else if(stage==='reporting') {
         acceptance??=await loadJSON(join(directory,'acceptance.json'));
-        const attempts=(await readdir(directory)).filter(name=>/^attempt-.*\.json$/.test(name)).length;
-        assert(attempts<=128,'Run history exhausted its 128-attempt bound; preserve it and prepare a new run.');
-        reportContext={priorStageReceipts:traces.length,unknownAttempts:Math.max(0,attempts-1)};
-        await save('report.md',reportMarkdown(plan,acceptance,traces,Math.max(0,attempts-1)));
+        const attemptNames=(await readdir(directory)).filter(name=>/^attempt-.*\.json$/.test(name)).sort();
+        assert(attemptNames.length<=128,'Run history exhausted its 128-attempt bound; preserve it and prepare a new run.');
+        let snapshot=await known('report-context.json');
+        if(snapshot) snapshot=parseBounded(snapshot.toString('utf8'));
+        else {
+          assert(!(await known('report.md')),'An existing report has no committed reporting snapshot.');
+          const attempts=[];
+          for(const name of attemptNames)
+            attempts.push({name,sha256:hash(await ordinary(join(directory,name)))});
+          snapshot={schema:'alpha-source-report-context/v1',approvalDigest,attempt,priorStageReceipts:traces.length,attempts};
+          await checkedReportContext(directory,approvalDigest,traces,snapshot);
+          await retain('report-context.json',json(snapshot));
+        }
+        reportContext=await checkedReportContext(directory,approvalDigest,traces,snapshot);
+        await save('report.md',reportMarkdown(plan,acceptance,traces,reportContext.unknownAttempts));
       }
       const used=process.cpuUsage(cpu),receipt={schema:'alpha-automated-stage/v1',stage,approvalDigest,attempt,artifacts,
         ...(reportContext?{reportContext}:{}),

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#100d1b">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-68paxxObY8ZhGlVd0J8V0pyPidAVwWE+lObONJbvVU8='; style-src 'sha256-RnMpGLvFLXKPqUrIFi95feUjDdawvhv9vCnITv2RK0Q='; img-src data:; worker-src blob:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zBiHcXqpfGrLVEVd50oV4hN+yLqhiPAx+nMnzM/NYP4='; style-src 'sha256-RnMpGLvFLXKPqUrIFi95feUjDdawvhv9vCnITv2RK0Q='; img-src data:; worker-src blob:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
 <meta name="description" content="Find a useful advantage, compare it fairly, and keep a working capability. Discover valuable opportunities, build useful capabilities and improve strategies with Computer Use and frontier reasoning. Keep the evidence and lessons in your SUCCESSOR Ω.">
 <title>Find your Alpha. Build your SUCCESSOR Ω.</title>
 <style>
@@ -6477,7 +6477,11 @@ $('automation-apply').addEventListener('click',()=>{
         const micros=scenario?.costs.recurringMicrosPerAccepted;
         if(!dossier?.cycles.length || micros==null)throw Error('Complete a mission and resolve the cost inputs before applying a modeled allocation.');
         if(micros>1000000000000)throw Error('Modeled amount exceeds the supported mission input range.');
-        $('shadow-currency').value=record.currency;$('shadow-cost').value=String(Math.ceil(micros/10000)/100);
+        if($('shadow-currency').value!==record.currency)throw Error(say(
+            'The cost record currency differs from the mission currency. Use a matching cost record; no amounts were copied or converted.',
+            'La devise du registre de coûts diffère de celle de la mission. Utilisez un registre dans la même devise ; aucun montant n’a été copié ni converti.'));
+        $('automation-error').hidden=true;
+        $('shadow-cost').value=String(Math.ceil(micros/10000)/100);
         $('shadow-cost-complete').checked=false;$('shadow-construction').value='';
         $('shadow-result').hidden=true;$('shadow-panel').open=true;
         $('shadow-cost').focus();

@@ -24,6 +24,9 @@ DEPENDENCIES = (
     "docs/assets/successor/engine.mjs",
 )
 RUNNER = "contrib/productive-capability-ledger/automation-v1/run-mission.mjs"
+LEGACY_RUNNER_SHA256 = "b41247af80a42213398c82120ef481dc139c793cec457b52fb3e58df94ec7824"
+LEGACY_METHOD_IDENTITY = "860c0f2af042fc61f5a16cd82408531d9e993abcf674ff54e134851dfe4800c9"
+LEGACY_SOURCE_COMMIT = "d12e955909cb5b52a5225c39d4f7fab4a5f93d50"
 
 
 def read_bytes(path: Path, maximum: int = 8_000_000) -> bytes:
@@ -188,9 +191,15 @@ def verify(directory: Path) -> dict[str, Any]:
     require(set(dependencies) == {*DEPENDENCIES, RUNNER}, "Executable dependency closure changed")
     require(plan["methodIdentity"] == sha(canonical(dependencies)), "Retained executable identity differs")
     require(complete["methodIdentity"] == plan["methodIdentity"], "Result changed the approved method")
+    legacy = dependencies[RUNNER] == LEGACY_RUNNER_SHA256 and plan["methodIdentity"] == LEGACY_METHOD_IDENTITY
     for path, digest in dependencies.items():
         public_path(path)
-        require(sha(read_bytes(ROOT / path, 4_000_000)) == digest, "Current installed executable differs: " + path)
+        installed = git_blob(LEGACY_SOURCE_COMMIT, path) if legacy else read_bytes(ROOT / path, 4_000_000)
+        require(
+            sha(installed) == digest,
+            ("Preserved historical executable differs: " if legacy else "Current installed executable differs: ")
+            + path,
+        )
         if path in DEPENDENCIES:
             require(
                 sha(git_blob(source_ref, path)) == digest, "Comparison dependency differs from the committed source"
@@ -357,6 +366,102 @@ def verify(directory: Path) -> dict[str, Any]:
             "Unpriced process observations must not become zero monetary cost",
         )
     report = raw_files["report.md"].decode()
+    reporting = traces[-1]
+    context = reporting.get("reportContext")
+    require(
+        isinstance(context, dict)
+        and set(context) == {"priorStageReceipts", "unknownAttempts"}
+        and context["priorStageReceipts"] == 7
+        and isinstance(context["unknownAttempts"], int)
+        and not isinstance(context["unknownAttempts"], bool)
+        and 0 <= context["unknownAttempts"] < 128,
+        "Historical report context is missing or invalid",
+    )
+    if not legacy:
+        require("report-context.json" in raw_files, "Current runner requires durable report context")
+        attempt_names = sorted(name for name in raw_files if name.startswith("attempt-") and name.endswith(".json"))
+        require(1 <= len(attempt_names) <= 128, "Complete retry history exceeded its lifetime attempt bound")
+        for name in attempt_names:
+            attempt = parse(raw_files[name])
+            require(
+                re.fullmatch(
+                    r"attempt-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json",
+                    name,
+                )
+                is not None
+                and isinstance(attempt, dict)
+                and attempt.get("attempt") == name.removeprefix("attempt-").removesuffix(".json")
+                and attempt.get("approvalDigest") == complete["approvalDigest"]
+                and attempt.get("state") == "started",
+                "Complete attempt history lost its approved scope",
+            )
+        interrupted = complete["interruptedOrUncommittedAttempts"]
+        require(
+            interrupted["value"] == len(attempt_names) - 1
+            and not isinstance(interrupted["value"], bool)
+            and interrupted["basis"] == "measured",
+            "Complete retry history lost interrupted-work accounting",
+        )
+        snapshot = parse(raw_files["report-context.json"])
+        require(
+            isinstance(snapshot, dict)
+            and set(snapshot) == {"schema", "approvalDigest", "attempt", "priorStageReceipts", "attempts"}
+            and snapshot["schema"] == "alpha-source-report-context/v1"
+            and snapshot["approvalDigest"] == complete["approvalDigest"]
+            and snapshot["priorStageReceipts"] == 7,
+            "Durable report context changed its approved scope",
+        )
+        rows = snapshot["attempts"]
+        require(isinstance(rows, list) and 1 <= len(rows) <= 128, "Report attempt snapshot is missing or unbounded")
+        names = []
+        for row in rows:
+            require(
+                isinstance(row, dict)
+                and set(row) == {"name", "sha256"}
+                and isinstance(row["name"], str)
+                and re.fullmatch(
+                    r"attempt-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.json",
+                    row["name"],
+                )
+                is not None
+                and isinstance(row["sha256"], str)
+                and HASH.fullmatch(row["sha256"]) is not None,
+                "Invalid report attempt snapshot row",
+            )
+            name = artifact_name(row["name"])
+            require(name in raw_files and sha(raw_files[name]) == row["sha256"], "Report attempt bytes differ")
+            attempt = parse(raw_files[name])
+            require(
+                isinstance(attempt, dict)
+                and attempt.get("attempt") == name.removeprefix("attempt-").removesuffix(".json")
+                and attempt.get("approvalDigest") == complete["approvalDigest"]
+                and attempt.get("state") == "started",
+                "Report attempt lost its approved scope",
+            )
+            names.append(name)
+        require(names == sorted(set(names)), "Report attempts must be sorted and unique")
+        require(
+            isinstance(snapshot["attempt"], str) and "attempt-" + snapshot["attempt"] + ".json" in names,
+            "Original reporting attempt is missing from its snapshot",
+        )
+        require(context["unknownAttempts"] == len(rows) - 1, "Report context disagrees with its durable snapshot")
+    expected_report = (
+        f"# Finished public-source assurance\n\n{plan['sourceCount']} committed source identities checked; "
+        f"{len(changed)} paths need attention.\n\nSource: {source_ref}; manifest: {plan['manifestPath']}.\n\n"
+        "The action plan and full differences identify every mismatch. Nothing modifies or approves the inspected "
+        "source.\n\n## Automated work\n\nPreparation, bounded planning, comparison, exact checking, "
+        "refusal/correction decision, packaging, reporting and checkpoint recovery run in software after approval.\n\n"
+        f"## Cost and attention\n\n7 prior stage receipts; {context['unknownAttempts']} interrupted/uncommitted "
+        "attempt(s) at this reporting checkpoint. Completion and reconnect receipts account for later restart cost. "
+        "No service model calls were used. These are process observations, not complete Agent monetary cost. Hardware, "
+        "allocated engineering/maintenance, wages, human comparison time and commercial acceptance remain "
+        "unmeasured.\n\n"
+        "User decisions remain: approve the exact input scope, inspect the finished report and decide whether proposed "
+        "source corrections should be commissioned. Those decisions do not become routine operator labor in this "
+        "offering.\n\n## Scope\n\nForeground local Node execution only. No authenticated executor, network, wallet, "
+        "payment, scheduler or arbitrary source-code execution.\n"
+    )
+    require(report == expected_report, "Finished report differs from its exact independently reconstructed context")
     require(source_ref in report and plan["manifestPath"] in report, "Finished report lost source provenance")
     require(
         "Foreground local Node execution only" in report and "No service model calls" in report,
@@ -369,6 +474,8 @@ def verify(directory: Path) -> dict[str, Any]:
         "runId": plan["runId"],
         "sourceRef": source_ref,
         "methodIdentity": plan["methodIdentity"],
+        "runnerSourceMode": "preserved-historical-source" if legacy else "current-installed-source",
+        "verifierSha256": sha(read_bytes(Path(__file__))),
         "sourceRows": len(sources),
         "changedPaths": changed,
         "completeSha256": sha(read_bytes(directory / "COMPLETE.json")),

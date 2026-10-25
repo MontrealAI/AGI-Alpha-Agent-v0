@@ -178,7 +178,18 @@ def run_acceptance(
             (ROOT / "examples/successor-alpha/fixtures/automated-costs-example.json").read_text()
         )
         assert automated_record["scenarios"][0]["humanBaseline"]["hourlyCostMicros"]["basis"] == "sourced"
+        page.locator("#shadow-currency").select_option("CAD")
         page.locator("#automation-apply").click()
+        expect(page.locator("#automation-error")).to_contain_text("currency differs")
+        expect(page.locator("#shadow-currency")).to_have_value("CAD")
+        for selector, value in values.items():
+            expect(page.locator("#" + selector)).to_have_value(value)
+        assert page.locator("#shadow-cost-complete").is_checked()
+        assert json.loads(download(page, "#shadow-download")) == known
+        checks.append("foreign-currency-allocation-refused-with-mission-amounts-and-history-intact")
+        page.locator("#shadow-currency").select_option("USD")
+        page.locator("#automation-apply").click()
+        expect(page.locator("#automation-error")).to_be_hidden()
         assert page.locator("#shadow-cost").input_value() != ""
         assert page.locator("#shadow-construction").input_value() == ""
         assert not page.locator("#shadow-cost-complete").is_checked()

@@ -104,6 +104,69 @@ test('reporting checkpoint and lost final commit recover without replacing histo
   });
 });
 
+test('report publication before its stage receipt recovers with the original committed reporting context',async()=>{
+  await temporary(async outputRoot=>{
+    for(const published of [false,true]) {
+      const {plan:scope,approvalDigest}=await plan('report-publication-'+published);
+      await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'reporting'});
+      const directory=join(outputRoot,scope.runId),historical=await readFile(join(directory,'report.md'));
+      const context=await readFile(join(directory,'report-context.json'));
+      // Simulate process loss after context publication, on either side of the report publication.
+      await rm(join(directory,'stage-reporting.json'));
+      if(!published)await rm(join(directory,'report.md'));
+      const completed=await runPlan(scope,{approvalDigest,outputRoot});
+      assert.equal(completed.accepted,true);assert.equal(completed.interruptedOrUncommittedAttempts.value,1);
+      assert.deepEqual(await readFile(join(directory,'report.md')),historical);
+      assert.deepEqual(await readFile(join(directory,'report-context.json')),context);
+      assert.equal(completed.stages.at(-1).reportContext.unknownAttempts,0);
+      assert(Object.hasOwn(completed.artifacts,'report-context.json'));
+      assert.equal((await runPlan(scope,{approvalDigest,outputRoot})).reconnected,true);
+    }
+  });
+});
+
+test('tampered reporting context or receipt refuses completion without replacing the report',async()=>{
+  await temporary(async outputRoot=>{
+    for(const mutation of ['attempt-hash','approval','stage-boundary','receipt-context']) {
+      const {plan:scope,approvalDigest}=await plan('report-tamper-'+mutation);
+      await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'reporting'});
+      const directory=join(outputRoot,scope.runId),historical=await readFile(join(directory,'report.md'));
+      if(mutation==='receipt-context') {
+        const receipt=JSON.parse(await readFile(join(directory,'stage-reporting.json'),'utf8'));
+        receipt.reportContext.unknownAttempts++;
+        await writeFile(join(directory,'stage-reporting.json'),JSON.stringify(receipt));
+      } else {
+        await rm(join(directory,'stage-reporting.json'));
+        const context=JSON.parse(await readFile(join(directory,'report-context.json'),'utf8'));
+        if(mutation==='attempt-hash')context.attempts[0].sha256='0'.repeat(64);
+        if(mutation==='approval')context.approvalDigest='0'.repeat(64);
+        if(mutation==='stage-boundary')context.priorStageReceipts=6;
+        await writeFile(join(directory,'report-context.json'),JSON.stringify(context));
+      }
+      await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/Reporting/);
+      assert.equal(existsSync(join(directory,'COMPLETE.json')),false);
+      assert.deepEqual(await readFile(join(directory,'report.md')),historical);
+    }
+  });
+});
+
+test('retained reporting context does not reset the total attempt ceiling',async()=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await plan('report-attempt-ceiling');
+    await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'reporting'});
+    const directory=join(outputRoot,scope.runId),historical=await readFile(join(directory,'report.md'));
+    await rm(join(directory,'stage-reporting.json'));
+    // Inert started-attempt fixtures fill the same pre-existing history ceiling.
+    for(let index=0;index<127;index++) {
+      const attempt='00000000-0000-4000-8000-'+String(index).padStart(12,'0');
+      await writeFile(join(directory,`attempt-${attempt}.json`),JSON.stringify({attempt,approvalDigest,state:'started'}));
+    }
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/128-attempt bound/);
+    assert.equal(existsSync(join(directory,'COMPLETE.json')),false);
+    assert.deepEqual(await readFile(join(directory,'report.md')),historical);
+  });
+});
+
 test('Git symlink blobs are refused as source files without reading the symlink target',async()=>{
   await temporary(async outputRoot=>{
     const git=(args,input)=>execFileSync('git',args,{input,encoding:'utf8'}).trim();

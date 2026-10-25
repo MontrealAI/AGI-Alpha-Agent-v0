@@ -51,14 +51,14 @@ The second mission invokes the same method on different actual inputs.
 Both inventories match. Empty action plans are honest checked deliverables, not
 evidence that behavior is defect-free. Ordinary executable reuse is demonstrated;
 new strategy discovery, superiority, autonomous capability expansion and acceleration
-are not. The new accounting feature itself is a human-authored product extension.
+are not. The new accounting feature is an externally engineered product extension.
 
 ## Scope and dependencies
 
 | Capability | Status and exact limit |
 | --- | --- |
 | Fresh local catalogue comparison and exports | Supported existing deterministic engine; public/permitted nonpersonal CSV only |
-| Mission-linked economic planning | Implemented and unit-tested candidate; browser acceptance and release remain pending |
+| Mission-linked economic planning | Implemented; hosted Chromium accepted d12e955 predecessor. Review corrections require fresh checks; release remains pending |
 | Retained tool on a second source-assurance mission | Executed in local Node; ordinary reuse, no improvement claim |
 | Finite reinvestment/reuse planning | Tested conditional arithmetic; no treasury or spending API |
 | Planning → changed planning → repair companion | Existing owner candidate; this increment does not qualify or replace it |
@@ -89,8 +89,12 @@ the full source validator includes both new economic implementation modules.
 Browser acceptance is explicitly **NOT RUN locally**: Chromium is absent and ordinary
 Playwright downloads were truncated. The separate cloud browser could not reach the
 local preview. The checked-in blocked receipt records zero browser passes. The new
-browser test is ready for the existing browser-capable acceptance environment; no
-unperformed visual, accessibility, installation or public acceptance is claimed.
+browser test subsequently passed in the hosted browser-capable environment at
+`d12e955909cb5b52a5225c39d4f7fab4a5f93d50`
+([run40209883107](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40209883107)).
+The local blocked receipt remains historical. The report-publication and currency
+review corrections require fresh hosted checks. No unperformed installation or
+public acceptance is claimed.
 
 
 ## Automated-configuration continuation

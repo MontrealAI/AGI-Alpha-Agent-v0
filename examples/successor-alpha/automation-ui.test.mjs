@@ -15,7 +15,7 @@ function element(){return {value:'',checked:false,hidden:false,disabled:false,te
 function load(dossier=null){
     const elements=new Map(),downloads=[];
     const $=id=>{if(!elements.has(id))elements.set(id,element());return elements.get(id);};
-    $('automation-scenario').value='base';$('shadow-acceptance').value='unknown';
+    $('automation-scenario').value='base';$('shadow-acceptance').value='unknown';$('shadow-currency').value='USD';
     const box={dossier,$,fr:{},JSON,TextEncoder,TextDecoder,automatedCosts,transport,
         AUTOMATED_COST_EXAMPLE:structuredClone(example),AUTOMATED_COST_UNKNOWN:structuredClone(unknown),
         language:'en',say:(en,_fr)=>en,number:value=>String(value),status(){},
@@ -83,4 +83,21 @@ test('an older asynchronous JSON import cannot replace a newer manual edit',asyn
     assert.equal(view.read('automationSummary'),null);
     assert.equal(view.$('automation-error').hidden,false);
     assert.match(view.$('automation-error').textContent,/changed during import/);
+});
+
+test('a foreign-currency allocation refuses without relabeling or changing any mission amounts',()=>{
+    const view=load({id:'project-1',cycles:[{id:'cycle-1'}]});
+    const record=structuredClone(example);record.currency='CAD';
+    view.$('automation-record').value=JSON.stringify(record);view.$('automation-calculate').click();
+    const amounts={'shadow-cost':'8.50','shadow-price':'100','shadow-collected':'25','shadow-reserve':'20',
+        'shadow-obligation':'5','shadow-hourly':'35.96','shadow-construction':'10'};
+    for(const [id,value]of Object.entries(amounts))view.$(id).value=value;
+    view.$('shadow-cost-complete').checked=true;view.$('shadow-result').hidden=false;
+    view.$('automation-apply').click();
+    assert.match(view.$('automation-error').textContent,/currency differs/);
+    assert.equal(view.$('shadow-currency').value,'USD');
+    for(const [id,value]of Object.entries(amounts))assert.equal(view.$(id).value,value,id);
+    assert.equal(view.$('shadow-cost-complete').checked,true);
+    assert.equal(view.$('shadow-result').hidden,false);
+    assert.equal(view.$('shadow-cost').focused,undefined);
 });

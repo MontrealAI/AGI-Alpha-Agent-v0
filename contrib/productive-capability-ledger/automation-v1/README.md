@@ -35,9 +35,28 @@ eight stages and the remaining activities. The product's separate shared economi
 model supplies prices, utilization, reserves and amortization; this runner does not
 invent a complete cost from its process timings.
 
-## Current corrected source and evidence
+## Current successor and preserved predecessor evidence
 
-Current runner source SHA-256:
+External review reproduced an additional interruption window after `report.md`
+publication but before its stage receipt. The current recovery successor commits
+`report-context.json` before publishing the report, validates its approved scope
+and exact attempt snapshot, and preserves those historical counts on resume.
+Eleven regression cases cover the runner, including both sides of this publication
+boundary and tampered context refusal.
+
+Current runner SHA-256:
+`2158e34cab75f11242f6d130c696ba276abb53e017f862ecc7ee8e40e1f8779b`;
+method identity:
+`17e09fd0d79d823e176d7a4f2eb547adc91ff71162766c6d0995fe2d3778fab9`.
+[Fresh source-bound process observations](report-recovery-final-successor-measurements.json)
+record two deliveries at input revision
+`d12e955909cb5b52a5225c39d4f7fab4a5f93d50`, with checked reconnects.
+These revisit the existing two inventory scope families after source changes;
+they establish neither a new offering type nor a speedup.
+See [review corrections and source bindings](REVIEW_CORRECTIONS_VALIDATION.json)
+for independent acceptance and the separate currency-import repair.
+
+Preserved predecessor runner source SHA-256:
 `b41247af80a42213398c82120ef481dc139c793cec457b52fb3e58df94ec7824`.
 The same retained executable identity
 `860c0f2af042fc61f5a16cd82408531d9e993abcf674ff54e134851dfe4800c9`
@@ -69,8 +88,8 @@ Two consequential pre-correction findings and a reporting recovery regression
 remain visible in [review snapshots](review/pre-correction-source.json). The earlier
 `runs/`, `plans/`, `execution-traces.json`, `external-process-measurements.json` and
 `independent-acceptance.json` retain their original bytes and scope. They are
-development evidence for the earlier candidate and do not qualify current v2
-source. Exact executed measurement/checker bytes are retained as inert text in
+development evidence for the earlier candidate and do not qualify either the
+b412 predecessor or its report-recovery successor. Exact executed measurement/checker bytes are retained as inert text in
 `review/executed-*.txt`; [source bindings](review/measurement-source-bindings.json)
 document subsequent line-length-only Python formatting with identical ASTs.
 

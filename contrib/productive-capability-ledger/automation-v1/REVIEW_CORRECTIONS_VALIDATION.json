@@ -1,0 +1,74 @@
+{
+  "schema": "alpha-review-corrections-validation/v1",
+  "parentCommit": "d12e955909cb5b52a5225c39d4f7fab4a5f93d50",
+  "sourceSha256": {
+    "contrib/productive-capability-ledger/automation-v1/run-mission.mjs": "2158e34cab75f11242f6d130c696ba276abb53e017f862ecc7ee8e40e1f8779b",
+    "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs": "289bd4de992b70c7eff744020cef6be071fe12fb4b4d0d90e2485c478401995b",
+    "contrib/productive-capability-ledger/automation-v1/verify-run.py": "617c2a81b6bb7a6286d0e0146dd8804c63bcce86f4efcc80957f455f437f8307",
+    "contrib/productive-capability-ledger/automation-v1/measure-report-recovery-successor.py": "1ecdfcbca34247b7dd3a1a3f27900fccc16dd73473433b4b22046a1ac94655ed",
+    "examples/successor-alpha/automation-ui.test.mjs": "c1430a75977b81f1d3c7c6593acc6c2e812d40c345652fb1dbc99d429228eaa6",
+    "scripts/templates/successor-alpha/automation-app.js": "c4d2d084918b152e187e08e65a4b449a8c13b75a93d9369306f136f115e5afef",
+    "tests/browser/test_shadow_ledger_browser.py": "e58c20b1191ff9af6f93746aea60fe4f08ffd7ca11bd2afcca6ddd9149b0919c",
+    "docs/successor/alpha/index.html": "6a905fe297b40f9283762d8ade06572476a6753c7e943cc515dfd502407459a6",
+    "docs/successor/alpha/sources.json": "c1f36f1dd705005f759bdb0fbf1137f1b2b11781622676d9318006ca998d3377",
+    "examples/successor-alpha/automated-costs.mjs": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506"
+  },
+  "findings": [
+    {
+      "reviewThread": "PRRT_kwDONwDjTc6wCvc9",
+      "scope": "report publication before reporting receipt",
+      "reproduced": true,
+      "preFixObserved": "Existing artifact differs; retained bytes are not overwritten. Prior report51d1a7b79d259a4736c97f384360119f038c4f6deb4ed614260342255ee2abbb differs from resumed628cd095573c790dbe1eccd4a01c16af2c59bf709b5c6c4b549ebe074b27ffa6.",
+      "repair": "Durable plan-bound context and hashed attempt snapshot committed before publishing report; exact report reconstructed on either-side recovery. Total128reporting-attempt guard retained.",
+      "newRegressionCases": 3
+    },
+    {
+      "reviewThread": "PRRT_kwDONwDjTc6wCvdA",
+      "scope": "foreign currency copied over existing mission amounts",
+      "reproduced": true,
+      "preFixEvidence": "review/currency-pre-fix-reproduction.txt",
+      "repair": "Refuse mismatched currencies before changing any amount, currency, completeness or result. Matching allocation still clears construction and completeness. Localized EN/FR refusal; Chromium acceptance extended.",
+      "newRegressionCases": 1
+    }
+  ],
+  "localTests": {
+    "node": 163,
+    "deterministicPage": 5,
+    "releaseEvidence": 18,
+    "failed": 0,
+    "skipped": 0
+  },
+  "finalSuccessor": {
+    "runnerSha256": "2158e34cab75f11242f6d130c696ba276abb53e017f862ecc7ee8e40e1f8779b",
+    "methodIdentity": "17e09fd0d79d823e176d7a4f2eb547adc91ff71162766c6d0995fe2d3778fab9",
+    "processObservations": "report-recovery-final-successor-measurements.json",
+    "independentAcceptance": "report-recovery-final-independent-acceptance.json",
+    "independentChecks": 557,
+    "distinctSourceScopes": 2,
+    "interpretation": "Two new-source deliveries of the existing guide/flagship inventory scope families, with reconnects; no new offering type, speed or savings claim."
+  },
+  "preservedIntermediate": {
+    "runnerSha256": "736d26ca30b8d366b74de52286b49fb80d04a9a19d504ee02b25502a75030dda",
+    "methodIdentity": "13523d02381af8b83d7dcf150cc70cf7f91b75ac787f82d974d43c593a0ca6bf",
+    "processObservations": "report-recovery-successor-measurements.json",
+    "classification": "Unadmitted intermediate. Independent reread found retained context could skip the lifetime attempt ceiling; final source restores it with regression. These observations do not qualify final source.",
+    "measurementSourceSnapshot": "review/executed-measure-report-recovery-intermediate.py.txt"
+  },
+  "preservedPredecessor": {
+    "runnerSha256": "b41247af80a42213398c82120ef481dc139c793cec457b52fb3e58df94ec7824",
+    "exactSourceCommit": "d12e955909cb5b52a5225c39d4f7fab4a5f93d50",
+    "originalChecks": 1034,
+    "recheck": "review/report-context-verifier-validation.json;1042 checks under explicitly historical source identity; original receipts unchanged."
+  },
+  "independentNegativeTests": {
+    "receipt": "review/report-context-verifier-validation.json",
+    "executableSnapshot": "review/executed-report-context-verifier-negative-harness.py.txt",
+    "cases": 4,
+    "allRefused": true
+  },
+  "costModel": "Canonical alpha-automated-costs/v1 bytes and scenario results unchanged; actual monetary cost unknown. Historical and unsuccessful construction remain visible.",
+  "rollback": "Use a separate exactd12e955 checkout and its matching predecessor plans for prior behavior. Current method identity refuses those plans; no evidence or consequential action is duplicated.",
+  "hostedQualification": "Fresh final-head Chromium/creator/CI and external review required. Parentd12 hosted success remains historical; no pass transferred.",
+  "authenticatedApprovedExecutor": "NOT RUN for this team; existing approved operator home and installed profile remain dependency.",
+  "financialActions": false
+}
