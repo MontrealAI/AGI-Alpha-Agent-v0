@@ -1,0 +1,254 @@
+{
+  "schema": "agi-alpha-source-settlement-constants-v1",
+  "status": "SOURCE_MECHANISMS_AND_DOCUMENTED_DEFAULTS_ONLY_NO_SCENARIO_RESULTS",
+  "as_of": "2026-10-25",
+  "interpretation": "Fixed constants, source initialization defaults, historical observations and placeholder configuration examples are separate. No current-chain value is asserted. A prospective financial model must explicitly choose parameters and route predicates.",
+  "routes": {
+    "ordinary_offchain": {
+      "evidence_status": "PROPOSED_ONLY",
+      "processor_percentage": null,
+      "processor_fixed_fee": null,
+      "refund_policy": null,
+      "automatic_token_flow": false,
+      "reinvestment_fraction": null,
+      "missing_values_mean": "Unspecified, never implied zero"
+    },
+    "manager_usdc": {
+      "asset": "USDC",
+      "decimals": 6,
+      "mainnet_token": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "fixed_wallet_pct": {
+        "wallet30": 30,
+        "wallet10": 10
+      },
+      "source_default_validator_budget_pct": 8,
+      "validator_budget_allowed_pct": {
+        "min": 1,
+        "max": 60
+      },
+      "validator_budget_snapshot": "job posting",
+      "agent_bond_defaults": {
+        "bps": 500,
+        "min_atomic": "1000000",
+        "max_atomic": "88888888000000",
+        "duration_limit_seconds": 10000000,
+        "formula": "base=max(floor(P*bps/10000),min); if L!=0 add floor(base*duration/L); if max!=0 cap at max; cap at P; all-zero bond parameters disable"
+      },
+      "validator_bond_defaults": {
+        "bps": 1500,
+        "min_atomic": "10000000",
+        "max_atomic": "88888888000000",
+        "formula": "min(P,max,max(floor(P*bps/10000),min)); all-zero parameters disable"
+      },
+      "validator_wrong_side_slash_bps_default": 8000,
+      "dispute_bond_fixed": {
+        "bps": 50,
+        "min_atomic": "1000000",
+        "max_atomic": "200000000",
+        "cap_at_payout": true
+      },
+      "accepted_agent_award_expression": "P-floor(P*v/100)-floor(P*30/100)-floor(P*10/100)+unallocated_validator_pool; V=0 for no validators",
+      "fee_wallet_entity_ownership_established": false,
+      "token_conversion_implemented": false,
+      "references": [
+        {
+          "source": "manager",
+          "lines": [
+            239,
+            278
+          ]
+        },
+        {
+          "source": "manager",
+          "lines": [
+            1168,
+            1176
+          ]
+        },
+        {
+          "source": "manager",
+          "lines": [
+            872,
+            879
+          ]
+        },
+        {
+          "source": "manager_bond_math",
+          "lines": [
+            6,
+            41
+          ]
+        },
+        {
+          "source": "manager_settlement",
+          "lines": [
+            111,
+            133
+          ]
+        }
+      ]
+    },
+    "ascension_agialpha": {
+      "asset": "AGIALPHA",
+      "decimals": 18,
+      "mainnet_token": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+      "fixed_validator_bps": 500,
+      "fixed_gross_payout_burn_divisor": 100,
+      "exact_formula": "e=floor(floor(P*500/10000)/2); w=P-2e; agent=w-floor(w/100); each approver=e-floor(e/100)",
+      "worker_bond_formula": "max(floor(B/10),minimumStake)",
+      "current_market_minimum_stake": null,
+      "current_oracle_minimum_stake": null,
+      "historically_reported_minimums": {
+        "record_date": "2026-10-18",
+        "market_atomic": "10000000000000000000",
+        "oracle_atomic": "10000000000000000000",
+        "evidence": "alpha_deployment_example, dated public snapshot; not fresh RPC"
+      },
+      "rejection_or_non_submission": {
+        "worker_bond_loss": "full locked bond",
+        "burn": "floor(bond/100)",
+        "client_refund": "B+bond-floor(bond/100)"
+      },
+      "missing_review_quorum": {
+        "worker_bond_loss": "0 by source rule",
+        "client_refund": "B",
+        "predicate": "worker submitted before due; no quorum through reviewEnd"
+      },
+      "new_financial_observations": 0,
+      "references": [
+        {
+          "source": "alpha_market",
+          "lines": [
+            44,
+            46
+          ]
+        },
+        {
+          "source": "alpha_market",
+          "lines": [
+            105,
+            140
+          ]
+        },
+        {
+          "source": "alpha_market",
+          "lines": [
+            183,
+            249
+          ]
+        },
+        {
+          "source": "alpha_oracle",
+          "lines": [
+            39,
+            63
+          ]
+        }
+      ]
+    },
+    "jobs_v0_agialpha": {
+      "asset": "AGIALPHA",
+      "decimals": 18,
+      "mainnet_token": "0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA",
+      "config_examples_not_current_chain": {
+        "fee_pct": 5,
+        "validator_reward_pct": 10,
+        "worker_payout_burn_pct": 1,
+        "fee_pool_burn_pct": 1,
+        "job_stake_bps": 1000,
+        "min_agent_stake_tokens": "100",
+        "stake_manager_global_min_tokens": "100",
+        "role_minimum_agent_tokens": "100",
+        "role_minimum_validator_tokens": "1000",
+        "employer_penalty_pct": 50,
+        "treasury_penalty_pct": 50,
+        "validator_penalty_reward_pct": 0,
+        "treasury": "0x0000000000000000000000000000000000000000",
+        "module_addresses": "zero placeholders"
+      },
+      "source_default_review_policy": {
+        "wrong_vote_stake_slash_pct": 50,
+        "non_reveal_stake_penalty_bps": 50,
+        "non_reveal_ban_blocks": 7200
+      },
+      "source_default_fee_pool_reward_role": "Platform",
+      "source_default_fee_pool_burn_pct": 1,
+      "fee_pool_zero_constructor_burn_means_default": true,
+      "fee_pct_snapshot": "job posting",
+      "worker_payout_pct_snapshot": "agent application",
+      "validator_pct_and_worker_burn_snapshot": "read at finalization, not posting",
+      "success_formula_conditions": [
+        "Correctly funded job escrow",
+        "Configured StakeManager and FeePool",
+        "Sufficient operatorRewardPool if worker multiplier >100",
+        "Actual configured percentages explicitly selected",
+        "No governance blacklist redirection"
+      ],
+      "worker_formula": "F=floor(R*f/100); P=R+F; V=floor(R*v/100) if validators exist else 0; M=floor((R-V)*m/100); worker=M-floor(M*b/100)",
+      "fee_pool_formula": "fee burn=floor(F*d/100); pending increment=F-fee burn",
+      "failure_numeric_status": "NOT_MODELED_WITHOUT_COMPLETE_PARAMETERS_AND_BRANCHES",
+      "failure_warning": "Failed job reward+fee escrow and worker job stake use penalty distribution; not a generic full refund. No-quorum records failed state before later settlement.",
+      "references": [
+        {
+          "source": "jobs_stake_config",
+          "lines": [
+            1,
+            45
+          ]
+        },
+        {
+          "source": "jobs_registry_config",
+          "lines": [
+            1,
+            13
+          ]
+        },
+        {
+          "source": "jobs_fee_config",
+          "lines": [
+            1,
+            11
+          ]
+        },
+        {
+          "source": "jobs_validation_base",
+          "lines": [
+            111,
+            112
+          ]
+        },
+        {
+          "source": "jobs_validation_base",
+          "lines": [
+            201,
+            205
+          ]
+        },
+        {
+          "source": "jobs_registry_base",
+          "lines": [
+            2040,
+            2136
+          ]
+        },
+        {
+          "source": "jobs_stake_base",
+          "lines": [
+            2327,
+            2484
+          ]
+        }
+      ]
+    }
+  },
+  "portfolio_accounting": {
+    "unconverted_tokens_as_spendable_usd": false,
+    "token_market_price_observed": null,
+    "liquidation_depth_observed": null,
+    "automatic_reinvestment_fraction_in_contracts": null,
+    "collateral": "Separate locked-capital stock; successful return is not income; any forfeiture or opportunity cost is separate.",
+    "burn": "Token-unit destruction; no established price or cash-flow effect to holders.",
+    "cash_available_for_reinvestment": "Enterprise-owned collected receipts minus all costs, refunds, taxes, obligations and required reserves, then separately authorized appropriation.",
+    "no_financial_transactions_performed": true
+  }
+}

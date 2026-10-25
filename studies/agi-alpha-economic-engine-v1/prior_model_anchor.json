@@ -1,0 +1,3112 @@
+{
+  "source_sha256": "cba5f2cf284e27f7097fc3f4cebe0bf985952cd64bfcabee78af51ca0c17ac9d",
+  "source_path": "economics_amendment_v1/outputs/run-001/results.json",
+  "native_observation": {
+    "schema": "operational-amendment-native-anchor/v1",
+    "task": "source-synthesis-01",
+    "scope": "Exact selected-passage compilation and provenance; not open-ended research or human acceptance.",
+    "original_freeze_sha256": "55fe389e077028c1439cf3dbdadc09164455df00865db471ddf03bd1eb99e282",
+    "identities": [
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/brief.json",
+        "copy_path": "observed/brief.json",
+        "sha256": "51f5cd2d3735499d8311f9989ca007a4c9c32a1ba1bef5d95597dce3f9d3125d",
+        "bytes": 3698
+      },
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/task.json",
+        "copy_path": "observed/task.json",
+        "sha256": "5f927aa411f54132d8206063f38644b7329dd7f3af7ac31e46a25eddc16b2a94",
+        "bytes": 4090
+      },
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/receipt.json",
+        "copy_path": "observed/receipt.json",
+        "sha256": "7fff97b3388eeaedbe3c83f3cb9746198fd898acec2e0a16ef1d933f4118e8f6",
+        "bytes": 2265
+      },
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/acceptance.json",
+        "copy_path": "observed/acceptance.json",
+        "sha256": "6b05428588c19d561b5cc03f619fbe8636e9e087ee7660cbe94b63ff853820a4",
+        "bytes": 1799
+      },
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/output/brief.json",
+        "copy_path": "observed/output/brief.json",
+        "sha256": "be32c6a9b7c67808575736f5ce324284e497d17073a21729a77ffb2a96cca282",
+        "bytes": 2767
+      },
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/output/brief.html",
+        "copy_path": "observed/output/brief.html",
+        "sha256": "dbc9a1447e01e567fe3aee5efa160ec5414e04874904f8603d97773030fc0435",
+        "bytes": 3939
+      },
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/output/slides.html",
+        "copy_path": "observed/output/slides.html",
+        "sha256": "6bfbbc447707c92b6991d4b3f0c3ad31ba8b0c8e82fda09d68f16a1179efb782",
+        "bytes": 4058
+      },
+      {
+        "original_path": "capability_study/raw/portfolio/source-synthesis-01/output/sources.json",
+        "copy_path": "observed/output/sources.json",
+        "sha256": "2a8e698353b83bf5788058b159518cdc6522f571eae03bb28ebcf24ef65255b8",
+        "bytes": 1524
+      }
+    ],
+    "native_delivery_wall_seconds": 0.11170285599655472,
+    "native_process_wall_seconds": 0.10871789000520948,
+    "native_child_cpu_seconds": 0.12088699999999997,
+    "native_supervisor_oracle_cpu_seconds": 0.00393460100000001,
+    "task_time_model_calls": 0,
+    "actual_human_attention_minutes": null,
+    "actual_full_agent_cost": null,
+    "historical_authoring_tokens": null,
+    "historical_authoring_human_minutes": null,
+    "historical_authoring_cost": null,
+    "note": "Known zero refers only to frozen deterministic task-time model calls. Other unknown costs are not zero. Native time is included within assumed operational occupancy, never added twice."
+  },
+  "scenarios": {
+    "base": {
+      "acceptance_probability": 0.95,
+      "branch_weights": {
+        "direct_accept": 0.7,
+        "model_repair_accept": 0.15,
+        "infrastructure_retry_accept": 0.06,
+        "combined_rescue_accept": 0.04,
+        "final_rejection": 0.03,
+        "early_refusal": 0.02
+      },
+      "hybrid_handoff_employer_minutes": 5,
+      "labor_prices": {
+        "employer_worker_per_hour": 35.96,
+        "provider_per_hour_in_reporting_currency": 72.19,
+        "USD_to_reporting_currency": 1.0
+      },
+      "variable": {
+        "provider_components_usd": {
+          "delivery.request_retention.successful_search": 0.0,
+          "delivery.request_retention.executor_cpu": 0.0,
+          "delivery.request_retention.executor_memory": 0.0,
+          "delivery.request_retention.executor_requests": 0.0,
+          "delivery.request_retention.storage_at_rest": 0.0011835503999999997,
+          "delivery.request_retention.cash_allowance.operations_and_egress": 0.019999999999999997,
+          "delivery.request_retention.nonlabor_tax_allowance": 0.00105917752,
+          "delivery.intake.provider.operator": 1.2031666666666665,
+          "delivery.intake.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.intake.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.intake.model.claude-opus-5.5.input": 0.0,
+          "delivery.intake.model.claude-opus-5.5.output": 0.0,
+          "delivery.intake.successful_search": 0.0,
+          "delivery.intake.executor_cpu": 0.0,
+          "delivery.intake.executor_memory": 0.0,
+          "delivery.intake.executor_requests": 0.0,
+          "delivery.intake.storage_at_rest": 0.0,
+          "delivery.intake.nonlabor_tax_allowance": 0.0,
+          "delivery.initial_attempt.provider.operator": 0.0,
+          "delivery.initial_attempt.model.claude-sonnet-5.5.input": 0.03136,
+          "delivery.initial_attempt.model.claude-sonnet-5.5.output": 0.0294,
+          "delivery.initial_attempt.model.claude-opus-5.5.input": 0.023519999999999996,
+          "delivery.initial_attempt.model.claude-opus-5.5.output": 0.019599999999999996,
+          "delivery.initial_attempt.successful_search": 0.019599999999999996,
+          "delivery.initial_attempt.executor_cpu": 0.0028224,
+          "delivery.initial_attempt.executor_memory": 0.0005880000000000001,
+          "delivery.initial_attempt.executor_requests": 3.92e-07,
+          "delivery.initial_attempt.storage_at_rest": 0.0,
+          "delivery.initial_attempt.nonlabor_tax_allowance": 0.006344539600000001,
+          "delivery.human_review.provider.operator": 0.5895516666666666,
+          "delivery.human_review.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.human_review.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.human_review.model.claude-opus-5.5.input": 0.0,
+          "delivery.human_review.model.claude-opus-5.5.output": 0.0,
+          "delivery.human_review.successful_search": 0.0,
+          "delivery.human_review.executor_cpu": 0.0,
+          "delivery.human_review.executor_memory": 0.0,
+          "delivery.human_review.executor_requests": 0.0,
+          "delivery.human_review.storage_at_rest": 0.0,
+          "delivery.human_review.nonlabor_tax_allowance": 0.0,
+          "delivery.completion.provider.operator": 0.5715041666666666,
+          "delivery.completion.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.completion.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.completion.model.claude-opus-5.5.input": 0.0,
+          "delivery.completion.model.claude-opus-5.5.output": 0.0,
+          "delivery.completion.successful_search": 0.0,
+          "delivery.completion.executor_cpu": 0.00022799999999999999,
+          "delivery.completion.executor_memory": 4.7499999999999996e-05,
+          "delivery.completion.executor_requests": 3.8e-07,
+          "delivery.completion.storage_at_rest": 0.0,
+          "delivery.completion.nonlabor_tax_allowance": 1.3794e-05,
+          "delivery.challenge_check.provider.operator": 0.21656999999999998,
+          "delivery.challenge_check.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.challenge_check.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.challenge_check.model.claude-opus-5.5.input": 0.00432,
+          "delivery.challenge_check.model.claude-opus-5.5.output": 0.005399999999999999,
+          "delivery.challenge_check.successful_search": 0.0,
+          "delivery.challenge_check.executor_cpu": 0.0003888,
+          "delivery.challenge_check.executor_memory": 8.1e-05,
+          "delivery.challenge_check.executor_requests": 7.200000000000001e-08,
+          "delivery.challenge_check.storage_at_rest": 0.0,
+          "delivery.challenge_check.nonlabor_tax_allowance": 0.0005094936,
+          "delivery.repair_attempt.provider.operator": 0.21656999999999998,
+          "delivery.repair_attempt.model.claude-sonnet-5.5.input": 0.0036,
+          "delivery.repair_attempt.model.claude-sonnet-5.5.output": 0.0036,
+          "delivery.repair_attempt.model.claude-opus-5.5.input": 0.0057599999999999995,
+          "delivery.repair_attempt.model.claude-opus-5.5.output": 0.0072,
+          "delivery.repair_attempt.successful_search": 0.0018,
+          "delivery.repair_attempt.executor_cpu": 0.0007776,
+          "delivery.repair_attempt.executor_memory": 0.000162,
+          "delivery.repair_attempt.executor_requests": 7.200000000000001e-08,
+          "delivery.repair_attempt.storage_at_rest": 0.0,
+          "delivery.repair_attempt.nonlabor_tax_allowance": 0.0011449836000000002,
+          "delivery.rereview.provider.operator": 0.15039583333333334,
+          "delivery.rereview.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.rereview.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.rereview.model.claude-opus-5.5.input": 0.0,
+          "delivery.rereview.model.claude-opus-5.5.output": 0.0,
+          "delivery.rereview.successful_search": 0.0,
+          "delivery.rereview.executor_cpu": 0.0,
+          "delivery.rereview.executor_memory": 0.0,
+          "delivery.rereview.executor_requests": 0.0,
+          "delivery.rereview.storage_at_rest": 0.0,
+          "delivery.rereview.nonlabor_tax_allowance": 0.0,
+          "delivery.failed_infrastructure_attempt.provider.operator": 0.0,
+          "delivery.failed_infrastructure_attempt.model.claude-sonnet-5.5.input": 0.001,
+          "delivery.failed_infrastructure_attempt.model.claude-sonnet-5.5.output": 0.0005,
+          "delivery.failed_infrastructure_attempt.model.claude-opus-5.5.input": 0.0,
+          "delivery.failed_infrastructure_attempt.model.claude-opus-5.5.output": 0.0,
+          "delivery.failed_infrastructure_attempt.successful_search": 0.0,
+          "delivery.failed_infrastructure_attempt.executor_cpu": 0.000144,
+          "delivery.failed_infrastructure_attempt.executor_memory": 3.0000000000000004e-05,
+          "delivery.failed_infrastructure_attempt.executor_requests": 4e-08,
+          "delivery.failed_infrastructure_attempt.storage_at_rest": 0.0,
+          "delivery.failed_infrastructure_attempt.nonlabor_tax_allowance": 8.3702e-05,
+          "delivery.failure_diagnosis.provider.operator": 0.24063333333333337,
+          "delivery.failure_diagnosis.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.failure_diagnosis.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.failure_diagnosis.model.claude-opus-5.5.input": 0.0,
+          "delivery.failure_diagnosis.model.claude-opus-5.5.output": 0.0,
+          "delivery.failure_diagnosis.successful_search": 0.0,
+          "delivery.failure_diagnosis.executor_cpu": 0.0,
+          "delivery.failure_diagnosis.executor_memory": 0.0,
+          "delivery.failure_diagnosis.executor_requests": 0.0,
+          "delivery.failure_diagnosis.storage_at_rest": 0.0,
+          "delivery.failure_diagnosis.nonlabor_tax_allowance": 0.0,
+          "delivery.retry_wait.provider.operator": 0.0,
+          "delivery.retry_wait.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.retry_wait.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.retry_wait.model.claude-opus-5.5.input": 0.0,
+          "delivery.retry_wait.model.claude-opus-5.5.output": 0.0,
+          "delivery.retry_wait.successful_search": 0.0,
+          "delivery.retry_wait.executor_cpu": 0.0,
+          "delivery.retry_wait.executor_memory": 0.0,
+          "delivery.retry_wait.executor_requests": 0.0,
+          "delivery.retry_wait.storage_at_rest": 0.0,
+          "delivery.retry_wait.nonlabor_tax_allowance": 0.0,
+          "delivery.manual_specialist_rescue.provider.operator": 0.4211083333333333,
+          "delivery.manual_specialist_rescue.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.manual_specialist_rescue.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.manual_specialist_rescue.model.claude-opus-5.5.input": 0.0056,
+          "delivery.manual_specialist_rescue.model.claude-opus-5.5.output": 0.0084,
+          "delivery.manual_specialist_rescue.successful_search": 0.0014,
+          "delivery.manual_specialist_rescue.executor_cpu": 0.001008,
+          "delivery.manual_specialist_rescue.executor_memory": 0.00021,
+          "delivery.manual_specialist_rescue.executor_requests": 2.8e-08,
+          "delivery.manual_specialist_rescue.storage_at_rest": 0.0,
+          "delivery.manual_specialist_rescue.nonlabor_tax_allowance": 0.0008309014000000001,
+          "delivery.exhaustion_closure.provider.operator": 0.07219,
+          "delivery.exhaustion_closure.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.exhaustion_closure.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.exhaustion_closure.model.claude-opus-5.5.input": 0.0,
+          "delivery.exhaustion_closure.model.claude-opus-5.5.output": 0.0,
+          "delivery.exhaustion_closure.successful_search": 0.0,
+          "delivery.exhaustion_closure.executor_cpu": 0.0,
+          "delivery.exhaustion_closure.executor_memory": 0.0,
+          "delivery.exhaustion_closure.executor_requests": 0.0,
+          "delivery.exhaustion_closure.storage_at_rest": 0.0,
+          "delivery.exhaustion_closure.nonlabor_tax_allowance": 0.0,
+          "delivery.eligibility_check.provider.operator": 0.024063333333333336,
+          "delivery.eligibility_check.model.claude-sonnet-5.5.input": 8e-05,
+          "delivery.eligibility_check.model.claude-sonnet-5.5.output": 0.0001,
+          "delivery.eligibility_check.model.claude-opus-5.5.input": 0.0,
+          "delivery.eligibility_check.model.claude-opus-5.5.output": 0.0,
+          "delivery.eligibility_check.successful_search": 0.0,
+          "delivery.eligibility_check.executor_cpu": 1.4400000000000001e-05,
+          "delivery.eligibility_check.executor_memory": 3.0000000000000005e-06,
+          "delivery.eligibility_check.executor_requests": 8e-09,
+          "delivery.eligibility_check.storage_at_rest": 0.0,
+          "delivery.eligibility_check.nonlabor_tax_allowance": 9.870400000000003e-06,
+          "delivery.refusal_closure.provider.operator": 0.024063333333333336,
+          "delivery.refusal_closure.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.refusal_closure.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.refusal_closure.model.claude-opus-5.5.input": 0.0,
+          "delivery.refusal_closure.model.claude-opus-5.5.output": 0.0,
+          "delivery.refusal_closure.successful_search": 0.0,
+          "delivery.refusal_closure.executor_cpu": 0.0,
+          "delivery.refusal_closure.executor_memory": 0.0,
+          "delivery.refusal_closure.executor_requests": 0.0,
+          "delivery.refusal_closure.storage_at_rest": 0.0,
+          "delivery.refusal_closure.nonlabor_tax_allowance": 0.0
+        },
+        "employer_components_usd": {
+          "delivery.intake.employer.briefing": 1.7979999999999998,
+          "delivery.intake.employer.source_preparation": 2.3973333333333335,
+          "delivery.intake.employer.approval": 0.5993333333333334,
+          "delivery.human_review.employer.independent_review": 3.5240799999999997,
+          "delivery.completion.employer.file_delivery": 0.5693666666666667,
+          "delivery.challenge_check.employer.challenge_adjudication": 0.21576,
+          "delivery.rereview.employer.independent_rereview": 0.5993333333333334,
+          "delivery.failure_diagnosis.employer.retry_approval": 0.05993333333333334,
+          "delivery.manual_specialist_rescue.employer.manual_correction": 0.6293,
+          "delivery.exhaustion_closure.employer.rejection_review": 0.053939999999999995,
+          "delivery.exhaustion_closure.employer.file_delivery": 0.01798,
+          "delivery.refusal_closure.employer.refusal_review": 0.023973333333333336,
+          "delivery.refusal_closure.employer.file_delivery": 0.011986666666666668
+        },
+        "resources": {
+          "employer_minutes": 17.519999999999996,
+          "provider_minutes": 3.099999999999999,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 224.29999999999998,
+          "input_tokens": 27820.0,
+          "output_tokens": 5390.0
+        },
+        "original_total_usd": 14.440062371186666,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "initial": {
+        "provider_components_usd": {
+          "initial.provider.requirements_setup": 577.52,
+          "initial.provider.deployment_configuration": 577.52,
+          "initial.provider.approved_executor_integration": 1155.04,
+          "initial.provider.successful_capability_construction": 1155.04,
+          "initial.provider.unsuccessful_capability_construction": 1155.04,
+          "initial.provider.independent_qualification": 577.52,
+          "initial.model.claude-sonnet-5.5.input": 1.0,
+          "initial.model.claude-sonnet-5.5.output": 1.0,
+          "initial.model.claude-opus-5.5.input": 1.0,
+          "initial.model.claude-opus-5.5.output": 1.0,
+          "initial.successful_search": 1.0,
+          "initial.executor_cpu": 0.28800000000000003,
+          "initial.executor_memory": 0.060000000000000005,
+          "initial.executor_requests": 4e-05,
+          "initial.storage_at_rest": 0.0,
+          "initial.nonlabor_tax_allowance": 0.26740200000000003
+        },
+        "employer_components_usd": {
+          "initial.employer.onboarding_and_governance": 71.92
+        },
+        "resources": {
+          "employer_minutes": 120.0,
+          "provider_minutes": 4320.0,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 12000.0,
+          "input_tokens": 750000.0,
+          "output_tokens": 150000.0
+        },
+        "original_total_usd": 5275.215442,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "monthly": {
+        "provider_components_usd": {
+          "monthly.provider.support": 72.19,
+          "monthly.provider.runtime_dependency_maintenance": 144.38,
+          "monthly.provider.capability_revalidation": 144.38,
+          "monthly.provider.recovery_security_upkeep": 72.19,
+          "monthly.provider.successful_refresh": 72.19,
+          "monthly.provider.unsuccessful_improvement": 72.19,
+          "monthly.model.claude-sonnet-5.5.input": 0.2,
+          "monthly.model.claude-sonnet-5.5.output": 0.2,
+          "monthly.model.claude-opus-5.5.input": 0.2,
+          "monthly.model.claude-opus-5.5.output": 0.2,
+          "monthly.successful_search": 0.2,
+          "monthly.executor_cpu": 0.0864,
+          "monthly.executor_memory": 0.018000000000000002,
+          "monthly.executor_requests": 1.6e-05,
+          "monthly.storage_at_rest": 0.019725839999999998,
+          "monthly.cash_allowance.logging_monitoring": 10.0,
+          "monthly.cash_allowance.connector_software_licenses": 10.0,
+          "monthly.cash_allowance.insurance_compliance_other_overhead": 10.0,
+          "monthly.nonlabor_tax_allowance": 1.5562070920000002
+        },
+        "employer_components_usd": {
+          "monthly.employer.governance": 35.96
+        },
+        "resources": {
+          "employer_minutes": 60.0,
+          "provider_minutes": 480.0,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 3600.0,
+          "input_tokens": 150000.0,
+          "output_tokens": 30000.0
+        },
+        "original_total_usd": 646.160348932,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "traditional": {
+        "5": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 1.7979999999999998,
+              "human_delivery.employer.source_preparation": 2.397333333333334,
+              "human_delivery.employer.approval": 0.5993333333333335,
+              "human_delivery.employer.independent_review": 3.5959999999999996,
+              "human_delivery.employer.file_delivery": 0.5993333333333335,
+              "human_delivery.traditional_worker.productive_work": 2.996666666666667,
+              "human_delivery.traditional_worker.correction": 0.4794666666666667,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.23973333333333335
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 15.4,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 5.8,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 12.705866666666667,
+            "account_totals": {
+              "traditional_delivery": 12.705866666666669
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 12.705866666666669
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 35.96,
+              "human_initial.traditional_worker.template_setup": 71.92,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 107.88,
+            "account_totals": {
+              "traditional_workflow_enablement": 107.88
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 107.88
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 17.98,
+              "human_monthly.traditional_worker.template_support": 17.98,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 15.0,
+              "human_monthly.nonlabor_tax_allowance": 0.75
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 30.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 30.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 51.71,
+            "account_totals": {
+              "traditional_workflow_upkeep": 51.71
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 51.71
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "15": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 1.7979999999999998,
+              "human_delivery.employer.source_preparation": 2.397333333333334,
+              "human_delivery.employer.approval": 0.5993333333333335,
+              "human_delivery.employer.independent_review": 3.5959999999999996,
+              "human_delivery.employer.file_delivery": 0.5993333333333335,
+              "human_delivery.traditional_worker.productive_work": 8.990000000000002,
+              "human_delivery.traditional_worker.correction": 0.4794666666666667,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.23973333333333335
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 15.4,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 15.8,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 18.6992,
+            "account_totals": {
+              "traditional_delivery": 18.699200000000005
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 18.699200000000005
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 35.96,
+              "human_initial.traditional_worker.template_setup": 71.92,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 107.88,
+            "account_totals": {
+              "traditional_workflow_enablement": 107.88
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 107.88
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 17.98,
+              "human_monthly.traditional_worker.template_support": 17.98,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 15.0,
+              "human_monthly.nonlabor_tax_allowance": 0.75
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 30.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 30.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 51.71,
+            "account_totals": {
+              "traditional_workflow_upkeep": 51.71
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 51.71
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "30": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 1.7979999999999998,
+              "human_delivery.employer.source_preparation": 2.397333333333334,
+              "human_delivery.employer.approval": 0.5993333333333335,
+              "human_delivery.employer.independent_review": 3.5959999999999996,
+              "human_delivery.employer.file_delivery": 0.5993333333333335,
+              "human_delivery.traditional_worker.productive_work": 17.980000000000004,
+              "human_delivery.traditional_worker.correction": 0.4794666666666667,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.23973333333333335
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 15.4,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 30.8,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 27.689200000000003,
+            "account_totals": {
+              "traditional_delivery": 27.689200000000007
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 27.689200000000007
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 35.96,
+              "human_initial.traditional_worker.template_setup": 71.92,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 107.88,
+            "account_totals": {
+              "traditional_workflow_enablement": 107.88
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 107.88
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 17.98,
+              "human_monthly.traditional_worker.template_support": 17.98,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 15.0,
+              "human_monthly.nonlabor_tax_allowance": 0.75
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 30.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 30.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 51.71,
+            "account_totals": {
+              "traditional_workflow_upkeep": 51.71
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 51.71
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "60": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 1.7979999999999998,
+              "human_delivery.employer.source_preparation": 2.397333333333334,
+              "human_delivery.employer.approval": 0.5993333333333335,
+              "human_delivery.employer.independent_review": 3.5959999999999996,
+              "human_delivery.employer.file_delivery": 0.5993333333333335,
+              "human_delivery.traditional_worker.productive_work": 35.96000000000001,
+              "human_delivery.traditional_worker.correction": 0.4794666666666667,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.23973333333333335
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 15.4,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 60.8,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 45.66920000000001,
+            "account_totals": {
+              "traditional_delivery": 45.66920000000001
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 45.66920000000001
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 35.96,
+              "human_initial.traditional_worker.template_setup": 71.92,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 107.88,
+            "account_totals": {
+              "traditional_workflow_enablement": 107.88
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 107.88
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 17.98,
+              "human_monthly.traditional_worker.template_support": 17.98,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 15.0,
+              "human_monthly.nonlabor_tax_allowance": 0.75
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 30.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 30.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 51.71,
+            "account_totals": {
+              "traditional_workflow_upkeep": 51.71
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 51.71
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "120": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 1.7979999999999998,
+              "human_delivery.employer.source_preparation": 2.397333333333334,
+              "human_delivery.employer.approval": 0.5993333333333335,
+              "human_delivery.employer.independent_review": 3.5959999999999996,
+              "human_delivery.employer.file_delivery": 0.5993333333333335,
+              "human_delivery.traditional_worker.productive_work": 71.92000000000002,
+              "human_delivery.traditional_worker.correction": 0.4794666666666667,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.23973333333333335
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 15.4,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.8,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 81.62920000000001,
+            "account_totals": {
+              "traditional_delivery": 81.62920000000003
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 81.62920000000003
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 35.96,
+              "human_initial.traditional_worker.template_setup": 71.92,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 107.88,
+            "account_totals": {
+              "traditional_workflow_enablement": 107.88
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 107.88
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 17.98,
+              "human_monthly.traditional_worker.template_support": 17.98,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 15.0,
+              "human_monthly.nonlabor_tax_allowance": 0.75
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 30.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 30.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 51.71,
+            "account_totals": {
+              "traditional_workflow_upkeep": 51.71
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 51.71
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        }
+      }
+    },
+    "conservative": {
+      "acceptance_probability": 0.85,
+      "branch_weights": {
+        "direct_accept": 0.45,
+        "model_repair_accept": 0.2,
+        "infrastructure_retry_accept": 0.12,
+        "combined_rescue_accept": 0.08,
+        "final_rejection": 0.1,
+        "early_refusal": 0.05
+      },
+      "hybrid_handoff_employer_minutes": 10,
+      "labor_prices": {
+        "employer_worker_per_hour": 35.96,
+        "provider_per_hour_in_reporting_currency": 72.19,
+        "USD_to_reporting_currency": 1.0
+      },
+      "variable": {
+        "provider_components_usd": {
+          "delivery.request_retention.successful_search": 0.0,
+          "delivery.request_retention.executor_cpu": 0.0,
+          "delivery.request_retention.executor_memory": 0.0,
+          "delivery.request_retention.executor_requests": 0.0,
+          "delivery.request_retention.storage_at_rest": 0.002958876,
+          "delivery.request_retention.cash_allowance.operations_and_egress": 0.05,
+          "delivery.request_retention.nonlabor_tax_allowance": 0.005295887599999999,
+          "delivery.intake.provider.operator": 1.8047499999999996,
+          "delivery.intake.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.intake.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.intake.model.claude-opus-5.5.input": 0.0,
+          "delivery.intake.model.claude-opus-5.5.output": 0.0,
+          "delivery.intake.successful_search": 0.0,
+          "delivery.intake.executor_cpu": 0.0,
+          "delivery.intake.executor_memory": 0.0,
+          "delivery.intake.executor_requests": 0.0,
+          "delivery.intake.storage_at_rest": 0.0,
+          "delivery.intake.nonlabor_tax_allowance": 0.0,
+          "delivery.initial_attempt.provider.operator": 0.0,
+          "delivery.initial_attempt.model.claude-sonnet-5.5.input": 0.06080000000000001,
+          "delivery.initial_attempt.model.claude-sonnet-5.5.output": 0.056999999999999995,
+          "delivery.initial_attempt.model.claude-opus-5.5.input": 0.0456,
+          "delivery.initial_attempt.model.claude-opus-5.5.output": 0.038000000000000006,
+          "delivery.initial_attempt.successful_search": 0.019000000000000003,
+          "delivery.initial_attempt.executor_cpu": 0.004104,
+          "delivery.initial_attempt.executor_memory": 0.0008550000000000001,
+          "delivery.initial_attempt.executor_requests": 3.8000000000000007e-07,
+          "delivery.initial_attempt.storage_at_rest": 0.0,
+          "delivery.initial_attempt.nonlabor_tax_allowance": 0.022535938,
+          "delivery.human_review.provider.operator": 0.8572562499999998,
+          "delivery.human_review.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.human_review.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.human_review.model.claude-opus-5.5.input": 0.0,
+          "delivery.human_review.model.claude-opus-5.5.output": 0.0,
+          "delivery.human_review.successful_search": 0.0,
+          "delivery.human_review.executor_cpu": 0.0,
+          "delivery.human_review.executor_memory": 0.0,
+          "delivery.human_review.executor_requests": 0.0,
+          "delivery.human_review.storage_at_rest": 0.0,
+          "delivery.human_review.nonlabor_tax_allowance": 0.0,
+          "delivery.completion.provider.operator": 0.7670187499999999,
+          "delivery.completion.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.completion.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.completion.model.claude-opus-5.5.input": 0.0,
+          "delivery.completion.model.claude-opus-5.5.output": 0.0,
+          "delivery.completion.successful_search": 0.0,
+          "delivery.completion.executor_cpu": 0.000306,
+          "delivery.completion.executor_memory": 6.375e-05,
+          "delivery.completion.executor_requests": 3.400000000000001e-07,
+          "delivery.completion.storage_at_rest": 0.0,
+          "delivery.completion.nonlabor_tax_allowance": 3.7009000000000004e-05,
+          "delivery.challenge_check.provider.operator": 0.541425,
+          "delivery.challenge_check.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.challenge_check.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.challenge_check.model.claude-opus-5.5.input": 0.014400000000000001,
+          "delivery.challenge_check.model.claude-opus-5.5.output": 0.018000000000000002,
+          "delivery.challenge_check.successful_search": 0.0,
+          "delivery.challenge_check.executor_cpu": 0.0009720000000000002,
+          "delivery.challenge_check.executor_memory": 0.0002025,
+          "delivery.challenge_check.executor_requests": 1.2000000000000002e-07,
+          "delivery.challenge_check.storage_at_rest": 0.0,
+          "delivery.challenge_check.nonlabor_tax_allowance": 0.0033574620000000003,
+          "delivery.repair_attempt.provider.operator": 0.541425,
+          "delivery.repair_attempt.model.claude-sonnet-5.5.input": 0.012,
+          "delivery.repair_attempt.model.claude-sonnet-5.5.output": 0.012,
+          "delivery.repair_attempt.model.claude-opus-5.5.input": 0.019200000000000002,
+          "delivery.repair_attempt.model.claude-opus-5.5.output": 0.024,
+          "delivery.repair_attempt.successful_search": 0.003,
+          "delivery.repair_attempt.executor_cpu": 0.0019440000000000004,
+          "delivery.repair_attempt.executor_memory": 0.000405,
+          "delivery.repair_attempt.executor_requests": 1.2000000000000002e-07,
+          "delivery.repair_attempt.storage_at_rest": 0.0,
+          "delivery.repair_attempt.nonlabor_tax_allowance": 0.007254912000000002,
+          "delivery.rereview.provider.operator": 0.43313999999999997,
+          "delivery.rereview.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.rereview.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.rereview.model.claude-opus-5.5.input": 0.0,
+          "delivery.rereview.model.claude-opus-5.5.output": 0.0,
+          "delivery.rereview.successful_search": 0.0,
+          "delivery.rereview.executor_cpu": 0.0,
+          "delivery.rereview.executor_memory": 0.0,
+          "delivery.rereview.executor_requests": 0.0,
+          "delivery.rereview.storage_at_rest": 0.0,
+          "delivery.rereview.nonlabor_tax_allowance": 0.0,
+          "delivery.failed_infrastructure_attempt.provider.operator": 0.0,
+          "delivery.failed_infrastructure_attempt.model.claude-sonnet-5.5.input": 0.004,
+          "delivery.failed_infrastructure_attempt.model.claude-sonnet-5.5.output": 0.002,
+          "delivery.failed_infrastructure_attempt.model.claude-opus-5.5.input": 0.0,
+          "delivery.failed_infrastructure_attempt.model.claude-opus-5.5.output": 0.0,
+          "delivery.failed_infrastructure_attempt.successful_search": 0.0,
+          "delivery.failed_infrastructure_attempt.executor_cpu": 0.000432,
+          "delivery.failed_infrastructure_attempt.executor_memory": 9e-05,
+          "delivery.failed_infrastructure_attempt.executor_requests": 8e-08,
+          "delivery.failed_infrastructure_attempt.storage_at_rest": 0.0,
+          "delivery.failed_infrastructure_attempt.nonlabor_tax_allowance": 0.0006522079999999999,
+          "delivery.failure_diagnosis.provider.operator": 0.7219,
+          "delivery.failure_diagnosis.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.failure_diagnosis.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.failure_diagnosis.model.claude-opus-5.5.input": 0.0,
+          "delivery.failure_diagnosis.model.claude-opus-5.5.output": 0.0,
+          "delivery.failure_diagnosis.successful_search": 0.0,
+          "delivery.failure_diagnosis.executor_cpu": 0.0,
+          "delivery.failure_diagnosis.executor_memory": 0.0,
+          "delivery.failure_diagnosis.executor_requests": 0.0,
+          "delivery.failure_diagnosis.storage_at_rest": 0.0,
+          "delivery.failure_diagnosis.nonlabor_tax_allowance": 0.0,
+          "delivery.retry_wait.provider.operator": 0.0,
+          "delivery.retry_wait.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.retry_wait.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.retry_wait.model.claude-opus-5.5.input": 0.0,
+          "delivery.retry_wait.model.claude-opus-5.5.output": 0.0,
+          "delivery.retry_wait.successful_search": 0.0,
+          "delivery.retry_wait.executor_cpu": 0.0,
+          "delivery.retry_wait.executor_memory": 0.0,
+          "delivery.retry_wait.executor_requests": 0.0,
+          "delivery.retry_wait.storage_at_rest": 0.0,
+          "delivery.retry_wait.nonlabor_tax_allowance": 0.0,
+          "delivery.manual_specialist_rescue.provider.operator": 1.624275,
+          "delivery.manual_specialist_rescue.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.manual_specialist_rescue.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.manual_specialist_rescue.model.claude-opus-5.5.input": 0.0288,
+          "delivery.manual_specialist_rescue.model.claude-opus-5.5.output": 0.0432,
+          "delivery.manual_specialist_rescue.successful_search": 0.0036,
+          "delivery.manual_specialist_rescue.executor_cpu": 0.003888,
+          "delivery.manual_specialist_rescue.executor_memory": 0.0008100000000000002,
+          "delivery.manual_specialist_rescue.executor_requests": 7.200000000000001e-08,
+          "delivery.manual_specialist_rescue.storage_at_rest": 0.0,
+          "delivery.manual_specialist_rescue.nonlabor_tax_allowance": 0.008029807200000003,
+          "delivery.exhaustion_closure.provider.operator": 0.36095,
+          "delivery.exhaustion_closure.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.exhaustion_closure.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.exhaustion_closure.model.claude-opus-5.5.input": 0.0,
+          "delivery.exhaustion_closure.model.claude-opus-5.5.output": 0.0,
+          "delivery.exhaustion_closure.successful_search": 0.0,
+          "delivery.exhaustion_closure.executor_cpu": 0.0,
+          "delivery.exhaustion_closure.executor_memory": 0.0,
+          "delivery.exhaustion_closure.executor_requests": 0.0,
+          "delivery.exhaustion_closure.storage_at_rest": 0.0,
+          "delivery.exhaustion_closure.nonlabor_tax_allowance": 0.0,
+          "delivery.eligibility_check.provider.operator": 0.0902375,
+          "delivery.eligibility_check.model.claude-sonnet-5.5.input": 0.0004,
+          "delivery.eligibility_check.model.claude-sonnet-5.5.output": 0.0005,
+          "delivery.eligibility_check.model.claude-opus-5.5.input": 0.0,
+          "delivery.eligibility_check.model.claude-opus-5.5.output": 0.0,
+          "delivery.eligibility_check.successful_search": 0.0,
+          "delivery.eligibility_check.executor_cpu": 5.4000000000000005e-05,
+          "delivery.eligibility_check.executor_memory": 1.1250000000000002e-05,
+          "delivery.eligibility_check.executor_requests": 2.0000000000000004e-08,
+          "delivery.eligibility_check.storage_at_rest": 0.0,
+          "delivery.eligibility_check.nonlabor_tax_allowance": 9.652700000000003e-05,
+          "delivery.refusal_closure.provider.operator": 0.0902375,
+          "delivery.refusal_closure.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.refusal_closure.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.refusal_closure.model.claude-opus-5.5.input": 0.0,
+          "delivery.refusal_closure.model.claude-opus-5.5.output": 0.0,
+          "delivery.refusal_closure.successful_search": 0.0,
+          "delivery.refusal_closure.executor_cpu": 0.0,
+          "delivery.refusal_closure.executor_memory": 0.0,
+          "delivery.refusal_closure.executor_requests": 0.0,
+          "delivery.refusal_closure.storage_at_rest": 0.0,
+          "delivery.refusal_closure.nonlabor_tax_allowance": 0.0
+        },
+        "employer_components_usd": {
+          "delivery.intake.employer.briefing": 2.697,
+          "delivery.intake.employer.source_preparation": 3.5959999999999996,
+          "delivery.intake.employer.approval": 0.8989999999999999,
+          "delivery.human_review.employer.independent_review": 5.1243,
+          "delivery.completion.employer.file_delivery": 0.7641499999999999,
+          "delivery.challenge_check.employer.challenge_adjudication": 0.5394,
+          "delivery.rereview.employer.independent_rereview": 1.72608,
+          "delivery.failure_diagnosis.employer.retry_approval": 0.1798,
+          "delivery.manual_specialist_rescue.employer.manual_correction": 2.4273000000000007,
+          "delivery.exhaustion_closure.employer.rejection_review": 0.2697,
+          "delivery.exhaustion_closure.employer.file_delivery": 0.0899,
+          "delivery.refusal_closure.employer.refusal_review": 0.0899,
+          "delivery.refusal_closure.employer.file_delivery": 0.04495
+        },
+        "resources": {
+          "employer_minutes": 30.779999999999998,
+          "provider_minutes": 6.51,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 487.5,
+          "input_tokens": 65600.0,
+          "output_tokens": 13310.0
+        },
+        "original_total_usd": 26.799952258799998,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "initial": {
+        "provider_components_usd": {
+          "initial.provider.requirements_setup": 1155.04,
+          "initial.provider.deployment_configuration": 1155.04,
+          "initial.provider.approved_executor_integration": 2887.6,
+          "initial.provider.successful_capability_construction": 2887.6,
+          "initial.provider.unsuccessful_capability_construction": 3465.12,
+          "initial.provider.independent_qualification": 1732.56,
+          "initial.model.claude-sonnet-5.5.input": 2.0,
+          "initial.model.claude-sonnet-5.5.output": 2.0,
+          "initial.model.claude-opus-5.5.input": 2.0,
+          "initial.model.claude-opus-5.5.output": 2.0,
+          "initial.successful_search": 2.0,
+          "initial.executor_cpu": 0.5760000000000001,
+          "initial.executor_memory": 0.12000000000000001,
+          "initial.executor_requests": 8e-05,
+          "initial.storage_at_rest": 0.0,
+          "initial.nonlabor_tax_allowance": 1.0696080000000001
+        },
+        "employer_components_usd": {
+          "initial.employer.onboarding_and_governance": 143.84
+        },
+        "resources": {
+          "employer_minutes": 240.0,
+          "provider_minutes": 11040.0,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 24000.0,
+          "input_tokens": 1500000.0,
+          "output_tokens": 300000.0
+        },
+        "original_total_usd": 13438.565687999999,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "monthly": {
+        "provider_components_usd": {
+          "monthly.provider.support": 216.57,
+          "monthly.provider.runtime_dependency_maintenance": 288.76,
+          "monthly.provider.capability_revalidation": 288.76,
+          "monthly.provider.recovery_security_upkeep": 144.38,
+          "monthly.provider.successful_refresh": 144.38,
+          "monthly.provider.unsuccessful_improvement": 216.57,
+          "monthly.model.claude-sonnet-5.5.input": 0.4,
+          "monthly.model.claude-sonnet-5.5.output": 0.4,
+          "monthly.model.claude-opus-5.5.input": 0.4,
+          "monthly.model.claude-opus-5.5.output": 0.4,
+          "monthly.successful_search": 0.4,
+          "monthly.executor_cpu": 0.1728,
+          "monthly.executor_memory": 0.036000000000000004,
+          "monthly.executor_requests": 3.2e-05,
+          "monthly.storage_at_rest": 0.0986292,
+          "monthly.cash_allowance.logging_monitoring": 25.0,
+          "monthly.cash_allowance.connector_software_licenses": 25.0,
+          "monthly.cash_allowance.insurance_compliance_other_overhead": 25.0,
+          "monthly.nonlabor_tax_allowance": 7.730746120000001
+        },
+        "employer_components_usd": {
+          "monthly.employer.governance": 71.92
+        },
+        "resources": {
+          "employer_minutes": 120.0,
+          "provider_minutes": 1080.0,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 7200.0,
+          "input_tokens": 300000.0,
+          "output_tokens": 60000.0
+        },
+        "original_total_usd": 1456.37820732,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "traditional": {
+        "5": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 2.697,
+              "human_delivery.employer.source_preparation": 3.5959999999999996,
+              "human_delivery.employer.approval": 0.8989999999999999,
+              "human_delivery.employer.independent_review": 5.394,
+              "human_delivery.employer.file_delivery": 0.8989999999999999,
+              "human_delivery.traditional_worker.productive_work": 2.996666666666667,
+              "human_delivery.traditional_worker.correction": 1.798,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.7192
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 23.7,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 8.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 18.998866666666668,
+            "account_totals": {
+              "traditional_delivery": 18.998866666666665
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 18.998866666666665
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 71.92,
+              "human_initial.traditional_worker.template_setup": 143.84,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 240.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 215.76,
+            "account_totals": {
+              "traditional_workflow_enablement": 215.76
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 215.76
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 35.96,
+              "human_monthly.traditional_worker.template_support": 35.96,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 25.0,
+              "human_monthly.nonlabor_tax_allowance": 2.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 60.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 99.42,
+            "account_totals": {
+              "traditional_workflow_upkeep": 99.42
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 99.42
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "15": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 2.697,
+              "human_delivery.employer.source_preparation": 3.5959999999999996,
+              "human_delivery.employer.approval": 0.8989999999999999,
+              "human_delivery.employer.independent_review": 5.394,
+              "human_delivery.employer.file_delivery": 0.8989999999999999,
+              "human_delivery.traditional_worker.productive_work": 8.99,
+              "human_delivery.traditional_worker.correction": 1.798,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.7192
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 23.7,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 18.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 24.9922,
+            "account_totals": {
+              "traditional_delivery": 24.992199999999997
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 24.992199999999997
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 71.92,
+              "human_initial.traditional_worker.template_setup": 143.84,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 240.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 215.76,
+            "account_totals": {
+              "traditional_workflow_enablement": 215.76
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 215.76
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 35.96,
+              "human_monthly.traditional_worker.template_support": 35.96,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 25.0,
+              "human_monthly.nonlabor_tax_allowance": 2.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 60.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 99.42,
+            "account_totals": {
+              "traditional_workflow_upkeep": 99.42
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 99.42
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "30": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 2.697,
+              "human_delivery.employer.source_preparation": 3.5959999999999996,
+              "human_delivery.employer.approval": 0.8989999999999999,
+              "human_delivery.employer.independent_review": 5.394,
+              "human_delivery.employer.file_delivery": 0.8989999999999999,
+              "human_delivery.traditional_worker.productive_work": 17.98,
+              "human_delivery.traditional_worker.correction": 1.798,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.7192
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 23.7,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 33.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 33.9822,
+            "account_totals": {
+              "traditional_delivery": 33.9822
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 33.9822
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 71.92,
+              "human_initial.traditional_worker.template_setup": 143.84,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 240.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 215.76,
+            "account_totals": {
+              "traditional_workflow_enablement": 215.76
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 215.76
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 35.96,
+              "human_monthly.traditional_worker.template_support": 35.96,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 25.0,
+              "human_monthly.nonlabor_tax_allowance": 2.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 60.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 99.42,
+            "account_totals": {
+              "traditional_workflow_upkeep": 99.42
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 99.42
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "60": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 2.697,
+              "human_delivery.employer.source_preparation": 3.5959999999999996,
+              "human_delivery.employer.approval": 0.8989999999999999,
+              "human_delivery.employer.independent_review": 5.394,
+              "human_delivery.employer.file_delivery": 0.8989999999999999,
+              "human_delivery.traditional_worker.productive_work": 35.96,
+              "human_delivery.traditional_worker.correction": 1.798,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.7192
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 23.7,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 63.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 51.9622,
+            "account_totals": {
+              "traditional_delivery": 51.9622
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 51.9622
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 71.92,
+              "human_initial.traditional_worker.template_setup": 143.84,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 240.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 215.76,
+            "account_totals": {
+              "traditional_workflow_enablement": 215.76
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 215.76
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 35.96,
+              "human_monthly.traditional_worker.template_support": 35.96,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 25.0,
+              "human_monthly.nonlabor_tax_allowance": 2.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 60.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 99.42,
+            "account_totals": {
+              "traditional_workflow_upkeep": 99.42
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 99.42
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "120": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 2.697,
+              "human_delivery.employer.source_preparation": 3.5959999999999996,
+              "human_delivery.employer.approval": 0.8989999999999999,
+              "human_delivery.employer.independent_review": 5.394,
+              "human_delivery.employer.file_delivery": 0.8989999999999999,
+              "human_delivery.traditional_worker.productive_work": 71.92,
+              "human_delivery.traditional_worker.correction": 1.798,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 0.7192
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 23.7,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 123.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 87.9222,
+            "account_totals": {
+              "traditional_delivery": 87.9222
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 87.9222
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 71.92,
+              "human_initial.traditional_worker.template_setup": 143.84,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 240.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 215.76,
+            "account_totals": {
+              "traditional_workflow_enablement": 215.76
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 215.76
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 35.96,
+              "human_monthly.traditional_worker.template_support": 35.96,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 25.0,
+              "human_monthly.nonlabor_tax_allowance": 2.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 60.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 60.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 99.42,
+            "account_totals": {
+              "traditional_workflow_upkeep": 99.42
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 99.42
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        }
+      }
+    },
+    "stress": {
+      "acceptance_probability": 0.65,
+      "branch_weights": {
+        "direct_accept": 0.2,
+        "model_repair_accept": 0.2,
+        "infrastructure_retry_accept": 0.15,
+        "combined_rescue_accept": 0.1,
+        "final_rejection": 0.25,
+        "early_refusal": 0.1
+      },
+      "hybrid_handoff_employer_minutes": 20,
+      "labor_prices": {
+        "employer_worker_per_hour": 35.96,
+        "provider_per_hour_in_reporting_currency": 72.19,
+        "USD_to_reporting_currency": 1.0
+      },
+      "variable": {
+        "provider_components_usd": {
+          "delivery.request_retention.successful_search": 0.0,
+          "delivery.request_retention.executor_cpu": 0.0,
+          "delivery.request_retention.executor_memory": 0.0,
+          "delivery.request_retention.executor_requests": 0.0,
+          "delivery.request_retention.storage_at_rest": 0.005917752,
+          "delivery.request_retention.cash_allowance.operations_and_egress": 0.1,
+          "delivery.request_retention.nonlabor_tax_allowance": 0.0158876628,
+          "delivery.intake.provider.operator": 3.0079166666666666,
+          "delivery.intake.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.intake.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.intake.model.claude-opus-5.5.input": 0.0,
+          "delivery.intake.model.claude-opus-5.5.output": 0.0,
+          "delivery.intake.successful_search": 0.0,
+          "delivery.intake.executor_cpu": 0.0,
+          "delivery.intake.executor_memory": 0.0,
+          "delivery.intake.executor_requests": 0.0,
+          "delivery.intake.storage_at_rest": 0.0,
+          "delivery.intake.nonlabor_tax_allowance": 0.0,
+          "delivery.initial_attempt.provider.operator": 0.0,
+          "delivery.initial_attempt.model.claude-sonnet-5.5.input": 0.11520000000000001,
+          "delivery.initial_attempt.model.claude-sonnet-5.5.output": 0.108,
+          "delivery.initial_attempt.model.claude-opus-5.5.input": 0.0864,
+          "delivery.initial_attempt.model.claude-opus-5.5.output": 0.072,
+          "delivery.initial_attempt.successful_search": 0.018,
+          "delivery.initial_attempt.executor_cpu": 0.007776,
+          "delivery.initial_attempt.executor_memory": 0.0016200000000000003,
+          "delivery.initial_attempt.executor_requests": 3.6000000000000005e-07,
+          "delivery.initial_attempt.storage_at_rest": 0.0,
+          "delivery.initial_attempt.nonlabor_tax_allowance": 0.061349454000000005,
+          "delivery.human_review.provider.operator": 1.3535625,
+          "delivery.human_review.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.human_review.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.human_review.model.claude-opus-5.5.input": 0.0,
+          "delivery.human_review.model.claude-opus-5.5.output": 0.0,
+          "delivery.human_review.successful_search": 0.0,
+          "delivery.human_review.executor_cpu": 0.0,
+          "delivery.human_review.executor_memory": 0.0,
+          "delivery.human_review.executor_requests": 0.0,
+          "delivery.human_review.storage_at_rest": 0.0,
+          "delivery.human_review.nonlabor_tax_allowance": 0.0,
+          "delivery.completion.provider.operator": 0.9775729166666667,
+          "delivery.completion.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.completion.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.completion.model.claude-opus-5.5.input": 0.0,
+          "delivery.completion.model.claude-opus-5.5.output": 0.0,
+          "delivery.completion.successful_search": 0.0,
+          "delivery.completion.executor_cpu": 0.00046800000000000005,
+          "delivery.completion.executor_memory": 9.750000000000001e-05,
+          "delivery.completion.executor_requests": 2.6000000000000005e-07,
+          "delivery.completion.storage_at_rest": 0.0,
+          "delivery.completion.nonlabor_tax_allowance": 8.486400000000002e-05,
+          "delivery.challenge_check.provider.operator": 1.3535625,
+          "delivery.challenge_check.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.challenge_check.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.challenge_check.model.claude-opus-5.5.input": 0.0432,
+          "delivery.challenge_check.model.claude-opus-5.5.output": 0.054,
+          "delivery.challenge_check.successful_search": 0.0,
+          "delivery.challenge_check.executor_cpu": 0.002916,
+          "delivery.challenge_check.executor_memory": 0.0006075,
+          "delivery.challenge_check.executor_requests": 1.8000000000000002e-07,
+          "delivery.challenge_check.storage_at_rest": 0.0,
+          "delivery.challenge_check.nonlabor_tax_allowance": 0.015108552,
+          "delivery.repair_attempt.provider.operator": 1.3535625,
+          "delivery.repair_attempt.model.claude-sonnet-5.5.input": 0.036000000000000004,
+          "delivery.repair_attempt.model.claude-sonnet-5.5.output": 0.036000000000000004,
+          "delivery.repair_attempt.model.claude-opus-5.5.input": 0.0576,
+          "delivery.repair_attempt.model.claude-opus-5.5.output": 0.07200000000000001,
+          "delivery.repair_attempt.successful_search": 0.0045000000000000005,
+          "delivery.repair_attempt.executor_cpu": 0.005832,
+          "delivery.repair_attempt.executor_memory": 0.001215,
+          "delivery.repair_attempt.executor_requests": 1.8000000000000002e-07,
+          "delivery.repair_attempt.storage_at_rest": 0.0,
+          "delivery.repair_attempt.nonlabor_tax_allowance": 0.031972077,
+          "delivery.rereview.provider.operator": 1.2031666666666667,
+          "delivery.rereview.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.rereview.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.rereview.model.claude-opus-5.5.input": 0.0,
+          "delivery.rereview.model.claude-opus-5.5.output": 0.0,
+          "delivery.rereview.successful_search": 0.0,
+          "delivery.rereview.executor_cpu": 0.0,
+          "delivery.rereview.executor_memory": 0.0,
+          "delivery.rereview.executor_requests": 0.0,
+          "delivery.rereview.storage_at_rest": 0.0,
+          "delivery.rereview.nonlabor_tax_allowance": 0.0,
+          "delivery.failed_infrastructure_attempt.provider.operator": 0.0,
+          "delivery.failed_infrastructure_attempt.model.claude-sonnet-5.5.input": 0.01,
+          "delivery.failed_infrastructure_attempt.model.claude-sonnet-5.5.output": 0.005,
+          "delivery.failed_infrastructure_attempt.model.claude-opus-5.5.input": 0.0,
+          "delivery.failed_infrastructure_attempt.model.claude-opus-5.5.output": 0.0,
+          "delivery.failed_infrastructure_attempt.successful_search": 0.0,
+          "delivery.failed_infrastructure_attempt.executor_cpu": 0.00108,
+          "delivery.failed_infrastructure_attempt.executor_memory": 0.00022500000000000002,
+          "delivery.failed_infrastructure_attempt.executor_requests": 1.0000000000000002e-07,
+          "delivery.failed_infrastructure_attempt.storage_at_rest": 0.0,
+          "delivery.failed_infrastructure_attempt.nonlabor_tax_allowance": 0.002445765,
+          "delivery.failure_diagnosis.provider.operator": 1.5039583333333333,
+          "delivery.failure_diagnosis.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.failure_diagnosis.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.failure_diagnosis.model.claude-opus-5.5.input": 0.0,
+          "delivery.failure_diagnosis.model.claude-opus-5.5.output": 0.0,
+          "delivery.failure_diagnosis.successful_search": 0.0,
+          "delivery.failure_diagnosis.executor_cpu": 0.0,
+          "delivery.failure_diagnosis.executor_memory": 0.0,
+          "delivery.failure_diagnosis.executor_requests": 0.0,
+          "delivery.failure_diagnosis.storage_at_rest": 0.0,
+          "delivery.failure_diagnosis.nonlabor_tax_allowance": 0.0,
+          "delivery.retry_wait.provider.operator": 0.0,
+          "delivery.retry_wait.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.retry_wait.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.retry_wait.model.claude-opus-5.5.input": 0.0,
+          "delivery.retry_wait.model.claude-opus-5.5.output": 0.0,
+          "delivery.retry_wait.successful_search": 0.0,
+          "delivery.retry_wait.executor_cpu": 0.0,
+          "delivery.retry_wait.executor_memory": 0.0,
+          "delivery.retry_wait.executor_requests": 0.0,
+          "delivery.retry_wait.storage_at_rest": 0.0,
+          "delivery.retry_wait.nonlabor_tax_allowance": 0.0,
+          "delivery.manual_specialist_rescue.provider.operator": 5.2638541666666665,
+          "delivery.manual_specialist_rescue.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.manual_specialist_rescue.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.manual_specialist_rescue.model.claude-opus-5.5.input": 0.112,
+          "delivery.manual_specialist_rescue.model.claude-opus-5.5.output": 0.16799999999999998,
+          "delivery.manual_specialist_rescue.successful_search": 0.007,
+          "delivery.manual_specialist_rescue.executor_cpu": 0.015120000000000001,
+          "delivery.manual_specialist_rescue.executor_memory": 0.0031500000000000005,
+          "delivery.manual_specialist_rescue.executor_requests": 1.4e-07,
+          "delivery.manual_specialist_rescue.storage_at_rest": 0.0,
+          "delivery.manual_specialist_rescue.nonlabor_tax_allowance": 0.045790521,
+          "delivery.exhaustion_closure.provider.operator": 1.5039583333333333,
+          "delivery.exhaustion_closure.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.exhaustion_closure.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.exhaustion_closure.model.claude-opus-5.5.input": 0.0,
+          "delivery.exhaustion_closure.model.claude-opus-5.5.output": 0.0,
+          "delivery.exhaustion_closure.successful_search": 0.0,
+          "delivery.exhaustion_closure.executor_cpu": 0.0,
+          "delivery.exhaustion_closure.executor_memory": 0.0,
+          "delivery.exhaustion_closure.executor_requests": 0.0,
+          "delivery.exhaustion_closure.storage_at_rest": 0.0,
+          "delivery.exhaustion_closure.nonlabor_tax_allowance": 0.0,
+          "delivery.eligibility_check.provider.operator": 0.3007916666666667,
+          "delivery.eligibility_check.model.claude-sonnet-5.5.input": 0.0016,
+          "delivery.eligibility_check.model.claude-sonnet-5.5.output": 0.002,
+          "delivery.eligibility_check.model.claude-opus-5.5.input": 0.0,
+          "delivery.eligibility_check.model.claude-opus-5.5.output": 0.0,
+          "delivery.eligibility_check.successful_search": 0.0,
+          "delivery.eligibility_check.executor_cpu": 0.00021600000000000002,
+          "delivery.eligibility_check.executor_memory": 4.500000000000001e-05,
+          "delivery.eligibility_check.executor_requests": 4.000000000000001e-08,
+          "delivery.eligibility_check.storage_at_rest": 0.0,
+          "delivery.eligibility_check.nonlabor_tax_allowance": 0.000579156,
+          "delivery.refusal_closure.provider.operator": 0.3007916666666667,
+          "delivery.refusal_closure.model.claude-sonnet-5.5.input": 0.0,
+          "delivery.refusal_closure.model.claude-sonnet-5.5.output": 0.0,
+          "delivery.refusal_closure.model.claude-opus-5.5.input": 0.0,
+          "delivery.refusal_closure.model.claude-opus-5.5.output": 0.0,
+          "delivery.refusal_closure.successful_search": 0.0,
+          "delivery.refusal_closure.executor_cpu": 0.0,
+          "delivery.refusal_closure.executor_memory": 0.0,
+          "delivery.refusal_closure.executor_requests": 0.0,
+          "delivery.refusal_closure.storage_at_rest": 0.0,
+          "delivery.refusal_closure.nonlabor_tax_allowance": 0.0
+        },
+        "employer_components_usd": {
+          "delivery.intake.employer.briefing": 4.494999999999999,
+          "delivery.intake.employer.source_preparation": 5.993333333333333,
+          "delivery.intake.employer.approval": 1.4983333333333333,
+          "delivery.human_review.employer.independent_review": 8.091,
+          "delivery.completion.employer.file_delivery": 0.9739166666666668,
+          "delivery.challenge_check.employer.challenge_adjudication": 1.3485,
+          "delivery.rereview.employer.independent_rereview": 4.794666666666667,
+          "delivery.failure_diagnosis.employer.retry_approval": 0.3745833333333334,
+          "delivery.manual_specialist_rescue.employer.manual_correction": 7.866250000000001,
+          "delivery.exhaustion_closure.employer.rejection_review": 1.12375,
+          "delivery.exhaustion_closure.employer.file_delivery": 0.3745833333333334,
+          "delivery.refusal_closure.employer.refusal_review": 0.2996666666666667,
+          "delivery.refusal_closure.employer.file_delivery": 0.14983333333333335
+        },
+        "resources": {
+          "employer_minutes": 62.375,
+          "provider_minutes": 15.0625,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 1392.0,
+          "input_tokens": 156200.0,
+          "output_tokens": 33400.0
+        },
+        "original_total_usd": 56.834119647133335,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "initial": {
+        "provider_components_usd": {
+          "initial.provider.requirements_setup": 2310.08,
+          "initial.provider.deployment_configuration": 2310.08,
+          "initial.provider.approved_executor_integration": 5775.2,
+          "initial.provider.successful_capability_construction": 5775.2,
+          "initial.provider.unsuccessful_capability_construction": 8662.8,
+          "initial.provider.independent_qualification": 3465.12,
+          "initial.model.claude-sonnet-5.5.input": 4.0,
+          "initial.model.claude-sonnet-5.5.output": 4.0,
+          "initial.model.claude-opus-5.5.input": 4.0,
+          "initial.model.claude-opus-5.5.output": 4.0,
+          "initial.successful_search": 4.0,
+          "initial.executor_cpu": 1.1520000000000001,
+          "initial.executor_memory": 0.24000000000000002,
+          "initial.executor_requests": 0.00016,
+          "initial.storage_at_rest": 0.0,
+          "initial.nonlabor_tax_allowance": 3.208824
+        },
+        "employer_components_usd": {
+          "initial.employer.onboarding_and_governance": 287.68
+        },
+        "resources": {
+          "employer_minutes": 480.0,
+          "provider_minutes": 23520.0,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 48000.0,
+          "input_tokens": 3000000.0,
+          "output_tokens": 600000.0
+        },
+        "original_total_usd": 28610.760984,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "monthly": {
+        "provider_components_usd": {
+          "monthly.provider.support": 433.14,
+          "monthly.provider.runtime_dependency_maintenance": 577.52,
+          "monthly.provider.capability_revalidation": 577.52,
+          "monthly.provider.recovery_security_upkeep": 288.76,
+          "monthly.provider.successful_refresh": 288.76,
+          "monthly.provider.unsuccessful_improvement": 433.14,
+          "monthly.model.claude-sonnet-5.5.input": 0.8,
+          "monthly.model.claude-sonnet-5.5.output": 0.8,
+          "monthly.model.claude-opus-5.5.input": 0.8,
+          "monthly.model.claude-opus-5.5.output": 0.8,
+          "monthly.successful_search": 0.8,
+          "monthly.executor_cpu": 0.3456,
+          "monthly.executor_memory": 0.07200000000000001,
+          "monthly.executor_requests": 6.4e-05,
+          "monthly.storage_at_rest": 0.1972584,
+          "monthly.cash_allowance.logging_monitoring": 50.0,
+          "monthly.cash_allowance.connector_software_licenses": 50.0,
+          "monthly.cash_allowance.insurance_compliance_other_overhead": 50.0,
+          "monthly.nonlabor_tax_allowance": 23.19223836
+        },
+        "employer_components_usd": {
+          "monthly.employer.governance": 143.84
+        },
+        "resources": {
+          "employer_minutes": 240.0,
+          "provider_minutes": 2160.0,
+          "traditional_worker_minutes": 0.0,
+          "executor_seconds": 14400.0,
+          "input_tokens": 600000.0,
+          "output_tokens": 120000.0
+        },
+        "original_total_usd": 2920.48716076,
+        "evidence_class": "ASSUMED_PRIOR_FROZEN_MODEL_NOT_OBSERVED_COST"
+      },
+      "traditional": {
+        "5": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 4.495,
+              "human_delivery.employer.source_preparation": 5.993333333333334,
+              "human_delivery.employer.approval": 1.4983333333333335,
+              "human_delivery.employer.independent_review": 8.99,
+              "human_delivery.employer.file_delivery": 1.4983333333333335,
+              "human_delivery.traditional_worker.productive_work": 2.996666666666667,
+              "human_delivery.traditional_worker.correction": 5.394,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 1.7980000000000003
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 40.5,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 14.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 32.66366666666667,
+            "account_totals": {
+              "traditional_delivery": 32.66366666666667
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 32.66366666666667
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 143.84,
+              "human_initial.traditional_worker.template_setup": 287.68,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 240.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 480.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 431.52,
+            "account_totals": {
+              "traditional_workflow_enablement": 431.52
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 431.52
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 71.92,
+              "human_monthly.traditional_worker.template_support": 71.92,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 50.0,
+              "human_monthly.nonlabor_tax_allowance": 7.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 201.34,
+            "account_totals": {
+              "traditional_workflow_upkeep": 201.34
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 201.34
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "15": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 4.495,
+              "human_delivery.employer.source_preparation": 5.993333333333334,
+              "human_delivery.employer.approval": 1.4983333333333335,
+              "human_delivery.employer.independent_review": 8.99,
+              "human_delivery.employer.file_delivery": 1.4983333333333335,
+              "human_delivery.traditional_worker.productive_work": 8.99,
+              "human_delivery.traditional_worker.correction": 5.394,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 1.7980000000000003
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 40.5,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 24.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 38.657000000000004,
+            "account_totals": {
+              "traditional_delivery": 38.657000000000004
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 38.657000000000004
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 143.84,
+              "human_initial.traditional_worker.template_setup": 287.68,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 240.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 480.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 431.52,
+            "account_totals": {
+              "traditional_workflow_enablement": 431.52
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 431.52
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 71.92,
+              "human_monthly.traditional_worker.template_support": 71.92,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 50.0,
+              "human_monthly.nonlabor_tax_allowance": 7.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 201.34,
+            "account_totals": {
+              "traditional_workflow_upkeep": 201.34
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 201.34
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "30": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 4.495,
+              "human_delivery.employer.source_preparation": 5.993333333333334,
+              "human_delivery.employer.approval": 1.4983333333333335,
+              "human_delivery.employer.independent_review": 8.99,
+              "human_delivery.employer.file_delivery": 1.4983333333333335,
+              "human_delivery.traditional_worker.productive_work": 17.98,
+              "human_delivery.traditional_worker.correction": 5.394,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 1.7980000000000003
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 40.5,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 39.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 47.647000000000006,
+            "account_totals": {
+              "traditional_delivery": 47.647
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 47.647
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 143.84,
+              "human_initial.traditional_worker.template_setup": 287.68,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 240.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 480.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 431.52,
+            "account_totals": {
+              "traditional_workflow_enablement": 431.52
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 431.52
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 71.92,
+              "human_monthly.traditional_worker.template_support": 71.92,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 50.0,
+              "human_monthly.nonlabor_tax_allowance": 7.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 201.34,
+            "account_totals": {
+              "traditional_workflow_upkeep": 201.34
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 201.34
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "60": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 4.495,
+              "human_delivery.employer.source_preparation": 5.993333333333334,
+              "human_delivery.employer.approval": 1.4983333333333335,
+              "human_delivery.employer.independent_review": 8.99,
+              "human_delivery.employer.file_delivery": 1.4983333333333335,
+              "human_delivery.traditional_worker.productive_work": 35.96,
+              "human_delivery.traditional_worker.correction": 5.394,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 1.7980000000000003
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 40.5,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 69.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 65.62700000000001,
+            "account_totals": {
+              "traditional_delivery": 65.627
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 65.627
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 143.84,
+              "human_initial.traditional_worker.template_setup": 287.68,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 240.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 480.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 431.52,
+            "account_totals": {
+              "traditional_workflow_enablement": 431.52
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 431.52
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 71.92,
+              "human_monthly.traditional_worker.template_support": 71.92,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 50.0,
+              "human_monthly.nonlabor_tax_allowance": 7.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 201.34,
+            "account_totals": {
+              "traditional_workflow_upkeep": 201.34
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 201.34
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        },
+        "120": {
+          "variable": {
+            "components": {
+              "human_delivery.employer.briefing": 4.495,
+              "human_delivery.employer.source_preparation": 5.993333333333334,
+              "human_delivery.employer.approval": 1.4983333333333335,
+              "human_delivery.employer.independent_review": 8.99,
+              "human_delivery.employer.file_delivery": 1.4983333333333335,
+              "human_delivery.traditional_worker.productive_work": 71.92,
+              "human_delivery.traditional_worker.correction": 5.394,
+              "human_delivery.successful_search": 0.0,
+              "human_delivery.executor_cpu": 0.0,
+              "human_delivery.executor_memory": 0.0,
+              "human_delivery.executor_requests": 0.0,
+              "human_delivery.storage_at_rest": 0.0,
+              "human_delivery.nonlabor_tax_allowance": 0.0,
+              "human_delivery.employer.rereview": 1.7980000000000003
+            },
+            "ownership": {
+              "human_delivery.employer.briefing": "traditional_delivery",
+              "human_delivery.employer.source_preparation": "traditional_delivery",
+              "human_delivery.employer.approval": "traditional_delivery",
+              "human_delivery.employer.independent_review": "traditional_delivery",
+              "human_delivery.employer.file_delivery": "traditional_delivery",
+              "human_delivery.traditional_worker.productive_work": "traditional_delivery",
+              "human_delivery.traditional_worker.correction": "traditional_delivery",
+              "human_delivery.successful_search": "traditional_delivery",
+              "human_delivery.executor_cpu": "traditional_delivery",
+              "human_delivery.executor_memory": "traditional_delivery",
+              "human_delivery.executor_requests": "traditional_delivery",
+              "human_delivery.storage_at_rest": "traditional_delivery",
+              "human_delivery.nonlabor_tax_allowance": "traditional_delivery",
+              "human_delivery.employer.rereview": "traditional_delivery"
+            },
+            "resources": {
+              "employer_minutes": 40.5,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 129.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 101.587,
+            "account_totals": {
+              "traditional_delivery": 101.58700000000002
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 101.58700000000002
+            }
+          },
+          "initial": {
+            "components": {
+              "human_initial.employer.onboarding": 143.84,
+              "human_initial.traditional_worker.template_setup": 287.68,
+              "human_initial.successful_search": 0.0,
+              "human_initial.executor_cpu": 0.0,
+              "human_initial.executor_memory": 0.0,
+              "human_initial.executor_requests": 0.0,
+              "human_initial.storage_at_rest": 0.0,
+              "human_initial.nonlabor_tax_allowance": 0.0
+            },
+            "ownership": {
+              "human_initial.employer.onboarding": "traditional_workflow_enablement",
+              "human_initial.traditional_worker.template_setup": "traditional_workflow_enablement",
+              "human_initial.successful_search": "traditional_workflow_enablement",
+              "human_initial.executor_cpu": "traditional_workflow_enablement",
+              "human_initial.executor_memory": "traditional_workflow_enablement",
+              "human_initial.executor_requests": "traditional_workflow_enablement",
+              "human_initial.storage_at_rest": "traditional_workflow_enablement",
+              "human_initial.nonlabor_tax_allowance": "traditional_workflow_enablement"
+            },
+            "resources": {
+              "employer_minutes": 240.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 480.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 431.52,
+            "account_totals": {
+              "traditional_workflow_enablement": 431.52
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 431.52
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          },
+          "monthly": {
+            "components": {
+              "human_monthly.employer.governance": 71.92,
+              "human_monthly.traditional_worker.template_support": 71.92,
+              "human_monthly.successful_search": 0.0,
+              "human_monthly.executor_cpu": 0.0,
+              "human_monthly.executor_memory": 0.0,
+              "human_monthly.executor_requests": 0.0,
+              "human_monthly.storage_at_rest": 0.0,
+              "human_monthly.cash_allowance.ordinary_software_IT": 50.0,
+              "human_monthly.nonlabor_tax_allowance": 7.5
+            },
+            "ownership": {
+              "human_monthly.employer.governance": "traditional_workflow_upkeep",
+              "human_monthly.traditional_worker.template_support": "traditional_workflow_upkeep",
+              "human_monthly.successful_search": "traditional_workflow_upkeep",
+              "human_monthly.executor_cpu": "traditional_workflow_upkeep",
+              "human_monthly.executor_memory": "traditional_workflow_upkeep",
+              "human_monthly.executor_requests": "traditional_workflow_upkeep",
+              "human_monthly.storage_at_rest": "traditional_workflow_upkeep",
+              "human_monthly.cash_allowance.ordinary_software_IT": "traditional_workflow_upkeep",
+              "human_monthly.nonlabor_tax_allowance": "traditional_workflow_upkeep"
+            },
+            "resources": {
+              "employer_minutes": 120.0,
+              "provider_minutes": 0.0,
+              "traditional_worker_minutes": 120.0,
+              "executor_seconds": 0.0,
+              "input_tokens": 0.0,
+              "output_tokens": 0.0
+            },
+            "total": 201.34,
+            "account_totals": {
+              "traditional_workflow_upkeep": 201.34
+            },
+            "service_improvement_totals": {
+              "identified_improvement": 0.0,
+              "joint_service_improvement_unallocated": 0.0,
+              "service_and_employer": 201.34
+            },
+            "meters": {
+              "raw_occupied_seconds": 0,
+              "billed_allocated_seconds": 0.0,
+              "executor_requests": 0,
+              "successful_search_calls": 0,
+              "storage_gib_hours": 0
+            }
+          }
+        }
+      }
+    }
+  }
+}

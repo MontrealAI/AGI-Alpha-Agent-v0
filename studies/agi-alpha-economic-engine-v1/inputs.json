@@ -1,0 +1,202 @@
+{
+  "schema": "agi-alpha-cash-reinvestment-inputs/v1",
+  "status": "PROSPECTIVE_SPECIFICATION_NO_NEW_FINANCIAL_RESULTS",
+  "currency": "USD",
+  "evidence_class": "SIMULATION_ASSUMPTIONS_EXCEPT_EXPLICIT_SOURCE_ANCHORS",
+  "operating_months_after_setup": 12,
+  "initial_virtual_cash_usd": 25000,
+  "initial_cash_is_revenue_or_reinvestment_surplus": false,
+  "collection_delay_months": 1,
+  "prices_usd_per_accepted_delivery": [
+    10,
+    20,
+    40
+  ],
+  "reinvestment_fractions_of_available_surplus": [
+    0,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "capability_outcome_worlds": [
+    "no_gain",
+    "assumed_diminishing_gain"
+  ],
+  "human_productive_minutes_for_anchor": [
+    5,
+    15,
+    30,
+    60,
+    120
+  ],
+  "hypothesis_human_replacement_cost_usd": 200,
+  "hypothesis_base_variable_delivery_cost_per_expected_accepted_usd": 0.5,
+  "hypothesis_base_provider_minutes_per_expected_accepted": 0.1,
+  "monthly_resources": {
+    "workdays": 20,
+    "provider_minutes_per_day": 120,
+    "customer_minutes_per_day": 120,
+    "traditional_worker_minutes_per_day": 480,
+    "executor_instances": 2,
+    "executor_hours_per_workday": 8
+  },
+  "unvalidated_capacity_constraints": [
+    "provider_model_token_quota",
+    "provider_rate_limits",
+    "network_tail_latency",
+    "daily_staffing_schedule",
+    "live_executor_concurrency_and_connection"
+  ],
+  "scenarios": {
+    "base": {
+      "label": "Illustration; not estimated most likely",
+      "utilization": 0.8,
+      "anchor_annual_requested_demand": 1000,
+      "hypothesis_annual_requested_demand": 12000,
+      "collected_fraction_of_accepted_invoices": 0.98,
+      "refund_fraction_of_collected": 0.01,
+      "payment_processing_fraction": 0.03,
+      "processing_usd_per_collected_invoice": 0.3,
+      "additional_business_setup_usd": 500,
+      "additional_setup_provider_hours": 4,
+      "additional_monthly_provider_hours": 1,
+      "additional_monthly_acquisition_billing_usd": 100,
+      "additional_monthly_business_administration_usd": 50,
+      "tax_reserve_fraction_of_positive_cumulative_pre_discretionary_income": 0.3,
+      "warranty_reserve_fraction_of_last_two_months_collected_proceeds": 0.05,
+      "working_capital_months": 2,
+      "hypothesis_provider_minutes_per_requested": null,
+      "hypothesis_customer_minutes_per_requested": 0.5,
+      "hypothesis_nonlabor_multiplier": 1,
+      "demand_multiplier_sensitivity": [
+        0.25,
+        1,
+        4
+      ]
+    },
+    "conservative": {
+      "label": "Joint adverse adoption and operating assumptions",
+      "utilization": 0.6,
+      "anchor_annual_requested_demand": 300,
+      "hypothesis_annual_requested_demand": 1200,
+      "collected_fraction_of_accepted_invoices": 0.9,
+      "refund_fraction_of_collected": 0.05,
+      "payment_processing_fraction": 0.04,
+      "processing_usd_per_collected_invoice": 0.5,
+      "additional_business_setup_usd": 1500,
+      "additional_setup_provider_hours": 12,
+      "additional_monthly_provider_hours": 2,
+      "additional_monthly_acquisition_billing_usd": 200,
+      "additional_monthly_business_administration_usd": 100,
+      "tax_reserve_fraction_of_positive_cumulative_pre_discretionary_income": 0.35,
+      "warranty_reserve_fraction_of_last_two_months_collected_proceeds": 0.1,
+      "working_capital_months": 3,
+      "hypothesis_provider_minutes_per_requested": 1,
+      "hypothesis_customer_minutes_per_requested": 2,
+      "hypothesis_nonlabor_multiplier": 2
+    },
+    "stress": {
+      "label": "Joint expensive failures, low demand and collection stress",
+      "utilization": 0.4,
+      "anchor_annual_requested_demand": 100,
+      "hypothesis_annual_requested_demand": 300,
+      "collected_fraction_of_accepted_invoices": 0.75,
+      "refund_fraction_of_collected": 0.1,
+      "payment_processing_fraction": 0.06,
+      "processing_usd_per_collected_invoice": 1,
+      "additional_business_setup_usd": 4000,
+      "additional_setup_provider_hours": 24,
+      "additional_monthly_provider_hours": 4,
+      "additional_monthly_acquisition_billing_usd": 400,
+      "additional_monthly_business_administration_usd": 200,
+      "tax_reserve_fraction_of_positive_cumulative_pre_discretionary_income": 0.4,
+      "warranty_reserve_fraction_of_last_two_months_collected_proceeds": 0.2,
+      "working_capital_months": 4,
+      "hypothesis_provider_minutes_per_requested": 5,
+      "hypothesis_customer_minutes_per_requested": 6,
+      "hypothesis_nonlabor_multiplier": 4
+    }
+  },
+  "candidate_capabilities": [
+    {
+      "id": "check_construction_1",
+      "construction_and_evaluation_usd": 500,
+      "provider_hours_included_in_cash_cost": 4,
+      "forecast_success_probability": 0.5,
+      "forecast_fractional_nonlabor_saving": 0.3,
+      "forecast_fractional_provider_time_saving": 0.1,
+      "monthly_upkeep_usd": 10,
+      "monthly_upkeep_provider_hours": 0.1,
+      "evaluation_delay_months": 1,
+      "assumed_diminishing_gain_pass": false,
+      "description": "Proposed reusable provenance-check capability; first simulated candidate fails."
+    },
+    {
+      "id": "check_construction_2",
+      "construction_and_evaluation_usd": 750,
+      "provider_hours_included_in_cash_cost": 6,
+      "forecast_success_probability": 0.5,
+      "forecast_fractional_nonlabor_saving": 0.25,
+      "forecast_fractional_provider_time_saving": 0.08,
+      "monthly_upkeep_usd": 15,
+      "monthly_upkeep_provider_hours": 0.15,
+      "evaluation_delay_months": 1,
+      "assumed_diminishing_gain_pass": true,
+      "description": "Separate proposed reusable checking method; outcome is a simulation assumption."
+    },
+    {
+      "id": "check_construction_3",
+      "construction_and_evaluation_usd": 1250,
+      "provider_hours_included_in_cash_cost": 10,
+      "forecast_success_probability": 0.3,
+      "forecast_fractional_nonlabor_saving": 0.1,
+      "forecast_fractional_provider_time_saving": 0.04,
+      "monthly_upkeep_usd": 25,
+      "monthly_upkeep_provider_hours": 0.25,
+      "evaluation_delay_months": 1,
+      "assumed_diminishing_gain_pass": true,
+      "description": "More expensive candidate with smaller prospective benefit; may be declined."
+    }
+  ],
+  "capacity_purchase": {
+    "kind": "one_additional_executor_instance",
+    "setup_usd": 250,
+    "monthly_upkeep_usd": 50,
+    "setup_provider_hours_included_in_cost": 1,
+    "monthly_upkeep_provider_hours_included_in_cost": 0.25,
+    "max_purchases": 2,
+    "eligibility": "Only when executor capacity binds, customer/provider capacity remains, and prospective remaining contribution covers setup and upkeep."
+  },
+  "decision_policy": {
+    "allocation": "Cumulative allocation ceiling equals chosen fraction of recovered, collected after-tax operating surplus; initial capital, uncollected invoices and reserves never qualify.",
+    "investment": "Consider bounded capacity purchase first if its bottleneck and payback gates pass; otherwise the next frozen candidate only. No exploration outside this list.",
+    "candidate_gate": "Construct only if the earmarked cash and provider time exist, at least two later operating months remain, and frozen probability-weighted savings on remaining feasible demand exceed construction plus upkeep.",
+    "promotion": "No benefit until next-month simulated evaluation passes; no_gain world rejects every candidate. All spending persists after rejection.",
+    "stop": "Stop at a failed affordability, reserve, resource, remaining-demand or expected-payback gate. Funds may remain idle. No mandate to spend a chosen percentage."
+  },
+  "primary_outputs": [
+    "accepted_and_unresolved_work",
+    "cash_and_revenue_waterfall",
+    "complete_provider_cost_including_failed_work_and_construction",
+    "customer_full_demand_cost_and_attention",
+    "available_surplus_and_allocation",
+    "actual_simulated_investment_spend_and_idle_allocation",
+    "remaining_cash_reserves_receivables",
+    "break_even_price_and_reuse",
+    "first_commission_setup_and_working_capital",
+    "capacity_bottlenecks_and_stop_reasons"
+  ],
+  "unknowns_not_zero": [
+    "observed_collected_revenue",
+    "actual_field_company_cost",
+    "actual_customer_duration_and_acceptance",
+    "actual_historical_authoring_cost",
+    "unbounded_downstream_loss",
+    "deployed_treasury_authority_and_current_configuration",
+    "live_authenticated_executor",
+    "actual_incremental_capability_gain"
+  ],
+  "stop_operation_policy": "Monthly service is cancelable; preserve one current monthly fixed-cost shutdown reserve. If mandatory costs plus this reserve cannot be met, stop new work, pay one shutdown-month cost, retain invoices/reserves and collect remaining due proceeds without restart. An unfunded shutdown obligation is a failed plan, never silently zero.",
+  "live_financial_transactions": "NOT RUN",
+  "authenticated_executor": "NOT RUN"
+}

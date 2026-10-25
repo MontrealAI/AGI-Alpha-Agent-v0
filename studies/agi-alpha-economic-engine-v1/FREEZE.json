@@ -1,0 +1,356 @@
+{
+  "schema": "agi-alpha-economic-engine-freeze/v1",
+  "created_utc": "2026-10-25T14:23:55.892155+00:00",
+  "scope": "Separate forward cash/pricing/reinvestment and source-mechanism simulation; all prior studies unchanged.",
+  "status": "FROZEN_BEFORE_FINANCIAL_SCENARIO_CALCULATION",
+  "prior_results_known": true,
+  "new_financial_scenarios_executed": 0,
+  "primary_paths": 144,
+  "additional_predeclared_demand_paths": 32,
+  "source_waterfall_scenarios": 27,
+  "files": [
+    {
+      "path": "PROTOCOL.md",
+      "bytes": 23230,
+      "sha256": "44c0d22787273bb3d79f33c9059dc95ed497c0532c3fa7fa88b2edece5801d4e"
+    },
+    {
+      "path": "contracts/ALPHA_DEPLOYED_SOURCE_DIRECTORY.json",
+      "bytes": 1203,
+      "sha256": "ee45892e9001e7f2a2ebfe0762e182d947f3e7d3ce7a984ad3f1fa55f0114036"
+    },
+    {
+      "path": "contracts/ALPHA_SOURCE_COMPARISON.json",
+      "bytes": 1962,
+      "sha256": "5556dce4837cc7ea60eaf72039b7adc956bab6783a0d480451148b79b929045e"
+    },
+    {
+      "path": "contracts/ALPHA_SOURCE_SNAPSHOTS.json",
+      "bytes": 11435,
+      "sha256": "36e505faffe13017d0c22f2887664fc3521d952e988bd3081eddaaecab16d164"
+    },
+    {
+      "path": "contracts/CONTRACT_ECONOMICS.md",
+      "bytes": 13232,
+      "sha256": "09c69e802f49c547dbde5908d35f2e8e1edb42da6000e92c24e3039604f6a80b"
+    },
+    {
+      "path": "contracts/CONTRACT_FREEZE_FILES.json",
+      "bytes": 5007,
+      "sha256": "fed6fbfad21778a0f00738d5e17803512360f2c3a3dddf947e9d2293a00e1d06"
+    },
+    {
+      "path": "contracts/FLOW_MATRIX.json",
+      "bytes": 24735,
+      "sha256": "eb74d20887c2f3fcebbe091ffc29c02f1bda6ba066fa987816f3693ef703e621"
+    },
+    {
+      "path": "contracts/FLOW_MATRIX.md",
+      "bytes": 14277,
+      "sha256": "212edab1886b2752018f7cd4085324a814b593c63162a3a092cfa22be294e04f"
+    },
+    {
+      "path": "contracts/INSPECTION_CHECK.json",
+      "bytes": 1290,
+      "sha256": "8719b44971b6d0d65ff6d22095c14a93d651b52dee6f3e0de49a867869fa0de3"
+    },
+    {
+      "path": "contracts/REMOTE_SOURCE_ADDITIONS.json",
+      "bytes": 1250,
+      "sha256": "c378228563de3dc424994c0240a47fce5450ca9e59eb9898fb0fcbc8f915b1a2"
+    },
+    {
+      "path": "contracts/REMOTE_SOURCE_SNAPSHOTS.json",
+      "bytes": 17163,
+      "sha256": "e5551cead67f9ae5b6819c979a195383c4212dcfdcd7c8142d43a18914a23188"
+    },
+    {
+      "path": "contracts/REPOSITORIES.json",
+      "bytes": 1836,
+      "sha256": "558dc80c1b551a7e50858b87719a17406377ab6b4ac1938a9e63d7dcbde2851b"
+    },
+    {
+      "path": "contracts/ROUTE_CONSTANTS.json",
+      "bytes": 8249,
+      "sha256": "743c23bf3d01496e1093935a6d4cadc6573053cde83d62f29b02e3d01adba1db"
+    },
+    {
+      "path": "contracts/ROUTE_FORMULAS.md",
+      "bytes": 15022,
+      "sha256": "4eb646519dc5421dad6860924d2458256d3fa5f1ddd8a904ee800d0402ec2c5d"
+    },
+    {
+      "path": "contracts/SOURCE_REGISTER.json",
+      "bytes": 42273,
+      "sha256": "a3e7aaa2626564be092027cb5c73fda8d7764c3352f6d8ba86bdb24c1f93b1c9"
+    },
+    {
+      "path": "contracts/build_register.py",
+      "bytes": 6113,
+      "sha256": "f0474e14588b1e847385a68ab67ee3de647de84953276816f88f7141c37ff4f6"
+    },
+    {
+      "path": "contracts/references.bib",
+      "bytes": 11793,
+      "sha256": "3336b8c7013ed5116594f7a47d211e04048736e86476123b35e48152a21b790d"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionAccess.sol",
+      "bytes": 3822,
+      "sha256": "de1f06c46d767e433356daa22dcbd039b6ca79c88d44bee4de70d5116c9b9a6e"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionJobMarket.sol",
+      "bytes": 14423,
+      "sha256": "db3865d4564fc53a47357ed31b17a5446319ff185218643d3232cb5e91bbd23c"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionMark.sol",
+      "bytes": 9009,
+      "sha256": "8264865cdf8d0dba1e5bfe357329582e04860e3b067ff30672eebbdf69351743"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionRiskOracle.sol",
+      "bytes": 6662,
+      "sha256": "45a0e4d3023848d2fe4a34d604d4e4928c3efacd75362d1560fb127ec9b582a9"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/AscensionToken.sol",
+      "bytes": 1836,
+      "sha256": "baff4fc94c8ac2ba27f453c4224cfa4c2d7f97663256c54bc4ac36666f816f88"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/contracts/ascension/NovaSeed.sol",
+      "bytes": 2203,
+      "sha256": "d5ba49b4dd662ac4764065f0ebf03ca708c4aefc5fde1d08f7319620addf9896"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/contracts/v2/Constants.sol",
+      "bytes": 199,
+      "sha256": "8465dc9898475abdf8683c4252ef29418b4fd3b2eafdb7382c1218359142325d"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/docs/agent/CURRENT_MAINNET_DEPLOYMENT.md",
+      "bytes": 5753,
+      "sha256": "79459c2244bef442f2d1bc878ccf3501104b89d289310d0ade2e58e2cb0e045a"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/docs/agent/SUCCESSOR_ALPHA.md",
+      "bytes": 25661,
+      "sha256": "d12422fd4dfd18b697a170860b58ca95bde06fb5c9809b3586321a719c17fc9c"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/docs/agent/SUCCESSOR_ALPHA_DEPLOYMENT.md",
+      "bytes": 5279,
+      "sha256": "d3bb0366aa2bfd36e3643e83657e6b73b60f865b4cdd982be507cbdedcef1b78"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/docs/deployments/2026-10-18/manifest.json",
+      "bytes": 13452,
+      "sha256": "0f16cecb1609c5366bc185c244f04b269eb9da6099564b6270346cf672c07755"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/examples/successor-alpha/deployment.json",
+      "bytes": 12322,
+      "sha256": "705ba66766eeb19ca461828c8afb9ee5d74c6dc745e278911dafbabce5554304"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/tests/contracts/README.md",
+      "bytes": 16414,
+      "sha256": "6868727b9acfc4a101670b3c2edc11a9444a2ce8535861b76886bebc55c0c35c"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/tests/contracts/test/ascension/lifecycle.test.js",
+      "bytes": 15526,
+      "sha256": "7354422d1fcd28fe3eff6fd96b54f445fb7e9fab56b69435d594d0c964305e06"
+    },
+    {
+      "path": "contracts/sources/AGI-Alpha-Agent-v0/tests/contracts/test/ascension/settlement.test.js",
+      "bytes": 3415,
+      "sha256": "edc4237355e839e4aa4dd1b11d017526bf38c445b854544bc9d403a9da3a7d96"
+    },
+    {
+      "path": "contracts/sources/AGI-Fleet-Linux/README.md",
+      "bytes": 30764,
+      "sha256": "1f39380bde8b4760d7765a2fb24a3f75593ed8f86bdf5de233f73a8bb29d6c62"
+    },
+    {
+      "path": "contracts/sources/AGI-Fleet-Linux/docs/CONTRACT_PROFILES.md",
+      "bytes": 12733,
+      "sha256": "d852725bc10913322529458c307cc33761a2e244c14878cd9f1d426493bd00ef"
+    },
+    {
+      "path": "contracts/sources/AGI-Fleet-Linux/docs/JOB_INTEGRATION.md",
+      "bytes": 10788,
+      "sha256": "91b38705408db4f68b4c3d48d702441633423afd12281c66397424ebdb723505"
+    },
+    {
+      "path": "contracts/sources/AGI-Fleet-Linux/docs/local-skills/PROJECT_JOURNEY.md",
+      "bytes": 9006,
+      "sha256": "81b7ddab32016b96e0f9fa68058451a3db4895bb5529ad9311da4875e76f2eb7"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/README.md",
+      "bytes": 20482,
+      "sha256": "300a30457486bf7c8b9fd3b22b8560fdfa7ed438c876d7a8ae3fcd8ae63d6fad"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/config/mainnet/manager-8815-2026-10-17.json",
+      "bytes": 11811,
+      "sha256": "06def03f2844edeb2f93203edb028a37085c83f79aedd91857e8b1ae9af922c0"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/config/usdc-deployment.json",
+      "bytes": 1422,
+      "sha256": "f2212599aff7e6a8c314144d6f0c390408cd475103d3b7239380eadfa838d79a"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/contracts/AGIJobManager.sol",
+      "bytes": 65262,
+      "sha256": "3c0cfc462cc815bd8a432243c221eb6fd210880ec6178509a489265db18f7962"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/contracts/utils/BondMath.sol",
+      "bytes": 1261,
+      "sha256": "f082b47230121bd98c9a2c4c5c0957734461f2fbf612b2386e249fa4b4b3fa30"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/contracts/utils/JobSettlement.sol",
+      "bytes": 7809,
+      "sha256": "0e38c450b7461f36d30ec0aa06488135cf690dec0c8822b837f6f1b273a7cd93"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/docs/GOVERNANCE.md",
+      "bytes": 3418,
+      "sha256": "9e10153b2675b2df3243af7e9c712b99d2ecc758b70cd120e37b4c3b1f9bce0a"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/docs/MAINNET_READINESS.md",
+      "bytes": 16754,
+      "sha256": "d84fd1355fd145cc0325b52f6ecd09e49f2325c4962a0ba84f26bc4d1422f741"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/docs/USDC_PAYOUT_SPLIT.md",
+      "bytes": 8037,
+      "sha256": "8c172ee3c4fd40e0303e9e4d69548649e2ffd7cb6da4a5cb22f105d3e6184ee6"
+    },
+    {
+      "path": "contracts/sources/AGIJobManager/test/payoutSplit.test.js",
+      "bytes": 9737,
+      "sha256": "1d4e514697c0f12b2bdac240bf1c7e03ab68f12e2b27d6eb290dde8f221adf0e"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/README.md",
+      "bytes": 75948,
+      "sha256": "1f6f108b93a3b198f7dabf3bd494d9941fa2f891510f8a774abf7fede149cae0"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/config/fee-pool.json",
+      "bytes": 398,
+      "sha256": "f5d10c0e1b256f0ed63a732823013d799d98a752459d9df35e2e1e822ea2520f"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/config/job-registry.json",
+      "bytes": 385,
+      "sha256": "07a2404208d12553d2be59fbae0ced289266b709ee520311adbe3c5cce43742b"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/config/stake-manager.json",
+      "bytes": 1341,
+      "sha256": "68bee818297ad49f87027417234ffe4a2b5b94a2d71addcd6ef6262bcfbf024c"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/contracts/v2/Constants.sol",
+      "bytes": 697,
+      "sha256": "664afde9f7b92e16abd6bc775866141c11e919b602db08cbc517ae7b66fa2a8b"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/contracts/v2/FeePool.sol",
+      "bytes": 23199,
+      "sha256": "097cfc96854de9ce082c354697f0f456dde484ace4c36b5698e1571ac61836ee"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/contracts/v2/Governable.sol",
+      "bytes": 1986,
+      "sha256": "46a2e479ce9aa2e58d10398047ba899fc0e54549ce66aaf09cf3e1e156eab85d"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/contracts/v2/implementation/JobRegistryBase.sol",
+      "bytes": 98030,
+      "sha256": "2e728787cc351fe4f474e2b81ed1cb942a13eb631a0733f0b93c8b2fbcde679e"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/contracts/v2/implementation/StakeManagerBase.sol",
+      "bytes": 111596,
+      "sha256": "4e0908ea249ff6f0d7b11fbf683dc5ede3b6e54bc8b4f36e1f1c06c1d1c429f8"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/contracts/v2/implementation/StakeManagerEscrow.sol",
+      "bytes": 8143,
+      "sha256": "0542bd54a2a7137adff74ca38a1664255ed66a2c34493a4cdc207ea4f3cd8ae8"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/contracts/v2/implementation/ValidationModuleBase.sol",
+      "bytes": 74480,
+      "sha256": "a18b69a25150477967f19ab61c6c8616816a82a1982c91a766cfccc92ed15640"
+    },
+    {
+      "path": "contracts/sources/AGIJobsv0/docs/production/mainnet-2026-10-18/deployment-snapshot.json",
+      "bytes": 55770,
+      "sha256": "b4335f5763f73e8da664c3cd45ac7ca8fa6f0d3beb2780b209e50fd1e3def23f"
+    },
+    {
+      "path": "contracts/verify_sources.py",
+      "bytes": 2575,
+      "sha256": "3c3d2bdfa5f906a64f34b7746796c630933d43adaf856f33d702ad9803189e83"
+    },
+    {
+      "path": "evaluation/CONTRACT_SOURCE_REVIEW.json",
+      "bytes": 16553,
+      "sha256": "b93308d7f778153b02ca8f41f150e69cacc66fbcecfd451f60d680a6219d3c38"
+    },
+    {
+      "path": "evaluation/EVALUATION_PLAN.md",
+      "bytes": 12023,
+      "sha256": "d4b1809c24915ea270d4e81d095f429c46fbd9114a2d4695407476cc0c79ab01"
+    },
+    {
+      "path": "evaluation/PREFREEZE_REVIEW.json",
+      "bytes": 19010,
+      "sha256": "1ea9880c9ec3d536b35cf141bd26e6f2fa944bf2d02558660c7367d6e17e5e00"
+    },
+    {
+      "path": "evaluation/STATIC_PREFREEZE_CHECK.json",
+      "bytes": 47008,
+      "sha256": "0dd8f0368c6342264869ad831a15dd4dcc761a22954c87674066da1f6aa66673"
+    },
+    {
+      "path": "evaluation/prefreeze_check.py",
+      "bytes": 13530,
+      "sha256": "06a3aa52d232d8e55d4a462315cbeb8f1f2bdb27187c7721ead4816e606ad98b"
+    },
+    {
+      "path": "inputs.json",
+      "bytes": 8837,
+      "sha256": "3f88faefaf5d1cb06daabbe2b8e894c5d0a7696bd82f7f529bd5b86e91e2bd6c"
+    },
+    {
+      "path": "prepare_preregistration.py",
+      "bytes": 11155,
+      "sha256": "ef8065a9e463a7863b86c1b0919e6bac8fcdc1d88350837202acbf9f70ab482f"
+    },
+    {
+      "path": "prior_model_anchor.json",
+      "bytes": 159527,
+      "sha256": "9c47d2b9de7978871e017246103ccca3400c37d435901c0974978cba5a69db8c"
+    },
+    {
+      "path": "token_scenarios.json",
+      "bytes": 5808,
+      "sha256": "ae5e4f6d9dea2de36520d755711fab240208dbdbb60f7689516f8155c4de2056"
+    }
+  ],
+  "count": 68,
+  "publication_before_calculation_required": true,
+  "subsequent_explicit_GO_required": true
+}
