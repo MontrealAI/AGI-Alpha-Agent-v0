@@ -34,6 +34,7 @@ PACKAGE = "strategy_succession_engineering/"
 DIST = "agi_alpha_strategy_succession_engineering"
 SCIENTIFIC = "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7"
 PUBLIC_RUNTIME = "fff8c6c8a8dbeeebf1f91cc8e9a3fae17113baac93b6ed0d6096ecb59d072554"
+PUBLIC_PREPARER_SCOPE = "exact generated source HTML opened locally; public Pages is separately qualified"
 COUNTERS = ("service_work", "improvement_work", "native_calls", "native_solve_seconds")
 BROWSER_CHECKS = {
     "exact_browser_approval",
@@ -48,6 +49,11 @@ BROWSER_CHECKS = {
     "no_duplicate_native_calls",
     "mobile_layout",
     "real_calendar_repair",
+    "fresh_distinct_graph",
+    "bilingual_scope_and_recovery",
+    "readable_report_download",
+    "input_preflight_no_authority",
+    "public_preparer_input_identity",
 }
 PLAN_FIELDS = (
     "plan_id",
@@ -699,6 +705,55 @@ def _verify_browser(
     return plan
 
 
+def _verify_public_preparer(
+    report: dict[str, Any], plan: dict[str, Any], default_raw: bytes, optin_raw: bytes, source_html: bytes
+) -> None:
+    """Bind real browser downloads to approved input and exact source HTML."""
+    approved = plan["input"]
+    default, opted_in = _json(default_raw), _json(optin_raw)
+    _require(
+        _canonical(opted_in) == _canonical(approved)
+        and isinstance(approved.get("construction"), dict)
+        and approved["construction"].get("enabled") is True,
+        "Public-preparer download differs from the actual approved input",
+    )
+    expected_default = deepcopy(approved)
+    expected_default["construction"]["enabled"] = False
+    _require(
+        _canonical(default) == _canonical(expected_default),
+        "Public-preparer default or opt-in changes more than construction consent",
+    )
+    raw_hashes = {
+        "browser-prepared-input-default.json": hashlib.sha256(default_raw).hexdigest(),
+        "browser-prepared-input-optin.json": hashlib.sha256(optin_raw).hexdigest(),
+    }
+    downloads = report.get("downloads")
+    _require(
+        isinstance(downloads, dict)
+        and all(downloads.get(name) == value for name, value in raw_hashes.items())
+        and report.get("prepared_input_sha256") == raw_hashes["browser-prepared-input-optin.json"]
+        and report.get("input_sha256") == _digest(approved),
+        "Public-preparer artifact or canonical input identity differs",
+    )
+    _require(
+        report.get("public_preparer_source_sha256") == hashlib.sha256(source_html).hexdigest()
+        and report.get("public_preparer_scope") == PUBLIC_PREPARER_SCOPE,
+        "Public-preparer local source identity or Pages distinction is missing",
+    )
+    _require(
+        _canonical(report.get("construction_opt_in"))
+        == _canonical(
+            {
+                "public_default": False,
+                "explicit_browser_checkbox": True,
+                "only_changed_setting": "construction.enabled",
+                "approved_input_matches_actual_download": True,
+            }
+        ),
+        "Explicit public construction opt-in evidence is incomplete",
+    )
+
+
 def _verify_crash(report: dict[str, Any], source_hash: str, profile: dict[str, Any]) -> dict[str, Any]:
     _require(
         report.get("schema") == "strategy-engineering-crash-recovery/v1"
@@ -885,6 +940,16 @@ def package(root: Path, output: Path, evidence: Path, commit: str, version: str)
     browser = _read_json(evidence / "acceptance-public" / "browser-acceptance.json")
     browser_raw = _read(evidence / "acceptance-public" / "browser-mission-export.json")
     browser_plan = _verify_browser(browser, browser_raw, source_hash, profile)
+    public_preparer_html = subprocess.check_output(
+        ["git", "-C", str(root), "show", "--no-textconv", commit + ":docs/try/index.html"]
+    )
+    _verify_public_preparer(
+        browser,
+        browser_plan,
+        _read(evidence / "acceptance-public" / "browser-prepared-input-default.json"),
+        _read(evidence / "acceptance-public" / "browser-prepared-input-optin.json"),
+        public_preparer_html,
+    )
     installed = _read_json(evidence / "acceptance-public" / "integrated-journey.json")
     _verify_plan(installed, source_hash, profile)
     summary = _read_json(evidence / "acceptance-public" / "integrated-summary.json")

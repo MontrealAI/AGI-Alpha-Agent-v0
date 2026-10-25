@@ -12,10 +12,12 @@ fixed browser interface, worker, exact scientific source subset, source guards,
 licenses and an operator profile. It installs no background service and creates
 no credential. Launch requires an **existing approved operator home**.
 
-The candidate version is **0.1.0rc1**. It is intended for the existing Alpha
+The candidate version is **0.1.0rc2**. It is intended for the existing Alpha
 repository's reviewed `contrib/strategy_succession` lane and a later additive
 asset through the existing publisher. A built wheel is not a public software
-release or production admission.
+release or production admission. This candidate requires its own reviewed
+installation profile and fresh installed acceptance; earlier candidate receipts
+remain historical and do not qualify these changed bytes.
 
 ## Install and open
 
@@ -34,16 +36,24 @@ assume a PyPI distribution provides these exact public bytes.
 python3.12 -m venv /absolute/path/to/strategy-candidate-env
 . /absolute/path/to/strategy-candidate-env/bin/activate
 python -m pip install ./alpha_factory_v1-1.42.0-py3-none-any.whl
-python -m pip install ./agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl
+python -m pip install ./agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl
 strategy-succession-engineering --home /absolute/path/to/existing-approved-operator-home
 ```
 
 Open `http://127.0.0.1:8768`. Enter the existing operator token in the local page;
 it stays only in tab memory. Choose **Start**, inspect the fixed input, source,
 expiry and separate budgets, then **Approve and start work**. Review the actual
-results and use **Keep** or **Export**. **Pause** and **Stop** fence the executor
+results and use **Download report**, **Keep** or **Export**. The readable report
+records actual schedules, costs and unknowns; the signed export remains the full
+evidence record. The interface supports English and French. **Pause** and **Stop** fence the executor
 at its next bounded checkpoint. See [the operator guide](docs/operator.md) before
 handling interrupted or uncertain work.
+
+The free [planning preparer](https://montrealai.github.io/AGI-Alpha-Agent-v0/try/#planning-title)
+can prepare and download `planning-mission-input.json` without a token, account
+or executor. It performs local input checks and navigation only. In the configured
+executor, import that file under **Use my own planning data**, check it and review
+the exact prepared scope before approval. Opening the loopback link starts no work.
 
 The ordinary fixed portfolio is available without native solver permission.
 The separately admitted native specialist requires an explicit operator launch:

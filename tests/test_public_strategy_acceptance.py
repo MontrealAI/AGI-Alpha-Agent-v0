@@ -22,6 +22,56 @@ class Response(io.BytesIO):
     status = 200
 
 
+def test_public_preparer_qa_uses_exact_commit_despite_index_and_worktree_edits(tmp_path: Path) -> None:
+    repo = tmp_path / "repository"
+    repo.mkdir()
+    html = repo / "docs/try/index.html"
+    html.parent.mkdir(parents=True)
+    body = b"<!doctype html><title>Committed inert public-preparer fixture</title>"
+    html.write_bytes(body)
+    subprocess.run(["git", "-C", str(repo), "-c", "init.templateDir=", "init", "-q"], check=True)
+    subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            str(repo),
+            "-c",
+            "user.name=Inert source fixture",
+            "-c",
+            "user.email=fixture@example.invalid",
+            "-c",
+            "commit.gpgsign=false",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "commit",
+            "-qm",
+            "Committed fixture",
+        ],
+        check=True,
+    )
+    commit = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"], text=True).strip()
+    html.write_bytes(b"Uncommitted indexed fixture")
+    subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
+    html.write_bytes(b"Different uncommitted worktree fixture")
+    destination = tmp_path / "public-planning-preparer.html"
+    record = public.stage_public_planning_preparer(repo, commit, destination)
+    assert destination.read_bytes() == body
+    assert record == {
+        "commit": commit,
+        "path": "docs/try/index.html",
+        "sha256": public.sha(body),
+        "scope": public.checks.PUBLIC_PREPARER_SCOPE,
+    }
+
+
+@pytest.mark.parametrize("commit", ["HEAD", "main", "a" * 39, "--untrusted"])
+def test_public_preparer_qa_refuses_unpinned_commit(tmp_path: Path, commit: str) -> None:
+    with pytest.raises(ValueError, match="Exact public-preparer source commit"):
+        public.stage_public_planning_preparer(tmp_path, commit, tmp_path / "not-created.html")
+    assert not (tmp_path / "not-created.html").exists()
+
+
 def release(raw: bytes = b"checked public body") -> dict[str, Any]:
     """Describe one exact inert public asset."""
     return {

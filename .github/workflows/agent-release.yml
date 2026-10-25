@@ -552,10 +552,16 @@ jobs:
           PY
       - name: Require blocking hooks on every release change
         env:
-          SKIP: black,ruff-format,flake8,update-actions
+          SKIP: black,ruff-format,flake8,update-actions,semgrep
         run: |
+          # Semgrep (official and bounded) was already required on all files above.
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --exit-code HEAD
+          git diff --cached --exit-code HEAD
           git diff --name-only -z d1df708e3e08ee58b7cbe74758767ddb2da2d5f9 HEAD | xargs -0 pre-commit run --files
-          git diff --exit-code
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --exit-code HEAD
+          git diff --cached --exit-code HEAD
       - name: Retain actual repository Python security evidence
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

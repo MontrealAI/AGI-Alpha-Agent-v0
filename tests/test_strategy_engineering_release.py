@@ -17,6 +17,7 @@ from typing import Any
 import zipfile
 
 import pytest
+import yaml
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
@@ -24,6 +25,7 @@ from scripts import strategy_engineering_release as release
 
 ROOT = Path(__file__).resolve().parents[1]
 SCIENCE = "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7"
+PREPARER_HTML = b"<!doctype html><title>Inert synthetic public-preparer source fixture</title>"
 BROWSER_CHECKS = {
     "exact_browser_approval",
     "real_fixed_executor",
@@ -37,7 +39,47 @@ BROWSER_CHECKS = {
     "no_duplicate_native_calls",
     "mobile_layout",
     "real_calendar_repair",
+    "fresh_distinct_graph",
+    "bilingual_scope_and_recovery",
+    "readable_report_download",
+    "input_preflight_no_authority",
+    "public_preparer_input_identity",
 }
+
+
+def test_hosted_build_install_and_collector_bind_the_current_companion_filename() -> None:
+    metadata = tomllib.loads((ROOT / "contrib/strategy_succession/pyproject.toml").read_text())
+    version = metadata["project"]["version"]
+    assert version == "0.1.0rc2"
+    filename = release.DIST + "-" + version + "-py3-none-any.whl"
+    workflow = yaml.safe_load((ROOT / ".github/workflows/strategy-succession-engineering.yml").read_text())
+    job = workflow["jobs"]["qualify"]
+    assert job.get("continue-on-error", False) is False
+    steps = job["steps"]
+    build = next(
+        step for step in steps if step.get("name") == "Build two identical wheels and install the actual candidate"
+    )
+    installed = next(
+        step
+        for step in steps
+        if step.get("name") == "Actual installed API, Chromium approval, reconnect, downloads and crash recovery"
+    )
+    assert steps.index(build) < steps.index(installed)
+    for step in (build, installed):
+        assert step.get("if") is None
+        assert step.get("continue-on-error", False) is False
+        assert "0.1.0rc1" not in step["run"]
+    assert (
+        f'cmp "$RUNNER_TEMP/strategy-wheel-one/{filename}" "$RUNNER_TEMP/strategy-wheel-two/{filename}"'
+        in build["run"].splitlines()
+    )
+    assert (
+        f'"$RUNNER_TEMP/strategy-env/bin/python" -m pip install --no-deps "$RUNNER_TEMP/strategy-wheel-one/{filename}"'
+        in build["run"].splitlines()
+    )
+    collector = next(line for line in installed["run"].splitlines() if " collect_qualification.py " in line)
+    assert f'--first-wheel "$RUNNER_TEMP/strategy-wheel-one/{filename}"' in collector
+    assert f'--second-wheel "$RUNNER_TEMP/strategy-wheel-two/{filename}"' in collector
 
 
 def digest(value: Any) -> str:
@@ -359,7 +401,35 @@ def browser_fixture(export: dict[str, Any]) -> tuple[dict[str, Any], bytes]:
         "unchanged_baseline_invalid_calendar_slots": [4],
         "committed_prefix_preserved": True,
         "requests": [{"url": "http://127.0.0.1:8768/api/strategy-executor/status", "method": "GET"}],
+        **preparer_identity(plan),
     }, raw
+
+
+def preparer_downloads(plan: dict[str, Any]) -> dict[str, bytes]:
+    opted_in = deepcopy(plan["input"])
+    default = deepcopy(opted_in)
+    default["construction"]["enabled"] = False
+    return {
+        "browser-prepared-input-default.json": json.dumps(default, indent=2).encode(),
+        "browser-prepared-input-optin.json": json.dumps(opted_in, indent=2).encode(),
+    }
+
+
+def preparer_identity(plan: dict[str, Any]) -> dict[str, Any]:
+    downloads = {name: hashlib.sha256(raw).hexdigest() for name, raw in preparer_downloads(plan).items()}
+    return {
+        "downloads": downloads,
+        "prepared_input_sha256": downloads["browser-prepared-input-optin.json"],
+        "input_sha256": digest(plan["input"]),
+        "public_preparer_source_sha256": hashlib.sha256(PREPARER_HTML).hexdigest(),
+        "public_preparer_scope": release.PUBLIC_PREPARER_SCOPE,
+        "construction_opt_in": {
+            "public_default": False,
+            "explicit_browser_checkbox": True,
+            "only_changed_setting": "construction.enabled",
+            "approved_input_matches_actual_download": True,
+        },
+    }
 
 
 def crash_fixture(profile: dict[str, Any]) -> tuple[dict[str, Any], str]:
@@ -620,6 +690,80 @@ def test_each_actual_browser_check_is_required(profile: dict[str, Any], missing:
         release._verify_browser(report, raw, source, profile)
 
 
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "none",
+        "approved-input",
+        "default-optin",
+        "default-other-field",
+        "raw-hash",
+        "canonical-hash",
+        "source",
+        "scope",
+        "consent",
+        "optin-boolean-alias",
+        "default-boolean-alias",
+        "consent-boolean-alias",
+    ],
+)
+def test_public_preparer_binds_exact_downloads_to_actual_approved_input(profile: dict[str, Any], mutation: str) -> None:
+    plan, source = completed_plan(profile)
+    report, _ = browser_fixture(signed_export(plan, source))
+    artifacts = preparer_downloads(plan)
+    default = artifacts["browser-prepared-input-default.json"]
+    opted_in = artifacts["browser-prepared-input-optin.json"]
+    if mutation in {"approved-input", "optin-boolean-alias"}:
+        changed = json.loads(opted_in)
+        if mutation == "optin-boolean-alias":
+            changed["construction"]["enabled"] = 1
+        else:
+            changed["initial"]["jobs"][0]["duration"] += 1
+        opted_in = json.dumps(changed).encode()
+    elif mutation in {"default-optin", "default-other-field", "default-boolean-alias"}:
+        changed = json.loads(default)
+        if mutation == "default-optin":
+            changed["construction"]["enabled"] = True
+        elif mutation == "default-boolean-alias":
+            changed["construction"]["enabled"] = 0
+        else:
+            changed["initial"]["jobs"][0]["duration"] += 1
+        default = json.dumps(changed).encode()
+    elif mutation == "raw-hash":
+        report["prepared_input_sha256"] = "0" * 64
+    elif mutation == "canonical-hash":
+        report["input_sha256"] = "0" * 64
+    elif mutation == "source":
+        report["public_preparer_source_sha256"] = "0" * 64
+    elif mutation == "scope":
+        report["public_preparer_scope"] = "Public Pages already qualified"
+    elif mutation == "consent":
+        report["construction_opt_in"]["explicit_browser_checkbox"] = False
+    elif mutation == "consent-boolean-alias":
+        report["construction_opt_in"]["explicit_browser_checkbox"] = 1
+    if mutation in {
+        "approved-input",
+        "optin-boolean-alias",
+        "default-optin",
+        "default-other-field",
+        "default-boolean-alias",
+    }:
+        # Hash-consistent forged bytes must still fail exact JSON/type binding.
+        report["downloads"] = {
+            "browser-prepared-input-default.json": hashlib.sha256(default).hexdigest(),
+            "browser-prepared-input-optin.json": hashlib.sha256(opted_in).hexdigest(),
+        }
+        report["prepared_input_sha256"] = hashlib.sha256(opted_in).hexdigest()
+    if mutation == "optin-boolean-alias":
+        assert json.loads(opted_in) == plan["input"]
+        assert digest(json.loads(opted_in)) != digest(plan["input"])
+    if mutation == "none":
+        release._verify_public_preparer(report, plan, default, opted_in, PREPARER_HTML)
+    else:
+        with pytest.raises(ValueError):
+            release._verify_public_preparer(report, plan, default, opted_in, PREPARER_HTML)
+
+
 def test_crash_receipt_retains_unknown_reservations_and_disallows_replay(profile: dict[str, Any]) -> None:
     report, source = crash_fixture(profile)
     release._verify_crash(report, source, profile)
@@ -697,7 +841,7 @@ def wheel_fixture(files: dict[str, bytes], changes: dict[str, bytes] | None = No
 def test_exact_payload_wheel_is_required_and_extra_or_changed_members_are_refused() -> None:
     files = payload_files()
     accepted = release._verify_wheel(wheel_fixture(files), files)
-    assert accepted["version"] == "0.1.0rc1"
+    assert accepted["version"] == "0.1.0rc2"
     for changes in (
         {release.PACKAGE + "setup.py": b"unlisted module"},
         {release.PACKAGE + "transport/strategy_executor.py": b"changed code"},
@@ -709,7 +853,7 @@ def test_exact_payload_wheel_is_required_and_extra_or_changed_members_are_refuse
 def test_wheel_metadata_cannot_expand_python_or_entrypoint_scope() -> None:
     files = payload_files()
     raw = wheel_fixture(files)
-    prefix = release.DIST + "-0.1.0rc1.dist-info/"
+    prefix = release.DIST + "-0.1.0rc2.dist-info/"
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         metadata = archive.read(prefix + "METADATA")
     modified = metadata.replace(b"Requires-Python: <3.13,>=3.12", b"Requires-Python: >=3.9")
@@ -730,7 +874,7 @@ def test_wheel_metadata_cannot_expand_python_or_entrypoint_scope() -> None:
 )
 def test_wheel_tags_imports_and_license_copies_match_declared_source(name: str, body: bytes) -> None:
     files = payload_files()
-    prefix = release.DIST + "-0.1.0rc1.dist-info/"
+    prefix = release.DIST + "-0.1.0rc2.dist-info/"
     with pytest.raises(ValueError):
         release._verify_wheel(wheel_fixture(files, {prefix + name: body}), files)
 
@@ -738,7 +882,7 @@ def test_wheel_tags_imports_and_license_copies_match_declared_source(name: str, 
 @pytest.mark.parametrize("kind", ["wheel", "metadata"])
 def test_unknown_wheel_or_metadata_format_versions_are_refused(kind: str) -> None:
     files = payload_files()
-    prefix = release.DIST + "-0.1.0rc1.dist-info/"
+    prefix = release.DIST + "-0.1.0rc2.dist-info/"
     raw = wheel_fixture(files)
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         name = "WHEEL" if kind == "wheel" else "METADATA"
@@ -758,6 +902,9 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
         target = root / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(body)
+    public_html = root / "docs/try/index.html"
+    public_html.parent.mkdir(parents=True)
+    public_html.write_bytes(PREPARER_HTML)
     subprocess.run(["git", "-c", "init.templateDir=", "init", "--quiet", str(root)], check=True, capture_output=True)
     subprocess.run(["git", "-C", str(root), "add", "."], check=True, capture_output=True)
     subprocess.run(
@@ -785,7 +932,7 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
         ["git", "-C", str(root), "rev-parse", "HEAD"], check=True, capture_output=True, text=True
     ).stdout.strip()
     evidence.mkdir()
-    name = release.DIST + "-0.1.0rc1-py3-none-any.whl"
+    name = release.DIST + "-0.1.0rc2-py3-none-any.whl"
     raw = wheel_fixture(files)
     (evidence / name).write_bytes(raw)
     (evidence / "reproduced-wheel").mkdir()
@@ -802,7 +949,7 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
         "schema": "strategy-engineering-release-qualification/v1",
         "commit": commit,
         "version": "1.44.0",
-        "companion_version": "0.1.0rc1",
+        "companion_version": "0.1.0rc2",
         "wheel": {"name": name, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)},
         "source_inventory_sha256": hashlib.sha256(inventory_raw).hexdigest(),
         "installed_outside_checkout": True,
@@ -842,6 +989,8 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
     browser, download = browser_fixture(signed_export(plan, source))
     (public / "browser-acceptance.json").write_text(json.dumps(browser))
     (public / "browser-mission-export.json").write_bytes(download)
+    for name, body in preparer_downloads(plan).items():
+        (public / name).write_bytes(body)
     (public / "integrated-journey.json").write_text(json.dumps(plan))
     (public / "integrated-summary.json").write_text(
         json.dumps(
@@ -870,7 +1019,7 @@ def test_package_copies_only_three_assets_after_complete_integrity_admission(pac
 def test_existing_release_asset_is_never_overwritten(package_fixture) -> None:
     root, evidence, output, commit, _ = package_fixture
     output.mkdir()
-    target = output / (release.DIST + "-0.1.0rc1-py3-none-any.whl")
+    target = output / (release.DIST + "-0.1.0rc2-py3-none-any.whl")
     target.write_bytes(b"accepted existing bytes")
     with pytest.raises(ValueError):
         release.package(root, output, evidence, commit, "1.44.0")

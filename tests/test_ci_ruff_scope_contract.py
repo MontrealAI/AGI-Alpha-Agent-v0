@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import ast
+import json
 import os
 from pathlib import Path
 import re
@@ -10,6 +12,7 @@ import shlex
 import subprocess
 import sys
 
+import pytest
 import yaml
 
 
@@ -238,3 +241,179 @@ def test_release_quality_requires_actual_security_regressions_after_installed_ho
     assert regressions.get("continue-on-error", False) is False
     hooks = next(step for step in steps if step.get("name") == "Require blocking hooks on every release change")
     assert steps.index(regressions) > steps.index(hooks)
+
+
+def _release_hook_steps() -> tuple[dict, dict]:
+    workflow = yaml.safe_load(Path(".github/workflows/agent-release.yml").read_text(encoding="utf-8"))
+    quality = workflow["jobs"]["quality"]
+    assert quality["if"] == "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
+    assert quality.get("continue-on-error", False) is False
+    steps = quality["steps"]
+    first = next(step for step in steps if step.get("name") == "Require the blocking repository hook report")
+    second = next(step for step in steps if step.get("name") == "Require blocking hooks on every release change")
+    assert steps.index(first) < steps.index(second)
+    for step in (first, second):
+        assert step.get("if") is None
+        assert step.get("continue-on-error", False) is False
+    return first, second
+
+
+def test_release_full_scope_security_remains_mandatory_before_duplicate_skip() -> None:
+    first, second = _release_hook_steps()
+    ordinary_skips = "black,ruff-format,flake8,update-actions"
+    assert first["env"] == {"SKIP": ordinary_skips}
+    assert second["env"] == {"SKIP": ordinary_skips + ",semgrep"}
+    lines = first["run"].splitlines()
+    assert lines[0:2] == ["mkdir -p evidence", "python - <<'PY'"]
+    assert lines[-1] == "PY"
+    tree = ast.parse("\n".join(lines[2:-1]))
+    assignment = next(
+        node for node in tree.body if isinstance(node, ast.Assign) and ast.unparse(node.targets[0]) == "result"
+    )
+    assert isinstance(assignment.value, ast.Call)
+    assert ast.unparse(assignment.value.func) == "subprocess.run"
+    assert [ast.literal_eval(argument) for argument in assignment.value.args] == [
+        ["pre-commit", "run", "--all-files", "--show-diff-on-failure"]
+    ]
+    assert {keyword.arg: ast.literal_eval(keyword.value) for keyword in assignment.value.keywords} == {
+        "capture_output": True,
+        "text": True,
+    }
+    assert isinstance(tree.body[-1], ast.Raise)
+    assert ast.unparse(tree.body[-1]) == "raise SystemExit(result.returncode)"
+    assert not any(isinstance(node, (ast.If, ast.Try)) for node in ast.walk(tree))
+    assert second["run"].splitlines() == [
+        "# Semgrep (official and bounded) was already required on all files above.",
+        'test "$(git rev-parse HEAD)" = "$GITHUB_SHA"',
+        "git diff --exit-code HEAD",
+        "git diff --cached --exit-code HEAD",
+        "git diff --name-only -z d1df708e3e08ee58b7cbe74758767ddb2da2d5f9 HEAD | xargs -0 pre-commit run --files",
+        'test "$(git rev-parse HEAD)" = "$GITHUB_SHA"',
+        "git diff --exit-code HEAD",
+        "git diff --cached --exit-code HEAD",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("phase", "effect"),
+    [
+        ("none", "none"),
+        ("first", "head"),
+        ("first", "index"),
+        ("first", "worktree"),
+        ("first", "masked-index"),
+        ("second", "head"),
+        ("second", "index"),
+        ("second", "worktree"),
+        ("second", "masked-index"),
+        ("first", "failure"),
+        ("second", "failure"),
+    ],
+)
+def test_release_hook_pair_refuses_failures_and_source_changes(tmp_path: Path, phase: str, effect: str) -> None:
+    """Run the actual shell steps with an inert hook, never a policy scanner."""
+    first, second = _release_hook_steps()
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    empty_config = tmp_path / "empty-git-config"
+    empty_config.write_text("")
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_") and key != "BASH_ENV"}
+    env.update(
+        GIT_CONFIG_NOSYSTEM="1",
+        GIT_CONFIG_GLOBAL=str(empty_config),
+        GIT_TERMINAL_PROMPT="0",
+        GIT_AUTHOR_NAME="Workflow fixture",
+        GIT_AUTHOR_EMAIL="fixture@example.invalid",
+        GIT_COMMITTER_NAME="Workflow fixture",
+        GIT_COMMITTER_EMAIL="fixture@example.invalid",
+    )
+
+    def git(*arguments: str) -> str:
+        return subprocess.check_output(["git", *arguments], cwd=repo, env=env, text=True).strip()
+
+    git("init", "-q")
+    tracked = repo / "tracked.txt"
+    tracked.write_text("baseline\n")
+    git("add", "tracked.txt")
+    git("commit", "-qm", "Fixture baseline")
+    baseline = git("rev-parse", "HEAD")
+    tracked.write_text("release\n")
+    git("add", "tracked.txt")
+    git("commit", "-qm", "Fixture release")
+    expected_head = git("rev-parse", "HEAD")
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    hook = bindir / "pre-commit"
+    hook.write_text(
+        "#!" + sys.executable + "\n"
+        "import json, os, subprocess, sys\n"
+        "from pathlib import Path\n"
+        "phase = 'first' if '--all-files' in sys.argv else 'second'\n"
+        "with Path('calls.jsonl').open('a') as out:\n"
+        "    out.write(json.dumps({'phase': phase, 'args': sys.argv[1:], 'skip': os.environ['SKIP']}) + '\\n')\n"
+        "if phase == os.environ['FIXTURE_PHASE']:\n"
+        "    effect = os.environ['FIXTURE_EFFECT']\n"
+        "    if effect == 'failure': sys.exit(7)\n"
+        "    if effect == 'head':\n"
+        "        subprocess.run(['git', 'commit', '--allow-empty', '-qm', 'Unexpected fixture commit'], check=True)\n"
+        "    else:\n"
+        "        Path('tracked.txt').write_text('unexpected fixture edit\\n')\n"
+        "        if effect in ('index', 'masked-index'):\n"
+        "            subprocess.run(['git', 'add', 'tracked.txt'], check=True)\n"
+        "        if effect == 'masked-index': Path('tracked.txt').write_text('release\\n')\n"
+    )
+    hook.chmod(0o700)
+    env.update(
+        PATH=str(bindir) + os.pathsep + env.get("PATH", os.defpath),
+        GITHUB_SHA=expected_head,
+        FIXTURE_PHASE=phase,
+        FIXTURE_EFFECT=effect,
+    )
+    first_result = subprocess.run(
+        ["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", first["run"]],
+        cwd=repo,
+        env={**env, **first["env"]},
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    report = json.loads((repo / "evidence/precommit-all.json").read_text())
+    assert report["exit_code"] == first_result.returncode
+    assert report["passed"] is (first_result.returncode == 0)
+    second_result = None
+    if first_result.returncode == 0:
+        second_script = second["run"].replace("d1df708e3e08ee58b7cbe74758767ddb2da2d5f9", baseline)
+        second_result = subprocess.run(
+            ["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", second_script],
+            cwd=repo,
+            env={**env, **second["env"]},
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+    calls = [json.loads(line) for line in (repo / "calls.jsonl").read_text().splitlines()]
+    assert calls[0] == {
+        "phase": "first",
+        "args": ["run", "--all-files", "--show-diff-on-failure"],
+        "skip": "black,ruff-format,flake8,update-actions",
+    }
+    if phase == "first":
+        assert len(calls) == 1
+    else:
+        assert calls[1] == {
+            "phase": "second",
+            "args": ["run", "--files", "tracked.txt"],
+            "skip": "black,ruff-format,flake8,update-actions,semgrep",
+        }
+    if effect == "none":
+        assert first_result.returncode == 0
+        assert second_result is not None and second_result.returncode == 0
+    elif phase == "first" and effect == "failure":
+        assert first_result.returncode == 7
+        assert second_result is None
+    else:
+        assert first_result.returncode == 0
+        assert second_result is not None and second_result.returncode != 0
+    if effect == "masked-index":
+        assert subprocess.run(["git", "diff", "--exit-code", "HEAD"], cwd=repo, env=env).returncode == 0
+        assert subprocess.run(["git", "diff", "--cached", "--exit-code", "HEAD"], cwd=repo, env=env).returncode == 1

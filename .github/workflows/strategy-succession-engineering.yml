@@ -108,8 +108,8 @@ jobs:
           cp -R contrib/strategy_succession "$RUNNER_TEMP/strategy-build-two"
           "$RUNNER_TEMP/strategy-env/bin/python" -m build --wheel --no-isolation --outdir "$RUNNER_TEMP/strategy-wheel-one" "$RUNNER_TEMP/strategy-build-one"
           "$RUNNER_TEMP/strategy-env/bin/python" -m build --wheel --no-isolation --outdir "$RUNNER_TEMP/strategy-wheel-two" "$RUNNER_TEMP/strategy-build-two"
-          cmp "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl" "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
-          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install --no-deps "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
+          cmp "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl" "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install --no-deps "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip check
       - name: Actual installed API, Chromium approval, reconnect, downloads and crash recovery
         env:
@@ -118,11 +118,12 @@ jobs:
           PYTHONNOUSERSITE: '1'
         run: |
           cp -R contrib/strategy_succession/qa "$RUNNER_TEMP/strategy-installed-tests"
+          cp docs/try/index.html "$RUNNER_TEMP/strategy-installed-tests/public-planning-preparer.html"
           cd "$RUNNER_TEMP/strategy-installed-tests"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_integration.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/integration.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_browser.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/browser.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_crash.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/crash_recovery.xml"
-          "$RUNNER_TEMP/strategy-env/bin/python" collect_qualification.py --root "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/evidence/strategy-engineering" --first-wheel "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl" --second-wheel "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
+          "$RUNNER_TEMP/strategy-env/bin/python" collect_qualification.py --root "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/evidence/strategy-engineering" --first-wheel "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl" --second-wheel "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl"
       - name: Retain executed and failed evidence; never private operator homes
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

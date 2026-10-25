@@ -37,6 +37,8 @@ SAFE_JSON = (
     "browser-mission-export.json",
     "browser-kept-methods.json",
     "browser-mobile-layout.json",
+    "browser-prepared-input-default.json",
+    "browser-prepared-input-optin.json",
     "crash-recovery.json",
 )
 
@@ -63,6 +65,15 @@ def sha(data: bytes) -> str:
 def write_json(path: Path, value: Any) -> None:
     """Write a local receipt, never an authority grant."""
     path.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
+
+
+def stage_public_planning_preparer(repo: Path, commit: str, destination: Path) -> dict[str, str]:
+    """Copy exact committed public HTML for local-file QA, never from the worktree."""
+    require(re.fullmatch(r"[0-9a-f]{40}", commit) is not None, "Exact public-preparer source commit is required")
+    name = "docs/try/index.html"
+    raw = subprocess.check_output(["git", "-C", str(repo), "show", "--no-textconv", commit + ":" + name])
+    destination.write_bytes(raw)
+    return {"commit": commit, "path": name, "sha256": sha(raw), "scope": checks.PUBLIC_PREPARER_SCOPE}
 
 
 def public_json(url: str) -> dict[str, Any]:
@@ -559,6 +570,9 @@ def accept(repo: Path, commit: str, work: Path, evidence: Path) -> None:
             qa_path = "contrib/strategy_succession/qa/" + name
             raw = subprocess.check_output(["git", "-C", str(repo), "show", "--no-textconv", commit + ":" + qa_path])
             (work / "qa" / name).write_bytes(raw)
+        summary["public_preparer_source"] = stage_public_planning_preparer(
+            repo, commit, work / "qa" / "public-planning-preparer.html"
+        )
         run("chromium", [py, "-m", "playwright", "install", "--with-deps", "chromium"])
         test_env = {"STRATEGY_INSTALLED_ACCEPTANCE": "1", "STRATEGY_EVIDENCE_DIR": str(work / "public-results")}
         for name, test in (("api", "integration"), ("browser", "browser"), ("crash", "crash")):
@@ -589,11 +603,19 @@ def accept(repo: Path, commit: str, work: Path, evidence: Path) -> None:
         checks._verify_child_environment(
             checks._read_json(output / "integrated-summary.json")["child_environment"], profile
         )
+        browser_report = checks._read_json(output / "browser-acceptance.json")
         browser_plan = checks._verify_browser(
-            checks._read_json(output / "browser-acceptance.json"),
+            browser_report,
             checks._read(output / "browser-mission-export.json"),
             source,
             profile,
+        )
+        checks._verify_public_preparer(
+            browser_report,
+            browser_plan,
+            checks._read(output / "browser-prepared-input-default.json"),
+            checks._read(output / "browser-prepared-input-optin.json"),
+            checks._read(work / "qa" / "public-planning-preparer.html"),
         )
         crash = checks._verify_crash(checks._read_json(output / "crash-recovery.json"), source, profile)
         after = release_identity(version, commit)
