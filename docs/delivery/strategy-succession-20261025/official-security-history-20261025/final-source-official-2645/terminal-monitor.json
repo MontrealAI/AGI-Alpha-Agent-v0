@@ -1,0 +1,322 @@
+{
+  "schema": "agi-alpha.hosted-official-terminal.v1",
+  "run_id": 40217025491,
+  "branch_commit": "2645d1980c83cbf10f6f648c703fc7b846648274",
+  "executed_pr_merge_commit": "722d845087215cc3afc76959dbf8f9851c3c627a",
+  "source_tree": "6a61eac6ab48722d22b262984a3b97a7025705d4",
+  "status": "COMPLETED_FAILURE_OFFICIAL_FINDINGS_UNADMITTED",
+  "jobs": [
+    {
+      "id": 121240272041,
+      "name": "paper-scope / Validate paper scope (not runtime acceptance)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40217025491,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Prove exact introduced history with the pre-change policy",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Post Run actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        }
+      ]
+    },
+    {
+      "id": 121240366669,
+      "name": "Full lint (ruff)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40217025491,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Free disk space",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Verify $AGIALPHA configuration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Ruff check",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Post Run actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        },
+        {
+          "name": "Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        }
+      ]
+    },
+    {
+      "id": 121240366707,
+      "name": "Full smoke tests",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 40217025491,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Free disk space",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Run actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Verify $AGIALPHA configuration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Check release workflow policy before merge",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Check official and additional Python security before merge",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8
+        },
+        {
+          "name": "Retain actual Python security evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Run smoke tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10
+        },
+        {
+          "name": "Verify every catalog entry and its finite launch contract",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11
+        },
+        {
+          "name": "Retain catalog acceptance evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Post Run actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23
+        },
+        {
+          "name": "Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        }
+      ]
+    },
+    {
+      "id": 121241103100,
+      "name": "Lint (ruff)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40217025491,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Require validated paper scope or successful full software checks",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "id": 121242766610,
+      "name": "Smoke tests",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 40217025491,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Require validated paper scope or successful full software checks",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 2
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "id": 121242787522,
+      "name": "Full software qualification",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 40217025491,
+      "logs_url": null,
+      "steps": null
+    }
+  ],
+  "artifact_metadata": [
+    {
+      "id": 12608073740,
+      "name": "pr-python-security",
+      "size_in_bytes": 194172,
+      "url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/actions/artifacts/12608073740",
+      "archive_download_url": "https://api.github.com/repos/MontrealAI/AGI-Alpha-Agent-v0/actions/artifacts/12608073740/zip",
+      "expired": false,
+      "created_at": "2026-10-25T17:43:32Z",
+      "expires_at": "2027-01-23T17:33:15Z",
+      "updated_at": "2026-10-25T17:43:32Z",
+      "digest": "sha256:04ddc7122a604e225366f431fcd1617b6098434bf39378327ebdb5ccf34f62e3",
+      "workflow_run": {
+        "id": 40217025491,
+        "repository_id": 922805069,
+        "head_repository_id": 922805069,
+        "head_branch": "codex/strategy-succession-20261025-344b3126",
+        "head_sha": "2645d1980c83cbf10f6f648c703fc7b846648274"
+      }
+    }
+  ],
+  "download_reference_urls_retained": false,
+  "licensed_rule_bodies_or_raw_messages_downloaded": false,
+  "local_scanner_performed": false,
+  "map_pin": null
+}
