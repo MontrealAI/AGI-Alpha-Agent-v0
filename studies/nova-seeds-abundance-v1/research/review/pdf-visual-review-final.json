@@ -1,0 +1,266 @@
+{
+  "schema": "nova-seeds-pdf-visual-qa/v1",
+  "status": "passed_visual_and_structural_review",
+  "reviewedPdf": "research/paper/paper.pdf",
+  "sha256": "405a7f2fdd6d5e3929f9eeb263499a36613d9cc26ecedcc059d113f6c1b3eaf9",
+  "bytes": 480978,
+  "pageCount": 20,
+  "reviewer": "Writer10 contracts subagent; same-session independent visual review",
+  "method": "All 20 final PDF pages rendered with Poppler at 120 dpi, JPEG quality 82, then visually inspected individually. One enlarged crop checks the bottom of page 18. Strict pypdf inspection verifies internal destinations and command text; LaTeX AUX citation keys checked.",
+  "initialReview": {
+    "pdfSha256": "1ae91915978bcccb8ceb09abd963ee22841be74f874f8205ea4634be97ca92e8",
+    "report": "research/review/pdf-visual-review.json"
+  },
+  "resolvedFindings": [
+    {
+      "id": "QA-1",
+      "status": "resolved",
+      "evidence": "Page 17 contains two ASCII --mode and two ASCII --out; zero U+2013 flag variants."
+    },
+    {
+      "id": "QA-2",
+      "status": "resolved",
+      "evidence": "Section 4 now starts with subsection/body on page 5."
+    },
+    {
+      "id": "QA-3",
+      "status": "resolved",
+      "evidence": "Section 8 now starts with subsection/table on page 15."
+    },
+    {
+      "id": "QA-4",
+      "status": "resolved",
+      "evidence": "Previously noted one-line paragraph splits removed; remaining continuations retain at least two lines."
+    },
+    {
+      "id": "QA-5",
+      "status": "resolved",
+      "evidence": "Integration and claim-ledger columns now use clear ragged-right text."
+    }
+  ],
+  "materialIssuesRemaining": [],
+  "structural": {
+    "annotations": 55,
+    "uriAnnotations": 29,
+    "uniqueUris": 24,
+    "internalAnnotations": 26,
+    "namedDestinations": 78,
+    "missingInternalDestinations": 0,
+    "unresolvedCitationMarkers": 0,
+    "citedKeys": 13,
+    "bibliographyKeys": 13,
+    "missingCitedKeys": [],
+    "uncitedBibliographyKeys": [],
+    "asciiModeFlags": 2,
+    "asciiOutFlags": 2,
+    "enDashFlags": 0
+  },
+  "pages": [
+    {
+      "page": 1,
+      "status": "pass",
+      "note": "Cover title leading corrected; provocation disclaimer and conceptual abundance map clean and legible."
+    },
+    {
+      "page": 2,
+      "status": "pass",
+      "note": "Abstract and reading-key box clean; the formerly isolated NFT-paragraph first line now moves intact to page 3."
+    },
+    {
+      "page": 3,
+      "status": "pass",
+      "note": "Value table and equations 1\u20132 clear; paragraph continuation has at least two lines."
+    },
+    {
+      "page": 4,
+      "status": "pass",
+      "note": "Foundations/citations readable; no isolated section heading remains at the bottom."
+    },
+    {
+      "page": 5,
+      "status": "pass",
+      "note": "Section 4, subsection 4.1 and mechanism text now begin together; equation 3 and subsection 4.3 fit."
+    },
+    {
+      "page": 6,
+      "status": "pass",
+      "note": "Complete-clone paragraph begins intact; protocol and seven-baseline table are legible and unclipped."
+    },
+    {
+      "page": 7,
+      "status": "pass",
+      "note": "Results and condition table fit; caption and numbers remain aligned and readable."
+    },
+    {
+      "page": 8,
+      "status": "pass",
+      "note": "Figure 1 legend, category labels, error bars and caption are distinct; no clipping or overlap."
+    },
+    {
+      "page": 9,
+      "status": "pass",
+      "note": "Figure 2 panels, titles, legend and temporal axes are legible; comparison text is intact."
+    },
+    {
+      "page": 10,
+      "status": "pass",
+      "note": "Figure 3 exact/adaptive labels are separated; registry continuation is at least two lines."
+    },
+    {
+      "page": 11,
+      "status": "pass",
+      "note": "Registry result box and privacy/source discussion are readable; AscensionMark paragraph no longer starts as one isolated line."
+    },
+    {
+      "page": 12,
+      "status": "pass",
+      "note": "AscensionMark starts intact; economics heading and per-mission cost table fit."
+    },
+    {
+      "page": 13,
+      "status": "pass",
+      "note": "Campaign accounting, table 5 and equation 4 are clear; cost exclusions remain readable."
+    },
+    {
+      "page": 14,
+      "status": "pass",
+      "note": "Economic conclusion closes cleanly; section 8 no longer stands alone. Remaining white space is the intentional section break."
+    },
+    {
+      "page": 15,
+      "status": "pass",
+      "note": "Section 8 begins with subsection 8.1/table 6; ragged-right columns remove stretched spacing. Paragraph continuation is at least two lines."
+    },
+    {
+      "page": 16,
+      "status": "pass",
+      "note": "World/Policy discussion begins intact; limitations and interpretation fit without orphaned headings."
+    },
+    {
+      "page": 17,
+      "status": "pass",
+      "note": "Reproduction commands visibly use ASCII --mode and --out; extraction verifies two of each and zero en-dash flags."
+    },
+    {
+      "page": 18,
+      "status": "pass",
+      "note": "Immutable SHA table and contract links are legible; ragged-right claim ledger has clean spacing. Enlarged bottom crop confirms complete last row and clearance above footer."
+    },
+    {
+      "page": 19,
+      "status": "pass",
+      "note": "Continued claim ledger repeats headers; freeze digests and custody/authoring notes fit without clipping."
+    },
+    {
+      "page": 20,
+      "status": "pass",
+      "note": "All 13 bibliography entries and their linked URLs are legible; final entry clears the footer."
+    }
+  ],
+  "limits": "This is visual and structural document QA, not independent peer review, scientific reanalysis, remote-URL availability testing, publication-policy validation, merge authorization or proof of deployment. External targets were not re-fetched in this QA. No manuscript, executable source, protocol or experimental evidence was changed.",
+  "imageDirectory": "output/pdf-qa",
+  "imageArchivePolicy": "Intermediate images stay outside the complete source archive.",
+  "reviewedAtUtc": "2026-10-24T03:21:37.254631+00:00",
+  "renderedImages": [
+    {
+      "path": "output/pdf-qa/final-page-01.jpg",
+      "bytes": 153688,
+      "sha256": "3a22c185d9e1fc88bb08dda02b745ba5805e1ee887fe650bf4adb0133965128e"
+    },
+    {
+      "path": "output/pdf-qa/final-page-02.jpg",
+      "bytes": 304743,
+      "sha256": "4656922cf8b4764a9cba8987be9a0e0b376635a726be832c2c43467b1f7ba092"
+    },
+    {
+      "path": "output/pdf-qa/final-page-03.jpg",
+      "bytes": 227956,
+      "sha256": "1be74f541bdcb5c7b51b837b4ba9a2e268462cabd57b366aa10713a6bebec217"
+    },
+    {
+      "path": "output/pdf-qa/final-page-04.jpg",
+      "bytes": 294085,
+      "sha256": "953ca3e60e500197b81080e8a836569b4ef09e23a53312c2e0678fadfc61fdc2"
+    },
+    {
+      "path": "output/pdf-qa/final-page-05.jpg",
+      "bytes": 289774,
+      "sha256": "8de501d4d361d8652f888af663586b998ef417a5881002edcb9c588cd8926c0b"
+    },
+    {
+      "path": "output/pdf-qa/final-page-06.jpg",
+      "bytes": 271957,
+      "sha256": "723592a4bbaca6a0178198806f67344d821f03b18d0ad0cecc07618746a3d15d"
+    },
+    {
+      "path": "output/pdf-qa/final-page-07.jpg",
+      "bytes": 269000,
+      "sha256": "726d9ba9e678d5c0912da5cbc51f7e2d2d97f544ff6c0a1299cac39497c56003"
+    },
+    {
+      "path": "output/pdf-qa/final-page-08.jpg",
+      "bytes": 206204,
+      "sha256": "c5527f0bd24e4637b25214d8263ff7ce48a20f0c87071e4301e7d1be1db474a6"
+    },
+    {
+      "path": "output/pdf-qa/final-page-09.jpg",
+      "bytes": 183435,
+      "sha256": "948ba2e0fac22ad73911e421be8ae6cbdde3b1845914055a33a603e31f3c1e37"
+    },
+    {
+      "path": "output/pdf-qa/final-page-10.jpg",
+      "bytes": 213530,
+      "sha256": "aa6bcf536a84a13e9dd6d1b074a2d7f3ecbdc310b505d09326b701f2e8cdb287"
+    },
+    {
+      "path": "output/pdf-qa/final-page-11.jpg",
+      "bytes": 314616,
+      "sha256": "b8ffb08a21ca102c40cbf4bf2e23529b18d3dd9fa72b2cc420dc8752fe4f3b23"
+    },
+    {
+      "path": "output/pdf-qa/final-page-12.jpg",
+      "bytes": 284518,
+      "sha256": "f0816586077b56ee36eae6153a4d3f2e22c6eb7e08d819ba72fe5103a9108bd8"
+    },
+    {
+      "path": "output/pdf-qa/final-page-13.jpg",
+      "bytes": 274948,
+      "sha256": "32e7d66141d2675e45a138a2b68a70b65b78faad07b65f0ac450a20da0628704"
+    },
+    {
+      "path": "output/pdf-qa/final-page-14.jpg",
+      "bytes": 175224,
+      "sha256": "1b1fa3d711bef9c0e85a69db0844859cdacdab523f3e5589ee2f8db9c301d3c5"
+    },
+    {
+      "path": "output/pdf-qa/final-page-15.jpg",
+      "bytes": 262290,
+      "sha256": "5ecc33c30603fbef9dcdfb17fd46aa2d2bd650f9a46887d1db9d53dd29b01fed"
+    },
+    {
+      "path": "output/pdf-qa/final-page-16.jpg",
+      "bytes": 277410,
+      "sha256": "830bbe7317c7dca6115ce71fe5324f253abaae9d79d580eba6b57aad05ac52ff"
+    },
+    {
+      "path": "output/pdf-qa/final-page-17.jpg",
+      "bytes": 246677,
+      "sha256": "ff2b5a3a00567edd2919b51f21ffb91be9241214c3ed5b34477ac466156ae546"
+    },
+    {
+      "path": "output/pdf-qa/final-page-18.jpg",
+      "bytes": 212416,
+      "sha256": "797b9cba40f555bdb4bd0fda281a00d6961145deaa803ecf4af56143e76625f5"
+    },
+    {
+      "path": "output/pdf-qa/final-page-19.jpg",
+      "bytes": 143932,
+      "sha256": "cf0b677c90fb32458b0b193dbc01d40eaba6d53d9e9066024d0a5b65e2e7d24f"
+    },
+    {
+      "path": "output/pdf-qa/final-page-20.jpg",
+      "bytes": 279466,
+      "sha256": "7e02565cde2db39422842931128638df69d40cacefff9de98ceb184a87161089"
+    }
+  ]
+}
