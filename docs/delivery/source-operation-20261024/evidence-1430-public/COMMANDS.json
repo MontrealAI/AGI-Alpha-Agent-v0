@@ -1,0 +1,187 @@
+[
+  {
+    "label": "installer-check",
+    "command": [
+      "$PYTHON_BUILD",
+      "$ACCEPTANCE_ROOT/assets/install_agent.py",
+      "--release-dir",
+      "$ACCEPTANCE_ROOT/assets",
+      "--venv",
+      "$ACCEPTANCE_ROOT/clean-venv",
+      "--check-only"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.05021977424621582,
+    "log_bytes": 101,
+    "log_sha256": "039712b9ff1cb9915d138a39802176eb5b42bf2c009c5ac926964b66553821e9",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "installer-install",
+    "command": [
+      "$PYTHON_BUILD",
+      "$ACCEPTANCE_ROOT/assets/install_agent.py",
+      "--release-dir",
+      "$ACCEPTANCE_ROOT/assets",
+      "--venv",
+      "$ACCEPTANCE_ROOT/clean-venv"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 19.717718601226807,
+    "log_bytes": 11025,
+    "log_sha256": "7d1a33f36e8e175af2e94ce24b694999070329cb0ff86ed78ef80282547084ae",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "installed-metadata",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/python",
+      "-I",
+      "-c",
+      "import alpha_factory_v1 as a,importlib.metadata as m,json,sys,pathlib,platform,hashlib\np=pathlib.Path(a.__file__).resolve();cfg=(pathlib.Path(sys.prefix)/'pyvenv.cfg').read_text();assert p.is_relative_to(pathlib.Path(sys.prefix));assert a.__version__=='1.43.0';assert 'include-system-site-packages = false' in cfg\nprint(json.dumps({'python':sys.version,'platform':platform.platform(),'module':str(p),'version':a.__version__,'distribution_version':m.version('alpha-factory-v1'),'module_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'pyvenv':cfg,'sys_path':sys.path,'distributions':sorted([{'name':x.metadata['Name'],'version':x.version} for x in m.distributions()],key=lambda x:x['name'].lower())}))"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.09122896194458008,
+    "log_bytes": 3045,
+    "log_sha256": "a6d2ce346a5c8882587f4bebb39e748b656bcc0139ce3ef82ed6dbd7946963b5",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "pip-check",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.22043848037719727,
+    "log_bytes": 30,
+    "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "version",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "--version"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.4636518955230713,
+    "log_bytes": 7,
+    "log_sha256": "a6ba533e6c4d49cd4234965e9684ec7c48746cf8f3144676aa8434090f413cf5",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "study-help",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "successor-study",
+      "--help"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.4588029384613037,
+    "log_bytes": 1904,
+    "log_sha256": "8764a35f3f3540796df3e5a5d6931e56c2998f0b658f34c698565129930dbad2",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "init",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "init"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.43625307083129883,
+    "log_bytes": 390,
+    "log_sha256": "771aaeb935712e53d555b1bd74d207fdbe9dcb032e9e7add5713a21a565a53cd",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "example",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/operation.json",
+      "operation-example",
+      "--retained-artifacts"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.6047289371490479,
+    "log_bytes": 226,
+    "log_sha256": "1a01ae2c7a4176696d8e6be98d4d57a7d333ce89e613ecbca7ac1f509feedd72",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "operation-start",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/result.json",
+      "operation-start",
+      "$ACCEPTANCE_ROOT/operation.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 14.317594528198242,
+    "log_bytes": 5926,
+    "log_sha256": "68dbf38391ae8155efb1aa4d141583594dc4208329421e23b6368d48a444840c",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "operation-status",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/status.json",
+      "operation-status",
+      "40af54db-2b6b-49bb-a28a-ebc9994c4b87"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.525413990020752,
+    "log_bytes": 5926,
+    "log_sha256": "faf083788963027d1217544c9cfde66e3d908124db0aef8860233ddd9d26376c",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "operation-export",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "successor-study",
+      "--output",
+      "$ACCEPTANCE_ROOT/history.json",
+      "operation-export",
+      "40af54db-2b6b-49bb-a28a-ebc9994c4b87"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.9751467704772949,
+    "log_bytes": 110,
+    "log_sha256": "567ebd155873e427b87c41afcc9e98d25aed3ced6da7eb63047fdca7120632c3",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  },
+  {
+    "label": "journal-verify",
+    "command": [
+      "$ACCEPTANCE_ROOT/clean-venv/bin/alpha-agent",
+      "--home",
+      "$ACCEPTANCE_ROOT/runtime-home",
+      "verify"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.49951791763305664,
+    "log_bytes": 218,
+    "log_sha256": "a115f85604358d2546d36e44080dbd0361cd729e8062803c89ed25ba653395bc",
+    "display_note": "Only local root/interpreter paths mapped; raw command receipt retained separately"
+  }
+]
