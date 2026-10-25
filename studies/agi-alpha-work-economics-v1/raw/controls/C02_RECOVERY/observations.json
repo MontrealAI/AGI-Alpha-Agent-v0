@@ -1,0 +1,55 @@
+{
+  "id": "C02_RECOVERY",
+  "title": "Interrupted record, historical restore, explicit import and new run",
+  "began": "2026-10-25T11:16:40.082Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "First attempt interrupted without a pack",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "Restore is historical and read-only",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "Explicit import creates new draft without a result",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "Imported history has no inherited authority",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "Explicit new run returns correct aggregation",
+      "passed": true,
+      "actual": {
+        "rows": 5,
+        "groups": 3,
+        "total": 13,
+        "unit": "synthetic exception counts"
+      },
+      "expected": null
+    }
+  ],
+  "observations": {
+    "checkpoints": 3,
+    "progress": [
+      "planning"
+    ],
+    "firstAttemptPacks": 0,
+    "explicitNewRunPacks": 1,
+    "recovery": "Explicit input restart, not continuation from an internal checkpoint; record validation also recomputes deterministic output."
+  },
+  "unexpectedError": null,
+  "elapsedNanoseconds": "108990140",
+  "completed": "2026-10-25T11:16:40.191Z"
+}

@@ -1,0 +1,367 @@
+{
+  "status": "MARKET_DATA_GROUNDED_BENCHMARK_COMPLETE; SAME_TASK_HUMAN_OBSERVATIONS_NOT_RUN",
+  "access_date": "2026-10-25",
+  "interpretation": "Observed labor-market wage/cost estimates and occupational duties are combined with explicit cost and task-time scenarios. These data do not observe completion time or acceptance on this study's tasks. No recruitment is required to reproduce this economic benchmark.",
+  "currency_policy": "Calculate each benchmark in its source currency. The same numeric system-cost scenario in CAD, USD and EUR represents separate assumptions, not currency equivalence. No foreign-exchange conversion is used.",
+  "system_fully_allocated_cost_scenarios_own_currency": [
+    1,
+    5,
+    10,
+    25
+  ],
+  "system_cost_status": "ASSUMED_FULLY_ALLOCATED_RANGE; includes all model/compute/setup/verification/retry/maintenance/capability-construction allocation and employer attention. Unknown actual costs are not recorded as zero.",
+  "human_minutes_sensitivity": [
+    5,
+    15,
+    30,
+    60,
+    120
+  ],
+  "human_minutes_status": "HYPOTHETICAL_TOTAL_JOB_EFFORT_INCLUDING_REVIEW_AND_REWORK; NOT_OBSERVED_TIMINGS",
+  "wage_only_employer_load_sensitivity": [
+    1.0,
+    1.15,
+    1.3,
+    1.5
+  ],
+  "load_status": "ASSUMED_MULTIPLIERS_ONLY; no uplift is added to published total-compensation or employer-cost series",
+  "rates": [
+    {
+      "id": "ca_qc_data_entry",
+      "geography": "Quebec, Canada",
+      "occupation": "Data entry clerks",
+      "occupation_code": "NOC 14111",
+      "currency": "CAD",
+      "rate_per_hour": 24.0,
+      "low_per_hour": 17.0,
+      "high_per_hour": 28.85,
+      "statistic": "Median hourly wage; published low/high",
+      "cost_basis": "wage_only",
+      "reference_period": "2023-2024",
+      "published_or_updated": "2025-11-19",
+      "source_key": "jobbank_qc_dataentry2025",
+      "source_url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/19213/QC",
+      "source_refs": [
+        "turn30search0",
+        "turn25search3",
+        "turn17search34",
+        "turn44search0"
+      ],
+      "methodology": "Statistics Canada Labour Force Survey, published by ESDC Job Bank. Gross wages; non-wage benefits excluded. Low/high generally correspond to 10th/90th percentiles, subject to methodology exceptions; not confidence bounds.",
+      "task_fit": "Source-data comparison, validation and discrepancy reporting; only those tasks, not entire occupation",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Official Job Bank indexed content, verified in both search systems; canonical direct page opens timed out. Page modification dates may be newer than the stated wage update."
+    },
+    {
+      "id": "ca_qc_bookkeeping",
+      "geography": "Quebec, Canada",
+      "occupation": "Accounting technicians and bookkeepers",
+      "occupation_code": "NOC 12200",
+      "currency": "CAD",
+      "rate_per_hour": 28.02,
+      "low_per_hour": 20.25,
+      "high_per_hour": 43.75,
+      "statistic": "Median hourly wage; published low/high",
+      "cost_basis": "wage_only",
+      "reference_period": "2023-2024",
+      "published_or_updated": "2025-11-19",
+      "source_key": "jobbank_qc_bookkeeping2025",
+      "source_url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/24500/QC",
+      "source_refs": [
+        "turn30search1",
+        "turn25search31",
+        "turn17search2",
+        "turn45search0",
+        "turn45search3"
+      ],
+      "methodology": "Statistics Canada Labour Force Survey, published by ESDC Job Bank. Gross wages; non-wage benefits excluded. Published low/high are not confidence bounds.",
+      "task_fit": "Reconciliation and reporting of account or record discrepancies; does not imply accounting sign-off, banking or professional judgment automation",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Official Job Bank indexed content, verified in both search systems; canonical direct page opens timed out. Page modification dates may be newer than the stated wage update."
+    },
+    {
+      "id": "ca_qc_database_analyst",
+      "geography": "Quebec, Canada",
+      "occupation": "Database analysts and data administrators; data analyst - informatics and systems",
+      "occupation_code": "NOC 21223",
+      "currency": "CAD",
+      "rate_per_hour": 43.96,
+      "low_per_hour": 22.0,
+      "high_per_hour": 55.0,
+      "statistic": "Median hourly wage; published low/high",
+      "cost_basis": "wage_only",
+      "reference_period": "2023-2024",
+      "published_or_updated": "2025-11-19",
+      "source_key": "jobbank_qc_dataanalyst2025",
+      "source_url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/17873/QC",
+      "source_refs": [
+        "turn30search2",
+        "turn25search5",
+        "turn17search16",
+        "turn44search2"
+      ],
+      "methodology": "Statistics Canada Labour Force Survey, published by ESDC Job Bank. Gross wages; non-wage benefits excluded. The Quebec provincial estimate is LFS, while some subprovincial estimates use 2024 Small Area Estimation; those are not substituted here.",
+      "task_fit": "Upper-skill sensitivity for data analysis and validation work; not a claim that a bounded CSV comparison requires this occupation",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Official Job Bank indexed content, verified in both search systems; canonical direct page opens timed out. Page modification dates may be newer than the stated wage update."
+    },
+    {
+      "id": "us_data_entry_wage",
+      "geography": "United States",
+      "occupation": "Data Entry Keyers",
+      "occupation_code": "SOC 43-9021",
+      "currency": "USD",
+      "rate_per_hour": 19.88,
+      "statistic": "Median hourly wage",
+      "cost_basis": "wage_only",
+      "reference_period": "2025",
+      "published_or_updated": "O*NET page updated 2026",
+      "source_key": "onet_dataentry2026",
+      "source_url": "https://www.onetonline.org/link/summary/43-9021.00",
+      "source_refs": [
+        "turn32view1",
+        "turn49view3"
+      ],
+      "methodology": "BLS 2025 wage data reproduced by U.S. Department of Labor O*NET. Occupational wages, not full employer costs.",
+      "task_fit": "Direct task-family fit for verifying source data and correcting entry discrepancies",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "us_bookkeeping_wage",
+      "geography": "United States",
+      "occupation": "Bookkeeping, Accounting, and Auditing Clerks",
+      "occupation_code": "SOC 43-3031",
+      "currency": "USD",
+      "rate_per_hour": 24.36,
+      "statistic": "Median hourly wage",
+      "cost_basis": "wage_only",
+      "reference_period": "2025",
+      "published_or_updated": "O*NET page updated 2026",
+      "source_key": "onet_bookkeeping2026",
+      "source_url": "https://www.onetonline.org/link/summary/43-3031.00",
+      "source_refs": [
+        "turn32view0",
+        "turn49view2"
+      ],
+      "methodology": "BLS 2025 wage data reproduced by U.S. Department of Labor O*NET. Occupational wages, not full employer costs.",
+      "task_fit": "Direct task-family fit for reconciliation, checking accuracy and reporting discrepancies",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "us_office_admin_compensation",
+      "geography": "United States, private industry",
+      "occupation": "Office and administrative support occupations",
+      "occupation_code": "Broad occupational group",
+      "currency": "USD",
+      "rate_per_hour": 35.96,
+      "wages_per_hour": 24.79,
+      "benefits_per_hour": 11.17,
+      "statistic": "Mean total compensation per employee hour worked",
+      "cost_basis": "total_compensation",
+      "reference_period": "December 2025",
+      "published_or_updated": "2026-03-20",
+      "source_key": "bls2025ecec",
+      "source_url": "https://www.bls.gov/news.release/archives/ecec_03202026.htm",
+      "source_refs": [
+        "turn7view0",
+        "turn49view1"
+      ],
+      "methodology": "BLS Employer Costs for Employee Compensation, Table 4. Wages plus benefits already included. Not occupation-specific employer overhead or a billable service rate.",
+      "task_fit": "Broad administration employer-cost sensitivity",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "us_professional_compensation",
+      "geography": "United States, private industry",
+      "occupation": "Professional and related occupations",
+      "occupation_code": "Broad occupational group",
+      "currency": "USD",
+      "rate_per_hour": 72.19,
+      "wages_per_hour": 50.1,
+      "benefits_per_hour": 22.09,
+      "statistic": "Mean total compensation per employee hour worked",
+      "cost_basis": "total_compensation",
+      "reference_period": "December 2025",
+      "published_or_updated": "2026-03-20",
+      "source_key": "bls2025ecec",
+      "source_url": "https://www.bls.gov/news.release/archives/ecec_03202026.htm",
+      "source_refs": [
+        "turn7view0",
+        "turn49view1"
+      ],
+      "methodology": "BLS Employer Costs for Employee Compensation, Table 4. Wages plus benefits already included. Not a matched data-analyst estimate.",
+      "task_fit": "Higher-skill employer-cost sensitivity; not the primary clerical comparator",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "eu_total_employer_cost",
+      "geography": "European Union",
+      "occupation": "Covered economy, all occupations",
+      "occupation_code": "NACE Rev.2 sections B-N and P-S",
+      "currency": "EUR",
+      "rate_per_hour": 34.9,
+      "statistic": "Mean hourly employer labor cost",
+      "cost_basis": "total_employer_labor_cost",
+      "reference_period": "2025",
+      "published_or_updated": "2026-03-31",
+      "source_key": "eurostat2025labourcost",
+      "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260331-2",
+      "source_refs": [
+        "turn18view3",
+        "turn38search0",
+        "turn43view2"
+      ],
+      "methodology": "Enterprises with 10+ employees; 2020 Labour Cost Survey extrapolated by Labour Cost Index (with documented exceptions). Wage and non-wage costs minus subsidies. Broad sector scope excludes agriculture, public administration, households and extraterritorial organizations.",
+      "task_fit": "Geographic employer-cost sensitivity only; no occupation match",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "nl_total_employer_cost",
+      "geography": "Netherlands",
+      "occupation": "Covered economy, all occupations",
+      "occupation_code": "NACE Rev.2 sections B-N and P-S",
+      "currency": "EUR",
+      "rate_per_hour": 47.9,
+      "statistic": "Mean hourly employer labor cost",
+      "cost_basis": "total_employer_labor_cost",
+      "reference_period": "2025",
+      "published_or_updated": "2026-03-31",
+      "source_key": "eurostat2025labourcost",
+      "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260331-2",
+      "source_refs": [
+        "turn18view3",
+        "turn38search0",
+        "turn43view2"
+      ],
+      "methodology": "Same Eurostat coverage as EU reference; 10+ employee enterprises. Not occupation-specific.",
+      "task_fit": "Country sensitivity only",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "lu_total_employer_cost",
+      "geography": "Luxembourg",
+      "occupation": "Covered economy, all occupations",
+      "occupation_code": "NACE Rev.2 sections B-N and P-S",
+      "currency": "EUR",
+      "rate_per_hour": 56.8,
+      "statistic": "Mean hourly employer labor cost",
+      "cost_basis": "total_employer_labor_cost",
+      "reference_period": "2025",
+      "published_or_updated": "2026-03-31",
+      "source_key": "eurostat2025labourcost",
+      "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260331-2",
+      "source_refs": [
+        "turn18view3",
+        "turn38search0",
+        "turn43view2"
+      ],
+      "methodology": "Same Eurostat coverage as EU reference; 10+ employee enterprises. Not occupation-specific.",
+      "task_fit": "Country sensitivity only",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "bg_total_employer_cost",
+      "geography": "Bulgaria",
+      "occupation": "Covered economy, all occupations",
+      "occupation_code": "NACE Rev.2 sections B-N and P-S",
+      "currency": "EUR",
+      "rate_per_hour": 12.0,
+      "statistic": "Mean hourly employer labor cost, published in EUR",
+      "cost_basis": "total_employer_labor_cost",
+      "reference_period": "2025",
+      "published_or_updated": "2026-03-31",
+      "source_key": "eurostat2025labourcost",
+      "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260331-2",
+      "source_refs": [
+        "turn18view3",
+        "turn38search0",
+        "turn43view2"
+      ],
+      "methodology": "Same Eurostat coverage as EU reference. Eurostat uses annual exchange rates for EUR aggregates; this study applies no additional FX conversion. Not occupation-specific.",
+      "task_fit": "Lower-cost country sensitivity only",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    },
+    {
+      "id": "ro_total_employer_cost",
+      "geography": "Romania",
+      "occupation": "Covered economy, all occupations",
+      "occupation_code": "NACE Rev.2 sections B-N and P-S",
+      "currency": "EUR",
+      "rate_per_hour": 13.6,
+      "statistic": "Mean hourly employer labor cost, published in EUR",
+      "cost_basis": "total_employer_labor_cost",
+      "reference_period": "2025",
+      "published_or_updated": "2026-03-31",
+      "source_key": "eurostat2025labourcost",
+      "source_url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260331-2",
+      "source_refs": [
+        "turn18view3",
+        "turn38search0",
+        "turn43view2"
+      ],
+      "methodology": "Same Eurostat coverage as EU reference. Eurostat uses annual exchange rates for EUR aggregates; this study applies no additional FX conversion. Not occupation-specific.",
+      "task_fit": "Lower-cost country sensitivity only",
+      "rate_observed_for_study_participants": false,
+      "extraction_mode": "Direct primary webpage retrieval"
+    }
+  ],
+  "occupational_task_evidence": [
+    {
+      "occupation": "Bookkeeping, Accounting, and Auditing Clerks",
+      "code": "O*NET-SOC 43-3031.00",
+      "source_url": "https://www.onetonline.org/link/summary/43-3031.00",
+      "source_key": "onet_bookkeeping2026",
+      "source_refs": [
+        "turn31view1",
+        "turn49view4"
+      ],
+      "paraphrased_tasks": [
+        "Check accuracy of entries, amounts and classifications",
+        "Reconcile records and report differences",
+        "Use spreadsheets or databases to maintain and summarize financial information"
+      ],
+      "remaining_human_responsibilities": "Determining accounting policy, materiality and business meaning; resolving ambiguous records; approval; relationships and physical/noncomputer work"
+    },
+    {
+      "occupation": "Data Entry Keyers",
+      "code": "O*NET-SOC 43-9021.00",
+      "source_url": "https://www.onetonline.org/link/summary/43-9021.00",
+      "source_key": "onet_dataentry2026",
+      "source_refs": [
+        "turn31view2",
+        "turn49view5"
+      ],
+      "paraphrased_tasks": [
+        "Find and correct entry errors or escalate them",
+        "Validate data against source records",
+        "Maintain work logs and organize completed records"
+      ],
+      "remaining_human_responsibilities": "Authenticating source authority, deciding semantic identity and handling exceptions beyond explicit rules"
+    },
+    {
+      "occupation": "Business Intelligence Analysts",
+      "code": "O*NET-SOC 15-2051.01",
+      "source_url": "https://www.onetonline.org/link/summary/15-2051.01",
+      "source_key": "onet_bi2026",
+      "source_refs": [
+        "turn31view3",
+        "turn49view0"
+      ],
+      "paraphrased_tasks": [
+        "Produce reports from business data",
+        "Test outputs against business requirements",
+        "Maintain reusable reporting templates and tools"
+      ],
+      "remaining_human_responsibilities": "Deciding the business question, interpreting findings, accountability and stakeholder judgment",
+      "warning": "O*NET wage shown for this detailed title is the broader Data Scientists category. It is not used as a matched analyst wage here."
+    }
+  ]
+}

@@ -1,0 +1,2391 @@
+{
+  "schema": "ti-catalogue-result/v1",
+  "leftIdentity": {
+    "sha256": "5ad5a45f2c86f09300222acb54aa9398ecb1dd8f0d6f569249ea7b56574916d0",
+    "bytes": 1712
+  },
+  "rightIdentity": {
+    "sha256": "0d3d5879113dd0cd9564eb751ccca98e700c3e554a5a3ccff485439f2aeae71d",
+    "bytes": 1693
+  },
+  "resolution": {
+    "schema": "successor-discrepancy-resolution/v1",
+    "actions": [
+      {
+        "id": "action-0001",
+        "key": "001",
+        "type": "missing_from_right",
+        "leftRows": [
+          3,
+          9,
+          23
+        ],
+        "rightRows": [],
+        "occurrences": [
+          "left:3",
+          "left:9",
+          "left:23"
+        ],
+        "conflicts": [],
+        "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+      },
+      {
+        "id": "action-0002",
+        "key": "1",
+        "type": "missing_from_left",
+        "leftRows": [],
+        "rightRows": [
+          13,
+          15
+        ],
+        "occurrences": [
+          "right:13",
+          "right:15"
+        ],
+        "conflicts": [],
+        "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+      },
+      {
+        "id": "action-0003",
+        "key": "CAT0-00000",
+        "type": "missing_from_right",
+        "leftRows": [
+          7,
+          17,
+          32
+        ],
+        "rightRows": [],
+        "occurrences": [
+          "left:7",
+          "left:17",
+          "left:32"
+        ],
+        "conflicts": [],
+        "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+      },
+      {
+        "id": "action-0004",
+        "key": "CAT0-00001",
+        "type": "review_shared_values",
+        "leftRows": [
+          22,
+          29
+        ],
+        "rightRows": [
+          4,
+          11,
+          16
+        ],
+        "occurrences": [
+          "conflict:22:4",
+          "conflict:22:11",
+          "conflict:22:16",
+          "conflict:29:4",
+          "conflict:29:11",
+          "conflict:29:16"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 22,
+            "rightIndex": 4,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 22,
+            "rightIndex": 11,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 22,
+            "rightIndex": 16,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 29,
+            "rightIndex": 4,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 29,
+            "rightIndex": 11,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 29,
+            "rightIndex": 16,
+            "fieldIndices": [
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0005",
+        "key": "CAT0-00002",
+        "type": "review_shared_values",
+        "leftRows": [
+          10,
+          15,
+          16
+        ],
+        "rightRows": [
+          1,
+          28,
+          36
+        ],
+        "occurrences": [
+          "conflict:10:1",
+          "conflict:10:28",
+          "conflict:10:36",
+          "conflict:15:1",
+          "conflict:15:28",
+          "conflict:15:36",
+          "conflict:16:1",
+          "conflict:16:28",
+          "conflict:16:36"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 10,
+            "rightIndex": 1,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 10,
+            "rightIndex": 28,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 10,
+            "rightIndex": 36,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 15,
+            "rightIndex": 1,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 15,
+            "rightIndex": 28,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 15,
+            "rightIndex": 36,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 16,
+            "rightIndex": 1,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 16,
+            "rightIndex": 28,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 16,
+            "rightIndex": 36,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0006",
+        "key": "CAT0-00003",
+        "type": "review_shared_values",
+        "leftRows": [
+          2,
+          20,
+          34
+        ],
+        "rightRows": [
+          12,
+          21,
+          26
+        ],
+        "occurrences": [
+          "conflict:2:12",
+          "conflict:2:21",
+          "conflict:2:26",
+          "conflict:20:12",
+          "conflict:20:21",
+          "conflict:20:26",
+          "conflict:34:12",
+          "conflict:34:21",
+          "conflict:34:26"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 2,
+            "rightIndex": 12,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 2,
+            "rightIndex": 21,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 2,
+            "rightIndex": 26,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 20,
+            "rightIndex": 12,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 20,
+            "rightIndex": 21,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 20,
+            "rightIndex": 26,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 34,
+            "rightIndex": 12,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 34,
+            "rightIndex": 21,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 34,
+            "rightIndex": 26,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0007",
+        "key": "CAT0-00004",
+        "type": "review_shared_values",
+        "leftRows": [
+          1,
+          24,
+          27
+        ],
+        "rightRows": [
+          10,
+          27,
+          31
+        ],
+        "occurrences": [
+          "conflict:1:10",
+          "conflict:1:27",
+          "conflict:1:31",
+          "conflict:24:10",
+          "conflict:24:27",
+          "conflict:24:31",
+          "conflict:27:10",
+          "conflict:27:27",
+          "conflict:27:31"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 1,
+            "rightIndex": 10,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 1,
+            "rightIndex": 27,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 1,
+            "rightIndex": 31,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 24,
+            "rightIndex": 10,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 24,
+            "rightIndex": 27,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 24,
+            "rightIndex": 31,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 27,
+            "rightIndex": 10,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 27,
+            "rightIndex": 27,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 27,
+            "rightIndex": 31,
+            "fieldIndices": [
+              0
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0008",
+        "key": "CAT0-00005",
+        "type": "review_shared_values",
+        "leftRows": [
+          12,
+          13,
+          19
+        ],
+        "rightRows": [
+          8,
+          29,
+          30
+        ],
+        "occurrences": [
+          "conflict:12:8",
+          "conflict:12:29",
+          "conflict:12:30",
+          "conflict:13:8",
+          "conflict:13:29",
+          "conflict:13:30",
+          "conflict:19:8",
+          "conflict:19:29",
+          "conflict:19:30"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 12,
+            "rightIndex": 8,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 12,
+            "rightIndex": 29,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 12,
+            "rightIndex": 30,
+            "fieldIndices": [
+              0
+            ]
+          },
+          {
+            "leftIndex": 13,
+            "rightIndex": 8,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 13,
+            "rightIndex": 29,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 13,
+            "rightIndex": 30,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 19,
+            "rightIndex": 8,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 19,
+            "rightIndex": 29,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "leftIndex": 19,
+            "rightIndex": 30,
+            "fieldIndices": [
+              0,
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0009",
+        "key": "CAT0-00008",
+        "type": "review_shared_values",
+        "leftRows": [
+          4,
+          18
+        ],
+        "rightRows": [
+          3,
+          7,
+          22
+        ],
+        "occurrences": [
+          "conflict:4:3",
+          "conflict:4:7",
+          "conflict:4:22",
+          "conflict:18:3",
+          "conflict:18:7",
+          "conflict:18:22"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 4,
+            "rightIndex": 3,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 4,
+            "rightIndex": 7,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 4,
+            "rightIndex": 22,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 18,
+            "rightIndex": 3,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 18,
+            "rightIndex": 7,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 18,
+            "rightIndex": 22,
+            "fieldIndices": [
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0010",
+        "key": "CAT0-00009",
+        "type": "review_shared_values",
+        "leftRows": [
+          5,
+          25,
+          35
+        ],
+        "rightRows": [
+          2,
+          33,
+          34
+        ],
+        "occurrences": [
+          "conflict:5:2",
+          "conflict:5:33",
+          "conflict:5:34",
+          "conflict:25:2",
+          "conflict:25:33",
+          "conflict:25:34",
+          "conflict:35:2",
+          "conflict:35:33",
+          "conflict:35:34"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 5,
+            "rightIndex": 2,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 5,
+            "rightIndex": 33,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 5,
+            "rightIndex": 34,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 25,
+            "rightIndex": 2,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 25,
+            "rightIndex": 33,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 25,
+            "rightIndex": 34,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 35,
+            "rightIndex": 2,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 35,
+            "rightIndex": 33,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 35,
+            "rightIndex": 34,
+            "fieldIndices": [
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0011",
+        "key": "CAT0-00010",
+        "type": "review_shared_values",
+        "leftRows": [
+          0,
+          8
+        ],
+        "rightRows": [
+          5,
+          6,
+          32
+        ],
+        "occurrences": [
+          "conflict:0:5",
+          "conflict:0:6",
+          "conflict:0:32",
+          "conflict:8:5",
+          "conflict:8:6",
+          "conflict:8:32"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 0,
+            "rightIndex": 5,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 0,
+            "rightIndex": 6,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 0,
+            "rightIndex": 32,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 8,
+            "rightIndex": 5,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 8,
+            "rightIndex": 6,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 8,
+            "rightIndex": 32,
+            "fieldIndices": [
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0012",
+        "key": "CAT0-00011",
+        "type": "review_shared_values",
+        "leftRows": [
+          6,
+          14,
+          30
+        ],
+        "rightRows": [
+          20,
+          23,
+          25
+        ],
+        "occurrences": [
+          "conflict:6:20",
+          "conflict:6:23",
+          "conflict:6:25",
+          "conflict:14:20",
+          "conflict:14:23",
+          "conflict:14:25",
+          "conflict:30:20",
+          "conflict:30:23",
+          "conflict:30:25"
+        ],
+        "conflicts": [
+          {
+            "leftIndex": 6,
+            "rightIndex": 20,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 6,
+            "rightIndex": 23,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 6,
+            "rightIndex": 25,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 14,
+            "rightIndex": 20,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 14,
+            "rightIndex": 23,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 14,
+            "rightIndex": 25,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 30,
+            "rightIndex": 20,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 30,
+            "rightIndex": 23,
+            "fieldIndices": [
+              1
+            ]
+          },
+          {
+            "leftIndex": 30,
+            "rightIndex": 25,
+            "fieldIndices": [
+              1
+            ]
+          }
+        ],
+        "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+      },
+      {
+        "id": "action-0013",
+        "key": "CAT0-NEW-0000",
+        "type": "missing_from_left",
+        "leftRows": [],
+        "rightRows": [
+          17,
+          18,
+          24
+        ],
+        "occurrences": [
+          "right:17",
+          "right:18",
+          "right:24"
+        ],
+        "conflicts": [],
+        "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+      },
+      {
+        "id": "action-0014",
+        "key": "CAT0-NEW-0001",
+        "type": "missing_from_left",
+        "leftRows": [],
+        "rightRows": [
+          9,
+          14,
+          19
+        ],
+        "occurrences": [
+          "right:9",
+          "right:14",
+          "right:19"
+        ],
+        "conflicts": [],
+        "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+      },
+      {
+        "id": "action-0015",
+        "key": "Key",
+        "type": "missing_from_left",
+        "leftRows": [],
+        "rightRows": [
+          0,
+          35
+        ],
+        "occurrences": [
+          "right:0",
+          "right:35"
+        ],
+        "conflicts": [],
+        "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+      },
+      {
+        "id": "action-0016",
+        "key": "Key ",
+        "type": "missing_from_right",
+        "leftRows": [
+          11,
+          21,
+          33
+        ],
+        "rightRows": [],
+        "occurrences": [
+          "left:11",
+          "left:21",
+          "left:33"
+        ],
+        "conflicts": [],
+        "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+      }
+    ],
+    "sharedFields": [
+      {
+        "name": "name",
+        "leftColumn": 1,
+        "rightColumn": 3
+      },
+      {
+        "name": "price",
+        "leftColumn": 2,
+        "rightColumn": 0
+      },
+      {
+        "name": "revision",
+        "leftColumn": 3,
+        "rightColumn": 4
+      }
+    ],
+    "burden": {
+      "pairwiseReviewItems": 91,
+      "groupedActions": 16,
+      "groupingReduction": 75,
+      "timeSavedClaim": false,
+      "sameTaskSuperiority": false
+    },
+    "coverage": {
+      "originalOccurrences": 91,
+      "coveredOccurrences": 91,
+      "complete": true,
+      "missing": [],
+      "duplicates": []
+    },
+    "diagnosis": {
+      "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+      "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+      "duplicateExceptionKeys": 16,
+      "uniqueExceptionKeys": 16,
+      "groupingReducesDecisionItems": true
+    },
+    "decision": {
+      "state": "offer_key_queue",
+      "recommendedContract": "per_key_corrective_actions",
+      "reason": "Several original exceptions concern the same exact key. A key-based queue reduces decision records under a changed output contract while preserving complete underlying evidence."
+    },
+    "contract": {
+      "changed": true,
+      "original": "One review item per unmatched source row or conflicting matched row pair.",
+      "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+      "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+    },
+    "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n\"action-0001\",\"001\",\"missing_from_right\",\"4;10;24\",\"\",\"left:3;left:9;left:23\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0002\",\"1\",\"missing_from_left\",\"\",\"14;16\",\"right:13;right:15\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0003\",\"CAT0-00000\",\"missing_from_right\",\"8;18;33\",\"\",\"left:7;left:17;left:32\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0004\",\"CAT0-00001\",\"review_shared_values\",\"23;30\",\"5;12;17\",\"conflict:22:4;conflict:22:11;conflict:22:16;conflict:29:4;conflict:29:11;conflict:29:16\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0005\",\"CAT0-00002\",\"review_shared_values\",\"11;16;17\",\"2;29;37\",\"conflict:10:1;conflict:10:28;conflict:10:36;conflict:15:1;conflict:15:28;conflict:15:36;conflict:16:1;conflict:16:28;conflict:16:36\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0006\",\"CAT0-00003\",\"review_shared_values\",\"3;21;35\",\"13;22;27\",\"conflict:2:12;conflict:2:21;conflict:2:26;conflict:20:12;conflict:20:21;conflict:20:26;conflict:34:12;conflict:34:21;conflict:34:26\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0007\",\"CAT0-00004\",\"review_shared_values\",\"2;25;28\",\"11;28;32\",\"conflict:1:10;conflict:1:27;conflict:1:31;conflict:24:10;conflict:24:27;conflict:24:31;conflict:27:10;conflict:27:27;conflict:27:31\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0008\",\"CAT0-00005\",\"review_shared_values\",\"13;14;20\",\"9;30;31\",\"conflict:12:8;conflict:12:29;conflict:12:30;conflict:13:8;conflict:13:29;conflict:13:30;conflict:19:8;conflict:19:29;conflict:19:30\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0009\",\"CAT0-00008\",\"review_shared_values\",\"5;19\",\"4;8;23\",\"conflict:4:3;conflict:4:7;conflict:4:22;conflict:18:3;conflict:18:7;conflict:18:22\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0010\",\"CAT0-00009\",\"review_shared_values\",\"6;26;36\",\"3;34;35\",\"conflict:5:2;conflict:5:33;conflict:5:34;conflict:25:2;conflict:25:33;conflict:25:34;conflict:35:2;conflict:35:33;conflict:35:34\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0011\",\"CAT0-00010\",\"review_shared_values\",\"1;9\",\"6;7;33\",\"conflict:0:5;conflict:0:6;conflict:0:32;conflict:8:5;conflict:8:6;conflict:8:32\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0012\",\"CAT0-00011\",\"review_shared_values\",\"7;15;31\",\"21;24;26\",\"conflict:6:20;conflict:6:23;conflict:6:25;conflict:14:20;conflict:14:23;conflict:14:25;conflict:30:20;conflict:30:23;conflict:30:25\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0013\",\"CAT0-NEW-0000\",\"missing_from_left\",\"\",\"18;19;25\",\"right:17;right:18;right:24\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0014\",\"CAT0-NEW-0001\",\"missing_from_left\",\"\",\"10;15;20\",\"right:9;right:14;right:19\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0015\",\"Key\",\"missing_from_left\",\"\",\"1;36\",\"right:0;right:35\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0016\",\"Key \",\"missing_from_right\",\"12;22;34\",\"\",\"left:11;left:21;left:33\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n",
+    "externalAuthority": false,
+    "automaticallyResolved": false,
+    "qualification": "local_engineering_only"
+  },
+  "differences": [
+    {
+      "id": "left:3",
+      "occurrence": "left:3",
+      "action": "action-0001",
+      "key": "001",
+      "kind": "missing_from_right",
+      "leftRow": 4,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"001\",\"Item 6\",\"7.06\",\"r1\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "left:9",
+      "occurrence": "left:9",
+      "action": "action-0001",
+      "key": "001",
+      "kind": "missing_from_right",
+      "leftRow": 10,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"001\",\"Item 6\",\"7.06 duplicate\",\"r1\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "left:23",
+      "occurrence": "left:23",
+      "action": "action-0001",
+      "key": "001",
+      "kind": "missing_from_right",
+      "leftRow": 24,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"001\",\"Item 6\",\"7.06 duplicate\",\"r1\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "right:13",
+      "occurrence": "right:13",
+      "action": "action-0002",
+      "key": "1",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 14,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"7.06\",\"1\",\"right source\",\"Item 6, revised\\nsecond line\",\"r1\"]"
+    },
+    {
+      "id": "right:15",
+      "occurrence": "right:15",
+      "action": "action-0002",
+      "key": "1",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 16,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"7.06\",\"1\",\"right source\",\"Item 6, revised\\nsecond line\",\"r1\"]"
+    },
+    {
+      "id": "left:7",
+      "occurrence": "left:7",
+      "action": "action-0003",
+      "key": "CAT0-00000",
+      "kind": "missing_from_right",
+      "leftRow": 8,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"CAT0-00000\",\"Item 0\",\"1.00\",\"r0\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "left:17",
+      "occurrence": "left:17",
+      "action": "action-0003",
+      "key": "CAT0-00000",
+      "kind": "missing_from_right",
+      "leftRow": 18,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"CAT0-00000\",\"Item 0\",\"1.00 duplicate\",\"r0\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "left:32",
+      "occurrence": "left:32",
+      "action": "action-0003",
+      "key": "CAT0-00000",
+      "kind": "missing_from_right",
+      "leftRow": 33,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"CAT0-00000\",\"Item 0\",\"1.00 duplicate\",\"r0\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "conflict:22:4:1",
+      "occurrence": "conflict:22:4",
+      "action": "action-0004",
+      "key": "CAT0-00001",
+      "kind": "conflict",
+      "leftRow": 23,
+      "rightRow": 5,
+      "field": "price",
+      "leftValue": "2.01 duplicate",
+      "rightValue": "2.01"
+    },
+    {
+      "id": "conflict:22:11:1",
+      "occurrence": "conflict:22:11",
+      "action": "action-0004",
+      "key": "CAT0-00001",
+      "kind": "conflict",
+      "leftRow": 23,
+      "rightRow": 12,
+      "field": "price",
+      "leftValue": "2.01 duplicate",
+      "rightValue": "2.01"
+    },
+    {
+      "id": "conflict:22:16:1",
+      "occurrence": "conflict:22:16",
+      "action": "action-0004",
+      "key": "CAT0-00001",
+      "kind": "conflict",
+      "leftRow": 23,
+      "rightRow": 17,
+      "field": "price",
+      "leftValue": "2.01 duplicate",
+      "rightValue": "2.01"
+    },
+    {
+      "id": "conflict:29:4:1",
+      "occurrence": "conflict:29:4",
+      "action": "action-0004",
+      "key": "CAT0-00001",
+      "kind": "conflict",
+      "leftRow": 30,
+      "rightRow": 5,
+      "field": "price",
+      "leftValue": "2.01 duplicate",
+      "rightValue": "2.01"
+    },
+    {
+      "id": "conflict:29:11:1",
+      "occurrence": "conflict:29:11",
+      "action": "action-0004",
+      "key": "CAT0-00001",
+      "kind": "conflict",
+      "leftRow": 30,
+      "rightRow": 12,
+      "field": "price",
+      "leftValue": "2.01 duplicate",
+      "rightValue": "2.01"
+    },
+    {
+      "id": "conflict:29:16:1",
+      "occurrence": "conflict:29:16",
+      "action": "action-0004",
+      "key": "CAT0-00001",
+      "kind": "conflict",
+      "leftRow": 30,
+      "rightRow": 17,
+      "field": "price",
+      "leftValue": "2.01 duplicate",
+      "rightValue": "2.01"
+    },
+    {
+      "id": "conflict:10:1:0",
+      "occurrence": "conflict:10:1",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 11,
+      "rightRow": 2,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:10:28:0",
+      "occurrence": "conflict:10:28",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 11,
+      "rightRow": 29,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:10:36:0",
+      "occurrence": "conflict:10:36",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 11,
+      "rightRow": 37,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:15:1:0",
+      "occurrence": "conflict:15:1",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 16,
+      "rightRow": 2,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:15:1:1",
+      "occurrence": "conflict:15:1",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 16,
+      "rightRow": 2,
+      "field": "price",
+      "leftValue": "3.02 duplicate",
+      "rightValue": "3.02"
+    },
+    {
+      "id": "conflict:15:28:0",
+      "occurrence": "conflict:15:28",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 16,
+      "rightRow": 29,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:15:28:1",
+      "occurrence": "conflict:15:28",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 16,
+      "rightRow": 29,
+      "field": "price",
+      "leftValue": "3.02 duplicate",
+      "rightValue": "3.02"
+    },
+    {
+      "id": "conflict:15:36:0",
+      "occurrence": "conflict:15:36",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 16,
+      "rightRow": 37,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:15:36:1",
+      "occurrence": "conflict:15:36",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 16,
+      "rightRow": 37,
+      "field": "price",
+      "leftValue": "3.02 duplicate",
+      "rightValue": "3.02"
+    },
+    {
+      "id": "conflict:16:1:0",
+      "occurrence": "conflict:16:1",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 17,
+      "rightRow": 2,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:16:1:1",
+      "occurrence": "conflict:16:1",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 17,
+      "rightRow": 2,
+      "field": "price",
+      "leftValue": "3.02 duplicate",
+      "rightValue": "3.02"
+    },
+    {
+      "id": "conflict:16:28:0",
+      "occurrence": "conflict:16:28",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 17,
+      "rightRow": 29,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:16:28:1",
+      "occurrence": "conflict:16:28",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 17,
+      "rightRow": 29,
+      "field": "price",
+      "leftValue": "3.02 duplicate",
+      "rightValue": "3.02"
+    },
+    {
+      "id": "conflict:16:36:0",
+      "occurrence": "conflict:16:36",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 17,
+      "rightRow": 37,
+      "field": "name",
+      "leftValue": "Québec – Δ",
+      "rightValue": "Quoted \"edition\", A"
+    },
+    {
+      "id": "conflict:16:36:1",
+      "occurrence": "conflict:16:36",
+      "action": "action-0005",
+      "key": "CAT0-00002",
+      "kind": "conflict",
+      "leftRow": 17,
+      "rightRow": 37,
+      "field": "price",
+      "leftValue": "3.02 duplicate",
+      "rightValue": "3.02"
+    },
+    {
+      "id": "conflict:2:12:0",
+      "occurrence": "conflict:2:12",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 3,
+      "rightRow": 13,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:2:21:0",
+      "occurrence": "conflict:2:21",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 3,
+      "rightRow": 22,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:2:26:0",
+      "occurrence": "conflict:2:26",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 3,
+      "rightRow": 27,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:20:12:0",
+      "occurrence": "conflict:20:12",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 21,
+      "rightRow": 13,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:20:12:1",
+      "occurrence": "conflict:20:12",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 21,
+      "rightRow": 13,
+      "field": "price",
+      "leftValue": "4.03 duplicate",
+      "rightValue": "4.03"
+    },
+    {
+      "id": "conflict:20:21:0",
+      "occurrence": "conflict:20:21",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 21,
+      "rightRow": 22,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:20:21:1",
+      "occurrence": "conflict:20:21",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 21,
+      "rightRow": 22,
+      "field": "price",
+      "leftValue": "4.03 duplicate",
+      "rightValue": "4.03"
+    },
+    {
+      "id": "conflict:20:26:0",
+      "occurrence": "conflict:20:26",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 21,
+      "rightRow": 27,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:20:26:1",
+      "occurrence": "conflict:20:26",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 21,
+      "rightRow": 27,
+      "field": "price",
+      "leftValue": "4.03 duplicate",
+      "rightValue": "4.03"
+    },
+    {
+      "id": "conflict:34:12:0",
+      "occurrence": "conflict:34:12",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 35,
+      "rightRow": 13,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:34:12:1",
+      "occurrence": "conflict:34:12",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 35,
+      "rightRow": 13,
+      "field": "price",
+      "leftValue": "4.03 duplicate",
+      "rightValue": "4.03"
+    },
+    {
+      "id": "conflict:34:21:0",
+      "occurrence": "conflict:34:21",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 35,
+      "rightRow": 22,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:34:21:1",
+      "occurrence": "conflict:34:21",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 35,
+      "rightRow": 22,
+      "field": "price",
+      "leftValue": "4.03 duplicate",
+      "rightValue": "4.03"
+    },
+    {
+      "id": "conflict:34:26:0",
+      "occurrence": "conflict:34:26",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 35,
+      "rightRow": 27,
+      "field": "name",
+      "leftValue": "=1+1",
+      "rightValue": "@SUM(A1:A2)"
+    },
+    {
+      "id": "conflict:34:26:1",
+      "occurrence": "conflict:34:26",
+      "action": "action-0006",
+      "key": "CAT0-00003",
+      "kind": "conflict",
+      "leftRow": 35,
+      "rightRow": 27,
+      "field": "price",
+      "leftValue": "4.03 duplicate",
+      "rightValue": "4.03"
+    },
+    {
+      "id": "conflict:1:10:0",
+      "occurrence": "conflict:1:10",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 2,
+      "rightRow": 11,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:1:10:1",
+      "occurrence": "conflict:1:10",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 2,
+      "rightRow": 11,
+      "field": "price",
+      "leftValue": "5.04 duplicate",
+      "rightValue": "5.04"
+    },
+    {
+      "id": "conflict:1:27:0",
+      "occurrence": "conflict:1:27",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 2,
+      "rightRow": 28,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:1:27:1",
+      "occurrence": "conflict:1:27",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 2,
+      "rightRow": 28,
+      "field": "price",
+      "leftValue": "5.04 duplicate",
+      "rightValue": "5.04"
+    },
+    {
+      "id": "conflict:1:31:0",
+      "occurrence": "conflict:1:31",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 2,
+      "rightRow": 32,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:1:31:1",
+      "occurrence": "conflict:1:31",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 2,
+      "rightRow": 32,
+      "field": "price",
+      "leftValue": "5.04 duplicate",
+      "rightValue": "5.04"
+    },
+    {
+      "id": "conflict:24:10:0",
+      "occurrence": "conflict:24:10",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 25,
+      "rightRow": 11,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:24:10:1",
+      "occurrence": "conflict:24:10",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 25,
+      "rightRow": 11,
+      "field": "price",
+      "leftValue": "5.04 duplicate",
+      "rightValue": "5.04"
+    },
+    {
+      "id": "conflict:24:27:0",
+      "occurrence": "conflict:24:27",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 25,
+      "rightRow": 28,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:24:27:1",
+      "occurrence": "conflict:24:27",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 25,
+      "rightRow": 28,
+      "field": "price",
+      "leftValue": "5.04 duplicate",
+      "rightValue": "5.04"
+    },
+    {
+      "id": "conflict:24:31:0",
+      "occurrence": "conflict:24:31",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 25,
+      "rightRow": 32,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:24:31:1",
+      "occurrence": "conflict:24:31",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 25,
+      "rightRow": 32,
+      "field": "price",
+      "leftValue": "5.04 duplicate",
+      "rightValue": "5.04"
+    },
+    {
+      "id": "conflict:27:10:0",
+      "occurrence": "conflict:27:10",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 28,
+      "rightRow": 11,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:27:27:0",
+      "occurrence": "conflict:27:27",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 28,
+      "rightRow": 28,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:27:31:0",
+      "occurrence": "conflict:27:31",
+      "action": "action-0007",
+      "key": "CAT0-00004",
+      "kind": "conflict",
+      "leftRow": 28,
+      "rightRow": 32,
+      "field": "name",
+      "leftValue": "  +123",
+      "rightValue": "Item 4"
+    },
+    {
+      "id": "conflict:12:8:0",
+      "occurrence": "conflict:12:8",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 13,
+      "rightRow": 9,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:12:29:0",
+      "occurrence": "conflict:12:29",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 13,
+      "rightRow": 30,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:12:30:0",
+      "occurrence": "conflict:12:30",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 13,
+      "rightRow": 31,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:13:8:0",
+      "occurrence": "conflict:13:8",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 14,
+      "rightRow": 9,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:13:8:1",
+      "occurrence": "conflict:13:8",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 14,
+      "rightRow": 9,
+      "field": "price",
+      "leftValue": "6.05 duplicate",
+      "rightValue": "6.05"
+    },
+    {
+      "id": "conflict:13:29:0",
+      "occurrence": "conflict:13:29",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 14,
+      "rightRow": 30,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:13:29:1",
+      "occurrence": "conflict:13:29",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 14,
+      "rightRow": 30,
+      "field": "price",
+      "leftValue": "6.05 duplicate",
+      "rightValue": "6.05"
+    },
+    {
+      "id": "conflict:13:30:0",
+      "occurrence": "conflict:13:30",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 14,
+      "rightRow": 31,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:13:30:1",
+      "occurrence": "conflict:13:30",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 14,
+      "rightRow": 31,
+      "field": "price",
+      "leftValue": "6.05 duplicate",
+      "rightValue": "6.05"
+    },
+    {
+      "id": "conflict:19:8:0",
+      "occurrence": "conflict:19:8",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 20,
+      "rightRow": 9,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:19:8:1",
+      "occurrence": "conflict:19:8",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 20,
+      "rightRow": 9,
+      "field": "price",
+      "leftValue": "6.05 duplicate",
+      "rightValue": "6.05"
+    },
+    {
+      "id": "conflict:19:29:0",
+      "occurrence": "conflict:19:29",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 20,
+      "rightRow": 30,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:19:29:1",
+      "occurrence": "conflict:19:29",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 20,
+      "rightRow": 30,
+      "field": "price",
+      "leftValue": "6.05 duplicate",
+      "rightValue": "6.05"
+    },
+    {
+      "id": "conflict:19:30:0",
+      "occurrence": "conflict:19:30",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 20,
+      "rightRow": 31,
+      "field": "name",
+      "leftValue": "\tformula-like label",
+      "rightValue": "Item 5"
+    },
+    {
+      "id": "conflict:19:30:1",
+      "occurrence": "conflict:19:30",
+      "action": "action-0008",
+      "key": "CAT0-00005",
+      "kind": "conflict",
+      "leftRow": 20,
+      "rightRow": 31,
+      "field": "price",
+      "leftValue": "6.05 duplicate",
+      "rightValue": "6.05"
+    },
+    {
+      "id": "conflict:4:3:1",
+      "occurrence": "conflict:4:3",
+      "action": "action-0009",
+      "key": "CAT0-00008",
+      "kind": "conflict",
+      "leftRow": 5,
+      "rightRow": 4,
+      "field": "price",
+      "leftValue": "9.08 duplicate",
+      "rightValue": "9.08"
+    },
+    {
+      "id": "conflict:4:7:1",
+      "occurrence": "conflict:4:7",
+      "action": "action-0009",
+      "key": "CAT0-00008",
+      "kind": "conflict",
+      "leftRow": 5,
+      "rightRow": 8,
+      "field": "price",
+      "leftValue": "9.08 duplicate",
+      "rightValue": "9.08"
+    },
+    {
+      "id": "conflict:4:22:1",
+      "occurrence": "conflict:4:22",
+      "action": "action-0009",
+      "key": "CAT0-00008",
+      "kind": "conflict",
+      "leftRow": 5,
+      "rightRow": 23,
+      "field": "price",
+      "leftValue": "9.08 duplicate",
+      "rightValue": "9.08"
+    },
+    {
+      "id": "conflict:18:3:1",
+      "occurrence": "conflict:18:3",
+      "action": "action-0009",
+      "key": "CAT0-00008",
+      "kind": "conflict",
+      "leftRow": 19,
+      "rightRow": 4,
+      "field": "price",
+      "leftValue": "9.08 duplicate",
+      "rightValue": "9.08"
+    },
+    {
+      "id": "conflict:18:7:1",
+      "occurrence": "conflict:18:7",
+      "action": "action-0009",
+      "key": "CAT0-00008",
+      "kind": "conflict",
+      "leftRow": 19,
+      "rightRow": 8,
+      "field": "price",
+      "leftValue": "9.08 duplicate",
+      "rightValue": "9.08"
+    },
+    {
+      "id": "conflict:18:22:1",
+      "occurrence": "conflict:18:22",
+      "action": "action-0009",
+      "key": "CAT0-00008",
+      "kind": "conflict",
+      "leftRow": 19,
+      "rightRow": 23,
+      "field": "price",
+      "leftValue": "9.08 duplicate",
+      "rightValue": "9.08"
+    },
+    {
+      "id": "conflict:5:2:1",
+      "occurrence": "conflict:5:2",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 6,
+      "rightRow": 3,
+      "field": "price",
+      "leftValue": "10.09",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:5:33:1",
+      "occurrence": "conflict:5:33",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 6,
+      "rightRow": 34,
+      "field": "price",
+      "leftValue": "10.09",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:5:34:1",
+      "occurrence": "conflict:5:34",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 6,
+      "rightRow": 35,
+      "field": "price",
+      "leftValue": "10.09",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:25:2:1",
+      "occurrence": "conflict:25:2",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 26,
+      "rightRow": 3,
+      "field": "price",
+      "leftValue": "10.09 duplicate",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:25:33:1",
+      "occurrence": "conflict:25:33",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 26,
+      "rightRow": 34,
+      "field": "price",
+      "leftValue": "10.09 duplicate",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:25:34:1",
+      "occurrence": "conflict:25:34",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 26,
+      "rightRow": 35,
+      "field": "price",
+      "leftValue": "10.09 duplicate",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:35:2:1",
+      "occurrence": "conflict:35:2",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 36,
+      "rightRow": 3,
+      "field": "price",
+      "leftValue": "10.09 duplicate",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:35:33:1",
+      "occurrence": "conflict:35:33",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 36,
+      "rightRow": 34,
+      "field": "price",
+      "leftValue": "10.09 duplicate",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:35:34:1",
+      "occurrence": "conflict:35:34",
+      "action": "action-0010",
+      "key": "CAT0-00009",
+      "kind": "conflict",
+      "leftRow": 36,
+      "rightRow": 35,
+      "field": "price",
+      "leftValue": "10.09 duplicate",
+      "rightValue": "10.09 changed"
+    },
+    {
+      "id": "conflict:0:5:1",
+      "occurrence": "conflict:0:5",
+      "action": "action-0011",
+      "key": "CAT0-00010",
+      "kind": "conflict",
+      "leftRow": 1,
+      "rightRow": 6,
+      "field": "price",
+      "leftValue": "11.10 duplicate",
+      "rightValue": "11.10"
+    },
+    {
+      "id": "conflict:0:6:1",
+      "occurrence": "conflict:0:6",
+      "action": "action-0011",
+      "key": "CAT0-00010",
+      "kind": "conflict",
+      "leftRow": 1,
+      "rightRow": 7,
+      "field": "price",
+      "leftValue": "11.10 duplicate",
+      "rightValue": "11.10"
+    },
+    {
+      "id": "conflict:0:32:1",
+      "occurrence": "conflict:0:32",
+      "action": "action-0011",
+      "key": "CAT0-00010",
+      "kind": "conflict",
+      "leftRow": 1,
+      "rightRow": 33,
+      "field": "price",
+      "leftValue": "11.10 duplicate",
+      "rightValue": "11.10"
+    },
+    {
+      "id": "conflict:8:5:1",
+      "occurrence": "conflict:8:5",
+      "action": "action-0011",
+      "key": "CAT0-00010",
+      "kind": "conflict",
+      "leftRow": 9,
+      "rightRow": 6,
+      "field": "price",
+      "leftValue": "11.10 duplicate",
+      "rightValue": "11.10"
+    },
+    {
+      "id": "conflict:8:6:1",
+      "occurrence": "conflict:8:6",
+      "action": "action-0011",
+      "key": "CAT0-00010",
+      "kind": "conflict",
+      "leftRow": 9,
+      "rightRow": 7,
+      "field": "price",
+      "leftValue": "11.10 duplicate",
+      "rightValue": "11.10"
+    },
+    {
+      "id": "conflict:8:32:1",
+      "occurrence": "conflict:8:32",
+      "action": "action-0011",
+      "key": "CAT0-00010",
+      "kind": "conflict",
+      "leftRow": 9,
+      "rightRow": 33,
+      "field": "price",
+      "leftValue": "11.10 duplicate",
+      "rightValue": "11.10"
+    },
+    {
+      "id": "conflict:6:20:1",
+      "occurrence": "conflict:6:20",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 7,
+      "rightRow": 21,
+      "field": "price",
+      "leftValue": "12.11",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:6:23:1",
+      "occurrence": "conflict:6:23",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 7,
+      "rightRow": 24,
+      "field": "price",
+      "leftValue": "12.11",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:6:25:1",
+      "occurrence": "conflict:6:25",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 7,
+      "rightRow": 26,
+      "field": "price",
+      "leftValue": "12.11",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:14:20:1",
+      "occurrence": "conflict:14:20",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 15,
+      "rightRow": 21,
+      "field": "price",
+      "leftValue": "12.11 duplicate",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:14:23:1",
+      "occurrence": "conflict:14:23",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 15,
+      "rightRow": 24,
+      "field": "price",
+      "leftValue": "12.11 duplicate",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:14:25:1",
+      "occurrence": "conflict:14:25",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 15,
+      "rightRow": 26,
+      "field": "price",
+      "leftValue": "12.11 duplicate",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:30:20:1",
+      "occurrence": "conflict:30:20",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 31,
+      "rightRow": 21,
+      "field": "price",
+      "leftValue": "12.11 duplicate",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:30:23:1",
+      "occurrence": "conflict:30:23",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 31,
+      "rightRow": 24,
+      "field": "price",
+      "leftValue": "12.11 duplicate",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "conflict:30:25:1",
+      "occurrence": "conflict:30:25",
+      "action": "action-0012",
+      "key": "CAT0-00011",
+      "kind": "conflict",
+      "leftRow": 31,
+      "rightRow": 26,
+      "field": "price",
+      "leftValue": "12.11 duplicate",
+      "rightValue": "12.11 changed"
+    },
+    {
+      "id": "right:17",
+      "occurrence": "right:17",
+      "action": "action-0013",
+      "key": "CAT0-NEW-0000",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 18,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"0\",\"CAT0-NEW-0000\",\"right source\",\"New item 0\",\"new\"]"
+    },
+    {
+      "id": "right:18",
+      "occurrence": "right:18",
+      "action": "action-0013",
+      "key": "CAT0-NEW-0000",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 19,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"0\",\"CAT0-NEW-0000\",\"right source\",\"New item 0\",\"new\"]"
+    },
+    {
+      "id": "right:24",
+      "occurrence": "right:24",
+      "action": "action-0013",
+      "key": "CAT0-NEW-0000",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 25,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"0\",\"CAT0-NEW-0000\",\"right source\",\"New item 0\",\"new\"]"
+    },
+    {
+      "id": "right:9",
+      "occurrence": "right:9",
+      "action": "action-0014",
+      "key": "CAT0-NEW-0001",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 10,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"1\",\"CAT0-NEW-0001\",\"right source\",\"New item 1\",\"new\"]"
+    },
+    {
+      "id": "right:14",
+      "occurrence": "right:14",
+      "action": "action-0014",
+      "key": "CAT0-NEW-0001",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 15,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"1\",\"CAT0-NEW-0001\",\"right source\",\"New item 1\",\"new\"]"
+    },
+    {
+      "id": "right:19",
+      "occurrence": "right:19",
+      "action": "action-0014",
+      "key": "CAT0-NEW-0001",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 20,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"1\",\"CAT0-NEW-0001\",\"right source\",\"New item 1\",\"new\"]"
+    },
+    {
+      "id": "right:0",
+      "occurrence": "right:0",
+      "action": "action-0015",
+      "key": "Key",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 1,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"8.07\",\"Key\",\"right source\",\"Item 7\",\"r2\"]"
+    },
+    {
+      "id": "right:35",
+      "occurrence": "right:35",
+      "action": "action-0015",
+      "key": "Key",
+      "kind": "missing_from_left",
+      "leftRow": "",
+      "rightRow": 36,
+      "field": "",
+      "leftValue": "",
+      "rightValue": "[\"8.07\",\"Key\",\"right source\",\"Item 7\",\"r2\"]"
+    },
+    {
+      "id": "left:11",
+      "occurrence": "left:11",
+      "action": "action-0016",
+      "key": "Key ",
+      "kind": "missing_from_right",
+      "leftRow": 12,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"Key \",\"Item 7\",\"8.07\",\"r2\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "left:21",
+      "occurrence": "left:21",
+      "action": "action-0016",
+      "key": "Key ",
+      "kind": "missing_from_right",
+      "leftRow": 22,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"Key \",\"Item 7\",\"8.07 duplicate\",\"r2\",\"left source\"]",
+      "rightValue": ""
+    },
+    {
+      "id": "left:33",
+      "occurrence": "left:33",
+      "action": "action-0016",
+      "key": "Key ",
+      "kind": "missing_from_right",
+      "leftRow": 34,
+      "rightRow": "",
+      "field": "",
+      "leftValue": "[\"Key \",\"Item 7\",\"8.07 duplicate\",\"r2\",\"left source\"]",
+      "rightValue": ""
+    }
+  ],
+  "metrics": {
+    "leftRows": 36,
+    "rightRows": 37,
+    "matchedPairs": 81,
+    "unmatchedRows": 19,
+    "unmatchedKeys": 7,
+    "conflictingPairs": 72,
+    "fieldDifferences": 96,
+    "actionGroups": 16,
+    "evidenceReferences": 91,
+    "leftDuplicates": {
+      "keys": 12,
+      "extraRows": 24
+    },
+    "rightDuplicates": {
+      "keys": 13,
+      "extraRows": 24
+    },
+    "comparedColumns": [
+      "name",
+      "price",
+      "revision"
+    ],
+    "unsharedLeft": [
+      "left_note"
+    ],
+    "unsharedRight": [
+      "right_note"
+    ]
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  }
+}

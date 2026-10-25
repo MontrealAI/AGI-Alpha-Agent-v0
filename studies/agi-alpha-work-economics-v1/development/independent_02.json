@@ -1,0 +1,42 @@
+{
+  "checks": 165,
+  "failures": [],
+  "accepted": true,
+  "sections": {
+    "native": {
+      "checks": 32,
+      "failures": [],
+      "accepted": true,
+      "oracle": "Python csv + independent SQLite exact join; no producer imports"
+    },
+    "guide": {
+      "checks": 104,
+      "failures": [],
+      "accepted": true,
+      "expected_counts": {
+        "leftRows": 18,
+        "rightRows": 18,
+        "matchedPairs": 14,
+        "unmatchedRows": 8,
+        "unmatchedKeys": 8,
+        "conflictingPairs": 5,
+        "fieldDifferences": 7,
+        "actionGroups": 13,
+        "evidenceReferences": 13,
+        "comparedColumns": [
+          "description",
+          "quantity",
+          "warehouse"
+        ]
+      },
+      "oracle": "Python csv + independent SQLite exact join; no producer imports"
+    },
+    "exports": {
+      "checks": 29,
+      "failures": [],
+      "accepted": true,
+      "oracle": "CSV export safety, summary cross-check and local-link inspection"
+    }
+  },
+  "oracle": "Independent-role Python CSV/SQLite reference; producer modules are not imported; human acceptance NOT RUN"
+}

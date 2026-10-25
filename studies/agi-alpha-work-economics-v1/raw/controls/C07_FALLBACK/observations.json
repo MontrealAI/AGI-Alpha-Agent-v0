@@ -1,0 +1,89 @@
+{
+  "id": "C07_FALLBACK",
+  "title": "Retained catalog key refused; explicit valid key succeeds",
+  "began": "2026-10-25T11:16:40.315Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Missing retained key refused without deliverable",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "Explicit valid-key fallback has expected complete counts",
+      "passed": true,
+      "actual": {
+        "leftRows": 2,
+        "rightRows": 2,
+        "matchedPairs": 1,
+        "unmatchedRows": 2,
+        "unmatchedKeys": 2,
+        "conflictingPairs": 1,
+        "fieldDifferences": 1,
+        "actionGroups": 3,
+        "evidenceReferences": 3,
+        "leftDuplicates": {
+          "keys": 0,
+          "extraRows": 0
+        },
+        "rightDuplicates": {
+          "keys": 0,
+          "extraRows": 0
+        },
+        "comparedColumns": [
+          "name",
+          "qty"
+        ],
+        "unsharedLeft": [],
+        "unsharedRight": []
+      },
+      "expected": null
+    },
+    {
+      "name": "Fallback makes no automatic source correction",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    }
+  ],
+  "observations": {
+    "retainedKeys": [
+      "sku",
+      "sku"
+    ],
+    "correctedKeys": [
+      "id",
+      "id"
+    ],
+    "correctionType": "Explicit predeclared configuration fallback; no autonomous schema inference claim.",
+    "metrics": {
+      "leftRows": 2,
+      "rightRows": 2,
+      "matchedPairs": 1,
+      "unmatchedRows": 2,
+      "unmatchedKeys": 2,
+      "conflictingPairs": 1,
+      "fieldDifferences": 1,
+      "actionGroups": 3,
+      "evidenceReferences": 3,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "name",
+        "qty"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    }
+  },
+  "unexpectedError": null,
+  "elapsedNanoseconds": "1592358",
+  "completed": "2026-10-25T11:16:40.317Z"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "C01_STOP",
+  "title": "Pre-aborted cooperative STOP",
+  "began": "2026-10-25T11:16:40.069Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Original runtime reports CANCELLED",
+      "passed": true,
+      "actual": "CANCELLED",
+      "expected": "CANCELLED"
+    },
+    {
+      "name": "No pack returned",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "Stop transition removes active run and result",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    }
+  ],
+  "observations": {
+    "checkpoints": 1,
+    "deliveredPacks": 0,
+    "scope": "Pre-aborted cooperative check; not an arbitrary process kill."
+  },
+  "unexpectedError": null,
+  "elapsedNanoseconds": "10462579",
+  "completed": "2026-10-25T11:16:40.080Z"
+}

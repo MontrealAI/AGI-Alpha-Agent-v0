@@ -1,0 +1,2918 @@
+{
+  "schema": "agialpha-intervention-ledger/v1",
+  "assembled_utc": "2026-10-25T11:37:55.605162+00:00",
+  "scope": "All explicit development/control/QA failures and interventions found in the named logs, plus the publication-owner report.",
+  "coverage": "The research session was not continuously instrumented for all human/operator actions; exhaustive whole-session count and attention remain unknown.",
+  "whole_session_intervention_count": null,
+  "whole_session_human_attention_minutes": null,
+  "operational_receipts_with_reported_intervention_field": 145,
+  "reported_unplanned_operational_interventions_sum": 0,
+  "scope_of_reported_zero": "Batch orchestration for named receipts only; does not include setup, authoring, review or these recorded development interventions.",
+  "counts_by_category": {
+    "injected_development_control": 6,
+    "development_failure": 1,
+    "development_activity": 5,
+    "pre_freeze_review_correction": 5,
+    "predeclared_control_case": 8,
+    "expected_control_refusal": 8,
+    "browser_build_or_qa_harness_failure": 4,
+    "browser_product_qa": 1,
+    "audit_harness_failure": 1,
+    "independent_role_verification": 1,
+    "publication_build_failure": 3,
+    "publication_visual_correction": 1,
+    "reproduction_tooling_development": 1,
+    "publication_build_verification": 1,
+    "publication_visual_review": 6
+  },
+  "events": [
+    {
+      "id": "development-timeout-fixture",
+      "category": "injected_development_control",
+      "description": "Outer worker timeout after 35 seconds",
+      "provenance": {
+        "path": "development/injected_timeout_05/receipt.json",
+        "fragment": null,
+        "sha256": "101dc5587eb9b13fc2b9808a20e7cd072b847f35cdab4ac482edfe3e904fa8a9"
+      },
+      "outcome": "Expected failed receipt persisted; not a primary job failure.",
+      "injected_test": true,
+      "actor": "automated_test_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "recorded_outer_interval_seconds": 3.724500129465014e-05,
+        "actual_35_second_wait_observed": false
+      }
+    },
+    {
+      "id": "dev-001",
+      "category": "development_failure",
+      "description": "task generation",
+      "provenance": {
+        "path": "development/ATTEMPTS.jsonl",
+        "fragment": "line 1",
+        "sha256": "8ea77835afacadb36528d22587b7108188da3796945095cb11fdb3c26c55921d"
+      },
+      "outcome": "FAILED",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "dev-001",
+        "stage": "task generation",
+        "status": "FAILED",
+        "error": "IndexError in high-complexity development rows; n=12 below duplicate index 20",
+        "scientific_confirmation_generated": false,
+        "cost_metering": "unmetered initial command; elapsed tool call 0.000048387s not job timing"
+      }
+    },
+    {
+      "id": "dev-002",
+      "category": "development_activity",
+      "description": "native CLI + original guide",
+      "provenance": {
+        "path": "development/ATTEMPTS.jsonl",
+        "fragment": "line 2",
+        "sha256": "8ea77835afacadb36528d22587b7108188da3796945095cb11fdb3c26c55921d"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "dev-002",
+        "stage": "native CLI + original guide",
+        "status": "PASS",
+        "packet": "native_01",
+        "checks": 183,
+        "scientific_confirmation_generated": false,
+        "data": "development seed917 only",
+        "not_human_trial": true
+      }
+    },
+    {
+      "id": "dev-003",
+      "category": "development_activity",
+      "description": "retained executable on changed schema",
+      "provenance": {
+        "path": "development/ATTEMPTS.jsonl",
+        "fragment": "line 3",
+        "sha256": "8ea77835afacadb36528d22587b7108188da3796945095cb11fdb3c26c55921d"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "dev-003",
+        "stage": "retained executable on changed schema",
+        "status": "PASS",
+        "packet": "retained_02",
+        "checks": 165,
+        "scientific_confirmation_generated": false,
+        "data": "development seed917 only",
+        "not_human_trial": true
+      }
+    },
+    {
+      "id": "dev-004",
+      "category": "development_activity",
+      "description": "market comparison label update",
+      "provenance": {
+        "path": "development/ATTEMPTS.jsonl",
+        "fragment": "line 4",
+        "sha256": "8ea77835afacadb36528d22587b7108188da3796945095cb11fdb3c26c55921d"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "dev-004",
+        "stage": "market comparison label update",
+        "status": "PASS",
+        "packet": "native_03",
+        "checks": 184,
+        "scientific_confirmation_generated": false,
+        "data": "development seed917 only",
+        "not_human_trial": true
+      }
+    },
+    {
+      "id": "dev-005",
+      "category": "development_activity",
+      "description": "metered complete worker",
+      "provenance": {
+        "path": "development/ATTEMPTS.jsonl",
+        "fragment": "line 5",
+        "sha256": "8ea77835afacadb36528d22587b7108188da3796945095cb11fdb3c26c55921d"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "dev-005",
+        "stage": "metered complete worker",
+        "status": "PASS",
+        "packet": "worker_04",
+        "checks": 166,
+        "scientific_confirmation_generated": false,
+        "data": "development seed917 only",
+        "not_human_trial": true
+      }
+    },
+    {
+      "id": "dev-006",
+      "category": "development_activity",
+      "description": "independent review corrections",
+      "provenance": {
+        "path": "development/ATTEMPTS.jsonl",
+        "fragment": "line 6",
+        "sha256": "8ea77835afacadb36528d22587b7108188da3796945095cb11fdb3c26c55921d"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "dev-006",
+        "stage": "independent review corrections",
+        "status": "PASS",
+        "corrections": [
+          "outer timeout failed receipt preserved",
+          "unknown CPU remains null",
+          "employer deadline distinguished from worker cap",
+          "CPU startup included",
+          "explicit native evaluation authority and settlement checked"
+        ],
+        "timeout_injection": "injected_timeout_05",
+        "confirmation_generated": false
+      }
+    },
+    {
+      "id": "pre-freeze:PF1",
+      "category": "pre_freeze_review_correction",
+      "description": "Uncaught outer subprocess TimeoutExpired aborts the campaign and omits a failed receipt and later attempts.",
+      "provenance": {
+        "path": "development/pre_freeze_review.json",
+        "fragment": "PF1",
+        "sha256": "5d72ccff15853efbc3d1aa94466dbe08df503af21b1ba3e9ea91f359e14970f4"
+      },
+      "outcome": "Corrections documented in dev-006 before the freeze.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "PF1",
+        "severity": "major",
+        "file": "src/run_campaign.py",
+        "issue": "Uncaught outer subprocess TimeoutExpired aborts the campaign and omits a failed receipt and later attempts.",
+        "correction": "Catch TimeoutExpired and launch/read failures; persist a failed receipt with task identity/context/complexity, observed outer time, null unmeasured CPU, timeout reason and captured output; continue scheduled jobs. Do not rerun/replace the failed attempt."
+      }
+    },
+    {
+      "id": "pre-freeze:PF2",
+      "category": "pre_freeze_review_correction",
+      "description": "Scale sum uses total_cpu_seconds or 0; analysis assumes numeric CPU for every job. Timeout/missing receipts therefore zero-fill missing cost quantities or crash analysis.",
+      "provenance": {
+        "path": "development/pre_freeze_review.json",
+        "fragment": "PF2",
+        "sha256": "5d72ccff15853efbc3d1aa94466dbe08df503af21b1ba3e9ea91f359e14970f4"
+      },
+      "outcome": "Corrections documented in dev-006 before the freeze.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "PF2",
+        "severity": "major",
+        "files": [
+          "src/run_campaign.py",
+          "src/analyse.py"
+        ],
+        "issue": "Scale sum uses total_cpu_seconds or 0; analysis assumes numeric CPU for every job. Timeout/missing receipts therefore zero-fill missing cost quantities or crash analysis.",
+        "correction": "Report known CPU subtotal, missing count, and null total when any job CPU is unmeasured. Summary statistics should handle missing values explicitly and retain all attempt/acceptance denominators."
+      }
+    },
+    {
+      "id": "pre-freeze:PF3",
+      "category": "pre_freeze_review_correction",
+      "description": "The stated 30-second job/worker limit is ambiguous as the common employer deadline while modeled human effort spans 5–60 minutes. Applying it to humans would handicap the comparison.",
+      "provenance": {
+        "path": "development/pre_freeze_review.json",
+        "fragment": "PF3",
+        "sha256": "5d72ccff15853efbc3d1aa94466dbe08df503af21b1ba3e9ea91f359e14970f4"
+      },
+      "outcome": "Corrections documented in dev-006 before the freeze.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "PF3",
+        "severity": "moderate",
+        "file": "protocol/STUDY_PROTOCOL.md",
+        "issue": "The stated 30-second job/worker limit is ambiguous as the common employer deadline while modeled human effort spans 5–60 minutes. Applying it to humans would handicap the comparison.",
+        "correction": "Distinguish a shared employer turnaround requirement from the system process safety cap. Do not price a human scenario as comparable if it violates the shared employer deadline."
+      }
+    },
+    {
+      "id": "pre-freeze:PF4",
+      "category": "pre_freeze_review_correction",
+      "description": "CPU timer begins after Python imports/startup and receipt serialization occurs after the sampled total; process-turnaround includes these but measured CPU does not.",
+      "provenance": {
+        "path": "development/pre_freeze_review.json",
+        "fragment": "PF4",
+        "sha256": "5d72ccff15853efbc3d1aa94466dbe08df503af21b1ba3e9ea91f359e14970f4"
+      },
+      "outcome": "Corrections documented in dev-006 before the freeze.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "PF4",
+        "severity": "minor",
+        "file": "src/run_job.py",
+        "issue": "CPU timer begins after Python imports/startup and receipt serialization occurs after the sampled total; process-turnaround includes these but measured CPU does not.",
+        "correction": "Label CPU as instrumented worker-and-child CPU excluding uninstrumented interpreter startup/receipt tail, or measure process CPU externally. This is not material to complete-cost claims because fully allocated cost remains unknown."
+      }
+    },
+    {
+      "id": "pre-freeze:PF5",
+      "category": "pre_freeze_review_correction",
+      "description": "No-settlement check treats an absent authority field as empty, and lacks explicit settlement value assertion.",
+      "provenance": {
+        "path": "development/pre_freeze_review.json",
+        "fragment": "PF5",
+        "sha256": "5d72ccff15853efbc3d1aa94466dbe08df503af21b1ba3e9ea91f359e14970f4"
+      },
+      "outcome": "Corrections documented in dev-006 before the freeze.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "PF5",
+        "severity": "minor",
+        "file": "src/successor_report.py",
+        "issue": "No-settlement check treats an absent authority field as empty, and lacks explicit settlement value assertion.",
+        "correction": "Require pack authority to be explicitly [] and settlement explicitly NOT_CONNECTED; retain this check separately from business deliverable correctness."
+      }
+    },
+    {
+      "id": "oracle-corruption:drop_difference",
+      "category": "injected_development_control",
+      "description": "drop_difference",
+      "provenance": {
+        "path": "development/development_oracle_verification.json",
+        "fragment": "drop_difference",
+        "sha256": "fce3e4d3b60543913be48119dd7c2bad3ade3ad8023a242859216c8cbe421c7d"
+      },
+      "outcome": "EXPECTED_REJECTION",
+      "injected_test": true,
+      "actor": "independent_role_test_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "mutation": "drop_difference",
+        "rejected": true,
+        "failed_checks": 1
+      }
+    },
+    {
+      "id": "oracle-corruption:change_source_value",
+      "category": "injected_development_control",
+      "description": "change_source_value",
+      "provenance": {
+        "path": "development/development_oracle_verification.json",
+        "fragment": "change_source_value",
+        "sha256": "fce3e4d3b60543913be48119dd7c2bad3ade3ad8023a242859216c8cbe421c7d"
+      },
+      "outcome": "EXPECTED_REJECTION",
+      "injected_test": true,
+      "actor": "independent_role_test_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "mutation": "change_source_value",
+        "rejected": true,
+        "failed_checks": 1
+      }
+    },
+    {
+      "id": "oracle-corruption:wrong_input_hash",
+      "category": "injected_development_control",
+      "description": "wrong_input_hash",
+      "provenance": {
+        "path": "development/development_oracle_verification.json",
+        "fragment": "wrong_input_hash",
+        "sha256": "fce3e4d3b60543913be48119dd7c2bad3ade3ad8023a242859216c8cbe421c7d"
+      },
+      "outcome": "EXPECTED_REJECTION",
+      "injected_test": true,
+      "actor": "independent_role_test_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "mutation": "wrong_input_hash",
+        "rejected": true,
+        "failed_checks": 1
+      }
+    },
+    {
+      "id": "oracle-corruption:drop_source_reference",
+      "category": "injected_development_control",
+      "description": "drop_source_reference",
+      "provenance": {
+        "path": "development/development_oracle_verification.json",
+        "fragment": "drop_source_reference",
+        "sha256": "fce3e4d3b60543913be48119dd7c2bad3ade3ad8023a242859216c8cbe421c7d"
+      },
+      "outcome": "EXPECTED_REJECTION",
+      "injected_test": true,
+      "actor": "independent_role_test_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "mutation": "drop_source_reference",
+        "rejected": true,
+        "failed_checks": 2
+      }
+    },
+    {
+      "id": "oracle-corruption:false_metric",
+      "category": "injected_development_control",
+      "description": "false_metric",
+      "provenance": {
+        "path": "development/development_oracle_verification.json",
+        "fragment": "false_metric",
+        "sha256": "fce3e4d3b60543913be48119dd7c2bad3ade3ad8023a242859216c8cbe421c7d"
+      },
+      "outcome": "EXPECTED_REJECTION",
+      "injected_test": true,
+      "actor": "independent_role_test_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "mutation": "false_metric",
+        "rejected": true,
+        "failed_checks": 1
+      }
+    },
+    {
+      "id": "control:C01_STOP",
+      "category": "predeclared_control_case",
+      "description": "Pre-aborted cooperative STOP",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C01_STOP",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "checkpoints": 1,
+        "deliveredPacks": 0,
+        "scope": "Pre-aborted cooperative check; not an arbitrary process kill."
+      }
+    },
+    {
+      "id": "control:C02_RECOVERY",
+      "category": "predeclared_control_case",
+      "description": "Interrupted record, historical restore, explicit import and new run",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C02_RECOVERY",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "checkpoints": 3,
+        "progress": [
+          "planning"
+        ],
+        "firstAttemptPacks": 0,
+        "explicitNewRunPacks": 1,
+        "recovery": "Explicit input restart, not continuation from an internal checkpoint; record validation also recomputes deterministic output."
+      }
+    },
+    {
+      "id": "control:C03_BOUNDS",
+      "category": "predeclared_control_case",
+      "description": "Clock-boundary budget and input ceiling",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C03_BOUNDS",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "clockValues": [
+          0,
+          60001
+        ],
+        "checkpoints": 1,
+        "oversizedCsvBytes": 100013,
+        "enforcedCsvCharacterCeiling": 100000,
+        "timeTest": "Injected monotonic clock, not real 60-second work",
+        "monetaryBudget": "NOT_TESTED"
+      }
+    },
+    {
+      "id": "control:C04_SOURCE",
+      "category": "predeclared_control_case",
+      "description": "Different source identity remains historical and cannot complete current run",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C04_SOURCE",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "originalSourceHash": "7ab63a685fdd28fe220350418df5f240960c7788f6405da4ed24a7c3902123c1",
+        "mismatchedDeclaredSourceHash": "c6e2c75ae552afa05d46468e6938d243211d27e31f2cb26b08075a993f8a8382",
+        "interpretation": "Intentional mismatch of two inspected source scopes, not an observed release upgrade."
+      }
+    },
+    {
+      "id": "control:C05_CORRUPTION",
+      "category": "predeclared_control_case",
+      "description": "Changed saved claims rejected",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C05_CORRUPTION",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "pristineWorkspaceRestored": true,
+        "originalMatchedPairs": 1,
+        "corruptedClaim": 2,
+        "authorityRestoredFromCorruption": false
+      }
+    },
+    {
+      "id": "control:C06_ROLLBACK",
+      "category": "predeclared_control_case",
+      "description": "Restore preserved local artifact bytes",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C06_ROLLBACK",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "identities": [
+          {
+            "name": "workspace.json",
+            "priorSha256": "274d879d6409ad2cfa02ff08c440e0d8a10fe450c54e1dda0c44d21d7bdfa86d",
+            "laterSha256": "3ef4fa33c6331449f3e0da6615b6125a07ddb5f5a55e9243fc8168919f109693",
+            "restoredSha256": "274d879d6409ad2cfa02ff08c440e0d8a10fe450c54e1dda0c44d21d7bdfa86d",
+            "priorBytes": 7659,
+            "laterBytes": 5675,
+            "restoredBytes": 7659
+          },
+          {
+            "name": "all-differences.csv",
+            "priorSha256": "c244f06ed275b79f7d23083551ac9d8ab2d1e48a265e4bcc321917c02b6f5623",
+            "laterSha256": "d513c82328b6dc77ca2f6cd73914ecbec59a73158dada2fbb901c2defca36596",
+            "restoredSha256": "c244f06ed275b79f7d23083551ac9d8ab2d1e48a265e4bcc321917c02b6f5623",
+            "priorBytes": 378,
+            "laterBytes": 194,
+            "restoredBytes": 378
+          }
+        ],
+        "priorMetrics": {
+          "leftRows": 2,
+          "rightRows": 2,
+          "matchedPairs": 1,
+          "unmatchedRows": 2,
+          "unmatchedKeys": 2,
+          "conflictingPairs": 1,
+          "fieldDifferences": 1,
+          "actionGroups": 3,
+          "evidenceReferences": 3,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        },
+        "laterMetrics": {
+          "leftRows": 2,
+          "rightRows": 3,
+          "matchedPairs": 2,
+          "unmatchedRows": 1,
+          "unmatchedKeys": 1,
+          "conflictingPairs": 0,
+          "fieldDifferences": 0,
+          "actionGroups": 1,
+          "evidenceReferences": 1,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        },
+        "scope": "Local snapshot copying; no claim of atomic multi-file, transactional, production, or contract rollback."
+      }
+    },
+    {
+      "id": "control:C07_FALLBACK",
+      "category": "predeclared_control_case",
+      "description": "Retained catalog key refused; explicit valid key succeeds",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C07_FALLBACK",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "retainedKeys": [
+          "sku",
+          "sku"
+        ],
+        "correctedKeys": [
+          "id",
+          "id"
+        ],
+        "correctionType": "Explicit predeclared configuration fallback; no autonomous schema inference claim.",
+        "metrics": {
+          "leftRows": 2,
+          "rightRows": 2,
+          "matchedPairs": 1,
+          "unmatchedRows": 2,
+          "unmatchedKeys": 2,
+          "conflictingPairs": 1,
+          "fieldDifferences": 1,
+          "actionGroups": 3,
+          "evidenceReferences": 3,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        }
+      }
+    },
+    {
+      "id": "control:C08_AMBIGUITY",
+      "category": "predeclared_control_case",
+      "description": "Numeric-looking exact identifiers remain unresolved",
+      "provenance": {
+        "path": "raw/controls/controls.json",
+        "fragment": "C08_AMBIGUITY",
+        "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d"
+      },
+      "outcome": "PASS",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "metrics": {
+          "leftRows": 1,
+          "rightRows": 1,
+          "matchedPairs": 0,
+          "unmatchedRows": 2,
+          "unmatchedKeys": 2,
+          "conflictingPairs": 0,
+          "fieldDifferences": 0,
+          "actionGroups": 2,
+          "evidenceReferences": 2,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        },
+        "preservedIdentifiers": [
+          [
+            "001",
+            "missing_from_right"
+          ],
+          [
+            "1",
+            "missing_from_left"
+          ]
+        ],
+        "unresolvedDecision": "A responsible user must determine whether 001 and 1 denote the same entity."
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C01_STOP/run-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "CANCELLED",
+      "provenance": {
+        "path": "raw/controls/C01_STOP/run-attempt.json",
+        "fragment": null,
+        "sha256": "a2ce47ce3c502279e1a043f22c74d7bacbd333468f5aef7676b934c0b8b91383"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": null,
+        "message": "CANCELLED",
+        "stack": "Error: CANCELLED\n    at checkpoint (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:263:30)\n    at async Module.run (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:267:3)\n    at async attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:45)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:135:15\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:130:1"
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C02_RECOVERY/interrupted-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "INJECTED_INTERRUPTION",
+      "provenance": {
+        "path": "raw/controls/C02_RECOVERY/interrupted-attempt.json",
+        "fragment": null,
+        "sha256": "6808caa07969ab42c4e2a9dd4711b35a8af62c2de82ea23dcf2f2e9413e8cc77"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": null,
+        "message": "INJECTED_INTERRUPTION",
+        "stack": "Error: INJECTED_INTERRUPTION\n    at onCheckpoint (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:151:64)\n    at checkpoint (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:262:11)\n    at publicData (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:202:32)\n    at async Module.run (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:273:16)\n    at async attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:45)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:149:15\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:145:1"
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C03_BOUNDS/budget-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "TIME_BUDGET_EXCEEDED",
+      "provenance": {
+        "path": "raw/controls/C03_BOUNDS/budget-attempt.json",
+        "fragment": null,
+        "sha256": "815c44c798b082f018a3106f12002552274983ea2b86876ef04d8306a0408ed9"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": null,
+        "message": "TIME_BUDGET_EXCEEDED",
+        "stack": "Error: TIME_BUDGET_EXCEEDED\n    at checkpoint (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:264:36)\n    at async Module.run (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:267:3)\n    at async attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:45)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:179:18\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:175:1"
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C03_BOUNDS/input-bound-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "TEXT: csv",
+      "provenance": {
+        "path": "raw/controls/C03_BOUNDS/input-bound-attempt.json",
+        "fragment": null,
+        "sha256": "9bf6f6d65984bf9865f7fa1ad65ec3ec829c73033ad9976d06ec8a51a5712392"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": null,
+        "message": "TEXT: csv",
+        "stack": "Error: TEXT: csv\n    at text (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:25:83)\n    at validate (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:74:50)\n    at Module.run (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/engine.mjs:258:15)\n    at file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:186:47\n    at attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:51)\n    at file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:186:23\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:175:1"
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C04_SOURCE/promotion-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "SOURCE_MISMATCH",
+      "provenance": {
+        "path": "raw/controls/C04_SOURCE/promotion-attempt.json",
+        "fragment": null,
+        "sha256": "1a69564fe88bfcf3a9d87f8d71211845c7cce73cae7129cf5b2c0b27505d5908"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": "SOURCE_MISMATCH",
+        "message": "SOURCE_MISMATCH",
+        "stack": "Error: SOURCE_MISMATCH\n    at fail (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/mission-record.mjs:33:19)\n    at checkPack (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/mission-record.mjs:166:64)\n    at Module.completeRun (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/mission-record.mjs:281:27)\n    at async attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:45)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:201:21\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:193:1"
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C05_CORRUPTION/corrupt-record-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "RECORD_INTEGRITY",
+      "provenance": {
+        "path": "raw/controls/C05_CORRUPTION/corrupt-record-attempt.json",
+        "fragment": null,
+        "sha256": "54eb180d02a91f34ade56c8361a069514b1a2aa0a049099924453b733cef41a5"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": "RECORD_INTEGRITY",
+        "message": "RECORD_INTEGRITY",
+        "stack": "Error: RECORD_INTEGRITY\n    at fail (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/mission-record.mjs:33:19)\n    at validateRecord (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/mission-record.mjs:207:72)\n    at async Module.restoreRecord (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-workbench/mission-record.mjs:327:20)\n    at async attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:45)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:222:25\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:209:1"
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C05_CORRUPTION/corrupt-workspace-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "The saved results differ from recomputation. No result or authority was restored.",
+      "provenance": {
+        "path": "raw/controls/C05_CORRUPTION/corrupt-workspace-attempt.json",
+        "fragment": null,
+        "sha256": "74eaa84435c4a1a2c3774834d2971558633b2a78cb33cdbedac092b7bbd90e12"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": null,
+        "message": "The saved results differ from recomputation. No result or authority was restored.",
+        "stack": "Error: The saved results differ from recomputation. No result or authority was restored.\n    at fail (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/ti-guide/guide.mjs:18:33)\n    at Module.restoreWorkspace (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/ti-guide/guide.mjs:133:9)\n    at async attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:45)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:216:28\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:209:1"
+      }
+    },
+    {
+      "id": "refusal:raw/controls/C07_FALLBACK/inappropriate-reuse-attempt.json",
+      "category": "expected_control_refusal",
+      "description": "Choose a key column present in each CSV.",
+      "provenance": {
+        "path": "raw/controls/C07_FALLBACK/inappropriate-reuse-attempt.json",
+        "fragment": null,
+        "sha256": "1f1534c6fcf38bf64372d40b54f3689862c415341ed49d8bddc17d0cb97139fe"
+      },
+      "outcome": "EXPECTED_REFUSAL_SEPARATE_FROM_BUSINESS_ACCEPTANCE",
+      "injected_test": true,
+      "actor": "automated_control_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "name": "Error",
+        "code": null,
+        "message": "Choose a key column present in each CSV.",
+        "stack": "Error: Choose a key column present in each CSV.\n    at fail (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-alpha/engine.mjs:17:33)\n    at Module.createJoinMission (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/successor-alpha/engine.mjs:99:69)\n    at Module.compute (file:///workspace/scratch/5f62e493ed3d/work_economics/upstream/examples/ti-guide/guide.mjs:50:27)\n    at file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:266:45\n    at attempt (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:28:51)\n    at file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:266:25\n    at async caseRun (file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:102:30)\n    at async file:///workspace/scratch/5f62e493ed3d/work_economics/src/controls.mjs:260:1"
+      }
+    },
+    {
+      "id": "browser-attempt:1",
+      "category": "browser_build_or_qa_harness_failure",
+      "description": "FileNotFoundError: upstream/LICENSE absent from companion snapshot",
+      "provenance": {
+        "path": "browser/BUILD_ATTEMPTS.jsonl",
+        "fragment": "line 1",
+        "sha256": "d0023aeeba1590b0580f7ca0a6de8a6ca61b41b7d3acb8441038299a96f0a59e"
+      },
+      "outcome": "failed_before_output",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "attempt": 1,
+        "phase": "build",
+        "outcome": "failed_before_output",
+        "error": "FileNotFoundError: upstream/LICENSE absent from companion snapshot",
+        "resolution": "Copy original repository LICENSE into browser/LICENSE; change evidence-subset path only. No upstream files changed."
+      }
+    },
+    {
+      "id": "browser-attempt:2",
+      "category": "browser_build_or_qa_harness_failure",
+      "description": "Python Playwright default Chromium revision 1248 executable absent",
+      "provenance": {
+        "path": "browser/BUILD_ATTEMPTS.jsonl",
+        "fragment": "line 2",
+        "sha256": "d0023aeeba1590b0580f7ca0a6de8a6ca61b41b7d3acb8441038299a96f0a59e"
+      },
+      "outcome": "browser_not_started",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "attempt": 2,
+        "phase": "browser_qa_launch",
+        "outcome": "browser_not_started",
+        "error": "Python Playwright default Chromium revision 1248 executable absent",
+        "resolution": "Use existing /tmp/successor-chrome/chrome-headless-shell-linux64/chrome-headless-shell through explicit WORK_ECONOMICS_CHROMIUM variable; no download/install."
+      }
+    },
+    {
+      "id": "browser-attempt:3",
+      "category": "browser_build_or_qa_harness_failure",
+      "description": "Default execution sandbox denied Chromium sandbox-host shutdown operation",
+      "provenance": {
+        "path": "browser/BUILD_ATTEMPTS.jsonl",
+        "fragment": "line 3",
+        "sha256": "d0023aeeba1590b0580f7ca0a6de8a6ca61b41b7d3acb8441038299a96f0a59e"
+      },
+      "outcome": "browser_not_started",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "attempt": 3,
+        "phase": "browser_qa_launch",
+        "outcome": "browser_not_started",
+        "error": "Default execution sandbox denied Chromium sandbox-host shutdown operation",
+        "resolution": "Approved isolated offline browser QA execution with require_escalated; no app or security settings changed."
+      }
+    },
+    {
+      "id": "browser-attempt:4",
+      "category": "browser_build_or_qa_harness_failure",
+      "description": "Playwright string wait predicate conflicts with document Content Security Policy forbidding unsafe-eval",
+      "provenance": {
+        "path": "browser/BUILD_ATTEMPTS.jsonl",
+        "fragment": "line 4",
+        "sha256": "d0023aeeba1590b0580f7ca0a6de8a6ca61b41b7d3acb8441038299a96f0a59e"
+      },
+      "outcome": "harness_interrupted_after_initial_checks",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "attempt": 4,
+        "phase": "browser_qa",
+        "outcome": "harness_interrupted_after_initial_checks",
+        "error": "Playwright string wait predicate conflicts with document Content Security Policy forbidding unsafe-eval",
+        "resolution": "Use DOM selector waits in QA script. Demo CSP remains unchanged."
+      }
+    },
+    {
+      "id": "browser-final-qa",
+      "category": "browser_product_qa",
+      "description": "Offline Chromium, source computations, downloaded bytes, keyboard tab interaction, arithmetic, corruption refusal, and 1440/390-pixel layout. This is product QA, not a business-job experiment.",
+      "provenance": {
+        "path": "browser/qa/QA_REPORT.json",
+        "fragment": null,
+        "sha256": "bb2dc74ce654d55d32190799551a1cf57ec5a4121aafd74fd3bdbe87c2b2e305"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "automated_browser_test_harness",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "checks": 21,
+        "passed": 21,
+        "html_sha256": "5056036a3231510a6b8f8c898650a454b2ca80e3240de5d5ece687545cc8ef7f",
+        "page_errors": []
+      }
+    },
+    {
+      "id": "saved-output-auditor-launcher",
+      "category": "audit_harness_failure",
+      "description": "An initial evaluator launcher assumed an outer-process receipt field on the directly invoked showcase and stopped with KeyError; no measured result was changed. The evaluator was corrected to use recorded stage exits for that packet.",
+      "provenance": {
+        "path": "verification/independent_review.json",
+        "fragment": "audit_development_note",
+        "sha256": "0a53e55f39d8f2e20e613832437b1dbb5185030d61b806268a41a733af53a875"
+      },
+      "outcome": "Evaluator corrected; recorded results unchanged.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": null
+    },
+    {
+      "id": "saved-output-independent-review",
+      "category": "independent_role_verification",
+      "description": "Saved evidence revalidated without producing-job reruns.",
+      "provenance": {
+        "path": "verification/independent_review.json",
+        "fragment": null,
+        "sha256": "0a53e55f39d8f2e20e613832437b1dbb5185030d61b806268a41a733af53a875"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "outer_checks": 6705,
+        "oracle_checks": 223024,
+        "issues": []
+      }
+    },
+    {
+      "id": "publication-tex-noalign",
+      "category": "publication_build_failure",
+      "description": "Initial LaTeX build failed with misplaced noalign; table macro assembly was corrected.",
+      "provenance": {
+        "path": "paper/build-initial.log",
+        "fragment": null,
+        "sha256": "ea3ecd0be28fe71f1bb26f639623731a4a26a540a36734dc2da133b797ddc935"
+      },
+      "outcome": "Failure log preserved; later build reported successful.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "error_lines": [
+          [
+            287,
+            "! Misplaced \\noalign."
+          ],
+          [
+            292,
+            "!  ==> Fatal error occurred, no output PDF file produced!"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "publication-initial-cwd",
+      "category": "publication_build_failure",
+      "description": "Initial figure/publication assembly used the wrong working directory; corrected before the successful build.",
+      "provenance": {
+        "kind": "parent_agent_report",
+        "origin": "/root coordination message in this research session",
+        "artifact_hash": null
+      },
+      "outcome": "Reported corrected by publication owner; elapsed time and cost unmetered.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": null
+    },
+    {
+      "id": "publication-layout-corrections",
+      "category": "publication_visual_correction",
+      "description": "Initial signature-figure and chart layouts were corrected before final visual review.",
+      "provenance": {
+        "kind": "parent_agent_report",
+        "origin": "/root coordination message in this research session",
+        "artifact_hash": null
+      },
+      "outcome": "Publication-development correction; no recorded job result changed.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": null
+    },
+    {
+      "id": "publication-truncated-figure",
+      "category": "publication_build_failure",
+      "description": "A fresh clean compile found attention_frontier.pdf truncated, missing xref/endstream (reported size 8804 bytes).",
+      "provenance": {
+        "path": "verification/failed-figure-build.log",
+        "fragment": null,
+        "sha256": "1da30a05d9f62e2c1e62e62137e6ef50f9ab0a3bd8fad9a4fcd07c732bf1c755"
+      },
+      "outcome": "Publication owner changed the figure writer to buffered, validated atomic replacement and restarted fresh clean builds.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "scope": "Publication artifact failure, not a scientific result failure.",
+        "measured_repair_time_seconds": null
+      }
+    },
+    {
+      "id": "reproduction-authoring-001",
+      "category": "reproduction_tooling_development",
+      "description": "Two patch attempts included unmatched README context and were rejected before any file change.",
+      "provenance": {
+        "path": "reproduction/DEVELOPMENT_ATTEMPTS.jsonl",
+        "fragment": "line 1",
+        "sha256": "68a4f64700528320336557468458c28c86244001f9955bf677aac93159c98caf"
+      },
+      "outcome": "Corrected patch scope; no source, evidence, or ledger content was lost.",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "id": "reproduction-authoring-001",
+        "description": "Two patch attempts included unmatched README context and were rejected before any file change.",
+        "outcome": "Corrected patch scope; no source, evidence, or ledger content was lost.",
+        "attempt_count": 2,
+        "cost": null,
+        "human_attention_minutes": null,
+        "scientific_result_failure": false
+      }
+    },
+    {
+      "id": "publication-final-clean-build",
+      "category": "publication_build_verification",
+      "description": "Two isolated builds and render verification of every final PDF page.",
+      "provenance": {
+        "path": "verification/CLEAN_BUILD.json",
+        "fragment": null,
+        "sha256": "dbb09ca4795f8436511dd0940154f2ac76327bbacf68a03bea2d47e36ea13db2"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "byte_identical": true,
+        "pages": 20,
+        "all_rendered_pngs_verified": true,
+        "clean_builds": [
+          {
+            "build": 1,
+            "sha256": "8b9df6f5ef1887d6f972ccfbe26d61a5551962dea41ad7c6595d431dfacb2f51",
+            "bytes": 414889,
+            "warnings": []
+          },
+          {
+            "build": 2,
+            "sha256": "8b9df6f5ef1887d6f972ccfbe26d61a5551962dea41ad7c6595d431dfacb2f51",
+            "bytes": 414889,
+            "warnings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "publication-review:paper_visual_review_pages08_14.json",
+      "category": "publication_visual_review",
+      "description": "Preserved draft or final page-inspection record; scope and findings remain in the original file.",
+      "provenance": {
+        "path": "verification/paper_visual_review_pages08_14.json",
+        "fragment": null,
+        "sha256": "3c68471b9902c057d9af2a4ee53dd6ec5537ed7106adb28a57f4e9fc5bfd342b"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "schema": "work-economics-visual-review/v1",
+        "reviewed_utc": "2026-10-25T11:35:15.472631+00:00",
+        "reviewer_role": "Independent-role protocol/output evaluator",
+        "scope": "Every physical page 08 through 14 inclusive; seven of twenty physical PDF pages",
+        "status": "PASS",
+        "main_tex_sha256": "8b60e274ec8c622b9bcc9af42e871d9b35ba308c748de1c61470a2b4504211ff",
+        "main_pdf_sha256": "8b9df6f5ef1887d6f972ccfbe26d61a5551962dea41ad7c6595d431dfacb2f51",
+        "pages": [
+          {
+            "physical_page": 8,
+            "printed_page": 7,
+            "image": "paper/qa-final/page-08.png",
+            "image_sha256": "2f4293f2bdea721ae011572aa43ebd86d9219fc180224945d0f42de456583546",
+            "visually_inspected": true,
+            "same_image_as_previous_full_visual_pass": true,
+            "inspection_basis": "Previously visually inspected exact image; SHA-256 confirms final bytes unchanged",
+            "status": "PASS",
+            "clipping": false,
+            "overlap": false,
+            "unreadable_tables_or_graphics": false,
+            "missing_references": false,
+            "bad_page_breaks": false
+          },
+          {
+            "physical_page": 9,
+            "printed_page": 8,
+            "image": "paper/qa-final/page-09.png",
+            "image_sha256": "295ee21906a34bf93134b69758ffdea86865c1fcbb80d966535e49fcbf7fa577",
+            "visually_inspected": true,
+            "same_image_as_previous_full_visual_pass": true,
+            "inspection_basis": "Previously visually inspected exact image; SHA-256 confirms final bytes unchanged",
+            "status": "PASS",
+            "clipping": false,
+            "overlap": false,
+            "unreadable_tables_or_graphics": false,
+            "missing_references": false,
+            "bad_page_breaks": false
+          },
+          {
+            "physical_page": 10,
+            "printed_page": 9,
+            "image": "paper/qa-final/page-10.png",
+            "image_sha256": "7c45fee4a260129d5542e637cd263d7effb084a55cef7ba312f6ac6d3d6e9b29",
+            "visually_inspected": true,
+            "same_image_as_previous_full_visual_pass": false,
+            "inspection_basis": "Reopened and visually inspected updated page 10 after annotation correction",
+            "status": "PASS",
+            "clipping": false,
+            "overlap": false,
+            "unreadable_tables_or_graphics": false,
+            "missing_references": false,
+            "bad_page_breaks": false
+          },
+          {
+            "physical_page": 11,
+            "printed_page": 10,
+            "image": "paper/qa-final/page-11.png",
+            "image_sha256": "34ea3fb984857d05d977c4e589c7f5301ebf3e550b86ad9ab07945fcd26ad322",
+            "visually_inspected": true,
+            "same_image_as_previous_full_visual_pass": true,
+            "inspection_basis": "Previously visually inspected exact image; SHA-256 confirms final bytes unchanged",
+            "status": "PASS",
+            "clipping": false,
+            "overlap": false,
+            "unreadable_tables_or_graphics": false,
+            "missing_references": false,
+            "bad_page_breaks": false
+          },
+          {
+            "physical_page": 12,
+            "printed_page": 11,
+            "image": "paper/qa-final/page-12.png",
+            "image_sha256": "59d6d4fbd18acfe0d80e85cacc5ba0eed74685bb5a500c6c8fcfc5d3d697c8dd",
+            "visually_inspected": true,
+            "same_image_as_previous_full_visual_pass": true,
+            "inspection_basis": "Previously visually inspected exact image; SHA-256 confirms final bytes unchanged",
+            "status": "PASS",
+            "clipping": false,
+            "overlap": false,
+            "unreadable_tables_or_graphics": false,
+            "missing_references": false,
+            "bad_page_breaks": false
+          },
+          {
+            "physical_page": 13,
+            "printed_page": 12,
+            "image": "paper/qa-final/page-13.png",
+            "image_sha256": "ed7d0c08a42eb3dbe9baa07a881cb266e3974b58978834285544d3161a705ea3",
+            "visually_inspected": true,
+            "same_image_as_previous_full_visual_pass": true,
+            "inspection_basis": "Previously visually inspected exact image; SHA-256 confirms final bytes unchanged",
+            "status": "PASS",
+            "clipping": false,
+            "overlap": false,
+            "unreadable_tables_or_graphics": false,
+            "missing_references": false,
+            "bad_page_breaks": false
+          },
+          {
+            "physical_page": 14,
+            "printed_page": 13,
+            "image": "paper/qa-final/page-14.png",
+            "image_sha256": "f0eb8f068020423213bfe2723c707f56f513e609418cb1478708273e68fe74d4",
+            "visually_inspected": true,
+            "same_image_as_previous_full_visual_pass": true,
+            "inspection_basis": "Previously visually inspected exact image; SHA-256 confirms final bytes unchanged",
+            "status": "PASS",
+            "clipping": false,
+            "overlap": false,
+            "unreadable_tables_or_graphics": false,
+            "missing_references": false,
+            "bad_page_breaks": false
+          }
+        ],
+        "all_original_findings_resolved": true,
+        "resolved_findings": {
+          "V01": "Throughput median labels are above the maximum dot, with clear spacing.",
+          "V02": "No lone continuation line; widow-control pagination is readable.",
+          "V03": "Opaque white annotation background prevents the gold frontier curve from crossing the purple explanatory text."
+        },
+        "equation_page_break": "Equation (4) and its variable explanation remain together.",
+        "headers_and_footers": "Present and clear; final PNG header pixels verified independently.",
+        "clean_build_record": "verification/CLEAN_BUILD.json records two byte-identical builds with zero warnings; hash identities checked here.",
+        "previous_reviews_preserved": [
+          "verification/paper_visual_review_pages08_14_draft.json",
+          "verification/paper_visual_review_pages08_14_prefinal.json"
+        ],
+        "no_paper_or_frozen_files_modified": true
+      }
+    },
+    {
+      "id": "publication-review:paper_visual_review_pages08_14_draft.json",
+      "category": "publication_visual_review",
+      "description": "Preserved draft or final page-inspection record; scope and findings remain in the original file.",
+      "provenance": {
+        "path": "verification/paper_visual_review_pages08_14_draft.json",
+        "fragment": null,
+        "sha256": "f2b2b64202d481aff79dcfa7827521a031af3389f12625f719afaff1faf8d9d4"
+      },
+      "outcome": "DRAFT_CHANGES_REQUESTED",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "schema": "work-economics-visual-review/v1",
+        "reviewed_utc": "2026-10-25T11:31:07.879940+00:00",
+        "scope": "Every physical page 08 through 14, inclusive",
+        "main_tex_sha256": "3cddcdbbb809005e451736f016cb7bc5af57b92defdd537d87d24d7d68037560",
+        "main_pdf_sha256": "31418a3045ab165ba10724accafde9d9a935fa427006735e8ddc2ec3bfd6d0a9",
+        "status": "DRAFT_CHANGES_REQUESTED",
+        "pages": [
+          {
+            "physical_page": 8,
+            "printed_page": 7,
+            "visually_inspected": true,
+            "image": "verification/pdf-pages-08-14/page-08.png",
+            "image_sha256": "1cb2db51d1912dc693125a76732462b76b3d1d92b8c3a78dcadaa904a9834605",
+            "status": "FIX_RECOMMENDED",
+            "notes": [
+              "A single continuation line (EUR12.00–56.80 with references) is orphaned above Table 5."
+            ],
+            "clipping": false,
+            "text_overlap": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 9,
+            "printed_page": 8,
+            "visually_inspected": true,
+            "image": "verification/pdf-pages-08-14/page-09.png",
+            "image_sha256": "64e1a3d1ab70c09accbf035ca21f550c46829cd721e423916ec3b27c2d29625f",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "text_overlap": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 10,
+            "printed_page": 9,
+            "visually_inspected": true,
+            "image": "verification/pdf-pages-08-14/page-10.png",
+            "image_sha256": "b63e623a0920d5405f544fb7f9e9b03d79ca6905fc349e4f5547aaee1a9a32f4",
+            "status": "PASS",
+            "notes": [
+              "Equation (4) is at page bottom and its explanatory paragraph continues on page 11; readable, optional keep-together improvement."
+            ],
+            "clipping": false,
+            "text_overlap": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 11,
+            "printed_page": 10,
+            "visually_inspected": true,
+            "image": "verification/pdf-pages-08-14/page-11.png",
+            "image_sha256": "9802a5fbae5b313470371745fbf37fe3cb5d5606dd38fcf7f54d1bdd11cb00d3",
+            "status": "FIX_RECOMMENDED",
+            "notes": [
+              "Upper batch dots overlap numeric labels 212 and 332 in throughput panel."
+            ],
+            "clipping": false,
+            "text_overlap": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 12,
+            "printed_page": 11,
+            "visually_inspected": true,
+            "image": "verification/pdf-pages-08-14/page-12.png",
+            "image_sha256": "8f366a7039d02344c203d4790a61472e4f7391a3e101f96136f3a34f5228bf79",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "text_overlap": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 13,
+            "printed_page": 12,
+            "visually_inspected": true,
+            "image": "verification/pdf-pages-08-14/page-13.png",
+            "image_sha256": "e66afd962da9b6830de8d8a087c7b63b883d351b2a6d61284815ea94143fa686",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "text_overlap": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 14,
+            "printed_page": 13,
+            "visually_inspected": true,
+            "image": "verification/pdf-pages-08-14/page-14.png",
+            "image_sha256": "dec29228e012231f1d618f6051940e369a7088a1a67b6864fb064a8f3302f5ca",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "text_overlap": false,
+            "missing_references": false
+          }
+        ],
+        "findings": [
+          {
+            "id": "V01",
+            "severity": "moderate",
+            "physical_page": 11,
+            "problem": "Data markers overlap median labels 212 and 332.",
+            "requested_fix": "Move labels above maximum point for each concurrency group with clear separation."
+          },
+          {
+            "id": "V02",
+            "severity": "minor",
+            "physical_page": 8,
+            "problem": "Single continuation line at top of page.",
+            "requested_fix": "Keep this short final line with its preceding paragraph if practical."
+          }
+        ],
+        "render_issue": {
+          "supplied_truncated_pngs": [
+            8,
+            14
+          ],
+          "remedy": "Independently rendered all seven pages with pdftoppm at 128 dpi; inspected those complete images. Original supplied files unchanged."
+        },
+        "source_stability": "Parent rebuilt main.tex/main.pdf during review; this report applies to the recorded initial pair and preserved independent page images, pending final stable rebuild review.",
+        "textual_findings": "All five prior scientific wording findings are resolved; see paper_scientific_review.json resolution_review."
+      }
+    },
+    {
+      "id": "publication-review:paper_visual_review_pages08_14_prefinal.json",
+      "category": "publication_visual_review",
+      "description": "Preserved draft or final page-inspection record; scope and findings remain in the original file.",
+      "provenance": {
+        "path": "verification/paper_visual_review_pages08_14_prefinal.json",
+        "fragment": null,
+        "sha256": "dcd357072bb38e153028ca96c3dd59152526559aa3e215a2573080ab73bdb192"
+      },
+      "outcome": "ONE_VISUAL_CORRECTION_REQUESTED",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "schema": "work-economics-visual-review/v1",
+        "reviewed_utc": "2026-10-25T11:33:03.253360+00:00",
+        "scope": "Every physical page 08 through 14 inclusive, reinspection of stable qa-final set",
+        "main_tex_sha256": "8b60e274ec8c622b9bcc9af42e871d9b35ba308c748de1c61470a2b4504211ff",
+        "main_pdf_sha256": "b20b064ccede3c69700d34cae7710f3a180c342f0653a4b10fb3c34ac31743f5",
+        "status": "ONE_VISUAL_CORRECTION_REQUESTED",
+        "pages": [
+          {
+            "physical_page": 8,
+            "printed_page": 7,
+            "visually_inspected": true,
+            "image": "paper/qa-final/page-08.png",
+            "image_sha256": "2f4293f2bdea721ae011572aa43ebd86d9219fc180224945d0f42de456583546",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 9,
+            "printed_page": 8,
+            "visually_inspected": true,
+            "image": "paper/qa-final/page-09.png",
+            "image_sha256": "295ee21906a34bf93134b69758ffdea86865c1fcbb80d966535e49fcbf7fa577",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 10,
+            "printed_page": 9,
+            "visually_inspected": true,
+            "image": "paper/qa-final/page-10.png",
+            "image_sha256": "386b76a07adf08dfa5229211eddb38e0676cca24cc34eb58dae0fe2bb8b88936",
+            "status": "FIX_REQUIRED",
+            "notes": [
+              "Gold frontier line intersects purple two-line illustration annotation."
+            ],
+            "clipping": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 11,
+            "printed_page": 10,
+            "visually_inspected": true,
+            "image": "paper/qa-final/page-11.png",
+            "image_sha256": "34ea3fb984857d05d977c4e589c7f5301ebf3e550b86ad9ab07945fcd26ad322",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 12,
+            "printed_page": 11,
+            "visually_inspected": true,
+            "image": "paper/qa-final/page-12.png",
+            "image_sha256": "59d6d4fbd18acfe0d80e85cacc5ba0eed74685bb5a500c6c8fcfc5d3d697c8dd",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 13,
+            "printed_page": 12,
+            "visually_inspected": true,
+            "image": "paper/qa-final/page-13.png",
+            "image_sha256": "ed7d0c08a42eb3dbe9baa07a881cb266e3974b58978834285544d3161a705ea3",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "missing_references": false
+          },
+          {
+            "physical_page": 14,
+            "printed_page": 13,
+            "visually_inspected": true,
+            "image": "paper/qa-final/page-14.png",
+            "image_sha256": "f0eb8f068020423213bfe2723c707f56f513e609418cb1478708273e68fe74d4",
+            "status": "PASS",
+            "notes": [],
+            "clipping": false,
+            "missing_references": false
+          }
+        ],
+        "resolved_prior_findings": [
+          "V01: throughput labels positioned above highest point without overlap",
+          "V02: single-line continuation avoided",
+          "Optional equation explanatory paragraph now stays with equation (4)"
+        ],
+        "remaining_finding": {
+          "id": "V03",
+          "severity": "minor",
+          "physical_page": 10,
+          "problem": "Gold USD20 frontier line crosses the purple illustration annotation.",
+          "requested_fix": "Place an opaque white annotation background or move the annotation to clear space."
+        },
+        "headers_verified": "Every assigned PNG has 2622 dark header-band pixels; repeated headers are present in image bytes.",
+        "textual_findings": "All five original textual findings remain resolved; no scientific claims were changed by reviewer."
+      }
+    },
+    {
+      "id": "publication-review:visual_pages_01_07_root.json",
+      "category": "publication_visual_review",
+      "description": "Preserved draft or final page-inspection record; scope and findings remain in the original file.",
+      "provenance": {
+        "path": "verification/visual_pages_01_07_root.json",
+        "fragment": null,
+        "sha256": "ef409235fe48412dd510d08831a12fcee5cd646072742e8d655fb38af83f81a3"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "status": "PASS",
+        "reviewer": "root",
+        "scope": "individual visual inspection of every assigned page",
+        "pdf_sha256": "8b9df6f5ef1887d6f972ccfbe26d61a5551962dea41ad7c6595d431dfacb2f51",
+        "tex_sha256": "8b60e274ec8c622b9bcc9af42e871d9b35ba308c748de1c61470a2b4504211ff",
+        "pages": [
+          {
+            "physical_page": 1,
+            "sha256": "422a5112dd14bf3a47e7ad66a70195195c80654c2fbe8bef4f39e571833e1f4f",
+            "visual_status": "PASS",
+            "issues": []
+          },
+          {
+            "physical_page": 2,
+            "sha256": "93a890d5c76984dc48186bd2df0c80989fd240f160f55b1b8c38d74e54f53c01",
+            "visual_status": "PASS",
+            "issues": []
+          },
+          {
+            "physical_page": 3,
+            "sha256": "65d075a3aea595aad43494f51a04eb93f61e7e4ca09b195eb732ee722e6c2ea2",
+            "visual_status": "PASS",
+            "issues": []
+          },
+          {
+            "physical_page": 4,
+            "sha256": "66368946ffeb3e4cb1eb48ee72d989c1d9b6a63e839e4674cc048cadd33c5a55",
+            "visual_status": "PASS",
+            "issues": []
+          },
+          {
+            "physical_page": 5,
+            "sha256": "91d026041bf57f72e19aa180e37e35073c38bf49dde10440ad906f2afb4e3b20",
+            "visual_status": "PASS",
+            "issues": []
+          },
+          {
+            "physical_page": 6,
+            "sha256": "5b5ec8ed552804e9da17af2f58852e701e650e791e11bd406f32e338acc7b11f",
+            "visual_status": "PASS",
+            "issues": []
+          },
+          {
+            "physical_page": 7,
+            "sha256": "b3973a4a6c5986e23789802697a0bdac78055cba0186c33a6626f3d3f02c2a6a",
+            "visual_status": "PASS",
+            "issues": []
+          }
+        ],
+        "fixed_issues": [
+          "Signature figure overflow corrected by bounded type sizes and wrapped text",
+          "Title lines separated; no overlap"
+        ],
+        "previous_pdf_sha256": "b20b064ccede3c69700d34cae7710f3a180c342f0653a4b10fb3c34ac31743f5",
+        "carry_forward": "All seven inspected page PNGs are byte-identical after the figure-only correction on physical page10."
+      }
+    },
+    {
+      "id": "publication-review:visual_pages_15_20_economics.json",
+      "category": "publication_visual_review",
+      "description": "Preserved draft or final page-inspection record; scope and findings remain in the original file.",
+      "provenance": {
+        "path": "verification/visual_pages_15_20_economics.json",
+        "fragment": null,
+        "sha256": "f49c56ba26c40f14dafe7b9da0ae90fde133d61cee9ce178e60159b08133f952"
+      },
+      "outcome": "LAYOUT_REVISION_REQUESTED",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "review": "Individual rendered-PNG visual review",
+        "date": "2026-10-25",
+        "reviewer": "economics_sources",
+        "status": "LAYOUT_REVISION_REQUESTED",
+        "main_tex_sha256": "3cddcdbbb809005e451736f016cb7bc5af57b92defdd537d87d24d7d68037560",
+        "main_pdf_sha256": "31418a3045ab165ba10724accafde9d9a935fa427006735e8ddc2ec3bfd6d0a9",
+        "physical_pages_assigned": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "physical_page_count": 20,
+        "pages": [
+          {
+            "physical_page": 15,
+            "printed_page": 14,
+            "png": "paper/qa-draft/page-15.png",
+            "png_sha256": "5e55f09c14def30f7b7f45bb37f35f0074e4d7fa123c81fb23eccc0648fc8e3e",
+            "inspected_with": "view_image, original resolution, individual page",
+            "result": "NO_OVERLAP_OR_CLIPPING",
+            "notes": "Cost ledger table and beginning of acceptance appendix: all three columns readable; no overlap, clipped rows or footer collision."
+          },
+          {
+            "physical_page": 16,
+            "printed_page": 15,
+            "png": "paper/qa-draft/page-16.png",
+            "png_sha256": "48cda7a6755146db0795d2e11ccfd58a8bec2e4cd273b77f26d834d17a4424a6",
+            "inspected_with": "view_image, original resolution, individual page",
+            "result": "NO_OVERLAP_OR_CLIPPING",
+            "notes": "Repository and contract tables plus source notes: readable headers, hashes, cells and caption. No clipping/overlap. Running header and left brand footer absent on this continuation page."
+          },
+          {
+            "physical_page": 17,
+            "printed_page": 16,
+            "png": "paper/qa-draft/page-17.png",
+            "png_sha256": "c965e854393a1ab536e24db6a7a84825b4b7eba2555968064d95c09fb0b96396",
+            "inspected_with": "view_image, original resolution, individual page",
+            "result": "REVISION_REQUESTED",
+            "notes": "Only final global-scenario appendix paragraph at top, followed by roughly80% unused page before bibliography; avoidable orphan-page layout. Running header and left brand footer absent."
+          },
+          {
+            "physical_page": 18,
+            "printed_page": 17,
+            "png": "paper/qa-draft/page-18.png",
+            "png_sha256": "bce5e55eee5ad5eafde81ec53e3cedd39121cd81d73297b1325da37090d26353",
+            "inspected_with": "view_image, original resolution, individual page",
+            "result": "NO_OVERLAP_OR_CLIPPING",
+            "notes": "References1–13: legible, URL/hash wrapping stays within margins; no overlapping entries or clipped lines. Running header/footer present."
+          },
+          {
+            "physical_page": 19,
+            "printed_page": 18,
+            "png": "paper/qa-draft/page-19.png",
+            "png_sha256": "2a7a5f3ae0086ce606b63bc403f8214a72ea679ec7edbb83c5de5af5b20dc96f",
+            "inspected_with": "view_image, original resolution, individual page",
+            "result": "NO_OVERLAP_OR_CLIPPING",
+            "notes": "References14–27: legible, wrapped URLs remain within margins; no overlap/clipping. ILO URL breaks after https:, visually awkward but fully present. Running header and left brand footer absent."
+          },
+          {
+            "physical_page": 20,
+            "printed_page": 19,
+            "png": "paper/qa-draft/page-20.png",
+            "png_sha256": "617225307a1b066b87f808147e8c554b6e0f98ddaa12e8e365f5f4deeb7150c1",
+            "inspected_with": "view_image, original resolution, individual page",
+            "result": "NO_OVERLAP_OR_CLIPPING",
+            "notes": "References28–43: legible; long URLs and final entry stay within margins and above page number; no clipped lines. Running header and left brand footer absent."
+          }
+        ],
+        "required_layout_change": {
+          "page": 17,
+          "issue": "Appendix final paragraph orphaned on near-empty page before forced bibliography break.",
+          "suggestion": "Remove pre-bibliography clearpage so references follow, or consolidate final global-scenario paragraph into preceding appendix text. Re-render affected end pages afterward."
+        },
+        "consistency_observation": {
+          "pages": [
+            16,
+            17,
+            19,
+            20
+          ],
+          "issue": "Running header and left brand footer absent while15/18 show both; page numbers remain. Check page-style consistency if unintended."
+        },
+        "no_pdf_or_main_tex_edits_by_reviewer": true
+      }
+    },
+    {
+      "id": "publication-review:visual_pages_15_20_economics_final.json",
+      "category": "publication_visual_review",
+      "description": "Preserved draft or final page-inspection record; scope and findings remain in the original file.",
+      "provenance": {
+        "path": "verification/visual_pages_15_20_economics_final.json",
+        "fragment": null,
+        "sha256": "7e0a398c11605c97294b959e06e308f67da24f3434e58e285d1efe5c7a0e21e1"
+      },
+      "outcome": "PASS",
+      "injected_test": false,
+      "actor": "research_or_test_operator",
+      "counts_as_primary_business_failure": false,
+      "human_active_minutes": null,
+      "authoring_or_repair_cost": null,
+      "timestamp_utc": null,
+      "details": {
+        "review": "Final visual sign-off, physical pages15–20",
+        "date": "2026-10-25",
+        "reviewer": "economics_sources",
+        "status": "PASS",
+        "supersedes": "verification/visual_pages_15_20_economics.json",
+        "main_tex_sha256": "8b60e274ec8c622b9bcc9af42e871d9b35ba308c748de1c61470a2b4504211ff",
+        "main_pdf_sha256": "b20b064ccede3c69700d34cae7710f3a180c342f0653a4b10fb3c34ac31743f5",
+        "physical_page_count": 20,
+        "physical_pages_assigned": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "pages": [
+          {
+            "physical_page": 15,
+            "printed_page": 14,
+            "png": "paper/qa-final/page-15.png",
+            "png_sha256": "5e55f09c14def30f7b7f45bb37f35f0074e4d7fa123c81fb23eccc0648fc8e3e",
+            "image_dimensions": [
+              1012,
+              1432
+            ],
+            "inspection": "view_image original resolution; each assigned page inspected",
+            "result": "PASS",
+            "notes": "Cost ledger columns and subsequent appendix text readable and aligned; no clipped rows or text-footer collision.",
+            "header_pixel_region": [
+              0,
+              0,
+              1012,
+              100
+            ],
+            "header_pixels_sha256": "aceee5d3288930305d721f46d8bcb7a18cdb94f419aa6559375baf74bdf94664",
+            "brand_footer_pixel_region": [
+              80,
+              1337,
+              500,
+              1402
+            ],
+            "brand_footer_pixels_sha256": "36455159a621b5db654650e5efe1ddcac2ad47acc43c3e6b0e981c81bb6fc5c1"
+          },
+          {
+            "physical_page": 16,
+            "printed_page": 15,
+            "png": "paper/qa-final/page-16.png",
+            "png_sha256": "48cda7a6755146db0795d2e11ccfd58a8bec2e4cd273b77f26d834d17a4424a6",
+            "image_dimensions": [
+              1012,
+              1432
+            ],
+            "inspection": "view_image original resolution; each assigned page inspected",
+            "result": "PASS",
+            "notes": "Repository/contract tables, caption and source notes readable; source hashes fit; no overlap or clipping.",
+            "header_pixel_region": [
+              0,
+              0,
+              1012,
+              100
+            ],
+            "header_pixels_sha256": "aceee5d3288930305d721f46d8bcb7a18cdb94f419aa6559375baf74bdf94664",
+            "brand_footer_pixel_region": [
+              80,
+              1337,
+              500,
+              1402
+            ],
+            "brand_footer_pixels_sha256": "36455159a621b5db654650e5efe1ddcac2ad47acc43c3e6b0e981c81bb6fc5c1"
+          },
+          {
+            "physical_page": 17,
+            "printed_page": 16,
+            "png": "paper/qa-final/page-17.png",
+            "png_sha256": "763ba09fc8067aeb73d84c84046b9b0a0d2399df2d312458160cbbeace121cda",
+            "image_dimensions": [
+              1012,
+              1432
+            ],
+            "inspection": "view_image original resolution; each assigned page inspected",
+            "result": "PASS",
+            "notes": "Former orphan appendix paragraph now followed by References on the same page. Reference entries1–12 flow within margins and remain legible.",
+            "header_pixel_region": [
+              0,
+              0,
+              1012,
+              100
+            ],
+            "header_pixels_sha256": "aceee5d3288930305d721f46d8bcb7a18cdb94f419aa6559375baf74bdf94664",
+            "brand_footer_pixel_region": [
+              80,
+              1337,
+              500,
+              1402
+            ],
+            "brand_footer_pixels_sha256": "36455159a621b5db654650e5efe1ddcac2ad47acc43c3e6b0e981c81bb6fc5c1"
+          },
+          {
+            "physical_page": 18,
+            "printed_page": 17,
+            "png": "paper/qa-final/page-18.png",
+            "png_sha256": "50885a0942a26567a0c86e1a76e3e5a37b7a2fb588d9bfdbaeee086c8036b402",
+            "image_dimensions": [
+              1012,
+              1432
+            ],
+            "inspection": "view_image original resolution; each assigned page inspected",
+            "result": "PASS",
+            "notes": "References13–26 readable; long URLs and hashes wrap within margins. No overlapping entries or clipped lines.",
+            "header_pixel_region": [
+              0,
+              0,
+              1012,
+              100
+            ],
+            "header_pixels_sha256": "aceee5d3288930305d721f46d8bcb7a18cdb94f419aa6559375baf74bdf94664",
+            "brand_footer_pixel_region": [
+              80,
+              1337,
+              500,
+              1402
+            ],
+            "brand_footer_pixels_sha256": "36455159a621b5db654650e5efe1ddcac2ad47acc43c3e6b0e981c81bb6fc5c1"
+          },
+          {
+            "physical_page": 19,
+            "printed_page": 18,
+            "png": "paper/qa-final/page-19.png",
+            "png_sha256": "e1c872aebd0a0266eef418f9800c4d16ac62a1196b35bd60fe0f89dc915fc27f",
+            "image_dimensions": [
+              1012,
+              1432
+            ],
+            "inspection": "view_image original resolution; each assigned page inspected",
+            "result": "PASS",
+            "notes": "References27–41 readable with consistent spacing; all wrapped links and final lines remain within margins.",
+            "header_pixel_region": [
+              0,
+              0,
+              1012,
+              100
+            ],
+            "header_pixels_sha256": "aceee5d3288930305d721f46d8bcb7a18cdb94f419aa6559375baf74bdf94664",
+            "brand_footer_pixel_region": [
+              80,
+              1337,
+              500,
+              1402
+            ],
+            "brand_footer_pixels_sha256": "36455159a621b5db654650e5efe1ddcac2ad47acc43c3e6b0e981c81bb6fc5c1"
+          },
+          {
+            "physical_page": 20,
+            "printed_page": 19,
+            "png": "paper/qa-final/page-20.png",
+            "png_sha256": "de4032b8bd28fdad0ae35499dddcdcc3ae2eaf83a516268fc9483919329f3e32",
+            "image_dimensions": [
+              1012,
+              1432
+            ],
+            "inspection": "view_image original resolution; each assigned page inspected",
+            "result": "PASS",
+            "notes": "References42–43 form a normal short final bibliography page; both entries fully visible, with correct final page number. No clipping or overlap.",
+            "header_pixel_region": [
+              0,
+              0,
+              1012,
+              100
+            ],
+            "header_pixels_sha256": "aceee5d3288930305d721f46d8bcb7a18cdb94f419aa6559375baf74bdf94664",
+            "brand_footer_pixel_region": [
+              80,
+              1337,
+              500,
+              1402
+            ],
+            "brand_footer_pixels_sha256": "36455159a621b5db654650e5efe1ddcac2ad47acc43c3e6b0e981c81bb6fc5c1"
+          }
+        ],
+        "all_assigned_pages_individually_inspected": true,
+        "prior_orphan_page_issue": "RESOLVED: References now follows appendix paragraph on physical17",
+        "prior_header_footer_observation": "RESOLVED: final PNG header and brand-footer regions are pixel-identical on all six assigned pages, matching the visibly complete page15 header/footer; no missing-header defect in the final images.",
+        "unresolved_layout_issues": [],
+        "source_or_pdf_modified_by_reviewer": false
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "raw/primary/assets-high-01/receipt.json",
+      "sha256": "7cfb594612005fa9c24a939af592a2004f8eb69043078f6993d7e99b8bec7630",
+      "bytes": 2141
+    },
+    {
+      "path": "raw/primary/assets-high-02/receipt.json",
+      "sha256": "735d87bced9607b89ee1f15b4949ab7c7e3ed57fc99e39f4e2622b74f7ca56a4",
+      "bytes": 2118
+    },
+    {
+      "path": "raw/primary/assets-high-03/receipt.json",
+      "sha256": "088b96a80c9c0c5d21b243efe97ab8ecfc91892335b8227aced08598bb4e6276",
+      "bytes": 2154
+    },
+    {
+      "path": "raw/primary/assets-low-01/receipt.json",
+      "sha256": "1179164d5ae54062a882ab46e77f5b42090fd4799d8ecc68a087bf316d5e01cf",
+      "bytes": 2143
+    },
+    {
+      "path": "raw/primary/assets-low-02/receipt.json",
+      "sha256": "8a4a39e3188b82642b3effbb14e7f9102e13952e62f05e4f0f6d36eb0aa10e11",
+      "bytes": 2144
+    },
+    {
+      "path": "raw/primary/assets-low-03/receipt.json",
+      "sha256": "dcf4e3f27af7f810fe613527c3806b3c8799231a586b2f4d799b900aa86b1382",
+      "bytes": 2144
+    },
+    {
+      "path": "raw/primary/assets-medium-01/receipt.json",
+      "sha256": "004db72b3b2ad5cf4a40e909022a5ad792c4888c1f7d1c58b697ac686b4a6e8e",
+      "bytes": 2137
+    },
+    {
+      "path": "raw/primary/assets-medium-02/receipt.json",
+      "sha256": "a885120e860e94a577a763b1dc47d37d7ff6f09e4bcdebc2f49dfae226b899c7",
+      "bytes": 2147
+    },
+    {
+      "path": "raw/primary/assets-medium-03/receipt.json",
+      "sha256": "fc6bb51e5d89ebe06bc67ded919f923fafaa20c8abc2cc5e2396f79375b2e1a2",
+      "bytes": 2168
+    },
+    {
+      "path": "raw/primary/catalog-high-01/receipt.json",
+      "sha256": "468e205b414a3358ec63edc4816ff0a4f2e2cfb95cbc29dfdf1ad4131382942f",
+      "bytes": 2151
+    },
+    {
+      "path": "raw/primary/catalog-high-02/receipt.json",
+      "sha256": "dd8b34bca68471ba8043fde63e56c0fdda313dc401cbea6dc0a6b1299d09c78d",
+      "bytes": 2132
+    },
+    {
+      "path": "raw/primary/catalog-high-03/receipt.json",
+      "sha256": "03acd8f70ce0bcf1caea1ed25e7000593c67c59d5cf3af9ef9741a745918baa9",
+      "bytes": 2149
+    },
+    {
+      "path": "raw/primary/catalog-low-01/receipt.json",
+      "sha256": "faecab2c98c4861b8c1de8fe135015ae69eef92e96f53c5535c3d5240a0f888e",
+      "bytes": 2166
+    },
+    {
+      "path": "raw/primary/catalog-low-02/receipt.json",
+      "sha256": "663bf9abc9057b0b45708faba85625088698fbcfd80f9b0ef4b07868fc7fdfd2",
+      "bytes": 2131
+    },
+    {
+      "path": "raw/primary/catalog-low-03/receipt.json",
+      "sha256": "6dd6e4bed251035bf1d8b97b69bf1bb1af93d9dd3bce6d6928ffa88e27bc2c42",
+      "bytes": 2144
+    },
+    {
+      "path": "raw/primary/catalog-medium-01/receipt.json",
+      "sha256": "543460099a828bbff12f41ca81064d17c98b0e9639060412f1966af514ef27d3",
+      "bytes": 2160
+    },
+    {
+      "path": "raw/primary/catalog-medium-02/receipt.json",
+      "sha256": "2b50783ce392cfc27592bd475c78703e7ffeac2636a92fda8a851d019f23560f",
+      "bytes": 2157
+    },
+    {
+      "path": "raw/primary/catalog-medium-03/receipt.json",
+      "sha256": "66ed49a6df93b2f7f2fc6919fc3a19623584765bba835c15a0c1057e4d1b9e85",
+      "bytes": 2138
+    },
+    {
+      "path": "raw/primary/inventory-high-01/receipt.json",
+      "sha256": "3e01918073ab2d06498c726ecc285a051c515887716449bd17ea30b1d4fa6088",
+      "bytes": 2152
+    },
+    {
+      "path": "raw/primary/inventory-high-02/receipt.json",
+      "sha256": "2042917fa2b1c12080043faf820218cbff819a6b025d29230dbd3bac0cb72eb5",
+      "bytes": 2156
+    },
+    {
+      "path": "raw/primary/inventory-high-03/receipt.json",
+      "sha256": "2cec7fa1eeefefdbeed3c0e97c3d69cc423c2403d681e47dd60ec7f40a4c90c3",
+      "bytes": 2146
+    },
+    {
+      "path": "raw/primary/inventory-low-01/receipt.json",
+      "sha256": "299d69fe84c1bb92d5caf00205453bd0053be32894c6b8665024192037bedb76",
+      "bytes": 2150
+    },
+    {
+      "path": "raw/primary/inventory-low-02/receipt.json",
+      "sha256": "1555d87c46fe72b2333467279a3892c6cbcd03a71a419455e63df0268f638d10",
+      "bytes": 2175
+    },
+    {
+      "path": "raw/primary/inventory-low-03/receipt.json",
+      "sha256": "f4d39535197a3f301f34dee1940c8d7e441d281e1c861a86744902ea7ecb0943",
+      "bytes": 2162
+    },
+    {
+      "path": "raw/primary/inventory-medium-01/receipt.json",
+      "sha256": "5c10ad02ca70790e20ededb567bc033895a1494df91878d8640c014731aea326",
+      "bytes": 2175
+    },
+    {
+      "path": "raw/primary/inventory-medium-02/receipt.json",
+      "sha256": "dca626a3c7d566e8a4b77e5ca8eb685f45a3fa612a8363f8c60db82b16241eba",
+      "bytes": 2163
+    },
+    {
+      "path": "raw/primary/inventory-medium-03/receipt.json",
+      "sha256": "b928337d668991151ffbd5742009d0cec0021fe55c6728fdee7e299a7101f5bc",
+      "bytes": 2151
+    },
+    {
+      "path": "raw/primary/publications-high-01/receipt.json",
+      "sha256": "8c4404d194e9985f1842cdcb851ecb21366818618772bb2ea9a61133701a7daf",
+      "bytes": 2164
+    },
+    {
+      "path": "raw/primary/publications-high-02/receipt.json",
+      "sha256": "ef031565c62f1913d4fcb07cedee96fae26633fb60d0f6d92360cb521dd3a780",
+      "bytes": 2139
+    },
+    {
+      "path": "raw/primary/publications-high-03/receipt.json",
+      "sha256": "c1a2c739bee6e320fe47428bca6dadc56a2e2cad2cfea686c30cad9cadad0cae",
+      "bytes": 2163
+    },
+    {
+      "path": "raw/primary/publications-low-01/receipt.json",
+      "sha256": "f5d50426f93d2f3756917ef0cf947e26302b060d9f884bf4edfd2e5ea79faeb9",
+      "bytes": 2164
+    },
+    {
+      "path": "raw/primary/publications-low-02/receipt.json",
+      "sha256": "a7d3c8500eeb60f12aed0f81dc00f6f33f0deed6203c75af932379b4e07decb1",
+      "bytes": 2166
+    },
+    {
+      "path": "raw/primary/publications-low-03/receipt.json",
+      "sha256": "2de9666f0334fee8128aa190c613e9f96a67dedd874f09778d732884aed5c9cf",
+      "bytes": 2165
+    },
+    {
+      "path": "raw/primary/publications-medium-01/receipt.json",
+      "sha256": "e5b809c2a412b70d48ae4bbbf4ed2524656eff417eee79c319bca972d56324a7",
+      "bytes": 2171
+    },
+    {
+      "path": "raw/primary/publications-medium-02/receipt.json",
+      "sha256": "dcc361a55bbf1529b81965642d823b3f729e5dd8da1b86e31b732ac8233532ae",
+      "bytes": 2172
+    },
+    {
+      "path": "raw/primary/publications-medium-03/receipt.json",
+      "sha256": "6d55905bd107331e02f1baff081d2fdac748c6de30e69908a1cb06a56d1896ee",
+      "bytes": 2146
+    },
+    {
+      "path": "raw/scale/c1-r1/assets-high-01/receipt.json",
+      "sha256": "90b942d0af40ba679b16c51ff29f2bbc6af570665019640b484f5db7ca80e3f5",
+      "bytes": 2305
+    },
+    {
+      "path": "raw/scale/c1-r1/assets-low-01/receipt.json",
+      "sha256": "f6badd445871eeb81ea37ef7f82b29d6c702dd042fcd722b785a793d39a31a6b",
+      "bytes": 2288
+    },
+    {
+      "path": "raw/scale/c1-r1/assets-medium-01/receipt.json",
+      "sha256": "ebdfe3c56bed72b8827ca0e5406573e1f09a3decaeef9916c2e21e305d07a3ef",
+      "bytes": 2293
+    },
+    {
+      "path": "raw/scale/c1-r1/catalog-high-01/receipt.json",
+      "sha256": "33f2e43d3f071bb1e2117d798d37e3407ca42b80fa4d3311805ffcc64979aea0",
+      "bytes": 2314
+    },
+    {
+      "path": "raw/scale/c1-r1/catalog-low-01/receipt.json",
+      "sha256": "c8b4b10d6b517d2d838a6f8d79b993396d33bcc23f30202743705159db806c68",
+      "bytes": 2302
+    },
+    {
+      "path": "raw/scale/c1-r1/catalog-medium-01/receipt.json",
+      "sha256": "6ab91f8ddbdd10e7711a45c95d3fa5b6353550efb0fc0cc53699bc12b26b5acb",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c1-r1/inventory-high-01/receipt.json",
+      "sha256": "c3dc7c4c42fa9e948dc2df1c28268aa9075e6c070fa9b14817751998825ed704",
+      "bytes": 2298
+    },
+    {
+      "path": "raw/scale/c1-r1/inventory-low-01/receipt.json",
+      "sha256": "0ecfe5ad8df7d6c0204743f9310e81b347b98d013e6fb333bb3e2e7d6bc5ba2c",
+      "bytes": 2317
+    },
+    {
+      "path": "raw/scale/c1-r1/inventory-medium-01/receipt.json",
+      "sha256": "c614a7c498305c14cb3a1bb43d441605aa790139ea41a0950d621a1662841e12",
+      "bytes": 2323
+    },
+    {
+      "path": "raw/scale/c1-r1/publications-high-01/receipt.json",
+      "sha256": "f3743fd2bd774c402d64fd2b3f4db4043bdf18977bd61ddce0a86d962f9c2cb0",
+      "bytes": 2318
+    },
+    {
+      "path": "raw/scale/c1-r1/publications-low-01/receipt.json",
+      "sha256": "b98f539cb087d87a464c69143edb5069685e5a43c5ca10e02a7f17ce48253c46",
+      "bytes": 2325
+    },
+    {
+      "path": "raw/scale/c1-r1/publications-medium-01/receipt.json",
+      "sha256": "bf4526d86e843d930da8a93ee84e8844a7bcb155ca07362f1f09dabb3a7e2b18",
+      "bytes": 2301
+    },
+    {
+      "path": "raw/scale/c1-r2/assets-high-01/receipt.json",
+      "sha256": "873de1e0bc4197151539ea8bb56cfa10c40128c9b558de8ceec33db86b6283e4",
+      "bytes": 2297
+    },
+    {
+      "path": "raw/scale/c1-r2/assets-low-01/receipt.json",
+      "sha256": "edafd356ad3bc042314bc4052599f801ecdabe62ec61206cb80a1478d1631a3d",
+      "bytes": 2297
+    },
+    {
+      "path": "raw/scale/c1-r2/assets-medium-01/receipt.json",
+      "sha256": "7d299b9a88dab3965604ae9c7ab6fa0749685bd3dfaeb0a20432a818e8ef9405",
+      "bytes": 2316
+    },
+    {
+      "path": "raw/scale/c1-r2/catalog-high-01/receipt.json",
+      "sha256": "299fad585640d1e13ef5794142d27cbf31491bdba0342aa71f1f839d232274b2",
+      "bytes": 2311
+    },
+    {
+      "path": "raw/scale/c1-r2/catalog-low-01/receipt.json",
+      "sha256": "cc1d31219b00f1f1a89d4ba08634a3bc6b0aa28f066dd3988a44e3374b8f3794",
+      "bytes": 2303
+    },
+    {
+      "path": "raw/scale/c1-r2/catalog-medium-01/receipt.json",
+      "sha256": "d47f421885140c17cd5558fd6481bbae35ed9f9e5b1d08c8746e8d407484e9f0",
+      "bytes": 2316
+    },
+    {
+      "path": "raw/scale/c1-r2/inventory-high-01/receipt.json",
+      "sha256": "c04d9f56ec19f1eecb5347c6b519000da7119fa4c86e44b802d687dc0ef908d1",
+      "bytes": 2300
+    },
+    {
+      "path": "raw/scale/c1-r2/inventory-low-01/receipt.json",
+      "sha256": "7fce3e8dfd98b2a62c87d4fdc585152c15cd2a20fa0341069e45d63d16703f82",
+      "bytes": 2306
+    },
+    {
+      "path": "raw/scale/c1-r2/inventory-medium-01/receipt.json",
+      "sha256": "3e552e093d1639d825a565c96b6f5b6b307bb87eb08fe20b4b2e88e8bdfbdce4",
+      "bytes": 2329
+    },
+    {
+      "path": "raw/scale/c1-r2/publications-high-01/receipt.json",
+      "sha256": "786a73691f39c7287bb6a8fcc7664a6922b76f2b9900aea3565dfc431dd330ac",
+      "bytes": 2307
+    },
+    {
+      "path": "raw/scale/c1-r2/publications-low-01/receipt.json",
+      "sha256": "496a13d8c531fd4b406beb1826036cc0bb62399ef1fdc5a528f8e9dbf9bd5064",
+      "bytes": 2310
+    },
+    {
+      "path": "raw/scale/c1-r2/publications-medium-01/receipt.json",
+      "sha256": "0a889d092de1459d477248fdf1f0da74540548de2407ffe47aecf3f9b2b37ba3",
+      "bytes": 2317
+    },
+    {
+      "path": "raw/scale/c1-r3/assets-high-01/receipt.json",
+      "sha256": "6ce090d821356583894f28f098a94ea7d109de642ceab174e0d2e981b84e2122",
+      "bytes": 2302
+    },
+    {
+      "path": "raw/scale/c1-r3/assets-low-01/receipt.json",
+      "sha256": "d3ebb8d673bda31e3a7eb65a78a9437e1d11015c8cb3dc1e192089a070008e3d",
+      "bytes": 2288
+    },
+    {
+      "path": "raw/scale/c1-r3/assets-medium-01/receipt.json",
+      "sha256": "5d1296c90dd48ffa4ea7208a2e335b6e04378cb5f555f441283b1897e85f9022",
+      "bytes": 2311
+    },
+    {
+      "path": "raw/scale/c1-r3/catalog-high-01/receipt.json",
+      "sha256": "b04a88dd9b05cd51932c7a36acfd3f8a38e4737826ce4935e28186d1d91477bb",
+      "bytes": 2320
+    },
+    {
+      "path": "raw/scale/c1-r3/catalog-low-01/receipt.json",
+      "sha256": "ac12513685b2444377b7a13adcbf6938c802ea8c36c52ce84e1d17bbcac3df56",
+      "bytes": 2301
+    },
+    {
+      "path": "raw/scale/c1-r3/catalog-medium-01/receipt.json",
+      "sha256": "94e2ca538fff09c5174723c4075c2ae436d535c1e5035ca132ccd28f7582b25f",
+      "bytes": 2302
+    },
+    {
+      "path": "raw/scale/c1-r3/inventory-high-01/receipt.json",
+      "sha256": "e43ba4ddfc79d6990ac9d7f2277b45969518fb72c52b893a7d1bac0633281105",
+      "bytes": 2314
+    },
+    {
+      "path": "raw/scale/c1-r3/inventory-low-01/receipt.json",
+      "sha256": "d1c08fb89c25d6d1a8b98e5f21f6719f2274b3a7d3202f2763ecc9374ad8e1dc",
+      "bytes": 2316
+    },
+    {
+      "path": "raw/scale/c1-r3/inventory-medium-01/receipt.json",
+      "sha256": "c4245d4562055955b9438ca2dea0ef5ddf23da0ccf00a085c7b866bf244a00c1",
+      "bytes": 2310
+    },
+    {
+      "path": "raw/scale/c1-r3/publications-high-01/receipt.json",
+      "sha256": "2861c4b525ceac2971afc7786442f9264d76e9f3d33eac4eff7c421fc4de8e98",
+      "bytes": 2304
+    },
+    {
+      "path": "raw/scale/c1-r3/publications-low-01/receipt.json",
+      "sha256": "ca37aa4cbf74dd2a4e135348da7b7de2e090011d0006e21cbd095f8a2b9aa3ac",
+      "bytes": 2290
+    },
+    {
+      "path": "raw/scale/c1-r3/publications-medium-01/receipt.json",
+      "sha256": "a0adb1099942bd6325e940a79d35c2963df00943b07f64fa671d597c6d2a7378",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c2-r1/assets-high-01/receipt.json",
+      "sha256": "b469990fa4a2e2065107d8d7c3a9caa07dec8a4df9ee2c235f05da033c1d1f2c",
+      "bytes": 2318
+    },
+    {
+      "path": "raw/scale/c2-r1/assets-low-01/receipt.json",
+      "sha256": "db1fb5b54bbe88c2d3bdb2335b796c8bbf37a59d58d80bff71113b6c5ee5f3ff",
+      "bytes": 2321
+    },
+    {
+      "path": "raw/scale/c2-r1/assets-medium-01/receipt.json",
+      "sha256": "71f66554176368706a4679fe696a917e887c4c20230796f4906c82c50b4b3e1c",
+      "bytes": 2315
+    },
+    {
+      "path": "raw/scale/c2-r1/catalog-high-01/receipt.json",
+      "sha256": "882fb9b1060b3a7adafe06a81fd577df876a76ef10ce4773540e068243056460",
+      "bytes": 2291
+    },
+    {
+      "path": "raw/scale/c2-r1/catalog-low-01/receipt.json",
+      "sha256": "34b21971e4b4756d2180cb39c7cff1cad285e5f2569869b69e4b42df32b46ddf",
+      "bytes": 2314
+    },
+    {
+      "path": "raw/scale/c2-r1/catalog-medium-01/receipt.json",
+      "sha256": "a131931f708586505bc60c4126a20e0e9740d4298192c2734b82104a23815d0a",
+      "bytes": 2325
+    },
+    {
+      "path": "raw/scale/c2-r1/inventory-high-01/receipt.json",
+      "sha256": "bfa0c90877c4a4ecc49424313e102bd7109fe14694e593b0773a4d531f0287d8",
+      "bytes": 2300
+    },
+    {
+      "path": "raw/scale/c2-r1/inventory-low-01/receipt.json",
+      "sha256": "ffc6df14475fba61eda257e765f9068bb4fcdf2dc6b0ec8e5afa4d57ece9b65a",
+      "bytes": 2310
+    },
+    {
+      "path": "raw/scale/c2-r1/inventory-medium-01/receipt.json",
+      "sha256": "a20756ebbc4780ca0161cdab5eb7469389c6b75c31116dfe41f59b7137cbd4b0",
+      "bytes": 2309
+    },
+    {
+      "path": "raw/scale/c2-r1/publications-high-01/receipt.json",
+      "sha256": "a4aee8ee6f042e58f3b904933833520da374dac344d9e0de39c686c0027c1b06",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c2-r1/publications-low-01/receipt.json",
+      "sha256": "69c057a3a4d95592adc3b35e08f92f8069f2ae5af834ae61eda3cb2ec9a98939",
+      "bytes": 2321
+    },
+    {
+      "path": "raw/scale/c2-r1/publications-medium-01/receipt.json",
+      "sha256": "b02b9d834001ecbb945b817d716400fa8b3461e15d8b74c3f5d49aebae175c45",
+      "bytes": 2312
+    },
+    {
+      "path": "raw/scale/c2-r2/assets-high-01/receipt.json",
+      "sha256": "f17be1a85ef42d1f18108031d7b46f21d7c11edba4c3cff45cbe76dfa090e94b",
+      "bytes": 2317
+    },
+    {
+      "path": "raw/scale/c2-r2/assets-low-01/receipt.json",
+      "sha256": "fa65d1464aa6a4b7d9e54891e480f4af77caa9c8b9126542c6c363c8fa350656",
+      "bytes": 2313
+    },
+    {
+      "path": "raw/scale/c2-r2/assets-medium-01/receipt.json",
+      "sha256": "4b51611a4f6e12ae27031ae5358ddcec5daab32e7d47d420aa91f764ce6793e8",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c2-r2/catalog-high-01/receipt.json",
+      "sha256": "d568c0d370823c029c3c273e1c1b94bf085080b377bf9316f21d16a043db6f67",
+      "bytes": 2313
+    },
+    {
+      "path": "raw/scale/c2-r2/catalog-low-01/receipt.json",
+      "sha256": "f7ff8bb9b672bed40c402caf94baa4468e35285bf30a620412dae58e8506791c",
+      "bytes": 2324
+    },
+    {
+      "path": "raw/scale/c2-r2/catalog-medium-01/receipt.json",
+      "sha256": "10d04e9e97dd1003dae4ef2f43ef88100311b122dad484619ab1cc1a55263d7f",
+      "bytes": 2316
+    },
+    {
+      "path": "raw/scale/c2-r2/inventory-high-01/receipt.json",
+      "sha256": "e23224fa3f08d5a2313fd7c7674bc3d0c90cdf03ce61a24f52104843ebc2eb3c",
+      "bytes": 2303
+    },
+    {
+      "path": "raw/scale/c2-r2/inventory-low-01/receipt.json",
+      "sha256": "422594aa6696aa5710dcc3ff9030922bd79bae8d07480779ca3615c873628a1a",
+      "bytes": 2317
+    },
+    {
+      "path": "raw/scale/c2-r2/inventory-medium-01/receipt.json",
+      "sha256": "66fd5606d3cb4977ab219bc3ac012871725246027eb689962fb9dad83a96f756",
+      "bytes": 2308
+    },
+    {
+      "path": "raw/scale/c2-r2/publications-high-01/receipt.json",
+      "sha256": "2b7d9f9c45967b4e9ae7b273b7e5ea7b57df90489d8532cc268df9dd7eac218b",
+      "bytes": 2318
+    },
+    {
+      "path": "raw/scale/c2-r2/publications-low-01/receipt.json",
+      "sha256": "77dbb9e260070d3bbb2ce1381a3ce66a477216cfea16f51ac23bd697e03600e2",
+      "bytes": 2317
+    },
+    {
+      "path": "raw/scale/c2-r2/publications-medium-01/receipt.json",
+      "sha256": "25db043dc4b592488a5ccc708580842ad630dde7f724f292d888c068212e1c86",
+      "bytes": 2329
+    },
+    {
+      "path": "raw/scale/c2-r3/assets-high-01/receipt.json",
+      "sha256": "e5fc7b2ac9330b2b9046f44278b41a640edee3b8df327eff696459625c69258e",
+      "bytes": 2300
+    },
+    {
+      "path": "raw/scale/c2-r3/assets-low-01/receipt.json",
+      "sha256": "4aedf560fb72fe5267d808dac4877929f620cbd118f08dacdcfa3f1bd509ae9d",
+      "bytes": 2307
+    },
+    {
+      "path": "raw/scale/c2-r3/assets-medium-01/receipt.json",
+      "sha256": "49e28d1b582a41af831e971b5d7e31c0f93bcb08ffc5456ba73f99a9663c9aa4",
+      "bytes": 2317
+    },
+    {
+      "path": "raw/scale/c2-r3/catalog-high-01/receipt.json",
+      "sha256": "1852bcdb9b15b0f6a3ec5d4571d52572b0e0d476a5f3a918bfbbabce191a24bd",
+      "bytes": 2295
+    },
+    {
+      "path": "raw/scale/c2-r3/catalog-low-01/receipt.json",
+      "sha256": "b03bebdcf8e0eefd828adc79ce96ff3b93ee2ba724564e05a97e6291c8feceb6",
+      "bytes": 2300
+    },
+    {
+      "path": "raw/scale/c2-r3/catalog-medium-01/receipt.json",
+      "sha256": "b924cbdea8351a0dde25ba139e6f9187fc8bfc5530cd4e2e4761b72f76855a9f",
+      "bytes": 2313
+    },
+    {
+      "path": "raw/scale/c2-r3/inventory-high-01/receipt.json",
+      "sha256": "9e6f26fb1a05d2f49031b25685376b6d8b2c87150ce1718fc334d13754af534c",
+      "bytes": 2307
+    },
+    {
+      "path": "raw/scale/c2-r3/inventory-low-01/receipt.json",
+      "sha256": "d6003e4f878c58504a95501d8a31820dfd659a3cf4c359bb64d0f06093a657f4",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c2-r3/inventory-medium-01/receipt.json",
+      "sha256": "aab3e9b9bc375ca662b5bc98aebe2742e714a2d83809ba2f40fd602c113f7afa",
+      "bytes": 2313
+    },
+    {
+      "path": "raw/scale/c2-r3/publications-high-01/receipt.json",
+      "sha256": "abb5fed9542971f71388f76d3776da4d09d50d6bc60ade80154e91060edb607b",
+      "bytes": 2296
+    },
+    {
+      "path": "raw/scale/c2-r3/publications-low-01/receipt.json",
+      "sha256": "6eeda46227f0b435fdf85717e1c60342a8ea9ce793cafb3842cf99cb9eaf8b2b",
+      "bytes": 2321
+    },
+    {
+      "path": "raw/scale/c2-r3/publications-medium-01/receipt.json",
+      "sha256": "713d62299b27428a8e495b241867ec20decaff7c579d0775c3685592ec5347da",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c4-r1/assets-high-01/receipt.json",
+      "sha256": "b2804a8c8774036abe26489b74edf735362e2072cb3c7b3ed2ceb623a478b451",
+      "bytes": 2292
+    },
+    {
+      "path": "raw/scale/c4-r1/assets-low-01/receipt.json",
+      "sha256": "1f2dba91d617d49be694c2eb32fd30520f2b269a769739b3b1806f6fb0c4cefc",
+      "bytes": 2319
+    },
+    {
+      "path": "raw/scale/c4-r1/assets-medium-01/receipt.json",
+      "sha256": "914fa85eed9ca11eb70b804bcd5ca4cd67926b3eb0e7d1612f34e77c822d0105",
+      "bytes": 2314
+    },
+    {
+      "path": "raw/scale/c4-r1/catalog-high-01/receipt.json",
+      "sha256": "56f807fee2129787b89b21815a541f8b6eb66d5bf3d930382563248f8d68883a",
+      "bytes": 2291
+    },
+    {
+      "path": "raw/scale/c4-r1/catalog-low-01/receipt.json",
+      "sha256": "c4cd0efc865823b4ceb4055184bb7c23cdae06d64242dba3a53b92609bf20d24",
+      "bytes": 2310
+    },
+    {
+      "path": "raw/scale/c4-r1/catalog-medium-01/receipt.json",
+      "sha256": "886b283f49b733d4fd5bb7563a28c0601dc05b7369f6edc0cf55e938bb86ffec",
+      "bytes": 2307
+    },
+    {
+      "path": "raw/scale/c4-r1/inventory-high-01/receipt.json",
+      "sha256": "b7f185079694ed01f8e5201fdfda1d7943ae2c87968dfe76f037a422210799a2",
+      "bytes": 2315
+    },
+    {
+      "path": "raw/scale/c4-r1/inventory-low-01/receipt.json",
+      "sha256": "b1a87300089a713ecf3e20a5a4dd69d5d216c77fbbd2f2024b75706d5a8cd047",
+      "bytes": 2309
+    },
+    {
+      "path": "raw/scale/c4-r1/inventory-medium-01/receipt.json",
+      "sha256": "98325d1234d6c618c9044a922c2be1d6544f041c52f0a81969de5ad16243bcbb",
+      "bytes": 2333
+    },
+    {
+      "path": "raw/scale/c4-r1/publications-high-01/receipt.json",
+      "sha256": "daa2664df78670d0b143d77a2b2b96a272a88c64b509a87628dd89a6a574e2cc",
+      "bytes": 2319
+    },
+    {
+      "path": "raw/scale/c4-r1/publications-low-01/receipt.json",
+      "sha256": "d197e017aa83cc92f8ace8049427a2e47c3afcefa75ac717ee51750e874288ea",
+      "bytes": 2320
+    },
+    {
+      "path": "raw/scale/c4-r1/publications-medium-01/receipt.json",
+      "sha256": "32fbd3ed7903dc26889f0a881f1aad545923cb64707095e3a650d6f1fc7a7e51",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c4-r2/assets-high-01/receipt.json",
+      "sha256": "d4ad378c4e7f226198dd66ae1c5111bbffd562704bdb5541c209696ff85d732e",
+      "bytes": 2309
+    },
+    {
+      "path": "raw/scale/c4-r2/assets-low-01/receipt.json",
+      "sha256": "31f851c87f3e3a7fa7bf0ec2ae32324e9f28dc7a2c1f800b785b126ddbd520e9",
+      "bytes": 2311
+    },
+    {
+      "path": "raw/scale/c4-r2/assets-medium-01/receipt.json",
+      "sha256": "57b946f4ba3b26c741315deb6c64c9807d772e7323f1e2471f4b2ecf8d22bcee",
+      "bytes": 2307
+    },
+    {
+      "path": "raw/scale/c4-r2/catalog-high-01/receipt.json",
+      "sha256": "d6eb816111c7473fdb5fb47269e1544869f088e6fefd5c2ada33bfd439c3172e",
+      "bytes": 2309
+    },
+    {
+      "path": "raw/scale/c4-r2/catalog-low-01/receipt.json",
+      "sha256": "0e2038b5eabecb864824724d606ec30d782798997b294047723b3da7f44c84ff",
+      "bytes": 2322
+    },
+    {
+      "path": "raw/scale/c4-r2/catalog-medium-01/receipt.json",
+      "sha256": "5bf1ee950921288a7d6776b272323964ad84ca9364869a7497b6a401fb5d2308",
+      "bytes": 2300
+    },
+    {
+      "path": "raw/scale/c4-r2/inventory-high-01/receipt.json",
+      "sha256": "a49b68285b2b25415d7190a300657d85d9c69e2b64d6537c1d059cf660a82bc7",
+      "bytes": 2309
+    },
+    {
+      "path": "raw/scale/c4-r2/inventory-low-01/receipt.json",
+      "sha256": "1ab3160233f0f63a41c96583865d86fe28313d644062e358e5875f594ec7f922",
+      "bytes": 2303
+    },
+    {
+      "path": "raw/scale/c4-r2/inventory-medium-01/receipt.json",
+      "sha256": "3d89179089afa9c3b1e2fb2a29f3a1d42656fb00db0d106bbf4ec6b447450718",
+      "bytes": 2333
+    },
+    {
+      "path": "raw/scale/c4-r2/publications-high-01/receipt.json",
+      "sha256": "e45c36749ea19c35d82b6e01c4faf95fe1a242e3266f1647e70e4acf884fdd5a",
+      "bytes": 2318
+    },
+    {
+      "path": "raw/scale/c4-r2/publications-low-01/receipt.json",
+      "sha256": "7818fc52819f7449f97b0a1218f3ae0a0f557b531cf9ccc21ce08e887bfdf04a",
+      "bytes": 2327
+    },
+    {
+      "path": "raw/scale/c4-r2/publications-medium-01/receipt.json",
+      "sha256": "d2f2cf2ef044e5788308888303f05307b4bed6d9e721cd68950010ba975d8b2b",
+      "bytes": 2325
+    },
+    {
+      "path": "raw/scale/c4-r3/assets-high-01/receipt.json",
+      "sha256": "c77e1a7380e3a9fad38bcb1c4ce20a7f547e01ca3d24719115ff5be54e6ebef6",
+      "bytes": 2297
+    },
+    {
+      "path": "raw/scale/c4-r3/assets-low-01/receipt.json",
+      "sha256": "3acd7f081124030329a7c25520be533aa5ad4fa09796433f1b8d71eee7154b13",
+      "bytes": 2300
+    },
+    {
+      "path": "raw/scale/c4-r3/assets-medium-01/receipt.json",
+      "sha256": "4b4bd41a7895b32583fd7a559779b59f6bca4a2c740066ea9ee751a68326f797",
+      "bytes": 2315
+    },
+    {
+      "path": "raw/scale/c4-r3/catalog-high-01/receipt.json",
+      "sha256": "dc15b250d28457bf1bc8ddb7aeb1e19de45dbffa94bd8e6f5c0bb5f902870ba9",
+      "bytes": 2297
+    },
+    {
+      "path": "raw/scale/c4-r3/catalog-low-01/receipt.json",
+      "sha256": "c597d87e74b5cc27f1e1d906c28581f4b8c21cea6beb75f080c357bd6293586e",
+      "bytes": 2299
+    },
+    {
+      "path": "raw/scale/c4-r3/catalog-medium-01/receipt.json",
+      "sha256": "3f6bdb936a5ca0708a8a6a093a0533fec6b63e9cd0962d74115d7b07797502a7",
+      "bytes": 2313
+    },
+    {
+      "path": "raw/scale/c4-r3/inventory-high-01/receipt.json",
+      "sha256": "33340ec7e319e727b9bf8c054d32eb14e92849c36c3114de3a4192406414132e",
+      "bytes": 2295
+    },
+    {
+      "path": "raw/scale/c4-r3/inventory-low-01/receipt.json",
+      "sha256": "e4d1f5d7e3c306bea70909d5576da4977f769c6897c6001b86aad8ab9ccdc4ff",
+      "bytes": 2313
+    },
+    {
+      "path": "raw/scale/c4-r3/inventory-medium-01/receipt.json",
+      "sha256": "c32c58317b4a07314f99b77753a86016a8909c3437fca29d532a7504bb14c977",
+      "bytes": 2332
+    },
+    {
+      "path": "raw/scale/c4-r3/publications-high-01/receipt.json",
+      "sha256": "fd5c530070666b820a3c495c5b226cef6647cc3a2f303c2f8aa8a453c488bc8e",
+      "bytes": 2329
+    },
+    {
+      "path": "raw/scale/c4-r3/publications-low-01/receipt.json",
+      "sha256": "b280cc90d1667c6a25d8673e609ab5ea7a87219e2b8d57b594d8f472431501fe",
+      "bytes": 2315
+    },
+    {
+      "path": "raw/scale/c4-r3/publications-medium-01/receipt.json",
+      "sha256": "ad2b102d06fe2b1bbfcfeefca5d8d47e302e56bd8b097199f96eb5d834419dad",
+      "bytes": 2315
+    },
+    {
+      "path": "raw/showcase/receipt.json",
+      "sha256": "cc037059234e8a8885e6e960e340af1f98bf7bdfd6c9e9f8b988bdcbf312d29b",
+      "bytes": 2091
+    },
+    {
+      "path": "raw/successor-report/receipt.json",
+      "sha256": "2098e92fa469040edda0eedec2f2e25b4dc3513be0010e4bdce47d350b17cdcf",
+      "bytes": 651
+    },
+    {
+      "path": "development/injected_timeout_05/receipt.json",
+      "sha256": "101dc5587eb9b13fc2b9808a20e7cd072b847f35cdab4ac482edfe3e904fa8a9",
+      "bytes": 422
+    },
+    {
+      "path": "development/worker_04/receipt.json",
+      "sha256": "6f0dacdc7c6d8d4cc59430b00316a74fd133a06a1982f19c51dbd569ac485c63",
+      "bytes": 1947
+    },
+    {
+      "path": "development/ATTEMPTS.jsonl",
+      "sha256": "8ea77835afacadb36528d22587b7108188da3796945095cb11fdb3c26c55921d",
+      "bytes": 1561
+    },
+    {
+      "path": "development/pre_freeze_review.json",
+      "sha256": "5d72ccff15853efbc3d1aa94466dbe08df503af21b1ba3e9ea91f359e14970f4",
+      "bytes": 4554
+    },
+    {
+      "path": "development/development_oracle_verification.json",
+      "sha256": "fce3e4d3b60543913be48119dd7c2bad3ade3ad8023a242859216c8cbe421c7d",
+      "bytes": 1864
+    },
+    {
+      "path": "raw/controls/controls.json",
+      "sha256": "2be25b0e8b66800e4c715ec8fd6e729db3608711a78db83b4a6dfcc862c9fc4d",
+      "bytes": 14916
+    },
+    {
+      "path": "raw/controls/C01_STOP/run-attempt.json",
+      "sha256": "a2ce47ce3c502279e1a043f22c74d7bacbd333468f5aef7676b934c0b8b91383",
+      "bytes": 814
+    },
+    {
+      "path": "raw/controls/C02_RECOVERY/interrupted-attempt.json",
+      "sha256": "6808caa07969ab42c4e2a9dd4711b35a8af62c2de82ea23dcf2f2e9413e8cc77",
+      "bytes": 1071
+    },
+    {
+      "path": "raw/controls/C03_BOUNDS/budget-attempt.json",
+      "sha256": "815c44c798b082f018a3106f12002552274983ea2b86876ef04d8306a0408ed9",
+      "bytes": 836
+    },
+    {
+      "path": "raw/controls/C03_BOUNDS/input-bound-attempt.json",
+      "sha256": "9bf6f6d65984bf9865f7fa1ad65ec3ec829c73033ad9976d06ec8a51a5712392",
+      "bytes": 1004
+    },
+    {
+      "path": "raw/controls/C04_SOURCE/promotion-attempt.json",
+      "sha256": "1a69564fe88bfcf3a9d87f8d71211845c7cce73cae7129cf5b2c0b27505d5908",
+      "bytes": 989
+    },
+    {
+      "path": "raw/controls/C05_CORRUPTION/corrupt-record-attempt.json",
+      "sha256": "54eb180d02a91f34ade56c8361a069514b1a2aa0a049099924453b733cef41a5",
+      "bytes": 1005
+    },
+    {
+      "path": "raw/controls/C05_CORRUPTION/corrupt-workspace-attempt.json",
+      "sha256": "74eaa84435c4a1a2c3774834d2971558633b2a78cb33cdbedac092b7bbd90e12",
+      "bytes": 934
+    },
+    {
+      "path": "raw/controls/C07_FALLBACK/inappropriate-reuse-attempt.json",
+      "sha256": "1f1534c6fcf38bf64372d40b54f3689862c415341ed49d8bddc17d0cb97139fe",
+      "bytes": 1065
+    },
+    {
+      "path": "browser/BUILD_ATTEMPTS.jsonl",
+      "sha256": "d0023aeeba1590b0580f7ca0a6de8a6ca61b41b7d3acb8441038299a96f0a59e",
+      "bytes": 1159
+    },
+    {
+      "path": "browser/qa/QA_REPORT.json",
+      "sha256": "bb2dc74ce654d55d32190799551a1cf57ec5a4121aafd74fd3bdbe87c2b2e305",
+      "bytes": 5012
+    },
+    {
+      "path": "verification/independent_review.json",
+      "sha256": "0a53e55f39d8f2e20e613832437b1dbb5185030d61b806268a41a733af53a875",
+      "bytes": 22072
+    },
+    {
+      "path": "paper/build-initial.log",
+      "sha256": "ea3ecd0be28fe71f1bb26f639623731a4a26a540a36734dc2da133b797ddc935",
+      "bytes": 16565
+    },
+    {
+      "path": "verification/failed-figure-build.log",
+      "sha256": "1da30a05d9f62e2c1e62e62137e6ef50f9ab0a3bd8fad9a4fcd07c732bf1c755",
+      "bytes": 18944
+    },
+    {
+      "path": "reproduction/DEVELOPMENT_ATTEMPTS.jsonl",
+      "sha256": "68a4f64700528320336557468458c28c86244001f9955bf677aac93159c98caf",
+      "bytes": 326
+    },
+    {
+      "path": "verification/CLEAN_BUILD.json",
+      "sha256": "dbb09ca4795f8436511dd0940154f2ac76327bbacf68a03bea2d47e36ea13db2",
+      "bytes": 4062
+    },
+    {
+      "path": "verification/paper_visual_review_pages08_14.json",
+      "sha256": "3c68471b9902c057d9af2a4ee53dd6ec5537ed7106adb28a57f4e9fc5bfd342b",
+      "bytes": 5464
+    },
+    {
+      "path": "verification/paper_visual_review_pages08_14_draft.json",
+      "sha256": "f2b2b64202d481aff79dcfa7827521a031af3389f12625f719afaff1faf8d9d4",
+      "bytes": 4508
+    },
+    {
+      "path": "verification/paper_visual_review_pages08_14_prefinal.json",
+      "sha256": "dcd357072bb38e153028ca96c3dd59152526559aa3e215a2573080ab73bdb192",
+      "bytes": 3660
+    },
+    {
+      "path": "verification/visual_pages_01_07_root.json",
+      "sha256": "ef409235fe48412dd510d08831a12fcee5cd646072742e8d655fb38af83f81a3",
+      "bytes": 1871
+    },
+    {
+      "path": "verification/visual_pages_15_20_economics.json",
+      "sha256": "f49c56ba26c40f14dafe7b9da0ae90fde133d61cee9ce178e60159b08133f952",
+      "bytes": 4094
+    },
+    {
+      "path": "verification/visual_pages_15_20_economics_final.json",
+      "sha256": "7e0a398c11605c97294b959e06e308f67da24f3434e58e285d1efe5c7a0e21e1",
+      "bytes": 6371
+    }
+  ],
+  "denominator_rule": "Intentional corruption, STOP, interruption and bound tests are expected control outcomes. Browser/TeX/auditor construction failures are development evidence, not failures among the 36 frozen business jobs."
+}

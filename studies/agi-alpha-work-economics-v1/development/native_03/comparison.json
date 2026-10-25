@@ -1,0 +1,1991 @@
+{
+  "schemaVersion": 1,
+  "missionKind": "catalog_join",
+  "candidateStrategyId": "smaller_side_hash",
+  "incumbentStrategyId": "nested_scan",
+  "strategies": [
+    {
+      "strategyId": "nested_scan",
+      "label": "Nested scan · current method",
+      "buildSide": null,
+      "pairs": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          32
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          27
+        ],
+        [
+          1,
+          31
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          2,
+          21
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          22
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          33
+        ],
+        [
+          5,
+          34
+        ],
+        [
+          6,
+          20
+        ],
+        [
+          6,
+          23
+        ],
+        [
+          6,
+          25
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          32
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          10,
+          28
+        ],
+        [
+          10,
+          36
+        ],
+        [
+          12,
+          8
+        ],
+        [
+          12,
+          29
+        ],
+        [
+          12,
+          30
+        ],
+        [
+          13,
+          8
+        ],
+        [
+          13,
+          29
+        ],
+        [
+          13,
+          30
+        ],
+        [
+          14,
+          20
+        ],
+        [
+          14,
+          23
+        ],
+        [
+          14,
+          25
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          15,
+          28
+        ],
+        [
+          15,
+          36
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          16,
+          28
+        ],
+        [
+          16,
+          36
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          18,
+          7
+        ],
+        [
+          18,
+          22
+        ],
+        [
+          19,
+          8
+        ],
+        [
+          19,
+          29
+        ],
+        [
+          19,
+          30
+        ],
+        [
+          20,
+          12
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          20,
+          26
+        ],
+        [
+          22,
+          4
+        ],
+        [
+          22,
+          11
+        ],
+        [
+          22,
+          16
+        ],
+        [
+          24,
+          10
+        ],
+        [
+          24,
+          27
+        ],
+        [
+          24,
+          31
+        ],
+        [
+          25,
+          2
+        ],
+        [
+          25,
+          33
+        ],
+        [
+          25,
+          34
+        ],
+        [
+          26,
+          3
+        ],
+        [
+          26,
+          7
+        ],
+        [
+          26,
+          22
+        ],
+        [
+          27,
+          10
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          27,
+          31
+        ],
+        [
+          28,
+          5
+        ],
+        [
+          28,
+          6
+        ],
+        [
+          28,
+          32
+        ],
+        [
+          29,
+          4
+        ],
+        [
+          29,
+          11
+        ],
+        [
+          29,
+          16
+        ],
+        [
+          30,
+          20
+        ],
+        [
+          30,
+          23
+        ],
+        [
+          30,
+          25
+        ],
+        [
+          31,
+          4
+        ],
+        [
+          31,
+          11
+        ],
+        [
+          31,
+          16
+        ],
+        [
+          34,
+          12
+        ],
+        [
+          34,
+          21
+        ],
+        [
+          34,
+          26
+        ],
+        [
+          35,
+          2
+        ],
+        [
+          35,
+          33
+        ],
+        [
+          35,
+          34
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 1332,
+        "hashInserts": 0,
+        "hashProbes": 0,
+        "indexedRows": 0,
+        "sortedRows": 0,
+        "outputPairs": 81,
+        "logicalOperations": 1413,
+        "elapsedMicros": 188
+      },
+      "verified": true
+    },
+    {
+      "strategyId": "fixed_right_hash",
+      "label": "Hash the right table · competitive baseline",
+      "buildSide": "right",
+      "pairs": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          32
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          27
+        ],
+        [
+          1,
+          31
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          2,
+          21
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          22
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          33
+        ],
+        [
+          5,
+          34
+        ],
+        [
+          6,
+          20
+        ],
+        [
+          6,
+          23
+        ],
+        [
+          6,
+          25
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          32
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          10,
+          28
+        ],
+        [
+          10,
+          36
+        ],
+        [
+          12,
+          8
+        ],
+        [
+          12,
+          29
+        ],
+        [
+          12,
+          30
+        ],
+        [
+          13,
+          8
+        ],
+        [
+          13,
+          29
+        ],
+        [
+          13,
+          30
+        ],
+        [
+          14,
+          20
+        ],
+        [
+          14,
+          23
+        ],
+        [
+          14,
+          25
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          15,
+          28
+        ],
+        [
+          15,
+          36
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          16,
+          28
+        ],
+        [
+          16,
+          36
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          18,
+          7
+        ],
+        [
+          18,
+          22
+        ],
+        [
+          19,
+          8
+        ],
+        [
+          19,
+          29
+        ],
+        [
+          19,
+          30
+        ],
+        [
+          20,
+          12
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          20,
+          26
+        ],
+        [
+          22,
+          4
+        ],
+        [
+          22,
+          11
+        ],
+        [
+          22,
+          16
+        ],
+        [
+          24,
+          10
+        ],
+        [
+          24,
+          27
+        ],
+        [
+          24,
+          31
+        ],
+        [
+          25,
+          2
+        ],
+        [
+          25,
+          33
+        ],
+        [
+          25,
+          34
+        ],
+        [
+          26,
+          3
+        ],
+        [
+          26,
+          7
+        ],
+        [
+          26,
+          22
+        ],
+        [
+          27,
+          10
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          27,
+          31
+        ],
+        [
+          28,
+          5
+        ],
+        [
+          28,
+          6
+        ],
+        [
+          28,
+          32
+        ],
+        [
+          29,
+          4
+        ],
+        [
+          29,
+          11
+        ],
+        [
+          29,
+          16
+        ],
+        [
+          30,
+          20
+        ],
+        [
+          30,
+          23
+        ],
+        [
+          30,
+          25
+        ],
+        [
+          31,
+          4
+        ],
+        [
+          31,
+          11
+        ],
+        [
+          31,
+          16
+        ],
+        [
+          34,
+          12
+        ],
+        [
+          34,
+          21
+        ],
+        [
+          34,
+          26
+        ],
+        [
+          35,
+          2
+        ],
+        [
+          35,
+          33
+        ],
+        [
+          35,
+          34
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 0,
+        "hashInserts": 37,
+        "hashProbes": 36,
+        "indexedRows": 37,
+        "sortedRows": 0,
+        "outputPairs": 81,
+        "logicalOperations": 154,
+        "elapsedMicros": 34
+      },
+      "verified": true
+    },
+    {
+      "strategyId": "smaller_side_hash",
+      "label": "Hash the smaller table · candidate",
+      "buildSide": "left",
+      "pairs": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          32
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          27
+        ],
+        [
+          1,
+          31
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          2,
+          21
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          22
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          33
+        ],
+        [
+          5,
+          34
+        ],
+        [
+          6,
+          20
+        ],
+        [
+          6,
+          23
+        ],
+        [
+          6,
+          25
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          32
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          10,
+          28
+        ],
+        [
+          10,
+          36
+        ],
+        [
+          12,
+          8
+        ],
+        [
+          12,
+          29
+        ],
+        [
+          12,
+          30
+        ],
+        [
+          13,
+          8
+        ],
+        [
+          13,
+          29
+        ],
+        [
+          13,
+          30
+        ],
+        [
+          14,
+          20
+        ],
+        [
+          14,
+          23
+        ],
+        [
+          14,
+          25
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          15,
+          28
+        ],
+        [
+          15,
+          36
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          16,
+          28
+        ],
+        [
+          16,
+          36
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          18,
+          7
+        ],
+        [
+          18,
+          22
+        ],
+        [
+          19,
+          8
+        ],
+        [
+          19,
+          29
+        ],
+        [
+          19,
+          30
+        ],
+        [
+          20,
+          12
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          20,
+          26
+        ],
+        [
+          22,
+          4
+        ],
+        [
+          22,
+          11
+        ],
+        [
+          22,
+          16
+        ],
+        [
+          24,
+          10
+        ],
+        [
+          24,
+          27
+        ],
+        [
+          24,
+          31
+        ],
+        [
+          25,
+          2
+        ],
+        [
+          25,
+          33
+        ],
+        [
+          25,
+          34
+        ],
+        [
+          26,
+          3
+        ],
+        [
+          26,
+          7
+        ],
+        [
+          26,
+          22
+        ],
+        [
+          27,
+          10
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          27,
+          31
+        ],
+        [
+          28,
+          5
+        ],
+        [
+          28,
+          6
+        ],
+        [
+          28,
+          32
+        ],
+        [
+          29,
+          4
+        ],
+        [
+          29,
+          11
+        ],
+        [
+          29,
+          16
+        ],
+        [
+          30,
+          20
+        ],
+        [
+          30,
+          23
+        ],
+        [
+          30,
+          25
+        ],
+        [
+          31,
+          4
+        ],
+        [
+          31,
+          11
+        ],
+        [
+          31,
+          16
+        ],
+        [
+          34,
+          12
+        ],
+        [
+          34,
+          21
+        ],
+        [
+          34,
+          26
+        ],
+        [
+          35,
+          2
+        ],
+        [
+          35,
+          33
+        ],
+        [
+          35,
+          34
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 0,
+        "hashInserts": 36,
+        "hashProbes": 37,
+        "indexedRows": 36,
+        "sortedRows": 0,
+        "outputPairs": 81,
+        "logicalOperations": 154,
+        "elapsedMicros": 67
+      },
+      "verified": true
+    },
+    {
+      "strategyId": "sort_merge",
+      "label": "Sort and merge · competitive baseline",
+      "buildSide": null,
+      "pairs": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          32
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          1,
+          27
+        ],
+        [
+          1,
+          31
+        ],
+        [
+          2,
+          12
+        ],
+        [
+          2,
+          21
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          22
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          33
+        ],
+        [
+          5,
+          34
+        ],
+        [
+          6,
+          20
+        ],
+        [
+          6,
+          23
+        ],
+        [
+          6,
+          25
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          32
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          10,
+          28
+        ],
+        [
+          10,
+          36
+        ],
+        [
+          12,
+          8
+        ],
+        [
+          12,
+          29
+        ],
+        [
+          12,
+          30
+        ],
+        [
+          13,
+          8
+        ],
+        [
+          13,
+          29
+        ],
+        [
+          13,
+          30
+        ],
+        [
+          14,
+          20
+        ],
+        [
+          14,
+          23
+        ],
+        [
+          14,
+          25
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          15,
+          28
+        ],
+        [
+          15,
+          36
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          16,
+          28
+        ],
+        [
+          16,
+          36
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          18,
+          7
+        ],
+        [
+          18,
+          22
+        ],
+        [
+          19,
+          8
+        ],
+        [
+          19,
+          29
+        ],
+        [
+          19,
+          30
+        ],
+        [
+          20,
+          12
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          20,
+          26
+        ],
+        [
+          22,
+          4
+        ],
+        [
+          22,
+          11
+        ],
+        [
+          22,
+          16
+        ],
+        [
+          24,
+          10
+        ],
+        [
+          24,
+          27
+        ],
+        [
+          24,
+          31
+        ],
+        [
+          25,
+          2
+        ],
+        [
+          25,
+          33
+        ],
+        [
+          25,
+          34
+        ],
+        [
+          26,
+          3
+        ],
+        [
+          26,
+          7
+        ],
+        [
+          26,
+          22
+        ],
+        [
+          27,
+          10
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          27,
+          31
+        ],
+        [
+          28,
+          5
+        ],
+        [
+          28,
+          6
+        ],
+        [
+          28,
+          32
+        ],
+        [
+          29,
+          4
+        ],
+        [
+          29,
+          11
+        ],
+        [
+          29,
+          16
+        ],
+        [
+          30,
+          20
+        ],
+        [
+          30,
+          23
+        ],
+        [
+          30,
+          25
+        ],
+        [
+          31,
+          4
+        ],
+        [
+          31,
+          11
+        ],
+        [
+          31,
+          16
+        ],
+        [
+          34,
+          12
+        ],
+        [
+          34,
+          21
+        ],
+        [
+          34,
+          26
+        ],
+        [
+          35,
+          2
+        ],
+        [
+          35,
+          33
+        ],
+        [
+          35,
+          34
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 408,
+        "hashInserts": 0,
+        "hashProbes": 0,
+        "indexedRows": 0,
+        "sortedRows": 73,
+        "outputPairs": 81,
+        "logicalOperations": 489,
+        "elapsedMicros": 344
+      },
+      "verified": true
+    }
+  ],
+  "reconciliation": {
+    "matchedPairs": 81,
+    "matchedLeftRows": 27,
+    "matchedRightRows": 27,
+    "unmatchedLeft": [
+      3,
+      7,
+      9,
+      11,
+      17,
+      21,
+      23,
+      32,
+      33
+    ],
+    "unmatchedRight": [
+      0,
+      9,
+      13,
+      14,
+      15,
+      17,
+      18,
+      19,
+      24,
+      35
+    ],
+    "sharedFields": [
+      {
+        "name": "name",
+        "leftColumn": 1,
+        "rightColumn": 3
+      },
+      {
+        "name": "price",
+        "leftColumn": 2,
+        "rightColumn": 0
+      },
+      {
+        "name": "revision",
+        "leftColumn": 3,
+        "rightColumn": 4
+      }
+    ],
+    "conflicts": [
+      {
+        "leftIndex": 0,
+        "rightIndex": 5,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 0,
+        "rightIndex": 6,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 0,
+        "rightIndex": 32,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 1,
+        "rightIndex": 10,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 1,
+        "rightIndex": 27,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 1,
+        "rightIndex": 31,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 2,
+        "rightIndex": 12,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 2,
+        "rightIndex": 21,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 2,
+        "rightIndex": 26,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 4,
+        "rightIndex": 3,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 4,
+        "rightIndex": 7,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 4,
+        "rightIndex": 22,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 5,
+        "rightIndex": 2,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 5,
+        "rightIndex": 33,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 5,
+        "rightIndex": 34,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 6,
+        "rightIndex": 20,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 6,
+        "rightIndex": 23,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 6,
+        "rightIndex": 25,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 8,
+        "rightIndex": 5,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 8,
+        "rightIndex": 6,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 8,
+        "rightIndex": 32,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 10,
+        "rightIndex": 1,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 10,
+        "rightIndex": 28,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 10,
+        "rightIndex": 36,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 12,
+        "rightIndex": 8,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 12,
+        "rightIndex": 29,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 12,
+        "rightIndex": 30,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 13,
+        "rightIndex": 8,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 13,
+        "rightIndex": 29,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 13,
+        "rightIndex": 30,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 14,
+        "rightIndex": 20,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 14,
+        "rightIndex": 23,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 14,
+        "rightIndex": 25,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 15,
+        "rightIndex": 1,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 15,
+        "rightIndex": 28,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 15,
+        "rightIndex": 36,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 16,
+        "rightIndex": 1,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 16,
+        "rightIndex": 28,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 16,
+        "rightIndex": 36,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 18,
+        "rightIndex": 3,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 18,
+        "rightIndex": 7,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 18,
+        "rightIndex": 22,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 19,
+        "rightIndex": 8,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 19,
+        "rightIndex": 29,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 19,
+        "rightIndex": 30,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 20,
+        "rightIndex": 12,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 20,
+        "rightIndex": 21,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 20,
+        "rightIndex": 26,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 22,
+        "rightIndex": 4,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 22,
+        "rightIndex": 11,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 22,
+        "rightIndex": 16,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 24,
+        "rightIndex": 10,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 24,
+        "rightIndex": 27,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 24,
+        "rightIndex": 31,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 25,
+        "rightIndex": 2,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 25,
+        "rightIndex": 33,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 25,
+        "rightIndex": 34,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 27,
+        "rightIndex": 10,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 27,
+        "rightIndex": 27,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 27,
+        "rightIndex": 31,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 29,
+        "rightIndex": 4,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 29,
+        "rightIndex": 11,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 29,
+        "rightIndex": 16,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 30,
+        "rightIndex": 20,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 30,
+        "rightIndex": 23,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 30,
+        "rightIndex": 25,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 34,
+        "rightIndex": 12,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 34,
+        "rightIndex": 21,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 34,
+        "rightIndex": 26,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 35,
+        "rightIndex": 2,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 35,
+        "rightIndex": 33,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 35,
+        "rightIndex": 34,
+        "fieldIndices": [
+          1
+        ]
+      }
+    ]
+  },
+  "assessment": {
+    "state": "local_demonstration",
+    "independentReview": "pending",
+    "externalAuthority": false,
+    "superiorityClaim": false,
+    "novelAlgorithm": false,
+    "localCorrectness": true,
+    "comparisons": [
+      {
+        "strategyId": "nested_scan",
+        "logicalOperationsSaved": 1259,
+        "indexedRowsSaved": -36,
+        "auxiliaryRowsSaved": -36,
+        "observedMicrosSaved": 121
+      },
+      {
+        "strategyId": "fixed_right_hash",
+        "logicalOperationsSaved": 0,
+        "indexedRowsSaved": 1,
+        "auxiliaryRowsSaved": 1,
+        "observedMicrosSaved": -33
+      },
+      {
+        "strategyId": "sort_merge",
+        "logicalOperationsSaved": 335,
+        "indexedRowsSaved": -36,
+        "auxiliaryRowsSaved": 110,
+        "observedMicrosSaved": 277
+      }
+    ],
+    "explanation": "All four methods returned the same complete join. Smaller-side hashing is a known heuristic. Operation and auxiliary-row counts describe this workload; timings are single local observations. Independent confirmation and economic benefit remain unestablished."
+  },
+  "measurementNotes": [
+    "Keys are exact, case-sensitive strings; no trimming or numeric conversion. Duplicate keys preserve every matching row pair.",
+    "A conflict means unequal exact text in a shared non-key column, not evidence that either catalog is wrong.",
+    "Logical operations count key comparisons, indexed-row insertions, hash probes, and emitted pairs. They omit string length, hashing internals, allocation, canonical output sorting, verification, and export costs.",
+    "indexedRows/sortedRows count indexed row references or sorted records, not bytes or measured peak memory. Merge sorting also uses a scratch array of the same total row count.",
+    "One bounded execution per method; no statistical timing claim, cost saving, model discovery, or external certification.",
+    "CSV exports prefix formula-like cells with an apostrophe for spreadsheet safety; exact JSON preserves original strings."
+  ]
+}

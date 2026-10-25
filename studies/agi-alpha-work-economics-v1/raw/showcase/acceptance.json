@@ -1,0 +1,41 @@
+{
+  "checks": 184,
+  "failures": [],
+  "accepted": true,
+  "sections": {
+    "native": {
+      "checks": 32,
+      "failures": [],
+      "accepted": true,
+      "oracle": "Python csv + independent SQLite exact join; no producer imports"
+    },
+    "guide": {
+      "checks": 122,
+      "failures": [],
+      "accepted": true,
+      "expected_counts": {
+        "leftRows": 135,
+        "rightRows": 135,
+        "matchedPairs": 135,
+        "unmatchedRows": 0,
+        "unmatchedKeys": 0,
+        "conflictingPairs": 16,
+        "fieldDifferences": 16,
+        "actionGroups": 16,
+        "evidenceReferences": 16,
+        "comparedColumns": [
+          "git_blob_sha",
+          "bytes"
+        ]
+      },
+      "oracle": "Python csv + independent SQLite exact join; no producer imports"
+    },
+    "exports": {
+      "checks": 30,
+      "failures": [],
+      "accepted": true,
+      "oracle": "CSV export safety, summary cross-check and local-link inspection"
+    }
+  },
+  "oracle": "Independent-role Python CSV/SQLite reference; producer modules are not imported; new human trial NOT RUN; market comparison MODELLED_WITH_SOURCED_BENCHMARKS"
+}

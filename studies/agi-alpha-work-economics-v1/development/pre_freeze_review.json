@@ -1,0 +1,82 @@
+{
+  "schema": "work-economics-pre-freeze-review/v1",
+  "reviewed_utc": "2026-10-25T11:14:54.201946+00:00",
+  "reviewer_role": "Independent-role protocol/evaluator agent; not external organizational review",
+  "confirmation_inputs_inspected": false,
+  "status": "CORRECTIONS_REQUESTED_BEFORE_FREEZE",
+  "reviewed_files": [
+    {
+      "path": "protocol/STUDY_PROTOCOL.md",
+      "sha256": "7db3b88047f69f5bb0c6522cd86d87b69f6830ec2aa2d9d9dc35307c19c6619d"
+    },
+    {
+      "path": "src/run_job.py",
+      "sha256": "10e51b0d37eb788fd428bc2837ff1b4cb9318c5d8bb04b73a23d18eb438c2604"
+    },
+    {
+      "path": "src/run_campaign.py",
+      "sha256": "e7d12d0f6e9608fe05af70d19240708c3bf811a2b953c1d327551a4dba1358ca"
+    },
+    {
+      "path": "src/generate_tasks.py",
+      "sha256": "eb848a990e00856d86d439cfd3487df7252724029736452dcc71337fb4c08f54"
+    },
+    {
+      "path": "src/successor_report.py",
+      "sha256": "ed53c9f69f3b71ab7f95e0d607f715eec30086b40616158501d8b2a7119a8f7f"
+    },
+    {
+      "path": "src/analyse.py",
+      "sha256": "d92786b4505963ae50a15e263b0949cf310d783459fa4b80e28b8071e4ec3e20"
+    }
+  ],
+  "findings": [
+    {
+      "id": "PF1",
+      "severity": "major",
+      "file": "src/run_campaign.py",
+      "issue": "Uncaught outer subprocess TimeoutExpired aborts the campaign and omits a failed receipt and later attempts.",
+      "correction": "Catch TimeoutExpired and launch/read failures; persist a failed receipt with task identity/context/complexity, observed outer time, null unmeasured CPU, timeout reason and captured output; continue scheduled jobs. Do not rerun/replace the failed attempt."
+    },
+    {
+      "id": "PF2",
+      "severity": "major",
+      "files": [
+        "src/run_campaign.py",
+        "src/analyse.py"
+      ],
+      "issue": "Scale sum uses total_cpu_seconds or 0; analysis assumes numeric CPU for every job. Timeout/missing receipts therefore zero-fill missing cost quantities or crash analysis.",
+      "correction": "Report known CPU subtotal, missing count, and null total when any job CPU is unmeasured. Summary statistics should handle missing values explicitly and retain all attempt/acceptance denominators."
+    },
+    {
+      "id": "PF3",
+      "severity": "moderate",
+      "file": "protocol/STUDY_PROTOCOL.md",
+      "issue": "The stated 30-second job/worker limit is ambiguous as the common employer deadline while modeled human effort spans 5\u201360 minutes. Applying it to humans would handicap the comparison.",
+      "correction": "Distinguish a shared employer turnaround requirement from the system process safety cap. Do not price a human scenario as comparable if it violates the shared employer deadline."
+    },
+    {
+      "id": "PF4",
+      "severity": "minor",
+      "file": "src/run_job.py",
+      "issue": "CPU timer begins after Python imports/startup and receipt serialization occurs after the sampled total; process-turnaround includes these but measured CPU does not.",
+      "correction": "Label CPU as instrumented worker-and-child CPU excluding uninstrumented interpreter startup/receipt tail, or measure process CPU externally. This is not material to complete-cost claims because fully allocated cost remains unknown."
+    },
+    {
+      "id": "PF5",
+      "severity": "minor",
+      "file": "src/successor_report.py",
+      "issue": "No-settlement check treats an absent authority field as empty, and lacks explicit settlement value assertion.",
+      "correction": "Require pack authority to be explicitly [] and settlement explicitly NOT_CONNECTED; retain this check separately from business deliverable correctness."
+    }
+  ],
+  "positive_findings": [
+    "36-job statistical unit is kept separate from the natural showcase, successor aggregate and108 timing repeats.",
+    "Human market comparison is explicitly modeled; adjacent historical time is not mislabeled as a matched observation.",
+    "No active-model provider cost is claimed for deterministic local execution; development and full economic costs remain unknown.",
+    "Generator, seeds, complexity sizes, ordering, oracle and analysis are prospective and no confirmation callback or retuning path was found.",
+    "The first portable tool is actually invoked on fresh task paths, while scope remains known exact reconciliation plus composition.",
+    "Acceptance oracle uses independent Python CSV/SQLite reference and the prior five corruption probes rejected.",
+    "The reported natural showcase is development-selected and is not included in the held-out36 denominator."
+  ]
+}

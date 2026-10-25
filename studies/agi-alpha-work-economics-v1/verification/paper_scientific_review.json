@@ -1,0 +1,103 @@
+{
+  "schema": "work-economics-paper-scientific-review/v1",
+  "reviewed_source": "paper/main.tex",
+  "reviewed_source_sha256": "d68aabfd68171a5ab223b2968b10f0a4addf262acd9c7b83509ee18d1a9c980d",
+  "role": "Independent-role protocol and output evaluator; same research effort, no external institutional independence",
+  "status": "ACCEPTABLE_WITH_TARGETED_CLARIFICATIONS",
+  "critical_findings": 0,
+  "material_findings": 1,
+  "scope": [
+    "Scientific wording against frozen protocol",
+    "Reported outcomes against raw/ANALYSIS.json and audited outputs",
+    "Control scope",
+    "Reuse and learning distinctions",
+    "Unobserved costs and attention",
+    "Human evidence applicability",
+    "Conditional economics"
+  ],
+  "findings": [
+    {
+      "id": "P01",
+      "severity": "moderate",
+      "location": "Final employer evidence box near original line 399",
+      "claim": "Full accepted local deliveries complete in fractions of a second to about 1.34 seconds.",
+      "reason": "That range is the 36 fresh confirmation jobs' process-turnaround range. Load runs reach 1.362470 seconds of process turnaround and 5.510788 seconds from submission to delivery. The unqualified employer-facing statement can imply a total wait guarantee.",
+      "required_change": "Scope the sentence explicitly to the 36 fresh confirmation jobs and their process-launch boundary; refer queued latency separately.",
+      "suggested_text": "The 36 fresh confirmation jobs took 0.161\u20131.338 seconds from process launch through acceptance and packaging; submission-to-delivery latency for queued batches is reported separately.",
+      "evidence": [
+        "raw/ANALYSIS.json:primary_turnaround_seconds",
+        "raw/ANALYSIS.json:scale.1.submit_to_delivery_seconds.maximum",
+        "raw/ANALYSIS.json:scale.4.process_seconds.maximum"
+      ]
+    },
+    {
+      "id": "P02",
+      "severity": "minor",
+      "location": "Complete cost subsection near original line 244",
+      "claim": "q_H and q_A are eventual acceptance fractions while t_H, h_A and u are per attempted job.",
+      "reason": "The wording leaves room to use final job-level acceptance after multiple retries with per-try costs. The formulas are correct only when numerator and acceptance denominator share one accounting boundary.",
+      "required_change": "Define q as accepted deliveries divided by attempted jobs at the declared boundary, and require retry/rework cost to be included consistently. If an attempted job includes all retries, its resource numerator must include them.",
+      "suggested_text": "At a common accounting boundary, q is accepted deliveries divided by attempted jobs; all resources spent on correction, retries and abandoned attempts are included. A workflow that treats an entire retry sequence as one attempted job must charge the entire sequence."
+    },
+    {
+      "id": "P03",
+      "severity": "minor",
+      "location": "Evidence hierarchy or abstract",
+      "claim": "No newly recruited human panel is required; matched trial is described as not observed.",
+      "reason": "The text is substantively honest but the original requested empirical-human status should be unmistakable. A visible status label improves separation from the completed market-data analysis.",
+      "recommended_change": "Add: Matched empirical no-AI human comparison: NOT RUN. Market-data comparison: completed as an explicitly conditional model."
+    },
+    {
+      "id": "P04",
+      "severity": "minor",
+      "location": "Capacity figure caption near original line 311",
+      "claim": "More processes improve throughput while increasing per-job CPU and contention.",
+      "reason": "Higher measured per-job CPU is observed; increased contention is a plausible explanation rather than separately measured causal evidence.",
+      "recommended_change": "Use 'with higher measured CPU per job' or mark contention as a possible explanation."
+    },
+    {
+      "id": "P05",
+      "severity": "completion_gate",
+      "location": "Economic scenarios subsection near original line 274",
+      "claim": "Both acceptance fractions equal one in this illustration; the companion varies them.",
+      "reason": "At review time the source-grounded benchmark and attention scripts present equal-acceptance thresholds; acceptance-variation output was not yet found. This may be pending in the figure/scenario build.",
+      "required_change": "Before final build, confirm the companion really contains the predeclared q=0.8/0.95/1 sensitivity with its script and assumptions, or revise the sentence. Do not change frozen confirmation outputs."
+    }
+  ],
+  "confirmed_boundaries": [
+    "36 fresh controlled jobs and 108 load repetitions are distinguished; no row or assertion is treated as a fresh human job.",
+    "All 36 confirmation jobs passed on the first recorded attempt; the acceptance and turnaround figures match saved analysis.",
+    "Acceptance is explicitly deterministic, role-independent technical checking; no human/client usability certification or willingness to pay is claimed.",
+    "The natural showcase is development-selected and uses public source metadata, not a live website check.",
+    "Exact-string semantics, duplicate Cartesian pairs, unshared columns and refusal limits match original source behavior.",
+    "Retained tool bytes are reused on 36 fresh jobs; no discovered algorithm, selected-only optimization, causal learning improvement or increasing improvement rate is claimed.",
+    "Full cost, setup, review, maintenance and investment allocation remain unknown; zero operational model calls are not equated with zero total cost.",
+    "Published human timings retain original tasks, populations, censorship and AI-use limits; none supplies a matched denominator.",
+    "Prestart STOP, injected clock timeout, explicit restart, local byte restoration and declared schema fallback are described at their observed scope.",
+    "Market scenarios are labeled assumptions; wages, GDP, provider revenue, customer savings and profit remain distinct.",
+    "Source inspection and unfunded drafts are distinguished from transactions; USDC and AGIALPHA routes are separated.",
+    "All 43 citation keys used in the reviewed draft exist in references.bib."
+  ],
+  "pending_visual_review": "Awaiting rendered final PDF pages.",
+  "no_frozen_or_paper_files_modified": true,
+  "resolution_review": {
+    "reviewed_source_sha256": "3cddcdbbb809005e451736f016cb7bc5af57b92defdd537d87d24d7d68037560",
+    "reviewed_pdf_sha256": "31418a3045ab165ba10724accafde9d9a935fa427006735e8ddc2ec3bfd6d0a9",
+    "status": "ALL_TEXTUAL_FINDINGS_RESOLVED",
+    "findings": {
+      "P01": "Final box explicitly limits 0.161\u20131.338 seconds to 36 fresh jobs from process launch; queue latency separate.",
+      "P02": "q defined as accepted outputs divided by attempted jobs at same accounting boundary; retries included consistently.",
+      "P03": "Explicit matched empirical no-AI comparison NOT RUN and completed conditional market model label present.",
+      "P04": "Capacity caption now says higher CPU per job; causal contention claim removed.",
+      "P05": "Postfreeze economic presentation includes all nine qH/qA Cartesian combinations; independent numerical recalculation passes."
+    },
+    "economics_evidence": "economics_post/measured_resource_economics.json",
+    "q_grid_check_count": 9
+  },
+  "current_textual_status": "RESOLVED",
+  "final_checked_source_sha256": "8b60e274ec8c622b9bcc9af42e871d9b35ba308c748de1c61470a2b4504211ff",
+  "final_checked_pdf_sha256": "8b9df6f5ef1887d6f972ccfbe26d61a5551962dea41ad7c6595d431dfacb2f51",
+  "final_textual_status": "PASS_ALL_FIVE_FINDINGS_RESOLVED",
+  "final_visual_status_for_assigned_pages": "PASS_PAGES_08_TO_14",
+  "final_review_utc": "2026-10-25T11:35:15.472631+00:00"
+}

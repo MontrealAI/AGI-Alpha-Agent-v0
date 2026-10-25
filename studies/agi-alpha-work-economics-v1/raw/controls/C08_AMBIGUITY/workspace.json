@@ -1,0 +1,180 @@
+{
+  "schema": "ti-catalogue-workspace/v1",
+  "sourceHash": "c6e2c75ae552afa05d46468e6938d243211d27e31f2cb26b08075a993f8a8382",
+  "runId": "controls-identifier-ambiguity",
+  "createdAt": "2026-10-25T11:16:40.318Z",
+  "language": "en",
+  "approach": "grouped",
+  "input": {
+    "leftCsv": "id,name,qty\n001,Part A,10\n",
+    "rightCsv": "id,name,qty\n1,Part A,10\n",
+    "leftKey": "id",
+    "rightKey": "id"
+  },
+  "result": {
+    "schema": "ti-catalogue-result/v1",
+    "leftIdentity": {
+      "sha256": "fe7e8c0b4e526b5f9b8c1293e8c390d43e942ccbcf8dcb2f572158046406f3e3",
+      "bytes": 26
+    },
+    "rightIdentity": {
+      "sha256": "769c060e572a9f67b72b406e299e867d41ed6cd824ecbfd8a31c10a392e4c4e6",
+      "bytes": 24
+    },
+    "resolution": {
+      "schema": "successor-discrepancy-resolution/v1",
+      "actions": [
+        {
+          "id": "action-0001",
+          "key": "001",
+          "type": "missing_from_right",
+          "leftRows": [
+            0
+          ],
+          "rightRows": [],
+          "occurrences": [
+            "left:0"
+          ],
+          "conflicts": [],
+          "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+        },
+        {
+          "id": "action-0002",
+          "key": "1",
+          "type": "missing_from_left",
+          "leftRows": [],
+          "rightRows": [
+            0
+          ],
+          "occurrences": [
+            "right:0"
+          ],
+          "conflicts": [],
+          "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+        }
+      ],
+      "sharedFields": [
+        {
+          "name": "name",
+          "leftColumn": 1,
+          "rightColumn": 1
+        },
+        {
+          "name": "qty",
+          "leftColumn": 2,
+          "rightColumn": 2
+        }
+      ],
+      "burden": {
+        "pairwiseReviewItems": 2,
+        "groupedActions": 2,
+        "groupingReduction": 0,
+        "timeSavedClaim": false,
+        "sameTaskSuperiority": false
+      },
+      "coverage": {
+        "originalOccurrences": 2,
+        "coveredOccurrences": 2,
+        "complete": true,
+        "missing": [],
+        "duplicates": []
+      },
+      "diagnosis": {
+        "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+        "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+        "duplicateExceptionKeys": 0,
+        "uniqueExceptionKeys": 2,
+        "groupingReducesDecisionItems": false
+      },
+      "decision": {
+        "state": "retain_original_review",
+        "recommendedContract": "original_occurrence_review",
+        "reason": "No repeated exception key reduces the number of decision records; retain the original review contract."
+      },
+      "contract": {
+        "changed": true,
+        "original": "One review item per unmatched source row or conflicting matched row pair.",
+        "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+        "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+      },
+      "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n\"action-0001\",\"001\",\"missing_from_right\",\"1\",\"\",\"left:0\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0002\",\"1\",\"missing_from_left\",\"\",\"1\",\"right:0\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n",
+      "externalAuthority": false,
+      "automaticallyResolved": false,
+      "qualification": "local_engineering_only"
+    },
+    "differences": [
+      {
+        "id": "left:0",
+        "occurrence": "left:0",
+        "action": "action-0001",
+        "key": "001",
+        "kind": "missing_from_right",
+        "leftRow": 1,
+        "rightRow": "",
+        "field": "",
+        "leftValue": "[\"001\",\"Part A\",\"10\"]",
+        "rightValue": ""
+      },
+      {
+        "id": "right:0",
+        "occurrence": "right:0",
+        "action": "action-0002",
+        "key": "1",
+        "kind": "missing_from_left",
+        "leftRow": "",
+        "rightRow": 1,
+        "field": "",
+        "leftValue": "",
+        "rightValue": "[\"1\",\"Part A\",\"10\"]"
+      }
+    ],
+    "metrics": {
+      "leftRows": 1,
+      "rightRows": 1,
+      "matchedPairs": 0,
+      "unmatchedRows": 2,
+      "unmatchedKeys": 2,
+      "conflictingPairs": 0,
+      "fieldDifferences": 0,
+      "actionGroups": 2,
+      "evidenceReferences": 2,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "name",
+        "qty"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    },
+    "limitations": {
+      "localOnly": true,
+      "authority": "none",
+      "automaticallyResolved": false,
+      "timeSavedMeasured": false,
+      "accuracyImprovementMeasured": false,
+      "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+      "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+      "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+      "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+    }
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  },
+  "authority": "none"
+}

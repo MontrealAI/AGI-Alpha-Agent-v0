@@ -1,0 +1,88 @@
+{
+  "review": "Individual rendered-PNG visual review",
+  "date": "2026-10-25",
+  "reviewer": "economics_sources",
+  "status": "LAYOUT_REVISION_REQUESTED",
+  "main_tex_sha256": "3cddcdbbb809005e451736f016cb7bc5af57b92defdd537d87d24d7d68037560",
+  "main_pdf_sha256": "31418a3045ab165ba10724accafde9d9a935fa427006735e8ddc2ec3bfd6d0a9",
+  "physical_pages_assigned": [
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "physical_page_count": 20,
+  "pages": [
+    {
+      "physical_page": 15,
+      "printed_page": 14,
+      "png": "paper/qa-draft/page-15.png",
+      "png_sha256": "5e55f09c14def30f7b7f45bb37f35f0074e4d7fa123c81fb23eccc0648fc8e3e",
+      "inspected_with": "view_image, original resolution, individual page",
+      "result": "NO_OVERLAP_OR_CLIPPING",
+      "notes": "Cost ledger table and beginning of acceptance appendix: all three columns readable; no overlap, clipped rows or footer collision."
+    },
+    {
+      "physical_page": 16,
+      "printed_page": 15,
+      "png": "paper/qa-draft/page-16.png",
+      "png_sha256": "48cda7a6755146db0795d2e11ccfd58a8bec2e4cd273b77f26d834d17a4424a6",
+      "inspected_with": "view_image, original resolution, individual page",
+      "result": "NO_OVERLAP_OR_CLIPPING",
+      "notes": "Repository and contract tables plus source notes: readable headers, hashes, cells and caption. No clipping/overlap. Running header and left brand footer absent on this continuation page."
+    },
+    {
+      "physical_page": 17,
+      "printed_page": 16,
+      "png": "paper/qa-draft/page-17.png",
+      "png_sha256": "c965e854393a1ab536e24db6a7a84825b4b7eba2555968064d95c09fb0b96396",
+      "inspected_with": "view_image, original resolution, individual page",
+      "result": "REVISION_REQUESTED",
+      "notes": "Only final global-scenario appendix paragraph at top, followed by roughly80% unused page before bibliography; avoidable orphan-page layout. Running header and left brand footer absent."
+    },
+    {
+      "physical_page": 18,
+      "printed_page": 17,
+      "png": "paper/qa-draft/page-18.png",
+      "png_sha256": "bce5e55eee5ad5eafde81ec53e3cedd39121cd81d73297b1325da37090d26353",
+      "inspected_with": "view_image, original resolution, individual page",
+      "result": "NO_OVERLAP_OR_CLIPPING",
+      "notes": "References1\u201313: legible, URL/hash wrapping stays within margins; no overlapping entries or clipped lines. Running header/footer present."
+    },
+    {
+      "physical_page": 19,
+      "printed_page": 18,
+      "png": "paper/qa-draft/page-19.png",
+      "png_sha256": "2a7a5f3ae0086ce606b63bc403f8214a72ea679ec7edbb83c5de5af5b20dc96f",
+      "inspected_with": "view_image, original resolution, individual page",
+      "result": "NO_OVERLAP_OR_CLIPPING",
+      "notes": "References14\u201327: legible, wrapped URLs remain within margins; no overlap/clipping. ILO URL breaks after https:, visually awkward but fully present. Running header and left brand footer absent."
+    },
+    {
+      "physical_page": 20,
+      "printed_page": 19,
+      "png": "paper/qa-draft/page-20.png",
+      "png_sha256": "617225307a1b066b87f808147e8c554b6e0f98ddaa12e8e365f5f4deeb7150c1",
+      "inspected_with": "view_image, original resolution, individual page",
+      "result": "NO_OVERLAP_OR_CLIPPING",
+      "notes": "References28\u201343: legible; long URLs and final entry stay within margins and above page number; no clipped lines. Running header and left brand footer absent."
+    }
+  ],
+  "required_layout_change": {
+    "page": 17,
+    "issue": "Appendix final paragraph orphaned on near-empty page before forced bibliography break.",
+    "suggestion": "Remove pre-bibliography clearpage so references follow, or consolidate final global-scenario paragraph into preceding appendix text. Re-render affected end pages afterward."
+  },
+  "consistency_observation": {
+    "pages": [
+      16,
+      17,
+      19,
+      20
+    ],
+    "issue": "Running header and left brand footer absent while15/18 show both; page numbers remain. Check page-style consistency if unintended."
+  },
+  "no_pdf_or_main_tex_edits_by_reviewer": true
+}
