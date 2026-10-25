@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "purpose": "Existing output directory refuses without overwriting; scientific audit not rerun",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/5f62e493ed3d/publication_continuation/new_study_handoff/reproduction_fix/rerun_scientific_audit.py\", line 170, in <module>\n    raise SystemExit(run(args.archive.resolve(), args.destination.resolve()))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/5f62e493ed3d/publication_continuation/new_study_handoff/reproduction_fix/rerun_scientific_audit.py\", line 61, in run\n    raise FileExistsError('Destination exists; choose a new verification output directory')\nFileExistsError: Destination exists; choose a new verification output directory\n",
+  "output_files_unchanged": true,
+  "archive_unchanged": true,
+  "output_hashes": {
+    "VERIFICATION.json": "5e7e123ea51ebc836dbe42b29e291928a07d58b237d64c5efcab417c86b088a7",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RECORDED_AUDIT.json": "ed77c435a67ade4a1276179b069b5d22db2a7675a9af575814fca4302474d63e",
+    "RECOMPUTED_AUDIT.json": "eeb4cd34078dfef883aaff6b15fd87573f6a20cff069b62a36c4ae9664956359",
+    "stdout.txt": "bdc98243c4950853899fd0df17b795b25e36e62a46a9551006e350e03907fb11"
+  }
+}

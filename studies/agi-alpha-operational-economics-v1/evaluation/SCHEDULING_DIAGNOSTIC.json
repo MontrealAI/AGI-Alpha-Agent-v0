@@ -1,0 +1,205 @@
+{
+  "schema": "operational-economics-scheduling-consistency-diagnostic/v1",
+  "created_utc": "2026-10-25T13:36:20.776497+00:00",
+  "classification": "POST_RESULT_CONSISTENCY_DIAGNOSTIC_NOT_PREREGISTERED_ENDPOINT_OR_NEW_SCENARIO",
+  "inputs_sha256": "00dc5a7f3c1ea62cb5725663a98e50ff5a45d67f278e8cbba67aefddfe789d6a",
+  "source_sha256": "c4a1d4581ac16665923e0ce1716c81afb1b0054a92d04642bbe2f059daeee276",
+  "rows": [
+    {
+      "scenario": "base",
+      "arm": "agent",
+      "declared_setup_workdays": "10",
+      "role_checks": {
+        "employer_minutes": {
+          "initial_minutes": "120",
+          "implied_initial_minutes_per_declared_setup_day": "12",
+          "uniform_available_minutes_per_day": "96.0",
+          "minimum_setup_days_under_uniform_allocation": "1.25",
+          "fits_declared_setup_if_uniform": true
+        },
+        "provider_minutes": {
+          "initial_minutes": "4320",
+          "implied_initial_minutes_per_declared_setup_day": "432",
+          "uniform_available_minutes_per_day": "96.0",
+          "minimum_setup_days_under_uniform_allocation": "45",
+          "fits_declared_setup_if_uniform": false
+        },
+        "worker_minutes": {
+          "initial_minutes": "0",
+          "implied_initial_minutes_per_declared_setup_day": "0",
+          "uniform_available_minutes_per_day": "384.0",
+          "minimum_setup_days_under_uniform_allocation": "0E+1",
+          "fits_declared_setup_if_uniform": true
+        }
+      },
+      "minimum_workdays_uniform_role_lower_bound": "45",
+      "whole_workday_lower_bound": 45,
+      "fits_uniform_daily_allocation": false
+    },
+    {
+      "scenario": "base",
+      "arm": "traditional",
+      "declared_setup_workdays": "1",
+      "role_checks": {
+        "employer_minutes": {
+          "initial_minutes": "60",
+          "implied_initial_minutes_per_declared_setup_day": "60",
+          "uniform_available_minutes_per_day": "96.0",
+          "minimum_setup_days_under_uniform_allocation": "0.625",
+          "fits_declared_setup_if_uniform": true
+        },
+        "provider_minutes": {
+          "initial_minutes": "0",
+          "implied_initial_minutes_per_declared_setup_day": "0",
+          "uniform_available_minutes_per_day": "96.0",
+          "minimum_setup_days_under_uniform_allocation": "0E+1",
+          "fits_declared_setup_if_uniform": true
+        },
+        "worker_minutes": {
+          "initial_minutes": "120",
+          "implied_initial_minutes_per_declared_setup_day": "120",
+          "uniform_available_minutes_per_day": "384.0",
+          "minimum_setup_days_under_uniform_allocation": "0.3125",
+          "fits_declared_setup_if_uniform": true
+        }
+      },
+      "minimum_workdays_uniform_role_lower_bound": "0.625",
+      "whole_workday_lower_bound": 1,
+      "fits_uniform_daily_allocation": true
+    },
+    {
+      "scenario": "conservative",
+      "arm": "agent",
+      "declared_setup_workdays": "30",
+      "role_checks": {
+        "employer_minutes": {
+          "initial_minutes": "240",
+          "implied_initial_minutes_per_declared_setup_day": "8",
+          "uniform_available_minutes_per_day": "72.0",
+          "minimum_setup_days_under_uniform_allocation": "3.3333333333333333333333333333333333333333333333333",
+          "fits_declared_setup_if_uniform": true
+        },
+        "provider_minutes": {
+          "initial_minutes": "11040",
+          "implied_initial_minutes_per_declared_setup_day": "368",
+          "uniform_available_minutes_per_day": "72.0",
+          "minimum_setup_days_under_uniform_allocation": "153.33333333333333333333333333333333333333333333333",
+          "fits_declared_setup_if_uniform": false
+        },
+        "worker_minutes": {
+          "initial_minutes": "0",
+          "implied_initial_minutes_per_declared_setup_day": "0",
+          "uniform_available_minutes_per_day": "288.0",
+          "minimum_setup_days_under_uniform_allocation": "0E+1",
+          "fits_declared_setup_if_uniform": true
+        }
+      },
+      "minimum_workdays_uniform_role_lower_bound": "153.33333333333333333333333333333333333333333333333",
+      "whole_workday_lower_bound": 154,
+      "fits_uniform_daily_allocation": false
+    },
+    {
+      "scenario": "conservative",
+      "arm": "traditional",
+      "declared_setup_workdays": "2",
+      "role_checks": {
+        "employer_minutes": {
+          "initial_minutes": "120",
+          "implied_initial_minutes_per_declared_setup_day": "60",
+          "uniform_available_minutes_per_day": "72.0",
+          "minimum_setup_days_under_uniform_allocation": "1.6666666666666666666666666666666666666666666666667",
+          "fits_declared_setup_if_uniform": true
+        },
+        "provider_minutes": {
+          "initial_minutes": "0",
+          "implied_initial_minutes_per_declared_setup_day": "0",
+          "uniform_available_minutes_per_day": "72.0",
+          "minimum_setup_days_under_uniform_allocation": "0E+1",
+          "fits_declared_setup_if_uniform": true
+        },
+        "worker_minutes": {
+          "initial_minutes": "240",
+          "implied_initial_minutes_per_declared_setup_day": "120",
+          "uniform_available_minutes_per_day": "288.0",
+          "minimum_setup_days_under_uniform_allocation": "0.83333333333333333333333333333333333333333333333333",
+          "fits_declared_setup_if_uniform": true
+        }
+      },
+      "minimum_workdays_uniform_role_lower_bound": "1.6666666666666666666666666666666666666666666666667",
+      "whole_workday_lower_bound": 2,
+      "fits_uniform_daily_allocation": true
+    },
+    {
+      "scenario": "stress",
+      "arm": "agent",
+      "declared_setup_workdays": "60",
+      "role_checks": {
+        "employer_minutes": {
+          "initial_minutes": "480",
+          "implied_initial_minutes_per_declared_setup_day": "8",
+          "uniform_available_minutes_per_day": "48.0",
+          "minimum_setup_days_under_uniform_allocation": "1E+1",
+          "fits_declared_setup_if_uniform": true
+        },
+        "provider_minutes": {
+          "initial_minutes": "23520",
+          "implied_initial_minutes_per_declared_setup_day": "392",
+          "uniform_available_minutes_per_day": "48.0",
+          "minimum_setup_days_under_uniform_allocation": "4.9E+2",
+          "fits_declared_setup_if_uniform": false
+        },
+        "worker_minutes": {
+          "initial_minutes": "0",
+          "implied_initial_minutes_per_declared_setup_day": "0",
+          "uniform_available_minutes_per_day": "192.0",
+          "minimum_setup_days_under_uniform_allocation": "0E+1",
+          "fits_declared_setup_if_uniform": true
+        }
+      },
+      "minimum_workdays_uniform_role_lower_bound": "4.9E+2",
+      "whole_workday_lower_bound": 490,
+      "fits_uniform_daily_allocation": false
+    },
+    {
+      "scenario": "stress",
+      "arm": "traditional",
+      "declared_setup_workdays": "4",
+      "role_checks": {
+        "employer_minutes": {
+          "initial_minutes": "240",
+          "implied_initial_minutes_per_declared_setup_day": "60",
+          "uniform_available_minutes_per_day": "48.0",
+          "minimum_setup_days_under_uniform_allocation": "5",
+          "fits_declared_setup_if_uniform": false
+        },
+        "provider_minutes": {
+          "initial_minutes": "0",
+          "implied_initial_minutes_per_declared_setup_day": "0",
+          "uniform_available_minutes_per_day": "48.0",
+          "minimum_setup_days_under_uniform_allocation": "0E+1",
+          "fits_declared_setup_if_uniform": true
+        },
+        "worker_minutes": {
+          "initial_minutes": "480",
+          "implied_initial_minutes_per_declared_setup_day": "120",
+          "uniform_available_minutes_per_day": "192.0",
+          "minimum_setup_days_under_uniform_allocation": "2.5",
+          "fits_declared_setup_if_uniform": true
+        }
+      },
+      "minimum_workdays_uniform_role_lower_bound": "5",
+      "whole_workday_lower_bound": 5,
+      "fits_uniform_daily_allocation": false
+    }
+  ],
+  "primary_results_changed": false,
+  "interpretation": [
+    "The frozen core capacity intersects annual and postdeployment aggregate resource pools. It is an aggregate resource upper bound, not a demonstrated daily staffing schedule.",
+    "Treating stated minutes per workday as uniform hard daily availability exposes initial staffing requirements that exceed the declared setup calendar in the Agent arm.",
+    "Treating those quantities as annual-average budgets permits frontloading only as an additional operational assumption. That frontloading policy and feasibility were not measured.",
+    "First-commission setup and turnaround remain assumed and unvalidated. They must not be advertised as deliverable commitments.",
+    "These role-based lower bounds ignore dependency ordering and other queues; satisfying them would not prove that a schedule exists.",
+    "Traditional setup is checked by the same rule. Hybrid readiness is sequential under the frozen specification and inherits both routes' limitations.",
+    "No frozen setup day, economic output, demand assumption, capacity endpoint, or prior study artifact has been altered."
+  ]
+}

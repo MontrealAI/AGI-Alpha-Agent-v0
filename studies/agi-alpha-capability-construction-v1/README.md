@@ -70,3 +70,7 @@ This directory is an **experimental research artifact**, not an installed runtim
 Existing review, exact-source hosted checks, release-owner responsibilities, software/site/publisher gates and Harness/Fleet holds remain in force. The prior #4901 source CI failure is preserved and is not cleared by this archive. No workflows, rules, lint exclusions, source guards, authorities or contract deployments are changed.
 
 The full archive carries upstream Apache-2.0 and retained AGI Jobs MIT license notices with pinned provenance. Public data and cited papers retain their own source terms. USDC and $AGIALPHA routes remain separate and unfunded.
+
+## Additive reproduction correction after review
+
+The archived audit intentionally refuses to overwrite its already-recorded output. To verify this exact edition again, use the [non-overwriting rerun guide](reproduction/README.md) and [helper](reproduction/rerun_scientific_audit.py). It validates a new isolated copy of the unchanged archive and preserves the recorded and recomputed receipts separately. The [verification receipt](reproduction/verification-run-001/VERIFICATION.json) records 1,101 passing checks and exact preservation. No frozen file or original archive byte was changed.
