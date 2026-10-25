@@ -54,6 +54,9 @@ def fixture_case(
     copies: bool = False,
 ) -> tuple[dict[str, Any], policy.CapturedInputs]:
     monkeypatch.setattr(policy, "ROOT", root.resolve())
+    # Development fixtures have their own inactive state and never inherit a
+    # future operator-reviewed production map pin.
+    monkeypatch.setattr(policy, "APPROVED_MAP_SHA256", None)
     (root / "selected.py").write_bytes(body)
     targets = ("selected.py",)
     if copies:
@@ -157,6 +160,14 @@ def test_no_map_pin_keeps_valid_findings_inactive_with_raw_status(
     assert result["raw_findings"] == report["results"] and result["raw_finding_count"] == 1
     assert result["inapplicable_finding_count"] == 0
     assert result["production_authority"] is False and result["release_authorized"] is False
+
+
+def test_inactive_fixture_does_not_inherit_a_production_pin(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(policy, "APPROVED_MAP_SHA256", "f" * 64)
+    report, captured = fixture_case(tmp_path, monkeypatch)
+    result = assess(report, captured)
+    assert policy.APPROVED_MAP_SHA256 is None
+    assert result["policy_disposition"] == "INACTIVE" and not result["policy_accepted"]
 
 
 @pytest.mark.parametrize(

@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Inactive, exact evidence matcher for separately reviewed rule inapplicability.
+"""Exact inapplicability matcher used by the primary static scanner.
 
-This module has no approved map and is not connected to scanner acceptance. A
-future activation requires reviewed source changes to the literal pin and fixed
-data file. It never changes engine output, suppresses a rule, or grants release
-or runtime authority. Inputs are captured by the operator's scanner, not by a
-candidate, imported memory, environment variable, or command-line selector.
+An absent approved pin leaves findings unadmitted. A separately reviewed fixed
+map can classify only cases whose source, rule and full repository context match.
+It never changes engine output, suppresses a rule, or grants release or runtime
+authority. Inputs are captured by the operator's scanner, not by a candidate,
+imported memory, environment variable, or command-line selector.
 
 Normalization is a cycle breaker, not an approval anchor: changing both the
 map and its literal pin is a protected criteria/source edit requiring separate

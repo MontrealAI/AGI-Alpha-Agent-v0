@@ -14,6 +14,7 @@ import json
 import marshal
 import os
 from pathlib import Path
+import re
 import shutil
 import signal
 import struct
@@ -67,6 +68,31 @@ def protocol_matcher(monkeypatch: pytest.MonkeyPatch, *, forbid_assess: bool = F
             capture_inputs=capture, assess=assess, RuleDefinition=lambda *_args: None, _git=lambda *_args: b"a" * 40
         ),
     )
+
+
+def inactive_matcher_body(body: bytes) -> bytes:
+    """A copied development executor never inherits a production authority pin."""
+    normalized, count = re.subn(
+        rb'^APPROVED_MAP_SHA256: str \| None = (None|"[0-9a-f]{64}")$',
+        b"APPROVED_MAP_SHA256: str | None = None",
+        body,
+        flags=re.MULTILINE,
+    )
+    assert count == 1
+    return normalized
+
+
+def copy_inactive_matcher(destination: Path) -> None:
+    destination.write_bytes(inactive_matcher_body((ROOT / security.MATCHER_PATH).read_bytes()))
+
+
+@pytest.mark.parametrize("literal", [b"None", b'"' + b"a" * 64 + b'"'])
+def test_copied_development_matcher_never_inherits_production_pin(literal: bytes) -> None:
+    baseline = inactive_matcher_body((ROOT / security.MATCHER_PATH).read_bytes())
+    simulated_production = baseline.replace(
+        b"APPROVED_MAP_SHA256: str | None = None", b"APPROVED_MAP_SHA256: str | None = " + literal
+    )
+    assert inactive_matcher_body(simulated_production) == baseline
 
 
 @pytest.fixture(scope="module")
@@ -414,7 +440,7 @@ def test_actual_official_ids_are_stable_across_evidence_directories(scanner_pyth
     shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
     matcher = root / security.MATCHER_PATH
     matcher.parent.mkdir(parents=True)
-    shutil.copyfile(ROOT / security.MATCHER_PATH, matcher)
+    copy_inactive_matcher(matcher)
     for command in (
         ["git", "init", "-q"],
         ["git", "add", "inert.py", "semgrep.yml", security.MATCHER_PATH],
@@ -836,7 +862,7 @@ def test_fixed_matcher_code_pin_refuses_modified_source_before_execution(tmp_pat
 def test_matcher_loader_ignores_forged_repository_bytecode_cache(tmp_path: Path) -> None:
     path = tmp_path / security.MATCHER_PATH
     path.parent.mkdir(parents=True)
-    shutil.copyfile(ROOT / security.MATCHER_PATH, path)
+    copy_inactive_matcher(path)
     marker = tmp_path / "forged-cache-executed"
     code = compile("from pathlib import Path\n" + f"Path({str(marker)!r}).write_text('bad')\n", str(path), "exec")
     cache = Path(importlib.util.cache_from_source(str(path)))
@@ -855,7 +881,7 @@ def test_primary_source_commit_ignores_foreign_git_selectors(tmp_path: Path, mon
         shutil.copyfile(ROOT / "semgrep.yml", directory / "semgrep.yml")
         matcher_path = directory / security.MATCHER_PATH
         matcher_path.parent.mkdir(parents=True)
-        shutil.copyfile(ROOT / security.MATCHER_PATH, matcher_path)
+        copy_inactive_matcher(matcher_path)
         subprocess.run(["git", "init", "-q"], cwd=directory, check=True)
         subprocess.run(["git", "add", "."], cwd=directory, check=True)
         subprocess.run(
