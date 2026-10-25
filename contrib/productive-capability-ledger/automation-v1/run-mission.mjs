@@ -23,7 +23,9 @@ const safePath=value=>typeof value==='string' && /^[A-Za-z0-9_.\/-]+$/.test(valu
 const fact=(value,reference,basis='measured')=>({value,basis,reference});
 const artifactName=value=>typeof value==='string' && /^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(value);
 function git(args,timeout=5000) {
-  return execFileSync('git',args,{cwd:ROOT,timeout,maxBuffer:4_000_000});
+  const environment=Object.fromEntries(Object.entries(process.env).filter(([key])=>!/^git_/i.test(key)));
+  return execFileSync('git',['--no-lazy-fetch','--no-replace-objects','--no-pager',...args],
+    {cwd:ROOT,timeout,maxBuffer:4_000_000,env:{...environment,GIT_TERMINAL_PROMPT:'0',GIT_OPTIONAL_LOCKS:'0'}});
 }
 function committed(ref,path,deadline=null) {
   assert.match(ref,/^[0-9a-f]{40}$/); assert(safePath(path),'Use a bounded repository-relative public source path.');

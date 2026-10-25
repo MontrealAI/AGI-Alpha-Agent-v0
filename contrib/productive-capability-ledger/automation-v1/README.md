@@ -37,7 +37,7 @@ invent a complete cost from its process timings.
 
 ## Current successor and preserved predecessor evidence
 
-The additive [completion candidate](../completion-v1/README.md) now creates
+The additive [completion candidate](../completion-v2/README.md) now creates
 `alpha-source-assurance-plan/v3` approvals with an explicit expiry, attempt ceiling
 and aggregate execution allowance. Durable reservations charge the full allowance
 before source validation or work, including interrupted attempts and completed
@@ -45,6 +45,16 @@ rechecks. Cancellation is distinct from a resumable STOP. This is still local
 foreground execution; it does not establish a persistent browser connection or
 an approved installed profile. The earlier v2 plans and evidence below retain
 their original identities and scope.
+
+Source reads now use Git's explicit `--no-lazy-fetch`, `--no-replace-objects` and
+`--no-pager` controls, with inherited `GIT_*` routing removed only from each child
+environment. Repository/global security configuration is unchanged. Missing
+objects refuse locally rather than invoking a promisor remote. Prepare the public
+checkout before approval and account for acquisition effort separately. This
+boundary was tested with Git 2.51.1; unsupported Git options refuse, and other
+installed combinations remain unqualified. The earlier
+[v1 candidate](../completion-v1/README.md) and its three deliveries are preserved;
+its nominally local Git reads did not yet enforce this boundary.
 
 External review reproduced an additional interruption window after `report.md`
 publication but before its stage receipt. The current recovery successor commits

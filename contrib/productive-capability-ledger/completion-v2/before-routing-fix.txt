@@ -1,0 +1,35 @@
+fatal: not a tree object
+✖ inherited Git routing cannot redirect the fixed repository source read (13.492612ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 104.731207
+
+✖ failing tests:
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-git-read.test.mjs:298:1
+✖ inherited Git routing cannot redirect the fixed repository source read (13.492612ms)
+  Error: Command failed: git ls-tree -z 1d46b4d553ac84b5da174a427961d7b34ae8e1fb -- docs/successor/alpha/sources.json
+  fatal: not a tree object
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at checkExecSyncError (node:child_process:943:11)
+      at execFileSync (node:child_process:979:15)
+      at git (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-git-read.mjs:26:10)
+      at committed (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-git-read.mjs:32:17)
+      at makePlan (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-git-read.mjs:87:46)
+      at plan (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-git-read.test.mjs:16:16)
+      at file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-git-read.test.mjs:304:47
+      at temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-git-read.test.mjs:15:104) {
+    status: 128,
+    signal: null,
+    output: [ null, <Buffer >, <Buffer 66 61 74 61 6c 3a 20 6e 6f 74 20 61 20 74 72 65 65 20 6f 62 6a 65 63 74 0a> ],
+    pid: 27,
+    stdout: <Buffer >,
+    stderr: <Buffer 66 61 74 61 6c 3a 20 6e 6f 74 20 61 20 74 72 65 65 20 6f 62 6a 65 63 74 0a>
+  }

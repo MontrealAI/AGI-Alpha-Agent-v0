@@ -6,7 +6,7 @@ import {existsSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {spawn,execFileSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
+import {createHash,randomUUID} from 'node:crypto';
 import {makePlan,runPlan} from './run-mission.mjs';
 
 const REF=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
@@ -292,5 +292,37 @@ test('simultaneous submissions share one immutable job and cannot duplicate its 
     assert.equal((await readdir(outputRoot)).length,1);
     assert.equal((await readdir(directory)).filter(name=>name.startsWith('reservation-')).length,deliveries.length);
     assert.deepEqual(await readFile(join(directory,'COMPLETE.json')),complete);
+  });
+});
+
+test('inherited Git routing cannot redirect the fixed repository source read',async()=>{
+  await temporary(async outputRoot=>{
+    const foreign=join(outputRoot,'unrelated.git');
+    execFileSync('git',['init','--bare','--quiet',foreign]);
+    const prior=process.env.GIT_DIR;process.env.GIT_DIR=foreign;
+    try {
+      const {plan:scope,approvalDigest}=await plan('fixed-repository');
+      const result=await runPlan(scope,{approvalDigest,outputRoot});
+      assert.equal(result.accepted,true);assert.equal(result.sourceRef,REF);
+    } finally {if(prior===undefined)delete process.env.GIT_DIR;else process.env.GIT_DIR=prior;}
+  });
+});
+
+test('a missing committed source body refuses locally without fetching or accepting partial work',async()=>{
+  await temporary(async outputRoot=>{
+    const git=(args,input)=>execFileSync('git',args,{input,encoding:'utf8',stdio:['pipe','pipe','pipe']}).trim();
+    const body='Absent synthetic source body '+randomUUID(),missing=git(['hash-object','--stdin'],body);
+    assert.throws(()=>git(['--no-lazy-fetch','cat-file','-e',missing]));
+    const manifest=JSON.stringify({sources:{'fixtures/unavailable-source.txt':sha(body)}});
+    const manifestBlob=git(['hash-object','-w','--stdin'],manifest);
+    const fixtures=git(['mktree','--missing'],`100644 blob ${missing}\tunavailable-source.txt\n100644 blob ${manifestBlob}\tmissing-source-manifest.json\n`);
+    const previous=git(['ls-tree',REF]).split('\n').filter(line=>!line.endsWith('\tfixtures'));
+    const tree=git(['mktree','--missing'],previous.concat(`040000 tree ${fixtures}\tfixtures`).join('\n')+'\n');
+    const sourceRef=git(['-c','user.name=Automation regression','-c','user.email=regression@example.invalid',
+      'commit-tree',tree,'-p',REF],'Inert missing-object regression; no refs or repository configuration changed.\n');
+    const {plan:scope,approvalDigest}=await makePlan({manifestPath:'fixtures/missing-source-manifest.json',sourceRef,runId:'missing-body'});
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/bad object|missing|Command failed/);
+    assert.equal(existsSync(join(outputRoot,'missing-body','COMPLETE.json')),false);
+    assert.throws(()=>git(['--no-lazy-fetch','cat-file','-e',missing]));
   });
 });

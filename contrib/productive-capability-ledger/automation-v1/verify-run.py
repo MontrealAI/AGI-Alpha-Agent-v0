@@ -82,17 +82,22 @@ def git_blob(commit: str, path: str) -> bytes:
     if not COMMIT.fullmatch(commit):
         raise ValueError("Invalid source commit")
     operand = commit + ":" + public_path(path)
-    listing = subprocess.check_output(["git", "ls-tree", "-z", commit, "--", path], cwd=ROOT, timeout=5)
+    environment = {key: value for key, value in os.environ.items() if not key.lower().startswith("git_")}
+    environment.update(GIT_TERMINAL_PROMPT="0", GIT_OPTIONAL_LOCKS="0")
+    command = ["git", "--no-lazy-fetch", "--no-replace-objects", "--no-pager"]
+    listing = subprocess.check_output(
+        [*command, "ls-tree", "-z", commit, "--", path], cwd=ROOT, timeout=5, env=environment
+    )
     entries = listing.decode().split("\0")
     if len(entries) != 2 or not entries[0].endswith("\t" + path):
         raise ValueError("An exact ordinary Git source entry is required")
     mode, kind, _ = entries[0].split("\t")[0].split(" ")
     if mode not in {"100644", "100755"} or kind != "blob":
         raise ValueError("Only ordinary Git source modes 100644 and 100755 are admitted")
-    size = int(subprocess.check_output(["git", "cat-file", "-s", operand], cwd=ROOT, timeout=5))
+    size = int(subprocess.check_output([*command, "cat-file", "-s", operand], cwd=ROOT, timeout=5, env=environment))
     if size > 4_000_000:
         raise ValueError("Public source blob exceeds its byte bound")
-    raw = subprocess.check_output(["git", "show", operand], cwd=ROOT, timeout=5)
+    raw = subprocess.check_output([*command, "show", operand], cwd=ROOT, timeout=5, env=environment)
     if len(raw) != size:
         raise ValueError("Git source changed during inspection")
     return raw
@@ -232,11 +237,17 @@ def verify(directory: Path) -> dict[str, Any]:
         dependencies[RUNNER] == "2158e34cab75f11242f6d130c696ba276abb53e017f862ecc7ee8e40e1f8779b"
         and plan["methodIdentity"] == "17e09fd0d79d823e176d7a4f2eb547adc91ff71162766c6d0995fe2d3778fab9"
     )
+    envelope_predecessor = (
+        dependencies[RUNNER] == "9aa3a9009fac35f03b4a96f2de545ee0403cafaa5a163243185f8c5af77ca216"
+        and plan["methodIdentity"] == "fa12a246aafcb5cb52f972e3cfb190a92c302eaafe27436bacdcf4fb9a46912c"
+    )
     historical_commit = (
         LEGACY_SOURCE_COMMIT
         if legacy
         else "2b442458847ca4655d0ed92afc6b1b62e8672e8d" if reporting_predecessor else None
     )
+    if envelope_predecessor:
+        historical_commit = "1d46b4d553ac84b5da174a427961d7b34ae8e1fb"
     for path, digest in dependencies.items():
         public_path(path)
         installed = git_blob(historical_commit, path) if historical_commit else read_bytes(ROOT / path, 4_000_000)
