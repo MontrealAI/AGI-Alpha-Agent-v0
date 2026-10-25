@@ -1,0 +1,2345 @@
+{
+  "schema": "agi-alpha.current-source-findings-triage.v1",
+  "status": "CURRENT_SOURCE_PROPOSAL_NOT_APPROVED_NOT_LOADABLE_MAP",
+  "created_at": "2026-10-25T17:17:25.262754+00:00",
+  "source_commit": "0895b3d1a96aec29e9de269b9e29132afc72b871",
+  "source_tree": "7c1df68ce6f005f1c449ecdff4cd54a816a1e53b",
+  "executed_pr_merge_commit": "89e63aeff58afc5e704effe63426522266891041",
+  "run_id": 40214558315,
+  "artifact_id": 12606559903,
+  "raw_report_sha256": "ca033906162e56bf701d8c79ef91d5b9b48e032cfd536681d413cec45ecffe1b",
+  "raw_engine_exit": 1,
+  "raw_findings": 56,
+  "official_pack_sha256": "e3c25cf9b28ddfd3cb1b7f240d2fc0998734199efa539fa0b10281487a602e79",
+  "official_observed_at": "2026-10-25T17:09:59.827181+00:00",
+  "official_rule_count": 151,
+  "selected_targets": 1544,
+  "target_paths_sha256": "7a36aa784b1f45ca7443bb3e5eaa4ed6eb46ac6106a983b447b4b9c01a55cc34",
+  "repository_inventory_sha256": "6a59c31849b1069fefcd291c56eb0f3e4e8b57c10dd72bd57aadee3308b56ae0",
+  "repository_files": 4943,
+  "approvals": 0,
+  "loadable_approval_map": false,
+  "map_absent": true,
+  "approved_map_sha256": null,
+  "policy_disposition": "INACTIVE",
+  "historical_a163_case38_proposed_inapplicability": "WITHDRAWN",
+  "previous_4c_proposal_status": "HISTORICAL_EXACT_SOURCE_UNAPPROVED_PRESERVED_UNTOUCHED",
+  "counts_by_rule": {
+    "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1": 12,
+    "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions": 1,
+    "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args": 28,
+    "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests": 14,
+    "python.django.security.injection.command.subprocess-injection.subprocess-injection": 1
+  },
+  "review_scope": "Exact fresh report/source/context rebinding; all38 finding-source bodies, all56 identities and all151 E3 definitions unchanged from577. No broad renewed review or approval of unchanged contexts.",
+  "cases": [
+    {
+      "assessment": "GIT_OBJECT_COMPATIBILITY_WITH_SHA256",
+      "rationale": "The SHA-1 operation computes Git blob framing/object IDs. The same source bytes also have an explicit SHA-256 check or fixture field; the Git identifier is not substituted for the content SHA-256.",
+      "applicability_limits": "Classification covers this protocol compatibility check only; it does not authorize SHA-1 as a credential, signature or sole new integrity primitive.",
+      "case_id": "C0895-PY-001",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+        "source_sha256": "2ad225701952de359a6faf69f9239812f3962ade671bc5a707cb58ac23da95ab",
+        "source_bytes": 78383,
+        "start": {
+          "line": 580,
+          "col": 12,
+          "offset": 29345
+        },
+        "end": {
+          "line": 580,
+          "col": 73,
+          "offset": 29406
+        },
+        "snippet_sha256": "e94c20e0ff377162e15d6ba31b8e38a1758bbfe44d9d50a6c8a907dc727d4f83",
+        "reported_lines_sha256": "25aa5f2f5bcb51eef589fffa4a0988d73f0778e5f94b02fad20a439ffadf0edb"
+      },
+      "function": "bytes_match",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/core/runtime/successor/transformation_source_audit.py#L580",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-001",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "DIRECTORY_OWNER_TRAVERSE_PERMISSION",
+      "rationale": "The target is a results directory created with mkdir(mode=0o700), then chmod(0o700). Owner execute supplies directory traversal; group/other receive no permissions.",
+      "applicability_limits": "This is a directory-mode classification, not approval to mark arbitrary regular files executable. Operator-selected results locations remain an explicit trust boundary.",
+      "case_id": "C0895-PY-002",
+      "identity": {
+        "rule_id": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+        "rule_definition_sha256": "5fcec5becdd97d5b47aa16885b701351167ef23058c57e46f1944ebe5d7bee08",
+        "rule_start_byte": 229532,
+        "rule_end_byte": 231926,
+        "source_path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+        "source_sha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+        "source_bytes": 20410,
+        "start": {
+          "line": 230,
+          "col": 5,
+          "offset": 8007
+        },
+        "end": {
+          "line": 230,
+          "col": 34,
+          "offset": 8036
+        },
+        "snippet_sha256": "e52477f027c05f3541705ea5c9fbfe818ec2308e8b857745cb06a22cb1391f0c",
+        "reported_lines_sha256": "3ef1de9a939701e0966e5c7e3854064ac16ffc04055cbd7cdbcb3781af33fe9f"
+      },
+      "function": "<module>",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py#L230",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-002",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "NONCRYPTO_SIMULATION_NAMESPACE",
+      "rationale": "A locally generated simulation identifier is hashed into an island-population/scenario key. The result is used as a simulation namespace, not authentication or artifact integrity.",
+      "applicability_limits": "No cryptographic uniqueness or access-control claim is made for this key. Replacing the digest changes historical scenario/cache identities.",
+      "case_id": "C0895-PY-003",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+        "source_sha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+        "source_bytes": 20410,
+        "start": {
+          "line": 375,
+          "col": 20,
+          "offset": 12935
+        },
+        "end": {
+          "line": 375,
+          "col": 49,
+          "offset": 12964
+        },
+        "snippet_sha256": "742946ca225f0550f30e7f7656c9ed989612c4f974ecd03fd53e953a1c96c2fb",
+        "reported_lines_sha256": "39902a78f928d16e79481268b61a10c7f2ec89d14f61c80ef23fd03b8d79f71e"
+      },
+      "function": "_background_run",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py#L375",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-003",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "NONCRYPTO_OBSERVATION_COUNTER",
+      "rationale": "The digest indexes an in-memory novelty counter over a deliberately truncated repr; it affects a reward heuristic rather than security admission.",
+      "applicability_limits": "The heuristic is not collision-proof and deliberately discards bytes after4096. This review does not establish exact semantic observation identity.",
+      "case_id": "C0895-PY-004",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "alpha_factory_v1/demos/era_of_experience/reward_backends/curiosity_reward.py",
+        "source_sha256": "bc8177e8d603ed3d750abd6e7a347cc7d8c4c33da8dfa76768e41bdcd450ab9e",
+        "source_bytes": 3431,
+        "start": {
+          "line": 80,
+          "col": 12,
+          "offset": 2857
+        },
+        "end": {
+          "line": 80,
+          "col": 30,
+          "offset": 2875
+        },
+        "snippet_sha256": "773bee9c4111c510fc98ea21d269279a6fcdb622c1cd079b3826125dbb414b05",
+        "reported_lines_sha256": "57b9ba56913c2769f23232d8da3b923df0a69a5ad0de75501f955ae9c0040b0f"
+      },
+      "function": "_hash_observation",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/era_of_experience/reward_backends/curiosity_reward.py#L80",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-004",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "NONCRYPTO_SIMHASH_FEATURE",
+      "rationale": "SHA-1 supplies token bit features for a64-bit SimHash similarity heuristic. Similarity/collisions are part of that numerical representation, not an authentication decision.",
+      "applicability_limits": "Changing the token hash would change existing numerical signatures/rewards and is not a behavior-preserving security repair.",
+      "case_id": "C0895-PY-005",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "alpha_factory_v1/demos/era_of_experience/reward_backends/novel_solution_reward.py",
+        "source_sha256": "4ada727916aae39c61df062c2d6b3f601609b98ba552df0c4dde750e5fd24d0e",
+        "source_bytes": 5800,
+        "start": {
+          "line": 82,
+          "col": 28,
+          "offset": 3147
+        },
+        "end": {
+          "line": 82,
+          "col": 52,
+          "offset": 3171
+        },
+        "snippet_sha256": "a15bfc612f8ec1bcb3d5c338cc07054ab0968828ae1a0b655079fbbbff76019a",
+        "reported_lines_sha256": "0fea534fccce1791cbeb6aed4f80c83118f21894e6075f4b1d131dcea4d3d2dd"
+      },
+      "function": "_simhash",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/era_of_experience/reward_backends/novel_solution_reward.py#L82",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-005",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "NONCRYPTO_DISPLAY_METADATA",
+      "rationale": "The ten-hex-character fingerprint is optional exported prompt metadata. Registration/no-overwrite and retrieval use the prompt name, not this hash; no security acceptance depends on the fingerprint.",
+      "applicability_limits": "This field must not be presented as cryptographic proof: callers may supply it through setdefault. The finding disposition does not validate broader provenance claims.",
+      "case_id": "C0895-PY-006",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "alpha_factory_v1/demos/meta_agentic_agi/core/prompts.py",
+        "source_sha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+        "source_bytes": 7011,
+        "start": {
+          "line": 80,
+          "col": 9,
+          "offset": 2627
+        },
+        "end": {
+          "line": 80,
+          "col": 23,
+          "offset": 2641
+        },
+        "snippet_sha256": "947fb2ba722e73764050cd8968bee05d476424eed3b1e8ea9cfbd2df47c21e4f",
+        "reported_lines_sha256": "681ba397dfcd41fe7727840220067c58cb48d5b2ed2edb031d0a0e0057bce9bf"
+      },
+      "function": "_fingerprint",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/meta_agentic_agi/core/prompts.py#L80",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-006",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "NONCRYPTO_DISPLAY_METADATA",
+      "rationale": "The ten-hex-character fingerprint is optional exported prompt metadata. Registration/no-overwrite and retrieval use the prompt name, not this hash; no security acceptance depends on the fingerprint.",
+      "applicability_limits": "This field must not be presented as cryptographic proof: callers may supply it through setdefault. The finding disposition does not validate broader provenance claims.",
+      "case_id": "C0895-PY-007",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "alpha_factory_v1/demos/meta_agentic_agi_v2/core/prompts.py",
+        "source_sha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+        "source_bytes": 7011,
+        "start": {
+          "line": 80,
+          "col": 9,
+          "offset": 2627
+        },
+        "end": {
+          "line": 80,
+          "col": 23,
+          "offset": 2641
+        },
+        "snippet_sha256": "947fb2ba722e73764050cd8968bee05d476424eed3b1e8ea9cfbd2df47c21e4f",
+        "reported_lines_sha256": "681ba397dfcd41fe7727840220067c58cb48d5b2ed2edb031d0a0e0057bce9bf"
+      },
+      "function": "_fingerprint",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/meta_agentic_agi_v2/core/prompts.py#L80",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-007",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "NONCRYPTO_DISPLAY_METADATA",
+      "rationale": "The ten-hex-character fingerprint is optional exported prompt metadata. Registration/no-overwrite and retrieval use the prompt name, not this hash; no security acceptance depends on the fingerprint.",
+      "applicability_limits": "This field must not be presented as cryptographic proof: callers may supply it through setdefault. The finding disposition does not validate broader provenance claims.",
+      "case_id": "C0895-PY-008",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "alpha_factory_v1/demos/meta_agentic_agi_v3/core/prompts.py",
+        "source_sha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+        "source_bytes": 7011,
+        "start": {
+          "line": 80,
+          "col": 9,
+          "offset": 2627
+        },
+        "end": {
+          "line": 80,
+          "col": 23,
+          "offset": 2641
+        },
+        "snippet_sha256": "947fb2ba722e73764050cd8968bee05d476424eed3b1e8ea9cfbd2df47c21e4f",
+        "reported_lines_sha256": "681ba397dfcd41fe7727840220067c58cb48d5b2ed2edb031d0a0e0057bce9bf"
+      },
+      "function": "_fingerprint",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/meta_agentic_agi_v3/core/prompts.py#L80",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-008",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "VALIDATED_OPERATOR_DOCKER_IMAGE_ARGV",
+      "rationale": "The environment-default image is passed through an exact image-reference validator before one Docker image operand. The subprocess uses an argv list with shell=False; current SelfHealer use supplies fixed pytest argv and a fixed local working directory.",
+      "applicability_limits": "Operator-selected images/mounts and the Docker daemon remain trusted explicit inputs. This is not general desktop/container-security qualification or permission to expose the Docker socket.",
+      "case_id": "C0895-PY-009",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+        "source_sha256": "50bf31ac8d85581cf2af61b0f1428826fbee95aecb1219f571c1cd6b416cf6ad",
+        "source_bytes": 2170,
+        "start": {
+          "line": 64,
+          "col": 29,
+          "offset": 2057
+        },
+        "end": {
+          "line": 64,
+          "col": 32,
+          "offset": 2060
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "7f8beb380500c2fd6ef78b855d923b236bdbe0bca2d5938410f866c3160318ac"
+      },
+      "function": "run_in_docker",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py#L64",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-009",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "rationale": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicability_limits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "case_id": "C0895-PY-010",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "check_env.py",
+        "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "source_bytes": 22549,
+        "start": {
+          "line": 354,
+          "col": 36,
+          "offset": 10958
+        },
+        "end": {
+          "line": 354,
+          "col": 39,
+          "offset": 10961
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "586581f08e077484c059b7d4def937a3b03d7a3e84d4c1065ec94febf5069904"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/check_env.py#L354",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-010",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "rationale": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicability_limits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "case_id": "C0895-PY-011",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "check_env.py",
+        "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "source_bytes": 22549,
+        "start": {
+          "line": 372,
+          "col": 28,
+          "offset": 11700
+        },
+        "end": {
+          "line": 372,
+          "col": 31,
+          "offset": 11703
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "9027e361d3c33610fbeac2dd3e49ceac111d208903013f203e6b316b99971859"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/check_env.py#L372",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-011",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "rationale": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicability_limits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "case_id": "C0895-PY-012",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "check_env.py",
+        "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "source_bytes": 22549,
+        "start": {
+          "line": 411,
+          "col": 28,
+          "offset": 13273
+        },
+        "end": {
+          "line": 411,
+          "col": 31,
+          "offset": 13276
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "9027e361d3c33610fbeac2dd3e49ceac111d208903013f203e6b316b99971859"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/check_env.py#L411",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-012",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "rationale": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicability_limits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "case_id": "C0895-PY-013",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "check_env.py",
+        "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "source_bytes": 22549,
+        "start": {
+          "line": 450,
+          "col": 32,
+          "offset": 14968
+        },
+        "end": {
+          "line": 450,
+          "col": 35,
+          "offset": 14971
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "c8b0d420837581be79f5e4e5552364c48657f217c50470b12441c402d47dfb1b"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/check_env.py#L450",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-013",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "rationale": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicability_limits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "case_id": "C0895-PY-014",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "check_env.py",
+        "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "source_bytes": 22549,
+        "start": {
+          "line": 538,
+          "col": 21,
+          "offset": 18687
+        },
+        "end": {
+          "line": 538,
+          "col": 24,
+          "offset": 18690
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "aee7f38da0f60fa8f6ca693a2da233051e6b3b8131f21a292c2a8ba8413c9d8a"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/check_env.py#L538",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-014",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_PACKAGE_INSTALL_ARGV",
+      "rationale": "These are explicit --auto-install setup operations invoking the current interpreter with fixed pip module/subcommands and source-defined package/requirements names. A configured wheelhouse is resolved to a real absolute directory and passed as one --find-links value; no shell interprets it.",
+      "applicability_limits": "The operator intentionally trusts selected local wheels/network package sources and permits installation. This is not approval for a model, webpage or downloaded mission to change those settings.",
+      "case_id": "C0895-PY-015",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "check_env.py",
+        "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+        "source_bytes": 22549,
+        "start": {
+          "line": 613,
+          "col": 32,
+          "offset": 22133
+        },
+        "end": {
+          "line": 613,
+          "col": 35,
+          "offset": 22136
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "c8b0d420837581be79f5e4e5552364c48657f217c50470b12441c402d47dfb1b"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/check_env.py#L613",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-015",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_AUDIT_ARGV",
+      "rationale": "The current interpreter runs the fixed pip_audit module; lock/output paths are separate argv operands selected by the operator. No shell or downloaded command text is used.",
+      "applicability_limits": "The local lock, executable environment and dependency-audit provider are trusted operator inputs; their separate audit/integrity checks remain required.",
+      "case_id": "C0895-PY-016",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/audit_agent_dependencies.py",
+        "source_sha256": "271f3f7cf9617033897125059bc11c596627f2abe508a46356aed29f80217249",
+        "source_bytes": 2960,
+        "start": {
+          "line": 56,
+          "col": 32,
+          "offset": 2052
+        },
+        "end": {
+          "line": 56,
+          "col": 39,
+          "offset": 2059
+        },
+        "snippet_sha256": "5d347fd948b66308f502c3f65c8f7e12ff1c5cf8c760bcdfb188ae1ec7b8b618",
+        "reported_lines_sha256": "bb5b99a4d4822d1597bbb468456b7db59aa2d9fe4a2c1b2b1d8395b10caf70b2"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/audit_agent_dependencies.py#L56",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-016",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_COMMITTED_BUILD_ARGV",
+      "rationale": "A fixed current-interpreter build module operates on the source just archived from the current Git commit, using an operator-resolved absolute output directory as one operand.",
+      "applicability_limits": "Build backends execute reviewed repository code intentionally. This is not acceptance of arbitrary untrusted source builds or a new host-execution permission.",
+      "case_id": "C0895-PY-017",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/package_agent_release.py",
+        "source_sha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+        "source_bytes": 44943,
+        "start": {
+          "line": 684,
+          "col": 13,
+          "offset": 34020
+        },
+        "end": {
+          "line": 684,
+          "col": 87,
+          "offset": 34094
+        },
+        "snippet_sha256": "90bbd694bd5e99e97a1bbbc93c69072e0cca4ca56589344ecbf7521353826cf2",
+        "reported_lines_sha256": "13b7d87354ecf6b6b82415926721fdcd46b2b6c854efb2c324aa6e30fb00b7b9"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/package_agent_release.py#L684",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-017",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_WHEEL_CHECK_ARGV",
+      "rationale": "The current interpreter invokes fixed twine check arguments. Python expands wheel/source filenames below the already-resolved output path; shell expansion is absent.",
+      "applicability_limits": "The interpreter, local build outputs and release source remain trusted and separately qualified; no broader package authenticity claim comes from this call.",
+      "case_id": "C0895-PY-018",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/package_agent_release.py",
+        "source_sha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+        "source_bytes": 44943,
+        "start": {
+          "line": 699,
+          "col": 9,
+          "offset": 34899
+        },
+        "end": {
+          "line": 699,
+          "col": 118,
+          "offset": 35008
+        },
+        "snippet_sha256": "41546286356780a7de6991ee1be5dc2ce1f849d3b965685f155cd1140f9140a0",
+        "reported_lines_sha256": "2ee52a3c19fbd14bd59e8b74d7d16fcb333f8fa658a51f98610c9dc3a39cc264"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/package_agent_release.py#L699",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-018",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "EXPLICIT_OPERATOR_MODEL_SERVER_EXECUTABLE",
+      "rationale": "The --server CLI path intentionally selects a local server executable for this validator. Remaining model/host/port arguments are separate argv values; version inspection reuses that selected executable. The actual release workflow fetches a fixed server archive and verifies its SHA-256 before invoking this script.",
+      "applicability_limits": "The CLI server path is an operator execution choice, not a model action. Script-level model checksum validation is not proof of arbitrary server identity; the workflow archive check remains material.",
+      "case_id": "C0895-PY-019",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/validate_agent_model.py",
+        "source_sha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+        "source_bytes": 9156,
+        "start": {
+          "line": 47,
+          "col": 17,
+          "offset": 1805
+        },
+        "end": {
+          "line": 62,
+          "col": 18,
+          "offset": 2298
+        },
+        "snippet_sha256": "b913d118d6574bfb2d8786df5cf97d7944454b74cc3a52c9f42157c214e44235",
+        "reported_lines_sha256": "2b7804d6c4ed29b711bbbbc6c23e8e434dd2c50681e024a0ffa65a69968256cf"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/validate_agent_model.py#L47",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-019",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "EXPLICIT_OPERATOR_MODEL_SERVER_EXECUTABLE",
+      "rationale": "The --server CLI path intentionally selects a local server executable for this validator. Remaining model/host/port arguments are separate argv values; version inspection reuses that selected executable. The actual release workflow fetches a fixed server archive and verifies its SHA-256 before invoking this script.",
+      "applicability_limits": "The CLI server path is an operator execution choice, not a model action. Script-level model checksum validation is not proof of arbitrary server identity; the workflow archive check remains material.",
+      "case_id": "C0895-PY-020",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/validate_agent_model.py",
+        "source_sha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+        "source_bytes": 9156,
+        "start": {
+          "line": 163,
+          "col": 25,
+          "offset": 7613
+        },
+        "end": {
+          "line": 163,
+          "col": 56,
+          "offset": 7644
+        },
+        "snippet_sha256": "5dfb536cd68803abeb971219f2a6d6b7d72da93906c6f0ea9d662ebbfbc28f4c",
+        "reported_lines_sha256": "09994eef1c625b4e6ff24a9576414571c3baf9ba4f2011056e04c32567eb08cf"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/validate_agent_model.py#L163",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-020",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-021",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "scripts/validate_nova_studio.py",
+        "source_sha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+        "source_bytes": 11413,
+        "start": {
+          "line": 55,
+          "col": 48,
+          "offset": 2431
+        },
+        "end": {
+          "line": 55,
+          "col": 76,
+          "offset": 2459
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "7c5af32d8f051ee2bd611cb468c3bed21575eeaef931f8e71c9fc52eb235eafb"
+      },
+      "function": "validate",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/validate_nova_studio.py#L55",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-021",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-022",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "scripts/validate_nova_studio.py",
+        "source_sha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+        "source_bytes": 11413,
+        "start": {
+          "line": 105,
+          "col": 48,
+          "offset": 5634
+        },
+        "end": {
+          "line": 105,
+          "col": 76,
+          "offset": 5662
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "7c5af32d8f051ee2bd611cb468c3bed21575eeaef931f8e71c9fc52eb235eafb"
+      },
+      "function": "validate",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/validate_nova_studio.py#L105",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-022",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-023",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "scripts/validate_onboarding.py",
+        "source_sha256": "78ba3f2e83d48c201682e3eb2dc33d4b14084492de3ec46a1d55f98cc5d12f5f",
+        "source_bytes": 13668,
+        "start": {
+          "line": 88,
+          "col": 48,
+          "offset": 4187
+        },
+        "end": {
+          "line": 88,
+          "col": 76,
+          "offset": 4215
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "7c5af32d8f051ee2bd611cb468c3bed21575eeaef931f8e71c9fc52eb235eafb"
+      },
+      "function": "validate",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/validate_onboarding.py#L88",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-023",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-024",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "scripts/validate_successor_build.py",
+        "source_sha256": "6e1f95ead70d845f36d6860a41997021318dc6ed3b1d7c0062dd63fc271ecca1",
+        "source_bytes": 5045,
+        "start": {
+          "line": 23,
+          "col": 40,
+          "offset": 835
+        },
+        "end": {
+          "line": 23,
+          "col": 68,
+          "offset": 863
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "aa379aeba35c48dd54cacf236f04010180887a3e913b8d505399a93b5204a221"
+      },
+      "function": "validate_workshop",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/validate_successor_build.py#L23",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-024",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "rationale": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicability_limits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "case_id": "C0895-PY-025",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/verify_aiga_requirements_lock.py",
+        "source_sha256": "ed9b542af90b2c0a5ccd56439e5d50da769db3057bbfa31a133a9246ad2b9d91",
+        "source_bytes": 1951,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1093
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1096
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "f929a65b973241cd13f527c6e8b8b7be459c57a0f28b7abd0a13bee27fc9d647"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/verify_aiga_requirements_lock.py#L31",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-025",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "rationale": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicability_limits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "case_id": "C0895-PY-026",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/verify_alpha_colab_requirements_lock.py",
+        "source_sha256": "93d3bb030441e7e2f1aa1c5d0b6490494a623eb1d66e53d777c1c9fe892d2a3d",
+        "source_bytes": 1818,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1046
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1049
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "f929a65b973241cd13f527c6e8b8b7be459c57a0f28b7abd0a13bee27fc9d647"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/verify_alpha_colab_requirements_lock.py#L31",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-026",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "rationale": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicability_limits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "case_id": "C0895-PY-027",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/verify_alpha_requirements_lock.py",
+        "source_sha256": "1b372a63d5256fa103592aa60c01ef9196b5edfa77c9f0b96963efa65bd40186",
+        "source_bytes": 1794,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1040
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1043
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "f929a65b973241cd13f527c6e8b8b7be459c57a0f28b7abd0a13bee27fc9d647"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/verify_alpha_requirements_lock.py#L31",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-027",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "rationale": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicability_limits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "case_id": "C0895-PY-028",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/verify_backend_requirements_lock.py",
+        "source_sha256": "897223c5718e9bc647136e83ef051c7682c7265cf8070ee1728f01728f350b43",
+        "source_bytes": 1762,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1045
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1048
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "f929a65b973241cd13f527c6e8b8b7be459c57a0f28b7abd0a13bee27fc9d647"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/verify_backend_requirements_lock.py#L31",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-028",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "rationale": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicability_limits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "case_id": "C0895-PY-029",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/verify_era_experience_requirements_lock.py",
+        "source_sha256": "4a07d87669a695b7751829bd6a33a520b78f89239fd80c008f748c51c5c3c4d4",
+        "source_bytes": 1958,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1087
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1090
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "f929a65b973241cd13f527c6e8b8b7be459c57a0f28b7abd0a13bee27fc9d647"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/verify_era_experience_requirements_lock.py#L31",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-029",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "rationale": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicability_limits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "case_id": "C0895-PY-030",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/verify_mats_requirements_lock.py",
+        "source_sha256": "71bf3a40686921e1cbf66d3902e24a6494e1082022e74300cdef6af8bfa5c4ca",
+        "source_bytes": 2037,
+        "start": {
+          "line": 31,
+          "col": 33,
+          "offset": 1117
+        },
+        "end": {
+          "line": 31,
+          "col": 36,
+          "offset": 1120
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "f929a65b973241cd13f527c6e8b8b7be459c57a0f28b7abd0a13bee27fc9d647"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/verify_mats_requirements_lock.py#L31",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-030",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "INTENDED_OPERATOR_LOCK_COMPILER_ARGV",
+      "rationale": "The lock checker chooses pip-compile from the operator PATH or current-interpreter piptools, supplies source-defined requirements/output paths, and passes optional WHEELHOUSE as one --find-links value. No shell parses that value.",
+      "applicability_limits": "PATH/tool environment and wheelhouse are deliberate trusted setup inputs. This does not prove safe execution of an attacker-controlled compiler, wheelhouse or requirements source.",
+      "case_id": "C0895-PY-031",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "scripts/verify_requirements_lock.py",
+        "source_sha256": "72c19a3a218880a45bb178522ca01a1ebf72cbfafd94fd26087e811588a3fb44",
+        "source_bytes": 1732,
+        "start": {
+          "line": 33,
+          "col": 33,
+          "offset": 1041
+        },
+        "end": {
+          "line": 33,
+          "col": 36,
+          "offset": 1044
+        },
+        "snippet_sha256": "04dc5b2136328a0dcb189df97734c7c72e5e1227fa0c03469a6ce608f32f1b66",
+        "reported_lines_sha256": "84ad900541e8112d60eb8d690bdf259c68e30d8846613718afc29b826057b7f7"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/scripts/verify_requirements_lock.py#L33",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-031",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "FROZEN_REPLAY_CURRENT_INTERPRETER_ARGV",
+      "rationale": "The replay code calls the current Python interpreter on a finite literal list of named scripts in a newly copied output kit; command options are literals, not interpolated source/shell text. The verifier variant checks copied source identities before replay.",
+      "applicability_limits": "Historical study evidence/source is preserved. This is static triage only: no replay was executed or reauthorized; an operator-owned interpreter/environment is assumed.",
+      "case_id": "C0895-PY-032",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+        "source_sha256": "cca163b796d173c483683d65771d625fc07668e465926d89b195165af0395978",
+        "source_bytes": 1188,
+        "start": {
+          "line": 8,
+          "col": 36,
+          "offset": 682
+        },
+        "end": {
+          "line": 8,
+          "col": 93,
+          "offset": 739
+        },
+        "snippet_sha256": "058cf67d804f17c81dfd17066dcd057b05883d346faa84e894363a627da8a6bc",
+        "reported_lines_sha256": "f2d25d92114ce7be48cb0d7d767dff77b0132b0775e8da30bca84b2197fe2512"
+      },
+      "function": "<module>",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py#L8",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-032",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "FROZEN_REPLAY_CURRENT_INTERPRETER_ARGV",
+      "rationale": "The replay code calls the current Python interpreter on a finite literal list of named scripts in a newly copied output kit; command options are literals, not interpolated source/shell text. The verifier variant checks copied source identities before replay.",
+      "applicability_limits": "Historical study evidence/source is preserved. This is static triage only: no replay was executed or reauthorized; an operator-owned interpreter/environment is assumed.",
+      "case_id": "C0895-PY-033",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+        "source_sha256": "537f5be821c82c30d87282ef6b580308b00c39ec7c49588a8a691245c1c05abf",
+        "source_bytes": 14947,
+        "start": {
+          "line": 333,
+          "col": 13,
+          "offset": 14567
+        },
+        "end": {
+          "line": 333,
+          "col": 76,
+          "offset": 14630
+        },
+        "snippet_sha256": "118e4ebec1805b2edfdd084d62aa01243cb5624ee1d40640c064c9988786e48f",
+        "reported_lines_sha256": "fd4288e78236d93bb1e83d7c35f8e2d7767987bf2ad346e66fe4ac7f21c0df7b"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/studies/computer-use/2026-10-14/verify_and_replay.py#L333",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-033",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "EXPLICIT_OPERATOR_NODE_FIXTURE_ARGV",
+      "rationale": "NODE_EXECUTABLE deliberately selects the test interpreter. The generated fixture script is fixed source text, and all remaining paths are separate argv operands without a shell.",
+      "applicability_limits": "Only this test-configuration taint is assessed. No browser/native/Fleet/Harness operation is executed or cleared; supplied interpreter/module artifacts must remain trusted and source-qualified.",
+      "case_id": "C0895-PY-034",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "tests/browser/out_evolve_recovery.py",
+        "source_sha256": "6af4cce631cc32c66348e4375fb9d1c87d18af724231ec8dd2ec01e1a67700f8",
+        "source_bytes": 35716,
+        "start": {
+          "line": 454,
+          "col": 9,
+          "offset": 23105
+        },
+        "end": {
+          "line": 461,
+          "col": 10,
+          "offset": 23440
+        },
+        "snippet_sha256": "30f59f0e97d31ae6af97185c20a11cefaecc18b0e94bf9fbe0f30cdffac581cb",
+        "reported_lines_sha256": "546dc555bd93dbf8ee0f78c0d53b15090fee4054f9f428160feaae4a2932dac6"
+      },
+      "function": "verify_report_capacity",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/out_evolve_recovery.py#L454",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-034",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-035",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/browser/test_discovery_lab_browser.py",
+        "source_sha256": "f6255542655b74810efc672cff9d5f451fc123a6d91aea98cf08e6927830cebf",
+        "source_bytes": 16906,
+        "start": {
+          "line": 111,
+          "col": 51,
+          "offset": 5059
+        },
+        "end": {
+          "line": 111,
+          "col": 79,
+          "offset": 5087
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "8732e4b40942bb107ff73d8107d75b3855db025ef3be35206beaeb5ca0ebbcd1"
+      },
+      "function": "run_acceptance",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_discovery_lab_browser.py#L111",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-035",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-036",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/browser/test_out_evolve_browser.py",
+        "source_sha256": "92e04eeeafea75829eb4bae947dba1cd277eea6ac6afc73a76523a15b5600847",
+        "source_bytes": 35621,
+        "start": {
+          "line": 86,
+          "col": 51,
+          "offset": 3575
+        },
+        "end": {
+          "line": 86,
+          "col": 79,
+          "offset": 3603
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "8732e4b40942bb107ff73d8107d75b3855db025ef3be35206beaeb5ca0ebbcd1"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_out_evolve_browser.py#L86",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-036",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-037",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/browser/test_out_execute_browser.py",
+        "source_sha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e",
+        "source_bytes": 8271,
+        "start": {
+          "line": 43,
+          "col": 51,
+          "offset": 1751
+        },
+        "end": {
+          "line": 43,
+          "col": 79,
+          "offset": 1779
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "8732e4b40942bb107ff73d8107d75b3855db025ef3be35206beaeb5ca0ebbcd1"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_out_execute_browser.py#L43",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-037",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "TRUSTED_REPOSITORY_EXPORTER_OPERATOR_NODE_CONFIGURATION",
+      "rationale": "The operator-selected Node executable runs fixed repository reconstruction code with strategy supplied only as JSON stdin. The helper checks installed source identity, schema, bounded objective/seed and complete canonical report, performs trusted same-seed rediscovery, and exports from the rediscovered report to preserve authored nested property order. This call does not import a downloaded module.",
+      "applicability_limits": "Trust is limited to operator executable configuration and reviewed repository modules. Full reconstructed-byte equality and document/request/source checks remain required before any subsequent host import. No arbitrary downloaded code, authority or exception is admitted.",
+      "case_id": "C0895-PY-038",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "tests/browser/test_successor_alpha_browser.py",
+        "source_sha256": "5e836182ae1de0ba99dac922f6f6c550bb961d47c00043866f0a9d9718c9a451",
+        "source_bytes": 70510,
+        "start": {
+          "line": 201,
+          "col": 9,
+          "offset": 8924
+        },
+        "end": {
+          "line": 201,
+          "col": 110,
+          "offset": 9025
+        },
+        "snippet_sha256": "48084d70ce9b3e521b89435f05c8dfebfa8b890ef3d635687c87139f01fa0812",
+        "reported_lines_sha256": "2f45bc2fe833fbba792259d2e0586ad9b9c05d29c978cb65b68040e4dbe15fa9"
+      },
+      "function": "expected_plan_tool",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_successor_alpha_browser.py#L201",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-038",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "FULL_BYTE_VERIFIED_RECONSTRUCTION_OPERATOR_NODE_CONFIGURATION",
+      "rationale": "The corrected boundary refuses document/request/source failures, bounds download size, reconstructs expected bytes from validated data and trusted source, requires complete downloaded-byte equality, writes only expected bytes, and imports that reconstruction. Canonical-order repair preserves this full-byte predicate.",
+      "applicability_limits": "Historical a163case38 proposed inapplicability remains WITHDRAWN. This is a new exact-source context note; no old approval transfers. Bounded diagnostics may include up to48 sampled bytes per side encodedhex, not full generated bodies. Browser acceptance is tracked separately.",
+      "case_id": "C0895-PY-039",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "tests/browser/test_successor_alpha_browser.py",
+        "source_sha256": "5e836182ae1de0ba99dac922f6f6c550bb961d47c00043866f0a9d9718c9a451",
+        "source_bytes": 70510,
+        "start": {
+          "line": 257,
+          "col": 9,
+          "offset": 11706
+        },
+        "end": {
+          "line": 264,
+          "col": 10,
+          "offset": 11917
+        },
+        "snippet_sha256": "16aeb0ec7c99c336b9825e1f132bab7cd39cd6d86a18f0fd6ae7e7bc085791ef",
+        "reported_lines_sha256": "92943a0c9bef20da5b58698b5ca0e3c30f5b025349eb25f34f5ed668f5d16ecc"
+      },
+      "function": "execute_verified_plan_tool",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_successor_alpha_browser.py#L257",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-039",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "PINNED_REPOSITORY_NATIVE_CLI_WITH_JSON_DATA",
+      "rationale": "The selected operator Node executable runs fixed repository native-cli.mjs with bounded JSON input/output paths. This distinct call does not import browser-downloaded code; surrounding checks validate adapter proof and installed source identity.",
+      "applicability_limits": "Trust is limited to operator-selected executable and reviewed checkout. No arbitrary module, provider, generated program or extra authority is admitted.",
+      "case_id": "C0895-PY-040",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "tests/browser/test_successor_alpha_browser.py",
+        "source_sha256": "5e836182ae1de0ba99dac922f6f6c550bb961d47c00043866f0a9d9718c9a451",
+        "source_bytes": 70510,
+        "start": {
+          "line": 652,
+          "col": 13,
+          "offset": 32418
+        },
+        "end": {
+          "line": 657,
+          "col": 14,
+          "offset": 32630
+        },
+        "snippet_sha256": "09743c283db72df15eb4fdaf54b68041acebc7f1d670b16e9e0b404113f11971",
+        "reported_lines_sha256": "b4f781e5cd695e51fbb9080161d6efd4e20a8de2f64befc731dad91f3992bdfa"
+      },
+      "function": "advanced_continuity",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_successor_alpha_browser.py#L652",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-040",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-041",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/browser/test_successor_capability_browser.py",
+        "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "source_bytes": 21837,
+        "start": {
+          "line": 99,
+          "col": 51,
+          "offset": 4241
+        },
+        "end": {
+          "line": 99,
+          "col": 79,
+          "offset": 4269
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "8732e4b40942bb107ff73d8107d75b3855db025ef3be35206beaeb5ca0ebbcd1"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_successor_capability_browser.py#L99",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-041",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-042",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/browser/test_successor_capability_browser.py",
+        "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "source_bytes": 21837,
+        "start": {
+          "line": 215,
+          "col": 57,
+          "offset": 11449
+        },
+        "end": {
+          "line": 215,
+          "col": 85,
+          "offset": 11477
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "8075793f245a09ed0bd91f9850ab3de1c3e8e924f767fa5cad46e4e3f8df87dc"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_successor_capability_browser.py#L215",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-042",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-043",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/browser/test_successor_capability_browser.py",
+        "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "source_bytes": 21837,
+        "start": {
+          "line": 340,
+          "col": 51,
+          "offset": 18666
+        },
+        "end": {
+          "line": 340,
+          "col": 79,
+          "offset": 18694
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "9f69f0f23fc48bd92371294cccf8055ce725a1c9373d2d37f07ee84902e4f12c"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_successor_capability_browser.py#L340",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-043",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-044",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/browser/test_successor_capability_browser.py",
+        "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+        "source_bytes": 21837,
+        "start": {
+          "line": 352,
+          "col": 51,
+          "offset": 19474
+        },
+        "end": {
+          "line": 352,
+          "col": 79,
+          "offset": 19502
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "9f69f0f23fc48bd92371294cccf8055ce725a1c9373d2d37f07ee84902e4f12c"
+      },
+      "function": "main",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/browser/test_successor_capability_browser.py#L352",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-044",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "EXPLICIT_OPERATOR_PTY_NODE_EXECUTABLE",
+      "rationale": "The executable is the operator CLI Node argument (or literal node), not text from the PTY conversation. The child script is the fixed sibling path; arguments are a list and the child environment is an explicit PATH.",
+      "applicability_limits": "The chosen executable is trusted operator configuration. This static disposition grants no creator authority and does not execute a PTY or any restricted probe.",
+      "case_id": "C0895-PY-045",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "tests/contracts/authority-test/creator-pty.test.py",
+        "source_sha256": "f25125c29ad836e6e320b7f28e49f904e64abcda5b50d6bd5fe0c1954aa7e6d8",
+        "source_bytes": 3052,
+        "start": {
+          "line": 28,
+          "col": 13,
+          "offset": 660
+        },
+        "end": {
+          "line": 28,
+          "col": 31,
+          "offset": 678
+        },
+        "snippet_sha256": "c110f3acc86d0827fb841b60da7fa1f4066cfdcbd17f5310a86de99eae6c9e7a",
+        "reported_lines_sha256": "27d62bfa49948bdb690ca37e1d469939895d99b75fd251bbc7aed2c49ac3354e"
+      },
+      "function": "campaign",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/contracts/authority-test/creator-pty.test.py#L28",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-045",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-046",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/runtime/test_ecosystem_browser.py",
+        "source_sha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+        "source_bytes": 19967,
+        "start": {
+          "line": 236,
+          "col": 48,
+          "offset": 10593
+        },
+        "end": {
+          "line": 236,
+          "col": 76,
+          "offset": 10621
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "7c5af32d8f051ee2bd611cb468c3bed21575eeaef931f8e71c9fc52eb235eafb"
+      },
+      "function": "test_public_chooser_uses_existing_paths_without_native_or_wallet_requests",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/runtime/test_ecosystem_browser.py#L236",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-046",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-047",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/runtime/test_ecosystem_browser.py",
+        "source_sha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+        "source_bytes": 19967,
+        "start": {
+          "line": 276,
+          "col": 29,
+          "offset": 12702
+        },
+        "end": {
+          "line": 276,
+          "col": 57,
+          "offset": 12730
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "75155cc9a43d17f71279596231431ba7514133045fc69c45bd9fcf31af5e0fdd"
+      },
+      "function": "test_native_login_is_inert_until_handlers_are_ready",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/runtime/test_ecosystem_browser.py#L276",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-047",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "FIXED_PYTHON_SCRIPT_WITH_JSON_STDIN",
+      "rationale": "The interpreter receives a fixed module-level Python string as -c code. Home/request/binding values go through json.dumps into stdin and are loaded as JSON; they are not concatenated into the executable code or argv.",
+      "applicability_limits": "This is a test-only fresh-process retained read, not approval for arbitrary journal paths or unrelated subprocess calls. No source/test was executed by triage.",
+      "case_id": "C0895-PY-048",
+      "identity": {
+        "rule_id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+        "rule_definition_sha256": "b8ad3c6842618daa05ab681d454c963c588bdb1e16f127bbe647369f7ce961f6",
+        "rule_start_byte": 391552,
+        "rule_end_byte": 394308,
+        "source_path": "tests/runtime/test_successor_studio_interruptions.py",
+        "source_sha256": "78739943a3821c4a7f6ec62b242d756c95593cbe79f83d639d3fa74dc766d237",
+        "source_bytes": 7202,
+        "start": {
+          "line": 45,
+          "col": 14,
+          "offset": 1653
+        },
+        "end": {
+          "line": 52,
+          "col": 6,
+          "offset": 1903
+        },
+        "snippet_sha256": "7ee8afcdaefd70a20eeb7b0dbbbdee892f6baabbf3e1656c22a32120daf9a137",
+        "reported_lines_sha256": "ceeabb9c740eb733beac82d0a3b6155abc9b1d5754cae5d43f95fb1ba9ef01ca"
+      },
+      "function": "fresh_read",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/runtime/test_successor_studio_interruptions.py#L45",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-048",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "BROWSER_REQUEST_URL_LIST_OBSERVATION",
+      "rationale": "The exact flagged expression appends the observed browser request URL to a local Python list. It does not issue an HTTP request through the requests library.",
+      "applicability_limits": "This judgment is about this receiver/type and expression only. Browser-origin/network authorization and injection checks remain separate; changing the receiver or surrounding source invalidates the context.",
+      "case_id": "C0895-PY-049",
+      "identity": {
+        "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "rule_definition_sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "rule_start_byte": 144700,
+        "rule_end_byte": 152102,
+        "source_path": "tests/runtime/test_supplier_browser_browser.py",
+        "source_sha256": "190ebcb9ad4634302f508d23ee27355a8038d3e7d51ed9166eef54f3b536e7b7",
+        "source_bytes": 11276,
+        "start": {
+          "line": 167,
+          "col": 44,
+          "offset": 7684
+        },
+        "end": {
+          "line": 167,
+          "col": 72,
+          "offset": 7712
+        },
+        "snippet_sha256": "bbd5afd40819d7dc56847fd7b7d370467fff00811213fd730ce31a1317dfd74c",
+        "reported_lines_sha256": "d7cb82c5d6e73e841516921d95fe30172d1a9534fb0db019b8552589c59f1b4f"
+      },
+      "function": "test_controls_fail_closed_without_script_and_during_initialization",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/runtime/test_supplier_browser_browser.py#L167",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-049",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "GIT_OBJECT_COMPATIBILITY_WITH_SHA256",
+      "rationale": "The SHA-1 operation computes Git blob framing/object IDs. The same source bytes also have an explicit SHA-256 check or fixture field; the Git identifier is not substituted for the content SHA-256.",
+      "applicability_limits": "Classification covers this protocol compatibility check only; it does not authorize SHA-1 as a credential, signature or sole new integrity primitive.",
+      "case_id": "C0895-PY-050",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "tests/runtime/test_transformation_source_audit.py",
+        "source_sha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+        "source_bytes": 31858,
+        "start": {
+          "line": 30,
+          "col": 18,
+          "offset": 1011
+        },
+        "end": {
+          "line": 30,
+          "col": 79,
+          "offset": 1072
+        },
+        "snippet_sha256": "e94c20e0ff377162e15d6ba31b8e38a1758bbfe44d9d50a6c8a907dc727d4f83",
+        "reported_lines_sha256": "ff600d9191c3cff9a74500ee2dec4051457afea1095c10c8c6dba850e455de74"
+      },
+      "function": "source",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/runtime/test_transformation_source_audit.py#L30",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-050",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "GIT_OBJECT_COMPATIBILITY_WITH_SHA256",
+      "rationale": "The SHA-1 operation computes Git blob framing/object IDs. The same source bytes also have an explicit SHA-256 check or fixture field; the Git identifier is not substituted for the content SHA-256.",
+      "applicability_limits": "Classification covers this protocol compatibility check only; it does not authorize SHA-1 as a credential, signature or sole new integrity primitive.",
+      "case_id": "C0895-PY-051",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "tests/runtime/test_transformation_source_audit.py",
+        "source_sha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+        "source_bytes": 31858,
+        "start": {
+          "line": 684,
+          "col": 18,
+          "offset": 31076
+        },
+        "end": {
+          "line": 684,
+          "col": 79,
+          "offset": 31137
+        },
+        "snippet_sha256": "e94c20e0ff377162e15d6ba31b8e38a1758bbfe44d9d50a6c8a907dc727d4f83",
+        "reported_lines_sha256": "ff600d9191c3cff9a74500ee2dec4051457afea1095c10c8c6dba850e455de74"
+      },
+      "function": "test_public_credential_source_refused_before_journal_or_cli_home_write",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/runtime/test_transformation_source_audit.py#L684",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-051",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "HISTORICAL_GIT_OBJECT_ASSERTION",
+      "rationale": "This exact assertion checks a predeclared historical Out_Execute.tex Git blob object identity, including blob framing. It preserves the existing Git object compatibility contract; it is not a cryptographic authentication credential. There is no adjacent SHA-256 assertion in this test function.",
+      "applicability_limits": "The historical SHA-1 object ID alone is not a modern signature or strong general-purpose integrity proof. Separate catalogue or other test checks must not be fabricated as a dual-hash check at this assertion. No finding admission or new authority is granted.",
+      "case_id": "C0895-PY-052",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "tests/test_featured_research.py",
+        "source_sha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+        "source_bytes": 10342,
+        "start": {
+          "line": 57,
+          "col": 12,
+          "offset": 2453
+        },
+        "end": {
+          "line": 57,
+          "col": 67,
+          "offset": 2508
+        },
+        "snippet_sha256": "a5489e4e0425bd16e7b693410b495f531abf9d668f30c4ccc04f210f8a25f9ea",
+        "reported_lines_sha256": "dc33d831d87e6dae4ef30e3ffddc132437fcd4c7be5fe352941b7dda797f59c1"
+      },
+      "function": "test_historical_seven_paper_inventory_remains_in_release_evidence",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/test_featured_research.py#L57",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-052",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "HISTORICAL_GIT_OBJECT_ASSERTION",
+      "rationale": "This Git blob compatibility assertion follows a separate SHA-256 assertion over the same enterprise PDF bytes at line74 and precedes destination byte equality at line76. SHA-1 preserves the declared historical Git object identity; the separate SHA-256/byte checks must remain intact.",
+      "applicability_limits": "This exact dual-check context does not qualify the bare historical Git assertions in current52 or54. Git SHA-1 alone is not a modern signature or general authentication proof; no finding admission is granted.",
+      "case_id": "C0895-PY-053",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "tests/test_featured_research.py",
+        "source_sha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+        "source_bytes": 10342,
+        "start": {
+          "line": 75,
+          "col": 12,
+          "offset": 3246
+        },
+        "end": {
+          "line": 75,
+          "col": 67,
+          "offset": 3301
+        },
+        "snippet_sha256": "a5489e4e0425bd16e7b693410b495f531abf9d668f30c4ccc04f210f8a25f9ea",
+        "reported_lines_sha256": "d97bac2b187f0a0e76a1b2806c52977234ae973e0e5e41fc8f9a61a96d2baa8a"
+      },
+      "function": "test_required_enterprise_originals_have_exact_catalogue_destinations",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/test_featured_research.py#L75",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-053",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "HISTORICAL_GIT_OBJECT_ASSERTION",
+      "rationale": "This exact assertion checks a predeclared historical PDF Git blob object identity, including blob framing. It preserves the existing Git object compatibility contract; it is not a cryptographic authentication credential. There is no adjacent SHA-256 assertion in this test function.",
+      "applicability_limits": "The historical SHA-1 object ID alone is not a modern signature or strong general-purpose integrity proof. Separate catalogue or other test checks must not be fabricated as a dual-hash check at this assertion. No finding admission or new authority is granted.",
+      "case_id": "C0895-PY-054",
+      "identity": {
+        "rule_id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "rule_definition_sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "rule_start_byte": 188007,
+        "rule_end_byte": 190071,
+        "source_path": "tests/test_featured_research.py",
+        "source_sha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+        "source_bytes": 10342,
+        "start": {
+          "line": 110,
+          "col": 12,
+          "offset": 5335
+        },
+        "end": {
+          "line": 110,
+          "col": 63,
+          "offset": 5386
+        },
+        "snippet_sha256": "d06cc2b83435b20fcadc6fe34505088f11810caf2282f493d0fdb089f5ee2ad6",
+        "reported_lines_sha256": "c0a02d9d02bf5c6d1a40dfc81b575dc066c93a09403b248475b64e8dd1700e98"
+      },
+      "function": "test_original_pdf_bytes_and_reading_links",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/test_featured_research.py#L110",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-054",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "OPERATOR_OWNED_TOOL_CACHE_VERSION_PROBE",
+      "rationale": "The test fixture deliberately probes an existing operator-owned pre-commit cache interpreter with fixed Python metadata-version code. It captures output and enforces a timeout, then requires Semgrep1.99.0. Candidate/runtime data does not supply code or paths.",
+      "applicability_limits": "PRE_COMMIT_HOME/cache contents are an operator trust boundary; the version probe does not authenticate arbitrary executables or make writable untrusted caches safe. No new tool installation or download occurs in this fixture.",
+      "case_id": "C0895-PY-055",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "tests/test_strategy_python_security.py",
+        "source_sha256": "608c42e215b8a287183ae483bbe95435ce973d35aa9ada103940571fa6ae5c42",
+        "source_bytes": 53313,
+        "start": {
+          "line": 114,
+          "col": 13,
+          "offset": 3963
+        },
+        "end": {
+          "line": 114,
+          "col": 104,
+          "offset": 4054
+        },
+        "snippet_sha256": "0d246dc183ed234710ee43af56f1a23554ddfd0e8fe61659eb6e4727c73115ab",
+        "reported_lines_sha256": "020c16040babb132c2c6bfc7d6e23232f699d648fd133a261fa542a19c0e1cbc"
+      },
+      "function": "scanner_python",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/test_strategy_python_security.py#L114",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-055",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    },
+    {
+      "assessment": "FIXED_REPOSITORY_EXPORTER_FIXTURE_OPERATOR_NODE_CONFIGURATION",
+      "rationale": "The inert regression fixture runs a fixed Node script importing reviewed repository mission/research/exporter/source-hash modules. It uses hardcoded public CSV inputs and seed17, then returns generated module strings as base64 data for comparison. Generated modules are not imported or executed; host execution-boundary tests use an inert replacement.",
+      "applicability_limits": "NODE_EXECUTABLE and reviewed checkout remain operator trust boundaries. This does not authenticate arbitrary executable paths or permit running downloaded/generated code. No finding admission or rule waiver is implied.",
+      "case_id": "C0895-PY-056",
+      "identity": {
+        "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "rule_definition_sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "rule_start_byte": 342990,
+        "rule_end_byte": 347589,
+        "source_path": "tests/test_successor_capability_reconstruction.py",
+        "source_sha256": "09b71362d7f6eee3ff4b909a033d025f87c0e1f46abf228e59eeb5a779dc0629",
+        "source_bytes": 7794,
+        "start": {
+          "line": 48,
+          "col": 9,
+          "offset": 2339
+        },
+        "end": {
+          "line": 48,
+          "col": 110,
+          "offset": 2440
+        },
+        "snippet_sha256": "48084d70ce9b3e521b89435f05c8dfebfa8b890ef3d635687c87139f01fa0812",
+        "reported_lines_sha256": "2f45bc2fe833fbba792259d2e0586ad9b9c05d29c978cb65b68040e4dbe15fa9"
+      },
+      "function": "authored_export",
+      "source_citation": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/0895b3d1a96aec29e9de269b9e29132afc72b871/tests/test_successor_capability_reconstruction.py#L48",
+      "historical_relation": {
+        "previous_577_case_id": "C577-PY-056",
+        "same_finding_identity_including_source_rule_span": true,
+        "whole_repository_context_changed": true,
+        "approval_transferred": false
+      },
+      "triage_status": "CURRENT_SOURCE_CONTEXT_PROPOSAL_UNAPPROVED",
+      "operator_disposition": "UNAPPROVED",
+      "approval_count": 0,
+      "independent_final_delta_review": "PENDING_MECHANICAL_REVIEW_ONLY",
+      "map_approval": false,
+      "context_review_basis": "Prior UNAPPROVED source-context note mechanically rebound to exact unchanged finding/source/rule identities. No renewed substantive review or approval."
+    }
+  ],
+  "smallest_legitimate_next_step": {
+    "current_admission": "BLOCKED_WITH_56_RAW_FINDINGS_NO_MAP",
+    "ordinary_source_repairs": "The separate memory TTL duplicate-cleanup correction changes two selected bodies outside the finding-source set. This capture performs no code repair and grants no new operational qualification.",
+    "if_only_context_adjudications_remain": "Responsible maintainer may review these exact cases as evidence. Activating an exception map to pass raw exit1 would change protected security admission criteria and requires separate explicit authorization; current no-security-changes instruction does not authorize it."
+  },
+  "privacy": {
+    "rule_bodies_included": false,
+    "raw_engine_messages_included": false,
+    "raw_report_included": false,
+    "public_source_spans_represented_by_hashes_locations_and_operator_context_only": true
+  },
+  "previous_577_proposal_status": "HISTORICAL_EXACT_SOURCE_UNAPPROVED_PRESERVED_UNTOUCHED"
+}

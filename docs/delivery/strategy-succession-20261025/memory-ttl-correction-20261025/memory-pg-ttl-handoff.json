@@ -1,0 +1,67 @@
+{
+  "schema": "memory-pg-duplicate-ttl-correction/v1",
+  "state": "FROZEN_TWO_PATH_CANDIDATE_FAKE_DB_CHECKED_REAL_POSTGRES_UNQUALIFIED",
+  "base_commit": "57706c331231d752edec5f39defaefceeedeffd2",
+  "base_tree": "d8cfa8bd782639c87d855f3c16de51ca3fda3917",
+  "worktree": "/workspace/scratch/0d7600b912de/strategy-memory-ttl-work",
+  "review_finding": {
+    "pr": 4899,
+    "review": 5644192853,
+    "comment": 4371573225
+  },
+  "files": [
+    {
+      "path": "alpha_factory_v1/backend/memory_fabric.py",
+      "mode": "100644",
+      "bytes": 34248,
+      "sha256": "c281eca332ba97f8e569dcdeda1b7355718af828052e4464fa0a50e9dfcef526",
+      "git_blob_sha": "54c76a5d5096cfd56c2a3933970c86b879ebd914"
+    },
+    {
+      "path": "tests/test_legacy_identity_security.py",
+      "mode": "100644",
+      "bytes": 31559,
+      "sha256": "47eaa49924fbd99980104f3ef619f8f363b699cd4be9afd5c5166e991d1fa03d",
+      "git_blob_sha": "50599c7c821261566ed227b02f51d8a2073d1e71"
+    }
+  ],
+  "patch_sha256": "678c38e9da50456589dbac3681f814a07c863af3a893eb6343f670d7dd47e5ad",
+  "behavior": "Known current-ID and exactlegacy-body duplicates leave the existing readtransaction before globalTTL cleanup; noinsert,quotaeviction,refresh oraddmetric onduplicate. Newinserts retain oldeviction/TTL/metricorder. Conflictstillraiseswithoutdowngrade.",
+  "checks": {
+    "red": "4failed4passed27deselected2.92s",
+    "green": "15passed20deselected2.46s",
+    "selected_tests": "tests/test_legacy_identity_security.py -k 'pg_duplicate or pg_new_insert or ram_identity or sqlite or faiss_identity or existing_agent_quota'",
+    "Black120": "PASS",
+    "Ruff0.12.5": "PASS",
+    "diffcheck": "PASS",
+    "runtime_AST_scope": "ONLYexistingPGconditionalbody changes; allotherAST unchanged",
+    "mypy": "NOTPASS: candidate59errors; exact577shadowbaseline59identicaldiagnosticmessages. No newdiagnostics; existingerrorspreserved."
+  },
+  "fake_controls": [
+    "Rejectreentrantconnectioncontexts",
+    "CurrentIDandlegacyexactbodyduplicates",
+    "TTL60removesunrelatedexpiredrows",
+    "Duplicatebytes/timestamps/legacyIDsunchanged",
+    "Expiredduplicateisremovednotrefreshed",
+    "TTL0noDELETE",
+    "No duplicateinsert/eviction/addmetric",
+    "IdentityconflictraisesandPGmodekept",
+    "Newinsertquota+metric+TTLpreserved"
+  ],
+  "excluded": [
+    "RealPostgres/pgvector/FAISSqualification",
+    "Providers/network/credentials",
+    "Held5runtimeactions",
+    "Otherlegacyharness/archive testbodies not executed",
+    "Workflows/security/scientificsourcechanges",
+    "Rootcheckout/ref/commit/publisheractions"
+  ],
+  "logs": [
+    "memory-pg-ttl-red.log",
+    "memory-pg-ttl-green.log",
+    "memory-pg-ttl-mypy.log",
+    "memory-pg-ttl-mypy-baseline.log"
+  ],
+  "operational_authority": false,
+  "published": false
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "memory-ttl-source-publication-plan/v1",
+  "parent": "57706c331231d752edec5f39defaefceeedeffd2",
+  "base_tree": "d8cfa8bd782639c87d855f3c16de51ca3fda3917",
+  "expected_tree": "7c1df68ce6f005f1c449ecdff4cd54a816a1e53b",
+  "entries": [
+    {
+      "path": "alpha_factory_v1/backend/memory_fabric.py",
+      "source_path": "/workspace/scratch/0d7600b912de/strategy-integration/alpha_factory_v1/backend/memory_fabric.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "54c76a5d5096cfd56c2a3933970c86b879ebd914",
+      "sha256": "c281eca332ba97f8e569dcdeda1b7355718af828052e4464fa0a50e9dfcef526",
+      "bytes": 34248
+    },
+    {
+      "path": "tests/test_legacy_identity_security.py",
+      "source_path": "/workspace/scratch/0d7600b912de/strategy-integration/tests/test_legacy_identity_security.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "50599c7c821261566ed227b02f51d8a2073d1e71",
+      "sha256": "47eaa49924fbd99980104f3ef619f8f363b699cd4be9afd5c5166e991d1fa03d",
+      "bytes": 31559
+    }
+  ],
+  "guarded_unchanged": 241,
+  "policy_activated": false,
+  "root_review": "CLEAR narrow PG flow: duplicate flag keeps identity validation inside original transaction, TTL runs after it exits, duplicate returns before quota/metric; new insert/conflict/disabled TTL semantics preserved.15 selected fake memory controls pass;20 unrelated test bodies deselected. Not live PG qualification. Direct strict backend mypy has same59diagnostics as previous577; not a type pass; existing configured exclusion unchanged."
+}

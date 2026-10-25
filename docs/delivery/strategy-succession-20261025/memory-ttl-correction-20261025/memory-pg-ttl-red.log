@@ -1,0 +1,152 @@
+FF..FF..                                                                 [100%]
+=================================== FAILURES ===================================
+_ test_pg_duplicate_ttl_runs_after_transaction_without_insert_refresh_or_metric[60-current] _
+
+memory = <module 'controlled_memory_identity_fixture' from '/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/alpha_factory_v1/backend/memory_fabric.py'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81b193f740>
+kind = 'current', ttl = 60
+
+    @pytest.mark.parametrize("kind", ["current", "legacy"])
+    @pytest.mark.parametrize("ttl", [60, 0])
+    def test_pg_duplicate_ttl_runs_after_transaction_without_insert_refresh_or_metric(
+        memory: Any, monkeypatch: pytest.MonkeyPatch, kind: str, ttl: int
+    ) -> None:
+        store, pg, metric = _pg_ttl_store(memory, monkeypatch, kind, ttl)
+        before = deepcopy(pg.rows)
+        for _ in range(2):
+            store.add("owner", "same retained body")
+            assert store._mode == "pg" and not pg.active
+        expected = [row for row in before if row["ts"] >= pg.now - ttl] if ttl else before
+>       assert pg.rows == expected
+E       AssertionError: assert [{'agent': 'o... [0.75], ...}] == [{'agent': 'o... [0.75], ...}]
+E         
+E         At index 1 diff: {'agent': 'other', 'content': 'expired unrelated', 'ts': 0, 'content_id': 'expired-fixture', 'hash': None, 'embedding': [0.5]} != {'agent': 'other', 'content': 'fresh unrelated', 'ts': 995, 'content_id': 'fresh-fixture', 'hash': None, 'embedding': [0.75]}
+E         Left contains one more item: {'agent': 'other', 'content': 'fresh unrelated', 'content_id': 'fresh-fixture', 'embedding': [0.75], ...}
+E         Use -v to get more diff
+
+/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/tests/test_legacy_identity_security.py:180: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+[2026-10-26 01:53:25,788] WARNING | MemoryFabric: no embedding backend → hashing fallback.
+[2026-10-26 01:53:25,789] INFO | VectorStore: SQLite disabled → RAM mode
+[2026-10-26 01:53:25,789] INFO | GraphStore: python-list ultimate fallback.
+------------------------------ Captured log setup ------------------------------
+WARNING  AlphaFactory.MemoryFabric:memory_fabric.py:207 MemoryFabric: no embedding backend → hashing fallback.
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:606 GraphStore: python-list ultimate fallback.
+----------------------------- Captured stderr call -----------------------------
+[2026-10-26 01:53:25,789] INFO | VectorStore: SQLite disabled → RAM mode
+------------------------------ Captured log call -------------------------------
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+_ test_pg_duplicate_ttl_runs_after_transaction_without_insert_refresh_or_metric[60-legacy] _
+
+memory = <module 'controlled_memory_identity_fixture' from '/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/alpha_factory_v1/backend/memory_fabric.py'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81b193ec00>
+kind = 'legacy', ttl = 60
+
+    @pytest.mark.parametrize("kind", ["current", "legacy"])
+    @pytest.mark.parametrize("ttl", [60, 0])
+    def test_pg_duplicate_ttl_runs_after_transaction_without_insert_refresh_or_metric(
+        memory: Any, monkeypatch: pytest.MonkeyPatch, kind: str, ttl: int
+    ) -> None:
+        store, pg, metric = _pg_ttl_store(memory, monkeypatch, kind, ttl)
+        before = deepcopy(pg.rows)
+        for _ in range(2):
+            store.add("owner", "same retained body")
+            assert store._mode == "pg" and not pg.active
+        expected = [row for row in before if row["ts"] >= pg.now - ttl] if ttl else before
+>       assert pg.rows == expected
+E       AssertionError: assert [{'agent': 'o... [0.75], ...}] == [{'agent': 'o... [0.75], ...}]
+E         
+E         At index 1 diff: {'agent': 'other', 'content': 'expired unrelated', 'ts': 0, 'content_id': 'expired-fixture', 'hash': None, 'embedding': [0.5]} != {'agent': 'other', 'content': 'fresh unrelated', 'ts': 995, 'content_id': 'fresh-fixture', 'hash': None, 'embedding': [0.75]}
+E         Left contains one more item: {'agent': 'other', 'content': 'fresh unrelated', 'content_id': 'fresh-fixture', 'embedding': [0.75], ...}
+E         Use -v to get more diff
+
+/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/tests/test_legacy_identity_security.py:180: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+[2026-10-26 01:53:25,878] WARNING | MemoryFabric: no embedding backend → hashing fallback.
+[2026-10-26 01:53:25,878] INFO | VectorStore: SQLite disabled → RAM mode
+[2026-10-26 01:53:25,878] INFO | GraphStore: python-list ultimate fallback.
+------------------------------ Captured log setup ------------------------------
+WARNING  AlphaFactory.MemoryFabric:memory_fabric.py:207 MemoryFabric: no embedding backend → hashing fallback.
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:606 GraphStore: python-list ultimate fallback.
+----------------------------- Captured stderr call -----------------------------
+[2026-10-26 01:53:25,878] INFO | VectorStore: SQLite disabled → RAM mode
+------------------------------ Captured log call -------------------------------
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+_____ test_pg_duplicate_ttl_does_not_refresh_an_expired_duplicate[current] _____
+
+memory = <module 'controlled_memory_identity_fixture' from '/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/alpha_factory_v1/backend/memory_fabric.py'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81b17da600>
+kind = 'current'
+
+    @pytest.mark.parametrize("kind", ["current", "legacy"])
+    def test_pg_duplicate_ttl_does_not_refresh_an_expired_duplicate(
+        memory: Any, monkeypatch: pytest.MonkeyPatch, kind: str
+    ) -> None:
+        store, pg, metric = _pg_ttl_store(memory, monkeypatch, kind, 60)
+        pg.rows[0]["ts"] = 0
+        retained_fresh = deepcopy(pg.rows[-1])
+        store.add("owner", "same retained body")
+        assert store._mode == "pg" and not pg.active
+>       assert pg.rows == [retained_fresh] and pg.inserts == 0 and pg.ttl_deletes == 1
+E       AssertionError: assert ([{'agent': 'o... [0.75], ...}] == [{'agent': 'o... [0.75], ...}]
+E         
+E         At index 0 diff: {'agent': 'owner', 'content': 'same retained body', 'ts': 0, 'content_id': 'memory-content-v2:sha256:b9a17aa911f10a12408777e038d93e835404ac1bc5941a694abbc7e93f140b55', 'hash': None, 'embedding': [0.25]} != {'agent': 'other', 'content': 'fresh unrelated', 'ts': 995, 'content_id': 'fresh-fixture', 'hash': None, 'embedding': [0.75]}
+E         Left contains 2 more items, first extra item: {'agent': 'other', 'content': 'expired unrelated', 'content_id': 'expired-fixture', 'embedding': [0.5], ...}
+E         Use -v to get more diff)
+
+/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/tests/test_legacy_identity_security.py:198: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+[2026-10-26 01:53:25,903] WARNING | MemoryFabric: no embedding backend → hashing fallback.
+[2026-10-26 01:53:25,903] INFO | VectorStore: SQLite disabled → RAM mode
+[2026-10-26 01:53:25,903] INFO | GraphStore: python-list ultimate fallback.
+------------------------------ Captured log setup ------------------------------
+WARNING  AlphaFactory.MemoryFabric:memory_fabric.py:207 MemoryFabric: no embedding backend → hashing fallback.
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:606 GraphStore: python-list ultimate fallback.
+----------------------------- Captured stderr call -----------------------------
+[2026-10-26 01:53:25,904] INFO | VectorStore: SQLite disabled → RAM mode
+------------------------------ Captured log call -------------------------------
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+_____ test_pg_duplicate_ttl_does_not_refresh_an_expired_duplicate[legacy] ______
+
+memory = <module 'controlled_memory_identity_fixture' from '/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/alpha_factory_v1/backend/memory_fabric.py'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f81b17da4e0>
+kind = 'legacy'
+
+    @pytest.mark.parametrize("kind", ["current", "legacy"])
+    def test_pg_duplicate_ttl_does_not_refresh_an_expired_duplicate(
+        memory: Any, monkeypatch: pytest.MonkeyPatch, kind: str
+    ) -> None:
+        store, pg, metric = _pg_ttl_store(memory, monkeypatch, kind, 60)
+        pg.rows[0]["ts"] = 0
+        retained_fresh = deepcopy(pg.rows[-1])
+        store.add("owner", "same retained body")
+        assert store._mode == "pg" and not pg.active
+>       assert pg.rows == [retained_fresh] and pg.inserts == 0 and pg.ttl_deletes == 1
+E       AssertionError: assert ([{'agent': 'o... [0.75], ...}] == [{'agent': 'o... [0.75], ...}]
+E         
+E         At index 0 diff: {'agent': 'owner', 'content': 'same retained body', 'ts': 0, 'content_id': None, 'hash': '1111111111111111111111111111111111111111', 'embedding': [0.25]} != {'agent': 'other', 'content': 'fresh unrelated', 'ts': 995, 'content_id': 'fresh-fixture', 'hash': None, 'embedding': [0.75]}
+E         Left contains 2 more items, first extra item: {'agent': 'other', 'content': 'expired unrelated', 'content_id': 'expired-fixture', 'embedding': [0.5], ...}
+E         Use -v to get more diff)
+
+/workspace/scratch/0d7600b912de/strategy-memory-ttl-work/tests/test_legacy_identity_security.py:198: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+[2026-10-26 01:53:25,920] WARNING | MemoryFabric: no embedding backend → hashing fallback.
+[2026-10-26 01:53:25,920] INFO | VectorStore: SQLite disabled → RAM mode
+[2026-10-26 01:53:25,920] INFO | GraphStore: python-list ultimate fallback.
+------------------------------ Captured log setup ------------------------------
+WARNING  AlphaFactory.MemoryFabric:memory_fabric.py:207 MemoryFabric: no embedding backend → hashing fallback.
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:606 GraphStore: python-list ultimate fallback.
+----------------------------- Captured stderr call -----------------------------
+[2026-10-26 01:53:25,921] INFO | VectorStore: SQLite disabled → RAM mode
+------------------------------ Captured log call -------------------------------
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+=========================== short test summary info ============================
+FAILED tests/test_legacy_identity_security.py::test_pg_duplicate_ttl_runs_after_transaction_without_insert_refresh_or_metric[60-current]
+FAILED tests/test_legacy_identity_security.py::test_pg_duplicate_ttl_runs_after_transaction_without_insert_refresh_or_metric[60-legacy]
+FAILED tests/test_legacy_identity_security.py::test_pg_duplicate_ttl_does_not_refresh_an_expired_duplicate[current]
+FAILED tests/test_legacy_identity_security.py::test_pg_duplicate_ttl_does_not_refresh_an_expired_duplicate[legacy]
+4 failed, 4 passed, 27 deselected in 2.92s
