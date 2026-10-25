@@ -1,0 +1,16 @@
+{
+  "schema": "strategy-hosted-outcome/v1",
+  "run": 40149014139,
+  "source": "640a37f1960e9cbafbe2ce479ffda171bbb0fc48",
+  "outcome": "FAILED_NATIVE_SUCCESS_TEST",
+  "worker_passed": 51,
+  "worker_failed": 1,
+  "failure": "KeyError valid hid actual failed native attempt row; original exact native cause UNKNOWN",
+  "reproduced_mechanism": "Configured venv interpreter resolved to base Python; isolated base lacks SciPy while venv contains it. Reproduction before six failed attempts, after six checked successes.",
+  "correction": "Preserve invocation path, actual child preflight before Journal, same all-native-valid criterion and diagnostic error rows",
+  "skipped": [
+    "installed/browser/crash/final collector"
+  ],
+  "artifact_id": 12582550411,
+  "artifact_sha256": "babb9cc587046254add49ca721b47d2eb990434965aad701359f6ee9751065fd"
+}

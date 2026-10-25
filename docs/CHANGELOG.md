@@ -1,3 +1,13 @@
+## 1.44.0 — Checked planning and repair (source candidate)
+
+- Connect the browser to an explicitly approved fixed-method executor over the existing Journal/ActionGateway.
+- Preserve actual predecessor plans, committed prefixes, separate improvement accounts, strong specialists and negative transfer.
+- Require actual child-interpreter/dependency checks, verified partials, finite leases and unknown-outcome recovery.
+- Preserve the immutable Strategy research edition and narrow source-bound lint compatibility.
+- Ship the separate 0.1.0rc1 companion through the existing qualified publisher; its runtime remains public Alpha1.42.
+- Retain actual published/clean-installed1.43 evidence and all earlier releases/URLs.
+- Require current-source review, hosted Chromium, resulting-main acceptance and public installation before any completion claim.
+
 ## 1.38.0 — Connected capability development (local integration candidate)
 
 - Bring the original seven papers and independently checked OUT-EXECUTE workspace together with all six Discovery Lab stages.

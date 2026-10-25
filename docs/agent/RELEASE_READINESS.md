@@ -1,5 +1,26 @@
 [Project notice](../DISCLAIMER_SNIPPET.md)
 
+# Release readiness — 1.44.0 checked planning and repair
+
+This source candidate adds the separately installable Strategy Succession companion. Its scope is
+[fixed planning and calendar repair](STRATEGY_SUCCESSION.md), with real approved browser execution,
+actual child-environment qualification and separate service/improvement budgets. The visible engineering
+case preserves a stronger native repair win and a rejected inferior candidate. No growth or payback is inferred.
+
+Required gates are exact-source configured review (including the finite frozen-source lint profile),
+applicable PR checks, actual hosted Chromium/clean public-Alpha1.42 companion installation, all existing
+resulting-main release gates, publication and independent actual public-asset installation. The existing
+publisher owns all assets. No source note or old local check substitutes for these gates.
+
+Published1.43 source5499495911bf8822ac0aa8c9007f00789c1132b5 has completed actual clean public
+installation and its finite CLI journey; [durable public evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/aa0e65b6cd6ab13d2fa05e28f5ef07b7e7d8f7e7/docs/delivery/source-operation-20261024/evidence-1430-public/REPORT.md)
+retains counters, equal-control ties, failed/omitted outcomes and no production authority. Its acceptance
+does not transfer to this source candidate. Prior1.42, Jobs/Manager releases, preferred Edition02, five held
+source pins and original Harness/Fleet restrictions remain unchanged. Full four-product installation,
+general desktop and repository maintenance remain unqualified.
+
+## Preserved1.43 preparation record
+
 # Release readiness — 1.43.0 finite source operations
 
 This additive candidate integrates the existing #4891 source-operation lineage with published 1.42 and

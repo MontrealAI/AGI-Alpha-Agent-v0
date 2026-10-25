@@ -198,6 +198,17 @@ SOURCE_OPERATION_143_EXTRA_FILES = TI_GUIDE_142_EXTRA_FILES | {
     ),
 }
 
+# The bounded Strategy engineering release changes only the complete generated
+# gallery cache edition; retain every historical edition and scientific source.
+STRATEGY_144_EXTRA_FILES = SOURCE_OPERATION_143_EXTRA_FILES | {
+    "docs/service-worker.js": (23501, "431c7e7860f44bffcede643128acfa05d4d84c1ddaa26352ac5000060aa0631e"),
+    "docs/assets/service-worker.js": (23938, "19ddc910d7cf5e5adb452890d282233813bb2bc0aa42278abaeabbbba7c0d5c6"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26560,
+        "e2d55209f31ad4b282e215fabbbf0f2544f398d71c23827387335bf6da8abc1c",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -272,6 +283,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, WORKBENCH_1411_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, TI_GUIDE_142_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, SOURCE_OPERATION_143_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, STRATEGY_144_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

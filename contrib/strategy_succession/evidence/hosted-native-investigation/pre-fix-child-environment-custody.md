@@ -1,0 +1,5 @@
+## Child environment custody correction
+
+The earlier v4/v5/v6 runs establish the parent installation and API observations recorded at their exact source identities. They do not establish clean native-child execution: the fixed wrapper resolved the virtual-environment Python path to its base executable. The local base SciPy payload matched the approved version, so the recorded local results remain evidence in that narrower scope; hosted native availability and clean child custody remain unqualified.
+
+The original receipts and failures are preserved without modification. Final package/browser/public-release admission is held until the approved executable path is preserved, an actual child environment probe runs before journal access, and the corrected exact source is rebuilt and exercised. Charged native invocation attempts include startup/import failures; they are not counts of successfully completed solver calls. No production authority or original Harness/Fleet clearance follows from these records.
