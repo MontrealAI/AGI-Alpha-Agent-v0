@@ -1,0 +1,1499 @@
+{
+  "schema": "agi-alpha-strategy-summary/v1",
+  "run_mode": "CONFIRMATION",
+  "primary": {
+    "comparison": "flywheel minus conventional saved workflow at1M counted units",
+    "endpoint": "Qualified coverage of all72 offered missions, including the first founder mission",
+    "coverage_difference_per_stream": {
+      "mean": 4.333333333333333,
+      "percentile_95_interval": [
+        3.6666666666666665,
+        4.916666666666667
+      ],
+      "independent_streams": 12,
+      "resamples": 10000,
+      "seed": 20261024,
+      "unit": "paired complete stream, including all stops"
+    },
+    "coverage_percentage_point_difference": {
+      "mean": 6.018518518518519,
+      "percentile_95_interval": [
+        5.092592592592593,
+        6.828703703703703
+      ],
+      "independent_streams": 12,
+      "resamples": 10000,
+      "seed": 20261024,
+      "unit": "paired complete stream, including all stops"
+    },
+    "charged_work_difference": {
+      "mean": -2904.0833333333335,
+      "percentile_95_interval": [
+        -5687.666666666667,
+        -141.41666666666666
+      ],
+      "independent_streams": 12,
+      "resamples": 10000,
+      "seed": 20261024,
+      "unit": "paired complete stream, including all stops"
+    },
+    "no_posthoc_exclusions": true,
+    "multiplicity": "One primary contrast; all other contrasts and resource sensitivities descriptive."
+  },
+  "arms": [
+    {
+      "budget": 250000,
+      "arm": "flywheel",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 253,
+      "valid": 252,
+      "qualified": 196,
+      "mean_qualified": 16.333333333333332,
+      "mean_work": 227872.08333333334,
+      "total_work": 2734465,
+      "qualified_per_million_work": 71.67764078165199,
+      "coverage_percent": 22.685185185185187,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 637711,
+        "catalog-lookup": 253,
+        "mission": 2072621,
+        "raw-evidence-block64": 14124,
+        "receipt-write": 9756
+      },
+      "mean_wall_ms": 633.2415880833456,
+      "mean_node_cpu_ms": 562.2773333333333,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 250000,
+      "arm": "learner",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 253,
+      "valid": 252,
+      "qualified": 196,
+      "mean_qualified": 16.333333333333332,
+      "mean_work": 227872.08333333334,
+      "total_work": 2734465,
+      "qualified_per_million_work": 71.67764078165199,
+      "coverage_percent": 22.685185185185187,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 637711,
+        "catalog-lookup": 253,
+        "mission": 2072621,
+        "raw-evidence-block64": 14124,
+        "receipt-write": 9756
+      },
+      "mean_wall_ms": 626.8414734166654,
+      "mean_node_cpu_ms": 567.274,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 250000,
+      "arm": "no_admission",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 253,
+      "valid": 252,
+      "qualified": 196,
+      "mean_qualified": 16.333333333333332,
+      "mean_work": 227875.58333333334,
+      "total_work": 2734507,
+      "qualified_per_million_work": 71.67653986623549,
+      "coverage_percent": 22.685185185185187,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 637758,
+        "catalog-lookup": 253,
+        "mission": 2072616,
+        "raw-evidence-block64": 14124,
+        "receipt-write": 9756
+      },
+      "mean_wall_ms": 620.4579220833353,
+      "mean_node_cpu_ms": 550.9423333333333,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 250000,
+      "arm": "no_discovery",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 258,
+      "valid": 256,
+      "qualified": 200,
+      "mean_qualified": 16.666666666666668,
+      "mean_work": 229792.91666666666,
+      "total_work": 2757515,
+      "qualified_per_million_work": 72.52907055809307,
+      "coverage_percent": 23.14814814814815,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 626806,
+        "catalog-lookup": 258,
+        "mission": 2106093,
+        "raw-evidence-block64": 14413,
+        "receipt-write": 9945
+      },
+      "mean_wall_ms": 633.1042460833293,
+      "mean_node_cpu_ms": 550.1764166666667,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 250000,
+      "arm": "no_retention",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 253,
+      "valid": 252,
+      "qualified": 196,
+      "mean_qualified": 16.333333333333332,
+      "mean_work": 227875.58333333334,
+      "total_work": 2734507,
+      "qualified_per_million_work": 71.67653986623549,
+      "coverage_percent": 22.685185185185187,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 637758,
+        "catalog-lookup": 253,
+        "mission": 2072616,
+        "raw-evidence-block64": 14124,
+        "receipt-write": 9756
+      },
+      "mean_wall_ms": 635.8460105833316,
+      "mean_node_cpu_ms": 575.0316666666666,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 250000,
+      "arm": "no_succession",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 253,
+      "valid": 252,
+      "qualified": 196,
+      "mean_qualified": 16.333333333333332,
+      "mean_work": 227876.41666666666,
+      "total_work": 2734517,
+      "qualified_per_million_work": 71.67627774850183,
+      "coverage_percent": 22.685185185185187,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 637769,
+        "catalog-lookup": 253,
+        "mission": 2072615,
+        "raw-evidence-block64": 14124,
+        "receipt-write": 9756
+      },
+      "mean_wall_ms": 612.8440264166662,
+      "mean_node_cpu_ms": 538.4060000000001,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 250000,
+      "arm": "portfolio",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 258,
+      "valid": 256,
+      "qualified": 200,
+      "mean_qualified": 16.666666666666668,
+      "mean_work": 229789.91666666666,
+      "total_work": 2757479,
+      "qualified_per_million_work": 72.5300174543487,
+      "coverage_percent": 23.14814814814815,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 626763,
+        "catalog-lookup": 258,
+        "mission": 2106100,
+        "raw-evidence-block64": 14413,
+        "receipt-write": 9945
+      },
+      "mean_wall_ms": 638.5176078333219,
+      "mean_node_cpu_ms": 558.50525,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 250000,
+      "arm": "workflow",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 254,
+      "valid": 252,
+      "qualified": 196,
+      "mean_qualified": 16.333333333333332,
+      "mean_work": 227785.83333333334,
+      "total_work": 2733430,
+      "qualified_per_million_work": 71.70478117237317,
+      "coverage_percent": 22.685185185185187,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 634427,
+        "catalog-lookup": 255,
+        "mission": 2074788,
+        "raw-evidence-block64": 14176,
+        "receipt-write": 9784
+      },
+      "mean_wall_ms": 632.8149504999965,
+      "mean_node_cpu_ms": 553.6915833333334,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "flywheel",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "mean_qualified": 43.083333333333336,
+      "mean_work": 976232.1666666666,
+      "total_work": 11714786,
+      "qualified_per_million_work": 44.132261570975345,
+      "coverage_percent": 59.83796296296296,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5238180,
+        "catalog-lookup": 677,
+        "mission": 5575478,
+        "raw-evidence-block64": 44786,
+        "receipt-write": 26238,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 2667.9220675,
+      "mean_node_cpu_ms": 2468.4375833333334,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "learner",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "mean_qualified": 43.083333333333336,
+      "mean_work": 976232.1666666666,
+      "total_work": 11714786,
+      "qualified_per_million_work": 44.132261570975345,
+      "coverage_percent": 59.83796296296296,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5238180,
+        "catalog-lookup": 677,
+        "mission": 5575478,
+        "raw-evidence-block64": 44786,
+        "receipt-write": 26238,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 2733.461598833334,
+      "mean_node_cpu_ms": 2573.5960833333334,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "no_admission",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "mean_qualified": 43.083333333333336,
+      "mean_work": 976242.9166666666,
+      "total_work": 11714915,
+      "qualified_per_million_work": 44.13177560400566,
+      "coverage_percent": 59.83796296296296,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5238331,
+        "catalog-lookup": 677,
+        "mission": 5575456,
+        "raw-evidence-block64": 44786,
+        "receipt-write": 26238,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 2627.2235404166627,
+      "mean_node_cpu_ms": 2506.869833333333,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "no_discovery",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 769,
+      "valid": 768,
+      "qualified": 591,
+      "mean_qualified": 49.25,
+      "mean_work": 976639.0,
+      "total_work": 11719668,
+      "qualified_per_million_work": 50.428049668301185,
+      "coverage_percent": 68.40277777777777,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5309599,
+        "catalog-lookup": 769,
+        "mission": 6336286,
+        "raw-evidence-block64": 43205,
+        "receipt-write": 29809
+      },
+      "mean_wall_ms": 2751.0704995,
+      "mean_node_cpu_ms": 2613.799,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "no_retention",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 677,
+      "valid": 675,
+      "qualified": 517,
+      "mean_qualified": 43.083333333333336,
+      "mean_work": 976242.9166666666,
+      "total_work": 11714915,
+      "qualified_per_million_work": 44.13177560400566,
+      "coverage_percent": 59.83796296296296,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5238331,
+        "catalog-lookup": 677,
+        "mission": 5575456,
+        "raw-evidence-block64": 44786,
+        "receipt-write": 26238,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 2707.901496000001,
+      "mean_node_cpu_ms": 2535.7649166666665,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "no_succession",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 619,
+      "valid": 618,
+      "qualified": 469,
+      "mean_qualified": 39.083333333333336,
+      "mean_work": 978711.75,
+      "total_work": 11744541,
+      "qualified_per_million_work": 39.93344652634786,
+      "coverage_percent": 54.282407407407405,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5089946,
+        "catalog-lookup": 619,
+        "mission": 5134623,
+        "raw-evidence-block64": 44153,
+        "receipt-write": 24033,
+        "discovery": 1451167
+      },
+      "mean_wall_ms": 2600.8865381666674,
+      "mean_node_cpu_ms": 2419.7211666666667,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "portfolio",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 769,
+      "valid": 768,
+      "qualified": 591,
+      "mean_qualified": 49.25,
+      "mean_work": 976631.25,
+      "total_work": 11719575,
+      "qualified_per_million_work": 50.42844983713147,
+      "coverage_percent": 68.40277777777777,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5309498,
+        "catalog-lookup": 769,
+        "mission": 6336294,
+        "raw-evidence-block64": 43205,
+        "receipt-write": 29809
+      },
+      "mean_wall_ms": 2691.0940226666635,
+      "mean_node_cpu_ms": 2474.93925,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 1000000,
+      "arm": "workflow",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 615,
+      "valid": 613,
+      "qualified": 465,
+      "mean_qualified": 38.75,
+      "mean_work": 979136.25,
+      "total_work": 11749635,
+      "qualified_per_million_work": 39.57569745783592,
+      "coverage_percent": 53.81944444444444,
+      "stopped": 12,
+      "reasons": {
+        "BUDGET_EXHAUSTED": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 5228215,
+        "catalog-lookup": 615,
+        "mission": 5092271,
+        "raw-evidence-block64": 45361,
+        "receipt-write": 23839,
+        "discovery": 1314098,
+        "qualification": 22568,
+        "qualification-reference": 22561,
+        "admission-decision": 107
+      },
+      "mean_wall_ms": 2767.568298416667,
+      "mean_node_cpu_ms": 2745.6180833333333,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "flywheel",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1343296.5833333333,
+      "total_work": 16119559,
+      "qualified_per_million_work": 41.44033965197187,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 8082460,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 55405,
+        "receipt-write": 33535,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 3631.5320436666807,
+      "mean_node_cpu_ms": 3431.4896666666664,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "learner",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1343296.5833333333,
+      "total_work": 16119559,
+      "qualified_per_million_work": 41.44033965197187,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 8082460,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 55405,
+        "receipt-write": 33535,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 3627.792548833318,
+      "mean_node_cpu_ms": 3351.5285833333332,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "no_admission",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1343312.25,
+      "total_work": 16119747,
+      "qualified_per_million_work": 41.43985634513991,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 8082648,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 55405,
+        "receipt-write": 33535,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 3740.91543150001,
+      "mean_node_cpu_ms": 3509.0014166666665,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "no_discovery",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1157032.0,
+      "total_work": 13884384,
+      "qualified_per_million_work": 48.11160509533588,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 6683495,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 48625,
+        "receipt-write": 33532
+      },
+      "mean_wall_ms": 3133.3654067500124,
+      "mean_node_cpu_ms": 2916.5189166666664,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "no_retention",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1343312.25,
+      "total_work": 16119747,
+      "qualified_per_million_work": 41.43985634513991,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 8082648,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 55405,
+        "receipt-write": 33535,
+        "discovery": 829427
+      },
+      "mean_wall_ms": 3706.8669993333365,
+      "mean_node_cpu_ms": 3472.4573333333333,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "no_succession",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1543857.0833333333,
+      "total_work": 18526285,
+      "qualified_per_million_work": 36.05687810589117,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 9467283,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 61223,
+        "receipt-write": 33535,
+        "discovery": 1845512
+      },
+      "mean_wall_ms": 4187.548275083333,
+      "mean_node_cpu_ms": 3971.8297500000003,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "portfolio",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1157022.3333333333,
+      "total_work": 13884268,
+      "qualified_per_million_work": 48.11200705719596,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 6683379,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 48625,
+        "receipt-write": 33532
+      },
+      "mean_wall_ms": 3129.6253295833303,
+      "mean_node_cpu_ms": 2979.1004166666667,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    },
+    {
+      "budget": 2000000,
+      "arm": "workflow",
+      "streams": 12,
+      "offered": 864,
+      "attempted": 864,
+      "valid": 864,
+      "qualified": 668,
+      "mean_qualified": 55.666666666666664,
+      "mean_work": 1556758.5833333333,
+      "total_work": 18681103,
+      "qualified_per_million_work": 35.75805989614211,
+      "coverage_percent": 77.31481481481481,
+      "stopped": 0,
+      "reasons": {
+        "None": 12
+      },
+      "active_assets": 0,
+      "cost_breakdown": {
+        "checkpoint-write-block64": 9734675,
+        "catalog-lookup": 864,
+        "mission": 7117868,
+        "raw-evidence-block64": 62616,
+        "receipt-write": 33535,
+        "discovery": 1686309,
+        "qualification": 22568,
+        "qualification-reference": 22561,
+        "admission-decision": 107
+      },
+      "mean_wall_ms": 4175.188752833332,
+      "mean_node_cpu_ms": 3976.41825,
+      "unknown_python_cpu": true,
+      "mid_stream_manual_interventions": 0
+    }
+  ],
+  "conventional_equivalence": [
+    {
+      "stream": "stream-01",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-02",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-03",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-04",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-05",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-06",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-07",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-08",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-09",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-10",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-11",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    },
+    {
+      "stream": "stream-12",
+      "qualified_difference": 0,
+      "work_difference": 0,
+      "same_mission_outcomes": true,
+      "same_asset_contents": true
+    }
+  ],
+  "diagnostic": [
+    {
+      "treatment": "inherited",
+      "streams": 12,
+      "qualified": 36,
+      "valid": 48,
+      "mean_work": 888009.5,
+      "complete_three_stage_chains": 12,
+      "active_three_stage_chains": 12,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+      },
+      "dispatch_rollout_calls": 2411,
+      "lookahead_repair_decisions": 86,
+      "reconstruction_exact_recoveries": 0,
+      "scope": "Correctness-only forced construction does not count as economically promoted production capability."
+    },
+    {
+      "treatment": "removed",
+      "streams": 12,
+      "qualified": 37,
+      "valid": 48,
+      "mean_work": 225339.33333333334,
+      "complete_three_stage_chains": 0,
+      "active_three_stage_chains": 0,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 12
+      },
+      "dispatch_rollout_calls": 0,
+      "lookahead_repair_decisions": 0,
+      "reconstruction_exact_recoveries": 0,
+      "scope": "Correctness-only forced construction does not count as economically promoted production capability."
+    },
+    {
+      "treatment": "rebuild",
+      "streams": 12,
+      "qualified": 36,
+      "valid": 48,
+      "mean_work": 2239765.9166666665,
+      "complete_three_stage_chains": 12,
+      "active_three_stage_chains": 12,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 72
+      },
+      "dispatch_rollout_calls": 4464,
+      "lookahead_repair_decisions": 86,
+      "reconstruction_exact_recoveries": 36,
+      "scope": "Correctness-only forced construction does not count as economically promoted production capability."
+    },
+    {
+      "treatment": "equivalent",
+      "streams": 12,
+      "qualified": 36,
+      "valid": 48,
+      "mean_work": 889359.0833333334,
+      "complete_three_stage_chains": 12,
+      "active_three_stage_chains": 12,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+      },
+      "dispatch_rollout_calls": 2411,
+      "lookahead_repair_decisions": 86,
+      "reconstruction_exact_recoveries": 0,
+      "scope": "Correctness-only forced construction does not count as economically promoted production capability."
+    }
+  ],
+  "diagnostic_pairs": [
+    {
+      "stream": "diagnostic-01",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -629366,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-01",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1344868,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-01",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1338,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-02",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -1020401,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-02",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1609468,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-02",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1359,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-03",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -639001,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-03",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1339147,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-03",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1350,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-04",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -611770,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-04",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1356543,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-04",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1345,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-05",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -770840,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-05",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1461142,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-05",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1347,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-06",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -617844,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-06",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1325918,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-06",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1365,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-07",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -592989,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-07",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1281717,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-07",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1342,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-08",
+      "treatment": "removed",
+      "qualified_difference": 1,
+      "work_difference": -602169,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-08",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1294641,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-08",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1345,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-09",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -600417,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-09",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1286868,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-09",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1351,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-10",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -661714,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-10",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1326114,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-10",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1351,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-11",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -588573,
+      "same_fresh_schedules_on_common_prefix": false,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-11",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1256059,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-11",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1345,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-12",
+      "treatment": "removed",
+      "qualified_difference": 0,
+      "work_difference": -616958,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-12",
+      "treatment": "rebuild",
+      "qualified_difference": 0,
+      "work_difference": 1338592,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    },
+    {
+      "stream": "diagnostic-12",
+      "treatment": "equivalent",
+      "qualified_difference": 0,
+      "work_difference": 1357,
+      "same_fresh_schedules_on_common_prefix": true,
+      "common_missions": 4,
+      "all_missions_completed_both": true
+    }
+  ],
+  "native": [
+    {
+      "mode": "deadline",
+      "tasks": 36,
+      "valid": 31,
+      "qualified": 31,
+      "mean_end_to_end_ms": 278.1100875833363,
+      "mean_solver_reported_ms": 273.27604572140746,
+      "timeouts_or_limits": 1,
+      "reported_status_counts": {
+        "0": 31,
+        "2": 4,
+        "1": 1
+      },
+      "objective_targets_makespan": false,
+      "practical_workflow_valid": 36,
+      "practical_workflow_qualified": 31,
+      "mean_practical_workflow_ms": 298.24048505555,
+      "comparison_work_units": null
+    },
+    {
+      "mode": "makespan",
+      "tasks": 36,
+      "valid": 36,
+      "qualified": 31,
+      "mean_end_to_end_ms": 1021.7762339722054,
+      "mean_solver_reported_ms": 997.4056063605935,
+      "timeouts_or_limits": 7,
+      "reported_status_counts": {
+        "1": 7,
+        "0": 29
+      },
+      "objective_targets_makespan": true,
+      "practical_workflow_valid": 36,
+      "practical_workflow_qualified": 31,
+      "mean_practical_workflow_ms": 1021.7781076944278,
+      "comparison_work_units": null
+    }
+  ],
+  "native_startup_ms": 405.0173059999943,
+  "increasing_rate": {
+    "status": "EXPLORATORY_ONLY_NOT_A_SELF_ACCELERATION_CLAIM",
+    "windows": [
+      {
+        "stream": "stream-01",
+        "flywheel_rates": [
+          4.056404301816762,
+          3.659953701585675,
+          2.9068499920061623
+        ],
+        "portfolio_rates": [
+          5.785655912578739,
+          4.037803939382468,
+          2.625860789990219
+        ],
+        "difference_in_last_minus_first_rate": 2.01024081277792
+      },
+      {
+        "stream": "stream-02",
+        "flywheel_rates": [
+          6.258267313354289,
+          5.530778783932585,
+          3.4339627500890684
+        ],
+        "portfolio_rates": [
+          9.046945422245617,
+          6.069501307701645,
+          3.4440826685812236
+        ],
+        "difference_in_last_minus_first_rate": 2.7785581903991723
+      },
+      {
+        "stream": "stream-03",
+        "flywheel_rates": [
+          5.165907187680127,
+          4.2920604035967465,
+          4.277914730464635
+        ],
+        "portfolio_rates": [
+          7.326628825271471,
+          4.6878540306429395,
+          4.4589774078478
+        ],
+        "difference_in_last_minus_first_rate": 1.9796589602081793
+      },
+      {
+        "stream": "stream-04",
+        "flywheel_rates": [
+          5.831567664234996,
+          4.933922443673108,
+          4.313670981935305
+        ],
+        "portfolio_rates": [
+          8.36780070289526,
+          5.405303142913512,
+          4.464634513857109
+        ],
+        "difference_in_last_minus_first_rate": 2.3852695067384593
+      },
+      {
+        "stream": "stream-05",
+        "flywheel_rates": [
+          4.803740512612488,
+          3.7221420927743916,
+          3.4552459271288636
+        ],
+        "portfolio_rates": [
+          6.752625083001017,
+          4.055211707396199,
+          4.0515860401044685
+        ],
+        "difference_in_last_minus_first_rate": 1.352544457412924
+      },
+      {
+        "stream": "stream-06",
+        "flywheel_rates": [
+          5.799887316474994,
+          5.506401191384985,
+          3.8034021432171077
+        ],
+        "portfolio_rates": [
+          8.394694553042477,
+          6.041118046192586,
+          4.092233486473805
+        ],
+        "difference_in_last_minus_first_rate": 2.3059758933107863
+      },
+      {
+        "stream": "stream-07",
+        "flywheel_rates": [
+          4.7602424550157085,
+          3.938686239620403,
+          3.4843610262604674
+        ],
+        "portfolio_rates": [
+          6.7010405226811605,
+          4.292235598287146,
+          4.235465836080956
+        ],
+        "difference_in_last_minus_first_rate": 1.1896932578449633
+      },
+      {
+        "stream": "stream-08",
+        "flywheel_rates": [
+          4.1347729234395105,
+          3.619590126663032,
+          3.18952814120679
+        ],
+        "portfolio_rates": [
+          5.922547880098018,
+          3.9811690702974927,
+          3.01337940455623
+        ],
+        "difference_in_last_minus_first_rate": 1.9639236933090678
+      },
+      {
+        "stream": "stream-09",
+        "flywheel_rates": [
+          4.239286528077325,
+          4.0255361066909146,
+          4.64085577380469
+        ],
+        "portfolio_rates": [
+          5.946850027875859,
+          4.396184112190618,
+          4.250939002061705
+        ],
+        "difference_in_last_minus_first_rate": 2.097480271541519
+      },
+      {
+        "stream": "stream-10",
+        "flywheel_rates": [
+          5.082877657809975,
+          3.7109193802764633,
+          2.7855463570624743
+        ],
+        "portfolio_rates": [
+          7.239281101285163,
+          4.070573569256993,
+          3.2010345743744377
+        ],
+        "difference_in_last_minus_first_rate": 1.740915226163224
+      },
+      {
+        "stream": "stream-11",
+        "flywheel_rates": [
+          3.8190775654653546,
+          3.4094860995251723,
+          2.9036426196663716
+        ],
+        "portfolio_rates": [
+          5.4398874305961025,
+          3.7536222454668757,
+          3.728649245965432
+        ],
+        "difference_in_last_minus_first_rate": 0.7958032388316876
+      },
+      {
+        "stream": "stream-12",
+        "flywheel_rates": [
+          5.905428776310794,
+          5.2264418135255335,
+          3.7613604840870942
+        ],
+        "portfolio_rates": [
+          8.530690173457367,
+          5.734524293902562,
+          4.456352809451924
+        ],
+        "difference_in_last_minus_first_rate": 1.9302690717817437
+      }
+    ],
+    "difference_in_changes": {
+      "mean": 1.8775277150266374,
+      "percentile_95_interval": [
+        1.5752340345480087,
+        2.1642119546875755
+      ],
+      "independent_streams": 12,
+      "resamples": 10000,
+      "seed": 20261024,
+      "unit": "paired complete stream, including all stops"
+    },
+    "note": "Balanced scope mixture; no endogenous saved-work reinvestment mechanism or rate-growth guarantee. Stopped/no-work windows remain missing-rate records, never discarded from primary coverage."
+  },
+  "limitations": [
+    "Synthetic supplied tasks and baseline schedules; no external demand, revenue, physical construction or production authority.",
+    "Closed grammar search and ordinary method composition; equal conventional learner is fully enabled.",
+    "Named resource units are not money, machine instructions, or equal total computation against native MILP.",
+    "One machine, one implementation family,12 independent stream seeds; shared project authorship limits independence.",
+    "Engineering/model/human commissioning labor is unpriced; no all-in profit claim."
+  ],
+  "artifact_counts": {
+    "main_trials": 288,
+    "diagnostic_trials": 48,
+    "unique_primary_missions": 864,
+    "native_cases": 72
+  }
+}

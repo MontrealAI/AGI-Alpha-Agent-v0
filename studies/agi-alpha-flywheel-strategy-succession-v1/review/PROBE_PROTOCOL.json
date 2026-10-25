@@ -1,0 +1,41 @@
+{
+  "schema": "regression-screening-probe/v1",
+  "scope": "development-only diagnostic probe, separate from main confirmatory experiment",
+  "status_before_execution": "prospectively specified; no outcomes inspected",
+  "purpose": "Measure earlier detection and full declared reference cost from retained counterexamples; never infer higher final correctness when the same final checker rejects both paths.",
+  "candidate_order": [
+    {"id": "unchanged_valid", "faults": []},
+    {"id": "calendar_omission_v1", "faults": ["calendar"]},
+    {"id": "prefix_drift_v2", "faults": ["prefix"]},
+    {"id": "lock_bound_omission_v3", "faults": ["bound"]},
+    {"id": "root_release_shift_v4", "faults": ["release"]},
+    {"id": "calendar_prefix_v5", "faults": ["calendar", "prefix"]},
+    {"id": "release_bound_v6", "faults": ["release", "bound"]}
+  ],
+  "fresh_case_order": [
+    {"family": "routine", "parameter": 1},
+    {"family": "routine", "parameter": 2},
+    {"family": "routine", "parameter": 3},
+    {"family": "routine", "parameter": 4},
+    {"family": "routine", "parameter": 5},
+    {"family": "routine", "parameter": 6},
+    {"family": "released_root", "parameter": 1},
+    {"family": "released_root", "parameter": 2},
+    {"family": "calendar_dip", "parameter": 1},
+    {"family": "calendar_dip", "parameter": 2},
+    {"family": "fixed_prefix", "parameter": 1},
+    {"family": "fixed_prefix", "parameter": 2},
+    {"family": "late_lock", "parameter": 1},
+    {"family": "late_lock", "parameter": 2}
+  ],
+  "arms": ["no_early_assets", "retained_counterexamples", "conventional_regression_suite"],
+  "matching": "All arms receive identical candidate fault models, public task information, tools and final checker. The two asset arms receive exactly the same three development cases and admission decisions. No-early-assets is an ablation, not the strongest conventional baseline.",
+  "screening_rule": "Asset arms check three retained counterexamples first, then the same 14 fresh diagnostic cases. Stop candidate screening at first independently invalid or unqualified artifact. An accepted candidate must pass every fresh case. Final checker source is identical in all arms.",
+  "primary_outcomes": ["checker calls until first reproducible defect or complete acceptance", "total screening reference work", "acquisition, retention and retrieval work", "matched accepted/rejected decisions"],
+  "cost_model": "Creator output canonical bytes plus checker reference units; asset acquisition ledger plus exact retained-file bytes; retrieval charges exact asset-file bytes once per asset arm per batch. Report elapsed time separately. Authoring and research-design labor are unpriced; no monetary or full enterprise-profit claim.",
+  "stopping": {"max_checker_calls": 357, "max_reference_work": 1000000, "max_elapsed_seconds": 30, "stop_on_source_mismatch": true, "stop_on_existing_output": true},
+  "exclusions": "None after execution. Malformed outputs and failed variants remain in raw events.",
+  "analysis": "Report all seven pairs. No significance test, population generalization, autonomous-discovery claim, or claim of final correctness improvement. Conventional regression suite with identical assets must be shown even if exactly equal. Report any non-amortized loss and valid-candidate overhead.",
+  "protection": "No protected confirmation inputs are available to this directory or probe; development assets carry no current proof or authority.",
+  "origin": "Hand-authored seeded faults and analytical small-instance fixture outputs. This is an audit-process diagnostic, not the flagship scheduling or capability-growth experiment."
+}

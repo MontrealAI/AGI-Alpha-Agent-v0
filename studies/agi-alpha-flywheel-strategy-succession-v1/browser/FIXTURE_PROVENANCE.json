@@ -1,0 +1,99 @@
+{
+  "schema": "strategy-succession-browser-fixtures/v1",
+  "phase": "DEVELOPMENT_BEFORE_FREEZE",
+  "construction_runtime": "v24.22.1",
+  "generator": "browser/make-fixtures.mjs --regenerate-development-fixtures",
+  "source_parents": {
+    "companion/core.mjs": "9bba17b000c2ae6baa401d2f9a36a4391786d2e31d13e6ff5612f6573733459c",
+    "companion/scenarios.mjs": "7962fd6c7dd546d9d611576073ff7d9a135b1114f65fa43dcfc929591a87b75d",
+    "companion/development_tasks.mjs": "b8846563cb09383e60e2ac2cd955f837ff1011f83f60ab245aef51fa5804a30b"
+  },
+  "file": "mission-fixtures.mjs",
+  "sha256": "106e6fb43a6b285594b48f7880e1d719c350ac3a12850bf2eb5e40d5b6aaee43",
+  "missions": [
+    {
+      "id": "development-43001-ordinary",
+      "scope": "ordinary",
+      "deadline": 41
+    },
+    {
+      "id": "development-43002-ordinary",
+      "scope": "ordinary",
+      "deadline": 23
+    },
+    {
+      "id": "development-43003-tight",
+      "scope": "tight",
+      "deadline": 62
+    },
+    {
+      "id": "development-43004-tight",
+      "scope": "tight",
+      "deadline": 59
+    },
+    {
+      "id": "development-43005-repair",
+      "scope": "repair",
+      "deadline": 77
+    },
+    {
+      "id": "development-43006-repair",
+      "scope": "repair",
+      "deadline": 58
+    }
+  ],
+  "qualification": {
+    "dispatch": {
+      "training": [
+        "development-44001-ordinary",
+        "development-44002-ordinary",
+        "development-44003-ordinary",
+        "development-44004-ordinary",
+        "development-44005-ordinary",
+        "development-44006-ordinary"
+      ],
+      "validation": [
+        "development-45001-ordinary",
+        "development-45002-ordinary",
+        "development-45003-ordinary",
+        "development-45004-ordinary"
+      ]
+    },
+    "lookahead": {
+      "training": [
+        "development-44101-tight",
+        "development-44102-tight",
+        "development-44103-tight",
+        "development-44104-tight",
+        "development-44105-tight",
+        "development-44106-tight"
+      ],
+      "validation": [
+        "development-45101-tight",
+        "development-45102-tight",
+        "development-45103-tight",
+        "development-45104-tight"
+      ]
+    },
+    "repair": {
+      "training": [
+        "development-44201-repair",
+        "development-44202-repair",
+        "development-44203-repair",
+        "development-44204-repair",
+        "development-44205-repair",
+        "development-44206-repair"
+      ],
+      "validation": [
+        "development-45201-repair",
+        "development-45202-repair",
+        "development-45203-repair",
+        "development-45204-repair"
+      ]
+    }
+  },
+  "purpose": "Six finite public synthetic demonstration missions and fixed development/qualification corpora; separate from protected confirmation tasks.",
+  "input_construction": "Repair inputs include a pre-disruption conventional schedule, locked work and a changed capacity calendar. This creates synthetic mission inputs; it is not a retained candidate or paid demand.",
+  "replay_status": "Inputs are fixed; schedules, discovery, qualification, admission, and local recovery execute freshly in the browser.",
+  "reason_frozen": "A development reload test observed regenerated fixture baseline_work vary from 6096 to 6115. Fixed inputs make configuration identity stable; the failed run and exact digest inputs are retained."
+}

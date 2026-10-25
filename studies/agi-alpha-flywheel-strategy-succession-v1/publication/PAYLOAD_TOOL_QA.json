@@ -1,0 +1,26 @@
+{
+  "schema": "strategy-succession-publication-tool-qa/v1",
+  "status": "PASS",
+  "command": "python publication/test_public_payload.py",
+  "tests": 10,
+  "failures": 0,
+  "scope": "Tiny synthetic archive extraction and refusal cases only; no scientific rerun, full evidence compression, repository write or deployment",
+  "cases": [
+    "Exact extraction and identical retry",
+    "Differing existing bytes block all writes",
+    "Traversal refusal",
+    "Symlink destination refusal",
+    "Duplicate ZIP-entry refusal",
+    "Symlink ZIP-entry refusal",
+    "Corrupt archive identity refusal",
+    "Four MiB whole-file shard bound",
+    "Private locator refusal without rewriting",
+    "Separate evidence handoff restores exact source-tree paths"
+  ],
+  "source_files": {
+    "extract_evidence.py": "c73997e58a5111f101d1b7357974d0248e4f59b56ac01a895a6c6b4e092648b0",
+    "test_public_payload.py": "f77480ca8efcd7fc1433974444293730e87d89a46a4096c3315f502ed599ec8c",
+    "prepare_public_payload.py": "403b1d629810dd923054e36e6b8fe6ebd2df428dc709d2e488fdac5f2ddd0ddb"
+  },
+  "source_scope_note": "Extractor and whole-file shard/private-locator functions exercised; full payload build/readback remains pending final manuscript."
+}

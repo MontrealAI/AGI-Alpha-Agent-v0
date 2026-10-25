@@ -1,0 +1,153 @@
+{
+  "schema": "release-load-result/v1",
+  "source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+  "protocol": {
+    "schema": "release-load-probe/v1",
+    "source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+    "source_status": "FROZEN_RESEARCH_SOURCE",
+    "batch_sizes": [
+      1,
+      4,
+      16,
+      64
+    ],
+    "concurrency_ceiling": 4,
+    "seed_base": 670000,
+    "task_scope_cycle": [
+      "ordinary",
+      "tight",
+      "repair"
+    ],
+    "per_output_work_limit": 100000,
+    "checker_timeout_ms": 2000,
+    "batch_wall_limit_ms": 120000,
+    "success": "All delivered valid schedules pass the separately implemented checker; report deadline misses without exclusion.",
+    "timing": "Batch wall includes client creation, task generation, plan/check, evidence write and checker shutdown. Per-task latency is enqueue-to-durable-record, including queue delay.",
+    "limits": "A finite local source experiment. No daemon, production service, external traffic, demand or general scalability inference."
+  },
+  "batches": [
+    {
+      "offered": 1,
+      "attempted": 1,
+      "valid": 1,
+      "qualified": 1,
+      "max_in_flight": 1,
+      "elapsed_ms": 47.47336299999999,
+      "throughput_per_second": 21.064444075723056,
+      "latency_p50_ms": 37.63463900000001,
+      "latency_p95_ms": 37.63463900000001,
+      "latency_max_ms": 37.63463900000001,
+      "node_cpu_ms": 53.426,
+      "python_cpu_ms": null,
+      "measured_policy_work": 6276,
+      "unknown_work_rows": 0,
+      "common_fixture_generation_ms": 1.1931409999999971,
+      "known_fixture_baseline_work": 0,
+      "stored_result_bytes": 3160,
+      "stored_pack_bytes": 38102,
+      "deadline_expired": false,
+      "mid_batch_manual_interventions": 0,
+      "scope_counts": {
+        "ordinary": 1,
+        "tight": 0,
+        "repair": 0
+      },
+      "note": "One observation at each load; task mixtures differ slightly. No throughput confidence interval, service-level claim or scale extrapolation."
+    },
+    {
+      "offered": 4,
+      "attempted": 4,
+      "valid": 4,
+      "qualified": 4,
+      "max_in_flight": 4,
+      "elapsed_ms": 107.907636,
+      "throughput_per_second": 37.06873904641929,
+      "latency_p50_ms": 88.209857,
+      "latency_p95_ms": 89.626499,
+      "latency_max_ms": 90.60356099999998,
+      "node_cpu_ms": 169.284,
+      "python_cpu_ms": null,
+      "measured_policy_work": 33572,
+      "unknown_work_rows": 0,
+      "common_fixture_generation_ms": 5.567838999999992,
+      "known_fixture_baseline_work": 5036,
+      "stored_result_bytes": 13967,
+      "stored_pack_bytes": 155952,
+      "deadline_expired": false,
+      "mid_batch_manual_interventions": 0,
+      "scope_counts": {
+        "ordinary": 1,
+        "tight": 2,
+        "repair": 1
+      },
+      "note": "One observation at each load; task mixtures differ slightly. No throughput confidence interval, service-level claim or scale extrapolation."
+    },
+    {
+      "offered": 16,
+      "attempted": 16,
+      "valid": 16,
+      "qualified": 12,
+      "max_in_flight": 4,
+      "elapsed_ms": 313.191016,
+      "throughput_per_second": 51.08703373534827,
+      "latency_p50_ms": 153.350748,
+      "latency_p95_ms": 288.45370599999995,
+      "latency_max_ms": 289.95253900000006,
+      "node_cpu_ms": 388.422,
+      "python_cpu_ms": null,
+      "measured_policy_work": 133540,
+      "unknown_work_rows": 0,
+      "common_fixture_generation_ms": 7.832722999999987,
+      "known_fixture_baseline_work": 37867,
+      "stored_result_bytes": 57136,
+      "stored_pack_bytes": 626474,
+      "deadline_expired": false,
+      "mid_batch_manual_interventions": 0,
+      "scope_counts": {
+        "ordinary": 5,
+        "tight": 5,
+        "repair": 6
+      },
+      "note": "One observation at each load; task mixtures differ slightly. No throughput confidence interval, service-level claim or scale extrapolation."
+    },
+    {
+      "offered": 64,
+      "attempted": 64,
+      "valid": 64,
+      "qualified": 51,
+      "max_in_flight": 4,
+      "elapsed_ms": 1123.7840390000001,
+      "throughput_per_second": 56.950444016761836,
+      "latency_p50_ms": 571.558255,
+      "latency_p95_ms": 1018.4643989999998,
+      "latency_max_ms": 1075.8673119999999,
+      "node_cpu_ms": 1260.387,
+      "python_cpu_ms": null,
+      "measured_policy_work": 533546,
+      "unknown_work_rows": 0,
+      "common_fixture_generation_ms": 34.36210799999992,
+      "known_fixture_baseline_work": 148833,
+      "stored_result_bytes": 225943,
+      "stored_pack_bytes": 2499981,
+      "deadline_expired": false,
+      "mid_batch_manual_interventions": 0,
+      "scope_counts": {
+        "ordinary": 22,
+        "tight": 21,
+        "repair": 21
+      },
+      "note": "One observation at each load; task mixtures differ slightly. No throughput confidence interval, service-level claim or scale extrapolation."
+    }
+  ],
+  "offered": 85,
+  "valid": 85,
+  "qualified": 68,
+  "interventions": [
+    {
+      "actor": "experiment-driver",
+      "action": "One explicit bounded probe start",
+      "human_minutes": null
+    }
+  ],
+  "conclusion": "Finite increasing-load measurements only; no commercial or sustained operational-growth claim."
+}

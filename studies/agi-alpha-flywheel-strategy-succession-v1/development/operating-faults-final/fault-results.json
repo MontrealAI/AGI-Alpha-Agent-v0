@@ -1,0 +1,129 @@
+{
+  "scope": "Development operating fault tests; no confirmatory inputs",
+  "source_hash": "e395004bbf0af0211a4b92c39ade3624c3cb8ab5db9fff2cea9b6dad63a6d3b0",
+  "source_status": "DEVELOPMENT_UNFROZEN",
+  "tests": [
+    {
+      "name": "separate-process lost acknowledgement after accepted effect",
+      "passed": true,
+      "wall_ms": 419.457868,
+      "evidence": {
+        "first_exit": 24,
+        "restart_exit": 0,
+        "accepted_missions": 3,
+        "mission_executions": 3,
+        "duplicate_request_executions": 0,
+        "restore_cost_is_charged": true
+      }
+    },
+    {
+      "name": "separate-process interrupted intent charges unknown work ceiling",
+      "passed": true,
+      "wall_ms": 273.850848,
+      "evidence": {
+        "reserved_work": 94284,
+        "charged_uncertain_work": 94284,
+        "exactly_once_CPU_execution_claimed": false,
+        "accepted_missions": 3
+      }
+    },
+    {
+      "name": "STOP then explicit resume keeps accepted output",
+      "passed": true,
+      "wall_ms": 127.62426299999993,
+      "evidence": {
+        "first_receipt_preserved": true,
+        "final_missions": 3
+      }
+    },
+    {
+      "name": "changed dependency refuses snapshot binding",
+      "passed": true,
+      "wall_ms": 1.2304960000000165,
+      "evidence": {
+        "refused": true
+      }
+    },
+    {
+      "name": "well-hashed invalid receipt independently refused",
+      "passed": true,
+      "wall_ms": 3.3733210000000327,
+      "evidence": {
+        "outer_and_receipt_hashes_recomputed": true,
+        "independent_refusal": true
+      }
+    },
+    {
+      "name": "finite authority expiry and malformed expiry refuse",
+      "passed": true,
+      "wall_ms": 4.356341999999927,
+      "evidence": {
+        "outcomes": [
+          "EXPIRED_AUTHORITY",
+          "EXPIRED_AUTHORITY"
+        ]
+      }
+    },
+    {
+      "name": "exhausted declared budget stops before new mission",
+      "passed": true,
+      "wall_ms": 2.193259000000012,
+      "evidence": {
+        "work": 0,
+        "budget": 20000,
+        "missions": 0
+      }
+    },
+    {
+      "name": "finite wall deadline stops at phase boundary",
+      "passed": true,
+      "wall_ms": 1.7424730000000181,
+      "evidence": {
+        "reason": "WALL_DEADLINE"
+      }
+    },
+    {
+      "name": "same-cursor older paid checkpoint cannot restore",
+      "passed": true,
+      "wall_ms": 0.7052009999999882,
+      "evidence": {
+        "cursor_unchanged": true,
+        "paid_high_water_preserved": true
+      }
+    },
+    {
+      "name": "new code source refuses old acquired history",
+      "passed": true,
+      "wall_ms": 0.443634999999972,
+      "evidence": {
+        "refused": true
+      }
+    },
+    {
+      "name": "rollback restores incumbent and rejected asset cannot reenter through retry or stale restore",
+      "passed": true,
+      "wall_ms": 598.063784,
+      "evidence": {
+        "real_retained_digest": "7cebe063fd57ceba53384732c1ce90b436036a11f9360db60e653a749308aa11",
+        "incumbent": "portfolio",
+        "retry_kept_rejection": true,
+        "older_same_cursor_restore_refused": true,
+        "rehash_cannot_resurrect": true,
+        "rollback_intervention_recorded": true
+      }
+    },
+    {
+      "name": "unresponsive separate checker times out and costs its reserved ceiling",
+      "passed": true,
+      "wall_ms": 142.44223199999988,
+      "evidence": {
+        "error": "CHECKER_TIMEOUT",
+        "charged_checker_ceiling": 3620,
+        "delivered": false,
+        "wall_ms": 139.131308
+      }
+    }
+  ],
+  "passed": 12,
+  "failed": 0
+}
