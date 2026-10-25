@@ -1,0 +1,87 @@
+{
+  "schema": "operational-amendment-price-register/v1",
+  "records": [
+    {
+      "id": "anthropic_pricing_20261025",
+      "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved_utc": "2026-10-25",
+      "publisher": "Anthropic",
+      "currency": "USD",
+      "scope": "First-party standard API, global routing, no cache/batch/fast-mode discounts. Published prices are not measured usage.",
+      "primary_web_refs": [
+        "turn93view0",
+        "turn94view0",
+        "turn94view1"
+      ],
+      "facts": {
+        "claude_sonnet_5_5_input_per_million_tokens": 2,
+        "claude_sonnet_5_5_output_per_million_tokens": 10,
+        "claude_opus_5_5_input_per_million_tokens": 4,
+        "claude_opus_5_5_output_per_million_tokens": 20,
+        "successful_web_search_per_1000_calls": 10
+      },
+      "methodology": "Direct official pricing table and web-search section. Search content is billed as model input; failed searches are not billed a search fee. Quantities remain assumed.",
+      "published_api_model_identifiers": {
+        "Claude Sonnet 5.5": "claude-sonnet-5-5",
+        "Claude Opus 5.5": "claude-opus-5-5"
+      },
+      "model_identifier_sources": [
+        "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+        "https://platform.claude.com/docs/en/models/opus-5-5/overview"
+      ],
+      "identifier_scope": "Published API identifiers for the hypothetical deployment; no API request or actual served-model receipt exists."
+    },
+    {
+      "id": "gcp_run_20261025",
+      "url": "https://cloud.google.com/run/pricing",
+      "retrieved_utc": "2026-10-25",
+      "publisher": "Google Cloud",
+      "currency": "USD",
+      "scope": "Cloud Run services, request-based billing, default rates, Iowa us-central1; not instance-billed services or Cloud Run Jobs.",
+      "primary_web_refs": [
+        "turn93view1",
+        "turn94view2",
+        "turn96view1"
+      ],
+      "facts": {
+        "active_vcpu_second": 2.4e-05,
+        "active_gib_second": 2.5e-06,
+        "per_million_requests": 0.4,
+        "rounding_seconds": 0.1
+      },
+      "methodology": "Direct official request-billing table. Allocated occupied runtime, not native CPU, is charged. Free tiers and committed discounts are not allocated to the scenario."
+    },
+    {
+      "id": "gcp_storage_20261025",
+      "url": "https://cloud.google.com/storage/pricing",
+      "retrieved_utc": "2026-10-25",
+      "publisher": "Google Cloud",
+      "currency": "USD",
+      "scope": "Standard regional at-rest storage, Iowa us-central1.",
+      "primary_web_refs": [
+        "turn93view2"
+      ],
+      "facts": {
+        "standard_storage_gib_hour": 2.7397e-05
+      },
+      "methodology": "Direct default hourly table. Operations and egress are separate explicit assumed allowances, not represented by this storage-only tariff."
+    },
+    {
+      "id": "ecb_fx_20261023",
+      "url": "https://www.ecb.europa.eu/stats/shared/pdf/eurofxref.pdf",
+      "retrieved_utc": "2026-10-25",
+      "reference_date": "2026-10-23",
+      "publisher": "European Central Bank",
+      "scope": "Nominal reference exchange rates, not transaction quotes or purchasing-power parity.",
+      "primary_web_refs": [
+        "turn96view0"
+      ],
+      "facts": {
+        "USD_per_EUR": 1.1193,
+        "CAD_per_EUR": 1.5665
+      },
+      "methodology": "Direct official dated one-page reference-rate PDF. Derive USD/local conversions only after freeze."
+    }
+  ],
+  "price_qualification": "Official tariffs do not establish model capability, acceptance, source quality, usage, latency, or deployment."
+}

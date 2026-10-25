@@ -1,0 +1,499 @@
+{
+  "schema": "operational-economics-prefreeze-independent-review/v1",
+  "status": "PASS",
+  "reviewed_utc": "2026-10-25T13:29:05.871995+00:00",
+  "review_scope": "Prospective protocol/input/source/identity review only. No economic scenario, acceptance moment, break-even, capacity, or sensitivity output was computed.",
+  "scenario_evaluation_run": false,
+  "checks_count": 61,
+  "checks": [
+    {
+      "check": "prospective_status",
+      "passed": true,
+      "detail": "No scenario computation was performed by this evaluator; arithmetic below checks input constraints only."
+    },
+    {
+      "check": "six_terminal_paths",
+      "passed": true,
+      "detail": "Four accepted and two unsuccessful terminal paths are specified; path outcomes are assumptions."
+    },
+    {
+      "check": "base/probability_mass",
+      "passed": true,
+      "detail": "Input-normalization check only; acceptance and economic moments have not been evaluated."
+    },
+    {
+      "check": "base/branch_coverage",
+      "passed": true,
+      "detail": "Every declared outcome has an explicit scenario weight."
+    },
+    {
+      "check": "base/valid_probabilities",
+      "passed": true,
+      "detail": "All path weights lie in [0,1]."
+    },
+    {
+      "check": "base/fixed_failure_costs",
+      "passed": true,
+      "detail": "Unsuccessful initial and recurring construction labor budgets are explicit and positive."
+    },
+    {
+      "check": "conservative/probability_mass",
+      "passed": true,
+      "detail": "Input-normalization check only; acceptance and economic moments have not been evaluated."
+    },
+    {
+      "check": "conservative/branch_coverage",
+      "passed": true,
+      "detail": "Every declared outcome has an explicit scenario weight."
+    },
+    {
+      "check": "conservative/valid_probabilities",
+      "passed": true,
+      "detail": "All path weights lie in [0,1]."
+    },
+    {
+      "check": "conservative/fixed_failure_costs",
+      "passed": true,
+      "detail": "Unsuccessful initial and recurring construction labor budgets are explicit and positive."
+    },
+    {
+      "check": "stress/probability_mass",
+      "passed": true,
+      "detail": "Input-normalization check only; acceptance and economic moments have not been evaluated."
+    },
+    {
+      "check": "stress/branch_coverage",
+      "passed": true,
+      "detail": "Every declared outcome has an explicit scenario weight."
+    },
+    {
+      "check": "stress/valid_probabilities",
+      "passed": true,
+      "detail": "All path weights lie in [0,1]."
+    },
+    {
+      "check": "stress/fixed_failure_costs",
+      "passed": true,
+      "detail": "Unsuccessful initial and recurring construction labor budgets are explicit and positive."
+    },
+    {
+      "check": "direct_accept/known_events",
+      "passed": true,
+      "detail": "Every reached event is defined; repeated rereview occurrences must each be charged."
+    },
+    {
+      "check": "direct_accept/attempt_cap",
+      "passed": true,
+      "detail": "Structural cap check; model review calls are not conflated with production attempts."
+    },
+    {
+      "check": "model_repair_accept/known_events",
+      "passed": true,
+      "detail": "Every reached event is defined; repeated rereview occurrences must each be charged."
+    },
+    {
+      "check": "model_repair_accept/attempt_cap",
+      "passed": true,
+      "detail": "Structural cap check; model review calls are not conflated with production attempts."
+    },
+    {
+      "check": "infrastructure_retry_accept/known_events",
+      "passed": true,
+      "detail": "Every reached event is defined; repeated rereview occurrences must each be charged."
+    },
+    {
+      "check": "infrastructure_retry_accept/attempt_cap",
+      "passed": true,
+      "detail": "Structural cap check; model review calls are not conflated with production attempts."
+    },
+    {
+      "check": "combined_rescue_accept/known_events",
+      "passed": true,
+      "detail": "Every reached event is defined; repeated rereview occurrences must each be charged."
+    },
+    {
+      "check": "combined_rescue_accept/attempt_cap",
+      "passed": true,
+      "detail": "Structural cap check; model review calls are not conflated with production attempts."
+    },
+    {
+      "check": "final_rejection/known_events",
+      "passed": true,
+      "detail": "Every reached event is defined; repeated rereview occurrences must each be charged."
+    },
+    {
+      "check": "final_rejection/attempt_cap",
+      "passed": true,
+      "detail": "Structural cap check; model review calls are not conflated with production attempts."
+    },
+    {
+      "check": "early_refusal/known_events",
+      "passed": true,
+      "detail": "Every reached event is defined; repeated rereview occurrences must each be charged."
+    },
+    {
+      "check": "early_refusal/attempt_cap",
+      "passed": true,
+      "detail": "Structural cap check; model review calls are not conflated with production attempts."
+    },
+    {
+      "check": "intake/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "initial_attempt/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "human_review/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "challenge_check/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "repair_attempt/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "rereview/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "failed_infrastructure_attempt/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "failure_diagnosis/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "retry_wait/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "manual_specialist_rescue/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "completion/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "eligibility_check/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "refusal_closure/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "exhaustion_closure/nonnegative_usage",
+      "passed": true,
+      "detail": "Event token quantities are totals across calls, not per-call quantities."
+    },
+    {
+      "check": "four_price_bases",
+      "passed": true,
+      "detail": "Four price bases in three geographies; U.S. office/admin is primary."
+    },
+    {
+      "check": "provider_professional_price",
+      "passed": true,
+      "detail": "Provider engineering/operator labor uses U.S. professional total compensation in every reporting currency."
+    },
+    {
+      "check": "labor_source_identity",
+      "passed": true,
+      "detail": "Prior rate matrix remains byte-identical to the stated sealed source."
+    },
+    {
+      "check": "US_office/benefit_scope",
+      "passed": true,
+      "detail": "Only the Ontario wage-only rate receives an assumed employer load; other prices already include benefits."
+    },
+    {
+      "check": "US_professional/benefit_scope",
+      "passed": true,
+      "detail": "Only the Ontario wage-only rate receives an assumed employer load; other prices already include benefits."
+    },
+    {
+      "check": "Ontario/benefit_scope",
+      "passed": true,
+      "detail": "Only the Ontario wage-only rate receives an assumed employer load; other prices already include benefits."
+    },
+    {
+      "check": "EU/benefit_scope",
+      "passed": true,
+      "detail": "Only the Ontario wage-only rate receives an assumed employer load; other prices already include benefits."
+    },
+    {
+      "check": "separate_executor_instances",
+      "passed": true,
+      "detail": "Each occupied request is priced at its own allocated instance; no concurrent shared-instance discount."
+    },
+    {
+      "check": "dual_calendar_constraint",
+      "passed": true,
+      "detail": "Annual time residual deducts initial+recurring usage; shortened postdeployment residual deducts recurring only. Minimum applies."
+    },
+    {
+      "check": "actual_model_identity_unknown",
+      "passed": true,
+      "detail": "Published hypothetical route IDs are pinned; no actual model invocation or served identity is claimed."
+    },
+    {
+      "check": "liability_boundary",
+      "passed": true,
+      "detail": "High-consequence decisions are unsupported; unknown material consequences are not assumed zero."
+    },
+    {
+      "check": "human_duration_unknown",
+      "passed": true,
+      "detail": "Human durations and final quality remain sensitivity assumptions, not observations inferred from wages."
+    },
+    {
+      "check": "anchor/observed/brief.json",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "anchor/observed/task.json",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "anchor/observed/receipt.json",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "anchor/observed/acceptance.json",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "anchor/observed/output/brief.json",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "anchor/observed/output/brief.html",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "anchor/observed/output/slides.html",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "anchor/observed/output/sources.json",
+      "passed": true,
+      "detail": "Exact copied original artifact; no rerun, retrospective timing correction or human-attention imputation."
+    },
+    {
+      "check": "unmeasured_fields_null",
+      "passed": true,
+      "detail": "Observed native measurement is kept separate from prospective operational budgets."
+    }
+  ],
+  "reviewed_input_files": [
+    {
+      "path": "AMENDMENT.md",
+      "sha256": "c06877e5fa081bc791b810f80ba66157a30704608760e43331fed64befbc3c64",
+      "bytes": 20721
+    },
+    {
+      "path": "inputs.json",
+      "sha256": "00dc5a7f3c1ea62cb5725663a98e50ff5a45d67f278e8cbba67aefddfe789d6a",
+      "bytes": 36969
+    },
+    {
+      "path": "output_schema.json",
+      "sha256": "79fd5b6d101eb6bf40fdb3bd4db90da3275843fc5eb08227b8d8513df19fd9b4",
+      "bytes": 1842
+    },
+    {
+      "path": "sources/labor_rates.json",
+      "sha256": "738791565c702190798f96323378041bcb5f6b6bb9ca9fd9d360de944460eee7",
+      "bytes": 5739
+    },
+    {
+      "path": "sources/pricing_register.json",
+      "sha256": "70a544da6c6a51a73eaffb62bd636e2e6b768a62c338ff3ee631d8677856c893",
+      "bytes": 3631
+    },
+    {
+      "path": "observed/ANCHOR.json",
+      "sha256": "312cd3917f7126c889bcbd189b94f3de65f3435f88b3013d76d75cf78d94f28b",
+      "bytes": 3017
+    },
+    {
+      "path": "observed/acceptance.json",
+      "sha256": "6b05428588c19d561b5cc03f619fbe8636e9e087ee7660cbe94b63ff853820a4",
+      "bytes": 1799
+    },
+    {
+      "path": "observed/brief.json",
+      "sha256": "51f5cd2d3735499d8311f9989ca007a4c9c32a1ba1bef5d95597dce3f9d3125d",
+      "bytes": 3698
+    },
+    {
+      "path": "observed/output/brief.html",
+      "sha256": "dbc9a1447e01e567fe3aee5efa160ec5414e04874904f8603d97773030fc0435",
+      "bytes": 3939
+    },
+    {
+      "path": "observed/output/brief.json",
+      "sha256": "be32c6a9b7c67808575736f5ce324284e497d17073a21729a77ffb2a96cca282",
+      "bytes": 2767
+    },
+    {
+      "path": "observed/output/slides.html",
+      "sha256": "6bfbbc447707c92b6991d4b3f0c3ad31ba8b0c8e82fda09d68f16a1179efb782",
+      "bytes": 4058
+    },
+    {
+      "path": "observed/output/sources.json",
+      "sha256": "2a8e698353b83bf5788058b159518cdc6522f571eae03bb28ebcf24ef65255b8",
+      "bytes": 1524
+    },
+    {
+      "path": "observed/receipt.json",
+      "sha256": "7fff97b3388eeaedbe3c83f3cb9746198fd898acec2e0a16ef1d933f4118e8f6",
+      "bytes": 2265
+    },
+    {
+      "path": "observed/task.json",
+      "sha256": "5f927aa411f54132d8206063f38644b7329dd7f3af7ac31e46a25eddc16b2a94",
+      "bytes": 4090
+    },
+    {
+      "path": "evaluation/EVALUATION_PLAN.md",
+      "sha256": "e2e30afbbb1992c80ee3a7c7964e56b59fff5d97f50f247ef421817f1e6ffd1c",
+      "bytes": 10225
+    }
+  ],
+  "primary_source_checks": [
+    {
+      "publisher": "Anthropic",
+      "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved_utc": "2026-10-25",
+      "refs": [
+        "turn98view3",
+        "turn97search0",
+        "turn97search3"
+      ],
+      "checked": "Standard first-party global product tariffs Sonnet5.5 2/10 USD per million input/output tokens, Opus5.5 4/20, search10 per1000 successful uses. Hypothetical input usage is not an observed bill; no cache/batch/US-only route discount assumed."
+    },
+    {
+      "publisher": "Google Cloud Run",
+      "url": "https://cloud.google.com/run/pricing",
+      "retrieved_utc": "2026-10-25",
+      "refs": [
+        "turn98view0",
+        "turn100view0",
+        "turn100view1",
+        "turn100view2"
+      ],
+      "checked": "Request-billed services active vCPU0.000024 USD/s, memory0.0000025 USD/GiB-s, requests0.40 USD/million, 100ms billing. Jobs and instance-billing tariffs excluded. Two separate instances resolve shared-resource pricing ambiguity."
+    },
+    {
+      "publisher": "Google Cloud Storage",
+      "url": "https://cloud.google.com/storage/pricing",
+      "retrieved_utc": "2026-10-25",
+      "refs": [
+        "turn98view1",
+        "turn100view3"
+      ],
+      "checked": "Iowa standard at-rest storage0.000027397 USD/GiB-hour. Operations/egress are separate assumed allowances; FX conversion models a USD price, not a foreign local-SKU invoice."
+    },
+    {
+      "publisher": "European Central Bank",
+      "url": "https://www.ecb.europa.eu/stats/shared/pdf/eurofxref.pdf",
+      "retrieved_utc": "2026-10-25",
+      "reference_date": "2026-10-23",
+      "refs": [
+        "turn98view2"
+      ],
+      "checked": "USD1.1193 and CAD1.5665 perEUR. Nominal reference conversion only; currency conversions not yet evaluated."
+    },
+    {
+      "publisher": "BLS",
+      "url": "https://www.bls.gov/news.release/archives/ecec_03202026.htm",
+      "retrieved_utc": "2026-10-25",
+      "reference_period": "December2025",
+      "publication_date": "2026-03-20",
+      "refs": [
+        "turn101view0",
+        "turn103view0",
+        "turn103view1"
+      ],
+      "checked": "Private-industry office/admin total compensation35.96 USD/hour and professional72.19. Benefits already included; no matched task durations or worker AI-use measurement."
+    },
+    {
+      "publisher": "Eurostat",
+      "url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260331-2",
+      "retrieved_utc": "2026-10-25",
+      "reference_period": "2025",
+      "publication_date": "2026-03-31",
+      "refs": [
+        "turn101view2"
+      ],
+      "checked": "EU34.9 EUR/hour employer cost; enterprises10+, covered NACE sectors; LCS2020 extrapolated by LCI with published exceptions. Broad geography sensitivity, not occupation/task match."
+    },
+    {
+      "publisher": "ESDC Job Bank / Statistics Canada",
+      "url": "https://www.jobbank.gc.ca/marketreport/wages-occupation/20923/ON",
+      "retrieved_utc": "2026-10-25",
+      "reference_period": "2023-2024",
+      "wage_update_date": "2025-11-19",
+      "refs": [
+        "turn103search0"
+      ],
+      "checked": "Ontario technical-writer median34.98 CAD/hour, low27/high59.63, LFS. Direct fetch timed out; authoritative-domain search retrieved the complete same wage table. Nonwage load1.30 remains an assumption, not the benefit-receipt percentage."
+    }
+  ],
+  "resolved_issues": [
+    "Explicit traditional setup delay and assumed token-budget status.",
+    "Human/provider/worker attention pools and traditional parity specified.",
+    "Two separately allocated executor instances, per-request runtime rounding.",
+    "Annual versus postdeployment capacity residuals avoid double subtraction.",
+    "Provider engineering rates are separately professional across price bases.",
+    "Hybrid break-even includes its human-time slope.",
+    "High-consequence use unsupported; downstream liability remains unknown.",
+    "Exact hypothetical API IDs distinct from null actual execution identity."
+  ],
+  "required_postfreeze_work": [
+    "Implement independent path expansion without importing producer calculations.",
+    "Audit every scenario, sensitivity, hybrid, capacity and displayed rounded value.",
+    "Keep all unfavorable/infeasible results and undefined accepted denominators.",
+    "Retain implementation attempts and correction records without changing frozen inputs."
+  ],
+  "limitations": [
+    "Approval is of a transparent scenario specification, not evidence that its usage, quality, demand or labor-time assumptions are empirically accurate.",
+    "This amendment is a forward operational-cost scenario analysis; it does not reconstruct unmetered historical model, human or full-service costs.",
+    "Current published tariffs and mixed-vintage labor prices do not establish local provider invoices, task quality, or a newly conducted human benchmark."
+  ],
+  "preservation_audit": {
+    "path": "evaluation/PRESERVATION_AUDIT.json",
+    "sha256": "7317489534e0ae66d71484393b3f3f5fe1d6124e5878d0c72e36c86126cdc290",
+    "passed": true,
+    "checks": 5102
+  }
+}
