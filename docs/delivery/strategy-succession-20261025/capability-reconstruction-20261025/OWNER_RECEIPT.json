@@ -1,0 +1,112 @@
+{
+  "schema": "strategy-capability-reconstruction-handoff/v1",
+  "base_commit": "4c27d77c6bcb05e74f9d2625a01020e3184e193e",
+  "base_tree": "830a9db28e497e9142c5a7d7873968ee34eb8915",
+  "worktree": "/workspace/scratch/0d7600b912de/strategy-capability-work",
+  "files": {
+    "tests/browser/test_successor_alpha_browser.py": {
+      "sha256": "5e836182ae1de0ba99dac922f6f6c550bb961d47c00043866f0a9d9718c9a451",
+      "bytes": 70510
+    },
+    "tests/test_successor_capability_reconstruction.py": {
+      "sha256": "09b71362d7f6eee3ff4b909a033d025f87c0e1f46abf228e59eeb5a779dc0629",
+      "bytes": 7794
+    }
+  },
+  "failure": {
+    "run_id": 40211660310,
+    "job_id": 121224077971,
+    "actual_checkout": "dd49b6834f500c167aa6cc1058e91ed13997e3bd",
+    "actual_tree": "830a9db28e497e9142c5a7d7873968ee34eb8915",
+    "first_failure": "tests/browser/test_successor_alpha_browser.py:206 full-byte comparison from advanced_continuity:485",
+    "original_download_sha256": "NOT_CAPTURED",
+    "artifact_id": 12606131499,
+    "artifact_sha256": "2c9b603f91c665264b3a194b9a27e37d39c1834eeda79814b205db7dfe81a860",
+    "artifact_bytes": 13796133,
+    "raw_log_sha256": "1260913b94ac8a64e3b3ff9b50d0b80858690b22c5643ac89d846ac8068d16e6",
+    "downstream_not_run": [
+      "remaining advanced_continuity",
+      "constructed_example",
+      "worker_fallback",
+      "mobile_and_french",
+      "computer_strategy_journey",
+      "computer_history_import_journey",
+      "computer_mission_presets",
+      "test_successor_mission_store.py",
+      "test_successor_mission_browser.py",
+      "test_alpha_discovery_browser.py",
+      "test_specialist_evaluation_browser.py",
+      "test_successor_project_browser.py",
+      "test_guided_successor_browser.py"
+    ],
+    "raw_log_bytes": 155299
+  },
+  "cause": "Canonical report transport sorts nested keys; unchanged capability exporter preserves original fixed-algorithm insertion order in JSON metadata. Semantically identical transported report produced different module bytes.",
+  "correction": "Validate schema/source/bounded objective+seed and supplied report with reviewed code; rediscover with same fixed source/seed, require complete canonical equality, then build trusted reconstruction. Full download byte equality, exact page/source observations, error fences, timeout and import-only-trusted-bytes sequence remain.",
+  "inert_reproduction": {
+    "schema": "capability-export-order-inert-reproduction/v1",
+    "source_commit": "4c27d77c6bcb05e74f9d2625a01020e3184e193e",
+    "sourceHash": "d0031bc9e1616288ba64f86f65ca1422d99944d6f44c0b7360b468ca46eb9ac5",
+    "scope": "Authored public/synthetic fixture, same advanced-continuity input, explicit seed17. Generated capability strings remain inert; no browser or downloaded artifact imported. Original CI download hash NOT_CAPTURED.",
+    "original_ci_download_sha256": "NOT_CAPTURED",
+    "confirmation_seed": 17,
+    "canonical_reports_equal": true,
+    "old_reconstruction_matches_browser_context": false,
+    "new_reconstruction_matches_browser_context": true,
+    "browser_context": {
+      "sha256": "d9ac6b27785ddf811d9e0bae7c11b7ab65ee58f3f0401b1c77951516324b8d92",
+      "bytes": 58185
+    },
+    "old_reconstruction": {
+      "sha256": "ec07311e606727cf4e848e37c2887f90d1fcbb6c06213bb1edfbe40e0000a468",
+      "bytes": 58185
+    },
+    "corrected_reconstruction": {
+      "sha256": "d9ac6b27785ddf811d9e0bae7c11b7ab65ee58f3f0401b1c77951516324b8d92",
+      "bytes": 58185
+    },
+    "first_differing_byte": 55165,
+    "browser_context_hex": "39633861227d2c2272657461696e6564506c616e223a7b22736368656d61223a22737563636573736f722d6a6f696e2d70726f6772616d2f7631222c226775617264223a7b226f70",
+    "old_context_hex": "39633861227d2c2272657461696e6564506c616e223a7b226775617264223a7b226f70223a226e6f6e65227d2c226c656166223a7b226c61726765223a7b226f70223a22626c6f63",
+    "report_retained_plan_keys": [
+      "schema",
+      "guard",
+      "split",
+      "leaf"
+    ],
+    "transported_retained_plan_keys": [
+      "guard",
+      "leaf",
+      "schema",
+      "split"
+    ],
+    "report_objective_keys": [
+      "maxAuxiliaryRows",
+      "auxiliaryWeight"
+    ],
+    "transported_objective_keys": [
+      "auxiliaryWeight",
+      "maxAuxiliaryRows"
+    ]
+  },
+  "checks": {
+    "owned_inert_regression": {
+      "passed": true,
+      "tests": 9,
+      "wall_seconds": 1.96,
+      "scope": "QA verification cost, not customer runtime or improvement cost"
+    },
+    "black": "PASS",
+    "ruff": "PASS",
+    "git_diff_check": "PASS",
+    "actual_browser": "NOT RUN on corrected source; requires normal hosted qualification",
+    "held_runtime_replays": "NONE"
+  },
+  "preserved": [
+    "Unchanged frozen scientific/exporter/runtime bodies",
+    "No edits to #4907 security owner files/workflows/criteria",
+    "No new job, grant, publisher, security flag or external effect",
+    "No generated/downloaded capability import in inert regressions",
+    "Original failed CI remains failed; unknown costs remain unknown"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "agi-alpha.current-node-boundary-static-review.v1",
+  "reviewer": "/root/operator_integration_review/current_node_boundary_review",
+  "review_type": "Internal independent static review; not organizational independence",
+  "source_commit": "4c27d77c6bcb05e74f9d2625a01020e3184e193e",
+  "source_tree": "830a9db28e497e9142c5a7d7873968ee34eb8915",
+  "conclusion": "No remaining demonstrated download-to-Node substitution in reviewed boundary",
+  "execution_performed": false,
+  "held_paths_read_or_executed": false,
+  "map_approval": false,
+  "source_files": [
+    {
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "sha256": "d1c462024a9f6160433df06bcb3f90110434579e99962fc62835a7d678b8d660",
+      "checks": [
+        "require_document_source106-110 validates response and complete digest",
+        "context_page156-158 requires verification immediately after navigation",
+        "expected_plan_tool163-190 fixed script/module URLs and JSON stdin",
+        "execute_verified_plan_tool204-220 complete equality then writes expected bytes",
+        "run_acceptance1185-1190 requires supplied digest for every non-local-file entry"
+      ]
+    },
+    {
+      "path": "examples/successor-alpha/capability.mjs",
+      "sha256": "99252c670208f7a5d4017a437a6fd2f28b586fe44582b4b35b1ddc128210c360",
+      "checks": [
+        "buildPlanCapability33-45 validates mission/options/source hash/research",
+        "line66 JSON.stringify metadata; executable source from trusted components"
+      ]
+    },
+    {
+      "path": "examples/successor-alpha/research.mjs",
+      "sha256": "cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a",
+      "checks": [
+        "validateResearch304-313 recomputes complete canonical report and source identity"
+      ]
+    },
+    {
+      "path": "examples/successor-alpha/native-cli.mjs",
+      "sha256": "f2f041b609ba66afdde2cec6160b190836b930e605bc30a6d2ee5b443a968b2a",
+      "checks": [
+        "computeInstalledSourceHash28-47 supplies module identity"
+      ]
+    },
+    {
+      "path": "scripts/validate_successor_alpha.py",
+      "sha256": "cf9cb4098484fa01e9e621f8a6cc0013cbf8ec5d914ad52c63a4ddb00a469443",
+      "checks": [
+        "only located production HTTP caller main176-179 supplies packaged pageSha256"
+      ]
+    }
+  ],
+  "historical_comparison": {
+    "commit": "a163b5b3e34551e5dfdf2075c6f69c8cdb3e0c1f",
+    "browser_sha256": "8d54a7cb0d6a97af79aea9d9cf1ba9cd23c80cb4c5d41215436c1f374b89691b",
+    "defect": "retained-hash substring at395 followed by downloaded-byte write403-404 and import405-423",
+    "old_case38_inapplicability": "WITHDRAWN"
+  },
+  "limitations": [
+    "No test, browser, Node, import or scanner execution",
+    "Not a general security guarantee",
+    "Does not approve any current finding disposition or activate criteria/map"
+  ]
+}

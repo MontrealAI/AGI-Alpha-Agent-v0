@@ -1,0 +1,12 @@
+{
+  "schema": "alpha-local-audit-preparation-intervention/v1",
+  "state": "REPAIRED_OWN_METADATA_JSON_TRAILER_NO_ARTIFACT_CHANGE",
+  "original_bad_metadata_sha256": "6754d4fd1a6998c38c0b0504e4c09982193ff591c5759c0eff88e5dc51b35971",
+  "corrected_metadata_sha256": "0eae22cbd535eb7e680c3d2ef9d3ed2f1bfe5af042145eca419e85736a3ebeb0",
+  "error": "JSONDecodeError Extra data because audit writer appended literal backslash-n instead of newline.",
+  "original_bad_metadata_retained": true,
+  "PR_download_repeated": false,
+  "component_or_source_or_runtime_changed": false,
+  "additional_helper_intervention": "Initial assertion compared summary.signed_export_sha256 to the signed canonical body hash. Actual field is the raw export-file hash. Both raw file and canonical signed body were independently verified after correcting that audit-only assumption; no artifact changed and no run/download repeated.",
+  "public_metadata_projection_intervention": "Before final allowlisting, conservative private-path scan matched an internal reviewer task namespace. Removed that nonessential namespace from public metadata; retained private original/hash; no actual artifact body or Git fact changed."
+}

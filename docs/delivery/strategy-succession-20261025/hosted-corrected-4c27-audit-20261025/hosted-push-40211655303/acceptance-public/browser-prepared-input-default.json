@@ -1,0 +1,149 @@
+{
+  "initial": {
+    "schema": "release-plan/v1",
+    "id": "community-release-seven",
+    "kind": "plan",
+    "public_or_synthetic": "synthetic",
+    "planning_only": true,
+    "jobs": [
+      {
+        "id": "J1",
+        "duration": 1,
+        "crew": 1,
+        "deps": []
+      },
+      {
+        "id": "J2",
+        "duration": 3,
+        "crew": 2,
+        "deps": [
+          "J1"
+        ]
+      },
+      {
+        "id": "J3",
+        "duration": 2,
+        "crew": 1,
+        "deps": [
+          "J1"
+        ]
+      },
+      {
+        "id": "J4",
+        "duration": 2,
+        "crew": 1,
+        "deps": [
+          "J2",
+          "J3"
+        ]
+      },
+      {
+        "id": "J5",
+        "duration": 2,
+        "crew": 2,
+        "deps": [
+          "J4"
+        ]
+      },
+      {
+        "id": "J6",
+        "duration": 1,
+        "crew": 1,
+        "deps": [
+          "J4"
+        ]
+      },
+      {
+        "id": "J7",
+        "duration": 1,
+        "crew": 1,
+        "deps": [
+          "J5",
+          "J6"
+        ]
+      }
+    ],
+    "capacity": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "deadline": 30
+  },
+  "changes": {
+    "durations": {
+      "J3": 4
+    },
+    "deadline": 30
+  },
+  "repair": {
+    "observed_at": 2,
+    "capacity": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "deadline": 30
+  },
+  "construction": {
+    "enabled": false
+  }
+}

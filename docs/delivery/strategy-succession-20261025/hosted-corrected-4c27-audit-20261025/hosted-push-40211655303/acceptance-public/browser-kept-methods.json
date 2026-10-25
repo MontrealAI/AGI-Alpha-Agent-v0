@@ -1,0 +1,5115 @@
+{
+  "schema": "strategy-method-inspection/v1",
+  "source_hash": "7da1b2e893a918fe3f164185452883a52ec56456b29fd8503baa0effb2dc629b",
+  "origin_plan": "d3befce5f517e12b94c88f8e3fb6e746a692edac764a66fdab6f1a62a11149f8",
+  "origin_outcome": "4e398e70d28c3c8424deaa63d66c87748cca02fb62c350c093b6869adff76b20",
+  "capabilities": [
+    {
+      "allocated_child_work": 250000,
+      "asset": {
+        "active": false,
+        "admission": {
+          "accepted": false,
+          "acquisition": 33175,
+          "action_export_accounting": "See action-level improvement ledger; no economic promotion before full costs.",
+          "assumption": "Qualification frequencies and mean costs generalize only to the declared remaining same-scope mission count; no demand or monetary value is inferred.",
+          "break_even_missions": 10915,
+          "candidate_maintenance": 10,
+          "candidate_mean_work": 3269,
+          "correctness": true,
+          "decision": "HOLD_FULL_COST_UNKNOWN",
+          "finalization_included_in_stage_work": true,
+          "forecast_candidate_qualified": 2,
+          "forecast_incumbent_qualified": 2,
+          "forecast_remaining_budget": 490729,
+          "forecast_remaining_missions": 2,
+          "incumbent_maintenance": 0,
+          "incumbent_mean_work": 3272,
+          "maintenance": 10,
+          "native_human_hardware_monetary_costs": "UNKNOWN_OR_SEPARATE",
+          "net_benefit": false,
+          "note": "No economic promotion is based on a pre-finalization forecast. Whole action construction/diagnostic/integration/export debits are retained in the authoritative protected improvement ledger.",
+          "predicted_net_savings": -32738,
+          "provisional_model_only": true
+        },
+        "applicability": {
+          "horizon": 128,
+          "jobs": 18,
+          "kind": "plan"
+        },
+        "authority": [],
+        "corpus": {
+          "protected_research": false,
+          "qualification": [
+            {
+              "id": "community-release-seven-dev-qualification",
+              "semantic_hash": "deed216f9510a0bbed19650e9074be6d12d9719f9680919ae2c7c824c72739f7"
+            }
+          ],
+          "training": [
+            {
+              "id": "community-release-seven-dev-training",
+              "semantic_hash": "7af08b8bb94e2ca7e9796fc4e20c9146272195013e048693960e0b0aed4fda04"
+            }
+          ]
+        },
+        "dependencies": [
+          "fixed core.mjs grammar",
+          "independent Python checker"
+        ],
+        "digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+        "executable_interface": "Fixed release-plan/v1 strategy AST, no host code",
+        "frozen_before_service_inputs": true,
+        "lifecycle_costs": [
+          {
+            "improvement_work": 33175,
+            "kind": "stage-construction-failed-candidates-checks-retention-integration",
+            "ledger_end": 30,
+            "ledger_start": 8
+          },
+          {
+            "assumption": "Declared remaining missions only; not yet incurred.",
+            "kind": "forecast-maintenance",
+            "work": 10
+          },
+          {
+            "account": "improvement_work",
+            "authoritative_action_ledger": true,
+            "kind": "action-level-diagnostics-and-export"
+          }
+        ],
+        "parent_digest": null,
+        "production_authority": false,
+        "proof": [],
+        "qualification": {
+          "candidate": {
+            "count": 1,
+            "makespan": 14,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3269
+          },
+          "candidate_digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+          "correctness": true,
+          "fair_allocation": true,
+          "incumbent": {
+            "count": 1,
+            "makespan": 14,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3272
+          },
+          "independence": "Separate checker implementation; common project authorship and one machine.",
+          "reference": [
+            {
+              "allocated_budget": 30000,
+              "attempts": [],
+              "checker": {
+                "counts": {
+                  "arithmetic": 75,
+                  "calendar_slots": 96,
+                  "comparisons": 433,
+                  "dependency_edges": 48,
+                  "input_bytes": 1146,
+                  "input_fields": 135,
+                  "interval_slots": 14,
+                  "job_scans": 42,
+                  "map_operations": 119,
+                  "total": 2108
+                },
+                "errors": [],
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "optimal_if_bound": false,
+                "qualified": true,
+                "valid": true
+              },
+              "counts": {
+                "accounting:check-reserve": 1,
+                "bound:capacity": 10,
+                "bound:job": 7,
+                "checker:reference": 2108,
+                "features:critical": 16,
+                "features:descendant": 32,
+                "features:earliest": 16,
+                "features:edge": 16,
+                "features:work": 38,
+                "inspect:edge": 15,
+                "inspect:input-block64": 10,
+                "inspect:job": 7,
+                "schedule:capacity-slot": 19,
+                "schedule:commit-slot": 14,
+                "schedule:dependency-time": 8,
+                "schedule:ready-edge": 31,
+                "schedule:ready-job": 49,
+                "schedule:start-trial": 12,
+                "strategy:priority-compare": 2,
+                "strategy:score-term": 9,
+                "workbench:envelope-block64": 569,
+                "workbench:validation": 256
+              },
+              "error": null,
+              "execution_budget": 30000,
+              "pack_digest": "c84a4925b0e2a5ab64886ba2712ee84f25db5422d5713d0ef8121219c976e547",
+              "qualified": true,
+              "result": {
+                "authority": [],
+                "dispatch_order": [
+                  "J1",
+                  "J2",
+                  "J3",
+                  "J4",
+                  "J5",
+                  "J6",
+                  "J7"
+                ],
+                "lookahead_steps": 0,
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "makespan": 14,
+                "movement": 0,
+                "optimal_by_lower_bound": false,
+                "proof": [],
+                "schedule": [
+                  {
+                    "end": 3,
+                    "id": "J1",
+                    "start": 0
+                  },
+                  {
+                    "end": 6,
+                    "id": "J2",
+                    "start": 3
+                  },
+                  {
+                    "end": 8,
+                    "id": "J3",
+                    "start": 6
+                  },
+                  {
+                    "end": 10,
+                    "id": "J4",
+                    "start": 8
+                  },
+                  {
+                    "end": 12,
+                    "id": "J5",
+                    "start": 10
+                  },
+                  {
+                    "end": 13,
+                    "id": "J6",
+                    "start": 12
+                  },
+                  {
+                    "end": 14,
+                    "id": "J7",
+                    "start": 13
+                  }
+                ],
+                "schema": "release-plan-result/v1",
+                "task_id": "community-release-seven-dev-qualification"
+              },
+              "selected_method": {
+                "kind": "dispatch",
+                "name": "critical-path",
+                "weights": {
+                  "cp": 1
+                }
+              },
+              "task_id": "community-release-seven-dev-qualification",
+              "truncated": false,
+              "valid": true,
+              "wall_ms": 36.894113999999945,
+              "work": 3272
+            }
+          ],
+          "registered_per_output_allocation": 30000,
+          "rows": [
+            {
+              "allocated_budget": 30000,
+              "attempts": [],
+              "checker": {
+                "counts": {
+                  "arithmetic": 75,
+                  "calendar_slots": 96,
+                  "comparisons": 433,
+                  "dependency_edges": 48,
+                  "input_bytes": 1146,
+                  "input_fields": 135,
+                  "interval_slots": 14,
+                  "job_scans": 42,
+                  "map_operations": 119,
+                  "total": 2108
+                },
+                "errors": [],
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "optimal_if_bound": false,
+                "qualified": true,
+                "valid": true
+              },
+              "counts": {
+                "accounting:check-reserve": 1,
+                "bound:capacity": 10,
+                "bound:job": 7,
+                "checker:reference": 2108,
+                "features:critical": 16,
+                "features:descendant": 32,
+                "features:earliest": 16,
+                "features:edge": 16,
+                "features:work": 38,
+                "inspect:edge": 15,
+                "inspect:input-block64": 10,
+                "inspect:job": 7,
+                "schedule:capacity-slot": 17,
+                "schedule:commit-slot": 14,
+                "schedule:dependency-time": 8,
+                "schedule:ready-edge": 29,
+                "schedule:ready-job": 49,
+                "schedule:start-trial": 10,
+                "strategy:priority-compare": 2,
+                "strategy:score-term": 9,
+                "strategy:sort-move": 2,
+                "workbench:envelope-block64": 569,
+                "workbench:validation": 256
+              },
+              "error": null,
+              "execution_budget": 30000,
+              "pack_digest": "ae4cbb436502c257e407279a44b5c005561be2e1b5252729cb0d1fee4cbd7131",
+              "qualified": true,
+              "result": {
+                "authority": [],
+                "dispatch_order": [
+                  "J1",
+                  "J3",
+                  "J2",
+                  "J4",
+                  "J6",
+                  "J5",
+                  "J7"
+                ],
+                "lookahead_steps": 0,
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "makespan": 14,
+                "movement": 0,
+                "optimal_by_lower_bound": false,
+                "proof": [],
+                "schedule": [
+                  {
+                    "end": 3,
+                    "id": "J1",
+                    "start": 0
+                  },
+                  {
+                    "end": 5,
+                    "id": "J3",
+                    "start": 3
+                  },
+                  {
+                    "end": 8,
+                    "id": "J2",
+                    "start": 5
+                  },
+                  {
+                    "end": 10,
+                    "id": "J4",
+                    "start": 8
+                  },
+                  {
+                    "end": 11,
+                    "id": "J6",
+                    "start": 10
+                  },
+                  {
+                    "end": 13,
+                    "id": "J5",
+                    "start": 11
+                  },
+                  {
+                    "end": 14,
+                    "id": "J7",
+                    "start": 13
+                  }
+                ],
+                "schema": "release-plan-result/v1",
+                "task_id": "community-release-seven-dev-qualification"
+              },
+              "selected_method": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "task_id": "community-release-seven-dev-qualification",
+              "truncated": false,
+              "valid": true,
+              "wall_ms": 39.721678999999995,
+              "work": 3269
+            }
+          ]
+        },
+        "schema": "engineering-strategy-capability/v1",
+        "scientific_source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+        "source_hash": "7da1b2e893a918fe3f164185452883a52ec56456b29fd8503baa0effb2dc629b",
+        "stage": "dispatch",
+        "strategy": {
+          "kind": "dispatch",
+          "name": "shortest-first",
+          "weights": {
+            "duration": -1
+          }
+        },
+        "trial_only": true,
+        "version": 1
+      },
+      "construction_work": 33175,
+      "corpus": {
+        "protected_research": false,
+        "qualification": [
+          {
+            "id": "community-release-seven-dev-qualification",
+            "semantic_hash": "deed216f9510a0bbed19650e9074be6d12d9719f9680919ae2c7c824c72739f7"
+          }
+        ],
+        "training": [
+          {
+            "id": "community-release-seven-dev-training",
+            "semantic_hash": "7af08b8bb94e2ca7e9796fc4e20c9146272195013e048693960e0b0aed4fda04"
+          }
+        ]
+      },
+      "decision": "HOLD_FULL_COST_UNKNOWN",
+      "gate": {
+        "accepted": false,
+        "acquisition": 33175,
+        "action_export_accounting": "See action-level improvement ledger; no economic promotion before full costs.",
+        "assumption": "Qualification frequencies and mean costs generalize only to the declared remaining same-scope mission count; no demand or monetary value is inferred.",
+        "break_even_missions": 10915,
+        "candidate_maintenance": 10,
+        "candidate_mean_work": 3269,
+        "correctness": true,
+        "decision": "HOLD_FULL_COST_UNKNOWN",
+        "finalization_included_in_stage_work": true,
+        "forecast_candidate_qualified": 2,
+        "forecast_incumbent_qualified": 2,
+        "forecast_remaining_budget": 490729,
+        "forecast_remaining_missions": 2,
+        "incumbent_maintenance": 0,
+        "incumbent_mean_work": 3272,
+        "maintenance": 10,
+        "native_human_hardware_monetary_costs": "UNKNOWN_OR_SEPARATE",
+        "net_benefit": false,
+        "note": "No economic promotion is based on a pre-finalization forecast. Whole action construction/diagnostic/integration/export debits are retained in the authoritative protected improvement ledger.",
+        "predicted_net_savings": -32738,
+        "provisional_model_only": true
+      },
+      "lineage": {
+        "authority": [],
+        "candidate_digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+        "output_digest": "f4a8496e92eed455d879ad16d0ea42db5d00b4041d78fc788d1d298072b3df82",
+        "parent_calls": 0,
+        "parent_digest": null,
+        "parent_read": 0,
+        "proof": []
+      },
+      "qualification": {
+        "candidate": {
+          "count": 1,
+          "makespan": 14,
+          "qualified": 1,
+          "valid": 1,
+          "work": 3269
+        },
+        "candidate_digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+        "correctness": true,
+        "fair_allocation": true,
+        "incumbent": {
+          "count": 1,
+          "makespan": 14,
+          "qualified": 1,
+          "valid": 1,
+          "work": 3272
+        },
+        "independence": "Separate checker implementation; common project authorship and one machine.",
+        "reference": [
+          {
+            "allocated_budget": 30000,
+            "attempts": [],
+            "checker": {
+              "counts": {
+                "arithmetic": 75,
+                "calendar_slots": 96,
+                "comparisons": 433,
+                "dependency_edges": 48,
+                "input_bytes": 1146,
+                "input_fields": 135,
+                "interval_slots": 14,
+                "job_scans": 42,
+                "map_operations": 119,
+                "total": 2108
+              },
+              "errors": [],
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "optimal_if_bound": false,
+              "qualified": true,
+              "valid": true
+            },
+            "counts": {
+              "accounting:check-reserve": 1,
+              "bound:capacity": 10,
+              "bound:job": 7,
+              "checker:reference": 2108,
+              "features:critical": 16,
+              "features:descendant": 32,
+              "features:earliest": 16,
+              "features:edge": 16,
+              "features:work": 38,
+              "inspect:edge": 15,
+              "inspect:input-block64": 10,
+              "inspect:job": 7,
+              "schedule:capacity-slot": 19,
+              "schedule:commit-slot": 14,
+              "schedule:dependency-time": 8,
+              "schedule:ready-edge": 31,
+              "schedule:ready-job": 49,
+              "schedule:start-trial": 12,
+              "strategy:priority-compare": 2,
+              "strategy:score-term": 9,
+              "workbench:envelope-block64": 569,
+              "workbench:validation": 256
+            },
+            "error": null,
+            "execution_budget": 30000,
+            "pack_digest": "c84a4925b0e2a5ab64886ba2712ee84f25db5422d5713d0ef8121219c976e547",
+            "qualified": true,
+            "result": {
+              "authority": [],
+              "dispatch_order": [
+                "J1",
+                "J2",
+                "J3",
+                "J4",
+                "J5",
+                "J6",
+                "J7"
+              ],
+              "lookahead_steps": 0,
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "makespan": 14,
+              "movement": 0,
+              "optimal_by_lower_bound": false,
+              "proof": [],
+              "schedule": [
+                {
+                  "end": 3,
+                  "id": "J1",
+                  "start": 0
+                },
+                {
+                  "end": 6,
+                  "id": "J2",
+                  "start": 3
+                },
+                {
+                  "end": 8,
+                  "id": "J3",
+                  "start": 6
+                },
+                {
+                  "end": 10,
+                  "id": "J4",
+                  "start": 8
+                },
+                {
+                  "end": 12,
+                  "id": "J5",
+                  "start": 10
+                },
+                {
+                  "end": 13,
+                  "id": "J6",
+                  "start": 12
+                },
+                {
+                  "end": 14,
+                  "id": "J7",
+                  "start": 13
+                }
+              ],
+              "schema": "release-plan-result/v1",
+              "task_id": "community-release-seven-dev-qualification"
+            },
+            "selected_method": {
+              "kind": "dispatch",
+              "name": "critical-path",
+              "weights": {
+                "cp": 1
+              }
+            },
+            "task_id": "community-release-seven-dev-qualification",
+            "truncated": false,
+            "valid": true,
+            "wall_ms": 36.894113999999945,
+            "work": 3272
+          }
+        ],
+        "registered_per_output_allocation": 30000,
+        "rows": [
+          {
+            "allocated_budget": 30000,
+            "attempts": [],
+            "checker": {
+              "counts": {
+                "arithmetic": 75,
+                "calendar_slots": 96,
+                "comparisons": 433,
+                "dependency_edges": 48,
+                "input_bytes": 1146,
+                "input_fields": 135,
+                "interval_slots": 14,
+                "job_scans": 42,
+                "map_operations": 119,
+                "total": 2108
+              },
+              "errors": [],
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "optimal_if_bound": false,
+              "qualified": true,
+              "valid": true
+            },
+            "counts": {
+              "accounting:check-reserve": 1,
+              "bound:capacity": 10,
+              "bound:job": 7,
+              "checker:reference": 2108,
+              "features:critical": 16,
+              "features:descendant": 32,
+              "features:earliest": 16,
+              "features:edge": 16,
+              "features:work": 38,
+              "inspect:edge": 15,
+              "inspect:input-block64": 10,
+              "inspect:job": 7,
+              "schedule:capacity-slot": 17,
+              "schedule:commit-slot": 14,
+              "schedule:dependency-time": 8,
+              "schedule:ready-edge": 29,
+              "schedule:ready-job": 49,
+              "schedule:start-trial": 10,
+              "strategy:priority-compare": 2,
+              "strategy:score-term": 9,
+              "strategy:sort-move": 2,
+              "workbench:envelope-block64": 569,
+              "workbench:validation": 256
+            },
+            "error": null,
+            "execution_budget": 30000,
+            "pack_digest": "ae4cbb436502c257e407279a44b5c005561be2e1b5252729cb0d1fee4cbd7131",
+            "qualified": true,
+            "result": {
+              "authority": [],
+              "dispatch_order": [
+                "J1",
+                "J3",
+                "J2",
+                "J4",
+                "J6",
+                "J5",
+                "J7"
+              ],
+              "lookahead_steps": 0,
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "makespan": 14,
+              "movement": 0,
+              "optimal_by_lower_bound": false,
+              "proof": [],
+              "schedule": [
+                {
+                  "end": 3,
+                  "id": "J1",
+                  "start": 0
+                },
+                {
+                  "end": 5,
+                  "id": "J3",
+                  "start": 3
+                },
+                {
+                  "end": 8,
+                  "id": "J2",
+                  "start": 5
+                },
+                {
+                  "end": 10,
+                  "id": "J4",
+                  "start": 8
+                },
+                {
+                  "end": 11,
+                  "id": "J6",
+                  "start": 10
+                },
+                {
+                  "end": 13,
+                  "id": "J5",
+                  "start": 11
+                },
+                {
+                  "end": 14,
+                  "id": "J7",
+                  "start": 13
+                }
+              ],
+              "schema": "release-plan-result/v1",
+              "task_id": "community-release-seven-dev-qualification"
+            },
+            "selected_method": {
+              "kind": "dispatch",
+              "name": "shortest-first",
+              "weights": {
+                "duration": -1
+              }
+            },
+            "task_id": "community-release-seven-dev-qualification",
+            "truncated": false,
+            "valid": true,
+            "wall_ms": 39.721678999999995,
+            "work": 3269
+          }
+        ]
+      },
+      "scope": "Disjoint authored development tasks; candidates freeze before any actual served changed/repair inputs are exposed to them. Not protected research evaluation.",
+      "search": {
+        "candidate": {
+          "digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+          "selected_index": 4,
+          "strategy": {
+            "kind": "dispatch",
+            "name": "shortest-first",
+            "weights": {
+              "duration": -1
+            }
+          },
+          "training": {
+            "count": 1,
+            "makespan": 13,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3251
+          }
+        },
+        "menu_size": 8,
+        "parent_digest": null,
+        "search_rule": "Fixed equal-prefix successive halving; all eliminated rows retained",
+        "stage": "dispatch",
+        "stop": "TRAINING_RACE_COMPLETE",
+        "trials": [
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 0,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 18,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 31,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 12,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 9,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "1af8c2f8a8fc1e259c47fb3e2333e863400bf1a3956513f4ef8219541322e641",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 11,
+                      "id": "J5",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J6",
+                      "start": 11
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "critical-path",
+                  "weights": {
+                    "cp": 1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 35.41534200000001,
+                "work": 3254
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "critical-path",
+              "weights": {
+                "cp": 1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3254
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 1,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 18,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 31,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 12,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 27,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "744cf345c077ec1c3974d6da6f9ad99c441faf7a1d8cbdf7e5c3f9ebf79c9733",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 11,
+                      "id": "J5",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J6",
+                      "start": 11
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "critical-work-short",
+                  "weights": {
+                    "cp": 1,
+                    "duration": -1,
+                    "work": 1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 35.491277999999966,
+                "work": 3273
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "critical-work-short",
+              "weights": {
+                "cp": 1,
+                "duration": -1,
+                "work": 1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3273
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 2,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 18,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 31,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 12,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 18,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "d7b5ce8c7e83eaad2a255d8e1a4e4d28df8d316abf85e58f685d335732cffb59",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 11,
+                      "id": "J5",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J6",
+                      "start": 11
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "critical-long",
+                  "weights": {
+                    "cp": 1,
+                    "duration": 1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 35.76541899999984,
+                "work": 3263
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "critical-long",
+              "weights": {
+                "cp": 1,
+                "duration": 1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3263
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 3,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 18,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 31,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 12,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 9,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "b825d819544ec34dbee3cd1ba01b7e86f1c25efdff002f79227069d7a62efe64",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 11,
+                      "id": "J5",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J6",
+                      "start": 11
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "descendant-work",
+                  "weights": {
+                    "work": 1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 31.992426000000023,
+                "work": 3254
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "descendant-work",
+              "weights": {
+                "work": 1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3254
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 4,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 16,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 29,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 10,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 9,
+                  "strategy:sort-move": 2,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "b3bb66f3eaec7a9347adb5bc79a32e902ec3cf13d7a8c3ba5185dae9f08707a6",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J3",
+                    "J2",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 4,
+                      "id": "J3",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J2",
+                      "start": 4
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J5",
+                      "start": 10
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "shortest-first",
+                  "weights": {
+                    "duration": -1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 37.04828100000009,
+                "work": 3251
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "shortest-first",
+              "weights": {
+                "duration": -1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3251
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 5,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 18,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 31,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 12,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 18,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "873ada92dc5a163761f49482d2c9e8cb4688dba730a076ab244d7f7bd43027a7",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 11,
+                      "id": "J5",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J6",
+                      "start": 11
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "critical-short",
+                  "weights": {
+                    "cp": 1,
+                    "duration": -1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 33.3699180000001,
+                "work": 3263
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "critical-short",
+              "weights": {
+                "cp": 1,
+                "duration": -1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3263
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 6,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 18,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 31,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 12,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 27,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "7c3a4cc0b80ff7fb372176893cc0b39472f5ac6a5fe2776fd84b8d3ef4b4e570",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 11,
+                      "id": "J5",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J6",
+                      "start": 11
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "critical-resource",
+                  "weights": {
+                    "cp": 4,
+                    "duration": 2,
+                    "work": 1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 31.774255999999923,
+                "work": 3273
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "critical-resource",
+              "weights": {
+                "cp": 4,
+                "duration": 2,
+                "work": 1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3273
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 7,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 18,
+                  "schedule:commit-slot": 13,
+                  "schedule:dependency-time": 8,
+                  "schedule:ready-edge": 31,
+                  "schedule:ready-job": 49,
+                  "schedule:start-trial": 12,
+                  "strategy:priority-compare": 2,
+                  "strategy:score-term": 9,
+                  "workbench:envelope-block64": 569,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "232cce0bf92503f83307a1badd7e9c0f03b3fc54fb842b3e71947dc2ee184b26",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 11,
+                      "id": "J5",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J6",
+                      "start": 11
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "kind": "dispatch",
+                  "name": "longest-first",
+                  "weights": {
+                    "duration": 1
+                  }
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 32.00347799999986,
+                "work": 3254
+              }
+            ],
+            "strategy": {
+              "kind": "dispatch",
+              "name": "longest-first",
+              "weights": {
+                "duration": 1
+              }
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3254
+            }
+          }
+        ]
+      },
+      "stage": "dispatch"
+    },
+    {
+      "allocated_child_work": 250000,
+      "asset": {
+        "active": false,
+        "admission": {
+          "accepted": false,
+          "acquisition": 29181,
+          "action_export_accounting": "See action-level improvement ledger; no economic promotion before full costs.",
+          "assumption": "Qualification frequencies and mean costs generalize only to the declared remaining same-scope mission count; no demand or monetary value is inferred.",
+          "break_even_missions": null,
+          "candidate_maintenance": 7,
+          "candidate_mean_work": 3553,
+          "correctness": true,
+          "decision": "HOLD_FULL_COST_UNKNOWN",
+          "finalization_included_in_stage_work": true,
+          "forecast_candidate_qualified": 1,
+          "forecast_incumbent_qualified": 1,
+          "forecast_remaining_budget": 490729,
+          "forecast_remaining_missions": 1,
+          "incumbent_maintenance": 0,
+          "incumbent_mean_work": 3272,
+          "maintenance": 7,
+          "native_human_hardware_monetary_costs": "UNKNOWN_OR_SEPARATE",
+          "net_benefit": false,
+          "note": "No economic promotion is based on a pre-finalization forecast. Whole action construction/diagnostic/integration/export debits are retained in the authoritative protected improvement ledger.",
+          "predicted_net_savings": -29055,
+          "provisional_model_only": true
+        },
+        "applicability": {
+          "horizon": 128,
+          "jobs": 18,
+          "kind": "plan"
+        },
+        "authority": [],
+        "corpus": {
+          "protected_research": false,
+          "qualification": [
+            {
+              "id": "community-release-seven-dev-qualification",
+              "semantic_hash": "deed216f9510a0bbed19650e9074be6d12d9719f9680919ae2c7c824c72739f7"
+            }
+          ],
+          "training": [
+            {
+              "id": "community-release-seven-dev-training",
+              "semantic_hash": "7af08b8bb94e2ca7e9796fc4e20c9146272195013e048693960e0b0aed4fda04"
+            }
+          ]
+        },
+        "dependencies": [
+          "fixed core.mjs grammar",
+          "independent Python checker"
+        ],
+        "digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+        "executable_interface": "Fixed release-plan/v1 strategy AST, no host code",
+        "frozen_before_service_inputs": true,
+        "lifecycle_costs": [
+          {
+            "improvement_work": 29181,
+            "kind": "stage-construction-failed-candidates-checks-retention-integration",
+            "ledger_end": 49,
+            "ledger_start": 31
+          },
+          {
+            "assumption": "Declared remaining missions only; not yet incurred.",
+            "kind": "forecast-maintenance",
+            "work": 7
+          },
+          {
+            "account": "improvement_work",
+            "authoritative_action_ledger": true,
+            "kind": "action-level-diagnostics-and-export"
+          }
+        ],
+        "parent_digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+        "production_authority": false,
+        "proof": [],
+        "qualification": {
+          "candidate": {
+            "count": 1,
+            "makespan": 14,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3553
+          },
+          "candidate_digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+          "correctness": true,
+          "fair_allocation": true,
+          "incumbent": {
+            "count": 1,
+            "makespan": 14,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3272
+          },
+          "independence": "Separate checker implementation; common project authorship and one machine.",
+          "reference": [
+            {
+              "allocated_budget": 30000,
+              "attempts": [],
+              "checker": {
+                "counts": {
+                  "arithmetic": 75,
+                  "calendar_slots": 96,
+                  "comparisons": 433,
+                  "dependency_edges": 48,
+                  "input_bytes": 1146,
+                  "input_fields": 135,
+                  "interval_slots": 14,
+                  "job_scans": 42,
+                  "map_operations": 119,
+                  "total": 2108
+                },
+                "errors": [],
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "optimal_if_bound": false,
+                "qualified": true,
+                "valid": true
+              },
+              "counts": {
+                "accounting:check-reserve": 1,
+                "bound:capacity": 10,
+                "bound:job": 7,
+                "checker:reference": 2108,
+                "features:critical": 16,
+                "features:descendant": 32,
+                "features:earliest": 16,
+                "features:edge": 16,
+                "features:work": 38,
+                "inspect:edge": 15,
+                "inspect:input-block64": 10,
+                "inspect:job": 7,
+                "schedule:capacity-slot": 19,
+                "schedule:commit-slot": 14,
+                "schedule:dependency-time": 8,
+                "schedule:ready-edge": 31,
+                "schedule:ready-job": 49,
+                "schedule:start-trial": 12,
+                "strategy:priority-compare": 2,
+                "strategy:score-term": 9,
+                "workbench:envelope-block64": 569,
+                "workbench:validation": 256
+              },
+              "error": null,
+              "execution_budget": 30000,
+              "pack_digest": "7fd0563413b2bb634660294eda6f9c274f33374d0ac1bf38be5f030a50238aad",
+              "qualified": true,
+              "result": {
+                "authority": [],
+                "dispatch_order": [
+                  "J1",
+                  "J2",
+                  "J3",
+                  "J4",
+                  "J5",
+                  "J6",
+                  "J7"
+                ],
+                "lookahead_steps": 0,
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "makespan": 14,
+                "movement": 0,
+                "optimal_by_lower_bound": false,
+                "proof": [],
+                "schedule": [
+                  {
+                    "end": 3,
+                    "id": "J1",
+                    "start": 0
+                  },
+                  {
+                    "end": 6,
+                    "id": "J2",
+                    "start": 3
+                  },
+                  {
+                    "end": 8,
+                    "id": "J3",
+                    "start": 6
+                  },
+                  {
+                    "end": 10,
+                    "id": "J4",
+                    "start": 8
+                  },
+                  {
+                    "end": 12,
+                    "id": "J5",
+                    "start": 10
+                  },
+                  {
+                    "end": 13,
+                    "id": "J6",
+                    "start": 12
+                  },
+                  {
+                    "end": 14,
+                    "id": "J7",
+                    "start": 13
+                  }
+                ],
+                "schema": "release-plan-result/v1",
+                "task_id": "community-release-seven-dev-qualification"
+              },
+              "selected_method": {
+                "kind": "dispatch",
+                "name": "critical-path",
+                "weights": {
+                  "cp": 1
+                }
+              },
+              "task_id": "community-release-seven-dev-qualification",
+              "truncated": false,
+              "valid": true,
+              "wall_ms": 31.276847999999973,
+              "work": 3272
+            }
+          ],
+          "registered_per_output_allocation": 30000,
+          "rows": [
+            {
+              "allocated_budget": 30000,
+              "attempts": [],
+              "checker": {
+                "counts": {
+                  "arithmetic": 75,
+                  "calendar_slots": 96,
+                  "comparisons": 433,
+                  "dependency_edges": 48,
+                  "input_bytes": 1146,
+                  "input_fields": 135,
+                  "interval_slots": 14,
+                  "job_scans": 42,
+                  "map_operations": 119,
+                  "total": 2108
+                },
+                "errors": [],
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "optimal_if_bound": false,
+                "qualified": true,
+                "valid": true
+              },
+              "counts": {
+                "accounting:check-reserve": 1,
+                "bound:capacity": 10,
+                "bound:job": 7,
+                "checker:reference": 2108,
+                "features:critical": 16,
+                "features:descendant": 32,
+                "features:earliest": 16,
+                "features:edge": 16,
+                "features:work": 38,
+                "inspect:edge": 15,
+                "inspect:input-block64": 10,
+                "inspect:job": 7,
+                "schedule:capacity-slot": 46,
+                "schedule:commit-slot": 36,
+                "schedule:dependency-time": 24,
+                "schedule:ready-edge": 64,
+                "schedule:ready-job": 119,
+                "schedule:start-trial": 29,
+                "strategy:contention": 2,
+                "strategy:inherited-dispatch-rollout": 2,
+                "strategy:priority-compare": 4,
+                "strategy:rollout": 2,
+                "strategy:score-term": 21,
+                "strategy:sort-move": 4,
+                "strategy:state-copy": 66,
+                "workbench:envelope-block64": 571,
+                "workbench:validation": 256
+              },
+              "error": null,
+              "execution_budget": 30000,
+              "pack_digest": "84e25cbf06e3e995334496244513b3646322cb54542e1580c0b4896cb092f126",
+              "qualified": true,
+              "result": {
+                "authority": [],
+                "dispatch_order": [
+                  "J1",
+                  "J3",
+                  "J2",
+                  "J4",
+                  "J6",
+                  "J5",
+                  "J7"
+                ],
+                "lookahead_steps": 1,
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 10,
+                  "locked": 0,
+                  "value": 11
+                },
+                "makespan": 14,
+                "movement": 0,
+                "optimal_by_lower_bound": false,
+                "proof": [],
+                "schedule": [
+                  {
+                    "end": 3,
+                    "id": "J1",
+                    "start": 0
+                  },
+                  {
+                    "end": 5,
+                    "id": "J3",
+                    "start": 3
+                  },
+                  {
+                    "end": 8,
+                    "id": "J2",
+                    "start": 5
+                  },
+                  {
+                    "end": 10,
+                    "id": "J4",
+                    "start": 8
+                  },
+                  {
+                    "end": 11,
+                    "id": "J6",
+                    "start": 10
+                  },
+                  {
+                    "end": 13,
+                    "id": "J5",
+                    "start": 11
+                  },
+                  {
+                    "end": 14,
+                    "id": "J7",
+                    "start": 13
+                  }
+                ],
+                "schema": "release-plan-result/v1",
+                "task_id": "community-release-seven-dev-qualification"
+              },
+              "selected_method": {
+                "base": {
+                  "kind": "dispatch",
+                  "name": "shortest-first",
+                  "weights": {
+                    "duration": -1
+                  }
+                },
+                "kind": "lookahead",
+                "steps": 1,
+                "trigger": "contention",
+                "width": 2
+              },
+              "task_id": "community-release-seven-dev-qualification",
+              "truncated": false,
+              "valid": true,
+              "wall_ms": 36.89797599999997,
+              "work": 3553
+            }
+          ]
+        },
+        "schema": "engineering-strategy-capability/v1",
+        "scientific_source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+        "source_hash": "7da1b2e893a918fe3f164185452883a52ec56456b29fd8503baa0effb2dc629b",
+        "stage": "lookahead",
+        "strategy": {
+          "base": {
+            "kind": "dispatch",
+            "name": "shortest-first",
+            "weights": {
+              "duration": -1
+            }
+          },
+          "kind": "lookahead",
+          "steps": 1,
+          "trigger": "contention",
+          "width": 2
+        },
+        "trial_only": true,
+        "version": 1
+      },
+      "construction_work": 29181,
+      "corpus": {
+        "protected_research": false,
+        "qualification": [
+          {
+            "id": "community-release-seven-dev-qualification",
+            "semantic_hash": "deed216f9510a0bbed19650e9074be6d12d9719f9680919ae2c7c824c72739f7"
+          }
+        ],
+        "training": [
+          {
+            "id": "community-release-seven-dev-training",
+            "semantic_hash": "7af08b8bb94e2ca7e9796fc4e20c9146272195013e048693960e0b0aed4fda04"
+          }
+        ]
+      },
+      "decision": "HOLD_FULL_COST_UNKNOWN",
+      "gate": {
+        "accepted": false,
+        "acquisition": 29181,
+        "action_export_accounting": "See action-level improvement ledger; no economic promotion before full costs.",
+        "assumption": "Qualification frequencies and mean costs generalize only to the declared remaining same-scope mission count; no demand or monetary value is inferred.",
+        "break_even_missions": null,
+        "candidate_maintenance": 7,
+        "candidate_mean_work": 3553,
+        "correctness": true,
+        "decision": "HOLD_FULL_COST_UNKNOWN",
+        "finalization_included_in_stage_work": true,
+        "forecast_candidate_qualified": 1,
+        "forecast_incumbent_qualified": 1,
+        "forecast_remaining_budget": 490729,
+        "forecast_remaining_missions": 1,
+        "incumbent_maintenance": 0,
+        "incumbent_mean_work": 3272,
+        "maintenance": 7,
+        "native_human_hardware_monetary_costs": "UNKNOWN_OR_SEPARATE",
+        "net_benefit": false,
+        "note": "No economic promotion is based on a pre-finalization forecast. Whole action construction/diagnostic/integration/export debits are retained in the authoritative protected improvement ledger.",
+        "predicted_net_savings": -29055,
+        "provisional_model_only": true
+      },
+      "lineage": {
+        "authority": [],
+        "candidate_digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+        "output_digest": "099480be5b88e3174972305282cb4cc88bc5293a3f82c5f38824bcb294390bd3",
+        "parent_calls": 20,
+        "parent_digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+        "parent_read": 1,
+        "proof": []
+      },
+      "qualification": {
+        "candidate": {
+          "count": 1,
+          "makespan": 14,
+          "qualified": 1,
+          "valid": 1,
+          "work": 3553
+        },
+        "candidate_digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+        "correctness": true,
+        "fair_allocation": true,
+        "incumbent": {
+          "count": 1,
+          "makespan": 14,
+          "qualified": 1,
+          "valid": 1,
+          "work": 3272
+        },
+        "independence": "Separate checker implementation; common project authorship and one machine.",
+        "reference": [
+          {
+            "allocated_budget": 30000,
+            "attempts": [],
+            "checker": {
+              "counts": {
+                "arithmetic": 75,
+                "calendar_slots": 96,
+                "comparisons": 433,
+                "dependency_edges": 48,
+                "input_bytes": 1146,
+                "input_fields": 135,
+                "interval_slots": 14,
+                "job_scans": 42,
+                "map_operations": 119,
+                "total": 2108
+              },
+              "errors": [],
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "optimal_if_bound": false,
+              "qualified": true,
+              "valid": true
+            },
+            "counts": {
+              "accounting:check-reserve": 1,
+              "bound:capacity": 10,
+              "bound:job": 7,
+              "checker:reference": 2108,
+              "features:critical": 16,
+              "features:descendant": 32,
+              "features:earliest": 16,
+              "features:edge": 16,
+              "features:work": 38,
+              "inspect:edge": 15,
+              "inspect:input-block64": 10,
+              "inspect:job": 7,
+              "schedule:capacity-slot": 19,
+              "schedule:commit-slot": 14,
+              "schedule:dependency-time": 8,
+              "schedule:ready-edge": 31,
+              "schedule:ready-job": 49,
+              "schedule:start-trial": 12,
+              "strategy:priority-compare": 2,
+              "strategy:score-term": 9,
+              "workbench:envelope-block64": 569,
+              "workbench:validation": 256
+            },
+            "error": null,
+            "execution_budget": 30000,
+            "pack_digest": "7fd0563413b2bb634660294eda6f9c274f33374d0ac1bf38be5f030a50238aad",
+            "qualified": true,
+            "result": {
+              "authority": [],
+              "dispatch_order": [
+                "J1",
+                "J2",
+                "J3",
+                "J4",
+                "J5",
+                "J6",
+                "J7"
+              ],
+              "lookahead_steps": 0,
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "makespan": 14,
+              "movement": 0,
+              "optimal_by_lower_bound": false,
+              "proof": [],
+              "schedule": [
+                {
+                  "end": 3,
+                  "id": "J1",
+                  "start": 0
+                },
+                {
+                  "end": 6,
+                  "id": "J2",
+                  "start": 3
+                },
+                {
+                  "end": 8,
+                  "id": "J3",
+                  "start": 6
+                },
+                {
+                  "end": 10,
+                  "id": "J4",
+                  "start": 8
+                },
+                {
+                  "end": 12,
+                  "id": "J5",
+                  "start": 10
+                },
+                {
+                  "end": 13,
+                  "id": "J6",
+                  "start": 12
+                },
+                {
+                  "end": 14,
+                  "id": "J7",
+                  "start": 13
+                }
+              ],
+              "schema": "release-plan-result/v1",
+              "task_id": "community-release-seven-dev-qualification"
+            },
+            "selected_method": {
+              "kind": "dispatch",
+              "name": "critical-path",
+              "weights": {
+                "cp": 1
+              }
+            },
+            "task_id": "community-release-seven-dev-qualification",
+            "truncated": false,
+            "valid": true,
+            "wall_ms": 31.276847999999973,
+            "work": 3272
+          }
+        ],
+        "registered_per_output_allocation": 30000,
+        "rows": [
+          {
+            "allocated_budget": 30000,
+            "attempts": [],
+            "checker": {
+              "counts": {
+                "arithmetic": 75,
+                "calendar_slots": 96,
+                "comparisons": 433,
+                "dependency_edges": 48,
+                "input_bytes": 1146,
+                "input_fields": 135,
+                "interval_slots": 14,
+                "job_scans": 42,
+                "map_operations": 119,
+                "total": 2108
+              },
+              "errors": [],
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "optimal_if_bound": false,
+              "qualified": true,
+              "valid": true
+            },
+            "counts": {
+              "accounting:check-reserve": 1,
+              "bound:capacity": 10,
+              "bound:job": 7,
+              "checker:reference": 2108,
+              "features:critical": 16,
+              "features:descendant": 32,
+              "features:earliest": 16,
+              "features:edge": 16,
+              "features:work": 38,
+              "inspect:edge": 15,
+              "inspect:input-block64": 10,
+              "inspect:job": 7,
+              "schedule:capacity-slot": 46,
+              "schedule:commit-slot": 36,
+              "schedule:dependency-time": 24,
+              "schedule:ready-edge": 64,
+              "schedule:ready-job": 119,
+              "schedule:start-trial": 29,
+              "strategy:contention": 2,
+              "strategy:inherited-dispatch-rollout": 2,
+              "strategy:priority-compare": 4,
+              "strategy:rollout": 2,
+              "strategy:score-term": 21,
+              "strategy:sort-move": 4,
+              "strategy:state-copy": 66,
+              "workbench:envelope-block64": 571,
+              "workbench:validation": 256
+            },
+            "error": null,
+            "execution_budget": 30000,
+            "pack_digest": "84e25cbf06e3e995334496244513b3646322cb54542e1580c0b4896cb092f126",
+            "qualified": true,
+            "result": {
+              "authority": [],
+              "dispatch_order": [
+                "J1",
+                "J3",
+                "J2",
+                "J4",
+                "J6",
+                "J5",
+                "J7"
+              ],
+              "lookahead_steps": 1,
+              "lower_bound": {
+                "critical": 11,
+                "load": 10,
+                "locked": 0,
+                "value": 11
+              },
+              "makespan": 14,
+              "movement": 0,
+              "optimal_by_lower_bound": false,
+              "proof": [],
+              "schedule": [
+                {
+                  "end": 3,
+                  "id": "J1",
+                  "start": 0
+                },
+                {
+                  "end": 5,
+                  "id": "J3",
+                  "start": 3
+                },
+                {
+                  "end": 8,
+                  "id": "J2",
+                  "start": 5
+                },
+                {
+                  "end": 10,
+                  "id": "J4",
+                  "start": 8
+                },
+                {
+                  "end": 11,
+                  "id": "J6",
+                  "start": 10
+                },
+                {
+                  "end": 13,
+                  "id": "J5",
+                  "start": 11
+                },
+                {
+                  "end": 14,
+                  "id": "J7",
+                  "start": 13
+                }
+              ],
+              "schema": "release-plan-result/v1",
+              "task_id": "community-release-seven-dev-qualification"
+            },
+            "selected_method": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 1,
+              "trigger": "contention",
+              "width": 2
+            },
+            "task_id": "community-release-seven-dev-qualification",
+            "truncated": false,
+            "valid": true,
+            "wall_ms": 36.89797599999997,
+            "work": 3553
+          }
+        ]
+      },
+      "scope": "Disjoint authored development tasks; candidates freeze before any actual served changed/repair inputs are exposed to them. Not protected research evaluation.",
+      "search": {
+        "candidate": {
+          "digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+          "selected_index": 0,
+          "strategy": {
+            "base": {
+              "kind": "dispatch",
+              "name": "shortest-first",
+              "weights": {
+                "duration": -1
+              }
+            },
+            "kind": "lookahead",
+            "steps": 1,
+            "trigger": "contention",
+            "width": 2
+          },
+          "training": {
+            "count": 1,
+            "makespan": 13,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3535
+          }
+        },
+        "menu_size": 6,
+        "parent_digest": "292984d1b0ea6912d77878994bc7aa4dc71a89e534a4191a55795b130cbb79d0",
+        "search_rule": "Fixed equal-prefix successive halving; all eliminated rows retained",
+        "stage": "lookahead",
+        "stop": "TRAINING_RACE_COMPLETE",
+        "trials": [
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 0,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 45,
+                  "schedule:commit-slot": 35,
+                  "schedule:dependency-time": 24,
+                  "schedule:ready-edge": 64,
+                  "schedule:ready-job": 119,
+                  "schedule:start-trial": 29,
+                  "strategy:contention": 2,
+                  "strategy:inherited-dispatch-rollout": 2,
+                  "strategy:priority-compare": 4,
+                  "strategy:rollout": 2,
+                  "strategy:score-term": 21,
+                  "strategy:sort-move": 4,
+                  "strategy:state-copy": 66,
+                  "workbench:envelope-block64": 571,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "f276bde4cd0a5699080e4912d5e1453ddb243b0c94ded90d61c7175eee921825",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J3",
+                    "J2",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 1,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 4,
+                      "id": "J3",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J2",
+                      "start": 4
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J5",
+                      "start": 10
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "base": {
+                    "kind": "dispatch",
+                    "name": "shortest-first",
+                    "weights": {
+                      "duration": -1
+                    }
+                  },
+                  "kind": "lookahead",
+                  "steps": 1,
+                  "trigger": "contention",
+                  "width": 2
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 43.8465769999998,
+                "work": 3535
+              }
+            ],
+            "strategy": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 1,
+              "trigger": "contention",
+              "width": 2
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3535
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 1,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 45,
+                  "schedule:commit-slot": 35,
+                  "schedule:dependency-time": 24,
+                  "schedule:ready-edge": 64,
+                  "schedule:ready-job": 119,
+                  "schedule:start-trial": 29,
+                  "strategy:contention": 2,
+                  "strategy:inherited-dispatch-rollout": 2,
+                  "strategy:priority-compare": 4,
+                  "strategy:rollout": 2,
+                  "strategy:score-term": 21,
+                  "strategy:sort-move": 4,
+                  "strategy:state-copy": 66,
+                  "workbench:envelope-block64": 571,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "a7cc24094bd0ec560dfc62216028fe22e03e4aa58a8c478e1185db8a90d51fc6",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J3",
+                    "J2",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 1,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 4,
+                      "id": "J3",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J2",
+                      "start": 4
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J5",
+                      "start": 10
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "base": {
+                    "kind": "dispatch",
+                    "name": "shortest-first",
+                    "weights": {
+                      "duration": -1
+                    }
+                  },
+                  "kind": "lookahead",
+                  "steps": 1,
+                  "trigger": "contention",
+                  "width": 4
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 36.017488000000185,
+                "work": 3535
+              }
+            ],
+            "strategy": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 1,
+              "trigger": "contention",
+              "width": 4
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3535
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 2,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 56,
+                  "schedule:commit-slot": 43,
+                  "schedule:dependency-time": 32,
+                  "schedule:ready-edge": 73,
+                  "schedule:ready-job": 147,
+                  "schedule:start-trial": 38,
+                  "strategy:contention": 4,
+                  "strategy:inherited-dispatch-rollout": 4,
+                  "strategy:priority-compare": 4,
+                  "strategy:rollout": 4,
+                  "strategy:score-term": 25,
+                  "strategy:sort-move": 4,
+                  "strategy:state-copy": 138,
+                  "workbench:envelope-block64": 571,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "f321d3cc0b55d76b85387742985ec753d8eef093adaa02b33fc653843452bae8",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J3",
+                    "J2",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 2,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 4,
+                      "id": "J3",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J2",
+                      "start": 4
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J5",
+                      "start": 10
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "base": {
+                    "kind": "dispatch",
+                    "name": "shortest-first",
+                    "weights": {
+                      "duration": -1
+                    }
+                  },
+                  "kind": "lookahead",
+                  "steps": 3,
+                  "trigger": "contention",
+                  "width": 2
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 32.80782399999998,
+                "work": 3690
+              }
+            ],
+            "strategy": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 3,
+              "trigger": "contention",
+              "width": 2
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3690
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 3,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 56,
+                  "schedule:commit-slot": 43,
+                  "schedule:dependency-time": 32,
+                  "schedule:ready-edge": 73,
+                  "schedule:ready-job": 147,
+                  "schedule:start-trial": 38,
+                  "strategy:contention": 4,
+                  "strategy:inherited-dispatch-rollout": 4,
+                  "strategy:priority-compare": 4,
+                  "strategy:rollout": 4,
+                  "strategy:score-term": 25,
+                  "strategy:sort-move": 4,
+                  "strategy:state-copy": 138,
+                  "workbench:envelope-block64": 571,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "8f38ba6b2cf02c73637599ae50a0d737f9604692a8f609b956b477214f70a296",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J3",
+                    "J2",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 2,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 4,
+                      "id": "J3",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J2",
+                      "start": 4
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J5",
+                      "start": 10
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "base": {
+                    "kind": "dispatch",
+                    "name": "shortest-first",
+                    "weights": {
+                      "duration": -1
+                    }
+                  },
+                  "kind": "lookahead",
+                  "steps": 3,
+                  "trigger": "contention",
+                  "width": 4
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 32.697189999999864,
+                "work": 3690
+              }
+            ],
+            "strategy": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 3,
+              "trigger": "contention",
+              "width": 4
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3690
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 4,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 56,
+                  "schedule:commit-slot": 43,
+                  "schedule:dependency-time": 32,
+                  "schedule:ready-edge": 73,
+                  "schedule:ready-job": 147,
+                  "schedule:start-trial": 38,
+                  "strategy:contention": 4,
+                  "strategy:inherited-dispatch-rollout": 4,
+                  "strategy:priority-compare": 4,
+                  "strategy:rollout": 4,
+                  "strategy:score-term": 25,
+                  "strategy:sort-move": 4,
+                  "strategy:state-copy": 138,
+                  "workbench:envelope-block64": 571,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "ad985b4d766c22581702c0f162ead667a33fd2fb1a61b772d472f227428fc07c",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J3",
+                    "J2",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 2,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 4,
+                      "id": "J3",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J2",
+                      "start": 4
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J5",
+                      "start": 10
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "base": {
+                    "kind": "dispatch",
+                    "name": "shortest-first",
+                    "weights": {
+                      "duration": -1
+                    }
+                  },
+                  "kind": "lookahead",
+                  "steps": 18,
+                  "trigger": "contention",
+                  "width": 2
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 35.22138199999995,
+                "work": 3690
+              }
+            ],
+            "strategy": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 18,
+              "trigger": "contention",
+              "width": 2
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3690
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 5,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 74,
+                    "calendar_slots": 96,
+                    "comparisons": 433,
+                    "dependency_edges": 48,
+                    "input_bytes": 1133,
+                    "input_fields": 135,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 119,
+                    "total": 2093
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 9,
+                  "bound:job": 7,
+                  "checker:reference": 2093,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 10,
+                  "inspect:job": 7,
+                  "schedule:capacity-slot": 56,
+                  "schedule:commit-slot": 43,
+                  "schedule:dependency-time": 32,
+                  "schedule:ready-edge": 73,
+                  "schedule:ready-job": 147,
+                  "schedule:start-trial": 38,
+                  "strategy:contention": 4,
+                  "strategy:inherited-dispatch-rollout": 4,
+                  "strategy:priority-compare": 4,
+                  "strategy:rollout": 4,
+                  "strategy:score-term": 25,
+                  "strategy:sort-move": 4,
+                  "strategy:state-copy": 138,
+                  "workbench:envelope-block64": 571,
+                  "workbench:validation": 256
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "c18d949375adca16ef5c30984059aa822da24e920e011ac406ef75163fab370d",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J1",
+                    "J3",
+                    "J2",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 2,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 9,
+                    "locked": 0,
+                    "value": 10
+                  },
+                  "makespan": 13,
+                  "movement": 0,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 4,
+                      "id": "J3",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J2",
+                      "start": 4
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 12,
+                      "id": "J5",
+                      "start": 10
+                    },
+                    {
+                      "end": 13,
+                      "id": "J7",
+                      "start": 12
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training"
+                },
+                "selected_method": {
+                  "base": {
+                    "kind": "dispatch",
+                    "name": "shortest-first",
+                    "weights": {
+                      "duration": -1
+                    }
+                  },
+                  "kind": "lookahead",
+                  "steps": 18,
+                  "trigger": "contention",
+                  "width": 4
+                },
+                "task_id": "community-release-seven-dev-training",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 32.75042200000007,
+                "work": 3690
+              }
+            ],
+            "strategy": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 18,
+              "trigger": "contention",
+              "width": 4
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 13,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3690
+            }
+          }
+        ]
+      },
+      "stage": "lookahead"
+    },
+    {
+      "allocated_child_work": 250000,
+      "asset": {
+        "active": false,
+        "admission": {
+          "accepted": false,
+          "acquisition": 19920,
+          "action_export_accounting": "See action-level improvement ledger; no economic promotion before full costs.",
+          "assumption": "Qualification frequencies and mean costs generalize only to the declared remaining same-scope mission count; no demand or monetary value is inferred.",
+          "break_even_missions": null,
+          "candidate_maintenance": 7,
+          "candidate_mean_work": 3823,
+          "correctness": true,
+          "decision": "HOLD_FULL_COST_UNKNOWN",
+          "finalization_included_in_stage_work": true,
+          "forecast_candidate_qualified": 1,
+          "forecast_incumbent_qualified": 1,
+          "forecast_remaining_budget": 490729,
+          "forecast_remaining_missions": 1,
+          "incumbent_maintenance": 0,
+          "incumbent_mean_work": 3813,
+          "maintenance": 7,
+          "native_human_hardware_monetary_costs": "UNKNOWN_OR_SEPARATE",
+          "net_benefit": false,
+          "note": "No economic promotion is based on a pre-finalization forecast. Whole action construction/diagnostic/integration/export debits are retained in the authoritative protected improvement ledger.",
+          "predicted_net_savings": -19608,
+          "provisional_model_only": true
+        },
+        "applicability": {
+          "horizon": 128,
+          "jobs": 18,
+          "kind": "repair"
+        },
+        "authority": [],
+        "corpus": {
+          "protected_research": false,
+          "qualification": [
+            {
+              "id": "community-release-seven-dev-qualification-repair",
+              "semantic_hash": "6a456dce5697b234df4fb9795d261a3676a4952f374af25ca8d0230dc64262a1"
+            }
+          ],
+          "training": [
+            {
+              "id": "community-release-seven-dev-training-repair",
+              "semantic_hash": "ede3b5c1ed724b96cc9aec20a5ffa3298fe93ec915073cf822812cd947063c80"
+            }
+          ]
+        },
+        "dependencies": [
+          "fixed core.mjs grammar",
+          "independent Python checker"
+        ],
+        "digest": "0470be8b1f3a545fd537c03fccbd1d8c7ad20fc1d05b9939843637c39eb85443",
+        "executable_interface": "Fixed release-plan/v1 strategy AST, no host code",
+        "frozen_before_service_inputs": true,
+        "lifecycle_costs": [
+          {
+            "improvement_work": 19920,
+            "kind": "stage-construction-failed-candidates-checks-retention-integration",
+            "ledger_end": 128,
+            "ledger_start": 116
+          },
+          {
+            "assumption": "Declared remaining missions only; not yet incurred.",
+            "kind": "forecast-maintenance",
+            "work": 7
+          },
+          {
+            "account": "improvement_work",
+            "authoritative_action_ledger": true,
+            "kind": "action-level-diagnostics-and-export"
+          }
+        ],
+        "parent_digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+        "production_authority": false,
+        "proof": [],
+        "qualification": {
+          "candidate": {
+            "count": 1,
+            "makespan": 14,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3823
+          },
+          "candidate_digest": "0470be8b1f3a545fd537c03fccbd1d8c7ad20fc1d05b9939843637c39eb85443",
+          "correctness": true,
+          "fair_allocation": true,
+          "incumbent": {
+            "count": 1,
+            "makespan": 14,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3813
+          },
+          "independence": "Separate checker implementation; common project authorship and one machine.",
+          "reference": [
+            {
+              "allocated_budget": 30000,
+              "attempts": [],
+              "checker": {
+                "counts": {
+                  "arithmetic": 104,
+                  "calendar_slots": 96,
+                  "comparisons": 499,
+                  "dependency_edges": 48,
+                  "input_bytes": 1378,
+                  "input_fields": 157,
+                  "interval_slots": 14,
+                  "job_scans": 42,
+                  "map_operations": 147,
+                  "total": 2485
+                },
+                "errors": [],
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 11,
+                  "locked": 3,
+                  "value": 11
+                },
+                "optimal_if_bound": false,
+                "qualified": true,
+                "valid": true
+              },
+              "counts": {
+                "accounting:check-reserve": 1,
+                "bound:capacity": 11,
+                "bound:job": 7,
+                "checker:reference": 2485,
+                "features:critical": 16,
+                "features:descendant": 32,
+                "features:earliest": 16,
+                "features:edge": 16,
+                "features:work": 38,
+                "inspect:baseline": 7,
+                "inspect:edge": 15,
+                "inspect:input-block64": 13,
+                "inspect:job": 7,
+                "inspect:locked": 1,
+                "inspect:release": 7,
+                "schedule:capacity-slot": 15,
+                "schedule:commit-slot": 11,
+                "schedule:dependency-time": 8,
+                "schedule:lock-slot": 3,
+                "schedule:ready-edge": 25,
+                "schedule:ready-job": 42,
+                "schedule:start-trial": 10,
+                "strategy:priority-compare": 2,
+                "strategy:repair-policy-entry": 1,
+                "strategy:score-term": 8,
+                "workbench:envelope-block64": 586,
+                "workbench:validation": 400
+              },
+              "error": null,
+              "execution_budget": 30000,
+              "pack_digest": "7e6d2af75f8dc37caa5fe7774580d9503aab02155a8c8edbd94342c4b410294d",
+              "qualified": true,
+              "result": {
+                "authority": [],
+                "dispatch_order": [
+                  "J2",
+                  "J3",
+                  "J4",
+                  "J5",
+                  "J6",
+                  "J7"
+                ],
+                "lookahead_steps": 0,
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 11,
+                  "locked": 3,
+                  "value": 11
+                },
+                "makespan": 14,
+                "movement": 3,
+                "optimal_by_lower_bound": false,
+                "proof": [],
+                "schedule": [
+                  {
+                    "end": 3,
+                    "id": "J1",
+                    "start": 0
+                  },
+                  {
+                    "end": 6,
+                    "id": "J2",
+                    "start": 3
+                  },
+                  {
+                    "end": 8,
+                    "id": "J3",
+                    "start": 6
+                  },
+                  {
+                    "end": 10,
+                    "id": "J4",
+                    "start": 8
+                  },
+                  {
+                    "end": 11,
+                    "id": "J6",
+                    "start": 10
+                  },
+                  {
+                    "end": 13,
+                    "id": "J5",
+                    "start": 11
+                  },
+                  {
+                    "end": 14,
+                    "id": "J7",
+                    "start": 13
+                  }
+                ],
+                "schema": "release-plan-result/v1",
+                "task_id": "community-release-seven-dev-qualification-repair"
+              },
+              "selected_method": {
+                "base": {
+                  "kind": "dispatch",
+                  "name": "critical-path",
+                  "weights": {
+                    "cp": 1
+                  }
+                },
+                "kind": "repair",
+                "mode": "quality",
+                "stability": 0
+              },
+              "task_id": "community-release-seven-dev-qualification-repair",
+              "truncated": false,
+              "valid": true,
+              "wall_ms": 31.149793000000045,
+              "work": 3813
+            }
+          ],
+          "registered_per_output_allocation": 30000,
+          "rows": [
+            {
+              "allocated_budget": 30000,
+              "attempts": [],
+              "checker": {
+                "counts": {
+                  "arithmetic": 104,
+                  "calendar_slots": 96,
+                  "comparisons": 499,
+                  "dependency_edges": 48,
+                  "input_bytes": 1378,
+                  "input_fields": 157,
+                  "interval_slots": 14,
+                  "job_scans": 42,
+                  "map_operations": 147,
+                  "total": 2485
+                },
+                "errors": [],
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 11,
+                  "locked": 3,
+                  "value": 11
+                },
+                "optimal_if_bound": false,
+                "qualified": true,
+                "valid": true
+              },
+              "counts": {
+                "accounting:check-reserve": 1,
+                "bound:capacity": 11,
+                "bound:job": 7,
+                "checker:reference": 2485,
+                "features:critical": 16,
+                "features:descendant": 32,
+                "features:earliest": 16,
+                "features:edge": 16,
+                "features:work": 38,
+                "inspect:baseline": 7,
+                "inspect:edge": 15,
+                "inspect:input-block64": 13,
+                "inspect:job": 7,
+                "inspect:locked": 1,
+                "inspect:release": 7,
+                "schedule:capacity-slot": 15,
+                "schedule:commit-slot": 11,
+                "schedule:dependency-time": 8,
+                "schedule:lock-slot": 3,
+                "schedule:ready-edge": 25,
+                "schedule:ready-job": 42,
+                "schedule:start-trial": 10,
+                "strategy:priority-compare": 2,
+                "strategy:repair-policy-entry": 1,
+                "strategy:score-term": 8,
+                "strategy:sort-move": 4,
+                "strategy:stability-compare": 2,
+                "workbench:envelope-block64": 588,
+                "workbench:validation": 400
+              },
+              "error": null,
+              "execution_budget": 30000,
+              "pack_digest": "df1e9d3d07d6b147e67e7523b965707547c03848f2c64720cb6318698199b2f3",
+              "qualified": true,
+              "result": {
+                "authority": [],
+                "dispatch_order": [
+                  "J2",
+                  "J3",
+                  "J4",
+                  "J5",
+                  "J6",
+                  "J7"
+                ],
+                "lookahead_steps": 0,
+                "lower_bound": {
+                  "critical": 11,
+                  "load": 11,
+                  "locked": 3,
+                  "value": 11
+                },
+                "makespan": 14,
+                "movement": 3,
+                "optimal_by_lower_bound": false,
+                "proof": [],
+                "schedule": [
+                  {
+                    "end": 3,
+                    "id": "J1",
+                    "start": 0
+                  },
+                  {
+                    "end": 6,
+                    "id": "J2",
+                    "start": 3
+                  },
+                  {
+                    "end": 8,
+                    "id": "J3",
+                    "start": 6
+                  },
+                  {
+                    "end": 10,
+                    "id": "J4",
+                    "start": 8
+                  },
+                  {
+                    "end": 11,
+                    "id": "J6",
+                    "start": 10
+                  },
+                  {
+                    "end": 13,
+                    "id": "J5",
+                    "start": 11
+                  },
+                  {
+                    "end": 14,
+                    "id": "J7",
+                    "start": 13
+                  }
+                ],
+                "schema": "release-plan-result/v1",
+                "task_id": "community-release-seven-dev-qualification-repair"
+              },
+              "selected_method": {
+                "base": {
+                  "base": {
+                    "kind": "dispatch",
+                    "name": "shortest-first",
+                    "weights": {
+                      "duration": -1
+                    }
+                  },
+                  "kind": "lookahead",
+                  "steps": 1,
+                  "trigger": "contention",
+                  "width": 2
+                },
+                "kind": "repair",
+                "mode": "stable",
+                "stability": 2
+              },
+              "task_id": "community-release-seven-dev-qualification-repair",
+              "truncated": false,
+              "valid": true,
+              "wall_ms": 34.68864600000006,
+              "work": 3823
+            }
+          ]
+        },
+        "schema": "engineering-strategy-capability/v1",
+        "scientific_source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+        "source_hash": "7da1b2e893a918fe3f164185452883a52ec56456b29fd8503baa0effb2dc629b",
+        "stage": "repair",
+        "strategy": {
+          "base": {
+            "base": {
+              "kind": "dispatch",
+              "name": "shortest-first",
+              "weights": {
+                "duration": -1
+              }
+            },
+            "kind": "lookahead",
+            "steps": 1,
+            "trigger": "contention",
+            "width": 2
+          },
+          "kind": "repair",
+          "mode": "stable",
+          "stability": 2
+        },
+        "trial_only": true,
+        "version": 1
+      },
+      "construction_work": 19920,
+      "corpus": {
+        "protected_research": false,
+        "qualification": [
+          {
+            "id": "community-release-seven-dev-qualification-repair",
+            "semantic_hash": "6a456dce5697b234df4fb9795d261a3676a4952f374af25ca8d0230dc64262a1"
+          }
+        ],
+        "training": [
+          {
+            "id": "community-release-seven-dev-training-repair",
+            "semantic_hash": "ede3b5c1ed724b96cc9aec20a5ffa3298fe93ec915073cf822812cd947063c80"
+          }
+        ]
+      },
+      "decision": "HOLD_FULL_COST_UNKNOWN",
+      "gate": {
+        "accepted": false,
+        "acquisition": 19920,
+        "action_export_accounting": "See action-level improvement ledger; no economic promotion before full costs.",
+        "assumption": "Qualification frequencies and mean costs generalize only to the declared remaining same-scope mission count; no demand or monetary value is inferred.",
+        "break_even_missions": null,
+        "candidate_maintenance": 7,
+        "candidate_mean_work": 3823,
+        "correctness": true,
+        "decision": "HOLD_FULL_COST_UNKNOWN",
+        "finalization_included_in_stage_work": true,
+        "forecast_candidate_qualified": 1,
+        "forecast_incumbent_qualified": 1,
+        "forecast_remaining_budget": 490729,
+        "forecast_remaining_missions": 1,
+        "incumbent_maintenance": 0,
+        "incumbent_mean_work": 3813,
+        "maintenance": 7,
+        "native_human_hardware_monetary_costs": "UNKNOWN_OR_SEPARATE",
+        "net_benefit": false,
+        "note": "No economic promotion is based on a pre-finalization forecast. Whole action construction/diagnostic/integration/export debits are retained in the authoritative protected improvement ledger.",
+        "predicted_net_savings": -19608,
+        "provisional_model_only": true
+      },
+      "lineage": {
+        "authority": [],
+        "candidate_digest": "0470be8b1f3a545fd537c03fccbd1d8c7ad20fc1d05b9939843637c39eb85443",
+        "output_digest": "0b0d2232d92b7ff52a0de8bcef5e594aa1d6749b9183ab4bda1aa241c5543a40",
+        "parent_calls": 3,
+        "parent_digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+        "parent_read": 1,
+        "proof": []
+      },
+      "qualification": {
+        "candidate": {
+          "count": 1,
+          "makespan": 14,
+          "qualified": 1,
+          "valid": 1,
+          "work": 3823
+        },
+        "candidate_digest": "0470be8b1f3a545fd537c03fccbd1d8c7ad20fc1d05b9939843637c39eb85443",
+        "correctness": true,
+        "fair_allocation": true,
+        "incumbent": {
+          "count": 1,
+          "makespan": 14,
+          "qualified": 1,
+          "valid": 1,
+          "work": 3813
+        },
+        "independence": "Separate checker implementation; common project authorship and one machine.",
+        "reference": [
+          {
+            "allocated_budget": 30000,
+            "attempts": [],
+            "checker": {
+              "counts": {
+                "arithmetic": 104,
+                "calendar_slots": 96,
+                "comparisons": 499,
+                "dependency_edges": 48,
+                "input_bytes": 1378,
+                "input_fields": 157,
+                "interval_slots": 14,
+                "job_scans": 42,
+                "map_operations": 147,
+                "total": 2485
+              },
+              "errors": [],
+              "lower_bound": {
+                "critical": 11,
+                "load": 11,
+                "locked": 3,
+                "value": 11
+              },
+              "optimal_if_bound": false,
+              "qualified": true,
+              "valid": true
+            },
+            "counts": {
+              "accounting:check-reserve": 1,
+              "bound:capacity": 11,
+              "bound:job": 7,
+              "checker:reference": 2485,
+              "features:critical": 16,
+              "features:descendant": 32,
+              "features:earliest": 16,
+              "features:edge": 16,
+              "features:work": 38,
+              "inspect:baseline": 7,
+              "inspect:edge": 15,
+              "inspect:input-block64": 13,
+              "inspect:job": 7,
+              "inspect:locked": 1,
+              "inspect:release": 7,
+              "schedule:capacity-slot": 15,
+              "schedule:commit-slot": 11,
+              "schedule:dependency-time": 8,
+              "schedule:lock-slot": 3,
+              "schedule:ready-edge": 25,
+              "schedule:ready-job": 42,
+              "schedule:start-trial": 10,
+              "strategy:priority-compare": 2,
+              "strategy:repair-policy-entry": 1,
+              "strategy:score-term": 8,
+              "workbench:envelope-block64": 586,
+              "workbench:validation": 400
+            },
+            "error": null,
+            "execution_budget": 30000,
+            "pack_digest": "7e6d2af75f8dc37caa5fe7774580d9503aab02155a8c8edbd94342c4b410294d",
+            "qualified": true,
+            "result": {
+              "authority": [],
+              "dispatch_order": [
+                "J2",
+                "J3",
+                "J4",
+                "J5",
+                "J6",
+                "J7"
+              ],
+              "lookahead_steps": 0,
+              "lower_bound": {
+                "critical": 11,
+                "load": 11,
+                "locked": 3,
+                "value": 11
+              },
+              "makespan": 14,
+              "movement": 3,
+              "optimal_by_lower_bound": false,
+              "proof": [],
+              "schedule": [
+                {
+                  "end": 3,
+                  "id": "J1",
+                  "start": 0
+                },
+                {
+                  "end": 6,
+                  "id": "J2",
+                  "start": 3
+                },
+                {
+                  "end": 8,
+                  "id": "J3",
+                  "start": 6
+                },
+                {
+                  "end": 10,
+                  "id": "J4",
+                  "start": 8
+                },
+                {
+                  "end": 11,
+                  "id": "J6",
+                  "start": 10
+                },
+                {
+                  "end": 13,
+                  "id": "J5",
+                  "start": 11
+                },
+                {
+                  "end": 14,
+                  "id": "J7",
+                  "start": 13
+                }
+              ],
+              "schema": "release-plan-result/v1",
+              "task_id": "community-release-seven-dev-qualification-repair"
+            },
+            "selected_method": {
+              "base": {
+                "kind": "dispatch",
+                "name": "critical-path",
+                "weights": {
+                  "cp": 1
+                }
+              },
+              "kind": "repair",
+              "mode": "quality",
+              "stability": 0
+            },
+            "task_id": "community-release-seven-dev-qualification-repair",
+            "truncated": false,
+            "valid": true,
+            "wall_ms": 31.149793000000045,
+            "work": 3813
+          }
+        ],
+        "registered_per_output_allocation": 30000,
+        "rows": [
+          {
+            "allocated_budget": 30000,
+            "attempts": [],
+            "checker": {
+              "counts": {
+                "arithmetic": 104,
+                "calendar_slots": 96,
+                "comparisons": 499,
+                "dependency_edges": 48,
+                "input_bytes": 1378,
+                "input_fields": 157,
+                "interval_slots": 14,
+                "job_scans": 42,
+                "map_operations": 147,
+                "total": 2485
+              },
+              "errors": [],
+              "lower_bound": {
+                "critical": 11,
+                "load": 11,
+                "locked": 3,
+                "value": 11
+              },
+              "optimal_if_bound": false,
+              "qualified": true,
+              "valid": true
+            },
+            "counts": {
+              "accounting:check-reserve": 1,
+              "bound:capacity": 11,
+              "bound:job": 7,
+              "checker:reference": 2485,
+              "features:critical": 16,
+              "features:descendant": 32,
+              "features:earliest": 16,
+              "features:edge": 16,
+              "features:work": 38,
+              "inspect:baseline": 7,
+              "inspect:edge": 15,
+              "inspect:input-block64": 13,
+              "inspect:job": 7,
+              "inspect:locked": 1,
+              "inspect:release": 7,
+              "schedule:capacity-slot": 15,
+              "schedule:commit-slot": 11,
+              "schedule:dependency-time": 8,
+              "schedule:lock-slot": 3,
+              "schedule:ready-edge": 25,
+              "schedule:ready-job": 42,
+              "schedule:start-trial": 10,
+              "strategy:priority-compare": 2,
+              "strategy:repair-policy-entry": 1,
+              "strategy:score-term": 8,
+              "strategy:sort-move": 4,
+              "strategy:stability-compare": 2,
+              "workbench:envelope-block64": 588,
+              "workbench:validation": 400
+            },
+            "error": null,
+            "execution_budget": 30000,
+            "pack_digest": "df1e9d3d07d6b147e67e7523b965707547c03848f2c64720cb6318698199b2f3",
+            "qualified": true,
+            "result": {
+              "authority": [],
+              "dispatch_order": [
+                "J2",
+                "J3",
+                "J4",
+                "J5",
+                "J6",
+                "J7"
+              ],
+              "lookahead_steps": 0,
+              "lower_bound": {
+                "critical": 11,
+                "load": 11,
+                "locked": 3,
+                "value": 11
+              },
+              "makespan": 14,
+              "movement": 3,
+              "optimal_by_lower_bound": false,
+              "proof": [],
+              "schedule": [
+                {
+                  "end": 3,
+                  "id": "J1",
+                  "start": 0
+                },
+                {
+                  "end": 6,
+                  "id": "J2",
+                  "start": 3
+                },
+                {
+                  "end": 8,
+                  "id": "J3",
+                  "start": 6
+                },
+                {
+                  "end": 10,
+                  "id": "J4",
+                  "start": 8
+                },
+                {
+                  "end": 11,
+                  "id": "J6",
+                  "start": 10
+                },
+                {
+                  "end": 13,
+                  "id": "J5",
+                  "start": 11
+                },
+                {
+                  "end": 14,
+                  "id": "J7",
+                  "start": 13
+                }
+              ],
+              "schema": "release-plan-result/v1",
+              "task_id": "community-release-seven-dev-qualification-repair"
+            },
+            "selected_method": {
+              "base": {
+                "base": {
+                  "kind": "dispatch",
+                  "name": "shortest-first",
+                  "weights": {
+                    "duration": -1
+                  }
+                },
+                "kind": "lookahead",
+                "steps": 1,
+                "trigger": "contention",
+                "width": 2
+              },
+              "kind": "repair",
+              "mode": "stable",
+              "stability": 2
+            },
+            "task_id": "community-release-seven-dev-qualification-repair",
+            "truncated": false,
+            "valid": true,
+            "wall_ms": 34.68864600000006,
+            "work": 3823
+          }
+        ]
+      },
+      "scope": "Disjoint authored development tasks; candidates freeze before any actual served changed/repair inputs are exposed to them. Not protected research evaluation.",
+      "search": {
+        "candidate": {
+          "digest": "0470be8b1f3a545fd537c03fccbd1d8c7ad20fc1d05b9939843637c39eb85443",
+          "selected_index": 1,
+          "strategy": {
+            "base": {
+              "base": {
+                "kind": "dispatch",
+                "name": "shortest-first",
+                "weights": {
+                  "duration": -1
+                }
+              },
+              "kind": "lookahead",
+              "steps": 1,
+              "trigger": "contention",
+              "width": 2
+            },
+            "kind": "repair",
+            "mode": "stable",
+            "stability": 2
+          },
+          "training": {
+            "count": 1,
+            "makespan": 14,
+            "qualified": 1,
+            "valid": 1,
+            "work": 3808
+          }
+        },
+        "menu_size": 3,
+        "parent_digest": "2a83aa7df6328711c7440b429f4488509d69e360a34255d432e8f0b720b10f06",
+        "search_rule": "Fixed equal-prefix successive halving; all eliminated rows retained",
+        "stage": "repair",
+        "stop": "TRAINING_RACE_COMPLETE",
+        "trials": [
+          {
+            "complete": true,
+            "eliminated_after": 1,
+            "index": 0,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 103,
+                    "calendar_slots": 96,
+                    "comparisons": 499,
+                    "dependency_edges": 48,
+                    "input_bytes": 1365,
+                    "input_fields": 157,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 147,
+                    "total": 2470
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 10,
+                    "locked": 2,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 10,
+                  "bound:job": 7,
+                  "checker:reference": 2470,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:baseline": 7,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 13,
+                  "inspect:job": 7,
+                  "inspect:locked": 1,
+                  "inspect:release": 7,
+                  "schedule:capacity-slot": 47,
+                  "schedule:commit-slot": 33,
+                  "schedule:dependency-time": 24,
+                  "schedule:lock-slot": 2,
+                  "schedule:ready-edge": 59,
+                  "schedule:ready-job": 112,
+                  "schedule:start-trial": 32,
+                  "strategy:contention": 2,
+                  "strategy:inherited-dispatch-rollout": 2,
+                  "strategy:inherited-lookahead-decision": 1,
+                  "strategy:priority-compare": 4,
+                  "strategy:repair-policy-entry": 1,
+                  "strategy:rollout": 2,
+                  "strategy:score-term": 20,
+                  "strategy:sort-move": 4,
+                  "strategy:state-copy": 66,
+                  "workbench:envelope-block64": 588,
+                  "workbench:validation": 400
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "915172a8cab09581ebb86f80a8cc813fde817a91f9d069c37c10841b837157db",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J6",
+                    "J5",
+                    "J7"
+                  ],
+                  "lookahead_steps": 1,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 10,
+                    "locked": 2,
+                    "value": 10
+                  },
+                  "makespan": 14,
+                  "movement": 5,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 13,
+                      "id": "J5",
+                      "start": 11
+                    },
+                    {
+                      "end": 14,
+                      "id": "J7",
+                      "start": 13
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training-repair"
+                },
+                "selected_method": {
+                  "base": {
+                    "base": {
+                      "kind": "dispatch",
+                      "name": "shortest-first",
+                      "weights": {
+                        "duration": -1
+                      }
+                    },
+                    "kind": "lookahead",
+                    "steps": 1,
+                    "trigger": "contention",
+                    "width": 2
+                  },
+                  "kind": "repair",
+                  "mode": "quality",
+                  "stability": 0
+                },
+                "task_id": "community-release-seven-dev-training-repair",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 34.32630199999994,
+                "work": 4089
+              }
+            ],
+            "strategy": {
+              "base": {
+                "base": {
+                  "kind": "dispatch",
+                  "name": "shortest-first",
+                  "weights": {
+                    "duration": -1
+                  }
+                },
+                "kind": "lookahead",
+                "steps": 1,
+                "trigger": "contention",
+                "width": 2
+              },
+              "kind": "repair",
+              "mode": "quality",
+              "stability": 0
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 14,
+              "qualified": 1,
+              "valid": 1,
+              "work": 4089
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 1,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 103,
+                    "calendar_slots": 96,
+                    "comparisons": 499,
+                    "dependency_edges": 48,
+                    "input_bytes": 1365,
+                    "input_fields": 157,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 147,
+                    "total": 2470
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 10,
+                    "locked": 2,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 10,
+                  "bound:job": 7,
+                  "checker:reference": 2470,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:baseline": 7,
+                  "inspect:edge": 15,
+                  "inspect:input-block64": 13,
+                  "inspect:job": 7,
+                  "inspect:locked": 1,
+                  "inspect:release": 7,
+                  "schedule:capacity-slot": 16,
+                  "schedule:commit-slot": 11,
+                  "schedule:dependency-time": 8,
+                  "schedule:lock-slot": 2,
+                  "schedule:ready-edge": 25,
+                  "schedule:ready-job": 42,
+                  "schedule:start-trial": 11,
+                  "strategy:priority-compare": 2,
+                  "strategy:repair-policy-entry": 1,
+                  "strategy:score-term": 8,
+                  "strategy:sort-move": 4,
+                  "strategy:stability-compare": 2,
+                  "workbench:envelope-block64": 588,
+                  "workbench:validation": 400
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "3879cc9dd2484552e5c83958ade52f9d6f98ed27e87b557b63a054820a2ab9db",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 10,
+                    "locked": 2,
+                    "value": 10
+                  },
+                  "makespan": 14,
+                  "movement": 5,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 13,
+                      "id": "J5",
+                      "start": 11
+                    },
+                    {
+                      "end": 14,
+                      "id": "J7",
+                      "start": 13
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training-repair"
+                },
+                "selected_method": {
+                  "base": {
+                    "base": {
+                      "kind": "dispatch",
+                      "name": "shortest-first",
+                      "weights": {
+                        "duration": -1
+                      }
+                    },
+                    "kind": "lookahead",
+                    "steps": 1,
+                    "trigger": "contention",
+                    "width": 2
+                  },
+                  "kind": "repair",
+                  "mode": "stable",
+                  "stability": 2
+                },
+                "task_id": "community-release-seven-dev-training-repair",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 31.573541999999634,
+                "work": 3808
+              }
+            ],
+            "strategy": {
+              "base": {
+                "base": {
+                  "kind": "dispatch",
+                  "name": "shortest-first",
+                  "weights": {
+                    "duration": -1
+                  }
+                },
+                "kind": "lookahead",
+                "steps": 1,
+                "trigger": "contention",
+                "width": 2
+              },
+              "kind": "repair",
+              "mode": "stable",
+              "stability": 2
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 14,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3808
+            }
+          },
+          {
+            "complete": true,
+            "eliminated_after": null,
+            "index": 2,
+            "rows": [
+              {
+                "allocated_budget": 60000,
+                "attempts": [],
+                "checker": {
+                  "counts": {
+                    "arithmetic": 103,
+                    "calendar_slots": 96,
+                    "comparisons": 499,
+                    "dependency_edges": 48,
+                    "input_bytes": 1398,
+                    "input_fields": 158,
+                    "interval_slots": 13,
+                    "job_scans": 42,
+                    "map_operations": 147,
+                    "total": 2504
+                  },
+                  "errors": [],
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 10,
+                    "locked": 2,
+                    "value": 10
+                  },
+                  "optimal_if_bound": false,
+                  "qualified": true,
+                  "valid": true
+                },
+                "counts": {
+                  "accounting:check-reserve": 1,
+                  "bound:capacity": 10,
+                  "bound:job": 7,
+                  "checker:reference": 2504,
+                  "features:critical": 16,
+                  "features:descendant": 32,
+                  "features:earliest": 16,
+                  "features:edge": 16,
+                  "features:work": 38,
+                  "inspect:baseline": 14,
+                  "inspect:edge": 30,
+                  "inspect:input-block64": 26,
+                  "inspect:job": 14,
+                  "inspect:locked": 2,
+                  "inspect:release": 14,
+                  "schedule:capacity-slot": 16,
+                  "schedule:commit-slot": 11,
+                  "schedule:dependency-time": 8,
+                  "schedule:lock-slot": 2,
+                  "schedule:ready-edge": 25,
+                  "schedule:ready-job": 42,
+                  "schedule:start-trial": 11,
+                  "strategy:priority-compare": 2,
+                  "strategy:repair-policy-entry": 2,
+                  "strategy:score-term": 8,
+                  "strategy:sort-move": 4,
+                  "strategy:stability-compare": 2,
+                  "workbench:envelope-block64": 589,
+                  "workbench:validation": 400
+                },
+                "error": null,
+                "execution_budget": 60000,
+                "pack_digest": "68aa84cbf1b2fac2fc15e6990242658bf40034cb386597842ce586ca4b665205",
+                "qualified": true,
+                "result": {
+                  "authority": [],
+                  "dispatch_order": [
+                    "J2",
+                    "J3",
+                    "J4",
+                    "J5",
+                    "J6",
+                    "J7"
+                  ],
+                  "lookahead_steps": 0,
+                  "lower_bound": {
+                    "critical": 10,
+                    "load": 10,
+                    "locked": 2,
+                    "value": 10
+                  },
+                  "makespan": 14,
+                  "movement": 5,
+                  "optimal_by_lower_bound": false,
+                  "proof": [],
+                  "repair_mode": "selective:stable",
+                  "schedule": [
+                    {
+                      "end": 2,
+                      "id": "J1",
+                      "start": 0
+                    },
+                    {
+                      "end": 5,
+                      "id": "J2",
+                      "start": 2
+                    },
+                    {
+                      "end": 7,
+                      "id": "J3",
+                      "start": 5
+                    },
+                    {
+                      "end": 9,
+                      "id": "J4",
+                      "start": 7
+                    },
+                    {
+                      "end": 10,
+                      "id": "J6",
+                      "start": 9
+                    },
+                    {
+                      "end": 13,
+                      "id": "J5",
+                      "start": 11
+                    },
+                    {
+                      "end": 14,
+                      "id": "J7",
+                      "start": 13
+                    }
+                  ],
+                  "schema": "release-plan-result/v1",
+                  "task_id": "community-release-seven-dev-training-repair"
+                },
+                "selected_method": {
+                  "base": {
+                    "base": {
+                      "kind": "dispatch",
+                      "name": "shortest-first",
+                      "weights": {
+                        "duration": -1
+                      }
+                    },
+                    "kind": "lookahead",
+                    "steps": 1,
+                    "trigger": "contention",
+                    "width": 2
+                  },
+                  "kind": "repair",
+                  "mode": "selective",
+                  "stability": 0
+                },
+                "task_id": "community-release-seven-dev-training-repair",
+                "truncated": false,
+                "valid": true,
+                "wall_ms": 31.198758999999882,
+                "work": 3895
+              }
+            ],
+            "strategy": {
+              "base": {
+                "base": {
+                  "kind": "dispatch",
+                  "name": "shortest-first",
+                  "weights": {
+                    "duration": -1
+                  }
+                },
+                "kind": "lookahead",
+                "steps": 1,
+                "trigger": "contention",
+                "width": 2
+              },
+              "kind": "repair",
+              "mode": "selective",
+              "stability": 0
+            },
+            "summary": {
+              "count": 1,
+              "makespan": 14,
+              "qualified": 1,
+              "valid": 1,
+              "work": 3895
+            }
+          }
+        ]
+      },
+      "stage": "repair"
+    }
+  ],
+  "proof": [],
+  "authority": [],
+  "limits": "Inspection records only. Fresh correctness, applicability and economic admission are required before reuse."
+}

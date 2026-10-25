@@ -1,0 +1,96 @@
+{
+  "schema": "agi-alpha.triage-chronology-amendment.v1",
+  "created_at": "2026-10-25T15:57:57.693229+00:00",
+  "status": "HISTORICAL_SUPERSEDED_CASE38_CORRECTION_NO_APPROVAL",
+  "original_proposal": {
+    "path": "/tmp/alpha-release-audit-recovery-20261025/current-live-a163/triage/CURRENT_54_TRIAGE_PROPOSAL.json",
+    "bytes": 126644,
+    "sha256": "e9437e66d9a5a69f1759d3b492757bd3fccb13d5ceabff6686c2596693caf992"
+  },
+  "original_body_preserved": true,
+  "original_status_now": "HISTORICAL_SUPERSEDED_PENDING_PROPOSAL",
+  "original_source": {
+    "commit": "a163b5b3e34551e5dfdf2075c6f69c8cdb3e0c1f",
+    "tree": "f276927ce6ff188a729f40c4942b28bc9d4a2f88",
+    "pack_sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+    "raw_report_sha256": "ee269a4cce06f5dfdc1b09d5a18c37ea5bf6fa96b12624cb80e6d13beaaba6f6",
+    "raw_engine_exit": 1,
+    "raw_findings": 54
+  },
+  "correction": {
+    "case_id": "A163-PY-038",
+    "original_identity": {
+      "rule_id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "rule_definition_sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+      "rule_start_byte": 385577,
+      "rule_end_byte": 390868,
+      "source_path": "tests/browser/test_successor_alpha_browser.py",
+      "source_sha256": "8d54a7cb0d6a97af79aea9d9cf1ba9cd23c80cb4c5d41215436c1f374b89691b",
+      "source_bytes": 64341,
+      "start": {
+        "line": 410,
+        "col": 13,
+        "offset": 19525
+      },
+      "end": {
+        "line": 417,
+        "col": 14,
+        "offset": 19764
+      },
+      "snippet_sha256": "42c38411709518e4d01411199b430804f642501c5b4c773846a1bd117fe62b45",
+      "reported_lines_sha256": "8056b58f4d91700ebe3e55f5c3866f4b17e0782e180f5d274d539a1fea01cb48"
+    },
+    "original_triage_outcome": "CONTEXTUAL_INAPPLICABILITY_PROPOSED_NOT_APPROVED",
+    "revised_triage_outcome": "PROPOSED_INAPPLICABILITY_WITHDRAWN_VALIDATED_SOURCE_BOUNDARY_DEFECT",
+    "original_no_confirmed_defects_claim": "WITHDRAWN_AS_GENERAL_TRIAGE_CONCLUSION",
+    "finding": "Correct retained-plan-hash substring did not bind the complete downloaded module. Source mismatch could remain deferred until after Node import. Operator-selected Node argv does not establish trust in web-derived code.",
+    "validation": "Exact historical source dispatch reproduced with inert recorder. One host-import dispatch was observed; native processes started0 and downloaded program executedFalse. No exploit program was executed.",
+    "repair": "Trusted pinned repository exporter independently reconstructs expected module using validated strategy data and canonical full source identity; complete byte equality and immediate document digest/error fences must pass before host import.",
+    "repair_status": "DEVELOPMENT_IMPLEMENTED_202_TESTS_PASS_PENDING_FINAL_SOURCE_CONFIGURED_REVIEW_AND_BROWSER_QUALIFICATION",
+    "repair_source": [
+      {
+        "path": "scripts/check_strategy_python_security.py",
+        "sha256": "b822f97f20fa23ef3e9703ec50f9c08769c498a0a197f7c700974688c52f00a5",
+        "bytes": 47494,
+        "baseline_sha256": "c32faa169bdaddf969a1141a02aa9f32fb91f527a7b13d9b1d9f12379054a7db",
+        "baseline_bytes": 45235
+      },
+      {
+        "path": "tests/test_strategy_python_security.py",
+        "sha256": "608c42e215b8a287183ae483bbe95435ce973d35aa9ada103940571fa6ae5c42",
+        "bytes": 53313,
+        "baseline_sha256": "79a1290d2a92c9cb07946df12563dccf5c09f75a622fbc19902d7e7de0be9126",
+        "baseline_bytes": 40542
+      },
+      {
+        "path": "tests/browser/test_successor_alpha_browser.py",
+        "sha256": "d1c462024a9f6160433df06bcb3f90110434579e99962fc62835a7d678b8d660",
+        "bytes": 67710,
+        "baseline_sha256": "8d54a7cb0d6a97af79aea9d9cf1ba9cd23c80cb4c5d41215436c1f374b89691b",
+        "baseline_bytes": 64341
+      }
+    ],
+    "regressions": [
+      {
+        "path": "/workspace/scratch/0d7600b912de/ci-review-artifacts/security-a163-corrections/download-before-inert-red.log",
+        "bytes": 248,
+        "sha256": "09fc39b7595a56fe1cc4c1a0f7b4214b64bdb9020408b67c263c3e69c79d5d0e"
+      },
+      {
+        "path": "/workspace/scratch/0d7600b912de/ci-review-artifacts/security-a163-corrections/browser-boundary-green.log",
+        "bytes": 113,
+        "sha256": "78e8b7565654d80cf4f250e27a6f2f122d74de4c8dc9d46633cd0619a43216a5"
+      }
+    ],
+    "second_dispatch_and_other_argv_scope": "Static bounded review of existing54 finding contexts; fixed native-cli JSON/source-bound dispatch distinguished from downloaded module. No blanket claim of safety."
+  },
+  "remaining_53_cases": {
+    "status": "UNAPPROVED_HISTORICAL_CONTEXT_PROPOSALS_NOT_FINAL_SOURCE_DISPOSITIONS",
+    "approval_count": 0,
+    "authority_granted": false
+  },
+  "required_next_evidence": "New final-source raw official report, exact pack/target/context identities and separately reviewed source-context judgments; old54 proposal is not an active approval map.",
+  "approved_map_pin": null,
+  "map_created_or_approved": false,
+  "source_or_remote_mutations_by_amendment": false
+}

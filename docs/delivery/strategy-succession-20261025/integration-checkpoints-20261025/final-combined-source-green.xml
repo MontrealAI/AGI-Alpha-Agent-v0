@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="1.289" timestamp="2026-10-26T01:20:11.278329+09:00" hostname="467b1f56c7aa"><testcase classname="" name="tests.test_public_strategy_acceptance" time="0.000"><error message="collection failure">ImportError while importing test module '/workspace/scratch/0d7600b912de/strategy-integration/tests/test_public_strategy_acceptance.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_public_strategy_acceptance.py:16: in &lt;module&gt;
+    from scripts import accept_public_strategy as public
+scripts/accept_public_strategy.py:24: in &lt;module&gt;
+    from defusedxml import ElementTree as SafeET
+E   ModuleNotFoundError: No module named 'defusedxml'</error></testcase><testcase classname="" name="tests.test_strategy_qualification_xml" time="0.000"><error message="collection failure">ImportError while importing test module '/workspace/scratch/0d7600b912de/strategy-integration/tests/test_strategy_qualification_xml.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_strategy_qualification_xml.py:11: in &lt;module&gt;
+    from defusedxml.common import DefusedXmlException
+E   ModuleNotFoundError: No module named 'defusedxml'</error></testcase></testsuite></testsuites>
