@@ -4,12 +4,16 @@ on:
   pull_request:
     paths:
       - 'contrib/strategy_succession/**'
+      - 'contrib/productive-capability-ledger/automation-v1/**'
+      - 'contrib/productive-capability-ledger/transport-v1/**'
       - 'scripts/strategy_engineering_release.py'
       - '.github/workflows/strategy-succession-engineering.yml'
   push:
     branches: [codex/strategy-succession-20261025-344b3126]
     paths:
       - 'contrib/strategy_succession/**'
+      - 'contrib/productive-capability-ledger/automation-v1/**'
+      - 'contrib/productive-capability-ledger/transport-v1/**'
       - 'scripts/strategy_engineering_release.py'
       - '.github/workflows/strategy-succession-engineering.yml'
   workflow_dispatch:
@@ -124,6 +128,20 @@ jobs:
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_browser.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/browser.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_crash.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/crash_recovery.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" collect_qualification.py --root "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/evidence/strategy-engineering" --first-wheel "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl" --second-wheel "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl"
+      - name: Qualify the separate source-assurance candidate without operator adoption
+        env:
+          PYTHONNOUSERSITE: '1'
+          SOURCE_ASSURANCE_CHECKOUT: ${{ github.workspace }}
+          SOURCE_ASSURANCE_COMMIT: ${{ github.sha }}
+          SOURCE_ASSURANCE_EVIDENCE_DIR: ${{ github.workspace }}/evidence/strategy-engineering/source-candidate
+        run: |
+          cp contrib/productive-capability-ledger/transport-v1/test_source_browser.py "$RUNNER_TEMP/test_source_browser.py"
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_worker.py" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_api.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-worker.xml"
+          node --test "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/strategy.test.mjs"
+          "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$RUNNER_TEMP/test_source_browser.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-browser.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/automation-v1/test_csv_integrity.py"
+          "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_lock_compiler_offline_boundary.py"
       - name: Retain executed and failed evidence; never private operator homes
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

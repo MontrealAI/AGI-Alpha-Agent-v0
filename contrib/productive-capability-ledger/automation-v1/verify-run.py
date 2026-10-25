@@ -137,6 +137,16 @@ def csv_records(raw: bytes) -> list[dict[str, str]]:
     return rows
 
 
+def export_csv(fields: list[str], rows: list[dict[str, Any]]) -> bytes:
+    output = io.StringIO(newline="")
+    writer = csv.writer(output, quoting=csv.QUOTE_ALL, lineterminator="\r\n")
+    writer.writerow(fields)
+    for row in rows:
+        cells = [str(row[field]) for field in fields]
+        writer.writerow(["'" + cell if re.match(r"^(?:\s*[=+\-@]|[\t\r\n])", cell) else cell for cell in cells])
+    return output.getvalue().encode("utf-8")
+
+
 def verify(directory: Path) -> dict[str, Any]:
     if directory.is_symlink() or not directory.is_dir():
         raise ValueError("A regular run directory is required")
@@ -377,15 +387,48 @@ def verify(directory: Path) -> dict[str, Any]:
             identity == {"sha256": sha(raw_files[filename]), "bytes": len(raw_files[filename])},
             "CSV byte identity differs",
         )
+    left_indices = {row["path"]: index for index, row in enumerate(left_rows)}
+    right_indices = {row["path"]: index for index, row in enumerate(right_rows)}
+    expected_differences: list[dict[str, Any]] = []
+    expected_actions: list[dict[str, Any]] = []
+    next_step = (
+        "Review all referenced differences for this exact key and choose the authoritative values; "
+        "do not auto-overwrite."
+    )
+    for ordinal, path in enumerate(changed, 1):
+        left_index, right_index = left_indices[path], right_indices[path]
+        occurrence = f"conflict:{left_index}:{right_index}"
+        action_id = f"action-{ordinal:04}"
+        expected_differences.append(
+            {
+                "id": occurrence + ":0",
+                "occurrence": occurrence,
+                "action": action_id,
+                "key": path,
+                "kind": "conflict",
+                "leftRow": left_index + 1,
+                "rightRow": right_index + 1,
+                "field": "sha256",
+                "leftValue": declared[path],
+                "rightValue": observed[path],
+            }
+        )
+        expected_actions.append(
+            {
+                "id": action_id,
+                "key": path,
+                "type": "review_shared_values",
+                "leftRows": [left_index],
+                "rightRows": [right_index],
+                "occurrences": [occurrence],
+                "conflicts": [{"leftIndex": left_index, "rightIndex": right_index, "fieldIndices": [0]}],
+                "nextStep": next_step,
+            }
+        )
     differences = result["differences"]
     require(
-        [[row["key"], row["leftValue"], row["rightValue"]] for row in differences]
-        == [[path, declared[path], observed[path]] for path in changed],
-        "Independent exact-key/hash differences disagree",
-    )
-    require(
-        all(row["kind"] == "conflict" and row["field"] == "sha256" for row in differences),
-        "Changed source kind differs",
+        canonical(differences) == canonical(expected_differences),
+        "Independent source differences disagree, including identities, row references or action mappings",
     )
     metrics = result["metrics"]
     for key, expected in {
@@ -402,9 +445,23 @@ def verify(directory: Path) -> dict[str, Any]:
     resolution = result["resolution"]
     require(resolution["automaticallyResolved"] is False, "No source was automatically repaired or approved")
     require(resolution["coverage"]["originalOccurrences"] == len(changed), "Original disagreement coverage differs")
-    require([action["key"] for action in resolution["actions"]] == changed, "Action group lost an affected source")
-    for filename, key in (("differences.csv", "key"), ("action-plan.csv", "exact_key")):
-        reader = csv.DictReader(io.StringIO(raw_files[filename].decode(), newline=""))
+    require(
+        canonical(resolution["actions"]) == canonical(expected_actions),
+        "Independent source actions or evidence references disagree",
+    )
+    action_rows = [
+        {
+            "action": action["id"],
+            "exact_key": action["key"],
+            "type": action["type"],
+            "left_data_rows": str(action["leftRows"][0] + 1),
+            "right_data_rows": str(action["rightRows"][0] + 1),
+            "original_review_occurrences": action["occurrences"][0],
+            "next_step": action["nextStep"],
+        }
+        for action in expected_actions
+    ]
+    for filename, expected_rows in (("differences.csv", expected_differences), ("action-plan.csv", action_rows)):
         headers = (
             ["id", "occurrence", "action", "key", "kind", "leftRow", "rightRow", "field", "leftValue", "rightValue"]
             if filename == "differences.csv"
@@ -418,9 +475,16 @@ def verify(directory: Path) -> dict[str, Any]:
                 "next_step",
             ]
         )
-        require(reader.fieldnames == headers, "Download replaced its exact result schema: " + filename)
-        rows = list(reader)
-        require([row[key] for row in rows] == changed, "Download lost or invented an affected source: " + filename)
+        expected_bytes = export_csv(headers, expected_rows)
+        require(
+            raw_files[filename] == expected_bytes,
+            "Download differs from independently reconstructed source: " + filename,
+        )
+        if filename == "action-plan.csv":
+            require(
+                resolution["actionsCsv"].encode("utf-8") == expected_bytes,
+                "Retained action CSV differs from independently reconstructed source",
+            )
     workspace = parse(raw_files["workspace.json"])
     require(
         workspace["schema"] == "ti-catalogue-workspace/v1" and workspace["authority"] == "none",

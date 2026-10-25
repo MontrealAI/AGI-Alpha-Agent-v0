@@ -1,0 +1,163 @@
+{
+  "schema": "agi-alpha.completion-focused-validation/v1",
+  "baseCheckpoint": "e2503611666ee170266cbce51dc250492285f2e8",
+  "scope": "Focused engineering evidence; final hosted qualification, source review, Security and approved-operator acceptance are separate.",
+  "checks": {
+    "sourceRunnerNode": {
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "approvedAttemptRegression": {
+        "maxAttempts": 128,
+        "completionReservation": 118,
+        "retainedArtifacts": 258,
+        "independentChecks": 3016,
+        "customerJobs": false
+      }
+    },
+    "csvIntegrity": {
+      "unittestGroups": 5,
+      "cases": 23,
+      "passed": true
+    },
+    "offlineLockBoundary": {
+      "unittestGroups": 5,
+      "cases": 70,
+      "passed": true
+    },
+    "sourceWorker": {
+      "cases": 23,
+      "passed": true
+    },
+    "sourceAuthenticatedAPI": {
+      "cases": 9,
+      "passed": true,
+      "runtime": "Actual verified public Alpha1.42 installed outside checkout; isolated ASGI fixtures, not approved operator"
+    },
+    "sourceUI": {
+      "nodeGroups": 3,
+      "passed": true
+    },
+    "lintTypes": {
+      "ruff": "PASS changed Python",
+      "black": "PASS contributor-reported changed Python",
+      "strictMypy": "PASS contributor-reported worker/launcher/verifier/lock scripts"
+    },
+    "hostedSourceBrowser": "NOT RUN locally; added to existing mandatory Strategy workflow",
+    "fullLockedDevelopmentInstall": "NOT RUN; actual public1.42 plus exact26 core dependency profile installed in separate test environment",
+    "candidateWheel": {
+      "unchangedPlanningProfile": true,
+      "twoIdenticalBuilds": true,
+      "bytes": 186400,
+      "sha256": "3d09e55b1412408add9c604bd5027ca1ac87999c70b4cf9ffb04eaeba9828a6b",
+      "cleanSeparateEnvironmentInstall": true,
+      "pipCheck": "PASS"
+    }
+  },
+  "operatingStates": {
+    "sourceProfileAdoption": "NOT APPROVED",
+    "approvedOperator": "NOT RUN; exact existing approved installation/profile/session unavailable",
+    "activeSourceBrowserClosure": "UNQUALIFIED",
+    "unattendedRecovery": "UNQUALIFIED; uncertain requests remain fenced and reservations retained",
+    "threeConstructedMethods": "HOLD; incumbent retained",
+    "completeCurrencyCostsAndSurplus": "UNKNOWN; no financial transaction"
+  },
+  "files": {
+    ".github/workflows/strategy-succession-engineering.yml": {
+      "sha256": "09b6836d369e7f16e7551a4c5f4ab18343392d7c155d034fe05219c69aad1b12",
+      "bytes": 10997
+    },
+    "contrib/productive-capability-ledger/automation-v1/verify-run.py": {
+      "sha256": "0750059f8587b650624ced4abbada12bc4a231857b0cde76a7e48e373da48639",
+      "bytes": 34527
+    },
+    "contrib/productive-capability-ledger/automation-v1/test_csv_integrity.py": {
+      "sha256": "059db153ac7fe270f3e13be7ef3c5927f9108f17ddb10a9a69e8aa5158bc24ca",
+      "bytes": 5933
+    },
+    "tests/test_lock_compiler_offline_boundary.py": {
+      "sha256": "c99859e7e4246dfd4bfbea66e66dd002f50bd230df18369942963978b3fbcd3b",
+      "bytes": 6715
+    },
+    "scripts/verify_aiga_requirements_lock.py": {
+      "sha256": "ad8faf1944be8abe0a72d4d1a1a705f4b9d82375243720afc52c258361fd31a0",
+      "bytes": 2562
+    },
+    "scripts/verify_alpha_colab_requirements_lock.py": {
+      "sha256": "d7fa7feb15be4565542d1596d63c7089fa571cbb54b0a2f44961c672993ecb1f",
+      "bytes": 2429
+    },
+    "scripts/verify_alpha_requirements_lock.py": {
+      "sha256": "47afe80dd902a424e90e0b4e8764dca7a47fc5a966c2462d2501f28383001f5b",
+      "bytes": 2405
+    },
+    "scripts/verify_backend_requirements_lock.py": {
+      "sha256": "a5cb5e3c113e2b254316fc687930c0b5cd5a58c2a3a4c51f004849321ece1b54",
+      "bytes": 2373
+    },
+    "scripts/verify_era_experience_requirements_lock.py": {
+      "sha256": "13742c2693ad67ea4efae095a84679ee4bc541caf7dc095af7f22cb7e9a6b3db",
+      "bytes": 2569
+    },
+    "scripts/verify_mats_requirements_lock.py": {
+      "sha256": "fd8f1263e6ef58f6ce0eb4a06135e4b710b539378606aedc364536dcdbb53671",
+      "bytes": 2648
+    },
+    "scripts/verify_requirements_lock.py": {
+      "sha256": "289d946f1cd9d41a64f8d1067801439be405a6393ab17ffcbbd0ef86c8948b0f",
+      "bytes": 2268
+    },
+    "contrib/productive-capability-ledger/transport-v1/CANDIDATE_MANIFEST.json": {
+      "sha256": "372b34a2a299e5882052a90f99df5535ec936255ede33f8df567a9cb92d52da0",
+      "bytes": 6274
+    },
+    "contrib/productive-capability-ledger/transport-v1/README.md": {
+      "sha256": "a05b6045f4b2ccd2ce9756de789134e5f7da9a250494843c98e21e071f896461",
+      "bytes": 14390
+    },
+    "contrib/productive-capability-ledger/transport-v1/bridge.mjs": {
+      "sha256": "8511dfc89b600e359492a1934def18e752c00c4921badda1b083ab4dd6f7ccba",
+      "bytes": 1145
+    },
+    "contrib/productive-capability-ledger/transport-v1/scopes.example.json": {
+      "sha256": "e9c25ae97460099a2b9aa4496d9d39cbc026dbd59375cb50b382c5ab2af805e8",
+      "bytes": 243
+    },
+    "contrib/productive-capability-ledger/transport-v1/serve_candidate.py": {
+      "sha256": "ecec935fb8981873b554a669e9617005604536fb49081551473ca28ff1defcd2",
+      "bytes": 3144
+    },
+    "contrib/productive-capability-ledger/transport-v1/source_worker.py": {
+      "sha256": "0b816161050e0f02599c0d3bcd2b3919f17a9e366f65e8e96c744c514b559ff9",
+      "bytes": 20481
+    },
+    "contrib/productive-capability-ledger/transport-v1/strategy.css": {
+      "sha256": "25ce825a9c53a4cb2be103b87c18a3b5bca2915512cf17a053aba324e2700f94",
+      "bytes": 1550
+    },
+    "contrib/productive-capability-ledger/transport-v1/strategy.html": {
+      "sha256": "84172b1f4245eeeeace56545f4d2ca3e7a1110a44d2102922aec9eb28515cc0d",
+      "bytes": 4705
+    },
+    "contrib/productive-capability-ledger/transport-v1/strategy.js": {
+      "sha256": "dde327c2b6cc724e996adc94f66c1f4a0aaa18a85f2a9e7eeaefc15d2934eb4c",
+      "bytes": 10049
+    },
+    "contrib/productive-capability-ledger/transport-v1/strategy.test.mjs": {
+      "sha256": "8f20ac748ed58c675dc04a69c2fc8cc4c20f92d9c61d19df50bf8a34f5ac21bb",
+      "bytes": 2079
+    },
+    "contrib/productive-capability-ledger/transport-v1/test_source_api.py": {
+      "sha256": "95a989fd9df921bf873361ae53a56d0e7230cca0853e2b748691c8437ce3bd1d",
+      "bytes": 13647
+    },
+    "contrib/productive-capability-ledger/transport-v1/test_source_browser.py": {
+      "sha256": "1837030e9e9e0bc8cbb4cc22875a4c365a03efc585b0772cd61fdca7b29d33f9",
+      "bytes": 15943
+    },
+    "contrib/productive-capability-ledger/transport-v1/test_source_worker.py": {
+      "sha256": "9a268a6ccbe733146ceb373b287abc22917c8367f853709f451652f91332cc76",
+      "bytes": 9591
+    }
+  }
+}
