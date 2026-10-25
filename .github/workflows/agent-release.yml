@@ -222,7 +222,9 @@ jobs:
         if: always()
         with:
           name: runtime-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   regression:
@@ -354,7 +356,9 @@ jobs:
         if: always()
         with:
           name: regression
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   browser-contracts:
@@ -442,6 +446,7 @@ jobs:
           name: browser-contracts
           path: |
             evidence/
+            !evidence/semgrep-official/**
             alpha_factory_v1/core/interface/web_client/test-results/
           if-no-files-found: error
 
@@ -485,7 +490,9 @@ jobs:
         if: always()
         with:
           name: real-model
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   quality:
@@ -554,7 +561,12 @@ jobs:
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: repository-python-security
-          path: evidence/semgrep-official/
+          # Publish projections only; captured upstream rules and raw errors remain local.
+          path: |
+            evidence/semgrep-official/public/attempt-*/summary.json
+            evidence/semgrep-official/public/attempt-*/policy-identity.json
+            evidence/semgrep-official/public/attempt-*/finding-index.json
+            evidence/semgrep-official/public/attempt-*/source-identities.json
           if-no-files-found: error
       - name: Verify scoped security hook with its installed tool
         run: STRATEGY_REQUIRE_SEMGREP=1 python -m pytest --noconftest -o addopts= -p no:cacheprovider tests/test_strategy_python_security.py -q
@@ -582,7 +594,9 @@ jobs:
         if: always()
         with:
           name: quality
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   style-advisory:
@@ -772,7 +786,9 @@ jobs:
         if: always()
         with:
           name: gallery-${{ matrix.assets }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
       - name: Archive the exact tested full site
         if: matrix.assets == 'full'
@@ -844,7 +860,9 @@ jobs:
         if: always()
         with:
           name: native-demos
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   sovereign-lab:
@@ -887,7 +905,9 @@ jobs:
         if: always()
         with:
           name: sovereign-lab-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   finance-lab:
@@ -929,7 +949,9 @@ jobs:
         if: always()
         with:
           name: finance-lab-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   muzero-lab:
@@ -981,7 +1003,9 @@ jobs:
         if: always()
         with:
           name: muzero-lab-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   demo-distribution:
@@ -1016,7 +1040,9 @@ jobs:
         if: always()
         with:
           name: demo-distribution-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
 
   historical-ci:
@@ -1073,7 +1099,9 @@ jobs:
         if: always()
         with:
           name: ${{ steps.evidence-name.outputs.name }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
 
   successor-workbench:
@@ -1120,7 +1148,9 @@ jobs:
         if: always()
         with:
           name: successor-workbench
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   transformational-intelligence:
@@ -1280,7 +1310,9 @@ jobs:
         if: always()
         with:
           name: ${{ steps.public-name.outputs.name }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
 
   publish:

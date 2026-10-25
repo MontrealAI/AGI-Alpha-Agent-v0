@@ -14,13 +14,25 @@ SQLite migration, reopen, duplicate connections and conflicts were exercised wit
 controlled embeddings. Actual FAISS and PostgreSQL/pgvector were not qualified;
 the PostgreSQL additive schema and conflict checks were not executed against a live
 server. No providers, network databases or model downloads were used in these tests.
-Do not roll back this expanded SQLite schema to an old positional-insert writer;
-stop writes and retain a backup for a separately reviewed rollback or forward fix.
+Do not point an old five-column positional-insert writer at the expanded table.
+The tested rollback boundary is: stop and close writers, take a pre-upgrade
+SQLite backup, and retain that snapshot. After upgrading and writing, stop writers
+again and preserve a separate upgraded backup. Restore the pre-upgrade backup to
+a separate database path before using the old five-column insert/read contract.
+The fixed-SQL procedure test verifies that the pre-upgrade snapshot remains intact,
+that the restored old writer can insert and read its own records, and that the
+retained upgraded snapshot still contains both legacy and post-upgrade records.
+Post-upgrade records are not automatically present in the restored old database
+or adapted for the old writer. Keep the upgraded snapshot; reconciling those later
+records requires a separately reviewed forward procedure. This is backup/restore
+with two preserved histories, not seamless rollback or automatic reconciliation.
 
 Patch Manager creates `archive-patch-v2:sha256:` IDs binding a domain, exact diff
 and parent. Its atomic insert-or-compare operation stores the body and archive row
 in one SQLite transaction. Identical retries retain the accepted timestamp, scores
-and parent; partial or conflicting records are refused. Existing SHA-1 keys,
+and parent. Admission compares archive and body state in one committed read
+snapshot, so a concurrent atomic commit cannot be mistaken for partial history.
+Genuine partial or conflicting records are refused. Existing SHA-1 keys,
 legacy JSON migrations, rows and ancestral links remain intact and readable.
 No old IDs are relabelled. SQLite history, duplicate connections and conflict
 refusals were exercised; generic archive APIs keep their existing behavior.

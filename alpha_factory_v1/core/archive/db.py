@@ -10,7 +10,7 @@ import dataclasses
 from pathlib import Path
 from typing import Iterator, Optional
 
-from sqlalchemy import Boolean, Column, Float, String, create_engine
+from sqlalchemy import Boolean, Column, Float, String, create_engine, text
 from sqlalchemy.orm import Session, DeclarativeBase
 from sqlalchemy.exc import IntegrityError
 
@@ -95,11 +95,20 @@ class ArchiveDB:
         key = f"patch:{entry.hash}"
 
         def matches(session: Session) -> bool:
-            row = session.get(_ArchiveRow, entry.hash)
-            state = session.get(_StateRow, key)
-            if row is None and state is None:
+            # One SQLite statement sees one committed snapshot. Two separate
+            # lookups could straddle another connection's otherwise atomic commit.
+            row_count, parent, state_count, value = session.execute(
+                text(
+                    "SELECT (SELECT COUNT(*) FROM archive WHERE hash=:identity), "
+                    "(SELECT parent FROM archive WHERE hash=:identity), "
+                    "(SELECT COUNT(*) FROM state WHERE key=:state_key), "
+                    "(SELECT value FROM state WHERE key=:state_key)"
+                ),
+                {"identity": entry.hash, "state_key": key},
+            ).one()
+            if row_count == 0 and state_count == 0:
                 return False
-            if row is None or state is None or state.value != body or row.parent != entry.parent:
+            if row_count != 1 or state_count != 1 or value != body or parent != entry.parent:
                 raise ValueError("Patch identity conflicts with retained archive history")
             return True
 

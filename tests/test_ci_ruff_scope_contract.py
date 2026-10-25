@@ -13,6 +13,12 @@ import sys
 import yaml
 
 
+PUBLIC_SECURITY_ARTIFACT_PATHS = [
+    "evidence/semgrep-official/public/attempt-*/" + name
+    for name in ("summary.json", "policy-identity.json", "finding-index.json", "source-identities.json")
+]
+
+
 def test_integration_ci_ruff_step_uses_target_script() -> None:
     workflow = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
 
@@ -148,7 +154,7 @@ def test_pr_smoke_requires_official_and_additional_security_before_merge() -> No
     assert steps.index(dependencies) < steps.index(security) < steps.index(smoke)
     artifact = next(step for step in steps if step.get("name") == "Retain actual Python security evidence")
     assert artifact["if"] == "always()"
-    assert artifact["with"]["path"] == "evidence/semgrep-official/"
+    assert artifact["with"]["path"].splitlines() == PUBLIC_SECURITY_ARTIFACT_PATHS
     assert artifact["with"]["if-no-files-found"] == "error"
 
 
@@ -157,9 +163,46 @@ def test_main_quality_always_retains_primary_security_reports() -> None:
     steps = workflow["jobs"]["quality"]["steps"]
     artifact = next(step for step in steps if step.get("name") == "Retain actual repository Python security evidence")
     assert artifact["if"] == "always()"
-    assert artifact["with"]["path"] == "evidence/semgrep-official/"
+    assert artifact["with"]["path"].splitlines() == PUBLIC_SECURITY_ARTIFACT_PATHS
     assert artifact["with"]["if-no-files-found"] == "error"
     assert "/evidence/semgrep-official/" in Path(".gitignore").read_text().splitlines()
+
+
+def test_broad_release_artifacts_exclude_private_scanner_captures() -> None:
+    workflow = yaml.safe_load(Path(".github/workflows/agent-release.yml").read_text())
+    observed = set()
+    for job, definition in workflow["jobs"].items():
+        for step in definition.get("steps", []):
+            if not str(step.get("uses", "")).startswith("actions/upload-artifact@"):
+                continue
+            paths = step["with"]["path"].splitlines()
+            if "evidence/" not in paths:
+                continue
+            observed.add(job)
+            ordinary = ["evidence/"]
+            if job == "browser-contracts":
+                ordinary.append("alpha_factory_v1/core/interface/web_client/test-results/")
+            # This is one generated private directory, not an evidence waiver.
+            assert paths == [ordinary[0], "!evidence/semgrep-official/**", *ordinary[1:]]
+            assert step["if"] == "always()"
+            existing_warn = {"gallery", "demo-distribution", "historical-ci", "pages"}
+            assert step["with"]["if-no-files-found"] == ("warn" if job in existing_warn else "error")
+    assert observed == {
+        "runtime",
+        "regression",
+        "browser-contracts",
+        "real-model",
+        "quality",
+        "gallery",
+        "native-demos",
+        "sovereign-lab",
+        "finance-lab",
+        "muzero-lab",
+        "demo-distribution",
+        "historical-ci",
+        "successor-workbench",
+        "pages",
+    }
 
 
 def test_xml_safety_dependency_is_installed_only_in_qa_and_public_verifier_bootstraps() -> None:

@@ -10,12 +10,15 @@ from __future__ import annotations
 
 import hashlib
 import importlib
+import importlib.machinery
+import importlib.util
 from importlib import metadata
 import json
 import math
 import multiprocessing
 import os
 from pathlib import Path
+import re
 import signal
 import stat
 import subprocess
@@ -23,6 +26,7 @@ import sys
 import tempfile
 import time
 from datetime import datetime, timezone
+from types import CodeType
 from typing import Any, BinaryIO, cast
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
@@ -71,6 +75,7 @@ TARGETS = (
     "scripts/refresh_capability_checkout.py",
     "scripts/reuse_writer4_http.py",
     "scripts/ruff_targets.py",
+    "scripts/semgrep_inapplicability.py",
     "scripts/strategy_engineering_release.py",
     "scripts/validate_homepage.py",
     "tests/test_capability_checkout_release_versions.py",
@@ -80,6 +85,7 @@ TARGETS = (
     "tests/test_public_strategy_acceptance.py",
     "tests/test_sandbox_docker.py",
     "tests/test_ruff_targets.py",
+    "tests/test_semgrep_inapplicability.py",
     "tests/test_strategy_engineering_release.py",
     "tests/test_strategy_python_security.py",
     "tests/test_strategy_qualification_xml.py",
@@ -93,6 +99,10 @@ MAX_SOURCE_BYTES = 256 * 1024
 MAX_TOTAL_BYTES = 2 * 1024 * 1024
 MAX_REPORT_BYTES = 8 * 1024 * 1024
 FETCH_WALL_SECONDS = 30
+MATCHER_PATH = "scripts/semgrep_inapplicability.py"
+# The independently reviewed module, with only its approved-map literal set to
+# None. A map-pin edit never changes this code pin; other source edits do.
+MATCHER_CODE_SHA256 = "c833fb3f2b596aaff600b6039450a5fb482e875e264db78b3c6bc0eccd87b82e"
 
 
 class CheckFailure(ValueError):
@@ -197,18 +207,28 @@ def _execute(
         preexec_fn=_limit_output_files,
     )
     expired = False
+    code = None
     try:
-        code = process.wait(timeout=seconds)
-    except subprocess.TimeoutExpired:
-        expired = True
-        _stop_group(process.pid)
         try:
-            code = process.wait(timeout=3)
+            code = process.wait(timeout=seconds)
         except subprocess.TimeoutExpired:
+            expired = True
+            _stop_group(process.pid)
+            try:
+                code = process.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                _stop_group(process.pid, force=True)
+                code = process.wait(timeout=3)
+    finally:
+        # The group can still contain workers after its leader exits. A hard
+        # stop also covers an engine catching EFBIG and returning exit1/exit0.
+        if (
+            expired
+            or code != 0
+            or any(os.fstat(stream.fileno()).st_size > MAX_REPORT_BYTES for stream in (output, errors))
+        ):
             _stop_group(process.pid, force=True)
-            code = process.wait()
-    if code not in (0, 1):
-        _stop_group(process.pid)
+    assert code is not None
     return code, expired
 
 
@@ -374,7 +394,7 @@ def fetch_official_policy(destination: Path) -> dict[str, Any]:
 def official_targets(root: Path, names: tuple[str, ...]) -> tuple[str, ...]:
     """Validate the actual nonempty pre-commit selection rather than infer its scope."""
     require(bool(names) and len(names) == len(set(names)), "Official scan requires unique actual filename targets")
-    tracked = set(subprocess.check_output(["git", "-C", str(root), "ls-files", "-z"], text=True).split("\0"))
+    tracked = set(_repository_git(root, "ls-files", "-z").decode("utf-8").split("\0"))
     for name in names:
         path = Path(name)
         require(
@@ -388,6 +408,318 @@ def official_targets(root: Path, names: tuple[str, ...]) -> tuple[str, ...]:
         require(path.suffix in {".py", ".pyw", ".pyi"}, "Official role requires Python source filenames")
         _capture(root, name, 1_000_000)
     return names
+
+
+def _load_matcher(root: Path) -> Any:
+    before = _capture(root, MATCHER_PATH, 1_000_000)
+    with (root / MATCHER_PATH).open("rb") as stream:
+        body = stream.read(1_000_001)
+    require(len(body) <= 1_000_000, "Matcher grew beyond its source bound")
+    matches = list(re.finditer(rb'^APPROVED_MAP_SHA256: str \| None = (None|"[0-9a-f]{64}")$', body, re.MULTILINE))
+    require(len(matches) == 1, "Matcher must have one exact reviewed map-pin declaration")
+    first, last = matches[0].span(1)
+    normalized = body[:first] + b"None" + body[last:]
+    require(hashlib.sha256(normalized).hexdigest() == MATCHER_CODE_SHA256, "Matcher differs from the reviewed code pin")
+    require(_capture(root, MATCHER_PATH, 1_000_000) == before, "Matcher changed before loading")
+    name = "_agialpha_reviewed_semgrep_matcher"
+
+    class PinnedSourceLoader(importlib.machinery.SourceFileLoader):
+        def get_code(self, _fullname: str) -> CodeType:
+            # Compile only captured/pinned bytes; ignore repo bytecode caches
+            # and never reopen a changed source file for execution.
+            return compile(body, str(root / MATCHER_PATH), "exec", dont_inherit=True)
+
+    specification = importlib.util.spec_from_file_location(
+        name, root / MATCHER_PATH, loader=PinnedSourceLoader(name, str(root / MATCHER_PATH))
+    )
+    require(specification is not None and specification.loader is not None, "Reviewed matcher cannot be loaded")
+    assert specification is not None and specification.loader is not None
+    module = importlib.util.module_from_spec(specification)
+    sys.modules[name] = module  # Dataclass registration only; no repo sys.path entry.
+    specification.loader.exec_module(module)
+    require(_capture(root, MATCHER_PATH, 1_000_000) == before, "Matcher changed while loading")
+    return module
+
+
+def _matcher_evidence(value: Any) -> dict[str, Any]:
+    return {
+        "targets": list(value.targets),
+        "repository_inventory_sha256": value.repository.sha256,
+        "repository_records": list(value.repository.records),
+        "raw_source_sha256": dict(value.repository.raw_sha256),
+        "head_source_sha256": dict(value.repository.head_sha256),
+        "within_run_fingerprints": dict(value.repository.fingerprints),
+    }
+
+
+def _repository_git(root: Path, *args: str) -> bytes:
+    # Reuse the pinned module's bounded, selector-free Git transport for source
+    # metadata as well as its whole-content inventory.
+    return cast(bytes, _load_matcher(root)._git(*args))
+
+
+def _sha256(value: Any) -> bool:
+    return type(value) is str and bool(re.fullmatch(r"[0-9a-f]{64}", value))
+
+
+def _public_source_path(value: Any) -> bool:
+    if type(value) is not str or not value or len(value) > 4096 or any(ord(char) < 32 for char in value):
+        return False
+    path = Path(value)
+    return (
+        not value.startswith("-")
+        and not path.is_absolute()
+        and path.as_posix() == value
+        and not {"", ".", ".."}.intersection(value.split("/"))
+    )
+
+
+def _public_policy(value: Any) -> dict[str, Any] | None:
+    """Only identifiers/digests/positions; never licensed rule bodies/metadata."""
+    if not isinstance(value, dict):
+        return None
+    valid = True
+    raw_ids = value.get("rule_ids", [])
+    if type(raw_ids) is not list:
+        raw_ids, valid = [], False
+    ids = [name for name in raw_ids if type(name) is str and re.fullmatch(r"[A-Za-z0-9_.-]{1,512}", name)]
+    valid = valid and len(ids) == len(raw_ids) == len(set(ids)) and _sha256(value.get("sha256"))
+    definitions = []
+    rows = value.get("rule_definitions", [])
+    if type(rows) is not list:
+        rows, valid = [], False
+    for row in rows:
+        if (
+            isinstance(row, dict)
+            and row.get("id") in ids
+            and _sha256(row.get("sha256"))
+            and all(type(row.get(key)) is int for key in ("start_byte", "end_byte"))
+            and 0 <= row["start_byte"] < row["end_byte"] <= 2_000_000
+        ):
+            definitions.append({key: row[key] for key in ("id", "sha256", "start_byte", "end_byte")})
+        else:
+            valid = False
+    result = {
+        "source_url": OFFICIAL_URL,
+        "sha256": value.get("sha256") if _sha256(value.get("sha256")) else None,
+        "rule_ids": ids,
+        "rule_definitions": definitions,
+        "definition_digest_scope": "Unmodified local YAML mapping spans; rule bodies are not published",
+        "declared_license": "Semgrep Rules License v1.0",
+    }
+    size = value.get("bytes")
+    if size is None or (type(size) is int and 0 <= size <= 2_000_000):
+        result["bytes"] = size
+    else:
+        valid = False
+    timestamp = value.get("observed_at")
+    if timestamp is None:
+        result["observed_at"] = None
+    elif type(timestamp) is str and len(timestamp) <= 40:
+        try:
+            datetime.fromisoformat(timestamp)
+            result["observed_at"] = timestamp
+        except ValueError:
+            valid = False
+    else:
+        valid = False
+    result["projection_valid"] = valid
+    return result
+
+
+def public_report(summary: dict[str, Any]) -> dict[str, Any]:
+    """Public logs/artifacts expose results and identities, excluding raw errors."""
+    keys = (
+        "schema",
+        "passed",
+        "artifact_directory",
+        "public_artifact_directory",
+        "automatic_retry",
+        "checker_sha256",
+        "commit",
+        "selected_targets",
+        "selected_files",
+        "scanned_files",
+        "findings",
+        "errors",
+        "skipped_rules",
+        "exit_code",
+        "tool_version",
+        "raw_report_sha256",
+        "output_bytes",
+        "elapsed_seconds",
+        "child_cpu_user_seconds",
+        "child_cpu_system_seconds",
+        "source_drift",
+        "wall_budget_expired",
+        "local_config_sha256",
+        "production_authority",
+        "runtime_qualified",
+        "raw_scan_passed",
+        "raw_exit_code",
+        "raw_finding_count",
+        "policy_disposition",
+        "policy_accepted",
+        "inapplicable_finding_count",
+        "matcher_code_sha256",
+        "repository_inventory_sha256",
+        "repository_files",
+    )
+    result: dict[str, Any] = {}
+    invalid = []
+    boolean = {
+        "passed",
+        "automatic_retry",
+        "wall_budget_expired",
+        "production_authority",
+        "runtime_qualified",
+        "raw_scan_passed",
+        "policy_accepted",
+    }
+    hashes = {
+        "checker_sha256",
+        "raw_report_sha256",
+        "local_config_sha256",
+        "matcher_code_sha256",
+        "repository_inventory_sha256",
+    }
+    counts = {
+        "selected_files",
+        "scanned_files",
+        "findings",
+        "errors",
+        "skipped_rules",
+        "raw_finding_count",
+        "inapplicable_finding_count",
+        "repository_files",
+    }
+    seconds = {"elapsed_seconds", "child_cpu_user_seconds", "child_cpu_system_seconds"}
+    for key in keys:
+        if key not in summary:
+            continue
+        value = summary[key]
+        valid = False
+        if key in boolean:
+            valid = type(value) is bool
+        elif key in hashes:
+            valid = _sha256(value)
+        elif key in counts:
+            valid = value is None or (type(value) is int and value >= 0)
+        elif key in seconds:
+            valid = type(value) in (int, float) and math.isfinite(value) and value >= 0
+        elif key in ("exit_code", "raw_exit_code"):
+            valid = type(value) is int
+        elif key == "policy_disposition":
+            valid = value in ("INACTIVE", "REFUSED", "EXACT_REVIEWED_INAPPLICABILITY", "NOT_NEEDED_RAW_PASS")
+        elif key == "commit":
+            valid = type(value) is str and bool(re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", value))
+        elif key == "schema":
+            valid = value in ("agialpha.official-python-security/v1", "agialpha.strategy-python-security/v1")
+        elif key == "tool_version":
+            valid = value == SEMGREP_VERSION
+        elif key in ("artifact_directory", "public_artifact_directory"):
+            prefix = OFFICIAL_OUTPUT + ("/public" if key.startswith("public") else "")
+            valid = type(value) is str and bool(re.fullmatch(re.escape(prefix) + r"/attempt-[a-z0-9_]{1,32}", value))
+        elif key in ("selected_targets", "source_drift"):
+            valid = type(value) is list and all(_public_source_path(name) for name in value)
+        elif key == "output_bytes":
+            valid = (
+                type(value) is dict
+                and set(value) == {"scanner.json", "scanner.stderr"}
+                and all(type(size) is int and 0 <= size <= MAX_REPORT_BYTES + 1 for size in value.values())
+            )
+        if valid:
+            result[key] = value
+        else:
+            invalid.append(key)
+    observed = summary.get("observed", {})
+    if isinstance(observed, dict):
+        for source, target in (("errors", "observed_error_count"), ("skipped_rules", "observed_skipped_rule_count")):
+            items = observed.get(source)
+            result[target] = len(items) if type(items) is list else None
+    if "reason" in summary:
+        result["failure_details_sha256"] = hashlib.sha256(str(summary["reason"]).encode()).hexdigest()
+        result["failure_details_location"] = "Retained local raw evidence; upstream configuration text is not published"
+    result["official_policy"] = _public_policy(summary.get("official_policy"))
+    if result["official_policy"] is not None and not result["official_policy"]["projection_valid"]:
+        invalid.append("official_policy")
+    result["projection_valid"] = not invalid
+    result["invalid_public_fields"] = invalid
+    if invalid:
+        result["passed"] = False
+    result["published_rule_bodies"] = False
+    result["published_raw_report"] = False
+    result["publication_scope"] = (
+        "Counts, identifiers, source hashes and byte positions; local raw evidence remains unmodified"
+    )
+    return result
+
+
+def _write_public_receipt(root: Path, attempt: Path, summary: dict[str, Any]) -> None:
+    destination = root / OFFICIAL_OUTPUT / "public" / attempt.name
+    require(destination.resolve() == destination, "Public evidence directory must not be an alias")
+    destination.mkdir(parents=True, mode=0o700, exist_ok=False)
+    summary["public_artifact_directory"] = destination.relative_to(root).as_posix()
+    projected = public_report(summary)
+    require(projected["projection_valid"], "Public evidence metadata failed type validation")
+    findings = []
+    report_path = attempt / "scanner.json"
+    if report_path.is_file():
+        try:
+            with report_path.open("rb") as stream:
+                report = _json(stream.read(MAX_REPORT_BYTES + 1))
+            for finding in report.get("results", []):
+                if not isinstance(finding, dict) or finding.get("path") not in summary.get("selected_targets", []):
+                    continue
+                name = finding.get("check_id")
+                if type(name) is not str or not re.fullmatch(r"[A-Za-z0-9_.-]{1,512}", name):
+                    continue
+                location = {key: finding.get(key) for key in ("start", "end")}
+                if not all(
+                    isinstance(row, dict)
+                    and set(row) == {"line", "col", "offset"}
+                    and all(type(number) is int for number in row.values())
+                    for row in location.values()
+                ):
+                    continue
+                findings.append({"rule_id": name, "path": finding["path"], **location})
+        except (ValueError, OSError, TypeError):
+            pass  # The failed raw report remains local and its hash is retained.
+    sources = {}
+    for phase in ("before", "after"):
+        path = attempt / ("source-" + phase + ".json")
+        if path.is_file():
+            with path.open("rb") as stream:
+                source = _json(stream.read(MAX_REPORT_BYTES + 1))
+            allowed = set(summary.get("selected_targets", [])) | {"semgrep.yml"}
+            require(
+                all(
+                    name in allowed
+                    and _public_source_path(name)
+                    and type(row) is list
+                    and len(row) == 3
+                    and _sha256(row[0])
+                    and type(row[2]) is int
+                    and row[2] >= 0
+                    for name, row in source.items()
+                ),
+                "Public source identities failed type validation",
+            )
+            sources[phase] = {name: {"sha256": row[0], "bytes": row[2]} for name, row in source.items()}
+    files = {
+        "summary.json": projected,
+        "policy-identity.json": projected["official_policy"],
+        "finding-index.json": {
+            "raw_report_sha256": summary.get("raw_report_sha256"),
+            "raw_finding_count": summary.get("findings"),
+            "projected_findings": findings,
+            "raw_result_published": False,
+        },
+        "source-identities.json": sources,
+    }
+    for name, value in files.items():
+        with (destination / name).open("x") as stream:
+            stream.write(json.dumps(value, indent=2) + "\n")
 
 
 def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
@@ -406,6 +738,9 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
         "runtime_qualified": False,
         "automatic_retry": False,
         "wall_budget_expired": False,
+        "raw_scan_passed": False,
+        "policy_accepted": False,
+        "policy_disposition": "REFUSED",
     }
     before: dict[str, tuple[str, tuple[int, ...], int]] = {}
     checker_before = None
@@ -418,7 +753,7 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
         resources = importlib.import_module("resource")
         targets = official_targets(root, names)
         summary.update(selected_targets=list(targets), selected_files=len(targets))
-        summary["commit"] = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+        summary["commit"] = _repository_git(root, "rev-parse", "HEAD").decode("ascii").strip()
         before = {name: _capture(root, name, 1_000_000) for name in (*targets, "semgrep.yml")}
         require(sum(row[2] for row in before.values()) <= 32_000_000, "Official source selection exceeds its bound")
         (attempt / "source-before.json").write_text(json.dumps(before, indent=2) + "\n")
@@ -427,6 +762,26 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
         policy = fetch_official_policy(attempt / "official-p-python.yml")
         summary["official_policy"] = policy
         (attempt / "policy-identity.json").write_text(json.dumps(policy, indent=2) + "\n")
+        matcher = _load_matcher(root)
+        definitions = tuple(
+            matcher.RuleDefinition(row["id"], row["start_byte"], row["end_byte"], row["sha256"])
+            for row in policy.get("rule_definitions", [])
+        )
+        with (attempt / "official-p-python.yml").open("rb") as stream:
+            pack_body = stream.read(2_000_001)
+        require(
+            len(pack_body) <= 2_000_000 and hashlib.sha256(pack_body).hexdigest() == policy["sha256"],
+            "Official policy changed before qualification",
+        )
+        matcher_before = matcher.capture_inputs(targets, pack_body, definitions)
+        (attempt / "qualification-before.json").write_text(
+            json.dumps(_matcher_evidence(matcher_before), indent=2) + "\n"
+        )
+        summary.update(
+            matcher_code_sha256=MATCHER_CODE_SHA256,
+            repository_inventory_sha256=matcher_before.repository.sha256,
+            repository_files=len(matcher_before.repository.records),
+        )
         command = [
             sys.executable,
             "-I",
@@ -476,11 +831,37 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
             all(size <= MAX_REPORT_BYTES for size in summary["output_bytes"].values()),
             "Scanner output exceeded its producer bound",
         )
+        matcher_after = matcher.capture_inputs(targets, pack_body, definitions)
+        (attempt / "qualification-after.json").write_text(json.dumps(_matcher_evidence(matcher_after), indent=2) + "\n")
         parsed = _json(raw)
         summary["observed"] = {key: parsed.get(key) for key in ("version", "paths", "errors", "skipped_rules")}
         summary["findings"] = len(parsed.get("results", [])) if type(parsed.get("results")) is list else None
         rules = tuple(policy["rule_ids"]) + ("solidity-tx-origin", "solidity-call-value")
-        summary.update(validate_report(raw, code, targets, rules))
+        raw_clean = False
+        try:
+            summary.update(validate_report(raw, code, targets, rules))
+            raw_clean = True
+        except CheckFailure as error:
+            # Only fully checked, nonempty exit1 findings reach applicability.
+            # Errors, skipped work, coverage/version issues and exit2+ refuse.
+            if code != 1 or not error.details.get("findings"):
+                raise
+            summary["details"] = error.details
+        decision = matcher.assess(raw, code, matcher_before, matcher_after)
+        summary.update(
+            raw_scan_passed=raw_clean,
+            raw_exit_code=code,
+            raw_finding_count=summary.get("findings"),
+            policy_disposition=decision["policy_disposition"],
+            policy_accepted=decision["policy_accepted"],
+            inapplicable_finding_count=decision["inapplicable_finding_count"],
+        )
+        summary["inapplicability_evidence"] = decision
+        admitted = decision["policy_accepted"] is True and (
+            (raw_clean and decision["policy_disposition"] == "NOT_NEEDED_RAW_PASS")
+            or (not raw_clean and code == 1 and decision["policy_disposition"] == "EXACT_REVIEWED_INAPPLICABILITY")
+        )
+        require(admitted, "Official findings or qualification remain unadmitted")
         require(summary.get("wall_budget_expired") is not True, "Official scanner exceeded its wall budget")
         require(
             hashlib.sha256((attempt / "official-p-python.yml").read_bytes()).hexdigest() == policy["sha256"],
@@ -505,6 +886,11 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
                     != summary["official_policy"]["sha256"]
                 ):
                     summary.update(passed=False, reason="Captured official rules changed during scanning")
+            if (
+                "commit" in summary
+                and _repository_git(root, "rev-parse", "HEAD").decode("ascii").strip() != summary["commit"]
+            ):
+                summary.update(passed=False, reason="Committed source identity changed during qualification")
         except (ValueError, OSError) as error:
             summary.update(passed=False, reason=type(error).__name__)
         if before:
@@ -518,6 +904,10 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
                 summary.update(passed=False, reason=type(error).__name__)
         summary["elapsed_seconds"] = time.perf_counter() - started
         summary["artifact_directory"] = attempt.relative_to(root).as_posix()
+        try:
+            _write_public_receipt(root, attempt, summary)
+        except (ValueError, OSError, TypeError, KeyError):
+            summary.update(passed=False, reason="Public evidence projection failed; local raw evidence is retained")
         (attempt / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     return summary
 
@@ -598,8 +988,9 @@ def main() -> int:
             "runtime_qualified": False,
             "production_authority": False,
         }
-    print(json.dumps(report, sort_keys=True))
-    return 0 if report["passed"] is True else 1
+    display = public_report(report) if sys.argv[1:2] == ["--official-repository"] else report
+    print(json.dumps(display, sort_keys=True))
+    return 0 if report["passed"] is True and display.get("passed") is True else 1
 
 
 if __name__ == "__main__":

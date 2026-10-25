@@ -9,14 +9,19 @@ from __future__ import annotations
 
 from copy import deepcopy
 from importlib import metadata
+import importlib.util
 import json
+import marshal
 import os
 from pathlib import Path
 import shutil
+import signal
+import struct
 import subprocess
 import sys
 import time
 from typing import Any
+from types import SimpleNamespace
 
 import pytest
 
@@ -34,6 +39,34 @@ def report() -> dict[str, Any]:
         "skipped_rules": [],
         "paths": {"scanned": list(security.TARGETS)},
     }
+
+
+def protocol_matcher(monkeypatch: pytest.MonkeyPatch, *, forbid_assess: bool = False) -> None:
+    """Transport-only mock; real matcher/Git/engine proof is tested separately."""
+
+    def capture(targets: tuple[str, ...], *_args: Any) -> Any:
+        return SimpleNamespace(
+            targets=targets,
+            repository=SimpleNamespace(sha256="0" * 64, records=(), raw_sha256={}, head_sha256={}, fingerprints={}),
+        )
+
+    def assess(raw: bytes, code: int, *_args: Any) -> dict[str, Any]:
+        if forbid_assess:
+            pytest.fail("Invalid raw engine report reached applicability")
+        clean = code == 0 and not json.loads(raw)["results"]
+        return {
+            "policy_disposition": "NOT_NEEDED_RAW_PASS" if clean else "INACTIVE",
+            "policy_accepted": clean,
+            "inapplicable_finding_count": 0,
+        }
+
+    monkeypatch.setattr(
+        security,
+        "_load_matcher",
+        lambda _root: SimpleNamespace(
+            capture_inputs=capture, assess=assess, RuleDefinition=lambda *_args: None, _git=lambda *_args: b"a" * 40
+        ),
+    )
 
 
 @pytest.fixture(scope="module")
@@ -98,7 +131,7 @@ def test_actual_component_scan_has_all_fixed_files_and_rules(scanner_python: str
     assert result.returncode == 0, result.stdout + result.stderr
     observed = json.loads(result.stdout)
     assert observed["passed"] is True
-    assert observed["scanned_files"] == len(security.TARGETS) == 48
+    assert observed["scanned_files"] == len(security.TARGETS) == 50
     assert observed["rules"] == list(security.RULE_IDS)
     assert observed["rule_sha256"] == security.RULE_SHA256
     assert observed["production_authority"] is False and observed["runtime_qualified"] is False
@@ -243,7 +276,7 @@ def test_rule_or_source_scope_drift_fails_before_scanner(
 
 
 def test_fixed_targets_exclude_scientific_and_held_sources() -> None:
-    assert len(security.TARGETS) == len(set(security.TARGETS)) == 48
+    assert len(security.TARGETS) == len(set(security.TARGETS)) == 50
     assert not any(name.startswith("studies/") or "/scientific/" in name for name in security.TARGETS)
     assert not any(
         name.endswith(
@@ -290,6 +323,7 @@ def test_official_role_passes_exact_captured_body_and_retains_protocol_artifacts
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Protocol-only fixture; actual official download/engine coverage is tested below."""
+    protocol_matcher(monkeypatch)
     root = tmp_path.resolve()
     (root / "selected.py").write_text("x = 1\n")
     shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
@@ -361,34 +395,36 @@ def test_actual_official_role_downloads_and_scans_an_actual_component(scanner_py
     assert observed["official_policy"]["source_url"] == security.OFFICIAL_URL
     assert len(observed["official_policy"]["rule_ids"]) > 2
     directory = ROOT / observed["artifact_directory"]
-    assert (
-        security.hashlib.sha256((directory / "official-p-python.yml").read_bytes()).hexdigest()
-        == observed["official_policy"]["sha256"]
-    )
+    observed_pack_sha = security.hashlib.sha256((directory / "official-p-python.yml").read_bytes()).hexdigest()
+    assert observed_pack_sha == observed["official_policy"]["sha256"]
     command = json.loads((directory / "command.json").read_text())
     assert command[command.index("--config") + 1] == str(directory / "official-p-python.yml")
     policy_raw = (directory / "official-p-python.yml").read_bytes()
     for definition in observed["official_policy"]["rule_definitions"]:
         span = policy_raw[definition["start_byte"] : definition["end_byte"]]
-        assert security.hashlib.sha256(span).hexdigest() == definition["sha256"]
+        observed_definition_sha = security.hashlib.sha256(span).hexdigest()
+        assert observed_definition_sha == definition["sha256"]
 
 
 def test_actual_official_ids_are_stable_across_evidence_directories(scanner_python: str, tmp_path: Path) -> None:
-    """The real engine reports official IDs, without a temporary path prefix."""
+    """Real exit1 findings remain INACTIVE, with stable IDs and full Git custody."""
     root = tmp_path / "official-source"
     root.mkdir()
     (root / "inert.py").write_text("import hashlib\nhashlib.sha1(b'inert')\n")
     shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
+    matcher = root / security.MATCHER_PATH
+    matcher.parent.mkdir(parents=True)
+    shutil.copyfile(ROOT / security.MATCHER_PATH, matcher)
     for command in (
         ["git", "init", "-q"],
-        ["git", "add", "inert.py", "semgrep.yml"],
+        ["git", "add", "inert.py", "semgrep.yml", security.MATCHER_PATH],
         ["git", "-c", "user.name=Static fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "inert"],
     ):
         subprocess.run(command, cwd=root, check=True, capture_output=True)
     driver = (
         "import json,runpy,sys;from pathlib import Path;"
         "s=runpy.run_path(sys.argv[1],run_name='official_fixture');"
-        "r=s['check_official'](Path(sys.argv[2]),('inert.py',));print(json.dumps(r))"
+        "r=s['check_official'](Path(sys.argv[2]),('inert.py',));print(json.dumps(s['public_report'](r)))"
     )
     attempts = []
     for _ in range(2):
@@ -402,10 +438,14 @@ def test_actual_official_ids_are_stable_across_evidence_directories(scanner_pyth
         assert result.returncode == 0, result.stdout + result.stderr
         observed = json.loads(result.stdout)
         assert observed["passed"] is False and observed["exit_code"] == 1
+        assert observed["raw_scan_passed"] is False and observed["raw_exit_code"] == 1
+        assert observed["policy_disposition"] == "INACTIVE" and observed["policy_accepted"] is False
+        assert observed["raw_finding_count"] == 1 and observed["inapplicable_finding_count"] == 0
         assert observed["selected_files"] == 1 and observed["source_drift"] == []
         report_raw = json.loads((root / observed["artifact_directory"] / "scanner.json").read_text())
-        assert report_raw["paths"]["scanned"] == ["inert.py"] and report_raw["errors"] == []
-        assert report_raw["skipped_rules"] == []
+        assert report_raw["paths"]["scanned"] == ["inert.py"]
+        error_count, skipped_count = len(report_raw["errors"]), len(report_raw["skipped_rules"])
+        assert error_count == 0 and skipped_count == 0
         attempts.append((observed, {finding["check_id"] for finding in report_raw["results"]}))
     expected = "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1"
     assert expected in attempts[0][1] == attempts[1][1]
@@ -515,10 +555,65 @@ def test_output_limit_bounds_actual_producers_before_report_read(
         security.validate_report(output_path.read_bytes(), code)
 
 
+@pytest.mark.parametrize("completion", ["timeout", "exit1", "caught-output-limit"])
+def test_group_hard_stop_terminates_a_term_ignoring_descendant(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, completion: str
+) -> None:
+    """A leader exiting promptly must not leave a live owned worker behind."""
+    monkeypatch.setattr(security, "MAX_REPORT_BYTES", 1024)
+    marker = tmp_path / "descendant-pid"
+    heartbeat = tmp_path / "descendant-heartbeat"
+    descendant = (
+        "import os,signal,time\nfrom pathlib import Path\n"
+        "signal.signal(signal.SIGTERM,signal.SIG_IGN)\n"
+        f"Path({str(marker)!r}).write_text(str(os.getpid()))\n"
+        f"stream=Path({str(heartbeat)!r}).open('ab',buffering=0)\n"
+        "for _ in range(3000):stream.write(b'x');time.sleep(0.01)\n"
+    )
+    leader = (
+        "import subprocess,sys,time\nfrom pathlib import Path\n"
+        f"subprocess.Popen([sys.executable,'-I','-c',{descendant!r}])\n"
+        f"marker=Path({str(marker)!r})\n"
+        "while not marker.exists():time.sleep(0.005)\n"
+    )
+    if completion == "exit1":
+        leader += "raise SystemExit(1)\n"
+    elif completion == "caught-output-limit":
+        leader += "try:\n sys.stdout.buffer.write(b'x'*65536);sys.stdout.buffer.flush()\nexcept OSError:pass\nos_exit=__import__('os')._exit\nos_exit(0)\n"
+    else:
+        leader += "time.sleep(30)\n"
+    pid = None
+    try:
+        with (tmp_path / "stdout").open("wb") as output, (tmp_path / "stderr").open("wb") as errors:
+            code, expired = security._execute([sys.executable, "-I", "-c", leader], tmp_path, {}, output, errors, 1)
+        pid = int(marker.read_text())
+        assert expired is (completion == "timeout")
+        if completion == "exit1":
+            assert code == 1
+        elif completion == "caught-output-limit":
+            assert code == 0 and (tmp_path / "stdout").stat().st_size == 1025
+        # Observe actual work, avoiding /proc PID views that may belong to a
+        # different namespace from the process IDs returned to this test.
+        time.sleep(0.03)
+        first = heartbeat.stat().st_size if heartbeat.exists() else 0
+        time.sleep(0.15)
+        last = heartbeat.stat().st_size if heartbeat.exists() else 0
+        assert last == first, "Owned descendant continues working after scanner completion"
+    finally:
+        if pid is None and marker.exists():
+            pid = int(marker.read_text())
+        if pid is not None:
+            try:
+                os.kill(pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+
+
 @pytest.mark.parametrize("changed", ["source", "captured-policy", "empty-coverage"])
 def test_official_protocol_cannot_qualify_drift_or_zero_work(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, changed: str
 ) -> None:
+    protocol_matcher(monkeypatch)
     root = tmp_path.resolve()
     target = root / "selected.py"
     target.write_text("x = 1\n")
@@ -554,3 +649,264 @@ def test_official_protocol_cannot_qualify_drift_or_zero_work(
     assert result["passed"] is False
     directory = root / result["artifact_directory"]
     assert (directory / "scanner.json").is_file() and (directory / "summary.json").is_file()
+
+
+def test_public_projection_excludes_rule_bodies_even_from_failed_engine_errors(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    protocol_matcher(monkeypatch, forbid_assess=True)
+    root = tmp_path.resolve()
+    (root / "selected.py").write_text("x = 1\n")
+    shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
+    monkeypatch.setattr(security.metadata, "version", lambda _name: "1.99.0")
+    monkeypatch.setattr(security, "official_targets", lambda _root, names: names)
+    monkeypatch.setattr(security.subprocess, "check_output", lambda *_a, **_k: "a" * 40)
+    marker = "PRIVATE_UPSTREAM_RULE_BODY_pattern_eval_everything"
+    rule_body = ("rules:\n- id: captured-rule\n  pattern: " + marker + "\n").encode()
+
+    def captured(path: Path) -> dict[str, Any]:
+        path.write_bytes(rule_body)
+        return {
+            "source_url": security.OFFICIAL_URL,
+            "sha256": security.hashlib.sha256(rule_body).hexdigest(),
+            "rule_ids": ["captured-rule"],
+        }
+
+    def execute(
+        _command: list[str], _root: Path, _env: dict[str, str], output: Any, errors: Any, _seconds: int
+    ) -> tuple[int, bool]:
+        value = report()
+        value["paths"]["scanned"] = ["selected.py"]
+        value["errors"] = [{"type": "RuleParseError", "message": marker, "complete_yaml": rule_body.decode()}]
+        output.write(json.dumps(value).encode())
+        errors.write(rule_body)
+        return 2, False
+
+    monkeypatch.setattr(security, "fetch_official_policy", captured)
+    monkeypatch.setattr(security, "_execute", execute)
+    result = security.check_official(root, ("selected.py",))
+    assert result["passed"] is False and result["exit_code"] == 2
+    private = root / result["artifact_directory"]
+    assert (private / "official-p-python.yml").read_bytes() == rule_body
+    assert marker in (private / "scanner.json").read_text() and marker in (private / "scanner.stderr").read_text()
+    public = root / result["public_artifact_directory"]
+    assert {path.name for path in public.iterdir()} == {
+        "summary.json",
+        "policy-identity.json",
+        "finding-index.json",
+        "source-identities.json",
+    }
+    assert all(marker not in path.read_text() and "complete_yaml" not in path.read_text() for path in public.iterdir())
+    assert marker not in json.dumps(security.public_report(result))
+    projected = json.loads((public / "summary.json").read_text())
+    assert projected["passed"] is False and projected["exit_code"] == 2
+    assert projected["observed_error_count"] == 1 and projected["published_rule_bodies"] is False
+    assert (
+        projected["raw_report_sha256"] == security.hashlib.sha256((private / "scanner.json").read_bytes()).hexdigest()
+    )
+
+
+def test_public_rule_identity_projection_omits_arbitrary_rule_definition_fields() -> None:
+    policy = {
+        "sha256": "a" * 64,
+        "rule_ids": ["safe-rule", "rules:\n- full-body"],
+        "rule_definitions": [
+            {"id": "safe-rule", "sha256": "b" * 64, "start_byte": 1, "end_byte": 4, "pattern": "PRIVATE_RULE_PATTERN"}
+        ],
+        "complete_yaml": "PRIVATE_RULE_YAML",
+    }
+    projected = security.public_report({"passed": False, "official_policy": policy})
+    assert projected["official_policy"]["rule_ids"] == ["safe-rule"]
+    assert "PRIVATE_RULE" not in json.dumps(projected) and "full-body" not in json.dumps(projected)
+
+
+def test_primary_cli_never_prints_raw_configuration_errors(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    marker = "PRIVATE_RULE_FULL_BODY"
+    monkeypatch.setattr(security.sys, "argv", ["checker", "--official-repository", "--", "selected.py"])
+    monkeypatch.setattr(
+        security,
+        "check_official",
+        lambda *_args: {
+            "passed": False,
+            "reason": marker,
+            "observed": {"errors": [{"message": marker}]},
+            "exit_code": 2,
+        },
+    )
+    assert security.main() == 1
+    output = capsys.readouterr().out
+    assert marker not in output
+    assert json.loads(output)["observed_error_count"] == 1
+
+
+@pytest.mark.parametrize("field", ["errors", "sha256", "bytes", "observed_at"])
+def test_public_projection_rejects_body_text_in_typed_scalar_fields(field: str) -> None:
+    marker = "PRIVATE_RULE_BODY_IN_TYPED_FIELD"
+    summary: dict[str, Any] = {"passed": True}
+    if field == "errors":
+        summary[field] = [{"message": marker}]
+    else:
+        summary["official_policy"] = {"sha256": "a" * 64, "rule_ids": [], field: marker}
+    projected = security.public_report(summary)
+    assert marker not in json.dumps(projected)
+    assert projected["projection_valid"] is False and projected["passed"] is False
+
+
+def test_public_source_identity_projection_refuses_non_hash_body_text(tmp_path: Path) -> None:
+    attempt = tmp_path / security.OFFICIAL_OUTPUT / "attempt-synthetic"
+    attempt.mkdir(parents=True)
+    marker = "PRIVATE_RULE_BODY_IN_SOURCE_IDENTITY"
+    (attempt / "source-before.json").write_text(json.dumps({"selected.py": [marker, [], 1]}))
+    summary = {
+        "passed": False,
+        "selected_targets": ["selected.py"],
+        "artifact_directory": attempt.relative_to(tmp_path).as_posix(),
+    }
+    with pytest.raises(security.CheckFailure, match="identities failed type"):
+        security._write_public_receipt(tmp_path, attempt, summary)
+    public = tmp_path / security.OFFICIAL_OUTPUT / "public/attempt-synthetic"
+    assert not list(public.iterdir())
+    assert marker in (attempt / "source-before.json").read_text()
+
+
+@pytest.mark.parametrize(
+    "defect", ["errors", "skips", "zero-coverage", "version", "exit2", "malformed-json", "unknown-finding"]
+)
+def test_primary_protocol_refusals_happen_before_applicability(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, defect: str
+) -> None:
+    root = tmp_path.resolve()
+    (root / "selected.py").write_text("x = 1\n")
+    shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
+    protocol_matcher(monkeypatch, forbid_assess=True)
+    monkeypatch.setattr(security.metadata, "version", lambda _name: "1.99.0")
+    monkeypatch.setattr(security, "official_targets", lambda _root, names: names)
+    monkeypatch.setattr(security.subprocess, "check_output", lambda *_a, **_k: "a" * 40)
+
+    def captured(path: Path) -> dict[str, Any]:
+        body = b"rules: []\n"
+        path.write_bytes(body)
+        return {"sha256": security.hashlib.sha256(body).hexdigest(), "rule_ids": ["fixture-rule"]}
+
+    value = report()
+    value["paths"]["scanned"] = ["selected.py"]
+    code = 0
+    if defect == "errors":
+        value["errors"] = [{"type": "ParseError"}]
+    elif defect == "skips":
+        value["skipped_rules"] = ["fixture-rule"]
+    elif defect == "zero-coverage":
+        value["paths"]["scanned"] = []
+    elif defect == "version":
+        value["version"] = "0.0.0"
+    elif defect == "exit2":
+        code = 2
+    elif defect == "unknown-finding":
+        code = 1
+        value["results"] = [{"check_id": "unreviewed", "path": "selected.py", "start": {"line": 1}}]
+    raw = b"not JSON" if defect == "malformed-json" else json.dumps(value).encode()
+
+    def execute(
+        _command: list[str], _root: Path, _env: dict[str, str], output: Any, _errors: Any, _seconds: int
+    ) -> tuple[int, bool]:
+        output.write(raw)
+        return code, False
+
+    monkeypatch.setattr(security, "fetch_official_policy", captured)
+    monkeypatch.setattr(security, "_execute", execute)
+    result = security.check_official(root, ("selected.py",))
+    assert result["passed"] is False and result["policy_accepted"] is False
+
+
+def test_fixed_matcher_code_pin_refuses_modified_source_before_execution(tmp_path: Path) -> None:
+    path = tmp_path / security.MATCHER_PATH
+    path.parent.mkdir(parents=True)
+    marker = tmp_path / "must-not-run"
+    path.write_text(
+        "APPROVED_MAP_SHA256: str | None = None\nfrom pathlib import Path\n"
+        + f"Path({str(marker)!r}).write_text('bad')\n"
+    )
+    with pytest.raises(security.CheckFailure, match="reviewed code pin"):
+        security._load_matcher(tmp_path)
+    assert not marker.exists()
+
+
+def test_matcher_loader_ignores_forged_repository_bytecode_cache(tmp_path: Path) -> None:
+    path = tmp_path / security.MATCHER_PATH
+    path.parent.mkdir(parents=True)
+    shutil.copyfile(ROOT / security.MATCHER_PATH, path)
+    marker = tmp_path / "forged-cache-executed"
+    code = compile("from pathlib import Path\n" + f"Path({str(marker)!r}).write_text('bad')\n", str(path), "exec")
+    cache = Path(importlib.util.cache_from_source(str(path)))
+    cache.parent.mkdir()
+    header = importlib.util.MAGIC_NUMBER + struct.pack("<III", 0, int(path.stat().st_mtime), path.stat().st_size)
+    cache.write_bytes(header + marshal.dumps(code))
+    module = security._load_matcher(tmp_path)
+    assert module.APPROVED_MAP_SHA256 is None and not marker.exists()
+
+
+def test_primary_source_commit_ignores_foreign_git_selectors(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    root, foreign = tmp_path / "actual", tmp_path / "foreign"
+    for directory in (root, foreign):
+        directory.mkdir()
+        (directory / "selected.py").write_text("x = 1\n")
+        shutil.copyfile(ROOT / "semgrep.yml", directory / "semgrep.yml")
+        matcher_path = directory / security.MATCHER_PATH
+        matcher_path.parent.mkdir(parents=True)
+        shutil.copyfile(ROOT / security.MATCHER_PATH, matcher_path)
+        subprocess.run(["git", "init", "-q"], cwd=directory, check=True)
+        subprocess.run(["git", "add", "."], cwd=directory, check=True)
+        subprocess.run(
+            [
+                "git",
+                "-c",
+                "user.name=Fixture",
+                "-c",
+                "user.email=fixture@example.invalid",
+                "commit",
+                "-qm",
+                directory.name,
+            ],
+            cwd=directory,
+            check=True,
+        )
+    actual_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+    foreign_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=foreign, text=True).strip()
+    assert actual_head != foreign_head
+    monkeypatch.setenv("GIT_DIR", str(foreign / ".git"))
+    monkeypatch.setenv("GIT_WORK_TREE", str(foreign))
+    monkeypatch.setattr(security.metadata, "version", lambda _name: "1.99.0")
+    rule = b"id: fixture-rule\npattern: x\n"
+    pack = b"rules:\n- " + rule
+    first = pack.index(b"id:")
+
+    def captured(path: Path) -> dict[str, Any]:
+        path.write_bytes(pack)
+        return {
+            "sha256": security.hashlib.sha256(pack).hexdigest(),
+            "rule_ids": ["fixture-rule"],
+            "rule_definitions": [
+                {
+                    "id": "fixture-rule",
+                    "start_byte": first,
+                    "end_byte": len(pack),
+                    "sha256": security.hashlib.sha256(pack[first:]).hexdigest(),
+                }
+            ],
+        }
+
+    def execute(
+        _command: list[str], _root: Path, _env: dict[str, str], output: Any, _errors: Any, _seconds: int
+    ) -> tuple[int, bool]:
+        value = report()
+        value["paths"]["scanned"] = ["selected.py"]
+        output.write(json.dumps(value).encode())
+        return 0, False
+
+    monkeypatch.setattr(security, "fetch_official_policy", captured)
+    monkeypatch.setattr(security, "_execute", execute)
+    result = security.check_official(root, ("selected.py",))
+    assert result["passed"] is True
+    assert result["commit"] == actual_head and result["commit"] != foreign_head

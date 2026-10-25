@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 import importlib.util
 import json
 from pathlib import Path
@@ -430,3 +431,113 @@ def test_copied_base_binding_is_verified_before_fixed_patch_and_legacy_calls_sta
     ok, copied = harness.apply_patch(repo, "fixed fixture")
     assert ok and len(seen) == 2
     harness.shutil.rmtree(copied)
+
+
+def test_sqlite_stop_backup_restore_preserves_both_schema_histories(
+    memory: Any, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """A restored old writer uses its old snapshot; upgraded data stay separately retained."""
+    live = tmp_path / "live.sqlite"
+    before = tmp_path / "pre-upgrade.sqlite"
+    retained = tmp_path / "retained-upgraded.sqlite"
+    restored = tmp_path / "restored-old-writer.sqlite"
+    vector = memory.np.asarray(memory._EMBED("legacy"), dtype="float32").tobytes()
+    legacy = ("1" * 40, "owner", "legacy-timestamp", vector, "legacy body")
+
+    def snapshot(source: Path, destination: Path) -> None:
+        assert not destination.exists()
+        with closing(sqlite3.connect(source)) as reader, closing(sqlite3.connect(destination)) as writer:
+            reader.backup(writer)
+
+    with closing(sqlite3.connect(live)) as connection:
+        connection.execute("CREATE TABLE memories(hash TEXT PRIMARY KEY,agent TEXT,ts TEXT,vec BLOB,content TEXT)")
+        connection.execute("INSERT INTO memories VALUES(?,?,?,?,?)", legacy)
+        connection.commit()
+    # All writers are closed before the pre-upgrade backup and before the retained copy.
+    snapshot(live, before)
+    monkeypatch.setenv("VECTOR_STORE_USE_SQLITE", "true")
+    monkeypatch.setenv("VECTOR_SQLITE_PATH", str(live))
+    store = memory._VectorStore()
+    try:
+        assert store._mode == "sqlite"
+        store.add("owner", "post-upgrade body")
+    finally:
+        store.close()
+    snapshot(live, retained)
+    snapshot(before, restored)
+
+    with closing(sqlite3.connect(retained)) as connection:
+        expanded = connection.execute(
+            "SELECT hash,agent,ts,vec,content,content_id FROM memories ORDER BY rowid"
+        ).fetchall()
+        assert len(expanded) == 2 and expanded[0] == legacy + (None,)
+        assert expanded[1][0] is None and expanded[1][4] == "post-upgrade body"
+        assert expanded[1][5] == memory._hash_content("post-upgrade body", "owner")
+        # Fixed legacy SQL proves this expanded table is not an old-writer target.
+        with pytest.raises(sqlite3.OperationalError, match="6 columns but 5 values"):
+            connection.execute("INSERT INTO memories VALUES(?,?,?,?,?)", ("2" * 40, "old", "t", vector, "not inserted"))
+        assert (
+            connection.execute("SELECT hash,agent,ts,vec,content,content_id FROM memories ORDER BY rowid").fetchall()
+            == expanded
+        )
+
+    old_writer_row = ("2" * 40, "old-writer", "rollback-timestamp", vector, "old writer after restore")
+    with closing(sqlite3.connect(restored)) as connection:
+        assert [row[1] for row in connection.execute("PRAGMA table_info(memories)")] == [
+            "hash",
+            "agent",
+            "ts",
+            "vec",
+            "content",
+        ]
+        assert connection.execute("SELECT * FROM memories").fetchall() == [legacy]
+        connection.execute("INSERT INTO memories VALUES(?,?,?,?,?)", old_writer_row)
+        connection.commit()
+        assert connection.execute("SELECT * FROM memories ORDER BY rowid").fetchall() == [legacy, old_writer_row]
+        assert connection.execute(
+            "SELECT COUNT(*) FROM memories WHERE content=?", ("post-upgrade body",)
+        ).fetchone() == (0,)
+    with closing(sqlite3.connect(before)) as connection:
+        assert connection.execute("SELECT * FROM memories").fetchall() == [legacy]
+    with closing(sqlite3.connect(retained)) as connection:
+        assert (
+            connection.execute("SELECT hash,agent,ts,vec,content,content_id FROM memories ORDER BY rowid").fetchall()
+            == expanded
+        )
+    with closing(sqlite3.connect(live)) as connection:
+        assert (
+            connection.execute("SELECT hash,agent,ts,vec,content,content_id FROM memories ORDER BY rowid").fetchall()
+            == expanded
+        )
+
+
+def test_archive_admission_compares_one_committed_read_snapshot(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """An identical delivery committed after the first read is not partial history."""
+    from sqlalchemy.orm import Session
+
+    path = tmp_path / "interleaved-archive.sqlite"
+    reader, concurrent = ArchiveDB(path), ArchiveDB(path)
+    entry = ArchiveEntry("archive-patch-v2:sha256:" + "4" * 64, "parent", 0, 0, True, 1)
+    body = '{"diff":"same exact body","parent":"parent"}'
+    original_execute = Session.execute
+    interleaved = False
+
+    def execute(session: Any, statement: Any, *args: Any, **kwargs: Any) -> Any:
+        nonlocal interleaved
+        result = original_execute(session, statement, *args, **kwargs)
+        if session.bind is reader.engine and not interleaved and str(statement).lstrip().upper().startswith("SELECT"):
+            # Finish this real read before committing through the other connection.
+            # Returning the frozen result keeps precisely the originally observed rows.
+            observed = result.freeze()
+            interleaved = True
+            assert concurrent.add_patch_once(entry, body)
+            return observed()
+        return result
+
+    monkeypatch.setattr(Session, "execute", execute)
+    assert reader.add_patch_once(entry, body) is False
+    assert interleaved
+    assert reader.get(entry.hash) == entry
+    assert reader.get_state("patch:" + entry.hash) == body

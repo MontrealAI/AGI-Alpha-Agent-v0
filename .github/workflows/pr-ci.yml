@@ -95,7 +95,12 @@ jobs:
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: pr-python-security
-          path: evidence/semgrep-official/
+          # Publish projections only; captured upstream rules and raw errors remain local.
+          path: |
+            evidence/semgrep-official/public/attempt-*/summary.json
+            evidence/semgrep-official/public/attempt-*/policy-identity.json
+            evidence/semgrep-official/public/attempt-*/finding-index.json
+            evidence/semgrep-official/public/attempt-*/source-identities.json
           if-no-files-found: error
       - name: Run smoke tests
         run: |
