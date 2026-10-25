@@ -144,7 +144,11 @@ def assert_research_edition_guides(page: Page, origin: str, output: Path) -> Non
             expect(page.locator("html")).to_have_attribute("lang", "en")
             page.keyboard.press("Tab")
             expect(page.locator(".skip")).to_be_focused()
+            expected_main_url = urlsplit(page.url)._replace(fragment="main").geturl()
             page.keyboard.press("Enter")
+            expect(page, f"Reading guide {record['id']} at {width}px: skip link destination").to_have_url(
+                expected_main_url
+            )
             assert urlsplit(page.url).fragment == "main"
             page.keyboard.press("Tab")
             pdf = page.locator('.actions a[type="application/pdf"]')
