@@ -1,0 +1,179 @@
+{
+  "status": "PASS",
+  "checks": 521566,
+  "failures": [],
+  "failure_count": 0,
+  "event_count": 110941,
+  "scenario_policy_runs": 52,
+  "cycles": 312,
+  "family_rows": 936,
+  "engine_sha256": "98f081642c41380b11afed65d596c32d9c85cf6397d35e2ab0089d027325966c",
+  "config_sha256": "8eb58ce30962e2007f0d18d153423a29bda64e2f3be99413bf90a8d7dd537323",
+  "results_summary_sha256": "ec627226af456f5b7335b48c4f06751aa668dc35572514c0be941e7bb727f19b",
+  "base": {
+    "scenario": "base",
+    "policy_fraction": 0,
+    "evidence_class": "SIMULATED",
+    "route": "direct",
+    "accepted_by_family": {
+      "release_assurance": 122,
+      "rollout_planning": 121,
+      "bilingual_dossier": 119
+    },
+    "attempts_by_family": {
+      "release_assurance": 132,
+      "rollout_planning": 130,
+      "bilingual_dossier": 132
+    },
+    "full_cost_per_accepted_by_family": {
+      "release_assurance": 28.262697,
+      "rollout_planning": 35.15649,
+      "bilingual_dossier": 32.934104
+    },
+    "initial_external_capital_usd": 2000,
+    "closing_cash_usd": 12970.106298,
+    "closing_receivables_usd": 3202.705,
+    "closing_collateral_usd": 0.0,
+    "closing_payables_usd": 0.0,
+    "closing_capital_asset_usd": 0.0,
+    "cumulative_net_external_collections_usd": 22591.2491,
+    "cumulative_operating_cash_paid_usd": 11621.142802,
+    "cumulative_investment_usd": 0.0,
+    "available_operating_surplus_usd": 8776.085038,
+    "full_surplus_next_plan_coverage": 2.461851,
+    "policy_next_plan_coverage": 0.0,
+    "purchased_projects": [],
+    "self_financing_demonstrated": false,
+    "self_acceleration_demonstrated": false,
+    "live_agent_cost_usd": null,
+    "next_plan_budget_feasible": false,
+    "next_plan_budget_checks": {
+      "service_cash_budget": false,
+      "human_minutes": true,
+      "elapsed_hours": true,
+      "provider_attempts": true
+    },
+    "next_plan_target_orders_per_family": 20,
+    "next_plan_acceptance_guaranteed": false,
+    "next_plan_cash_need_usd": 3564.831771,
+    "maximum_budget_feasible_target_orders_per_family": 12,
+    "budget_feasible_smaller_plan_cash_need_usd": 2396.552419,
+    "budget_feasible_smaller_plan_surplus_coverage": 3.661962
+  },
+  "resource_omissions": [],
+  "next_plan_cash_ceiling_diagnostics": [
+    {
+      "scenario": "base",
+      "policy": 0,
+      "cycle": 1,
+      "service_cash_required": 3125.139716,
+      "service_cash_ceiling": 2000,
+      "coverage": 0.0
+    },
+    {
+      "scenario": "base",
+      "policy": 0,
+      "cycle": 2,
+      "service_cash_required": 3125.139116,
+      "service_cash_ceiling": 2000,
+      "coverage": 0.222908
+    },
+    {
+      "scenario": "base",
+      "policy": 0,
+      "cycle": 3,
+      "service_cash_required": 3125.139596,
+      "service_cash_ceiling": 2000,
+      "coverage": 0.749974
+    },
+    {
+      "scenario": "base",
+      "policy": 0,
+      "cycle": 4,
+      "service_cash_required": 3125.139476,
+      "service_cash_ceiling": 2000,
+      "coverage": 1.327652
+    },
+    {
+      "scenario": "base",
+      "policy": 0,
+      "cycle": 5,
+      "service_cash_required": 3125.139476,
+      "service_cash_ceiling": 2000,
+      "coverage": 1.889507
+    },
+    {
+      "scenario": "base",
+      "policy": 0,
+      "cycle": 6,
+      "service_cash_required": 3125.139476,
+      "service_cash_ceiling": 2000,
+      "coverage": 2.461851
+    },
+    {
+      "scenario": "base",
+      "policy": 0.25,
+      "cycle": 1,
+      "service_cash_required": 3125.139716,
+      "service_cash_ceiling": 2000,
+      "coverage": 0.0
+    },
+    {
+      "scenario": "base",
+      "policy": 0.25,
+      "cycle": 2,
+      "service_cash_required": 3125.139116,
+      "service_cash_ceiling": 2000,
+      "coverage": 0.222908
+    },
+    {
+      "scenario": "base",
+      "policy": 0.25,
+      "cycle": 3,
+      "service_cash_required": 3125.139596,
+      "service_cash_ceiling": 2000,
+      "coverage": 0.749974
+    },
+    {
+      "scenario": "base",
+      "policy": 0.25,
+      "cycle": 4,
+      "service_cash_required": 3125.139476,
+      "service_cash_ceiling": 2000,
+      "coverage": 1.327652
+    },
+    {
+      "scenario": "base",
+      "policy": 0.25,
+      "cycle": 5,
+      "service_cash_required": 3125.139476,
+      "service_cash_ceiling": 2000,
+      "coverage": 1.889507
+    },
+    {
+      "scenario": "base",
+      "policy": 0.25,
+      "cycle": 6,
+      "service_cash_required": 3125.139476,
+      "service_cash_ceiling": 2000,
+      "coverage": 2.461851
+    }
+  ],
+  "cycles_with_next_plan_service_cash_above_ceiling": 312,
+  "independence": "Separate reviewer implementation; imports and executes no economics producer. Same commission/session/model family/shared files. Reconciles serialized modeled events and assumptions; no external demand, real paid collections or full live Agent cost is verified.",
+  "verification_scope": [
+    "All event account classifications and five-account nonnegativity",
+    "Cash, receivables, collateral and capital conservation",
+    "Cohort collection/default/refund/conversion arithmetic",
+    "Reserve, earned-surplus and bounded allocation identities",
+    "Family counts, full-cost allocation, source-rate break-even arithmetic",
+    "Observed bridge identity and CPU effect; source and output hashes",
+    "Financing coverage arithmetic separated from resource feasibility"
+  ],
+  "limits": [
+    "An event ledger can be conserved while economic assumptions are false.",
+    "No independent source-to-bank or chain settlement attestation.",
+    "No empirical validation of modeled human time, demand, pricing, collection or capacity vendor offers.",
+    "This is an accounting/reconciliation audit, not a proof that all possible engine inputs are correct."
+  ]
+}

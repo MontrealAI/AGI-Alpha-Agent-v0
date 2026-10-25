@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "scope": "Formatted browsable review copies only; canonical archives and frozen records unchanged.",
+  "black_version": "25.1.0",
+  "local_ruff_version": "0.12.3",
+  "hosted_ruff_version": "0.12.5",
+  "hosted_gate_status": "Original head fails; corrected staged files have not been pushed or hosted-qualified.",
+  "checks": {
+    "economics": {
+      "byte_identical_outputs": [
+        "events.jsonl",
+        "ledger.csv",
+        "family_results.csv"
+      ],
+      "only_provenance_engine_sha_changed": [
+        "summary.json",
+        "ledger.json",
+        "scenarios.json",
+        "family_results.json"
+      ],
+      "all_other_business_and_provenance_fields_exactly_equal": true,
+      "all_52_scenario_policy_runs_checked": true,
+      "initial_validation_harness_correction": "The first comparison allowed changed source identity only in summary.json; the shared provenance occurs in all four JSON outputs. The corrected comparison verifies every other value exactly. No model code was changed to resolve this assertion."
+    },
+    "named_closure": {
+      "independent_evidence_assertions": 15127,
+      "status": "PASS",
+      "limits": "Function __name__/traceback name changes from <lambda> to req; no function introspection or serialization is used."
+    },
+    "checker_variable_renames": {
+      "equal_result_receipts": 216,
+      "includes_invalid_makespan_and_movement": true
+    },
+    "paper/generate_base.py": {
+      "identical_generated_text_files": 6,
+      "binary_plot_bytes_not_used_as_semantic_assertion": true
+    },
+    "paper/generate_results.py": {
+      "identical_generated_text_files": 8,
+      "binary_plot_bytes_not_used_as_semantic_assertion": true
+    }
+  },
+  "canonical_archive_sha256": "293db5a4ea0ef5ff44bfe3d3f73ca33afc7f603e4e750b8e2eb8366262c1cda5",
+  "temporary_validation_directory": "/tmp/productive-capital-review-lint-check-oyr9hc62"
+}

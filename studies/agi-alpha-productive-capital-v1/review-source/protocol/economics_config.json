@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.0",
+  "study_id": "productive-capital-engine-2026-10-25",
+  "evidence_class": "assumed business scenarios with separately observed local execution bridge",
+  "currency": "USD nominal accounting unit",
+  "live_full_agent_cost_usd": null,
+  "paid_external_demand_observed": false,
+  "cycles": 6,
+  "cycle_days": 30,
+  "initial_external_capital_usd": 2000,
+  "per_cycle_cash_spend_budget_usd": 2000,
+  "human_attention_budget_minutes": 3000,
+  "elapsed_budget_hours": 160,
+  "provider_attempt_limit": 240,
+  "demand_sets": [
+    20,
+    40,
+    60,
+    80,
+    80,
+    80
+  ],
+  "max_attempts_per_order": 2,
+  "operational_attempt_failure_probability": 0.08,
+  "sample_seed": "productive-capital-2026-10-25",
+  "reinvestment_policies": [
+    0,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "rates": {
+    "software_engineer_usd_per_hour": 93.40139396709324,
+    "reviewer_usd_per_hour": 62.086718640135004,
+    "operator_usd_per_hour": 61.09074848825764,
+    "classification": "estimated: BLS May2025 OEWS medians/2080 times June2026 ECEC total/wage ratio; population AI use unknown",
+    "source_file": "research/evidence/source_ledger_human.json"
+  },
+  "families": {
+    "release_assurance": {
+      "price_usd": 90,
+      "supervision_minutes_per_attempt": 6,
+      "verification_minutes_per_attempt": 6,
+      "setup_minutes_per_order": 2,
+      "support_minutes_per_accepted": 2,
+      "retry_correction_minutes": 3,
+      "model_tool_usd_per_attempt": 1.5,
+      "traditional_rate_key": "software_engineer_usd_per_hour",
+      "customer_review_minutes_per_accepted": 3
+    },
+    "rollout_planning": {
+      "price_usd": 75,
+      "supervision_minutes_per_attempt": 10,
+      "verification_minutes_per_attempt": 7,
+      "setup_minutes_per_order": 3,
+      "support_minutes_per_accepted": 3,
+      "retry_correction_minutes": 5,
+      "model_tool_usd_per_attempt": 1.1,
+      "traditional_rate_key": "operator_usd_per_hour",
+      "customer_review_minutes_per_accepted": 5
+    },
+    "bilingual_dossier": {
+      "price_usd": 55,
+      "supervision_minutes_per_attempt": 8,
+      "verification_minutes_per_attempt": 7,
+      "setup_minutes_per_order": 3,
+      "support_minutes_per_accepted": 3,
+      "retry_correction_minutes": 4,
+      "model_tool_usd_per_attempt": 0.8,
+      "traditional_rate_key": "reviewer_usd_per_hour",
+      "customer_review_minutes_per_accepted": 4
+    }
+  },
+  "business": {
+    "fixed_operating_usd_per_cycle": 120,
+    "fixed_administration_minutes_per_cycle": 60,
+    "storage_usd_per_attempt": 0.1,
+    "delivery_usd_per_accepted": 0.25,
+    "acquisition_usd_per_order": 2.5,
+    "processing_fee_fraction": 0.02,
+    "processing_fee_usd_per_accepted": 0.25,
+    "contingency_cash_floor_usd": 200,
+    "cash_profit_obligation_reserve_fraction": 0.2,
+    "reserve_description": "Illustrative obligation buffer on cumulative positive cash operating profit; not a statutory tax computation",
+    "receivable_collection_weights": [
+      0.5,
+      0.35,
+      0.15
+    ],
+    "default_fraction": 0.02,
+    "refund_fraction_of_collections": 0.02,
+    "elapsed_hours_per_attempt": 0.5,
+    "unsuccessful_build_engineer_hours": 1,
+    "initial_integration_engineer_hours": 2,
+    "initial_verification_hours": 1,
+    "initial_model_tool_cost_usd": 5,
+    "kernel_compute_usd_per_cpu_hour": 0.18,
+    "capital_opportunity_cost_annual_fraction": 0.12
+  },
+  "projects": {
+    "dependency-repair-v1": {
+      "kind": "capability",
+      "construction_engineer_hours": 4,
+      "construction_verification_hours": 1,
+      "construction_model_tool_usd": 4,
+      "maintenance_engineer_hours_per_cycle": 0.25,
+      "finite_reuses": 100,
+      "life_cycles": 3,
+      "residual_value_usd": 0,
+      "admission": "Nonnegative measured-compute NPV against conventional_cache, or explicitly labeled compelled research; no assumed attention benefit"
+    },
+    "extra-execution-block": {
+      "kind": "execution_capacity",
+      "construction_cash_usd": 350,
+      "extra_provider_attempts_per_cycle": 40,
+      "life_cycles": 3,
+      "maintenance_cash_usd_per_cycle": 15,
+      "residual_value_usd": 0,
+      "admission": "Positive modeled contribution from otherwise blocked demand under fixed cash, attention and elapsed budgets; vendor availability is assumed"
+    },
+    "discovery-process-pilot": {
+      "kind": "discovery",
+      "construction_engineer_hours": 3,
+      "construction_verification_hours": 1,
+      "construction_model_tool_usd": 3,
+      "life_cycles": 3,
+      "residual_value_usd": 0,
+      "admission": "HOLD: no measured productive benefit; potential budget does not authorize or prove research success"
+    }
+  },
+  "routes": {
+    "direct": {
+      "worker_entitlement_fraction": 1,
+      "collateral_fraction": 0,
+      "collateral_lock_cycles": 0,
+      "gas_usd_per_order": 0,
+      "conversion_spread_fraction": 0,
+      "volatility_haircut_fraction": 0,
+      "route_classification": "assumed off-chain sale; no live payment"
+    },
+    "alpha_agialpha": {
+      "worker_entitlement_fraction": 0.9405,
+      "collateral_fraction": 0.1,
+      "collateral_lock_cycles": 1,
+      "gas_usd_per_order": 3,
+      "conversion_spread_fraction": 0.02,
+      "volatility_haircut_fraction": 0,
+      "route_classification": "source-derived large-amount worker share; collateral10% assumes configurable minimumStake nonbinding; lock/gas/spread assumptions; no token appreciation"
+    },
+    "manager_usdc": {
+      "worker_entitlement_fraction": 0.52,
+      "collateral_fraction": 0.1,
+      "collateral_lock_cycles": 1,
+      "gas_usd_per_order": 3,
+      "conversion_spread_fraction": 0.002,
+      "volatility_haircut_fraction": 0,
+      "route_classification": "source-derived default validator-participating worker allocation; collateral/lock/gas/conversion assumptions; no claim to wallet30/wallet10"
+    },
+    "jobs_agialpha": {
+      "worker_entitlement_fraction": 0.8674285714285714,
+      "collateral_fraction": 0.1,
+      "collateral_lock_cycles": 1,
+      "gas_usd_per_order": 3,
+      "conversion_spread_fraction": 0.02,
+      "volatility_haircut_fraction": 0,
+      "route_classification": "configured illustrative R*0.92*0.99/(R*1.05), with5%external fee,8%validator share,1%assumed agent burn,NFTmultiplier1,no extra pool reward; not a deployment readback"
+    }
+  },
+  "base_route": "direct",
+  "next_cycle_plan": {
+    "accepted_sets": 20,
+    "new_capability": "dependency-repair-v1",
+    "working_capital_basis": "Worst-case two attempts/order, all specified operating categories and new collateral before collection; existing reserve balances excluded from denominator",
+    "include_fixed_business_cost": true,
+    "include_one_cycle_capability_maintenance": true
+  },
+  "sensitivity": {
+    "human_minutes": [
+      5,
+      15,
+      30,
+      60,
+      120,
+      240
+    ],
+    "tool_cost_multiplier": [
+      0.5,
+      1,
+      2
+    ],
+    "attention_multiplier": [
+      0.5,
+      1,
+      2,
+      3
+    ],
+    "token_gas_usd": [
+      1,
+      3,
+      10
+    ],
+    "token_spread_fraction": [
+      0.01,
+      0.02,
+      0.05
+    ],
+    "token_volatility_haircut_fraction": [
+      0,
+      0.1,
+      0.3
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "base",
+      "label": "Base direct sale; admission enforced",
+      "route": "direct"
+    },
+    {
+      "id": "price_compression",
+      "label": "Prices fall to45% of base",
+      "route": "direct",
+      "price_multiplier": 0.45
+    },
+    {
+      "id": "high_supervision",
+      "label": "Human attention triples",
+      "route": "direct",
+      "attention_multiplier": 3
+    },
+    {
+      "id": "failure_stress",
+      "label": "30% failure per attempt",
+      "route": "direct",
+      "failure_probability": 0.3
+    },
+    {
+      "id": "low_reuse",
+      "label": "Only five future child reuses",
+      "route": "direct",
+      "child_reuse_limit": 5
+    },
+    {
+      "id": "slow_collection",
+      "label": "10/20/70% collection over three cycles",
+      "route": "direct",
+      "collection_weights": [
+        0.1,
+        0.2,
+        0.7
+      ]
+    },
+    {
+      "id": "provider_limit",
+      "label": "Provider permits40 attempts/cycle",
+      "route": "direct",
+      "provider_attempt_limit": 40
+    },
+    {
+      "id": "demand_stall",
+      "label": "Demand ends after cycle1",
+      "route": "direct",
+      "demand_sets": [
+        20,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "alpha_route",
+      "label": "Alpha worker economics, stable token mark",
+      "route": "alpha_agialpha"
+    },
+    {
+      "id": "alpha_token_stress",
+      "label": "Alpha30% lower conversion mark,5%spread,$10gas",
+      "route": "alpha_agialpha",
+      "volatility_haircut_fraction": 0.3,
+      "conversion_spread_fraction": 0.05,
+      "gas_usd_per_order": 10
+    },
+    {
+      "id": "manager_route",
+      "label": "Manager default52%worker entitlement",
+      "route": "manager_usdc"
+    },
+    {
+      "id": "jobs_route",
+      "label": "Jobs explicitly configured illustrative route",
+      "route": "jobs_agialpha"
+    },
+    {
+      "id": "compelled_research",
+      "label": "Fund child research when affordable despite negative compute NPV",
+      "route": "direct",
+      "force_research": true
+    }
+  ],
+  "classification_notes": {
+    "observed": "Only bridge local CPU/wall/work/acceptance and generated files; bridge is versioned separately",
+    "externally_sourced": "BLS and inspected contract formulas; source/current deployment distinct",
+    "estimated": "Human engineering/review costs using sourced rates; not observed human attention",
+    "assumed": "Demand,prices,acceptance failure,collection,default,refund,overhead,maintenance,lifetime,capacity purchase,budgets",
+    "unknown": "Complete authenticated live Agent cost; API billing beyond the local research adapter; actual customer willingness/demand/quality"
+  }
+}

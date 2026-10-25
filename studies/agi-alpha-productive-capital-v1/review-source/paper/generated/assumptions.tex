@@ -1,0 +1,16 @@
+\begin{table}[H]\small\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{.24\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{.18\linewidth}}\toprule Input & Primary scenario & Classification \\\midrule
+Horizon and demand & Six 30-day cycles; 20/40/60/80/80/80 requested orders per class. No empirical demand fit. & Assumed \\
+Resource ceilings & USD2,000 service operating spend per cycle; 3,000 human minutes; 160 elapsed hours; 240 attempts. Initial external capital USD2,000. Capital investment separately uses earned surplus. & Assumed \\
+Prices & Assurance USD90; planning USD75; dossier USD55. No actual invoices or collections. & Assumed \\
+Attention per attempt & Supervision + verification: 6+6, 10+7 and 8+7 minutes by class; order setup 2/3/3; accepted support 2/3/3; retry correction 3/5/4. & Estimated \\
+Model/tool allowance & USD1.50/1.10/0.80 per attempt; actual inference charges unavailable. & Estimated \\
+Operating envelope & USD120 fixed cost + 60 administration minutes/cycle; storage USD0.10/attempt; delivery USD0.25/acceptance; acquisition USD2.50/order; processing 2\% + USD0.25/acceptance. & Estimated / assumed \\
+Failures and collections & 8\% independent attempt failure, at most two attempts/order; 50/35/15\% collection over three cycles; 2\% default and 2\% refund. Deterministic seeded draws, not measured rates. & Assumed \\
+Initialization and losses & Two integration-engineer hours, one failed-build engineer hour, one verification hour, USD5 model/tool allowance. First development interruption lacks its original full timing receipt. & Estimated; unknown actuals \\
+Reserves & USD200 contingency floor and 20\% of positive cumulative cash operating profit reserved for obligations. No statutory tax claim. & Assumed \\
+Local compute & Observed joint CPU, allocated once across three services, at USD0.18/CPU-hour. This rate does not price authorship or human attention. & Observed + assumed \\
+Capability & Four engineer + one reviewer hour and USD4 tools; USD439.69 construction. Quarter-hour engineer maintenance/cycle; 100 uses; three-cycle life; zero salvage. & Estimated / assumed \\
+Capacity / discovery & USD350 buys 40 extra attempts/cycle for three cycles; USD15 maintenance. Discovery pilot costs USD345.29 but has no measured benefit. No actual purchase. & Assumed / estimated \\\bottomrule\end{tabularx}
+\caption{Nonzero complete-cost envelope. Exact values, source links and classifications are in the frozen configuration; unknown live costs remain null.}
+\end{table}
+The initial economic implementation costed setup, failed construction and maintenance in cash but omitted some of their human/elapsed time from resource admission. A disclosed amendment added that time without changing the original economic assumptions. No original scenario's production count or cash result changed because those additional minutes did not breach its ceiling. The original engine and all original outputs are retained in a hashed history archive. Post-result remediation and bottleneck sensitivities are reported separately.

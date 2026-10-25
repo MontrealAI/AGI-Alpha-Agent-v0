@@ -1,0 +1,68 @@
+[
+  {
+    "command": [
+      "pdflatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "main.tex"
+    ],
+    "returncode": 0,
+    "tail": [
+      "usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>",
+      "Output written on main.pdf (21 pages, 391000 bytes).",
+      "Transcript written on main.log."
+    ]
+  },
+  {
+    "command": [
+      "bibtex",
+      "main"
+    ],
+    "returncode": 0,
+    "tail": [
+      "The top-level auxiliary file: main.aux",
+      "The style file: plainnat.bst",
+      "Database file #1: references.bib"
+    ]
+  },
+  {
+    "command": [
+      "pdflatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "main.tex"
+    ],
+    "returncode": 0,
+    "tail": [
+      "usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>",
+      "Output written on main.pdf (21 pages, 391437 bytes).",
+      "Transcript written on main.log."
+    ]
+  },
+  {
+    "command": [
+      "pdflatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "main.tex"
+    ],
+    "returncode": 0,
+    "tail": [
+      "usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb>",
+      "Output written on main.pdf (21 pages, 391246 bytes).",
+      "Transcript written on main.log."
+    ]
+  },
+  {
+    "command": [
+      "pdftoppm",
+      "-scale-to",
+      "1300",
+      "-png",
+      "main.pdf",
+      "render/page"
+    ],
+    "returncode": 0,
+    "tail": []
+  }
+]
