@@ -518,6 +518,11 @@ jobs:
           python -m pip install --require-hashes --only-binary=:all: -r requirements-papers.lock
           python -m scripts.research_papers check
           python -m pytest --noconftest -o addopts= tests/test_research_papers.py tests/test_paper_changes.py tests/test_paper_publication.py tests/test_paper_workflow_policy.py -q
+      - name: Verify immutable sources and committed release evidence
+        run: |
+          python scripts/check_strategy_research_source.py
+          python scripts/check_no_binary_diff.py --base 5499495911bf8822ac0aa8c9007f00789c1132b5
+          python scripts/dp_scrubber.py --base 5499495911bf8822ac0aa8c9007f00789c1132b5
       - name: Require the blocking repository hook report
         env:
           SKIP: black,ruff-format,flake8,update-actions
@@ -544,6 +549,8 @@ jobs:
         run: |
           git diff --name-only -z d1df708e3e08ee58b7cbe74758767ddb2da2d5f9 HEAD | xargs -0 pre-commit run --files
           git diff --exit-code
+      - name: Verify scoped security hook with its installed tool
+        run: STRATEGY_REQUIRE_SEMGREP=1 python -m pytest --noconftest -o addopts= -p no:cacheprovider tests/test_strategy_python_security.py -q
       - name: Verify the documented contributor setup in a fresh environment
         run: |
           python -m venv "$RUNNER_TEMP/contributor-env"

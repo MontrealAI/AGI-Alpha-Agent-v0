@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# Bounded Strategy admission rules; no registry imports or suppression paths.
+rules:
+  - id: strategy-python-no-dynamic-evaluation
+    languages: [python]
+    message: Direct eval or exec is outside the fixed Strategy execution surface.
+    severity: ERROR
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: exec(...)
+      - pattern: builtins.eval(...)
+      - pattern: builtins.exec(...)
+  - id: strategy-python-no-subprocess-shell
+    languages: [python]
+    message: A literal subprocess shell=True call is outside the fixed Strategy execution surface.
+    severity: ERROR
+    patterns:
+      - pattern: subprocess.$FUNCTION(..., shell=True, ...)
+      - metavariable-regex:
+          metavariable: $FUNCTION
+          regex: ^(run|Popen|call|check_call|check_output)$

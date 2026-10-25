@@ -6,7 +6,7 @@ repos:
         # Retain the hash-verified original study harness byte-for-byte.
         exclude: ^(alpha_factory_v1/backend/agent_factory\.py|studies/computer-use/2026-10-14/04_Reproduce/)
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 1bd02b3569e3ac5cc66552b1336a96a8880d1bae
+    rev: 73b0f6d59bbfcb75e17a4653d581c9dfaca13969
     hooks:
       - id: ruff
         exclude: alpha_factory_v1/backend/agent_factory.py
@@ -22,9 +22,12 @@ repos:
     rev: 2bbd0a55b3655b26991c936b92e0c0f6d6f4fa94
     hooks:
       - id: semgrep
-        args: ["--config", "semgrep.yml"]
+        entry: python -I scripts/check_strategy_python_security.py
+        args: []
         additional_dependencies: ["setuptools>=75,<81"]
         types: [python]
+        pass_filenames: false
+        always_run: true
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: d0a0a0d7aa4e87ed0c7a31b5fcee1c20697718ff
     hooks:

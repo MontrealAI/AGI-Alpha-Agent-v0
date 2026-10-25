@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import argparse
+import io
 import json
 import hashlib
 import os
@@ -216,10 +218,16 @@ def _base_ref() -> str:
     return "HEAD"
 
 
-def _iter_changed_paths(base_ref: str) -> list[str]:
+def _iter_changed_paths(base_ref: str, *, exact: bool = False) -> list[str]:
     try:
-        result = _run("git", "diff", "--name-status", f"{base_ref}...HEAD")
+        result = (
+            _run("git", "diff", "--name-status", "--no-renames", base_ref, "HEAD")
+            if exact
+            else _run("git", "diff", "--name-status", f"{base_ref}...HEAD")
+        )
     except subprocess.CalledProcessError:
+        if exact:
+            raise
         result = _run("git", "diff", "--name-status", "HEAD")
     paths: list[str] = []
     for line in result.stdout.splitlines():
@@ -234,10 +242,16 @@ def _iter_changed_paths(base_ref: str) -> list[str]:
     return [p for p in paths if p]
 
 
-def _has_binary_diff(base_ref: str) -> list[str]:
+def _has_binary_diff(base_ref: str, *, exact: bool = False) -> list[str]:
     try:
-        result = _run("git", "diff", "--numstat", f"{base_ref}...HEAD")
+        result = (
+            _run("git", "diff", "--numstat", "--no-renames", base_ref, "HEAD")
+            if exact
+            else _run("git", "diff", "--numstat", f"{base_ref}...HEAD")
+        )
     except subprocess.CalledProcessError:
+        if exact:
+            raise
         result = _run("git", "diff", "--numstat", "HEAD")
     binaries = []
     for line in result.stdout.splitlines():
@@ -430,12 +444,328 @@ def _enterprise_admissions(root: Path, paths: list[str]) -> set[str]:
     return admitted
 
 
-def main() -> int:
+STRATEGY_MANIFEST = "scripts/data/strategy_succession_binary_evidence.json"
+STRATEGY_MANIFEST_SHA256 = "a3e0d5f3046b1c5768f88b70100aaf5036014d1bbb66b2ed6d9a65c35fda76e9"
+STRATEGY_STUDY_PREFIX = "studies/agi-alpha-flywheel-strategy-succession-v1/"
+STRATEGY_ENGINEERING_PREFIX = "contrib/strategy_succession/evidence/"
+STRATEGY_SCIENTIFIC_MANIFEST = STRATEGY_STUDY_PREFIX + "PUBLIC_PAYLOAD_MANIFEST.json"
+STRATEGY_SCIENTIFIC_MANIFEST_SHA256 = "2f7e7b7676f81ec608fa8f1e9d4179fecdb9638a814e579058d625044df182bd"
+STRATEGY_SOURCE_COMMIT = "54f3b603eeb78baf59c039af78c097c2f6db3033"
+STRATEGY_SOURCE_TREE = "7102fd622da8d35ad94f1124f431bac000838d67"
+STRATEGY_SCIENTIFIC_SOURCE = "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7"
+
+
+def _strategy_name(name: Any, prefix: str) -> bool:
+    return (
+        isinstance(name, str)
+        and name.startswith(prefix)
+        and not name.startswith("/")
+        and "\\" not in name
+        and "\x00" not in name
+        and PurePosixPath(name).as_posix() == name
+        and ".." not in PurePosixPath(name).parts
+    )
+
+
+def _load_strategy_manifest(root: Path) -> dict[str, dict[str, Any]]:
+    """Read the closed reviewed inventory; no directory or suffix grants admission."""
+    raw = _regular_path(root, STRATEGY_MANIFEST).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != STRATEGY_MANIFEST_SHA256:
+        raise ValueError("Strategy evidence manifest differs from its reviewed bytes")
+    data = json.loads(raw, object_pairs_hook=_unique_object)
+    if not isinstance(data, dict) or set(data) != {
+        "schema",
+        "source_commit",
+        "source_tree",
+        "scientific_payload",
+        "scope",
+        "files",
+    }:
+        raise ValueError("Invalid Strategy evidence manifest schema")
+    if (
+        data["schema"] != "strategy-succession-binary-evidence/v1"
+        or data["source_commit"] != STRATEGY_SOURCE_COMMIT
+        or data["source_tree"] != STRATEGY_SOURCE_TREE
+        or data["scientific_payload"]
+        != {"path": STRATEGY_SCIENTIFIC_MANIFEST, "sha256": STRATEGY_SCIENTIFIC_MANIFEST_SHA256, "body_count": 239}
+        or data["scope"]
+        != "Exact inert scientific publication and engineering evidence bytes only; no execution, proof or "
+        "operational authority. Failed and superseded outcomes remain failed and superseded."
+        or not isinstance(data["files"], list)
+        or len(data["files"]) != 20
+    ):
+        raise ValueError("Invalid Strategy evidence source or closed inventory")
+    rows: dict[str, dict[str, Any]] = {}
+    for row in data["files"]:
+        if not isinstance(row, dict) or set(row) != {"path", "size", "sha256", "git_blob", "media_type", "provenance"}:
+            raise ValueError("Invalid Strategy evidence record")
+        name = row["path"]
+        if (
+            not (_strategy_name(name, STRATEGY_STUDY_PREFIX) or _strategy_name(name, STRATEGY_ENGINEERING_PREFIX))
+            or name in rows
+            or type(row["size"]) is not int
+            or not 0 < row["size"] <= 2_500_000
+            or not isinstance(row["sha256"], str)
+            or re.fullmatch(r"[0-9a-f]{64}", row["sha256"]) is None
+            or not isinstance(row["git_blob"], str)
+            or re.fullmatch(r"[0-9a-f]{40}", row["git_blob"]) is None
+            or not isinstance(row["media_type"], str)
+            or (PurePosixPath(name).suffix, row["media_type"])
+            not in {(".png", "image/png"), (".zip", "application/zip"), (".pdf", "application/pdf")}
+        ):
+            raise ValueError("Invalid Strategy evidence path, identity or media type")
+        provenance = row["provenance"]
+        if (
+            not isinstance(provenance, dict)
+            or set(provenance) != {"kind", "source_identity", "source_path"}
+            or any(not isinstance(value, str) for value in provenance.values())
+        ):
+            raise ValueError("Invalid Strategy evidence provenance")
+        scientific = name.startswith(STRATEGY_STUDY_PREFIX)
+        kinds = {
+            "application/pdf": {"scientific-author-pdf", "scientific-figure-pdf"},
+            "image/png": {"recorded-study-screenshot"},
+            "application/zip": {"hosted-failure-evidence", "engineering-development-evidence"},
+        }
+        if (
+            provenance["kind"] not in kinds[row["media_type"]]
+            or scientific != (row["media_type"] != "application/zip")
+            or provenance["source_identity"]
+            != ("scientific-source:" + STRATEGY_SCIENTIFIC_SOURCE if scientific else "git:" + STRATEGY_SOURCE_COMMIT)
+            or provenance["source_path"] != (name.removeprefix(STRATEGY_STUDY_PREFIX) if scientific else name)
+        ):
+            raise ValueError("Strategy evidence provenance differs from its source")
+        rows[name] = row
+    if sum(row["size"] for row in rows.values()) != 5_271_810:
+        raise ValueError("Invalid Strategy evidence total byte length")
+    if sorted(row["media_type"] for row in rows.values()) != sorted(
+        ["application/zip"] * 8 + ["application/pdf"] * 10 + ["image/png"] * 2
+    ):
+        raise ValueError("Invalid Strategy evidence media inventory")
+    manifest_blob = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
+    if _strategy_head(root).get(STRATEGY_MANIFEST) != ("100644", manifest_blob):
+        raise ValueError("Committed Strategy evidence manifest differs from its reviewed bytes")
+    return rows
+
+
+def _strategy_head(root: Path) -> dict[str, tuple[str, str]]:
+    """Bind the newly admitted assets to the HEAD whose release delta is checked."""
+    try:
+        result = _run(
+            "git",
+            "-C",
+            str(root),
+            "ls-tree",
+            "-rz",
+            "--full-tree",
+            "HEAD",
+            "--",
+            STRATEGY_STUDY_PREFIX,
+            STRATEGY_ENGINEERING_PREFIX,
+            STRATEGY_MANIFEST,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("Cannot inspect committed Strategy source identities") from exc
+    entries: dict[str, tuple[str, str]] = {}
+    for entry in result.stdout.split("\x00"):
+        if not entry:
+            continue
+        metadata, name = entry.split("\t", 1)
+        mode, kind, blob = metadata.split()
+        if kind != "blob" or name in entries:
+            raise ValueError("Invalid committed Strategy source identity")
+        entries[name] = (mode, blob)
+    return entries
+
+
+def _verify_strategy_scientific_sources(root: Path) -> None:
+    """Check all 239 immutable source bodies without running the study or its code."""
+    raw = _regular_path(root, STRATEGY_SCIENTIFIC_MANIFEST).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != STRATEGY_SCIENTIFIC_MANIFEST_SHA256:
+        raise ValueError("Strategy scientific inventory differs from its immutable bytes")
+    head = _strategy_head(root)
+    manifest_blob = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
+    if head.get(STRATEGY_SCIENTIFIC_MANIFEST) != ("100644", manifest_blob):
+        raise ValueError("Committed Strategy scientific inventory differs from its immutable bytes")
+    data = json.loads(raw, object_pairs_hook=_unique_object)
+    rows = data.get("files") if isinstance(data, dict) else None
+    if not isinstance(rows, list) or len(rows) != 238:
+        raise ValueError("Invalid Strategy scientific inventory")
+    seen: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != {"path", "repo_path", "sha256", "bytes", "mode"}:
+            raise ValueError("Invalid Strategy scientific source record")
+        name = row["repo_path"]
+        if (
+            not _strategy_name(name, STRATEGY_STUDY_PREFIX)
+            or name in seen
+            or row["path"] != name.removeprefix(STRATEGY_STUDY_PREFIX)
+            or type(row["bytes"]) is not int
+            or row["bytes"] <= 0
+            or not isinstance(row["mode"], str)
+            or row["mode"] not in {"100644", "100755"}
+        ):
+            raise ValueError("Invalid Strategy scientific source path")
+        path = _regular_path(root, name)
+        body = path.read_bytes()
+        if (
+            path.stat().st_size != row["bytes"]
+            or hashlib.sha256(body).hexdigest() != row["sha256"]
+            or head.get(name) != (row["mode"], hashlib.sha1(f"blob {len(body)}\0".encode() + body).hexdigest())
+        ):
+            raise ValueError(f"Strategy scientific source differs from its immutable bytes: {name}")
+        seen.add(name)
+
+
+def _valid_strategy_zip(path: Path, raw: bytes) -> bool:
+    """Validate bounded inert archive records, including member CRCs, without extraction."""
+    if not _valid_zip(path, raw):
+        return False
+    try:
+        with zipfile.ZipFile(path) as archive:
+            members = archive.infolist()
+            if (
+                len(members) > 512
+                or sum(member.file_size for member in members) > 32 * 1024 * 1024
+                or any(
+                    member.file_size > 4 * 1024 * 1024
+                    or stat.S_IFMT(member.external_attr >> 16) not in {0, stat.S_IFREG, stat.S_IFDIR}
+                    for member in members
+                )
+            ):
+                return False
+            return archive.testzip() is None
+    except (OSError, ValueError, RuntimeError, zipfile.BadZipFile, zlib.error):
+        return False
+
+
+def _valid_strategy_pdf(raw: bytes, *, author: bool) -> bool:
+    """Parse immutable PDFs; the titleless figure originals are never normalized."""
+    try:
+        if author:
+            from scripts.research_papers import verify_pdf
+
+            verify_pdf(raw, "AGI ALPHA FLYWHEEL: Strategy as a Productive Asset")
+            return True
+        from pypdf import PdfReader
+        from pypdf.generic import ArrayObject, DictionaryObject, IndirectObject, StreamObject
+
+        if not raw.startswith(b"%PDF-") or not raw.rstrip().endswith(b"%%EOF") or len(raw) > 2_000_000:
+            return False
+        reader = PdfReader(io.BytesIO(raw), strict=True)
+        if reader.is_encrypted or len(reader.pages) != 1 or reader.metadata and reader.metadata.title:
+            return False
+        forbidden = {
+            "/A",
+            "/AA",
+            "/AcroForm",
+            "/EF",
+            "/EmbeddedFiles",
+            "/JavaScript",
+            "/JS",
+            "/Names",
+            "/OpenAction",
+            "/RichMedia",
+            "/URI",
+            "/XFA",
+        }
+        actions = {"/JavaScript", "/Launch", "/SubmitForm", "/ImportData", "/GoTo", "/GoToR", "/GoToE", "/URI"}
+        pending: list[Any] = [reader.trailer["/Root"]]
+        visited: set[tuple[int, int]] = set()
+        count = 0
+        while pending:
+            count += 1
+            if count > 20_000:
+                return False
+            value = pending.pop()
+            if isinstance(value, IndirectObject):
+                identity = (value.idnum, value.generation)
+                if identity not in visited:
+                    visited.add(identity)
+                    pending.append(value.get_object())
+            elif isinstance(value, DictionaryObject):
+                annotations = value["/Annots"].get_object() if "/Annots" in value else None
+                if (
+                    forbidden.intersection(value)
+                    or value.get("/Type") in {"/Filespec", "/EmbeddedFile"}
+                    or value.get("/S") in actions
+                    or isinstance(value, StreamObject)
+                    and "/F" in value
+                    or annotations is not None
+                    and (not isinstance(annotations, ArrayObject) or len(annotations) != 0)
+                ):
+                    return False
+                pending.extend(value.values())
+            elif isinstance(value, ArrayObject):
+                pending.extend(value)
+        return True
+    except Exception:
+        return False
+
+
+def _strategy_admissions(root: Path, paths: list[str]) -> set[str]:
+    candidates = {name for name in paths if name.startswith((STRATEGY_STUDY_PREFIX, STRATEGY_ENGINEERING_PREFIX))}
+    if not candidates:
+        return set()
+    manifest = _load_strategy_manifest(root)
+    _verify_strategy_scientific_sources(root)
+    head = _strategy_head(root)
+    admitted: set[str] = set()
+    for name in candidates:
+        row = manifest.get(name)
+        if row is None:
+            continue
+        try:
+            path = _regular_path(root, name)
+            if path.stat().st_size != row["size"]:
+                continue
+            raw = path.read_bytes()
+            if (
+                len(raw) != row["size"]
+                or hashlib.sha256(raw).hexdigest() != row["sha256"]
+                or hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest() != row["git_blob"]
+                or head.get(name) != ("100644", row["git_blob"])
+            ):
+                continue
+            media = row["media_type"]
+            valid_type = (
+                _valid_png(raw)
+                if media == "image/png"
+                else (
+                    _valid_strategy_zip(path, raw)
+                    if media == "application/zip"
+                    else _valid_strategy_pdf(raw, author=row["provenance"]["kind"] == "scientific-author-pdf")
+                )
+            )
+            if valid_type:
+                admitted.add(name)
+        except (OSError, ValueError):
+            continue
+    return admitted
+
+
+def main(base_ref: str | None = None) -> int:
     root = _git_root()
-    base_ref = _base_ref()
-    changed_paths = _iter_changed_paths(base_ref)
+    exact = base_ref is not None
+    if exact:
+        if re.fullmatch(r"[0-9a-f]{40}", base_ref or "") is None:
+            print("ERROR: --base requires an exact lowercase 40-character commit SHA")
+            return 1
+        commit = _run("git", "rev-parse", "--verify", f"{base_ref}^{{commit}}", check=False)
+        if commit.returncode or commit.stdout.strip() != base_ref:
+            print("ERROR: --base commit is unavailable or does not identify that exact commit")
+            return 1
+    else:
+        base_ref = _base_ref()
+    assert base_ref is not None
+    try:
+        changed_paths = _iter_changed_paths(base_ref, exact=True) if exact else _iter_changed_paths(base_ref)
+        binary_diff = _has_binary_diff(base_ref, exact=True) if exact else _has_binary_diff(base_ref)
+    except subprocess.CalledProcessError:
+        print("ERROR: Cannot compare the exact --base commit with HEAD")
+        return 1
     binary_paths = [path for path in changed_paths if _matches_binary_extension(path)]
-    binary_paths.extend(_has_binary_diff(base_ref))
+    binary_paths.extend(binary_diff)
     authorized = AUTHORIZED_MANUSCRIPT | AUTHORIZED_REPORT_PACK | AUTHORIZED_FLAGSHIP_ARTWORK
     # Only exact validated catalog bytes qualify; this is not a PDF suffix exclusion.
     from scripts.research_papers import (
@@ -459,11 +789,17 @@ def main() -> int:
     except (OSError, ValueError) as exc:
         print(f"ERROR: Enterprise binary admission failed: {exc}")
         return 1
+    try:
+        admitted_strategy = _strategy_admissions(root, binary_paths)
+    except (OSError, ValueError) as exc:
+        print(f"ERROR: Strategy binary admission failed: {exc}")
+        return 1
     binary_paths = sorted(
         {
             path
             for path in binary_paths
             if path not in admitted_evidence
+            and path not in admitted_strategy
             and (
                 path not in authorized
                 or not Path(path).is_file()
@@ -481,4 +817,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--base", help="Compare HEAD directly with this exact 40-character release commit SHA")
+    raise SystemExit(main(parser.parse_args().base))
