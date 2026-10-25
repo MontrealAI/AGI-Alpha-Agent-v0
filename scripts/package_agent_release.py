@@ -156,6 +156,8 @@ def release_documents(version: str) -> tuple[str, ...]:
             "docs/agent/FLYWHEEL_COMPATIBILITY.json",
             "docs/agent/FLYWHEEL_CAPABILITIES.json",
         )
+    if tuple(map(int, version.split("."))) >= (1, 44, 0):
+        documents += ("docs/agent/STRATEGY_SUCCESSION.md",)
     return documents
 
 
@@ -607,7 +609,10 @@ def main() -> None:
         subprocess.run(
             [sys.executable, "-m", "build", "--no-isolation", "--outdir", str(output)], cwd=source, check=True
         )
-    wheel = next(output.glob("*.whl"))
+    primary_wheels = list(output.glob("alpha_factory_v1-*.whl"))
+    if len(primary_wheels) != 1:
+        raise ValueError("Exactly one primary Alpha wheel is required")
+    wheel = primary_wheels[0]
     with zipfile.ZipFile(wheel) as archive:
         names = archive.namelist()
         assert "alpha_factory_v1/core/runtime/web/index.html" in names
@@ -764,6 +769,15 @@ def main() -> None:
         manifest["release_gates"].append(
             "bounded TI exact native comparisons, separate measurement/reuse controls, complete browser recovery "
             "and byte-identical offline workspace with operator guides"
+        )
+    from scripts.strategy_engineering_release import package as package_strategy_engineering
+
+    strategy = package_strategy_engineering(Path.cwd(), output, args.evidence / "strategy-engineering", sha, version)
+    if strategy is not None:
+        manifest["strategy_engineering"] = strategy
+        manifest["release_gates"].append(
+            "Source-bound standalone planning companion: public Alpha1.42, actual child context, "
+            "Chromium approval/repair/recovery, separate costs and actual signed artifacts; no production authority"
         )
     manifest["assets"] = require_asset_limits(output)
     (output / "release-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

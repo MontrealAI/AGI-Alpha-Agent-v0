@@ -1,0 +1,45 @@
+{
+  "schema": "strategy-engineering-child-environment-custody-disposition/v1",
+  "status": "FINAL_QUALIFICATION_HELD_PENDING_ACTUAL_CHILD_GUARD",
+  "affected": [
+    {
+      "epoch": "v4",
+      "wheel_sha256": "3a09651fe1b09f41417784881ab24bc3d680a3a93a437f82a1f60a56cf745d25",
+      "source_hash": "b4758fd29e4aa5ee551c32effed53cdbc32074b5e973f44160932710b84f0b3a"
+    },
+    {
+      "epoch": "v5",
+      "wheel_sha256": "8b009fea09fa149348b8f90c24aa1c1e56a090ccaa3b0457ca9ce465b984b80a",
+      "source_hash": "ad274003257161df409e9212b1dfcbbae575356196839d90ae4fae9647bba3e8"
+    },
+    {
+      "epoch": "v6",
+      "wheel_sha256": "b5100b62ed8ea01afcaa292ba863408a0b8a0467c8233d34eb5d3fbd4138fea6",
+      "source_hash": "68b9e4c8013e251275c4b7965fb434346c649633633791d0c039284911cb6011"
+    }
+  ],
+  "finding": "The wrapper resolved the approved virtual-environment Python symlink to the base executable before launching native children. Parent installation/API isolation does not establish native-child virtual-environment isolation.",
+  "retained_scope": [
+    "actual public Alpha1.42 wheel and companion installation",
+    "source and package-byte verification",
+    "parent API and journal controls",
+    "recorded planning/checker outcomes and crash observations within their original source scope"
+  ],
+  "qualification_withdrawn": [
+    "clean native-child environment attribution",
+    "portable native availability on hosted runners whose base Python lacks SciPy",
+    "final browser-to-executor/public-release admission"
+  ],
+  "native_local_observation": "The local base interpreter had SciPy1.17. Its1421runtime payload bodies previously compared byte-identically with the approved official wheel, supporting the recorded local computations but not the claimed clean child custody.",
+  "counter_semantics": "native_calls reserves charged invocation attempts before spawn; import/startup failures remain charged and do not prove completed solver calls. Native solve allowance and observed CPU/wall remain separate.",
+  "required_correction": [
+    "preserve the approved virtual-environment executable path",
+    "verify actual child interpreter/environment before Journal access",
+    "refresh exact reviewed worker/profile/source identities",
+    "rebuild and rerun actual installed/API/native/browser/recovery qualification on corrected source"
+  ],
+  "raw_receipts_rewritten": false,
+  "prior_held_harness_fleet_decisions": "unchanged",
+  "production_authority": false,
+  "public_release": false
+}

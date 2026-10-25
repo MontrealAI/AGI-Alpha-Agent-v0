@@ -32,7 +32,7 @@ def sample():
             "deadline": 24,
         },
         "changes": {"durations": {"J2": 6}, "deadline": 28},
-        "repair": {"observed_at": 9, "capacity": [1 if 14 <= i < 19 else 2 for i in range(32)], "deadline": 28},
+        "repair": {"observed_at": 9, "capacity": [1 if 12 <= i < 15 else 2 for i in range(32)], "deadline": 28},
         "construction": {"enabled": True},
     }
 
@@ -40,7 +40,11 @@ def sample():
 def test_real_public_runtime_fixed_worker_journey(tmp_path):
     journal = Journal.initialize(tmp_path / "operator")
     token = (journal.root / "api.token").read_text().strip()
-    client = TestClient(create(journal.root, ROOT / "ENGINEERING_MANIFEST.json", native=True))
+    app = create(journal.root, ROOT / "ENGINEERING_MANIFEST.json", native=True)
+    child_environment = app.state.public_runtime["child_environment"]
+    assert child_environment["observation"]["invocation_context_matches"] is True
+    assert child_environment["observation"]["prefix_context_matches"] is True
+    client = TestClient(app)
     headers = {"Authorization": "Bearer " + token}
     assert client.get("/api/strategy-executor/status").status_code == 401
     assert (
@@ -75,6 +79,25 @@ def test_real_public_runtime_fixed_worker_journey(tmp_path):
     assert len(phases) == 3 and all(p["verified"] and p["qualified"] for p in phases)
     assert phases[0]["task"]["jobs"] != phases[1]["task"]["jobs"]
     assert phases[2]["baseline_source"]["receipt_hash"] == phases[1]["receipt_hash"]
+    # Independently check that the actual changed plan needs a repair under
+    # the new calendar, and that the fixed producer preserved its commitments.
+    before = {row["id"]: row for row in phases[1]["result"]["schedule"]}
+    repaired_task = phases[2]["task"]
+    jobs = {row["id"]: row for row in repaired_task["jobs"]}
+    baseline_load = [
+        sum(jobs[jid]["crew"] for jid, row in before.items() if row["start"] <= slot < row["end"])
+        for slot in range(len(repaired_task["capacity"]))
+    ]
+    invalid_baseline_slots = [slot for slot, load in enumerate(baseline_load) if load > repaired_task["capacity"][slot]]
+    assert invalid_baseline_slots, "The example must require a real calendar repair"
+    after = {row["id"]: row for row in phases[2]["result"]["schedule"]}
+    assert all(after[jid]["start"] == start for jid, start in repaired_task["locked"].items())
+    assert phases[2]["result"]["movement"] > 0
+    assert phases[2]["result"]["movement"] == sum(abs(after[jid]["start"] - before[jid]["start"]) for jid in jobs)
+    assert all(
+        sum(jobs[jid]["crew"] for jid, row in after.items() if row["start"] <= slot < row["end"]) <= capacity
+        for slot, capacity in enumerate(repaired_task["capacity"])
+    )
     assert len(completed["partial_receipts"]) == 3
     assert [p["receipt_hash"] for p in completed["partial_receipts"]] == [p["receipt_hash"] for p in phases]
     costs = completed["outcome"]["costs"]
@@ -95,13 +118,16 @@ def test_real_public_runtime_fixed_worker_journey(tmp_path):
         json.dumps(
             {
                 "schema": "strategy-engineering-acceptance/v1",
-                "runtime": "actual public Alpha1.42.0 wheel; inherited dependency environment",
+                "runtime": "actual public Alpha1.42.0 wheel; exact parent/child dependency profile checked; installation cleanliness is separately attested",
+                "child_environment": child_environment,
                 "source_hash": plan["source_hash"],
                 "outcome_hash": completed["outcome_hash"],
                 "wall_seconds": time.perf_counter() - started,
                 "native_calls": costs["native_calls"],
                 "charged_native_solve_allowance_seconds": costs["native_solve_seconds"],
                 "phase_makespans": [p["result"]["makespan"] for p in phases],
+                "unchanged_baseline_invalid_calendar_slots": invalid_baseline_slots,
+                "committed_prefix_preserved": True,
                 "costs": costs,
                 "human_minutes": None,
                 "monetary_cost": None,

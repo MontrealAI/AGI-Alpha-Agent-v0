@@ -147,7 +147,7 @@ Research proposals and bounded studies, not claims of general autonomous capabil
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
 <!-- /featured-research-papers -->
 
-**Current experimental source candidate · 1.43.0.** [Finite recurring source studies](docs/agent/RELEASE_NOTES_1.43.0.md).
+**Current experimental source candidate · 1.44.0.** [Checked planning and repair](docs/agent/RELEASE_NOTES_1.44.0.md). [Configure the bounded Strategy Succession executor](docs/agent/STRATEGY_SUCCESSION.md). Published [1.43](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/tag/v1.43.0) remains preserved.
 The existing `alpha-agent successor-study` entry point can run an explicitly approved finite operation,
 retain a closed executable source-selection program and test it on later changed inputs. Pause/Stop,
 lease expiry, bounded retries and committed-child recovery keep their existing journal history.

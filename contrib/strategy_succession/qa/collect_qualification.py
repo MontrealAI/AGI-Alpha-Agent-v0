@@ -53,7 +53,11 @@ def main() -> None:
     assert browser["source_hash"] == crash["source_hash"] == integrated["source_hash"]
     assert integrated["state"] == "completed" and integrated["outcome"]["verified"] is True
     dependency_audit = json.loads((output / "dependency-audit.json").read_text())
-    assert dependency_audit["passed"] is True and dependency_audit["packages"] == 25 and dependency_audit["commit"] == commit
+    assert (
+        dependency_audit["passed"] is True
+        and dependency_audit["packages"] == 25
+        and dependency_audit["commit"] == commit
+    )
     checks = {"dependency_audit": True}
     for name in ("transport", "worker", "environment", "integration", "browser", "crash_recovery"):
         document = ET.parse(output / (name + ".xml"))
@@ -87,6 +91,11 @@ def main() -> None:
     reproduced.parent.mkdir(exist_ok=True)
     reproduced.write_bytes(args.second_wheel.read_bytes())
     profile = json.loads((installed / "ENGINEERING_MANIFEST.json").read_text())
+    installed_summary = json.loads((output / "acceptance-public/integrated-summary.json").read_text())
+    child_environment = installed_summary["child_environment"]
+    assert child_environment["observation"]["dependencies"] == profile["qualified_environment"]["dependencies"]
+    assert child_environment["observation"]["invocation_context_matches"] is True
+    assert child_environment["observation"]["prefix_context_matches"] is True
     report = {
         "schema": "strategy-engineering-release-qualification/v1",
         "commit": commit,
@@ -101,6 +110,7 @@ def main() -> None:
         "checks": checks,
         "source_hash": browser["source_hash"],
         "qualified_environment": profile["qualified_environment"],
+        "child_environment": child_environment,
         "dependency_installation": "clean dedicated CI venv from exact qualification pins plus verified public Alpha wheel",
         "scope": "Automated browser/operator acceptance of bounded fixed planning methods; no production grant, held bridge, desktop or general computer-use qualification.",
         "costs_scope": "API journey only; browser and interruption exercise are separate attempts, not aggregate QA or lifecycle cost.",

@@ -2,7 +2,7 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const INITIAL={schema:'release-plan/v1',id:'public-release-plan',kind:'plan',public_or_synthetic:'synthetic',planning_only:true,jobs:[{id:'J1',duration:2,crew:1,deps:[]},{id:'J2',duration:4,crew:2,deps:['J1']},{id:'J3',duration:3,crew:1,deps:['J1']},{id:'J4',duration:3,crew:2,deps:['J2']},{id:'J5',duration:2,crew:1,deps:['J3']},{id:'J6',duration:1,crew:1,deps:['J4','J5']}],capacity:Array(32).fill(2),deadline:24};
-const SAMPLE={initial:INITIAL,changes:{durations:{J2:6},deadline:28},repair:{observed_at:9,capacity:Array.from({length:32},(_,i)=>i>=14&&i<19?1:2),deadline:28},construction:{enabled:true}};
+const SAMPLE={initial:INITIAL,changes:{durations:{J2:6},deadline:28},repair:{observed_at:9,capacity:Array.from({length:32},(_,i)=>i>=12&&i<15?1:2),deadline:28},construction:{enabled:true}};
 $('input').value=JSON.stringify(SAMPLE,null,2);
 let token='',connected=false,currentPlan=null,latestStatus=null,running=false,polling=null,language='en';
 const words={en:{start:'Start',connect:'Connect',disconnect:'Disconnect',review:'Review',pause:'Pause',resume:'Resume',stop:'Stop',keep:'Keep',improve:'Improve',export:'Export',approve:'Approve and start work',resumeApproved:'Resume approved work'},fr:{start:'Démarrer',connect:'Connecter',disconnect:'Déconnecter',review:'Vérifier',pause:'Pause',resume:'Reprendre',stop:'Arrêter',keep:'Conserver',improve:'Améliorer',export:'Exporter',approve:'Autoriser et démarrer',resumeApproved:'Reprendre le travail autorisé'}};

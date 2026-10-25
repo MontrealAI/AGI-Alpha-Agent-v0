@@ -50,7 +50,7 @@ jobs:
           target.write_bytes(data)
           PY
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip install "$RUNNER_TEMP/alpha_factory_v1-1.42.0-py3-none-any.whl" -r contrib/strategy_succession/requirements-qualification.txt
-          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install setuptools==84.1.0 wheel==0.48.0 build==1.2.2.post1 pytest==8.4.2 playwright==1.64.1 ruff==0.12.5
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install setuptools==84.1.0 wheel==0.48.0 build==1.2.2.post1 pytest==8.4.2 playwright==1.64.1 ruff==0.12.5 mypy==1.17.0
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip check
           "$RUNNER_TEMP/strategy-env/bin/python" -m playwright install --with-deps chromium
       - name: Preserve the original study and exact lint compatibility scope
@@ -94,6 +94,9 @@ jobs:
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q transport/test_strategy_executor.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/transport.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q worker/test_fixed_worker.py worker/test_worker_engineering.py worker/test_native_repair.py worker/test_supervisor_crash.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/worker.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q qa/test_environment.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/environment.xml"
+          MYPYPATH=transport:worker "$RUNNER_TEMP/strategy-env/bin/python" -m mypy --config-file "$GITHUB_WORKSPACE/mypy.ini" --follow-imports=silent --explicit-package-bases serve.py transport/strategy_executor.py worker/fixed_worker.py worker/native_repair.py
+          node --check worker/fixed_worker.mjs
+          node --check transport/static/strategy.js
           "$RUNNER_TEMP/strategy-env/bin/python" qa/restore_component_fixture.py
           node review/ui_recovery.test.mjs
       - name: Build two identical wheels and install the actual candidate

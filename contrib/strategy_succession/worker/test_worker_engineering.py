@@ -139,7 +139,10 @@ class EngineeringWorkerTests(unittest.TestCase):
         for phase in out["result"]["phases"]:
             native = [r for r in phase["attempts"] if r["method"].startswith("native-")]
             self.assertEqual(len(native), 2)
-            self.assertTrue(all(r["valid"] and r["checker"]["valid"] for r in native))
+            self.assertTrue(
+                all(r.get("valid") and (r.get("checker") or {}).get("valid") for r in native),
+                json.dumps(native, sort_keys=True),
+            )
             self.assertEqual(phase["receipt"]["result"], phase["result"])
             self.assertEqual(phase["receipt"]["method"], phase["selected_method"])
             canonical = json.dumps(phase["receipt"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)

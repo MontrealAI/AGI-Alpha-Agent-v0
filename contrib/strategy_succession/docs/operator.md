@@ -134,3 +134,11 @@ use the previously accepted installation through its own authorized process.
 It does not mean downgrading source under an old live grant, rewriting pins or
 erasing rejected/failing histories. This engineering contribution does not clear
 any held Harness/bridge or Fleet review, merge or native execution restriction.
+
+## Read the cost record
+
+Construction and service use different protected accounts. The ledger records failed proposals, current checks, retrieval, retained reports and workbench integration. Native calls reserve two solve seconds before each attempt; physical solver/startup/checker wall and CPU measurements stay separate. These allowances are not measured CPU time or money.
+
+The report keeps API acceptance, browser acceptance and crash/recovery attempts separate. A killed request retains its full unknown reservation, even when one checked phase survives. It is not a free failed attempt. No automatic retry is available.
+
+Model inference calls are zero for these fixed algorithms; model-assisted authorship, setup and review effort remain unknown. Python HTTP/journal/cryptographic overhead, whole QA/development cost, hardware and currency totals are not fully measured. Forecast maintenance is a declared assumption, not an incurred saving. No synthetic work-unit reduction is revenue or profit.

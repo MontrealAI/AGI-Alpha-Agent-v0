@@ -77,10 +77,13 @@ class FixedWorker:
     def _executable(value: str | Path | None, name: str) -> str:
         if value is None or not Path(value).is_absolute():
             raise WorkerError(f"OPERATOR_{name}_ABSOLUTE_PATH_REQUIRED")
-        path = Path(value).resolve(strict=True)
-        if not path.is_file() or not os.access(path, os.X_OK):
+        invocation = Path(value)
+        target = invocation.resolve(strict=True)
+        if not target.is_file() or not os.access(target, os.X_OK):
             raise WorkerError(f"OPERATOR_{name}_NOT_EXECUTABLE")
-        return str(path)
+        # Python uses the invoked path to find pyvenv.cfg. Resolving a venv's
+        # interpreter symlink here would silently select the base environment.
+        return str(invocation)
 
     def _regular(self, relative: str) -> Path:
         if not isinstance(relative, str) or "\\" in relative:

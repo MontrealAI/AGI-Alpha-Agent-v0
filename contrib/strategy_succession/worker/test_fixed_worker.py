@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 import sys
 import time
+import subprocess
+import venv
 
 import pytest
 
@@ -57,7 +59,7 @@ def test_fixed_success_charges_once_and_sanitizes_environment(tmp_path, monkeypa
     assert debits == [{}, {"service_work": 7}]
     assert result["costs"]["service_work"] == 7 and result["verified"]
     assert result["result"]["secret"] is None
-    assert result["result"]["python"] == str(Path(sys.executable).resolve())
+    assert result["result"]["python"] == str(Path(sys.executable).absolute())
     assert worker.last_progress["phase"] == "fixed-phase"
     assert worker.verify_sources() == first_manifest
 
@@ -254,3 +256,46 @@ def test_nonboolean_verification_flag_is_refused(tmp_path):
     root = worker_root(tmp_path, source)
     with pytest.raises(WorkerError, match="RESULT_VERIFICATION_TYPE"):
         FixedWorker(root).execute("construct", {}, limits(), lambda **values: None)
+
+
+def test_operator_python_keeps_venv_only_module_visible(tmp_path):
+    environment = tmp_path / "operator-environment"
+    venv.EnvBuilder(with_pip=False, symlinks=True).create(environment)
+    executable = environment / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
+    purelib = Path(
+        subprocess.check_output(
+            [str(executable), "-c", "import sysconfig;print(sysconfig.get_paths()['purelib'])"], text=True
+        ).strip()
+    )
+    assert purelib.is_relative_to(environment)
+    purelib.mkdir(parents=True, exist_ok=True)
+    sentinel = purelib / "fixed_worker_venv_only_sentinel.py"
+    sentinel.write_text("VALUE = 'AUTHORED_VENV_ONLY_SENTINEL'\n")
+    direct = subprocess.check_output(
+        [str(executable), "-c", "import fixed_worker_venv_only_sentinel as sentinel;print(sentinel.__file__)"],
+        text=True,
+    ).strip()
+    assert Path(direct) == sentinel
+    root = tmp_path / "worker"
+    root.mkdir()
+    probe = root / "fixed_venv_probe.py"
+    probe.write_text(
+        "import json,sys\nimport fixed_worker_venv_only_sentinel as sentinel\n"
+        "print(json.dumps({'module_file':sentinel.__file__,'value':sentinel.VALUE,'python':sys.executable,'prefix':sys.prefix}))\n"
+    )
+    source = """import readline from 'node:readline';import {spawnSync} from 'node:child_process';
+const lines=readline.createInterface({input:process.stdin});
+lines.once('line',line=>{const request=JSON.parse(line);const run=spawnSync(process.env.FIXED_PYTHON,['fixed_venv_probe.py'],{encoding:'utf8',env:{PYTHONDONTWRITEBYTECODE:'1'}});
+if(run.status!==0){console.log(JSON.stringify({type:'error',error:'VENV_SENTINEL_NOT_VISIBLE:'+String(run.stderr).slice(-200),costs:{service_work:0,improvement_work:0,native_calls:0,native_solve_seconds:0,unknown_costs:[]},source_hash:request.limits.source_hash,verified:false}));process.exitCode=1;}
+else console.log(JSON.stringify({type:'result',result:JSON.parse(run.stdout),costs:{service_work:0,improvement_work:0,native_calls:0,native_solve_seconds:0,unknown_costs:[]},source_hash:request.limits.source_hash,verified:true}));lines.close();});
+"""
+    worker_root(root, source)
+    manifest = json.loads((root / "SOURCE_FILES.json").read_text())
+    manifest["files"].append({"path": "fixed_venv_probe.py", "sha256": hashlib.sha256(probe.read_bytes()).hexdigest()})
+    (root / "SOURCE_FILES.json").write_text(json.dumps(manifest))
+    out = FixedWorker(root, python=executable).execute("run-mission", {}, limits(), lambda **values: None)
+    assert out["verified"] is True
+    assert Path(out["result"]["module_file"]) == sentinel
+    assert out["result"]["value"] == "AUTHORED_VENV_ONLY_SENTINEL"
+    assert Path(out["result"]["python"]) == executable.absolute()
+    assert Path(out["result"]["prefix"]) == environment

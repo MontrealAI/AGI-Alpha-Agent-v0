@@ -493,7 +493,7 @@ class StrategyExecutor:
                 "journal_record_digest": value["digest"], "source_hash": self.source_hash,
                 "executor_id": self.policy.executor_id, "plan": plan, "production_authority": False,
                 "cost_units": {"service_work": "declared fixed-method units", "improvement_work": "declared construction units",
-                               "native_calls": "actual native call count", "native_solve_seconds": "charged solve allowance seconds; observed solver wall/CPU separate telemetry"},
+                               "native_calls": "charged native invocation attempts; includes failures before solver startup", "native_solve_seconds": "charged solve allowance seconds; observed solver wall/CPU separate telemetry"},
                 "limits": "Local fixed-method attribution; not independent proof, money or inherited authority."}
         body_hash = digest(body)
         import base64

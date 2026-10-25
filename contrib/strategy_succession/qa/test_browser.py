@@ -120,6 +120,27 @@ def test_real_browser_approved_executor_reconnect_download_stop(tmp_path):
                 expect(page.locator(".schedule:not(.summary-table)")).to_have_count(3)
                 expect(page.locator("#keep")).to_be_enabled()
                 assert status["spent"]["native_calls"] == 6
+                phases = plan["outcome"]["result"]["phases"]
+                previous = {row["id"]: row for row in phases[1]["result"]["schedule"]}
+                repair_task = phases[2]["task"]
+                jobs = {row["id"]: row for row in repair_task["jobs"]}
+                conflict_slots = [
+                    slot
+                    for slot, capacity in enumerate(repair_task["capacity"])
+                    if sum(jobs[jid]["crew"] for jid, row in previous.items() if row["start"] <= slot < row["end"])
+                    > capacity
+                ]
+                assert conflict_slots and phases[2]["result"]["movement"] > 0
+                repaired = {row["id"]: row for row in phases[2]["result"]["schedule"]}
+                assert all(repaired[jid]["start"] == start for jid, start in repair_task["locked"].items())
+                assert phases[2]["result"]["movement"] == sum(
+                    abs(repaired[jid]["start"] - previous[jid]["start"]) for jid in jobs
+                )
+                assert all(
+                    sum(jobs[jid]["crew"] for jid, row in repaired.items() if row["start"] <= slot < row["end"])
+                    <= capacity
+                    for slot, capacity in enumerate(repair_task["capacity"])
+                )
                 assert len(plan["partial_receipts"]) == 3
                 assert not status["active_after_browser_close"]
                 assert [x["receipt_hash"] for x in plan["partial_receipts"]] == [
@@ -181,6 +202,7 @@ def test_real_browser_approved_executor_reconnect_download_stop(tmp_path):
                         "pause_resume_stop": True,
                         "no_duplicate_native_calls": True,
                         "mobile_layout": True,
+                        "real_calendar_repair": True,
                     },
                     "passed": True,
                     "browser": browser.version,
@@ -190,6 +212,8 @@ def test_real_browser_approved_executor_reconnect_download_stop(tmp_path):
                     "tab_closed_during_active_request": True,
                     "new_context_recovered_same_mission": True,
                     "native_calls": 6,
+                    "unchanged_baseline_invalid_calendar_slots": conflict_slots,
+                    "committed_prefix_preserved": True,
                     "phase_receipts": [x["receipt_hash"] for x in plan["partial_receipts"]],
                     "source_changes_or_mock_browser": False,
                     "wall_seconds": time.perf_counter() - started,

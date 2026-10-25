@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import sys
 from types import SimpleNamespace
+import venv
 
 import pytest
 
@@ -139,7 +140,17 @@ def test_exact_environment_does_not_grant_native_authority(environment, monkeypa
 
     monkeypatch.setattr(serve, "Journal", TestJournal)
     monkeypatch.setattr(serve, "ExecutorPolicy", lambda **kwargs: SimpleNamespace(**kwargs))
-    monkeypatch.setattr(serve, "FixedWorker", lambda *a, **kwargs: captured.update(worker=kwargs))
+
+    def worker(*args, **kwargs):
+        captured["worker"] = kwargs
+        return SimpleNamespace(root=args[0], **kwargs)
+
+    monkeypatch.setattr(serve, "FixedWorker", worker)
+    monkeypatch.setattr(
+        serve,
+        "qualified_child_environment",
+        lambda *a, **k: {"observation": {"native_imports": {}}, "sha256": "0" * 64},
+    )
 
     def app(journal, worker, policy, **kwargs):
         captured["policy"] = policy
@@ -183,3 +194,93 @@ def test_exact_environment_does_not_grant_native_authority(environment, monkeypa
     profile_source = next(source for source in policy.sources if source.label == "installation-profile")
     assert profile_source.path == manifest.resolve()
     assert profile_source.sha256 == hashlib.sha256(manifest.read_bytes()).hexdigest()
+
+
+@pytest.fixture
+def actual_child_venv(tmp_path, monkeypatch):
+    """Authored version stand-ins test real venv selection, not dependency qualification."""
+    root = tmp_path / "isolated-venv"
+    venv.EnvBuilder(with_pip=False, symlinks=True).create(root)
+    child = root / "bin" / "python"
+    site = root / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "site-packages"
+    dependencies = dict(
+        line.split("==")
+        for line in (serve.ROOT / "requirements-qualification.txt").read_text().splitlines()
+        if line and not line.startswith("#")
+    )
+    for name, version in dependencies.items():
+        metadata = site / (name.replace("-", "_") + "-" + version + ".dist-info")
+        metadata.mkdir(parents=True)
+        (metadata / "METADATA").write_text(f"Metadata-Version: 2.1\nName: {name}\nVersion: {version}\n")
+    for name in ("numpy", "scipy"):
+        package = site / name
+        package.mkdir()
+        (package / "__init__.py").write_text("__version__ = " + repr(dependencies[name]) + "\n")
+    workspace = tmp_path / "fixed-worker"
+    workspace.mkdir()
+    expected = {
+        "python_implementation": serve.platform.python_implementation(),
+        "python_version": serve.platform.python_version(),
+        "dependencies": dependencies,
+    }
+    node = serve.shutil.which("node")
+    assert node is not None
+    worker = SimpleNamespace(root=workspace, node=node, python=str(child))
+    monkeypatch.setattr(serve.sys, "executable", str(child))
+    monkeypatch.setattr(serve.sys, "prefix", str(root))
+    return worker, expected, site
+
+
+def test_actual_venv_child_matches_context_versions_and_imports_without_path_export(actual_child_venv):
+    worker, expected, site = actual_child_venv
+    checked = serve.qualified_child_environment(worker, expected, native=True)
+    observation = checked["observation"]
+    assert observation["invocation_context_matches"] is observation["prefix_context_matches"] is True
+    assert observation["dependencies"] == expected["dependencies"]
+    assert observation["native_imports"] == {name: expected["dependencies"][name] for name in ("numpy", "scipy")}
+    assert str(site.parent.parent.parent) not in json.dumps(checked)
+    assert str(worker.root) not in json.dumps(checked)
+    assert not (site / "numpy" / "__pycache__").exists()
+    assert not (site / "scipy" / "__pycache__").exists()
+    assert (
+        checked["sha256"]
+        == hashlib.sha256(json.dumps(observation, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    )
+
+
+def test_old_resolved_python_refused_before_operator_state(actual_child_venv, monkeypatch, tmp_path):
+    worker, expected, _ = actual_child_venv
+    resolved = SimpleNamespace(root=worker.root, node=worker.node, python=str(Path(worker.python).resolve()))
+    assert resolved.python != worker.python, "This regression requires a real venv Python symlink"
+    monkeypatch.setattr(serve, "qualified_environment", lambda _: worker.node)
+    monkeypatch.setattr(serve, "FixedWorker", lambda *a, **k: resolved)
+    monkeypatch.setattr(serve, "Journal", lambda *a, **k: pytest.fail("operator state opened before child refusal"))
+    manifest = tmp_path / "profile.json"
+    manifest.write_text(
+        json.dumps({"schema": "strategy-engineering-installation/v1", "qualified_environment": expected})
+    )
+    with pytest.raises(ValueError, match="Selected child invocation context is unqualified"):
+        serve.create(tmp_path / "unopened-operator-home", manifest, native=True)
+
+
+@pytest.mark.parametrize("native", [False, True])
+def test_actual_child_dependency_mismatch_is_refused(actual_child_venv, native):
+    worker, expected, site = actual_child_venv
+    metadata = next(site.glob("certifi-*.dist-info")) / "METADATA"
+    metadata.write_text("Metadata-Version: 2.1\nName: certifi\nVersion: 0.0\n")
+    with pytest.raises(ValueError, match="Selected child dependency environment is unqualified"):
+        serve.qualified_child_environment(worker, expected, native=native)
+
+
+def test_actual_child_native_import_mismatch_is_refused(actual_child_venv):
+    worker, expected, site = actual_child_venv
+    (site / "scipy" / "__init__.py").write_text('__version__ = "wrong-import-version"\n')
+    with pytest.raises(ValueError, match="Selected child native imports are unqualified"):
+        serve.qualified_child_environment(worker, expected, native=True)
+
+
+def test_child_probe_enforces_output_bound_without_exporting_child_text(actual_child_venv, monkeypatch):
+    worker, expected, _ = actual_child_venv
+    monkeypatch.setattr(serve, "_CHILD_ENVIRONMENT_SCRIPT", 'print("private-child-text" * 10000)')
+    with pytest.raises(ValueError, match="^Selected child environment is unqualified$"):
+        serve.qualified_child_environment(worker, expected, native=True)
