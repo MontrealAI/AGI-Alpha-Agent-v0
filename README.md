@@ -153,6 +153,8 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/5caa871db78352557699f783027cf64357403d8b/studies/agi-alpha-operational-economics-v1/README.md)
 - **[AGI ALPHA FLYWHEEL: The Productive Capital Engine](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-productive-capital-v1.pdf)** · A frozen study connects useful local work to a conserved economic model; conditional service margins are modeled, while the constructed child does not outperform conventional reuse\.
   MONTREAL\.AI · Independent research edition · 2026-10-25 · English PDF.
+- **[AGI ALPHA FLYWHEEL: The Autonomous Work Economy](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-autonomous-work-economy-v1.pdf)** · An independent bounded study delivers 16 local artifacts across four workflow families, retains eight expected refusals, and tests a successor on eight later quote cases\. Complete costs and reinvestment remain conditional models; customer payments, full authenticated execution and self\-acceleration are not established\.
+  Vincent Boucher · MONTREAL\.AI · 2026-10-25 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
