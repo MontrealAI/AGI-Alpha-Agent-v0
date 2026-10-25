@@ -167,11 +167,29 @@ import {readFileSync} from 'node:fs';
 const root = process.argv[1];
 const {createJoinMission} = await import(new URL('examples/successor-alpha/engine.mjs', root));
 const {buildPlanCapability} = await import(new URL('examples/successor-alpha/capability.mjs', root));
+const {discoverStrategy, validateResearch} = await import(new URL('examples/successor-alpha/research.mjs', root));
+const {canonical} = await import(new URL('docs/assets/successor/engine.mjs', root));
 const {computeInstalledSourceHash} = await import(new URL('examples/successor-alpha/native-cli.mjs', root));
 const value = JSON.parse(readFileSync(0, 'utf8'));
 const read = name => readFileSync(new URL(name, root), 'utf8').replace(/\\r\\n?/g, '\\n');
-const source = await buildPlanCapability(createJoinMission(value.inputs), value.strategy, {
-    sourceHash: await computeInstalledSourceHash(),
+const mission = createJoinMission(value.inputs), supplied = value.strategy;
+const sourceHash = await computeInstalledSourceHash();
+const bounded = (n, maximum) => Number.isSafeInteger(n) && !Object.is(n, -0) && n >= 0 && n <= maximum;
+if (!supplied || supplied.schema !== 'successor-strategy-research/v1' || supplied.sourceHash !== sourceHash
+    || !bounded(supplied.objective?.maxAuxiliaryRows, 4500)
+    || !bounded(supplied.objective?.auxiliaryWeight, 1000000)
+    || !bounded(supplied.confirmation?.seed, 0xffffffff)) throw Error('Invalid reviewed strategy context.');
+await validateResearch(supplied, mission, {sourceHash});
+// The JSON download canonically sorts keys; the unchanged exporter preserves
+// the original reviewed algorithm's nested insertion order in emitted metadata.
+// Recreate that order from fixed source and validated data, never downloaded code.
+const recomputed = await discoverStrategy(mission, {sourceHash,
+    maxAuxiliaryRows: supplied.objective.maxAuxiliaryRows,
+    auxiliaryWeight: supplied.objective.auxiliaryWeight,
+    confirmationSeed: supplied.confirmation.seed});
+if (canonical(recomputed) !== canonical(supplied)) throw Error('Strategy differs from trusted recomputation.');
+const source = await buildPlanCapability(mission, recomputed, {
+    sourceHash,
     engineSource: read('examples/successor-alpha/engine.mjs'),
     researchSource: read('examples/successor-alpha/research.mjs'),
 });
@@ -199,10 +217,34 @@ def execute_verified_plan_tool(
     directory: str,
     errors: list[str],
     external: list[str],
+    diagnostic_directory: Path | None = None,
 ) -> subprocess.CompletedProcess[str]:
     """Import only independently reconstructed bytes after complete equality."""
     assert not errors and not external, "Browser source or request verification failed before host execution"
+    assert 0 < len(downloaded) <= 520_000, "Downloaded capability exceeds the reviewed exporter budget"
     expected = expected_plan_tool(inputs, strategy)
+    if diagnostic_directory is not None:
+        # Fixed authored public/synthetic acceptance only. Retain bounded hashes
+        # and byte context, never execute the download or upload a directory.
+        offset = next(
+            (i for i, (a, b) in enumerate(zip(downloaded, expected)) if a != b), min(len(downloaded), len(expected))
+        )
+        different = downloaded != expected
+        diagnostic = {
+            "schema": "reviewed-capability-byte-comparison/v1",
+            "scope": "authored public/synthetic browser acceptance; QA verification cost",
+            "downloaded_sha256": hashlib.sha256(downloaded).hexdigest(),
+            "expected_sha256": hashlib.sha256(expected).hexdigest(),
+            "downloaded_bytes": len(downloaded),
+            "expected_bytes": len(expected),
+            "equal": not different,
+            "first_differing_byte": offset if different else None,
+            "downloaded_context_hex": downloaded[max(0, offset - 16) : offset + 32].hex() if different else "",
+            "expected_context_hex": expected[max(0, offset - 16) : offset + 32].hex() if different else "",
+        }
+        (diagnostic_directory / "capability-export-byte-comparison.json").write_text(
+            json.dumps(diagnostic, indent=2) + "\n"
+        )
     assert downloaded == expected, "Downloaded capability differs from the reviewed repository exporter"
     tool_path = Path(directory) / "retained.mjs"
     # Execute the trusted reconstruction, never an unchecked browser download.
@@ -483,7 +525,7 @@ def advanced_continuity(browser: Browser, output: Path, errors: list[str], exter
     }
     with tempfile.TemporaryDirectory(prefix="alpha-downloaded-capability-") as directory:
         outcome = execute_verified_plan_tool(
-            plan_tool, original_inputs, strategy, changed_inputs, directory, errors, external
+            plan_tool, original_inputs, strategy, changed_inputs, directory, errors, external, output
         )
         assert outcome.returncode == 0, outcome.stderr
         executable_result = json.loads(outcome.stdout)
