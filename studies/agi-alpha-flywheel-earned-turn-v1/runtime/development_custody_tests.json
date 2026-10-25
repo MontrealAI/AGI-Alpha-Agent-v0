@@ -1,0 +1,78 @@
+{
+  "scope": "development fault injections only; no numerical confirmation",
+  "source_sha256": "93c1b5899d6eb82685e8bc3f7f21057cdaca68afe57ca082d42b72465c534a62",
+  "tests": [
+    {
+      "case": "lost_ack_restart_and_duplicate_no_repeat",
+      "passed": true
+    },
+    {
+      "case": "pending_restart_charges_ceiling_and_quarantines",
+      "passed": true
+    },
+    {
+      "case": "changed_receipt_rejected_by_journal",
+      "passed": true
+    },
+    {
+      "case": "changed_dependency_refused",
+      "passed": true
+    },
+    {
+      "case": "changed_source_refused",
+      "passed": true
+    },
+    {
+      "case": "failed_research_cannot_borrow_service_budget",
+      "passed": true
+    },
+    {
+      "case": "persistent_STOP_explicit_resume_preserves_history",
+      "passed": true
+    },
+    {
+      "case": "stale_external_checkpoint_rejected",
+      "passed": true
+    },
+    {
+      "case": "expired_authority_cannot_start_or_resume",
+      "passed": true
+    },
+    {
+      "case": "expired_absolute_deadline_refused",
+      "passed": true
+    },
+    {
+      "case": "expiry_during_work_preserves_cost_refuses_admission",
+      "passed": true,
+      "clock": "explicit development clock injection"
+    },
+    {
+      "case": "rollback_retains_incumbent_rejected_child_cannot_reenter",
+      "passed": true
+    },
+    {
+      "case": "real_quota_transfer_conserves_endowment_and_funds_successor",
+      "passed": true
+    },
+    {
+      "case": "overrun_charged_without_cross_account_borrowing",
+      "passed": true
+    },
+    {
+      "case": "journal_rollback_against_separate_anchor_refused",
+      "passed": true
+    },
+    {
+      "case": "exclusive_writer_and_invalid_receipt_fail_closed",
+      "passed": true
+    }
+  ],
+  "passed": 16,
+  "limitations": [
+    "CPU reservations do not physically preempt native calls; actual overruns are recorded and refused.",
+    "Released quota is a reassignment of external service endowment, not money or proof of causal saving.",
+    "Local unsigned journal/anchor share host control; independently retain checkpoints to detect whole-directory rollback.",
+    "History/provenance never grants institutional proof status or production authority."
+  ]
+}

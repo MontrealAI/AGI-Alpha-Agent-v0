@@ -1,0 +1,125 @@
+{
+  "schema": "earned-turn-independent-results/v1",
+  "status": "PASS",
+  "analysis_status": "DEVELOPMENT_AUDIT",
+  "expected_source": "0000000000000000000000000000000000000000000000000000000000000000",
+  "protocol_sha256": "8dc3372b8a2edab4a32e0f32960bec324e8c6fbb3d90355ec6ba53a2b9de5398",
+  "audit_source_sha256": "60b124672939326134f1d854179884872d43fb16a1172d0b24761245f93c7080",
+  "checker_source_sha256": "940e53c22ac0a85e90cdfacfb56b26d29e50026f589863b2feb6e9b0ee0562ba",
+  "issues": [],
+  "trials": [
+    {
+      "trial": "failure-wrapper",
+      "seed": 27101,
+      "regime": "recurring",
+      "arm": "flywheel",
+      "qualified": 0,
+      "offered": 23,
+      "attempted_useful": 1,
+      "total_cpu_ms": 628.514445,
+      "charged_action_cpu_ms": 46.213749,
+      "external_control_cpu_ms": 582.300696,
+      "total_wall_ms": 112.832408,
+      "account_cpu_ms": {
+        "earned": 0.0,
+        "improvement": 0.0,
+        "service": 46.214
+      },
+      "released_service_quota_ms": 0.0,
+      "qualified_fresh_child_outputs": 0,
+      "qualified_fresh_child_parent_calls": 0,
+      "reported_successor_constructed": false,
+      "methods": {
+        "REFUSE_SCOPE": 1
+      },
+      "scope_refusal": null,
+      "scope_recovery_pass": false,
+      "budget_violation": false,
+      "asset_count": 0,
+      "reported_failure": "RuntimeError: INITIAL_SERVICE_FAILED"
+    }
+  ],
+  "aggregates": [
+    {
+      "arm": "flywheel",
+      "streams": 1,
+      "qualified": 0,
+      "offered": 23,
+      "all_qualified": false,
+      "total_cpu_ms": 628.514445,
+      "mean_cpu_ms": 628.514445,
+      "qualified_fresh_child_parent_calls": 0,
+      "released_service_quota_ms": 0.0,
+      "successor_account_spent_ms": 0.0
+    }
+  ],
+  "primary_cpu_ratio": {
+    "status": "INCOMPLETE_PAIRS"
+  },
+  "conventional_noninferiority": {
+    "status": "INCOMPLETE_PAIRS"
+  },
+  "product_gate": {
+    "all_flywheel_qualified": false,
+    "all_three_primary_comparators_qualified": false,
+    "zero_failures_budget_violations_and_all_stream_scope_recovery": false,
+    "upper_95_ratio_vs_native_below_0_95": false,
+    "upper_95_ratio_vs_conventional_below_1_10": false,
+    "passed": false,
+    "investment_recovery": "UNRESOLVED_UNKNOWN_HUMAN_AND_MONETARY_COSTS",
+    "acceleration": "NOT_TESTED"
+  },
+  "paired_input_divergences": [],
+  "numeric_checks": [
+    {
+      "trial": "failure-wrapper",
+      "id": "A",
+      "independently_valid": false,
+      "accepted": false,
+      "qualified": false,
+      "reason": "NODE_COUNT_SCOPE"
+    }
+  ],
+  "source_artifacts": {
+    "failure-wrapper/summary.json": {
+      "bytes": 865,
+      "sha256": "dae9ea9da34354da28007e373029c554e5229523025b374a5c83ac21f360d063"
+    },
+    "failure-wrapper/rows.json": {
+      "bytes": 828,
+      "sha256": "d8cb9e89af8c48fc7be84a4eed4f3816004705e31c25957db902c2b22beb3547"
+    },
+    "failure-wrapper/tasks.json": {
+      "bytes": 72,
+      "sha256": "7553048bc2862548ed3d7871e7057e38280bc9289cadbe381f456ca8a81c3dcd"
+    },
+    "failure-wrapper/events.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "failure-wrapper/custody_status.json": {
+      "bytes": 2715,
+      "sha256": "1d433d74b24f22c9ef1c95838b53f63daf28553c373057f579e8cb01856682ac"
+    },
+    "failure-wrapper/solutions.npz": {
+      "bytes": 22,
+      "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+    },
+    "failure-wrapper/A-pack.json": {
+      "bytes": 32449,
+      "sha256": "6d900fd56d50697d6e63d49015633ab5bbf79d107c08d6b27a3132da59ff2a2e"
+    },
+    "failure-wrapper/custody/journal.jsonl": {
+      "bytes": 1835,
+      "sha256": "8d4425559c679e0dc546fc01fc2c96d32082d2e286b6aa89ee7de8b6b6a4e7a0"
+    },
+    "failure-wrapper/custody/anchor.jsonl": {
+      "bytes": 267,
+      "sha256": "a5c665ac1bff23865d5502133936de61271e7367b99015119dee9a740f7df076"
+    }
+  },
+  "audit_cpu_ms": 42.877736,
+  "audit_wall_ms": 4.7192280035233125,
+  "independence": "Separate raw-data aggregation without producer analysis imports; checker separately sums node balances. Same commission and host; reviewer previously corrected executor validation and integer-ground assembly. Parent counters are producer instrumentation, independently attributed rather than CPU-traced.",
+  "cost_boundary": "Audit compute is additional research cost, not part of already measured service trials. Raw claimed totalCPU is reconciled to charged actions but cannot be independently reconstructed from CPU hardware after the fact."
+}

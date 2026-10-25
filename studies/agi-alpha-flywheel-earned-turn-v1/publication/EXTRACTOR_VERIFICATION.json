@@ -1,0 +1,110 @@
+{
+  "schema": "earned-turn-extractor-verification/v1",
+  "verified_utc": "2026-10-25T01:43:15.820646+00:00",
+  "status": "PASS",
+  "scope": "Packaging-only byte verification and small fixtures. No numerical solver, old confirmation or policy replay executed.",
+  "extractor": {
+    "path": "unpack_evidence.py",
+    "sha256": "aec20161bffcb9d051d46f4c04f5394c9e9412770e6b96dcf737a16bd9ed07fb"
+  },
+  "fixture_tests": {
+    "source": "review/results/test_unpack_evidence.py",
+    "sha256": "0173ec72977d8979977c0722775f20e1bb667aa0618cdad483df22c8adadfad4",
+    "count": 20,
+    "passed": 20,
+    "test_names": [
+      "test_exact_install_then_idempotent_skip",
+      "test_different_existing_file_preserved",
+      "test_dangling_destination_symlink_refused",
+      "test_live_destination_symlink_refused",
+      "test_inside_symlink_parent_refused",
+      "test_outside_symlink_parent_refused",
+      "test_non_directory_parent_refused",
+      "test_directory_destination_preserved",
+      "test_concurrent_different_destination_never_clobbered",
+      "test_concurrent_identical_destination_preserved",
+      "test_fixture_restore_and_verify",
+      "test_archive_digest_mismatch_writes_nothing",
+      "test_payload_identity_mismatch_refused",
+      "test_payload_size_mismatch_refused",
+      "test_traversal_member_refused",
+      "test_noncanonical_alias_refused",
+      "test_archive_link_members_refused",
+      "test_duplicate_member_refused_with_exact_prefix_preserved",
+      "test_missing_member_refused",
+      "test_symlink_root_refused"
+    ],
+    "recorded_runner_seconds": 0.046,
+    "fixture_archive_pin": "Temporary in-memory pin for each tiny fixture; delivered literal archive SHA remains unchanged"
+  },
+  "closed_findings": [
+    "Atomic no-replace installation prevents an existing or concurrently created different destination from being overwritten.",
+    "Existing exact regular files are preserved and counted as skipped.",
+    "Final symlinks, including dangling symlinks, and symlink parent directories are refused using no-follow descriptor traversal.",
+    "Directory destinations refuse explicitly; initial fixture exception preserved as a failed packaging test record."
+  ],
+  "actual_archive_verification": {
+    "command": "python3 earned_turn/unpack_evidence.py --root earned_turn --archive earned_turn/checkpoints/AGI_ALPHA_Earned_Turn_Raw_Evidence.tar.xz --verify-only",
+    "status": "PASS",
+    "archive_sha256": "8d746fe1ea57fc62bc22213d11bdd8044f9fbf9bd96d69d877cd9c7bf53e8821",
+    "verified_members": 6985,
+    "restored": 0,
+    "already_exact": 0,
+    "mode": "VERIFY_ONLY"
+  },
+  "reference_reconciliation": {
+    "raw_file_records": 6984,
+    "raw_uncompressed_file_bytes": 1826353833,
+    "independent_auditor_artifact_paths_resolved": 5334,
+    "missing_or_mismatched_auditor_paths": 0,
+    "raw_docket_paths_resolved": 20,
+    "missing_or_mismatched_docket_paths": 0,
+    "receipt_location_rule": "Frozen independent_results.py resolves each receipt basename within its own trial directory; original earned_turn path prefixes are provenance, not an extraction destination."
+  },
+  "limits": [
+    "Restoration is per-file atomic and resumable, not one all-or-nothing transaction over the entire archive. A verified prefix may remain after interruption or a late error; rerun preserves exact files.",
+    "The same controlling OS account can change files after verification; this is integrity checking, not protection against a hostile administrator.",
+    "Full archive byte verification parses no numerical arrays or results and is not another scientific confirmation.",
+    "Whole-file data reads are bounded by the pinned manifest; largest member is 8864472 bytes."
+  ],
+  "source_manifests": {
+    "publication/RAW_EVIDENCE_MANIFEST.json": "c42996e2d8f27ae692bd02ce6f2c44998480df68fb1b5d08cd34f1897018ed34",
+    "publication/RAW_ARCHIVE_IDENTITY.json": "aaff512d8e761e53f43b8e9c657a9397ae707d318416e0baf50d540f1d5f43a4",
+    "review/results/INDEPENDENT_RESULTS.json": "466e92056bf83f42cfebe4df764ee4f799b95a8a79562823b3cd008302299367",
+    "protocol/FREEZE.json": "2c45b73570d935c7fdfaa19aa66612a8c57ee6201aa788bdb1af286ee8438626"
+  },
+  "frozen_files_unchanged": {
+    "browser/app.mjs": true,
+    "browser/bootstrap.mjs": true,
+    "browser/checker.mjs": true,
+    "browser/core.mjs": true,
+    "browser/mission.mjs": true,
+    "companion/analyze.py": true,
+    "companion/confirm.py": true,
+    "companion/develop_numeric.py": true,
+    "companion/numerical.py": true,
+    "companion/study.py": true,
+    "development/CALIBRATION.json": true,
+    "protocol/CONFIRMATORY_PROTOCOL.json": true,
+    "protocol/DEVELOPMENT_CHARTER.json": true,
+    "protocol/ENVIRONMENT.json": true,
+    "protocol/freeze.py": true,
+    "requirements.txt": true,
+    "review/checker.py": true,
+    "review/independent_results.py": true,
+    "runtime/custody.py": true,
+    "runtime/process_recovery.py": true,
+    "runtime/vendor/docs/assets/successor/engine.mjs": true,
+    "runtime/vendor/docs/assets/transformational-intelligence/source-understanding.mjs": true,
+    "runtime/vendor/examples/build-successor/model.mjs": true,
+    "runtime/vendor/examples/build-successor/vendor/agijobs/compiler.mjs": true,
+    "runtime/vendor/examples/build-successor/vendor/agijobs/domain.mjs": true,
+    "runtime/vendor/examples/build-successor/vendor/agijobs/integrity.mjs": true,
+    "runtime/vendor/examples/build-successor/vendor/agijobs/templates.mjs": true,
+    "runtime/vendor/examples/successor-workbench/engine.mjs": true,
+    "runtime/vendor/examples/successor-workbench/mission-store.mjs": true,
+    "runtime/verify_process_recovery.py": true,
+    "runtime/workbench_bridge.mjs": true,
+    "runtime/workbench_client.py": true
+  }
+}

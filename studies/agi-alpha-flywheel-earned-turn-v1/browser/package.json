@@ -1,0 +1,20 @@
+{
+  "name": "agi-alpha-earned-turn-browser",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.17.1 <25"
+  },
+  "scripts": {
+    "build": "python3 build_demo.py",
+    "test:checker": "node checker.test.mjs",
+    "test:ui": "node qa.mjs",
+    "test:recovery": "node qa_recovery.mjs",
+    "test:recorded": "node qa_recorded.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
