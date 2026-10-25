@@ -1,0 +1,120 @@
+{
+  "schema": "ti-catalogue-workspace/v1",
+  "sourceHash": "b5aaef12f31a4186dca5c20fbf5aea62fe6b9c35e9679f4baf153c1678475211",
+  "runId": "measured-guide-0255",
+  "createdAt": "2026-10-25T15:10:02.644Z",
+  "language": "en",
+  "approach": "grouped",
+  "input": {
+    "leftCsv": "\"path\",\"sha256\"\r\n\"LICENSE\",\"c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4\"\r\n\"examples/successor-alpha/engine.mjs\",\"09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2\"\r\n\"examples/successor-alpha/research.mjs\",\"cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a\"\r\n\"examples/ti-guide/guide.mjs\",\"327ca9f977f2b860546cee3190147305fd43fc19c8d16d3bf526e81a550f15e2\"\r\n\"scripts/generate_ti_guide.py\",\"6a160eb074fa74d9be8690fab87397d22a2cd76e20dc8d892bf9247583201eec\"\r\n\"scripts/templates/ti-guide/app.js\",\"afeaa368f777a2ba379ee6d7563fff036e9181c739fa0e27f5470d52a4f6e785\"\r\n\"scripts/templates/ti-guide/index.html\",\"ba04ab9a0d089803baa7e09a4eaaae36fa2a5d85cea65898ec957c72972dcbba\"\r\n\"scripts/templates/ti-guide/style.css\",\"7189e337e771d34f3300bac835982f323ffb755b0a2e2624237c6fb769566d5e\"\r\n",
+    "rightCsv": "\"path\",\"sha256\"\r\n\"LICENSE\",\"c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4\"\r\n\"examples/successor-alpha/engine.mjs\",\"09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2\"\r\n\"examples/successor-alpha/research.mjs\",\"cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a\"\r\n\"examples/ti-guide/guide.mjs\",\"327ca9f977f2b860546cee3190147305fd43fc19c8d16d3bf526e81a550f15e2\"\r\n\"scripts/generate_ti_guide.py\",\"6a160eb074fa74d9be8690fab87397d22a2cd76e20dc8d892bf9247583201eec\"\r\n\"scripts/templates/ti-guide/app.js\",\"afeaa368f777a2ba379ee6d7563fff036e9181c739fa0e27f5470d52a4f6e785\"\r\n\"scripts/templates/ti-guide/index.html\",\"ba04ab9a0d089803baa7e09a4eaaae36fa2a5d85cea65898ec957c72972dcbba\"\r\n\"scripts/templates/ti-guide/style.css\",\"7189e337e771d34f3300bac835982f323ffb755b0a2e2624237c6fb769566d5e\"\r\n",
+    "leftKey": "path",
+    "rightKey": "path"
+  },
+  "result": {
+    "schema": "ti-catalogue-result/v1",
+    "leftIdentity": {
+      "sha256": "6e5126e635e35d4a10350c66a3ad4e33e9caec4d759a9a60e9350da04efa679a",
+      "bytes": 825
+    },
+    "rightIdentity": {
+      "sha256": "6e5126e635e35d4a10350c66a3ad4e33e9caec4d759a9a60e9350da04efa679a",
+      "bytes": 825
+    },
+    "resolution": {
+      "schema": "successor-discrepancy-resolution/v1",
+      "actions": [],
+      "sharedFields": [
+        {
+          "name": "sha256",
+          "leftColumn": 1,
+          "rightColumn": 1
+        }
+      ],
+      "burden": {
+        "pairwiseReviewItems": 0,
+        "groupedActions": 0,
+        "groupingReduction": 0,
+        "timeSavedClaim": false,
+        "sameTaskSuperiority": false
+      },
+      "coverage": {
+        "originalOccurrences": 0,
+        "coveredOccurrences": 0,
+        "complete": true,
+        "missing": [],
+        "duplicates": []
+      },
+      "diagnosis": {
+        "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+        "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+        "duplicateExceptionKeys": 0,
+        "uniqueExceptionKeys": 0,
+        "groupingReducesDecisionItems": false
+      },
+      "decision": {
+        "state": "retain_original_review",
+        "recommendedContract": "original_occurrence_review",
+        "reason": "No repeated exception key reduces the number of decision records; retain the original review contract."
+      },
+      "contract": {
+        "changed": true,
+        "original": "One review item per unmatched source row or conflicting matched row pair.",
+        "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+        "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+      },
+      "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n",
+      "externalAuthority": false,
+      "automaticallyResolved": false,
+      "qualification": "local_engineering_only"
+    },
+    "differences": [],
+    "metrics": {
+      "leftRows": 8,
+      "rightRows": 8,
+      "matchedPairs": 8,
+      "unmatchedRows": 0,
+      "unmatchedKeys": 0,
+      "conflictingPairs": 0,
+      "fieldDifferences": 0,
+      "actionGroups": 0,
+      "evidenceReferences": 0,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "sha256"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    },
+    "limitations": {
+      "localOnly": true,
+      "authority": "none",
+      "automaticallyResolved": false,
+      "timeSavedMeasured": false,
+      "accuracyImprovementMeasured": false,
+      "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+      "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+      "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+      "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+    }
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  },
+  "authority": "none"
+}

@@ -1,0 +1,391 @@
+# SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import io
+import json
+import os
+import re
+import stat
+import subprocess
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[3]
+HASH = re.compile(r"[0-9a-f]{64}\Z")
+COMMIT = re.compile(r"[0-9a-f]{40}\Z")
+STAGES = ("recovery", "planning", "preparation", "execution", "verification", "correction", "packaging", "reporting")
+DEPENDENCIES = (
+    "examples/ti-guide/guide.mjs",
+    "examples/successor-alpha/engine.mjs",
+    "examples/successor-alpha/research.mjs",
+    "docs/assets/successor/engine.mjs",
+)
+RUNNER = "contrib/productive-capability-ledger/automation-v1/run-mission.mjs"
+
+
+def read_bytes(path: Path, maximum: int = 8_000_000) -> bytes:
+    handle = os.open(path, os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        metadata = os.fstat(handle)
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > maximum:
+            raise ValueError("Acceptance requires bounded regular files")
+        chunks, used = [], 0
+        while True:
+            chunk = os.read(handle, min(65536, maximum + 1 - used))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            used += len(chunk)
+            if used > maximum:
+                raise ValueError("Acceptance input grew beyond its byte bound")
+        return b"".join(chunks)
+    finally:
+        os.close(handle)
+
+
+def unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError("Acceptance input contains duplicate JSON keys")
+        value[key] = item
+    return value
+
+
+def parse(raw: bytes) -> Any:
+    return json.loads(raw.decode("utf-8"), object_pairs_hook=unique)
+
+
+def sha(raw: bytes) -> str:
+    return hashlib.sha256(raw).hexdigest()
+
+
+def public_path(value: Any) -> str:
+    if (
+        not isinstance(value, str)
+        or not re.fullmatch(r"[A-Za-z0-9_./-]+", value)
+        or value.startswith("/")
+        or any(part in {"", ".", ".."} for part in value.split("/"))
+    ):
+        raise ValueError("Unsafe public source path")
+    return value
+
+
+def git_blob(commit: str, path: str) -> bytes:
+    if not COMMIT.fullmatch(commit):
+        raise ValueError("Invalid source commit")
+    operand = commit + ":" + public_path(path)
+    listing = subprocess.check_output(["git", "ls-tree", "-z", commit, "--", path], cwd=ROOT, timeout=5)
+    entries = listing.decode().split("\0")
+    if len(entries) != 2 or not entries[0].endswith("\t" + path):
+        raise ValueError("An exact ordinary Git source entry is required")
+    mode, kind, _ = entries[0].split("\t")[0].split(" ")
+    if mode not in {"100644", "100755"} or kind != "blob":
+        raise ValueError("Only ordinary Git source modes 100644 and 100755 are admitted")
+    size = int(subprocess.check_output(["git", "cat-file", "-s", operand], cwd=ROOT, timeout=5))
+    if size > 4_000_000:
+        raise ValueError("Public source blob exceeds its byte bound")
+    raw = subprocess.check_output(["git", "show", operand], cwd=ROOT, timeout=5)
+    if len(raw) != size:
+        raise ValueError("Git source changed during inspection")
+    return raw
+
+
+def csv_records(raw: bytes) -> list[dict[str, str]]:
+    reader = csv.DictReader(io.StringIO(raw.decode("utf-8"), newline=""))
+    if reader.fieldnames != ["path", "sha256"]:
+        raise ValueError("Inventory CSV must retain exact source columns")
+    rows = list(reader)
+    if len(rows) > 128 or len({row["path"] for row in rows}) != len(rows):
+        raise ValueError("Inventory CSV exceeds its bound or repeats a source path")
+    for row in rows:
+        public_path(row["path"])
+        if set(row) != {"path", "sha256"} or not HASH.fullmatch(row["sha256"]):
+            raise ValueError("Inventory CSV contains invalid source identities")
+    return rows
+
+
+def verify(directory: Path) -> dict[str, Any]:
+    if directory.is_symlink() or not directory.is_dir():
+        raise ValueError("A regular run directory is required")
+    checks = 0
+
+    def require(condition: bool, message: str) -> None:
+        nonlocal checks
+        checks += 1
+        if not condition:
+            raise ValueError(message)
+
+    def canonical(value: Any) -> bytes:
+        return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+
+    def artifact_name(value: Any) -> str:
+        require(
+            isinstance(value, str)
+            and re.fullmatch(r"[A-Za-z0-9_.-]+", value) is not None
+            and value not in {".", "..", "COMPLETE.json", "writer.lock"},
+            "An artifact reference attempts to leave the approved run scope",
+        )
+        return value
+
+    complete = parse(read_bytes(directory / "COMPLETE.json"))
+    require(complete["schema"] == "alpha-automated-source-delivery/v2", "Unexpected complete-delivery schema")
+    require(
+        complete["accepted"] is True and complete["authority"] == "none", "Local acceptance cannot import authority"
+    )
+    require(complete["commercialAcceptance"] == "unknown", "Commercial acceptance was not measured")
+    require(
+        complete["connectedExecution"].startswith("NOT RUN"), "Local source work cannot qualify a connected executor"
+    )
+    require(
+        complete["fullAgentCost"]["value"] is None and complete["fullAgentCost"]["basis"] == "unknown",
+        "Unmeasured whole Agent cost cannot become zero",
+    )
+    artifacts = complete["artifacts"]
+    require(isinstance(artifacts, dict) and 1 <= len(artifacts) <= 256, "Artifact inventory is missing or unbounded")
+    raw_files: dict[str, bytes] = {}
+    for name, digest in artifacts.items():
+        artifact_name(name)
+        require(isinstance(digest, str) and HASH.fullmatch(digest) is not None, "Invalid artifact identity")
+        raw_files[name] = read_bytes(directory / name)
+        require(sha(raw_files[name]) == digest, "Complete-delivery artifact bytes differ: " + name)
+    required = {
+        "plan.json",
+        "final-acceptance.json",
+        "prepared-inputs.json",
+        "result.json",
+        "acceptance.json",
+        "correction.json",
+        "workspace.json",
+        "declared-inventory.csv",
+        "observed-inventory.csv",
+        "differences.csv",
+        "action-plan.csv",
+        "report.md",
+        *("stage-" + stage + ".json" for stage in STAGES),
+    }
+    require(required <= artifacts.keys(), "A finished-delivery payload is missing")
+    plan = parse(raw_files["plan.json"])
+    require(plan["schema"] == "alpha-source-assurance-plan/v2", "Unexpected bounded-plan schema")
+    require(plan["authority"] == "none", "A plan cannot grant execution authority")
+    require(complete["approvalDigest"] == sha(canonical(plan)), "Approved plan digest differs")
+    require(complete["sourceRef"] == plan["sourceRef"], "Complete delivery changed its approved source")
+    require(complete["runId"] == plan["runId"], "Run identity changed")
+    source_ref = plan["sourceRef"]
+    require(
+        isinstance(source_ref, str) and COMMIT.fullmatch(source_ref) is not None,
+        "Source ref must be an exact Git commit",
+    )
+    source_manifest = git_blob(source_ref, plan["manifestPath"])
+    require(sha(source_manifest) == plan["manifestSha256"], "Approved manifest bytes differ")
+    sources = parse(source_manifest)["sources"]
+    require(isinstance(sources, dict) and 1 <= len(sources) <= 128, "Source inventory exceeds its approved bound")
+    require(len(sources) == plan["sourceCount"], "Approved source count differs")
+    dependencies = plan["dependencySha256"]
+    require(set(dependencies) == {*DEPENDENCIES, RUNNER}, "Executable dependency closure changed")
+    require(plan["methodIdentity"] == sha(canonical(dependencies)), "Retained executable identity differs")
+    require(complete["methodIdentity"] == plan["methodIdentity"], "Result changed the approved method")
+    for path, digest in dependencies.items():
+        public_path(path)
+        require(sha(read_bytes(ROOT / path, 4_000_000)) == digest, "Current installed executable differs: " + path)
+        if path in DEPENDENCIES:
+            require(
+                sha(git_blob(source_ref, path)) == digest, "Comparison dependency differs from the committed source"
+            )
+    prepared = parse(raw_files["prepared-inputs.json"])
+    require(prepared["schema"] == "alpha-source-assurance-inputs/v1", "Unexpected prepared-input schema")
+    require(
+        prepared["sourceRef"] == source_ref and prepared["manifestPath"] == plan["manifestPath"],
+        "Prepared scope differs",
+    )
+    inputs = prepared["input"]
+    require(set(inputs) == {"leftCsv", "rightCsv", "leftKey", "rightKey"}, "Prepared inputs changed shape")
+    require(inputs["leftKey"] == inputs["rightKey"] == "path", "Inventory identifiers changed")
+    require(
+        inputs["leftCsv"].encode() == raw_files["declared-inventory.csv"],
+        "Declared CSV differs from the prepared input",
+    )
+    require(
+        inputs["rightCsv"].encode() == raw_files["observed-inventory.csv"],
+        "Observed CSV differs from the prepared input",
+    )
+    left_rows, right_rows = (
+        csv_records(raw_files["declared-inventory.csv"]),
+        csv_records(raw_files["observed-inventory.csv"]),
+    )
+    declared, observed = ({row["path"]: row["sha256"] for row in rows} for rows in (left_rows, right_rows))
+    require(declared == sources and declared.keys() == observed.keys(), "CSV scope differs from the original manifest")
+    for path, digest in observed.items():
+        require(sha(git_blob(source_ref, path)) == digest, "Observed hash differs from the exact committed public blob")
+    changed = [row["path"] for row in right_rows if declared[row["path"]] != row["sha256"]]
+    result = parse(raw_files["result.json"])
+    require(result["schema"] == "ti-catalogue-result/v1", "Unexpected existing catalogue-result format")
+    for side, filename in (("left", "declared-inventory.csv"), ("right", "observed-inventory.csv")):
+        identity = result[side + "Identity"]
+        require(
+            identity == {"sha256": sha(raw_files[filename]), "bytes": len(raw_files[filename])},
+            "CSV byte identity differs",
+        )
+    differences = result["differences"]
+    require(
+        [[row["key"], row["leftValue"], row["rightValue"]] for row in differences]
+        == [[path, declared[path], observed[path]] for path in changed],
+        "Independent exact-key/hash differences disagree",
+    )
+    require(
+        all(row["kind"] == "conflict" and row["field"] == "sha256" for row in differences),
+        "Changed source kind differs",
+    )
+    metrics = result["metrics"]
+    for key, expected in {
+        "leftRows": len(sources),
+        "rightRows": len(sources),
+        "matchedPairs": len(sources),
+        "unmatchedRows": 0,
+        "fieldDifferences": len(changed),
+        "conflictingPairs": len(changed),
+        "actionGroups": len(changed),
+        "evidenceReferences": len(changed),
+    }.items():
+        require(metrics[key] == expected, "Independent source metric disagrees: " + key)
+    resolution = result["resolution"]
+    require(resolution["automaticallyResolved"] is False, "No source was automatically repaired or approved")
+    require(resolution["coverage"]["originalOccurrences"] == len(changed), "Original disagreement coverage differs")
+    require([action["key"] for action in resolution["actions"]] == changed, "Action group lost an affected source")
+    for filename, key in (("differences.csv", "key"), ("action-plan.csv", "exact_key")):
+        reader = csv.DictReader(io.StringIO(raw_files[filename].decode(), newline=""))
+        headers = (
+            ["id", "occurrence", "action", "key", "kind", "leftRow", "rightRow", "field", "leftValue", "rightValue"]
+            if filename == "differences.csv"
+            else [
+                "action",
+                "exact_key",
+                "type",
+                "left_data_rows",
+                "right_data_rows",
+                "original_review_occurrences",
+                "next_step",
+            ]
+        )
+        require(reader.fieldnames == headers, "Download replaced its exact result schema: " + filename)
+        rows = list(reader)
+        require([row[key] for row in rows] == changed, "Download lost or invented an affected source: " + filename)
+    workspace = parse(raw_files["workspace.json"])
+    require(
+        workspace["schema"] == "ti-catalogue-workspace/v1" and workspace["authority"] == "none",
+        "Workspace changed scope",
+    )
+    require(workspace["input"] == inputs and workspace["result"] == result, "Portable workspace lost exact work")
+    require(
+        workspace["sourceHash"] == plan["methodIdentity"] and workspace["runId"] == plan["runId"],
+        "Workspace source differs",
+    )
+    acceptance = parse(raw_files["acceptance.json"])
+    require(
+        acceptance["accepted"] is True and acceptance["changedPaths"] == changed,
+        "Runtime checker did not accept exact work",
+    )
+    require(
+        acceptance["commercialAcceptance"] == "unknown" and acceptance["authority"] == "none",
+        "Checker exceeded local scope",
+    )
+    correction = parse(raw_files["correction.json"])
+    require(correction["decision"] == "report-discrepancies-without-source-mutation", "Correction scope changed")
+    require(
+        correction["changedPaths"] == changed and correction["needsRoutineCorrection"] is False,
+        "Correction decision differs",
+    )
+    final_acceptance = parse(raw_files["final-acceptance.json"])
+    require(
+        final_acceptance["schema"] == "alpha-source-final-acceptance/v1"
+        and final_acceptance["accepted"] is True
+        and final_acceptance["approvalDigest"] == complete["approvalDigest"]
+        and final_acceptance["sourceRef"] == source_ref
+        and final_acceptance["methodIdentity"] == plan["methodIdentity"]
+        and final_acceptance["authority"] == "none",
+        "Full revalidation did not bind the final acceptance",
+    )
+    revalidation = complete["finalRevalidation"]
+    require(
+        revalidation["accepted"] is True and revalidation["schema"] == "alpha-source-final-revalidation/v1",
+        "Complete result lacks its full recomputation",
+    )
+    require(
+        any(name.startswith("final-revalidation-") and parse(raw_files[name]) == revalidation for name in artifacts),
+        "Final revalidation timing has no exact retained receipt",
+    )
+    traces = complete["stages"]
+    require([trace["stage"] for trace in traces] == list(STAGES), "Every automated workflow stage needs one receipt")
+    stage_payloads = {
+        "recovery": set(),
+        "planning": set(),
+        "preparation": {"prepared-inputs.json", "declared-inventory.csv", "observed-inventory.csv"},
+        "execution": {"result.json"},
+        "verification": {"acceptance.json"},
+        "correction": {"correction.json"},
+        "packaging": {"differences.csv", "action-plan.csv", "workspace.json"},
+        "reporting": {"report.md"},
+    }
+    for trace in traces:
+        stage = trace["stage"]
+        require(
+            trace == parse(raw_files["stage-" + stage + ".json"]), "A stage receipt differs from the complete trace"
+        )
+        require(trace["approvalDigest"] == complete["approvalDigest"], "A stage changed approved scope")
+        require(set(trace["artifacts"]) == stage_payloads[stage], "A stage changed its allowed artifact writes")
+        for filename, digest in trace["artifacts"].items():
+            artifact_name(filename)
+            require(artifacts[filename] == digest, "A stage's exact payload differs")
+        for field in ("wallMicroseconds", "cpuMicroseconds", "toolInvocations", "modelCalls", "routineHumanMinutes"):
+            value = trace[field]
+            require(
+                set(value) == {"value", "basis", "reference"}
+                and type(value["value"]) is int
+                and value["value"] >= 0
+                and value["basis"] == "measured"
+                and bool(value["reference"]),
+                "A measured stage fact is missing or invalid: " + field,
+            )
+        require(trace["modelCalls"]["value"] == 0, "This deterministic offering used no live model adapter")
+        require(trace["routineHumanMinutes"]["value"] == 0, "Routine human handling was not automated")
+        require(
+            trace["monetaryCost"]["value"] is None and trace["monetaryCost"]["basis"] == "unknown",
+            "Unpriced process observations must not become zero monetary cost",
+        )
+    report = raw_files["report.md"].decode()
+    require(source_ref in report and plan["manifestPath"] in report, "Finished report lost source provenance")
+    require(
+        "Foreground local Node execution only" in report and "No service model calls" in report,
+        "Report overstates execution",
+    )
+    return {
+        "schema": "alpha-independent-automated-source-acceptance/v1",
+        "accepted": True,
+        "checks": checks,
+        "runId": plan["runId"],
+        "sourceRef": source_ref,
+        "methodIdentity": plan["methodIdentity"],
+        "sourceRows": len(sources),
+        "changedPaths": changed,
+        "completeSha256": sha(read_bytes(directory / "COMPLETE.json")),
+        "authority": "none",
+        "commercialAcceptance": "unknown",
+        "connectedExecution": "NOT RUN; local Node only",
+        "implementation": (
+            "Separately implemented Python CSV/Git/hash acceptance; no JavaScript " "comparison code imported."
+        ),
+        "scope": (
+            "Accepted deterministic source-assurance deliverable; not authenticated "
+            "executor or monetary-cost qualification."
+        ),
+    }
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("run_directory", type=Path)
+    args = parser.parse_args()
+    print(json.dumps(verify(args.run_directory), indent=2))

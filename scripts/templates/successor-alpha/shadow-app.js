@@ -31,7 +31,7 @@ function renderShadow() {
     const current = dossier?.cycles.at(-1);
     if (current?.id !== shadowFormCycleId) {
         shadowFormCycleId=current?.id;
-        const retained=shadowArchive?.projectId === dossier?.id ?
+        const retained=shadowArchive && dossier && shadowArchive.projectId === dossier.id ?
             [...shadowArchive.entries].reverse().find(entry=>entry.cycleId===current?.id) : null;
         fillShadow(retained?.inputs);
     }
@@ -45,6 +45,7 @@ function renderShadow() {
     shadowCurrent = selected || null;
     $('shadow-result').replaceChildren(); $('shadow-result').hidden = !replayed.missions.length;
     if (!replayed.missions.length) return;
+    node('p',$('shadow-result'),say('These are saved planning figures. Recalculate after editing the inputs.','Ces chiffres proviennent de la fiche enregistrée. Recalculez après modification des données.'));
     node('p',$('shadow-result'),say(`${replayed.missions.length} planned mission(s); ${replayed.revisions} retained revision(s). Latest record per mission is counted once.`,
         `${replayed.missions.length} mission(s) planifiée(s) ; ${replayed.revisions} révision(s) conservée(s). Chaque mission est comptée une seule fois.`));
     if (!selected) {

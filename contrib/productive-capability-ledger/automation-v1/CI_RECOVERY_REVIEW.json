@@ -1,0 +1,51 @@
+{
+  "schema": "productive-capability-ci-recovery-review/v1",
+  "reviewScope": "Read-only hosted CI/source triage, plus new actual-source Node VM regression with minimal DOM mocks; no held execution or policy changes",
+  "baselineCommit": "0255ebf0a3289e1011f3a8fad165baf140480241",
+  "hostedMergeCommit": "b550300fe8c8fb9b93fa4560e62fa8049388ad3c",
+  "runId": 40202909153,
+  "jobId": 121197777093,
+  "workflow": "SUCCESSOR mission recovery",
+  "failedStep": "Atomic storage and full browser recovery",
+  "failure": {
+    "path": "tests/browser/test_successor_alpha_browser.py",
+    "line": 256,
+    "assertion": "restored-note contains histor after opening portable HTML offline",
+    "observed": "Hidden empty restored-note; corrected shadow-ledger browser journey had not yet been reached",
+    "cause": "On fresh startup, shadowArchive and dossier are null. Optional project IDs both evaluate to undefined, compare equal, then renderShadow dereferences shadowArchive.entries. This aborts translate before the automatic restore IIFE.",
+    "classification": "New product shadow UI regression, not a baseline failure or unavailable hosted browser",
+    "oldSourceCounterexample": {
+      "executed": true,
+      "error": "Cannot read properties of null (reading 'entries')",
+      "scope": "Exact old renderShadow function executed in Node VM, no browser/permission boundary invoked"
+    }
+  },
+  "repair": {
+    "owner": "existing product root",
+    "scope": "Require both shadowArchive and dossier before comparing project IDs",
+    "sourcePath": "scripts/templates/successor-alpha/shadow-app.js",
+    "beforeSha256": "d9299dae0b753793ea5979bedfc571ff2f3ce295dada5b951c60523e921fcd9b",
+    "reviewedAfterSha256": "72dcb11632a73c91bd51840a0ecf2703ef044bad4abc73123186ca26d30d1a63",
+    "implementationEditedByReviewer": false
+  },
+  "regression": {
+    "sourcePath": "examples/successor-alpha/shadow-ui.test.mjs",
+    "sha256": "7e5141137b14df8e969936a41d9e982ccc145f889b62a5a6bf1c2603c1433d23",
+    "command": "node --test examples/successor-alpha/shadow-ui.test.mjs",
+    "passed": 4,
+    "failed": 0,
+    "checks": [
+      "startup with no project/archive keeps null economics and empty inputs",
+      "first mission without archive initializes without exception",
+      "valid retained sidecar restores inputs and recomputes accounting",
+      "new cycle clears assumptions without dropping older planning history"
+    ],
+    "limit": "Actual shadow-app.js and real shadow-plan/ledger modules, minimal DOM mocks; not Chromium visual/accessibility/connected-executor acceptance"
+  },
+  "unchangedHostedEvidence": [
+    "strict records and existing workbench passed",
+    "generated source exactness passed",
+    "guided-cross-repository job passed"
+  ],
+  "remaining": "Fresh corrected exact-source browser/hosted qualification remains required. Original failure retained; no prior green run transferred."
+}

@@ -45,6 +45,7 @@ MODULE_ROOTS = (
     "examples/successor-alpha/computer.mjs",
     "examples/successor-alpha/learning.mjs",
     "examples/successor-alpha/shadow-plan.mjs",
+    "examples/successor-alpha/automated-costs.mjs",
     "docs/assets/successor/engine.mjs",
 )
 HASH = re.compile(r"[0-9a-f]{64}\Z")

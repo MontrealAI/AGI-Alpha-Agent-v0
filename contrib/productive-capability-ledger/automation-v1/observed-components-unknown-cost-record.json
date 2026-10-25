@@ -1,0 +1,922 @@
+{
+  "schema": "alpha-automated-costs/v1",
+  "offeringId": "committed-source-assurance",
+  "currency": "USD",
+  "scenarios": [
+    {
+      "name": "base",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Hypothetical provisioned offering capacity, not measured fleet throughput or demand; planning assumption, not observed billing."
+      },
+      "utilizationBps": {
+        "value": 5000,
+        "basis": "estimated",
+        "reference": "Hypothetical offering utilization; no paid demand is established; planning assumption, not observed billing."
+      },
+      "acceptanceBps": {
+        "value": 9800,
+        "basis": "estimated",
+        "reference": "Expected complete-request acceptance; two deterministic jobs do not estimate production reliability; planning assumption, not observed billing."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1020000,
+        "basis": "estimated",
+        "reference": "Initial attempt plus expected failures/retries; failed work is charged; planning assumption, not observed billing."
+      },
+      "operations": [
+        {
+          "id": "local-preparation",
+          "stage": "preparation",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=preparation"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-planning",
+          "stage": "planning",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=planning"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=execution"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=verification"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-correction",
+          "stage": "correction",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=correction"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=packaging"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=reporting"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-recovery",
+          "stage": "recovery",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=recovery"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "connected-admission-overhead",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One authenticated admission/report transport per attempt in the modeled missing connected route; planning assumption, not observed billing."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "required-user-decision",
+          "stage": "planning",
+          "exceptionsPerRequestPpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One required objective/rights/scope approval; user decision, not routine staffed service; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 1,
+            "basis": "estimated",
+            "reference": "Unmeasured user-decision duration sensitivity, charged conservatively instead of erased; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        },
+        {
+          "id": "residual-exception-investigation",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "Unmeasured exceptional investigation rate after automated bounded recovery; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 0,
+            "basis": "estimated",
+            "reference": "Exceptional investigation effort; no permanent per-job operator assumed; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "fixed-capacity",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this fixed capacity; no second utilization charge; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "automated-shared-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering allocation of shared automated maintenance, charged once monthly; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "business-software",
+          "kind": "business",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in variable costs; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "initial-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual complete setup/development cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this one-time setup pool; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected amortization horizon, not permanent reuse; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "development-including-failed-work",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual complete setup/development cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in per-request or monthly costs; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected development reuse horizon; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Matched human timing is unmeasured"
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+        }
+      }
+    },
+    {
+      "name": "conservative",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Hypothetical provisioned offering capacity, not measured fleet throughput or demand; planning assumption, not observed billing."
+      },
+      "utilizationBps": {
+        "value": 2000,
+        "basis": "estimated",
+        "reference": "Hypothetical offering utilization; no paid demand is established; planning assumption, not observed billing."
+      },
+      "acceptanceBps": {
+        "value": 9500,
+        "basis": "estimated",
+        "reference": "Expected complete-request acceptance; two deterministic jobs do not estimate production reliability; planning assumption, not observed billing."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1150000,
+        "basis": "estimated",
+        "reference": "Initial attempt plus expected failures/retries; failed work is charged; planning assumption, not observed billing."
+      },
+      "operations": [
+        {
+          "id": "local-preparation",
+          "stage": "preparation",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=preparation"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-planning",
+          "stage": "planning",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=planning"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=execution"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=verification"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-correction",
+          "stage": "correction",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=correction"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=packaging"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=reporting"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-recovery",
+          "stage": "recovery",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=recovery"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "connected-admission-overhead",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One authenticated admission/report transport per attempt in the modeled missing connected route; planning assumption, not observed billing."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "required-user-decision",
+          "stage": "planning",
+          "exceptionsPerRequestPpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One required objective/rights/scope approval; user decision, not routine staffed service; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 2,
+            "basis": "estimated",
+            "reference": "Unmeasured user-decision duration sensitivity, charged conservatively instead of erased; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        },
+        {
+          "id": "residual-exception-investigation",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 50000,
+            "basis": "estimated",
+            "reference": "Unmeasured exceptional investigation rate after automated bounded recovery; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 5,
+            "basis": "estimated",
+            "reference": "Exceptional investigation effort; no permanent per-job operator assumed; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "fixed-capacity",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this fixed capacity; no second utilization charge; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "automated-shared-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering allocation of shared automated maintenance, charged once monthly; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "business-software",
+          "kind": "business",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in variable costs; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "initial-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual complete setup/development cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this one-time setup pool; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected amortization horizon, not permanent reuse; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "development-including-failed-work",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual complete setup/development cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in per-request or monthly costs; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Finite expected development reuse horizon; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Matched human timing is unmeasured"
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+        }
+      }
+    },
+    {
+      "name": "stress",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Hypothetical provisioned offering capacity, not measured fleet throughput or demand; planning assumption, not observed billing."
+      },
+      "utilizationBps": {
+        "value": 500,
+        "basis": "estimated",
+        "reference": "Hypothetical offering utilization; no paid demand is established; planning assumption, not observed billing."
+      },
+      "acceptanceBps": {
+        "value": 8000,
+        "basis": "estimated",
+        "reference": "Expected complete-request acceptance; two deterministic jobs do not estimate production reliability; planning assumption, not observed billing."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1750000,
+        "basis": "estimated",
+        "reference": "Initial attempt plus expected failures/retries; failed work is charged; planning assumption, not observed billing."
+      },
+      "operations": [
+        {
+          "id": "local-preparation",
+          "stage": "preparation",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=preparation"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-planning",
+          "stage": "planning",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=planning"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=execution"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=verification"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-correction",
+          "stage": "correction",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=correction"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=packaging"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=reporting"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "local-recovery",
+          "stage": "recovery",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "measured",
+            "reference": "corrected-execution-traces.json: eight-stage fixed software implementation invoked in both primary missions; not a production failure-rate estimate; stage=recovery"
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "implemented"
+        },
+        {
+          "id": "connected-admission-overhead",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One authenticated admission/report transport per attempt in the modeled missing connected route; planning assumption, not observed billing."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No measured monetary bill; implementation and timing do not establish price"
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "required-user-decision",
+          "stage": "planning",
+          "exceptionsPerRequestPpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "One required objective/rights/scope approval; user decision, not routine staffed service; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 5,
+            "basis": "estimated",
+            "reference": "Unmeasured user-decision duration sensitivity, charged conservatively instead of erased; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        },
+        {
+          "id": "residual-exception-investigation",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 200000,
+            "basis": "estimated",
+            "reference": "Unmeasured exceptional investigation rate after automated bounded recovery; planning assumption, not observed billing."
+          },
+          "minutesPerException": {
+            "value": 10,
+            "basis": "estimated",
+            "reference": "Exceptional investigation effort; no permanent per-job operator assumed; planning assumption, not observed billing."
+          },
+          "hourlyCostMicros": {
+            "value": 35960000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "fixed-capacity",
+          "kind": "capacity",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this fixed capacity; no second utilization charge; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "automated-shared-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering allocation of shared automated maintenance, charged once monthly; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "business-software",
+          "kind": "business",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual ongoing full operation cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in variable costs; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "initial-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual complete setup/development cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share of this one-time setup pool; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "Finite expected amortization horizon, not permanent reuse; planning assumption, not observed billing."
+          }
+        },
+        {
+          "id": "development-including-failed-work",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Actual complete setup/development cost not observed"
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Offering share; no duplicate charge in per-request or monthly costs; planning assumption, not observed billing."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "Finite expected development reuse horizon; planning assumption, not observed billing."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Matched human timing is unmeasured"
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+        }
+      }
+    }
+  ]
+}

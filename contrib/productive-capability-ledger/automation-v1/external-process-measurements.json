@@ -1,0 +1,269 @@
+{
+  "schema": "alpha-automated-external-process-measurements/v1",
+  "measurementSourceSha256": "a2bdc973280b4d1908b6a16861f968668c324e643153fb3ab593ffe8762b4017",
+  "runnerSha256": "20ad2bd23d4526191cc65309b5eaab630742a0dbff4cce98c88ff50ead824af2",
+  "distinctTaskScopes": 2,
+  "operatingReplications": 2,
+  "reconnectRequests": 2,
+  "runs": [
+    {
+      "runId": "measured-guide-0255",
+      "manifestPath": "docs/try/sources.json",
+      "sourceRef": "0255ebf0a3289e1011f3a8fad165baf140480241",
+      "methodIdentity": "b5aaef12f31a4186dca5c20fbf5aea62fe6b9c35e9679f4baf153c1678475211",
+      "dependencySha256": {
+        "examples/ti-guide/guide.mjs": "327ca9f977f2b860546cee3190147305fd43fc19c8d16d3bf526e81a550f15e2",
+        "examples/successor-alpha/engine.mjs": "09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2",
+        "examples/successor-alpha/research.mjs": "cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a",
+        "docs/assets/successor/engine.mjs": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488",
+        "contrib/productive-capability-ledger/automation-v1/run-mission.mjs": "20ad2bd23d4526191cc65309b5eaab630742a0dbff4cce98c88ff50ead824af2"
+      },
+      "classification": "Operating replication of an already exercised input scope; not additional independent task diversity.",
+      "planning": {
+        "argv": [
+          "node",
+          "/workspace/scratch/ba16d8d248e5/alpha/contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+          "plan",
+          "--manifest",
+          "docs/try/sources.json",
+          "--ref",
+          "0255ebf0a3289e1011f3a8fad165baf140480241",
+          "--run-id",
+          "measured-guide-0255"
+        ],
+        "exitCode": 0,
+        "wholeProcessWallMicroseconds": {
+          "value": 117920,
+          "basis": "measured",
+          "reference": "External Python monotonic clock around process launch, imports, Node work, waited Git children and output collection."
+        },
+        "processAndWaitedDescendantCPUMicroseconds": {
+          "value": 125944,
+          "basis": "measured",
+          "reference": "POSIX wait4 user+system CPU for the command and descendants waited by it on this Linux host."
+        },
+        "maximumReportedRSSKiB": {
+          "value": 41656,
+          "basis": "measured",
+          "reference": "Linux wait4 maximum resident-set observation in KiB; not a measured sum of simultaneous fleet memory."
+        },
+        "modelCalls": {
+          "value": 0,
+          "basis": "measured",
+          "reference": "The fixed source-assurance service contains no model adapter; engineering/model-assisted authorship is outside this invocation."
+        },
+        "fullMonetaryCost": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Price compute, fixed development, maintenance, failure rates and residual exceptions separately; timing is not money."
+        }
+      },
+      "newDelivery": {
+        "argv": [
+          "node",
+          "/workspace/scratch/ba16d8d248e5/alpha/contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+          "run",
+          "--plan",
+          "contrib/productive-capability-ledger/automation-v1/plans/measured-guide-0255.json",
+          "--approve",
+          "f39cda71619b3388e192336ddd7ddcd4b3a9e972475f253929ca64e7c2e4a7ff"
+        ],
+        "exitCode": 0,
+        "wholeProcessWallMicroseconds": {
+          "value": 235001,
+          "basis": "measured",
+          "reference": "External Python monotonic clock around process launch, imports, Node work, waited Git children and output collection."
+        },
+        "processAndWaitedDescendantCPUMicroseconds": {
+          "value": 253135,
+          "basis": "measured",
+          "reference": "POSIX wait4 user+system CPU for the command and descendants waited by it on this Linux host."
+        },
+        "maximumReportedRSSKiB": {
+          "value": 56836,
+          "basis": "measured",
+          "reference": "Linux wait4 maximum resident-set observation in KiB; not a measured sum of simultaneous fleet memory."
+        },
+        "modelCalls": {
+          "value": 0,
+          "basis": "measured",
+          "reference": "The fixed source-assurance service contains no model adapter; engineering/model-assisted authorship is outside this invocation."
+        },
+        "fullMonetaryCost": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Price compute, fixed development, maintenance, failure rates and residual exceptions separately; timing is not money."
+        }
+      },
+      "reconnect": {
+        "argv": [
+          "node",
+          "/workspace/scratch/ba16d8d248e5/alpha/contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+          "run",
+          "--plan",
+          "contrib/productive-capability-ledger/automation-v1/plans/measured-guide-0255.json",
+          "--approve",
+          "f39cda71619b3388e192336ddd7ddcd4b3a9e972475f253929ca64e7c2e4a7ff"
+        ],
+        "exitCode": 0,
+        "wholeProcessWallMicroseconds": {
+          "value": 253642,
+          "basis": "measured",
+          "reference": "External Python monotonic clock around process launch, imports, Node work, waited Git children and output collection."
+        },
+        "processAndWaitedDescendantCPUMicroseconds": {
+          "value": 289968,
+          "basis": "measured",
+          "reference": "POSIX wait4 user+system CPU for the command and descendants waited by it on this Linux host."
+        },
+        "maximumReportedRSSKiB": {
+          "value": 96456,
+          "basis": "measured",
+          "reference": "Linux wait4 maximum resident-set observation in KiB; not a measured sum of simultaneous fleet memory."
+        },
+        "modelCalls": {
+          "value": 0,
+          "basis": "measured",
+          "reference": "The fixed source-assurance service contains no model adapter; engineering/model-assisted authorship is outside this invocation."
+        },
+        "fullMonetaryCost": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Price compute, fixed development, maintenance, failure rates and residual exceptions separately; timing is not money."
+        }
+      }
+    },
+    {
+      "runId": "measured-flagship-0255",
+      "manifestPath": "docs/successor/alpha/sources.json",
+      "sourceRef": "0255ebf0a3289e1011f3a8fad165baf140480241",
+      "methodIdentity": "b5aaef12f31a4186dca5c20fbf5aea62fe6b9c35e9679f4baf153c1678475211",
+      "dependencySha256": {
+        "examples/ti-guide/guide.mjs": "327ca9f977f2b860546cee3190147305fd43fc19c8d16d3bf526e81a550f15e2",
+        "examples/successor-alpha/engine.mjs": "09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2",
+        "examples/successor-alpha/research.mjs": "cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a",
+        "docs/assets/successor/engine.mjs": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488",
+        "contrib/productive-capability-ledger/automation-v1/run-mission.mjs": "20ad2bd23d4526191cc65309b5eaab630742a0dbff4cce98c88ff50ead824af2"
+      },
+      "classification": "Operating replication of an already exercised input scope; not additional independent task diversity.",
+      "planning": {
+        "argv": [
+          "node",
+          "/workspace/scratch/ba16d8d248e5/alpha/contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+          "plan",
+          "--manifest",
+          "docs/successor/alpha/sources.json",
+          "--ref",
+          "0255ebf0a3289e1011f3a8fad165baf140480241",
+          "--run-id",
+          "measured-flagship-0255"
+        ],
+        "exitCode": 0,
+        "wholeProcessWallMicroseconds": {
+          "value": 113318,
+          "basis": "measured",
+          "reference": "External Python monotonic clock around process launch, imports, Node work, waited Git children and output collection."
+        },
+        "processAndWaitedDescendantCPUMicroseconds": {
+          "value": 122058,
+          "basis": "measured",
+          "reference": "POSIX wait4 user+system CPU for the command and descendants waited by it on this Linux host."
+        },
+        "maximumReportedRSSKiB": {
+          "value": 41912,
+          "basis": "measured",
+          "reference": "Linux wait4 maximum resident-set observation in KiB; not a measured sum of simultaneous fleet memory."
+        },
+        "modelCalls": {
+          "value": 0,
+          "basis": "measured",
+          "reference": "The fixed source-assurance service contains no model adapter; engineering/model-assisted authorship is outside this invocation."
+        },
+        "fullMonetaryCost": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Price compute, fixed development, maintenance, failure rates and residual exceptions separately; timing is not money."
+        }
+      },
+      "newDelivery": {
+        "argv": [
+          "node",
+          "/workspace/scratch/ba16d8d248e5/alpha/contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+          "run",
+          "--plan",
+          "contrib/productive-capability-ledger/automation-v1/plans/measured-flagship-0255.json",
+          "--approve",
+          "9fea7a70fd2a3455723579c26adff0d4c9820a9190167687c8557320b33733ca"
+        ],
+        "exitCode": 0,
+        "wholeProcessWallMicroseconds": {
+          "value": 353010,
+          "basis": "measured",
+          "reference": "External Python monotonic clock around process launch, imports, Node work, waited Git children and output collection."
+        },
+        "processAndWaitedDescendantCPUMicroseconds": {
+          "value": 388213,
+          "basis": "measured",
+          "reference": "POSIX wait4 user+system CPU for the command and descendants waited by it on this Linux host."
+        },
+        "maximumReportedRSSKiB": {
+          "value": 69492,
+          "basis": "measured",
+          "reference": "Linux wait4 maximum resident-set observation in KiB; not a measured sum of simultaneous fleet memory."
+        },
+        "modelCalls": {
+          "value": 0,
+          "basis": "measured",
+          "reference": "The fixed source-assurance service contains no model adapter; engineering/model-assisted authorship is outside this invocation."
+        },
+        "fullMonetaryCost": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Price compute, fixed development, maintenance, failure rates and residual exceptions separately; timing is not money."
+        }
+      },
+      "reconnect": {
+        "argv": [
+          "node",
+          "/workspace/scratch/ba16d8d248e5/alpha/contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+          "run",
+          "--plan",
+          "contrib/productive-capability-ledger/automation-v1/plans/measured-flagship-0255.json",
+          "--approve",
+          "9fea7a70fd2a3455723579c26adff0d4c9820a9190167687c8557320b33733ca"
+        ],
+        "exitCode": 0,
+        "wholeProcessWallMicroseconds": {
+          "value": 400650,
+          "basis": "measured",
+          "reference": "External Python monotonic clock around process launch, imports, Node work, waited Git children and output collection."
+        },
+        "processAndWaitedDescendantCPUMicroseconds": {
+          "value": 450904,
+          "basis": "measured",
+          "reference": "POSIX wait4 user+system CPU for the command and descendants waited by it on this Linux host."
+        },
+        "maximumReportedRSSKiB": {
+          "value": 93448,
+          "basis": "measured",
+          "reference": "Linux wait4 maximum resident-set observation in KiB; not a measured sum of simultaneous fleet memory."
+        },
+        "modelCalls": {
+          "value": 0,
+          "basis": "measured",
+          "reference": "The fixed source-assurance service contains no model adapter; engineering/model-assisted authorship is outside this invocation."
+        },
+        "fullMonetaryCost": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Price compute, fixed development, maintenance, failure rates and residual exceptions separately; timing is not money."
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Local foreground command measurements only; no remote/browser-approved-executor connection.",
+    "These cases have no source drift; no superiority, human-work saving or self-acceleration is inferred.",
+    "Complete monetary cost and operational exception rates remain unknown; economic scenarios must label assumptions."
+  ]
+}

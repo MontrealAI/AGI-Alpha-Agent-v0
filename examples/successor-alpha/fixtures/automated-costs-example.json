@@ -1,0 +1,733 @@
+{
+  "schema": "alpha-automated-costs/v1",
+  "offeringId": "illustrative-automated-delivery",
+  "currency": "USD",
+  "scenarios": [
+    {
+      "name": "base",
+      "capacityRequestsPerMonth": {
+        "value": 2000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "utilizationBps": {
+        "value": 5000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "acceptanceBps": {
+        "value": 9500,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1100000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "operations": [
+        {
+          "id": "preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 3000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 120000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 30000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 20000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 2000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 2000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exception",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "minutesPerException": {
+            "value": 4,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "hourlyCostMicros": {
+            "value": 60000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-capacity-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 80000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "one-time-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 500000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "amortizationMonths": {
+            "value": 24,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        },
+        {
+          "id": "shared-development",
+          "kind": "development",
+          "amountMicros": {
+            "value": 2000000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "amortizationMonths": {
+            "value": 24,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": 30,
+          "basis": "estimated",
+          "reference": "Illustrative traditional competent human workflow of equal acceptance; duration is unmeasured and must be replaced with offering-specific evidence."
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, first occupational group, private industry office/admin, December 2025; includes benefits; preserved research source5caa871d"
+        }
+      }
+    },
+    {
+      "name": "conservative",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "utilizationBps": {
+        "value": 2500,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "acceptanceBps": {
+        "value": 8000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 1500000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "operations": [
+        {
+          "id": "preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 6000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 20000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 240000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 60000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 40000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 4000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 4000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 20000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exception",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 50000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "minutesPerException": {
+            "value": 10,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "hourlyCostMicros": {
+            "value": 60000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-capacity-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 120000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "one-time-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 1000000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        },
+        {
+          "id": "shared-development",
+          "kind": "development",
+          "amountMicros": {
+            "value": 5000000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "amortizationMonths": {
+            "value": 12,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": 30,
+          "basis": "estimated",
+          "reference": "Illustrative traditional competent human workflow of equal acceptance; duration is unmeasured and must be replaced with offering-specific evidence."
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, first occupational group, private industry office/admin, December 2025; includes benefits; preserved research source5caa871d"
+        }
+      }
+    },
+    {
+      "name": "stress",
+      "capacityRequestsPerMonth": {
+        "value": 1000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "utilizationBps": {
+        "value": 100,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "acceptanceBps": {
+        "value": 5000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "attemptsPerRequestPpm": {
+        "value": 3000000,
+        "basis": "estimated",
+        "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+      },
+      "operations": [
+        {
+          "id": "preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 15000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 50000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 600000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 150000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 100000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": 1000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "unitCostMicros": {
+            "value": 50000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exception",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": 200000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "minutesPerException": {
+            "value": 15,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "hourlyCostMicros": {
+            "value": 60000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-capacity-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": 200000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "one-time-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": 1000000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        },
+        {
+          "id": "shared-development",
+          "kind": "development",
+          "amountMicros": {
+            "value": 5000000000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "allocationBps": {
+            "value": 10000,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          },
+          "amortizationMonths": {
+            "value": 6,
+            "basis": "estimated",
+            "reference": "Illustrative automated-delivery estimate for sensitivity only; not observed operation or established AGI ALPHA cost."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": 30,
+          "basis": "estimated",
+          "reference": "Illustrative traditional competent human workflow of equal acceptance; duration is unmeasured and must be replaced with offering-specific evidence."
+        },
+        "hourlyCostMicros": {
+          "value": 35960000,
+          "basis": "sourced",
+          "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, first occupational group, private industry office/admin, December 2025; includes benefits; preserved research source5caa871d"
+        }
+      }
+    }
+  ]
+}

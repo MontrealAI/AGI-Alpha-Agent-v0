@@ -269,7 +269,7 @@ function translate() {
     renderNotice();
     if (lastStatus) $('status').textContent = say(...lastStatus);
     if (lastError && !$('error').hidden) $('error').textContent = errorMessage(lastError);
-    renderValue(); renderShadow();
+    renderValue(); renderShadow(); renderAutomatedCosts();
     renderLearning(); renderComputer();
     if (!$('key-mapping').hidden) updateMappingSummary();
 }
@@ -514,7 +514,7 @@ function syncName() {
     dossier = project.renameProject(dossier,name);
 }
 function renderHistory() {
-    renderShadow();
+    renderShadow(); renderAutomatedCosts();
     $('cycle-history').replaceChildren();
     $('cycle-count').textContent = dossier ? say(`${dossier.cycles.length} ${dossier.cycles.length === 1?'cycle':'cycles'}`,`${dossier.cycles.length} ${dossier.cycles.length === 1?'cycle':'cycles'}`) : say('No cycles yet','Aucun cycle');
     if (!dossier) return;
@@ -548,6 +548,7 @@ function restoreSerialized(serialized) {
     learningRecords = []; nativeContinuityRaw = null;
     computerHistoryRaw = null; computerHistoryChecked = null; computerHandoffRaw = null; computerChecked = null; computerSelectedIndex = -1;
     shadowArchive = null; shadowCurrent = null; shadowImportVersion++; shadowFormCycleId = null;
+    automationRecord = null; automationSummary = null; automationImportVersion++;
     clearCurrent(); dossier = restored; $('project-name').value = restored.name;
     notice = {type:'restored',name:restored.name,cycles:restored.cycles.length};
     if (restored.cycles.length) fillMission(restored.cycles.at(-1).mission);
@@ -1259,5 +1260,6 @@ translate(); go(0,false);
         if (savedLearning && savedLearning !== '{}') await restoreLearning(savedLearning);
         else if (saved && saved !== '{}') await restoreSerialized(saved);
         restoreShadow();
+        restoreAutomatedCosts();
     } catch(error) { showError(error); }
 })();

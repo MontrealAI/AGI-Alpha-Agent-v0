@@ -164,6 +164,28 @@ def run_acceptance(
         assert json.loads(download(page, "#shadow-download")) == known
         checks.append("tamper-cross-project-import-refused-with-existing-history-preserved")
 
+        page.locator("#automation-panel > summary").click()
+        page.locator("#automation-calculate").click()
+        expect(page.locator("#automation-result")).to_contain_text("Unknown")
+        unknown_costs = json.loads(download(page, "#automation-download"))
+        assert unknown_costs["schema"] == "alpha-automated-costs/v1"
+        assert unknown_costs["scenarios"][0]["operations"][0]["unitCostMicros"]["value"] is None
+        page.locator("#automation-example").click()
+        expect(page.locator("#automation-result tbody tr")).to_have_count(3)
+        expect(page.locator("#automation-result")).to_contain_text("Loses")
+        automated_record = json.loads(download(page, "#automation-download"))
+        assert automated_record == json.loads(
+            (ROOT / "examples/successor-alpha/fixtures/automated-costs-example.json").read_text()
+        )
+        assert automated_record["scenarios"][0]["humanBaseline"]["hourlyCostMicros"]["basis"] == "sourced"
+        page.locator("#automation-apply").click()
+        assert page.locator("#shadow-cost").input_value() != ""
+        assert page.locator("#shadow-construction").input_value() == ""
+        assert not page.locator("#shadow-cost-complete").is_checked()
+        assert json.loads(download(page, "#shadow-download")) == known
+        checks.append("automated-three-cost-tiers-shared-record-and-loss-scenario")
+        checks.append("amortization-never-converted-to-spendable-cash-or-duplicated-investment")
+
         page.locator("#lang-fr").click()
         expect(page.locator("#shadow-panel > summary")).to_have_text("Combien cette livraison a-t-elle coûté ?")
         expect(page.locator("#shadow-acceptance option[value=unknown]")).to_have_text("Acceptation du client inconnue")
@@ -190,6 +212,9 @@ def run_acceptance(
         expect(page.locator("#restored-note")).to_contain_text("historical")
         embedded = page.locator("#saved-shadow-ledger").text_content()
         assert json.loads(embedded or "null") == known
+        automated_embedded = json.loads(page.locator("#saved-automated-costs").text_content() or "null")
+        assert automated_embedded["projectId"] == project["id"]
+        assert automated_embedded["record"] == automated_record
         page.locator("#custom-start").click()
         expect(page.locator("#pane-evidence")).to_be_visible()
         page.locator("#keep-capability").click()

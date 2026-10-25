@@ -1,0 +1,59 @@
+{
+  "schema": "alpha-automation-product-validation/v1",
+  "parentCommit": "0255ebf0a3289e1011f3a8fad165baf140480241",
+  "sourceSha256": {
+    "examples/successor-alpha/automated-costs.mjs": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506",
+    "examples/successor-alpha/automation-ui.test.mjs": "7219ce7ce5365a17557695965eeb0dc2c411798b52d3538070605e67d259cc7b",
+    "scripts/templates/successor-alpha/automation-app.js": "75c9401667b66854cc5a0e9edc393c5a0d1f19cee38e078f323a3dda437e90b0",
+    "scripts/templates/successor-alpha/shadow-app.js": "8464cec44f670ce86d8c226b040550938780c319ee40c0e8cda0d39fcd2a79f6",
+    "scripts/generate_successor_alpha.py": "c32dc47693e15c8339360c05de056f5a44dfe55d3b6e4f26ebc31626583b9025",
+    "contrib/productive-capability-ledger/automation-v1/run-mission.mjs": "b41247af80a42213398c82120ef481dc139c793cec457b52fb3e58df94ec7824",
+    "contrib/productive-capability-ledger/automation-v1/verify-run.py": "42f69f183ee19aba931fb0b38cfcfef9d4a6c538e13c8ab1aba9e846eecaf2d7",
+    "contrib/productive-capability-ledger/automation-v1/model-automated-offering.mjs": "6f448e6e09b8fd8095d7f4adbcf1ed479d28e6e83e1d33c9c3c250eccf88eaf2"
+  },
+  "nodeTests": {
+    "passed": 158,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "150 flagship model/UI/core tests plus 8 bounded workflow/recovery cases"
+  },
+  "deterministicPageTests": {
+    "passed": 5,
+    "failed": 0
+  },
+  "releaseEvidenceTests": {
+    "passed": 18,
+    "failed": 0
+  },
+  "independentCostOracle": {
+    "schema": "alpha-automated-cost-independent-arithmetic/v1",
+    "passed": true,
+    "checks": 240,
+    "records": 5,
+    "scenarios": 15,
+    "sourceSha256": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506",
+    "recordSha256": {
+      "examples/successor-alpha/fixtures/automated-costs-example.json": "1002291b9c157aeac8f09454a233a3e7df1d3f4f1315cb1b392d4be87bd037c1",
+      "examples/successor-alpha/fixtures/automated-costs-unknown.json": "9a3f63e8c9e27a54abe567eef1be4d13d7b398fba980086422fe6b982aacc638",
+      "contrib/productive-capability-ledger/automation-v1/automated-cost-record.json": "1700b45f82e2b43598e97c90f3ba936cf89eb588a627cb9ab4f19b2f26cc81ee",
+      "contrib/productive-capability-ledger/automation-v1/observed-components-unknown-cost-record.json": "090d9c872f8ecc3ecc596fa76e1800573a61211e2a6170d45e79d2c1f747187b",
+      "contrib/productive-capability-ledger/automation-v1/initial-one-time-human-setup-automated-cost-record.json": "220e7a2a19ea8c58e5aee933ee871aef4eb8f1118b1d1e9e05c0eacdd48cadd8"
+    },
+    "method": "Separately implemented Python fractions.Fraction oracle against the Node implementation",
+    "scope": "Conditional arithmetic only; no live executor, measured full cost or independent organizational custody"
+  },
+  "independentCorrectedDeliveries": {
+    "checks": 1034,
+    "distinctTaskScopes": 2,
+    "primaryDeliveries": 2,
+    "operatingReplications": 2,
+    "receipt": "current-verifier-acceptance.json"
+  },
+  "recoveryBug": "Prior exact-head hosted run40202909153 failed; null-project startup fixed and covered by actual-source VM regression. Required corrected-head browser acceptance remains pending.",
+  "actualMonetaryCost": null,
+  "economicAnalysis": "Completed conditional automated-configuration model; prices, utilization, failure assumptions and human durations retain explicit estimates or unknown labels.",
+  "authenticatedExecutor": "NOT RUN; requires existing approved operator home and exact installed profile.",
+  "transactions": false,
+  "productionAuthority": false,
+  "generatedPageSha256": "0d3117ac6da6e2bec71e55d47c9d2adaa27ffacb3114680e7d2a3892042e6d82"
+}

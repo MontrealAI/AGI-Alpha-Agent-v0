@@ -91,3 +91,22 @@ Playwright downloads were truncated. The separate cloud browser could not reach 
 local preview. The checked-in blocked receipt records zero browser passes. The new
 browser test is ready for the existing browser-capable acceptance environment; no
 unperformed visual, accessibility, installation or public acceptance is claimed.
+
+
+## Automated-configuration continuation
+
+The additive [automation-v1 evidence and software](automation-v1/README.md)
+implements the source-assurance delivery path and the shared
+`alpha-automated-costs/v1` record. It separates marginal, recurring and fully
+loaded cost, prices software replacement of routine handling, and preserves
+one-time/shared work, failed construction and residual decisions. The
+[completed conditional economics](automation-v1/AUTOMATED_ECONOMICS.md) use
+measured execution components, sourced compensation and explicit assumptions;
+actual complete monetary cost remains unknown. Neither the old staffed scenario
+nor a token component is promoted into an established Agent cost.
+
+The previous hosted mission-recovery run found a real null-project startup bug.
+That source and outcome remain recorded. The repaired source now has an actual
+UI regression, plus new shared-cost controls and separately checked recovery
+software. Exact current-head hosted browser acceptance is still required before
+this candidate is integrated or described as publicly installed.
