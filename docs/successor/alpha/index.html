@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#100d1b">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UIePpM2fE00hoh5s54gm1BxE0jJpL0xhwe0NKmpyggA='; style-src 'sha256-RnMpGLvFLXKPqUrIFi95feUjDdawvhv9vCnITv2RK0Q='; img-src data:; worker-src blob:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-68paxxObY8ZhGlVd0J8V0pyPidAVwWE+lObONJbvVU8='; style-src 'sha256-RnMpGLvFLXKPqUrIFi95feUjDdawvhv9vCnITv2RK0Q='; img-src data:; worker-src blob:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'">
 <meta name="description" content="Find a useful advantage, compare it fairly, and keep a working capability. Discover valuable opportunities, build useful capabilities and improve strategies with Computer Use and frontier reasoning. Keep the evidence and lessons in your SUCCESSOR Ω.">
 <title>Find your Alpha. Build your SUCCESSOR Ω.</title>
 <style>
@@ -122,7 +122,7 @@ should exist next?</h2></div><p data-i18n="computerIntro">Start with an opportun
 <div><label for="shadow-cost" data-i18n="shadowCost">Total operating cost for this delivery</label><input id="shadow-cost" type="number" min="0" step="0.01" inputmode="decimal" aria-describedby="shadow-cost-help"></div>
 </div>
 <p id="shadow-currency-help" class="hint" data-i18n="shadowCurrencyHelp">Use amounts in the selected currency. No exchange rate or token conversion is applied.</p>
-<div class="shadow-coverage"><p id="shadow-cost-help" data-i18n="shadowCostHelp">Include tools and model usage; human supervision and verification; retries, failures and recovery; allocated setup, maintenance and business overhead. Include unsuccessful capability construction in the separate field below. Unmeasured costs stay unknown.</p><label class="shadow-check" for="shadow-cost-complete"><input id="shadow-cost-complete" type="checkbox"><span data-i18n="shadowCostComplete">I included every applicable operating cost above, including human attention, or explicitly established that it was zero.</span></label></div>
+<div class="shadow-coverage"><p id="shadow-cost-help" data-i18n="shadowCostHelp">Include tools and model usage; human supervision and verification; retries, failures and recovery; allocated setup, maintenance and business overhead. Include unsuccessful capability construction in the separate field below. Unmeasured costs stay unknown.</p><label class="shadow-check" for="shadow-cost-complete"><input id="shadow-cost-complete" type="checkbox"><span data-i18n="shadowCostComplete">I included every applicable provider operating cost above, including provider human work, or explicitly established that it was zero.</span></label></div>
 <div class="shadow-grid">
 <div><label for="shadow-acceptance" data-i18n="shadowAcceptance">Acceptance for this planning scenario</label><select id="shadow-acceptance" aria-describedby="shadow-acceptance-help"><option value="unknown" selected data-i18n="shadowAcceptanceUnknown">Customer acceptance unknown</option><option value="accepted" data-i18n="shadowAcceptanceAccepted">Assume equivalent accepted work</option><option value="rejected" data-i18n="shadowAcceptanceRejected">Rejected / unsuccessful delivery</option></select></div>
 <div><label for="shadow-price" data-i18n="shadowPrice">Customer price assumption</label><input id="shadow-price" type="number" min="0" step="0.01" inputmode="decimal" aria-describedby="shadow-revenue-help"></div>
@@ -132,12 +132,12 @@ should exist next?</h2></div><p data-i18n="computerIntro">Start with an opportun
 <div><label for="shadow-construction" data-i18n="shadowConstruction">Capability construction cost · include failed attempts</label><input id="shadow-construction" type="number" min="0" step="0.01" inputmode="decimal" aria-describedby="shadow-investment-help"></div>
 <div><label for="shadow-traditional-minutes" data-i18n="shadowTraditionalMinutes">Traditional workflow · minutes for equivalent accepted work</label><input id="shadow-traditional-minutes" type="number" min="0" step="1" inputmode="decimal" aria-describedby="shadow-human-help"></div>
 <div><label for="shadow-hourly" data-i18n="shadowHourly">Fully loaded human cost per hour</label><input id="shadow-hourly" type="number" min="0" step="0.01" inputmode="decimal" aria-describedby="shadow-human-help"></div>
-<div><label for="shadow-attention" data-i18n="shadowAttention">Remaining human attention · minutes</label><input id="shadow-attention" type="number" min="0" step="1" inputmode="decimal" aria-describedby="shadow-human-help"></div>
+<div><label for="shadow-attention" data-i18n="shadowAttention">Remaining customer attention · minutes</label><input id="shadow-attention" type="number" min="0" step="1" inputmode="decimal" aria-describedby="shadow-human-help"></div>
 <div><label for="shadow-reinvestment" data-i18n="shadowReinvestment">Potential reinvestment from available surplus</label><select id="shadow-reinvestment" aria-describedby="shadow-investment-help"><option value="0" selected>0%</option><option value="25">25%</option><option value="50">50%</option><option value="75">75%</option><option value="100">100%</option></select></div>
 </div>
 <p id="shadow-acceptance-help" class="hint" data-i18n="shadowAcceptanceHelp">This selection is only an explicit scenario assertion. It does not establish real customer acceptance, independent qualification or settlement eligibility.</p>
 <p id="shadow-revenue-help" class="hint" data-i18n="shadowRevenueHelp">Customer savings, a quoted price and collected revenue are separate. Only an entered collected amount can support the self-reported cash view; a price assumption supports a scenario.</p>
-<p id="shadow-human-help" class="hint" data-i18n="shadowHumanHelp">Use a competent human workflow with equivalent acceptance. Minutes and hourly cost are your inputs, not observed benchmarks. Human attention must already be included in operating cost; it is displayed separately without charging it twice.</p>
+<p id="shadow-human-help" class="hint" data-i18n="shadowHumanHelp">Use a competent human workflow with equivalent acceptance. Minutes and hourly cost are your inputs, not observed benchmarks. Customer attention is priced separately in the buyer comparison. Include provider supervision and exceptions in operating cost; customer opportunity cost is not automatically a provider expense.</p>
 <p id="shadow-investment-help" class="hint" data-i18n="shadowInvestmentHelp">Reserves and outstanding unpaid obligations reduce available surplus. Do not count paid costs again as unpaid obligations. Construction cost is deducted separately from operating cost: enter it once. Reinvestment is a planning ceiling, not a payment or evidence that capability will improve. Zero reinvestment is supported.</p>
 <div class="actions shadow-actions"><button id="shadow-calculate" class="button primary small" type="button" data-i18n="shadowCalculate">Calculate my planning record</button><button id="shadow-download" class="button secondary small" type="button" disabled data-i18n="shadowDownload">Download planning ledger</button><button id="shadow-import" class="button quiet small" type="button" data-i18n="shadowImport">Restore a planning ledger</button><input id="shadow-file" type="file" accept=".json,application/json" hidden></div>
 <p id="shadow-error" class="error" role="alert" hidden></p>
@@ -156,7 +156,7 @@ should exist next?</h2></div><p data-i18n="computerIntro">Start with an opportun
 <p id="automation-error" class="error" role="alert" hidden></p>
 <div id="automation-result" class="shadow-result" role="status" aria-live="polite" hidden></div>
 <div class="shadow-grid"><div><label for="automation-scenario" data-i18n="automationScenario">Scenario to carry into this mission’s plan</label><select id="automation-scenario"><option value="base" data-i18n="automationScenarioBase">Base</option><option value="conservative" data-i18n="automationScenarioConservative">Conservative</option><option value="stress" data-i18n="automationScenarioStress">Stress</option></select></div></div>
-<p class="hint" data-i18n="automationApplyHelp">Only the recurring allocation is carried over. Setup and development cash outlays remain unknown in the mission record. Enter actual investments, reserves and obligations before calculating surplus. Economic amortization is not available cash.</p>
+<p class="hint" data-i18n="automationApplyHelp">Only the recurring resource allocation is carried over. Exclude customer opportunity costs before enterprise cash accounting. Setup and development cash outlays remain unknown in the mission record. Enter actual investments, reserves and obligations before calculating surplus. Economic amortization is not available cash.</p>
 <div class="shadow-actions"><button class="button secondary small" type="button" id="automation-apply" disabled data-i18n="automationApply">Use its provisional recurring allocation</button><button class="button quiet small" type="button" id="automation-download" disabled data-i18n="automationDownload">Download the shared task-and-cost record</button></div>
 <p class="hint" data-i18n="automationLimit">The scenarios are alternative assumptions, never amounts to add together. Losses and low utilization stay visible. Reinvestment remains non-transactional planning.</p>
 </details>
@@ -5026,7 +5026,7 @@ const fr = {
     shadowCost:"Coût total d’exploitation de cette livraison",
     shadowCurrencyHelp:"Saisissez chaque montant dans la devise choisie. Aucun taux de change ni conversion de jetons n’est appliqué.",
     shadowCostHelp:"Incluez outils et modèles ; supervision et vérification humaines ; nouvelles tentatives, échecs et récupération ; quote-part de mise en place, maintenance et frais d’entreprise. Indiquez la construction de capacités, y compris les échecs, dans le champ distinct ci-dessous. Un coût non mesuré reste inconnu.",
-    shadowCostComplete:"J’ai inclus tous les coûts d’exploitation applicables ci-dessus, y compris l’attention humaine, ou établi explicitement qu’ils étaient nuls.",
+    shadowCostComplete:"J’ai inclus tous les coûts d’exploitation applicables du prestataire, dont son travail humain, ou établi explicitement qu’ils étaient nuls.",
     shadowPrice:"Hypothèse de prix facturé au client",
     shadowCollected:"Recettes réellement encaissées · votre déclaration",
     shadowReserve:"Réserves nécessaires",
@@ -5034,10 +5034,10 @@ const fr = {
     shadowConstruction:"Coût de construction de capacités · échecs inclus",
     shadowTraditionalMinutes:"Travail traditionnel · minutes pour une livraison équivalente acceptée",
     shadowHourly:"Coût humain horaire complet",
-    shadowAttention:"Attention humaine restante · minutes",
+    shadowAttention:"Attention restante du client · minutes",
     shadowReinvestment:"Réinvestissement possible du surplus disponible",
     shadowRevenueHelp:"Économie du client, prix proposé et recettes encaissées sont distincts. Seul un encaissement saisi peut étayer la vue de trésorerie déclarative ; le prix supposé sert au scénario.",
-    shadowHumanHelp:"Comparez un travail humain compétent soumis aux mêmes critères d’acceptation. Durée et coût horaire sont vos données, pas des mesures de référence observées. L’attention humaine doit déjà être incluse dans le coût d’exploitation ; elle est affichée séparément, sans être comptée deux fois.",
+    shadowHumanHelp:"Comparez un travail humain compétent soumis aux mêmes critères d’acceptation. Durée et coût horaire sont vos données, pas des mesures de référence observées. L’attention du client est valorisée séparément dans sa comparaison. Incluez supervision et exceptions du prestataire dans son coût ; le coût d’opportunité du client n’est pas automatiquement une dépense du prestataire.",
     shadowInvestmentHelp:"Réserves et obligations impayées réduisent le surplus disponible. Ne comptez pas une dépense déjà payée parmi les obligations impayées. Le coût de construction est déduit séparément du coût d’exploitation : saisissez-le une seule fois. Le réinvestissement est un plafond de planification, sans paiement ni preuve d’amélioration. Le réinvestissement nul est possible.",
     shadowCalculate:"Calculer ma fiche de planification",
     shadowDownload:"Télécharger le registre de planification",
@@ -6381,7 +6381,7 @@ Object.assign(fr,{
     automationCalculate:'Calculer les trois niveaux de coût',automationOpen:'Importer un registre partagé',
     automationDownload:'Télécharger le registre partagé des tâches et des coûts',automationScenario:'Scénario à reprendre dans la fiche de mission',
     automationApply:'Reprendre le coût récurrent provisoire',
-    automationApplyHelp:'Seule l’allocation récurrente est reprise. Les décaissements de mise en place et de développement restent inconnus dans la fiche de mission. Renseignez investissements réels, réserves et obligations avant de calculer un surplus. Un amortissement économique n’est pas de la trésorerie disponible.',
+    automationApplyHelp:'Seule l’allocation récurrente des ressources est reprise. Excluez le coût d’opportunité du client avant de calculer la trésorerie de l’entreprise. Les décaissements de mise en place et de développement restent inconnus dans la fiche de mission. Renseignez investissements réels, réserves et obligations avant de calculer un surplus. Un amortissement économique n’est pas de la trésorerie disponible.',
     automationScenarioBase:'Base',automationScenarioConservative:'Prudent',automationScenarioStress:'Tension',
     automationLimit:'Les trois scénarios sont des hypothèses comparatives, jamais des montants à additionner. Les pertes et les faibles volumes restent visibles. Le réinvestissement demeure une planification sans transaction.',
 });

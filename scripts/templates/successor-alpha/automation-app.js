@@ -10,7 +10,7 @@ Object.assign(fr,{
     automationCalculate:'Calculer les trois niveaux de coût',automationOpen:'Importer un registre partagé',
     automationDownload:'Télécharger le registre partagé des tâches et des coûts',automationScenario:'Scénario à reprendre dans la fiche de mission',
     automationApply:'Reprendre le coût récurrent provisoire',
-    automationApplyHelp:'Seule l’allocation récurrente est reprise. Les décaissements de mise en place et de développement restent inconnus dans la fiche de mission. Renseignez investissements réels, réserves et obligations avant de calculer un surplus. Un amortissement économique n’est pas de la trésorerie disponible.',
+    automationApplyHelp:'Seule l’allocation récurrente des ressources est reprise. Excluez le coût d’opportunité du client avant de calculer la trésorerie de l’entreprise. Les décaissements de mise en place et de développement restent inconnus dans la fiche de mission. Renseignez investissements réels, réserves et obligations avant de calculer un surplus. Un amortissement économique n’est pas de la trésorerie disponible.',
     automationScenarioBase:'Base',automationScenarioConservative:'Prudent',automationScenarioStress:'Tension',
     automationLimit:'Les trois scénarios sont des hypothèses comparatives, jamais des montants à additionner. Les pertes et les faibles volumes restent visibles. Le réinvestissement demeure une planification sans transaction.',
 });

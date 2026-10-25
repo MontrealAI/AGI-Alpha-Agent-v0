@@ -58,8 +58,9 @@ mission cannot qualify for investment. Reinvestment from zero through 10,000 bps
 only models a fraction of nonnegative available surplus; it executes nothing.
 
 `comparison` keeps traditional labor cost, customer price plus customer attention,
-and provider full cost separate. Customer attention is already included in the
-attested aggregate operating cost and is not added a second time. These are conditional
+and provider full cost separate. Customer attention is valued separately in the buyer comparison. Provider human
+supervision and exceptions belong in provider operating cost; a customer opportunity
+cost is not automatically a provider expense. The two comparisons are not summed. These are conditional
 equal-acceptance calculations using supplied durations and hourly cost, not
 measured savings or a market-size estimate. Customer savings are never revenue.
 
