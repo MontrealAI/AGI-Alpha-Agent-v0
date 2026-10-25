@@ -1,0 +1,22 @@
+{
+  "schema": "alpha-independent-review-correction/v1",
+  "recorded_at": "2026-10-25T04:46:10.422217+00:00",
+  "state": "HISTORICAL_PASS_GUARDS_BUT_P1_UNRESOLVED",
+  "affected_source": "7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9",
+  "review_id": 5641564341,
+  "comment_id": 4369677532,
+  "pull_request": 4899,
+  "finding_source": "Integration lead supplied configured review finding; independently read current repository instruction. No remote review fetch performed.",
+  "repository_requirement": {
+    "path": "AGENTS.md",
+    "lines": "306\u2013308",
+    "quote": "Semgrep scans Python files with the official `p/python` ruleset to enforce security and style best practices."
+  },
+  "validated_defect": "The bounded two-rule Strategy hook replaced the required repository-wide official Python policy instead of supplementing it. A passing fixed-scope scan is insufficient.",
+  "independent_review_error": "I reviewed bounded implementation fidelity, focused tests and legacy config bytes but missed the applicable AGENTS.md requirement. Prior CLEAR is withdrawn as a statement of full repository-policy compliance.",
+  "required_correction": "Restore the actual official p/python primary hook and keep the bounded Strategy hook additional; require fresh configured review and applicable CI on new source. Owners retain implementation.",
+  "previous_guard_and_test_outcomes_preserved": true,
+  "publication_clearance": false,
+  "runtime_or_scientific_rerun": false,
+  "source_edit_or_push": false
+}

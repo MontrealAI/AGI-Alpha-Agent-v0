@@ -1,0 +1,94 @@
+{
+  "schema": "strategy-failed-main-regression-run/v1",
+  "state": "FAILED_NOT_QUALIFIED",
+  "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+  "source": "f836f06e8351e64db1da770e16e304b5feb01f28",
+  "tree": "6aa458f1dad73205fe61ab8277abae785cb76fe4",
+  "workflow": "Agent release acceptance",
+  "run_id": 40157168357,
+  "run_attempt": 1,
+  "job_id": 121061031945,
+  "job_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40157168357/job/121061031945",
+  "job_conclusion": "failure",
+  "job_started_at": "2026-10-25T03:13:28Z",
+  "job_completed_at": "2026-10-25T04:20:29Z",
+  "final_run_jobs": {
+    "total": 40,
+    "success": 32,
+    "failure": 3,
+    "skipped": 5,
+    "source": "final-40-jobs.json",
+    "failed_job_names": [
+      "regression",
+      "quality",
+      "gallery (minimal)"
+    ]
+  },
+  "pytest_log_summary": {
+    "failed": 2,
+    "passed": 4939,
+    "skipped": 80,
+    "deselected": 4,
+    "xfailed": 4,
+    "warnings": 192,
+    "elapsed_seconds": 3805.88,
+    "meaning": "Reported pytest test-run elapsed time only; not whole-CI elapsed, aggregate compute, money, or human effort."
+  },
+  "junit_summary": {
+    "tests": 5025,
+    "errors": 0,
+    "failures": 2,
+    "skipped_including_xfail": 84,
+    "elapsed_seconds": 3803.126,
+    "source": "regression.xml inside the original archive",
+    "precision": "JUnit skipped84 includes80skipped and4xfail; deselected4 are absent from JUnit cases. Its elapsed field differs from the pytest console summary; both are preserved."
+  },
+  "coverage": {
+    "reported_percent": 82.35,
+    "xml_line_rate": 0.8235,
+    "lines_covered": 62252,
+    "lines_valid": 75597,
+    "source": "coverage.xml inside the original archive"
+  },
+  "strict_types_and_repository_checks": {
+    "state": "SKIPPED",
+    "reason": "Regression step failed before the types/repository step; final-steps.json preserves observed step outcomes."
+  },
+  "failures": [
+    {
+      "test": "tests/test_paper_workflow_policy.py::test_runtime_gates_preserve_original_permissions_dependencies_and_failure_semantics[agent-release.yml]",
+      "observed": "historical-ci dependency comparison lacks strategy-engineering"
+    },
+    {
+      "test": "tests/test_release_queue_policy.py::test_historical_proof_waits_without_allocating_an_early_runner",
+      "observed": "historical-ci boundary dependency set lacks strategy-engineering"
+    }
+  ],
+  "failure_relationship": "Both failures expose the same omitted Strategy prerequisite already identified by the original main quality gate; they do not identify a distinct product-runtime defect. Correction and qualification belong to separately identified source/checks.",
+  "costs": {
+    "test_elapsed_seconds": 3805.88,
+    "whole_ci_elapsed_seconds": null,
+    "cpu_seconds": null,
+    "monetary_cost": null,
+    "human_effort": null,
+    "engineering_or_qa_total": null,
+    "unknowns_remain_unknown": true
+  },
+  "qualification": {
+    "corrective_source_739": false,
+    "public_release": false,
+    "productive_capability_growth": false,
+    "held_harness_or_fleet_authority": false,
+    "executed_for_this_archival_preparation": false
+  },
+  "custody": {
+    "archive": "main-f836-regression-failed.zip",
+    "artifact_id": 12586157484,
+    "archive_bytes": 13862948,
+    "archive_sha256": "f637ebc47d6b34bc812a9719105702da4bc3160db4fc8ea52cbadfee660085db",
+    "raw_log_bytes": 994499,
+    "raw_log_sha256": "42779f6c666ecd254686287b37cc384c2761c034d362a8e02cdf5a92fe9ad711",
+    "raw_originals_unchanged": true,
+    "archive_reassembled_from_parts_byte_equal": true
+  }
+}

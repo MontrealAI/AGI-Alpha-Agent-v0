@@ -1,0 +1,563 @@
+{
+  "schema": "alpha-existing-record-cost-completeness-audit/v1",
+  "recorded_at": "2026-10-25T04:48:23.135879+00:00",
+  "state": "EVIDENCE_ONLY_FULL_COST_UNKNOWN_P1_UNRESOLVED",
+  "source_commit": "7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9",
+  "source_tree": "06bfa5ea7edbca9cc107414349aa2b0f85c44dc2",
+  "companion_source_hash_independently_matches_current_manifest": "8a271c69d811a593245e955beee0c285ebcc04a48e6d5a76c5211a0e1b0999a5",
+  "scope": "Read existing candidate hosted engineering and frozen scientific summary/attribution records only. Not actual new public1.44 installed acceptance; no execution or raw-trial replay.",
+  "engineering": {
+    "observed_counters": {
+      "improvement_work": 276634,
+      "native_calls": 6,
+      "native_solve_seconds": 12,
+      "service_work": 30908
+    },
+    "improvement_ledger_entries": 192,
+    "improvement_ledger_sum": 276634,
+    "accounting_scope": "All modelled construction/diagnostic/check/retention/integration/export debits are retained. Bookkeeping/source/IPC CPU remains separately measured, not converted into JS units.",
+    "native_allowance_semantics": "Charged 2-second solve allowance per approved attempt; observed wall/CPU are separate native telemetry.",
+    "unknown_costs": [
+      "Node orchestration/source hashing/IPC CPU is not converted to declared JavaScript units.",
+      "Human effort and hardware/monetary costs are unmeasured.",
+      "Opaque native solver work is not converted to JavaScript work units."
+    ],
+    "phase_costs": [
+      {
+        "label": "Initial plan",
+        "costs": {
+          "improvement_work": 0,
+          "native_calls": 2,
+          "native_solve_seconds": 4,
+          "service_work": 8503
+        },
+        "selected_method": "ordinary-portfolio",
+        "makespan": 15
+      },
+      {
+        "label": "Changed requirements",
+        "costs": {
+          "improvement_work": 2950,
+          "native_calls": 2,
+          "native_solve_seconds": 4,
+          "service_work": 8618
+        },
+        "selected_method": "ordinary-portfolio",
+        "makespan": 17
+      },
+      {
+        "label": "Repair the same project",
+        "costs": {
+          "improvement_work": 3476,
+          "native_calls": 2,
+          "native_solve_seconds": 4,
+          "service_work": 10315
+        },
+        "selected_method": "native-repair",
+        "makespan": 19
+      }
+    ],
+    "parent_diagnostics": [
+      {
+        "stage": "lookahead",
+        "all_currently_qualified": true,
+        "equal_fresh_outputs": true,
+        "parent_construction_consequence": "LESS_RECONSTRUCTION_WORK",
+        "parent_benefit": "MEASURED_LOCAL_CONSTRUCTION_COSTS_ONLY",
+        "total_work": 111036,
+        "arms": [
+          {
+            "treatment": "inherited",
+            "parent_reconstruction_work": 4,
+            "child_work": 26925,
+            "total_work": 26929,
+            "child_allocation": 250000,
+            "reconstruction_allocation": 250000,
+            "total_allocation": 501024,
+            "unused_total_allowance": 474095
+          },
+          {
+            "treatment": "rebuilt",
+            "parent_reconstruction_work": 30267,
+            "child_work": 26925,
+            "total_work": 57192,
+            "child_allocation": 250000,
+            "reconstruction_allocation": 250000,
+            "total_allocation": 501024,
+            "unused_total_allowance": 443832
+          },
+          {
+            "treatment": "equivalent",
+            "parent_reconstruction_work": 5,
+            "child_work": 26910,
+            "total_work": 26915,
+            "child_allocation": 250000,
+            "reconstruction_allocation": 250000,
+            "total_allocation": 501024,
+            "unused_total_allowance": 474109
+          }
+        ]
+      },
+      {
+        "stage": "repair",
+        "all_currently_qualified": true,
+        "equal_fresh_outputs": true,
+        "parent_construction_consequence": "LESS_RECONSTRUCTION_WORK",
+        "parent_benefit": "MEASURED_LOCAL_CONSTRUCTION_COSTS_ONLY",
+        "total_work": 111806,
+        "arms": [
+          {
+            "treatment": "inherited",
+            "parent_reconstruction_work": 5,
+            "child_work": 18204,
+            "total_work": 18209,
+            "child_allocation": 250000,
+            "reconstruction_allocation": 500000,
+            "total_allocation": 751024,
+            "unused_total_allowance": 732815
+          },
+          {
+            "treatment": "rebuilt",
+            "parent_reconstruction_work": 57192,
+            "child_work": 18204,
+            "total_work": 75396,
+            "child_allocation": 250000,
+            "reconstruction_allocation": 500000,
+            "total_allocation": 751024,
+            "unused_total_allowance": 675628
+          },
+          {
+            "treatment": "equivalent",
+            "parent_reconstruction_work": 7,
+            "child_work": 18194,
+            "total_work": 18201,
+            "child_allocation": 250000,
+            "reconstruction_allocation": 500000,
+            "total_allocation": 751024,
+            "unused_total_allowance": 732823
+          }
+        ]
+      }
+    ],
+    "repair": {
+      "consequence": "LOSS",
+      "economic_decision": "HOLD_FULL_COST_UNKNOWN",
+      "candidate_movement": 9,
+      "specialist_movement": 7,
+      "candidate_lookahead_steps": 0,
+      "production_promotion": false
+    },
+    "physical_observations": {
+      "outer_summary_wall_seconds": 9.766719616000017,
+      "worker_runtime": {
+        "node_cpu_seconds": 2.35612,
+        "wall_seconds": 9.161645974
+      },
+      "native_role_scopes": [
+        {
+          "role": "checker",
+          "records": 93,
+          "call_cpu_seconds": 0.024522079000000006,
+          "call_wall_seconds": 0.024503530999908207,
+          "process_wall_seconds": 2.8201305039999993,
+          "startup_cpu_seconds": 0.040786871000000016,
+          "operation_errors": 0
+        },
+        {
+          "role": "specialist",
+          "records": 6,
+          "call_cpu_seconds": 0.06650579299999992,
+          "call_wall_seconds": 0.04169326999999612,
+          "process_wall_seconds": 3.0276298929999994,
+          "startup_cpu_seconds": 6.280896071999999,
+          "operation_errors": 0
+        }
+      ],
+      "do_not_sum_as_whole_device_CPU": true
+    },
+    "human_minutes": null,
+    "monetary_cost": null,
+    "public_engineering_release": false,
+    "maintenance": "Forecasts/assumptions, not incurred or measured future upkeep.",
+    "cost_scope_overlap": "Per-stage construction, diagnostic and final action ledgers overlap by containment. Use authoritative total; do not add published subtotals twice."
+  },
+  "frozen_study": {
+    "source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+    "primary_budget": 1000000,
+    "primary_arms": [
+      {
+        "arm": "flywheel",
+        "offered": 864,
+        "qualified": 517,
+        "total_work": 11714786,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5238180,
+          "catalog-lookup": 677,
+          "mission": 5575478,
+          "raw-evidence-block64": 44786,
+          "receipt-write": 26238,
+          "discovery": 829427
+        },
+        "unknown_python_cpu": true
+      },
+      {
+        "arm": "learner",
+        "offered": 864,
+        "qualified": 517,
+        "total_work": 11714786,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5238180,
+          "catalog-lookup": 677,
+          "mission": 5575478,
+          "raw-evidence-block64": 44786,
+          "receipt-write": 26238,
+          "discovery": 829427
+        },
+        "unknown_python_cpu": true
+      },
+      {
+        "arm": "no_admission",
+        "offered": 864,
+        "qualified": 517,
+        "total_work": 11714915,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5238331,
+          "catalog-lookup": 677,
+          "mission": 5575456,
+          "raw-evidence-block64": 44786,
+          "receipt-write": 26238,
+          "discovery": 829427
+        },
+        "unknown_python_cpu": true
+      },
+      {
+        "arm": "no_discovery",
+        "offered": 864,
+        "qualified": 591,
+        "total_work": 11719668,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5309599,
+          "catalog-lookup": 769,
+          "mission": 6336286,
+          "raw-evidence-block64": 43205,
+          "receipt-write": 29809
+        },
+        "unknown_python_cpu": true
+      },
+      {
+        "arm": "no_retention",
+        "offered": 864,
+        "qualified": 517,
+        "total_work": 11714915,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5238331,
+          "catalog-lookup": 677,
+          "mission": 5575456,
+          "raw-evidence-block64": 44786,
+          "receipt-write": 26238,
+          "discovery": 829427
+        },
+        "unknown_python_cpu": true
+      },
+      {
+        "arm": "no_succession",
+        "offered": 864,
+        "qualified": 469,
+        "total_work": 11744541,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5089946,
+          "catalog-lookup": 619,
+          "mission": 5134623,
+          "raw-evidence-block64": 44153,
+          "receipt-write": 24033,
+          "discovery": 1451167
+        },
+        "unknown_python_cpu": true
+      },
+      {
+        "arm": "portfolio",
+        "offered": 864,
+        "qualified": 591,
+        "total_work": 11719575,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5309498,
+          "catalog-lookup": 769,
+          "mission": 6336294,
+          "raw-evidence-block64": 43205,
+          "receipt-write": 29809
+        },
+        "unknown_python_cpu": true
+      },
+      {
+        "arm": "workflow",
+        "offered": 864,
+        "qualified": 465,
+        "total_work": 11749635,
+        "active_assets": 0,
+        "cost_breakdown": {
+          "checkpoint-write-block64": 5228215,
+          "catalog-lookup": 615,
+          "mission": 5092271,
+          "raw-evidence-block64": 45361,
+          "receipt-write": 23839,
+          "discovery": 1314098,
+          "qualification": 22568,
+          "qualification-reference": 22561,
+          "admission-decision": 107
+        },
+        "unknown_python_cpu": true
+      }
+    ],
+    "all_primary_budget_arm_active_assets_zero": true,
+    "flywheel_equal_learner": "Conventional equivalence retains identical outcomes/assets/work across12streams; no measured primary inheritance benefit.",
+    "diagnostic": [
+      {
+        "treatment": "inherited",
+        "streams": 12,
+        "qualified": 36,
+        "valid": 48,
+        "mean_work": 888009.5,
+        "complete_three_stage_chains": 12,
+        "active_three_stage_chains": 12,
+        "gates": {
+          "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+        },
+        "dispatch_rollout_calls": 2411,
+        "lookahead_repair_decisions": 86,
+        "reconstruction_exact_recoveries": 0,
+        "scope": "Correctness-only forced construction does not count as economically promoted production capability.",
+        "derived_total_work": 10656114.0
+      },
+      {
+        "treatment": "removed",
+        "streams": 12,
+        "qualified": 37,
+        "valid": 48,
+        "mean_work": 225339.33333333334,
+        "complete_three_stage_chains": 0,
+        "active_three_stage_chains": 0,
+        "gates": {
+          "DIAGNOSTIC_CORRECTNESS_ONLY": 12
+        },
+        "dispatch_rollout_calls": 0,
+        "lookahead_repair_decisions": 0,
+        "reconstruction_exact_recoveries": 0,
+        "scope": "Correctness-only forced construction does not count as economically promoted production capability.",
+        "derived_total_work": 2704072.0
+      },
+      {
+        "treatment": "rebuild",
+        "streams": 12,
+        "qualified": 36,
+        "valid": 48,
+        "mean_work": 2239765.9166666665,
+        "complete_three_stage_chains": 12,
+        "active_three_stage_chains": 12,
+        "gates": {
+          "DIAGNOSTIC_CORRECTNESS_ONLY": 72
+        },
+        "dispatch_rollout_calls": 4464,
+        "lookahead_repair_decisions": 86,
+        "reconstruction_exact_recoveries": 36,
+        "scope": "Correctness-only forced construction does not count as economically promoted production capability.",
+        "derived_total_work": 26877191.0
+      },
+      {
+        "treatment": "equivalent",
+        "streams": 12,
+        "qualified": 36,
+        "valid": 48,
+        "mean_work": 889359.0833333334,
+        "complete_three_stage_chains": 12,
+        "active_three_stage_chains": 12,
+        "gates": {
+          "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+        },
+        "dispatch_rollout_calls": 2411,
+        "lookahead_repair_decisions": 86,
+        "reconstruction_exact_recoveries": 0,
+        "scope": "Correctness-only forced construction does not count as economically promoted production capability.",
+        "derived_total_work": 10672309.0
+      }
+    ],
+    "run_physical_and_unknowns": {
+      "completed_utc": "2026-10-24T23:48:15.232Z",
+      "source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+      "wall_ms": 844395.683542,
+      "node_cpu_ms": 751102.19,
+      "python_cpu_ms": null,
+      "trials": 336,
+      "run_mode": "CONFIRMATION",
+      "main_unique_tasks": 864,
+      "diagnostic_unique_fresh_successor_tasks": 36,
+      "diagnostic_founder_tasks": 12,
+      "native_comparisons": 72,
+      "one_explicit_launch": true,
+      "manually_triggered_phases": 0,
+      "common_world_generation": {
+        "wall_ms": 420.608649,
+        "node_cpu_ms": 579.437,
+        "known_baseline_work": 3464226,
+        "claim": "One common supplied-WORLD construction cost, reported separately from the conditional per-arm mission-work endpoint; not free in total experimental effort."
+      },
+      "monetary_cost": null,
+      "authoring_cost": null
+    },
+    "primary_acquisition": {
+      "stages": 12,
+      "gate_reached": 0,
+      "decisions": {
+        "NO_COMPLETE_CANDIDATE": 12
+      },
+      "acquisition_work_range": [
+        74818,
+        79327
+      ],
+      "candidate_statuses": {
+        "UNFINISHED_VALID_PREFIX": 26,
+        "NORMAL_VALID_HALVING_ELIMINATION": 58,
+        "UNFUNDED_PIPELINE_CALL": 12
+      }
+    },
+    "cost_attribution_not_additive": "paid_acquisition_work and diagnostic acquisition totals are already contained in total_work, not extra charges. CHECK_RESERVE zero executed-call work does not make search free.",
+    "service_improvement_split": "Frozen summary cost categories do not provide complete mutually exclusive service_work/improvement_work totals; do not invent them.",
+    "selected_repair_diagnostic03": {
+      "selected_training_calls": 0,
+      "selected_qualification_calls": 0,
+      "fresh_mission_calls": 0,
+      "other_candidate_training_calls": 3,
+      "selected_training_charged_work": 78653,
+      "selected_qualification_charged_work": 55345,
+      "fresh_mission_charged_work": 14452,
+      "other_candidate_training_charged_work": 43506,
+      "interpretation": "Immediate parent counter is selected-path evidence; three quality/other-search calls do not establish selected stable repair use or parent necessity.",
+      "phase_details": {
+        "selected_training": {
+          "outputs": 6,
+          "immediate_parent_calls": 0,
+          "charged_work": 78653
+        },
+        "other_training": {
+          "outputs": 3,
+          "immediate_parent_calls": 3,
+          "charged_work": 43506
+        },
+        "selected_qualification": {
+          "outputs": 4,
+          "immediate_parent_calls": 0,
+          "charged_work": 55345
+        },
+        "fresh_missions": {
+          "outputs": 1,
+          "immediate_parent_calls": 0,
+          "charged_work": 14452
+        }
+      }
+    },
+    "raw_archives": "Source snapshot excludes raw ZIP shards; this audit checks published summaries/attribution fields, not independent rederivation from raw trial archives."
+  },
+  "crash_cost_uncertainty": {
+    "reserved_before": {
+      "improvement_work": 3000000,
+      "native_calls": 6,
+      "native_solve_seconds": 20,
+      "service_work": 500000
+    },
+    "reserved_after": {
+      "improvement_work": 3000000,
+      "native_calls": 6,
+      "native_solve_seconds": 20,
+      "service_work": 500000
+    },
+    "unknown_work_refunded": false,
+    "no_automatic_replay": true,
+    "operator_interventions": [
+      "ephemeral test-home setup",
+      "prepare",
+      "exact approval",
+      "start",
+      "SIGKILL injection after checked phase",
+      "restart unchanged installed source",
+      "inspect status",
+      "refused duplicate",
+      "inspect reconciliation",
+      "permanent STOP",
+      "export"
+    ],
+    "interpretation": "Full unknown reservation remains held; reservation ceilings are not measured spent work or a safe failed zero."
+  },
+  "actual_missing_costs": [
+    "Complete Python HTTP/journal/cryptographic/orchestration CPU attribution across whole journey.",
+    "Whole commissioning, environment setup/download, failed attempts, debugging, adversarial QA, integration, release and review effort/time; historical failures retained but not comprehensively priced.",
+    "Model-assisted authorship/inference charges and human durations; zero manual phase triggers is not zero human work.",
+    "Device ownership, machine/CI monetary charges, energy and future retention/maintenance economics.",
+    "Measured user value, actual revenue, all-in ROI/profit."
+  ],
+  "not_inferred": [
+    "No missing cost is assigned zero.",
+    "Declared JavaScript work is not native internal operations, CPU time, dollars, tokens or revenue.",
+    "Charged native solve allowance is not observed solve time.",
+    "Correctness-only diagnostic qualification is not economic promotion.",
+    "Compounding, deep growth and parent necessity are not established."
+  ],
+  "public_release_status": "No public1.44 observations polled; quality7392 historical guard passes have valid unresolved P1.",
+  "input_files": [
+    {
+      "path": "strategy-final-audit/artifact/acceptance-public/integrated-journey.json",
+      "bytes": 1603121,
+      "sha256": "47ed0d308746ce996a4f761483a92af03ceaf90d59a1183238b1ab85278ddda9"
+    },
+    {
+      "path": "strategy-final-audit/artifact/acceptance-public/integrated-summary.json",
+      "bytes": 2395,
+      "sha256": "260cc45156056620825ddd27b78644bc652f679e3a00424965c8e2146e2eff59"
+    },
+    {
+      "path": "strategy-final-audit/artifact/acceptance-public/crash-recovery.json",
+      "bytes": 11821,
+      "sha256": "bd864473e7e3688f3d1eca17ee2cf5fcd6ee1d5a9fcc8c5dc4c25476ae614070"
+    },
+    {
+      "path": "strategy-integration/studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/SUMMARY.json",
+      "bytes": 43256,
+      "sha256": "19c8ecb81dc6e3f0a15340489c5968533b42ad5b88908b411e73e0294daca0fa"
+    },
+    {
+      "path": "strategy-integration/studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/RUN_COMPLETE.json",
+      "bytes": 724,
+      "sha256": "9afa903a4d9d0700e95bc67609339eb898ed6efa6a6b0c27046dd4c3abe52b7d"
+    },
+    {
+      "path": "strategy-integration/studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/ACQUISITION_FAILURE_AUDIT.json",
+      "bytes": 710763,
+      "sha256": "d7639e40ddcbb2545657a0f1a51bb1bdf4eec6d642ed3f40f6d9447f65bcec61"
+    },
+    {
+      "path": "strategy-integration/studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/SELECTED_LINEAGE_USE_AUDIT.json",
+      "bytes": 338609,
+      "sha256": "3d2a14e942aa39dd3e5dfbd74fb6193894a4b94131eb6682631f9a408a79274c"
+    },
+    {
+      "path": "strategy-integration/studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/NATIVE_REFERENCE.json",
+      "bytes": 209526,
+      "sha256": "902db4a1e93276c3dbf8aa25338d6bbc426d78f71fa62bee578fdf6b232b8f8c"
+    },
+    {
+      "path": "strategy-integration/studies/agi-alpha-flywheel-strategy-succession-v1/coordination/INTERVENTIONS_COMPLETE.json",
+      "bytes": 9158,
+      "sha256": "894abb4f72f89d22ddbf9062ecddddca809bfcbb8e9fce22c5a6f9aabd28bf6b"
+    },
+    {
+      "path": "strategy-integration/studies/agi-alpha-flywheel-strategy-succession-v1/operations/load-results/LOAD_RESULTS.json",
+      "bytes": 5256,
+      "sha256": "866691d0240d38b04344aa635a31b1471a415737d72dd6d2bc8f5061e1d63052"
+    }
+  ]
+}

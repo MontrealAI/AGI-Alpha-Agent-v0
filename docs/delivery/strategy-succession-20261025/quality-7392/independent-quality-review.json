@@ -1,0 +1,115 @@
+{
+  "schema": "alpha-quality-independent-review/v1",
+  "state": "READ_ONLY_SOURCE_REVIEW_CLEAR",
+  "recorded_at": "2026-10-25T04:24:30.191383+00:00",
+  "prospective_worktree_over_head": "54f3b603eeb78baf59c039af78c097c2f6db3033",
+  "source_files": [
+    {
+      "path": "scripts/dp_scrubber.py",
+      "sha256": "8927f57e38dde020c0b0c392d9f0b016b67f89302b9bfc3d9050dc7062a33977",
+      "bytes": 11654
+    },
+    {
+      "path": "tests/test_dp_scrubber.py",
+      "sha256": "4f37a40592f89c3cac877364a7b60f66778f4bf66e2a911069dae69eb2031b07",
+      "bytes": 11705
+    },
+    {
+      "path": "scripts/check_strategy_python_security.py",
+      "sha256": "ea5241597bcfc0c8580222a495edd3ff3f087b22ec95a2cb74862dbbb1b44cc9",
+      "bytes": 11883
+    },
+    {
+      "path": "scripts/strategy_python_security.yml",
+      "sha256": "41b6fcf8b68115407c4671670da9926e91f9402a1be9a733b08ba7d11c68cdd0",
+      "bytes": 824
+    },
+    {
+      "path": "tests/test_strategy_python_security.py",
+      "sha256": "9979e6adf0f2028a3aaf769c013dcb5037021a4a7de09670356d2c429ca30669",
+      "bytes": 10252
+    },
+    {
+      "path": "scripts/check_no_binary_diff.py",
+      "sha256": "a2399e713d7f2f0432a4eb2f458ad3da52c0b442b9bb20445b049f2deb91880f",
+      "bytes": 33863
+    },
+    {
+      "path": "scripts/data/strategy_succession_binary_evidence.json",
+      "sha256": "a3e0d5f3046b1c5768f88b70100aaf5036014d1bbb66b2ed6d9a65c35fda76e9",
+      "bytes": 12019
+    },
+    {
+      "path": "tests/test_strategy_succession_binary_admission.py",
+      "sha256": "ac0b92b44c3afd97da7da1bce0445b8f49d3a9c476e75d90cf095601098478b2",
+      "bytes": 23326
+    },
+    {
+      "path": ".pre-commit-config.yaml",
+      "sha256": "19589f6124b191ed8d752514cc1e7f87f830b6f8f5a80875a2f32347dadc0207",
+      "bytes": 4337
+    },
+    {
+      "path": ".github/workflows/agent-release.yml",
+      "sha256": "72d47fff685d0e12cf765c52e1d84fcdfe2fd4244e42c01833e028af5b19a8ec",
+      "bytes": 78447
+    },
+    {
+      "path": "tests/test_ci_ruff_scope_contract.py",
+      "sha256": "2543597c3b6c100a66603267c1d7a221e911dacbb3c52e2fc6bd404dce2cf07a",
+      "bytes": 4428
+    }
+  ],
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 STRATEGY_REQUIRE_SEMGREP=1 python -m pytest --noconftest -o addopts= -p no:cacheprovider tests/test_dp_scrubber.py tests/test_strategy_python_security.py -q",
+    "exit": 0,
+    "passed": 64,
+    "seconds": 12.82,
+    "output": "64 passed in 12.82s",
+    "kind": "inert Git fixtures and static Semgrep tool scans; no candidate fixture execution"
+  },
+  "rights_review": {
+    "file": "tests/test_dp_scrubber.py",
+    "disposition": "Authored Apache-2.0 synthetic classifier tests; marker strings and generated temporary files, no actual private/pay-walled excerpt observed. Exact source/hash/Git blob/mode admission only.",
+    "default_positive_retained": true,
+    "raw_release_positive_retained": true
+  },
+  "limitations": [
+    "Prospective uncommitted worktree source, not final committed CI evidence.",
+    "Fresh clean committed-HEAD full guards, configured review and CI remain required; source review does not confer production authority.",
+    "No generic Python security proof.",
+    "No native/product/browser/scientific/held execution or remote action.",
+    "Binary guard scientific revalidation conditional on changed Strategy binary; separate immutable guard must run unconditionally."
+  ],
+  "workflow_contract_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python -m pytest --noconftest -o addopts= -p no:cacheprovider tests/test_ci_ruff_scope_contract.py -q",
+    "exit": 0,
+    "passed": 7,
+    "seconds": 0.32,
+    "output": "7 passed in 0.32s"
+  },
+  "preserved_byte_identical_to_f836": [
+    "semgrep.yml",
+    "requirements-dev.lock",
+    "pyproject.toml",
+    "scripts/ruff_targets.py"
+  ],
+  "legacy_dp_executable_ast_identical_to_549": [
+    "classify_with_llm",
+    "tokenize",
+    "is_proprietary_content",
+    "scan_file",
+    "staged_files"
+  ],
+  "workflow_review": {
+    "explicit_delta_base": "5499495911bf8822ac0aa8c9007f00789c1132b5",
+    "immutable_guard_unconditional_before_hooks": true,
+    "binary_guard_exact_base_before_hooks": true,
+    "dp_guard_exact_base_before_hooks": true,
+    "semgrep_hook_isolated_python": true,
+    "semgrep_fixed_scope_always_run_no_filenames": true,
+    "semgrep_actual_engine_tests_mandatory_after_hooks": true,
+    "no_continue_on_error_added": true,
+    "no_action_pin_permission_publisher_change": true
+  }
+}

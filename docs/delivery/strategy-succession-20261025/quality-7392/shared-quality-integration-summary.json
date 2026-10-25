@@ -1,0 +1,59 @@
+{
+  "schema": "shared-quality-integration/v1",
+  "baseline_head": "54f3b603eeb78baf59c039af78c097c2f6db3033",
+  "owned_files": {
+    ".pre-commit-config.yaml": "19589f6124b191ed8d752514cc1e7f87f830b6f8f5a80875a2f32347dadc0207",
+    ".github/workflows/agent-release.yml": "72d47fff685d0e12cf765c52e1d84fcdfe2fd4244e42c01833e028af5b19a8ec",
+    "tests/test_ci_ruff_scope_contract.py": "2543597c3b6c100a66603267c1d7a221e911dacbb3c52e2fc6bd404dce2cf07a"
+  },
+  "ruff": {
+    "old": "0.2.1",
+    "ci_and_new_hook": "0.12.5",
+    "verified_official_commit": "73b0f6d59bbfcb75e17a4653d581c9dfaca13969",
+    "old_35_file_findings": 29,
+    "old_codes": [
+      "E721"
+    ],
+    "new_35_file_findings": 0,
+    "final_42_file_findings": 0,
+    "full_tracked_scope": "PASS",
+    "rules_exclusions_type_guards": "UNCHANGED",
+    "global_tool_upgrade": false
+  },
+  "wiring": {
+    "before_existing_hooks": [
+      "python scripts/check_strategy_research_source.py",
+      "python scripts/check_no_binary_diff.py --base 5499495911bf8822ac0aa8c9007f00789c1132b5",
+      "python scripts/dp_scrubber.py --base 5499495911bf8822ac0aa8c9007f00789c1132b5"
+    ],
+    "semgrep_hook": "Existing pinned1.99.0 hook environment executes python -I scripts/check_strategy_python_security.py; fixed42 current files/two literal patterns, args[],pass_filenames=false,always_run=true. This is not general Python security qualification.",
+    "after_both_hooks": "STRATEGY_REQUIRE_SEMGREP=1 python -m pytest --noconftest -o addopts= -p no:cacheprovider tests/test_strategy_python_security.py -q"
+  },
+  "checks": {
+    "focused_source_exact": "409PASS45.54s, no skips",
+    "immutable_guard": {
+      "matched": true,
+      "checks": 241,
+      "configurationErrors": []
+    },
+    "black": "PASS",
+    "ruff_0_12_5": "PASS",
+    "actionlint": "PASS",
+    "pre_commit_validate_config": "PASS",
+    "diff_check": "PASS",
+    "independent_shared_review": "CLEAR;7contractsPASS +64DP/actualSemgrepPASS"
+  },
+  "preserved_unqualified_outcomes": [
+    "Cached0.2.1 actual29E721 findings retained.",
+    "Target-installed0.12.5 launcher selected base0.12.3; caught by actual version observation, excluded, rerun in dedicated verified0.12.5venv.",
+    "Pinned Semgrep top-level -msemgrep failed closed; owner retained it and root approved same-interpreter official isolated console module.",
+    "Current dirty checkout binary admission refuses missing reviewed committed manifest; DP scan refuses index/worktree mismatch. Neither is claimed passed."
+  ],
+  "remaining_actual_acceptance": [
+    "Root normal composite commit must include all11 authored component/shared paths.",
+    "Run exact binary/DP --base549 modes on clean committedHEAD, preserving raw flag/disposition counts.",
+    "Fresh exact-head eligible review and applicableCI remain required."
+  ],
+  "remote_actions": [],
+  "patch_sha256": "ca06640afe502e4a510042e8504f51d25b6ecc4a0f14c513caf9080a7fdf73ff"
+}

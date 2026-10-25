@@ -1,0 +1,56 @@
+{
+  "head": "7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9",
+  "tree": "06bfa5ea7edbca9cc107414349aa2b0f85c44dc2",
+  "observed_at": "2026-10-25T04:40:42.598961+00:00",
+  "checks": [
+    {
+      "name": "immutable",
+      "command": [
+        "python",
+        "scripts/check_strategy_research_source.py"
+      ],
+      "exit_code": 0,
+      "log": "committed-7392-immutable.log",
+      "bytes": 83288,
+      "sha256": "c170b9424dddcec0733ae16600f76ea4387698bf84d5bd9049cd926d1fa2f07f"
+    },
+    {
+      "name": "binary",
+      "command": [
+        "python",
+        "scripts/check_no_binary_diff.py",
+        "--base",
+        "5499495911bf8822ac0aa8c9007f00789c1132b5"
+      ],
+      "exit_code": 0,
+      "log": "committed-7392-binary.log",
+      "bytes": 28,
+      "sha256": "4c8e9f7415394e887080ef92b034b17ad6e7a2617fb6bb3c95346d038e309537"
+    },
+    {
+      "name": "text",
+      "command": [
+        "python",
+        "scripts/dp_scrubber.py",
+        "--base",
+        "5499495911bf8822ac0aa8c9007f00789c1132b5"
+      ],
+      "exit_code": 0,
+      "log": "committed-7392-text.log",
+      "bytes": 1090,
+      "sha256": "e83c35e7753eab65cec1a2eb87aa929ef04180c0b8c3141688d1bae003887395"
+    },
+    {
+      "name": "python-security",
+      "command": [
+        "PINNED_SEMGREP_PYTHON",
+        "-I",
+        "scripts/check_strategy_python_security.py"
+      ],
+      "exit_code": 0,
+      "log": "committed-7392-python-security.log",
+      "bytes": 585,
+      "sha256": "bf60ae749341f51236bc76e75318ed9b7c474d2935e90198dad7b948fdb42b63"
+    }
+  ]
+}

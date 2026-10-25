@@ -1,0 +1,30 @@
+{
+  "classification": "READ_ONLY_UPSTREAM_VERSION_VERIFICATION",
+  "repository": "astral-sh/ruff-pre-commit",
+  "commit": {
+    "sha": "73b0f6d59bbfcb75e17a4653d581c9dfaca13969",
+    "message": "Mirror: 0.12.5",
+    "url": "https://github.com/astral-sh/ruff-pre-commit/commit/73b0f6d59bbfcb75e17a4653d581c9dfaca13969"
+  },
+  "new_pyproject": {
+    "content": "[project]\nname = \"ruff-pre-commit\"\nversion = \"0.0.0\"\ndependencies = [\n    \"ruff==0.12.5\",\n]\n",
+    "encoding": "utf-8",
+    "sha": "ca6ad353ce8f5a084dd4914e9d44af78e8ce5a14",
+    "display_url": "https://github.com/astral-sh/ruff-pre-commit/blob/73b0f6d59bbfcb75e17a4653d581c9dfaca13969/pyproject.toml",
+    "display_title": "pyproject.toml"
+  },
+  "new_hooks": {
+    "content": "- id: ruff-check\n  name: ruff check\n  description: \"Run 'ruff check' for extremely fast Python linting\"\n  entry: ruff check --force-exclude\n  language: python\n  types_or: [python, pyi, jupyter]\n  args: []\n  require_serial: true\n  additional_dependencies: []\n  minimum_pre_commit_version: \"2.9.2\"\n\n- id: ruff-format\n  name: ruff format\n  description: \"Run 'ruff format' for extremely fast Python formatting\"\n  entry: ruff format --force-exclude\n  language: python\n  types_or: [python, pyi, jupyter]\n  args: []\n  require_serial: true\n  additional_dependencies: []\n  minimum_pre_commit_version: \"2.9.2\"\n\n# Legacy alias\n- id: ruff\n  name: ruff (legacy alias)\n  description: \"Run 'ruff check' for extremely fast Python linting\"\n  entry: ruff check --force-exclude\n  language: python\n  types_or: [python, pyi, jupyter]\n  args: []\n  require_serial: true\n  additional_dependencies: []\n  minimum_pre_commit_version: \"2.9.2\"\n",
+    "encoding": "utf-8",
+    "sha": "4d17023022feb0d8fb8a8093fc3deb68feeab8fa",
+    "display_url": "https://github.com/astral-sh/ruff-pre-commit/blob/73b0f6d59bbfcb75e17a4653d581c9dfaca13969/.pre-commit-hooks.yaml",
+    "display_title": ".pre-commit-hooks.yaml"
+  },
+  "old_pyproject": {
+    "content": "[project]\nname = \"ruff-pre-commit\"\nversion = \"0.0.0\"\ndependencies = [\n    \"ruff==0.2.1\",\n]\n\n[project.optional-dependencies]\ndev = [\n    \"packaging~=23.1\",\n    \"pip-tools>=7.3.0,<8.0.0\",\n    \"urllib3>=2.0.5,<3.0.0\",\n]\n",
+    "encoding": "utf-8",
+    "sha": "12549e2cd60cb78a748bcb8da66578a6c65b9486",
+    "display_url": "https://github.com/astral-sh/ruff-pre-commit/blob/1bd02b3569e3ac5cc66552b1336a96a8880d1bae/pyproject.toml",
+    "display_title": "pyproject.toml"
+  }
+}
