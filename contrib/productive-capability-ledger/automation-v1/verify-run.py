@@ -200,6 +200,7 @@ def verify(directory: Path) -> dict[str, Any]:
         names = sorted(path.name for path in directory.iterdir() if path.name.startswith("reservation-"))
         require(1 <= len(names) <= plan["maxAttempts"], "Reservations exceed attempt envelope")
         require(len(names) * plan["maxSeconds"] <= plan["maxTotalSeconds"], "Reservations exceed total execution")
+        reserved_attempts: set[str] = set()
         for ordinal, name in enumerate(names, 1):
             require(name == f"reservation-{ordinal:03}.json", "Reservation history has a gap")
             reservation = parse(read_bytes(directory / name))
@@ -211,11 +212,51 @@ def verify(directory: Path) -> dict[str, Any]:
             )
             started = datetime.fromisoformat(reservation["startedAt"].replace("Z", "+00:00"))
             require(created <= started < expiry, "Reservation falls outside approval validity")
+            attempt = reservation["attempt"]
+            require(
+                isinstance(attempt, str)
+                and re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", attempt)
+                is not None,
+                "Invalid reserved attempt identity",
+            )
+            require(attempt not in reserved_attempts, "Reservation attempts must be unique")
+            reserved_attempts.add(attempt)
+        execution_names = sorted(
+            path.name
+            for path in directory.iterdir()
+            if path.name.startswith("attempt-") and path.name.endswith(".json")
+        )
+        require(
+            set(execution_names)
+            == {name for name in raw_files if name.startswith("attempt-") and name.endswith(".json")},
+            "Retained execution attempts cannot be omitted from the completion inventory",
+        )
+        execution_attempts: set[str] = set()
+        for name in execution_names:
+            execution = parse(raw_files[name])
+            require(
+                name == f"attempt-{execution['attempt']}.json"
+                and execution["approvalDigest"] == complete["approvalDigest"],
+                "Execution attempt lost its identity or approved scope",
+            )
+            require(execution["attempt"] in reserved_attempts, "Execution attempt has no retained reservation")
+            execution_attempts.add(execution["attempt"])
+        for stage in STAGES:
+            receipt = parse(raw_files[f"stage-{stage}.json"])
+            require(receipt["attempt"] in execution_attempts, "Stage lacks its reserved execution attempt")
         final_reservation = complete["authorization"]
         require(1 <= final_reservation["ordinal"] <= len(names), "Completion reservation is missing")
         require(
             final_reservation == parse(read_bytes(directory / f"reservation-{final_reservation['ordinal']:03}.json")),
             "Completion changed its execution reservation",
+        )
+        require(final_reservation["attempt"] in execution_attempts, "Completion is not bound to an execution attempt")
+        for ordinal in range(1, final_reservation["ordinal"] + 1):
+            require(f"reservation-{ordinal:03}.json" in raw_files, "Completion omits a reserved allowance")
+        final_verification = f"final-revalidation-{final_reservation['attempt']}.json"
+        require(
+            final_verification in raw_files and parse(raw_files[final_verification]) == complete["finalRevalidation"],
+            "Completion lacks its reserved final verification",
         )
         require(not (directory / "CANCELLED.json").exists(), "A cancelled mission is not an accepted completion")
     source_ref = plan["sourceRef"]
@@ -248,6 +289,11 @@ def verify(directory: Path) -> dict[str, Any]:
     )
     if envelope_predecessor:
         historical_commit = "1d46b4d553ac84b5da174a427961d7b34ae8e1fb"
+    if (
+        dependencies[RUNNER] == "9ac945d9ce62580e6c4b15418bf6c99d0e1aab9833b6b51d7e0469ef00fdcd46"
+        and plan["methodIdentity"] == "5b3559ee139bf27f9c29f91a57ddf8b2b6e91ff0f53ed2353833eb55c81ebc1f"
+    ):
+        historical_commit = "2c5c393c1e5431c00d59d077c403739e789abd43"
     for path, digest in dependencies.items():
         public_path(path)
         installed = git_blob(historical_commit, path) if historical_commit else read_bytes(ROOT / path, 4_000_000)

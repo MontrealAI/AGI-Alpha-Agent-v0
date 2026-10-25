@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {mkdtemp, readFile, writeFile, rm, readdir} from 'node:fs/promises';
+import {mkdtemp, readFile, writeFile, rm, readdir, cp} from 'node:fs/promises';
 import {existsSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {spawn,execFileSync} from 'node:child_process';
+import childProcess,{spawn,execFileSync} from 'node:child_process';
+import {syncBuiltinESMExports} from 'node:module';
 import {createHash,randomUUID} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
 import {makePlan,runPlan} from './run-mission.mjs';
+import {canonical} from '../../../examples/ti-guide/guide.mjs';
 
 const REF=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const source=new URL('./run-mission.mjs',import.meta.url).href;
@@ -152,7 +155,8 @@ test('tampered reporting context or receipt refuses completion without replacing
 
 test('retained reporting context does not reset the total attempt ceiling',async()=>{
   await temporary(async outputRoot=>{
-    const {plan:scope,approvalDigest}=await plan('report-attempt-ceiling');
+    const {plan:scope,approvalDigest}=await makePlan({manifestPath:'docs/successor/alpha/sources.json',sourceRef:REF,
+      runId:'report-attempt-ceiling',maxAttempts:128,maxTotalSeconds:2560});
     await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'reporting'});
     const directory=join(outputRoot,scope.runId),historical=await readFile(join(directory,'report.md'));
     await rm(join(directory,'stage-reporting.json'));
@@ -160,6 +164,9 @@ test('retained reporting context does not reset the total attempt ceiling',async
     for(let index=0;index<127;index++) {
       const attempt='00000000-0000-4000-8000-'+String(index).padStart(12,'0');
       await writeFile(join(directory,`attempt-${attempt}.json`),JSON.stringify({attempt,approvalDigest,state:'started'}));
+      await writeFile(join(directory,`reservation-${String(index+2).padStart(3,'0')}.json`),JSON.stringify({
+        schema:'alpha-source-reservation/v1',approvalDigest,ordinal:index+2,reservedSeconds:20,attempt,
+        startedAt:new Date().toISOString(),accounting:'Inert complete reservation fixture.'}));
     }
     await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/128-attempt bound/);
     assert.equal(existsSync(join(directory,'COMPLETE.json')),false);
@@ -269,6 +276,8 @@ test('a malformed reservation history and an interrupted recovery guard fail clo
     await writeFile(join(directory,'writer.lock'),JSON.stringify({pid:2147483647,approvalDigest}));
     await writeFile(join(directory,'recovery.lock'),'Unresolved recovery ownership.');
     await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/explicit operator inspection/);
+    await rm(join(directory,'writer.lock'));
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/explicit operator inspection/);
     assert.equal(existsSync(join(directory,'COMPLETE.json')),false);
   });
 });
@@ -324,5 +333,54 @@ test('a missing committed source body refuses locally without fetching or accept
     await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/bad object|missing|Command failed/);
     assert.equal(existsSync(join(outputRoot,'missing-body','COMPLETE.json')),false);
     assert.throws(()=>git(['--no-lazy-fetch','cat-file','-e',missing]));
+  });
+});
+
+test('source rebuild preserves the approved expiry between real Git reads under a controlled clock',async()=>{
+  await temporary(async outputRoot=>{
+    const planned=await plan('rebuild-expiry'),started=Date.now(),expiry=started+560;
+    const scope={...planned.plan,expiresAt:new Date(expiry).toISOString()},approvalDigest=sha(canonical(scope));
+    let utc=started,monotonic=performance.now();const calls=[];
+    const originalDate=Date.now,descriptor=Object.getOwnPropertyDescriptor(performance,'now'),originalExec=childProcess.execFileSync;
+    Date.now=()=>utc;Object.defineProperty(performance,'now',{configurable:true,value:()=>monotonic});
+    childProcess.execFileSync=(file,args,options)=>{
+      if(file!=='git')return originalExec(file,args,options);
+      calls.push(utc);const result=originalExec(file,args,options);utc+=80;monotonic+=80;return result;
+    };syncBuiltinESMExports();
+    try {await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/elapsed budget|expired/);}
+    finally {
+      Date.now=originalDate;if(descriptor)Object.defineProperty(performance,'now',descriptor);else delete performance.now;
+      childProcess.execFileSync=originalExec;syncBuiltinESMExports();
+    }
+    assert(calls.length>0);assert(calls.every(value=>value<expiry),'A new Git read started after approved expiry.');
+    assert.equal(existsSync(join(outputRoot,scope.runId,'COMPLETE.json')),false);
+  });
+});
+
+test('independent verifier and runner refuse truncated, duplicated or substituted reservation history',async()=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await makePlan({manifestPath:'docs/try/sources.json',sourceRef:REF,runId:'verifier-coverage'});
+    await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'preparation'});
+    await runPlan(scope,{approvalDigest,outputRoot});await runPlan(scope,{approvalDigest,outputRoot});
+    const directory=join(outputRoot,scope.runId),checker=fileURLToPath(new URL('./verify-run.py',import.meta.url));
+    const check=path=>JSON.parse(execFileSync('python',[checker,path],{encoding:'utf8',stdio:['ignore','pipe','pipe']}));
+    assert.equal(check(directory).accepted,true);
+    for(const mutation of ['truncated','duplicate','substituted','omitted-attempt']) {
+      const copy=join(outputRoot,'copy-'+mutation);await cp(directory,copy,{recursive:true});
+      const complete=JSON.parse(await readFile(join(copy,'COMPLETE.json'))),first=JSON.parse(await readFile(join(copy,'reservation-001.json')));
+      const second=JSON.parse(await readFile(join(copy,'reservation-002.json')));
+      if(mutation==='truncated') {
+        await rm(join(copy,'reservation-002.json'));await rm(join(copy,'reservation-003.json'));
+        delete complete.artifacts['reservation-002.json'];complete.authorization=first;
+      } else if(mutation==='omitted-attempt')delete complete.artifacts[`attempt-${second.attempt}.json`];
+      else {
+        second.attempt=mutation==='duplicate'?first.attempt:randomUUID();const bytes=JSON.stringify(second)+'\n';
+        await writeFile(join(copy,'reservation-002.json'),bytes);complete.artifacts['reservation-002.json']=sha(bytes);complete.authorization=second;
+      }
+      await writeFile(join(copy,'COMPLETE.json'),JSON.stringify(complete));
+      assert.throws(()=>check(copy),/reservation|Reservation|attempt|Attempt/);
+    }
+    await rm(join(directory,'reservation-002.json'));await rm(join(directory,'reservation-003.json'));
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/Unreserved execution attempt/);
   });
 });

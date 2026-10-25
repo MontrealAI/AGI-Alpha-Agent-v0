@@ -37,7 +37,7 @@ invent a complete cost from its process timings.
 
 ## Current successor and preserved predecessor evidence
 
-The additive [completion candidate](../completion-v2/README.md) now creates
+The additive [completion candidate](../completion-v3/README.md) now creates
 `alpha-source-assurance-plan/v3` approvals with an explicit expiry, attempt ceiling
 and aggregate execution allowance. Durable reservations charge the full allowance
 before source validation or work, including interrupted attempts and completed

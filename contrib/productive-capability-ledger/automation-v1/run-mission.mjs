@@ -63,15 +63,18 @@ function manifestSources(bytes) {
   for(const [path,digest] of rows){assert(safePath(path),'Unsafe source path.');assert.match(digest,/^[0-9a-f]{64}$/);}
   return rows;
 }
-async function installedIdentity() {
+async function installedIdentity(deadline=null) {
   const dependencySha256={};
-  for(const path of DEPENDENCIES)dependencySha256[path]=hash(await ordinary(join(ROOT,path)));
+  const checkpoint=()=>assert(deadline===null || performance.now()<deadline,'Approved elapsed budget exhausted; checkpoint retained.');
+  for(const path of DEPENDENCIES){checkpoint();dependencySha256[path]=hash(await ordinary(join(ROOT,path)));}
+  checkpoint();
   dependencySha256[relative(ROOT,fileURLToPath(import.meta.url))]=hash(await ordinary(fileURLToPath(import.meta.url)));
+  checkpoint();
   return {methodIdentity:hash(guide.canonical(dependencySha256)),dependencySha256};
 }
 export async function makePlan({manifestPath,sourceRef,runId,maxSeconds=20,createdAt=new Date().toISOString(),
   maxAttempts=8,maxTotalSeconds=maxSeconds*maxAttempts,expiresAt=new Date(Date.parse(createdAt)+3_600_000).toISOString(),
-  schema='alpha-source-assurance-plan/v3'}) {
+  schema='alpha-source-assurance-plan/v3'},{deadline:invocationDeadline=null}={}) {
   const wall=performance.now(),cpu=process.cpuUsage();
   assert(safePath(manifestPath),'Choose an explicit public manifest path.');
   assert.match(sourceRef,/^[0-9a-f]{40}$/);assert.match(runId,/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/);
@@ -86,10 +89,15 @@ export async function makePlan({manifestPath,sourceRef,runId,maxSeconds=20,creat
       Date.parse(expiresAt)>Date.parse(createdAt) && Date.parse(expiresAt)-Date.parse(createdAt)<=86_400_000,
       'Use an explicit expiry within 24 hours of plan creation.');
   }
-  const deadline=wall+maxSeconds*1000,source=committed(sourceRef,manifestPath,deadline), rows=manifestSources(source);
-  for(const path of DEPENDENCIES)assert.equal(hash(await ordinary(join(ROOT,path))),hash(committed(sourceRef,path,deadline)),
-    'Installed comparison dependency differs from the approved source.');
-  const identity=await installedIdentity();
+  const deadline=Math.min(wall+maxSeconds*1000,invocationDeadline??Infinity);
+  assert(performance.now()<deadline,'Approved elapsed budget exhausted; checkpoint retained.');
+  const source=committed(sourceRef,manifestPath,deadline), rows=manifestSources(source);
+  for(const path of DEPENDENCIES) {
+    assert(performance.now()<deadline,'Approved elapsed budget exhausted; checkpoint retained.');
+    assert.equal(hash(await ordinary(join(ROOT,path))),hash(committed(sourceRef,path,deadline)),
+      'Installed comparison dependency differs from the approved source.');
+  }
+  const identity=await installedIdentity(deadline);
   const plan={schema,offeringId:'committed-source-assurance',runId,createdAt,manifestPath,sourceRef,
     manifestSha256:hash(source),sourceCount:rows.length,maxSeconds,...identity,authority:'none',
     ...(schema==='alpha-source-assurance-plan/v3'?{maxAttempts,maxTotalSeconds,expiresAt}:{}),
@@ -103,7 +111,7 @@ export async function makePlan({manifestPath,sourceRef,runId,maxSeconds=20,creat
     modelCalls:fact(0,'No model adapter is called by deterministic planning.'),
     monetaryCost:fact(null,'Execution timing is not full monetary cost.','unknown')}};
 }
-async function checkedPlan(raw,approvalDigest,rebuild=true) {
+async function checkedPlan(raw,approvalDigest,rebuild=true,invocationDeadline=null) {
   const frame=parseBounded(typeof raw==='string'?raw:guide.canonical(raw));
   assert(['alpha-source-assurance-plan/v2','alpha-source-assurance-plan/v3'].includes(frame?.schema));
   assert.match(frame.runId,/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/);
@@ -118,7 +126,9 @@ async function checkedPlan(raw,approvalDigest,rebuild=true) {
     assert(Date.now()<Date.parse(frame.expiresAt),'Approved envelope expired; a new exact approval is required.');
   }
   if(!rebuild)return frame;
-  const rebuilt=await makePlan(frame);
+  const deadline=Math.min(invocationDeadline??Infinity,frame.schema==='alpha-source-assurance-plan/v3'
+    ?performance.now()+Math.max(0,Date.parse(frame.expiresAt)-Date.now()):Infinity);
+  const rebuilt=await makePlan(frame,{deadline});
   assert.equal(guide.canonical(rebuilt.plan),guide.canonical(frame),'Plan fields, dependencies or source changed.');
   assert.equal(rebuilt.approvalDigest,approvalDigest,'Approve the exact bounded plan digest.');
   return rebuilt.plan;
@@ -220,11 +230,10 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
   await mkdir(directory,{recursive:false}).catch(error=>{if(error.code!=='EEXIST')throw error;});
   assert((await lstat(directory)).isDirectory() && !(await lstat(directory)).isSymbolicLink());
   const lock=join(directory,'writer.lock');
-  try {await exclusive(lock,json({pid:process.pid,approvalDigest}));} catch(error) {
-    if(error.code!=='EEXIST')throw error;
-    const recoveryLock=join(directory,'recovery.lock');
-    try {await exclusive(recoveryLock,json({pid:process.pid,approvalDigest}));}
-    catch(recoveryError){if(recoveryError.code==='EEXIST')throw Error('Recovery already owned or interrupted; explicit operator inspection required.');throw recoveryError;}
+  const recoveryLock=join(directory,'recovery.lock');
+  try {await exclusive(recoveryLock,json({pid:process.pid,approvalDigest}));}
+  catch(recoveryError){if(recoveryError.code==='EEXIST')throw Error('Recovery already owned or interrupted; explicit operator inspection required.');throw recoveryError;}
+  try {
     try {
       const previous=await loadJSON(lock);
       assert.equal(previous.approvalDigest,approvalDigest,'Existing run belongs to a different plan.');
@@ -232,9 +241,9 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
       let alive=true;try{process.kill(previous.pid,0);}catch(probe){if(probe.code==='ESRCH')alive=false;else throw probe;}
       assert(!alive,'A writer still owns this run.');
       await rename(lock,join(directory,'interrupted-lock-'+randomUUID()+'.json'));
-      await exclusive(lock,json({pid:process.pid,approvalDigest}));
-    } finally {await unlink(recoveryLock);}
-  }
+    } catch(error) {if(error.code!=='ENOENT')throw error;}
+    await exclusive(lock,json({pid:process.pid,approvalDigest}));
+  } finally {await unlink(recoveryLock);}
   const attempt=randomUUID(),bounded=plan.schema==='alpha-source-assurance-plan/v3';
   const deadline=Math.min(invokedAt+plan.maxSeconds*1000,
     bounded?performance.now()+Math.max(0,Date.parse(plan.expiresAt)-Date.now()):Infinity),traces=[];
@@ -267,21 +276,53 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
       const names=(await readdir(directory)).filter(name=>name.startsWith('reservation-')).sort();
       assert(names.length<plan.maxAttempts && names.length<128,
         `Approved ${plan.maxAttempts}-attempt bound exhausted (absolute 128-attempt bound); no automatic renewal.`);
+      const reservedAttempts=new Set();
       for(let index=0;index<names.length;index++) {
+        stopped();
         assert.equal(names[index],`reservation-${String(index+1).padStart(3,'0')}.json`,'Reservation history is not contiguous.');
         const prior=await loadJSON(join(directory,names[index]));
         assert.equal(prior.schema,'alpha-source-reservation/v1');assert.equal(prior.approvalDigest,approvalDigest);
         assert.equal(prior.ordinal,index+1);assert.equal(prior.reservedSeconds,plan.maxSeconds);
+        assert.match(prior.attempt,/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+        assert(!reservedAttempts.has(prior.attempt),'Reservation attempts must be unique.');reservedAttempts.add(prior.attempt);
+      }
+      const executionAttempts=new Set();
+      for(const name of (await readdir(directory)).filter(name=>/^attempt-.*\.json$/.test(name))) {
+        stopped();const prior=await loadJSON(join(directory,name));
+        assert.equal(name,`attempt-${prior.attempt}.json`);assert.equal(prior.approvalDigest,approvalDigest);
+        assert.equal(prior.state,'started');
+        assert(reservedAttempts.has(prior.attempt),'Unreserved execution attempt; preserve history for operator inspection.');
+        executionAttempts.add(prior.attempt);
+      }
+      for(const stage of STAGES) {
+        stopped();const bytes=await known(`stage-${stage}.json`);
+        if(bytes){const prior=parseBounded(bytes.toString('utf8'));
+          assert(executionAttempts.has(prior.attempt),'A stage lacks its reserved execution attempt.');}
       }
       const ordinal=names.length+1,reservedSeconds=ordinal*plan.maxSeconds;
       assert(reservedSeconds<=plan.maxTotalSeconds,'Approved total execution reservation exhausted; no automatic renewal.');
       authorization={schema:'alpha-source-reservation/v1',approvalDigest,ordinal,reservedSeconds:plan.maxSeconds,
         attempt,startedAt:new Date().toISOString(),accounting:'Full attempt allowance retained, including interrupted work and reconnect.'};
-      await exclusive(join(directory,`reservation-${String(ordinal).padStart(3,'0')}.json`),json(authorization));
+      stopped();await exclusive(join(directory,`reservation-${String(ordinal).padStart(3,'0')}.json`),json(authorization));
     }
-    await checkedPlan(plan,approvalDigest);
+    await checkedPlan(plan,approvalDigest,true,deadline);
     const completed=await known('COMPLETE.json');
     if(completed){const summary=parseBounded(completed.toString());assert.equal(summary.approvalDigest,approvalDigest);
+      if(bounded) {
+        const reservation=summary.authorization;
+        assert(reservation && reservation.ordinal<authorization.ordinal,'Completion lacks an earlier execution reservation.');
+        assert.equal(guide.canonical(reservation),guide.canonical(await loadJSON(join(directory,
+          `reservation-${String(reservation.ordinal).padStart(3,'0')}.json`))),'Completion reservation differs from retained history.');
+        assert.equal(guide.canonical(summary.finalRevalidation),guide.canonical(await loadJSON(join(directory,
+          `final-revalidation-${reservation.attempt}.json`))),'Completion lacks its reserved final verification.');
+        for(const name of (await readdir(directory)).filter(name=>/^attempt-.*\.json$/.test(name)))
+          assert(Object.hasOwn(summary.artifacts,name),'Completion omits a retained execution attempt.');
+        for(let ordinal=1;ordinal<=reservation.ordinal;ordinal++)
+          assert(Object.hasOwn(summary.artifacts,`reservation-${String(ordinal).padStart(3,'0')}.json`),
+            'Completion omits a reserved allowance.');
+        assert(Object.hasOwn(summary.artifacts,`final-revalidation-${reservation.attempt}.json`),
+          'Completion omits its reserved final verification.');
+      }
       const required=['plan.json','final-acceptance.json','report-context.json',...STAGES.map(stage=>`stage-${stage}.json`),...Object.values(OUTPUTS).flat()];
       for(const name of required)assert(Object.hasOwn(summary.artifacts,name),'Completed payload is incomplete.');
       for(const [name,digest] of Object.entries(summary.artifacts)){assert(artifactName(name),'Unsafe artifact name.');
