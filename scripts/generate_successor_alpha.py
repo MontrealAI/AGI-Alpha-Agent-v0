@@ -57,6 +57,7 @@ def build(root: Path = ROOT) -> None:
     capability = visit(root / "examples/successor-alpha/capability.mjs")
     computer = visit(root / "examples/successor-alpha/computer.mjs")
     learning = visit(root / "examples/successor-alpha/learning.mjs")
+    shadow = visit(root / "examples/successor-alpha/shadow-plan.mjs")
     transport = visit(root / "docs/assets/successor/engine.mjs")
     core_source = engine_path.read_text(encoding="utf-8")
     source_hash = hashlib.sha256(json.dumps(sources, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
@@ -132,6 +133,8 @@ function exportPortable(dossier) {
   saved.textContent=project.serializeProject(dossier).replaceAll('<','\\\\u003c');
   const learning=clone.querySelector('#saved-learning');
   if(learning)learning.textContent=serializeLearningArchive().replaceAll('<','\\\\u003c');
+  const shadow=clone.querySelector('#saved-shadow-ledger');
+  if(shadow)shadow.textContent=serializeShadow().replaceAll('<','\\\\u003c');
   for(const el of clone.querySelectorAll('[data-i18n]'))el.textContent=en[el.dataset.i18n];
   for(const el of clone.querySelectorAll('[data-i18n-aria]'))el.setAttribute('aria-label',ariaEn[el.dataset.i18nAria]);
   for(const el of clone.querySelectorAll('[data-i18n-alt]'))el.setAttribute('alt',altEn[el.dataset.i18nAlt]);
@@ -151,7 +154,7 @@ function exportPortable(dossier) {
     code += f"\nconst alpha={engine},project={project},SOURCE_HASH={json.dumps(source_hash)};\n"
     code += (
         f"const research={research},continuity={continuity},transport={transport},capability={capability},"
-        f"computer={computer},learning={learning};\n"
+        f"computer={computer},learning={learning},shadow={shadow};\n"
     )
     reusable_source = {
         "engineSource": core_source,
@@ -163,7 +166,13 @@ function exportPortable(dossier) {
     code += (
         "project.configure({engineSource:" + json.dumps(core_source, ensure_ascii=False) + ",deployment:DEPLOYMENT});\n"
     )
-    code += bootstrap + (template / "app.js").read_text(encoding="utf-8") + "\n})();\n"
+    app = (template / "app.js").read_text(encoding="utf-8")
+    extension = (template / "shadow-app.js").read_text(encoding="utf-8")
+    marker = "translate(); go(0,false);"
+    if app.count(marker) != 1:
+        raise ValueError("Flagship extension initialization marker changed")
+    app = app.replace(marker, extension + "\n" + marker)
+    code += bootstrap + app + "\n})();\n"
     if "</script" in code.lower():
         raise ValueError("Closing script tag is forbidden inside the flagship bundle")
     style = "\n" + (template / "style.css").read_text(encoding="utf-8") + "\n"

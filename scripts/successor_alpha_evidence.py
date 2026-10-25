@@ -34,6 +34,7 @@ REQUIRED_CHECKS = {
     "computer-use-public-reading-pane-and-visible-work-product",
     "computer-use-bilingual-mission-presets-and-complete-strategy-slate",
     "no-page-errors-no-csp-violations-no-external-dependencies",
+    "mission-shadow-ledger-and-offline-recovery",
 }
 MODULE_ROOTS = (
     "examples/successor-alpha/engine.mjs",
@@ -43,6 +44,7 @@ MODULE_ROOTS = (
     "examples/successor-alpha/capability.mjs",
     "examples/successor-alpha/computer.mjs",
     "examples/successor-alpha/learning.mjs",
+    "examples/successor-alpha/shadow-plan.mjs",
     "docs/assets/successor/engine.mjs",
 )
 HASH = re.compile(r"[0-9a-f]{64}\Z")

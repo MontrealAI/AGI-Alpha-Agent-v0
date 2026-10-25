@@ -1,0 +1,48 @@
+{
+  "schema": "productive-capability-retained-asset/v1",
+  "version": "1.0.0",
+  "purpose": "Reconcile a finite public-source SHA-256 inventory with the exact current committed files using the existing released CSV comparison method.",
+  "applicability": [
+    "Public nonpersonal repository source only",
+    "Manifest sources is a map from safe repository-relative path to SHA-256",
+    "Exact path identity and SHA-256 equality; no semantic security judgement",
+    "Current committed working bytes; guide input and output limits apply"
+  ],
+  "implementation": {
+    "entrypoint": "contrib/productive-capability-ledger/evidence/run-source-missions.mjs",
+    "retainedExecutable": "examples/ti-guide/guide.mjs",
+    "dependencyIdentity": "82494db90559cbadfeda79d6d1a17a5f95ff1fc1498660c8d6403d50f46a873e",
+    "dependencies": {
+      "examples/ti-guide/guide.mjs": "327ca9f977f2b860546cee3190147305fd43fc19c8d16d3bf526e81a550f15e2",
+      "examples/successor-alpha/engine.mjs": "09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2",
+      "examples/successor-alpha/research.mjs": "cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a"
+    },
+    "runtimeObserved": "Node 24.22.1; Python acceptance in the same local host",
+    "methodConstruction": "Existing method retained unchanged; small source-inventory adapter authored in this engineering session"
+  },
+  "inputOutput": {
+    "input": "Two fixed current public manifests and their repository file bytes",
+    "output": "Declared/observed CSVs, exact differences, action plans, recomputable workspaces, receipts and acceptance report",
+    "permissions": "Read current committed public files and git objects; write only this evidence directory; no authority inherited"
+  },
+  "tests": {
+    "acceptance": "verify-source-missions.py: 116 checks, zero failures",
+    "existingGuide": "node --test examples/ti-guide/guide.test.mjs: six passed",
+    "actualUse": ["guide-source-assurance/receipt.json", "transformational-source-assurance/receipt.json"],
+    "sourceCommit": "aaad4763c0df96943a3e8a66987c4c013a6e3589"
+  },
+  "costs": {
+    "observedComponents": "Per-mission and aggregate local process wall/CPU in receipts; not complete monetary cost",
+    "completeMonetaryCost": null,
+    "humanAttention": null,
+    "setupAndMaintenance": null
+  },
+  "limitations": [
+    "Checks declared source identities; does not prove manifest completeness, implementation correctness or release approval",
+    "Two real current source scopes; not representative of all maintenance work",
+    "No new defect discovered; no capability promotion, measured savings or expansion established",
+    "No authenticated connected execution or independent organizational custody"
+  ],
+  "rollback": "Discard these inert generated outputs and use the unchanged existing guide; no production caller, source method or grant was changed.",
+  "authority": "none"
+}
