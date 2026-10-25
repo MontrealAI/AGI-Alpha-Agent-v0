@@ -1,0 +1,123 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Strategy Succession engineering
+on:
+  pull_request:
+    paths:
+      - 'contrib/strategy_succession/**'
+      - 'scripts/strategy_engineering_release.py'
+      - '.github/workflows/strategy-succession-engineering.yml'
+  push:
+    branches: [codex/strategy-succession-20261025-344b3126]
+    paths:
+      - 'contrib/strategy_succession/**'
+      - 'scripts/strategy_engineering_release.py'
+      - '.github/workflows/strategy-succession-engineering.yml'
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+concurrency:
+  group: strategy-engineering-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12.14'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24.22.1'
+      - name: Install the separately verified public runtime in a clean test environment
+        env:
+          PYTHONNOUSERSITE: '1'
+        run: |
+          python -m venv "$RUNNER_TEMP/strategy-env"
+          "$RUNNER_TEMP/strategy-env/bin/python" - <<'PY'
+          from pathlib import Path
+          import hashlib, os, urllib.request
+          target = Path(os.environ['RUNNER_TEMP']) / 'alpha_factory_v1-1.42.0-py3-none-any.whl'
+          with urllib.request.urlopen('https://github.com/MontrealAI/AGI-Alpha-Agent-v0/releases/download/v1.42.0/alpha_factory_v1-1.42.0-py3-none-any.whl', timeout=120) as response:
+              data = response.read(6000000)
+          assert len(data) == 5498450
+          assert hashlib.sha256(data).hexdigest() == 'fff8c6c8a8dbeeebf1f91cc8e9a3fae17113baac93b6ed0d6096ecb59d072554'
+          target.write_bytes(data)
+          PY
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install "$RUNNER_TEMP/alpha_factory_v1-1.42.0-py3-none-any.whl" -r contrib/strategy_succession/requirements-qualification.txt
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install setuptools==84.1.0 wheel==0.48.0 build==1.2.2.post1 pytest==8.4.2 playwright==1.64.1
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip check
+          "$RUNNER_TEMP/strategy-env/bin/python" -m playwright install --with-deps chromium
+      - name: Audit every exact third-party qualification dependency
+        run: |
+          mkdir -p evidence/strategy-engineering
+          python -m venv "$RUNNER_TEMP/strategy-audit-env"
+          "$RUNNER_TEMP/strategy-audit-env/bin/python" -m pip install pip-audit==2.10.1
+          python - <<'PY'
+          from pathlib import Path
+          source = Path('contrib/strategy_succession/requirements-qualification.txt').read_text()
+          third_party = [line for line in source.splitlines() if line and not line.startswith('#') and not line.startswith('alpha-factory-v1==')]
+          assert len(third_party) == 25
+          Path('evidence/strategy-engineering/third-party-requirements.txt').write_text('\n'.join(third_party) + '\n')
+          PY
+          "$RUNNER_TEMP/strategy-audit-env/bin/python" -m pip_audit --disable-pip --no-deps --progress-spinner=off -r evidence/strategy-engineering/third-party-requirements.txt --format=json --output evidence/strategy-engineering/pip-audit.json
+          python - <<'PY'
+          from pathlib import Path
+          import json, os, re
+          root = Path('evidence/strategy-engineering')
+          normalize = lambda name: re.sub(r'[-_.]+', '-', name).lower()
+          expected = {normalize(line.split('==')[0]): line.split('==')[1] for line in (root/'third-party-requirements.txt').read_text().splitlines()}
+          report = json.loads((root/'pip-audit.json').read_text())
+          rows = report['dependencies']
+          assert len(rows) == len(expected) == 25
+          assert {normalize(row['name']): row.get('version') for row in rows} == expected
+          assert all(not row.get('skip_reason') and row.get('vulns') == [] for row in rows)
+          (root/'dependency-audit.json').write_text(json.dumps({'schema':'strategy-engineering-dependency-audit/v1','commit':os.environ['GITHUB_SHA'],'passed':True,'packages':25,'custom_runtime':'Public Alpha1.42 source qualification is separate from third-party advisory lookup.'},indent=2)+'\n')
+          PY
+      - name: Exercise fixed methods and boundaries outside the checkout
+        env:
+          PYTHONNOUSERSITE: '1'
+        run: |
+          mkdir -p evidence/strategy-engineering
+          cp -R contrib/strategy_succession "$RUNNER_TEMP/strategy-test-source"
+          cd "$RUNNER_TEMP/strategy-test-source"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q transport/test_strategy_executor.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/transport.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q worker/test_fixed_worker.py worker/test_worker_engineering.py worker/test_native_repair.py worker/test_supervisor_crash.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/worker.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q qa/test_environment.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/environment.xml"
+          node review/ui_recovery.test.mjs
+      - name: Build two identical wheels and install the actual candidate
+        env:
+          SOURCE_DATE_EPOCH: '1792800000'
+          PYTHONNOUSERSITE: '1'
+        run: |
+          cp -R contrib/strategy_succession "$RUNNER_TEMP/strategy-build-one"
+          cp -R contrib/strategy_succession "$RUNNER_TEMP/strategy-build-two"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m build --wheel --no-isolation --outdir "$RUNNER_TEMP/strategy-wheel-one" "$RUNNER_TEMP/strategy-build-one"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m build --wheel --no-isolation --outdir "$RUNNER_TEMP/strategy-wheel-two" "$RUNNER_TEMP/strategy-build-two"
+          cmp "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl" "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install --no-deps "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip check
+      - name: Actual installed API, Chromium approval, reconnect, downloads and crash recovery
+        env:
+          STRATEGY_INSTALLED_ACCEPTANCE: '1'
+          STRATEGY_EVIDENCE_DIR: ${{ github.workspace }}/evidence/strategy-engineering/acceptance-public
+          PYTHONNOUSERSITE: '1'
+        run: |
+          cp -R contrib/strategy_succession/qa "$RUNNER_TEMP/strategy-installed-tests"
+          cd "$RUNNER_TEMP/strategy-installed-tests"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_integration.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/integration.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_browser.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/browser.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_crash.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/crash_recovery.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" collect_qualification.py --root "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/evidence/strategy-engineering" --first-wheel "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl" --second-wheel "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
+      - name: Retain executed and failed evidence; never private operator homes
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: strategy-engineering
+          path: evidence/strategy-engineering/
+          if-no-files-found: warn
