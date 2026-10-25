@@ -1,0 +1,236 @@
+{
+  "schema": "productive-project/v1",
+  "id": "DEV01",
+  "title": "SDK release: source inventory, staged rollout and maintainer dossier",
+  "context": "sdk_release",
+  "stratum": "simple",
+  "cycle": 0,
+  "data_class": "public-derived-synthetic",
+  "synthetic_scope": "Declared component dependencies, work requirements, durations, capacity and revisions are authored synthetic fixtures, not observed repository dependency graph or paid customer jobs. Source bytes are pinned public upstream files.",
+  "components": [
+    {
+      "id": "C01",
+      "path": "contracts/ascension/AscensionAccess.sol",
+      "content": "// SPDX-License-Identifier: Apache-2.0\npragma solidity ^0.8.24;\n\nimport \"@openzeppelin/contracts/access/Ownable2Step.sol\";\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\n\ninterface IAscensionENS { function owner(bytes32 node) external view returns (address); }\ninterface IAscensionWrapper {\n    function getData(uint256 node) external view returns (address owner, uint32 fuses, uint64 expiry);\n}\n\n/// @notice Live ENS ownership plus expiring, attributable admission decisions. No resolver-address bypass.\ncontract AscensionAccess is Ownable2Step {\n    enum Role { Business, Agent, Validator }\n    struct Admission { bytes32 evidence; uint64 until; }\n    IAscensionENS public immutable ens;\n    IAscensionWrapper public immutable wrapper;\n    mapping(Role => bytes32) public roots;\n    mapping(address => mapping(Role => bytes32)) public names;\n    mapping(address => Admission) public admission;\n    event Registered(address indexed account, Role indexed role, bytes32 indexed node, string label);\n    event AdmissionSet(address indexed account, bytes32 evidence, uint64 until);\n\n    constructor(address ens_, address wrapper_, address governor) Ownable(governor) {\n        require(ens_.code.length > 0, \"ENS contract required\");\n        require(wrapper_ == address(0) || wrapper_.code.length > 0, \"wrapper contract required\");\n        ens = IAscensionENS(ens_);\n        wrapper = IAscensionWrapper(wrapper_);\n        bytes32 agi = child(child(bytes32(0), \"eth\"), \"agi\");\n        roots[Role.Business] = child(agi, \"alpha\");\n        roots[Role.Agent] = child(child(agi, \"agent\"), \"alpha\");\n        roots[Role.Validator] = child(child(agi, \"club\"), \"alpha\");\n    }\n\n    function child(bytes32 parent, string memory label) public pure returns (bytes32) {\n        return keccak256(abi.encodePacked(parent, keccak256(bytes(label))));\n    }\n\n    function register(Role role, string calldata label) external {\n        bytes memory raw = bytes(label);\n        require(raw.length > 0 && raw.length <= 63, \"single ASCII label required\");\n        for (uint256 i; i < raw.length; ++i) {\n            bytes1 c = raw[i];\n            require((c >= 0x61 && c <= 0x7a) || (c >= 0x30 && c <= 0x39) ||\n                (c == 0x2d && i > 0 && i + 1 < raw.length), \"noncanonical label\");\n        }\n        bytes32 node = child(roots[role], label);\n        require(owns(msg.sender, node), \"ENS ownership required\");\n        names[msg.sender][role] = node;\n        emit Registered(msg.sender, role, node, label);\n    }\n\n    function owns(address account, bytes32 node) public view returns (bool) {\n        if (account == address(0) || node == bytes32(0)) return false;\n        try ens.owner(node) returns (address holder) {\n            if (holder == account) return true;\n            if (holder != address(wrapper) || address(wrapper) == address(0)) return false;\n            try wrapper.getData(uint256(node)) returns (address wrappedOwner, uint32, uint64 expiry) {\n                return wrappedOwner == account && expiry > block.timestamp;\n            } catch { return false; }\n        } catch { return false; }\n    }\n\n    function setAdmission(address account, bytes32 evidence, uint64 until) external onlyOwner {\n        require(account != address(0), \"zero account\");\n        require(until == 0 || (evidence != bytes32(0) && until > block.timestamp &&\n            until <= block.timestamp + 365 days), \"invalid admission\");\n        admission[account] = Admission(evidence, until);\n        emit AdmissionSet(account, evidence, until);\n    }\n\n    function admitted(address account) public view returns (bool) {\n        return admission[account].until > block.timestamp;\n    }\n\n    function eligible(address account, Role role) public view returns (bool) {\n        return admitted(account) && owns(account, names[account][role]);\n    }\n}\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/AscensionAccess.sol",
+      "source_sha256": "de1f06c46d767e433356daa22dcbd039b6ca79c88d44bee4de70d5116c9b9a6e",
+      "deps": []
+    },
+    {
+      "id": "C02",
+      "path": "contracts/ascension/AscensionToken.sol",
+      "content": "// SPDX-License-Identifier: Apache-2.0\npragma solidity ^0.8.24;\n\nimport \"@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol\";\nimport \"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol\";\nimport \"../v2/Constants.sol\";\n\ninterface IAscensionBurn { function burn(uint256 amount) external; }\n\n/// @notice Canonical token only; reject fee-on-transfer deposits and verify actual supply destruction.\nabstract contract AscensionToken {\n    using SafeERC20 for IERC20;\n    IERC20 public constant token = IERC20(Constants.AGIALPHA);\n    constructor() {\n        require(address(token).code.length > 0, \"AGIALPHA contract required\");\n        require(IERC20Metadata(address(token)).decimals() == 18, \"wrong decimals\");\n    }\n    function _receive(address from, uint256 amount) internal {\n        uint256 before_ = token.balanceOf(address(this));\n        token.safeTransferFrom(from, address(this), amount);\n        require(token.balanceOf(address(this)) == before_ + amount, \"non-exact deposit\");\n    }\n    function _burn(uint256 amount) internal {\n        if (amount == 0) return;\n        uint256 before_ = token.totalSupply();\n        uint256 balance = token.balanceOf(address(this));\n        IAscensionBurn(address(token)).burn(amount);\n        require(token.totalSupply() == before_ - amount, \"supply not burned\");\n        require(token.balanceOf(address(this)) == balance - amount, \"non-exact burn\");\n    }\n    function _send(address recipient, uint256 amount) internal {\n        if (amount == 0) return;\n        uint256 balance = token.balanceOf(address(this));\n        uint256 received = token.balanceOf(recipient);\n        token.safeTransfer(recipient, amount);\n        require(token.balanceOf(address(this)) == balance - amount &&\n            token.balanceOf(recipient) == received + amount, \"non-exact payout\");\n    }\n}\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/AscensionToken.sol",
+      "source_sha256": "baff4fc94c8ac2ba27f453c4224cfa4c2d7f97663256c54bc4ac36666f816f88",
+      "deps": [
+        "C01"
+      ]
+    },
+    {
+      "id": "C03",
+      "path": "contracts/ascension/NovaSeed.sol",
+      "content": "// SPDX-License-Identifier: Apache-2.0\npragma solidity ^0.8.24;\n\nimport \"@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol\";\nimport \"./AscensionAccess.sol\";\n\n/// @notice Transferable ERC-721 binding an encrypted capsule, immutable FusionPlan and optional successor lineage.\ncontract NovaSeed is ERC721URIStorage {\n    struct Genome {\n        bytes32 capsuleHash;\n        bytes32 planRoot;\n        bytes32 evidenceHash;\n        uint256 parent;\n        uint32 jobs;\n        address creator;\n    }\n    AscensionAccess public immutable access;\n    uint256 public nextId;\n    mapping(uint256 => Genome) public genomes;\n    event SeedSealed(uint256 indexed seedId, address indexed creator, bytes32 capsuleHash,\n        bytes32 planRoot, uint256 parent, bytes32 evidenceHash);\n\n    constructor(AscensionAccess access_) ERC721(\"Alpha AGI Nova-Seeds\", \"NOVA\") { access = access_; }\n\n    function seal(bytes32 capsuleHash, bytes32 planRoot, uint32 jobs, string calldata metadataURI,\n        uint256 parent, bytes32 evidenceHash) external returns (uint256 id) {\n        require(access.eligible(msg.sender, AscensionAccess.Role.Business), \"business identity\");\n        require(capsuleHash != bytes32(0) && planRoot != bytes32(0) && evidenceHash != bytes32(0), \"empty commitment\");\n        require(jobs > 0 && jobs <= 128, \"job bound\");\n        require(bytes(metadataURI).length > 0 && bytes(metadataURI).length <= 512, \"metadata URI\");\n        if (parent != 0) require(ownerOf(parent) == msg.sender, \"parent ownership\");\n        id = ++nextId;\n        genomes[id] = Genome(capsuleHash, planRoot, evidenceHash, parent, jobs, msg.sender);\n        // State and URI are complete before an ERC-721 receiver can be invoked.\n        _mint(msg.sender, id);\n        _setTokenURI(id, metadataURI);\n        emit SeedSealed(id, msg.sender, capsuleHash, planRoot, parent, evidenceHash);\n    }\n    function plan(uint256 id) external view returns (bytes32 root, uint32 count) {\n        ownerOf(id);\n        Genome storage genome = genomes[id];\n        return (genome.planRoot, genome.jobs);\n    }\n    function creatorOf(uint256 id) external view returns (address) { ownerOf(id); return genomes[id].creator; }\n}\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/ascension/NovaSeed.sol",
+      "source_sha256": "d5ba49b4dd662ac4764065f0ebf03ca708c4aefc5fde1d08f7319620addf9896",
+      "deps": [
+        "C02"
+      ]
+    },
+    {
+      "id": "C04",
+      "path": "contracts/v2/Constants.sol",
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.24;\n\nlibrary Constants {\n    address constant AGIALPHA = 0xA61a3B3a130a9c20768EEBF97E21515A6046a1fA;\n    uint8 constant AGIALPHA_DECIMALS = 18;\n}\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contracts/v2/Constants.sol",
+      "source_sha256": "8465dc9898475abdf8683c4252ef29418b4fd3b2eafdb7382c1218359142325d",
+      "deps": []
+    },
+    {
+      "id": "C05",
+      "path": "contrib/strategy_succession/worker/python_bridge.py",
+      "content": "# SPDX-License-Identifier: Apache-2.0\nfrom __future__ import annotations\nimport json\nimport sys\nimport time\nfrom pathlib import Path\n\nsys.dont_write_bytecode = True\nroot = Path(__file__).resolve().parent / \"scientific\"\nrole = sys.argv[1] if len(sys.argv) == 2 else None\nstart = time.perf_counter()\ncpu = time.process_time()\nif role == \"checker\":\n    sys.path.insert(0, str(root / \"review\"))\n    from check import check\nelif role == \"specialist\":\n    sys.path.insert(0, str(root / \"companion\"))\n    from specialist import solve\n    from native_repair import solve as solve_repair\nelse:\n    raise ValueError(\"FIXED_ROLE_REQUIRED\")\nstartup = {\"wall_seconds\": time.perf_counter() - start, \"cpu_seconds\": time.process_time() - cpu}\nraw = sys.stdin.buffer.read(262145)\nif len(raw) > 262144:\n    raise ValueError(\"INPUT_LIMIT\")\nx = json.loads(raw)\nstart = time.perf_counter()\ncpu = time.process_time()\ntry:\n    result = (\n        check(x)\n        if role == \"checker\"\n        else (\n            solve_repair(x[\"task\"], time_limit=2.0)\n            if x[\"mode\"] == \"repair\"\n            else solve(x[\"task\"], upper_bound=x.get(\"upper_bound\"), time_limit=2.0, mode=x[\"mode\"])\n        )\n    )\n    output = {\"ok\": True, \"result\": result}\nexcept Exception as e:\n    output = {\"ok\": False, \"error\": type(e).__name__ + \": \" + str(e)}\noutput[\"startup\"] = startup\noutput[\"call_wall_seconds\"] = time.perf_counter() - start\noutput[\"call_cpu_seconds\"] = time.process_time() - cpu\nprint(json.dumps(output, allow_nan=False, separators=(\",\", \":\")), flush=True)\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contrib/strategy_succession/worker/python_bridge.py",
+      "source_sha256": "81ab6126fd56f48c3cf097b44e8a5bf2734cb1c730807ed97eee26d1dfbadc9a",
+      "deps": [
+        "C02",
+        "C04"
+      ]
+    },
+    {
+      "id": "C06",
+      "path": "contrib/strategy_succession/worker/scientific/companion/binding.mjs",
+      "content": "// SPDX-License-Identifier: Apache-2.0\n// Source binding; regenerate only before a new explicitly recorded freeze.\nexport const SOURCE_HASH='7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7';\nexport const SOURCE_STATUS='FROZEN_RESEARCH_SOURCE';\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contrib/strategy_succession/worker/scientific/companion/binding.mjs",
+      "source_sha256": "3afe7da49b0becff2389f8cb8c025d3d58f69f27df3c8b640c2c66af60422e20",
+      "deps": [
+        "C05"
+      ]
+    },
+    {
+      "id": "C07",
+      "path": "contrib/strategy_succession/worker/scientific/companion/adapter.mjs",
+      "content": "// SPDX-License-Identifier: Apache-2.0\nimport {Meter,WorkLimit,inspectTask,inspectStrategy,plan,portfolio,verifyLocal} from './core.mjs';\nimport {createWorkbench} from './vendor/examples/successor-workbench/engine.mjs';\nimport {digest} from './vendor/docs/assets/successor/engine.mjs';\nimport {SOURCE_HASH} from './binding.mjs';\n\nconst bytes=value=>new TextEncoder().encode(JSON.stringify(value,(key,value)=>key==='elapsedMilliseconds'||key.endsWith('_ms')?0:value)).length;\nconst clock=()=>globalThis.performance.now();\nexport const ADAPTER_MANIFEST=Object.freeze({id:'release-strategy',version:1,en:'Plan a resource-constrained release',fr:'Planifier une livraison contrainte',\n scope:'Finite synthetic or public worker-constrained planning and disruption repair; no operational execution or inherited authority.',artifact:'release-plan.json'});\nexport function checkerReserve(task,result){\n const n=task.jobs.length,H=task.capacity.length,E=task.jobs.reduce((s,j)=>s+j.deps.length,0),B=bytes({task,result});\n return 2*B+4*n*n+220*n+(2*n+50)*E+18*H+1024;\n}\nexport async function localCheck(task,result){const meter=new Meter();try{return {...verifyLocal(task,result,meter),counts:{...meter.counts,total:meter.spent},errors:[]};}catch(error){return {valid:false,qualified:false,errors:[{code:error.message}],counts:{...meter.counts,total:meter.spent}};}}\n\nexport async function runMission(task,{strategy='portfolio',sourceHash=SOURCE_HASH,check=localCheck,budget=100000,signal,onEvent=()=>{}}={}){\n const started=clock(),validationMeter=new Meter(),meter=new Meter(Math.max(0,budget-18000));let checked=null,delivered=null,error=null,checkerWork=0,attempts=[],selectedMethod=null;\n if(!Number.isSafeInteger(budget)||budget<0)throw Error('MISSION_BUDGET');\n const adapter={manifest:ADAPTER_MANIFEST,\n  validate(input){inspectTask(input.task,validationMeter);if(input.strategy!=='portfolio')inspectStrategy(input.strategy);if(input.budget!==budget)throw Error('BUDGET_BINDING');},\n  async execute(input,checkpoint){\n   await checkpoint('Out-Execute');onEvent({kind:'OUT_EXECUTE',mission_id:task.id});\n   try{\n    if(input.strategy==='portfolio'){const outcome=portfolio(input.task,meter,undefined,{stopOnQualified:true});delivered=outcome.result;attempts=outcome.attempts;selectedMethod=outcome.method;}\n    else{delivered=plan(input.task,input.strategy,meter);selectedMethod=input.strategy;}\n    const reserve=checkerReserve(input.task,delivered);meter.tick('accounting:check-reserve',1);\n    if(meter.spent+validationMeter.spent+reserve+2048>budget)throw Error('CHECK_RESERVE');\n    checkerWork=reserve; // On a timeout/failed acknowledgement the ceiling is charged.\n    checked=await check(input.task,delivered);checkerWork=checked?.counts?.total??0;\n    if(!Number.isSafeInteger(checkerWork)||checkerWork<0||checkerWork>reserve)throw Error('CHECKER_ACCOUNTING_BOUND');\n    if(!checked.valid)error='INDEPENDENT_CHECK_REFUSED';\n   }catch(e){error=e instanceof WorkLimit?'WORK_LIMIT':e.message;}\n   await checkpoint('Out-Evolve');\n   const evidence={task_id:input.task.id,valid:Boolean(checked?.valid&&!error),qualified:Boolean(checked?.qualified&&!error),\n    strategy_digest:await digest('release-strategy',JSON.stringify(input.strategy)),candidate_error:error,\n    proof:[],authority:[],checker:'Injected checker; see experiment custodian and implementation manifest.'};\n   return {decision:error?'REFUSED':evidence.qualified?'QUALIFIED_LOCAL_RESULT':'FEASIBLE_TARGET_NOT_MET',\n    summary:{jobs:task.jobs.length,makespan:delivered?.makespan??null,deadline:task.deadline??task.capacity.length,qualified:evidence.qualified},\n    evidence,artifacts:[{name:'release-plan.json',type:'application/json',content:JSON.stringify({task:input.task,result:delivered,checker:checked,error},null,2)+'\\n'}],\n    limits:['Planning software only; schedules do not perform physical work.','Current receipt does not create production authority or a signed settlement.',\n     'Named work units are an explicit accounting model, not machine instructions, dollars, or independent human review.']};\n  }};\n const workbench=createWorkbench([adapter]);\n const spec={schema:'successor-workbench/v1',family:'release-strategy',name:'AGI ALPHA \u00b7 Release strategy',language:'en',owner:'local-research-owner',\n  rights:{dataClass:task.public_or_synthetic==='public'?'public':'synthetic',source:'Bounded nonpersonal release-planning input',license:task.input_license??'Apache-2.0'},reviewMinutes:10,\n  inputs:{task,strategy,budget}};\n let pack=null;\n try{pack=await workbench.run(spec,{sourceHash,signal,onProgress:phase=>onEvent({kind:'PHASE',mission_id:task.id,phase})});}\n catch(e){error=e.message;}\n const envelopeWork=Math.ceil((bytes(spec)+(pack?bytes(pack):0))/64),work=meter.spent+validationMeter.spent+checkerWork+envelopeWork;\n if(work>budget)error='TOTAL_BUDGET_EXCEEDED';\n return {task_id:task.id,result:delivered,valid:Boolean(checked?.valid&&!error),qualified:Boolean(checked?.qualified&&!error),\n  checker:checked,error,truncated:['WORK_LIMIT','CHECK_RESERVE','TOTAL_BUDGET_EXCEEDED'].includes(error),work,\n  counts:{...meter.counts,'workbench:validation':validationMeter.spent,'checker:reference':checkerWork,'workbench:envelope-block64':envelopeWork},\n  wall_ms:clock()-started,attempts,selected_method:selectedMethod,pack};\n}\n\nexport async function inspectMissionPack(pack){\n const adapter={manifest:ADAPTER_MANIFEST,\n  validate(input){inspectTask(input.task);if(input.strategy!=='portfolio')inspectStrategy(input.strategy);},execute:async()=>{throw Error('INSPECTION_ONLY');}};\n return createWorkbench([adapter]).inspectPack(pack);\n}\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contrib/strategy_succession/worker/scientific/companion/adapter.mjs",
+      "source_sha256": "5051d9d08068c22f5892cea8649c8dccece065763e8f68043d027ee2a0cb6d4b",
+      "deps": []
+    },
+    {
+      "id": "C08",
+      "path": "contrib/strategy_succession/worker/scientific/companion/specialist.py",
+      "content": "# SPDX-License-Identifier: Apache-2.0\nfrom __future__ import annotations\nimport json,math,sys,time\nimport numpy as np\nfrom scipy import __version__ as scipy_version\nfrom scipy.optimize import Bounds,LinearConstraint,milp\nfrom scipy.sparse import coo_matrix\n\ndef solve(task,upper_bound=None,time_limit=2.0,mode='makespan'):\n if mode not in ('makespan','deadline'):raise ValueError('SPECIALIST_MODE')\n start=time.perf_counter();cpu=time.process_time();jobs=task['jobs'];ids={j['id']:i for i,j in enumerate(jobs)};capacity=task['capacity'];H=len(capacity)\n if upper_bound is not None:H=min(H,int(upper_bound))\n if mode=='deadline':H=min(H,task.get('deadline',H))\n options=[];cols_by_job=[]\n release=task.get('release',{});locked=task.get('locked',{});baseline=task.get('baseline',{})\n for j in jobs:\n  cols=[];starts=[locked[j['id']]] if j['id'] in locked else range(release.get(j['id'],0),H-j['duration']+1)\n  for t in starts:\n   if t<release.get(j['id'],0) or t+j['duration']>H or any(capacity[s]<j['crew'] for s in range(t,t+j['duration'])):continue\n   cols.append(len(options));options.append((j['id'],t))\n  if not cols:return {'schema':'highs-specialist/v1','status':'INFEASIBLE_MODEL','schedule':None,'wall_ms':(time.perf_counter()-start)*1000,'cpu_ms':(time.process_time()-cpu)*1000,'scipy_version':scipy_version}\n  cols_by_job.append(cols)\n n=len(options);cmax=n;row_i=[];col_i=[];values=[];lower=[];upper=[]\n def row(entries,lo,hi):\n  r=len(lower);lower.append(lo);upper.append(hi)\n  for col,value in entries:row_i.append(r);col_i.append(col);values.append(float(value))\n for cols in cols_by_job:row([(col,1) for col in cols],1,1)\n for j,cols in zip(jobs,cols_by_job):\n  for p in j['deps']:\n   previous=cols_by_job[ids[p]];duration=jobs[ids[p]]['duration'];row([(col,options[col][1]) for col in cols]+[(col,-options[col][1]) for col in previous],duration,np.inf)\n for t in range(H):\n  entries=[]\n  for j,cols in zip(jobs,cols_by_job):\n   for col in cols:\n    if options[col][1]<=t<options[col][1]+j['duration']:entries.append((col,j['crew']))\n  row(entries,-np.inf,capacity[t])\n for j,cols in zip(jobs,cols_by_job):row([(col,options[col][1]+j['duration']) for col in cols]+[(cmax,-1)],-np.inf,0)\n if 'movement_limit' in task:row([(col,abs(t-baseline.get(id,t))) for col,(id,t) in enumerate(options)],-np.inf,task['movement_limit'])\n objective=np.zeros(n+1);objective[cmax]=0.0 if mode=='deadline' else 1.0\n if baseline and mode=='makespan':\n  scale=1/(len(jobs)*len(capacity)+1)\n  for col,(id,t) in enumerate(options):objective[col]=scale*abs(t-baseline.get(id,t))\n matrix=coo_matrix((values,(row_i,col_i)),shape=(len(lower),n+1)).tocsc();lb=np.zeros(n+1);ub=np.ones(n+1);ub[cmax]=H\n build_ms=(time.perf_counter()-start)*1000\n result=milp(objective,integrality=np.ones(n+1),bounds=Bounds(lb,ub),constraints=LinearConstraint(matrix,np.asarray(lower),np.asarray(upper)),options={'time_limit':float(time_limit),'mip_rel_gap':0.0,'presolve':True})\n schedule=None\n if result.x is not None:\n  schedule=[]\n  for j,cols in zip(jobs,cols_by_job):\n   selected=[options[col][1] for col in cols if result.x[col]>.5]\n   if len(selected)!=1:raise ValueError('NONINTEGRAL_SPECIALIST_RESULT')\n   t=selected[0];schedule.append({'id':j['id'],'start':t,'end':t+j['duration']})\n  schedule.sort(key=lambda x:(x['start'],x['id']))\n output={'schema':'highs-specialist/v1','task_id':task['id'],'status':str(result.message),'status_code':int(result.status),'success':bool(result.success),'schedule':schedule,'makespan':max((j['end'] for j in schedule),default=None) if schedule else None,'movement':sum(abs(j['start']-baseline.get(j['id'],j['start'])) for j in schedule) if schedule else None,'objective':float(result.fun) if result.fun is not None else None,'mip_gap':float(result.mip_gap) if getattr(result,'mip_gap',None) is not None else None,'mip_dual_bound':float(result.mip_dual_bound) if getattr(result,'mip_dual_bound',None) is not None else None,'mip_nodes':int(result.mip_node_count) if getattr(result,'mip_node_count',None) is not None else None,'model_binary_variables':n,'model_rows':len(lower),'model_nonzeros':len(values),'model_build_ms':build_ms,'wall_ms':(time.perf_counter()-start)*1000,'cpu_ms':(time.process_time()-cpu)*1000,'time_limit_seconds':time_limit,'scipy_version':scipy_version,'numpy_version':np.__version__,'internal_primitive_count':None,'internal_primitive_count_note':'Opaque solver internals are not converted into declared JavaScript work units.'}\n output.update(mode=mode,objective_semantics='Feasibility objective 0 under the user deadline; optimal status DOES NOT establish optimal makespan.' if mode=='deadline' else 'Minimize makespan; on repair, movement is a strictly subordinate bounded tie-breaker.')\n output['model_solve_ms']=output['wall_ms']-build_ms\n return output\n\nif __name__=='__main__':\n for line in sys.stdin:\n  try:\n   request=json.loads(line)\n   if request.get('op')=='metadata':print(json.dumps({'ok':True,'scipy':scipy_version,'numpy':np.__version__,'python':sys.version,'solver':'scipy.optimize.milp / bundled HiGHS'}),flush=True)\n   else:print(json.dumps({'ok':True,'result':solve(request['task'],request.get('upper_bound'),request.get('time_limit',2.0),request.get('mode','makespan'))}),flush=True)\n  except Exception as e:print(json.dumps({'ok':False,'error':type(e).__name__+': '+str(e)}),flush=True)\n",
+      "source_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contrib/strategy_succession/worker/scientific/companion/specialist.py",
+      "source_sha256": "f799ce9220b091007a2702f5f4ce01983b9675bae6dd830fa3da37e1ade36a88",
+      "deps": [
+        "C07"
+      ]
+    }
+  ],
+  "task": {
+    "schema": "release-plan/v1",
+    "id": "DEV01-c0",
+    "kind": "plan",
+    "public_or_synthetic": "synthetic",
+    "planning_only": true,
+    "jobs": [
+      {
+        "id": "J1",
+        "duration": 1,
+        "crew": 2,
+        "deps": []
+      },
+      {
+        "id": "J2",
+        "duration": 4,
+        "crew": 1,
+        "deps": [
+          "J1"
+        ]
+      },
+      {
+        "id": "J3",
+        "duration": 1,
+        "crew": 1,
+        "deps": [
+          "J2"
+        ]
+      },
+      {
+        "id": "J4",
+        "duration": 3,
+        "crew": 1,
+        "deps": [
+          "J3"
+        ]
+      },
+      {
+        "id": "J5",
+        "duration": 3,
+        "crew": 2,
+        "deps": [
+          "J2"
+        ]
+      },
+      {
+        "id": "J6",
+        "duration": 2,
+        "crew": 1,
+        "deps": [
+          "J4"
+        ]
+      }
+    ],
+    "capacity": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "deadline": 65,
+    "release": {
+      "J6": 2
+    }
+  },
+  "job_labels": {
+    "J1": "source freeze",
+    "J2": "package build",
+    "J3": "unit tests",
+    "J4": "documentation",
+    "J5": "compatibility check",
+    "J6": "release review"
+  }
+}

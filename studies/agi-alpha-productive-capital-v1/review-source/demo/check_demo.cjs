@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: Apache-2.0
+const {chromium}=require('playwright');
+const fs=require('fs'),path=require('path');
+(async()=>{
+ const root=path.resolve(__dirname,'..'),checks=[],errors=[],requests=[];
+ const browser=await chromium.launch({executablePath:process.env.PCAP_BROWSER_PATH||'/tmp/successor-ui-browser1194/chrome-linux/headless_shell',headless:true,args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
+ page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url())});
+ const check=(name,value)=>{checks.push({name,passed:Boolean(value)});if(!value)throw Error(name)};
+ await page.goto('file://'+path.join(root,'deliverables/AGI_ALPHA_Productive_Capital_Demo.html'));
+ await page.waitForFunction(()=>window.__ready===true);check('self-contained:no network',requests.length===0);
+ await page.getByRole('button',{name:'Try it now'}).click();
+ await page.waitForFunction(()=>window.__lastResult?.metrics.child_calls===1);
+ check('fresh parent and child invoked',await page.evaluate(()=>window.__lastResult.metrics.parent_calls===1&&window.__lastResult.metrics.child_calls===1));
+ check('three synchronized deliverables plus evidence',await page.evaluate(()=>window.__lastResult.pack.result.artifacts.length===5));
+ check('finite checked schedule',await page.evaluate(()=>window.__lastResult.plan.result.makespan<=window.__lastResult.plan.task.deadline));
+ check('downloads available',(await page.locator('#downloads button').count())===5);
+ await page.locator('[data-tab=dossier]').click();check('dossier iframe',await page.locator('iframe').count()===1);
+ check('dossier actual html',await page.locator('iframe').getAttribute('srcdoc').then(x=>x.includes('Source assurance')));
+ await page.locator('[data-tab=reuse]').click();check('retained evidence shown',await page.locator('#result-content').innerText().then(x=>x.includes('predecessor')));
+ await page.locator('[data-tab=trace]').click();check('seven stage records',await page.locator('.stage').count()===7);
+ await page.locator('[data-preset=price]').click();check('price compression yields no surplus',await page.evaluate(()=>window.__economicResult.surplus===0));
+ await page.locator('[data-preset=base]').click();check('base has modeled surplus',await page.evaluate(()=>window.__economicResult.surplus>0));
+ check('cash identity',await page.evaluate(()=>{const r=window.__economicResult;return Math.abs(r.collected-r.cashCost-r.reserves-r.net)<1e-7}));
+ check('unit cost separate from cash setup',await page.evaluate(()=>{const before=window.__economicResult;document.getElementById('reuse').value='5';document.getElementById('reuse').dispatchEvent(new Event('input'));return window.__economicResult.unit>before.unit&&window.__economicResult.cashCost===before.cashCost}));
+ await page.locator('[data-preset=base]').click();await page.locator('#route').selectOption('manager');check('Manager proceeds are worker share',await page.evaluate(()=>Math.abs(window.__economicResult.collected/window.__economicResult.invoice-.52)<1e-10));
+ await page.locator('#route').selectOption('direct');await page.locator('#revision').selectOption('missing');await page.locator('#run').click();await page.waitForFunction(()=>window.__lastError==='SOURCE_EVIDENCE_REQUIRED');check('missing source safely refuses',await page.locator('#mission-status').innerText().then(x=>x.includes('Refused')));check('refusal clears prior artifacts',await page.locator('#downloads button').count()===0&&await page.locator('#result-content').innerText().then(x=>x.includes('No accepted output')));
+ await page.locator('#fr').click();check('French refusal status preserved',await page.locator('#mission-status').innerText().then(x=>x.includes('Refus')));check('French locale',await page.getAttribute('html','lang')==='fr');check('French CTA',await page.locator('#run').innerText().then(x=>x.includes('Exécuter')));
+ await page.locator('#revision').selectOption('duration');await page.locator('#run').click();await page.waitForFunction(()=>window.__lastResult?.plan?.task?.jobs?.some(j=>j.duration>=5));check('second revision locally computed',await page.locator('#mission-status').innerText().then(x=>x.includes('Terminé')));
+ await page.locator('[data-tab=plan]').click();await page.locator('#en').click();await page.evaluate(()=>scrollTo(0,0));
+ await page.screenshot({path:path.join(root,'demo/desktop.png'),fullPage:true});
+ await page.setViewportSize({width:390,height:844});await page.evaluate(()=>scrollTo(0,0));check('mobile width',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.screenshot({path:path.join(root,'demo/mobile.png'),fullPage:true});check('no uncaught browser errors',errors.length===0);check('all computation stayed offline',requests.length===0);
+ fs.writeFileSync(path.join(root,'demo/VERIFICATION.json'),JSON.stringify({schema:'productive-capital-demo-verification/v1',html_sha256:require('crypto').createHash('sha256').update(fs.readFileSync(path.join(root,'deliverables/AGI_ALPHA_Productive_Capital_Demo.html'))).digest('hex'),checks,passed:checks.every(c=>c.passed),browser:await browser.version(),errors,external_requests:requests,scope:'Actual local Chromium UI interaction. No remote executor, live financial transactions or external publication.'},null,2)+'\n');
+ console.log(JSON.stringify({passed:checks.length,errors,external_requests:requests.length}));await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

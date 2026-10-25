@@ -1,0 +1,14 @@
+\begin{figure}[H]\centering
+\begin{tikzpicture}[every node/.style={font=\small,align=center},box/.style={draw=purple,fill=lavender,rounded corners=2mm,text width=4.3cm,minimum height=1.0cm},arr/.style={->,thick,color=purple}]
+\node[box] (mission) at (0,0) {Mission specification\\Scope, sources, acceptance};
+\node[box] (delivery) at (6,0) {Alpha / SUCCESSOR\\Workbench delivery};
+\node[box] (retained) at (6,-2) {Retained artifacts\\Parent index + child};
+\node[box] (ledger) at (0,-2) {Conserved cash ledger\\Proceeds, costs, reserves};
+\node[box] (invest) at (0,-4) {Investment admission\\Fundability + value};
+\node[box] (next) at (6,-4) {Subsequent production\\Stable and fresh slices};
+\draw[arr] (mission)--(delivery);\draw[arr] (delivery)--(retained);\draw[arr] (delivery.south west)--(ledger.north east);
+\draw[arr] (ledger)--(invest);\draw[arr] (retained)--(next);\draw[arr] (invest)--(next);
+\draw[arr] (next.east)--++(.65,0)|-(delivery.east);
+\end{tikzpicture}
+\caption{Implemented local artifact links and a separately modeled financial link. Manager, Jobs and Fleet retain their distinct settlement/admission boundaries; no transaction or external execution is implied by the diagram.}
+\end{figure}
