@@ -1,0 +1,50 @@
+{
+  "schema": "writer9-external-process-timing/v1",
+  "phase": "post-confirmation functional controls",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-B",
+    "/workspace/scratch/1a887afbd6a7/writer9-alpha/research/constructive-foresight/tests/numerical_controls.py",
+    "--child",
+    "--output",
+    "/workspace/scratch/1a887afbd6a7/writer9-alpha/research/constructive-foresight/evidence/numerical-controls.json"
+  ],
+  "issued_utc": "2026-10-24T02:38:25.972069+00:00",
+  "completed_utc": "2026-10-24T02:38:26.562128+00:00",
+  "wall_seconds": 0.590060397007619,
+  "child_user_cpu_seconds": 0.510259,
+  "child_system_cpu_seconds": 0.079287,
+  "child_cpu_seconds": 0.589546,
+  "maximum_resident_set_native": 54584,
+  "maximum_resident_set_units": "KiB on Linux",
+  "platform": "Linux",
+  "returncode": 0,
+  "stdout": "{\"passed\": true, \"controls\": 10, \"failures\": [], \"output\": \"/workspace/scratch/1a887afbd6a7/writer9-alpha/research/constructive-foresight/evidence/numerical-controls.json\"}\n",
+  "stderr": "",
+  "launch_error": null,
+  "hashes_before": {
+    "numerics.py": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+    "protocol.json": "aebdfe90edf392d89433289f7bccc3fc1757abe7f7311381b11170af7b1ae51a",
+    "data/manifest.json": "2d814fbdc753f4474f3bcc095bc858a4872e902c01811c0ca123a329239cef3c",
+    "data/1138_bus.mtx.gz": "2bbcb12ed6c1fa33020203ba39bf4f3d45ed832c1bb85655b02b765c1848ee2b",
+    "results/forecast_freeze.json": "95ab2aec575f797f6392d6bc1d01a4e22a8815dd5c25e10a5eb0446763a8439d",
+    "results/calibration/batches.jsonl": "f37056e3263835b509672132c3fdd14c5bb6823f4ff7e80ee79fba05ab1c9025",
+    "results/confirmation/batches.jsonl": "d5a562219ebcc28e9f03f1b1a0e62f18c3e8bbeaa966b53beb2ec729bb7776c6",
+    "results/confirmation/summary.json": "faa29d94d567fd61403adc59ab6b31f1e921a7d82c06f4dcb698f42224ee8bb7"
+  },
+  "hashes_after": {
+    "numerics.py": "6ff30ebcf9a223e1cff760dabae282bd3aeed614089bc139a41c3ea34608bde5",
+    "protocol.json": "aebdfe90edf392d89433289f7bccc3fc1757abe7f7311381b11170af7b1ae51a",
+    "data/manifest.json": "2d814fbdc753f4474f3bcc095bc858a4872e902c01811c0ca123a329239cef3c",
+    "data/1138_bus.mtx.gz": "2bbcb12ed6c1fa33020203ba39bf4f3d45ed832c1bb85655b02b765c1848ee2b",
+    "results/forecast_freeze.json": "95ab2aec575f797f6392d6bc1d01a4e22a8815dd5c25e10a5eb0446763a8439d",
+    "results/calibration/batches.jsonl": "f37056e3263835b509672132c3fdd14c5bb6823f4ff7e80ee79fba05ab1c9025",
+    "results/confirmation/batches.jsonl": "d5a562219ebcc28e9f03f1b1a0e62f18c3e8bbeaa966b53beb2ec729bb7776c6",
+    "results/confirmation/summary.json": "faa29d94d567fd61403adc59ab6b31f1e921a7d82c06f4dcb698f42224ee8bb7"
+  },
+  "protected_files_unchanged": true,
+  "test_source_sha256": "4383785fd41e70e93c6a4d65354d38be0e5cbc3d99b90191c5a762bfec8e77fc",
+  "report_sha256": "1f39375e9d3be04c336591092c57de3805b79d16e645b2b9b9c4b2193517fdeb",
+  "passed": true,
+  "accounting": "External child measurement includes Python startup/shutdown and imports. Internal times are subsets. Launcher CPU is excluded."
+}

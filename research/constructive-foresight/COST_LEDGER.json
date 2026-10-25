@@ -1,0 +1,486 @@
+{
+  "schema": "writer9-research-cost-ledger/v1",
+  "created_utc": "2026-10-24T02:38:46.970040+00:00",
+  "scope": "Recorded research through numerical/decision studies, native restoration and named audits; not a complete session bill.",
+  "units": {
+    "wall_seconds": "Measured wall intervals summed as work, not end-to-end session duration.",
+    "cpu_seconds": "Measured process or child CPU within the named scope.",
+    "assumed_seconds": "Counterfactual service, information and alternative-cost inputs, not extra real CPU consumed.",
+    "money": "No conversion from seconds or mission credits to currency."
+  },
+  "entries": [
+    {
+      "id": "numerical-calibration",
+      "scope_complete": true,
+      "scope": "Numerical phase body, including ingestion, batches, generation, retained output and CG diagnostics.",
+      "wall_seconds": 78.50672219700937,
+      "cpu_seconds": 78.515727947,
+      "excluded": "Interpreter startup/shutdown and final summary serialization after the timing sample.",
+      "batches": 288,
+      "evidence": [
+        {
+          "path": "results/calibration/summary.json",
+          "sha256": "f3cbf88a70633cab285556fbd6d785fa2618bf87e039392520dee706b22241bf"
+        }
+      ]
+    },
+    {
+      "id": "numerical-confirmation",
+      "scope_complete": true,
+      "scope": "Numerical phase body, including ingestion, batches, generation, retained output and CG diagnostics.",
+      "wall_seconds": 117.34716115999618,
+      "cpu_seconds": 117.282992538,
+      "excluded": "Interpreter startup/shutdown and final summary serialization after the timing sample.",
+      "batches": 432,
+      "evidence": [
+        {
+          "path": "results/confirmation/summary.json",
+          "sha256": "faa29d94d567fd61403adc59ab6b31f1e921a7d82c06f4dcb698f42224ee8bb7"
+        }
+      ]
+    },
+    {
+      "id": "native-initial-and-restoration-demo",
+      "scope_complete": true,
+      "scope": "Externally measured whole child process, including startup/shutdown and waited descendants.",
+      "wall_seconds": 6.551944302991615,
+      "cpu_seconds": 6.427498,
+      "excluded": "Authoring, review and other processes outside this invocation.",
+      "evidence": [
+        {
+          "path": "evidence/native-demo-001-process.json",
+          "sha256": "e9610017849d56ff825e641a0683f85a53faec4039461e12a5ca9f39469a2ee0"
+        }
+      ]
+    },
+    {
+      "id": "decision-calibration",
+      "scope_complete": true,
+      "scope": "Externally measured whole child process, including startup/shutdown and waited descendants.",
+      "wall_seconds": 1.3756079449958634,
+      "cpu_seconds": 1.35965,
+      "excluded": "Authoring, review and other processes outside this invocation.",
+      "evidence": [
+        {
+          "path": "evidence/decision-calibration-invocation.json",
+          "sha256": "9c7833ae6026a562e005bc5345532e1df6167b64936cf1c523e89bf842333171"
+        }
+      ]
+    },
+    {
+      "id": "decision-confirmation",
+      "scope_complete": true,
+      "scope": "Externally measured whole child process, including startup/shutdown and waited descendants.",
+      "wall_seconds": 3.928196036009467,
+      "cpu_seconds": 3.9276919999999995,
+      "excluded": "Authoring, review and other processes outside this invocation.",
+      "evidence": [
+        {
+          "path": "evidence/decision-confirmation-invocation.json",
+          "sha256": "80e178c9ae43aacbefebb20d64ccb31bc93e93d5db729a1285660cf80df7178b"
+        }
+      ]
+    },
+    {
+      "id": "independent-numerical-audit-v1",
+      "scope_complete": true,
+      "scope": "Externally measured whole child process, including startup/shutdown and waited descendants.",
+      "wall_seconds": 0.6862000989931403,
+      "cpu_seconds": 0.689114,
+      "excluded": "Authoring, review and other processes outside this invocation.",
+      "evidence": [
+        {
+          "path": "evidence/independent-numerical-audit-cost.json",
+          "sha256": "9b6727a8ad0e4989714b54bbdbfb208c2e4853679e9f3cf3305556d98d17103e"
+        }
+      ]
+    },
+    {
+      "id": "independent-numerical-audit-v2",
+      "scope_complete": true,
+      "scope": "Externally measured whole child process, including startup/shutdown and waited descendants.",
+      "wall_seconds": 0.732809505003388,
+      "cpu_seconds": 0.734038,
+      "excluded": "Authoring, review and other processes outside this invocation.",
+      "evidence": [
+        {
+          "path": "evidence/independent-numerical-audit-v2-cost.json",
+          "sha256": "9a528e935ddefe5e75f8a90b83c106b97bd234effe7cb4eca39059ecd87a0a9e"
+        }
+      ]
+    },
+    {
+      "id": "independent-decision-audit",
+      "scope_complete": true,
+      "scope": "Externally measured whole child process, including startup/shutdown and waited descendants.",
+      "wall_seconds": 3.5890358860051492,
+      "cpu_seconds": 3.5875,
+      "excluded": "Authoring, review and other processes outside this invocation.",
+      "evidence": [
+        {
+          "path": "evidence/independent-decision-audit-cost.json",
+          "sha256": "78d9a6e9e0b84991d8016a0068c0157968f4b172b98c57d2342475128ba5c5e8"
+        }
+      ]
+    },
+    {
+      "id": "post-confirmation-numerical-controls",
+      "scope_complete": true,
+      "scope": "Externally measured whole child process, including startup/shutdown and waited descendants.",
+      "wall_seconds": 0.590060397007619,
+      "cpu_seconds": 0.589546,
+      "excluded": "Authoring, review and other processes outside this invocation.",
+      "evidence": [
+        {
+          "path": "evidence/numerical-controls-process.json",
+          "sha256": "5452af20c31e63e7f4593f2915201c5f3dc06f78e5fda552ddb965320124db2f"
+        }
+      ]
+    },
+    {
+      "id": "numerical-development-retained-batches",
+      "scope_complete": false,
+      "scope": "Retained36batch intervals only; lower bound for the failed-summary engineering phase.",
+      "wall_seconds": 9.952939703027369,
+      "cpu_seconds": 9.947653705000002,
+      "full_phase_wall_seconds": null,
+      "full_phase_cpu_seconds": null,
+      "excluded": "Unretained phase overhead and CG diagnostic measurements; summary serialization failed.",
+      "evidence": [
+        {
+          "path": "results/development/summary.json",
+          "sha256": "8088df9d53d995c27a5655b11f41c67b66dccc7b8ae406293a91b6ead8bc73e2"
+        },
+        {
+          "path": "results/development/batches.jsonl",
+          "sha256": "fb293a116f6cb74c468d4cee6341383174b216297740588f971381f3447a4041"
+        },
+        {
+          "path": "amendments/A03_engineering_serialization.json",
+          "sha256": "7d30d55747950781c81f6ef3fd965033cfa6b91de66be9b6de7b08cc57e0de49"
+        }
+      ]
+    },
+    {
+      "id": "harness-engineering-003",
+      "scope_complete": false,
+      "scope": "Measured native run_harness body; lower bound for the complete engineering process.",
+      "wall_seconds": 0.9190651609969791,
+      "cpu_seconds": 0.8688606480000001,
+      "excluded": "Startup/shutdown, later receipt serialization and any separate bridge invocation.",
+      "handler_counts": {
+        "checker_calls": 1,
+        "inspection_handler_calls": 1,
+        "numeric_handler_calls": 1
+      },
+      "evidence": [
+        {
+          "path": "evidence/harness-engineering-003/native-receipt.json",
+          "sha256": "96aa2d0d44afbc27059c8df63a9d245c5adb3befeacb547c3db38c90ecc054a5"
+        }
+      ]
+    },
+    {
+      "id": "harness-negative-001",
+      "scope_complete": false,
+      "scope": "Measured native run_harness body; lower bound for the complete engineering process.",
+      "wall_seconds": 1.0525637309910962,
+      "cpu_seconds": 0.997759586,
+      "excluded": "Startup/shutdown, later receipt serialization and any separate bridge invocation.",
+      "handler_counts": {
+        "checker_calls": 1,
+        "inspection_handler_calls": 0,
+        "numeric_handler_calls": 1
+      },
+      "evidence": [
+        {
+          "path": "evidence/harness-negative-001/native-receipt.json",
+          "sha256": "9057d1f795ed76cf984f89f1ce34a6f3ef98ca18a8fd4e20f49944852dce23e6"
+        }
+      ]
+    },
+    {
+      "id": "engineering-decision",
+      "scope_complete": false,
+      "scope": "Disjoint model-preparation CPU once plus controller/offline-evaluator CPU; process lower bound.",
+      "wall_seconds": 0.02011235999816563,
+      "cpu_seconds": 0.05278104000000006,
+      "components": {
+        "model_preparation_cpu_once": 0.03268579999999999,
+        "controller_cpu": 0.02009524000000007,
+        "offline_evaluator_cpu": 0.0
+      },
+      "excluded": "World generation, simulation outside policy timers, summarization, serialization and startup/shutdown.",
+      "evidence": [
+        {
+          "path": "engineering/decision/decision_summary.json",
+          "sha256": "9552b0a095a3feb286ffa7f867f06d041132015ba016ffb791cff837243745b9"
+        },
+        {
+          "path": "engineering/decision/decision_observations.csv.gz",
+          "sha256": "6f88920fc8c6a8a28d700cf46e07ce9b06d6fc8adace89af787226d6ed2a2e86"
+        }
+      ]
+    },
+    {
+      "id": "engineering-decision-v2",
+      "scope_complete": false,
+      "scope": "Disjoint model-preparation CPU once plus controller/offline-evaluator CPU; process lower bound.",
+      "wall_seconds": 0.01860807377670426,
+      "cpu_seconds": 0.05615778799999985,
+      "components": {
+        "model_preparation_cpu_once": 0.037198962,
+        "controller_cpu": 0.018399027999999873,
+        "offline_evaluator_cpu": 0.0005597979999999725
+      },
+      "excluded": "World generation, simulation outside policy timers, summarization, serialization and startup/shutdown.",
+      "evidence": [
+        {
+          "path": "engineering/decision-v2/decision_summary.json",
+          "sha256": "da2d8f20e833f0bf4d6d1f1c3bdb867b3b56f6b659bec89f3fdeb338b9f57b85"
+        },
+        {
+          "path": "engineering/decision-v2/decision_observations.csv.gz",
+          "sha256": "d64c8c2a400bc5108e1bcf9a2c79cf50ce992cc0a8a3799da5df05d80af25191"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "complete_named_scope_wall_work_seconds": 213.30773752801178,
+    "complete_named_scope_cpu_seconds": 213.113758485,
+    "additional_documented_partial_scope_wall_work_seconds": 11.963289028790314,
+    "additional_documented_partial_scope_cpu_seconds": 11.923212767000003,
+    "documented_wall_work_lower_bound_seconds": 225.2710265568021,
+    "documented_cpu_lower_bound_seconds": 225.036971252,
+    "complete_study_wall_seconds": null,
+    "complete_study_cpu_seconds": null,
+    "complete_study_monetary_cost": null,
+    "interpretation": "Named disjoint work scopes. Parallel wall intervals are work sums, not session latency. Unknown costs are not zero."
+  },
+  "failures_and_negative_controls": [
+    {
+      "id": "native-proof-enum-failure",
+      "expected": false,
+      "wall_seconds": null,
+      "cpu_seconds": null,
+      "evidence": {
+        "path": "evidence/harness-engineering-001/FAILURE.json",
+        "sha256": "051acdea17ab8d091cb49065070acea67d30771d536318f89f9f94fa00f0635a"
+      }
+    },
+    {
+      "id": "native-proof-decimal-failure",
+      "expected": false,
+      "wall_seconds": null,
+      "cpu_seconds": null,
+      "evidence": {
+        "path": "evidence/harness-engineering-002/FAILURE.json",
+        "sha256": "49b29e7c407869ed9e0a6591582583aa5a63061be3dc2c87baf8d3d514ae7712"
+      }
+    },
+    {
+      "id": "development-summary-serialization",
+      "expected": false,
+      "cost_accounting": "Included retained batch lower bound; remaining cost unknown.",
+      "evidence": {
+        "path": "amendments/A03_engineering_serialization.json",
+        "sha256": "7d30d55747950781c81f6ef3fd965033cfa6b91de66be9b6de7b08cc57e0de49"
+      }
+    },
+    {
+      "id": "GNU-time-launcher-unavailable",
+      "expected": false,
+      "wall_seconds": null,
+      "cpu_seconds": null,
+      "cost_accounting": "Exited127 before audit execution; fallback audit measured separately.",
+      "evidence": {
+        "path": "evidence/independent-numerical-audit-cost.json",
+        "sha256": "9b6727a8ad0e4989714b54bbdbfb208c2e4853679e9f3cf3305556d98d17103e"
+      }
+    },
+    {
+      "id": "pattern-only-matrix-candidate-rejected",
+      "expected": false,
+      "wall_seconds": null,
+      "cpu_seconds": null,
+      "evidence": {
+        "path": "data/rejected_source.json",
+        "sha256": "52cd333d9a700b08977d4867f3a29787b22edbee8bd695b92eeb07fbb2d142c8"
+      }
+    },
+    {
+      "id": "intentional-corrupt-solution-refusal",
+      "expected": true,
+      "cost_accounting": "Already included in harness-negative-001; not added again.",
+      "evidence": {
+        "path": "evidence/harness-negative-001/native-receipt.json",
+        "sha256": "9057d1f795ed76cf984f89f1ce34a6f3ef98ca18a8fd4e20f49944852dce23e6"
+      }
+    }
+  ],
+  "cg_diagnostics_already_included": [
+    {
+      "phase": "calibration",
+      "matrix": "1138_bus",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.01210068199725356,
+      "cpu_seconds": 0.012102121999999937,
+      "inclusion": "Inside numerical-calibration; diagnostic only; not added again."
+    },
+    {
+      "phase": "calibration",
+      "matrix": "bcsstk14",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.06069391200435348,
+      "cpu_seconds": 0.06069742299999881,
+      "inclusion": "Inside numerical-calibration; diagnostic only; not added again."
+    },
+    {
+      "phase": "calibration",
+      "matrix": "bcsstk18",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.2338934059953317,
+      "cpu_seconds": 0.23391067700001145,
+      "inclusion": "Inside numerical-calibration; diagnostic only; not added again."
+    },
+    {
+      "phase": "calibration",
+      "matrix": "bcsstk24",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.1496965449914569,
+      "cpu_seconds": 0.1496933829999989,
+      "inclusion": "Inside numerical-calibration; diagnostic only; not added again."
+    },
+    {
+      "phase": "confirmation",
+      "matrix": "1138_bus",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.01270723900233861,
+      "cpu_seconds": 0.012710355000000062,
+      "inclusion": "Inside numerical-confirmation; diagnostic only; not added again."
+    },
+    {
+      "phase": "confirmation",
+      "matrix": "bcsstk14",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.06678607499634381,
+      "cpu_seconds": 0.06679082600000008,
+      "inclusion": "Inside numerical-confirmation; diagnostic only; not added again."
+    },
+    {
+      "phase": "confirmation",
+      "matrix": "bcsstk18",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.22312923200661317,
+      "cpu_seconds": 0.22314019700000642,
+      "inclusion": "Inside numerical-confirmation; diagnostic only; not added again."
+    },
+    {
+      "phase": "confirmation",
+      "matrix": "bcsstk24",
+      "solver_info": 400,
+      "overall_qualified": false,
+      "wall_seconds": 0.13727707600628491,
+      "cpu_seconds": 0.13728482599999836,
+      "inclusion": "Inside numerical-confirmation; diagnostic only; not added again."
+    }
+  ],
+  "no_double_counting": [
+    "Numerical phase totals include factorization, preflight, solve, validation, RHS formation, metadata, orchestration and retained CG diagnostics; never add their subcomponents again.",
+    "rhs_generation_shared_seconds repeats in every row of a matrix/block. Count it once in a component audit, never once per row and never on top of phase totals.",
+    "The external native-demo timer includes initial proof, restored proof, numerical checking, Node bridge, dispatch and actual restoration; all internal segment timers are nested evidence only.",
+    "Decision process timers include actual fitting, policy calculation, simulation, bootstrap and output. Per-policy preparation allocations and simulated compute fields are not additional actual spending.",
+    "Simulation failed_compute_seconds and late_numerical_wall_seconds are subsets of charged work, not extra charges.",
+    "Independent numerical audits v1/v2 are separate actual inspections and both are included; neither re-runs a solver."
+  ],
+  "unknown_costs": [
+    {
+      "category": "Authoring inference token counts and provider charges, including agent and subagent reasoning",
+      "native_quantity": null,
+      "monetary_value": null
+    },
+    {
+      "category": "Source/literature searches, information acquisition and failed download attempts",
+      "native_quantity": null,
+      "monetary_value": null
+    },
+    {
+      "category": "Engineering labor and supervision, including failed native proof construction",
+      "native_quantity": null,
+      "monetary_value": null
+    },
+    {
+      "category": "Human review, required external review and beneficiary acceptance effort",
+      "native_quantity": null,
+      "monetary_value": null
+    },
+    {
+      "category": "Future maintenance and opportunity costs",
+      "native_quantity": null,
+      "monetary_value": null
+    },
+    {
+      "category": "Figure generation, typesetting, page inspection, publication and packaging outside listed processes",
+      "native_quantity": null,
+      "monetary_value": null
+    },
+    {
+      "category": "Unretained development overhead and process startup/shutdown outside numerical phase timers",
+      "native_quantity": null,
+      "monetary_value": null
+    },
+    {
+      "category": "Additional unmetered read-only analysis, primary-stratum arithmetic review and ledger construction",
+      "native_quantity": null,
+      "monetary_value": null
+    }
+  ],
+  "native_quantities": {
+    "matrix_archives_bytes": 1851405,
+    "numerical_engineering_batches": 36,
+    "numerical_calibration_batches": 288,
+    "numerical_confirmation_batches": 432,
+    "confirmation_logged_rhs_checks": 3024,
+    "independently_recomputed_confirmation_columns": 24,
+    "simulated_confirmation_rows": 32256,
+    "simulated_paired_worlds": 4608,
+    "inference_calls_inside_executable_study": 0,
+    "authoring_inference_calls": null,
+    "onchain_transactions_submitted": 0,
+    "gas_paid_native_units": 0
+  },
+  "model_costs": {
+    "evidence_class": "Assumed counterfactual values using measured numerical runtime samples.",
+    "clock_seconds": 0.047096737755055074,
+    "request_credit": 1.0,
+    "cost_credit_per_clock_unit": 1.0,
+    "monetary_conversion": null,
+    "linear_service_assumption": "q=16 per-RHS runtime applied to assumed request counts; independently resampled stage costs.",
+    "preparation_rule": "Full fitted-model preparation CPU allocated to each hypothetical independently deployed model-using policy over4608worlds; no claim of additional actual fit runs.",
+    "unobserved": [
+      "customer demand",
+      "adoption",
+      "competition",
+      "imitation",
+      "request value",
+      "future maintenance"
+    ]
+  },
+  "cash_and_value": {
+    "recorded_paid_commitments": 0,
+    "recorded_financial_transactions": 0,
+    "recorded_payment_receipts": 0,
+    "complete_cash_spend_usd": null,
+    "recognized_external_revenue_usd": 0,
+    "note": "No recorded purchase/payment does not establish that hosted inference, labor or infrastructure was free.",
+    "full_cost_mission_alpha_established": false
+  }
+}

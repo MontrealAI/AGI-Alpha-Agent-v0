@@ -1,0 +1,176 @@
+{
+  "schema": "writer9-passive-paper-handoff/v1",
+  "id": "agi-alpha-constructive-foresight-v1",
+  "title": "AGI ALPHA: THE ADVANTAGE YOU CAN BUILD",
+  "subtitle": "Constructive Foresight for the Intelligence Transition",
+  "author": "MONTREAL.AI",
+  "date": "2026-10-23",
+  "language": "en",
+  "version": "1",
+  "publication_status": "final-results-inserted-awaiting-assets-and-receiving-owner-acknowledgment",
+  "public_ready": false,
+  "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+  "coordination_issue": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850",
+  "topic": {
+    "en": "Constructive foresight, calibrated delivery forecasts and full-cost Mission Alpha",
+    "fr": "Prospective constructive, prévisions calibrées de livraison et valeur de mission nette des coûts"
+  },
+  "summary": {
+    "en": "Useful readiness; no unique full-cost advantage established. All 432 held-out numerical batches passed, with conventional factorization reuse accounting for the speed benefit. At the preregistered primary deadline, frozen local forecasts improved Brier score from 0.25997074 to 0.07205556 across 720 correlated outcomes. The secondary all-deadline scores were 0.24237301 and 0.03146296 across 2,160 outcomes. In the declared decision model, constructive foresight's nominal advantage over the calibrated fixed rule selected using calibration only was +0.025667 assumed credits per episode, with a 95% interval of [-0.038950, +0.127277]; distribution shift produced a loss. A same-information adaptive policy chose identical actions in all 4,608 simulated episodes at lower controller cost. Native execution and actual restoration passed under a limited public test fixture; external beneficiary acceptance remains unobserved.",
+    "fr": "Une préparation utile, sans avantage propre établi après prise en compte de tous les coûts. Les 432 lots numériques hors échantillon ont satisfait les critères; la réutilisation classique de la factorisation explique le gain de vitesse. À l’échéance principale préenregistrée, les prévisions figées de livraison locale ont amélioré le score de Brier de 0,25997074 à 0,07205556 sur 720 observations corrélées. L’analyse secondaire de toutes les échéances donne respectivement 0,24237301 et 0,03146296 sur 2 160 observations. Dans le modèle déclaré, l’avantage nominal de la prospective constructive sur la règle fixe calibrée, choisie uniquement à partir des données de calibration, était de +0,025667 crédit hypothétique par épisode, avec un intervalle à 95 % de [-0,038950; +0,127277]; un changement de distribution a produit une perte. Une politique adaptative disposant des mêmes informations a choisi les mêmes actions dans les 4 608 épisodes simulés, avec un coût de contrôle inférieur. L’exécution et la reconstruction effective ont réussi dans un dispositif de test public limité; aucune acceptation externe d’un bénéficiaire n’a été observée."
+  },
+  "landing_file": "index.html",
+  "assets": {
+    "pdf": {
+      "path": "assets/AGI_ALPHA_The_Advantage_You_Can_Build.pdf",
+      "mime_type": "application/pdf",
+      "sha256": null,
+      "verified": false
+    },
+    "tex": {
+      "path": "assets/AGI_ALPHA_The_Advantage_You_Can_Build.tex",
+      "mime_type": "application/x-tex",
+      "sha256": null,
+      "verified": false
+    },
+    "archive": {
+      "path": "assets/AGI_ALPHA_Constructive_Foresight_Complete_Source.zip",
+      "mime_type": "application/zip",
+      "sha256": null,
+      "verified": false
+    }
+  },
+  "results": {
+    "numerical": {
+      "evidence_class": "observed-local-computation",
+      "heldout_batches": 432,
+      "accepted_batches": 432,
+      "heldout_right_hand_sides": 3024,
+      "accepted_right_hand_sides": 3024,
+      "q16_cold_to_certified_median_speedup_approximate_range": [
+        7.0,
+        13.6
+      ],
+      "q16_certified_to_native_cached_paired_median_time_ratio_range": [
+        1.01,
+        1.44
+      ],
+      "interpretation": "Conventional factorization reuse accounts for the speed benefit. The certified readiness instrument does not beat native cached factorization on runtime."
+    },
+    "forecast": {
+      "evidence_class": "observed-local-prospective-delivery",
+      "analysis_scope": "preregistered-primary-deadline",
+      "deadline_multiplier": 1,
+      "frozen_forecast_brier": 0.07205556,
+      "calibration_only_constant_brier": 0.25997074,
+      "deadline_outcomes": 720,
+      "secondary_all_deadlines": {
+        "analysis_scope": "secondary-all-three-deadlines",
+        "frozen_forecast_brier": 0.03146296,
+        "calibration_only_constant_brier": 0.24237301,
+        "deadline_outcomes": 2160
+      },
+      "independent_samples": false,
+      "derivation": "Primary deadline stratification computed from retained frozen predictions and outcomes; no new runs.",
+      "scope": "Correlated local qualified-delivery timing targets; not AGI arrival, external demand or adoption forecasting."
+    },
+    "decision_model": {
+      "evidence_class": "controlled-simulation",
+      "primary_comparator_selected_on_calibration": "static_expert",
+      "units": "assumed model credits per episode",
+      "nominal_constructive_minus_comparator": 0.025667,
+      "nominal_95_percent_seed_block_interval": [
+        -0.03895,
+        0.127277
+      ],
+      "distribution_shift_constructive_minus_comparator": -0.06278,
+      "distribution_shift_95_percent_seed_block_interval": [
+        -0.121571,
+        -0.006446
+      ],
+      "same_information_adaptive_comparator": {
+        "simulated_episodes": 4608,
+        "action_disagreements": 0,
+        "controller_cost": "lower than constructive foresight"
+      },
+      "verdict": "Useful readiness. No unique full-cost advantage established.",
+      "limitations": "Declared finite model, assumed utility and adoption/demand/competition processes; intervals over seed blocks, not real beneficiaries or realized market value.",
+      "primary_comparator_display_name": "calibrated fixed rule",
+      "primary_comparator_identity_note": "static_expert is the frozen software policy identifier; no human expert or independent expert evaluation is implied."
+    },
+    "native_demonstration": {
+      "evidence_class": "observed-engineering",
+      "matrix": "1138_bus",
+      "seed": 1701,
+      "q": 4,
+      "runs": 2,
+      "initial_correctness": "pass",
+      "restored_correctness": "pass",
+      "actual_refactorization": true,
+      "native_refusals_passed": 8,
+      "receiver_refusals_passed": 6,
+      "restored_authority": [],
+      "restored_proof_currency": "absent",
+      "execution_enabled_by_import": false,
+      "wall_seconds": 6.551944302991615,
+      "cpu_seconds": 6.427498,
+      "evidence_path": "evidence/native-demo-001-process.json",
+      "limitations": "One fixed development case under one operator using public RFC test material; no authentication, independent custody, beneficiary acceptance or efficacy conclusion."
+    },
+    "external_beneficiary_acceptance": "unobserved"
+  },
+  "evidence_classes": [
+    "observed",
+    "simulated",
+    "assumed",
+    "prospective"
+  ],
+  "draft_replacement_ids": [
+    "draft-status",
+    "verdict-summary",
+    "numerical-evidence-label",
+    "result-numerical",
+    "forecast-evidence-label",
+    "result-forecast",
+    "result-decision",
+    "authority-evidence-label",
+    "result-authority",
+    "verification-summary"
+  ],
+  "handoff": {
+    "shared_catalog_modified": false,
+    "remote_write_performed": false,
+    "receiving_owner_acknowledgment": null,
+    "intended_public_url": null,
+    "source_pr_url": null,
+    "release_asset_urls": [],
+    "staging": "Keep index.html and its assets directory together. The existing publication owner resolves final catalogue paths and public URLs after exact-content acknowledgment.",
+    "required_before_public_ready": [
+      "Stage exact PDF, TeX and complete archive bytes at the relative asset paths",
+      "Verify hashes, archive payloads and reproducible source rebuild",
+      "Remove the internal-draft banner and pending result text only after qualification",
+      "Verify desktop/mobile rendering, keyboard access, inline PDF and direct downloads in a browser",
+      "Obtain receiving-owner acknowledgment and satisfy required repository review/publication gates",
+      "Record only verified public URLs"
+    ],
+    "project_disclaimer_url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/docs/DISCLAIMER_SNIPPET.md"
+  },
+  "presentation": {
+    "type": "passive-static-paper-page",
+    "scripts": false,
+    "tracking": false,
+    "external_fonts": false,
+    "external_assets": false,
+    "pdf_fallback": true,
+    "responsive": true,
+    "accessibility_intent": [
+      "semantic landmarks",
+      "skip link",
+      "visible keyboard focus",
+      "labeled tables",
+      "reduced motion",
+      "text labels independent of color",
+      "direct PDF fallback"
+    ]
+  }
+}

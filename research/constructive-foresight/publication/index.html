@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="An evidence-led study of constructive foresight: when prediction, capability building and timely execution create useful advantage at full cost.">
+  <meta name="author" content="MONTREAL.AI">
+  <title>AGI Alpha: The Advantage You Can Build — MONTREAL.AI</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --space: #0c0a17;
+      --panel: #151125;
+      --panel-high: #1e1833;
+      --paper: #f6f1ff;
+      --muted: #c0b8d2;
+      --quiet: #a99fbe;
+      --purple: #c0a4ff;
+      --mint: #8ee1d4;
+      --amber: #f2d29a;
+      --line: #47395f;
+      --radius: 18px;
+      --max: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+    body {
+      margin: 0;
+      background: var(--space);
+      color: var(--paper);
+      font: 400 17px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--purple); text-underline-offset: .22em; }
+    a:hover { color: white; }
+    a:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid var(--mint);
+      outline-offset: 5px;
+      border-radius: 3px;
+    }
+    p { margin: 0 0 1.2rem; }
+    h1, h2, h3 { line-height: 1.15; }
+    h2, h3 { margin: 0 0 1rem; }
+    h2 { font-size: clamp(1.85rem, 4vw, 2.7rem); letter-spacing: -.035em; }
+    h3 { font-size: 1.2rem; letter-spacing: -.015em; }
+    strong { font-weight: 670; }
+    code { font: .88em/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .wrap { width: min(var(--max), calc(100% - 3rem)); margin-inline: auto; }
+    .skip {
+      position: absolute; left: 1rem; top: -100px; z-index: 10;
+      background: var(--paper); color: var(--space); padding: .8rem 1rem;
+    }
+    .skip:focus { top: 1rem; }
+    .masthead {
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+      padding: 1.5rem 0; border-bottom: 1px solid var(--line);
+    }
+    .brand { color: var(--paper); text-decoration: none; font-size: .94rem; font-weight: 750; letter-spacing: .12em; }
+    .brand span { color: var(--purple); }
+    nav { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+    nav a { font-size: .87rem; color: var(--muted); text-decoration: none; padding-block: .35rem; }
+    .draft {
+      margin-top: 1.6rem; padding: .8rem 1rem;
+      border: 1px solid #766241; border-radius: 10px; background: #292114; color: var(--amber);
+      font-size: .87rem;
+    }
+    .hero {
+      position: relative; padding: 5.4rem 0 4.2rem; isolation: isolate;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero::before {
+      position: absolute; z-index: -1; content: ""; pointer-events: none;
+      inset: -4rem -2rem -2rem;
+      background: radial-gradient(ellipse at 77% 29%, #35215480 0%, transparent 58%);
+    }
+    .eyebrow { color: var(--purple); font-size: .76rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+    .hero h1 {
+      max-width: 950px; margin: 1.15rem 0 1.6rem;
+      font: 500 clamp(3.05rem, 7.3vw, 6.05rem)/1.02 Georgia, "Times New Roman", serif;
+      letter-spacing: -.055em;
+    }
+    .hero h1 span { display: block; font: 700 .25em/1.3 system-ui, sans-serif; letter-spacing: .15em; margin-bottom: .7em; }
+    .subtitle { max-width: 760px; font-size: clamp(1.15rem, 2.2vw, 1.45rem); color: var(--muted); line-height: 1.5; }
+    .signature { margin-top: 1.55rem; color: var(--paper); font-size: 1.04rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin: 2rem 0 1.3rem; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 48px;
+      padding: .72rem 1.25rem; border: 1px solid var(--line); border-radius: 8px;
+      text-decoration: none; font-size: .95rem; font-weight: 650;
+      color: var(--paper); background: var(--panel-high);
+    }
+    .button:hover { background: #302449; }
+    .button.primary { color: #181025; background: var(--purple); border-color: var(--purple); }
+    .button.primary:hover { color: #181025; background: #d3c0ff; }
+    .byline { display: flex; gap: 1rem 1.4rem; flex-wrap: wrap; color: var(--quiet); font-size: .84rem; }
+    section { padding: 4rem 0; border-bottom: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: 150px 1fr; gap: 2rem; margin-bottom: 2.25rem; }
+    .section-number { color: var(--purple); font: 500 .78rem/1.5 ui-monospace, monospace; letter-spacing: .08em; }
+    .section-head p { max-width: 760px; color: var(--muted); margin-bottom: 0; }
+    .question {
+      margin: 0; max-width: 920px; padding: 1.4rem 0 1.4rem 1.5rem;
+      border-left: 3px solid var(--purple);
+      font: 400 clamp(1.45rem, 2.5vw, 1.9rem)/1.4 Georgia, "Times New Roman", serif;
+    }
+    .principle { margin: 2rem 0 0; padding: 1.3rem 1.5rem; background: var(--panel); border-radius: var(--radius); }
+    .principle strong { color: var(--mint); }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .card { padding: 1.5rem; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+    .card p:last-child { margin-bottom: 0; }
+    .card p { color: var(--muted); }
+    .label {
+      display: inline-block; margin: 0 0 1rem; padding: .15rem .55rem;
+      border: 1px solid var(--line); border-radius: 4px;
+      color: var(--muted); font-size: .69rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .label.observed { color: var(--mint); border-color: #385f5b; }
+    .label.simulated { color: var(--purple); border-color: #685187; }
+    .label.pending { color: var(--amber); border-color: #766241; }
+    .result-copy { min-height: 5.1rem; }
+    .result-copy.pending-copy { color: var(--amber); }
+    .scope-note { color: var(--muted); margin-top: 1.5rem; font-size: .95rem; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: .94rem; }
+    caption { text-align: left; padding: 1rem 1.2rem; color: var(--muted); background: var(--panel); }
+    th, td { padding: .95rem 1.2rem; vertical-align: top; border-top: 1px solid var(--line); }
+    thead th { color: var(--purple); font-size: .79rem; font-weight: 650; background: var(--panel); }
+    tbody th { font-weight: 600; color: var(--paper); width: 25%; }
+    td { color: var(--muted); }
+    .small { color: var(--quiet); font-size: .85rem; }
+    .evidence-key { display: flex; flex-wrap: wrap; gap: .8rem 1.8rem; margin-bottom: 1.3rem; }
+    .evidence-key .label { margin-bottom: 0; }
+    details { margin-top: 1.6rem; padding: 1.2rem 1.35rem; border: 1px solid var(--line); border-radius: 12px; }
+    summary { cursor: pointer; color: var(--paper); font-weight: 650; }
+    details p { margin: 1rem 0 0; color: var(--muted); }
+    .pdf-shell { background: #201b2c; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+    .pdf-bar { display: flex; justify-content: space-between; gap: 1rem; padding: .9rem 1.15rem; font-size: .85rem; }
+    .pdf-bar span { color: var(--muted); }
+    object { display: block; width: 100%; height: 760px; background: #e9e6ec; }
+    .pdf-fallback { padding: 2.5rem; color: #1a1425; background: #f6f3fa; }
+    .pdf-fallback a { color: #553092; }
+    .download-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .download { display: block; padding: 1.25rem; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; }
+    .download strong { display: block; color: var(--paper); margin-bottom: .3rem; }
+    .download span { color: var(--muted); font-size: .85rem; }
+    .download:hover { background: var(--panel); }
+    .citation { padding: 1.4rem; border-left: 3px solid var(--purple); background: var(--panel); color: var(--muted); }
+    footer { padding: 2rem 0 3rem; color: var(--quiet); font-size: .85rem; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+    footer p { margin: 0; }
+    @media (max-width: 740px) {
+      .wrap { width: calc(100% - 2rem); }
+      .masthead { align-items: flex-start; flex-direction: column; gap: .6rem; }
+      nav { gap: 1rem; }
+      .hero { padding: 3.1rem 0; }
+      .hero::before { inset-inline: 0; }
+      section { padding: 2.7rem 0; }
+      .section-head { grid-template-columns: 1fr; gap: .65rem; margin-bottom: 1.6rem; }
+      .grid, .download-grid { grid-template-columns: 1fr; }
+      .result-copy { min-height: 0; }
+      .card { padding: 1.3rem; }
+      th, td { padding: .85rem; }
+      tbody th { width: 29%; }
+      object { height: 560px; }
+      .pdf-bar { flex-direction: column; gap: .3rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media print {
+      :root { --space: white; --paper: #191421; --muted: #41374c; --quiet: #51485a; --purple: #62418d; --mint: #176c60; --line: #b5aabc; --panel: #f4f1f7; }
+      .hero::before, nav, .actions, .pdf-shell { display: none; }
+      body { font-size: 11pt; }
+      .wrap { width: 100%; }
+      section { padding: 1.5rem 0; break-inside: avoid; }
+      .hero { padding: 2rem 0; }
+      .hero h1 { font-size: 38pt; }
+      .card { break-inside: avoid; }
+      a { color: #62418d; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to research paper</a>
+  <header class="wrap masthead">
+    <a class="brand" href="#main" aria-label="MONTREAL.AI research home on this page">MONTREAL<span>.AI</span></a>
+    <nav aria-label="Paper sections">
+      <a href="#question">Question</a>
+      <a href="#findings">Findings</a>
+      <a href="#design">Study</a>
+      <a href="#paper">Paper</a>
+      <a href="#reproduce">Source</a>
+    </nav>
+  </header>
+  <main id="main" class="wrap">
+    <div class="draft" id="draft-status" role="note">
+      <strong>Internal publication draft.</strong> Final downloadable assets and the publication handoff are being verified.
+      This page is not a publication or a resolved result until the receiving owner approves the final handoff.
+    </div>
+    <div class="hero">
+      <p class="eyebrow">Constructive foresight for the intelligence transition</p>
+      <h1><span>AGI ALPHA</span>The advantage<br>you can build.</h1>
+      <p class="subtitle">Could the intelligence transition create an extraordinary opportunity—and when does foresight help build something useful in time?</p>
+      <p class="signature">Foresight earns its value through useful delivery.</p>
+      <div class="actions">
+        <a class="button primary" href="#paper">Read the paper <span aria-hidden="true">&nbsp;↓</span></a>
+        <a class="button" href="assets/AGI_ALPHA_Constructive_Foresight_Complete_Source.zip" download>Get the complete source</a>
+      </div>
+      <div class="byline">
+        <span>MONTREAL.AI</span>
+        <span>Research manuscript · Version 1</span>
+        <time datetime="2026-10-23">Manuscript date: 23 October 2026</time>
+      </div>
+    </div>
+
+    <section id="question" aria-labelledby="question-title">
+      <div class="section-head">
+        <p class="section-number">01 / THE QUESTION</p>
+        <div>
+          <h2 id="question-title">From anticipating change<br>to qualifying an advantage.</h2>
+          <p>Transformational intelligence (TI∞) motivates the inquiry. Defined tasks, credible alternatives and measured evidence determine the answer.</p>
+        </div>
+      </div>
+      <blockquote class="question">When does calibrated foresight help an agent identify a mission bottleneck, build an enabling capability, and deliver greater full-cost mission value before the opportunity changes?</blockquote>
+      <p class="principle"><strong>Mission Alpha</strong> is the useful value delivered by a chosen policy, after full costs, above the best credible alternative under comparable constraints. Better forecasts can be useless. Early construction can be costly. Waiting can be the right decision.</p>
+    </section>
+
+    <section id="findings" aria-labelledby="findings-title">
+      <div class="section-head">
+        <p class="section-number">02 / THE VERDICT</p>
+        <div>
+          <h2 id="findings-title">Useful readiness.<br>No unique full-cost advantage established.</h2>
+          <p id="verdict-summary">The instrument worked and local forecasts improved. Conventional factorization reuse explains the speed benefit. In the declared decision model, constructive foresight did not establish an advantage over the calibrated fixed rule and chose the same actions as an adaptive policy with the same information and lower measured controller cost.</p>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card" aria-labelledby="numerical-title">
+          <span class="label observed" id="numerical-evidence-label">Observed · local computation</span>
+          <h3 id="numerical-title">A capability that can be inspected.</h3>
+          <p class="result-copy" id="result-numerical">All 432 held-out batches—3,024 right-hand sides—passed. At 16 RHS, the instrument was about 7.0–13.6× faster than repeated cold factorization, yet took 1.01–1.44× the time of the native cached solver. Conventional reuse accounts for the benefit. <a href="#paper">Read the comparison.</a></p>
+        </article>
+        <article class="card" aria-labelledby="forecast-title">
+          <span class="label observed" id="forecast-evidence-label">Observed · local forecast</span>
+          <h3 id="forecast-title">A forecast that can be scored.</h3>
+          <p class="result-copy" id="result-forecast">At the preregistered primary deadline (multiplier 1), frozen forecasts scored 0.0721 Brier versus a calibration-only pooled constant of 0.2600 across 720 correlated outcomes; lower is better. Across all three deadlines, the secondary score was 0.0315 versus 0.2424 across 2,160 outcomes. These are local timing events, not AGI-arrival or adoption forecasts. <a href="#paper">Read the forecast analysis.</a></p>
+        </article>
+        <article class="card" aria-labelledby="decision-title">
+          <span class="label simulated">Controlled simulation</span>
+          <h3 id="decision-title">A decision that pays its full cost.</h3>
+          <p class="result-copy" id="result-decision">Against the calibrated fixed rule, selected using calibration only, nominal incremental value was +0.0257 assumed credits per episode (95% interval: −0.0390 to +0.1273). Under distribution shift, it was −0.0628 (−0.1216 to −0.0064). An adaptive policy with the same information chose identical actions in all 4,608 simulated episodes at lower controller cost. <a href="#paper">Read the model and uncertainty analysis.</a></p>
+        </article>
+        <article class="card" aria-labelledby="authority-title">
+          <span class="label observed" id="authority-evidence-label">Observed · engineering</span>
+          <h3 id="authority-title">A record that carries no permission.</h3>
+          <p class="result-copy" id="result-authority">Both fixed numerical runs passed, including actual refactorization after knowledge-only restore. Eight native authority/proof refusals and six receiver refusals behaved as required. Complete process cost: 6.552 seconds wall time. <a href="#reproduce">Inspect the retained evidence.</a></p>
+        </article>
+      </div>
+          <p class="scope-note"><strong>Scope:</strong> local computational delivery and a controlled decision model. Model credits are assumed utility units. Intervals use simulation seed blocks; episodes are not beneficiaries. External acceptance, paid demand, sector forecasts and investor returns are not established.</p>
+    </section>
+
+    <section id="design" aria-labelledby="design-title">
+      <div class="section-head">
+        <p class="section-number">03 / THE STUDY</p>
+        <div>
+          <h2 id="design-title">One bounded mission.<br>Several credible ways to act.</h2>
+          <p>Qualify repeated sparse-system investigations before an explicit computational deadline. A reusable numerical recipe binds conventional solver setup, preflight, verification and restoration to exact source and matrix bytes.</p>
+        </div>
+      </div>
+      <div class="table-wrap" id="study-table" tabindex="0" role="region" aria-label="Frozen study design table; scroll horizontally if needed">
+        <table>
+          <caption>Frozen study design. Counts describe the preregistration; completion and exclusions belong to the final results.</caption>
+          <thead><tr><th scope="col">Element</th><th scope="col">Design</th><th scope="col">Evidence boundary</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Public inputs</th><td>Four fixed power-system and structural matrices; manufactured right-hand sides.</td><td>Real-origin matrices; synthetic tasks.</td></tr>
+            <tr><th scope="row">Numerical alternatives</th><td>Repeated cold factorization; native cached factorization; a source-bound readiness instrument.</td><td>The cached solver is the strong comparator.</td></tr>
+            <tr><th scope="row">Qualified delivery</th><td>Every RHS must pass finite-value, residual, backward-error and manufactured forward-error checks.</td><td>Computational acceptance; no external beneficiary acceptance.</td></tr>
+            <tr><th scope="row">Forecast targets</th><td>Qualified local delivery by frozen elapsed deadlines, conditional on method and readiness.</td><td>Later local outcomes; no AGI-arrival forecast.</td></tr>
+            <tr><th scope="row">Decision alternatives</th><td>Forecast-only; constructive foresight; wait-and-act; calibrated fixed rule; adaptive nonforecast; adaptive with the same signal.</td><td>Comparable information and accounted budgets.</td></tr>
+            <tr><th scope="row">Stress conditions</th><td>Uninformative forecasts, costly premature action, delayed demand, fast imitation and distribution shift.</td><td>Controlled model interventions.</td></tr>
+            <tr><th scope="row">Costs</th><td>Construction, checking, search, restoration and orchestration; unknown labor, inference and maintenance costs remain explicit.</td><td>Measured native units plus stated sensitivity assumptions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details>
+        <summary>What the system demonstration can establish</summary>
+        <p>The wrapper uses unchanged, hash-pinned published Alpha SUCCESSOR code and the existing Jobs and Manager local receivers. Manager’s USDC route and Jobs’ AGIALPHA route remain separate, zero-cap handoffs. The Jobs pack restores knowledge with no active authority or current proof. Rebuilding the numerical recipe requires fresh factorization and checking.</p>
+        <p>The signatures reuse public RFC test material under one operator; they establish neither authentication nor independent custody. Fleet is source-inspected only. No installed Fleet executor, funded transaction, deployed settlement or independently accepted customer work is claimed.</p>
+      </details>
+    </section>
+
+    <section id="evidence" aria-labelledby="evidence-title">
+      <div class="section-head">
+        <p class="section-number">04 / THE BOUNDARY</p>
+        <div>
+          <h2 id="evidence-title">Different claims.<br>Different kinds of evidence.</h2>
+          <p>Results, counterfactuals and unresolved outcomes are kept visibly separate throughout the manuscript and source.</p>
+        </div>
+      </div>
+      <div class="evidence-key" aria-label="Evidence labels">
+        <span class="label observed">Observed</span><span class="label simulated">Simulated</span>
+        <span class="label">Assumed</span><span class="label pending">Prospective</span>
+      </div>
+      <div class="table-wrap" id="evidence-table" tabindex="0" role="region" aria-label="Evidence classification table; scroll horizontally if needed">
+        <table>
+          <caption>How to read the paper’s claims.</caption>
+          <thead><tr><th scope="col">Class</th><th scope="col">Meaning here</th><th scope="col">Does not establish</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Observed</th><td>Actual local timings, numerical outputs, byte checks and runtime refusals.</td><td>Customer adoption, independent replication or economic value at deployment scale.</td></tr>
+            <tr><th scope="row">Simulated</th><td>Policy counterfactuals in a declared finite model, informed by measured computational costs.</td><td>A realized market or causal sector-level outcome.</td></tr>
+            <tr><th scope="row">Assumed</th><td>Adoption, competition, imitation, demand, pricing and monetary conversion scenarios.</td><td>Verified demand, revenue or investment returns.</td></tr>
+            <tr><th scope="row">Prospective</th><td>Unresolved external outcomes and acceptance targets after the research cutoff.</td><td>Success before the outcome is observed.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="paper" aria-labelledby="paper-title">
+      <div class="section-head">
+        <p class="section-number">05 / THE PAPER</p>
+        <div>
+          <h2 id="paper-title">Read the complete argument.</h2>
+          <p>The paper connects the motivating opportunity question to explicit evidence boundaries, a testable intervention, measured capability and a qualified net-value verdict.</p>
+        </div>
+      </div>
+      <div class="pdf-shell">
+        <div class="pdf-bar">
+          <span>AGI Alpha: The Advantage You Can Build · PDF</span>
+          <a href="assets/AGI_ALPHA_The_Advantage_You_Can_Build.pdf">Open PDF directly</a>
+        </div>
+        <object data="assets/AGI_ALPHA_The_Advantage_You_Can_Build.pdf#view=FitH" type="application/pdf"
+                title="Full research paper PDF: AGI Alpha, The Advantage You Can Build" aria-label="Embedded full research paper PDF">
+          <div class="pdf-fallback">
+            <h3>Read the PDF in your viewer.</h3>
+            <p>If your browser cannot display the paper here, use the direct file.</p>
+            <a href="assets/AGI_ALPHA_The_Advantage_You_Can_Build.pdf">Open or download the full paper</a>
+          </div>
+        </object>
+      </div>
+      <p class="small" style="margin-top:1rem">The direct PDF link remains available on mobile devices and when inline PDF viewing is unsupported.</p>
+    </section>
+
+    <section id="reproduce" aria-labelledby="source-title">
+      <div class="section-head">
+        <p class="section-number">06 / THE SOURCE</p>
+        <div>
+          <h2 id="source-title">Inspect it. Rebuild it. Challenge it.</h2>
+          <p>The complete archive preserves the canonical PDF, LaTeX and bibliography, original figures, experiment source, exact-source manifest, retained failures, results and environment instructions.</p>
+        </div>
+      </div>
+      <div class="download-grid">
+        <a class="download" href="assets/AGI_ALPHA_The_Advantage_You_Can_Build.pdf" download>
+          <strong>Research paper <span aria-hidden="true">↗</span></strong><span>Canonical PDF</span>
+        </a>
+        <a class="download" href="assets/AGI_ALPHA_The_Advantage_You_Can_Build.tex" download>
+          <strong>LaTeX source <span aria-hidden="true">↗</span></strong><span>Main manuscript; dependencies in the archive</span>
+        </a>
+        <a class="download" href="assets/AGI_ALPHA_Constructive_Foresight_Complete_Source.zip" download>
+          <strong>Complete archive <span aria-hidden="true">↗</span></strong><span>Source, figures, evidence and manifest</span>
+        </a>
+      </div>
+      <p class="small" id="verification-summary">Internal draft: final asset hashes, archive verification and receiving-owner publication acknowledgment are pending.</p>
+      <p>Publication coordination and source review: <a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850">MontrealAI/AGI-Alpha-Agent-v0 · issue #4850</a>.</p>
+      <h3>Cite this manuscript</h3>
+      <p class="citation">MONTREAL.AI (2026). <em>AGI Alpha: The Advantage You Can Build—Constructive Foresight for the Intelligence Transition.</em> Research manuscript, version 1.</p>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <p>MONTREAL.AI · Constructive foresight research</p>
+      <p><a href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/197147ffd22c5ae13113162afffaf3ce9c10aa2e/docs/DISCLAIMER_SNIPPET.md">Project disclaimer</a></p>
+      <p>Evidence determines the answer.</p>
+    </div>
+  </footer>
+</body>
+</html>

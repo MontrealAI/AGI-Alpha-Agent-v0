@@ -1,0 +1,16 @@
+{
+  "id": "A04",
+  "utc": "2026-10-24T02:22:07.197702+00:00",
+  "before": "decision calibration and confirmation; numerical confirmation now complete",
+  "visible_outcomes": "Numerical432/432passed; separatedecisionengineeringseed9001only",
+  "changes": [
+    "Decision admission uses frozen calibration duration estimates, then charges actual sampled runtime. Late numerical success is not accepted beforedeadline; its fullcostisretained.",
+    "Wait/nonforecast probabilities come from an offline shared evaluator, computed outside decisiontimers, excluded from policycalibrationplots.",
+    "Primitive durations are measuredwallseconds. Numericalwalltime,controllerCPU,controllerwalldelay,preparationCPU andassumedwall-equivalentcosts are reported separately. The credit conversion uses an explicit commonassumedrate, not a claimedhardwareCPUtotal.",
+    "The deployedsame-signalconventionalpolicy compiles its rule on calibration, while constructive policy performs the equivalentfiniteevaluation atdecisiontime. Both payfullmodelpreparationallocation and can chooseidenticalactions. Thisengineeringefficiencydifference isnot hidden."
+  ],
+  "hypotheses_changed": false,
+  "confirmation_seeds_changed": false,
+  "decision_source_sha256": "9413cd8f9b2c197c6617f9a4e604b5db69a112f5ae4223155490d529f6f1b3cc",
+  "decision_protocol_sha256": "ded342bad3fcd29cba90730abf3117d1e398bee6b8d99db6cc4d74bd69d1b4ad"
+}

@@ -1,0 +1,45 @@
+\subsection{A controlled timing experiment, anchored to measured work}
+Real computation cannot reveal the counterfactual demand that a different policy would have encountered. We therefore separate an observed capability trial from a controlled timing model. The model uses only numerical \emph{calibration} runtimes. It does not manufacture an observed customer, an adoption event or a day-scale industrial lead time.
+
+One common clock unit is the median build time across the four frozen matrix primitives: 0.047096737755 seconds. The horizon is eight units. A binary forecast target asks whether at least one numerically qualified request is delivered by absolute model time four and before its expiry. The no-action alternative rents available conventional service; construction changes the delivery distribution. Forecasts are explicitly conditional on the chosen plan and its information acquisition.
+
+Before decision calibration, the executable source and protocol fixed six regimes, eight calibration seeds (101--108), twenty-four confirmation seeds (201--224), and 32 episodes per seed per regime. A finite calibration scenario bank estimates action values and event probabilities. The training file, selected comparator, primitives, source and protocol were then hashed in a separate freeze, saved durably, reopened and publicly recorded before confirmation. Every eligible policy receives the same context, frozen model, tools, signal-purchase option and construction plans. Actual deployed policy work and model preparation are charged.
+
+Table~\ref{tab:policies} gives the competitors. ``Expert'' is a code label for a strong calibration-optimized rule; no human expert was recruited. The fixed rule can select a plan with adaptive arrival recourse. Thus ``static'' does not mean a deliberately helpless competitor. The same-information adaptive competitor compiles the finite decision rule during preparation, and may match constructive foresight exactly.
+
+\begin{table}[ht]\centering\small
+\begin{tabularx}{\linewidth}{@{}L{35mm}Y@{}}\toprule
+Policy & Allowed behavior and role \\\midrule
+Forecast only & Buys the signal and rents conventional service. Construction is removed as a declared ablation. \\
+Constructive foresight & Evaluates finite prior and posterior plans, acquires information only for positive modeled net VOI, then builds, rents, defers or uses arrival recourse. \\
+Wait and act & Waits for observed demand and then constructs. Timing ablation; does not exploit cheap competing service. \\
+Calibrated fixed rule & Selects the best prior plan from the calibration model, including adaptive arrival recourse; pays model preparation. Locked primary comparator after calibration. \\
+Adaptive, no forecast & Uses observed arrival, request count, expiry and available conventional service to decide whether to build or rent. No acquired forecast. \\
+Adaptive, same information & Uses the same model, signal and feasible plans as constructive foresight, compiled into a conventional decision table. Pays preparation and actual dispatch work. \\
+Clairvoyant menu & Exact best realized choice among the finite common plan menu and build-at-demand with future events revealed. Nondeployable upper reference; excluded from comparator selection. \\\bottomrule
+\end{tabularx}
+\caption{Preregistered controlled-model design. Forecast-only and wait-and-act policies are explicit ablations. Strong competitors can construct capabilities and use the same tools. No real-world organization is represented by a measured performance claim.}
+\label{tab:policies}\end{table}
+
+The base demand probabilities are 0.10, 0.35 and 0.70. A demanded episode requests 1, 4, 16 or 64 outputs with probabilities 0.45, 0.30, 0.20 and 0.05. The declared nominal adoption probability is 0.85. Request arrival, adoption delay, expiry, competitor arrival and imitation lag are sampled from explicit finite distributions in the protocol. Information acquisition costs 0.05 clock units and also delays action. Alternative service amortizes its measured construction cost over an assumed 64 requests, available equally to all policies. That amortization is an assumption, not observed demand or free competitor capital.
+
+\begin{table}[ht]\centering\small
+\begin{tabularx}{\linewidth}{@{}L{34mm}YY@{}}\toprule
+Regime & Declared change & Testable failure mechanism \\\midrule
+Nominal & Signal accuracy 0.8, nominal adoption and competition & Can information change a worthwhile construction decision? \\
+Uninformative signal & Known accuracy 0.5 & Does the policy avoid paying for information with no decision value? \\
+Costly construction & Build cost multiplied by 8; demand probability by 0.45 & Can speculative preparation or mandatory late construction destroy value? \\
+Delayed demand & Actual arrival delayed by 6 units and adoption falls to 0.45; unannounced to the model & Does outdated timing create idle capability and missed useful demand? \\
+Fast imitation & Earlier competing supply and short imitation lags & Does an accessible alternative remove the reason to build privately? \\
+Distribution shift & Actual signal accuracy 0.2 while the model assumes 0.8 & Does a confident but reversed signal lead to harmful intervention? \\\bottomrule
+\end{tabularx}
+\caption{\assum{} / \simu{}. These stress regimes are declared causal interventions inside the finite model. Their frequencies are not empirical sector base rates.}
+\label{tab:regimes}\end{table}
+
+The information boundary is strict. At arrival, the policy observes demand, count, current time, expiry and current alternative availability. Before then, it cannot see the actual future arrival, expiry, competitor times, sampled service durations or success draws. Request admission uses calibrated duration estimates. Once admitted, an attempt pays its actual sampled duration even if it finishes late. Late numerical success is not qualified on-time delivery. The clairvoyant reference is the only arm with perfect future-event knowledge, and its ideal-menu bound is reported separately from its measured search cost.
+
+Each qualified on-time request receives one \emph{assumed} mission credit. Cost is one credit per common clock unit. Accounted seconds sum replayed numerical wall time, assumed acquisition/competitor time and measured controller/preparation CPU at that explicit common price. They are neither metered total CPU nor currency. Actual controller wall time delays dispatch; CPU measures its cost. Full model-fitting CPU is allocated to each independently deployed model-using policy over the declared 4,608 confirmation episodes, not divided among policies as a shared free resource. Study execution counts the actual fitting process once in its separate measured ledger.
+
+Wait-and-act and adaptive-without-forecast receive offline shared-evaluator probability estimates only \emph{after} their timed decision. Those estimates are excluded from policy calibration plots and their evaluator CPU is study overhead. The oracle's zero-error retrospective event label is likewise not a forecast. Policy-conditional forecast scores use only probabilities available before the corresponding simulated outcome.
+
+Paired common random numbers expose each policy to the same exogenous world. Method order is randomized. The primary effect is constructive foresight minus the calibration-selected eligible comparator in each declared regime; its 95\% intervals resample 24 complete seed blocks with 2,000 resamples. This pairing supports model-internal counterfactual comparisons, not an external causal estimate of customer adoption. \citep{rubin1974} The calibration bank, source, stopping rule and comparator are frozen before confirmation; no unfavorable episode is discarded. Post-confirmation service-value sensitivity is explicitly exploratory and holds all actions and outcomes fixed.
