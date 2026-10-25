@@ -237,6 +237,29 @@ def run_acceptance(
         assert current_project["cycles"][0] == project["cycles"][0]
         checks.append("whole-html-close-reopen-offline-restores-planning-and-mission-history")
 
+        upload(page, known_raw)
+        expect(page.locator("#shadow-cost")).to_have_value("")
+        expect(page.locator("#shadow-price")).to_have_value("")
+        expect(page.locator("#shadow-acceptance")).to_have_value("unknown")
+        expect(page.locator("#shadow-reinvestment")).to_have_value("0")
+        assert json.loads(download(page, "#shadow-download")) == known
+        checks.append("earlier-cycle-ledger-import-keeps-unplanned-current-cycle-unknown")
+        unplanned_path = Path(folder) / "portable-unplanned-cycle.html"
+        unplanned_path.write_bytes(download(page, "#download-workspace"))
+        restored_context = browser.new_context(offline=True, reduced_motion="reduce")
+        restored_context.on("request", observe_request)
+        restored_page = restored_context.new_page()
+        restored_page.on("pageerror", lambda error: errors.append(str(error)))
+        restored_page.goto(unplanned_path.as_uri())
+        expect(restored_page.locator("#restored-note")).to_contain_text("historical")
+        expect(restored_page.locator("#shadow-cost")).to_have_value("")
+        expect(restored_page.locator("#shadow-price")).to_have_value("")
+        expect(restored_page.locator("#shadow-acceptance")).to_have_value("unknown")
+        expect(restored_page.locator("#shadow-reinvestment")).to_have_value("0")
+        assert json.loads(restored_page.locator("#saved-shadow-ledger").text_content()) == known
+        restored_context.close()
+        checks.append("portable-restore-never-inherits-earlier-cycle-finances-or-acceptance")
+
         page.locator("#next-cycle").click()
         run_custom(page, LEFT, RIGHT.replace("45", "48").replace("80", "82"))
         expect(page.locator("#shadow-cost")).to_have_value("")

@@ -114,3 +114,9 @@ That source and outcome remain recorded. The repaired source now has an actual
 UI regression, plus new shared-cost controls and separately checked recovery
 software. Exact current-head hosted browser acceptance is still required before
 this candidate is integrated or described as publicly installed.
+
+Further review reproduced earlier-cycle assumptions entering an unplanned current cycle.
+The [current-cycle restoration repair](automation-v1/CYCLE_RESTORATION_VALIDATION.json)
+selects only the latest matching plan on workspace restoration and ledger import.
+Four actual-source regressions pass; the earlier archive stays intact. Fresh
+hosted qualification is required for this source; previous passes remain historical.

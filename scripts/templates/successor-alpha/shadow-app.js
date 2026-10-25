@@ -27,14 +27,16 @@ function fillShadow(inputs) {
     $('shadow-cost-complete').checked = inputs?.operatingCostsComplete || false;
     $('shadow-reinvestment').value = String((inputs?.reinvestmentBps || 0)/100);
 }
+function fillCurrentShadow() {
+    const current=dossier?.cycles.at(-1);
+    shadowFormCycleId=current?.id;
+    const retained=shadowArchive && dossier && shadowArchive.projectId===dossier.id ?
+        [...shadowArchive.entries].reverse().find(entry=>entry.cycleId===current?.id) : null;
+    fillShadow(retained?.inputs);
+}
 function renderShadow() {
     const current = dossier?.cycles.at(-1);
-    if (current?.id !== shadowFormCycleId) {
-        shadowFormCycleId=current?.id;
-        const retained=shadowArchive && dossier && shadowArchive.projectId === dossier.id ?
-            [...shadowArchive.entries].reverse().find(entry=>entry.cycleId===current?.id) : null;
-        fillShadow(retained?.inputs);
-    }
+    if (current?.id !== shadowFormCycleId) fillCurrentShadow();
     $('shadow-calculate').disabled = !current;
     $('shadow-download').disabled = !shadowArchive?.entries.length;
     if (!shadowArchive || shadowArchive.projectId !== dossier?.id) {
@@ -86,7 +88,7 @@ function restoreShadow() {
     const raw=$('saved-shadow-ledger').textContent.trim();
     if (raw && raw !== 'null') {
         shadowArchive=shadow.inspectPlans(raw,dossier);
-        fillShadow(shadowArchive.entries.at(-1)?.inputs); renderShadow();
+        fillCurrentShadow(); renderShadow();
     }
 }
 function shadowError(error) {
@@ -118,6 +120,6 @@ $('shadow-file').addEventListener('change',async()=>{
         const incoming=shadow.inspectPlans(raw,dossier);
         if(shadowArchive && shadowArchive.entries.some((entry,i)=>transport.canonical(entry)!==transport.canonical(incoming.entries[i])))
             throw Error('Import would replace or remove retained planning history.');
-        shadowArchive=incoming; fillShadow(incoming.entries.at(-1)?.inputs); renderShadow();
+        shadowArchive=incoming; fillCurrentShadow(); renderShadow();
     } catch(error){shadowError(error);} finally{$('shadow-file').value='';}
 });

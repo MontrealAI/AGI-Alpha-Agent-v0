@@ -1,0 +1,54 @@
+{
+  "schema": "alpha-current-cycle-restoration-validation/v1",
+  "parentCommit": "846b12762dc69e1317103116b37529461d3902fe",
+  "reviewThread": "PRRT_kwDONwDjTc6wC11E",
+  "finding": "Workspace restoration and ledger import selected last archive entry even when it belonged to an earlier cycle.",
+  "reproduced": true,
+  "preFixRegressionEvidence": "review/cycle-restore-pre-fix.txt",
+  "preFixFailedCases": 4,
+  "repair": "One current-cycle selector initializes, restores and imports latest matching cycle inputs. No matching plan clears all financial inputs, acceptance/completeness and reinvestment; immutable earlier history is retained.",
+  "sourceSha256": {
+    "scripts/templates/successor-alpha/shadow-app.js": "c27963cbb096ffc0a85fc1f1457303fa8f629371a928f297a0294c505306e5ee",
+    "examples/successor-alpha/shadow-ui.test.mjs": "3a41302e83a466f5516aee7d3e5ac72966ad8e088f1beea6883057b5a41ae7ff",
+    "tests/browser/test_shadow_ledger_browser.py": "544b1e3e5003371d3df49f8563bd80e95e5a26115f98c4b1dfb50430b4754ab0",
+    "docs/successor/alpha/index.html": "8af62cacebf5e6d45365715985acf10a3c509c39d80c67db69d29cb9de0cfe4e",
+    "docs/successor/alpha/sources.json": "ec5d6c27f1af90e84a79e9286aa2cee499d3120125e9e0f5fd8f9fc09543cfc8"
+  },
+  "localTests": {
+    "node": 167,
+    "deterministicPage": 5,
+    "releaseEvidence": 18,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actualSourceUIRegressions": {
+    "total": 8,
+    "added": 4,
+    "covers": [
+      "workspace restore with unplanned latest cycle",
+      "ledger import with unplanned latest cycle",
+      "workspace restore prefers latest current-cycle plan over later earlier-cycle revision",
+      "ledger import prefers latest current-cycle plan over later earlier-cycle revision"
+    ]
+  },
+  "chromiumAcceptanceExtended": [
+    "import earlier-cycle ledger while latest cycle remains unplanned",
+    "reopen portable workspace in fresh offline context and assert unknown current-cycle money and acceptance"
+  ],
+  "hostedAcceptance": "Fresh current-head required; parent846b run40211327282 success is historical and not transferred.",
+  "unchangedBindings": {
+    "costModelSha256": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506",
+    "runnerSha256": "2158e34cab75f11242f6d130c696ba276abb53e017f862ecc7ee8e40e1f8779b",
+    "methodIdentity": "17e09fd0d79d823e176d7a4f2eb547adc91ff71162766c6d0995fe2d3778fab9",
+    "interpretation": "No arithmetic, pricing, runner or source-delivery implementation changes; their exact-source receipts retain their original scope."
+  },
+  "reviewBurden": {
+    "externallyReportedFindings": 3,
+    "reproducedFindings": 3,
+    "falseAlarmsObserved": 0,
+    "reviewResourceCost": null,
+    "limits": "Counts describe these review rounds only, not a production error-rate estimate."
+  },
+  "approvedLiveExecutor": "NOT RUN by this team; approved operator home and exact profile remain receiving-owner dependency.",
+  "financialActions": false
+}
