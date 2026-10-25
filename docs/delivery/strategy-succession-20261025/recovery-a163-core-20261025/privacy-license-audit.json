@@ -1,0 +1,41 @@
+{
+  "schema": "core-recovery-data-only-privacy-license-audit/v1",
+  "source_commit": "a163b5b3e34551e5dfdf2075c6f69c8cdb3e0c1f",
+  "review_scope": "Explicit selected UTF-8 report files only; no directory-driven selection.",
+  "status": "clear-for-this-data-only-append-plan",
+  "manual_review": [
+    "Read verification, inventories, README, cost/environment records and raw successful/failed diagnostic logs.",
+    "Inspected all five JUnit headers, test names, error/skip payloads and paths; parsed with DTD/entities/external access forbidden.",
+    "Verified all 18 source-inventory identities against the historical committed Git bodies, without executing those bodies."
+  ],
+  "automated_checks": {
+    "regular_files_no_symlink_ancestors": true,
+    "bounded_utf8_text_no_nul": true,
+    "strict_json_no_duplicate_keys_or_nonfinite_values": true,
+    "junit_dtd_entities_external_forbidden": true,
+    "common_credential_signature_matches": 0
+  },
+  "retained_diagnostic_metadata": [
+    "Generic scratch, interpreter, installed-package and synthetic-fixture path strings.",
+    "Generic /root/.local installed-package location strings; no private-home file contents.",
+    "Ephemeral container hostname and test timestamps in raw JUnit.",
+    "Public PyPI hostname and fixed public dependency filename in acquisition diagnostics."
+  ],
+  "excluded": [
+    "SQLite/database snapshot bodies; hashes, columns, counts and fixture-presence flags only are retained.",
+    "Private-home contents, tokens/credentials, provider data, QA environments and dependency/package wheel bodies.",
+    "Generated fixture trees, runner source bodies and the preexisting broad receipt-inventory.json.",
+    "Licensed scanner rule bodies, source/package archives, whole-directory ZIPs and executable artifacts."
+  ],
+  "license_provenance": {
+    "new_notes": "Project-authored Apache-2.0 evidence notes and factual records.",
+    "raw_reports": "Project-generated test/JUnit/tool diagnostics; original bytes retained.",
+    "tracebacks": "Minimal diagnostic stack excerpts and package locations only, not bundled third-party implementation or rule bodies.",
+    "source_inventory": "Hashes and sizes of committed source, not source body redistribution.",
+    "dependency_record": "Version, filename, size, public origin and hash only; no wheel or third-party source copied."
+  },
+  "scope_limit": "A bounded content/provenance review, not a claim of universal secret detection or software licensing certification.",
+  "production_authority": false,
+  "proof": [],
+  "authority": []
+}

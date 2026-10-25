@@ -1,0 +1,56 @@
+{
+  "black": {
+    "exit_code": 0,
+    "elapsed_seconds": 0.17552337299275678,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "black",
+      "--check",
+      "alpha_factory_v1/backend/memory_fabric.py",
+      "alpha_factory_v1/core/archive/db.py",
+      "alpha_factory_v1/core/archive/manager.py",
+      "alpha_factory_v1/core/self_evolution/harness.py",
+      "tests/test_archive_policy.py",
+      "tests/test_legacy_identity_security.py"
+    ]
+  },
+  "ruff": {
+    "exit_code": 0,
+    "elapsed_seconds": 0.028906226012622938,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "alpha_factory_v1/backend/memory_fabric.py",
+      "alpha_factory_v1/core/archive/db.py",
+      "alpha_factory_v1/core/archive/manager.py",
+      "alpha_factory_v1/core/self_evolution/harness.py",
+      "tests/test_archive_policy.py",
+      "tests/test_legacy_identity_security.py"
+    ]
+  },
+  "mypy-copy-fence": {
+    "exit_code": 0,
+    "elapsed_seconds": 1.1828917829989223,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "mypy",
+      "--config-file",
+      "mypy.ini",
+      "alpha_factory_v1/core/self_evolution/harness.py"
+    ]
+  },
+  "actual-release-base-binary-gate": {
+    "exit_code": 0,
+    "elapsed_seconds": 4.447577225000714,
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "scripts/check_no_binary_diff.py",
+      "--base",
+      "5499495911bf8822ac0aa8c9007f00789c1132b5"
+    ]
+  }
+}

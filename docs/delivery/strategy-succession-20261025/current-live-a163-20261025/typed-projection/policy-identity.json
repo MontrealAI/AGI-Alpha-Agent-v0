@@ -1,0 +1,1070 @@
+{
+  "source_url": "https://semgrep.dev/c/p/python",
+  "sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+  "rule_ids": [
+    "python.boto3.security.hardcoded-token.hardcoded-token",
+    "python.cryptography.security.insecure-cipher-algorithms.insecure-cipher-algorithm-idea",
+    "python.cryptography.security.insecure-cipher-mode-ecb.insecure-cipher-mode-ecb",
+    "python.cryptography.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+    "python.cryptography.security.insufficient-dsa-key-size.insufficient-dsa-key-size",
+    "python.cryptography.security.insufficient-ec-key-size.insufficient-ec-key-size",
+    "python.cryptography.security.insufficient-rsa-key-size.insufficient-rsa-key-size",
+    "python.distributed.security.require-encryption",
+    "python.django.security.audit.avoid-insecure-deserialization.avoid-insecure-deserialization",
+    "python.django.security.injection.open-redirect.open-redirect",
+    "python.django.security.injection.reflected-data-httpresponse.reflected-data-httpresponse",
+    "python.django.security.injection.reflected-data-httpresponsebadrequest.reflected-data-httpresponsebadrequest",
+    "python.django.security.injection.request-data-fileresponse.request-data-fileresponse",
+    "python.django.security.injection.request-data-write.request-data-write",
+    "python.django.security.injection.code.user-eval-format-string.user-eval-format-string",
+    "python.django.security.injection.code.user-eval.user-eval",
+    "python.django.security.injection.code.user-exec-format-string.user-exec-format-string",
+    "python.django.security.injection.code.user-exec.user-exec",
+    "python.django.security.injection.command.command-injection-os-system.command-injection-os-system",
+    "python.django.security.injection.email.xss-html-email-body.xss-html-email-body",
+    "python.django.security.injection.email.xss-send-mail-html-message.xss-send-mail-html-message",
+    "python.django.security.injection.path-traversal.path-traversal-open.path-traversal-open",
+    "python.django.security.injection.sql.sql-injection-extra.sql-injection-using-extra-where",
+    "python.django.security.injection.sql.sql-injection-rawsql.sql-injection-using-rawsql",
+    "python.django.security.injection.sql.sql-injection-using-db-cursor-execute.sql-injection-db-cursor-execute",
+    "python.django.security.injection.sql.sql-injection-using-raw.sql-injection-using-raw",
+    "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+    "python.django.security.injection.ssrf.ssrf-injection-urllib.ssrf-injection-urllib",
+    "python.django.security.passwords.password-empty-string.password-empty-string",
+    "python.django.security.passwords.use-none-for-password-default.use-none-for-password-default",
+    "python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host",
+    "python.flask.security.audit.app-run-security-config.avoid_using_app_run_directly",
+    "python.flask.security.audit.debug-enabled.debug-enabled",
+    "python.flask.security.audit.directly-returned-format-string.directly-returned-format-string",
+    "python.flask.security.injection.os-system-injection.os-system-injection",
+    "python.flask.security.injection.path-traversal-open.path-traversal-open",
+    "python.flask.security.injection.ssrf-requests.ssrf-requests",
+    "python.flask.security.injection.user-eval.eval-injection",
+    "python.flask.security.injection.user-exec.exec-injection",
+    "python.jwt.security.jwt-hardcode.jwt-python-hardcoded-secret",
+    "python.jwt.security.jwt-none-alg.jwt-python-none-alg",
+    "python.jwt.security.unverified-jwt-decode.unverified-jwt-decode",
+    "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+    "python.lang.security.insecure-hash-function.insecure-hash-function",
+    "python.lang.security.unverified-ssl-context.unverified-ssl-context",
+    "python.lang.security.audit.ssl-wrap-socket-is-deprecated.ssl-wrap-socket-is-deprecated",
+    "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+    "python.lang.security.audit.weak-ssl-version.weak-ssl-version",
+    "python.lang.security.audit.insecure-transport.requests.request-session-http-in-with-context.request-session-http-in-with-context",
+    "python.lang.security.audit.insecure-transport.requests.request-session-with-http.request-session-with-http",
+    "python.lang.security.audit.insecure-transport.requests.request-with-http.request-with-http",
+    "python.lang.security.audit.logging.logger-credential-leak.python-logger-credential-disclosure",
+    "python.lang.security.audit.network.bind.avoid-bind-to-all-interfaces",
+    "python.lang.security.audit.network.disabled-cert-validation.disabled-cert-validation",
+    "python.lang.security.audit.network.http-not-https-connection.http-not-https-connection",
+    "python.lang.security.deserialization.avoid-pyyaml-load.avoid-pyyaml-load",
+    "python.lang.security.deserialization.avoid-unsafe-ruamel.avoid-unsafe-ruamel",
+    "python.lang.security.deserialization.pickle.avoid-shelve",
+    "python.pycryptodome.security.insecure-cipher-algorithm.insecure-cipher-algorithm-xor",
+    "python.pycryptodome.security.insecure-hash-algorithm.insecure-hash-algorithm-sha1",
+    "python.pycryptodome.security.insufficient-dsa-key-size.insufficient-dsa-key-size",
+    "python.pycryptodome.security.insufficient-rsa-key-size.insufficient-rsa-key-size",
+    "python.sqlalchemy.security.sqlalchemy-sql-injection.sqlalchemy-sql-injection",
+    "python.pymongo.security.mongodb.mongo-client-bad-auth",
+    "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+    "python.django.security.injection.raw-html-format.raw-html-format",
+    "python.flask.security.injection.raw-html-concat.raw-html-format",
+    "python.flask.security.injection.tainted-url-host.tainted-url-host",
+    "python.flask.security.injection.tainted-sql-string.tainted-sql-string",
+    "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+    "python.sqlalchemy.security.audit.avoid-sqlalchemy-text.avoid-sqlalchemy-text",
+    "python.aws-lambda.security.dangerous-asyncio-create-exec.dangerous-asyncio-create-exec",
+    "python.aws-lambda.security.dangerous-asyncio-exec.dangerous-asyncio-exec",
+    "python.aws-lambda.security.dangerous-asyncio-shell.dangerous-asyncio-shell",
+    "python.aws-lambda.security.dangerous-spawn-process.dangerous-spawn-process",
+    "python.aws-lambda.security.dangerous-subprocess-use.dangerous-subprocess-use",
+    "python.aws-lambda.security.dangerous-system-call.dangerous-system-call",
+    "python.aws-lambda.security.mysql-sqli.mysql-sqli",
+    "python.aws-lambda.security.psycopg-sqli.psycopg-sqli",
+    "python.aws-lambda.security.pymssql-sqli.pymssql-sqli",
+    "python.aws-lambda.security.pymysql-sqli.pymysql-sqli",
+    "python.aws-lambda.security.sqlalchemy-sqli.sqlalchemy-sqli",
+    "python.aws-lambda.security.tainted-code-exec.tainted-code-exec",
+    "python.aws-lambda.security.tainted-html-response.tainted-html-response",
+    "python.aws-lambda.security.tainted-sql-string.tainted-sql-string",
+    "python.django.security.nan-injection.nan-injection",
+    "python.flask.security.injection.nan-injection.nan-injection",
+    "python.aws-lambda.security.tainted-html-string.tainted-html-string",
+    "python.jinja2.security.audit.autoescape-disabled-false.incorrect-autoescape-disabled",
+    "python.jinja2.security.audit.missing-autoescape-disabled.missing-autoescape-disabled",
+    "python.aws-lambda.security.dynamodb-filter-injection.dynamodb-filter-injection",
+    "python.pyramid.audit.authtkt-cookie-httponly-unsafe-default.pyramid-authtkt-cookie-httponly-unsafe-default",
+    "python.pyramid.audit.authtkt-cookie-httponly-unsafe-value.pyramid-authtkt-cookie-httponly-unsafe-value",
+    "python.pyramid.audit.authtkt-cookie-samesite.pyramid-authtkt-cookie-samesite",
+    "python.pyramid.audit.authtkt-cookie-secure-unsafe-default.pyramid-authtkt-cookie-secure-unsafe-default",
+    "python.pyramid.audit.authtkt-cookie-secure-unsafe-value.pyramid-authtkt-cookie-secure-unsafe-value",
+    "python.pyramid.audit.csrf-origin-check-disabled-globally.pyramid-csrf-origin-check-disabled-globally",
+    "python.pyramid.audit.csrf-origin-check-disabled.pyramid-csrf-origin-check-disabled",
+    "python.pyramid.audit.set-cookie-httponly-unsafe-default.pyramid-set-cookie-httponly-unsafe-default",
+    "python.pyramid.audit.set-cookie-httponly-unsafe-value.pyramid-set-cookie-httponly-unsafe-value",
+    "python.pyramid.audit.set-cookie-samesite-unsafe-default.pyramid-set-cookie-samesite-unsafe-default",
+    "python.pyramid.audit.set-cookie-samesite-unsafe-value.pyramid-set-cookie-samesite-unsafe-value",
+    "python.pyramid.audit.set-cookie-secure-unsafe-default.pyramid-set-cookie-secure-unsafe-default",
+    "python.pyramid.audit.set-cookie-secure-unsafe-value.pyramid-set-cookie-secure-unsafe-value",
+    "python.pyramid.security.csrf-check-disabled-globally.pyramid-csrf-check-disabled-globally",
+    "python.pyramid.security.direct-use-of-response.pyramid-direct-use-of-response",
+    "python.pyramid.security.sqlalchemy-sql-injection.pyramid-sqlalchemy-sql-injection",
+    "python.aws-lambda.security.tainted-pickle-deserialization.tainted-pickle-deserialization",
+    "python.lang.security.audit.dangerous-asyncio-exec-tainted-env-args.dangerous-asyncio-exec-tainted-env-args",
+    "python.lang.security.audit.dangerous-asyncio-shell-tainted-env-args.dangerous-asyncio-shell-tainted-env-args",
+    "python.lang.security.audit.dangerous-code-run-tainted-env-args.dangerous-interactive-code-run-tainted-env-args",
+    "python.lang.security.audit.dangerous-os-exec-tainted-env-args.dangerous-os-exec-tainted-env-args",
+    "python.lang.security.audit.dangerous-spawn-process-tainted-env-args.dangerous-spawn-process-tainted-env-args",
+    "python.lang.security.audit.dangerous-subinterpreters-run-string-tainted-env-args.dangerous-subinterpreters-run-string-tainted-env-args",
+    "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+    "python.lang.security.audit.dangerous-system-call-tainted-env-args.dangerous-system-call-tainted-env-args",
+    "python.lang.security.audit.dangerous-testcapi-run-in-subinterp-tainted-env-args.dangerous-testcapi-run-in-subinterp-tainted-env-args",
+    "python.lang.security.dangerous-code-run.dangerous-interactive-code-run",
+    "python.lang.security.dangerous-os-exec.dangerous-os-exec",
+    "python.lang.security.dangerous-spawn-process.dangerous-spawn-process",
+    "python.lang.security.dangerous-subinterpreters-run-string.dangerous-subinterpreters-run-string",
+    "python.lang.security.dangerous-subprocess-use.dangerous-subprocess-use",
+    "python.lang.security.dangerous-system-call.dangerous-system-call",
+    "python.lang.security.dangerous-testcapi-run-in-subinterp.dangerous-testcapi-run-in-subinterp",
+    "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+    "python.django.security.injection.csv-writer-injection.csv-writer-injection",
+    "python.flask.security.injection.csv-writer-injection.csv-writer-injection",
+    "python.flask.security.injection.subprocess-injection.subprocess-injection",
+    "python.cryptography.security.mode-without-authentication.crypto-mode-without-authentication",
+    "python.pycryptodome.security.mode-without-authentication.crypto-mode-without-authentication",
+    "python.cryptography.security.insecure-cipher-algorithms-arc4.insecure-cipher-algorithm-arc4",
+    "python.cryptography.security.insecure-cipher-algorithms-blowfish.insecure-cipher-algorithm-blowfish",
+    "python.cryptography.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "python.pycryptodome.security.insecure-cipher-algorithm-blowfish.insecure-cipher-algorithm-blowfish",
+    "python.pycryptodome.security.insecure-cipher-algorithm-des.insecure-cipher-algorithm-des",
+    "python.pycryptodome.security.insecure-cipher-algorithm-rc2.insecure-cipher-algorithm-rc2",
+    "python.pycryptodome.security.insecure-cipher-algorithm-rc4.insecure-cipher-algorithm-rc4",
+    "python.pycryptodome.security.insecure-hash-algorithm-md2.insecure-hash-algorithm-md2",
+    "python.pycryptodome.security.insecure-hash-algorithm-md4.insecure-hash-algorithm-md4",
+    "python.pycryptodome.security.insecure-hash-algorithm-md5.insecure-hash-algorithm-md5",
+    "python.cryptography.security.empty-aes-key.empty-aes-key",
+    "python.django.security.hashids-with-django-secret.hashids-with-django-secret",
+    "python.flask.security.hashids-with-flask-secret.hashids-with-flask-secret",
+    "python.lang.security.use-defused-xml-parse.use-defused-xml-parse",
+    "python.django.security.django-using-request-post-after-is-valid.django-using-request-post-after-is-valid",
+    "python.fastapi.security.wildcard-cors.wildcard-cors",
+    "python.twilio.security.twiml-injection.twiml-injection",
+    "python.lang.security.insecure-uuid-version.insecure-uuid-version",
+    "python.lang.security.audit.sha224-hash.sha224-hash",
+    "python.flask.security.audit.flask-url-for-external-true.flask-url-for-external-true"
+  ],
+  "rule_definitions": [
+    {
+      "id": "python.boto3.security.hardcoded-token.hardcoded-token",
+      "sha256": "cecf9899c7c738655eb3b076be7695ad96649c819123e9abcc139ec493c3fcdb",
+      "start_byte": 9,
+      "end_byte": 2372
+    },
+    {
+      "id": "python.cryptography.security.insecure-cipher-algorithms.insecure-cipher-algorithm-idea",
+      "sha256": "c75af4d5688c01a3830c596f9b49ae8319476cffb091c52523ae9148abbe2f42",
+      "start_byte": 2374,
+      "end_byte": 4808
+    },
+    {
+      "id": "python.cryptography.security.insecure-cipher-mode-ecb.insecure-cipher-mode-ecb",
+      "sha256": "edb7871fa59b6547c50cea40962b15d5d723af3e4d989d52b8d478c0c48485d3",
+      "start_byte": 4810,
+      "end_byte": 6889
+    },
+    {
+      "id": "python.cryptography.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+      "sha256": "e3feeb8e683415bdb14a5170fc90ea023ffb331ef52214cb3e06081122b7579b",
+      "start_byte": 6891,
+      "end_byte": 9154
+    },
+    {
+      "id": "python.cryptography.security.insufficient-dsa-key-size.insufficient-dsa-key-size",
+      "sha256": "ea92ed1f3b99107f87c01abe74deaea9390da01da468e8f36b4201b8fa9f4b2e",
+      "start_byte": 9156,
+      "end_byte": 11270
+    },
+    {
+      "id": "python.cryptography.security.insufficient-ec-key-size.insufficient-ec-key-size",
+      "sha256": "6490c253cd938928673810b71f71e99263e2f122c995d0ff480b4d94433d3544",
+      "start_byte": 11272,
+      "end_byte": 13339
+    },
+    {
+      "id": "python.cryptography.security.insufficient-rsa-key-size.insufficient-rsa-key-size",
+      "sha256": "a820598a3f951f50a051b8463b88c86fb47dd70a9fff3f6f847ac0448e151fcb",
+      "start_byte": 13341,
+      "end_byte": 15383
+    },
+    {
+      "id": "python.distributed.security.require-encryption",
+      "sha256": "cec932932a99eb0076988f3de1f8e6cc9f8d053be621d9aeb29c8c2889f62395",
+      "start_byte": 15385,
+      "end_byte": 16930
+    },
+    {
+      "id": "python.django.security.audit.avoid-insecure-deserialization.avoid-insecure-deserialization",
+      "sha256": "f9c5c21e466fed11b9e8b6c280695e9914de400660fec6115685a697f19bc6b2",
+      "start_byte": 16932,
+      "end_byte": 19802
+    },
+    {
+      "id": "python.django.security.injection.open-redirect.open-redirect",
+      "sha256": "4e9a882fe8143cacd92c3c655c997862056941b45462bcb6fe36f4a11ed8cba5",
+      "start_byte": 19804,
+      "end_byte": 41948
+    },
+    {
+      "id": "python.django.security.injection.reflected-data-httpresponse.reflected-data-httpresponse",
+      "sha256": "835fee9fd6ec235f1c72b5d1a1f86efa119c2218b8b2fa955a4eb6148d4609c3",
+      "start_byte": 41950,
+      "end_byte": 51228
+    },
+    {
+      "id": "python.django.security.injection.reflected-data-httpresponsebadrequest.reflected-data-httpresponsebadrequest",
+      "sha256": "2349a2e99bd5a75cf212069a7f97d41e1ff4100c11aa42e863319a39c7d3028b",
+      "start_byte": 51230,
+      "end_byte": 61125
+    },
+    {
+      "id": "python.django.security.injection.request-data-fileresponse.request-data-fileresponse",
+      "sha256": "1755be4dde6d043780f32f2efce0591de2097a1f4a0d5b76e8c7835ac094aadb",
+      "start_byte": 61127,
+      "end_byte": 64945
+    },
+    {
+      "id": "python.django.security.injection.request-data-write.request-data-write",
+      "sha256": "6cbbd112b8e1fbcbcff42ae63c12965f8b314921fb580add4a16d4424fcde154",
+      "start_byte": 64947,
+      "end_byte": 70724
+    },
+    {
+      "id": "python.django.security.injection.code.user-eval-format-string.user-eval-format-string",
+      "sha256": "4cd0ba2d7efd7adeab74f097ea035cb8081dcdce5405534bd9254bc68998ee70",
+      "start_byte": 70726,
+      "end_byte": 74718
+    },
+    {
+      "id": "python.django.security.injection.code.user-eval.user-eval",
+      "sha256": "710fd809abeb32290987e8572a30b44303cac5d45a766d4ec9da5bc82e4f25eb",
+      "start_byte": 74720,
+      "end_byte": 76697
+    },
+    {
+      "id": "python.django.security.injection.code.user-exec-format-string.user-exec-format-string",
+      "sha256": "fd9c4d5fcd4a967a78dae685c02bf8e14f8ff9f5e577dcce9132f3c39e8dd5d1",
+      "start_byte": 76699,
+      "end_byte": 83797
+    },
+    {
+      "id": "python.django.security.injection.code.user-exec.user-exec",
+      "sha256": "4f73d2891fb033e0a90112e77fe6eae059c08b4f5d35b46d00a8935718a7a8e7",
+      "start_byte": 83799,
+      "end_byte": 86306
+    },
+    {
+      "id": "python.django.security.injection.command.command-injection-os-system.command-injection-os-system",
+      "sha256": "fbf0dba24ff680d42baae35844a3bcbff663348103f93b464ecae5d48efc8c10",
+      "start_byte": 86308,
+      "end_byte": 96161
+    },
+    {
+      "id": "python.django.security.injection.email.xss-html-email-body.xss-html-email-body",
+      "sha256": "f9fcfdf8cc4783b44d51889c78fe833509f17c38a3791d0b18d3de649200ba48",
+      "start_byte": 96163,
+      "end_byte": 103318
+    },
+    {
+      "id": "python.django.security.injection.email.xss-send-mail-html-message.xss-send-mail-html-message",
+      "sha256": "c3b8f4a96538d24b7ea2495fd8af753b711341486a4e7b1e70edf8e92d82ad01",
+      "start_byte": 103320,
+      "end_byte": 112143
+    },
+    {
+      "id": "python.django.security.injection.path-traversal.path-traversal-open.path-traversal-open",
+      "sha256": "bc120e86764c2ce6001ced2eed41c88f046a6ce12a2414c918df468d11bbe466",
+      "start_byte": 112145,
+      "end_byte": 125313
+    },
+    {
+      "id": "python.django.security.injection.sql.sql-injection-extra.sql-injection-using-extra-where",
+      "sha256": "ec57638d16397e84382d475ed364241e46063a6fd74badfd1a7215e5a35a6c6a",
+      "start_byte": 125315,
+      "end_byte": 136732
+    },
+    {
+      "id": "python.django.security.injection.sql.sql-injection-rawsql.sql-injection-using-rawsql",
+      "sha256": "d9e740ae15e766644b4211c19d53f3d7ff216971494fe39b0ca459503b62428f",
+      "start_byte": 136734,
+      "end_byte": 147875
+    },
+    {
+      "id": "python.django.security.injection.sql.sql-injection-using-db-cursor-execute.sql-injection-db-cursor-execute",
+      "sha256": "9af588c11cf00866e4987045851a85687be8f5a18bb40bc595792f3231cd2ba4",
+      "start_byte": 147877,
+      "end_byte": 157618
+    },
+    {
+      "id": "python.django.security.injection.sql.sql-injection-using-raw.sql-injection-using-raw",
+      "sha256": "b229b0df2a9430da7aa4bae6851e5fad07708d435d9476dac2579d10997070dc",
+      "start_byte": 157620,
+      "end_byte": 167508
+    },
+    {
+      "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+      "start_byte": 167510,
+      "end_byte": 176226
+    },
+    {
+      "id": "python.django.security.injection.ssrf.ssrf-injection-urllib.ssrf-injection-urllib",
+      "sha256": "3b8a749bdb7f7c0131694e559ea8327fd71d443e5e5c1ca25407ee5de99d1547",
+      "start_byte": 176228,
+      "end_byte": 185283
+    },
+    {
+      "id": "python.django.security.passwords.password-empty-string.password-empty-string",
+      "sha256": "403bd605a4c30544c5920fcff58fbd2ee95407e26ca96ec7d21f91784d43b151",
+      "start_byte": 185285,
+      "end_byte": 187040
+    },
+    {
+      "id": "python.django.security.passwords.use-none-for-password-default.use-none-for-password-default",
+      "sha256": "7cdee8cce0b71001045a5d4a277a8807f0bd6dfb8390056eb80810fa4a709b72",
+      "start_byte": 187042,
+      "end_byte": 188982
+    },
+    {
+      "id": "python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host",
+      "sha256": "b9f1d9df9a5b9ca624f0d215416d49cb3e423b96f9fb43ff34f0434aaa2808d0",
+      "start_byte": 188984,
+      "end_byte": 190329
+    },
+    {
+      "id": "python.flask.security.audit.app-run-security-config.avoid_using_app_run_directly",
+      "sha256": "d6269650e147accc992b08c5fedec3a7f9e930f067f0e6b06fbd5e019a91e151",
+      "start_byte": 190331,
+      "end_byte": 191799
+    },
+    {
+      "id": "python.flask.security.audit.debug-enabled.debug-enabled",
+      "sha256": "877a6e73d6b1b286e5f63b35145651da25011eea9d6354d2f5d26df7d3c95ec3",
+      "start_byte": 191801,
+      "end_byte": 193228
+    },
+    {
+      "id": "python.flask.security.audit.directly-returned-format-string.directly-returned-format-string",
+      "sha256": "a62719adca5d04ba776e98e14355b7eb533726f035634f04bc7da9174a08e9bb",
+      "start_byte": 193230,
+      "end_byte": 195981
+    },
+    {
+      "id": "python.flask.security.injection.os-system-injection.os-system-injection",
+      "sha256": "7a573777414d3a1e63870db673beb18ca74898e7d24d5798307b8c56571b8e7c",
+      "start_byte": 195983,
+      "end_byte": 198877
+    },
+    {
+      "id": "python.flask.security.injection.path-traversal-open.path-traversal-open",
+      "sha256": "79ea29fa24852953be64b8df1b6e743b103b4ee0833417227cafe2f232cdf06e",
+      "start_byte": 198879,
+      "end_byte": 202629
+    },
+    {
+      "id": "python.flask.security.injection.ssrf-requests.ssrf-requests",
+      "sha256": "8882489347a409c2cece8bcfd71ec44df4abbdf8ace3609ca7ac6a9e3eb0b44d",
+      "start_byte": 202631,
+      "end_byte": 205826
+    },
+    {
+      "id": "python.flask.security.injection.user-eval.eval-injection",
+      "sha256": "6ec08edeb04e7f3ffab7bce3d5352efb28081152a9d60480ea46057b6d177175",
+      "start_byte": 205828,
+      "end_byte": 208440
+    },
+    {
+      "id": "python.flask.security.injection.user-exec.exec-injection",
+      "sha256": "f727c271c311a14a11dbb44baec2a9178ef7bbbd3c3d0fb40ad5269cf76eb728",
+      "start_byte": 208442,
+      "end_byte": 211052
+    },
+    {
+      "id": "python.jwt.security.jwt-hardcode.jwt-python-hardcoded-secret",
+      "sha256": "20452fe8b42e38c2df2ddc8fa7e52ddad21a3ef942a442356180766f4832b898",
+      "start_byte": 211054,
+      "end_byte": 212610
+    },
+    {
+      "id": "python.jwt.security.jwt-none-alg.jwt-python-none-alg",
+      "sha256": "7dd12c4f78870bde1762c346de53b28a391d96cc69fab605846bfd5f2583346d",
+      "start_byte": 212612,
+      "end_byte": 214338
+    },
+    {
+      "id": "python.jwt.security.unverified-jwt-decode.unverified-jwt-decode",
+      "sha256": "23c60169a407925aa63dfcdc903d87c14817f879ab16749e9db102af02710722",
+      "start_byte": 214340,
+      "end_byte": 216413
+    },
+    {
+      "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+      "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+      "start_byte": 216415,
+      "end_byte": 218600
+    },
+    {
+      "id": "python.lang.security.insecure-hash-function.insecure-hash-function",
+      "sha256": "b757b1839f2617454cb9315b35cc08961579b54dbf7c27b8990cd0a71ab0b760",
+      "start_byte": 218602,
+      "end_byte": 220776
+    },
+    {
+      "id": "python.lang.security.unverified-ssl-context.unverified-ssl-context",
+      "sha256": "9b8e073bf84dc3551dbd2dab764f3a9fd0761ccc500803b6f36992bb396a003a",
+      "start_byte": 220778,
+      "end_byte": 222479
+    },
+    {
+      "id": "python.lang.security.audit.ssl-wrap-socket-is-deprecated.ssl-wrap-socket-is-deprecated",
+      "sha256": "2e43cba97ec76fc174bae8736f6d67597a8b0e2ac931aba15c084136407b8c08",
+      "start_byte": 222481,
+      "end_byte": 224085
+    },
+    {
+      "id": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+      "sha256": "e8179b38a11f0677217ab6943d86ab38c658c72150a5c2ee41bd0882f132c6fc",
+      "start_byte": 224087,
+      "end_byte": 226123
+    },
+    {
+      "id": "python.lang.security.audit.weak-ssl-version.weak-ssl-version",
+      "sha256": "ee01733e3b8fec308fa4472b8184f813da864f2ee75ec4fae04308866bead819",
+      "start_byte": 226125,
+      "end_byte": 228343
+    },
+    {
+      "id": "python.lang.security.audit.insecure-transport.requests.request-session-http-in-with-context.request-session-http-in-with-context",
+      "sha256": "e761a964a6fd25e422c41b884ddde48c334f360da694ce12dc2b37a5e2e8a358",
+      "start_byte": 228345,
+      "end_byte": 230857
+    },
+    {
+      "id": "python.lang.security.audit.insecure-transport.requests.request-session-with-http.request-session-with-http",
+      "sha256": "c401c64233117454a3f30923fae8c6ba07851a85af96d45c81a504141971da38",
+      "start_byte": 230859,
+      "end_byte": 233223
+    },
+    {
+      "id": "python.lang.security.audit.insecure-transport.requests.request-with-http.request-with-http",
+      "sha256": "b4be7adbc7e18e9c1d0089e5d8e4f510da76e4854541f999c57e0464174f3f4e",
+      "start_byte": 233225,
+      "end_byte": 235658
+    },
+    {
+      "id": "python.lang.security.audit.logging.logger-credential-leak.python-logger-credential-disclosure",
+      "sha256": "d55420bd626a92afbbb626c3d796c3ac11b7038e909904c9b8dd0a39a09567b0",
+      "start_byte": 235660,
+      "end_byte": 237640
+    },
+    {
+      "id": "python.lang.security.audit.network.bind.avoid-bind-to-all-interfaces",
+      "sha256": "e5575f8932a7e872ad524838543436f8449704143cb2a88abeeeae1e2194971a",
+      "start_byte": 237642,
+      "end_byte": 239354
+    },
+    {
+      "id": "python.lang.security.audit.network.disabled-cert-validation.disabled-cert-validation",
+      "sha256": "21d067db198ff6942486047b1f6c75d2909b1c4775a685344dba8db07d41f010",
+      "start_byte": 239356,
+      "end_byte": 241471
+    },
+    {
+      "id": "python.lang.security.audit.network.http-not-https-connection.http-not-https-connection",
+      "sha256": "4f13ba6979cac4025820527cd11f63b0d9f4d12f0ea54df1f8731767dfc64585",
+      "start_byte": 241473,
+      "end_byte": 243083
+    },
+    {
+      "id": "python.lang.security.deserialization.avoid-pyyaml-load.avoid-pyyaml-load",
+      "sha256": "44a2630bcad7262c18bd42fd45f753b28211183cbbb181daae6b2b9857d3216c",
+      "start_byte": 243085,
+      "end_byte": 245574
+    },
+    {
+      "id": "python.lang.security.deserialization.avoid-unsafe-ruamel.avoid-unsafe-ruamel",
+      "sha256": "e7de05000134fd7cc75a740e0ceba74fe6eecf9e8066b5b6ddf09b26904714ce",
+      "start_byte": 245576,
+      "end_byte": 247240
+    },
+    {
+      "id": "python.lang.security.deserialization.pickle.avoid-shelve",
+      "sha256": "f86b445e9c133ea16811eaf368f128a8c871c7a2d4d12d9b9f5e53b9751bba46",
+      "start_byte": 247242,
+      "end_byte": 248787
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-cipher-algorithm.insecure-cipher-algorithm-xor",
+      "sha256": "f26e5d22ec03242d1b63ff17d60d250518bc1d1813b8c94d503325c6fbe4a5c8",
+      "start_byte": 248789,
+      "end_byte": 250498
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-hash-algorithm.insecure-hash-algorithm-sha1",
+      "sha256": "1ab0925dd3cc2cdbefc952c9d924d219a3f1c9fa2a2dc0cc708e1ca7ae36ed97",
+      "start_byte": 250500,
+      "end_byte": 252464
+    },
+    {
+      "id": "python.pycryptodome.security.insufficient-dsa-key-size.insufficient-dsa-key-size",
+      "sha256": "4d013c3db0a13abf9b54b73b0aa14b52d2100331dda13c68bf2d0bdab7680e0d",
+      "start_byte": 252466,
+      "end_byte": 254556
+    },
+    {
+      "id": "python.pycryptodome.security.insufficient-rsa-key-size.insufficient-rsa-key-size",
+      "sha256": "25b10eab7d69c1d6f63291df8271f2f333d58398b44dd443c62e6e0c59d59c71",
+      "start_byte": 254558,
+      "end_byte": 256652
+    },
+    {
+      "id": "python.sqlalchemy.security.sqlalchemy-sql-injection.sqlalchemy-sql-injection",
+      "sha256": "0a649ace4b0eb4b0b5d4df5478e3afb59d11a332fac4920ec3c09431cf375940",
+      "start_byte": 256654,
+      "end_byte": 259198
+    },
+    {
+      "id": "python.pymongo.security.mongodb.mongo-client-bad-auth",
+      "sha256": "6bc4058cff07be3ca4605f1511c8ac8249a2b1cf1d65c267bd061eae137f9f4d",
+      "start_byte": 259200,
+      "end_byte": 260530
+    },
+    {
+      "id": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+      "sha256": "a8215217b91be9c2122b4863001f8d037c3e7e515ff70275a729d8b879476b19",
+      "start_byte": 260532,
+      "end_byte": 263185
+    },
+    {
+      "id": "python.django.security.injection.raw-html-format.raw-html-format",
+      "sha256": "69f38d4cfec9446c695fd3a33b0b063f5efecd595500258e2f70915936150325",
+      "start_byte": 263187,
+      "end_byte": 265812
+    },
+    {
+      "id": "python.flask.security.injection.raw-html-concat.raw-html-format",
+      "sha256": "f71cd84e55b0b131bcd20d81f19c3464343ee16db119d38f7cfac38b5965b04f",
+      "start_byte": 265814,
+      "end_byte": 268656
+    },
+    {
+      "id": "python.flask.security.injection.tainted-url-host.tainted-url-host",
+      "sha256": "429bcd0f250533b2b312194f10d29b3eb837f75a8f8df42c578b33465522976d",
+      "start_byte": 268658,
+      "end_byte": 271763
+    },
+    {
+      "id": "python.flask.security.injection.tainted-sql-string.tainted-sql-string",
+      "sha256": "b41660c07ddab52329218c94bdb2de329fd4dd9ff7ccf3c8e5c458c166b5312d",
+      "start_byte": 271765,
+      "end_byte": 274295
+    },
+    {
+      "id": "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+      "sha256": "b8ce6a3eace1bd18fdec2b9e349a44af263e1fe3089f246c498bf800019c544d",
+      "start_byte": 274297,
+      "end_byte": 276607
+    },
+    {
+      "id": "python.sqlalchemy.security.audit.avoid-sqlalchemy-text.avoid-sqlalchemy-text",
+      "sha256": "24be69ff2f922187450776d2b6c7edf008a6eb6dc30ca8dd83c050efdd0eb100",
+      "start_byte": 276609,
+      "end_byte": 278861
+    },
+    {
+      "id": "python.aws-lambda.security.dangerous-asyncio-create-exec.dangerous-asyncio-create-exec",
+      "sha256": "f683be04c228ee11f082992c09f9b9ea8ff9ba55fe4aae2a46b8d07f1ae93744",
+      "start_byte": 278863,
+      "end_byte": 281958
+    },
+    {
+      "id": "python.aws-lambda.security.dangerous-asyncio-exec.dangerous-asyncio-exec",
+      "sha256": "ba203b0a46460ac403592d69af032a8b50220c3336c54ced1253c9de3f9028e2",
+      "start_byte": 281960,
+      "end_byte": 284581
+    },
+    {
+      "id": "python.aws-lambda.security.dangerous-asyncio-shell.dangerous-asyncio-shell",
+      "sha256": "dde900fae4e22d8e6ea8f31434e6ab9bf2af59bcd253d6147de5a0bf506390b3",
+      "start_byte": 284583,
+      "end_byte": 286998
+    },
+    {
+      "id": "python.aws-lambda.security.dangerous-spawn-process.dangerous-spawn-process",
+      "sha256": "3141384810478c6d982682effdcaf6b3ec66da2f62e02326eaba32eae3cc2295",
+      "start_byte": 287000,
+      "end_byte": 290110
+    },
+    {
+      "id": "python.aws-lambda.security.dangerous-subprocess-use.dangerous-subprocess-use",
+      "sha256": "a6a9a198336cecf5e2cc1437bae87be1cab78c2c9c4a930e6cfaf2a45990169c",
+      "start_byte": 290112,
+      "end_byte": 292653
+    },
+    {
+      "id": "python.aws-lambda.security.dangerous-system-call.dangerous-system-call",
+      "sha256": "e9cf14949b46565f10270c8cb71e97d28ea64fd8d24c858cc4bf3617b33aba6c",
+      "start_byte": 292655,
+      "end_byte": 295080
+    },
+    {
+      "id": "python.aws-lambda.security.mysql-sqli.mysql-sqli",
+      "sha256": "23479f63ed737335b1511c6d2505796845a5e3b8e5728dbae60c112023d52ed8",
+      "start_byte": 295082,
+      "end_byte": 297279
+    },
+    {
+      "id": "python.aws-lambda.security.psycopg-sqli.psycopg-sqli",
+      "sha256": "3a479998c7f0a12e4b0aac4608b2d164131e5dfb9d8625c7f4a04dfddd1e63df",
+      "start_byte": 297281,
+      "end_byte": 299448
+    },
+    {
+      "id": "python.aws-lambda.security.pymssql-sqli.pymssql-sqli",
+      "sha256": "5aca9eff1600872d3a7833124e49ef253a537e4c8280f99daf6f852aa304bc39",
+      "start_byte": 299450,
+      "end_byte": 301333
+    },
+    {
+      "id": "python.aws-lambda.security.pymysql-sqli.pymysql-sqli",
+      "sha256": "8ecbe3fba010c6e9feb6df0aee3a7bc20057186e9b117e20d196325c89e49f9e",
+      "start_byte": 301335,
+      "end_byte": 303325
+    },
+    {
+      "id": "python.aws-lambda.security.sqlalchemy-sqli.sqlalchemy-sqli",
+      "sha256": "4c04b1b949534007877bc3ba4c7869bd28e7399e79a472c052d142d47fdb791c",
+      "start_byte": 303327,
+      "end_byte": 305298
+    },
+    {
+      "id": "python.aws-lambda.security.tainted-code-exec.tainted-code-exec",
+      "sha256": "8b39ea893e5ed01d465f3d316c772cc7bf442bde2e7619f417c8087808d2f994",
+      "start_byte": 305300,
+      "end_byte": 307305
+    },
+    {
+      "id": "python.aws-lambda.security.tainted-html-response.tainted-html-response",
+      "sha256": "787427474549ef77b778398d727847e992b3b09080ec104b077786c0d4baa710",
+      "start_byte": 307307,
+      "end_byte": 309171
+    },
+    {
+      "id": "python.aws-lambda.security.tainted-sql-string.tainted-sql-string",
+      "sha256": "64bea2e12583479c4b2c95f94030dd961e10357eeb0c31bd3bcabf019de8f488",
+      "start_byte": 309173,
+      "end_byte": 311449
+    },
+    {
+      "id": "python.django.security.nan-injection.nan-injection",
+      "sha256": "cedf9dbfb52450c41a81b46eed9552d805b227a8e6e21f4d67fd392be4f6e5a9",
+      "start_byte": 311451,
+      "end_byte": 313399
+    },
+    {
+      "id": "python.flask.security.injection.nan-injection.nan-injection",
+      "sha256": "b6223e1a56420e6bb685d8b86cfc70b72c9b2342ce6853a6b92e137ae588b010",
+      "start_byte": 313401,
+      "end_byte": 315367
+    },
+    {
+      "id": "python.aws-lambda.security.tainted-html-string.tainted-html-string",
+      "sha256": "96162400dca0048303f88327d4093dfa189c4414c117ba4dd4e40f79af7ef165",
+      "start_byte": 315369,
+      "end_byte": 317852
+    },
+    {
+      "id": "python.jinja2.security.audit.autoescape-disabled-false.incorrect-autoescape-disabled",
+      "sha256": "c00976302e81f2d86c61a19ab76b0f4550eeed4656e6053206f6602affd74b81",
+      "start_byte": 317854,
+      "end_byte": 319819
+    },
+    {
+      "id": "python.jinja2.security.audit.missing-autoescape-disabled.missing-autoescape-disabled",
+      "sha256": "c1cab9ec4041159e2a9a3e47b49b35180dbb5ef33c8c7b5325cd3ce40d973fd1",
+      "start_byte": 319821,
+      "end_byte": 321718
+    },
+    {
+      "id": "python.aws-lambda.security.dynamodb-filter-injection.dynamodb-filter-injection",
+      "sha256": "6ce14c0a78174ad17266b47ca2908082ea2c1638c866c29d05d5f4332858e306",
+      "start_byte": 321720,
+      "end_byte": 323938
+    },
+    {
+      "id": "python.pyramid.audit.authtkt-cookie-httponly-unsafe-default.pyramid-authtkt-cookie-httponly-unsafe-default",
+      "sha256": "3cd972f892a0416b3356f1e52f65d0f6a4b829d3e1f1b7bbd01b6a38e3c97da8",
+      "start_byte": 323940,
+      "end_byte": 325993
+    },
+    {
+      "id": "python.pyramid.audit.authtkt-cookie-httponly-unsafe-value.pyramid-authtkt-cookie-httponly-unsafe-value",
+      "sha256": "8ad06d899287e4f66b0bfa7dcaabeae042f78db3b2d01cc0a550b2567d8f8b7a",
+      "start_byte": 325995,
+      "end_byte": 328161
+    },
+    {
+      "id": "python.pyramid.audit.authtkt-cookie-samesite.pyramid-authtkt-cookie-samesite",
+      "sha256": "3196ee91411fd6fd8960a401f7071345c018faf5e8987fb038122764dc037900",
+      "start_byte": 328163,
+      "end_byte": 329997
+    },
+    {
+      "id": "python.pyramid.audit.authtkt-cookie-secure-unsafe-default.pyramid-authtkt-cookie-secure-unsafe-default",
+      "sha256": "c6e1736a4a739263e7423cbe2bc026a51a0838c8966a81eead8e7edba16bbe8f",
+      "start_byte": 329999,
+      "end_byte": 332261
+    },
+    {
+      "id": "python.pyramid.audit.authtkt-cookie-secure-unsafe-value.pyramid-authtkt-cookie-secure-unsafe-value",
+      "sha256": "148c0b1a1146f461eead047515aa06ed75f742e65c3bd0847373dd5574e972a2",
+      "start_byte": 332263,
+      "end_byte": 334406
+    },
+    {
+      "id": "python.pyramid.audit.csrf-origin-check-disabled-globally.pyramid-csrf-origin-check-disabled-globally",
+      "sha256": "e5f3651d253efa25b05880b2bff47a4a0e773e27a4045322dbba7edb06865169",
+      "start_byte": 334408,
+      "end_byte": 336349
+    },
+    {
+      "id": "python.pyramid.audit.csrf-origin-check-disabled.pyramid-csrf-origin-check-disabled",
+      "sha256": "a452e5c5279bd19b00728528852b4ad5f62ab62fc8764acbaf01cd2b5df29fdb",
+      "start_byte": 336351,
+      "end_byte": 338318
+    },
+    {
+      "id": "python.pyramid.audit.set-cookie-httponly-unsafe-default.pyramid-set-cookie-httponly-unsafe-default",
+      "sha256": "dd34ab0d76407247b7a7c10900fbc36a5cac6d3b4abf10c459b8f5074e1e0c05",
+      "start_byte": 338320,
+      "end_byte": 340482
+    },
+    {
+      "id": "python.pyramid.audit.set-cookie-httponly-unsafe-value.pyramid-set-cookie-httponly-unsafe-value",
+      "sha256": "9f1e821f9f47a592f9ed2d45a1cc56b2c72362746040f7e786b2045a189fd723",
+      "start_byte": 340484,
+      "end_byte": 342801
+    },
+    {
+      "id": "python.pyramid.audit.set-cookie-samesite-unsafe-default.pyramid-set-cookie-samesite-unsafe-default",
+      "sha256": "1ae1a96405678aabe7c0f1dee4fcf6072beda738233cce65f8002a3035f25216",
+      "start_byte": 342803,
+      "end_byte": 344960
+    },
+    {
+      "id": "python.pyramid.audit.set-cookie-samesite-unsafe-value.pyramid-set-cookie-samesite-unsafe-value",
+      "sha256": "12e42e0e2782ddd4892ee9cda4258c5b1a6081561dd60589414250c09cfa4d84",
+      "start_byte": 344962,
+      "end_byte": 347107
+    },
+    {
+      "id": "python.pyramid.audit.set-cookie-secure-unsafe-default.pyramid-set-cookie-secure-unsafe-default",
+      "sha256": "16fa91dd6df8bf97750c0f33439455c226a4f44113e7d9e43394be03a0850ef8",
+      "start_byte": 347109,
+      "end_byte": 349264
+    },
+    {
+      "id": "python.pyramid.audit.set-cookie-secure-unsafe-value.pyramid-set-cookie-secure-unsafe-value",
+      "sha256": "06f30fa380f077d8776b41a3f2b28f44cba0dd7dc6e1274bf7f6aaa286b3cb99",
+      "start_byte": 349266,
+      "end_byte": 351415
+    },
+    {
+      "id": "python.pyramid.security.csrf-check-disabled-globally.pyramid-csrf-check-disabled-globally",
+      "sha256": "729e62bb03d7b56da66d65ad258081d9e872c48b93a246942c6ab41ed25a09c7",
+      "start_byte": 351417,
+      "end_byte": 353250
+    },
+    {
+      "id": "python.pyramid.security.direct-use-of-response.pyramid-direct-use-of-response",
+      "sha256": "80e4a98c16d952fc7b0306b603283f78841e86b8165ddfd25ca1dda86bdb9bb0",
+      "start_byte": 353252,
+      "end_byte": 355444
+    },
+    {
+      "id": "python.pyramid.security.sqlalchemy-sql-injection.pyramid-sqlalchemy-sql-injection",
+      "sha256": "59f62cf58b23c8de71e4f489b880848dbf589eeebf7534bc6bb982b436452ffd",
+      "start_byte": 355446,
+      "end_byte": 358084
+    },
+    {
+      "id": "python.aws-lambda.security.tainted-pickle-deserialization.tainted-pickle-deserialization",
+      "sha256": "38bcd91bef87608fa351a2fec4481bad7677c273f81b1790ac84aae80ecd41e6",
+      "start_byte": 358086,
+      "end_byte": 360388
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-asyncio-exec-tainted-env-args.dangerous-asyncio-exec-tainted-env-args",
+      "sha256": "bb9738dee893bcf485afe4b27b0fb9452bf6188caa3663fb8095cbee8db59667",
+      "start_byte": 360390,
+      "end_byte": 364699
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-asyncio-shell-tainted-env-args.dangerous-asyncio-shell-tainted-env-args",
+      "sha256": "8e2f5df1af076ef4c450f3366793f37dbb5147e367d1d828974eaf9843d4aaec",
+      "start_byte": 364701,
+      "end_byte": 368803
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-code-run-tainted-env-args.dangerous-interactive-code-run-tainted-env-args",
+      "sha256": "3d9577a7a083749bed08412f56e5842cce9d2b05205c760dff3f4de2239294d0",
+      "start_byte": 368805,
+      "end_byte": 372830
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-os-exec-tainted-env-args.dangerous-os-exec-tainted-env-args",
+      "sha256": "cda947d16789faf500c7ce56a001f9ae7b63f1bd21b066aaaf09a0d3cd2585fd",
+      "start_byte": 372832,
+      "end_byte": 377345
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-spawn-process-tainted-env-args.dangerous-spawn-process-tainted-env-args",
+      "sha256": "81799202f7eae38c71d48726f71a19d8bf90943d7002ea2f48cd252911e9a4f9",
+      "start_byte": 377347,
+      "end_byte": 382162
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-subinterpreters-run-string-tainted-env-args.dangerous-subinterpreters-run-string-tainted-env-args",
+      "sha256": "69064a34d76d459e972b3123ddee59ef7c3990e4bbc6f6e8d6d5244e47a386ab",
+      "start_byte": 382164,
+      "end_byte": 385575
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+      "start_byte": 385577,
+      "end_byte": 390868
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-system-call-tainted-env-args.dangerous-system-call-tainted-env-args",
+      "sha256": "7050cccef265d0e6154152312bb70d2f7d19ee3c14e386ad7529283fac86f162",
+      "start_byte": 390870,
+      "end_byte": 395187
+    },
+    {
+      "id": "python.lang.security.audit.dangerous-testcapi-run-in-subinterp-tainted-env-args.dangerous-testcapi-run-in-subinterp-tainted-env-args",
+      "sha256": "2141b1264b63dca9c192705ef4c594dc5ac56daf39d1d08af8da7c468c6886c3",
+      "start_byte": 395189,
+      "end_byte": 398719
+    },
+    {
+      "id": "python.lang.security.dangerous-code-run.dangerous-interactive-code-run",
+      "sha256": "a179e3f20e10645151bcb0b506c85f61f72b24b0256ab767fda8b1cca5fbdd56",
+      "start_byte": 398721,
+      "end_byte": 404663
+    },
+    {
+      "id": "python.lang.security.dangerous-os-exec.dangerous-os-exec",
+      "sha256": "ba6f16bfa54d62267f97c802803d077513805272b38e96b552265be832fe4cc0",
+      "start_byte": 404665,
+      "end_byte": 411114
+    },
+    {
+      "id": "python.lang.security.dangerous-spawn-process.dangerous-spawn-process",
+      "sha256": "866f9b008d20d39eede6449e7360bad6cd2c60ffca5b373fdb3cdef76c57da17",
+      "start_byte": 411116,
+      "end_byte": 419348
+    },
+    {
+      "id": "python.lang.security.dangerous-subinterpreters-run-string.dangerous-subinterpreters-run-string",
+      "sha256": "5e5e8a2aea09a8ee9f45fae7f4ae0cfa7c324b84b2042d2a5aa9948afe9e2933",
+      "start_byte": 419350,
+      "end_byte": 424699
+    },
+    {
+      "id": "python.lang.security.dangerous-subprocess-use.dangerous-subprocess-use",
+      "sha256": "65264b233026cc14da0e4a5e50c0b8ac6dc334d241809c590add4ddba4ca0057",
+      "start_byte": 424701,
+      "end_byte": 431873
+    },
+    {
+      "id": "python.lang.security.dangerous-system-call.dangerous-system-call",
+      "sha256": "cf5474ab654d326ca6b54ed60b713fd107b63952be21694dd7221b1bbd159124",
+      "start_byte": 431875,
+      "end_byte": 438272
+    },
+    {
+      "id": "python.lang.security.dangerous-testcapi-run-in-subinterp.dangerous-testcapi-run-in-subinterp",
+      "sha256": "d5fec3503ac64da50f3e2682cc15da4d3d91780f6114f3a8690ae81d13634c42",
+      "start_byte": 438274,
+      "end_byte": 443733
+    },
+    {
+      "id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+      "sha256": "3ff4fd088fbfa8ee0512e67b7741e6ec1ef9afde14d27385283a8e8b5c5ee789",
+      "start_byte": 443735,
+      "end_byte": 446751
+    },
+    {
+      "id": "python.django.security.injection.csv-writer-injection.csv-writer-injection",
+      "sha256": "2c693a74ae239ce12c0542d7c1251f0b40f133cee26ab607ae54b046c1c656de",
+      "start_byte": 446753,
+      "end_byte": 449301
+    },
+    {
+      "id": "python.flask.security.injection.csv-writer-injection.csv-writer-injection",
+      "sha256": "871e2e876c70bb630f010d434f2b448b33b08ecaf213be7b077113b092955bab",
+      "start_byte": 449303,
+      "end_byte": 452666
+    },
+    {
+      "id": "python.flask.security.injection.subprocess-injection.subprocess-injection",
+      "sha256": "bb9ad22786573984fbe65772c2f64cee40d2b014946cb043a340402bce8da0bf",
+      "start_byte": 452668,
+      "end_byte": 456400
+    },
+    {
+      "id": "python.cryptography.security.mode-without-authentication.crypto-mode-without-authentication",
+      "sha256": "76cf4f597bbf8ea77646a7a1a8f579182d1d41d0f34336b86793b5cd4b650013",
+      "start_byte": 456402,
+      "end_byte": 458497
+    },
+    {
+      "id": "python.pycryptodome.security.mode-without-authentication.crypto-mode-without-authentication",
+      "sha256": "3d74d31ec69374948fbd5c54ffff3d968c4661e380234d2a5bd03f41afa1a1fc",
+      "start_byte": 458499,
+      "end_byte": 460552
+    },
+    {
+      "id": "python.cryptography.security.insecure-cipher-algorithms-arc4.insecure-cipher-algorithm-arc4",
+      "sha256": "f2dae925018526d9ac91cadead90e96facfdddd81259daa416e0db766d64ea77",
+      "start_byte": 460554,
+      "end_byte": 462887
+    },
+    {
+      "id": "python.cryptography.security.insecure-cipher-algorithms-blowfish.insecure-cipher-algorithm-blowfish",
+      "sha256": "f20542f0bcc8665c846b833a25e49d4163afce414aac0c47861814ac78b7cfa0",
+      "start_byte": 462889,
+      "end_byte": 465230
+    },
+    {
+      "id": "python.cryptography.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+      "sha256": "f887d516699446957d901a43253e06e95c5892c619097fb8053754035d03c69d",
+      "start_byte": 465232,
+      "end_byte": 467484
+    },
+    {
+      "id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+      "sha256": "207121b83824a0a5e1d2d7290d78bee6a06025b6d64123c3cfc113e0f78a6df4",
+      "start_byte": 467486,
+      "end_byte": 469704
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-cipher-algorithm-blowfish.insecure-cipher-algorithm-blowfish",
+      "sha256": "9ca93fcca8fe18c8dd189c4486429a1f6d2655a2b1aadc9ac8dc23ea7288c111",
+      "start_byte": 469706,
+      "end_byte": 471949
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-cipher-algorithm-des.insecure-cipher-algorithm-des",
+      "sha256": "4946d5d5bc32656ed9ccefece2cef34c490ad5a3ce3291d59e88e14f00c2b24f",
+      "start_byte": 471951,
+      "end_byte": 474282
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-cipher-algorithm-rc2.insecure-cipher-algorithm-rc2",
+      "sha256": "4b4db90e9a5414ab49167b10cdb233cedd6e96c05f39a12750d9e32837e8520c",
+      "start_byte": 474284,
+      "end_byte": 476446
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-cipher-algorithm-rc4.insecure-cipher-algorithm-rc4",
+      "sha256": "0f50464abb5da1e9adea704b8539edcff0dc4710d021c84e7b70b7ffe552c79c",
+      "start_byte": 476448,
+      "end_byte": 478569
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-hash-algorithm-md2.insecure-hash-algorithm-md2",
+      "sha256": "4598ff687525f60cf966ca4db0b280a8246167026d9c09027d3cd99bae00d5e2",
+      "start_byte": 478571,
+      "end_byte": 480838
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-hash-algorithm-md4.insecure-hash-algorithm-md4",
+      "sha256": "0c76368605802b9745c5dc649c67575c37f3eba31883b3960f4dc47316932eb9",
+      "start_byte": 480840,
+      "end_byte": 483106
+    },
+    {
+      "id": "python.pycryptodome.security.insecure-hash-algorithm-md5.insecure-hash-algorithm-md5",
+      "sha256": "ef38c28b870f5343b26464361389836c4556684d8e7c4d9dc0b00544fc23efd5",
+      "start_byte": 483108,
+      "end_byte": 485375
+    },
+    {
+      "id": "python.cryptography.security.empty-aes-key.empty-aes-key",
+      "sha256": "97b966b4f29c8a9e9e301bc204bb8e2c635e5c4132af2e9427b5e58470d7afd3",
+      "start_byte": 485377,
+      "end_byte": 486952
+    },
+    {
+      "id": "python.django.security.hashids-with-django-secret.hashids-with-django-secret",
+      "sha256": "285a8f0fdb1aeeab8662b66e99ea2fb5f17ebc38385b9b06a237aaeeb9542244",
+      "start_byte": 486954,
+      "end_byte": 488625
+    },
+    {
+      "id": "python.flask.security.hashids-with-flask-secret.hashids-with-flask-secret",
+      "sha256": "da40ae79002b4e4a7aeb5d441b52e355c33ba5ca80239216dc882d777175a4c6",
+      "start_byte": 488627,
+      "end_byte": 490528
+    },
+    {
+      "id": "python.lang.security.use-defused-xml-parse.use-defused-xml-parse",
+      "sha256": "5029805ceddea8172e848172ab26e85037ba5dbb728552fbd8189d5c8ba63097",
+      "start_byte": 490530,
+      "end_byte": 492363
+    },
+    {
+      "id": "python.django.security.django-using-request-post-after-is-valid.django-using-request-post-after-is-valid",
+      "sha256": "d375a51088b227e210209ace0e3a353e499de008b0aba9295dacc5c18a7e9e8e",
+      "start_byte": 492365,
+      "end_byte": 493930
+    },
+    {
+      "id": "python.fastapi.security.wildcard-cors.wildcard-cors",
+      "sha256": "1449e2eb3ab121fc3130811016f6e7ff97e5a3248dbf34edb16680df78f421e2",
+      "start_byte": 493932,
+      "end_byte": 495455
+    },
+    {
+      "id": "python.twilio.security.twiml-injection.twiml-injection",
+      "sha256": "dc7e1f2820bd6109c4e0eccf578ca542e1d35558ace1eb4dafe55b2aca758720",
+      "start_byte": 495457,
+      "end_byte": 497124
+    },
+    {
+      "id": "python.lang.security.insecure-uuid-version.insecure-uuid-version",
+      "sha256": "f341fe9eb192e4666ccb804392703aa4b9d7b1391bfea97c780efa9235b74b72",
+      "start_byte": 497126,
+      "end_byte": 498892
+    },
+    {
+      "id": "python.lang.security.audit.sha224-hash.sha224-hash",
+      "sha256": "b916a2f544d907ddaa5188f3e1c791e7e51bbc3e86abb2943a3244e61a381b3e",
+      "start_byte": 498894,
+      "end_byte": 500501
+    },
+    {
+      "id": "python.flask.security.audit.flask-url-for-external-true.flask-url-for-external-true",
+      "sha256": "ac4d2eec79f05ab9799a31f379a14265945b99885078c76fe74d8d8a8daf1b4f",
+      "start_byte": 500503,
+      "end_byte": 502198
+    }
+  ],
+  "definition_digest_scope": "Unmodified local YAML mapping spans; rule bodies are not published",
+  "declared_license": "Semgrep Rules License v1.0",
+  "bytes": 502198,
+  "observed_at": "2026-10-25T13:09:32.981791+00:00",
+  "projection_valid": true
+}

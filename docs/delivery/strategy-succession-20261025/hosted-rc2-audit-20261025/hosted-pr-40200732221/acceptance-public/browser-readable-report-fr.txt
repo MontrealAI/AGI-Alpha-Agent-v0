@@ -1,0 +1,72 @@
+AGI ALPHA · Rapport de mission
+Mission : 73b204726f7b7bb94e845fc1a6334ca3
+Code : f1efa4e6833de9b22473a1ffb2342891ebd2202333d3612dbe275e9817e38e0c
+Empreinte du résultat : 94cc0b9e9988fa366486c0e79d5976e60a3e08acfd6960514b2016b9775c7790
+État : Terminée
+Méthode : Planifier → adapter → réparer
+Vérification du résultat par l’exécuteur : réussie
+Plans uniquement. Le travail physique n’est pas observé. Aucune autorité de production.
+
+Plan initial · Qualifié
+Vérification de l’étape : réussie
+Méthode : Portefeuille de spécialistes existant
+Durée / déplacement : 12 / 0
+Reçu : 766a62813e25d8f48ca6bfa1ff09a26d836624e6848cc1b38c0396629844f3af
+J1 · 0 → 1
+J2 · 1 → 4
+J3 · 4 → 6
+J4 · 6 → 8
+J5 · 8 → 10
+J6 · 10 → 11
+J7 · 11 → 12
+
+Exigences modifiées · Qualifié
+Vérification de l’étape : réussie
+Méthode : Portefeuille de spécialistes existant
+Durée / déplacement : 14 / 0
+Reçu : 37041f58aa18af199a1a87d8dde28d854f2d641c32e2a3c2f80124f9c0c42224
+J1 · 0 → 1
+J3 · 1 → 5
+J2 · 5 → 8
+J4 · 8 → 10
+J5 · 10 → 12
+J6 · 12 → 13
+J7 · 13 → 14
+
+Réparer le même projet · Qualifié
+Vérification de l’étape : réussie
+Méthode : Spécialiste natif de réparation
+Durée / déplacement : 16 / 5
+Reçu : 0ff37ccdfc57424373039f5b0ee287604202c07242711a07874b0bebb7ec2814
+J1 · 0 → 1
+J3 · 1 → 5
+J2 · 5 → 8
+J4 · 8 → 10
+J6 · 12 → 13
+J5 · 13 → 15
+J7 · 15 → 16
+
+Coûts observés (unités déclarées, pas de l’argent) :
+{
+  "improvement_work": 300893,
+  "native_calls": 6,
+  "native_solve_seconds": 12,
+  "service_work": 33381,
+  "unknown_costs": [
+    "Node orchestration/source hashing/IPC CPU is not converted to declared JavaScript units.",
+    "Human effort and hardware/monetary costs are unmeasured.",
+    "Opaque native solver work is not converted to JavaScript work units."
+  ]
+}
+native_solve_seconds est l’ALLOCATION de solveur débitée pour chaque appel natif tenté, y compris les échecs ; ce n’est pas une mesure CPU ou de durée réelle. Les mesures disponibles restent distinctes dans l’export signé.
+Les algorithmes fixes effectuent zéro appel d’inférence de modèle. Les coûts de développement et de rédaction assistée par modèle sont hors de ce compte d’exécution et restent partiellement inconnus.
+Plafonds autorisés :
+{
+  "improvement_work": 3000000,
+  "native_calls": 6,
+  "native_solve_seconds": 20,
+  "service_work": 500000
+}
+Comparaison de réparation : défaite du candidat
+En attente — coût complet inconnu
+L’effort humain et les coûts monétaires et de cycle de vie complets restent inconnus. Les comptes n’établissent ni économie, ni profit, ni autoaccélération. Exportez le JSON signé pour les reçus, comparaisons, mesures réelles et provenance complets.

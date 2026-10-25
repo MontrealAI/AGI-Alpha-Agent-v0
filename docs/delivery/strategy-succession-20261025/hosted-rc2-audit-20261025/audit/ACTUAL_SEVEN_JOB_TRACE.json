@@ -1,0 +1,221 @@
+{
+  "schema": "alpha-actual-hosted-seven-job-runtime-trace/v1",
+  "state": "HISTORICAL_CANDIDATE_INFORMATIONAL_VERSION_MISMATCH_SUPERSEDED",
+  "run_id": 40200732221,
+  "artifact_id": 12601697433,
+  "source_commit": "1c30d75d8c41722c901ebec30140907db5704707",
+  "branch_head": "f912a97db01e3256b691a6a9502c85edf132e051",
+  "source_hash": "f1efa4e6833de9b22473a1ffb2342891ebd2202333d3612dbe275e9817e38e0c",
+  "wheel_sha256": "93fb11e5fa5385230a549f557857d586583a4b415a610ae95cede9f6ff1ca4b4",
+  "profile_sha256": "3f1cbd837dfe8a47be825bbcdbc14170d475c784bb386cf7da029f939e6ef0ec",
+  "plan_id": "73b204726f7b7bb94e845fc1a6334ca3",
+  "plan_digest": "c7a3f605517f64535864d00aee173e19374b0fe18f9fae01803b3dfa05093b14",
+  "request_hash": "47a8a51b8ca2e1f846f45bbd8b416c28846b599fd27c4d4542cb7273a88ed2cd",
+  "input_canonical_sha256": "4a71827d4771044d7c40dde929a74da8c727ed04da757a792be017ccef505af5",
+  "raw_optin_download_sha256": "5743cc64e15e25b7e33721a9a91e5c9c9bb58f67fc6b46066be4ec42815666e8",
+  "raw_browser_export_sha256": "d947d35c6cc5ee6e41e45acb1b88b006c30b3b6fbdf9ffd71eebb901cbc1a69a",
+  "phases": [
+    {
+      "label": "Initial plan",
+      "task_id": "community-release-seven",
+      "jobs": 7,
+      "makespan": 12,
+      "movement": 0,
+      "selected_method": "ordinary-portfolio",
+      "selected_lookahead_steps": 0,
+      "receipt_sha256": "766a62813e25d8f48ca6bfa1ff09a26d836624e6848cc1b38c0396629844f3af",
+      "costs": {
+        "improvement_work": 0,
+        "native_calls": 2,
+        "native_solve_seconds": 4,
+        "service_work": 9271
+      }
+    },
+    {
+      "label": "Changed requirements",
+      "task_id": "community-release-seven-changed",
+      "jobs": 7,
+      "makespan": 14,
+      "movement": 0,
+      "selected_method": "ordinary-portfolio",
+      "selected_lookahead_steps": 0,
+      "receipt_sha256": "37041f58aa18af199a1a87d8dde28d854f2d641c32e2a3c2f80124f9c0c42224",
+      "costs": {
+        "improvement_work": 3251,
+        "native_calls": 2,
+        "native_solve_seconds": 4,
+        "service_work": 9411
+      }
+    },
+    {
+      "label": "Repair the same project",
+      "task_id": "community-release-seven-changed-repair",
+      "jobs": 7,
+      "makespan": 16,
+      "movement": 5,
+      "selected_method": "native-repair",
+      "selected_lookahead_steps": 0,
+      "receipt_sha256": "0ff37ccdfc57424373039f5b0ee287604202c07242711a07874b0bebb7ec2814",
+      "costs": {
+        "improvement_work": 3810,
+        "native_calls": 2,
+        "native_solve_seconds": 4,
+        "service_work": 11180
+      }
+    }
+  ],
+  "browser_total_costs": {
+    "improvement_work": 300893,
+    "native_calls": 6,
+    "native_solve_seconds": 12,
+    "service_work": 33381,
+    "unknown_costs": [
+      "Node orchestration/source hashing/IPC CPU is not converted to declared JavaScript units.",
+      "Human effort and hardware/monetary costs are unmeasured.",
+      "Opaque native solver work is not converted to JavaScript work units."
+    ]
+  },
+  "separate_API_costs": {
+    "improvement_work": 276634,
+    "native_calls": 6,
+    "native_solve_seconds": 12,
+    "service_work": 30908,
+    "unknown_costs": [
+      "Node orchestration/source hashing/IPC CPU is not converted to declared JavaScript units.",
+      "Human effort and hardware/monetary costs are unmeasured.",
+      "Opaque native solver work is not converted to JavaScript work units."
+    ]
+  },
+  "separate_API_case": {
+    "id": "public-release-plan",
+    "jobs": 6,
+    "not_browser_overhead_comparator": true
+  },
+  "native_bridge_telemetry": {
+    "records": 99,
+    "roles": {
+      "checker": 93,
+      "specialist": 6
+    },
+    "call_cpu_seconds_sum": 0.11651784,
+    "call_wall_seconds_sum": 0.07944485599981022,
+    "startup_cpu_seconds_sum": 4.959176197000001,
+    "startup_wall_seconds_sum": 2.155315136000013,
+    "process_wall_seconds_sum": 4.999684581000005,
+    "scope": "Partial component windows; excludes unmetered outer HTTP/journal/browser/QA/development resources. Do not sum overlapping wall windows."
+  },
+  "node_telemetry": {
+    "node_cpu_seconds": 1.9653,
+    "wall_seconds": 11.99747381
+  },
+  "browser_wall_seconds": 17.423611242999982,
+  "repair_consequence": "LOSS",
+  "candidate_movement": 7,
+  "selected_native_movement": 5,
+  "economic_decision": "HOLD_FULL_COST_UNKNOWN",
+  "production_promotion": false,
+  "inheritance_diagnostics": [
+    {
+      "stage": "lookahead",
+      "equal_fresh_outputs": true,
+      "total_work": 120707,
+      "arms": [
+        {
+          "treatment": "inherited",
+          "total_work": 29185,
+          "parent_reconstruction_work": 4,
+          "child_work": 29181,
+          "total_allocation": 501024,
+          "child_allocation": 250000
+        },
+        {
+          "treatment": "rebuilt",
+          "total_work": 62356,
+          "parent_reconstruction_work": 33175,
+          "child_work": 29181,
+          "total_allocation": 501024,
+          "child_allocation": 250000
+        },
+        {
+          "treatment": "equivalent",
+          "total_work": 29166,
+          "parent_reconstruction_work": 5,
+          "child_work": 29161,
+          "total_allocation": 501024,
+          "child_allocation": 250000
+        }
+      ]
+    },
+    {
+      "stage": "repair",
+      "equal_fresh_outputs": true,
+      "total_work": 122119,
+      "arms": [
+        {
+          "treatment": "inherited",
+          "total_work": 19925,
+          "parent_reconstruction_work": 5,
+          "child_work": 19920,
+          "total_allocation": 751024,
+          "child_allocation": 250000
+        },
+        {
+          "treatment": "rebuilt",
+          "total_work": 82276,
+          "parent_reconstruction_work": 62356,
+          "child_work": 19920,
+          "total_allocation": 751024,
+          "child_allocation": 250000
+        },
+        {
+          "treatment": "equivalent",
+          "total_work": 19918,
+          "parent_reconstruction_work": 7,
+          "child_work": 19911,
+          "total_allocation": 751024,
+          "child_allocation": 250000
+        }
+      ]
+    }
+  ],
+  "aggregate_construction_parent_calls": [
+    0,
+    20,
+    3
+  ],
+  "selected_repair_immediate_parent_or_lookahead_calls": 0,
+  "crash_observed_cost": {
+    "improvement_work": 186,
+    "native_calls": 2,
+    "native_solve_seconds": 4,
+    "service_work": 8503
+  },
+  "crash_reserved_unknown_cost": {
+    "improvement_work": 3000000,
+    "native_calls": 6,
+    "native_solve_seconds": 20,
+    "service_work": 500000
+  },
+  "crash_unknown_refunded": false,
+  "qa_operator_interventions": [
+    "configure ephemeral test home",
+    "configure exact finite profile",
+    "browser exact approval",
+    "close browser tab",
+    "reconnect",
+    "inspect/download",
+    "Pause/Resume",
+    "Stop",
+    "separate SIGKILL/restart recovery exercise"
+  ],
+  "QA_actions_not_measured_human_minutes": true,
+  "automated_after_one_exact_approved_request": true,
+  "customer_business_acceptance_or_indefinite_renewal_established": false,
+  "LLM_job_calls": {
+    "value": 0,
+    "basis": "Source-verified fixed-method closure, not provider-metered; excludes development/review inference."
+  },
+  "human_and_monetary_cost": null,
+  "total_QA_and_development_cost": "UNKNOWN",
+  "public_installation_or_release": false
+}

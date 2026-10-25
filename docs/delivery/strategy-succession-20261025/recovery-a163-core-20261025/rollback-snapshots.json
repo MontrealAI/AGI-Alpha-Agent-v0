@@ -1,0 +1,72 @@
+{
+  "schema": "fresh-core-rollback-snapshots/v1",
+  "files": [
+    {
+      "file": "legacy-fixtures/test_sqlite_stop_backup_restor0/live.sqlite",
+      "sha256": "d35c76a2eba556f53df77fd9ae313bda933c8fd3ac0e9c09a3cd89e4eedcfa7f",
+      "bytes": 24576,
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content",
+        "content_id"
+      ],
+      "rows": 2,
+      "legacy": true,
+      "post_upgrade": true,
+      "restored_writer": false
+    },
+    {
+      "file": "legacy-fixtures/test_sqlite_stop_backup_restor0/pre-upgrade.sqlite",
+      "sha256": "818dada38427e5a37f9af879ea2c4bc4e576daffe33c7786fd933aa566fd7594",
+      "bytes": 12288,
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content"
+      ],
+      "rows": 1,
+      "legacy": true,
+      "post_upgrade": false,
+      "restored_writer": false
+    },
+    {
+      "file": "legacy-fixtures/test_sqlite_stop_backup_restor0/restored-old-writer.sqlite",
+      "sha256": "618b546e203499666653a5c9a91e843c8cc56fd4ec775331abec973fb59f300e",
+      "bytes": 20480,
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content"
+      ],
+      "rows": 2,
+      "legacy": true,
+      "post_upgrade": false,
+      "restored_writer": true
+    },
+    {
+      "file": "legacy-fixtures/test_sqlite_stop_backup_restor0/retained-upgraded.sqlite",
+      "sha256": "d8bcb539cca3e597bcf8c42105ae8ada4547e681c57b1bb04e6b7d8386f596aa",
+      "bytes": 24576,
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content",
+        "content_id"
+      ],
+      "rows": 2,
+      "legacy": true,
+      "post_upgrade": true,
+      "restored_writer": false
+    }
+  ],
+  "scope": "fixed local SQLite fixtures; post-upgrade content retained separately and not automatically loaded by restored old writer"
+}

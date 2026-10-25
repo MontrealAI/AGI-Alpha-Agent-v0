@@ -1,0 +1,41 @@
+
+==================================== ERRORS ====================================
+____________________ ERROR collecting tests/test_archive.py ____________________
+ImportError while importing test module '/workspace/scratch/0d7600b912de/strategy-integration/tests/test_archive.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/__init__.py:37: in <module>
+    stub = importlib.import_module("google_adk")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: import of google_adk halted; None in sys.modules
+________________ ERROR collecting tests/test_archive_policy.py _________________
+ImportError while importing test module '/workspace/scratch/0d7600b912de/strategy-integration/tests/test_archive_policy.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/__init__.py:37: in <module>
+    stub = importlib.import_module("google_adk")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: import of google_adk halted; None in sys.modules
+- generated xml file: /workspace/scratch/0d7600b912de/recovery-evidence/core/legacy-focused.xml -
+=========================== short test summary info ============================
+ERROR tests/test_archive.py
+ERROR tests/test_archive_policy.py
+2 errors in 0.08s
+ERROR: found no collectors for /workspace/scratch/0d7600b912de/strategy-integration/tests/test_archive.py::test_archive_crud
+
+ERROR: found no collectors for /workspace/scratch/0d7600b912de/strategy-integration/tests/test_archive.py::test_archive_migration
+
+ERROR: found no collectors for /workspace/scratch/0d7600b912de/strategy-integration/tests/test_archive_policy.py::test_admit_policy
+

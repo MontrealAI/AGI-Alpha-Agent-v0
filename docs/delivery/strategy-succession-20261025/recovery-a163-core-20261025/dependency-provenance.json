@@ -1,0 +1,38 @@
+{
+  "schema": "core-recovery-dependency-provenance/v1",
+  "source_commit": "a163b5b3e34551e5dfdf2075c6f69c8cdb3e0c1f",
+  "dependency_isolation": false,
+  "application_install_qualified": false,
+  "qa_environment_record": "qa-environment.json",
+  "package": "defusedxml",
+  "version": "0.7.1",
+  "wheel": {
+    "name": "defusedxml-0.7.1-py2.py3-none-any.whl",
+    "bytes": 25604,
+    "sha256": "a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61",
+    "body_included": false
+  },
+  "lock": {
+    "path": "requirements-dev.lock",
+    "commit": "a163b5b3e34551e5dfdf2075c6f69c8cdb3e0c1f",
+    "sha256": "be24dfe0cfc8a4c5905662f30ff4b715fd6c651848f6a346998ab6cbc08f369e",
+    "version_and_hash_present": true
+  },
+  "acquisition": {
+    "initial_attempt": "Public PyPI download failed DNS; raw qa-dependency-download.log retained.",
+    "later_custody": "Integration lead supplied the exact wheel fetched through configured networking from official PyPI metadata/files.pythonhosted.org; this owner rechecked bytes and unchanged committed lock hash.",
+    "official_origins": [
+      "https://pypi.org/pypi/defusedxml/0.7.1/json",
+      "https://files.pythonhosted.org/"
+    ],
+    "independent_network_refetch_by_this_owner": false
+  },
+  "installation": "Only the exact wheel installed with --no-deps --no-index into the task QA interpreter; no global upgrade. Provided QA and primary packages explicitly linked.",
+  "actual_import_probe": {
+    "defusedxml": "0.7.1",
+    "cryptography": "50.0.2",
+    "pypdf": "6.10.0",
+    "pytest": "8.4.2"
+  },
+  "qualification_limit": "Provided dependency versions are observed QA dependencies, not transfer of earlier locked-environment or clean application installation qualification."
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "core-recovery-qa-cost-observations/v1",
+  "source_commit": "a163b5b3e34551e5dfdf2075c6f69c8cdb3e0c1f",
+  "units": "seconds for elapsed/CPU; KiB for peak process RSS; QA observations only.",
+  "runs": {
+    "legacy-execution.json": {
+      "elapsed_seconds": 3.7379552380007226,
+      "cpu_user_seconds": 4.168896,
+      "cpu_system_seconds": 0.7116079999999999,
+      "peak_process_rss_kib": 197572
+    },
+    "legacy-process.json": {
+      "overall_wall_seconds": 4.504539271991234
+    },
+    "security-execution.json": {
+      "elapsed_seconds": 32.58666857299977,
+      "process_cpu_user_seconds": 2.325751,
+      "process_cpu_system_seconds": 1.8860819999999998,
+      "child_cpu_user_seconds": 22.87735,
+      "child_cpu_system_seconds": 5.387373,
+      "peak_process_rss_kib": 78312
+    },
+    "security-process.json": {
+      "overall_wall_seconds": 32.74461766600143
+    },
+    "xml-public-execution.json": {
+      "elapsed_seconds": 0.4140143600088777,
+      "process_cpu_user_seconds": 0.30322499999999997,
+      "process_cpu_system_seconds": 0.02772,
+      "child_cpu_user_seconds": 0.050074,
+      "child_cpu_system_seconds": 0.032376,
+      "peak_process_rss_kib": 35888
+    },
+    "xml-public-process.json": {
+      "overall_wall_seconds": 0.5890781400084961
+    },
+    "legacy-attempt-1-adk-stub-conflict/legacy-execution.json": {
+      "elapsed_seconds": 0.2079758259933442,
+      "cpu_user_seconds": 0.183159,
+      "cpu_system_seconds": 0.003961999999999999,
+      "peak_process_rss_kib": 27968
+    },
+    "legacy-attempt-1-adk-stub-conflict/legacy-process.json": {
+      "overall_wall_seconds": 0.4431626769946888
+    },
+    "xml-public-attempt-1-missing-provided-backend/xml-public-process.json": {
+      "overall_wall_seconds": 0.780077112998697
+    }
+  },
+  "static_checks": {
+    "black": {
+      "elapsed_seconds": 0.17552337299275678,
+      "exit_code": 0
+    },
+    "ruff": {
+      "elapsed_seconds": 0.028906226012622938,
+      "exit_code": 0
+    },
+    "mypy-copy-fence": {
+      "elapsed_seconds": 1.1828917829989223,
+      "exit_code": 0
+    },
+    "actual-release-base-binary-gate": {
+      "elapsed_seconds": 4.447577225000714,
+      "exit_code": 0
+    }
+  },
+  "full_lifecycle_total": null,
+  "human_effort": null,
+  "assistant_inference_cost": null,
+  "construction_integration_maintenance_cost": null,
+  "monetary_cost": null,
+  "actual_revenue": null,
+  "not_measured": [
+    "Complete dependency acquisition/setup cost",
+    "Total development or review cost",
+    "Physical native solve time or native invocation outcomes"
+  ],
+  "scope": "Do not sum nested run/process timings as independent costs. These observations do not establish savings, profit, clean installation or native qualification."
+}

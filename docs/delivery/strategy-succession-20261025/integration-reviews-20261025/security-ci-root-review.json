@@ -1,0 +1,68 @@
+{
+  "schema": "strategy-security-and-ci-root-review/v1",
+  "status": "INDEPENDENT_IMPLEMENTATION_REVIEW_CLEAR_PENDING_COMBINED_QUALIFICATION",
+  "base": "4d8fb7bccba4e252faaefeefce666f2242b109fa",
+  "reviewer": "integration lead, separate from component implementers; not outside-organization independence",
+  "reviewed_files": {
+    "scripts/check_strategy_python_security.py": {
+      "bytes": 47494,
+      "sha256": "b822f97f20fa23ef3e9703ec50f9c08769c498a0a197f7c700974688c52f00a5"
+    },
+    "tests/test_strategy_python_security.py": {
+      "bytes": 53313,
+      "sha256": "608c42e215b8a287183ae483bbe95435ce973d35aa9ada103940571fa6ae5c42"
+    },
+    "tests/browser/test_successor_alpha_browser.py": {
+      "bytes": 67710,
+      "sha256": "d1c462024a9f6160433df06bcb3f90110434579e99962fc62835a7d678b8d660"
+    },
+    ".github/workflows/agent-release.yml": {
+      "bytes": 80288,
+      "sha256": "e63c283c7665438353e3c5a703b3a0e2259791dc7ea7c94589439fb5c1e322c3"
+    },
+    ".github/workflows/ci.yml": {
+      "bytes": 56854,
+      "sha256": "e670c5b37739092171918467c962aed1a03fec136352cc90f5ba7f90c72916e1"
+    },
+    ".github/workflows/pr-ci.yml": {
+      "bytes": 8107,
+      "sha256": "5112b8e2f411d82340d93632737318127f307c71f1b144985ba5ce67c53fb791"
+    },
+    "tests/test_ci_ruff_scope_contract.py": {
+      "bytes": 21724,
+      "sha256": "b2e21f4ab6b09833e2b596816deb2c82b4a9482534aeb5e8fa12a70e93379358"
+    }
+  },
+  "producer_checks": {
+    "raw_junit_cases": 202,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "junit_sha256": "7661a1dbb1de7498dcb3109c921467a4e7a63c6c97472d81f5493c51bb8bce58"
+  },
+  "consumer_checks": {
+    "cases": 248,
+    "scope": "quoted1 at three existing primary scanner invocations; no commands/skips/fences/jobs/permissions changed"
+  },
+  "findings_resolved_in_candidate": [
+    "raw staged source scan remains mandatory, cannot grant committed-source/map authority",
+    "owned scanner descendants terminated on successful leader exit before report consumption",
+    "complete downloaded-tool byte comparison to trusted reconstruction before host import",
+    "public browser document digest checked at navigation before downloads/host work"
+  ],
+  "preserved": [
+    "mandatory repository-wide official p/python",
+    "strict committed-source acceptance",
+    "whole-source/rule/coverage/error bounds",
+    "map absent and pin None",
+    "frozen studies and original held runtime paths"
+  ],
+  "not_claimed": [
+    "final combined source scan",
+    "configured review clearance",
+    "whole repository CI",
+    "new package install/browser acceptance",
+    "public release",
+    "security-policy activation"
+  ]
+}

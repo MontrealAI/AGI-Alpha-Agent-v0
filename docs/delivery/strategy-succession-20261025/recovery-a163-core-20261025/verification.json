@@ -1,0 +1,259 @@
+{
+  "schema": "fresh-core-recovery-verification/v1",
+  "created_utc": "2026-10-25T13:21:32Z",
+  "commit": "a163b5b3e34551e5dfdf2075c6f69c8cdb3e0c1f",
+  "tree": "f276927ce6ff188a729f40c4942b28bc9d4a2f88",
+  "source_changed": false,
+  "fresh_results": {
+    "legacy": {
+      "cases": 30,
+      "passed": 29,
+      "skipped": [
+        {
+          "name": "test_admit_policy",
+          "message": "src.self_edit.tools not available in this environment"
+        }
+      ],
+      "failures": [],
+      "execution": {
+        "schema": "fresh-core-focused-execution/v1",
+        "pytest_exit": 0,
+        "blocked_attempts": [],
+        "tests": [
+          "tests/test_legacy_identity_security.py",
+          "tests/test_archive.py::test_archive_crud",
+          "tests/test_archive.py::test_archive_migration",
+          "tests/test_archive_policy.py::test_admit_policy"
+        ],
+        "elapsed_seconds": 3.7379552380007226,
+        "cpu_user_seconds": 4.168896,
+        "cpu_system_seconds": 0.7116079999999999,
+        "peak_process_rss_kib": 197572,
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "interpreter": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "venv_recovered": false,
+        "environment_scope": "provided QA package directory explicitly allowed in sanitized isolated process; no clean-install qualification",
+        "dependency_versions": {
+          "pytest": "8.4.2",
+          "SQLAlchemy": "2.1.6",
+          "numpy": "2.4.6",
+          "pydantic": "2.13.5",
+          "pydantic-settings": "2.15.0"
+        },
+        "human_effort": null,
+        "monetary_cost": null,
+        "provider_usage": null,
+        "execution_scope": "fixed SQL/filesystem fixtures; patch/preflight/test callbacks mocked; socket and process launches denied"
+      },
+      "junit_sha256": "03ccaae787d77a377207909bf4cc10e43bcd764f3f9df0f4d177f5eb4d028b9f"
+    },
+    "security": {
+      "cases": 122,
+      "passed": 122,
+      "skipped": [],
+      "failures": [],
+      "execution": {
+        "schema": "fresh-core-security-execution/v1",
+        "pytest_exit": 0,
+        "blocked_attempts": [],
+        "allowed_git_calls": 955,
+        "allowed_gate_cli_calls": 25,
+        "tests": [
+          "tests/test_strategy_succession_binary_admission.py",
+          "tests/test_autonomous_enterprise_binary_admission.py",
+          "tests/test_no_binary_diff_entrypoint.py"
+        ],
+        "elapsed_seconds": 32.58666857299977,
+        "process_cpu_user_seconds": 2.325751,
+        "process_cpu_system_seconds": 1.8860819999999998,
+        "child_cpu_user_seconds": 22.87735,
+        "child_cpu_system_seconds": 5.387373,
+        "peak_process_rss_kib": 78312,
+        "environment_scope": "provided primary+QA user-site packages, sanitized process; no clean-install qualification",
+        "dependency_versions": {
+          "pytest": "8.4.2",
+          "pypdf": "6.10.0"
+        },
+        "human_effort": null,
+        "monetary_cost": null,
+        "provider_usage": null,
+        "execution_scope": "actual static validators and temporary Git/CLI fixtures; no archived scientific code, native solvers or generated patches executed"
+      },
+      "junit_sha256": "c510a78e9a65f33f7e638e808e3f8f77b259e995e7c73eaae84dd359d8d3edfa"
+    },
+    "xml-public": {
+      "cases": 62,
+      "passed": 62,
+      "skipped": [],
+      "failures": [],
+      "execution": {
+        "schema": "fresh-core-xml-public-execution/v1",
+        "pytest_exit": 0,
+        "blocked_attempts": [],
+        "allowed_git_calls": 49,
+        "allowed_gate_cli_calls": 0,
+        "tests": [
+          "tests/test_public_strategy_acceptance.py",
+          "tests/test_strategy_qualification_xml.py"
+        ],
+        "elapsed_seconds": 0.4140143600088777,
+        "process_cpu_user_seconds": 0.30322499999999997,
+        "process_cpu_system_seconds": 0.02772,
+        "child_cpu_user_seconds": 0.050074,
+        "child_cpu_system_seconds": 0.032376,
+        "peak_process_rss_kib": 35888,
+        "environment_scope": "fresh task QA venv with explicit provided QA packages and exact installed defusedxml; no clean-install qualification",
+        "dependency_versions": {
+          "pytest": "8.4.2",
+          "pypdf": "6.10.0",
+          "defusedxml": "0.7.1"
+        },
+        "human_effort": null,
+        "monetary_cost": null,
+        "provider_usage": null,
+        "execution_scope": "actual static validators and temporary Git/CLI fixtures; no archived scientific code, native solvers or generated patches executed"
+      },
+      "junit_sha256": "8697032a9eb287f28c29a80272a30dd286b7af6aa5279f15b0183017d827901d"
+    }
+  },
+  "total_passed": 213,
+  "total_skipped": 1,
+  "prior_reports_reused_as_pass": false,
+  "static_checks": {
+    "black": {
+      "exit_code": 0,
+      "elapsed_seconds": 0.17552337299275678,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "black",
+        "--check",
+        "alpha_factory_v1/backend/memory_fabric.py",
+        "alpha_factory_v1/core/archive/db.py",
+        "alpha_factory_v1/core/archive/manager.py",
+        "alpha_factory_v1/core/self_evolution/harness.py",
+        "tests/test_archive_policy.py",
+        "tests/test_legacy_identity_security.py"
+      ]
+    },
+    "ruff": {
+      "exit_code": 0,
+      "elapsed_seconds": 0.028906226012622938,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "alpha_factory_v1/backend/memory_fabric.py",
+        "alpha_factory_v1/core/archive/db.py",
+        "alpha_factory_v1/core/archive/manager.py",
+        "alpha_factory_v1/core/self_evolution/harness.py",
+        "tests/test_archive_policy.py",
+        "tests/test_legacy_identity_security.py"
+      ]
+    },
+    "mypy-copy-fence": {
+      "exit_code": 0,
+      "elapsed_seconds": 1.1828917829989223,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mypy",
+        "--config-file",
+        "mypy.ini",
+        "alpha_factory_v1/core/self_evolution/harness.py"
+      ]
+    },
+    "actual-release-base-binary-gate": {
+      "exit_code": 0,
+      "elapsed_seconds": 4.447577225000714,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "scripts/check_no_binary_diff.py",
+        "--base",
+        "5499495911bf8822ac0aa8c9007f00789c1132b5"
+      ]
+    }
+  },
+  "environment": {
+    "schema": "recovered-core-qa-environment/v1",
+    "fresh_qa_venv": "/workspace/scratch/0d7600b912de/recovery-evidence/core/qa-env",
+    "surviving_old_venv": false,
+    "provided_qa_packages_path": "/root/.local/lib/python3.12/site-packages",
+    "dependency_isolation": false,
+    "scope": "Fresh task QA interpreter explicitly links provided QA and primary bundled packages; not a clean application/install qualification. Only verified defusedxml wheel installed, no global upgrade.",
+    "defusedxml_wheel_sha256": "a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61",
+    "defusedxml_wheel_bytes": 25604,
+    "probe": {
+      "python": "/workspace/scratch/0d7600b912de/recovery-evidence/core/qa-env/bin/python",
+      "prefix": "/workspace/scratch/0d7600b912de/recovery-evidence/core/qa-env",
+      "defusedxml": "0.7.1",
+      "module": "/workspace/scratch/0d7600b912de/recovery-evidence/core/qa-env/lib/python3.12/site-packages/defusedxml/__init__.py"
+    },
+    "provided_primary_packages_path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages"
+  },
+  "preserved_nonpasses": [
+    "dependency-check-no-user-site.log: provided QA packages excluded",
+    "legacy-attempt-1-adk-stub-conflict: runner conflicted with existing offline stub",
+    "qa-dependency-download.log: pinned PyPI dependency acquisition failed DNS",
+    "xml-public-attempt-1-missing-provided-backend: initial QA environment lacked bundled backend; explicit fallback recorded"
+  ],
+  "cost_limits": {
+    "full_lifecycle_total": null,
+    "human_effort": null,
+    "assistant_inference_cost": null,
+    "construction_integration_maintenance_cost": null,
+    "money": null,
+    "revenue": null,
+    "known_measurements": "Per-run wall, process CPU/RSS and allowed Git/CLI child CPU recorded; these are QA measurements, not mission savings or full development cost.",
+    "abstract_work_is_not_cpu_or_money": true
+  },
+  "rollback": {
+    "snapshot_receipt": "rollback-snapshots.json",
+    "tested": "Stop/backup; upgrade/write; retain upgraded snapshot; restore pre-upgrade snapshot to separate path; fixed five-column writer works only there.",
+    "post_upgrade_records_auto_reconciled": false,
+    "legacy_merge_general_crash_safety_qualified": false,
+    "pg_qualified": false,
+    "actual_faiss_qualified": false
+  },
+  "incumbent": {
+    "unchanged_vs_commit": "7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9",
+    "protected_path_delta": "",
+    "paths": [
+      "studies/agi-alpha-flywheel-strategy-succession-v1",
+      "contrib/strategy_succession/worker",
+      "contrib/strategy_succession/transport",
+      "contrib/strategy_succession/ENGINEERING_MANIFEST.json",
+      "contrib/strategy_succession/serve.py"
+    ],
+    "profile_sha256": "0542301599817d9907e606d6378d9a4eed2fe57eb41bfae86f8333d424aa395c",
+    "runtime_versions": [
+      "1.42.0"
+    ],
+    "public_runtime_wheel_sha256_pin": "fff8c6c8a8dbeeebf1f91cc8e9a3fae17113baac93b6ed0d6096ecb59d072554",
+    "public_wheel_freshly_downloaded_or_installed": false,
+    "native_worker_or_held_tests_executed": false,
+    "scope": "Source identity unchanged; no transfer of previous scientific, installed-runtime or native qualification from historical reports."
+  },
+  "connected_budget_configuration": {
+    "per_plan_caps": {
+      "service_work": 500000,
+      "improvement_work": 3000000,
+      "native_calls": 6,
+      "native_solve_seconds": 20
+    },
+    "total_caps": {
+      "service_work": 1000000,
+      "improvement_work": 6000000,
+      "native_calls": 12,
+      "native_solve_seconds": 40
+    },
+    "max_requests": 4,
+    "grant_seconds": 600,
+    "request_seconds": 120,
+    "cost_limits": "Work counters are declared units; native counter charges solve allowance. Actual timing, opaque native work, human labor and monetary costs are separate."
+  },
+  "production_authority": false,
+  "proof": [],
+  "authority": []
+}

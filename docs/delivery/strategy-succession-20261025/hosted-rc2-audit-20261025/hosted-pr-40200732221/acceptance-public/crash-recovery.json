@@ -1,0 +1,420 @@
+{
+  "schema": "strategy-engineering-crash-recovery/v1",
+  "passed": true,
+  "actual_supervisor_signal": "SIGKILL",
+  "source_hash": "f1efa4e6833de9b22473a1ffb2342891ebd2202333d3612dbe275e9817e38e0c",
+  "descendants_observed": 1,
+  "descendants_inactive": true,
+  "descendant_stop_seconds": 0.03273560599996017,
+  "restarted_state": "running",
+  "reserved_before": {
+    "improvement_work": 3000000,
+    "native_calls": 6,
+    "native_solve_seconds": 20,
+    "service_work": 500000
+  },
+  "reserved_after": {
+    "improvement_work": 3000000,
+    "native_calls": 6,
+    "native_solve_seconds": 20,
+    "service_work": 500000
+  },
+  "retained_partial_hashes": [
+    "24b67ddba9951ffc4c64a9d079fb09b0fce1ccdf3437382b8bac4e6ac5cf23cc"
+  ],
+  "duplicate_run_http": 409,
+  "early_reconciliation_http": 409,
+  "no_automatic_replay": true,
+  "unknown_work_refunded": false,
+  "operator_interventions": [
+    "ephemeral test-home setup",
+    "prepare",
+    "exact approval",
+    "start",
+    "SIGKILL injection after checked phase",
+    "restart unchanged installed source",
+    "inspect status",
+    "refused duplicate",
+    "inspect reconciliation",
+    "permanent STOP",
+    "export"
+  ],
+  "export": {
+    "body": {
+      "schema": "strategy-executor-evidence/v1",
+      "journal_identity": "urn:agialpha:ed25519:95a8fe0b504cef64c0c27b9b1d5f5722ac28900da8ba43c95ee261b00767b44b",
+      "journal_record_digest": "8e08ee1609c94cdc9f6d731b7a7339a84019981bfb5fcd30bae01590cb789cd3",
+      "source_hash": "f1efa4e6833de9b22473a1ffb2342891ebd2202333d3612dbe275e9817e38e0c",
+      "executor_id": "alpha-strategy-engineering-v1",
+      "plan": {
+        "approved_at": 1792937407.4403467,
+        "caps": {
+          "improvement_work": 3000000,
+          "native_calls": 6,
+          "native_solve_seconds": 20,
+          "service_work": 500000
+        },
+        "executor_id": "alpha-strategy-engineering-v1",
+        "expires_at": 1792938007.4357252,
+        "input": {
+          "changes": {
+            "deadline": 28,
+            "durations": {
+              "J2": 6
+            }
+          },
+          "construction": {
+            "enabled": true
+          },
+          "initial": {
+            "capacity": [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            "deadline": 24,
+            "id": "public-release-plan",
+            "jobs": [
+              {
+                "crew": 1,
+                "deps": [],
+                "duration": 2,
+                "id": "J1"
+              },
+              {
+                "crew": 2,
+                "deps": [
+                  "J1"
+                ],
+                "duration": 4,
+                "id": "J2"
+              },
+              {
+                "crew": 1,
+                "deps": [
+                  "J1"
+                ],
+                "duration": 3,
+                "id": "J3"
+              },
+              {
+                "crew": 2,
+                "deps": [
+                  "J2"
+                ],
+                "duration": 3,
+                "id": "J4"
+              },
+              {
+                "crew": 1,
+                "deps": [
+                  "J3"
+                ],
+                "duration": 2,
+                "id": "J5"
+              },
+              {
+                "crew": 1,
+                "deps": [
+                  "J4",
+                  "J5"
+                ],
+                "duration": 1,
+                "id": "J6"
+              }
+            ],
+            "kind": "plan",
+            "planning_only": true,
+            "public_or_synthetic": "synthetic",
+            "schema": "release-plan/v1"
+          },
+          "repair": {
+            "capacity": [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              1,
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            "deadline": 28,
+            "observed_at": 9
+          }
+        },
+        "lease_expires_at": 1792937527.4471006,
+        "lease_id": "d7864026a55d96b2a7a54dd9310f1a83",
+        "method": "run-journey",
+        "observed": {
+          "improvement_work": 186,
+          "native_calls": 2,
+          "native_solve_seconds": 4,
+          "service_work": 8503
+        },
+        "partial_receipts": [
+          {
+            "authority": [],
+            "checker": {
+              "counts": {
+                "arithmetic": 72,
+                "calendar_slots": 96,
+                "comparisons": 395,
+                "dependency_edges": 36,
+                "input_bytes": 1012,
+                "input_fields": 123,
+                "interval_slots": 15,
+                "job_scans": 36,
+                "map_operations": 98,
+                "total": 1883
+              },
+              "errors": [],
+              "lower_bound": {
+                "critical": 10,
+                "load": 11,
+                "locked": 0,
+                "value": 11
+              },
+              "optimal_if_bound": false,
+              "qualified": true,
+              "valid": true
+            },
+            "phase_index": 0,
+            "policy_binding": "7af0b158aceb0a3ebfed4d4d5dcefb0580f87a8ff8469d140631ea07abb11900",
+            "proof": [],
+            "receipt_hash": "24b67ddba9951ffc4c64a9d079fb09b0fce1ccdf3437382b8bac4e6ac5cf23cc",
+            "request_hash": "0315ea154239c344d380b52ca1336b3f9c90f82dcde650dfa0875c31f74b6ad7",
+            "result": {
+              "authority": [],
+              "dispatch_order": [
+                "J1",
+                "J2",
+                "J3",
+                "J4",
+                "J5",
+                "J6"
+              ],
+              "lookahead_steps": 0,
+              "lower_bound": {
+                "critical": 10,
+                "load": 11,
+                "locked": 0,
+                "value": 11
+              },
+              "makespan": 15,
+              "movement": 0,
+              "optimal_by_lower_bound": false,
+              "proof": [],
+              "schedule": [
+                {
+                  "end": 2,
+                  "id": "J1",
+                  "start": 0
+                },
+                {
+                  "end": 6,
+                  "id": "J2",
+                  "start": 2
+                },
+                {
+                  "end": 9,
+                  "id": "J3",
+                  "start": 6
+                },
+                {
+                  "end": 12,
+                  "id": "J4",
+                  "start": 9
+                },
+                {
+                  "end": 14,
+                  "id": "J5",
+                  "start": 12
+                },
+                {
+                  "end": 15,
+                  "id": "J6",
+                  "start": 14
+                }
+              ],
+              "schema": "release-plan-result/v1",
+              "task_id": "public-release-plan"
+            },
+            "schema": "strategy-executor-partial/v1",
+            "scientific_source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+            "selectedmethod": "ordinary-portfolio",
+            "source_hash": "f1efa4e6833de9b22473a1ffb2342891ebd2202333d3612dbe275e9817e38e0c",
+            "task": {
+              "capacity": [
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2
+              ],
+              "deadline": 24,
+              "id": "public-release-plan",
+              "jobs": [
+                {
+                  "crew": 1,
+                  "deps": [],
+                  "duration": 2,
+                  "id": "J1"
+                },
+                {
+                  "crew": 2,
+                  "deps": [
+                    "J1"
+                  ],
+                  "duration": 4,
+                  "id": "J2"
+                },
+                {
+                  "crew": 1,
+                  "deps": [
+                    "J1"
+                  ],
+                  "duration": 3,
+                  "id": "J3"
+                },
+                {
+                  "crew": 2,
+                  "deps": [
+                    "J2"
+                  ],
+                  "duration": 3,
+                  "id": "J4"
+                },
+                {
+                  "crew": 1,
+                  "deps": [
+                    "J3"
+                  ],
+                  "duration": 2,
+                  "id": "J5"
+                },
+                {
+                  "crew": 1,
+                  "deps": [
+                    "J4",
+                    "J5"
+                  ],
+                  "duration": 1,
+                  "id": "J6"
+                }
+              ],
+              "kind": "plan",
+              "planning_only": true,
+              "public_or_synthetic": "synthetic",
+              "schema": "release-plan/v1"
+            },
+            "transport_digest": "9664fbd302a117911ff004f5cd3c24618677d984c71053286aa8c704a28897cf"
+          }
+        ],
+        "plan_digest": "a5607b7566d6f81b4a7fe295a6e774c03813c73fa41fa0164e155f09b63a3091",
+        "plan_id": "1936364d6ef0dd8829830c90f7884fd4",
+        "policy_binding": "7af0b158aceb0a3ebfed4d4d5dcefb0580f87a8ff8469d140631ea07abb11900",
+        "prepared_at": 1792937407.4357252,
+        "production_authority": false,
+        "request_hash": "0315ea154239c344d380b52ca1336b3f9c90f82dcde650dfa0875c31f74b6ad7",
+        "request_id": "crash-after-committed-phase",
+        "request_seconds": 120,
+        "source_hash": "f1efa4e6833de9b22473a1ffb2342891ebd2202333d3612dbe275e9817e38e0c",
+        "started_at": 1792937407.4471004,
+        "state": "running"
+      },
+      "production_authority": false,
+      "cost_units": {
+        "service_work": "declared fixed-method units",
+        "improvement_work": "declared construction units",
+        "native_calls": "charged native invocation attempts; includes failures before solver startup",
+        "native_solve_seconds": "charged solve allowance seconds; observed solver wall/CPU separate telemetry"
+      },
+      "limits": "Local fixed-method attribution; not independent proof, money or inherited authority."
+    },
+    "sha256": "542619926171173c629ff30edfbba3b69a2c0087ef2ecada43a6a6b9d00dea1c",
+    "public_key": "95a8fe0b504cef64c0c27b9b1d5f5722ac28900da8ba43c95ee261b00767b44b",
+    "signature": "4x03ScMG1McDsFBQDOekdwRzOHhIewag1DAMlyPat6P30YkSI+WX4Ar2OauQcVzlEnQqWbOs9F2KXiZf2HmnCg=="
+  },
+  "production_authority": false
+}
