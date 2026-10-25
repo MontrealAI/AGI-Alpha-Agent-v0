@@ -12,6 +12,7 @@ from typing import Iterator, Optional
 
 from sqlalchemy import Boolean, Column, Float, String, create_engine
 from sqlalchemy.orm import Session, DeclarativeBase
+from sqlalchemy.exc import IntegrityError
 
 
 class Base(DeclarativeBase):
@@ -88,6 +89,33 @@ class ArchiveDB:
         with Session(self.engine) as session:
             session.merge(_ArchiveRow(**dataclasses.asdict(entry)))
             session.commit()
+
+    def add_patch_once(self, entry: ArchiveEntry, body: str) -> bool:
+        """Atomically insert a patch; identical retries retain all accepted history."""
+        key = f"patch:{entry.hash}"
+
+        def matches(session: Session) -> bool:
+            row = session.get(_ArchiveRow, entry.hash)
+            state = session.get(_StateRow, key)
+            if row is None and state is None:
+                return False
+            if row is None or state is None or state.value != body or row.parent != entry.parent:
+                raise ValueError("Patch identity conflicts with retained archive history")
+            return True
+
+        with Session(self.engine) as session:
+            if matches(session):
+                return False
+            session.add(_ArchiveRow(**dataclasses.asdict(entry)))
+            session.add(_StateRow(key=key, value=body))
+            try:
+                session.commit()
+            except IntegrityError:
+                session.rollback()
+                if matches(session):
+                    return False
+                raise ValueError("Patch admission raced with conflicting archive history") from None
+        return True
 
     def get(self, h: str) -> ArchiveEntry | None:
         """Return the entry matching ``h`` or ``None`` if missing."""

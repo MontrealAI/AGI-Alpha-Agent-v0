@@ -3,8 +3,12 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 import re
+import shlex
+import subprocess
+import sys
 
 import yaml
 
@@ -63,21 +67,118 @@ def test_release_quality_checks_committed_delta_before_blocking_hooks() -> None:
     assert steps.index(checks) < steps.index(hooks)
 
 
-def test_strategy_security_hook_keeps_pinned_tool_and_always_checks_fixed_python_scope() -> None:
+def test_security_hooks_preserve_official_policy_and_add_fixed_strategy_scope() -> None:
     config = yaml.safe_load(Path(".pre-commit-config.yaml").read_text(encoding="utf-8"))
     repo = next(item for item in config["repos"] if item["repo"] == "https://github.com/semgrep/semgrep")
     assert repo["rev"] == "2bbd0a55b3655b26991c936b92e0c0f6d6f4fa94"
     assert repo["hooks"] == [
         {
             "id": "semgrep",
+            "name": "Repository Python security (official and local rules)",
+            "entry": "python -I scripts/check_strategy_python_security.py --official-repository --",
+            "args": [],
+            "additional_dependencies": ["setuptools>=75,<81"],
+            "types": ["python"],
+            "pass_filenames": True,
+            "require_serial": True,
+            "verbose": True,
+        },
+        {
+            "id": "semgrep",
+            "name": "Additional bounded Strategy Python security",
             "entry": "python -I scripts/check_strategy_python_security.py",
             "args": [],
             "additional_dependencies": ["setuptools>=75,<81"],
             "types": ["python"],
             "pass_filenames": False,
             "always_run": True,
-        }
+        },
     ]
+
+
+def test_pre_commit_semgrep_selection_executes_both_named_hooks_without_aliases(tmp_path: Path) -> None:
+    env = {**os.environ, "PRE_COMMIT_HOME": str(tmp_path / "cache"), "SKIP": ""}
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True, env=env)
+    marker = tmp_path / "marker.py"
+    marker.write_text(
+        "from pathlib import Path\nimport sys\n"
+        "with Path('selected.txt').open('a') as output: output.write(sys.argv[1]+'\\n')\n"
+    )
+    (tmp_path / "example.py").write_text("value = 1\n")
+    subprocess.run(["git", "-C", str(tmp_path), "add", "example.py"], check=True, env=env)
+    hooks = [
+        {
+            "id": "semgrep",
+            "name": name,
+            "entry": shlex.join([sys.executable, str(marker), role]),
+            "language": "system",
+            "pass_filenames": False,
+            "always_run": True,
+        }
+        for name, role in (("Primary policy", "primary"), ("Additional bounded policy", "additional"))
+    ]
+    (tmp_path / ".pre-commit-config.yaml").write_text(yaml.safe_dump({"repos": [{"repo": "local", "hooks": hooks}]}))
+    subprocess.run(
+        [sys.executable, "-m", "pre_commit", "run", "semgrep", "--all-files"],
+        cwd=tmp_path,
+        env=env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert (tmp_path / "selected.txt").read_text().splitlines() == ["primary", "additional"]
+
+
+def test_pr_smoke_requires_official_and_additional_security_before_merge() -> None:
+    workflow = yaml.safe_load(Path(".github/workflows/pr-ci.yml").read_text(encoding="utf-8"))
+    steps = workflow["jobs"]["smoke"]["steps"]
+    security = next(
+        step for step in steps if step.get("name") == "Check official and additional Python security before merge"
+    )
+    assert security["run"].splitlines() == [
+        "mkdir -p evidence/semgrep-official",
+        "set -o pipefail",
+        "pre-commit run semgrep --all-files --verbose --show-diff-on-failure 2>&1 | tee evidence/semgrep-official/precommit-pr.log",
+    ]
+    assert security["timeout-minutes"] == 12
+    assert security.get("if") is None
+    assert security.get("continue-on-error", False) is False
+    dependencies = next(step for step in steps if step.get("name") == "Install dependencies")
+    smoke = next(step for step in steps if step.get("name") == "Run smoke tests")
+    assert steps.index(dependencies) < steps.index(security) < steps.index(smoke)
+    artifact = next(step for step in steps if step.get("name") == "Retain actual Python security evidence")
+    assert artifact["if"] == "always()"
+    assert artifact["with"]["path"] == "evidence/semgrep-official/"
+    assert artifact["with"]["if-no-files-found"] == "error"
+
+
+def test_main_quality_always_retains_primary_security_reports() -> None:
+    workflow = yaml.safe_load(Path(".github/workflows/agent-release.yml").read_text())
+    steps = workflow["jobs"]["quality"]["steps"]
+    artifact = next(step for step in steps if step.get("name") == "Retain actual repository Python security evidence")
+    assert artifact["if"] == "always()"
+    assert artifact["with"]["path"] == "evidence/semgrep-official/"
+    assert artifact["with"]["if-no-files-found"] == "error"
+    assert "/evidence/semgrep-official/" in Path(".gitignore").read_text().splitlines()
+
+
+def test_xml_safety_dependency_is_installed_only_in_qa_and_public_verifier_bootstraps() -> None:
+    strategy = yaml.safe_load(Path(".github/workflows/strategy-succession-engineering.yml").read_text())
+    install = next(
+        step
+        for step in strategy["jobs"]["qualify"]["steps"]
+        if step.get("name") == "Install the separately verified public runtime in a clean test environment"
+    )
+    assert "defusedxml==0.7.1" in install["run"]
+    release = yaml.safe_load(Path(".github/workflows/agent-release.yml").read_text())
+    public = next(
+        step
+        for step in release["jobs"]["public-strategy-install"]["steps"]
+        if step.get("name") == "Install only the existing release-verifier dependencies"
+    )
+    assert public["run"] == "python -m pip install cryptography==50.0.1 packaging==25.0 defusedxml==0.7.1"
+    requirements = Path("contrib/strategy_succession/requirements-qualification.txt").read_text()
+    assert "defusedxml" not in requirements
 
 
 def test_release_quality_requires_actual_security_regressions_after_installed_hooks() -> None:

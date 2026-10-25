@@ -24,8 +24,10 @@ additive hardening to satisfy enterprise infosec & regulator audits.
 from __future__ import annotations
 
 import os, asyncio, inspect, logging, time, json, math, tempfile, threading
+import re
 from pathlib import Path
 from typing import Any, Dict
+from urllib.parse import urlsplit
 
 if os.name != "nt":
     import fcntl
@@ -301,10 +303,50 @@ def _require_service(*, execution: bool = False) -> AIGAMetaService:
 # ---------------------------------------------------------------------------
 # FASTAPI --------------------------------------------------------------------
 # ---------------------------------------------------------------------------
+def _cors_origins(value: str) -> list[str]:
+    """Accept only explicitly configured HTTP(S) origins; default to same-origin."""
+    if len(value) > 4096 or any(ord(char) < 32 or ord(char) == 127 for char in value):
+        raise ValueError("AIGA_CORS_ORIGINS must contain exact HTTP(S) origins")
+    if not value.strip():
+        return []
+    origins = []
+    for item in value.split(","):
+        origin = item.strip()
+        try:
+            target = urlsplit(origin)
+            port = target.port
+        except ValueError:
+            raise ValueError("AIGA_CORS_ORIGINS must contain exact HTTP(S) origins") from None
+        if (
+            not origin.startswith(("http://", "https://"))
+            or target.scheme not in {"http", "https"}
+            or not target.hostname
+            or target.username is not None
+            or target.password is not None
+            or target.path
+            or "?" in origin
+            or "#" in origin
+            or "%" in target.netloc
+            or "\\" in origin
+            or any(char.isspace() for char in origin)
+            or port == 0
+            or re.fullmatch(
+                r"(?:\[[0-9A-Fa-f:.]+\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::[0-9]+)?", target.netloc
+            )
+            is None
+        ):
+            raise ValueError("AIGA_CORS_ORIGINS must contain exact HTTP(S) origins")
+        origins.append(origin)
+    if len(origins) > 32:
+        raise ValueError("AIGA_CORS_ORIGINS contains too many origins")
+    return list(dict.fromkeys(origins))
+
+
+_CORS_ORIGINS = _cors_origins(os.getenv("AIGA_CORS_ORIGINS", ""))
 app = FastAPI(title="AI‑GA Meta‑Evolution API", version="1.1.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -318,6 +360,17 @@ if ENABLE_OTEL and FastAPIInstrumentor:
 
 @app.middleware("http")
 async def _count_requests(request, call_next):
+    # CORS alone does not stop a browser's simple POST from reaching a mutation.
+    origins = request.headers.getlist("origin")
+    if request.method not in {"GET", "HEAD", "OPTIONS"} and origins:
+        origin = origins[0]
+        try:
+            valid = len(origins) == 1 and _cors_origins(origin) == [origin]
+        except ValueError:
+            valid = False
+        same_origin = f"{request.url.scheme}://{request.url.netloc}"
+        if not valid or (origin != same_origin and origin not in _CORS_ORIGINS):
+            return JSONResponse({"detail": "origin not permitted"}, status_code=403)
     path = request.url.path
     if path.startswith("/metrics"):
         return await call_next(request)

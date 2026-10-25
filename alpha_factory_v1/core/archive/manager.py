@@ -15,6 +15,12 @@ from alpha_factory_v1.core.monitoring import metrics
 from .db import ArchiveDB, ArchiveEntry
 
 
+def patch_identity(diff: str, parent: str) -> str:
+    """Bind new patch identities to exact content and lineage without rewriting legacy IDs."""
+    body = json.dumps(["alpha-archive-patch/v2", parent, diff], ensure_ascii=False, separators=(",", ":"))
+    return "archive-patch-v2:sha256:" + hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
 def _tool_roundtrip() -> bool:
     """Return ``True`` if edit/undo leaves no changes."""
     path = REPO_ROOT / "_roundtrip.txt"
@@ -44,9 +50,14 @@ class PatchManager:
         if not _tool_roundtrip():
             return False
 
-        h = hashlib.sha1(diff.encode()).hexdigest()
+        h = patch_identity(diff, parent)
         entry = json.dumps({"diff": diff, "parent": parent})
-        self.db.set_state(f"patch:{h}", entry)
-        self.db.add(ArchiveEntry(hash=h, parent=parent, score=0.0, novelty=0.0, is_live=True, ts=time.time()))
-        metrics.dgm_children_admitted_total.inc()
+        try:
+            inserted = self.db.add_patch_once(
+                ArchiveEntry(hash=h, parent=parent, score=0.0, novelty=0.0, is_live=True, ts=time.time()), entry
+            )
+        except ValueError:
+            return False
+        if inserted:
+            metrics.dgm_children_admitted_total.inc()
         return True

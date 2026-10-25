@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -40,19 +39,19 @@ def test_admit_policy(monkeypatch, tmp_path: Path) -> None:
     monkeypatch.setattr(manager, "run_preflight", lambda _repo: None)
     monkeypatch.setattr(manager, "_tool_roundtrip", lambda: True)
     assert mgr.admit(diff, parent)
-    h = hashlib.sha1(diff.encode()).hexdigest()
+    h = manager.patch_identity(diff, parent)
     stored = mgr.db.get_state(f"patch:{h}")
     assert json.loads(stored) == {"diff": diff, "parent": parent}
 
     diff2 = "--- a/foo\n+++ b/foo\n@@\n-a\n+c\n"
     monkeypatch.setattr(manager, "run_preflight", lambda _repo: (_ for _ in ()).throw(RuntimeError()))
     assert not mgr.admit(diff2, parent)
-    h2 = hashlib.sha1(diff2.encode()).hexdigest()
+    h2 = manager.patch_identity(diff2, parent)
     assert mgr.db.get_state(f"patch:{h2}") is None
 
     diff3 = "--- a/foo\n+++ b/foo\n@@\n-a\n+d\n"
     monkeypatch.setattr(manager, "run_preflight", lambda _repo: None)
     monkeypatch.setattr(manager, "_tool_roundtrip", lambda: False)
     assert not mgr.admit(diff3, parent)
-    h3 = hashlib.sha1(diff3.encode()).hexdigest()
+    h3 = manager.patch_identity(diff3, parent)
     assert mgr.db.get_state(f"patch:{h3}") is None

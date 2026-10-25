@@ -84,6 +84,19 @@ jobs:
           pip install -r requirements-dev.lock
       - name: Check release workflow policy before merge
         run: python -m pytest --noconftest -o addopts= tests/test_paper_workflow_policy.py -q
+      - name: Check official and additional Python security before merge
+        timeout-minutes: 12
+        run: |
+          mkdir -p evidence/semgrep-official
+          set -o pipefail
+          pre-commit run semgrep --all-files --verbose --show-diff-on-failure 2>&1 | tee evidence/semgrep-official/precommit-pr.log
+      - name: Retain actual Python security evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: pr-python-security
+          path: evidence/semgrep-official/
+          if-no-files-found: error
       - name: Run smoke tests
         run: |
           pytest -m smoke \

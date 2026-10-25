@@ -1,28 +1,38 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Enforce two pinned local Python patterns over one fixed Strategy source set.
+"""Primary official repository Python scan and an additional bounded Strategy check.
 
-This is bounded static admission, not general Python security qualification or
-permission to execute a candidate. Scientific and held source is never selected.
+The no-argument role checks two pinned patterns over a fixed source set, excluding
+scientific/held files. The official role only parses pre-commit's selected source;
+neither role executes that source or grants runtime authority.
 """
 
 from __future__ import annotations
 
 import hashlib
+import importlib
 from importlib import metadata
 import json
 import math
+import multiprocessing
 import os
 from pathlib import Path
+import signal
 import stat
 import subprocess
 import sys
 import tempfile
-from typing import Any, cast
+import time
+from datetime import datetime, timezone
+from typing import Any, BinaryIO, cast
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 ROOT = Path(__file__).resolve().parents[1]
 RULE_CONFIG = "scripts/strategy_python_security.yml"
 RULE_SHA256 = "41b6fcf8b68115407c4671670da9926e91f9402a1be9a733b08ba7d11c68cdd0"
 SEMGREP_VERSION = "1.99.0"
+OFFICIAL_URL = "https://semgrep.dev/c/p/python"
+OFFICIAL_OUTPUT = "evidence/semgrep-official"
+LEGACY_CONFIG_SHA256 = "8cfac716549d157d4f994670a80abecb65c2f94c64fe976a1f2e52d9d707a918"
 RULE_IDS = (
     "strategy-python-no-dynamic-evaluation",
     "strategy-python-no-subprocess-shell",
@@ -31,6 +41,7 @@ RULE_IDS = (
 # neither a candidate nor a command-line argument may expand or reduce it.
 TARGETS = (
     "alpha_factory_v1/__init__.py",
+    "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
     "contrib/strategy_succession/__init__.py",
     "contrib/strategy_succession/qa/collect_qualification.py",
     "contrib/strategy_succession/qa/proc_namespace.py",
@@ -58,6 +69,7 @@ TARGETS = (
     "scripts/dp_scrubber.py",
     "scripts/package_agent_release.py",
     "scripts/refresh_capability_checkout.py",
+    "scripts/reuse_writer4_http.py",
     "scripts/ruff_targets.py",
     "scripts/strategy_engineering_release.py",
     "scripts/validate_homepage.py",
@@ -66,16 +78,21 @@ TARGETS = (
     "tests/test_dp_scrubber.py",
     "tests/test_paper_workflow_policy.py",
     "tests/test_public_strategy_acceptance.py",
+    "tests/test_sandbox_docker.py",
     "tests/test_ruff_targets.py",
     "tests/test_strategy_engineering_release.py",
     "tests/test_strategy_python_security.py",
+    "tests/test_strategy_qualification_xml.py",
     "tests/test_strategy_release_documents.py",
     "tests/test_strategy_research_source.py",
     "tests/test_strategy_succession_binary_admission.py",
+    "tests/test_autonomous_enterprise_binary_admission.py",
+    "tests/test_writer4_http_reuse.py",
 )
 MAX_SOURCE_BYTES = 256 * 1024
 MAX_TOTAL_BYTES = 2 * 1024 * 1024
 MAX_REPORT_BYTES = 8 * 1024 * 1024
+FETCH_WALL_SECONDS = 30
 
 
 class CheckFailure(ValueError):
@@ -84,6 +101,115 @@ class CheckFailure(ValueError):
     def __init__(self, message: str, details: dict[str, Any] | None = None) -> None:
         super().__init__(message)
         self.details = details or {}
+
+
+class _NoOfficialRedirect(HTTPRedirectHandler):
+    """A response cannot expand the fixed official-registry network destination."""
+
+    def redirect_request(self, req: Request, fp: Any, code: int, msg: str, headers: Any, newurl: str) -> None:
+        raise CheckFailure("Official registry redirects are not admitted")
+
+
+def _open_official(request: Request, timeout: int) -> Any:
+    return build_opener(_NoOfficialRedirect()).open(request, timeout=timeout)
+
+
+def _stop_group(pid: int, force: bool = False) -> None:
+    require(pid > 0, "Invalid owned scanner process identity")
+    try:
+        os.killpg(pid, signal.SIGKILL if force else signal.SIGTERM)
+    except ProcessLookupError:
+        pass
+
+
+def _download_body(destination: str, connection: Any) -> None:
+    """A separately terminable worker prevents a dripping response escaping the deadline."""
+    try:
+        os.setsid()
+        with _open_official(Request(OFFICIAL_URL, headers={"Accept": "application/json"}), timeout=30) as response:
+            require(
+                response.status == 200 and response.geturl() == OFFICIAL_URL, "Official registry changed origin/status"
+            )
+            count = 0
+            read = getattr(response, "read1", response.read)
+            with Path(destination).open("xb") as stream:
+                while block := read(65536):
+                    count += len(block)
+                    require(count <= 2_000_000, "Official registry rules exceed their bound")
+                    stream.write(block)
+                    stream.flush()
+            require(count > 0, "Official registry rules are empty")
+        connection.send({"ok": True})
+    except Exception as error:
+        connection.send({"ok": False, "error_type": type(error).__name__})
+    finally:
+        connection.close()
+
+
+def _fetch_body(destination: Path) -> bytes:
+    context = multiprocessing.get_context("fork")
+    receiver, sender = context.Pipe(duplex=False)
+    process = context.Process(target=_download_body, args=(str(destination), sender), daemon=True)
+    process.start()
+    sender.close()
+    try:
+        process.join(timeout=FETCH_WALL_SECONDS)
+        require(not process.is_alive(), "Official registry fetch exceeded its absolute wall deadline")
+        require(process.exitcode == 0 and receiver.poll(), "Official registry fetch produced no verified result")
+        status = receiver.recv()
+        require(status == {"ok": True}, "Official registry fetch failed: " + str(status.get("error_type", "unknown")))
+    finally:
+        if process.is_alive():
+            _stop_group(process.pid or 0)
+            # The deadline can arrive before the worker has established its
+            # session. Its owned Process remains a safe fallback identity.
+            process.terminate()
+            process.join(timeout=3)
+            if process.is_alive():
+                _stop_group(process.pid or 0, force=True)
+                process.kill()
+                process.join(timeout=3)
+        receiver.close()
+        process.close()
+    with destination.open("rb") as stream:
+        raw = stream.read(2_000_001)
+    require(0 < len(raw) <= 2_000_000, "Official registry rules exceed their bound")
+    return raw
+
+
+def _limit_output_files() -> None:
+    resources = importlib.import_module("resource")
+    resources.setrlimit(resources.RLIMIT_FSIZE, (MAX_REPORT_BYTES + 1, MAX_REPORT_BYTES + 1))
+
+
+def _execute(
+    command: list[str], root: Path, env: dict[str, str], output: BinaryIO, errors: BinaryIO, seconds: int
+) -> tuple[int, bool]:
+    """Bound output in producers, then stop the complete owned group on resource failure."""
+    process = subprocess.Popen(
+        command,
+        cwd=root,
+        env=env,
+        stdin=subprocess.DEVNULL,
+        stdout=output,
+        stderr=errors,
+        start_new_session=True,
+        preexec_fn=_limit_output_files,
+    )
+    expired = False
+    try:
+        code = process.wait(timeout=seconds)
+    except subprocess.TimeoutExpired:
+        expired = True
+        _stop_group(process.pid)
+        try:
+            code = process.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            _stop_group(process.pid, force=True)
+            code = process.wait()
+    if code not in (0, 1):
+        _stop_group(process.pid)
+    return code, expired
 
 
 def require(condition: bool, message: str) -> None:
@@ -96,19 +222,19 @@ def _fingerprint(value: os.stat_result) -> tuple[int, ...]:
     return (value.st_dev, value.st_ino, value.st_mode, value.st_size, value.st_mtime_ns, value.st_ctime_ns)
 
 
-def _capture(root: Path, name: str) -> tuple[str, tuple[int, ...], int]:
+def _capture(root: Path, name: str, maximum: int = MAX_SOURCE_BYTES) -> tuple[str, tuple[int, ...], int]:
     path = root / name
     require(path.resolve(strict=True) == path, "Scan source or ancestor is a symlink")
     before = path.lstat()
-    require(stat.S_ISREG(before.st_mode) and before.st_size <= MAX_SOURCE_BYTES, "Unbounded or nonregular scan source")
+    require(stat.S_ISREG(before.st_mode) and before.st_size <= maximum, "Unbounded or nonregular scan source")
     descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
     with os.fdopen(descriptor, "rb") as stream:
         opened = os.fstat(stream.fileno())
-        data = stream.read(MAX_SOURCE_BYTES + 1)
+        data = stream.read(maximum + 1)
         after = os.fstat(stream.fileno())
     current = path.lstat()
     require(
-        len(data) <= MAX_SOURCE_BYTES
+        len(data) <= maximum
         and _fingerprint(before) == _fingerprint(opened) == _fingerprint(after) == _fingerprint(current)
         and path.resolve(strict=True) == path,
         "Scan source changed during capture",
@@ -157,8 +283,11 @@ def _json(raw: bytes) -> dict[str, Any]:
     return cast(dict[str, Any], value)
 
 
-def validate_report(raw: bytes, returncode: int) -> dict[str, Any]:
+def validate_report(
+    raw: bytes, returncode: int, targets: tuple[str, ...] = TARGETS, rules: tuple[str, ...] = RULE_IDS
+) -> dict[str, Any]:
     """Require actual complete target coverage, never a green empty scan."""
+    require(bool(targets), "No security target selection was supplied")
     report = _json(raw)
     require(report.get("version") == SEMGREP_VERSION, "Scanner report has an unqualified version")
     require(type(report.get("results")) is list, "Scanner omitted its findings")
@@ -176,8 +305,8 @@ def validate_report(raw: bytes, returncode: int) -> dict[str, Any]:
     require(
         type(scanned) is list
         and all(type(name) is str for name in scanned)
-        and len(scanned) == len(set(scanned)) == len(TARGETS)
-        and set(scanned) == set(TARGETS),
+        and len(scanned) == len(set(scanned)) == len(targets)
+        and set(scanned) == set(targets),
         "Scanner target coverage is empty, incomplete, duplicated or unexpected",
     )
     require(paths.get("skipped", []) == [], "Scanner skipped a target")
@@ -186,9 +315,7 @@ def validate_report(raw: bytes, returncode: int) -> dict[str, Any]:
         details = []
         for finding in findings:
             require(isinstance(finding, dict), "Malformed scanner finding")
-            require(
-                finding.get("check_id") in RULE_IDS and finding.get("path") in TARGETS, "Unexpected scanner finding"
-            )
+            require(finding.get("check_id") in rules and finding.get("path") in targets, "Unexpected scanner finding")
             start = finding.get("start", {})
             line = start.get("line") if isinstance(start, dict) else None
             require(type(line) is int and line > 0, "Scanner finding omitted its location")
@@ -196,6 +323,203 @@ def validate_report(raw: bytes, returncode: int) -> dict[str, Any]:
         raise CheckFailure("Pinned Python security rules found prohibited operations", {"findings": details})
     require(returncode == 0, "Scanner did not finish successfully")
     return {"scanned_files": len(cast(list[str], scanned)), "findings": 0, "errors": 0, "skipped_rules": 0}
+
+
+def fetch_official_policy(destination: Path) -> dict[str, Any]:
+    """Capture once and run the exact unmodified official registry response."""
+    raw = _fetch_body(destination)
+    parser = importlib.import_module("ruamel.yaml").YAML(typ="safe")
+    try:
+        text = raw.decode("utf-8")
+        value = parser.load(text)
+        document = parser.compose(text)
+    except Exception as error:
+        raise CheckFailure("Official registry YAML is invalid", {"error_type": type(error).__name__}) from error
+    require(isinstance(value, dict) and type(value.get("rules")) is list, "Official registry omitted its rules")
+    rules = value["rules"]
+    require(bool(rules) and all(isinstance(rule, dict) for rule in rules), "Official registry has no valid rules")
+    ids = [rule.get("id") for rule in rules]
+    require(
+        all(type(name) is str and name for name in ids) and len(ids) == len(set(ids)),
+        "Official registry has duplicate or missing rule identities",
+    )
+    require(any("python" in rule.get("languages", []) for rule in rules), "Official registry has no Python rules")
+    sequences = [node for key, node in document.value if key.value == "rules"]
+    require(len(sequences) == 1 and sequences[0].tag.endswith(":seq"), "Official rule spans are not a direct sequence")
+    rule_nodes = sequences[0].value
+    require(len(rule_nodes) == len(rules), "Official rule definition spans are incomplete")
+    definitions = []
+    for rule, node in zip(rules, rule_nodes):
+        first, last = node.start_mark.index, node.end_mark.index
+        span = text[first:last].encode("utf-8")
+        definitions.append(
+            {
+                "id": rule["id"],
+                "sha256": hashlib.sha256(span).hexdigest(),
+                "start_byte": len(text[:first].encode("utf-8")),
+                "end_byte": len(text[:last].encode("utf-8")),
+            }
+        )
+    return {
+        "source_url": OFFICIAL_URL,
+        "observed_at": datetime.now(timezone.utc).isoformat(),
+        "bytes": len(raw),
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "rule_ids": ids,
+        "rule_definitions": definitions,
+        "definition_digest_scope": "Exact unmodified YAML mapping-node byte spans, excluding sequence indicators",
+    }
+
+
+def official_targets(root: Path, names: tuple[str, ...]) -> tuple[str, ...]:
+    """Validate the actual nonempty pre-commit selection rather than infer its scope."""
+    require(bool(names) and len(names) == len(set(names)), "Official scan requires unique actual filename targets")
+    tracked = set(subprocess.check_output(["git", "-C", str(root), "ls-files", "-z"], text=True).split("\0"))
+    for name in names:
+        path = Path(name)
+        require(
+            not name.startswith("-")
+            and not path.is_absolute()
+            and path.as_posix() == name
+            and not {"", ".", ".."}.intersection(name.split("/"))
+            and name in tracked,
+            "Unknown, escaping or option-like official target",
+        )
+        require(path.suffix in {".py", ".pyw", ".pyi"}, "Official role requires Python source filenames")
+        _capture(root, name, 1_000_000)
+    return names
+
+
+def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
+    """Run primary official policy, preserving complete separate attempt artifacts."""
+    output = root / OFFICIAL_OUTPUT
+    require(root.is_absolute() and root.resolve(strict=True) == root, "Official root must be direct and absolute")
+    require(output.resolve() == output, "Official evidence directory must not be an alias")
+    output.mkdir(parents=True, exist_ok=True)
+    require(output.resolve() == output, "Official evidence directory must not be an alias")
+    attempt = Path(tempfile.mkdtemp(prefix="attempt-", dir=output))
+    summary: dict[str, Any] = {
+        "schema": "agialpha.official-python-security/v1",
+        "passed": False,
+        "scope": "Actual pre-commit filename selection; no finding, error or skipped work is waived",
+        "production_authority": False,
+        "runtime_qualified": False,
+        "automatic_retry": False,
+        "wall_budget_expired": False,
+    }
+    before: dict[str, tuple[str, tuple[int, ...], int]] = {}
+    checker_before = None
+    started = time.perf_counter()
+    try:
+        checker_before = _capture(ROOT, "scripts/check_strategy_python_security.py", 1_000_000)
+        summary["checker_sha256"] = checker_before[0]
+        require(metadata.version("semgrep") == SEMGREP_VERSION, "Official policy requires pinned Semgrep 1.99.0")
+        require(hasattr(os, "killpg"), "Official bounded process supervision requires the qualified POSIX environment")
+        resources = importlib.import_module("resource")
+        targets = official_targets(root, names)
+        summary.update(selected_targets=list(targets), selected_files=len(targets))
+        summary["commit"] = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+        before = {name: _capture(root, name, 1_000_000) for name in (*targets, "semgrep.yml")}
+        require(sum(row[2] for row in before.values()) <= 32_000_000, "Official source selection exceeds its bound")
+        (attempt / "source-before.json").write_text(json.dumps(before, indent=2) + "\n")
+        summary["local_config_sha256"] = before["semgrep.yml"][0]
+        require(before["semgrep.yml"][0] == LEGACY_CONFIG_SHA256, "Legacy local security configuration changed")
+        policy = fetch_official_policy(attempt / "official-p-python.yml")
+        summary["official_policy"] = policy
+        (attempt / "policy-identity.json").write_text(json.dumps(policy, indent=2) + "\n")
+        command = [
+            sys.executable,
+            "-I",
+            "-m",
+            "semgrep.console_scripts.entrypoint",
+            "--config",
+            str(attempt / "official-p-python.yml"),
+            "--config",
+            "semgrep.yml",
+            "--error",
+            "--strict",
+            "--json",
+            "--metrics=off",
+            "--disable-version-check",
+            "--disable-nosem",
+            "--no-rewrite-rule-ids",
+            "--no-git-ignore",
+            "--x-ignore-semgrepignore-files",
+            "--jobs=2",
+            "--",
+            *targets,
+        ]
+        (attempt / "command.json").write_text(json.dumps(command, indent=2) + "\n")
+        env = {
+            key: os.environ[key]
+            for key in ("PATH", "LANG", "LC_ALL", "SYSTEMROOT", "TMPDIR", "TEMP", "TMP")
+            if key in os.environ
+        }
+        env.update(PYTHONNOUSERSITE="1", SEMGREP_ENABLE_VERSION_CHECK="0", SEMGREP_SEND_METRICS="off")
+        usage = resources.getrusage(resources.RUSAGE_CHILDREN)
+        with (attempt / "scanner.json").open("wb") as stdout, (attempt / "scanner.stderr").open("wb") as stderr:
+            code, expired = _execute(command, root, env, stdout, stderr, 600)
+            summary["wall_budget_expired"] = expired
+        after_usage = resources.getrusage(resources.RUSAGE_CHILDREN)
+        summary.update(
+            exit_code=code,
+            tool_version=SEMGREP_VERSION,
+            child_cpu_user_seconds=after_usage.ru_utime - usage.ru_utime,
+            child_cpu_system_seconds=after_usage.ru_stime - usage.ru_stime,
+        )
+        with (attempt / "scanner.json").open("rb") as stream:
+            summary["raw_report_sha256"] = hashlib.file_digest(stream, "sha256").hexdigest()
+            stream.seek(0)
+            raw = stream.read(MAX_REPORT_BYTES + 1)
+        summary["output_bytes"] = {name: (attempt / name).stat().st_size for name in ("scanner.json", "scanner.stderr")}
+        require(
+            all(size <= MAX_REPORT_BYTES for size in summary["output_bytes"].values()),
+            "Scanner output exceeded its producer bound",
+        )
+        parsed = _json(raw)
+        summary["observed"] = {key: parsed.get(key) for key in ("version", "paths", "errors", "skipped_rules")}
+        summary["findings"] = len(parsed.get("results", [])) if type(parsed.get("results")) is list else None
+        rules = tuple(policy["rule_ids"]) + ("solidity-tx-origin", "solidity-call-value")
+        summary.update(validate_report(raw, code, targets, rules))
+        require(summary.get("wall_budget_expired") is not True, "Official scanner exceeded its wall budget")
+        require(
+            hashlib.sha256((attempt / "official-p-python.yml").read_bytes()).hexdigest() == policy["sha256"],
+            "Captured official rules changed during scanning",
+        )
+        summary["passed"] = True
+    except (ValueError, OSError, ImportError, subprocess.SubprocessError) as error:
+        summary.update(
+            reason=str(error) if isinstance(error, CheckFailure) else type(error).__name__,
+            details=error.details if isinstance(error, CheckFailure) else {},
+        )
+    finally:
+        try:
+            if (
+                checker_before is not None
+                and _capture(ROOT, "scripts/check_strategy_python_security.py", 1_000_000) != checker_before
+            ):
+                summary.update(passed=False, reason="Security checker changed during scanning")
+            if "official_policy" in summary:
+                if (
+                    hashlib.sha256((attempt / "official-p-python.yml").read_bytes()).hexdigest()
+                    != summary["official_policy"]["sha256"]
+                ):
+                    summary.update(passed=False, reason="Captured official rules changed during scanning")
+        except (ValueError, OSError) as error:
+            summary.update(passed=False, reason=type(error).__name__)
+        if before:
+            try:
+                after = {name: _capture(root, name, 1_000_000) for name in before}
+                (attempt / "source-after.json").write_text(json.dumps(after, indent=2) + "\n")
+                summary["source_drift"] = [name for name in before if before[name] != after[name]]
+                if summary["source_drift"]:
+                    summary.update(passed=False, reason="Official source changed during scanning")
+            except (ValueError, OSError) as error:
+                summary.update(passed=False, reason=type(error).__name__)
+        summary["elapsed_seconds"] = time.perf_counter() - started
+        summary["artifact_directory"] = attempt.relative_to(root).as_posix()
+        (attempt / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    return summary
 
 
 def check(root: Path = ROOT) -> dict[str, Any]:
@@ -229,13 +553,17 @@ def check(root: Path = ROOT) -> dict[str, Any]:
     }
     env.update(PYTHONNOUSERSITE="1", SEMGREP_ENABLE_VERSION_CHECK="0", SEMGREP_SEND_METRICS="off")
     with tempfile.TemporaryFile() as output, tempfile.TemporaryFile() as errors:
-        result = subprocess.run(
-            command, cwd=root, env=env, stdin=subprocess.DEVNULL, stdout=output, stderr=errors, timeout=60
-        )
+        code, expired = _execute(command, root, env, output, errors, 60)
         output.seek(0)
         raw = output.read(MAX_REPORT_BYTES + 1)
+        require(
+            os.fstat(output.fileno()).st_size <= MAX_REPORT_BYTES
+            and os.fstat(errors.fileno()).st_size <= MAX_REPORT_BYTES,
+            "Scanner output exceeded its producer bound",
+        )
+    require(not expired, "Bounded Strategy scanner exceeded its wall deadline")
     require(capture_sources(root) == sources, "Sources or policy changed while scanning")
-    coverage = validate_report(raw, result.returncode)
+    coverage = validate_report(raw, code)
     identities = {name: row[0] for name, row in sources.items()}
     digest = hashlib.sha256(json.dumps(identities, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     return {
@@ -255,8 +583,12 @@ def check(root: Path = ROOT) -> dict[str, Any]:
 def main() -> int:
     """No target, rule, report or root selection is accepted from command-line data."""
     try:
-        require(len(sys.argv) == 1, "This policy accepts no command-line selectors")
-        report = check()
+        if sys.argv[1:2] == ["--official-repository"]:
+            require(sys.argv[2:3] == ["--"], "Official role requires the filename delimiter")
+            report = check_official(ROOT, tuple(sys.argv[3:]))
+        else:
+            require(len(sys.argv) == 1, "This policy accepts no command-line selectors")
+            report = check()
     except (ValueError, OSError, subprocess.SubprocessError, metadata.PackageNotFoundError) as error:
         report = {
             "schema": "agialpha.strategy-python-security/v1",

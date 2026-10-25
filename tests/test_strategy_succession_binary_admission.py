@@ -288,7 +288,8 @@ def test_media_validation_is_independent_of_attacker_supplied_byte_commitments(
     raw = b"X" * row["size"]
     (root / row["path"]).write_bytes(raw)
     row["sha256"] = hashlib.sha256(raw).hexdigest()
-    row["git_blob"] = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
+    save(root)
+    row["git_blob"] = git(root, "rev-parse", "HEAD:" + row["path"])
     # Isolate media parsing here; whole-source refusal is exercised separately above.
     monkeypatch.setattr(gate, "_load_strategy_manifest", lambda _: rows)
     monkeypatch.setattr(gate, "_verify_strategy_scientific_sources", lambda _: None)
@@ -296,6 +297,24 @@ def test_media_validation_is_independent_of_attacker_supplied_byte_commitments(
         gate, "_strategy_head", lambda _: {name: ("100644", item["git_blob"]) for name, item in rows.items()}
     )
     assert gate._strategy_admissions(root, [row["path"]]) == set()
+
+
+def test_actual_git_object_bytes_are_checked_separately_from_tree_identity(payload) -> None:
+    root, data = payload
+    name = data["files"][0]["path"]
+    raw = (root / name).read_bytes()
+    head = gate._strategy_head(root)
+    assert gate._head_bodies_match(root, head, {name: ("100644", raw)})
+    changed = bytes([raw[0] ^ 1]) + raw[1:]
+    assert not gate._head_bodies_match(root, head, {name: ("100644", changed)})
+    assert not gate._head_bodies_match(root, head, {name: ("100755", raw)})
+
+
+def test_missing_committed_git_object_is_refused_without_using_worktree_bytes(payload) -> None:
+    root, data = payload
+    name = data["files"][0]["path"]
+    raw = (root / name).read_bytes()
+    assert not gate._head_bodies_match(root, {name: ("100644", "f" * 40)}, {name: ("100644", raw)})
 
 
 def synthetic_pdf(case: str) -> bytes:

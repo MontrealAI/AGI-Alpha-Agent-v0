@@ -303,6 +303,71 @@ def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def _committed_head(root: Path, paths: tuple[str, ...]) -> dict[str, tuple[str, str]]:
+    """Read actual Git tree identities without recomputing the Git hash protocol."""
+    try:
+        result = _run("git", "-C", str(root), "ls-tree", "-rz", "--full-tree", "HEAD", "--", *paths)
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("Cannot inspect committed evidence source identities") from exc
+    entries: dict[str, tuple[str, str]] = {}
+    for entry in result.stdout.split("\x00"):
+        if not entry:
+            continue
+        metadata, name = entry.split("\t", 1)
+        mode, kind, blob = metadata.split()
+        if kind != "blob" or name in entries:
+            raise ValueError("Invalid committed evidence source identity")
+        entries[name] = (mode, blob)
+    return entries
+
+
+def _head_bodies_match(root: Path, head: dict[str, tuple[str, str]], expected: dict[str, tuple[str, bytes]]) -> bool:
+    """Compare pinned working bytes with the actual bounded committed Git objects."""
+    objects: dict[str, bytes] = {}
+    for name, (mode, raw) in expected.items():
+        identity = head.get(name)
+        if identity is None or identity[0] != mode or re.fullmatch(r"[0-9a-f]{40}", identity[1]) is None:
+            return False
+        blob = identity[1]
+        if blob in objects and objects[blob] != raw:
+            return False
+        objects[blob] = raw
+    if not objects:
+        return True
+    request = "".join(blob + "\n" for blob in objects).encode("ascii")
+    try:
+        metadata = subprocess.run(
+            ["git", "-C", str(root), "cat-file", "--batch-check"],
+            input=request,
+            capture_output=True,
+            check=True,
+        ).stdout.splitlines()
+        if len(metadata) != len(objects):
+            return False
+        for line, (blob, raw) in zip(metadata, objects.items()):
+            if line != f"{blob} blob {len(raw)}".encode("ascii"):
+                return False
+        # Sizes are checked first, so a substituted oversized object is never read.
+        output = subprocess.run(
+            ["git", "-C", str(root), "cat-file", "--batch"],
+            input=request,
+            capture_output=True,
+            check=True,
+        ).stdout
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("Cannot read committed evidence Git objects") from exc
+    offset = 0
+    for blob, raw in objects.items():
+        header = f"{blob} blob {len(raw)}\n".encode("ascii")
+        if output[offset : offset + len(header)] != header:
+            return False
+        offset += len(header)
+        if output[offset : offset + len(raw)] != raw or output[offset + len(raw) : offset + len(raw) + 1] != b"\n":
+            return False
+        offset += len(raw) + 1
+    return offset == len(output)
+
+
 def _load_enterprise_manifest(root: Path) -> dict[str, dict[str, Any]]:
     raw = _regular_path(root, ENTERPRISE_MANIFEST).read_bytes()
     if hashlib.sha256(raw).hexdigest() != ENTERPRISE_MANIFEST_SHA256:
@@ -420,6 +485,10 @@ def _enterprise_admissions(root: Path, paths: list[str]) -> set[str]:
     if not candidates:
         return set()
     manifest = _load_enterprise_manifest(root)
+    head = _committed_head(root, (ENTERPRISE_PREFIX, ENTERPRISE_MANIFEST))
+    manifest_raw = _regular_path(root, ENTERPRISE_MANIFEST).read_bytes()
+    if not _head_bodies_match(root, head, {ENTERPRISE_MANIFEST: ("100644", manifest_raw)}):
+        raise ValueError("Committed enterprise evidence manifest differs from its reviewed bytes")
     admitted: set[str] = set()
     for name in candidates:
         row = manifest.get(name)
@@ -433,7 +502,8 @@ def _enterprise_admissions(root: Path, paths: list[str]) -> set[str]:
             if (
                 len(raw) != row["size"]
                 or hashlib.sha256(raw).hexdigest() != row["sha256"]
-                or hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest() != row["git_blob"]
+                or head.get(name) != ("100644", row["git_blob"])
+                or not _head_bodies_match(root, head, {name: ("100644", raw)})
             ):
                 continue
             valid_type = _valid_png(raw) if row["media_type"] == "image/png" else _valid_zip(path, raw)
@@ -542,40 +612,14 @@ def _load_strategy_manifest(root: Path) -> dict[str, dict[str, Any]]:
         ["application/zip"] * 8 + ["application/pdf"] * 10 + ["image/png"] * 2
     ):
         raise ValueError("Invalid Strategy evidence media inventory")
-    manifest_blob = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
-    if _strategy_head(root).get(STRATEGY_MANIFEST) != ("100644", manifest_blob):
+    if not _head_bodies_match(root, _strategy_head(root), {STRATEGY_MANIFEST: ("100644", raw)}):
         raise ValueError("Committed Strategy evidence manifest differs from its reviewed bytes")
     return rows
 
 
 def _strategy_head(root: Path) -> dict[str, tuple[str, str]]:
     """Bind the newly admitted assets to the HEAD whose release delta is checked."""
-    try:
-        result = _run(
-            "git",
-            "-C",
-            str(root),
-            "ls-tree",
-            "-rz",
-            "--full-tree",
-            "HEAD",
-            "--",
-            STRATEGY_STUDY_PREFIX,
-            STRATEGY_ENGINEERING_PREFIX,
-            STRATEGY_MANIFEST,
-        )
-    except subprocess.CalledProcessError as exc:
-        raise ValueError("Cannot inspect committed Strategy source identities") from exc
-    entries: dict[str, tuple[str, str]] = {}
-    for entry in result.stdout.split("\x00"):
-        if not entry:
-            continue
-        metadata, name = entry.split("\t", 1)
-        mode, kind, blob = metadata.split()
-        if kind != "blob" or name in entries:
-            raise ValueError("Invalid committed Strategy source identity")
-        entries[name] = (mode, blob)
-    return entries
+    return _committed_head(root, (STRATEGY_STUDY_PREFIX, STRATEGY_ENGINEERING_PREFIX, STRATEGY_MANIFEST))
 
 
 def _verify_strategy_scientific_sources(root: Path) -> None:
@@ -584,14 +628,14 @@ def _verify_strategy_scientific_sources(root: Path) -> None:
     if hashlib.sha256(raw).hexdigest() != STRATEGY_SCIENTIFIC_MANIFEST_SHA256:
         raise ValueError("Strategy scientific inventory differs from its immutable bytes")
     head = _strategy_head(root)
-    manifest_blob = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
-    if head.get(STRATEGY_SCIENTIFIC_MANIFEST) != ("100644", manifest_blob):
+    if not _head_bodies_match(root, head, {STRATEGY_SCIENTIFIC_MANIFEST: ("100644", raw)}):
         raise ValueError("Committed Strategy scientific inventory differs from its immutable bytes")
     data = json.loads(raw, object_pairs_hook=_unique_object)
     rows = data.get("files") if isinstance(data, dict) else None
     if not isinstance(rows, list) or len(rows) != 238:
         raise ValueError("Invalid Strategy scientific inventory")
     seen: set[str] = set()
+    bodies: dict[str, tuple[str, bytes]] = {}
     for row in rows:
         if not isinstance(row, dict) or set(row) != {"path", "repo_path", "sha256", "bytes", "mode"}:
             raise ValueError("Invalid Strategy scientific source record")
@@ -608,13 +652,12 @@ def _verify_strategy_scientific_sources(root: Path) -> None:
             raise ValueError("Invalid Strategy scientific source path")
         path = _regular_path(root, name)
         body = path.read_bytes()
-        if (
-            path.stat().st_size != row["bytes"]
-            or hashlib.sha256(body).hexdigest() != row["sha256"]
-            or head.get(name) != (row["mode"], hashlib.sha1(f"blob {len(body)}\0".encode() + body).hexdigest())
-        ):
+        if path.stat().st_size != row["bytes"] or hashlib.sha256(body).hexdigest() != row["sha256"]:
             raise ValueError(f"Strategy scientific source differs from its immutable bytes: {name}")
+        bodies[name] = (row["mode"], body)
         seen.add(name)
+    if not _head_bodies_match(root, head, bodies):
+        raise ValueError("Committed Strategy scientific sources differ from their immutable bodies or modes")
 
 
 def _valid_strategy_zip(path: Path, raw: bytes) -> bool:
@@ -723,8 +766,8 @@ def _strategy_admissions(root: Path, paths: list[str]) -> set[str]:
             if (
                 len(raw) != row["size"]
                 or hashlib.sha256(raw).hexdigest() != row["sha256"]
-                or hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest() != row["git_blob"]
                 or head.get(name) != ("100644", row["git_blob"])
+                or not _head_bodies_match(root, head, {name: ("100644", raw)})
             ):
                 continue
             media = row["media_type"]

@@ -22,6 +22,16 @@ repos:
     rev: 2bbd0a55b3655b26991c936b92e0c0f6d6f4fa94
     hooks:
       - id: semgrep
+        name: Repository Python security (official and local rules)
+        entry: python -I scripts/check_strategy_python_security.py --official-repository --
+        args: []
+        additional_dependencies: ["setuptools>=75,<81"]
+        types: [python]
+        pass_filenames: true
+        require_serial: true
+        verbose: true
+      - id: semgrep
+        name: Additional bounded Strategy Python security
         entry: python -I scripts/check_strategy_python_security.py
         args: []
         additional_dependencies: ["setuptools>=75,<81"]

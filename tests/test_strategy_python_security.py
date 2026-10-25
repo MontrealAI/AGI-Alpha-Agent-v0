@@ -15,6 +15,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import time
 from typing import Any
 
 import pytest
@@ -97,7 +98,7 @@ def test_actual_component_scan_has_all_fixed_files_and_rules(scanner_python: str
     assert result.returncode == 0, result.stdout + result.stderr
     observed = json.loads(result.stdout)
     assert observed["passed"] is True
-    assert observed["scanned_files"] == len(security.TARGETS) == 42
+    assert observed["scanned_files"] == len(security.TARGETS) == 48
     assert observed["rules"] == list(security.RULE_IDS)
     assert observed["rule_sha256"] == security.RULE_SHA256
     assert observed["production_authority"] is False and observed["runtime_qualified"] is False
@@ -242,7 +243,7 @@ def test_rule_or_source_scope_drift_fails_before_scanner(
 
 
 def test_fixed_targets_exclude_scientific_and_held_sources() -> None:
-    assert len(security.TARGETS) == len(set(security.TARGETS)) == 42
+    assert len(security.TARGETS) == len(set(security.TARGETS)) == 48
     assert not any(name.startswith("studies/") or "/scientific/" in name for name in security.TARGETS)
     assert not any(
         name.endswith(
@@ -268,3 +269,288 @@ def test_command_line_cannot_change_policy_root_rules_or_targets() -> None:
     )
     assert result.returncode == 1
     assert "no command-line selectors" in json.loads(result.stdout)["reason"]
+
+
+@pytest.mark.parametrize("names", [(), ("--config",), ("../escape.py",), ("/tmp/escape.py",), ("unknown.py",)])
+def test_official_role_refuses_unknown_empty_and_option_targets(names: tuple[str, ...]) -> None:
+    with pytest.raises((security.CheckFailure, OSError)):
+        security.official_targets(ROOT, names)
+
+
+def test_official_report_cannot_substitute_another_or_empty_selection() -> None:
+    value = report()
+    value["paths"]["scanned"] = ["selected.py"]
+    assert security.validate_report(json.dumps(value).encode(), 0, ("selected.py",))["scanned_files"] == 1
+    for supplied in [(), ("different.py",), ("selected.py", "missing.py")]:
+        with pytest.raises(security.CheckFailure):
+            security.validate_report(json.dumps(value).encode(), 0, supplied)
+
+
+def test_official_role_passes_exact_captured_body_and_retains_protocol_artifacts(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Protocol-only fixture; actual official download/engine coverage is tested below."""
+    root = tmp_path.resolve()
+    (root / "selected.py").write_text("x = 1\n")
+    shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
+    monkeypatch.setattr(security.metadata, "version", lambda _name: "1.99.0")
+    monkeypatch.setattr(security, "official_targets", lambda _root, names: names)
+    monkeypatch.setattr(security.subprocess, "check_output", lambda *_a, **_k: "a" * 40)
+    raw = b"rules:\n- id: captured-rule\n  languages: [python]\n  pattern: eval(...)\n  message: captured\n  severity: ERROR\n"
+
+    def captured(path: Path) -> dict[str, Any]:
+        path.write_bytes(raw)
+        return {
+            "source_url": security.OFFICIAL_URL,
+            "sha256": security.hashlib.sha256(raw).hexdigest(),
+            "rule_ids": ["captured-rule"],
+        }
+
+    monkeypatch.setattr(security, "fetch_official_policy", captured)
+    requested = []
+
+    class Process:
+        def __init__(self, command: list[str], **kwargs: Any) -> None:
+            requested.append(command)
+            assert command[:4] == [sys.executable, "-I", "-m", "semgrep.console_scripts.entrypoint"]
+            assert Path(command[5]).read_bytes() == raw
+            assert "p/python" not in command  # No second, unbound registry fetch.
+            assert command[-2:] == ["--", "selected.py"]
+            value = report()
+            value["paths"]["scanned"] = ["selected.py"]
+            kwargs["stdout"].write(json.dumps(value).encode())
+            self.pid = 0
+
+        def wait(self, timeout: int) -> int:
+            assert timeout == 600
+            return 0
+
+    monkeypatch.setattr(security.subprocess, "Popen", Process)
+    first = security.check_official(root, ("selected.py",))
+    second = security.check_official(root, ("selected.py",))
+    assert first["passed"] is True and second["passed"] is True and len(requested) == 2
+    assert first["official_policy"]["source_url"] == "https://semgrep.dev/c/p/python"
+    assert first["artifact_directory"] != second["artifact_directory"]
+    for result in (first, second):
+        directory = root / result["artifact_directory"]
+        assert (directory / "official-p-python.yml").read_bytes() == raw
+        assert {"scanner.json", "scanner.stderr", "source-before.json", "source-after.json", "summary.json"} <= {
+            path.name for path in directory.iterdir()
+        }
+
+
+def test_actual_official_role_downloads_and_scans_an_actual_component(scanner_python: str) -> None:
+    """A small real component scan is partial evidence, never a repository pass."""
+    result = subprocess.run(
+        [
+            scanner_python,
+            "-I",
+            str(ROOT / "scripts/check_strategy_python_security.py"),
+            "--official-repository",
+            "--",
+            "contrib/strategy_succession/transport/strategy_executor.py",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    observed = json.loads(result.stdout)
+    assert observed["selected_files"] == observed["scanned_files"] == 1
+    assert observed["official_policy"]["source_url"] == security.OFFICIAL_URL
+    assert len(observed["official_policy"]["rule_ids"]) > 2
+    directory = ROOT / observed["artifact_directory"]
+    assert (
+        security.hashlib.sha256((directory / "official-p-python.yml").read_bytes()).hexdigest()
+        == observed["official_policy"]["sha256"]
+    )
+    command = json.loads((directory / "command.json").read_text())
+    assert command[command.index("--config") + 1] == str(directory / "official-p-python.yml")
+    policy_raw = (directory / "official-p-python.yml").read_bytes()
+    for definition in observed["official_policy"]["rule_definitions"]:
+        span = policy_raw[definition["start_byte"] : definition["end_byte"]]
+        assert security.hashlib.sha256(span).hexdigest() == definition["sha256"]
+
+
+def test_actual_official_ids_are_stable_across_evidence_directories(scanner_python: str, tmp_path: Path) -> None:
+    """The real engine reports official IDs, without a temporary path prefix."""
+    root = tmp_path / "official-source"
+    root.mkdir()
+    (root / "inert.py").write_text("import hashlib\nhashlib.sha1(b'inert')\n")
+    shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
+    for command in (
+        ["git", "init", "-q"],
+        ["git", "add", "inert.py", "semgrep.yml"],
+        ["git", "-c", "user.name=Static fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "inert"],
+    ):
+        subprocess.run(command, cwd=root, check=True, capture_output=True)
+    driver = (
+        "import json,runpy,sys;from pathlib import Path;"
+        "s=runpy.run_path(sys.argv[1],run_name='official_fixture');"
+        "r=s['check_official'](Path(sys.argv[2]),('inert.py',));print(json.dumps(r))"
+    )
+    attempts = []
+    for _ in range(2):
+        result = subprocess.run(
+            [scanner_python, "-I", "-c", driver, str(ROOT / "scripts/check_strategy_python_security.py"), str(root)],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+        observed = json.loads(result.stdout)
+        assert observed["passed"] is False and observed["exit_code"] == 1
+        assert observed["selected_files"] == 1 and observed["source_drift"] == []
+        report_raw = json.loads((root / observed["artifact_directory"] / "scanner.json").read_text())
+        assert report_raw["paths"]["scanned"] == ["inert.py"] and report_raw["errors"] == []
+        assert report_raw["skipped_rules"] == []
+        attempts.append((observed, {finding["check_id"] for finding in report_raw["results"]}))
+    expected = "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1"
+    assert expected in attempts[0][1] == attempts[1][1]
+    assert attempts[0][0]["artifact_directory"] != attempts[1][0]["artifact_directory"]
+
+
+def test_fixed_official_fetch_keeps_unmodified_unicode_rule_spans(scanner_python: str, tmp_path: Path) -> None:
+    driver = r"""
+import hashlib,json,runpy,sys
+from pathlib import Path
+s=runpy.run_path(sys.argv[1],run_name='fetch_fixture')
+raw='rules:\n- id: exact-id\n  languages: [python]\n  pattern: eval(...)\n  message: café\n  severity: ERROR\n'.encode()
+calls=Path(sys.argv[2]+'.calls')
+class Response:
+ status=200
+ def __enter__(self):return self
+ def __exit__(self,*args):pass
+ def geturl(self):return s['OFFICIAL_URL']
+ def read(self,maximum):
+  assert maximum==65536
+  if getattr(self,'read_done',False):return b''
+  self.read_done=True;return raw
+def opened(request,timeout):
+ assert request.full_url=='https://semgrep.dev/c/p/python' and timeout==30
+ assert 'Authorization' not in request.headers
+ with calls.open('a') as stream:stream.write(request.full_url+'\n')
+ return Response()
+s['fetch_official_policy'].__globals__['_open_official']=opened
+destination=Path(sys.argv[2])
+identity=s['fetch_official_policy'](destination)
+assert destination.read_bytes()==raw and calls.read_text().splitlines()==[s['OFFICIAL_URL']]
+assert identity['sha256']==hashlib.sha256(raw).hexdigest()
+for row in identity['rule_definitions']:
+ assert row['id']=='exact-id'
+ assert row['sha256']==hashlib.sha256(raw[row['start_byte']:row['end_byte']]).hexdigest()
+print(json.dumps(identity))
+"""
+    result = subprocess.run(
+        [
+            scanner_python,
+            "-I",
+            "-c",
+            driver,
+            str(ROOT / "scripts/check_strategy_python_security.py"),
+            str(tmp_path / "official.yml"),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(result.stdout)["rule_ids"] == ["exact-id"]
+
+
+def test_official_redirect_cannot_expand_the_network_destination() -> None:
+    with pytest.raises(security.CheckFailure, match="redirects"):
+        security._NoOfficialRedirect().redirect_request(
+            security.Request(security.OFFICIAL_URL), None, 302, "redirect", {}, "http://127.0.0.1/private"
+        )
+
+
+def test_fetch_absolute_deadline_stops_a_dripping_response_and_preserves_partial_body(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    class Response:
+        status = 200
+
+        def __enter__(self) -> Any:
+            return self
+
+        def __exit__(self, *_args: Any) -> None:
+            pass
+
+        def geturl(self) -> str:
+            return security.OFFICIAL_URL
+
+        def read(self, _maximum: int) -> bytes:
+            time.sleep(0.03)
+            return b"partial-official-body\n"
+
+    monkeypatch.setattr(security, "_open_official", lambda *_args, **_kwargs: Response())
+    monkeypatch.setattr(security, "FETCH_WALL_SECONDS", 0.2)
+    destination = tmp_path / "partial.yml"
+    started = time.monotonic()
+    with pytest.raises(security.CheckFailure, match="absolute wall deadline"):
+        security._fetch_body(destination)
+    assert time.monotonic() - started < 2
+    assert destination.read_bytes().startswith(b"partial-official-body\n")
+
+
+@pytest.mark.parametrize("stream_name", ["stdout", "stderr"])
+def test_output_limit_bounds_actual_producers_before_report_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, stream_name: str
+) -> None:
+    monkeypatch.setattr(security, "MAX_REPORT_BYTES", 1024)
+    output_path, error_path = tmp_path / "scanner.json", tmp_path / "scanner.stderr"
+    # An inert writer is executed only to exercise the OS producer limit; the
+    # source inspected by Semgrep is never executed by this test.
+    writer = "import sys\ns=sys." + stream_name + ".buffer\nwhile True:s.write(b'x'*65536);s.flush()\n"
+    with output_path.open("wb") as output, error_path.open("wb") as errors:
+        code, expired = security._execute([sys.executable, "-I", "-c", writer], tmp_path, {}, output, errors, 5)
+    assert not expired and code != 0
+    assert max(output_path.stat().st_size, error_path.stat().st_size) == 1025
+    assert all(path.stat().st_size <= 1025 for path in (output_path, error_path))
+    with pytest.raises(ValueError):
+        security.validate_report(output_path.read_bytes(), code)
+
+
+@pytest.mark.parametrize("changed", ["source", "captured-policy", "empty-coverage"])
+def test_official_protocol_cannot_qualify_drift_or_zero_work(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, changed: str
+) -> None:
+    root = tmp_path.resolve()
+    target = root / "selected.py"
+    target.write_text("x = 1\n")
+    shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
+    monkeypatch.setattr(security.metadata, "version", lambda _name: "1.99.0")
+    monkeypatch.setattr(security, "official_targets", lambda _root, names: names)
+    monkeypatch.setattr(security.subprocess, "check_output", lambda *_a, **_k: "a" * 40)
+    raw = b"rules: []\n"
+
+    def captured(path: Path) -> dict[str, Any]:
+        path.write_bytes(raw)
+        return {"source_url": security.OFFICIAL_URL, "sha256": security.hashlib.sha256(raw).hexdigest(), "rule_ids": []}
+
+    monkeypatch.setattr(security, "fetch_official_policy", captured)
+
+    class Process:
+        pid = 0
+
+        def __init__(self, command: list[str], **kwargs: Any) -> None:
+            value = report()
+            value["paths"]["scanned"] = [] if changed == "empty-coverage" else ["selected.py"]
+            kwargs["stdout"].write(json.dumps(value).encode())
+            if changed == "source":
+                target.write_text("x = 2\n")
+            elif changed == "captured-policy":
+                Path(command[5]).write_text("rules: changed\n")
+
+        def wait(self, timeout: int) -> int:
+            return 0
+
+    monkeypatch.setattr(security.subprocess, "Popen", Process)
+    result = security.check_official(root, ("selected.py",))
+    assert result["passed"] is False
+    directory = root / result["artifact_directory"]
+    assert (directory / "scanner.json").is_file() and (directory / "summary.json").is_file()
