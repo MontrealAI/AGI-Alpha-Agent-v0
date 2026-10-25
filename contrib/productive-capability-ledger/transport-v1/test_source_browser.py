@@ -146,6 +146,12 @@ def test_candidate_source_browser_approval_download_and_completed_reconnect(tmp_
                 expect(page.locator("#input")).to_have_value(payload_bytes.decode())
                 page.locator("#prepare").click()
                 expect(page.locator("#approve")).to_be_enabled()
+                expect(page.locator("#plan-summary")).to_contain_text("Périmètre : public-guide")
+                expect(page.locator("#plan-summary")).to_contain_text("Révision publique exacte : " + commit)
+                expect(page.locator("#plan-summary")).to_contain_text("Une tentative source")
+                page.get_by_text("Plan technique exact", exact=True).click()
+                expect(page.locator("#plan")).to_be_visible()
+                expect(page.locator("#plan")).to_contain_text('"plan_id"')
                 prepared = json.loads(page.locator("#plan").inner_text())
                 assert prepared["input"] == payload and prepared["state"] == "prepared"
                 assert prepared["production_authority"] is False
@@ -230,6 +236,11 @@ def test_candidate_source_browser_approval_download_and_completed_reconnect(tmp_
                 page.get_by_role("button", name="Inspect plan", exact=True).click()
                 expect(page.locator("#approve")).to_be_disabled()
                 expect(page.locator("#run")).to_be_disabled()
+                expect(page.locator("#plan-summary")).to_contain_text("Scope: public-guide")
+                expect(page.locator("#plan-summary")).to_contain_text("Exact public commit: " + commit)
+                page.get_by_text("Exact technical plan", exact=True).click()
+                expect(page.locator("#plan")).to_be_visible()
+                expect(page.locator("#plan")).to_contain_text('"outcome_hash"')
                 assert json.loads(page.locator("#plan").inner_text())["outcome_hash"] == completed["outcome_hash"]
                 duplicate = client.post("/api/strategy-executor/run", json=binding)
                 assert duplicate.status_code == 200 and duplicate.json()["outcome_hash"] == completed["outcome_hash"]
