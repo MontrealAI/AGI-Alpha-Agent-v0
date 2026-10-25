@@ -291,7 +291,7 @@ def test_candidate_factory_refuses_wrong_git_version(rig, tmp_path):
     fake.parent.mkdir()
     fake.write_text("#!/bin/sh\nprintf 'git version 0.0.0\\n'\n")
     fake.chmod(0o700)
-    with pytest.raises(ValueError, match="Git 2.51.1"):
+    with pytest.raises(ValueError, match="explicit Git 2.51.1 or 2.55.0"):
         launcher.create_candidate_app(
             Journal(journal.root), registry, node=Path(shutil.which("node")), git=fake, python=Path(sys.executable)
         )
@@ -313,3 +313,47 @@ def test_candidate_factory_refuses_changed_public_runtime_source(rig, tmp_path, 
             git=Path(shutil.which("git")),
             python=Path(sys.executable),
         )
+
+
+@pytest.mark.parametrize(
+    "probe",
+    [
+        {"git": "git version 2.51.2"},
+        {"git": "git version 2.55.1"},
+        {"git": "git version 2.55.0.extra"},
+        {"git": "git version 2.55.0", "extra": True},
+        {"git": None},
+        {},
+    ],
+)
+def test_candidate_git_receipt_refuses_unlisted_or_ambiguous_profile(probe):
+    with pytest.raises(ValueError, match="explicit Git"):
+        launcher.worker_module.candidate_git_version(probe)
+
+
+@pytest.mark.parametrize("version", ["2.51.1", "2.55.0"])
+def test_candidate_git_receipt_selects_only_exact_declared_profile(version):
+    assert launcher.worker_module.candidate_git_version({"git": "git version " + version}) == version
+
+
+def test_synthetic_git_version_observation_changes_policy_binding(rig, monkeypatch):
+    app, journal, _, _, _ = rig
+    worker = app.state.source_assurance_worker
+    transport = launcher.worker_module.load_transport()
+    first = launcher.worker_module.candidate_policy(journal, worker)
+    actual = subprocess.check_output([worker.git, "--version"], text=True).strip().removeprefix("git version ")
+    assert first.executor_id.endswith("-git-" + actual)
+    alternate = "2.55.0" if actual == "2.51.1" else "2.51.1"
+    original = worker._process
+
+    def synthetic_receipt(args, document, seconds, checkpoint):
+        if "-e" in args:
+            return {"git": "git version " + alternate}
+        return original(args, document, seconds, checkpoint)
+
+    monkeypatch.setattr(worker, "_process", synthetic_receipt)
+    second = launcher.worker_module.candidate_policy(journal, worker)
+    assert second.executor_id.endswith("-git-" + alternate)
+    assert second.executor_id != first.executor_id
+    with pytest.raises(Conflict, match="policy changed"):
+        transport.StrategyExecutor(journal, worker, second)

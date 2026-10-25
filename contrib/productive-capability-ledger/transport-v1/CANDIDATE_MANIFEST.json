@@ -15,9 +15,13 @@
       "sha256": "0750059f8587b650624ced4abbada12bc4a231857b0cde76a7e48e373da48639",
       "bytes": 34527
     },
+    "contrib/productive-capability-ledger/transport-v1/COMPATIBILITY_40245472688.json": {
+      "sha256": "1170325df71adc54201ff617b548647a61ab097f5107171545e26498c9a7c2f3",
+      "bytes": 1231
+    },
     "contrib/productive-capability-ledger/transport-v1/README.md": {
-      "sha256": "a05b6045f4b2ccd2ce9756de789134e5f7da9a250494843c98e21e071f896461",
-      "bytes": 14390
+      "sha256": "a304046bb2e895735c0977f1ef21c09358b67580d9867edd8e45e01e5782da16",
+      "bytes": 17020
     },
     "contrib/productive-capability-ledger/transport-v1/bridge.mjs": {
       "sha256": "8511dfc89b600e359492a1934def18e752c00c4921badda1b083ab4dd6f7ccba",
@@ -32,8 +36,8 @@
       "bytes": 3144
     },
     "contrib/productive-capability-ledger/transport-v1/source_worker.py": {
-      "sha256": "0b816161050e0f02599c0d3bcd2b3919f17a9e366f65e8e96c744c514b559ff9",
-      "bytes": 20481
+      "sha256": "b38e0c164e2386bfd5f6199c8b8229cfece0985219d4790c58dd3f32c6b10879",
+      "bytes": 20808
     },
     "contrib/productive-capability-ledger/transport-v1/strategy.css": {
       "sha256": "25ce825a9c53a4cb2be103b87c18a3b5bca2915512cf17a053aba324e2700f94",
@@ -52,8 +56,8 @@
       "bytes": 2079
     },
     "contrib/productive-capability-ledger/transport-v1/test_source_api.py": {
-      "sha256": "95a989fd9df921bf873361ae53a56d0e7230cca0853e2b748691c8437ce3bd1d",
-      "bytes": 13647
+      "sha256": "f79ef46c36f2b7ea18179e1357e91f53f98b3699cb8d7f6b721bdef912537d6b",
+      "bytes": 15488
     },
     "contrib/productive-capability-ledger/transport-v1/test_source_browser.py": {
       "sha256": "1837030e9e9e0bc8cbb4cc22875a4c365a03efc585b0772cd61fdca7b29d33f9",
@@ -96,7 +100,7 @@
       "bytes": 8721
     }
   },
-  "sourceIdentity": "b6b4e805991f1edf98f5309ff20ec6393fd97ff1c6aef90d4c1535c0da92b85e",
+  "sourceIdentity": "58a0dbf29ac01aaeb955e3137b223199a56684001b6bfb485a271e55cfb64a47",
   "qualification": {
     "workerCases": {
       "passed": 23,
@@ -104,7 +108,8 @@
     },
     "authenticatedAsgiCases": {
       "passed": 9,
-      "scope": "Isolated outside-checkout actual public Alpha1.42 installation; exact environment/source guard, authentication/approval, result/history, refusal/restart/concurrency"
+      "scope": "Isolated outside-checkout actual public Alpha1.42 installation; exact environment/source guard, authentication/approval, result/history, refusal/restart/concurrency",
+      "sourceScope": "Preserved original nine-case local campaign; compatibility addition changes source, fresh complete hosted campaign required"
     },
     "nodeUiGroups": {
       "passed": 3,
@@ -112,12 +117,28 @@
     },
     "browser": "NOT RUN locally; separate hosted browser candidate test supplied",
     "approvedOperator": "NOT RUN",
-    "security": "Final-source official scan/review required; no exception or rule change"
+    "security": "Final-source official scan/review required; no exception or rule change",
+    "gitCompatibilityCases": {
+      "passed": 10,
+      "environment": "Actual installed Alpha1.42/core26 on local Git2.51.1",
+      "scope": "Exact two-profile selection, unlisted/ambiguous refusal, actual/synthetic version identity binding and changed-policy refusal",
+      "unchangedApiCasesNotRerun": 8,
+      "git255ApiBrowser": "PROSPECTIVE; not yet qualified"
+    },
+    "git255FirstHostedRun": {
+      "run": 40245472688,
+      "outcome": "nine source API setups refused undeclared profile; preserved adverse evidence",
+      "sourceWorkerCasesPassed": 23,
+      "existingPlanningCasesPassed": 147
+    }
   },
   "versions": {
     "python": "3.12.14",
     "node": "24.22.1",
-    "git": "2.51.1",
+    "git": [
+      "2.51.1",
+      "2.55.0"
+    ],
     "runtime": "alpha-factory-v1==1.42.0",
     "coreProfile": "contrib/strategy_succession/ENGINEERING_MANIFEST.json qualified_environment; exact 26 dependencies and 505 runtime-source identities"
   },

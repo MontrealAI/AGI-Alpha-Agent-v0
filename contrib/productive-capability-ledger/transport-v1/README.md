@@ -50,7 +50,10 @@ The helper `candidate_policy(journal, worker)` reuses the existing installed
 engineering environment/child checks: Ubuntu 24.04 x86_64, glibc 2.39, CPython
 3.12.14, Node 24.22.1, the exact 26 dependencies and public Alpha 1.42.0. It checks
 all 505 declared runtime Python sources, binds the four existing runtime
-enforcement files, and additionally requires the selected Git 2.51.1 executable.
+enforcement files, and additionally admits only the two explicitly declared Git
+profiles, 2.51.1 and 2.55.0. The observed exact Git version enters the candidate
+executor identity and therefore its policy binding and every exact approval. A
+journal bound to one version refuses the other; no automatic migration occurs.
 Unknown hosts/versions, wrong selected interpreters and changed public runtime
 source refuse. Matching this engineering profile still grants no operator
 adoption. Pure worker tests remain separate from these installed profile checks.
@@ -189,15 +192,43 @@ node --test contrib/productive-capability-ledger/transport-v1/strategy.test.mjs
 
 The worker-only campaign passes 23 cases using actual Git/Node and the
 independent Python verifier; three Node groups check input, download validation and the bilingual plan summary.
-The separate nine-case authenticated ASGI campaign runs outside the checkout with `-I`,
+The original nine-case authenticated ASGI campaign ran outside the checkout with `-I`,
 asserts actual installed public Alpha 1.42.0 rather than checkout imports, and uses
 its exact core dependency profile. Its transient isolated journals are test
 fixtures, not operator credentials or profile adoption. The component environment
-is CPython 3.12.14, Node 24.22.1 and Git 2.51.1. Full software qualification, official
+used CPython 3.12.14, Node 24.22.1 and Git 2.51.1. The compatibility successor
+adds ten focused cases for exact version selection, unlisted-version refusal and
+version-bound journal refusal; these run locally on the existing Git 2.51.1
+profile. Their synthetic 2.55.0 receipt exercises identity binding only and is
+not execution on a Git 2.55.0 binary. The other eight API cases are unchanged
+and await the fresh exact-source hosted campaign. Full software qualification, official
 Security, actual browser and approved-operator acceptance remain separate.
 Run `test_source_api.py` only in that installed environment from outside the
 checkout with `python -I -m pytest ABSOLUTE_TEST_PATH --noconftest
 --import-mode=importlib -p no:cacheprovider`. Test counts are cases/groups, not jobs.
+
+## Explicit Git compatibility successor
+
+[Strategy run 40245472688](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40245472688)
+failed when its actual Git 2.55.0 executable reached the prior 2.51.1-only candidate
+factory: all nine source API setups correctly refused the undeclared profile.
+The integration owner's record reports 23 source-worker cases and 147 existing
+installed planning cases passed in that run. They do not turn the refused API
+setups into successful source missions. The typed pointer is preserved in
+`COMPATIBILITY_40245472688.json`; no exact event/merge/local SHA is guessed.
+
+The engineering successor declares exactly two Git versions:
+
+| Git profile | Evidence and current acceptance state |
+| --- | --- |
+| 2.51.1 | Actual local source-worker/API component evidence; focused compatibility regressions pass after this addition. Final exact-source hosted campaign remains required. |
+| 2.55.0 | Actual version observed in the failed hosted run, with 23 source-worker cases passing before the API factory refusal. Fresh API/browser qualification is prospective and NOT YET ESTABLISHED. |
+
+There is no minimum-version fallback or automatic acceptance of other Git
+versions. The prior failed record, planning profile, full-core dependency pins,
+offline Git restrictions and operator-adoption requirement remain unchanged.
+A different observed version produces a different candidate policy identity;
+changing versions cannot inherit an existing journal's approvals.
 
 ## Français — périmètre et adoption
 
@@ -222,3 +253,10 @@ l'historique durable. Une interruption du processus conserve un résultat incert
 aucune réussite. STOP reste permanent, CANCEL est durable, et la reprise d'un
 travail incertain exige l'inspection prévue par le transport existant. Aucune
 recette, économie complète ou accélération autonome n'est établie par ce candidat.
+
+Les deux profils Git explicitement déclarés sont 2.51.1 et 2.55.0. La version
+observée entre dans l'identité et l'approbation du candidat ; aucune autre version
+n'est admise automatiquement. Le premier essai hébergé avec Git 2.55.0 a refusé
+les neuf préparations API, car cette version n'était pas déclarée. Sa nouvelle
+qualification API/navigateur reste à établir sur la source exacte. Cet ajout
+technique n'adopte pas un profil opérationnel et ne transfère aucune autorisation.

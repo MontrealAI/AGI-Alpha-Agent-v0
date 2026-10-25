@@ -53,6 +53,7 @@ SOURCES = (
 )
 SHA = re.compile(r"[0-9a-f]{64}\Z")
 IDENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}\Z")
+GIT_PROFILES = {"git version 2.51.1": "2.51.1", "git version 2.55.0": "2.55.0"}
 
 
 def _canonical(value: Any) -> bytes:
@@ -377,7 +378,7 @@ def candidate_policy(journal: Any, worker: SourceAssuranceWorker, *, max_request
         SourceFile("candidate-public-scopes.json", worker.registry, hashlib.sha256(worker.registry_bytes).hexdigest()),
     )
     return ExecutorPolicy(
-        "source-assurance-candidate-v1",
+        "source-assurance-candidate-v1-git-" + environment["git_version"],
         sources,
         {"run-mission": Limits(1)},
         Limits(max_requests),
@@ -436,12 +437,11 @@ def qualified_candidate_environment(worker: SourceAssuranceWorker) -> dict[str, 
         6,
         lambda: None,
     )
-    if probe != {"git": "git version 2.51.1"}:
-        raise ValueError("candidate requires the declared Git 2.51.1 executable")
+    git_version = candidate_git_version(probe)
     return {
         "schema": "alpha-source-candidate-environment/v1",
         "profile": profile["qualified_environment"],
-        "git_version": "2.51.1",
+        "git_version": git_version,
         "child_environment": child,
         "operator_adoption": "NOT APPROVED",
         "runtime_sources": [
@@ -449,3 +449,9 @@ def qualified_candidate_environment(worker: SourceAssuranceWorker) -> dict[str, 
             for name in profile["runtime_enforcement_files"]
         ],
     }
+
+
+def candidate_git_version(probe: dict[str, Any]) -> str:
+    if set(probe) != {"git"} or not isinstance(probe.get("git"), str) or probe["git"] not in GIT_PROFILES:
+        raise ValueError("candidate requires an explicit Git 2.51.1 or 2.55.0 profile")
+    return GIT_PROFILES[probe["git"]]
