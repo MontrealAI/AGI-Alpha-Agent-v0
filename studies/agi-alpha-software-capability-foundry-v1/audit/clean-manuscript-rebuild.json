@@ -1,0 +1,32 @@
+{
+  "schema": "foundry-clean-manuscript-rebuild/v1",
+  "status": "PASS",
+  "original_sha256": "256d02c92faf51dcf51ca8ae44100f04645a9ef65404c548e86f6b6835d09f54",
+  "clean_rebuilt_sha256": "256d02c92faf51dcf51ca8ae44100f04645a9ef65404c548e86f6b6835d09f54",
+  "byte_identical": true,
+  "build_commands": [
+    [
+      "pdflatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "Software_Capability_Foundry.tex"
+    ],
+    [
+      "bibtex",
+      "Software_Capability_Foundry"
+    ],
+    [
+      "pdflatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "Software_Capability_Foundry.tex"
+    ],
+    [
+      "pdflatex",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "Software_Capability_Foundry.tex"
+    ]
+  ],
+  "context": "Clean auxiliary-free local build using supplied TeX, BibTeX and chart PDFs; no benchmark execution."
+}

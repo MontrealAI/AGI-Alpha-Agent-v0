@@ -1,0 +1,76 @@
+{
+  "analysis_sha256": "8ae40f5cd8bfbcaa96003d309865794852a676e35c711a9966eeb1fbe5d42457",
+  "audit_process_cpu_seconds": 0.300810558,
+  "audit_script_sha256": "f676600430599068f06c0e5d92e5cafcdf4bf2ff724b9c9bea0fd3bc788c5b50",
+  "audit_wall_seconds": 0.30080883200571407,
+  "benchmark_rerun": false,
+  "bound_child_instances": 96,
+  "bound_parent_invocations": 384,
+  "by_arm": {
+    "conventional": {
+      "bound_parent_invocations": 96,
+      "diagnostic_outputs": 96,
+      "read_outputs": 96
+    },
+    "equivalent": {
+      "bound_parent_invocations": 96,
+      "diagnostic_outputs": 96,
+      "read_outputs": 96
+    },
+    "flywheel": {
+      "bound_parent_invocations": 96,
+      "diagnostic_outputs": 96,
+      "read_outputs": 96
+    },
+    "history": {
+      "bound_parent_invocations": 0,
+      "diagnostic_outputs": 96,
+      "read_outputs": 96
+    },
+    "no_asset": {
+      "bound_parent_invocations": 0,
+      "diagnostic_outputs": 96,
+      "read_outputs": 96
+    },
+    "reconstruction": {
+      "bound_parent_invocations": 96,
+      "diagnostic_outputs": 96,
+      "read_outputs": 96
+    },
+    "specialist": {
+      "bound_parent_invocations": 0,
+      "diagnostic_outputs": 96,
+      "read_outputs": 96
+    }
+  },
+  "campaign_sha256": "75a9b43256efcd7c82addf8a4d9243c605f7dc7150d3f2700d4a2663499e9878",
+  "case_arm_pairs": 168,
+  "checks": 5931,
+  "failures": [],
+  "freeze_sha256": "b3cb8d2c9926521e0a6687b0d8983496abf5eba5a6e1564d3f56a5732192fb85",
+  "frozen_files_checked": 29,
+  "independently_read_committed_files": 1344,
+  "independently_recomputed_primary": {
+    "ci95": [
+      1.0245655557292654,
+      1.089916378852082
+    ],
+    "geometric_cpu_ratio": 1.057435649524383
+  },
+  "input_audit_method": "Direct decompression and hash verification of commit, tree and blob objects; independent ZIP reads and output comparisons; no candidate or comparator method rerun.",
+  "limitations": [
+    "Internal role-separated audit in a shared workspace, not OS-isolated or external replication.",
+    "Parent traces are source-bound in-process records, not hardware attestation or independently captured system calls.",
+    "One child design instantiated 96 times; these are not 96 independently discovered algorithms.",
+    "No-asset specialist and ordinary tooling may reuse independent reader functions; zero bound-parent traces means no proposed lineage record, not zero software reuse.",
+    "24 generated instances share one source ecosystem and one host; timings remain conditional on that environment.",
+    "Full research, model, human, integration and maintenance costs remain incomplete."
+  ],
+  "outputs_checked": 1344,
+  "passed": true,
+  "protected_files_checked": 49,
+  "repository_instances": 24,
+  "reviewed_utc": "2026-10-25T10:18:27.405050+00:00",
+  "schema": "foundry-independent-output-audit/v1",
+  "working_tree_decoys_verified": 24
+}

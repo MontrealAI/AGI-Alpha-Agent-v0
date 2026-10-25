@@ -1,0 +1,52 @@
+{
+  "benchmark_rerun": false,
+  "checked_utc": "2026-10-25T10:26:32.422387+00:00",
+  "checks": [
+    {
+      "name": "valid",
+      "observed_pass": true,
+      "passed": true
+    },
+    {
+      "name": "changed",
+      "observed_pass": false,
+      "passed": true
+    },
+    {
+      "name": "missing",
+      "observed_pass": false,
+      "passed": true
+    },
+    {
+      "name": "traversal",
+      "observed_error": "Unsafe or noncanonical relative path: '../outside'",
+      "passed": true
+    },
+    {
+      "name": "symlink",
+      "observed_pass": false,
+      "passed": true
+    },
+    {
+      "name": "duplicate",
+      "observed_error": "Manifest cannot list itself or duplicate a path: source.py",
+      "passed": true
+    },
+    {
+      "name": "freeze-mismatch",
+      "observed_pass": false,
+      "passed": true
+    },
+    {
+      "name": "input-lock-mismatch",
+      "observed_pass": false,
+      "passed": true
+    }
+  ],
+  "disposable_fixtures_only": true,
+  "frozen_science_files_unchanged": true,
+  "help_command_exit_code": 0,
+  "passed": true,
+  "schema": "foundry-package-verifier-checks/v1",
+  "script_sha256": "667f1a42e0542bba7cc62980f969efbb803fd67c4068d8b47ccf690ed5a8947c"
+}

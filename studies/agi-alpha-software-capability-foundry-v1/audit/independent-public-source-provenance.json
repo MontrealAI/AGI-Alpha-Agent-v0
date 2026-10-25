@@ -1,0 +1,908 @@
+{
+  "checks": {
+    "alpha_factory_v1/backend/adk_bridge.py": true,
+    "alpha_factory_v1/backend/agent_base.py": true,
+    "alpha_factory_v1/backend/agents/cyber_threat_agent.py": true,
+    "alpha_factory_v1/backend/agents/plugins.py": true,
+    "alpha_factory_v1/backend/main.py": true,
+    "alpha_factory_v1/backend/services/__init__.py": true,
+    "alpha_factory_v1/common/utils/__init__.py": true,
+    "alpha_factory_v1/core/__init__.py": true,
+    "alpha_factory_v1/core/agents/reviewer_agent.py": true,
+    "alpha_factory_v1/core/agents/self_improver_agent.py": true,
+    "alpha_factory_v1/core/runtime/examples/research.json": true,
+    "alpha_factory_v1/core/runtime/successor/__init__.py": true,
+    "alpha_factory_v1/core/runtime/successor/mission.py": true,
+    "alpha_factory_v1/core/runtime/successor/model_program_operator.py": true,
+    "alpha_factory_v1/core/self_evolution/self_improver.py": true,
+    "alpha_factory_v1/core/simulation/selector.py": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v0/RESEARCH_ARCHIVE.md": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/data/sector_shock_10/scenario_10.json": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/archive.test.js": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/replay_cid.test.js": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/test_dist_self_contained.py": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/test_safari_offline.py": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_app.py": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/src/simulation/__init__.py": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/src/utils/__init__.py": true,
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/tests/test_forecast.py": true,
+    "alpha_factory_v1/demos/era_of_experience/reward_backends/fitness_reward.py": true,
+    "alpha_factory_v1/demos/macro_sentinel/__main__.py": true,
+    "alpha_factory_v1/demos/macro_sentinel/simulation_core.py": true,
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/__main__.py": true,
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/meta_agentic_agi_demo_v3.py": true,
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/scenarios.json": true,
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/src/__init__.py": true,
+    "alpha_factory_v1/demos/meta_agentic_tree_search_v0/__init__.py": true,
+    "alpha_factory_v1/demos/meta_agentic_tree_search_v0/mats/__init__.py": true,
+    "alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md": true,
+    "alpha_factory_v1/demos/omni_factory_demo/omni_metrics_exporter.py": true,
+    "alpha_factory_v1/demos/presentation/__init__.py": true,
+    "alpha_factory_v1/demos/self_healing_repo/agent_core/diff_utils.py": true,
+    "alpha_factory_v1/demos/self_healing_repo/sample_broken_calc/calc.py": true,
+    "alpha_factory_v1/quickstart.py": true,
+    "alpha_factory_v1/requirements-core.txt": true,
+    "alpha_factory_v1/tests/test_alpha_asi_world_model.py": true,
+    "alpha_factory_v1/tests/test_marketplace_client.py": true,
+    "alpha_factory_v1/tests/test_scripts_run_tests.py": true,
+    "alpha_factory_v1/utils/config_common.py": true,
+    "scripts/build_service_worker.py": true,
+    "scripts/check_ci_status.py": true,
+    "scripts/mark_wallet_evidence.py": true,
+    "scripts/open_subdir_demo.py": true,
+    "scripts/publish_computer_use_study.py": true,
+    "scripts/publish_demo_gallery.py": true,
+    "scripts/refresh_capability_checkout.py": true,
+    "scripts/release_packs.py": true,
+    "scripts/required_checks.json": true,
+    "scripts/reuse_writer4_http.py": true,
+    "scripts/validate_ascension.py": true,
+    "scripts/validate_business3.py": true,
+    "scripts/validate_discovery.py": true,
+    "scripts/validate_governance_core.py": true,
+    "scripts/validate_mainnet_directory.py": true,
+    "tests/__init__.py": true,
+    "tests/browser/bloom_engine.test.mjs": true,
+    "tests/browser/out_evolve_recovery.py": true,
+    "tests/browser/test_cross_industry_engine.mjs": true,
+    "tests/browser/test_discovery_lab_continuation.py": true,
+    "tests/browser/test_successor_alpha_browser.py": true,
+    "tests/browser/test_successor_capability_accessibility.py": true,
+    "tests/contracts/hardhat.config.js": true,
+    "tests/contracts/test/ascension/native-handoff.test.js": true,
+    "tests/contracts/test/verification-package.test.js": true,
+    "tests/nova-studio/cycle-edges.test.mjs": true,
+    "tests/runtime/test_budget_browser.py": true,
+    "tests/runtime/test_campaign_experiment.py": true,
+    "tests/runtime/test_successor_signatures.py": true,
+    "tests/test_adk_gateway_startup.py": true,
+    "tests/test_agent_manager_consumer.py": true,
+    "tests/test_agent_muzero_entrypoint.py": true,
+    "tests/test_agents_alias.py": true,
+    "tests/test_alpha_agi_insight_demo.py": true,
+    "tests/test_alpha_agi_insight_main.py": true,
+    "tests/test_archive_cron.py": true,
+    "tests/test_ascension_stack_ci.py": true,
+    "tests/test_browser_ui.py": true,
+    "tests/test_bus_ssl_gen.py": true,
+    "tests/test_business2_launchers.py": true,
+    "tests/test_cross_industry_patch.py": true,
+    "tests/test_curriculum_delivery.py": true,
+    "tests/test_curriculum_switcher.py": true,
+    "tests/test_demo_execution_claims.py": true,
+    "tests/test_demo_inventory_docs.py": true,
+    "tests/test_diff_mutation.py": true,
+    "tests/test_diff_utils_apply.py": true,
+    "tests/test_dual_critic.py": true,
+    "tests/test_edge_runner.py": true,
+    "tests/test_edge_runner_cli.py": true,
+    "tests/test_fetch_assets.py": true,
+    "tests/test_fetch_assets_import.py": true,
+    "tests/test_file_ops.py": true,
+    "tests/test_finance_demo_cli.py": true,
+    "tests/test_forecast.py": true,
+    "tests/test_governance.py": true,
+    "tests/test_held_native_source_guard.py": true,
+    "tests/test_homepage_evidence.py": true,
+    "tests/test_insight_build_script_selection.py": true,
+    "tests/test_kafka_service.py": true,
+    "tests/test_llm_client_error_handling.py": true,
+    "tests/test_macro_sentinel.py": true,
+    "tests/test_mats_bridge_entrypoint.py": true,
+    "tests/test_memory_agent_persistence.py": true,
+    "tests/test_muzero_learning.py": true,
+    "tests/test_muzero_planning.py": true,
+    "tests/test_native_browser_ci.py": true,
+    "tests/test_orchestrator_backoff.py": true,
+    "tests/test_paper_checkout_bytes.py": true,
+    "tests/test_portfolio_no_lock.py": true,
+    "tests/test_postgres_ledger.py": true,
+    "tests/test_preflight_sandbox.py": true,
+    "tests/test_revive_rate.py": true,
+    "tests/test_root_config.py": true,
+    "tests/test_run_business_3_demo.py": true,
+    "tests/test_safety_guardian_fuzz.py": true,
+    "tests/test_simulator_init.py": true,
+    "tests/test_successor_alpha_validation.py": true,
+    "tests/test_successor_capability_delivery.py": true,
+    "tests/test_transformational_artifact_handoff.py": true,
+    "tests/test_world_model_kafka.py": true,
+    "tests/test_world_model_safety.py": true
+  },
+  "method": "read-only native Git tree inspection at pinned public commit; no benchmark rerun",
+  "observed": {
+    "alpha_factory_v1/backend/adk_bridge.py": {
+      "bytes": 10094,
+      "mode": "100644",
+      "oid": "20490b7fd9e74679011436b0e42242a77946ee48",
+      "type": "blob"
+    },
+    "alpha_factory_v1/backend/agent_base.py": {
+      "bytes": 342,
+      "mode": "100644",
+      "oid": "c72bb0a490f7cc5c9ac17abd57e2265d9b7a3134",
+      "type": "blob"
+    },
+    "alpha_factory_v1/backend/agents/cyber_threat_agent.py": {
+      "bytes": 18154,
+      "mode": "100644",
+      "oid": "912451ad80c222336cac4a69b13561b8376da8c8",
+      "type": "blob"
+    },
+    "alpha_factory_v1/backend/agents/plugins.py": {
+      "bytes": 2198,
+      "mode": "100644",
+      "oid": "52f592829112f6ee5674290a9a206f0444b36bc0",
+      "type": "blob"
+    },
+    "alpha_factory_v1/backend/main.py": {
+      "bytes": 2848,
+      "mode": "100644",
+      "oid": "51bfb61ff394c37677709e8ab72913e1c9507305",
+      "type": "blob"
+    },
+    "alpha_factory_v1/backend/services/__init__.py": {
+      "bytes": 270,
+      "mode": "100644",
+      "oid": "609209435cb2e54fd20099fac19281bfaf5965f6",
+      "type": "blob"
+    },
+    "alpha_factory_v1/common/utils/__init__.py": {
+      "bytes": 607,
+      "mode": "100644",
+      "oid": "69b8834b18e6a3b4b7623a5673eafa55d1d6bfb8",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/__init__.py": {
+      "bytes": 106,
+      "mode": "100644",
+      "oid": "bd3579b5219c5e3dbb1a33e614f4a9e3a4132e37",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/agents/reviewer_agent.py": {
+      "bytes": 901,
+      "mode": "100644",
+      "oid": "e00e7ee162a6b39c95eafa82bec165ab219fc3fa",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/agents/self_improver_agent.py": {
+      "bytes": 3656,
+      "mode": "100644",
+      "oid": "fe44fbd6a8bd7ad502b3fad58d772ecb3f24debe",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/runtime/examples/research.json": {
+      "bytes": 2006,
+      "mode": "100644",
+      "oid": "1884fa44f6ed51e498ba0eac0a329ee4fe707326",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/runtime/successor/__init__.py": {
+      "bytes": 118,
+      "mode": "100644",
+      "oid": "2d5d184e6bc59631834609110f6058aa0ff67020",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/runtime/successor/mission.py": {
+      "bytes": 29248,
+      "mode": "100644",
+      "oid": "fe4a40415e8c795d6f4a822db47a0d1925ebcaa2",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/runtime/successor/model_program_operator.py": {
+      "bytes": 1230,
+      "mode": "100644",
+      "oid": "0f008fd238ba3bee63767f1931940f9f7bfbd576",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/self_evolution/self_improver.py": {
+      "bytes": 3909,
+      "mode": "100644",
+      "oid": "9a04ad66acbaaede329c35de5367fb22588a1484",
+      "type": "blob"
+    },
+    "alpha_factory_v1/core/simulation/selector.py": {
+      "bytes": 1765,
+      "mode": "100644",
+      "oid": "52f853ade0f26bed2fef7bc9d8074487593e74ec",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v0/RESEARCH_ARCHIVE.md": {
+      "bytes": 15921,
+      "mode": "100644",
+      "oid": "81ece121be5a15b2819f4dc5954702ce131d086f",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/data/sector_shock_10/scenario_10.json": {
+      "bytes": 97,
+      "mode": "100644",
+      "oid": "193ed2b74f45fd1ba35f51c8b52893057fbd4d03",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/archive.test.js": {
+      "bytes": 4531,
+      "mode": "100644",
+      "oid": "05b66a30923f7f2df3c2375526bc7f1ac422220d",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/replay_cid.test.js": {
+      "bytes": 659,
+      "mode": "100644",
+      "oid": "36ce526fcb52de3ce25dcbeed216bc809c533df5",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/test_dist_self_contained.py": {
+      "bytes": 786,
+      "mode": "100644",
+      "oid": "eba12a90f8578afa5cc7f8d7effa2260a7f390b2",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/insight_browser_v1/tests/test_safari_offline.py": {
+      "bytes": 1576,
+      "mode": "100644",
+      "oid": "4933ca1eedee24389dfbaa3b3fcd8aaa8bc70993",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/web_app.py": {
+      "bytes": 3570,
+      "mode": "100644",
+      "oid": "7f2a3fc1536e04e6be7fc2d65b7bc20ae26659c4",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/src/simulation/__init__.py": {
+      "bytes": 618,
+      "mode": "100644",
+      "oid": "f48acd3404bad9913855f36f7fd922ab5fac74b1",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/src/utils/__init__.py": {
+      "bytes": 346,
+      "mode": "100644",
+      "oid": "386b3f270c1820b6cda16b1759cdbd74f84375c0",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/alpha_agi_insight_v1/tests/test_forecast.py": {
+      "bytes": 380,
+      "mode": "100644",
+      "oid": "83b94b46c2b72f64ef286ac480ff7c15477d27cc",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/era_of_experience/reward_backends/fitness_reward.py": {
+      "bytes": 3971,
+      "mode": "100644",
+      "oid": "d6daf2228cff03e2aabee87237694f0994561484",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/macro_sentinel/__main__.py": {
+      "bytes": 1709,
+      "mode": "100644",
+      "oid": "9e69bfbd9ecd0a771459ddae33f4a8061fced1d8",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/macro_sentinel/simulation_core.py": {
+      "bytes": 10331,
+      "mode": "100644",
+      "oid": "828f68eedbb29c373414a37ea43838018be64d02",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/__main__.py": {
+      "bytes": 90,
+      "mode": "100644",
+      "oid": "4be5342b6ea97feca7afc043a4ba8c26bc1aaaab",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/meta_agentic_agi_demo_v3.py": {
+      "bytes": 19782,
+      "mode": "100644",
+      "oid": "ee7b155ad649427394f0772a5a90fd5a017a37b3",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/scenarios.json": {
+      "bytes": 2444,
+      "mode": "100644",
+      "oid": "6587d1466460c3ee7ce52478657a730150ff830c",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/meta_agentic_agi_v3/src/__init__.py": {
+      "bytes": 38,
+      "mode": "100644",
+      "oid": "9881313609aae2c16a19dae665af4268bd54431d",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/meta_agentic_tree_search_v0/__init__.py": {
+      "bytes": 453,
+      "mode": "100644",
+      "oid": "d4f704598ddfc55b5d0cf9d8074bd476db2dfcfc",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/meta_agentic_tree_search_v0/mats/__init__.py": {
+      "bytes": 446,
+      "mode": "100644",
+      "oid": "b3f5eb5de2926ccab302b3f0f355f69816c00b59",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/muzeromctsllmagent_v0/README.md": {
+      "bytes": 7559,
+      "mode": "100644",
+      "oid": "75503daa8f82ddc5f5b977e8960aea1d0490d39c",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/omni_factory_demo/omni_metrics_exporter.py": {
+      "bytes": 10900,
+      "mode": "100644",
+      "oid": "dc28ebd97ebcb6309f25034b1e5573366bb9355a",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/presentation/__init__.py": {
+      "bytes": 102,
+      "mode": "100644",
+      "oid": "daed39e0d906bc9d1d6102c87bb33b88e63f2559",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/self_healing_repo/agent_core/diff_utils.py": {
+      "bytes": 5343,
+      "mode": "100644",
+      "oid": "a9f49bbad38cffa6de15bf9751c599b586a8e70f",
+      "type": "blob"
+    },
+    "alpha_factory_v1/demos/self_healing_repo/sample_broken_calc/calc.py": {
+      "bytes": 134,
+      "mode": "100644",
+      "oid": "68a83641dd82fc93a06be29a343dcb8d2d9fee4a",
+      "type": "blob"
+    },
+    "alpha_factory_v1/quickstart.py": {
+      "bytes": 5545,
+      "mode": "100644",
+      "oid": "37f390165c49da71da770fb8d10d751a59f349f7",
+      "type": "blob"
+    },
+    "alpha_factory_v1/requirements-core.txt": {
+      "bytes": 1142,
+      "mode": "100644",
+      "oid": "b196a4e30e5e54fdc97c2b360b81163bc92e31ca",
+      "type": "blob"
+    },
+    "alpha_factory_v1/tests/test_alpha_asi_world_model.py": {
+      "bytes": 1772,
+      "mode": "100644",
+      "oid": "b85666798a1e277db4e72f9ddeeb07f1bbf3ae37",
+      "type": "blob"
+    },
+    "alpha_factory_v1/tests/test_marketplace_client.py": {
+      "bytes": 2280,
+      "mode": "100644",
+      "oid": "e4064892cacad16b9d93992c88880b60b6e43047",
+      "type": "blob"
+    },
+    "alpha_factory_v1/tests/test_scripts_run_tests.py": {
+      "bytes": 1663,
+      "mode": "100644",
+      "oid": "037bc9bbae722444820e8faa8f2683906a5fbc2a",
+      "type": "blob"
+    },
+    "alpha_factory_v1/utils/config_common.py": {
+      "bytes": 2882,
+      "mode": "100644",
+      "oid": "6b00d1647286920a6026f865812fd7170752c882",
+      "type": "blob"
+    },
+    "scripts/build_service_worker.py": {
+      "bytes": 5875,
+      "mode": "100644",
+      "oid": "e8c8eb729c76fa18de013ca018a89a91a2af6c38",
+      "type": "blob"
+    },
+    "scripts/check_ci_status.py": {
+      "bytes": 31619,
+      "mode": "100644",
+      "oid": "7a98f8940c94af6250555247805d8d376b408df5",
+      "type": "blob"
+    },
+    "scripts/mark_wallet_evidence.py": {
+      "bytes": 2752,
+      "mode": "100644",
+      "oid": "e42ed9fa04f0826e3e9374daaaf6150b43d29ed9",
+      "type": "blob"
+    },
+    "scripts/open_subdir_demo.py": {
+      "bytes": 4051,
+      "mode": "100644",
+      "oid": "3cf299b2c28bc0306af8870cce881f72c5156ac6",
+      "type": "blob"
+    },
+    "scripts/publish_computer_use_study.py": {
+      "bytes": 14958,
+      "mode": "100644",
+      "oid": "d3be731d03afb2a2d5997972329c72d8c6142e96",
+      "type": "blob"
+    },
+    "scripts/publish_demo_gallery.py": {
+      "bytes": 2591,
+      "mode": "100755",
+      "oid": "2f19911c8b53d91399d81b537288c15bb63550f9",
+      "type": "blob"
+    },
+    "scripts/refresh_capability_checkout.py": {
+      "bytes": 20851,
+      "mode": "100644",
+      "oid": "355fc4dcede2efe3aaae0c68b33e1a9b2bad326a",
+      "type": "blob"
+    },
+    "scripts/release_packs.py": {
+      "bytes": 22864,
+      "mode": "100644",
+      "oid": "22a27fd56e9943cfa61eb7ff81287bb51c66e62b",
+      "type": "blob"
+    },
+    "scripts/required_checks.json": {
+      "bytes": 37,
+      "mode": "100644",
+      "oid": "f93dc902f0c135bee429bda9de46163033d0b0ac",
+      "type": "blob"
+    },
+    "scripts/reuse_writer4_http.py": {
+      "bytes": 9901,
+      "mode": "100644",
+      "oid": "f5d6818f951665e891a59fe85ff4cf6709f310d1",
+      "type": "blob"
+    },
+    "scripts/validate_ascension.py": {
+      "bytes": 19724,
+      "mode": "100644",
+      "oid": "d4b3f0320e7d01b3de13c9adb6435991f3341b66",
+      "type": "blob"
+    },
+    "scripts/validate_business3.py": {
+      "bytes": 13295,
+      "mode": "100644",
+      "oid": "abda82c5b4efc4efef711b4527b3cd8d4c549cb5",
+      "type": "blob"
+    },
+    "scripts/validate_discovery.py": {
+      "bytes": 10384,
+      "mode": "100644",
+      "oid": "cee84415e865c1b47da9ad7a26665a9b26f2be55",
+      "type": "blob"
+    },
+    "scripts/validate_governance_core.py": {
+      "bytes": 4833,
+      "mode": "100644",
+      "oid": "918ace11ec8b72d5925426c07de9c9386dd6ec29",
+      "type": "blob"
+    },
+    "scripts/validate_mainnet_directory.py": {
+      "bytes": 1555,
+      "mode": "100644",
+      "oid": "186ef8a869235715453c9f51c1ed70d74b850868",
+      "type": "blob"
+    },
+    "tests/__init__.py": {
+      "bytes": 1354,
+      "mode": "100644",
+      "oid": "794ff6dca9466fcdb76e33b91b55d03b24df8375",
+      "type": "blob"
+    },
+    "tests/browser/bloom_engine.test.mjs": {
+      "bytes": 11322,
+      "mode": "100644",
+      "oid": "fb48a28b109ba1ef96ceab81e0625b8288f7c041",
+      "type": "blob"
+    },
+    "tests/browser/out_evolve_recovery.py": {
+      "bytes": 35716,
+      "mode": "100644",
+      "oid": "5ba5393f4e773b1573b0ce20f086aacc826e5158",
+      "type": "blob"
+    },
+    "tests/browser/test_cross_industry_engine.mjs": {
+      "bytes": 4091,
+      "mode": "100644",
+      "oid": "8ba093ad8c7ddf9877c721f4492de8adf5330f82",
+      "type": "blob"
+    },
+    "tests/browser/test_discovery_lab_continuation.py": {
+      "bytes": 18984,
+      "mode": "100644",
+      "oid": "0cce584d3906c026038468d17a68cc84c50b77d1",
+      "type": "blob"
+    },
+    "tests/browser/test_successor_alpha_browser.py": {
+      "bytes": 64341,
+      "mode": "100644",
+      "oid": "b169590f7d57b3f7b71f8b4417423e59b87dce03",
+      "type": "blob"
+    },
+    "tests/browser/test_successor_capability_accessibility.py": {
+      "bytes": 15203,
+      "mode": "100644",
+      "oid": "edfb6b2dfaa5b28aada44590eb7970741ccb5fff",
+      "type": "blob"
+    },
+    "tests/contracts/hardhat.config.js": {
+      "bytes": 1084,
+      "mode": "100644",
+      "oid": "2497da95e2b337c9fae7097c966cb7e644339804",
+      "type": "blob"
+    },
+    "tests/contracts/test/ascension/native-handoff.test.js": {
+      "bytes": 4575,
+      "mode": "100644",
+      "oid": "bcd4270cde8b45ea1322728641fd49b97307bcc7",
+      "type": "blob"
+    },
+    "tests/contracts/test/verification-package.test.js": {
+      "bytes": 9192,
+      "mode": "100644",
+      "oid": "7ab016ed0f64c9688bd5b6304f8da2e19811535e",
+      "type": "blob"
+    },
+    "tests/nova-studio/cycle-edges.test.mjs": {
+      "bytes": 10899,
+      "mode": "100644",
+      "oid": "3301a6d953e39b6bf239dbfa6ef087c5a6a00907",
+      "type": "blob"
+    },
+    "tests/runtime/test_budget_browser.py": {
+      "bytes": 19824,
+      "mode": "100644",
+      "oid": "690bdf65df228ce28b05f7ac4cad7c2aad3767d9",
+      "type": "blob"
+    },
+    "tests/runtime/test_campaign_experiment.py": {
+      "bytes": 15695,
+      "mode": "100644",
+      "oid": "c74a3fcc30a5820543859aafed283303310196d9",
+      "type": "blob"
+    },
+    "tests/runtime/test_successor_signatures.py": {
+      "bytes": 8026,
+      "mode": "100644",
+      "oid": "c433bbb7bb88cff36a1f2c2e8659018b64f3602a",
+      "type": "blob"
+    },
+    "tests/test_adk_gateway_startup.py": {
+      "bytes": 2149,
+      "mode": "100644",
+      "oid": "511d75be087da4ac6f113d6df93513904342a581",
+      "type": "blob"
+    },
+    "tests/test_agent_manager_consumer.py": {
+      "bytes": 1988,
+      "mode": "100644",
+      "oid": "5791fd389d09a33441c43bde9557f487b480e2a8",
+      "type": "blob"
+    },
+    "tests/test_agent_muzero_entrypoint.py": {
+      "bytes": 751,
+      "mode": "100644",
+      "oid": "b484d55c19ff29897772044bb632a43eb94c63cc",
+      "type": "blob"
+    },
+    "tests/test_agents_alias.py": {
+      "bytes": 579,
+      "mode": "100644",
+      "oid": "c8042df86e5ead798085994514651248e40d9878",
+      "type": "blob"
+    },
+    "tests/test_alpha_agi_insight_demo.py": {
+      "bytes": 733,
+      "mode": "100644",
+      "oid": "679596ef58dc23fbe7e2e04f09d4d820fec09e5e",
+      "type": "blob"
+    },
+    "tests/test_alpha_agi_insight_main.py": {
+      "bytes": 727,
+      "mode": "100644",
+      "oid": "55d5017abc11ffb3fa7f31c4fd0581f366742a94",
+      "type": "blob"
+    },
+    "tests/test_archive_cron.py": {
+      "bytes": 1625,
+      "mode": "100644",
+      "oid": "0ea8c56788d2e3526234d54ad3c91c6968902067",
+      "type": "blob"
+    },
+    "tests/test_ascension_stack_ci.py": {
+      "bytes": 3881,
+      "mode": "100644",
+      "oid": "510fd3ea9cf419b525cdeb33fa8376719d8e36aa",
+      "type": "blob"
+    },
+    "tests/test_browser_ui.py": {
+      "bytes": 1345,
+      "mode": "100644",
+      "oid": "6bcba02e21ade459c75baf3223cd3bc2bf4f08c4",
+      "type": "blob"
+    },
+    "tests/test_bus_ssl_gen.py": {
+      "bytes": 2070,
+      "mode": "100644",
+      "oid": "f816df70c5862e8a3af6370b76d80045b9b948ec",
+      "type": "blob"
+    },
+    "tests/test_business2_launchers.py": {
+      "bytes": 3468,
+      "mode": "100644",
+      "oid": "74c5439ad21fe899b61c0cb733dbbbacbb5c5ab5",
+      "type": "blob"
+    },
+    "tests/test_cross_industry_patch.py": {
+      "bytes": 2113,
+      "mode": "100644",
+      "oid": "0a04758eb639f74226662fa43c1050877451b35d",
+      "type": "blob"
+    },
+    "tests/test_curriculum_delivery.py": {
+      "bytes": 6796,
+      "mode": "100644",
+      "oid": "2ae67420d8bcdf73ae4820f764d792b4de08c481",
+      "type": "blob"
+    },
+    "tests/test_curriculum_switcher.py": {
+      "bytes": 1171,
+      "mode": "100644",
+      "oid": "27af0d5045af0693e8eed937f8e640be3fb01801",
+      "type": "blob"
+    },
+    "tests/test_demo_execution_claims.py": {
+      "bytes": 10709,
+      "mode": "100644",
+      "oid": "dcfebc6958df41012b093fd5d407021a8f33dc00",
+      "type": "blob"
+    },
+    "tests/test_demo_inventory_docs.py": {
+      "bytes": 3460,
+      "mode": "100644",
+      "oid": "214b78b9539dde0fc2664eebab52b76cda6fcb9e",
+      "type": "blob"
+    },
+    "tests/test_diff_mutation.py": {
+      "bytes": 637,
+      "mode": "100644",
+      "oid": "085096ea1ee11c5f8dd13223529d9d916fef6a63",
+      "type": "blob"
+    },
+    "tests/test_diff_utils_apply.py": {
+      "bytes": 2298,
+      "mode": "100644",
+      "oid": "27aa64ea21ce52a2482172a89a56191d22283460",
+      "type": "blob"
+    },
+    "tests/test_dual_critic.py": {
+      "bytes": 537,
+      "mode": "100644",
+      "oid": "95d9914abe43f53e0ab03f54d634b728a93d0243",
+      "type": "blob"
+    },
+    "tests/test_edge_runner.py": {
+      "bytes": 579,
+      "mode": "100644",
+      "oid": "f67075b7f5b77054a8f82116aa0509b9419cb994",
+      "type": "blob"
+    },
+    "tests/test_edge_runner_cli.py": {
+      "bytes": 1964,
+      "mode": "100644",
+      "oid": "e68d4bb3f1c2b716d2970fc431ba8f77f1b18e65",
+      "type": "blob"
+    },
+    "tests/test_fetch_assets.py": {
+      "bytes": 648,
+      "mode": "100644",
+      "oid": "ce96a9a4ba1487d4d37a08dd64f298ade5759775",
+      "type": "blob"
+    },
+    "tests/test_fetch_assets_import.py": {
+      "bytes": 736,
+      "mode": "100644",
+      "oid": "c420d6bb6df344730e798e2f21f20ff6ca27bc6a",
+      "type": "blob"
+    },
+    "tests/test_file_ops.py": {
+      "bytes": 983,
+      "mode": "100644",
+      "oid": "0d2ed195019b1d4459ae8c7a86cb6555535727cb",
+      "type": "blob"
+    },
+    "tests/test_finance_demo_cli.py": {
+      "bytes": 3327,
+      "mode": "100644",
+      "oid": "1652acd52a492df925407adb7316c38c51c30989",
+      "type": "blob"
+    },
+    "tests/test_forecast.py": {
+      "bytes": 5180,
+      "mode": "100644",
+      "oid": "c5ef1cebf380d1a981e43c0cf29effa6e4e963d1",
+      "type": "blob"
+    },
+    "tests/test_governance.py": {
+      "bytes": 2912,
+      "mode": "100644",
+      "oid": "fa28d9dd2fdacdbe5bc84051b89e6cfe6be24296",
+      "type": "blob"
+    },
+    "tests/test_held_native_source_guard.py": {
+      "bytes": 4461,
+      "mode": "100644",
+      "oid": "5be9f6b30f12132b13ab32cf42bfeba361d107e2",
+      "type": "blob"
+    },
+    "tests/test_homepage_evidence.py": {
+      "bytes": 9448,
+      "mode": "100644",
+      "oid": "0264ad616e309f71ab86f5d9605a333782706c3b",
+      "type": "blob"
+    },
+    "tests/test_insight_build_script_selection.py": {
+      "bytes": 1595,
+      "mode": "100644",
+      "oid": "ca263db9e4290cbd55663757e41469363d7dd4ba",
+      "type": "blob"
+    },
+    "tests/test_kafka_service.py": {
+      "bytes": 560,
+      "mode": "100644",
+      "oid": "c6d54a562cfea69ac1ceb78daf97dc3e09b96a5a",
+      "type": "blob"
+    },
+    "tests/test_llm_client_error_handling.py": {
+      "bytes": 967,
+      "mode": "100644",
+      "oid": "9716f8e5c16df792bf24f65a7f290d0fd6d2c3e0",
+      "type": "blob"
+    },
+    "tests/test_macro_sentinel.py": {
+      "bytes": 6024,
+      "mode": "100644",
+      "oid": "809fb2e7db5166465976409cb0bcccd0de9b03b3",
+      "type": "blob"
+    },
+    "tests/test_mats_bridge_entrypoint.py": {
+      "bytes": 990,
+      "mode": "100644",
+      "oid": "3bdce8efa918869c58746a1a875a5c2fce74bc69",
+      "type": "blob"
+    },
+    "tests/test_memory_agent_persistence.py": {
+      "bytes": 830,
+      "mode": "100644",
+      "oid": "0ff5b3d3c097e91326e391399472434efa26c900",
+      "type": "blob"
+    },
+    "tests/test_muzero_learning.py": {
+      "bytes": 11763,
+      "mode": "100644",
+      "oid": "72560f00636a8d9b0842ae9ebd342236cea63bfe",
+      "type": "blob"
+    },
+    "tests/test_muzero_planning.py": {
+      "bytes": 872,
+      "mode": "100644",
+      "oid": "d1b63d14728eb1cc66e506a26c75fed57532ecaf",
+      "type": "blob"
+    },
+    "tests/test_native_browser_ci.py": {
+      "bytes": 19777,
+      "mode": "100644",
+      "oid": "326fd355b88a99ec7a8a21674684f7de9d2c4742",
+      "type": "blob"
+    },
+    "tests/test_orchestrator_backoff.py": {
+      "bytes": 3527,
+      "mode": "100644",
+      "oid": "cb69e704881faafd3a4e3844509c421e1d742370",
+      "type": "blob"
+    },
+    "tests/test_paper_checkout_bytes.py": {
+      "bytes": 3535,
+      "mode": "100644",
+      "oid": "8547d6797efe2cc9e60ac265dbd2172cb235a7a7",
+      "type": "blob"
+    },
+    "tests/test_portfolio_no_lock.py": {
+      "bytes": 1126,
+      "mode": "100644",
+      "oid": "ce87d834de3e424319fa23887b4ccf52551e301b",
+      "type": "blob"
+    },
+    "tests/test_postgres_ledger.py": {
+      "bytes": 3057,
+      "mode": "100644",
+      "oid": "4b5d968d24dc468c53da5effbffc2475938a28f3",
+      "type": "blob"
+    },
+    "tests/test_preflight_sandbox.py": {
+      "bytes": 668,
+      "mode": "100644",
+      "oid": "a2eb53e0e24d58576b537b03c63b9d2c72e7942f",
+      "type": "blob"
+    },
+    "tests/test_revive_rate.py": {
+      "bytes": 388,
+      "mode": "100644",
+      "oid": "7952d5d41d8b8301164ba3acd8f71a7b7d7205eb",
+      "type": "blob"
+    },
+    "tests/test_root_config.py": {
+      "bytes": 2215,
+      "mode": "100644",
+      "oid": "718374a950f881c5e539f5cc897fb23221daed4b",
+      "type": "blob"
+    },
+    "tests/test_run_business_3_demo.py": {
+      "bytes": 1181,
+      "mode": "100644",
+      "oid": "4582eba3a12d0bc9ede265e95c60c48730de2711",
+      "type": "blob"
+    },
+    "tests/test_safety_guardian_fuzz.py": {
+      "bytes": 2729,
+      "mode": "100644",
+      "oid": "959ca844badc7f03cf8262bec18a6477402ed9a6",
+      "type": "blob"
+    },
+    "tests/test_simulator_init.py": {
+      "bytes": 1354,
+      "mode": "100644",
+      "oid": "b532ed298932807e4f1eb2a11b45c48d1618a11b",
+      "type": "blob"
+    },
+    "tests/test_successor_alpha_validation.py": {
+      "bytes": 7493,
+      "mode": "100644",
+      "oid": "3aa6722d4eee52d78d4906ddc5e1d2dac8596083",
+      "type": "blob"
+    },
+    "tests/test_successor_capability_delivery.py": {
+      "bytes": 40493,
+      "mode": "100644",
+      "oid": "78ef7e5483650fe41259714c212ae553549eb856",
+      "type": "blob"
+    },
+    "tests/test_transformational_artifact_handoff.py": {
+      "bytes": 6259,
+      "mode": "100644",
+      "oid": "7518c38e19521882439fea97f245f9151be731ec",
+      "type": "blob"
+    },
+    "tests/test_world_model_kafka.py": {
+      "bytes": 819,
+      "mode": "100644",
+      "oid": "ee2b04cf788e83a8afa085bacf5d309824fa48c1",
+      "type": "blob"
+    },
+    "tests/test_world_model_safety.py": {
+      "bytes": 5920,
+      "mode": "100644",
+      "oid": "8db28369eb84b525a7d1e30323c1754837955da4",
+      "type": "blob"
+    }
+  },
+  "passed": true,
+  "raw_tree_sha256": "049b53b4437cc6dc971ae6495daff7b981e2396fe6c039c999805b8161094b34",
+  "schema": "foundry-independent-public-source-provenance/v1",
+  "selected_public_paths": 128,
+  "source_commit": "f836f06e8351e64db1da770e16e304b5feb01f28"
+}

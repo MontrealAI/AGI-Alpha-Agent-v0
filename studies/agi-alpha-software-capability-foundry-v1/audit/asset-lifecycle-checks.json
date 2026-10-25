@@ -1,0 +1,46 @@
+{
+  "all_29_frozen_files_unchanged": true,
+  "all_49_protected_inputs_unchanged": true,
+  "arm": "flywheel",
+  "benchmark_rerun": false,
+  "case": "case-01",
+  "checks": [
+    {
+      "name": "untouched-copied-child-diagnoses-original-case",
+      "passed": true
+    },
+    {
+      "name": "copied-parent-byte-tamper-refused",
+      "observed": "Retained parent bytes changed",
+      "passed": true
+    },
+    {
+      "name": "direct-incumbent-fallback-remains-correct-during-tamper",
+      "passed": true
+    },
+    {
+      "child_bytes_unchanged": true,
+      "name": "wrong-acceptance-parent-identity-refused",
+      "observed": "A matching accepted parent mission is required",
+      "passed": true
+    },
+    {
+      "name": "restored-parent-recovers-correct-child-diagnosis",
+      "passed": true
+    }
+  ],
+  "disposable_copy_only": true,
+  "original_asset_hashes": {
+    "accepted_parent.json": "603b0af9590b5b31a535c6d3e07568d40513c435959f4a349b07226f84dd5910",
+    "drift.json": "4b020c49cc6498177410c3e15db0e0162e1a4723df63c1b7e587f1e1b2d8adde",
+    "drift.py": "3af548e3cd507f72bd19ef1e8177fadd2025438062b5d80d4ac553bb6f0de2a3",
+    "reader.json": "a9b86a1f7a6fa3a107066df8ba90bd488bf181cc695c2f67947ef7d4836c4618",
+    "reader.py": "c744c84ca6273231a67d33a2160bb33484f0ea572156ab9808fef816d7f6cd68"
+  },
+  "original_assets_unchanged": true,
+  "passed": true,
+  "reviewed_utc": "2026-10-25T10:21:03.543811+00:00",
+  "schema": "foundry-postconfirmation-asset-lifecycle/v1",
+  "scope": "postconfirmation delivery behavior only; not an additional confirmation or timing study",
+  "timing_inference": false
+}
