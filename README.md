@@ -145,6 +145,9 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[AGI ALPHA FLYWHEEL: The Economics of Autonomous Work](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-work-economics-v1.pdf)** · A bounded exact\-reconciliation study reports 36/36 accepted fresh jobs and 0\.301\-second median turnaround\. Official labor data support conditional human\-work economics; complete costs, remaining employer attention and a matched human trial are unmeasured\.
   Vincent Boucher · MONTREAL\.AI · 2026-10-25 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/223e4a4381820ddf827df4b40fcee4db9802fbc9/studies/agi-alpha-work-economics-v1/README.md)
+- **[AGI ALPHA FLYWHEEL](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-capability-construction-v1.pdf)** · A preregistered bounded study accepts 42/42 fresh jobs across seven digital\-work families and records actual reusable\-capability invocation\. Tested inheritance candidates establish neither net savings nor self\-acceleration\. Official labor data support conditional adoption economics; full Agent cost and employer attention remain unmeasured\.
+  AGI ALPHA research engineering study · 2026-10-25 · English PDF.
+  [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/2afc163e4ca51ad85ae677b5fdffa3c69e2a662b/studies/agi-alpha-capability-construction-v1/README.md)
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
