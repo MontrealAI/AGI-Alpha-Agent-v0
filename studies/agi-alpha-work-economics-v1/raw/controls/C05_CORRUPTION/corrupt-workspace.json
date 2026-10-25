@@ -1,0 +1,216 @@
+{
+  "schema": "ti-catalogue-workspace/v1",
+  "sourceHash": "c6e2c75ae552afa05d46468e6938d243211d27e31f2cb26b08075a993f8a8382",
+  "runId": "controls-corruption-original",
+  "createdAt": "2026-10-25T11:16:40.305Z",
+  "language": "en",
+  "approach": "grouped",
+  "input": {
+    "leftCsv": "id,name,qty\nA,Part A,10\nB,Part B,3\n",
+    "rightCsv": "id,name,qty\nA,Part A,12\nC,Part C,8\n",
+    "leftKey": "id",
+    "rightKey": "id"
+  },
+  "result": {
+    "schema": "ti-catalogue-result/v1",
+    "leftIdentity": {
+      "sha256": "a789d8ce7e268368790fc649dca7fa27e009448448d771a1c01a988856892a89",
+      "bytes": 35
+    },
+    "rightIdentity": {
+      "sha256": "6b97f555d610feed2bdd676b8a7db44cffb2baa3f95bef27e99e234e4b50d16f",
+      "bytes": 35
+    },
+    "resolution": {
+      "schema": "successor-discrepancy-resolution/v1",
+      "actions": [
+        {
+          "id": "action-0001",
+          "key": "A",
+          "type": "review_shared_values",
+          "leftRows": [
+            0
+          ],
+          "rightRows": [
+            0
+          ],
+          "occurrences": [
+            "conflict:0:0"
+          ],
+          "conflicts": [
+            {
+              "leftIndex": 0,
+              "rightIndex": 0,
+              "fieldIndices": [
+                1
+              ]
+            }
+          ],
+          "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+        },
+        {
+          "id": "action-0002",
+          "key": "B",
+          "type": "missing_from_right",
+          "leftRows": [
+            1
+          ],
+          "rightRows": [],
+          "occurrences": [
+            "left:1"
+          ],
+          "conflicts": [],
+          "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+        },
+        {
+          "id": "action-0003",
+          "key": "C",
+          "type": "missing_from_left",
+          "leftRows": [],
+          "rightRows": [
+            1
+          ],
+          "occurrences": [
+            "right:1"
+          ],
+          "conflicts": [],
+          "nextStep": "Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding."
+        }
+      ],
+      "sharedFields": [
+        {
+          "name": "name",
+          "leftColumn": 1,
+          "rightColumn": 1
+        },
+        {
+          "name": "qty",
+          "leftColumn": 2,
+          "rightColumn": 2
+        }
+      ],
+      "burden": {
+        "pairwiseReviewItems": 3,
+        "groupedActions": 3,
+        "groupingReduction": 0,
+        "timeSavedClaim": false,
+        "sameTaskSuperiority": false
+      },
+      "coverage": {
+        "originalOccurrences": 3,
+        "coveredOccurrences": 3,
+        "complete": true,
+        "missing": [],
+        "duplicates": []
+      },
+      "diagnosis": {
+        "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+        "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+        "duplicateExceptionKeys": 0,
+        "uniqueExceptionKeys": 3,
+        "groupingReducesDecisionItems": false
+      },
+      "decision": {
+        "state": "retain_original_review",
+        "recommendedContract": "original_occurrence_review",
+        "reason": "No repeated exception key reduces the number of decision records; retain the original review contract."
+      },
+      "contract": {
+        "changed": true,
+        "original": "One review item per unmatched source row or conflicting matched row pair.",
+        "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+        "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+      },
+      "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n\"action-0001\",\"A\",\"review_shared_values\",\"1\",\"1\",\"conflict:0:0\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0002\",\"B\",\"missing_from_right\",\"2\",\"\",\"left:1\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n\"action-0003\",\"C\",\"missing_from_left\",\"\",\"2\",\"right:1\",\"Check whether this key belongs in the other catalog; retain every referenced occurrence before deciding.\"\r\n",
+      "externalAuthority": false,
+      "automaticallyResolved": false,
+      "qualification": "local_engineering_only"
+    },
+    "differences": [
+      {
+        "id": "conflict:0:0:1",
+        "occurrence": "conflict:0:0",
+        "action": "action-0001",
+        "key": "A",
+        "kind": "conflict",
+        "leftRow": 1,
+        "rightRow": 1,
+        "field": "qty",
+        "leftValue": "10",
+        "rightValue": "12"
+      },
+      {
+        "id": "left:1",
+        "occurrence": "left:1",
+        "action": "action-0002",
+        "key": "B",
+        "kind": "missing_from_right",
+        "leftRow": 2,
+        "rightRow": "",
+        "field": "",
+        "leftValue": "[\"B\",\"Part B\",\"3\"]",
+        "rightValue": ""
+      },
+      {
+        "id": "right:1",
+        "occurrence": "right:1",
+        "action": "action-0003",
+        "key": "C",
+        "kind": "missing_from_left",
+        "leftRow": "",
+        "rightRow": 2,
+        "field": "",
+        "leftValue": "",
+        "rightValue": "[\"C\",\"Part C\",\"8\"]"
+      }
+    ],
+    "metrics": {
+      "leftRows": 2,
+      "rightRows": 2,
+      "matchedPairs": 2,
+      "unmatchedRows": 2,
+      "unmatchedKeys": 2,
+      "conflictingPairs": 1,
+      "fieldDifferences": 1,
+      "actionGroups": 3,
+      "evidenceReferences": 3,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "name",
+        "qty"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    },
+    "limitations": {
+      "localOnly": true,
+      "authority": "none",
+      "automaticallyResolved": false,
+      "timeSavedMeasured": false,
+      "accuracyImprovementMeasured": false,
+      "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+      "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+      "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+      "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+    }
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  },
+  "authority": "none"
+}

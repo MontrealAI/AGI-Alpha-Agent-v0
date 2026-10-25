@@ -1,0 +1,514 @@
+{
+  "schema": "agialpha-local-controls/v1",
+  "began": "2026-10-25T11:16:40.067Z",
+  "completed": "2026-10-25T11:16:40.325Z",
+  "status": "PASS",
+  "node": "v24.22.1",
+  "platform": "linux",
+  "architecture": "x64",
+  "scope": "Finite foreground original APIs; no Journal, daemon, remote worker, credentials, model calls, or financial transactions.",
+  "controlCaseDenominator": 8,
+  "businessDeliverablesCounted": 0,
+  "acceptanceKind": "Predeclared study assertions of published API contracts; not independent human acceptance.",
+  "sourceHash": "7ab63a685fdd28fe220350418df5f240960c7788f6405da4ed24a7c3902123c1",
+  "guideSourceHash": "c6e2c75ae552afa05d46468e6938d243211d27e31f2cb26b08075a993f8a8382",
+  "cases": [
+    {
+      "id": "C01_STOP",
+      "title": "Pre-aborted cooperative STOP",
+      "began": "2026-10-25T11:16:40.069Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "Original runtime reports CANCELLED",
+          "passed": true,
+          "actual": "CANCELLED",
+          "expected": "CANCELLED"
+        },
+        {
+          "name": "No pack returned",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Stop transition removes active run and result",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "observations": {
+        "checkpoints": 1,
+        "deliveredPacks": 0,
+        "scope": "Pre-aborted cooperative check; not an arbitrary process kill."
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "10462579",
+      "completed": "2026-10-25T11:16:40.080Z"
+    },
+    {
+      "id": "C02_RECOVERY",
+      "title": "Interrupted record, historical restore, explicit import and new run",
+      "began": "2026-10-25T11:16:40.082Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "First attempt interrupted without a pack",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Restore is historical and read-only",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Explicit import creates new draft without a result",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Imported history has no inherited authority",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Explicit new run returns correct aggregation",
+          "passed": true,
+          "actual": {
+            "rows": 5,
+            "groups": 3,
+            "total": 13,
+            "unit": "synthetic exception counts"
+          },
+          "expected": null
+        }
+      ],
+      "observations": {
+        "checkpoints": 3,
+        "progress": [
+          "planning"
+        ],
+        "firstAttemptPacks": 0,
+        "explicitNewRunPacks": 1,
+        "recovery": "Explicit input restart, not continuation from an internal checkpoint; record validation also recomputes deterministic output."
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "108990140",
+      "completed": "2026-10-25T11:16:40.191Z"
+    },
+    {
+      "id": "C03_BOUNDS",
+      "title": "Clock-boundary budget and input ceiling",
+      "began": "2026-10-25T11:16:40.192Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "Injected budget boundary refused",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "CSV over ceiling refused",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "observations": {
+        "clockValues": [
+          0,
+          60001
+        ],
+        "checkpoints": 1,
+        "oversizedCsvBytes": 100013,
+        "enforcedCsvCharacterCeiling": 100000,
+        "timeTest": "Injected monotonic clock, not real 60-second work",
+        "monetaryBudget": "NOT_TESTED"
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "1865462",
+      "completed": "2026-10-25T11:16:40.194Z"
+    },
+    {
+      "id": "C04_SOURCE",
+      "title": "Different source identity remains historical and cannot complete current run",
+      "began": "2026-10-25T11:16:40.195Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "Distinct inspected source identities used",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Mismatched restore has no current result or review",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Pack cannot complete differently bound run",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "observations": {
+        "originalSourceHash": "7ab63a685fdd28fe220350418df5f240960c7788f6405da4ed24a7c3902123c1",
+        "mismatchedDeclaredSourceHash": "c6e2c75ae552afa05d46468e6938d243211d27e31f2cb26b08075a993f8a8382",
+        "interpretation": "Intentional mismatch of two inspected source scopes, not an observed release upgrade."
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "105884740",
+      "completed": "2026-10-25T11:16:40.301Z"
+    },
+    {
+      "id": "C05_CORRUPTION",
+      "title": "Changed saved claims rejected",
+      "began": "2026-10-25T11:16:40.301Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "Original workspace restores",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Changed result claim rejected by recomputation",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Changed record revision rejected by digest",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "observations": {
+        "pristineWorkspaceRestored": true,
+        "originalMatchedPairs": 1,
+        "corruptedClaim": 2,
+        "authorityRestoredFromCorruption": false
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "8295724",
+      "completed": "2026-10-25T11:16:40.310Z"
+    },
+    {
+      "id": "C06_ROLLBACK",
+      "title": "Restore preserved local artifact bytes",
+      "began": "2026-10-25T11:16:40.310Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "workspace.json: later content was different",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "workspace.json: exact preserved bytes restored",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "all-differences.csv: later content was different",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "all-differences.csv: exact preserved bytes restored",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Restored workspace still verifies",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "observations": {
+        "identities": [
+          {
+            "name": "workspace.json",
+            "priorSha256": "274d879d6409ad2cfa02ff08c440e0d8a10fe450c54e1dda0c44d21d7bdfa86d",
+            "laterSha256": "3ef4fa33c6331449f3e0da6615b6125a07ddb5f5a55e9243fc8168919f109693",
+            "restoredSha256": "274d879d6409ad2cfa02ff08c440e0d8a10fe450c54e1dda0c44d21d7bdfa86d",
+            "priorBytes": 7659,
+            "laterBytes": 5675,
+            "restoredBytes": 7659
+          },
+          {
+            "name": "all-differences.csv",
+            "priorSha256": "c244f06ed275b79f7d23083551ac9d8ab2d1e48a265e4bcc321917c02b6f5623",
+            "laterSha256": "d513c82328b6dc77ca2f6cd73914ecbec59a73158dada2fbb901c2defca36596",
+            "restoredSha256": "c244f06ed275b79f7d23083551ac9d8ab2d1e48a265e4bcc321917c02b6f5623",
+            "priorBytes": 378,
+            "laterBytes": 194,
+            "restoredBytes": 378
+          }
+        ],
+        "priorMetrics": {
+          "leftRows": 2,
+          "rightRows": 2,
+          "matchedPairs": 1,
+          "unmatchedRows": 2,
+          "unmatchedKeys": 2,
+          "conflictingPairs": 1,
+          "fieldDifferences": 1,
+          "actionGroups": 3,
+          "evidenceReferences": 3,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        },
+        "laterMetrics": {
+          "leftRows": 2,
+          "rightRows": 3,
+          "matchedPairs": 2,
+          "unmatchedRows": 1,
+          "unmatchedKeys": 1,
+          "conflictingPairs": 0,
+          "fieldDifferences": 0,
+          "actionGroups": 1,
+          "evidenceReferences": 1,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        },
+        "scope": "Local snapshot copying; no claim of atomic multi-file, transactional, production, or contract rollback."
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "4482812",
+      "completed": "2026-10-25T11:16:40.315Z"
+    },
+    {
+      "id": "C07_FALLBACK",
+      "title": "Retained catalog key refused; explicit valid key succeeds",
+      "began": "2026-10-25T11:16:40.315Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "Missing retained key refused without deliverable",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        },
+        {
+          "name": "Explicit valid-key fallback has expected complete counts",
+          "passed": true,
+          "actual": {
+            "leftRows": 2,
+            "rightRows": 2,
+            "matchedPairs": 1,
+            "unmatchedRows": 2,
+            "unmatchedKeys": 2,
+            "conflictingPairs": 1,
+            "fieldDifferences": 1,
+            "actionGroups": 3,
+            "evidenceReferences": 3,
+            "leftDuplicates": {
+              "keys": 0,
+              "extraRows": 0
+            },
+            "rightDuplicates": {
+              "keys": 0,
+              "extraRows": 0
+            },
+            "comparedColumns": [
+              "name",
+              "qty"
+            ],
+            "unsharedLeft": [],
+            "unsharedRight": []
+          },
+          "expected": null
+        },
+        {
+          "name": "Fallback makes no automatic source correction",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "observations": {
+        "retainedKeys": [
+          "sku",
+          "sku"
+        ],
+        "correctedKeys": [
+          "id",
+          "id"
+        ],
+        "correctionType": "Explicit predeclared configuration fallback; no autonomous schema inference claim.",
+        "metrics": {
+          "leftRows": 2,
+          "rightRows": 2,
+          "matchedPairs": 1,
+          "unmatchedRows": 2,
+          "unmatchedKeys": 2,
+          "conflictingPairs": 1,
+          "fieldDifferences": 1,
+          "actionGroups": 3,
+          "evidenceReferences": 3,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        }
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "1592358",
+      "completed": "2026-10-25T11:16:40.317Z"
+    },
+    {
+      "id": "C08_AMBIGUITY",
+      "title": "Numeric-looking exact identifiers remain unresolved",
+      "began": "2026-10-25T11:16:40.317Z",
+      "status": "PASS",
+      "checks": [
+        {
+          "name": "Exact identifiers not numerically coerced",
+          "passed": true,
+          "actual": {
+            "leftRows": 1,
+            "rightRows": 1,
+            "matchedPairs": 0,
+            "unmatchedRows": 2,
+            "unmatchedKeys": 2,
+            "conflictingPairs": 0,
+            "fieldDifferences": 0,
+            "actionGroups": 2,
+            "evidenceReferences": 2,
+            "leftDuplicates": {
+              "keys": 0,
+              "extraRows": 0
+            },
+            "rightDuplicates": {
+              "keys": 0,
+              "extraRows": 0
+            },
+            "comparedColumns": [
+              "name",
+              "qty"
+            ],
+            "unsharedLeft": [],
+            "unsharedRight": []
+          },
+          "expected": null
+        },
+        {
+          "name": "Both exact strings and source sides preserved",
+          "passed": true,
+          "actual": [
+            [
+              "001",
+              "missing_from_right"
+            ],
+            [
+              "1",
+              "missing_from_left"
+            ]
+          ],
+          "expected": null
+        },
+        {
+          "name": "Ambiguity not automatically resolved",
+          "passed": true,
+          "actual": null,
+          "expected": null
+        }
+      ],
+      "observations": {
+        "metrics": {
+          "leftRows": 1,
+          "rightRows": 1,
+          "matchedPairs": 0,
+          "unmatchedRows": 2,
+          "unmatchedKeys": 2,
+          "conflictingPairs": 0,
+          "fieldDifferences": 0,
+          "actionGroups": 2,
+          "evidenceReferences": 2,
+          "leftDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "rightDuplicates": {
+            "keys": 0,
+            "extraRows": 0
+          },
+          "comparedColumns": [
+            "name",
+            "qty"
+          ],
+          "unsharedLeft": [],
+          "unsharedRight": []
+        },
+        "preservedIdentifiers": [
+          [
+            "001",
+            "missing_from_right"
+          ],
+          [
+            "1",
+            "missing_from_left"
+          ]
+        ],
+        "unresolvedDecision": "A responsible user must determine whether 001 and 1 denote the same entity."
+      },
+      "unexpectedError": null,
+      "elapsedNanoseconds": "7266976",
+      "completed": "2026-10-25T11:16:40.325Z"
+    }
+  ],
+  "passed": 8,
+  "failed": 0
+}

@@ -1,0 +1,100 @@
+{
+  "id": "C08_AMBIGUITY",
+  "title": "Numeric-looking exact identifiers remain unresolved",
+  "began": "2026-10-25T11:16:40.317Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Exact identifiers not numerically coerced",
+      "passed": true,
+      "actual": {
+        "leftRows": 1,
+        "rightRows": 1,
+        "matchedPairs": 0,
+        "unmatchedRows": 2,
+        "unmatchedKeys": 2,
+        "conflictingPairs": 0,
+        "fieldDifferences": 0,
+        "actionGroups": 2,
+        "evidenceReferences": 2,
+        "leftDuplicates": {
+          "keys": 0,
+          "extraRows": 0
+        },
+        "rightDuplicates": {
+          "keys": 0,
+          "extraRows": 0
+        },
+        "comparedColumns": [
+          "name",
+          "qty"
+        ],
+        "unsharedLeft": [],
+        "unsharedRight": []
+      },
+      "expected": null
+    },
+    {
+      "name": "Both exact strings and source sides preserved",
+      "passed": true,
+      "actual": [
+        [
+          "001",
+          "missing_from_right"
+        ],
+        [
+          "1",
+          "missing_from_left"
+        ]
+      ],
+      "expected": null
+    },
+    {
+      "name": "Ambiguity not automatically resolved",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    }
+  ],
+  "observations": {
+    "metrics": {
+      "leftRows": 1,
+      "rightRows": 1,
+      "matchedPairs": 0,
+      "unmatchedRows": 2,
+      "unmatchedKeys": 2,
+      "conflictingPairs": 0,
+      "fieldDifferences": 0,
+      "actionGroups": 2,
+      "evidenceReferences": 2,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "name",
+        "qty"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    },
+    "preservedIdentifiers": [
+      [
+        "001",
+        "missing_from_right"
+      ],
+      [
+        "1",
+        "missing_from_left"
+      ]
+    ],
+    "unresolvedDecision": "A responsible user must determine whether 001 and 1 denote the same entity."
+  },
+  "unexpectedError": null,
+  "elapsedNanoseconds": "7266976",
+  "completed": "2026-10-25T11:16:40.325Z"
+}

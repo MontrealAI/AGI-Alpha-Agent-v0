@@ -1,0 +1,15 @@
+{
+  "id": "public-release-inventory",
+  "context": "public-release",
+  "complexity": "natural",
+  "data_origin": "public GitHub source inventories",
+  "objective": "Identify all changed, added or removed docs/assets files between c352bad0 (v1.42 release source) and f836f06e (current main) before release review.",
+  "acceptance": "Exact path matching; preserve every differing Git blob and byte-size value with source rows; no assertion that a change is correct or deployed.",
+  "employer_deadline_seconds": 28800,
+  "system_execution_cap_seconds": 30,
+  "scope": "Tracked source assets only; excludes untracked generated site outputs and live HTTP contents.",
+  "source_commits": [
+    "c352bad0a0941fdccd490a7224e3efd1b8de45d5",
+    "f836f06e8351e64db1da770e16e304b5feb01f28"
+  ]
+}

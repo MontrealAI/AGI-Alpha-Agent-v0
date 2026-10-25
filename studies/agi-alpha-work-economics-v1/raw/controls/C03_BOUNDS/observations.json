@@ -1,0 +1,34 @@
+{
+  "id": "C03_BOUNDS",
+  "title": "Clock-boundary budget and input ceiling",
+  "began": "2026-10-25T11:16:40.192Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Injected budget boundary refused",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "CSV over ceiling refused",
+      "passed": true,
+      "actual": null,
+      "expected": null
+    }
+  ],
+  "observations": {
+    "clockValues": [
+      0,
+      60001
+    ],
+    "checkpoints": 1,
+    "oversizedCsvBytes": 100013,
+    "enforcedCsvCharacterCeiling": 100000,
+    "timeTest": "Injected monotonic clock, not real 60-second work",
+    "monetaryBudget": "NOT_TESTED"
+  },
+  "unexpectedError": null,
+  "elapsedNanoseconds": "1865462",
+  "completed": "2026-10-25T11:16:40.194Z"
+}

@@ -1,0 +1,110 @@
+{
+  "review": "Independent economics and source review",
+  "date": "2026-10-25",
+  "reviewer": "economics_sources",
+  "status": "ECONOMIC_PASS_WITH_MINOR_WORDING_PRECISION",
+  "initial_reviewed_main_tex_sha256": "d68aabfd68171a5ab223b2968b10f0a4addf262acd9c7b83509ee18d1a9c980d",
+  "corrected_reviewed_main_tex_sha256": "3cddcdbbb809005e451736f016cb7bc5af57b92defdd537d87d24d7d68037560",
+  "corrected_reviewed_main_pdf_sha256": "31418a3045ab165ba10724accafde9d9a935fa427006735e8ddc2ec3bfd6d0a9",
+  "frozen_files_checked": 69,
+  "frozen_hash_mismatches": [],
+  "manuscript_modified_by_reviewer": false,
+  "verified_findings": [
+    "All displayed Quebec, US occupational, BLS compensation and Eurostat rates match the frozen primary-source register and retain original currencies and periods.",
+    "Wage-only and employer-compensation cost bases are separated; published benefits are not loaded twice.",
+    "Cost equations and break-even algebra are correct with per-attempt acceptance denominators and A/N_attempts allocation.",
+    "CPU median is used only for conditional typical-job scenarios; total CPU divided by accepted outputs is used for campaign quantities.",
+    "Six example cost rows match postfreeze Decimal model; losses and weak cases remain.",
+    "Explicit qH/qA sensitivity contains nine Cartesian rows for 0.8/0.95/1, not only a summary.",
+    "No matched no-AI human timing is claimed; wage populations are not represented as verified no-AI participants.",
+    "WREX, TASHEEH, SpreadsheetBench and OSWorld preserve original task denominators and prohibit transferring durations to this portfolio.",
+    "TASHEEH Figure9 cumulative-time plot independently inspected; reported 67\u00b118 minute ten-file-study context and 83\u00b117% accuracy are not treated as matched Alpha timings.",
+    "USD40T is explicitly illustrative; USD60T common calibration is hypothetical; all technical/adoption/retained-cost/provider-share fractions remain assumptions.",
+    "Global scenario arithmetic balances; mechanical 118.35T\u00d70.526=62.2521T scale check is explicitly not a harmonized employer-cost estimate.",
+    "Customer capacity value, realizable cash savings, provider revenue and profit are distinguished."
+  ],
+  "requested_corrections_verified_applied": [
+    {
+      "original_line": 244,
+      "issue": "eventual acceptance definition",
+      "resolution": "q now defined as accepted outputs divided by attempted jobs at the same accounting boundary; retries included consistently."
+    },
+    {
+      "original_line": 264,
+      "issue": "fixed5 threshold assumptions omitted",
+      "resolution": "qH=1 and vH=0 now explicit."
+    },
+    {
+      "original_line": 274,
+      "issue": "postfreeze model and vH assumption not explicit",
+      "resolution": "postfreeze presentation and vH=0 now explicit."
+    },
+    {
+      "original_line": 325,
+      "issue": "paid versus worked hour basis",
+      "resolution": "hours worked and loaded cost/hour worked now match; denominator warning added."
+    },
+    {
+      "original_line": 252,
+      "issue": "price versus cost terminology",
+      "resolution": "Fully allocated monetary cost replaces fully allocated price."
+    },
+    {
+      "original_line": 290,
+      "issue": "throughput versus acceptance regime",
+      "resolution": "lambda matched to qA regime, lambda=rho*qA and sensitivity not a new measured throughput now explicit."
+    },
+    {
+      "original_line": 355,
+      "issue": "verification recurring cost versus amortization",
+      "resolution": "Only setup/reusable verification infrastructure amortized; per-delivery checking recurring."
+    }
+  ],
+  "minor_wording_precision": [
+    {
+      "find": "Both acceptance fractions equal one and $v_H=0$ in this illustration; the companion varies them.",
+      "replace": "Both acceptance fractions equal one and $v_H=0$ in this illustration; the companion varies the acceptance fractions.",
+      "reason": "vH is fixed0 in the saved module; only qH/qA are varied in this clause."
+    }
+  ],
+  "q_evidence": {
+    "file": "economics_post/measured_resource_economics.json",
+    "keys": [
+      "assumptions.human_acceptance_probability",
+      "assumptions.alpha_acceptance_probability",
+      "sensitivity_slices_us_reference[0:9]"
+    ],
+    "row_count": 9,
+    "example_qH1_qA08": {
+      "slice": "reliability",
+      "qH_assumed": 1.0,
+      "qA_assumed": 0.8,
+      "status": "MODELED_FROM_MEASURED_CPU_AND_ASSUMPTIONS",
+      "human_cost": 17.98,
+      "alpha_cost": 4.99595762,
+      "cost_ratio": 3.59890963,
+      "effort_capacity_ratio": 4.8,
+      "capacity_value": 12.98404238,
+      "break_even_human_minutes": 8.3358581
+    }
+  },
+  "additional_primary_verification": [
+    {
+      "url": "https://openproceedings.org/2024/conf/edbt/paper-108.pdf",
+      "refs": [
+        "turn52view0",
+        "turn53view1",
+        "turn54view0"
+      ],
+      "scope": "Section5.5 and Figure9 page12, visual screenshot inspected"
+    },
+    {
+      "url": "https://pg.ucsd.edu/publications/Wrex-synthesizing-readable-data-science-code_CHI-2020.pdf",
+      "refs": [
+        "turn52view1",
+        "turn53view2"
+      ],
+      "scope": "Manual12/36 completion and five-minute task limits"
+    }
+  ]
+}

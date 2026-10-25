@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "missionKind": "catalog_join",
+  "candidateStrategyId": "smaller_side_hash",
+  "incumbentStrategyId": "nested_scan",
+  "strategies": [
+    {
+      "strategyId": "nested_scan",
+      "label": "Nested scan · current method",
+      "buildSide": null,
+      "pairs": [
+        [
+          0,
+          16
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          11
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          16,
+          14
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 324,
+        "hashInserts": 0,
+        "hashProbes": 0,
+        "indexedRows": 0,
+        "sortedRows": 0,
+        "outputPairs": 14,
+        "logicalOperations": 338,
+        "elapsedMicros": 126
+      },
+      "verified": true
+    },
+    {
+      "strategyId": "fixed_right_hash",
+      "label": "Hash the right table · competitive baseline",
+      "buildSide": "right",
+      "pairs": [
+        [
+          0,
+          16
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          11
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          16,
+          14
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 0,
+        "hashInserts": 18,
+        "hashProbes": 18,
+        "indexedRows": 18,
+        "sortedRows": 0,
+        "outputPairs": 14,
+        "logicalOperations": 50,
+        "elapsedMicros": 33
+      },
+      "verified": true
+    },
+    {
+      "strategyId": "smaller_side_hash",
+      "label": "Hash the smaller table · candidate",
+      "buildSide": "right",
+      "pairs": [
+        [
+          0,
+          16
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          11
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          16,
+          14
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 0,
+        "hashInserts": 18,
+        "hashProbes": 18,
+        "indexedRows": 18,
+        "sortedRows": 0,
+        "outputPairs": 14,
+        "logicalOperations": 50,
+        "elapsedMicros": 18
+      },
+      "verified": true
+    },
+    {
+      "strategyId": "sort_merge",
+      "label": "Sort and merge · competitive baseline",
+      "buildSide": null,
+      "pairs": [
+        [
+          0,
+          16
+        ],
+        [
+          2,
+          15
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          11
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          16,
+          14
+        ]
+      ],
+      "metrics": {
+        "keyComparisons": 159,
+        "hashInserts": 0,
+        "hashProbes": 0,
+        "indexedRows": 0,
+        "sortedRows": 36,
+        "outputPairs": 14,
+        "logicalOperations": 173,
+        "elapsedMicros": 1157
+      },
+      "verified": true
+    }
+  ],
+  "reconciliation": {
+    "matchedPairs": 14,
+    "matchedLeftRows": 14,
+    "matchedRightRows": 14,
+    "unmatchedLeft": [
+      1,
+      6,
+      12,
+      17
+    ],
+    "unmatchedRight": [
+      0,
+      1,
+      12,
+      17
+    ],
+    "sharedFields": [
+      {
+        "name": "description",
+        "leftColumn": 1,
+        "rightColumn": 1
+      },
+      {
+        "name": "quantity",
+        "leftColumn": 2,
+        "rightColumn": 2
+      },
+      {
+        "name": "warehouse",
+        "leftColumn": 3,
+        "rightColumn": 3
+      }
+    ],
+    "conflicts": [
+      {
+        "leftIndex": 0,
+        "rightIndex": 16,
+        "fieldIndices": [
+          0
+        ]
+      },
+      {
+        "leftIndex": 8,
+        "rightIndex": 8,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 9,
+        "rightIndex": 11,
+        "fieldIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "leftIndex": 10,
+        "rightIndex": 2,
+        "fieldIndices": [
+          1
+        ]
+      },
+      {
+        "leftIndex": 16,
+        "rightIndex": 14,
+        "fieldIndices": [
+          0
+        ]
+      }
+    ]
+  },
+  "assessment": {
+    "state": "local_demonstration",
+    "independentReview": "pending",
+    "externalAuthority": false,
+    "superiorityClaim": false,
+    "novelAlgorithm": false,
+    "localCorrectness": true,
+    "comparisons": [
+      {
+        "strategyId": "nested_scan",
+        "logicalOperationsSaved": 288,
+        "indexedRowsSaved": -18,
+        "auxiliaryRowsSaved": -18,
+        "observedMicrosSaved": 108
+      },
+      {
+        "strategyId": "fixed_right_hash",
+        "logicalOperationsSaved": 0,
+        "indexedRowsSaved": 0,
+        "auxiliaryRowsSaved": 0,
+        "observedMicrosSaved": 15
+      },
+      {
+        "strategyId": "sort_merge",
+        "logicalOperationsSaved": 123,
+        "indexedRowsSaved": -18,
+        "auxiliaryRowsSaved": 54,
+        "observedMicrosSaved": 1139
+      }
+    ],
+    "explanation": "All four methods returned the same complete join. Smaller-side hashing is a known heuristic. Operation and auxiliary-row counts describe this workload; timings are single local observations. Independent confirmation and economic benefit remain unestablished."
+  },
+  "measurementNotes": [
+    "Keys are exact, case-sensitive strings; no trimming or numeric conversion. Duplicate keys preserve every matching row pair.",
+    "A conflict means unequal exact text in a shared non-key column, not evidence that either catalog is wrong.",
+    "Logical operations count key comparisons, indexed-row insertions, hash probes, and emitted pairs. They omit string length, hashing internals, allocation, canonical output sorting, verification, and export costs.",
+    "indexedRows/sortedRows count indexed row references or sorted records, not bytes or measured peak memory. Merge sorting also uses a scratch array of the same total row count.",
+    "One bounded execution per method; no statistical timing claim, cost saving, model discovery, or external certification.",
+    "CSV exports prefix formula-like cells with an apostrophe for spreadsheet safety; exact JSON preserves original strings."
+  ]
+}

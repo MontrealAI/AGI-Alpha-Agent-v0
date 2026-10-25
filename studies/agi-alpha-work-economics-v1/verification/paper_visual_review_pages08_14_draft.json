@@ -1,0 +1,125 @@
+{
+  "schema": "work-economics-visual-review/v1",
+  "reviewed_utc": "2026-10-25T11:31:07.879940+00:00",
+  "scope": "Every physical page 08 through 14, inclusive",
+  "main_tex_sha256": "3cddcdbbb809005e451736f016cb7bc5af57b92defdd537d87d24d7d68037560",
+  "main_pdf_sha256": "31418a3045ab165ba10724accafde9d9a935fa427006735e8ddc2ec3bfd6d0a9",
+  "status": "DRAFT_CHANGES_REQUESTED",
+  "pages": [
+    {
+      "physical_page": 8,
+      "printed_page": 7,
+      "visually_inspected": true,
+      "image": "verification/pdf-pages-08-14/page-08.png",
+      "image_sha256": "1cb2db51d1912dc693125a76732462b76b3d1d92b8c3a78dcadaa904a9834605",
+      "status": "FIX_RECOMMENDED",
+      "notes": [
+        "A single continuation line (EUR12.00\u201356.80 with references) is orphaned above Table 5."
+      ],
+      "clipping": false,
+      "text_overlap": false,
+      "missing_references": false
+    },
+    {
+      "physical_page": 9,
+      "printed_page": 8,
+      "visually_inspected": true,
+      "image": "verification/pdf-pages-08-14/page-09.png",
+      "image_sha256": "64e1a3d1ab70c09accbf035ca21f550c46829cd721e423916ec3b27c2d29625f",
+      "status": "PASS",
+      "notes": [],
+      "clipping": false,
+      "text_overlap": false,
+      "missing_references": false
+    },
+    {
+      "physical_page": 10,
+      "printed_page": 9,
+      "visually_inspected": true,
+      "image": "verification/pdf-pages-08-14/page-10.png",
+      "image_sha256": "b63e623a0920d5405f544fb7f9e9b03d79ca6905fc349e4f5547aaee1a9a32f4",
+      "status": "PASS",
+      "notes": [
+        "Equation (4) is at page bottom and its explanatory paragraph continues on page 11; readable, optional keep-together improvement."
+      ],
+      "clipping": false,
+      "text_overlap": false,
+      "missing_references": false
+    },
+    {
+      "physical_page": 11,
+      "printed_page": 10,
+      "visually_inspected": true,
+      "image": "verification/pdf-pages-08-14/page-11.png",
+      "image_sha256": "9802a5fbae5b313470371745fbf37fe3cb5d5606dd38fcf7f54d1bdd11cb00d3",
+      "status": "FIX_RECOMMENDED",
+      "notes": [
+        "Upper batch dots overlap numeric labels 212 and 332 in throughput panel."
+      ],
+      "clipping": false,
+      "text_overlap": false,
+      "missing_references": false
+    },
+    {
+      "physical_page": 12,
+      "printed_page": 11,
+      "visually_inspected": true,
+      "image": "verification/pdf-pages-08-14/page-12.png",
+      "image_sha256": "8f366a7039d02344c203d4790a61472e4f7391a3e101f96136f3a34f5228bf79",
+      "status": "PASS",
+      "notes": [],
+      "clipping": false,
+      "text_overlap": false,
+      "missing_references": false
+    },
+    {
+      "physical_page": 13,
+      "printed_page": 12,
+      "visually_inspected": true,
+      "image": "verification/pdf-pages-08-14/page-13.png",
+      "image_sha256": "e66afd962da9b6830de8d8a087c7b63b883d351b2a6d61284815ea94143fa686",
+      "status": "PASS",
+      "notes": [],
+      "clipping": false,
+      "text_overlap": false,
+      "missing_references": false
+    },
+    {
+      "physical_page": 14,
+      "printed_page": 13,
+      "visually_inspected": true,
+      "image": "verification/pdf-pages-08-14/page-14.png",
+      "image_sha256": "dec29228e012231f1d618f6051940e369a7088a1a67b6864fb064a8f3302f5ca",
+      "status": "PASS",
+      "notes": [],
+      "clipping": false,
+      "text_overlap": false,
+      "missing_references": false
+    }
+  ],
+  "findings": [
+    {
+      "id": "V01",
+      "severity": "moderate",
+      "physical_page": 11,
+      "problem": "Data markers overlap median labels 212 and 332.",
+      "requested_fix": "Move labels above maximum point for each concurrency group with clear separation."
+    },
+    {
+      "id": "V02",
+      "severity": "minor",
+      "physical_page": 8,
+      "problem": "Single continuation line at top of page.",
+      "requested_fix": "Keep this short final line with its preceding paragraph if practical."
+    }
+  ],
+  "render_issue": {
+    "supplied_truncated_pngs": [
+      8,
+      14
+    ],
+    "remedy": "Independently rendered all seven pages with pdftoppm at 128 dpi; inspected those complete images. Original supplied files unchanged."
+  },
+  "source_stability": "Parent rebuilt main.tex/main.pdf during review; this report applies to the recorded initial pair and preserved independent page images, pending final stable rebuild review.",
+  "textual_findings": "All five prior scientific wording findings are resolved; see paper_scientific_review.json resolution_review."
+}
