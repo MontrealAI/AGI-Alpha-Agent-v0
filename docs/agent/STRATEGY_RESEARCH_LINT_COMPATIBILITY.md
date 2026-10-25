@@ -30,6 +30,12 @@ configuration. Changing or removing it, adding a Ruff table, replacing it with a
 symlink or introducing another ancestor configuration fails the guard. Future
 metadata changes require a new reviewed pin-table and guard identity.
 
+The Starlette dependency correction following the failed
+[engineering audit run](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/actions/runs/40148294466)
+changes this package metadata identity and requires fresh qualification. It does
+not change any original research body or lint exception. The previous metadata
+and failed audit remain historical evidence; advisory scanning remains blocking.
+
 The three original `F841` findings were inspected separately. In `review/check.py`,
 the unused `makespan_ok` and `movement_ok` variables receive the return values of
 `a.integer(...)`; those calls still record invalid-value errors and counted checks.

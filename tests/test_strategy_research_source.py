@@ -235,3 +235,14 @@ def test_unused_assignment_exception_is_limited_to_reviewed_exact_checker_bodies
         "contrib/strategy_succession/worker/scientific/review/check.py",
     }
     assert all(set(rules) <= {"E701", "E702", "F841"} for rules in pins["ruff_per_file_ignores"].values())
+
+
+def test_prior_dependency_metadata_cannot_reuse_the_updated_pin(prepared):
+    root, _, _ = prepared
+    metadata = root / guard.NON_RUFF_PROJECT
+    body = metadata.read_bytes()
+    assert b'"starlette==1.7.0"' in body
+    metadata.write_bytes(body.replace(b'"starlette==1.7.0"', b'"starlette==0.52.1"'))
+    report = guard.check(root)
+    assert report["matched"] is False
+    assert report["projectConfigurationChecks"][0]["matched"] is False

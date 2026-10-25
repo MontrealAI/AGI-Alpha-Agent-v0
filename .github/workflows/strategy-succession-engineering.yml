@@ -50,9 +50,14 @@ jobs:
           target.write_bytes(data)
           PY
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip install "$RUNNER_TEMP/alpha_factory_v1-1.42.0-py3-none-any.whl" -r contrib/strategy_succession/requirements-qualification.txt
-          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install setuptools==84.1.0 wheel==0.48.0 build==1.2.2.post1 pytest==8.4.2 playwright==1.64.1
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install setuptools==84.1.0 wheel==0.48.0 build==1.2.2.post1 pytest==8.4.2 playwright==1.64.1 ruff==0.12.5
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip check
           "$RUNNER_TEMP/strategy-env/bin/python" -m playwright install --with-deps chromium
+      - name: Preserve the original study and exact lint compatibility scope
+        run: |
+          mkdir -p evidence/strategy-engineering
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pytest --noconftest -o addopts= tests/test_strategy_research_source.py tests/test_ruff_targets.py -q --junitxml=evidence/strategy-engineering/source-integrity.xml
+          "$RUNNER_TEMP/strategy-env/bin/python" scripts/ruff_targets.py --run
       - name: Audit every exact third-party qualification dependency
         run: |
           mkdir -p evidence/strategy-engineering
