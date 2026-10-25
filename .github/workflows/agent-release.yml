@@ -533,6 +533,7 @@ jobs:
       - name: Require the blocking repository hook report
         env:
           SKIP: black,ruff-format,flake8,update-actions
+          STRATEGY_REQUIRE_COMMITTED_CONTEXT: '1'
         run: |
           mkdir -p evidence
           python - <<'PY'

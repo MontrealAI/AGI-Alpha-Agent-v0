@@ -405,6 +405,107 @@ def browser_fixture(export: dict[str, Any]) -> tuple[dict[str, Any], bytes]:
     }, raw
 
 
+def service_only_fixture(primary: dict[str, Any], source: str) -> tuple[dict[str, Any], dict[str, Any], bytes]:
+    """Author a signed toy control; no runtime, native solve or browser is executed."""
+    plan = deepcopy(primary)
+    plan["request_id"] = "synthetic-service-only-control"
+    plan["plan_id"] = digest({"request_id": plan["request_id"]})[:32]
+    plan["input"]["construction"] = {"enabled": False}
+    plan["outcome"]["costs"]["improvement_work"] = plan["observed"]["improvement_work"] = 0
+    result = plan["outcome"]["result"]
+    result.update(
+        capabilities=[],
+        inheritance={"diagnostics": [], "lineage": [], "parent_benefit": "NOT_ESTABLISHED"},
+        repair_usefulness={
+            "candidate_trial": None,
+            "candidate_frozen_digest": None,
+            "training_qualification": None,
+            "consequence": "DEFER_NO_FROZEN_REPAIR",
+            "economic_decision": "HOLD_FULL_COST_UNKNOWN",
+            "production_promotion": False,
+        },
+        accounting={
+            "improvement_total": 0,
+            "improvement_ledger": [],
+            "service_total": plan["outcome"]["costs"]["service_work"],
+        },
+        events=[{"costs": {"improvement_work": 0}}],
+        runtime_telemetry={"node_cpu_seconds": 0.1, "wall_seconds": 1.0},
+        native_telemetry=[
+            {
+                "role": "specialist",
+                "status": 0,
+                "signal": None,
+                "error": None,
+                "ok": True,
+                "process_wall_seconds": 0.1,
+                "call_wall_seconds": 0.05,
+                "call_cpu_seconds": 0.03,
+                "startup": {"wall_seconds": 0.04, "cpu_seconds": 0.02},
+            }
+            for _ in range(6)
+        ],
+    )
+    for index, phase in enumerate(result["phases"]):
+        methods = ["ordinary-portfolio", "native-makespan", "native-repair" if index == 2 else "native-deadline"]
+        phase["attempts"] = [
+            {"method": method, "valid": True, "qualified": True, "result": deepcopy(phase["result"])}
+            for method in methods
+        ]
+    refresh_approval(plan)
+    plan["outcome_hash"] = digest(plan["outcome"])
+    raw = json.dumps(signed_export(plan, source), indent=2).encode()
+    projected = [
+        {
+            k: row[k]
+            for k in (
+                "role",
+                "status",
+                "signal",
+                "error",
+                "process_wall_seconds",
+                "startup",
+                "call_wall_seconds",
+                "call_cpu_seconds",
+            )
+        }
+        for row in result["native_telemetry"]
+    ]
+    summary = {
+        "schema": "strategy-engineering-service-only-acceptance/v1",
+        "construction_enabled": False,
+        "same_input_except_construction": True,
+        "caps_unchanged": True,
+        "committed_prefix_preserved": True,
+        "no_constructed_assets": True,
+        "deduplicated_without_new_charges": True,
+        "journal_verified": True,
+        "comparison_outcome_hash": primary["outcome_hash"],
+        "comparison_input_sha256": digest(primary["input"]),
+        "input_sha256": digest(plan["input"]),
+        "source_hash": source,
+        "plan_id": plan["plan_id"],
+        "outcome_hash": plan["outcome_hash"],
+        "costs": deepcopy(plan["outcome"]["costs"]),
+        "charged_native_solve_allowance_seconds": 12,
+        "phase_makespans": [p["result"]["makespan"] for p in result["phases"]],
+        "phase_receipts": [p["receipt_hash"] for p in result["phases"]],
+        "unchanged_baseline_invalid_calendar_slots": [4],
+        "signed_export_sha256": hashlib.sha256(raw).hexdigest(),
+        "worker_runtime_telemetry": deepcopy(result["runtime_telemetry"]),
+        "python_call_observations": projected,
+        "api_call_wall_seconds": 1.0,
+        "api_test_process_cpu_seconds": 0.01,
+        "independent_verification_wall_seconds": 0.1,
+        "independent_verification_test_process_cpu_seconds": 0.01,
+        "control_window_wall_seconds": 1.2,
+        "timing_scope": "Authored synthetic unit values; not empirical timing.",
+        "human_minutes": None,
+        "monetary_cost": None,
+    }
+    return plan, summary, raw
+
+
 def preparer_downloads(plan: dict[str, Any]) -> dict[str, bytes]:
     opted_in = deepcopy(plan["input"])
     default = deepcopy(opted_in)
@@ -850,6 +951,26 @@ def test_exact_payload_wheel_is_required_and_extra_or_changed_members_are_refuse
             release._verify_wheel(wheel_fixture(files, changes), files)
 
 
+@pytest.mark.parametrize(
+    "version_statement",
+    [
+        '__version__ = "0.1.0rc1"',
+        '__version__ = "0.1.0" + "rc2"',
+        'other = "0.1.0rc2"',
+        '__version__ = "0.1.0rc2"\n__version__ = "0.1.0rc1"',
+    ],
+)
+def test_literal_module_version_must_match_distribution_without_executing_package(version_statement: str) -> None:
+    files = payload_files()
+    module = ('"""Inert authored module metadata fixture."""\n' + version_statement + "\n").encode()
+    files[release.CONTRIB + "__init__.py"] = module
+    profile = json.loads(files[release.CONTRIB + "ENGINEERING_MANIFEST.json"])
+    profile["files"]["__init__.py"] = hashlib.sha256(module).hexdigest()
+    files[release.CONTRIB + "ENGINEERING_MANIFEST.json"] = json.dumps(profile, indent=2).encode()
+    with pytest.raises(ValueError, match="Literal package __version__"):
+        release._verify_wheel(wheel_fixture(files), files)
+
+
 def test_wheel_metadata_cannot_expand_python_or_entrypoint_scope() -> None:
     files = payload_files()
     raw = wheel_fixture(files)
@@ -992,6 +1113,10 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
     for name, body in preparer_downloads(plan).items():
         (public / name).write_bytes(body)
     (public / "integrated-journey.json").write_text(json.dumps(plan))
+    service, service_summary, service_export = service_only_fixture(plan, source)
+    (public / "service-only-journey.json").write_text(json.dumps(service))
+    (public / "service-only-summary.json").write_text(json.dumps(service_summary))
+    (public / "service-only-export.json").write_bytes(service_export)
     (public / "integrated-summary.json").write_text(
         json.dumps(
             {
@@ -1024,6 +1149,136 @@ def test_existing_release_asset_is_never_overwritten(package_fixture) -> None:
     with pytest.raises(ValueError):
         release.package(root, output, evidence, commit, "1.44.0")
     assert target.read_bytes() == b"accepted existing bytes" and len(list(output.iterdir())) == 1
+
+
+@pytest.mark.parametrize(
+    "missing", ["service-only-journey.json", "service-only-summary.json", "service-only-export.json"]
+)
+def test_service_only_control_is_required_for_package_qualification(package_fixture, missing: str) -> None:
+    root, evidence, output, commit, _ = package_fixture
+    (evidence / "acceptance-public" / missing).unlink()
+    with pytest.raises(ValueError):
+        release.package(root, output, evidence, commit, "1.44.0")
+    assert not output.exists()
+
+
+def test_service_only_does_not_waive_primary_improvement_and_preserves_signed_control(profile) -> None:
+    primary, source = completed_plan(profile)
+    service, summary, raw = service_only_fixture(primary, source)
+    release._verify_service_only(service, summary, raw, primary, source, profile)
+    with pytest.raises(ValueError, match="productive work"):
+        release._verify_plan(service, source, profile)
+    with pytest.raises(ValueError, match="productive work"):
+        release._verify_export(json.loads(raw), source, profile)
+
+
+@pytest.mark.parametrize("duration", [12, 13])
+def test_service_schedule_enforces_actual_duration_grammar_boundary(duration: int) -> None:
+    task = {
+        "schema": "release-plan/v1",
+        "id": "authored-duration-boundary",
+        "kind": "plan",
+        "jobs": [{"id": "J1", "duration": duration, "crew": 1, "deps": []}],
+        "capacity": [1] * duration,
+        "deadline": duration,
+    }
+    result = {
+        "schema": "release-plan-result/v1",
+        "task_id": task["id"],
+        "schedule": [{"id": "J1", "start": 0, "end": duration}],
+        "makespan": duration,
+        "movement": 0,
+    }
+    if duration == 12:
+        release._verify_service_schedule(task, result)
+    else:
+        with pytest.raises(ValueError, match="job requirements exceed the fixed grammar"):
+            release._verify_service_schedule(task, result)
+
+
+def test_service_control_rejects_consistently_resealed_separate_policy_binding(profile) -> None:
+    primary, source = completed_plan(profile)
+    service, summary, _ = service_only_fixture(primary, source)
+    separate = "f" * 64
+    assert separate != primary["policy_binding"]
+    service["policy_binding"] = separate
+    for partial in service["partial_receipts"]:
+        partial["policy_binding"] = separate
+    refresh_approval(service)
+    raw = json.dumps(signed_export(service, source), indent=2).encode()
+    summary["signed_export_sha256"] = hashlib.sha256(raw).hexdigest()
+    # Approval, receipt and signature integrity all pass for the separate envelope.
+    # Only the claim of a matched control in the same installed policy must fail.
+    release._verify_plan(service, source, profile, require_improvement=False)
+    release._verify_export(json.loads(raw), source, profile, require_improvement=False)
+    with pytest.raises(ValueError, match="same installed policy binding"):
+        release._verify_service_only(service, summary, raw, primary, source, profile)
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "construction-true",
+        "input-change",
+        "positive-improvement",
+        "asset",
+        "ledger",
+        "native-count",
+        "native-unknown",
+        "schedule",
+        "signature",
+        "summary-input",
+        "summary-cost",
+        "money",
+        "timing",
+    ],
+)
+def test_service_only_control_refuses_scope_accounting_identity_or_evidence_mutations(profile, mutation: str) -> None:
+    primary, source = completed_plan(profile)
+    service, summary, raw = service_only_fixture(primary, source)
+    result = service["outcome"]["result"]
+    if mutation == "construction-true":
+        service["input"]["construction"]["enabled"] = True
+    elif mutation == "input-change":
+        service["input"]["initial"]["id"] += "-different"
+    elif mutation == "positive-improvement":
+        service["outcome"]["costs"]["improvement_work"] = service["observed"]["improvement_work"] = 1
+    elif mutation == "asset":
+        result["capabilities"] = [{"synthetic": "unexpected asset"}]
+    elif mutation == "ledger":
+        result["accounting"]["improvement_ledger"] = [{"work": 0}]
+    elif mutation == "native-count":
+        service["outcome"]["costs"]["native_calls"] = service["observed"]["native_calls"] = 5
+        service["outcome"]["costs"]["native_solve_seconds"] = service["observed"]["native_solve_seconds"] = 10
+    elif mutation == "native-unknown":
+        result["native_telemetry"][0]["error"] = "SYNTHETIC_UNCERTAIN"
+    elif mutation == "schedule":
+        result["phases"][0]["result"]["schedule"][0]["end"] += 1
+        refresh_delivery(service, 0)
+    elif mutation == "summary-input":
+        summary["input_sha256"] = "0" * 64
+    elif mutation == "summary-cost":
+        summary["costs"]["improvement_work"] = 1
+    elif mutation == "money":
+        summary["monetary_cost"] = 1
+    elif mutation == "timing":
+        summary["api_call_wall_seconds"] = None
+    if mutation not in {"signature", "summary-input", "summary-cost", "money", "timing"}:
+        refresh_approval(service)
+        service["outcome_hash"] = digest(service["outcome"])
+        raw = json.dumps(signed_export(service, source), indent=2).encode()
+        summary.update(
+            outcome_hash=service["outcome_hash"],
+            input_sha256=digest(service["input"]),
+            costs=deepcopy(service["outcome"]["costs"]),
+            signed_export_sha256=hashlib.sha256(raw).hexdigest(),
+        )
+    if mutation == "signature":
+        document = json.loads(raw)
+        document["signature"] = base64.b64encode(bytes(64)).decode()
+        raw = json.dumps(document).encode()
+    with pytest.raises(ValueError):
+        release._verify_service_only(service, summary, raw, primary, source, profile)
 
 
 @pytest.mark.parametrize("case", ["missing", "false"])

@@ -17,7 +17,7 @@ import subprocess
 import sys
 import time
 import tomllib
-from typing import Any, cast
+from typing import Any
 from urllib.request import Request, urlopen
 import zipfile
 
@@ -33,6 +33,9 @@ MAX_JUNIT_BYTES = 8 * 1024 * 1024
 SAFE_JSON = (
     "integrated-journey.json",
     "integrated-summary.json",
+    "service-only-journey.json",
+    "service-only-summary.json",
+    "service-only-export.json",
     "browser-acceptance.json",
     "browser-mission-export.json",
     "browser-kept-methods.json",
@@ -82,7 +85,7 @@ def public_json(url: str) -> dict[str, Any]:
     with urlopen(Request(url, headers={"User-Agent": "Alpha-public-install-acceptance"}), timeout=60) as response:
         data = response.read(5_000_001)
     require(len(data) <= 5_000_000, "Public metadata exceeds its bound")
-    return cast(dict[str, Any], checks._json(data))
+    return checks._json(data)
 
 
 def release_identity(version: str, commit: str) -> dict[str, Any]:
@@ -600,6 +603,20 @@ def accept(repo: Path, commit: str, work: Path, evidence: Path) -> None:
         output = work / "public-results"
         plan = checks._read_json(output / "integrated-journey.json")
         checks._verify_plan(plan, source, profile)
+        service_only = checks._verify_service_only(
+            checks._read_json(output / "service-only-journey.json"),
+            checks._read_json(output / "service-only-summary.json"),
+            checks._read(output / "service-only-export.json"),
+            plan,
+            source,
+            profile,
+        )
+        summary["service_only_control"] = {
+            "plan_id": service_only["plan_id"],
+            "outcome_hash": service_only["outcome_hash"],
+            "costs": service_only["outcome"]["costs"],
+            "qualification": "Matched construction-off API control; no causal speedup or monetary payback claim",
+        }
         checks._verify_child_environment(
             checks._read_json(output / "integrated-summary.json")["child_environment"], profile
         )

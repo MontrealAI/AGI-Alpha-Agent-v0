@@ -144,6 +144,7 @@ def test_pr_smoke_requires_official_and_additional_security_before_merge() -> No
     security = next(
         step for step in steps if step.get("name") == "Check official and additional Python security before merge"
     )
+    _require_committed_context_for_ci(security)
     assert security["run"].splitlines() == [
         "mkdir -p evidence/semgrep-official",
         "set -o pipefail",
@@ -261,7 +262,8 @@ def _release_hook_steps() -> tuple[dict, dict]:
 def test_release_full_scope_security_remains_mandatory_before_duplicate_skip() -> None:
     first, second = _release_hook_steps()
     ordinary_skips = "black,ruff-format,flake8,update-actions"
-    assert first["env"] == {"SKIP": ordinary_skips}
+    assert first["env"] == {"SKIP": ordinary_skips, "STRATEGY_REQUIRE_COMMITTED_CONTEXT": "1"}
+    _require_committed_context_for_ci(first)
     assert second["env"] == {"SKIP": ordinary_skips + ",semgrep"}
     lines = first["run"].splitlines()
     assert lines[0:2] == ["mkdir -p evidence", "python - <<'PY'"]
@@ -294,6 +296,181 @@ def test_release_full_scope_security_remains_mandatory_before_duplicate_skip() -
     ]
 
 
+def _require_committed_context_for_ci(step: dict) -> None:
+    """A developer-only raw pass must never select the CI qualification mode."""
+    value = step.get("env", {}).get("STRATEGY_REQUIRE_COMMITTED_CONTEXT")
+    assert type(value) is str and value == "1"
+    assert step.get("if") is None
+    assert step.get("continue-on-error", False) is False
+
+
+CI_OFFICIAL_CONSUMERS = (
+    ("agent-release.yml", "quality", "Require the blocking repository hook report"),
+    ("pr-ci.yml", "smoke", "Check official and additional Python security before merge"),
+    ("ci.yml", "lint-type", "Run pre-commit checks"),
+)
+
+
+@pytest.mark.parametrize(("filename", "job", "name"), CI_OFFICIAL_CONSUMERS)
+def test_every_mandatory_official_consumer_requires_committed_context(filename: str, job: str, name: str) -> None:
+    workflow = yaml.safe_load((Path(".github/workflows") / filename).read_text())
+    step = next(step for step in workflow["jobs"][job]["steps"] if step.get("name") == name)
+    _require_committed_context_for_ci(step)
+    if filename == "ci.yml":
+        assert step["env"] == {
+            "PRE_COMMIT_HOME": ".cache/pre-commit",
+            "SKIP": "eslint-insight-browser,black,ruff-format,flake8,update-actions",
+            "STRATEGY_REQUIRE_COMMITTED_CONTEXT": "1",
+        }
+        assert step["run"].splitlines() == [
+            'test "$(git rev-parse HEAD)" = "$GITHUB_SHA"',
+            "git diff --exit-code HEAD",
+            "git diff --cached --exit-code HEAD",
+            'from_ref="${{ github.event.before }}"',
+            'if [ -n "$from_ref" ] && git rev-parse --verify "$from_ref^{commit}" >/dev/null 2>&1; then',
+            "  pre-commit run semgrep --all-files",
+            '  test "$(git rev-parse HEAD)" = "$GITHUB_SHA"',
+            "  git diff --exit-code HEAD",
+            "  git diff --cached --exit-code HEAD",
+            '  SKIP="${SKIP},semgrep" pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"',
+            "else",
+            '  echo "::notice::Falling back to pre-commit --all-files (missing or unreachable from_ref)."',
+            "  pre-commit run --all-files",
+            "fi",
+            'test "$(git rev-parse HEAD)" = "$GITHUB_SHA"',
+            "git diff --exit-code HEAD",
+            "git diff --cached --exit-code HEAD",
+        ]
+
+
+@pytest.mark.parametrize(("filename", "job", "name"), CI_OFFICIAL_CONSUMERS)
+@pytest.mark.parametrize("value", [None, "0", "true", "", 1, True])
+def test_missing_or_malformed_strict_ci_flag_cannot_qualify(
+    filename: str, job: str, name: str, value: str | int | bool | None
+) -> None:
+    workflow = yaml.safe_load((Path(".github/workflows") / filename).read_text())
+    original = next(step for step in workflow["jobs"][job]["steps"] if step.get("name") == name)
+    changed = {**original, "env": dict(original.get("env", {}))}
+    if value is None:
+        changed["env"].pop("STRATEGY_REQUIRE_COMMITTED_CONTEXT", None)
+    else:
+        changed["env"]["STRATEGY_REQUIRE_COMMITTED_CONTEXT"] = value
+    with pytest.raises(AssertionError):
+        _require_committed_context_for_ci(changed)
+
+
+@pytest.mark.parametrize(
+    ("branch", "phase", "effect"),
+    [
+        ("range", "none", "none"),
+        ("fallback", "none", "none"),
+        *[
+            (branch, phase, effect)
+            for branch, phase in (("range", "full"), ("range", "range"), ("fallback", "full"))
+            for effect in ("failure", "head", "index", "worktree", "masked-index")
+        ],
+    ],
+)
+def test_integration_full_security_precedes_only_duplicate_skip_and_refuses_source_mutations(
+    tmp_path: Path, branch: str, phase: str, effect: str
+) -> None:
+    """Exercise both actual Integration shell branches using authored inert hooks."""
+    workflow = yaml.safe_load(Path(".github/workflows/ci.yml").read_text())
+    step = next(s for s in workflow["jobs"]["lint-type"]["steps"] if s.get("name") == "Run pre-commit checks")
+    repo = tmp_path / "repository"
+    repo.mkdir()
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if not key.startswith("GIT_") and key not in {"BASH_ENV", "SKIP", "STRATEGY_REQUIRE_COMMITTED_CONTEXT"}
+    }
+    empty_config = tmp_path / "empty-config"
+    empty_config.write_text("")
+    env.update(
+        GIT_CONFIG_NOSYSTEM="1",
+        GIT_CONFIG_GLOBAL=str(empty_config),
+        GIT_TERMINAL_PROMPT="0",
+        GIT_AUTHOR_NAME="Integration fixture",
+        GIT_AUTHOR_EMAIL="fixture@example.invalid",
+        GIT_COMMITTER_NAME="Integration fixture",
+        GIT_COMMITTER_EMAIL="fixture@example.invalid",
+    )
+
+    def git(*args: str) -> str:
+        return subprocess.check_output(["git", *args], cwd=repo, env=env, text=True).strip()
+
+    git("init", "-q")
+    (repo / "tracked.txt").write_text("baseline\n")
+    git("add", ".")
+    git("commit", "-qm", "Baseline fixture")
+    baseline = git("rev-parse", "HEAD")
+    (repo / "tracked.txt").write_text("release\n")
+    git("add", ".")
+    git("commit", "-qm", "Release fixture")
+    head = git("rev-parse", "HEAD")
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    hook = bindir / "pre-commit"
+    hook.write_text(
+        "#!" + sys.executable + "\n"
+        "import json, os, subprocess, sys\nfrom pathlib import Path\n"
+        "phase = 'range' if '--from-ref' in sys.argv else 'full'\n"
+        "with Path('calls.jsonl').open('a') as out:\n"
+        "    out.write(json.dumps({'phase':phase,'args':sys.argv[1:],'skip':os.environ['SKIP'],"
+        "'strict':os.environ.get('STRATEGY_REQUIRE_COMMITTED_CONTEXT')})+'\\n')\n"
+        "if phase == os.environ['FIXTURE_PHASE']:\n"
+        "    effect = os.environ['FIXTURE_EFFECT']\n"
+        "    if effect == 'failure': sys.exit(7)\n"
+        "    if effect == 'head':\n"
+        "        subprocess.run(['git','commit','--allow-empty','-qm','Unexpected fixture commit'],check=True)\n"
+        "    else:\n"
+        "        Path('tracked.txt').write_text('unexpected fixture change\\n')\n"
+        "        if effect in ('index','masked-index'):\n"
+        "            subprocess.run(['git','add','tracked.txt'],check=True)\n"
+        "        if effect == 'masked-index': Path('tracked.txt').write_text('release\\n')\n"
+    )
+    hook.chmod(0o700)
+    env.update(
+        PATH=str(bindir) + os.pathsep + env.get("PATH", os.defpath),
+        GITHUB_SHA=head,
+        FIXTURE_PHASE=phase,
+        FIXTURE_EFFECT=effect,
+        **step["env"],
+    )
+    script = step["run"].replace("${{ github.event.before }}", baseline if branch == "range" else "missing-ref")
+    script = script.replace("${{ github.sha }}", head)
+    result = subprocess.run(
+        ["bash", "--noprofile", "--norc", "-eo", "pipefail", "-c", script],
+        cwd=repo,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    calls = [json.loads(line) for line in (repo / "calls.jsonl").read_text().splitlines()]
+    ordinary = "eslint-insight-browser,black,ruff-format,flake8,update-actions"
+    assert calls[0] == {
+        "phase": "full",
+        "args": ["run", "semgrep", "--all-files"] if branch == "range" else ["run", "--all-files"],
+        "skip": ordinary,
+        "strict": "1",
+    }
+    if branch == "range" and phase != "full":
+        assert calls[1] == {
+            "phase": "range",
+            "args": ["run", "--from-ref", baseline, "--to-ref", head],
+            "skip": ordinary + ",semgrep",
+            "strict": "1",
+        }
+        assert len(calls) == 2
+    else:
+        assert len(calls) == 1
+    assert (result.returncode == 0) is (effect == "none")
+    if effect == "masked-index":
+        assert subprocess.run(["git", "diff", "--exit-code", "HEAD"], cwd=repo, env=env).returncode == 0
+        assert subprocess.run(["git", "diff", "--cached", "--exit-code", "HEAD"], cwd=repo, env=env).returncode == 1
+
+
 @pytest.mark.parametrize(
     ("phase", "effect"),
     [
@@ -317,7 +494,11 @@ def test_release_hook_pair_refuses_failures_and_source_changes(tmp_path: Path, p
     repo.mkdir()
     empty_config = tmp_path / "empty-git-config"
     empty_config.write_text("")
-    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_") and key != "BASH_ENV"}
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if not key.startswith("GIT_") and key not in {"BASH_ENV", "STRATEGY_REQUIRE_COMMITTED_CONTEXT"}
+    }
     env.update(
         GIT_CONFIG_NOSYSTEM="1",
         GIT_CONFIG_GLOBAL=str(empty_config),
@@ -350,7 +531,8 @@ def test_release_hook_pair_refuses_failures_and_source_changes(tmp_path: Path, p
         "from pathlib import Path\n"
         "phase = 'first' if '--all-files' in sys.argv else 'second'\n"
         "with Path('calls.jsonl').open('a') as out:\n"
-        "    out.write(json.dumps({'phase': phase, 'args': sys.argv[1:], 'skip': os.environ['SKIP']}) + '\\n')\n"
+        "    out.write(json.dumps({'phase': phase, 'args': sys.argv[1:], 'skip': os.environ['SKIP'], "
+        "'committed_context': os.environ.get('STRATEGY_REQUIRE_COMMITTED_CONTEXT')}) + '\\n')\n"
         "if phase == os.environ['FIXTURE_PHASE']:\n"
         "    effect = os.environ['FIXTURE_EFFECT']\n"
         "    if effect == 'failure': sys.exit(7)\n"
@@ -396,6 +578,7 @@ def test_release_hook_pair_refuses_failures_and_source_changes(tmp_path: Path, p
         "phase": "first",
         "args": ["run", "--all-files", "--show-diff-on-failure"],
         "skip": "black,ruff-format,flake8,update-actions",
+        "committed_context": "1",
     }
     if phase == "first":
         assert len(calls) == 1
@@ -404,6 +587,7 @@ def test_release_hook_pair_refuses_failures_and_source_changes(tmp_path: Path, p
             "phase": "second",
             "args": ["run", "--files", "tracked.txt"],
             "skip": "black,ruff-format,flake8,update-actions,semgrep",
+            "committed_context": None,
         }
     if effect == "none":
         assert first_result.returncode == 0

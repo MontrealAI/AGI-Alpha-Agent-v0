@@ -192,16 +192,27 @@ jobs:
           PRE_COMMIT_HOME: .cache/pre-commit
       - name: Run pre-commit checks
         run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --exit-code HEAD
+          git diff --cached --exit-code HEAD
           from_ref="${{ github.event.before }}"
           if [ -n "$from_ref" ] && git rev-parse --verify "$from_ref^{commit}" >/dev/null 2>&1; then
-            pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"
+            pre-commit run semgrep --all-files
+            test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+            git diff --exit-code HEAD
+            git diff --cached --exit-code HEAD
+            SKIP="${SKIP},semgrep" pre-commit run --from-ref "$from_ref" --to-ref "${{ github.sha }}"
           else
             echo "::notice::Falling back to pre-commit --all-files (missing or unreachable from_ref)."
             pre-commit run --all-files
           fi
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --exit-code HEAD
+          git diff --cached --exit-code HEAD
         env:
           PRE_COMMIT_HOME: .cache/pre-commit
           SKIP: eslint-insight-browser,black,ruff-format,flake8,update-actions
+          STRATEGY_REQUIRE_COMMITTED_CONTEXT: '1'
       - name: Remove pre-commit cache from lint scope
         run: rm -rf .cache/pre-commit
       - name: Fail on uncommitted changes

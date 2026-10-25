@@ -68,6 +68,9 @@ def protocol_matcher(monkeypatch: pytest.MonkeyPatch, *, forbid_assess: bool = F
             capture_inputs=capture, assess=assess, RuleDefinition=lambda *_args: None, _git=lambda *_args: b"a" * 40
         ),
     )
+    # These protocol-only Popen doubles own no OS process group. Real group
+    # cleanup is exercised separately by heartbeat-based subprocess controls.
+    monkeypatch.setattr(security, "_stop_group", lambda *_args, **_kwargs: None)
 
 
 def inactive_matcher_body(body: bytes) -> bytes:
@@ -415,8 +418,17 @@ def test_actual_official_role_downloads_and_scans_an_actual_component(scanner_py
         text=True,
         timeout=120,
     )
-    assert result.returncode == 0, result.stdout + result.stderr
     observed = json.loads(result.stdout)
+    from scripts import semgrep_inapplicability as applicability
+
+    unknown_pack = observed["official_policy"]["sha256"] not in applicability.REVIEWABLE_PACK_SHA256S
+    if unknown_pack and observed["committed_context_qualified"]:
+        assert result.returncode == 1 and observed["passed"] is False
+        assert observed["policy_disposition"] == "REFUSED" and observed["policy_accepted"] is False
+    else:
+        assert result.returncode == 0 and observed["passed"] is True, result.stdout + result.stderr
+    assert observed["raw_exit_code"] == 0 and observed["raw_scan_passed"] is True
+    assert observed["raw_finding_count"] == 0
     assert observed["selected_files"] == observed["scanned_files"] == 1
     assert observed["official_policy"]["source_url"] == security.OFFICIAL_URL
     assert len(observed["official_policy"]["rule_ids"]) > 2
@@ -465,7 +477,11 @@ def test_actual_official_ids_are_stable_across_evidence_directories(scanner_pyth
         observed = json.loads(result.stdout)
         assert observed["passed"] is False and observed["exit_code"] == 1
         assert observed["raw_scan_passed"] is False and observed["raw_exit_code"] == 1
-        assert observed["policy_disposition"] == "INACTIVE" and observed["policy_accepted"] is False
+        from scripts import semgrep_inapplicability as applicability
+
+        known_pack = observed["official_policy"]["sha256"] in applicability.REVIEWABLE_PACK_SHA256S
+        assert observed["policy_disposition"] == ("INACTIVE" if known_pack else "REFUSED")
+        assert observed["policy_accepted"] is False
         assert observed["raw_finding_count"] == 1 and observed["inapplicable_finding_count"] == 0
         assert observed["selected_files"] == 1 and observed["source_drift"] == []
         report_raw = json.loads((root / observed["artifact_directory"] / "scanner.json").read_text())
@@ -581,7 +597,7 @@ def test_output_limit_bounds_actual_producers_before_report_read(
         security.validate_report(output_path.read_bytes(), code)
 
 
-@pytest.mark.parametrize("completion", ["timeout", "exit1", "caught-output-limit"])
+@pytest.mark.parametrize("completion", ["timeout", "exit1", "exit0", "caught-output-limit"])
 def test_group_hard_stop_terminates_a_term_ignoring_descendant(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, completion: str
 ) -> None:
@@ -602,8 +618,8 @@ def test_group_hard_stop_terminates_a_term_ignoring_descendant(
         f"marker=Path({str(marker)!r})\n"
         "while not marker.exists():time.sleep(0.005)\n"
     )
-    if completion == "exit1":
-        leader += "raise SystemExit(1)\n"
+    if completion in {"exit0", "exit1"}:
+        leader += "raise SystemExit(" + ("0" if completion == "exit0" else "1") + ")\n"
     elif completion == "caught-output-limit":
         leader += "try:\n sys.stdout.buffer.write(b'x'*65536);sys.stdout.buffer.flush()\nexcept OSError:pass\nos_exit=__import__('os')._exit\nos_exit(0)\n"
     else:
@@ -614,8 +630,8 @@ def test_group_hard_stop_terminates_a_term_ignoring_descendant(
             code, expired = security._execute([sys.executable, "-I", "-c", leader], tmp_path, {}, output, errors, 1)
         pid = int(marker.read_text())
         assert expired is (completion == "timeout")
-        if completion == "exit1":
-            assert code == 1
+        if completion in {"exit0", "exit1"}:
+            assert code == (0 if completion == "exit0" else 1)
         elif completion == "caught-output-limit":
             assert code == 0 and (tmp_path / "stdout").stat().st_size == 1025
         # Observe actual work, avoiding /proc PID views that may belong to a
@@ -754,7 +770,7 @@ def test_primary_cli_never_prints_raw_configuration_errors(
     monkeypatch.setattr(
         security,
         "check_official",
-        lambda *_args: {
+        lambda *_args, **_kwargs: {
             "passed": False,
             "reason": marker,
             "observed": {"errors": [{"message": marker}]},
@@ -938,3 +954,236 @@ def test_primary_source_commit_ignores_foreign_git_selectors(tmp_path: Path, mon
     # envelope; provenance must remain correct even for an unqualified input.
     assert result["passed"] is False and result["policy_disposition"] == "REFUSED"
     assert result["commit"] == actual_head and result["commit"] != foreign_head
+
+
+def staged_source(root: Path, body: str) -> None:
+    """A real Git index overlay, never a forged qualification report."""
+    root.mkdir()
+    (root / "selected.py").write_text("value = 1\n")
+    shutil.copyfile(ROOT / "semgrep.yml", root / "semgrep.yml")
+    matcher = root / security.MATCHER_PATH
+    matcher.parent.mkdir(parents=True)
+    copy_inactive_matcher(matcher)
+    for command in (
+        ["git", "init", "-q"],
+        ["git", "add", "."],
+        ["git", "-c", "user.name=Inert fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "base"],
+    ):
+        subprocess.run(command, cwd=root, check=True, capture_output=True)
+    (root / "selected.py").write_text(body)
+    subprocess.run(["git", "add", "selected.py"], cwd=root, check=True)
+
+
+@pytest.mark.parametrize(
+    "defect", ["none", "finding", "error", "zero-coverage", "bad-version", "index-drift", "strict-ci"]
+)
+def test_staged_raw_scan_never_inherits_committed_source_or_map_authority(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, defect: str
+) -> None:
+    root = tmp_path / "staged"
+    staged_source(root, "value = 2\n")
+    monkeypatch.setattr(security.metadata, "version", lambda _name: "1.99.0")
+    loader = security._load_matcher
+
+    def guarded(directory: Path) -> Any:
+        module = loader(directory)
+        module.assess = lambda *_a: pytest.fail("Staged source must never reach applicability acceptance")
+        return module
+
+    monkeypatch.setattr(security, "_load_matcher", guarded)
+    pack = b"rules:\n- id: fixture-rule\n  pattern: value\n"
+
+    def captured(path: Path) -> dict[str, Any]:
+        path.write_bytes(pack)
+        return {"sha256": security.hashlib.sha256(pack).hexdigest(), "rule_ids": ["fixture-rule"]}
+
+    calls = []
+
+    def execute(
+        command: list[str], _root: Path, _env: dict[str, str], output: Any, _errors: Any, _seconds: int
+    ) -> tuple[int, bool]:
+        calls.append(command)
+        value = report()
+        value["paths"]["scanned"] = ["selected.py"]
+        code = 0
+        if defect == "finding":
+            value["results"] = [{"check_id": "fixture-rule", "path": "selected.py", "start": {"line": 1}}]
+            code = 1
+        elif defect == "error":
+            value["errors"] = [{"type": "ParseError"}]
+            code = 2
+        elif defect == "zero-coverage":
+            value["paths"]["scanned"] = []
+        elif defect == "bad-version":
+            value["version"] = "unqualified"
+        elif defect == "index-drift":
+            subprocess.run(["git", "reset", "-q", "HEAD", "selected.py"], cwd=root, check=True)
+        output.write(json.dumps(value).encode())
+        return code, False
+
+    monkeypatch.setattr(security, "fetch_official_policy", captured)
+    monkeypatch.setattr(security, "_execute", execute)
+    result = security.check_official(root, ("selected.py",), require_committed_context=defect == "strict-ci")
+    assert len(calls) == 1, "A staged edit must reach the mandatory raw engine"
+    assert result["passed"] is (defect == "none")
+    assert result["committed_context_qualified"] is False
+    assert result["policy_accepted"] is False
+    assert result["committed_context_required"] is (defect == "strict-ci")
+    assert result.get("inapplicable_finding_count", 0) == 0
+    if defect in {"none", "finding"}:
+        assert result["policy_disposition"] == "RAW_ONLY_UNQUALIFIED"
+        assert result["raw_exit_code"] == (1 if defect == "finding" else 0)
+    if defect == "strict-ci":
+        assert result["raw_scan_passed"] is True and result["raw_exit_code"] == 0
+        assert "requires committed-source qualification" in result["reason"]
+    assert "Index overlays committed HEAD" in result["qualification_before_refusal"]
+    assert (root / result["artifact_directory"] / "scanner.json").is_file()
+    assert security.public_report(result)["projection_valid"] is True
+
+
+@pytest.mark.parametrize("strict", [False, True])
+def test_cli_propagates_the_ci_committed_context_requirement(monkeypatch: pytest.MonkeyPatch, strict: bool) -> None:
+    monkeypatch.setattr(sys, "argv", ["security", "--official-repository", "--", "selected.py"])
+    if strict:
+        monkeypatch.setenv("STRATEGY_REQUIRE_COMMITTED_CONTEXT", "1")
+    else:
+        monkeypatch.delenv("STRATEGY_REQUIRE_COMMITTED_CONTEXT", raising=False)
+    calls = []
+
+    def check(root: Path, names: tuple[str, ...], **kwargs: Any) -> dict[str, Any]:
+        calls.append((root, names, kwargs))
+        return {"passed": False}
+
+    monkeypatch.setattr(security, "check_official", check)
+    monkeypatch.setattr(security, "public_report", lambda value: value)
+    assert security.main() == 1
+    assert calls == [(security.ROOT, ("selected.py",), {"require_committed_context": strict})]
+
+
+@pytest.mark.parametrize("unsafe", [False, True])
+def test_actual_official_engine_scans_staged_python_without_applicability(
+    scanner_python: str, tmp_path: Path, unsafe: bool
+) -> None:
+    root = tmp_path / "actual-staged"
+    staged_source(root, "import hashlib\nhashlib.sha1(b'inert')\n" if unsafe else "value = 2\n")
+    driver = (
+        "import json,runpy,sys;from pathlib import Path;"
+        "s=runpy.run_path(sys.argv[1],run_name='staged_fixture');"
+        "r=s['check_official'](Path(sys.argv[2]),('selected.py',));print(json.dumps(s['public_report'](r)))"
+    )
+    completed = subprocess.run(
+        [scanner_python, "-I", "-c", driver, str(ROOT / "scripts/check_strategy_python_security.py"), str(root)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    result = json.loads(completed.stdout)
+    assert result["passed"] is (not unsafe)
+    assert result["exit_code"] == (1 if unsafe else 0)
+    assert result["raw_exit_code"] == result["exit_code"]
+    assert result["committed_context_qualified"] is False
+    assert result["policy_disposition"] == "RAW_ONLY_UNQUALIFIED" and result["policy_accepted"] is False
+    assert result["raw_finding_count"] == int(unsafe)
+    raw = json.loads((root / result["artifact_directory"] / "scanner.json").read_bytes())
+    assert raw["paths"]["scanned"] == ["selected.py"] and raw["errors"] == raw["skipped_rules"] == []
+
+
+def browser_source_boundary(monkeypatch: pytest.MonkeyPatch) -> Any:
+    """Import actual reviewed boundary helpers with an inert browser API surface."""
+    api = SimpleNamespace(
+        Browser=object,
+        BrowserContext=object,
+        Page=object,
+        Response=object,
+        expect=SimpleNamespace(set_options=lambda **_kwargs: None),
+        sync_playwright=lambda: pytest.fail("An inert boundary regression must not start a browser"),
+    )
+    monkeypatch.setitem(sys.modules, "playwright.sync_api", api)
+    path = ROOT / "tests/browser/test_successor_alpha_browser.py"
+    spec = importlib.util.spec_from_file_location("inert_browser_source_boundary", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_unexpected_download_with_correct_plan_hash_never_reaches_node_executor(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    browser = browser_source_boundary(monkeypatch)
+    plan_hash = "a" * 64
+    expected = ("// reviewed expected module " + plan_hash + "\n").encode()
+    downloaded = expected + b"// unexpected executable suffix must remain data\n"
+    assert plan_hash.encode() in downloaded  # The old substring-only check passes.
+    monkeypatch.setattr(browser, "expected_plan_tool", lambda *_args: expected)
+    monkeypatch.setattr(browser.subprocess, "run", lambda *_a, **_k: pytest.fail("Unverified download reached Node"))
+    with pytest.raises(AssertionError, match="differs from the reviewed repository exporter"):
+        browser.execute_verified_plan_tool(downloaded, {}, {"retainedPlanHash": plan_hash}, {}, str(tmp_path), [], [])
+    assert not (tmp_path / "retained.mjs").exists()
+
+
+@pytest.mark.parametrize("source_error", ["document", "external"])
+def test_recorded_browser_source_failure_prevents_exporter_and_node(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, source_error: str
+) -> None:
+    browser = browser_source_boundary(monkeypatch)
+    monkeypatch.setattr(browser, "expected_plan_tool", lambda *_a: pytest.fail("Source failure reached exporter"))
+    monkeypatch.setattr(browser.subprocess, "run", lambda *_a, **_k: pytest.fail("Source failure reached Node"))
+    errors = ["DOCUMENT_SOURCE_CHANGED"] if source_error == "document" else []
+    external = ["https://unexpected.invalid/"] if source_error == "external" else []
+    with pytest.raises(AssertionError, match="verification failed before host execution"):
+        browser.execute_verified_plan_tool(b"inert", {}, {}, {}, str(tmp_path), errors, external)
+
+
+def test_exact_reconstruction_is_the_only_file_presented_to_inert_node(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    browser = browser_source_boundary(monkeypatch)
+    expected = b"// inert source identity fixture; never executed\n"
+    monkeypatch.setattr(browser, "expected_plan_tool", lambda *_a: expected)
+    seen = []
+
+    def inert(argv: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
+        seen.append(argv)
+        assert (tmp_path / "retained.mjs").read_bytes() == expected
+        assert argv[-1] == json.dumps({"leftCsv": "changed"})
+        return subprocess.CompletedProcess(argv, 0, stdout="{}", stderr="")
+
+    monkeypatch.setattr(browser.subprocess, "run", inert)
+    result = browser.execute_verified_plan_tool(expected, {}, {}, {"leftCsv": "changed"}, str(tmp_path), [], [])
+    assert result.returncode == 0 and len(seen) == 1
+
+
+def test_trusted_exporter_receives_only_strategy_json_and_fixed_repository_modules(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    browser = browser_source_boundary(monkeypatch)
+    inputs, strategy = {"leftCsv": "inert"}, {"untrustedText": "import('untrusted.mjs')"}
+
+    def inert(argv: list[str], **kwargs: Any) -> subprocess.CompletedProcess[bytes]:
+        assert json.loads(kwargs["input"]) == {"inputs": inputs, "strategy": strategy}
+        assert argv[-1] == ROOT.as_uri() + "/"
+        code = argv[argv.index("-e") + 1]
+        assert strategy["untrustedText"] not in code
+        assert "computeInstalledSourceHash" in code and "buildPlanCapability" in code
+        assert "value.strategy" in code and "value.inputs" in code
+        assert "retained.mjs" not in code
+        assert kwargs["check"] is True and kwargs["timeout"] == 30
+        return subprocess.CompletedProcess(argv, 0, stdout=b"// inert expected bytes\n")
+
+    monkeypatch.setattr(browser.subprocess, "run", inert)
+    assert browser.expected_plan_tool(inputs, strategy) == b"// inert expected bytes\n"
+
+
+def test_actual_browser_response_must_match_before_downloads_or_host_work(monkeypatch: pytest.MonkeyPatch) -> None:
+    browser = browser_source_boundary(monkeypatch)
+    browser.URL = "https://public.invalid/successor/alpha/"
+    browser.EXPECTED_PAGE_SHA256 = security.hashlib.sha256(b"reviewed page").hexdigest()
+    good = SimpleNamespace(url=browser.URL, body=lambda: b"reviewed page")
+    browser.require_document_source(good)
+    with pytest.raises(AssertionError, match="document source changed"):
+        browser.require_document_source(SimpleNamespace(url=browser.URL, body=lambda: b"different browser response"))
+    with pytest.raises(ValueError, match="requires its reviewed page"):
+        browser.run_acceptance(browser.URL, Path("unused"))

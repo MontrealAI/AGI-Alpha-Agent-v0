@@ -195,7 +195,7 @@ def _limit_output_files() -> None:
 def _execute(
     command: list[str], root: Path, env: dict[str, str], output: BinaryIO, errors: BinaryIO, seconds: int
 ) -> tuple[int, bool]:
-    """Bound output in producers, then stop the complete owned group on resource failure."""
+    """Bound output in producers and stop every owned worker before returning."""
     process = subprocess.Popen(
         command,
         cwd=root,
@@ -220,14 +220,9 @@ def _execute(
                 _stop_group(process.pid, force=True)
                 code = process.wait(timeout=3)
     finally:
-        # The group can still contain workers after its leader exits. A hard
-        # stop also covers an engine catching EFBIG and returning exit1/exit0.
-        if (
-            expired
-            or code != 0
-            or any(os.fstat(stream.fileno()).st_size > MAX_REPORT_BYTES for stream in (output, errors))
-        ):
-            _stop_group(process.pid, force=True)
+        # Even a successful leader can leave writers/workers behind. Never
+        # inspect its report while an owned descendant can still modify it.
+        _stop_group(process.pid, force=True)
     assert code is not None
     return code, expired
 
@@ -564,6 +559,8 @@ def public_report(summary: dict[str, Any]) -> dict[str, Any]:
         "matcher_code_sha256",
         "repository_inventory_sha256",
         "repository_files",
+        "committed_context_qualified",
+        "committed_context_required",
     )
     result: dict[str, Any] = {}
     invalid = []
@@ -575,6 +572,8 @@ def public_report(summary: dict[str, Any]) -> dict[str, Any]:
         "runtime_qualified",
         "raw_scan_passed",
         "policy_accepted",
+        "committed_context_qualified",
+        "committed_context_required",
     }
     hashes = {
         "checker_sha256",
@@ -610,7 +609,13 @@ def public_report(summary: dict[str, Any]) -> dict[str, Any]:
         elif key in ("exit_code", "raw_exit_code"):
             valid = type(value) is int
         elif key == "policy_disposition":
-            valid = value in ("INACTIVE", "REFUSED", "EXACT_REVIEWED_INAPPLICABILITY", "NOT_NEEDED_RAW_PASS")
+            valid = value in (
+                "INACTIVE",
+                "REFUSED",
+                "EXACT_REVIEWED_INAPPLICABILITY",
+                "NOT_NEEDED_RAW_PASS",
+                "RAW_ONLY_UNQUALIFIED",
+            )
         elif key == "commit":
             valid = type(value) is str and bool(re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", value))
         elif key == "schema":
@@ -722,7 +727,7 @@ def _write_public_receipt(root: Path, attempt: Path, summary: dict[str, Any]) ->
             stream.write(json.dumps(value, indent=2) + "\n")
 
 
-def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
+def check_official(root: Path, names: tuple[str, ...], *, require_committed_context: bool = False) -> dict[str, Any]:
     """Run primary official policy, preserving complete separate attempt artifacts."""
     output = root / OFFICIAL_OUTPUT
     require(root.is_absolute() and root.resolve(strict=True) == root, "Official root must be direct and absolute")
@@ -741,11 +746,15 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
         "raw_scan_passed": False,
         "policy_accepted": False,
         "policy_disposition": "REFUSED",
+        "committed_context_qualified": False,
+        "committed_context_required": require_committed_context,
     }
     before: dict[str, tuple[str, tuple[int, ...], int]] = {}
+    index_before = None
     checker_before = None
     started = time.perf_counter()
     try:
+        require(type(require_committed_context) is bool, "Committed-context requirement must be boolean")
         checker_before = _capture(ROOT, "scripts/check_strategy_python_security.py", 1_000_000)
         summary["checker_sha256"] = checker_before[0]
         require(metadata.version("semgrep") == SEMGREP_VERSION, "Official policy requires pinned Semgrep 1.99.0")
@@ -754,6 +763,7 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
         targets = official_targets(root, names)
         summary.update(selected_targets=list(targets), selected_files=len(targets))
         summary["commit"] = _repository_git(root, "rev-parse", "HEAD").decode("ascii").strip()
+        index_before = _repository_git(root, "ls-files", "--stage", "-z")
         before = {name: _capture(root, name, 1_000_000) for name in (*targets, "semgrep.yml")}
         require(sum(row[2] for row in before.values()) <= 32_000_000, "Official source selection exceeds its bound")
         (attempt / "source-before.json").write_text(json.dumps(before, indent=2) + "\n")
@@ -773,15 +783,22 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
             len(pack_body) <= 2_000_000 and hashlib.sha256(pack_body).hexdigest() == policy["sha256"],
             "Official policy changed before qualification",
         )
-        matcher_before = matcher.capture_inputs(targets, pack_body, definitions)
-        (attempt / "qualification-before.json").write_text(
-            json.dumps(_matcher_evidence(matcher_before), indent=2) + "\n"
-        )
-        summary.update(
-            matcher_code_sha256=MATCHER_CODE_SHA256,
-            repository_inventory_sha256=matcher_before.repository.sha256,
-            repository_files=len(matcher_before.repository.records),
-        )
+        matcher_before = None
+        try:
+            matcher_before = matcher.capture_inputs(targets, pack_body, definitions)
+        except ValueError as error:
+            # A normal staged edit differs from HEAD. That prevents committed
+            # source qualification, never the required raw official scan.
+            summary["qualification_before_refusal"] = str(error)
+        if matcher_before is not None:
+            (attempt / "qualification-before.json").write_text(
+                json.dumps(_matcher_evidence(matcher_before), indent=2) + "\n"
+            )
+            summary.update(
+                matcher_code_sha256=MATCHER_CODE_SHA256,
+                repository_inventory_sha256=matcher_before.repository.sha256,
+                repository_files=len(matcher_before.repository.records),
+            )
         command = [
             sys.executable,
             "-I",
@@ -831,8 +848,15 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
             all(size <= MAX_REPORT_BYTES for size in summary["output_bytes"].values()),
             "Scanner output exceeded its producer bound",
         )
-        matcher_after = matcher.capture_inputs(targets, pack_body, definitions)
-        (attempt / "qualification-after.json").write_text(json.dumps(_matcher_evidence(matcher_after), indent=2) + "\n")
+        matcher_after = None
+        try:
+            matcher_after = matcher.capture_inputs(targets, pack_body, definitions)
+        except ValueError as error:
+            summary["qualification_after_refusal"] = str(error)
+        if matcher_after is not None:
+            (attempt / "qualification-after.json").write_text(
+                json.dumps(_matcher_evidence(matcher_after), indent=2) + "\n"
+            )
         parsed = _json(raw)
         summary["observed"] = {key: parsed.get(key) for key in ("version", "paths", "errors", "skipped_rules")}
         summary["findings"] = len(parsed.get("results", [])) if type(parsed.get("results")) is list else None
@@ -847,7 +871,17 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
             if code != 1 or not error.details.get("findings"):
                 raise
             summary["details"] = error.details
-        decision = matcher.assess(raw, code, matcher_before, matcher_after)
+        if matcher_before is not None and matcher_after is not None:
+            decision = matcher.assess(raw, code, matcher_before, matcher_after)
+            summary["committed_context_qualified"] = True
+        else:
+            # No committed context means no map lookup or exit1 exception,
+            # even if an operator-approved map exists in another source epoch.
+            decision = {
+                "policy_disposition": "RAW_ONLY_UNQUALIFIED",
+                "policy_accepted": False,
+                "inapplicable_finding_count": 0,
+            }
         summary.update(
             raw_scan_passed=raw_clean,
             raw_exit_code=code,
@@ -857,11 +891,19 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
             inapplicable_finding_count=decision["inapplicable_finding_count"],
         )
         summary["inapplicability_evidence"] = decision
-        admitted = decision["policy_accepted"] is True and (
-            (raw_clean and decision["policy_disposition"] == "NOT_NEEDED_RAW_PASS")
-            or (not raw_clean and code == 1 and decision["policy_disposition"] == "EXACT_REVIEWED_INAPPLICABILITY")
+        admitted = raw_clean and decision["policy_disposition"] == "RAW_ONLY_UNQUALIFIED"
+        admitted = admitted or (
+            decision["policy_accepted"] is True
+            and (
+                (raw_clean and decision["policy_disposition"] == "NOT_NEEDED_RAW_PASS")
+                or (not raw_clean and code == 1 and decision["policy_disposition"] == "EXACT_REVIEWED_INAPPLICABILITY")
+            )
         )
         require(admitted, "Official findings or qualification remain unadmitted")
+        require(
+            not require_committed_context or summary["committed_context_qualified"] is True,
+            "This invocation requires committed-source qualification; raw-only evidence is insufficient",
+        )
         require(summary.get("wall_budget_expired") is not True, "Official scanner exceeded its wall budget")
         require(
             hashlib.sha256((attempt / "official-p-python.yml").read_bytes()).hexdigest() == policy["sha256"],
@@ -891,6 +933,8 @@ def check_official(root: Path, names: tuple[str, ...]) -> dict[str, Any]:
                 and _repository_git(root, "rev-parse", "HEAD").decode("ascii").strip() != summary["commit"]
             ):
                 summary.update(passed=False, reason="Committed source identity changed during qualification")
+            if index_before is not None and _repository_git(root, "ls-files", "--stage", "-z") != index_before:
+                summary.update(passed=False, reason="Git index changed during the raw official scan")
         except (ValueError, OSError) as error:
             summary.update(passed=False, reason=type(error).__name__)
         if before:
@@ -975,7 +1019,11 @@ def main() -> int:
     try:
         if sys.argv[1:2] == ["--official-repository"]:
             require(sys.argv[2:3] == ["--"], "Official role requires the filename delimiter")
-            report = check_official(ROOT, tuple(sys.argv[3:]))
+            report = check_official(
+                ROOT,
+                tuple(sys.argv[3:]),
+                require_committed_context=os.environ.get("STRATEGY_REQUIRE_COMMITTED_CONTEXT") == "1",
+            )
         else:
             require(len(sys.argv) == 1, "This policy accepts no command-line selectors")
             report = check()

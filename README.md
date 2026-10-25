@@ -148,6 +148,11 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[AGI ALPHA FLYWHEEL](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-capability-construction-v1.pdf)** · A preregistered bounded study accepts 42/42 fresh jobs across seven digital\-work families and records actual reusable\-capability invocation\. Tested inheritance candidates establish neither net savings nor self\-acceleration\. Official labor data support conditional adoption economics; full Agent cost and employer attention remain unmeasured\.
   AGI ALPHA research engineering study · 2026-10-25 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/2afc163e4ca51ad85ae677b5fdffa3c69e2a662b/studies/agi-alpha-capability-construction-v1/README.md)
+- **[AGI ALPHA FLYWHEEL](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-operational-economics-v1.pdf)** · A separately frozen, market\-data\-grounded operational comparison prices delivery, failures, review, setup and capability upkeep against traditional non\-AI work\. The primary 30\-minute office scenario does not establish an economic win at the modeled expected\-use capacity limit\. Conditional thresholds, complete\-demand fallback and unvalidated setup scheduling remain explicit; no deployed\-service cost or new human trial is claimed\.
+  AGI ALPHA research engineering study · 2026-10-25 · English PDF.
+  [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/5caa871db78352557699f783027cf64357403d8b/studies/agi-alpha-operational-economics-v1/README.md)
+- **[AGI ALPHA FLYWHEEL: The Productive Capital Engine](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-productive-capital-v1.pdf)** · A frozen study connects useful local work to a conserved economic model; conditional service margins are modeled, while the constructed child does not outperform conventional reuse\.
+  MONTREAL\.AI · Independent research edition · 2026-10-25 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)

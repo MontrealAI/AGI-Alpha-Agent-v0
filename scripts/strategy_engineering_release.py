@@ -7,6 +7,7 @@ package, browser, installed-runtime and recovery evidence to committed bytes.
 """
 from __future__ import annotations
 
+import ast
 import base64
 import csv
 from configparser import ConfigParser
@@ -185,6 +186,26 @@ def _committed_files(root: Path, commit: str) -> dict[str, bytes]:
 def _verify_wheel(raw: bytes, files: dict[str, bytes]) -> dict[str, Any]:
     project = tomllib.loads(files[CONTRIB + "pyproject.toml"].decode())
     version = project["project"]["version"]
+    module = ast.parse(files[CONTRIB + "__init__.py"].decode("utf-8"))
+    assignments = [
+        node
+        for node in module.body
+        if isinstance(node, ast.Assign)
+        and any(isinstance(target, ast.Name) and target.id == "__version__" for target in node.targets)
+    ]
+    _require(
+        len(module.body) == 2
+        and isinstance(module.body[0], ast.Expr)
+        and isinstance(module.body[0].value, ast.Constant)
+        and type(module.body[0].value.value) is str
+        and len(assignments) == 1
+        and module.body[1] is assignments[0]
+        and len(assignments[0].targets) == 1
+        and isinstance(assignments[0].value, ast.Constant)
+        and type(assignments[0].value.value) is str
+        and assignments[0].value.value == version,
+        "Literal package __version__ differs from distribution metadata",
+    )
     _require(project["project"]["name"] == "agi-alpha-strategy-succession-engineering", "Wrong companion project")
     payload = {
         *project["tool"]["setuptools"]["package-data"]["strategy_succession_engineering"],
@@ -304,8 +325,14 @@ def _empty_authority(value: Any, depth: int = 0) -> None:
 
 
 def _verify_plan(
-    plan: dict[str, Any], source_hash: str, profile: dict[str, Any], *, complete: bool = True
+    plan: dict[str, Any],
+    source_hash: str,
+    profile: dict[str, Any],
+    *,
+    complete: bool = True,
+    require_improvement: bool = True,
 ) -> dict[str, Any]:
+    _require(type(require_improvement) is bool, "Improvement admission mode must be explicit boolean")
     _empty_authority(plan)
     _require(
         plan.get("source_hash") == source_hash
@@ -438,7 +465,7 @@ def _verify_plan(
     )
     _require(
         costs["service_work"] > 0
-        and costs["improvement_work"] > 0
+        and (costs["improvement_work"] > 0 if require_improvement else costs["improvement_work"] == 0)
         and costs["native_solve_seconds"] == 2 * costs["native_calls"],
         "Separate productive work or charged native allowance is absent",
     )
@@ -617,7 +644,12 @@ def _calendar_repair_observations(phases: list[dict[str, Any]]) -> dict[str, Any
 
 
 def _verify_export(
-    document: dict[str, Any], source_hash: str, profile: dict[str, Any], *, complete: bool = True
+    document: dict[str, Any],
+    source_hash: str,
+    profile: dict[str, Any],
+    *,
+    complete: bool = True,
+    require_improvement: bool = True,
 ) -> dict[str, Any]:
     _require(set(document) == {"body", "sha256", "public_key", "signature"}, "Unsupported signed mission export")
     body = document["body"]
@@ -640,7 +672,228 @@ def _verify_export(
         )
     except Exception as error:
         raise ValueError("Mission export signature is invalid") from error
-    return _verify_plan(body["plan"], source_hash, profile, complete=complete)
+    return _verify_plan(body["plan"], source_hash, profile, complete=complete, require_improvement=require_improvement)
+
+
+def _verify_service_schedule(task: dict[str, Any], result: dict[str, Any]) -> None:
+    """Check this bounded planning control arithmetically, without a solver."""
+    jobs = {job["id"]: job for job in task["jobs"]}
+    rows = {row["id"]: row for row in result["schedule"]}
+    capacity = task["capacity"]
+    _require(
+        1 <= len(jobs) <= 18
+        and len(jobs) == len(task["jobs"])
+        and len(rows) == len(result["schedule"]) == len(jobs)
+        and set(rows) == set(jobs)
+        and 1 <= len(capacity) <= 128
+        and all(type(n) is int and 0 <= n <= 4 for n in capacity),
+        "Service-only schedule inventory is invalid",
+    )
+    _require(
+        all(
+            type(job.get("duration")) is int
+            and 1 <= job["duration"] <= 12
+            and type(job.get("crew")) is int
+            and 1 <= job["crew"] <= 4
+            and isinstance(job.get("deps"), list)
+            and all(dep in jobs for dep in job["deps"])
+            for job in jobs.values()
+        ),
+        "Service-only job requirements exceed the fixed grammar",
+    )
+    for name, row in rows.items():
+        job = jobs[name]
+        _require(
+            type(row.get("start")) is int
+            and type(row.get("end")) is int
+            and 0 <= row["start"] < row["end"] <= len(capacity)
+            and row["end"] == row["start"] + job["duration"]
+            and row["start"] >= task.get("release", {}).get(name, 0)
+            and all(dep in rows and rows[dep]["end"] <= row["start"] for dep in job["deps"])
+            and (name not in task.get("locked", {}) or row["start"] == task["locked"][name]),
+            "Service-only schedule violates duration, precedence, release or committed work",
+        )
+    makespan = max(row["end"] for row in rows.values())
+    movement = sum(abs(rows[name]["start"] - start) for name, start in task.get("baseline", {}).items())
+    _require(
+        result.get("schema") == "release-plan-result/v1"
+        and result["task_id"] == task["id"]
+        and type(result["makespan"]) is int
+        and type(result["movement"]) is int
+        and result["makespan"] == makespan <= task["deadline"]
+        and result["movement"] == movement <= task.get("movement_limit", movement)
+        and all(
+            sum(jobs[name]["crew"] for name, row in rows.items() if row["start"] <= slot < row["end"]) <= limit
+            for slot, limit in enumerate(capacity)
+        ),
+        "Service-only schedule exceeds its actual calendar or objective bounds",
+    )
+
+
+def _verify_service_only(
+    plan: dict[str, Any],
+    summary: dict[str, Any],
+    export_raw: bytes,
+    primary: dict[str, Any],
+    source_hash: str,
+    profile: dict[str, Any],
+) -> dict[str, Any]:
+    """Admit only the matched construction-off control; primary checks stay strict."""
+    _verify_plan(primary, source_hash, profile)
+    _require(
+        _canonical(plan["input"].get("construction")) == _canonical({"enabled": False}),
+        "Service-only control requires explicit construction false",
+    )
+    _verify_plan(plan, source_hash, profile, require_improvement=False)
+    exported = _verify_export(_json(export_raw), source_hash, profile, require_improvement=False)
+    _require(_canonical(exported) == _canonical(plan), "Service-only signed export substitutes another mission")
+    expected = deepcopy(primary["input"])
+    expected["construction"] = {"enabled": False}
+    _require(
+        plan["policy_binding"] == primary["policy_binding"],
+        "Service-only control must use the same installed policy binding",
+    )
+    _require(
+        _canonical(plan["input"]) == _canonical(expected)
+        and plan["caps"] == primary["caps"]
+        and plan["plan_id"] != primary["plan_id"]
+        and plan["request_id"] != primary["request_id"],
+        "Service-only control changed other input, budgets or mission identity",
+    )
+    result, costs = plan["outcome"]["result"], plan["outcome"]["costs"]
+    _require(
+        result.get("capabilities") == []
+        and result["inheritance"].get("diagnostics") == []
+        and result["inheritance"].get("lineage") == []
+        and result["inheritance"].get("parent_benefit") == "NOT_ESTABLISHED"
+        and all(
+            result["repair_usefulness"].get(k) is None
+            for k in ("candidate_trial", "candidate_frozen_digest", "training_qualification")
+        )
+        and result["repair_usefulness"].get("consequence") == "DEFER_NO_FROZEN_REPAIR"
+        and result["repair_usefulness"].get("economic_decision") == "HOLD_FULL_COST_UNKNOWN"
+        and result["repair_usefulness"].get("production_promotion") is False,
+        "Service-only control constructed or promoted an asset",
+    )
+    _require(
+        result["accounting"].get("improvement_total") == costs["improvement_work"] == 0
+        and result["accounting"].get("improvement_ledger") == []
+        and result["accounting"].get("service_total") == costs["service_work"]
+        and all(event["costs"]["improvement_work"] == 0 for event in result["events"])
+        and costs["native_calls"] == 6
+        and costs["native_solve_seconds"] == 12
+        and bool(costs["unknown_costs"])
+        and all(isinstance(v, str) for v in costs["unknown_costs"]),
+        "Service-only separate accounting or native allowance is invalid",
+    )
+    phases = result["phases"]
+    for index, phase in enumerate(phases):
+        _verify_service_schedule(phase["task"], phase["result"])
+        methods = {"native-repair", "native-makespan"} if index == 2 else {"native-deadline", "native-makespan"}
+        attempts = phase["attempts"]
+        _require(
+            len(attempts) == 3 and {a["method"] for a in attempts} == {"ordinary-portfolio", *methods},
+            "Service-only strongest specialist comparison is missing",
+        )
+        qualified = []
+        for attempt in attempts:
+            if attempt["method"] in methods:
+                _require(
+                    attempt.get("valid") is True and attempt.get("qualified") is True,
+                    "Service-only native attempt was not independently qualified",
+                )
+            if attempt.get("qualified") is True:
+                _verify_service_schedule(phase["task"], attempt["result"])
+                quality = (
+                    (attempt["result"]["movement"], attempt["result"]["makespan"])
+                    if index == 2
+                    else (attempt["result"]["makespan"], attempt["result"]["movement"])
+                )
+                qualified.append(quality)
+        chosen = phase["result"]
+        quality = (chosen["movement"], chosen["makespan"]) if index == 2 else (chosen["makespan"], chosen["movement"])
+        _require(quality == min(qualified), "Service-only delivery ignores a stronger qualified specialist")
+    telemetry = result["native_telemetry"]
+    native = [row for row in telemetry if row.get("role") == "specialist"]
+    _require(
+        len(native) == 6
+        and all(
+            row.get("ok") is True
+            and row.get("status") == 0
+            and row.get("error") is None
+            and all(_number(row.get(k)) for k in ("process_wall_seconds", "call_wall_seconds", "call_cpu_seconds"))
+            and all(_number(row.get("startup", {}).get(k)) for k in ("wall_seconds", "cpu_seconds"))
+            for row in native
+        ),
+        "Service-only native measurements are missing or uncertain",
+    )
+    observations = _calendar_repair_observations(phases)
+    _require(
+        summary.get("schema") == "strategy-engineering-service-only-acceptance/v1"
+        and summary.get("construction_enabled") is False
+        and all(
+            summary.get(k) is True
+            for k in (
+                "same_input_except_construction",
+                "caps_unchanged",
+                "committed_prefix_preserved",
+                "no_constructed_assets",
+                "deduplicated_without_new_charges",
+                "journal_verified",
+            )
+        )
+        and summary.get("comparison_outcome_hash") == primary["outcome_hash"]
+        and summary.get("comparison_input_sha256") == _digest(primary["input"])
+        and summary.get("input_sha256") == _digest(plan["input"])
+        and all(summary.get(k) == plan[k] for k in ("source_hash", "plan_id", "outcome_hash"))
+        and _canonical(summary.get("costs")) == _canonical(costs)
+        and summary.get("charged_native_solve_allowance_seconds") == costs["native_solve_seconds"]
+        and summary.get("phase_makespans") == [p["result"]["makespan"] for p in phases]
+        and summary.get("phase_receipts") == [p["receipt_hash"] for p in phases]
+        and summary.get("unchanged_baseline_invalid_calendar_slots") == observations["invalid_calendar_slots"]
+        and summary.get("signed_export_sha256") == hashlib.sha256(export_raw).hexdigest(),
+        "Service-only summary substitutes input, costs, receipts or checked effects",
+    )
+    projected = [
+        {
+            k: row[k]
+            for k in (
+                "role",
+                "status",
+                "signal",
+                "error",
+                "process_wall_seconds",
+                "startup",
+                "call_wall_seconds",
+                "call_cpu_seconds",
+            )
+            if k in row
+        }
+        for row in telemetry
+    ]
+    _require(
+        _canonical(summary.get("worker_runtime_telemetry")) == _canonical(result["runtime_telemetry"])
+        and all(_number(result["runtime_telemetry"].get(k)) for k in ("node_cpu_seconds", "wall_seconds"))
+        and _canonical(summary.get("python_call_observations")) == _canonical(projected)
+        and all(
+            _number(summary.get(k))
+            for k in (
+                "api_call_wall_seconds",
+                "api_test_process_cpu_seconds",
+                "independent_verification_wall_seconds",
+                "independent_verification_test_process_cpu_seconds",
+                "control_window_wall_seconds",
+            )
+        )
+        and isinstance(summary.get("timing_scope"), str)
+        and bool(summary["timing_scope"])
+        and "human_minutes" in summary
+        and summary["human_minutes"] is None
+        and "monetary_cost" in summary
+        and summary["monetary_cost"] is None,
+        "Service-only timing boundaries or unknown human/money costs are missing",
+    )
+    return plan
 
 
 def _verify_browser(
@@ -952,6 +1205,14 @@ def package(root: Path, output: Path, evidence: Path, commit: str, version: str)
     )
     installed = _read_json(evidence / "acceptance-public" / "integrated-journey.json")
     _verify_plan(installed, source_hash, profile)
+    _verify_service_only(
+        _read_json(evidence / "acceptance-public" / "service-only-journey.json"),
+        _read_json(evidence / "acceptance-public" / "service-only-summary.json"),
+        _read(evidence / "acceptance-public" / "service-only-export.json"),
+        installed,
+        source_hash,
+        profile,
+    )
     summary = _read_json(evidence / "acceptance-public" / "integrated-summary.json")
     _require(
         summary.get("source_hash") == source_hash
