@@ -1,39 +1,65 @@
 [Project notice](../../docs/DISCLAIMER_SNIPPET.md)
 
-# AGI ALPHA FLYWHEEL — The economic engine
+# AGI ALPHA FLYWHEEL — The Economic Engine
 
-Useful work → collected surplus → greater capability.
+## Completed, separately preregistered financial amendment
 
-## Separate prospective financial amendment v1
+**Useful recorded work, complete business accounts and bounded reinvestment — with simulation distinguished from observation.** This 15-page edition preserves the earlier native capability study, operating-cost amendment and original Economics of Autonomous Work edition. Its public freeze preceded its financial calculations. It is a source-and-evidence contribution, not a deployed service or a new human trial.
 
-**Status at this commit: frozen specification only; no financial scenario results have been calculated.** Earlier native and operational studies are preserved. The original Economics paper and expanded capability paper are merged as #4902 and #4904; completed operating economics is published separately at source commit5caa871db78352557699f783027cf64357403d8b and passive paper #4905. Their publication does not depend on this further analysis.
+### Read and inspect
 
-This amendment asks whether useful accepted work can generate collected resources for further construction before self-acceleration is established. Competent traditional non-AI work remains the customer comparator. A separate USD0.50 delivery-cost / USD200 human-cost case is an explicit hypothesis, not a measured commercial result. Customer savings, provider receipts, complete costs, reserves and discretionary investment are separate accounts.
+- [Canonical 15-page paper](paper/main.pdf)
+- [Download the complete engine source and evidence archive](AGI_ALPHA_Economic_Engine_Amendment_v1_Source.tar.xz)
+- [Download the standalone offline companion](browser/AGI_ALPHA_Reinvestment_Policy_Demo.html?raw=1)
+- [Results and interpretation](RESULTS_INTERPRETATION.md)
+- [Complete scorecard](SCORECARD.json)
+- [Reproduction guide](MODEL_GUIDE.md)
+- [Independent numerical audit](evaluation/INDEPENDENT_AUDIT.json)
+- [Source/archive member identities](ENGINE_PUBLIC_FILES.json)
 
-The prospective matrix covers144 primary paths and32 demand sensitivities, with0%,25%,50% and75% maximum allocations of recovered, collected after-tax operating surplus. Initial capital, uncollected invoices, customer savings, returned bonds and token appreciation cannot fund simulated reinvestment. Every unsuccessful candidate and all upkeep remain charged. A no-gain world rejects every newly constructed capability.
+The source archive contains the complete LaTeX, bibliography, editable figures, implementation, inputs, raw outputs, ledgers, independent oracles/audits, failed attempts and QA receipts for this amendment. The separately published native study remains its original edition. Its [source and evidence](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/5caa871db78352557699f783027cf64357403d8b/studies/agi-alpha-capability-construction-v1/README.md) supply the prior canonical browser and native artifacts when rebuilding this derivative companion. The compiled standalone HTML already contains its local execution modules, recorded artifacts and audited data and runs offline.
 
-## Inspect the specification
+## What was completed
 
-- [Protocol](PROTOCOL.md)
-- [Inputs](inputs.json)
-- [Exact prior-model anchor](prior_model_anchor.json)
-- [Separate source-settlement scenarios](token_scenarios.json)
-- [Freeze manifest](FREEZE.json)
-- [Independent prospective review](evaluation/PREFREEZE_REVIEW.json)
-- [Independent evaluation plan](evaluation/EVALUATION_PLAN.md)
-- [Source-linked contract flows](contracts/FLOW_MATRIX.md)
-- [Exact settlement formulas](contracts/ROUTE_FORMULAS.md)
-- [Contract evidence and limits](contracts/CONTRACT_ECONOMICS.md)
-- [Complete prospective inputs and41 source snapshots](AGI_ALPHA_Economic_Engine_Preregistration.tar.gz)
+The frozen financial matrix covers **144 primary cases and 32 demand sensitivities**, each with twelve operating months after setup. The customer comparator is traditional non-AI work, with explicit human-duration sensitivities and full fallback for unfinished demand. The enterprise account separates invoices, collected cash, refunds, payment charges, complete provider costs, initial capital, taxes/reserves, obligations, idle allocations and actual simulated construction spending.
 
-Freeze time: 2026-10-25T14:23:55.892155+00:00. Freeze SHA-256:
+The recorded source-backed brief is real preserved native output, with exact passage-fidelity and coverage acceptance. Its measured native component time and zero task-time model calls do not establish complete Agent cost, employer attention or commercial acceptance. Full field reliability, setup, support, supervision, collection and business behavior remain assumptions.
 
-`4c7bac19106f946920d64ad39b01cb2cc844eed78c5cdb4d79140904a10cc9ba`
+The separate USD 0.50 variable-cost / USD 200 traditional-replacement case is an **unvalidated hypothesis**. It is not the observed brief's measured cost. In the base USD 20, 50%-allocation, primary-demand hypothesis, the earmark can grow while actual new investment remains zero. Higher-demand simulated gains depend on the frozen outcome assumptions; they do not demonstrate autonomous discovery or acceleration. No simulated executor purchases occurred.
 
-The68 frozen files include exact source snapshots, chosen configuration/realization assumptions, accounting order, stop rules and the independent audit plan. The matrix is specified after earlier operating-cost results are known and before these new financial calculations. Source inspection/historical deployment reports are distinct from current-chain verification. Live authenticated executor and financial execution remain **NOT RUN**.
+Starting USD 25,000 in this amendment means **provider cash excluding customer costs**. The earlier operational study's USD 25,000 combined-resource budget is a different account. Neither amount is a real financial commitment. Assumed monthly resource limits and setup workdays are not demonstrated staffing schedules or service promises.
 
-## Asset and authority boundaries
+## Source-linked settlement routes
 
-Ordinary USD invoicing is a proposed company arrangement. Manager USDC, Ascension AGIALPHA and Jobs-v0 AGIALPHA have separate source-defined payment paths. Only the operating enterprise's stated worker role is credited; unrelated beneficiary/validator/treasury payments are not provider income. Jobs-v0 failure economics remain NOT MODELED until sufficiently specified. No inspected mechanism establishes a universal50% profit-reinvestment policy, buyback, passive-tokenholder dividend or guaranteed appreciation. The dynamic cash engine makes no transaction and changes no contract.
+The [flow matrix](contracts/FLOW_MATRIX.md), [formulas](contracts/ROUTE_FORMULAS.md) and [source register](contracts/SOURCE_REGISTER.json) distinguish Manager USDC, Ascension AGIALPHA and Jobs-v0 AGIALPHA. Nine source-success waterfalls feed 27 separate realization cases; nine specified failure examples remain inspectable. Jobs-v0 failure/no-quorum numerical economics remain NOT MODELED where configuration was insufficient.
 
-No new spending, paid commitment, credential, security change, deployed-contract change or bypass is authorized. Results and source will be added in a later commit after public freeze and a separate GO record.
+Worker receipts exclude unrelated validator, beneficiary and treasury amounts. Returned collateral is principal, burns create no spendable cash, and hypothetical token conversion is separate from the ordinary-USD enterprise simulation. There is no automatic bridge from token receipts into reinvestment, no assumed appreciation, no universal tokenholder profit right and no live transaction.
+
+## Evidence and verification
+
+- The canonical independent audit is **PASS**, binding cash `outputs/run-002/results.json` and token `outputs/token-run-002/token_waterfalls.json` to their exact producer sources. Its 1,288,965 equation, field, ledger, identity and export comparisons are repeated consistency checks, not independent experiments or a reliability sample.
+- The reporting revision preserves all actual simulated cash/admission/investment paths. It clarifies stopped forecasts, unavailable empty served-cohort comparisons and payment-processing-inclusive provider expense. The first runs and failed audit attempts remain preserved.
+- The final companion passes 45 browser checks and 77,131 audited numeric-display bindings across all 176 cases, 2,112 monthly views, 1,056 customer views and 27 settlement realizations. Exact downloads, actual local retained-module invocation, STOP, rollback, recovery and tamper refusal are checked. Desktop/mobile views were inspected. Runtime external requests and script errors were zero.
+- All three editable publication figures pass independent quantity checks and visual review. The paper clean-builds to the same bytes, has zero LaTeX warnings and all 15 pages have been visually reviewed.
+- No earlier frozen study, canonical paper or companion was replaced. The engine source archive preserves all 68 prospectively frozen files.
+
+### Exact release identities
+
+| Artifact | Bytes | SHA256 |
+| --- | ---: | --- |
+| Canonical paper | 425,802 | `86a00ef277098376a26265f954c770608eb0aa7cd7ac59a897b7b78a47b8242d` |
+| Standalone companion | 5,455,240 | `c7b7ff873ed9b136819358504309bf8577223c3be8971e009498427d3de13a08` |
+| Complete engine source archive | 5,001,484 | `4d8dbc66cd96d0d28d0edf2a1ef46b1905fa4e3b319c2113fd13fc8b2ffb428d` |
+| Prospective freeze manifest | 13,275 | `4c7bac19106f946920d64ad39b01cb2cc844eed78c5cdb4d79140904a10cc9ba` |
+
+## Reproduce without overwriting evidence
+
+Extract the source archive into a new directory, then follow `reinvestment_amendment_v1/MODEL_GUIDE.md`. Financial models and independent audits use the Python standard library and refuse to overwrite earlier run destinations. The guide provides the isolated-copy audit wrapper. Paper and figure rebuilding requires the documented TeX/plotting dependencies; rebuilding the derivative browser additionally requires the preserved prior native study beside the amendment.
+
+The archive's original `reinvestment_amendment_v1/README.md` remains the historical prospective-checkpoint text. This repository page records completion; the preserved archive's `MODEL_GUIDE.md` and `RESULTS_INTERPRETATION.md` describe the completed calculations. Original preregistration files and [its archive](AGI_ALPHA_Economic_Engine_Preregistration.tar.gz) remain available in this branch's history and tree.
+
+## Publication and authority boundary
+
+The paper uses the existing passive-paper process. Source availability, numerical audit and local browser tests do not establish merge, website deployment, runtime acceptance, public installation, paid demand or live revenue. Existing software-owner/release gates, #4907 product-ledger ownership and original Harness/Fleet restrictions remain in force.
+
+Authenticated browser-to-approved-executor execution and financial transactions are **NOT RUN**. No new paid commitment, credential, security change, deployed-contract change, treasury or scheduler is introduced. The later automated-workflow/independent economic study is a separate contribution and is not included in this sealed edition.

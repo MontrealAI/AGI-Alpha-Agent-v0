@@ -1,0 +1,127 @@
+{
+  "schema": "reinvestment-browser-visual-qa/v1",
+  "created_utc": "2026-10-25T14:51:47.125119+00:00",
+  "html_sha256": "c7b7ff873ed9b136819358504309bf8577223c3be8971e009498427d3de13a08",
+  "status": "PASS",
+  "viewport_desktop": [
+    1440,
+    1080
+  ],
+  "viewport_mobile": [
+    390,
+    844
+  ],
+  "reviewed_views": [
+    {
+      "path": "qa/desktop-economics.png",
+      "bytes": 167582,
+      "sha256": "f702be3f2469fe989dc7b42af494f828623d53687a09737ef92c0a86e6a40f68",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-riLoadStatus.png",
+      "bytes": 186363,
+      "sha256": "79315454e03b4113e2973ba26a0d5bf0be34d26b4df6156e589c937eb6c2c93d",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-riCashRows.png",
+      "bytes": 158953,
+      "sha256": "5dff7550329b1db465f3a1479e66cb85c7d5e246df37c0cb9a2bf7b405d365b1",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-riCustomerResults.png",
+      "bytes": 170803,
+      "sha256": "1f24e3086efbc8a265bb2d435f0e3a4616a0765e1f5345bafae12a6413fa2bf0",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-riTokenResults.png",
+      "bytes": 158287,
+      "sha256": "b62e7348ea11ec540c25b549f8f835331de55953873b0c4420968a414b34f1a1",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/mobile-economics.png",
+      "bytes": 77316,
+      "sha256": "79fcdc74d1b8fcb461c0d68a0f255942b3490e8f85a8b4561feadf598bd03a2d",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/mobile-riLoadStatus.png",
+      "bytes": 84785,
+      "sha256": "b6769aaf5379cf5d88b0d10af3e051bc075d8276e273d5cf0eb945c9dd216f57",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/mobile-riCashRows.png",
+      "bytes": 76755,
+      "sha256": "8c9fa726c1d4bd3f54c7b146cafaf1f4fc396539efbe636282364bb823e97a88",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/mobile-riCustomerResults.png",
+      "bytes": 78288,
+      "sha256": "3750923c1d35e0636377030c6ad59e341471317b9f1eac6468a311abae3f9cb2",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/mobile-riTokenResults.png",
+      "bytes": 77517,
+      "sha256": "ae85b092e924dfd1d1409a7ddb8bb6a057200296f7fa7bff574ed34adb660283",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-live.png",
+      "bytes": 169510,
+      "sha256": "bc9438ad31bd74f4ec597ce2281e6040a2393a08f5cf326ded8bbbaf60a67e95",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-recorded.png",
+      "bytes": 143812,
+      "sha256": "cfd92b7688215a466838c4dcf050516f01c136fa49ae815f912316ae9cad2421",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-executor.png",
+      "bytes": 195350,
+      "sha256": "ceb1183b9a82d506f3613c52bfa787cf915d83e162df2ba48ca6ca9f925a87ef",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-recorded-brief.png",
+      "bytes": 193852,
+      "sha256": "57d6379f9d7cb183a3b389b7297ffba287cb2a87ef1f6a7cf39edff63e6669aa",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/desktop-recorded-slides.png",
+      "bytes": 193500,
+      "sha256": "aadd3030ced9d63f3aa570c9d49a5e4835ba80b7e4bd459ebe0c3a32e7442a2e",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/mobile-recorded-brief.png",
+      "bytes": 59603,
+      "sha256": "d9363057002bf7875006481019e26b5712a6f15ea12240b44fcf4cd57df38f93",
+      "visual_status": "PASS"
+    },
+    {
+      "path": "qa/mobile-recorded-slides.png",
+      "bytes": 59643,
+      "sha256": "dca9250a692856282940418d1821c74c812079533949d066987577216fa072c4",
+      "visual_status": "PASS"
+    }
+  ],
+  "findings": [
+    "Final header, controls, outcome scores, cash ledger, customer costs and source settlement views readable at desktop and mobile widths.",
+    "Mobile financial rows stack their interpretation below the amount; no document overflow.",
+    "Final recorded brief and slides inspected after iframe paint; exact download bytes remain preserved.",
+    "Original live, recorded and executor sections remain clearly separated.",
+    "One earlier case-ID overflow was corrected using wrapping; earlier failed QA remains preserved.",
+    "An earlier mobile artifact screenshot captured a pending iframe paint; all four final artifact screenshots show the loaded brief/slides."
+  ],
+  "claims_boundary": "Visual presentation only; no additional economic or scientific inference."
+}
