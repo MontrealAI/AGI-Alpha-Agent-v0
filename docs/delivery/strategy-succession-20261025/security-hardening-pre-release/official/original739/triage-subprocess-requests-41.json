@@ -1,0 +1,3354 @@
+{
+  "schema": "agialpha.official-python-static-triage.v1",
+  "source_commit": "7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9",
+  "source_inventory_sha256": "5d9279a7c8ec38ebd12b9e18d29a80855afd4fd926bfe53548eb7f84df934fb8",
+  "scanner_output_file": "scanner-output.json",
+  "scanner_output_sha256": "1bc7abe515a3f251fc1c44c4b684b638bc4096913627214861907acd274b4ab9",
+  "original_scan": {
+    "version": "1.99.0",
+    "selected_files": 1537,
+    "scanned_files": 1537,
+    "total_findings": 77,
+    "errors": 0,
+    "skipped_rules": 0,
+    "source_drift": [],
+    "complete_source_scan_exit": 1
+  },
+  "assigned_findings": 41,
+  "assigned_by_rule": {
+    "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args": 26,
+    "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests": 14,
+    "python.django.security.injection.command.subprocess-injection.subprocess-injection": 1
+  },
+  "dispositions": {
+    "BLOCK_ARGUMENT_BOUNDARY_UNVALIDATED": 1,
+    "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV": 13,
+    "RULE_INAPPLICABLE_OPERATOR_CLI_ARGV": 3,
+    "RULE_INAPPLICABLE_EXPLICIT_OPERATOR_EXECUTABLE": 2,
+    "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP": 14,
+    "RULE_INAPPLICABLE_FIXED_COPIED_STUDY_SCRIPT": 1,
+    "RULE_INAPPLICABLE_FIXED_VERIFIED_STUDY_SCRIPT": 1,
+    "RULE_INAPPLICABLE_TEST_OPERATOR_NODE_SELECTOR": 4,
+    "RULE_INAPPLICABLE_JSON_STDIN_NOT_COMMAND": 1,
+    "RULE_INAPPLICABLE_TEST_OPERATOR_CACHE_SELECTOR": 1
+  },
+  "blocking_findings": [
+    {
+      "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+      "line": 42,
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args"
+    }
+  ],
+  "method": "Read immutable scanner JSON/source inventories and exact snapshot source bytes; independently parse Python ASTs and inspect command/data/list bindings. No target module import, compilation, command, network request, browser, native executor, frozen replay or held operation was executed. Findings remain source/rule/location-bound; no generic baseline waiver.",
+  "held_exclusions": {
+    "paths_not_read_imported_executed_or_modified": [
+      "tests/browser/fleet_git_metadata.mjs",
+      "tests/browser/fleet_module_boundary.mjs",
+      "tests/browser/fleet_receipt_native.mjs",
+      "tests/browser/test_discovery_lab_continuation.py",
+      "tests/test_successor_capability_delivery.py"
+    ],
+    "original_requests_not_reviewed_or_cleared": [
+      "AGI-Alpha-Agent-v0#4863",
+      "AGI-Fleet-Linux#61"
+    ],
+    "authority_granted": false
+  },
+  "publication_or_policy_mutation": false,
+  "future_source_qualification": false,
+  "rows": [
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+      "line": 42,
+      "end_line": 42,
+      "source_sha256": "3bec8c5f1509e35805478fb7cff55fa7e4bbb3dc912356262d5711380cfac685",
+      "scanner_fingerprint": "38098de1cced6c43e9921303a145fa994d0d3982bdfdce1604314844a232560e44d536802e769723af51345c749dce59a069782871791b4609dbf42a0a3030fe_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "    result = subprocess.run(cmd, capture_output=True, text=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+              "start": {
+                "line": 11,
+                "col": 17,
+                "offset": 225
+              },
+              "end": {
+                "line": 11,
+                "col": 63,
+                "offset": 271
+              }
+            },
+            "os.getenv(\"SANDBOX_IMAGE\", \"python:3.11-slim\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+              "start": {
+                "line": 11,
+                "col": 1,
+                "offset": 209
+              },
+              "end": {
+                "line": 11,
+                "col": 14,
+                "offset": 222
+              }
+            },
+            "content": "DEFAULT_IMAGE"
+          },
+          {
+            "location": {
+              "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+              "start": {
+                "line": 11,
+                "col": 1,
+                "offset": 209
+              },
+              "end": {
+                "line": 11,
+                "col": 14,
+                "offset": 222
+              }
+            },
+            "content": "DEFAULT_IMAGE"
+          },
+          {
+            "location": {
+              "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+              "start": {
+                "line": 27,
+                "col": 5,
+                "offset": 644
+              },
+              "end": {
+                "line": 27,
+                "col": 10,
+                "offset": 649
+              }
+            },
+            "content": "image"
+          },
+          {
+            "location": {
+              "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+              "start": {
+                "line": 41,
+                "col": 5,
+                "offset": 1025
+              },
+              "end": {
+                "line": 41,
+                "col": 8,
+                "offset": 1028
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+              "start": {
+                "line": 42,
+                "col": 29,
+                "offset": 1092
+              },
+              "end": {
+                "line": 42,
+                "col": 32,
+                "offset": 1095
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "BLOCK_ARGUMENT_BOUNDARY_UNVALIDATED",
+      "reason": "The environment-derived image is appended before *command in Docker run argv without image-reference or leading-option rejection. Shell expansion is absent, but an option-shaped image value can cross the intended image-operand boundary. Docker parsing/impact was not executed or claimed; the static boundary remains unqualified.",
+      "trust_boundary": "SANDBOX_IMAGE (operator environment), or public run_in_docker image parameter, enters Docker CLI option parsing. The current SelfHealer caller supplies fixed pytest argv and no image override; a remote exploit is not demonstrated. This still warrants narrow image validation for a function advertised as a sandbox.",
+      "suggested_fix": "Before command construction, require a nonempty Docker image reference that cannot start with a dash or contain whitespace/control bytes; use a reviewed reference/digest grammar or supported Docker end-of-options boundary, independently verify actual parsing in a disposable test when separately authorized. Add mocked-subprocess rejection tests for option-shaped image/environment values and preserve existing network/mount controls. No change made.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+          "start_line": 11,
+          "end_line": 19,
+          "lines": "11: DEFAULT_IMAGE = os.getenv(\"SANDBOX_IMAGE\", \"python:3.11-slim\")\n12: \n13: \n14: def run_in_docker(\n15:     command: Iterable[str],\n16:     repo_dir: str,\n17:     *,\n18:     image: str | None = None,\n19:     mounts: Mapping[str, str] | None = None,"
+        },
+        {
+          "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+          "start_line": 27,
+          "end_line": 42,
+          "lines": "27:     image = image or DEFAULT_IMAGE\n28:     if not shutil.which(\"docker\"):\n29:         raise RuntimeError(\"docker is required to run the sandbox\")\n30:     mounts = mounts or {}\n31:     cmd = [\n32:         \"docker\",\n33:         \"run\",\n34:         \"--rm\",\n35:         \"--network=none\",\n36:         \"-v\",\n37:         f\"{repo_dir}:/app\",\n38:     ]\n39:     for host, target in mounts.items():\n40:         cmd += [\"-v\", f\"{host}:{target}\"]\n41:     cmd += [\"-w\", \"/app\", image, *command]\n42:     result = subprocess.run(cmd, capture_output=True, text=True)"
+        },
+        {
+          "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/self_healer.py",
+          "source_sha256": "1659ed4591ebfd35e7eae9d5e4fa95f7348bfee6ee28e4fe9ee07c112b5370f8",
+          "start_line": 56,
+          "end_line": 66,
+          "lines": "56:     def run_tests_collect_error(self):\n57:         \"\"\"Run the test suite and collect output if failures occur.\"\"\"\n58:         runner = test_runner.get_default_runner(self.working_dir)\n59:         rc, output = sandbox.run_in_docker(\n60:             [\n61:                 \"pytest\",\n62:                 \"-q\",\n63:                 \"--color=no\",\n64:             ],\n65:             self.working_dir,\n66:         )"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "check_env.py",
+      "line": 354,
+      "end_line": 354,
+      "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "scanner_fingerprint": "892f3cca5fbd899e6211f41b2834bebfdb98d9e0919da2497018f06d8c6d0e17fb2c1b6ae27cfe825f4f2e390dd4d2bf878931c3f6248d0ac3c00d6d3f6f9d4e_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "                    subprocess.run(cmd, check=True, timeout=pip_timeout)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 37,
+                "offset": 8787
+              },
+              "end": {
+                "line": 298,
+                "col": 60,
+                "offset": 8810
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 5,
+                "offset": 8755
+              },
+              "end": {
+                "line": 298,
+                "col": 15,
+                "offset": 8765
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 346,
+                "col": 21,
+                "offset": 10630
+              },
+              "end": {
+                "line": 346,
+                "col": 24,
+                "offset": 10633
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 354,
+                "col": 36,
+                "offset": 10958
+              },
+              "end": {
+                "line": 354,
+                "col": 39,
+                "offset": 10961
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local operator supplies WHEELHOUSE/--wheelhouse as a package-source location; it is not a web request or model/tool result. The command is an argv list, not a shell command. check_env resolves the wheelhouse to an absolute directory with at least one *.whl before inserting it as the single --find-links operand. Literal sys.executable -m pip install switches and repository/static package selections remain separate argv elements.",
+      "trust_boundary": "Automatic install is an explicit --auto-install or AUTO_INSTALL_MISSING operator setting; the package source is therefore a trusted installation input, not a general execution grant or untrusted website/tool data. Dependency/wheel integrity is separate and not established here.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, check=True, timeout=pip_timeout)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "check_env.py",
+          "start_line": 263,
+          "end_line": 315,
+          "lines": "263:     parser.add_argument(\n264:         \"--auto-install\",\n265:         action=\"store_true\",\n266:         help=\"Attempt pip install of any missing packages\",\n267:     )\n268:     parser.add_argument(\n269:         \"--wheelhouse\",\n270:         help=(\n271:             \"Optional path to a local wheelhouse for offline installs. \"\n272:             \"Defaults to <repo>/wheels when that directory exists.\"\n273:         ),\n274:     )\n275:     parser.add_argument(\n276:         \"--timeout\",\n277:         type=int,\n278:         default=int(os.getenv(\"PIP_TIMEOUT\", \"600\")),\n279:         help=\"Seconds before pip install operations abort (default: 600)\",\n280:     )\n281:     parser.add_argument(\n282:         \"--allow-basic-fallback\",\n283:         action=\"store_true\",\n284:         help=\"Continue even if numpy or pandas are missing\",\n285:     )\n286:     parser.add_argument(\n287:         \"--demo\",\n288:         help=\"Validate additional packages for the specified demo\",\n289:     )\n290:     parser.add_argument(\n291:         \"--skip-net-check\",\n292:         action=\"store_true\",\n293:         help=\"Skip the connectivity check to run quietly offline\",\n294:     )\n295: \n296:     args = parser.parse_args(argv)\n297: \n298:     wheelhouse = args.wheelhouse or os.getenv(\"WHEELHOUSE\")\n299:     if not wheelhouse:\n300:         default_wh = Path(__file__).resolve().parent / \"wheels\"\n301:         if default_wh.is_dir():\n302:             wheelhouse = str(default_wh)\n303: \n304:     wheel_path = Path(wheelhouse).resolve() if wheelhouse else None\n305:     if wheel_path and not (wheel_path.is_dir() and any(wheel_path.glob(\"*.whl\"))):\n306:         print(f\"Wheelhouse {wheel_path} has no wheels; falling back to network installs\")\n307:         wheel_path = None\n308:     wheelhouse = str(wheel_path) if wheel_path else None\n309:     auto = args.auto_install or os.getenv(\"AUTO_INSTALL_MISSING\") == \"1\"\n310:     heavy_auto = FULL_FEATURE\n311:     skip_net_check = args.skip_net_check\n312:     pip_timeout = args.timeout\n313:     allow_basic = args.allow_basic_fallback\n314:     demo = args.demo\n315:     wheel_msg = f\" (wheelhouse: {wheelhouse})\" if wheelhouse else \"\""
+        },
+        {
+          "path": "check_env.py",
+          "start_line": 341,
+          "end_line": 359,
+          "lines": "341:     if auto and (wheelhouse or network_ok):\n342:         for pkg in (\"numpy\", \"prometheus_client\"):\n343:             if not check_pkg(pkg):\n344:                 cmd = [sys.executable, \"-m\", \"pip\", \"install\", \"--quiet\"]\n345:                 if wheelhouse:\n346:                     cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n347:                 cmd += [PIP_NAMES.get(pkg, pkg)]\n348:                 print(\n349:                     f\"Ensuring {pkg} (timeout {pip_timeout}s):\",\n350:                     \" \".join(cmd),\n351:                     flush=True,\n352:                 )\n353:                 try:\n354:                     subprocess.run(cmd, check=True, timeout=pip_timeout)\n355:                 except subprocess.SubprocessError as exc:\n356:                     print(f\"Failed to install {pkg}{wheel_msg} (code {getattr(exc, 'returncode', '')})\")\n357:                     return 1\n358: \n359:     missing_core = warn_missing_core()"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "check_env.py",
+      "line": 372,
+      "end_line": 372,
+      "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "scanner_fingerprint": "892f3cca5fbd899e6211f41b2834bebfdb98d9e0919da2497018f06d8c6d0e17fb2c1b6ae27cfe825f4f2e390dd4d2bf878931c3f6248d0ac3c00d6d3f6f9d4e_1",
+      "original_severity": "ERROR",
+      "scanner_lines": "            subprocess.run(cmd, check=True, timeout=pip_timeout)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 37,
+                "offset": 8787
+              },
+              "end": {
+                "line": 298,
+                "col": 60,
+                "offset": 8810
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 5,
+                "offset": 8755
+              },
+              "end": {
+                "line": 298,
+                "col": 15,
+                "offset": 8765
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 364,
+                "col": 13,
+                "offset": 11391
+              },
+              "end": {
+                "line": 364,
+                "col": 16,
+                "offset": 11394
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 372,
+                "col": 28,
+                "offset": 11700
+              },
+              "end": {
+                "line": 372,
+                "col": 31,
+                "offset": 11703
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local operator supplies WHEELHOUSE/--wheelhouse as a package-source location; it is not a web request or model/tool result. The command is an argv list, not a shell command. check_env resolves the wheelhouse to an absolute directory with at least one *.whl before inserting it as the single --find-links operand. Literal sys.executable -m pip install switches and repository/static package selections remain separate argv elements.",
+      "trust_boundary": "Automatic install is an explicit --auto-install or AUTO_INSTALL_MISSING operator setting; the package source is therefore a trusted installation input, not a general execution grant or untrusted website/tool data. Dependency/wheel integrity is separate and not established here.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, check=True, timeout=pip_timeout)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "check_env.py",
+          "start_line": 263,
+          "end_line": 315,
+          "lines": "263:     parser.add_argument(\n264:         \"--auto-install\",\n265:         action=\"store_true\",\n266:         help=\"Attempt pip install of any missing packages\",\n267:     )\n268:     parser.add_argument(\n269:         \"--wheelhouse\",\n270:         help=(\n271:             \"Optional path to a local wheelhouse for offline installs. \"\n272:             \"Defaults to <repo>/wheels when that directory exists.\"\n273:         ),\n274:     )\n275:     parser.add_argument(\n276:         \"--timeout\",\n277:         type=int,\n278:         default=int(os.getenv(\"PIP_TIMEOUT\", \"600\")),\n279:         help=\"Seconds before pip install operations abort (default: 600)\",\n280:     )\n281:     parser.add_argument(\n282:         \"--allow-basic-fallback\",\n283:         action=\"store_true\",\n284:         help=\"Continue even if numpy or pandas are missing\",\n285:     )\n286:     parser.add_argument(\n287:         \"--demo\",\n288:         help=\"Validate additional packages for the specified demo\",\n289:     )\n290:     parser.add_argument(\n291:         \"--skip-net-check\",\n292:         action=\"store_true\",\n293:         help=\"Skip the connectivity check to run quietly offline\",\n294:     )\n295: \n296:     args = parser.parse_args(argv)\n297: \n298:     wheelhouse = args.wheelhouse or os.getenv(\"WHEELHOUSE\")\n299:     if not wheelhouse:\n300:         default_wh = Path(__file__).resolve().parent / \"wheels\"\n301:         if default_wh.is_dir():\n302:             wheelhouse = str(default_wh)\n303: \n304:     wheel_path = Path(wheelhouse).resolve() if wheelhouse else None\n305:     if wheel_path and not (wheel_path.is_dir() and any(wheel_path.glob(\"*.whl\"))):\n306:         print(f\"Wheelhouse {wheel_path} has no wheels; falling back to network installs\")\n307:         wheel_path = None\n308:     wheelhouse = str(wheel_path) if wheel_path else None\n309:     auto = args.auto_install or os.getenv(\"AUTO_INSTALL_MISSING\") == \"1\"\n310:     heavy_auto = FULL_FEATURE\n311:     skip_net_check = args.skip_net_check\n312:     pip_timeout = args.timeout\n313:     allow_basic = args.allow_basic_fallback\n314:     demo = args.demo\n315:     wheel_msg = f\" (wheelhouse: {wheelhouse})\" if wheelhouse else \"\""
+        },
+        {
+          "path": "check_env.py",
+          "start_line": 357,
+          "end_line": 377,
+          "lines": "357:                     return 1\n358: \n359:     missing_core = warn_missing_core()\n360: \n361:     if auto and missing_core and (wheelhouse or network_ok):\n362:         cmd = [sys.executable, \"-m\", \"pip\", \"install\", \"--quiet\"]\n363:         if wheelhouse:\n364:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n365:         cmd += [PIP_NAMES.get(pkg, pkg) for pkg in missing_core]\n366:         print(\n367:             f\"Attempting install of core packages (timeout {pip_timeout}s):\",\n368:             \" \".join(cmd),\n369:             flush=True,\n370:         )\n371:         try:\n372:             subprocess.run(cmd, check=True, timeout=pip_timeout)\n373:         except subprocess.SubprocessError as exc:\n374:             print(\n375:                 \"Failed to install core packages \"\n376:                 f\"{', '.join(missing_core)}{wheel_msg} \"\n377:                 f\"(code {getattr(exc, 'returncode', '')})\""
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "check_env.py",
+      "line": 411,
+      "end_line": 411,
+      "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "scanner_fingerprint": "892f3cca5fbd899e6211f41b2834bebfdb98d9e0919da2497018f06d8c6d0e17fb2c1b6ae27cfe825f4f2e390dd4d2bf878931c3f6248d0ac3c00d6d3f6f9d4e_2",
+      "original_severity": "ERROR",
+      "scanner_lines": "            subprocess.run(cmd, check=True, timeout=pip_timeout)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 37,
+                "offset": 8787
+              },
+              "end": {
+                "line": 298,
+                "col": 60,
+                "offset": 8810
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 5,
+                "offset": 8755
+              },
+              "end": {
+                "line": 298,
+                "col": 15,
+                "offset": 8765
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 403,
+                "col": 13,
+                "offset": 12997
+              },
+              "end": {
+                "line": 403,
+                "col": 16,
+                "offset": 13000
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 411,
+                "col": 28,
+                "offset": 13273
+              },
+              "end": {
+                "line": 411,
+                "col": 31,
+                "offset": 13276
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local operator supplies WHEELHOUSE/--wheelhouse as a package-source location; it is not a web request or model/tool result. The command is an argv list, not a shell command. check_env resolves the wheelhouse to an absolute directory with at least one *.whl before inserting it as the single --find-links operand. Literal sys.executable -m pip install switches and repository/static package selections remain separate argv elements.",
+      "trust_boundary": "Automatic install is an explicit --auto-install or AUTO_INSTALL_MISSING operator setting; the package source is therefore a trusted installation input, not a general execution grant or untrusted website/tool data. Dependency/wheel integrity is separate and not established here.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, check=True, timeout=pip_timeout)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "check_env.py",
+          "start_line": 263,
+          "end_line": 315,
+          "lines": "263:     parser.add_argument(\n264:         \"--auto-install\",\n265:         action=\"store_true\",\n266:         help=\"Attempt pip install of any missing packages\",\n267:     )\n268:     parser.add_argument(\n269:         \"--wheelhouse\",\n270:         help=(\n271:             \"Optional path to a local wheelhouse for offline installs. \"\n272:             \"Defaults to <repo>/wheels when that directory exists.\"\n273:         ),\n274:     )\n275:     parser.add_argument(\n276:         \"--timeout\",\n277:         type=int,\n278:         default=int(os.getenv(\"PIP_TIMEOUT\", \"600\")),\n279:         help=\"Seconds before pip install operations abort (default: 600)\",\n280:     )\n281:     parser.add_argument(\n282:         \"--allow-basic-fallback\",\n283:         action=\"store_true\",\n284:         help=\"Continue even if numpy or pandas are missing\",\n285:     )\n286:     parser.add_argument(\n287:         \"--demo\",\n288:         help=\"Validate additional packages for the specified demo\",\n289:     )\n290:     parser.add_argument(\n291:         \"--skip-net-check\",\n292:         action=\"store_true\",\n293:         help=\"Skip the connectivity check to run quietly offline\",\n294:     )\n295: \n296:     args = parser.parse_args(argv)\n297: \n298:     wheelhouse = args.wheelhouse or os.getenv(\"WHEELHOUSE\")\n299:     if not wheelhouse:\n300:         default_wh = Path(__file__).resolve().parent / \"wheels\"\n301:         if default_wh.is_dir():\n302:             wheelhouse = str(default_wh)\n303: \n304:     wheel_path = Path(wheelhouse).resolve() if wheelhouse else None\n305:     if wheel_path and not (wheel_path.is_dir() and any(wheel_path.glob(\"*.whl\"))):\n306:         print(f\"Wheelhouse {wheel_path} has no wheels; falling back to network installs\")\n307:         wheel_path = None\n308:     wheelhouse = str(wheel_path) if wheel_path else None\n309:     auto = args.auto_install or os.getenv(\"AUTO_INSTALL_MISSING\") == \"1\"\n310:     heavy_auto = FULL_FEATURE\n311:     skip_net_check = args.skip_net_check\n312:     pip_timeout = args.timeout\n313:     allow_basic = args.allow_basic_fallback\n314:     demo = args.demo\n315:     wheel_msg = f\" (wheelhouse: {wheelhouse})\" if wheelhouse else \"\""
+        },
+        {
+          "path": "check_env.py",
+          "start_line": 396,
+          "end_line": 416,
+          "lines": "396:             spec = None\n397:         if spec is None:\n398:             missing_required_pre.append(pkg)\n399: \n400:     if auto and req_file.exists() and (wheelhouse or network_ok) and (missing_core or missing_required_pre):\n401:         cmd = [sys.executable, \"-m\", \"pip\", \"install\", \"--quiet\"]\n402:         if wheelhouse:\n403:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n404:         cmd += [\"-r\", str(req_file)]\n405:         print(\n406:             f\"Ensuring baseline requirements (timeout {pip_timeout}s):\",\n407:             \" \".join(cmd),\n408:             flush=True,\n409:         )\n410:         try:\n411:             subprocess.run(cmd, check=True, timeout=pip_timeout)\n412:         except subprocess.TimeoutExpired:\n413:             print(\"Timed out installing baseline requirements.\\n\" + NO_NETWORK_HINT)\n414:             if wheelhouse:\n415:                 print(f\"Wheelhouse used: {wheelhouse}\")\n416:             return 1"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "check_env.py",
+      "line": 450,
+      "end_line": 450,
+      "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "scanner_fingerprint": "892f3cca5fbd899e6211f41b2834bebfdb98d9e0919da2497018f06d8c6d0e17fb2c1b6ae27cfe825f4f2e390dd4d2bf878931c3f6248d0ac3c00d6d3f6f9d4e_3",
+      "original_severity": "ERROR",
+      "scanner_lines": "                subprocess.run(cmd, check=True, timeout=pip_timeout)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 37,
+                "offset": 8787
+              },
+              "end": {
+                "line": 298,
+                "col": 60,
+                "offset": 8810
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 5,
+                "offset": 8755
+              },
+              "end": {
+                "line": 298,
+                "col": 15,
+                "offset": 8765
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 442,
+                "col": 17,
+                "offset": 14640
+              },
+              "end": {
+                "line": 442,
+                "col": 20,
+                "offset": 14643
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 450,
+                "col": 32,
+                "offset": 14968
+              },
+              "end": {
+                "line": 450,
+                "col": 35,
+                "offset": 14971
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local operator supplies WHEELHOUSE/--wheelhouse as a package-source location; it is not a web request or model/tool result. The command is an argv list, not a shell command. check_env resolves the wheelhouse to an absolute directory with at least one *.whl before inserting it as the single --find-links operand. Literal sys.executable -m pip install switches and repository/static package selections remain separate argv elements.",
+      "trust_boundary": "Automatic install is an explicit --auto-install or AUTO_INSTALL_MISSING operator setting; the package source is therefore a trusted installation input, not a general execution grant or untrusted website/tool data. Dependency/wheel integrity is separate and not established here.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, check=True, timeout=pip_timeout)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "check_env.py",
+          "start_line": 263,
+          "end_line": 315,
+          "lines": "263:     parser.add_argument(\n264:         \"--auto-install\",\n265:         action=\"store_true\",\n266:         help=\"Attempt pip install of any missing packages\",\n267:     )\n268:     parser.add_argument(\n269:         \"--wheelhouse\",\n270:         help=(\n271:             \"Optional path to a local wheelhouse for offline installs. \"\n272:             \"Defaults to <repo>/wheels when that directory exists.\"\n273:         ),\n274:     )\n275:     parser.add_argument(\n276:         \"--timeout\",\n277:         type=int,\n278:         default=int(os.getenv(\"PIP_TIMEOUT\", \"600\")),\n279:         help=\"Seconds before pip install operations abort (default: 600)\",\n280:     )\n281:     parser.add_argument(\n282:         \"--allow-basic-fallback\",\n283:         action=\"store_true\",\n284:         help=\"Continue even if numpy or pandas are missing\",\n285:     )\n286:     parser.add_argument(\n287:         \"--demo\",\n288:         help=\"Validate additional packages for the specified demo\",\n289:     )\n290:     parser.add_argument(\n291:         \"--skip-net-check\",\n292:         action=\"store_true\",\n293:         help=\"Skip the connectivity check to run quietly offline\",\n294:     )\n295: \n296:     args = parser.parse_args(argv)\n297: \n298:     wheelhouse = args.wheelhouse or os.getenv(\"WHEELHOUSE\")\n299:     if not wheelhouse:\n300:         default_wh = Path(__file__).resolve().parent / \"wheels\"\n301:         if default_wh.is_dir():\n302:             wheelhouse = str(default_wh)\n303: \n304:     wheel_path = Path(wheelhouse).resolve() if wheelhouse else None\n305:     if wheel_path and not (wheel_path.is_dir() and any(wheel_path.glob(\"*.whl\"))):\n306:         print(f\"Wheelhouse {wheel_path} has no wheels; falling back to network installs\")\n307:         wheel_path = None\n308:     wheelhouse = str(wheel_path) if wheel_path else None\n309:     auto = args.auto_install or os.getenv(\"AUTO_INSTALL_MISSING\") == \"1\"\n310:     heavy_auto = FULL_FEATURE\n311:     skip_net_check = args.skip_net_check\n312:     pip_timeout = args.timeout\n313:     allow_basic = args.allow_basic_fallback\n314:     demo = args.demo\n315:     wheel_msg = f\" (wheelhouse: {wheelhouse})\" if wheelhouse else \"\""
+        },
+        {
+          "path": "check_env.py",
+          "start_line": 435,
+          "end_line": 455,
+          "lines": "435:         if heavy_missing:\n436:             if not wheelhouse and not skip_net_check:\n437:                 if not has_network():\n438:                     print(NO_NETWORK_HINT)\n439:                     return 1\n440:             cmd = [sys.executable, \"-m\", \"pip\", \"install\", \"--quiet\"]\n441:             if wheelhouse:\n442:                 cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n443:             cmd += [PIP_NAMES.get(pkg, pkg) for pkg in heavy_missing]\n444:             print(\n445:                 f\"Ensuring heavy extras (timeout {pip_timeout}s):\",\n446:                 \" \".join(cmd),\n447:                 flush=True,\n448:             )\n449:             try:\n450:                 subprocess.run(cmd, check=True, timeout=pip_timeout)\n451:             except subprocess.SubprocessError as exc:\n452:                 print(\n453:                     \"Failed to install heavy extras \"\n454:                     f\"{', '.join(heavy_missing)}{wheel_msg} \"\n455:                     f\"(code {getattr(exc, 'returncode', '')})\""
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "check_env.py",
+      "line": 538,
+      "end_line": 538,
+      "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "scanner_fingerprint": "892f3cca5fbd899e6211f41b2834bebfdb98d9e0919da2497018f06d8c6d0e17fb2c1b6ae27cfe825f4f2e390dd4d2bf878931c3f6248d0ac3c00d6d3f6f9d4e_4",
+      "original_severity": "ERROR",
+      "scanner_lines": "                    cmd,",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 37,
+                "offset": 8787
+              },
+              "end": {
+                "line": 298,
+                "col": 60,
+                "offset": 8810
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 5,
+                "offset": 8755
+              },
+              "end": {
+                "line": 298,
+                "col": 15,
+                "offset": 8765
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 528,
+                "col": 17,
+                "offset": 18287
+              },
+              "end": {
+                "line": 528,
+                "col": 20,
+                "offset": 18290
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 538,
+                "col": 21,
+                "offset": 18687
+              },
+              "end": {
+                "line": 538,
+                "col": 24,
+                "offset": 18690
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local operator supplies WHEELHOUSE/--wheelhouse as a package-source location; it is not a web request or model/tool result. The command is an argv list, not a shell command. check_env resolves the wheelhouse to an absolute directory with at least one *.whl before inserting it as the single --find-links operand. Literal sys.executable -m pip install switches and repository/static package selections remain separate argv elements.",
+      "trust_boundary": "Automatic install is an explicit --auto-install or AUTO_INSTALL_MISSING operator setting; the package source is therefore a trusted installation input, not a general execution grant or untrusted website/tool data. Dependency/wheel integrity is separate and not established here.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=pip_timeout)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "check_env.py",
+          "start_line": 263,
+          "end_line": 315,
+          "lines": "263:     parser.add_argument(\n264:         \"--auto-install\",\n265:         action=\"store_true\",\n266:         help=\"Attempt pip install of any missing packages\",\n267:     )\n268:     parser.add_argument(\n269:         \"--wheelhouse\",\n270:         help=(\n271:             \"Optional path to a local wheelhouse for offline installs. \"\n272:             \"Defaults to <repo>/wheels when that directory exists.\"\n273:         ),\n274:     )\n275:     parser.add_argument(\n276:         \"--timeout\",\n277:         type=int,\n278:         default=int(os.getenv(\"PIP_TIMEOUT\", \"600\")),\n279:         help=\"Seconds before pip install operations abort (default: 600)\",\n280:     )\n281:     parser.add_argument(\n282:         \"--allow-basic-fallback\",\n283:         action=\"store_true\",\n284:         help=\"Continue even if numpy or pandas are missing\",\n285:     )\n286:     parser.add_argument(\n287:         \"--demo\",\n288:         help=\"Validate additional packages for the specified demo\",\n289:     )\n290:     parser.add_argument(\n291:         \"--skip-net-check\",\n292:         action=\"store_true\",\n293:         help=\"Skip the connectivity check to run quietly offline\",\n294:     )\n295: \n296:     args = parser.parse_args(argv)\n297: \n298:     wheelhouse = args.wheelhouse or os.getenv(\"WHEELHOUSE\")\n299:     if not wheelhouse:\n300:         default_wh = Path(__file__).resolve().parent / \"wheels\"\n301:         if default_wh.is_dir():\n302:             wheelhouse = str(default_wh)\n303: \n304:     wheel_path = Path(wheelhouse).resolve() if wheelhouse else None\n305:     if wheel_path and not (wheel_path.is_dir() and any(wheel_path.glob(\"*.whl\"))):\n306:         print(f\"Wheelhouse {wheel_path} has no wheels; falling back to network installs\")\n307:         wheel_path = None\n308:     wheelhouse = str(wheel_path) if wheel_path else None\n309:     auto = args.auto_install or os.getenv(\"AUTO_INSTALL_MISSING\") == \"1\"\n310:     heavy_auto = FULL_FEATURE\n311:     skip_net_check = args.skip_net_check\n312:     pip_timeout = args.timeout\n313:     allow_basic = args.allow_basic_fallback\n314:     demo = args.demo\n315:     wheel_msg = f\" (wheelhouse: {wheelhouse})\" if wheelhouse else \"\""
+        },
+        {
+          "path": "check_env.py",
+          "start_line": 523,
+          "end_line": 543,
+          "lines": "523:             if hint:\n524:                 print(\"  -\", hint)\n525:         if auto and missing_required and (wheelhouse or network_ok):\n526:             cmd = [sys.executable, \"-m\", \"pip\", \"install\", \"--quiet\"]\n527:             if wheelhouse:\n528:                 cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n529:             packages = [PIP_NAMES.get(pkg, pkg) for pkg in missing_required]\n530:             cmd += packages\n531:             print(\n532:                 f\"Attempting automatic install (timeout {pip_timeout}s):\",\n533:                 \" \".join(cmd),\n534:                 flush=True,\n535:             )\n536:             try:\n537:                 result = subprocess.run(\n538:                     cmd,\n539:                     capture_output=True,\n540:                     text=True,\n541:                     check=True,\n542:                     timeout=pip_timeout,\n543:                 )"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "check_env.py",
+      "line": 613,
+      "end_line": 613,
+      "source_sha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "scanner_fingerprint": "892f3cca5fbd899e6211f41b2834bebfdb98d9e0919da2497018f06d8c6d0e17fb2c1b6ae27cfe825f4f2e390dd4d2bf878931c3f6248d0ac3c00d6d3f6f9d4e_5",
+      "original_severity": "ERROR",
+      "scanner_lines": "                subprocess.run(cmd, check=True, timeout=pip_timeout)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 37,
+                "offset": 8787
+              },
+              "end": {
+                "line": 298,
+                "col": 60,
+                "offset": 8810
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 298,
+                "col": 5,
+                "offset": 8755
+              },
+              "end": {
+                "line": 298,
+                "col": 15,
+                "offset": 8765
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "check_env.py",
+              "start": {
+                "line": 605,
+                "col": 17,
+                "offset": 21850
+              },
+              "end": {
+                "line": 605,
+                "col": 20,
+                "offset": 21853
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "check_env.py",
+              "start": {
+                "line": 613,
+                "col": 32,
+                "offset": 22133
+              },
+              "end": {
+                "line": 613,
+                "col": 35,
+                "offset": 22136
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local operator supplies WHEELHOUSE/--wheelhouse as a package-source location; it is not a web request or model/tool result. The command is an argv list, not a shell command. check_env resolves the wheelhouse to an absolute directory with at least one *.whl before inserting it as the single --find-links operand. Literal sys.executable -m pip install switches and repository/static package selections remain separate argv elements.",
+      "trust_boundary": "Automatic install is an explicit --auto-install or AUTO_INSTALL_MISSING operator setting; the package source is therefore a trusted installation input, not a general execution grant or untrusted website/tool data. Dependency/wheel integrity is separate and not established here.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, check=True, timeout=pip_timeout)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "check_env.py",
+          "start_line": 263,
+          "end_line": 315,
+          "lines": "263:     parser.add_argument(\n264:         \"--auto-install\",\n265:         action=\"store_true\",\n266:         help=\"Attempt pip install of any missing packages\",\n267:     )\n268:     parser.add_argument(\n269:         \"--wheelhouse\",\n270:         help=(\n271:             \"Optional path to a local wheelhouse for offline installs. \"\n272:             \"Defaults to <repo>/wheels when that directory exists.\"\n273:         ),\n274:     )\n275:     parser.add_argument(\n276:         \"--timeout\",\n277:         type=int,\n278:         default=int(os.getenv(\"PIP_TIMEOUT\", \"600\")),\n279:         help=\"Seconds before pip install operations abort (default: 600)\",\n280:     )\n281:     parser.add_argument(\n282:         \"--allow-basic-fallback\",\n283:         action=\"store_true\",\n284:         help=\"Continue even if numpy or pandas are missing\",\n285:     )\n286:     parser.add_argument(\n287:         \"--demo\",\n288:         help=\"Validate additional packages for the specified demo\",\n289:     )\n290:     parser.add_argument(\n291:         \"--skip-net-check\",\n292:         action=\"store_true\",\n293:         help=\"Skip the connectivity check to run quietly offline\",\n294:     )\n295: \n296:     args = parser.parse_args(argv)\n297: \n298:     wheelhouse = args.wheelhouse or os.getenv(\"WHEELHOUSE\")\n299:     if not wheelhouse:\n300:         default_wh = Path(__file__).resolve().parent / \"wheels\"\n301:         if default_wh.is_dir():\n302:             wheelhouse = str(default_wh)\n303: \n304:     wheel_path = Path(wheelhouse).resolve() if wheelhouse else None\n305:     if wheel_path and not (wheel_path.is_dir() and any(wheel_path.glob(\"*.whl\"))):\n306:         print(f\"Wheelhouse {wheel_path} has no wheels; falling back to network installs\")\n307:         wheel_path = None\n308:     wheelhouse = str(wheel_path) if wheel_path else None\n309:     auto = args.auto_install or os.getenv(\"AUTO_INSTALL_MISSING\") == \"1\"\n310:     heavy_auto = FULL_FEATURE\n311:     skip_net_check = args.skip_net_check\n312:     pip_timeout = args.timeout\n313:     allow_basic = args.allow_basic_fallback\n314:     demo = args.demo\n315:     wheel_msg = f\" (wheelhouse: {wheelhouse})\" if wheelhouse else \"\""
+        },
+        {
+          "path": "check_env.py",
+          "start_line": 598,
+          "end_line": 615,
+          "lines": "598:     if demo == \"macro_sentinel\" and not os.getenv(\"ETHERSCAN_API_KEY\"):\n599:         print(\"WARNING: ETHERSCAN_API_KEY is unset; Etherscan collector disabled\")\n600: \n601:     if (shutil.which(\"pre-commit\") or (Path(\".git/hooks/pre-commit\").exists())) and not shutil.which(\"ruff\"):\n602:         if auto and (wheelhouse or network_ok):\n603:             cmd = [sys.executable, \"-m\", \"pip\", \"install\", \"--quiet\"]\n604:             if wheelhouse:\n605:                 cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n606:             cmd.append(\"ruff\")\n607:             print(\n608:                 f\"Installing Ruff (timeout {pip_timeout}s):\",\n609:                 \" \".join(cmd),\n610:                 flush=True,\n611:             )\n612:             try:\n613:                 subprocess.run(cmd, check=True, timeout=pip_timeout)\n614:             except subprocess.SubprocessError as exc:\n615:                 print(\"Failed to install Ruff\", getattr(exc, \"returncode\", \"\"))"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/audit_agent_dependencies.py",
+      "line": 56,
+      "end_line": 56,
+      "source_sha256": "271f3f7cf9617033897125059bc11c596627f2abe508a46356aed29f80217249",
+      "scanner_fingerprint": "9e0ff8f3cae87cfe1a28a6688950af5f98a461f0de51e7a877b2fdd341829dd03175dd14f8afa2e1a7ea3b75e946eedeeea90cd45301f4915bfd5020c6ba23af_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "    completed = subprocess.run(command, check=False, timeout=600)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/audit_agent_dependencies.py",
+              "start": {
+                "line": 40,
+                "col": 5,
+                "offset": 1617
+              },
+              "end": {
+                "line": 40,
+                "col": 31,
+                "offset": 1643
+              }
+            },
+            "args = parser.parse_args()"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/audit_agent_dependencies.py",
+              "start": {
+                "line": 40,
+                "col": 5,
+                "offset": 1617
+              },
+              "end": {
+                "line": 40,
+                "col": 9,
+                "offset": 1621
+              }
+            },
+            "content": "args"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/audit_agent_dependencies.py",
+              "start": {
+                "line": 56,
+                "col": 32,
+                "offset": 2052
+              },
+              "end": {
+                "line": 56,
+                "col": 39,
+                "offset": 2059
+              }
+            },
+            "command"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_CLI_ARGV",
+      "reason": "Explicit local argparse --lock/--output paths occupy individual -r/--output operands in literal sys.executable -m pip_audit argv. The call uses no shell; a source path is not interpolated into executable text. The selected module and command switches are fixed.",
+      "trust_boundary": "Operator CLI selects files to audit and evidence output; it is not a server request handler. This does not authorize untrusted lock content to install/execute packages; the literal --disable-pip and --require-hashes are retained.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(command, check=False, timeout=600)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "command"
+      },
+      "support": [
+        {
+          "path": "scripts/audit_agent_dependencies.py",
+          "start_line": 36,
+          "end_line": 56,
+          "lines": "36: def main() -> None:\n37:     parser = argparse.ArgumentParser(description=__doc__)\n38:     parser.add_argument(\"--lock\", type=Path, default=Path(\"requirements-agent.lock\"))\n39:     parser.add_argument(\"--output\", type=Path, default=Path(\"evidence/python-dependencies\"))\n40:     args = parser.parse_args()\n41:     args.output.mkdir(parents=True, exist_ok=True)\n42:     report_path = args.output / \"pip-audit.json\"\n43:     command = [\n44:         sys.executable,\n45:         \"-m\",\n46:         \"pip_audit\",\n47:         \"--disable-pip\",\n48:         \"--require-hashes\",\n49:         \"--progress-spinner=off\",\n50:         \"-r\",\n51:         str(args.lock),\n52:         \"--format=json\",\n53:         \"--output\",\n54:         str(report_path),\n55:     ]\n56:     completed = subprocess.run(command, check=False, timeout=600)"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/package_agent_release.py",
+      "line": 610,
+      "end_line": 610,
+      "source_sha256": "1bd65d0f60c78677f0c8c8e774e906d3b8ff0e83dee151b8daeaa85c95b5ba39",
+      "scanner_fingerprint": "57fb302adbf0afb286b3b8a338c597d190894d9850bddeab4de440bda7742d69b7eec22ac9b5a5591572d1c90b04ad093c6e97c30ff49cfa88e026ac8840b670_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            [sys.executable, \"-m\", \"build\", \"--no-isolation\", \"--outdir\", str(output)], cwd=source, check=True",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 560,
+                "col": 5,
+                "offset": 27537
+              },
+              "end": {
+                "line": 560,
+                "col": 31,
+                "offset": 27563
+              }
+            },
+            "args = parser.parse_args()"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 560,
+                "col": 5,
+                "offset": 27537
+              },
+              "end": {
+                "line": 560,
+                "col": 9,
+                "offset": 27541
+              }
+            },
+            "content": "args"
+          },
+          {
+            "location": {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 564,
+                "col": 5,
+                "offset": 27801
+              },
+              "end": {
+                "line": 564,
+                "col": 11,
+                "offset": 27807
+              }
+            },
+            "content": "output"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 610,
+                "col": 13,
+                "offset": 30015
+              },
+              "end": {
+                "line": 610,
+                "col": 87,
+                "offset": 30089
+              }
+            },
+            "[sys.executable, \"-m\", \"build\", \"--no-isolation\", \"--outdir\", str(output)]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_CLI_ARGV",
+      "reason": "--output is resolved to an absolute Path before use as the single operand of literal --outdir in sys.executable -m build --no-isolation argv. shell is omitted/False. CLI output data cannot add shell tokens or options through string splitting.",
+      "trust_boundary": "Operator release CLI output directory; clean HEAD and current evidence validation precede the call. Build intentionally executes the selected committed project build backend and requires separate release authorization; this triage does not grant it.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([sys.executable, '-m', 'build', '--no-isolation', '--outdir', str(output)], cwd=source, check=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[sys.executable, '-m', 'build', '--no-isolation', '--outdir', str(output)]"
+      },
+      "support": [
+        {
+          "path": "scripts/package_agent_release.py",
+          "start_line": 556,
+          "end_line": 578,
+          "lines": "556: def main() -> None:\n557:     parser = argparse.ArgumentParser(description=__doc__)\n558:     parser.add_argument(\"--output\", type=Path, required=True)\n559:     parser.add_argument(\"--evidence\", type=Path, required=True)\n560:     args = parser.parse_args()\n561:     subprocess.run([\"git\", \"diff\", \"--exit-code\", \"--quiet\", \"HEAD\"], check=True)\n562:     sha = subprocess.check_output([\"git\", \"rev-parse\", \"HEAD\"], text=True).strip()\n563:     historical_ci = require_historical_evidence(args.evidence, sha)\n564:     output = args.output.resolve()\n565:     version = tomllib.loads(Path(\"pyproject.toml\").read_text(encoding=\"utf-8\"))[\"project\"][\"version\"]\n566:     if not isinstance(version, str) or not re.fullmatch(r\"\\d+\\.\\d+\\.\\d+\", version):\n567:         raise ValueError(\"release version must be major.minor.patch\")\n568:     flagship = None\n569:     if tuple(map(int, version.split(\".\"))) >= (1, 34, 0):\n570:         from scripts.successor_alpha_evidence import require_local_reports\n571: \n572:         flagship = require_local_reports(args.evidence, sha, version)\n573:     transformational = None\n574:     if tuple(map(int, version.split(\".\"))) >= (1, 36, 0):\n575:         from scripts.transformational_evidence import require_local_reports as require_ti_local_reports\n576: \n577:         transformational = require_ti_local_reports(args.evidence, sha, version)[\"full\"]\n578:     output.mkdir(parents=True, exist_ok=False)"
+        },
+        {
+          "path": "scripts/package_agent_release.py",
+          "start_line": 604,
+          "end_line": 611,
+          "lines": "604:     with tempfile.TemporaryDirectory(prefix=\"alpha-release-build-\") as temporary:\n605:         clean = Path(temporary)\n606:         with zipfile.ZipFile(output / f\"alpha-agent-v{version}-source.zip\") as archive:\n607:             archive.extractall(clean)\n608:         source = clean / f\"AGI-Alpha-Agent-v{version}\"\n609:         subprocess.run(\n610:             [sys.executable, \"-m\", \"build\", \"--no-isolation\", \"--outdir\", str(output)], cwd=source, check=True\n611:         )"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/package_agent_release.py",
+      "line": 625,
+      "end_line": 625,
+      "source_sha256": "1bd65d0f60c78677f0c8c8e774e906d3b8ff0e83dee151b8daeaa85c95b5ba39",
+      "scanner_fingerprint": "d300891aa28c239dd3df370c91b5d1776a4495e917d5db375ee14fcc081dc95f659b9fdcb1d3ddce798ecc39784b7b519f048679125c951853fe6d67c8c048a5_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        [sys.executable, \"-m\", \"twine\", \"check\", *map(str, output.glob(\"*.whl\")), *map(str, output.glob(\"*.tar.gz\"))],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 560,
+                "col": 5,
+                "offset": 27537
+              },
+              "end": {
+                "line": 560,
+                "col": 31,
+                "offset": 27563
+              }
+            },
+            "args = parser.parse_args()"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 560,
+                "col": 5,
+                "offset": 27537
+              },
+              "end": {
+                "line": 560,
+                "col": 9,
+                "offset": 27541
+              }
+            },
+            "content": "args"
+          },
+          {
+            "location": {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 564,
+                "col": 5,
+                "offset": 27801
+              },
+              "end": {
+                "line": 564,
+                "col": 11,
+                "offset": 27807
+              }
+            },
+            "content": "output"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/package_agent_release.py",
+              "start": {
+                "line": 625,
+                "col": 9,
+                "offset": 30894
+              },
+              "end": {
+                "line": 625,
+                "col": 118,
+                "offset": 31003
+              }
+            },
+            "[sys.executable, \"-m\", \"twine\", \"check\", *map(str, output.glob(\"*.whl\")), *map(str, output.glob(\"*.tar.gz\"))]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_CLI_ARGV",
+      "reason": "The list invokes fixed sys.executable -m twine check. Inputs are *.whl/*.tar.gz children of already absolute output Path, so each is an absolute argv filename and cannot become an option or shell fragment. No shell is used.",
+      "trust_boundary": "Operator output folder and artifacts built by preceding local release process; not a remote request. This finding disposition does not qualify package contents or authorize publication.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([sys.executable, '-m', 'twine', 'check', *map(str, output.glob('*.whl')), *map(str, output.glob('*.tar.gz'))], check=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[sys.executable, '-m', 'twine', 'check', *map(str, output.glob('*.whl')), *map(str, output.glob('*.tar.gz'))]"
+      },
+      "support": [
+        {
+          "path": "scripts/package_agent_release.py",
+          "start_line": 556,
+          "end_line": 578,
+          "lines": "556: def main() -> None:\n557:     parser = argparse.ArgumentParser(description=__doc__)\n558:     parser.add_argument(\"--output\", type=Path, required=True)\n559:     parser.add_argument(\"--evidence\", type=Path, required=True)\n560:     args = parser.parse_args()\n561:     subprocess.run([\"git\", \"diff\", \"--exit-code\", \"--quiet\", \"HEAD\"], check=True)\n562:     sha = subprocess.check_output([\"git\", \"rev-parse\", \"HEAD\"], text=True).strip()\n563:     historical_ci = require_historical_evidence(args.evidence, sha)\n564:     output = args.output.resolve()\n565:     version = tomllib.loads(Path(\"pyproject.toml\").read_text(encoding=\"utf-8\"))[\"project\"][\"version\"]\n566:     if not isinstance(version, str) or not re.fullmatch(r\"\\d+\\.\\d+\\.\\d+\", version):\n567:         raise ValueError(\"release version must be major.minor.patch\")\n568:     flagship = None\n569:     if tuple(map(int, version.split(\".\"))) >= (1, 34, 0):\n570:         from scripts.successor_alpha_evidence import require_local_reports\n571: \n572:         flagship = require_local_reports(args.evidence, sha, version)\n573:     transformational = None\n574:     if tuple(map(int, version.split(\".\"))) >= (1, 36, 0):\n575:         from scripts.transformational_evidence import require_local_reports as require_ti_local_reports\n576: \n577:         transformational = require_ti_local_reports(args.evidence, sha, version)[\"full\"]\n578:     output.mkdir(parents=True, exist_ok=False)"
+        },
+        {
+          "path": "scripts/package_agent_release.py",
+          "start_line": 612,
+          "end_line": 626,
+          "lines": "612:     primary_wheels = list(output.glob(\"alpha_factory_v1-*.whl\"))\n613:     if len(primary_wheels) != 1:\n614:         raise ValueError(\"Exactly one primary Alpha wheel is required\")\n615:     wheel = primary_wheels[0]\n616:     with zipfile.ZipFile(wheel) as archive:\n617:         names = archive.namelist()\n618:         assert \"alpha_factory_v1/core/runtime/web/index.html\" in names\n619:         assert \"alpha_factory_v1/core/runtime/cli.py\" in names\n620:         assert \"alpha_factory_v1/core/runtime/successor/cli.py\" in names\n621:         assert \"alpha_factory_v1/core/runtime/successor/schemas.json\" in names\n622:         assert \"alpha_factory_v1/core/runtime/successor/canonical-vectors.json\" in names\n623:         assert not any(\"/node_modules/\" in name or \"/.venv/\" in name for name in names)\n624:     subprocess.run(\n625:         [sys.executable, \"-m\", \"twine\", \"check\", *map(str, output.glob(\"*.whl\")), *map(str, output.glob(\"*.tar.gz\"))],\n626:         check=True,"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/validate_agent_model.py",
+      "line": 47,
+      "end_line": 62,
+      "source_sha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+      "scanner_fingerprint": "6f44d351eed2f96ee1d76e2f77af0357b4d608acabd3f796df578eafe9de8d5de41d09fbf4abffc75a926a4d436eff65cc8516838d31ba72b2a03b4868a82b56_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "                [\n                    str(args.server.resolve()),\n                    \"--model\",\n                    str(args.model.resolve()),\n                    \"--host\",\n                    \"127.0.0.1\",\n                    \"--port\",\n                    str(port),\n                    \"--ctx-size\",\n                    \"4096\",\n                    \"--threads\",\n                    \"8\",\n                    \"--alias\",\n                    \"qwen3-4b-pinned\",\n                    \"--no-webui\",\n                ],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/validate_agent_model.py",
+              "start": {
+                "line": 35,
+                "col": 5,
+                "offset": 1237
+              },
+              "end": {
+                "line": 35,
+                "col": 31,
+                "offset": 1263
+              }
+            },
+            "args = parser.parse_args()"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/validate_agent_model.py",
+              "start": {
+                "line": 35,
+                "col": 5,
+                "offset": 1237
+              },
+              "end": {
+                "line": 35,
+                "col": 9,
+                "offset": 1241
+              }
+            },
+            "content": "args"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/validate_agent_model.py",
+              "start": {
+                "line": 47,
+                "col": 17,
+                "offset": 1805
+              },
+              "end": {
+                "line": 62,
+                "col": 18,
+                "offset": 2298
+              }
+            },
+            "[\n                    str(args.server.resolve()),\n                    \"--model\",\n                    str(args.model.resolve()),\n                    \"--host\",\n                    \"127.0.0.1\",\n                    \"--port\",\n                    str(port),\n                    \"--ctx-size\",\n                    \"4096\",\n                    \"--threads\",\n                    \"8\",\n                    \"--alias\",\n                    \"qwen3-4b-pinned\",\n                    \"--no-webui\",\n                ]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_EXPLICIT_OPERATOR_EXECUTABLE",
+      "reason": "The script explicitly requires local --server and --model CLI Paths. args.server.resolve() is the selected executable in argv[0]; model.resolve() is one --model operand. Host/port/threads and other switches are literals/locally allocated integers, with no shell. A local operator intentionally chooses an executable; no lower-trust content-to-command escalation is shown.",
+      "trust_boundary": "Operator-supplied llama.cpp binary and SHA256-checked model, not a web/model supplied action. The binary itself is not authenticated by this call; trusting arbitrary supplied binaries is outside this disposition.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.Popen([str(args.server.resolve()), '--model', str(args.model.resolve()), '--host', '127.0.0.1', '--port', str(port), '--ctx-size', '4096', '--threads', '8', '--alias', 'qwen3-4b-pinned', '--no-webui'], stdout=log, stderr=log)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[str(args.server.resolve()), '--model', str(args.model.resolve()), '--host', '127.0.0.1', '--port', str(port), '--ctx-size', '4096', '--threads', '8', '--alias', 'qwen3-4b-pinned', '--no-webui']"
+      },
+      "support": [
+        {
+          "path": "scripts/validate_agent_model.py",
+          "start_line": 24,
+          "end_line": 65,
+          "lines": "24: def main() -> None:\n25:     \"\"\"Run the supplied llama.cpp binary on loopback and retain public evidence.\"\"\"\n26:     parser = argparse.ArgumentParser()\n27:     parser.add_argument(\"--server\", type=Path, required=True)\n28:     parser.add_argument(\"--model\", type=Path, required=True)\n29:     parser.add_argument(\"--sha256\", required=True)\n30:     parser.add_argument(\"--output\", type=Path, required=True)\n31:     parser.add_argument(\"--with-code\", action=\"store_true\", help=\"Also generate, sandbox, review and export code\")\n32:     parser.add_argument(\n33:         \"--with-ti-public-pilot\", action=\"store_true\", help=\"Also run the actual bounded TI public-source pilot\"\n34:     )\n35:     args = parser.parse_args()\n36:     with args.model.open(\"rb\") as source:\n37:         model_hash = hashlib.file_digest(source, \"sha256\").hexdigest()\n38:     if model_hash != args.sha256:\n39:         raise ValueError(\"model checksum mismatch\")\n40:     with socket.socket() as listener:\n41:         listener.bind((\"127.0.0.1\", 0))\n42:         port = listener.getsockname()[1]\n43:     with tempfile.TemporaryDirectory(prefix=\"alpha-real-model-\") as temporary:\n44:         folder = Path(temporary)\n45:         with (folder / \"server.log\").open(\"w\") as log:\n46:             process = subprocess.Popen(\n47:                 [\n48:                     str(args.server.resolve()),\n49:                     \"--model\",\n50:                     str(args.model.resolve()),\n51:                     \"--host\",\n52:                     \"127.0.0.1\",\n53:                     \"--port\",\n54:                     str(port),\n55:                     \"--ctx-size\",\n56:                     \"4096\",\n57:                     \"--threads\",\n58:                     \"8\",\n59:                     \"--alias\",\n60:                     \"qwen3-4b-pinned\",\n61:                     \"--no-webui\",\n62:                 ],\n63:                 stdout=log,\n64:                 stderr=log,\n65:             )"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/validate_agent_model.py",
+      "line": 163,
+      "end_line": 163,
+      "source_sha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+      "scanner_fingerprint": "a849f4b67d1206a59ca2b8ee1410a82409a1257bd76c4628daebc1dbf959445165eba0d652916a72671a8bf41b9c34ded6a07ffe16a3287bd98a73002edbf8a0_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "                        [str(args.server), \"--version\"], text=True, stderr=subprocess.STDOUT",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/validate_agent_model.py",
+              "start": {
+                "line": 35,
+                "col": 5,
+                "offset": 1237
+              },
+              "end": {
+                "line": 35,
+                "col": 31,
+                "offset": 1263
+              }
+            },
+            "args = parser.parse_args()"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/validate_agent_model.py",
+              "start": {
+                "line": 35,
+                "col": 5,
+                "offset": 1237
+              },
+              "end": {
+                "line": 35,
+                "col": 9,
+                "offset": 1241
+              }
+            },
+            "content": "args"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/validate_agent_model.py",
+              "start": {
+                "line": 163,
+                "col": 25,
+                "offset": 7613
+              },
+              "end": {
+                "line": 163,
+                "col": 56,
+                "offset": 7644
+              }
+            },
+            "[str(args.server), \"--version\"]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_EXPLICIT_OPERATOR_EXECUTABLE",
+      "reason": "argv is exactly [str(args.server), --version]; no shell or dynamic program text. The same required local operator binary selector is used.",
+      "trust_boundary": "Local operator selected executable; no remote request source. This verifies neither binary integrity nor the broader inference/runtime safety.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.check_output([str(args.server), '--version'], text=True, stderr=subprocess.STDOUT)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[str(args.server), '--version']"
+      },
+      "support": [
+        {
+          "path": "scripts/validate_agent_model.py",
+          "start_line": 24,
+          "end_line": 39,
+          "lines": "24: def main() -> None:\n25:     \"\"\"Run the supplied llama.cpp binary on loopback and retain public evidence.\"\"\"\n26:     parser = argparse.ArgumentParser()\n27:     parser.add_argument(\"--server\", type=Path, required=True)\n28:     parser.add_argument(\"--model\", type=Path, required=True)\n29:     parser.add_argument(\"--sha256\", required=True)\n30:     parser.add_argument(\"--output\", type=Path, required=True)\n31:     parser.add_argument(\"--with-code\", action=\"store_true\", help=\"Also generate, sandbox, review and export code\")\n32:     parser.add_argument(\n33:         \"--with-ti-public-pilot\", action=\"store_true\", help=\"Also run the actual bounded TI public-source pilot\"\n34:     )\n35:     args = parser.parse_args()\n36:     with args.model.open(\"rb\") as source:\n37:         model_hash = hashlib.file_digest(source, \"sha256\").hexdigest()\n38:     if model_hash != args.sha256:\n39:         raise ValueError(\"model checksum mismatch\")"
+        },
+        {
+          "path": "scripts/validate_agent_model.py",
+          "start_line": 157,
+          "end_line": 164,
+          "lines": "157:                 evidence = {\n158:                     \"model_file\": args.model.name,\n159:                     \"coding\": coding,\n160:                     \"ti_public_pilot\": ti_public_pilot,\n161:                     \"model_sha256\": model_hash,\n162:                     \"server_version\": subprocess.check_output(\n163:                         [str(args.server), \"--version\"], text=True, stderr=subprocess.STDOUT\n164:                     ).strip(),"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "scripts/validate_nova_studio.py",
+      "line": 55,
+      "end_line": 55,
+      "source_sha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+      "scanner_fingerprint": "8f025b4eb373b7c31337d9ea7e71b7aa97ddbc730fa2eb1638887f5d3d0fe0e67daacae7f8909bc395493d898da79269fe856153af56290b521582162dff5c3f_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            page.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          40
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "scripts/validate_nova_studio.py",
+          "start_line": 40,
+          "end_line": 40,
+          "lines": "40:     requests: list[str] = []"
+        },
+        {
+          "path": "scripts/validate_nova_studio.py",
+          "start_line": 53,
+          "end_line": 57,
+          "lines": "53:             page = context.new_page()\n54:             page.on(\"pageerror\", lambda error: errors.append(str(error)))\n55:             page.on(\"request\", lambda request: requests.append(request.url))\n56:             for name, digest in expected.items():\n57:                 response = context.request.get(origin + name)"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "scripts/validate_nova_studio.py",
+      "line": 105,
+      "end_line": 105,
+      "source_sha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+      "scanner_fingerprint": "8f025b4eb373b7c31337d9ea7e71b7aa97ddbc730fa2eb1638887f5d3d0fe0e67daacae7f8909bc395493d898da79269fe856153af56290b521582162dff5c3f_1",
+      "original_severity": "ERROR",
+      "scanner_lines": "            page.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          40
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "scripts/validate_nova_studio.py",
+          "start_line": 40,
+          "end_line": 40,
+          "lines": "40:     requests: list[str] = []"
+        },
+        {
+          "path": "scripts/validate_nova_studio.py",
+          "start_line": 103,
+          "end_line": 107,
+          "lines": "103:             page = context.new_page()\n104:             page.on(\"pageerror\", lambda error: errors.append(str(error)))\n105:             page.on(\"request\", lambda request: requests.append(request.url))\n106:             page.goto(target)\n107:             expect(page.locator(\"#status\")).to_contain_text(\"Start locally\")"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "scripts/validate_onboarding.py",
+      "line": 88,
+      "end_line": 88,
+      "source_sha256": "78ba3f2e83d48c201682e3eb2dc33d4b14084492de3ec46a1d55f98cc5d12f5f",
+      "scanner_fingerprint": "45a520fcfeb7017dbaa178f29f2175e06edefc57517b4e194ebc40fd8aebaf81b41967c829db54e724723e6cd5f745a8af26f6033a87ac4444bc1b2a4067b5b1_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            page.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          87
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "scripts/validate_onboarding.py",
+          "start_line": 87,
+          "end_line": 87,
+          "lines": "87:             requests: list[str] = []"
+        },
+        {
+          "path": "scripts/validate_onboarding.py",
+          "start_line": 86,
+          "end_line": 90,
+          "lines": "86:             page.on(\"pageerror\", lambda error: report[\"browser_errors\"].append(str(error)))\n87:             requests: list[str] = []\n88:             page.on(\"request\", lambda request: requests.append(request.url))\n89:             page.emulate_media(media=\"print\")\n90:             expect(page.locator(\"main\")).to_be_visible()"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "scripts/validate_successor_build.py",
+      "line": 23,
+      "end_line": 23,
+      "source_sha256": "6e1f95ead70d845f36d6860a41997021318dc6ed3b1d7c0062dd63fc271ecca1",
+      "scanner_fingerprint": "d61312e210d978f246c0c25ea73975702881fb26bf8760bc38db614814aad2c590f144bec68d5fbac7a65f74e6602ead0ca476b66598114cd9b1e8b0677ed0d6_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "    page.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          20
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "scripts/validate_successor_build.py",
+          "start_line": 20,
+          "end_line": 20,
+          "lines": "20:     requests: list[str] = []"
+        },
+        {
+          "path": "scripts/validate_successor_build.py",
+          "start_line": 21,
+          "end_line": 25,
+          "lines": "21:     page.on(\"pageerror\", lambda error: errors.append(str(error)))\n22:     page.goto(origin + \"successor/build/\", wait_until=\"networkidle\")\n23:     page.on(\"request\", lambda request: requests.append(request.url))\n24:     expect(page.locator(\"#app\")).to_be_visible()\n25:     name = '</script><img src=x onerror=\"alert(1)\">'"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/verify_aiga_requirements_lock.py",
+      "line": 31,
+      "end_line": 31,
+      "source_sha256": "ed9b542af90b2c0a5ccd56439e5d50da769db3057bbfa31a133a9246ad2b9d91",
+      "scanner_fingerprint": "719d7737171b41c048649e892cdb762d3972f23fd5f65f6a3c8e7d1f498b0c140574cbd2ec8f550dcec97a58a4efff48b043d30146ace08821aac0e39c8bde86_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        result = subprocess.run(cmd, capture_output=True, text=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_aiga_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 22,
+                "offset": 853
+              },
+              "end": {
+                "line": 26,
+                "col": 45,
+                "offset": 876
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/verify_aiga_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 9,
+                "offset": 840
+              },
+              "end": {
+                "line": 26,
+                "col": 19,
+                "offset": 850
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_aiga_requirements_lock.py",
+              "start": {
+                "line": 29,
+                "col": 13,
+                "offset": 939
+              },
+              "end": {
+                "line": 29,
+                "col": 16,
+                "offset": 942
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_aiga_requirements_lock.py",
+              "start": {
+                "line": 31,
+                "col": 33,
+                "offset": 1093
+              },
+              "end": {
+                "line": 31,
+                "col": 36,
+                "offset": 1096
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local lock-verification process selects pip-compile from PATH or sys.executable -m piptools compile; WHEELHOUSE is one argv operand after literal --find-links. Requirement input paths are repository constants and output is a fresh temporary file. No shell=True/string command or remote request source exists at this call. This does not establish trust in packages from an operator-selected wheelhouse or PATH.",
+      "trust_boundary": "Local developer/CI operator environment and dependency-resolution policy. This does not admit untrusted package sources, PATH programs or printed command suggestions for later execution.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "scripts/verify_aiga_requirements_lock.py",
+          "start_line": 14,
+          "end_line": 34,
+          "lines": "14: def main() -> int:\n15:     repo_root = Path(__file__).resolve().parents[1]\n16:     req_txt = repo_root / \"alpha_factory_v1\" / \"demos\" / \"aiga_meta_evolution\" / \"requirements.txt\"\n17:     lock_file = repo_root / \"alpha_factory_v1\" / \"demos\" / \"aiga_meta_evolution\" / \"requirements.lock\"\n18: \n19:     with tempfile.TemporaryDirectory() as tmpdir:\n20:         out_path = Path(tmpdir) / \"requirements.lock\"\n21:         pip_compile = shutil.which(\"pip-compile\")\n22:         if pip_compile:\n23:             cmd = [pip_compile]\n24:         else:\n25:             cmd = [sys.executable, \"-m\", \"piptools\", \"compile\"]\n26:         wheelhouse = os.getenv(\"WHEELHOUSE\")\n27:         cmd += [\"--quiet\"]\n28:         if wheelhouse:\n29:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n30:         cmd += [\"--generate-hashes\", str(req_txt), \"-o\", str(out_path)]\n31:         result = subprocess.run(cmd, capture_output=True, text=True)\n32:         sys.stdout.write(result.stdout)\n33:         sys.stderr.write(result.stderr)\n34:         if result.returncode != 0:"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/verify_alpha_colab_requirements_lock.py",
+      "line": 31,
+      "end_line": 31,
+      "source_sha256": "93d3bb030441e7e2f1aa1c5d0b6490494a623eb1d66e53d777c1c9fe892d2a3d",
+      "scanner_fingerprint": "134fc63ea4d1c89d545ef35efa1b9cef16c7d246c02dc7a2f3bb3129c19a61866dd6cf5dea251b9b38c84d45c00b844622e3d0904bbebe90b26076a58ba7dadf_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        result = subprocess.run(cmd, capture_output=True, text=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_alpha_colab_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 22,
+                "offset": 806
+              },
+              "end": {
+                "line": 26,
+                "col": 45,
+                "offset": 829
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/verify_alpha_colab_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 9,
+                "offset": 793
+              },
+              "end": {
+                "line": 26,
+                "col": 19,
+                "offset": 803
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_alpha_colab_requirements_lock.py",
+              "start": {
+                "line": 29,
+                "col": 13,
+                "offset": 913
+              },
+              "end": {
+                "line": 29,
+                "col": 16,
+                "offset": 916
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_alpha_colab_requirements_lock.py",
+              "start": {
+                "line": 31,
+                "col": 33,
+                "offset": 1046
+              },
+              "end": {
+                "line": 31,
+                "col": 36,
+                "offset": 1049
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local lock-verification process selects pip-compile from PATH or sys.executable -m piptools compile; WHEELHOUSE is one argv operand after literal --find-links. Requirement input paths are repository constants and output is a fresh temporary file. No shell=True/string command or remote request source exists at this call. This does not establish trust in packages from an operator-selected wheelhouse or PATH.",
+      "trust_boundary": "Local developer/CI operator environment and dependency-resolution policy. This does not admit untrusted package sources, PATH programs or printed command suggestions for later execution.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "scripts/verify_alpha_colab_requirements_lock.py",
+          "start_line": 14,
+          "end_line": 34,
+          "lines": "14: def main() -> int:\n15:     repo_root = Path(__file__).resolve().parents[1]\n16:     req_txt = repo_root / \"alpha_factory_v1\" / \"requirements-colab.txt\"\n17:     lock_file = repo_root / \"alpha_factory_v1\" / \"requirements-colab.lock\"\n18: \n19:     with tempfile.TemporaryDirectory() as tmpdir:\n20:         out_path = Path(tmpdir) / \"requirements.lock\"\n21:         pip_compile = shutil.which(\"pip-compile\")\n22:         if pip_compile:\n23:             cmd = [pip_compile]\n24:         else:\n25:             cmd = [sys.executable, \"-m\", \"piptools\", \"compile\"]\n26:         wheelhouse = os.getenv(\"WHEELHOUSE\")\n27:         cmd += [\"--generate-hashes\", \"--quiet\"]\n28:         if wheelhouse:\n29:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n30:         cmd += [str(req_txt), \"-o\", str(out_path)]\n31:         result = subprocess.run(cmd, capture_output=True, text=True)\n32:         sys.stdout.write(result.stdout)\n33:         sys.stderr.write(result.stderr)\n34:         if result.returncode != 0:"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/verify_alpha_requirements_lock.py",
+      "line": 31,
+      "end_line": 31,
+      "source_sha256": "1b372a63d5256fa103592aa60c01ef9196b5edfa77c9f0b96963efa65bd40186",
+      "scanner_fingerprint": "50d520ad2c01f46d753259ab6326ca9cda86c9f2602748f42a30882878cddb0bc9d227db07aa431805b247f3872165ed8d14d0ab956a7046ec0752b433b5eb16_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        result = subprocess.run(cmd, capture_output=True, text=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_alpha_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 22,
+                "offset": 782
+              },
+              "end": {
+                "line": 26,
+                "col": 45,
+                "offset": 805
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/verify_alpha_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 9,
+                "offset": 769
+              },
+              "end": {
+                "line": 26,
+                "col": 19,
+                "offset": 779
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_alpha_requirements_lock.py",
+              "start": {
+                "line": 29,
+                "col": 13,
+                "offset": 907
+              },
+              "end": {
+                "line": 29,
+                "col": 16,
+                "offset": 910
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_alpha_requirements_lock.py",
+              "start": {
+                "line": 31,
+                "col": 33,
+                "offset": 1040
+              },
+              "end": {
+                "line": 31,
+                "col": 36,
+                "offset": 1043
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local lock-verification process selects pip-compile from PATH or sys.executable -m piptools compile; WHEELHOUSE is one argv operand after literal --find-links. Requirement input paths are repository constants and output is a fresh temporary file. No shell=True/string command or remote request source exists at this call. This does not establish trust in packages from an operator-selected wheelhouse or PATH.",
+      "trust_boundary": "Local developer/CI operator environment and dependency-resolution policy. This does not admit untrusted package sources, PATH programs or printed command suggestions for later execution.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "scripts/verify_alpha_requirements_lock.py",
+          "start_line": 14,
+          "end_line": 34,
+          "lines": "14: def main() -> int:\n15:     repo_root = Path(__file__).resolve().parents[1]\n16:     req_txt = repo_root / \"alpha_factory_v1\" / \"requirements.txt\"\n17:     lock_file = repo_root / \"alpha_factory_v1\" / \"requirements.lock\"\n18: \n19:     with tempfile.TemporaryDirectory() as tmpdir:\n20:         out_path = Path(tmpdir) / \"requirements.lock\"\n21:         pip_compile = shutil.which(\"pip-compile\")\n22:         if pip_compile:\n23:             cmd = [pip_compile]\n24:         else:\n25:             cmd = [sys.executable, \"-m\", \"piptools\", \"compile\"]\n26:         wheelhouse = os.getenv(\"WHEELHOUSE\")\n27:         cmd += [\"--generate-hashes\", \"--quiet\", \"--allow-unsafe\"]\n28:         if wheelhouse:\n29:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n30:         cmd += [str(req_txt), \"-o\", str(out_path)]\n31:         result = subprocess.run(cmd, capture_output=True, text=True)\n32:         sys.stdout.write(result.stdout)\n33:         sys.stderr.write(result.stderr)\n34:         if result.returncode != 0:"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/verify_backend_requirements_lock.py",
+      "line": 31,
+      "end_line": 31,
+      "source_sha256": "897223c5718e9bc647136e83ef051c7682c7265cf8070ee1728f01728f350b43",
+      "scanner_fingerprint": "13a95edf532165d3d180e5115a4dbe2ced7f218cc0587941007801ee74074452a1230fd27cdf1716d35bcabedc774cecc6a327d4f5070c128ca59063155c224b_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        result = subprocess.run(cmd, capture_output=True, text=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_backend_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 22,
+                "offset": 805
+              },
+              "end": {
+                "line": 26,
+                "col": 45,
+                "offset": 828
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/verify_backend_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 9,
+                "offset": 792
+              },
+              "end": {
+                "line": 26,
+                "col": 19,
+                "offset": 802
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_backend_requirements_lock.py",
+              "start": {
+                "line": 29,
+                "col": 13,
+                "offset": 891
+              },
+              "end": {
+                "line": 29,
+                "col": 16,
+                "offset": 894
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_backend_requirements_lock.py",
+              "start": {
+                "line": 31,
+                "col": 33,
+                "offset": 1045
+              },
+              "end": {
+                "line": 31,
+                "col": 36,
+                "offset": 1048
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local lock-verification process selects pip-compile from PATH or sys.executable -m piptools compile; WHEELHOUSE is one argv operand after literal --find-links. Requirement input paths are repository constants and output is a fresh temporary file. No shell=True/string command or remote request source exists at this call. This does not establish trust in packages from an operator-selected wheelhouse or PATH.",
+      "trust_boundary": "Local developer/CI operator environment and dependency-resolution policy. This does not admit untrusted package sources, PATH programs or printed command suggestions for later execution.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "scripts/verify_backend_requirements_lock.py",
+          "start_line": 14,
+          "end_line": 34,
+          "lines": "14: def main() -> int:\n15:     repo_root = Path(__file__).resolve().parents[1]\n16:     req_txt = repo_root / \"alpha_factory_v1\" / \"backend\" / \"requirements.txt\"\n17:     lock_file = repo_root / \"alpha_factory_v1\" / \"backend\" / \"requirements-lock.txt\"\n18: \n19:     with tempfile.TemporaryDirectory() as tmpdir:\n20:         out_path = Path(tmpdir) / \"requirements.lock\"\n21:         pip_compile = shutil.which(\"pip-compile\")\n22:         if pip_compile:\n23:             cmd = [pip_compile]\n24:         else:\n25:             cmd = [sys.executable, \"-m\", \"piptools\", \"compile\"]\n26:         wheelhouse = os.getenv(\"WHEELHOUSE\")\n27:         cmd += [\"--quiet\"]\n28:         if wheelhouse:\n29:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n30:         cmd += [\"--generate-hashes\", str(req_txt), \"-o\", str(out_path)]\n31:         result = subprocess.run(cmd, capture_output=True, text=True)\n32:         sys.stdout.write(result.stdout)\n33:         sys.stderr.write(result.stderr)\n34:         if result.returncode != 0:"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/verify_era_experience_requirements_lock.py",
+      "line": 31,
+      "end_line": 31,
+      "source_sha256": "4a07d87669a695b7751829bd6a33a520b78f89239fd80c008f748c51c5c3c4d4",
+      "scanner_fingerprint": "eacf16d1eb91bd3b7f65224517130c4a67dd560dddd307e20c11fc96f6dc317d30217d6b70182cfe3c67fd698225b7656938948ee17226cf4e5215b0ce0400df_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        result = subprocess.run(cmd, capture_output=True, text=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_era_experience_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 22,
+                "offset": 847
+              },
+              "end": {
+                "line": 26,
+                "col": 45,
+                "offset": 870
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/verify_era_experience_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 9,
+                "offset": 834
+              },
+              "end": {
+                "line": 26,
+                "col": 19,
+                "offset": 844
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_era_experience_requirements_lock.py",
+              "start": {
+                "line": 29,
+                "col": 13,
+                "offset": 954
+              },
+              "end": {
+                "line": 29,
+                "col": 16,
+                "offset": 957
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_era_experience_requirements_lock.py",
+              "start": {
+                "line": 31,
+                "col": 33,
+                "offset": 1087
+              },
+              "end": {
+                "line": 31,
+                "col": 36,
+                "offset": 1090
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local lock-verification process selects pip-compile from PATH or sys.executable -m piptools compile; WHEELHOUSE is one argv operand after literal --find-links. Requirement input paths are repository constants and output is a fresh temporary file. No shell=True/string command or remote request source exists at this call. This does not establish trust in packages from an operator-selected wheelhouse or PATH.",
+      "trust_boundary": "Local developer/CI operator environment and dependency-resolution policy. This does not admit untrusted package sources, PATH programs or printed command suggestions for later execution.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "scripts/verify_era_experience_requirements_lock.py",
+          "start_line": 14,
+          "end_line": 34,
+          "lines": "14: def main() -> int:\n15:     repo_root = Path(__file__).resolve().parents[1]\n16:     req_txt = repo_root / \"alpha_factory_v1\" / \"demos\" / \"era_of_experience\" / \"requirements.txt\"\n17:     lock_file = repo_root / \"alpha_factory_v1\" / \"demos\" / \"era_of_experience\" / \"requirements.lock\"\n18: \n19:     with tempfile.TemporaryDirectory() as tmpdir:\n20:         out_path = Path(tmpdir) / \"requirements.lock\"\n21:         pip_compile = shutil.which(\"pip-compile\")\n22:         if pip_compile:\n23:             cmd = [pip_compile]\n24:         else:\n25:             cmd = [sys.executable, \"-m\", \"piptools\", \"compile\"]\n26:         wheelhouse = os.getenv(\"WHEELHOUSE\")\n27:         cmd += [\"--generate-hashes\", \"--quiet\"]\n28:         if wheelhouse:\n29:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n30:         cmd += [str(req_txt), \"-o\", str(out_path)]\n31:         result = subprocess.run(cmd, capture_output=True, text=True)\n32:         sys.stdout.write(result.stdout)\n33:         sys.stderr.write(result.stderr)\n34:         if result.returncode != 0:"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/verify_mats_requirements_lock.py",
+      "line": 31,
+      "end_line": 31,
+      "source_sha256": "71bf3a40686921e1cbf66d3902e24a6494e1082022e74300cdef6af8bfa5c4ca",
+      "scanner_fingerprint": "42a2fcdd236027dbf60c4652af31505beaea9bd73ef0049da9ba7adca7c950f61326010559a22925967b93d425e552c5201323cd6e5b2723dc6c9a06924a3eea_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        result = subprocess.run(cmd, capture_output=True, text=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_mats_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 22,
+                "offset": 877
+              },
+              "end": {
+                "line": 26,
+                "col": 45,
+                "offset": 900
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/verify_mats_requirements_lock.py",
+              "start": {
+                "line": 26,
+                "col": 9,
+                "offset": 864
+              },
+              "end": {
+                "line": 26,
+                "col": 19,
+                "offset": 874
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_mats_requirements_lock.py",
+              "start": {
+                "line": 29,
+                "col": 13,
+                "offset": 963
+              },
+              "end": {
+                "line": 29,
+                "col": 16,
+                "offset": 966
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_mats_requirements_lock.py",
+              "start": {
+                "line": 31,
+                "col": 33,
+                "offset": 1117
+              },
+              "end": {
+                "line": 31,
+                "col": 36,
+                "offset": 1120
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local lock-verification process selects pip-compile from PATH or sys.executable -m piptools compile; WHEELHOUSE is one argv operand after literal --find-links. Requirement input paths are repository constants and output is a fresh temporary file. No shell=True/string command or remote request source exists at this call. This does not establish trust in packages from an operator-selected wheelhouse or PATH.",
+      "trust_boundary": "Local developer/CI operator environment and dependency-resolution policy. This does not admit untrusted package sources, PATH programs or printed command suggestions for later execution.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "scripts/verify_mats_requirements_lock.py",
+          "start_line": 14,
+          "end_line": 34,
+          "lines": "14: def main() -> int:\n15:     repo_root = Path(__file__).resolve().parents[1]\n16:     req_txt = repo_root / \"alpha_factory_v1\" / \"demos\" / \"meta_agentic_tree_search_v0\" / \"requirements.txt\"\n17:     lock_file = repo_root / \"alpha_factory_v1\" / \"demos\" / \"meta_agentic_tree_search_v0\" / \"requirements.lock\"\n18: \n19:     with tempfile.TemporaryDirectory() as tmpdir:\n20:         out_path = Path(tmpdir) / \"requirements.lock\"\n21:         pip_compile = shutil.which(\"pip-compile\")\n22:         if pip_compile:\n23:             cmd = [pip_compile]\n24:         else:\n25:             cmd = [sys.executable, \"-m\", \"piptools\", \"compile\"]\n26:         wheelhouse = os.getenv(\"WHEELHOUSE\")\n27:         cmd += [\"--quiet\"]\n28:         if wheelhouse:\n29:             cmd += [\"--no-index\", \"--find-links\", wheelhouse]\n30:         cmd += [\"--generate-hashes\", str(req_txt), \"-o\", str(out_path)]\n31:         result = subprocess.run(cmd, capture_output=True, text=True)\n32:         sys.stdout.write(result.stdout)\n33:         sys.stderr.write(result.stderr)\n34:         if result.returncode != 0:"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "scripts/verify_requirements_lock.py",
+      "line": 33,
+      "end_line": 33,
+      "source_sha256": "72c19a3a218880a45bb178522ca01a1ebf72cbfafd94fd26087e811588a3fb44",
+      "scanner_fingerprint": "14b11eb03f0b0927dc68eedc9a029ed04dbde406a8333b0b5465ae83708e77aab810f7c2e5d011effb7e981a4ae1513ca609c460f3f1d005ce5cb65ed6a1a124_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        result = subprocess.run(cmd, capture_output=True, text=True, check=False)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_requirements_lock.py",
+              "start": {
+                "line": 27,
+                "col": 22,
+                "offset": 744
+              },
+              "end": {
+                "line": 27,
+                "col": 45,
+                "offset": 767
+              }
+            },
+            "os.getenv(\"WHEELHOUSE\")"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "scripts/verify_requirements_lock.py",
+              "start": {
+                "line": 27,
+                "col": 9,
+                "offset": 731
+              },
+              "end": {
+                "line": 27,
+                "col": 19,
+                "offset": 741
+              }
+            },
+            "content": "wheelhouse"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_requirements_lock.py",
+              "start": {
+                "line": 30,
+                "col": 13,
+                "offset": 851
+              },
+              "end": {
+                "line": 30,
+                "col": 28,
+                "offset": 866
+              }
+            },
+            "content": "wheelhouse_path"
+          },
+          {
+            "location": {
+              "path": "scripts/verify_requirements_lock.py",
+              "start": {
+                "line": 31,
+                "col": 13,
+                "offset": 903
+              },
+              "end": {
+                "line": 31,
+                "col": 16,
+                "offset": 906
+              }
+            },
+            "content": "cmd"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "scripts/verify_requirements_lock.py",
+              "start": {
+                "line": 33,
+                "col": 33,
+                "offset": 1041
+              },
+              "end": {
+                "line": 33,
+                "col": 36,
+                "offset": 1044
+              }
+            },
+            "cmd"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_OPERATOR_PACKAGE_SOURCE_ARGV",
+      "reason": "The local lock-verification process selects pip-compile from PATH or sys.executable -m piptools compile; WHEELHOUSE is one argv operand after literal --find-links. Requirement input paths are repository constants and output is a fresh temporary file. No shell=True/string command or remote request source exists at this call. This does not establish trust in packages from an operator-selected wheelhouse or PATH.",
+      "trust_boundary": "Local developer/CI operator environment and dependency-resolution policy. This does not admit untrusted package sources, PATH programs or printed command suggestions for later execution.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run(cmd, capture_output=True, text=True, check=False)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "cmd"
+      },
+      "support": [
+        {
+          "path": "scripts/verify_requirements_lock.py",
+          "start_line": 14,
+          "end_line": 34,
+          "lines": "14: \n15: def main() -> int:\n16:     repo_root = Path(__file__).resolve().parents[1]\n17:     req_txt = repo_root / \"requirements.txt\"\n18:     lock_file = repo_root / \"requirements.lock\"\n19: \n20:     with tempfile.TemporaryDirectory() as tmpdir:\n21:         out_path = Path(tmpdir) / \"requirements.lock\"\n22:         pip_compile = shutil.which(\"pip-compile\")\n23:         if pip_compile:\n24:             cmd = [pip_compile]\n25:         else:\n26:             cmd = [sys.executable, \"-m\", \"piptools\", \"compile\"]\n27:         wheelhouse = os.getenv(\"WHEELHOUSE\")\n28:         cmd += [\"--generate-hashes\", \"--quiet\"]\n29:         if wheelhouse:\n30:             wheelhouse_path = str(Path(wheelhouse))\n31:             cmd += [\"--no-index\", \"--find-links\", wheelhouse_path]\n32:         cmd += [str(req_txt), \"-o\", str(out_path)]\n33:         result = subprocess.run(cmd, capture_output=True, text=True, check=False)\n34:         sys.stdout.write(result.stdout)"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+      "line": 8,
+      "end_line": 8,
+      "source_sha256": "cca163b796d173c483683d65771d625fc07668e465926d89b195165af0395978",
+      "scanner_fingerprint": "b5586bf49b92a43a34c40e541c629a6dd50ff0c52875af8ce7bd0d43a95db68478798a387fdf99685c90b0149906a98bc8389ff556de51c6742b3ae10e361879_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "for cmd in commands:subprocess.run([sys.executable,str(dest/'04_Reproduce'/cmd[0]),*cmd[1:]],check=True)",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+              "start": {
+                "line": 4,
+                "col": 70,
+                "offset": 188
+              },
+              "end": {
+                "line": 4,
+                "col": 89,
+                "offset": 207
+              }
+            },
+            "args=p.parse_args()"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+              "start": {
+                "line": 4,
+                "col": 70,
+                "offset": 188
+              },
+              "end": {
+                "line": 4,
+                "col": 74,
+                "offset": 192
+              }
+            },
+            "content": "args"
+          },
+          {
+            "location": {
+              "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+              "start": {
+                "line": 4,
+                "col": 90,
+                "offset": 208
+              },
+              "end": {
+                "line": 4,
+                "col": 94,
+                "offset": 212
+              }
+            },
+            "content": "dest"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+              "start": {
+                "line": 8,
+                "col": 36,
+                "offset": 682
+              },
+              "end": {
+                "line": 8,
+                "col": 93,
+                "offset": 739
+              }
+            },
+            "[sys.executable,str(dest/'04_Reproduce'/cmd[0]),*cmd[1:]]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_FIXED_COPIED_STUDY_SCRIPT",
+      "reason": "The only argparse value is a new absolute destination outside source. The script first copytrees its fixed adjacent source kit there, then invokes sys.executable on one of four literal 04_Reproduce script names with literal argument arrays. Destination is not evaluated as command text; no shell is used.",
+      "trust_boundary": "Local operator replay destination. Static observation only: the frozen original body was neither modified nor imported/executed, and no replay results or fresh qualification are claimed.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([sys.executable, str(dest / '04_Reproduce' / cmd[0]), *cmd[1:]], check=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[sys.executable, str(dest / '04_Reproduce' / cmd[0]), *cmd[1:]]"
+      },
+      "support": [
+        {
+          "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+          "start_line": 1,
+          "end_line": 10,
+          "lines": "1: from pathlib import Path\n2: import argparse,shutil,subprocess,sys,json,hashlib\n3: source=Path(__file__).resolve().parents[1]\n4: p=argparse.ArgumentParser();p.add_argument('--output',required=True);args=p.parse_args();dest=Path(args.output).resolve()\n5: if dest.exists() or dest.is_relative_to(source):raise SystemExit('Use a new destination outside the source package.')\n6: shutil.copytree(source,dest,ignore=shutil.ignore_patterns('__pycache__','.venv'))\n7: commands=[['browser_acceptance.py','--tasks','A','B','--variants','before','after'],['browser_acceptance.py','--tasks','B','--variants','without-portability-fix'],['recovery_tests.py'],['owner_effort.py']]\n8: for cmd in commands:subprocess.run([sys.executable,str(dest/'04_Reproduce'/cmd[0]),*cmd[1:]],check=True)\n9: files={p.relative_to(dest).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()for p in sorted(dest.rglob('*'))if p.is_file() and '__pycache__' not in p.parts and p.name!='MANIFEST.json'}\n10: (dest/'MANIFEST.json').write_text(json.dumps({'schema':'study-package-manifest/v1','notice':'Replay manifest. Included narrative is the original report; inspect refreshed raw results.','files':files},indent=2)+'\\n')"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+      "line": 333,
+      "end_line": 333,
+      "source_sha256": "537f5be821c82c30d87282ef6b580308b00c39ec7c49588a8a691245c1c05abf",
+      "scanner_fingerprint": "7e78cc3316ac6b3f3c1fd2314b230da7d025d2a0d3b186076fdcb830c2e1b7f853e260c865fb6cadd7ee4882f9e725976915efcee54ae407ae9dd61d0134784f_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            [sys.executable, str(dest / \"04_Reproduce\" / cmd[0]), *cmd[1:]],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+              "start": {
+                "line": 297,
+                "col": 5,
+                "offset": 13148
+              },
+              "end": {
+                "line": 297,
+                "col": 31,
+                "offset": 13174
+              }
+            },
+            "args = parser.parse_args()"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+              "start": {
+                "line": 297,
+                "col": 5,
+                "offset": 13148
+              },
+              "end": {
+                "line": 297,
+                "col": 9,
+                "offset": 13152
+              }
+            },
+            "content": "args"
+          },
+          {
+            "location": {
+              "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+              "start": {
+                "line": 307,
+                "col": 5,
+                "offset": 13514
+              },
+              "end": {
+                "line": 307,
+                "col": 9,
+                "offset": 13518
+              }
+            },
+            "content": "dest"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+              "start": {
+                "line": 333,
+                "col": 13,
+                "offset": 14567
+              },
+              "end": {
+                "line": 333,
+                "col": 76,
+                "offset": 14630
+              }
+            },
+            "[sys.executable, str(dest / \"04_Reproduce\" / cmd[0]), *cmd[1:]]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_FIXED_VERIFIED_STUDY_SCRIPT",
+      "reason": "--output is a new absolute path outside the source kit; fixed manifest-selected source files are copied and verify_sources(dest) precedes an argv-list call to sys.executable plus one of four literal script names and arguments. No shell/string command.",
+      "trust_boundary": "Operator-selected destination for a source-verified study kit. Static source review only; no verify_sources/replay/import executed. Hash validation code is observed, not independently operationally exercised here.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([sys.executable, str(dest / '04_Reproduce' / cmd[0]), *cmd[1:]], check=True, timeout=240, env=os.environ.copy())",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[sys.executable, str(dest / '04_Reproduce' / cmd[0]), *cmd[1:]]"
+      },
+      "support": [
+        {
+          "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+          "start_line": 293,
+          "end_line": 337,
+          "lines": "293: def main() -> None:\n294:     parser = argparse.ArgumentParser(description=__doc__)\n295:     parser.add_argument(\"--output\", type=Path)\n296:     parser.add_argument(\"--verify-only\", action=\"store_true\")\n297:     args = parser.parse_args()\n298:     verify_sources(ROOT)\n299:     if args.verify_only:\n300:         print(\n301:             \"Complete publication manifest, original source and generated \"\n302:             \"applications verified; real-user results remain empty.\"\n303:         )\n304:         return\n305:     if not args.output:\n306:         parser.error(\"--output must name a NEW directory outside this kit\")\n307:     dest = args.output.resolve()\n308:     if dest.exists() or dest.is_relative_to(ROOT) or ROOT.is_relative_to(dest):\n309:         parser.error(\"Choose a new destination outside the source kit\")\n310:     names = sorted(manifest_files(ROOT)) + [\"SHA256SUMS\"]\n311:     dest.mkdir(parents=True, exist_ok=False, mode=0o700)\n312:     for name in names:\n313:         target = dest / name\n314:         target.parent.mkdir(parents=True, exist_ok=True)\n315:         shutil.copy2(safe_file(ROOT, name), target)\n316:     verify_sources(dest)\n317:     for relative in [\n318:         \"03_Evidence/acceptance\",\n319:         \"03_Evidence/downloads\",\n320:         \"03_Evidence/screenshots\",\n321:         \"03_Evidence/recovery\",\n322:         \"08_Metrics\",\n323:     ]:\n324:         (dest / relative).mkdir(parents=True, exist_ok=True)\n325:     commands = [\n326:         [\"browser_acceptance.py\", \"--tasks\", \"A\", \"B\", \"--variants\", \"before\", \"after\"],\n327:         [\"browser_acceptance.py\", \"--tasks\", \"B\", \"--variants\", \"without-portability-fix\"],\n328:         [\"recovery_tests.py\"],\n329:         [\"owner_effort.py\"],\n330:     ]\n331:     for cmd in commands:\n332:         subprocess.run(\n333:             [sys.executable, str(dest / \"04_Reproduce\" / cmd[0]), *cmd[1:]],\n334:             check=True,\n335:             timeout=240,\n336:             env=os.environ.copy(),\n337:         )"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "tests/browser/out_evolve_recovery.py",
+      "line": 454,
+      "end_line": 461,
+      "source_sha256": "6af4cce631cc32c66348e4375fb9d1c87d18af724231ec8dd2ec01e1a67700f8",
+      "scanner_fingerprint": "6b0cd3a5c8dd56fc325858b52fbb687515e41bccfc63218857c4d5b8ae2e187bd36c883b56cb0ab5994b104a2c62a8cb2e3814967a7f2c8f12e64c21eae4af5e_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        [\n            os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n            str(generator_path),\n            str(package_path.resolve()),\n            str(destination.resolve()),\n            str(root / \"examples/successor-capability/out-evolve-workspace.mjs\"),\n            str(root / \"examples/successor-capability/constructor.mjs\"),\n        ],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/browser/out_evolve_recovery.py",
+              "start": {
+                "line": 455,
+                "col": 13,
+                "offset": 23119
+              },
+              "end": {
+                "line": 455,
+                "col": 23,
+                "offset": 23129
+              }
+            },
+            "os.environ"
+          ]
+        ],
+        "intermediate_vars": [],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/browser/out_evolve_recovery.py",
+              "start": {
+                "line": 454,
+                "col": 9,
+                "offset": 23105
+              },
+              "end": {
+                "line": 461,
+                "col": 10,
+                "offset": 23440
+              }
+            },
+            "[\n            os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n            str(generator_path),\n            str(package_path.resolve()),\n            str(destination.resolve()),\n            str(root / \"examples/successor-capability/out-evolve-workspace.mjs\"),\n            str(root / \"examples/successor-capability/constructor.mjs\"),\n        ]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_TEST_OPERATOR_NODE_SELECTOR",
+      "reason": "NODE_EXECUTABLE is solely argv[0], an explicit local test-runtime selector. Subsequent operands are individual fixed/local file paths; generator_path is written from an authored literal script, not environment text. No shell.",
+      "trust_boundary": "Trusted test operator environment and authored local synthetic fixture. This is not permission to run it or qualify any original held Harness/Fleet request; no Node/browser/native execution occurred during review.",
+      "extra_note": "The exact generated literal script is visible in source immediately before the sink (ending line451); the review did not execute it.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([os.environ.get('NODE_EXECUTABLE', 'node'), str(generator_path), str(package_path.resolve()), str(destination.resolve()), str(root / 'examples/successor-capability/out-evolve-workspace.mjs'), str(root / 'examples/successor-capability/constructor.mjs')], cwd=root, capture_output=True, text=True, check=False)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[os.environ.get('NODE_EXECUTABLE', 'node'), str(generator_path), str(package_path.resolve()), str(destination.resolve()), str(root / 'examples/successor-capability/out-evolve-workspace.mjs'), str(root / 'examples/successor-capability/constructor.mjs')]"
+      },
+      "support": [
+        {
+          "path": "tests/browser/out_evolve_recovery.py",
+          "start_line": 453,
+          "end_line": 470,
+          "lines": "453:     generated = subprocess.run(\n454:         [\n455:             os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n456:             str(generator_path),\n457:             str(package_path.resolve()),\n458:             str(destination.resolve()),\n459:             str(root / \"examples/successor-capability/out-evolve-workspace.mjs\"),\n460:             str(root / \"examples/successor-capability/constructor.mjs\"),\n461:         ],\n462:         cwd=root,\n463:         capture_output=True,\n464:         text=True,\n465:         check=False,\n466:     )\n467:     (destination / \"fixture-generation.log\").write_text(generated.stdout + generated.stderr)\n468:     assert generated.returncode == 0, generated.stderr\n469:     fixture_receipt: dict[str, Any] = json.loads(generated.stdout)\n470:     assert fixture_receipt[\"node\"] == \"v22.17.1\""
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/browser/test_discovery_lab_browser.py",
+      "line": 111,
+      "end_line": 111,
+      "source_sha256": "f6255542655b74810efc672cff9d5f451fc123a6d91aea98cf08e6927830cebf",
+      "scanner_fingerprint": "faf16f4083443c392b3d4b33f81776da530231ff597d7b761239a01eab4472024d2c07fa5bf4894baa98faf8b52853401b7d1ad6aee27638fa84009927b40364_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            context.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          105
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_discovery_lab_browser.py",
+          "start_line": 105,
+          "end_line": 105,
+          "lines": "105:     requests: list[str] = []"
+        },
+        {
+          "path": "tests/browser/test_discovery_lab_browser.py",
+          "start_line": 109,
+          "end_line": 113,
+          "lines": "109:             browser = playwright.chromium.launch(executable_path=executable)\n110:             context = browser.new_context(accept_downloads=True, viewport={\"width\": 1440, \"height\": 1000})\n111:             context.on(\"request\", lambda request: requests.append(request.url))\n112:             page = context.new_page()\n113:             page.on(\"pageerror\", lambda error: errors.append(str(error)))"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/browser/test_out_evolve_browser.py",
+      "line": 86,
+      "end_line": 86,
+      "source_sha256": "92e04eeeafea75829eb4bae947dba1cd277eea6ac6afc73a76523a15b5600847",
+      "scanner_fingerprint": "04e1926f2ed967f6bd017768516c0b72016251ff5b2e7ab919dc7769b14f02a18b8c9115f3ffee01b9936fcd1d0fba4ceb6e89add57adf931bded3baa5258886_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            context.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          80
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_out_evolve_browser.py",
+          "start_line": 80,
+          "end_line": 80,
+          "lines": "80:     requests: list[str] = []"
+        },
+        {
+          "path": "tests/browser/test_out_evolve_browser.py",
+          "start_line": 84,
+          "end_line": 88,
+          "lines": "84:             browser = playwright.chromium.launch(executable_path=executable)\n85:             context = browser.new_context(accept_downloads=True, viewport={\"width\": 1440, \"height\": 1000})\n86:             context.on(\"request\", lambda request: requests.append(request.url))\n87:             page = context.new_page()\n88:             page.on(\"pageerror\", lambda error: errors.append(str(error)))"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/browser/test_out_execute_browser.py",
+      "line": 43,
+      "end_line": 43,
+      "source_sha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e",
+      "scanner_fingerprint": "a3dbde1f2b6a7eb00d79477e7a14018931272faa804cbb11878d53c460a64070226d3d13dddf4d3da303a9580ca326b4c19d198daa4e95e0bed816fd89d37dfd_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            context.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          36
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_out_execute_browser.py",
+          "start_line": 36,
+          "end_line": 36,
+          "lines": "36:     requests: list[str] = []"
+        },
+        {
+          "path": "tests/browser/test_out_execute_browser.py",
+          "start_line": 41,
+          "end_line": 45,
+          "lines": "41:             )\n42:             context = browser.new_context(accept_downloads=True, viewport={\"width\": 1440, \"height\": 1000})\n43:             context.on(\"request\", lambda request: requests.append(request.url))\n44:             page = context.new_page()\n45:             page.on(\"pageerror\", lambda error: errors.append(str(error)))"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "line": 410,
+      "end_line": 417,
+      "source_sha256": "8d54a7cb0d6a97af79aea9d9cf1ba9cd23c80cb4c5d41215436c1f374b89691b",
+      "scanner_fingerprint": "5c55bfc0c1abac35079cc1f549d8e88e96db5b20aa92c75c678a613b674e7144dbacddfef59dae0c9f154de99e674ff38b02ac067669f1ad2a130c23893f9b2e_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            [\n                os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n                \"--input-type=module\",\n                \"-e\",\n                script,\n                tool_path.as_uri(),\n                json.dumps(changed_inputs),\n            ],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/browser/test_successor_alpha_browser.py",
+              "start": {
+                "line": 411,
+                "col": 17,
+                "offset": 19543
+              },
+              "end": {
+                "line": 411,
+                "col": 27,
+                "offset": 19553
+              }
+            },
+            "os.environ"
+          ]
+        ],
+        "intermediate_vars": [],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/browser/test_successor_alpha_browser.py",
+              "start": {
+                "line": 410,
+                "col": 13,
+                "offset": 19525
+              },
+              "end": {
+                "line": 417,
+                "col": 14,
+                "offset": 19764
+              }
+            },
+            "[\n                os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n                \"--input-type=module\",\n                \"-e\",\n                script,\n                tool_path.as_uri(),\n                json.dumps(changed_inputs),\n            ]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_TEST_OPERATOR_NODE_SELECTOR",
+      "reason": "NODE_EXECUTABLE is argv[0], not program text. The -e script is a fixed literal assembled at405-408; changed inputs are serialized JSON in a separate argv element, not interpolated into that program. The imported tool is the test browser download from its source-controlled fixture.",
+      "trust_boundary": "Local test runner/environment. This test intentionally imports downloaded JavaScript on its host and is not a general sandbox or approval gateway; the env-argument disposition does not qualify arbitrary download execution, the generated tool, or any held request.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([os.environ.get('NODE_EXECUTABLE', 'node'), '--input-type=module', '-e', script, tool_path.as_uri(), json.dumps(changed_inputs)], cwd=directory, capture_output=True, text=True, timeout=30, check=False)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[os.environ.get('NODE_EXECUTABLE', 'node'), '--input-type=module', '-e', script, tool_path.as_uri(), json.dumps(changed_inputs)]"
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_successor_alpha_browser.py",
+          "start_line": 394,
+          "end_line": 427,
+          "lines": "394:     plan_tool = download(page, \"#download-plan-tool\")\n395:     assert strategy[\"decision\"][\"retainedPlanHash\"].encode() in plan_tool\n396:     changed_inputs = {\n397:         \"leftCsv\": \"code,title\\nN,one\\nN,two\\nM,left\\n\",\n398:         \"rightCsv\": \"id,title\\nN,one\\nN,right\\nQ,new\\n\",\n399:         \"leftKey\": \"code\",\n400:         \"rightKey\": \"id\",\n401:     }\n402:     with tempfile.TemporaryDirectory(prefix=\"alpha-downloaded-capability-\") as directory:\n403:         tool_path = Path(directory) / \"retained.mjs\"\n404:         tool_path.write_bytes(plan_tool)\n405:         script = (\n406:             \"const m=await import(process.argv[1]);const r=m.reconcileCatalogs(JSON.parse(process.argv[2]));\"\n407:             \"console.log(JSON.stringify({metadata:m.metadata,result:r}));\"\n408:         )\n409:         outcome = subprocess.run(\n410:             [\n411:                 os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n412:                 \"--input-type=module\",\n413:                 \"-e\",\n414:                 script,\n415:                 tool_path.as_uri(),\n416:                 json.dumps(changed_inputs),\n417:             ],\n418:             cwd=directory,\n419:             capture_output=True,\n420:             text=True,\n421:             timeout=30,\n422:             check=False,\n423:         )\n424:         assert outcome.returncode == 0, outcome.stderr\n425:         executable_result = json.loads(outcome.stdout)\n426:     assert executable_result[\"metadata\"][\"planHash\"] == strategy[\"decision\"][\"retainedPlanHash\"]\n427:     exact_changed = json.loads(executable_result[\"result\"][\"exactJson\"])"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "line": 546,
+      "end_line": 551,
+      "source_sha256": "8d54a7cb0d6a97af79aea9d9cf1ba9cd23c80cb4c5d41215436c1f374b89691b",
+      "scanner_fingerprint": "f1d6fba3e2a6d3fc851e42a2f3e199911e47be15a2d69fc8b4506328edf9a5f94a2a9a61558813a194b11798c00653c0cb44064819e439f8ce1ea39b7f48f21a_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            [\n                os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n                str(ROOT / \"examples/successor-alpha/native-cli.mjs\"),\n                str(input_path),\n                str(output_path),\n            ],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/browser/test_successor_alpha_browser.py",
+              "start": {
+                "line": 547,
+                "col": 17,
+                "offset": 26631
+              },
+              "end": {
+                "line": 547,
+                "col": 27,
+                "offset": 26641
+              }
+            },
+            "os.environ"
+          ]
+        ],
+        "intermediate_vars": [],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/browser/test_successor_alpha_browser.py",
+              "start": {
+                "line": 546,
+                "col": 13,
+                "offset": 26613
+              },
+              "end": {
+                "line": 551,
+                "col": 14,
+                "offset": 26825
+              }
+            },
+            "[\n                os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n                str(ROOT / \"examples/successor-alpha/native-cli.mjs\"),\n                str(input_path),\n                str(output_path),\n            ]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_TEST_OPERATOR_NODE_SELECTOR",
+      "reason": "NODE_EXECUTABLE is the explicit local runtime selector. The script path is the fixed ROOT/examples/successor-alpha/native-cli.mjs, followed by two temporary file paths in distinct argv slots; no shell command or environment interpolation into code.",
+      "trust_boundary": "Local test fixture only; no browser/native/held execution performed or cleared. This disposition is limited to the reported environment-to-subprocess rule, not complete native adapter safety.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([os.environ.get('NODE_EXECUTABLE', 'node'), str(ROOT / 'examples/successor-alpha/native-cli.mjs'), str(input_path), str(output_path)], cwd=directory, capture_output=True, text=True, timeout=30, check=False)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[os.environ.get('NODE_EXECUTABLE', 'node'), str(ROOT / 'examples/successor-alpha/native-cli.mjs'), str(input_path), str(output_path)]"
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_successor_alpha_browser.py",
+          "start_line": 541,
+          "end_line": 558,
+          "lines": "541:     with tempfile.TemporaryDirectory(prefix=\"alpha-native-host-\") as directory:\n542:         input_path = Path(directory) / \"handoff.json\"\n543:         output_path = Path(directory) / \"return.json\"\n544:         input_path.write_bytes(handoff_raw)\n545:         outcome = subprocess.run(\n546:             [\n547:                 os.environ.get(\"NODE_EXECUTABLE\", \"node\"),\n548:                 str(ROOT / \"examples/successor-alpha/native-cli.mjs\"),\n549:                 str(input_path),\n550:                 str(output_path),\n551:             ],\n552:             cwd=directory,\n553:             capture_output=True,\n554:             text=True,\n555:             timeout=30,\n556:             check=False,\n557:         )\n558:         assert outcome.returncode == 0, outcome.stderr"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "line": 99,
+      "end_line": 99,
+      "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "scanner_fingerprint": "6d4d5d70f7560ee9d06dbb4d11faa09752d062adef35a15ffbc735bfcd2fced770d87b40b0df50d0793a5dbfc91c41193c8a3367df30b6947bd97616e33dad7a_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            context.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          97
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 97,
+          "end_line": 97,
+          "lines": "97:             requests: list[str] = []"
+        },
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 97,
+          "end_line": 101,
+          "lines": "97:             requests: list[str] = []\n98:             page.on(\"pageerror\", lambda error: errors.append(str(error)))\n99:             context.on(\"request\", lambda request: requests.append(request.url))\n100:             context.on(\"page\", lambda tab: tab.on(\"pageerror\", lambda error: errors.append(str(error))))\n101:             page.on(\"dialog\", lambda dialog: dialog.accept())"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "line": 215,
+      "end_line": 215,
+      "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "scanner_fingerprint": "6d4d5d70f7560ee9d06dbb4d11faa09752d062adef35a15ffbc735bfcd2fced770d87b40b0df50d0793a5dbfc91c41193c8a3367df30b6947bd97616e33dad7a_1",
+      "original_severity": "ERROR",
+      "scanner_lines": "            other_context.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          97
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 97,
+          "end_line": 97,
+          "lines": "97:             requests: list[str] = []"
+        },
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 213,
+          "end_line": 217,
+          "lines": "213:             # Fresh-origin import saves a full event history at independent storage revision zero.\n214:             other_context = browser.new_context()\n215:             other_context.on(\"request\", lambda request: requests.append(request.url))\n216:             other_context.on(\"page\", lambda tab: tab.on(\"pageerror\", lambda error: errors.append(str(error))))\n217:             imported = other_context.new_page()"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "line": 340,
+      "end_line": 340,
+      "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "scanner_fingerprint": "6d4d5d70f7560ee9d06dbb4d11faa09752d062adef35a15ffbc735bfcd2fced770d87b40b0df50d0793a5dbfc91c41193c8a3367df30b6947bd97616e33dad7a_2",
+      "original_severity": "ERROR",
+      "scanner_lines": "            durable.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          97
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 97,
+          "end_line": 97,
+          "lines": "97:             requests: list[str] = []"
+        },
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 338,
+          "end_line": 342,
+          "lines": "338:             profile = str(Path(temporary) / \"durable-browser-profile\")\n339:             durable = playwright.chromium.launch_persistent_context(profile, executable_path=executable)\n340:             durable.on(\"request\", lambda request: requests.append(request.url))\n341:             durable.on(\"page\", lambda tab: tab.on(\"pageerror\", lambda error: errors.append(str(error))))\n342:             durable_page = durable.pages[0]"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "line": 352,
+      "end_line": 352,
+      "source_sha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "scanner_fingerprint": "6d4d5d70f7560ee9d06dbb4d11faa09752d062adef35a15ffbc735bfcd2fced770d87b40b0df50d0793a5dbfc91c41193c8a3367df30b6947bd97616e33dad7a_3",
+      "original_severity": "ERROR",
+      "scanner_lines": "            durable.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          97
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 97,
+          "end_line": 97,
+          "lines": "97:             requests: list[str] = []"
+        },
+        {
+          "path": "tests/browser/test_successor_capability_browser.py",
+          "start_line": 350,
+          "end_line": 354,
+          "lines": "350:             durable.close()\n351:             durable = playwright.chromium.launch_persistent_context(profile, executable_path=executable)\n352:             durable.on(\"request\", lambda request: requests.append(request.url))\n353:             durable.on(\"page\", lambda tab: tab.on(\"pageerror\", lambda error: errors.append(str(error))))\n354:             durable_page = durable.pages[0]"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "tests/contracts/authority-test/creator-pty.test.py",
+      "line": 28,
+      "end_line": 28,
+      "source_sha256": "f25125c29ad836e6e320b7f28e49f904e64abcda5b50d6bd5fe0c1954aa7e6d8",
+      "scanner_fingerprint": "4af6178d50f7e2fe3f8440a960ed001f6ea584786f0824ba10e0d104af2edb6f8435007994261f40d39ea85d9c10dcfed3b5270965913f0694c8baed4eac7832_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            [NODE, str(CHILD)],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/contracts/authority-test/creator-pty.test.py",
+              "start": {
+                "line": 16,
+                "col": 8,
+                "offset": 267
+              },
+              "end": {
+                "line": 16,
+                "col": 16,
+                "offset": 275
+              }
+            },
+            "sys.argv"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "tests/contracts/authority-test/creator-pty.test.py",
+              "start": {
+                "line": 16,
+                "col": 1,
+                "offset": 260
+              },
+              "end": {
+                "line": 16,
+                "col": 5,
+                "offset": 264
+              }
+            },
+            "content": "NODE"
+          },
+          {
+            "location": {
+              "path": "tests/contracts/authority-test/creator-pty.test.py",
+              "start": {
+                "line": 16,
+                "col": 1,
+                "offset": 260
+              },
+              "end": {
+                "line": 16,
+                "col": 5,
+                "offset": 264
+              }
+            },
+            "content": "NODE"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/contracts/authority-test/creator-pty.test.py",
+              "start": {
+                "line": 28,
+                "col": 13,
+                "offset": 660
+              },
+              "end": {
+                "line": 28,
+                "col": 31,
+                "offset": 678
+              }
+            },
+            "[NODE, str(CHILD)]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_TEST_OPERATOR_NODE_SELECTOR",
+      "reason": "NODE is explicitly the test CLI first argument (or literal node) and CHILD is the fixed adjacent creator-pty-child.cjs. Popen uses a two-element argv list and scrubbed PATH-only environment; no shell. The source declares disposable synthetic keys/no provider or live signing.",
+      "trust_boundary": "Local test operator chooses Node. Static review does not run PTY, inspect a private key, grant signer authority or authorize live-chain actions.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.Popen([NODE, str(CHILD)], stdin=slave, stdout=slave, stderr=slave, env={'PATH': '/usr/bin:/bin'}, close_fds=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[NODE, str(CHILD)]"
+      },
+      "support": [
+        {
+          "path": "tests/contracts/authority-test/creator-pty.test.py",
+          "start_line": 1,
+          "end_line": 19,
+          "lines": "1: \"\"\"Actual local Linux PTYs, disposable synthetic keys; no provider or live signing.\"\"\"\n2: \n3: import errno\n4: import json\n5: import os\n6: from pathlib import Path\n7: import pty\n8: import select\n9: import signal\n10: import subprocess\n11: import sys\n12: import termios\n13: import time\n14: import unittest\n15: \n16: NODE = sys.argv[1] if len(sys.argv) > 1 else \"node\"\n17: sys.argv = [sys.argv[0]]\n18: CHILD = Path(__file__).with_name(\"creator-pty-child.cjs\")\n19: SYNTHETIC = b\"0x\" + b\"11\" * 32"
+        },
+        {
+          "path": "tests/contracts/authority-test/creator-pty.test.py",
+          "start_line": 23,
+          "end_line": 34,
+          "lines": "23:     def campaign(self, action):\n24:         master, slave = pty.openpty()\n25:         initial = termios.tcgetattr(slave)\n26:         output = bytearray()\n27:         process = subprocess.Popen(\n28:             [NODE, str(CHILD)],\n29:             stdin=slave,\n30:             stdout=slave,\n31:             stderr=slave,\n32:             env={\"PATH\": \"/usr/bin:/bin\"},\n33:             close_fds=True,\n34:         )"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/runtime/test_ecosystem_browser.py",
+      "line": 236,
+      "end_line": 236,
+      "source_sha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+      "scanner_fingerprint": "743feed0f387d6c3ca0ee5d19bb1d7e058de1e475f7f34478d9065e2cb88d65a334b5e584a95928488ed09fe3bfd848bebe3a4577159a1ece07123ef92c1f1e7_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            page.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          273,
+          234
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/runtime/test_ecosystem_browser.py",
+          "start_line": 273,
+          "end_line": 273,
+          "lines": "273:         requests = []"
+        },
+        {
+          "path": "tests/runtime/test_ecosystem_browser.py",
+          "start_line": 234,
+          "end_line": 234,
+          "lines": "234:             requests = []"
+        },
+        {
+          "path": "tests/runtime/test_ecosystem_browser.py",
+          "start_line": 234,
+          "end_line": 238,
+          "lines": "234:             requests = []\n235:             errors = []\n236:             page.on(\"request\", lambda request: requests.append(request.url))\n237:             page.on(\"pageerror\", lambda error: errors.append(str(error)))\n238:             origin = f\"http://127.0.0.1:{server.server_port}\""
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/runtime/test_ecosystem_browser.py",
+      "line": 276,
+      "end_line": 276,
+      "source_sha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+      "scanner_fingerprint": "78393c4ca594bae1668ec7be617ac7eef026359680c3000bf72b53acb1f7802e656abc029568e18ea113e940453a0cc4ddc05e70140556bc26d9097634852bac_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            lambda request: requests.append(request.url) if request.resource_type in {\"fetch\", \"xhr\"} else None,",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          273,
+          234
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/runtime/test_ecosystem_browser.py",
+          "start_line": 273,
+          "end_line": 273,
+          "lines": "273:         requests = []"
+        },
+        {
+          "path": "tests/runtime/test_ecosystem_browser.py",
+          "start_line": 234,
+          "end_line": 234,
+          "lines": "234:             requests = []"
+        },
+        {
+          "path": "tests/runtime/test_ecosystem_browser.py",
+          "start_line": 274,
+          "end_line": 278,
+          "lines": "274:         page.on(\n275:             \"request\",\n276:             lambda request: requests.append(request.url) if request.resource_type in {\"fetch\", \"xhr\"} else None,\n277:         )\n278:         page.route(\"**/\" + script, lambda request: held.append(request))"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+      "path": "tests/runtime/test_successor_studio_interruptions.py",
+      "line": 45,
+      "end_line": 52,
+      "source_sha256": "78739943a3821c4a7f6ec62b242d756c95593cbe79f83d639d3fa74dc766d237",
+      "scanner_fingerprint": "ab8632b56fbc9d2bf606ac6fcc0a0215851fb456989fa5997136af57512d1768a79ed138790c14f84a4cc29aba615806d46410cf3e5218f0a41e7cd986462192_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "    result = subprocess.run(\n        [sys.executable, \"-c\", FRESH_READ],\n        input=json.dumps({\"home\": str(home), \"request\": request, \"binding\": binding[\"digest\"]}),\n        text=True,\n        capture_output=True,\n        timeout=30,\n        check=True,\n    )",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/runtime/test_successor_studio_interruptions.py",
+              "start": {
+                "line": 43,
+                "col": 28,
+                "offset": 1488
+              },
+              "end": {
+                "line": 43,
+                "col": 35,
+                "offset": 1495
+              }
+            },
+            "request"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "tests/runtime/test_successor_studio_interruptions.py",
+              "start": {
+                "line": 43,
+                "col": 28,
+                "offset": 1488
+              },
+              "end": {
+                "line": 43,
+                "col": 35,
+                "offset": 1495
+              }
+            },
+            "content": "request"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/runtime/test_successor_studio_interruptions.py",
+              "start": {
+                "line": 45,
+                "col": 14,
+                "offset": 1653
+              },
+              "end": {
+                "line": 52,
+                "col": 6,
+                "offset": 1903
+              }
+            },
+            "subprocess.run(\n        [sys.executable, \"-c\", FRESH_READ],\n        input=json.dumps({\"home\": str(home), \"request\": request, \"binding\": binding[\"digest\"]}),\n        text=True,\n        capture_output=True,\n        timeout=30,\n        check=True,\n    )"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_JSON_STDIN_NOT_COMMAND",
+      "reason": "The parameter named request is serialized through json.dumps into subprocess input (stdin). argv is [sys.executable, -c, FRESH_READ], where FRESH_READ is a fixed module-level string; the child uses json.load(sys.stdin). No request value enters executable argv/code or shell parsing. The rule mistakes an ordinary typed test data parameter for a Django request-to-command sink.",
+      "trust_boundary": "Synthetic test request/binding are data for a fixed retained-journal read. No child process, product import, held operation or recovery run occurred in this static audit.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([sys.executable, '-c', FRESH_READ], input=json.dumps({'home': str(home), 'request': request, 'binding': binding['digest']}), text=True, capture_output=True, timeout=30, check=True)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[sys.executable, '-c', FRESH_READ]"
+      },
+      "support": [
+        {
+          "path": "tests/runtime/test_successor_studio_interruptions.py",
+          "start_line": 1,
+          "end_line": 5,
+          "lines": "1: # SPDX-License-Identifier: Apache-2.0\n2: \"\"\"Real fixed-work interruption boundaries with synthetic RPC and test principals.\n3: \n4: Fresh subprocesses reopen retained journals without replaying execution. These\n5: checks do not establish physical-device, external provider or live-chain recovery."
+        },
+        {
+          "path": "tests/runtime/test_successor_studio_interruptions.py",
+          "start_line": 26,
+          "end_line": 53,
+          "lines": "26: FRESH_READ = \"\"\"\n27: import json, sys\n28: from alpha_factory_v1.core.runtime.store import Journal, Conflict\n29: from alpha_factory_v1.core.runtime.successor import studio\n30: value = json.load(sys.stdin)\n31: journal = Journal(value['home'])\n32: before = journal.verify()\n33: try:\n34:     result = studio.retained_work(journal, value['request'], value['binding'])\n35:     output = {'status': 'retained', 'result': result}\n36: except Conflict:\n37:     output = {'status': 'requires-explicit-recovery'}\n38: assert journal.verify() == before, 'Fresh retained read must not mutate or execute'\n39: print(json.dumps(output))\n40: \"\"\"\n41: \n42: \n43: def fresh_read(home: Path, request: dict[str, Any], binding: dict[str, Any]) -> dict[str, Any]:\n44:     \"\"\"Reopen journal in another interpreter with no recovered grant or client.\"\"\"\n45:     result = subprocess.run(\n46:         [sys.executable, \"-c\", FRESH_READ],\n47:         input=json.dumps({\"home\": str(home), \"request\": request, \"binding\": binding[\"digest\"]}),\n48:         text=True,\n49:         capture_output=True,\n50:         timeout=30,\n51:         check=True,\n52:     )\n53:     return json.loads(result.stdout)"
+        }
+      ]
+    },
+    {
+      "rule": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "path": "tests/runtime/test_supplier_browser_browser.py",
+      "line": 167,
+      "end_line": 167,
+      "source_sha256": "190ebcb9ad4634302f508d23ee27355a8038d3e7d51ed9166eef54f3b536e7b7",
+      "scanner_fingerprint": "7bc4b4bb98a7d29fcc246d4d5ad567aeda7c1137b107109a795052cd5fa86f99ea9daf1bdb4c59124f05f4df6f052e327b6a26e3fc94139219b7f5e155e527e8_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "        page.on(\"request\", lambda request: requests.append(request.url))",
+      "original_is_ignored": false,
+      "scanner_taint_trace": null,
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_LIST_OBSERVATION_NOT_HTTP",
+      "reason": "The identifier requests is explicitly initialized as a Python list. The flagged sink is list.append(request.url) inside a Playwright request-event callback; appending a string neither sends an HTTP request nor resolves a destination. This is a receiver-name collision with the requests HTTP library, which is not imported by this file.",
+      "trust_boundary": "Observed browser URL is recorded as test evidence only at this location. No server-side HTTP client call occurs in the finding. This limited static disposition does not qualify browser behavior, native execution, any held Harness/Fleet request, or other sinks in the file.",
+      "ast_validation": {
+        "requests_list_initializers": [
+          166
+        ],
+        "flagged_call": "requests.append(request.url)",
+        "requests_http_library_imported": false
+      },
+      "support": [
+        {
+          "path": "tests/runtime/test_supplier_browser_browser.py",
+          "start_line": 166,
+          "end_line": 166,
+          "lines": "166:         held, requests = [], []"
+        },
+        {
+          "path": "tests/runtime/test_supplier_browser_browser.py",
+          "start_line": 165,
+          "end_line": 169,
+          "lines": "165:         page = browser.new_page()\n166:         held, requests = [], []\n167:         page.on(\"request\", lambda request: requests.append(request.url))\n168:         page.route(\"**/supplier-studio.js\", lambda route: held.append(route))\n169:         with page.expect_request(\"**/supplier-studio.js\"):"
+        }
+      ]
+    },
+    {
+      "rule": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "path": "tests/test_strategy_python_security.py",
+      "line": 51,
+      "end_line": 51,
+      "source_sha256": "9979e6adf0f2028a3aaf769c013dcb5037021a4a7de09670356d2c429ca30669",
+      "scanner_fingerprint": "86eedbae5531529bc54806272ab6e16ac6fa0ab83a18a0c37a58c4e1ffdcc350af860fcb841805160a46c43338acb33ed1f80ae3f7e8cafb6d71f21a1930f29d_0",
+      "original_severity": "ERROR",
+      "scanner_lines": "            [str(candidate), \"-c\", \"from importlib.metadata import version; print(version('semgrep'))\"],",
+      "original_is_ignored": false,
+      "scanner_taint_trace": {
+        "taint_source": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/test_strategy_python_security.py",
+              "start": {
+                "line": 46,
+                "col": 18,
+                "offset": 1246
+              },
+              "end": {
+                "line": 46,
+                "col": 91,
+                "offset": 1319
+              }
+            },
+            "os.environ.get(\"PRE_COMMIT_HOME\", str(Path.home() / \".cache/pre-commit\"))"
+          ]
+        ],
+        "intermediate_vars": [
+          {
+            "location": {
+              "path": "tests/test_strategy_python_security.py",
+              "start": {
+                "line": 46,
+                "col": 5,
+                "offset": 1233
+              },
+              "end": {
+                "line": 46,
+                "col": 10,
+                "offset": 1238
+              }
+            },
+            "content": "cache"
+          },
+          {
+            "location": {
+              "path": "tests/test_strategy_python_security.py",
+              "start": {
+                "line": 47,
+                "col": 9,
+                "offset": 1329
+              },
+              "end": {
+                "line": 47,
+                "col": 18,
+                "offset": 1338
+              }
+            },
+            "content": "candidate"
+          }
+        ],
+        "taint_sink": [
+          "CliLoc",
+          [
+            {
+              "path": "tests/test_strategy_python_security.py",
+              "start": {
+                "line": 51,
+                "col": 13,
+                "offset": 1510
+              },
+              "end": {
+                "line": 51,
+                "col": 104,
+                "offset": 1601
+              }
+            },
+            "[str(candidate), \"-c\", \"from importlib.metadata import version; print(version('semgrep'))\"]"
+          ]
+        ]
+      },
+      "authority_clearance": false,
+      "executed": false,
+      "disposition": "RULE_INAPPLICABLE_TEST_OPERATOR_CACHE_SELECTOR",
+      "reason": "PRE_COMMIT_HOME selects a local installed-tool cache. glob yields candidate Python interpreter paths; each runs one fixed metadata version string through argv [-c, constant] without a shell. No repository/browser/model content supplies program text.",
+      "trust_boundary": "Trusted operator-controlled pre-commit cache/interpreter installation, not a remote input. The is_file/version probe is not authentication of an arbitrary hostile cache; executing an untrusted selected interpreter remains unsafe and is not admitted by this review.",
+      "ast_validation": {
+        "subprocess_call": "subprocess.run([str(candidate), '-c', \"from importlib.metadata import version; print(version('semgrep'))\"], capture_output=True, text=True, timeout=10)",
+        "shell_keyword": "omitted (Python subprocess default False)",
+        "argv_expression": "[str(candidate), '-c', \"from importlib.metadata import version; print(version('semgrep'))\"]"
+      },
+      "support": [
+        {
+          "path": "tests/test_strategy_python_security.py",
+          "start_line": 39,
+          "end_line": 61,
+          "lines": "39: def scanner_python() -> str:\n40:     \"\"\"Reuse the existing pinned hook environment; never install or download a tool.\"\"\"\n41:     try:\n42:         if metadata.version(\"semgrep\") == security.SEMGREP_VERSION:\n43:             return sys.executable\n44:     except metadata.PackageNotFoundError:\n45:         pass\n46:     cache = Path(os.environ.get(\"PRE_COMMIT_HOME\", str(Path.home() / \".cache/pre-commit\")))\n47:     for candidate in sorted(cache.glob(\"*/py_env-*/bin/python\")):\n48:         if not (candidate.parent / \"semgrep\").is_file():\n49:             continue\n50:         result = subprocess.run(\n51:             [str(candidate), \"-c\", \"from importlib.metadata import version; print(version('semgrep'))\"],\n52:             capture_output=True,\n53:             text=True,\n54:             timeout=10,\n55:         )\n56:         if result.returncode == 0 and result.stdout.strip() == security.SEMGREP_VERSION:\n57:             return str(candidate)\n58:     message = \"Real Semgrep1.99.0 integration requires the existing blocking-hook environment; no auto-install\"\n59:     if os.environ.get(\"STRATEGY_REQUIRE_SEMGREP\") == \"1\":\n60:         pytest.fail(message)\n61:     pytest.skip(message)"
+        }
+      ]
+    }
+  ]
+}

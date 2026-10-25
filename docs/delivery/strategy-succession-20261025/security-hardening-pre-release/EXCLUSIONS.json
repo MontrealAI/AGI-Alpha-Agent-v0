@@ -1,0 +1,49 @@
+{
+  "schema": "pre-release-evidence-exclusions/v1",
+  "status": "EXPLICIT_OMISSIONS_NO_CAPTURED_INPUT_ALTERATION",
+  "items": [
+    {
+      "kind": "third-party-rules",
+      "path": "official-p-python-observed.yaml and attempt-0nz6pteg/official-p-python.yml",
+      "sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+      "bytes": 502198,
+      "reason": "Captured rules declare Semgrep RulesLicensev1.0, whose official terms disallow distribution; exactlocalcapture untouched; publicappend keepsobservation/hash/IDs/definitiondigests only",
+      "license_url": "https://semgrep.dev/legal/rules-license/"
+    },
+    {
+      "kind": "private-or-irrelevant-payloads",
+      "excluded": [
+        "environments",
+        "credential stores",
+        "private-home contents",
+        "HAR",
+        "executables",
+        "SQLite/database files",
+        "bulk source snapshots",
+        "irrelevant images",
+        "already archived failed-CI ZIPs"
+      ],
+      "reason": "Data-only bounded evidence; no recursive directory admission or linked-file traversal."
+    },
+    {
+      "kind": "unfrozen-followup",
+      "excluded": [
+        "current matcher implementation and active-map qualification",
+        "final public-projection exporter acceptance",
+        "final published source and public installation"
+      ],
+      "reason": "Not yet qualified in this snapshot; later append required."
+    }
+  ],
+  "component_exclusions": [
+    "Official77/54 raw scans, timeout/triage/resource reports are owned by parent and intentionally omitted to avoid duplicate evidence work.",
+    "Source .py snapshots, unified patches, environments, executables, caches, SQLite/DB files, raw study inputs, images/HAR, credentials/private home contents and already archived failed-CI ZIPs are not selected.",
+    "No PG/pgvector, actualFAISS, liveQdrant, Docker execution, generated-patch runtime, general desktop, financial action or heldHarness/Fleet qualification is inferred."
+  ],
+  "rule_license_observation": {
+    "url": "https://semgrep.dev/legal/rules-license/",
+    "observed_date": "2026-10-25",
+    "stated_limitation": "This license does not allow you to distribute the rules",
+    "distribution_authority_inferred": false
+  }
+}

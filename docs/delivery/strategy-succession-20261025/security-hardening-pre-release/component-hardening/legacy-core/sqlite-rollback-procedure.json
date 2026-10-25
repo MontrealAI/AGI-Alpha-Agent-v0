@@ -1,0 +1,83 @@
+{
+  "schema": "legacy-sqlite-rollback-procedure/v1",
+  "production_source_commit": "4cb71e1e6eee4aba807aaa7035b950661bfe48fd",
+  "test_and_docs_sha256": {
+    "tests/test_legacy_identity_security.py": "018e9bf38ae9f8ab274b78b39376bf0aa0e4e3fcbc42d15a7bf5aa4f58b4c0dc",
+    "docs/agent/LEGACY_CONTENT_IDENTITIES.md": "3306f20dcc82d0ad7870a642842d97603206944dff71339c08e43a859b5cbf61"
+  },
+  "snapshot_files": {
+    "live.sqlite": {
+      "bytes": 24576,
+      "sha256": "1976d94e56307931654013c8419c6056a948185424d0949241e5f86f69028f5a",
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content",
+        "content_id"
+      ],
+      "rows": 2,
+      "row_inventory_sha256": "b4bc8f1af7b55ae46869e5a9e243f03d4031ac8043dde19e4cd7d0de690a2303",
+      "has_legacy_body": true,
+      "has_post_upgrade_body": true,
+      "has_restored_writer_body": false
+    },
+    "pre-upgrade.sqlite": {
+      "bytes": 12288,
+      "sha256": "818dada38427e5a37f9af879ea2c4bc4e576daffe33c7786fd933aa566fd7594",
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content"
+      ],
+      "rows": 1,
+      "row_inventory_sha256": "6c77c8a5424404271f66e83f701fcd8220c0237355d7b6874e1848234b4c431f",
+      "has_legacy_body": true,
+      "has_post_upgrade_body": false,
+      "has_restored_writer_body": false
+    },
+    "restored-old-writer.sqlite": {
+      "bytes": 20480,
+      "sha256": "618b546e203499666653a5c9a91e843c8cc56fd4ec775331abec973fb59f300e",
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content"
+      ],
+      "rows": 2,
+      "row_inventory_sha256": "25854cf822af98169b8dbb2e300ca52464e2b4fbfa731e72214f0d8df9f0f0a4",
+      "has_legacy_body": true,
+      "has_post_upgrade_body": false,
+      "has_restored_writer_body": true
+    },
+    "retained-upgraded.sqlite": {
+      "bytes": 24576,
+      "sha256": "5fbab828ff00fcd9aa2ea22d5aaab8c6a0480c4b1ec8f09810cd2c5e2168f113",
+      "columns": [
+        "hash",
+        "agent",
+        "ts",
+        "vec",
+        "content",
+        "content_id"
+      ],
+      "rows": 2,
+      "row_inventory_sha256": "b4bc8f1af7b55ae46869e5a9e243f03d4031ac8043dde19e4cd7d0de690a2303",
+      "has_legacy_body": true,
+      "has_post_upgrade_body": true,
+      "has_restored_writer_body": false
+    }
+  },
+  "production_source_unchanged": true,
+  "fixed_sql_only": true,
+  "test_result": "1 passed in 2.36s",
+  "postgres_or_providers_called": false,
+  "seamless_rollback_qualified": false,
+  "post_upgrade_data_in_restored_old_snapshot": false,
+  "scope": "Stopped writers; pre-upgrade SQLite backup; upgrade/write; separately retained upgraded copy; restore old snapshot at a different path; fixed five-column old-writer insert/read. New data remain in the upgraded copy and are not automatically reconciled."
+}

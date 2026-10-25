@@ -1,0 +1,83 @@
+FF
+=================================== FAILURES ===================================
+_ test_qdrant_uses_exact_validated_origin[qdrant.example:6333-https://qdrant.example:6333] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f45da3bc980>
+event = {'es_settle': 5000.0, 'fed_speech': 'Authored public development example', 'stable_flow': 1.0, 'timestamp': '2026-01-01T00:00:00+00:00', ...}
+put = <Mock id='139937990822368'>, target = 'qdrant.example:6333'
+origin = 'https://qdrant.example:6333'
+
+    @pytest.mark.parametrize(
+        ("target", "origin"),
+        [
+            ("qdrant.example:6333", "https://qdrant.example:6333"),
+            ("https://QDRANT.example:6333", "https://qdrant.example:6333"),
+            ("qdrant", "https://qdrant"),
+            ("https://[2001:db8::1]:6333", "https://[2001:db8::1]:6333"),
+            ("127.0.0.1:6333", "http://127.0.0.1:6333"),
+            ("127.23.45.67:6333", "http://127.23.45.67:6333"),
+            ("localhost:6333", "http://localhost:6333"),
+            ("[::1]:6333", "http://[::1]:6333"),
+            ("http://localhost:6333", "http://localhost:6333"),
+            ("http://127.0.0.1:6333", "http://127.0.0.1:6333"),
+            ("http://[::1]:6333", "http://[::1]:6333"),
+            ("https://localhost:6333", "https://localhost:6333"),
+        ],
+    )
+    def test_qdrant_uses_exact_validated_origin(
+        monkeypatch: pytest.MonkeyPatch, event: dict[str, Any], put: Mock, target: str, origin: str
+    ) -> None:
+        monkeypatch.setattr(data_feeds, "VEC_URL", target)
+        data_feeds._push_qdrant(event)
+        put.assert_called_once()
+        args, kwargs = put.call_args
+>       assert args == (origin + "/collections/macro/points",)
+E       AssertionError: assert ('http://qdra...acro/points',) == ('https://qdr...acro/points',)
+E         
+E         At index 0 diff: 'http://qdrant.example:6333/collections/macro/points' != 'https://qdrant.example:6333/collections/macro/points'
+E         Use -v to get more diff
+
+tests/test_macro_qdrant_security.py:63: AssertionError
+_ test_qdrant_uses_exact_validated_origin[https://QDRANT.example:6333-https://qdrant.example:6333] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f45da3be210>
+event = {'es_settle': 5000.0, 'fed_speech': 'Authored public development example', 'stable_flow': 1.0, 'timestamp': '2026-01-01T00:00:00+00:00', ...}
+put = <Mock id='139937990831776'>, target = 'https://QDRANT.example:6333'
+origin = 'https://qdrant.example:6333'
+
+    @pytest.mark.parametrize(
+        ("target", "origin"),
+        [
+            ("qdrant.example:6333", "https://qdrant.example:6333"),
+            ("https://QDRANT.example:6333", "https://qdrant.example:6333"),
+            ("qdrant", "https://qdrant"),
+            ("https://[2001:db8::1]:6333", "https://[2001:db8::1]:6333"),
+            ("127.0.0.1:6333", "http://127.0.0.1:6333"),
+            ("127.23.45.67:6333", "http://127.23.45.67:6333"),
+            ("localhost:6333", "http://localhost:6333"),
+            ("[::1]:6333", "http://[::1]:6333"),
+            ("http://localhost:6333", "http://localhost:6333"),
+            ("http://127.0.0.1:6333", "http://127.0.0.1:6333"),
+            ("http://[::1]:6333", "http://[::1]:6333"),
+            ("https://localhost:6333", "https://localhost:6333"),
+        ],
+    )
+    def test_qdrant_uses_exact_validated_origin(
+        monkeypatch: pytest.MonkeyPatch, event: dict[str, Any], put: Mock, target: str, origin: str
+    ) -> None:
+        monkeypatch.setattr(data_feeds, "VEC_URL", target)
+        data_feeds._push_qdrant(event)
+        put.assert_called_once()
+        args, kwargs = put.call_args
+>       assert args == (origin + "/collections/macro/points",)
+E       AssertionError: assert ('http://http...acro/points',) == ('https://qdr...acro/points',)
+E         
+E         At index 0 diff: 'http://https://QDRANT.example:6333/collections/macro/points' != 'https://qdrant.example:6333/collections/macro/points'
+E         Use -v to get more diff
+
+tests/test_macro_qdrant_security.py:63: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_macro_qdrant_security.py::test_qdrant_uses_exact_validated_origin[qdrant.example:6333-https://qdrant.example:6333]
+FAILED tests/test_macro_qdrant_security.py::test_qdrant_uses_exact_validated_origin[https://QDRANT.example:6333-https://qdrant.example:6333]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 2 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+2 failed, 48 deselected in 0.27s

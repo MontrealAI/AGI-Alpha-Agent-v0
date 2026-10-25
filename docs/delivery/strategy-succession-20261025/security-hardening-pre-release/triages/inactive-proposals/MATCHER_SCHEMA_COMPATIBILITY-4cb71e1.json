@@ -1,0 +1,90 @@
+{
+  "schema": "alpha-inactive-matcher-schema-compatibility-review/v1",
+  "recorded_at": "2026-10-25T06:02:55.106979+00:00",
+  "state": "INACTIVE_COMPATIBILITY_REVIEW_CONTEXT_BINDING_UNRESOLVED_BEFORE_ACTIVATION",
+  "reviewed_worktree_files": [
+    {
+      "path": "scripts/semgrep_inapplicability.py",
+      "bytes": 14399,
+      "sha256": "fde54387dab09f4d52761a4786c5a4c7e88d071466cbedc621456e7abbfb107f"
+    },
+    {
+      "path": "tests/test_semgrep_inapplicability.py",
+      "bytes": 18188,
+      "sha256": "004d2d5e7271c0a3fad48e91d29eae5174a84e22b5ac023bf1aecb6b7a162d97"
+    }
+  ],
+  "source_proposal": "APPLICABILITY_PROPOSAL-4cb71e1.json",
+  "proposal_source_commit": "4cb71e1e6eee4aba807aaa7035b950661bfe48fd",
+  "proposal_raw_report_sha256": "a66f4f99dcb9ee661487ae2e0b11bf43be060e644f17e15c5dadcd594bfafe24",
+  "observations": {
+    "approved_map_pin": null,
+    "fixed_map_file_exists": false,
+    "map_created_by_this_review": false,
+    "source_tests_or_policy_edited": false,
+    "matcher_or_product_test_execution": false,
+    "target_runtime_native_held_or_remote_execution": false
+  },
+  "mechanical_translation_facts": {
+    "actual_findings": 54,
+    "all54byte_location_line_column_checks_pass": true,
+    "exact_span_SHA_differs_from_reported_lines_SHA_count": 54,
+    "selected_paths": 1549,
+    "selected_paths_sha256": "e529fd521525c901b6bf3db741a2680ffe6f680025a51ee15f8803812518024a",
+    "capture_entries": 1550,
+    "extra_capture_entry": "semgrep.yml",
+    "selected_source_bytes": 9109530,
+    "largest_selected_source_bytes": 78383,
+    "required_identity_keys": [
+      "rule_id",
+      "rule_definition_sha256",
+      "rule_start_byte",
+      "rule_end_byte",
+      "source_path",
+      "source_sha256",
+      "source_bytes",
+      "start",
+      "end",
+      "snippet_sha256",
+      "reported_lines_sha256"
+    ],
+    "snippet_sha256_definition": "SHA256(source_body_bytes[start.offset:end.offset])",
+    "reported_lines_sha256_definition": "SHA256(UTF8(raw_finding.extra.lines)), no normalization",
+    "rule_definition_sha256_definition": "Exact unmodified captured YAML mapping-node bytes; include rule_start_byte/end_byte and exact whole official pack pin."
+  },
+  "deliberate_proposal_to_map_differences": [
+    "Inactive evidence proposal is richer than the exact root/case map schema and cannot be loaded directly.",
+    "Proposal has no independently approved review_reference; none may be fabricated during translation.",
+    "Proposal full reported-line hash must map to reported_lines_sha256; exact span digest must be derived separately.",
+    "Use actual sorted selected paths for target_paths_sha256; do not include the extra legacyconfig capture.",
+    "Helper/test/matcher additions change final targets/bodies; old4cb digest is not final-source approval."
+  ],
+  "activation_concerns": [
+    {
+      "id": "CONTEXT_EXPIRY_NOT_EXPRESSIBLE",
+      "status": "UNRESOLVED_BEFORE_ACTIVATION",
+      "source_locations": [
+        "scripts/semgrep_inapplicability.py:299",
+        "scripts/semgrep_inapplicability.py:303"
+      ],
+      "finding": "Current exact map root binds selected path names and finding-file bodies, but not content identities of non-finding consumer files. before==after proves within-scan stability, not equality to prior reviewed consumer context.",
+      "mechanical_case": "Keep the same target names, pack and finding helper body; change a different already-selected consumer to use that helper result for security. New before/after are equal within the new scan and finding identities can remain unchanged. Every current map comparison can still match.",
+      "impact_limit": "No present acceptance bypass: production pinNone/no map/no wiring. This is a schema incompatibility with explicit whole-context expiry in the proposal before any activation.",
+      "needed_decision": "Explicit reviewed finite context/source-content inventory or sufficient dependency binding, including treatment of future pin self-reference; do not silently exclude policy code. Separate review must choose the treatment."
+    },
+    {
+      "id": "LEGACY_CONFIG_BINDING",
+      "status": "RESOLVE_WITH_CONTEXT_BINDING",
+      "finding": "Actual scan includes legacysemgrep.yml; proposal binds its wholebody. Current root map schema has official pack and Python selected-path list only.",
+      "needed_decision": "Bind the exact legacy configuration in the reviewed context. Unknown surrounding configurations must not inherit applicability."
+    }
+  ],
+  "safe_properties_observed": [
+    "Literal APPROVED_MAP_SHA256=None and fixed MAP_PATH; environment/CLI map selectors absent.",
+    "Exact source/rule/span identity and one-to-one case sets; unknown/duplicate/missing changes refuse.",
+    "Raw findings and engine exit retained separately from policy disposition.",
+    "Whole official pack pinned; newly added exact rule span offsets prevent rule-span relocation.",
+    "No release or production authority is granted by assessment."
+  ],
+  "next_step": "Integration lead resolves context schema, owners freeze helper/tests/matcher, then fresh complete official scan and separate final code/security review; no active map requested or created."
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "agialpha.primary-python-scanner-independent-review.v1",
+  "reviewed_checker_sha256": "06e4d5f0beb84499e78343f3423a890916f5f5c5130be472b851c36924e21a16",
+  "reviewed_tests_sha256": "6f3a9da0b77820872d556c72cb5ba6c184c699123948d270ecaba7ae3c530c54",
+  "local_two_rule_config_sha256": "41b6fcf8b68115407c4671670da9926e91f9402a1be9a733b08ba7d11c68cdd0",
+  "legacy_semgrep_config_sha256": "8cfac716549d157d4f994670a80abecb65c2f94c64fe976a1f2e52d9d707a918",
+  "status": "BLOCKED_RESOURCE_GAPS",
+  "findings": [
+    {
+      "id": "F1",
+      "path": "scripts/check_strategy_python_security.py",
+      "line": 230,
+      "title": "Official fetch has socket timeout, no absolute wall deadline",
+      "evidence": "_open_official(..., timeout=30) ultimately passes urllib.open timeout, then response.read(2_000_001) may perform multiple blocking receives. The 600-second process-group supervision starts only after fetch and parsing. Thus a progressing/dripping response is not bounded to thirty seconds overall.",
+      "required_outcome": "Bound the complete official fetch to a real thirty-second wall deadline and retain fixed HTTPS endpoint, redirect refusal, byte bound and unmodified response evidence.",
+      "runtime_exploit_attempted": false
+    },
+    {
+      "id": "F2",
+      "path": "scripts/check_strategy_python_security.py",
+      "line": 391,
+      "title": "Official scanner output is loaded before its byte bound is checked",
+      "evidence": "The subprocess writes scanner.json/scanner.stderr without output-size limits, then scanner.json.read_bytes() allocates the whole file before _json checks MAX_REPORT_BYTES. Its scanner timeout alone does not enforce memory/disk output bounds.",
+      "required_outcome": "Bound stdout/stderr growth or supervise their sizes, and bound reads before allocation while retaining failure evidence. Unknown/oversized/truncated output must fail, not be reinterpreted as complete coverage.",
+      "runtime_exploit_attempted": false
+    }
+  ],
+  "verified_controls": [
+    "Parent and child Python invocations use -I in observed pre-commit wiring and scanner argv.",
+    "Primary argv uses fixed captured official config path plus pinned legacy local config, strict/error/noignore/nosem/no-rewrite flags and literal -- before validated tracked Python names.",
+    "Coverage equals exact unique selected filenames; findings/errors/skipped rules/target skips/version mismatch/empty coverage/nonzero result/drift all fail; no admission map exists.",
+    "Current official response is preserved unmodified and all 151 byte-span hashes independently match raw body and separately parsed rule IDs.",
+    "The current saved one-file component attempt records zero findings/errors/skips and equal source-before/source-after inventories; this is not full repository qualification."
+  ],
+  "observed_component": {
+    "attempt": "evidence/semgrep-official/attempt-gdzpggt8",
+    "checker_sha256": "06e4d5f0beb84499e78343f3423a890916f5f5c5130be472b851c36924e21a16",
+    "official_policy_sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+    "official_bytes": 502198,
+    "rules": 151,
+    "scanned_files": 1,
+    "findings": 0,
+    "exit_code": 0,
+    "raw_report_sha256": "a7afe5b48f4673821c2328aa23f8ceab8f18efb654349a13b3ce6ad00025ee8b",
+    "elapsed_seconds": 6.6401324620092055
+  },
+  "owner_reported_focused_tests": {
+    "count": 48,
+    "passed": 48,
+    "skipped": 0,
+    "elapsed_seconds": 30.98,
+    "independent_saved_receipt_pending": true
+  },
+  "review_method": "Read-only exact source/tests/wiring and saved artifact JSON/YAML; independent stdlib hash/coverage and separate PyYAML parsing. No checker/scanner/native/browser/held target execution or source edits.",
+  "authority_clearance": false,
+  "full_repository_qualification": false
+}

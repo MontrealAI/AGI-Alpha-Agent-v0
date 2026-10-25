@@ -1,0 +1,65 @@
+................F...........................................             [100%]
+=================================== FAILURES ===================================
+_ test_qdrant_refuses_unsafe_target_before_transport[http://[::ffff:127.0.0.1]:6333] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fd7ba8ec9b0>
+event = {'es_settle': 5000.0, 'fed_speech': 'Authored public development example', 'stable_flow': 1.0, 'timestamp': '2026-01-01T00:00:00+00:00', ...}
+put = <Mock id='140564524617648'>, target = 'http://[::ffff:127.0.0.1]:6333'
+
+    @pytest.mark.parametrize(
+        "target",
+        [
+            "http://qdrant.example:6333",
+            "http://qdrant:6333",
+            "http://127.0.0.1.evil.example:6333",
+            "http://localhost.evil.example:6333",
+            "http://[::ffff:127.0.0.1]:6333",
+            "http://0.0.0.0:6333",
+            "https://user:password@qdrant.example:6333",
+            "qdrant.example@other.example:6333",
+            "https://qdrant.example:6333/",
+            "qdrant.example:6333/collections/other/points",
+            "https://qdrant.example:6333?token=synthetic",
+            "https://qdrant.example:6333?",
+            "https://qdrant.example:6333#fragment",
+            "https://qdrant.example:6333#",
+            "https://qdrant.example\\@127.0.0.1:6333",
+            "qdrant.example\n",
+            "https://qdrant.example\t:6333",
+            " qdrant.example:6333",
+            "qdrant.example:6333 ",
+            "https://qdrant.example\x00:6333",
+            "https://qdrant.example\x7f:6333",
+            "https://qdrant.example%2fother.example:6333",
+            "http://[::1%25lo]:6333",
+            "//qdrant.example:6333",
+            "ftp://qdrant.example:6333",
+            "https:////qdrant.example:6333",
+            "https://",
+            "qdrant.example:",
+            "qdrant.example:0",
+            "qdrant.example:65536",
+            "qdrant.example:abc",
+            "qdrant.example:-1",
+            "qdrant.example:6333:6444",
+            "127.0.0.999:6333",
+            "2130706433:6333",
+            "localhost.:6333",
+            "qdrant..example:6333",
+            "-qdrant.example:6333",
+            "qdrant.example;other:6333",
+            "https://qdrant\N{FULLWIDTH FULL STOP}example:6333",
+        ],
+    )
+    def test_qdrant_refuses_unsafe_target_before_transport(
+        monkeypatch: pytest.MonkeyPatch, event: dict[str, Any], put: Mock, target: str
+    ) -> None:
+        monkeypatch.setattr(data_feeds, "VEC_URL", target)
+>       with pytest.raises(ValueError, match="Qdrant"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_macro_qdrant_security.py:128: Failed
+=========================== short test summary info ============================
+FAILED tests/test_macro_qdrant_security.py::test_qdrant_refuses_unsafe_target_before_transport[http://[::ffff:127.0.0.1]:6333]
+1 failed, 59 passed in 0.28s

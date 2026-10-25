@@ -1,0 +1,49 @@
+{
+  "scope": "Independent read-only source review and21 authored focused HTTP boundary tests; no provider/network/listening sockets/Docker/lifespan/training/remote action. No source edits.",
+  "reviewed_files": [
+    {
+      "path": "alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py",
+      "sha256": "7ec22eb2fb0efeb4bd084eb7c2afcc3807e7b87d090b958a6de1f204fb9da546"
+    },
+    {
+      "path": "alpha_factory_v1/demos/alpha_asi_world_model/alpha_asi_world_model_demo.py",
+      "sha256": "f8e3ed99f43622e80ce79811b765568261e700f384596d38e17039f240e20d41"
+    },
+    {
+      "path": "alpha_factory_v1/ui/app.py",
+      "sha256": "f9a737f0f31955d5b36f383618aeb333762c79aad7d7838e1e75051849c028ee"
+    },
+    {
+      "path": "tests/test_legacy_http_security.py",
+      "sha256": "43b4661efb81518d900f61a85d2d9f65c1a68021438e1cb9fb39d284e8b9bb55"
+    }
+  ],
+  "source_findings": {
+    "blocking_bypass": "None found in scoped CORS-origin or UI-bind changes. Full authority regex refuses IPvFuture and bracket-prefix/suffix parser pitfalls; controls/backslash/percent/userinfo/path/query/fragment/wildcard and invalid ports fail closed. Defaultallow_origins=[] limits HTTP CORS grants; direct UI main binds127.0.0.1 without operator override.",
+    "low_risk_config_note": "DNS authority regex admits invalid interior DNS-label forms (e.g. consecutive dots or label-leading hyphen). Exact CORS string matching makes these fail closed rather than expanding an allowed origin; consider stricter labels only if required for config validation.",
+    "scope_precision": "HTTP CORS controls browser access to responses/preflight grants, not general mutation authorization/CSRF or WebSocket Origin enforcement. Existing world-model /ws behavior is unchanged.",
+    "test_route_precision": "AIGA tests use/evolve while actual route is/evolve/{gens}; CORS preflight is independent of route existence, so those tests alone do not prove route preservation."
+  },
+  "test_findings": [
+    {
+      "priority": "P2",
+      "location": "tests/test_legacy_http_security.py load_service plus direct UI import in final test",
+      "issue": "When module absent initially, monkeypatch.delitem(...raising=False) has no original slot to restore. Import then leaves cached test-built module after undo.",
+      "reproduction": {
+        "initial_aiga_cache_present": false,
+        "final_aiga_cache_present": true,
+        "final_MetaEvolver_is_stub_object": true,
+        "service_initialized": false,
+        "test_passed": 21,
+        "warnings": 13,
+        "test_seconds": 2.01
+      },
+      "repair_suggestion": "Before deleting/importing, register slot with monkeypatch.setitem(sys.modules,name,None); then monkeypatch.delitem(sys.modules,name). Undo then restores prior entry or removes previously absent one. Preserve parent-module attribute restoration. Use equivalent lifecycle cleanup for UI import."
+    }
+  ],
+  "evidence": {
+    "path": "focused-and-module-cache-probe.log",
+    "sha256": "e96bce0777afc3fdbf7bfb1ad8e569807faa4969ba25553b5467048e2af1d63c"
+  },
+  "qualification": "Review/test evidence only; not release, live browser, provider, training or deployed authorization qualification."
+}

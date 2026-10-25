@@ -1,0 +1,432 @@
+FFFFF.F                                                                  [100%]
+=================================== FAILURES ===================================
+_ test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcd24b335f0>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-205/test_default_cors_refuses_unre0')
+name = 'alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint'
+setting = 'AIGA_CORS_ORIGINS', route = '/evolve'
+
+    @pytest.mark.parametrize("name,setting,route", SERVICES)
+    def test_default_cors_refuses_unrelated_mutation_origin(monkeypatch, tmp_path, name, setting, route):
+        module = load_service(monkeypatch, tmp_path, name, setting, "")
+        # Outside a lifespan context: no evolver, orchestration thread, or provider starts.
+        client = TestClient(module.app)
+        response = client.options(route, headers={"Origin": "https://unrelated.example", "Access-Control-Request-Method": "POST"})
+>       assert response.status_code == 400
+E       assert 200 == 400
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests/test_legacy_http_security.py:59: AssertionError
+_ test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo-ALPHA_ASI_CORS_ORIGINS-/command] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcd23baf380>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-205/test_default_cors_refuses_unre1')
+name = 'alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo'
+setting = 'ALPHA_ASI_CORS_ORIGINS', route = '/command'
+
+    @pytest.mark.parametrize("name,setting,route", SERVICES)
+    def test_default_cors_refuses_unrelated_mutation_origin(monkeypatch, tmp_path, name, setting, route):
+        module = load_service(monkeypatch, tmp_path, name, setting, "")
+        # Outside a lifespan context: no evolver, orchestration thread, or provider starts.
+        client = TestClient(module.app)
+        response = client.options(route, headers={"Origin": "https://unrelated.example", "Access-Control-Request-Method": "POST"})
+>       assert response.status_code == 400
+E       assert 200 == 400
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests/test_legacy_http_security.py:59: AssertionError
+----------------------------- Captured stdout call -----------------------------
+
+💡  Alpha-ASI demo ready — version 1.1.0 • type `help(alpha_asi_world_model)` for details - or - `alpha_asi_world_model.run_ui()` to launch the dashboard.
+
+----------------------------- Captured stderr call -----------------------------
+2026-10-25 14:26:20,384  WARNING   alpha_factory.agents: kafka-python missing – registry heartbeat disabled
+[2026-10-25 14:26:20,617] WARNING | MemoryFabric: no embedding backend → hashing fallback.
+[2026-10-25 14:26:20,618] INFO | VectorStore: SQLite disabled → RAM mode
+[2026-10-25 14:26:20,618] INFO | GraphStore: python-list ultimate fallback.
+2026-10-25 14:26:20,624  INFO      alpha_factory.agents: Agent aiga_evolver not registered (condition=false)
+2026-10-25 14:26:20,624  INFO      alpha_factory.agents: ✓ agent aiga_evolver       caps=meta_evolution
+2026-10-25 14:26:20,903  INFO      alpha_factory.agents: ✓ agent biotech            caps=nl_query,experiment_design,pathway_analysis,alpha_dashboard
+2026-10-25 14:26:20,904  INFO      alpha_factory.agents: ✓ agent climate_risk       caps=physical_risk_var,adaptation_planning,scenario_simulation
+2026-10-25 14:26:20,906  INFO      alpha_factory.agents: ✓ agent cyber_threat       caps=cve_monitoring,threat_intel_fusion,risk_quantification,patch_planning
+2026-10-25 14:26:20,908  INFO      alpha_factory.agents: ✓ agent drug_design        caps=molecule_generation,activity_prediction,docking_evaluation,synthesis_planning
+2026-10-25 14:26:20,910  INFO      alpha_factory.agents: ✓ agent energy_markets     caps=load_forecasting,dispatch_optimisation,hedge_strategy
+2026-10-25 14:26:21,609  INFO      alpha_factory.agents: ✓ agent finance            caps=
+2026-10-25 14:26:21,613  INFO      alpha_factory.agents: ✓ agent manufacturing      caps=scheduling,scenario_analysis,energy_forecast
+2026-10-25 14:26:21,613  INFO      alpha_factory.agents: ✓ agent market_analysis    caps=analyze
+2026-10-25 14:26:21,614  INFO      alpha_factory.agents: ✓ agent memory             caps=remember
+2026-10-25 14:26:21,614  INFO      alpha_factory.agents: ✓ agent ping               caps=diagnostics,observability
+2026-10-25 14:26:21,615  INFO      alpha_factory.agents: ✓ agent planning           caps=plan
+2026-10-25 14:26:21,618  INFO      alpha_factory.agents: ✓ agent policy             caps=nl_query,version_diff,risk_classification
+2026-10-25 14:26:21,618  INFO      alpha_factory.agents: ✓ agent research           caps=research
+2026-10-25 14:26:21,620  INFO      alpha_factory.agents: ✓ agent retail_demand      caps=demand_forecasting,reorder_optimisation,markdown_pricing
+2026-10-25 14:26:21,621  INFO      alpha_factory.agents: ✓ agent safety             caps=guard
+2026-10-25 14:26:21,623  INFO      alpha_factory.agents: ✓ agent smart_contract     caps=contract_audit,gas_optimisation,economic_simulation
+2026-10-25 14:26:21,624  INFO      alpha_factory.agents: ✓ agent strategy           caps=strategy
+2026-10-25 14:26:21,626  INFO      alpha_factory.agents: ✓ agent supply_chain       caps=demand_forecasting,inventory_optimisation,route_pricing,scenario_generation
+2026-10-25 14:26:21,628  INFO      alpha_factory.agents: ✓ agent talent_match       caps=candidate_recommendation,similarity_scoring,dei_reporting,offer_simulation
+2026-10-25 14:26:21,649  INFO      alpha_factory.agents: 🚀 Agent registry ready –  20 agents,  45 distinct capabilities
+2026-10-25 14:26:21,650  INFO      alpha_factory.agents: Agent aiga_evolver not registered (condition=false)
+2026-10-25 14:26:21,650  INFO      alpha_factory.agents: ✓ agent aiga_evolver       caps=meta_evolution
+2026-10-25 14:26:21,653  ERROR     alpha_factory.agents: Duplicate agent name 'biotech' ignored
+2026-10-25 14:26:21,653  INFO      alpha_factory.agents: ✓ agent biotech            caps=nl_query,experiment_design,pathway_analysis,alpha_dashboard
+2026-10-25 14:26:21,655  ERROR     alpha_factory.agents: Duplicate agent name 'climate_risk' ignored
+2026-10-25 14:26:21,655  INFO      alpha_factory.agents: ✓ agent climate_risk       caps=physical_risk_var,adaptation_planning,scenario_simulation
+2026-10-25 14:26:21,657  ERROR     alpha_factory.agents: Duplicate agent name 'cyber_threat' ignored
+2026-10-25 14:26:21,658  INFO      alpha_factory.agents: ✓ agent cyber_threat       caps=cve_monitoring,threat_intel_fusion,risk_quantification,patch_planning
+2026-10-25 14:26:21,660  ERROR     alpha_factory.agents: Duplicate agent name 'drug_design' ignored
+2026-10-25 14:26:21,660  INFO      alpha_factory.agents: ✓ agent drug_design        caps=molecule_generation,activity_prediction,docking_evaluation,synthesis_planning
+2026-10-25 14:26:21,662  ERROR     alpha_factory.agents: Duplicate agent name 'energy_markets' ignored
+2026-10-25 14:26:21,663  INFO      alpha_factory.agents: ✓ agent energy_markets     caps=load_forecasting,dispatch_optimisation,hedge_strategy
+2026-10-25 14:26:21,666  ERROR     alpha_factory.agents: Duplicate agent name 'finance' ignored
+2026-10-25 14:26:21,666  INFO      alpha_factory.agents: ✓ agent finance            caps=
+2026-10-25 14:26:21,669  ERROR     alpha_factory.agents: Duplicate agent name 'manufacturing' ignored
+2026-10-25 14:26:21,669  INFO      alpha_factory.agents: ✓ agent manufacturing      caps=scheduling,scenario_analysis,energy_forecast
+2026-10-25 14:26:21,671  ERROR     alpha_factory.agents: Duplicate agent name 'ping' ignored
+2026-10-25 14:26:21,671  INFO      alpha_factory.agents: ✓ agent ping               caps=diagnostics,observability
+2026-10-25 14:26:21,674  ERROR     alpha_factory.agents: Duplicate agent name 'policy' ignored
+2026-10-25 14:26:21,674  INFO      alpha_factory.agents: ✓ agent policy             caps=nl_query,version_diff,risk_classification
+2026-10-25 14:26:21,677  ERROR     alpha_factory.agents: Duplicate agent name 'retail_demand' ignored
+2026-10-25 14:26:21,677  INFO      alpha_factory.agents: ✓ agent retail_demand      caps=demand_forecasting,reorder_optimisation,markdown_pricing
+2026-10-25 14:26:21,680  ERROR     alpha_factory.agents: Duplicate agent name 'smart_contract' ignored
+2026-10-25 14:26:21,680  INFO      alpha_factory.agents: ✓ agent smart_contract     caps=contract_audit,gas_optimisation,economic_simulation
+2026-10-25 14:26:21,682  ERROR     alpha_factory.agents: Duplicate agent name 'supply_chain' ignored
+2026-10-25 14:26:21,682  INFO      alpha_factory.agents: ✓ agent supply_chain       caps=demand_forecasting,inventory_optimisation,route_pricing,scenario_generation
+2026-10-25 14:26:21,684  ERROR     alpha_factory.agents: Duplicate agent name 'talent_match' ignored
+2026-10-25 14:26:21,685  INFO      alpha_factory.agents: ✓ agent talent_match       caps=candidate_recommendation,similarity_scoring,dei_reporting,offer_simulation
+2026-10-25 14:26:21,697  INFO      alpha_factory.agents: 🚀 Agent registry ready –  14 agents,  39 distinct capabilities
+------------------------------ Captured log call -------------------------------
+WARNING  alpha_factory.agents:registry.py:28 kafka-python missing – registry heartbeat disabled
+WARNING  alpha_factory_v1.backend.agents.discovery:discovery.py:24 google-adk not installed – mesh integration disabled
+WARNING  alpha_factory.agents:registry.py:28 kafka-python missing – registry heartbeat disabled
+WARNING  backend.agents.discovery:discovery.py:24 google-adk not installed – mesh integration disabled
+WARNING  AlphaFactory.MemoryFabric:memory_fabric.py:207 MemoryFabric: no embedding backend → hashing fallback.
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:335 VectorStore: SQLite disabled → RAM mode
+INFO     AlphaFactory.MemoryFabric:memory_fabric.py:603 GraphStore: python-list ultimate fallback.
+WARNING  backend.agents.aiga_evolver_agent:aiga_evolver_agent.py:24 AIGA meta-evolution demo unavailable – agent disabled
+WARNING  backend.agents.base:base.py:70 kafka-python missing – heartbeats disabled
+WARNING  backend.agents.base:base.py:76 aiocron not installed – scheduling disabled
+INFO     alpha_factory.agents:registry.py:224 Agent aiga_evolver not registered (condition=false)
+INFO     alpha_factory.agents:registry.py:293 ✓ agent aiga_evolver       caps=meta_evolution
+WARNING  backend.agents.biotech_agent:biotech_agent.py:78 rdflib not installed – knowledge graph disabled
+WARNING  backend.agents.biotech_agent:biotech_agent.py:84 faiss missing – similarity search disabled
+WARNING  backend.agents.biotech_agent:biotech_agent.py:90 sentence-transformers missing – embeddings disabled
+WARNING  backend.agents.biotech_agent:biotech_agent.py:109 openai package not found – LLM features disabled
+WARNING  backend.agents.biotech_agent:biotech_agent.py:122 kafka-python missing – event streaming disabled
+WARNING  backend.agents.biotech_agent:biotech_agent.py:134 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent biotech            caps=nl_query,experiment_design,pathway_analysis,alpha_dashboard
+WARNING  backend.agents.climate_risk_agent:climate_risk_agent.py:82 torch missing – surrogate model disabled
+WARNING  backend.agents.climate_risk_agent:climate_risk_agent.py:88 kafka-python missing – event streaming disabled
+WARNING  backend.agents.climate_risk_agent:climate_risk_agent.py:95 openai package not found – LLM features disabled
+WARNING  backend.agents.climate_risk_agent:climate_risk_agent.py:109 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent climate_risk       caps=physical_risk_var,adaptation_planning,scenario_simulation
+WARNING  backend.agents.cyber_threat_agent:cyber_threat_agent.py:72 feedparser missing – RSS ingestion disabled
+WARNING  backend.agents.cyber_threat_agent:cyber_threat_agent.py:78 networkx unavailable – graph features disabled
+WARNING  backend.agents.cyber_threat_agent:cyber_threat_agent.py:84 lightgbm missing – ML model disabled
+WARNING  backend.agents.cyber_threat_agent:cyber_threat_agent.py:91 openai package not found – LLM features disabled
+WARNING  backend.agents.cyber_threat_agent:cyber_threat_agent.py:104 google-adk not installed – mesh integration disabled
+WARNING  backend.agents.cyber_threat_agent:cyber_threat_agent.py:121 kafka-python missing – event bus disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent cyber_threat       caps=cve_monitoring,threat_intel_fusion,risk_quantification,patch_planning
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:61 rdkit not installed – chemical descriptors disabled
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:68 torch missing – neural nets disabled
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:76 torch-geometric missing – GNN features disabled
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:82 lightgbm missing – gradient boosting disabled
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:94 kafka-python missing – event bus disabled
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:101 openai package not found – LLM features disabled
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:114 google-adk not installed – mesh integration disabled
+WARNING  backend.agents.drug_design_agent:drug_design_agent.py:131 selfies not installed – SELFIES support disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent drug_design        caps=molecule_generation,activity_prediction,docking_evaluation,synthesis_planning
+WARNING  backend.agents.energy_agent:energy_agent.py:73 lightgbm missing – forecasting model disabled
+WARNING  backend.agents.energy_agent:energy_agent.py:79 pulp not installed – optimisation disabled
+WARNING  backend.agents.energy_agent:energy_agent.py:91 kafka-python missing – event bus disabled
+WARNING  backend.agents.energy_agent:energy_agent.py:98 openai package not found – LLM features disabled
+WARNING  backend.agents.energy_agent:energy_agent.py:108 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent energy_markets     caps=load_forecasting,dispatch_optimisation,hedge_strategy
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:60 binance package not installed – live trading disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:65 torch unavailable – MuZero planner disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:71 lightgbm missing – gradient boosting disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:76 google-adk not installed – mesh integration disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:100 openai-agents not installed – tool wrappers disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent finance            caps=
+WARNING  backend.agents.manufacturing_agent:manufacturing_agent.py:62 OR-Tools missing – constraint solver disabled
+WARNING  backend.agents.manufacturing_agent:manufacturing_agent.py:80 kafka-python missing – event bus disabled
+WARNING  backend.agents.manufacturing_agent:manufacturing_agent.py:87 openai package not found – LLM features disabled
+WARNING  backend.agents.manufacturing_agent:manufacturing_agent.py:97 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent manufacturing      caps=scheduling,scenario_analysis,energy_forecast
+INFO     alpha_factory.agents:registry.py:293 ✓ agent market_analysis    caps=analyze
+INFO     alpha_factory.agents:registry.py:293 ✓ agent memory             caps=remember
+INFO     alpha_factory.agents:registry.py:293 ✓ agent ping               caps=diagnostics,observability
+INFO     alpha_factory.agents:registry.py:293 ✓ agent planning           caps=plan
+WARNING  backend.agents.policy_agent:policy_agent.py:64 faiss missing – similarity search disabled
+WARNING  backend.agents.policy_agent:policy_agent.py:70 sentence-transformers missing – embeddings disabled
+WARNING  backend.agents.policy_agent:policy_agent.py:76 rank_bm25 not installed – BM25 features disabled
+WARNING  backend.agents.policy_agent:policy_agent.py:83 openai package not found – LLM features disabled
+WARNING  backend.agents.policy_agent:policy_agent.py:96 kafka-python missing – event bus disabled
+WARNING  backend.agents.policy_agent:policy_agent.py:108 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent policy             caps=nl_query,version_diff,risk_classification
+INFO     alpha_factory.agents:registry.py:293 ✓ agent research           caps=research
+WARNING  backend.agents.retail_demand_agent:retail_demand_agent.py:66 lightgbm missing – forecasting model disabled
+WARNING  backend.agents.retail_demand_agent:retail_demand_agent.py:78 kafka-python missing – event bus disabled
+WARNING  backend.agents.retail_demand_agent:retail_demand_agent.py:85 openai package not found – LLM features disabled
+WARNING  backend.agents.retail_demand_agent:retail_demand_agent.py:98 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent retail_demand      caps=demand_forecasting,reorder_optimisation,markdown_pricing
+INFO     alpha_factory.agents:registry.py:293 ✓ agent safety             caps=guard
+WARNING  backend.agents.smart_contract_agent:smart_contract_agent.py:61 web3 not installed – blockchain features disabled
+WARNING  backend.agents.smart_contract_agent:smart_contract_agent.py:68 slither missing – static analysis disabled
+WARNING  backend.agents.smart_contract_agent:smart_contract_agent.py:74 lightgbm missing – scoring model disabled
+WARNING  backend.agents.smart_contract_agent:smart_contract_agent.py:80 kafka-python missing – event bus disabled
+WARNING  backend.agents.smart_contract_agent:smart_contract_agent.py:93 openai package not found – LLM features disabled
+WARNING  backend.agents.smart_contract_agent:smart_contract_agent.py:106 google-adk not installed – mesh integration disabled
+WARNING  backend.agents.smart_contract_agent:smart_contract_agent.py:123 solcx not installed – compilation disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent smart_contract     caps=contract_audit,gas_optimisation,economic_simulation
+INFO     alpha_factory.agents:registry.py:293 ✓ agent strategy           caps=strategy
+WARNING  backend.agents.supply_chain_agent:supply_chain_agent.py:50 networkx not installed – graph model disabled
+WARNING  backend.agents.supply_chain_agent:supply_chain_agent.py:86 pulp not installed – optimisation disabled
+WARNING  backend.agents.supply_chain_agent:supply_chain_agent.py:99 openai package not found – LLM features disabled
+WARNING  backend.agents.supply_chain_agent:supply_chain_agent.py:109 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent supply_chain       caps=demand_forecasting,inventory_optimisation,route_pricing,scenario_generation
+WARNING  backend.agents.talent_match_agent:talent_match_agent.py:73 faiss missing – vector search disabled
+WARNING  backend.agents.talent_match_agent:talent_match_agent.py:79 sentence-transformers missing – embeddings disabled
+WARNING  backend.agents.talent_match_agent:talent_match_agent.py:85 kafka-python missing – event bus disabled
+WARNING  backend.agents.talent_match_agent:talent_match_agent.py:98 openai package not found – LLM features disabled
+WARNING  backend.agents.talent_match_agent:talent_match_agent.py:108 google-adk not installed – mesh integration disabled
+INFO     alpha_factory.agents:registry.py:293 ✓ agent talent_match       caps=candidate_recommendation,similarity_scoring,dei_reporting,offer_simulation
+INFO     alpha_factory.agents:__init__.py:47 🚀 Agent registry ready –  20 agents,  45 distinct capabilities
+WARNING  alpha_factory_v1.backend.agents.aiga_evolver_agent:aiga_evolver_agent.py:24 AIGA meta-evolution demo unavailable – agent disabled
+INFO     alpha_factory.agents:registry.py:224 Agent aiga_evolver not registered (condition=false)
+INFO     alpha_factory.agents:registry.py:293 ✓ agent aiga_evolver       caps=meta_evolution
+WARNING  alpha_factory_v1.backend.agents.biotech_agent:biotech_agent.py:78 rdflib not installed – knowledge graph disabled
+WARNING  alpha_factory_v1.backend.agents.biotech_agent:biotech_agent.py:84 faiss missing – similarity search disabled
+WARNING  alpha_factory_v1.backend.agents.biotech_agent:biotech_agent.py:90 sentence-transformers missing – embeddings disabled
+WARNING  alpha_factory_v1.backend.agents.biotech_agent:biotech_agent.py:109 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.biotech_agent:biotech_agent.py:122 kafka-python missing – event streaming disabled
+WARNING  alpha_factory_v1.backend.agents.biotech_agent:biotech_agent.py:134 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'biotech' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent biotech            caps=nl_query,experiment_design,pathway_analysis,alpha_dashboard
+WARNING  alpha_factory_v1.backend.agents.climate_risk_agent:climate_risk_agent.py:82 torch missing – surrogate model disabled
+WARNING  alpha_factory_v1.backend.agents.climate_risk_agent:climate_risk_agent.py:88 kafka-python missing – event streaming disabled
+WARNING  alpha_factory_v1.backend.agents.climate_risk_agent:climate_risk_agent.py:95 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.climate_risk_agent:climate_risk_agent.py:109 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'climate_risk' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent climate_risk       caps=physical_risk_var,adaptation_planning,scenario_simulation
+WARNING  alpha_factory_v1.backend.agents.cyber_threat_agent:cyber_threat_agent.py:72 feedparser missing – RSS ingestion disabled
+WARNING  alpha_factory_v1.backend.agents.cyber_threat_agent:cyber_threat_agent.py:78 networkx unavailable – graph features disabled
+WARNING  alpha_factory_v1.backend.agents.cyber_threat_agent:cyber_threat_agent.py:84 lightgbm missing – ML model disabled
+WARNING  alpha_factory_v1.backend.agents.cyber_threat_agent:cyber_threat_agent.py:91 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.cyber_threat_agent:cyber_threat_agent.py:104 google-adk not installed – mesh integration disabled
+WARNING  alpha_factory_v1.backend.agents.cyber_threat_agent:cyber_threat_agent.py:121 kafka-python missing – event bus disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'cyber_threat' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent cyber_threat       caps=cve_monitoring,threat_intel_fusion,risk_quantification,patch_planning
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:61 rdkit not installed – chemical descriptors disabled
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:68 torch missing – neural nets disabled
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:76 torch-geometric missing – GNN features disabled
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:82 lightgbm missing – gradient boosting disabled
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:94 kafka-python missing – event bus disabled
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:101 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:114 google-adk not installed – mesh integration disabled
+WARNING  alpha_factory_v1.backend.agents.drug_design_agent:drug_design_agent.py:131 selfies not installed – SELFIES support disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'drug_design' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent drug_design        caps=molecule_generation,activity_prediction,docking_evaluation,synthesis_planning
+WARNING  alpha_factory_v1.backend.agents.energy_agent:energy_agent.py:73 lightgbm missing – forecasting model disabled
+WARNING  alpha_factory_v1.backend.agents.energy_agent:energy_agent.py:79 pulp not installed – optimisation disabled
+WARNING  alpha_factory_v1.backend.agents.energy_agent:energy_agent.py:91 kafka-python missing – event bus disabled
+WARNING  alpha_factory_v1.backend.agents.energy_agent:energy_agent.py:98 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.energy_agent:energy_agent.py:108 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'energy_markets' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent energy_markets     caps=load_forecasting,dispatch_optimisation,hedge_strategy
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:60 binance package not installed – live trading disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:65 torch unavailable – MuZero planner disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:71 lightgbm missing – gradient boosting disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:76 google-adk not installed – mesh integration disabled
+WARNING  AlphaFactory.FinanceAgent:finance_agent.py:100 openai-agents not installed – tool wrappers disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'finance' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent finance            caps=
+WARNING  alpha_factory_v1.backend.agents.manufacturing_agent:manufacturing_agent.py:62 OR-Tools missing – constraint solver disabled
+WARNING  alpha_factory_v1.backend.agents.manufacturing_agent:manufacturing_agent.py:80 kafka-python missing – event bus disabled
+WARNING  alpha_factory_v1.backend.agents.manufacturing_agent:manufacturing_agent.py:87 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.manufacturing_agent:manufacturing_agent.py:97 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'manufacturing' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent manufacturing      caps=scheduling,scenario_analysis,energy_forecast
+WARNING  alpha_factory_v1.backend.agents.base:base.py:70 kafka-python missing – heartbeats disabled
+WARNING  alpha_factory_v1.backend.agents.base:base.py:76 aiocron not installed – scheduling disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'ping' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent ping               caps=diagnostics,observability
+WARNING  alpha_factory_v1.backend.agents.policy_agent:policy_agent.py:64 faiss missing – similarity search disabled
+WARNING  alpha_factory_v1.backend.agents.policy_agent:policy_agent.py:70 sentence-transformers missing – embeddings disabled
+WARNING  alpha_factory_v1.backend.agents.policy_agent:policy_agent.py:76 rank_bm25 not installed – BM25 features disabled
+WARNING  alpha_factory_v1.backend.agents.policy_agent:policy_agent.py:83 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.policy_agent:policy_agent.py:96 kafka-python missing – event bus disabled
+WARNING  alpha_factory_v1.backend.agents.policy_agent:policy_agent.py:108 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'policy' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent policy             caps=nl_query,version_diff,risk_classification
+WARNING  alpha_factory_v1.backend.agents.retail_demand_agent:retail_demand_agent.py:66 lightgbm missing – forecasting model disabled
+WARNING  alpha_factory_v1.backend.agents.retail_demand_agent:retail_demand_agent.py:78 kafka-python missing – event bus disabled
+WARNING  alpha_factory_v1.backend.agents.retail_demand_agent:retail_demand_agent.py:85 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.retail_demand_agent:retail_demand_agent.py:98 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'retail_demand' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent retail_demand      caps=demand_forecasting,reorder_optimisation,markdown_pricing
+WARNING  alpha_factory_v1.backend.agents.smart_contract_agent:smart_contract_agent.py:61 web3 not installed – blockchain features disabled
+WARNING  alpha_factory_v1.backend.agents.smart_contract_agent:smart_contract_agent.py:68 slither missing – static analysis disabled
+WARNING  alpha_factory_v1.backend.agents.smart_contract_agent:smart_contract_agent.py:74 lightgbm missing – scoring model disabled
+WARNING  alpha_factory_v1.backend.agents.smart_contract_agent:smart_contract_agent.py:80 kafka-python missing – event bus disabled
+WARNING  alpha_factory_v1.backend.agents.smart_contract_agent:smart_contract_agent.py:93 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.smart_contract_agent:smart_contract_agent.py:106 google-adk not installed – mesh integration disabled
+WARNING  alpha_factory_v1.backend.agents.smart_contract_agent:smart_contract_agent.py:123 solcx not installed – compilation disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'smart_contract' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent smart_contract     caps=contract_audit,gas_optimisation,economic_simulation
+WARNING  alpha_factory_v1.backend.agents.supply_chain_agent:supply_chain_agent.py:50 networkx not installed – graph model disabled
+WARNING  alpha_factory_v1.backend.agents.supply_chain_agent:supply_chain_agent.py:86 pulp not installed – optimisation disabled
+WARNING  alpha_factory_v1.backend.agents.supply_chain_agent:supply_chain_agent.py:99 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.supply_chain_agent:supply_chain_agent.py:109 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'supply_chain' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent supply_chain       caps=demand_forecasting,inventory_optimisation,route_pricing,scenario_generation
+WARNING  alpha_factory_v1.backend.agents.talent_match_agent:talent_match_agent.py:73 faiss missing – vector search disabled
+WARNING  alpha_factory_v1.backend.agents.talent_match_agent:talent_match_agent.py:79 sentence-transformers missing – embeddings disabled
+WARNING  alpha_factory_v1.backend.agents.talent_match_agent:talent_match_agent.py:85 kafka-python missing – event bus disabled
+WARNING  alpha_factory_v1.backend.agents.talent_match_agent:talent_match_agent.py:98 openai package not found – LLM features disabled
+WARNING  alpha_factory_v1.backend.agents.talent_match_agent:talent_match_agent.py:108 google-adk not installed – mesh integration disabled
+ERROR    alpha_factory.agents:registry.py:283 Duplicate agent name 'talent_match' ignored
+INFO     alpha_factory.agents:registry.py:293 ✓ agent talent_match       caps=candidate_recommendation,similarity_scoring,dei_reporting,offer_simulation
+INFO     alpha_factory.agents:__init__.py:47 🚀 Agent registry ready –  14 agents,  39 distinct capabilities
+WARNING  alpha_asi_demo:alpha_asi_world_model_demo.py:317 [BOOT] stubbed MarketAnalysisAgent (No module named 'alpha_factory_v1.backend.agents.market_agent')
+WARNING  alpha_asi_demo:alpha_asi_world_model_demo.py:317 [BOOT] stubbed CodeGenAgent (No module named 'alpha_factory_v1.backend.agents.codegen_agent')
+WARNING  alpha_asi_demo:alpha_asi_world_model_demo.py:317 [BOOT] stubbed MarketAnalysisAgent (No module named 'alpha_factory_v1.backend.agents.market_agent')
+WARNING  alpha_asi_demo:alpha_asi_world_model_demo.py:317 [BOOT] stubbed CodeGenAgent (No module named 'alpha_factory_v1.backend.agents.codegen_agent')
+_ test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcd04652b70>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-205/test_explicit_cors_origin_is_e0')
+name = 'alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint'
+setting = 'AIGA_CORS_ORIGINS', route = '/evolve'
+
+    @pytest.mark.parametrize("name,setting,route", SERVICES)
+    def test_explicit_cors_origin_is_exact_and_keeps_routes(monkeypatch, tmp_path, name, setting, route):
+        module = load_service(monkeypatch, tmp_path, name, setting, "https://console.example,http://localhost:3000")
+        client = TestClient(module.app)
+        for origin in ("https://console.example", "http://localhost:3000"):
+            response = client.options(route, headers={"Origin": origin, "Access-Control-Request-Method": "POST"})
+            assert response.status_code == 200
+            assert response.headers["access-control-allow-origin"] == origin
+        rejected = client.options(route, headers={"Origin": "https://console.example.evil", "Access-Control-Request-Method": "POST"})
+>       assert rejected.status_code == 400
+E       assert 200 == 400
+E        +  where 200 = <Response [200 OK]>.status_code
+
+tests/test_legacy_http_security.py:73: AssertionError
+_ test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo-ALPHA_ASI_CORS_ORIGINS-/command] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcce72e2f90>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-205/test_explicit_cors_origin_is_e1')
+name = 'alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo'
+setting = 'ALPHA_ASI_CORS_ORIGINS', route = '/command'
+
+    @pytest.mark.parametrize("name,setting,route", SERVICES)
+    def test_explicit_cors_origin_is_exact_and_keeps_routes(monkeypatch, tmp_path, name, setting, route):
+        module = load_service(monkeypatch, tmp_path, name, setting, "https://console.example,http://localhost:3000")
+        client = TestClient(module.app)
+        for origin in ("https://console.example", "http://localhost:3000"):
+            response = client.options(route, headers={"Origin": origin, "Access-Control-Request-Method": "POST"})
+            assert response.status_code == 200
+>           assert response.headers["access-control-allow-origin"] == origin
+E           AssertionError: assert '*' == 'https://console.example'
+E             
+E             - https://console.example
+E             + *
+
+tests/test_legacy_http_security.py:71: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  alpha_asi_demo:alpha_asi_world_model_demo.py:317 [BOOT] stubbed MarketAnalysisAgent (No module named 'alpha_factory_v1.backend.agents.market_agent')
+WARNING  alpha_asi_demo:alpha_asi_world_model_demo.py:317 [BOOT] stubbed CodeGenAgent (No module named 'alpha_factory_v1.backend.agents.codegen_agent')
+_____________ test_log_ui_loopback_default_and_explicit_bind[None] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcce72e3dd0>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-205/test_log_ui_loopback_default_a0')
+host = None
+
+    @pytest.mark.parametrize("host", [None, "0.0.0.0", "::1"])
+    def test_log_ui_loopback_default_and_explicit_bind(monkeypatch, tmp_path, host):
+        monkeypatch.setenv("AF_MEMORY_DIR", str(tmp_path / "memory"))
+        if host is None:
+            monkeypatch.delenv("ALPHA_UI_HOST", raising=False)
+        else:
+            monkeypatch.setenv("ALPHA_UI_HOST", host)
+        calls = []
+        monkeypatch.setattr(Flask, "run", lambda self, **kwargs: calls.append(kwargs))
+        runpy.run_module("alpha_factory_v1.ui.app", run_name="__main__")
+>       assert calls == [{"port": 3000, "host": host or "127.0.0.1"}]
+E       AssertionError: assert [{'host': '0....'port': 3000}] == [{'host': '12...'port': 3000}]
+E         
+E         At index 0 diff: {'port': 3000, 'host': '0.0.0.0'} != {'port': 3000, 'host': '127.0.0.1'}
+E         Use -v to get more diff
+
+tests/test_legacy_http_security.py:87: AssertionError
+_____________ test_log_ui_loopback_default_and_explicit_bind[::1] ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcce72e00e0>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-205/test_log_ui_loopback_default_a2')
+host = '::1'
+
+    @pytest.mark.parametrize("host", [None, "0.0.0.0", "::1"])
+    def test_log_ui_loopback_default_and_explicit_bind(monkeypatch, tmp_path, host):
+        monkeypatch.setenv("AF_MEMORY_DIR", str(tmp_path / "memory"))
+        if host is None:
+            monkeypatch.delenv("ALPHA_UI_HOST", raising=False)
+        else:
+            monkeypatch.setenv("ALPHA_UI_HOST", host)
+        calls = []
+        monkeypatch.setattr(Flask, "run", lambda self, **kwargs: calls.append(kwargs))
+        runpy.run_module("alpha_factory_v1.ui.app", run_name="__main__")
+>       assert calls == [{"port": 3000, "host": host or "127.0.0.1"}]
+E       AssertionError: assert [{'host': '0....'port': 3000}] == [{'host': '::...'port': 3000}]
+E         
+E         At index 0 diff: {'port': 3000, 'host': '0.0.0.0'} != {'port': 3000, 'host': '::1'}
+E         Use -v to get more diff
+
+tests/test_legacy_http_security.py:87: AssertionError
+=============================== warnings summary ===============================
+../../../../root/.local/lib/python3.12/site-packages/starlette/testclient.py:45
+  /root/.local/lib/python3.12/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+  /workspace/scratch/0d7600b912de/strategy-integration/alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py:442: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+  /root/.local/lib/python3.12/site-packages/fastapi/applications.py:4681: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)  # ty: ignore[deprecated]
+
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+  /workspace/scratch/0d7600b912de/strategy-integration/alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py:481: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+FAILED tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo-ALPHA_ASI_CORS_ORIGINS-/command]
+FAILED tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+FAILED tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.alpha_asi_world_model.alpha_asi_world_model_demo-ALPHA_ASI_CORS_ORIGINS-/command]
+FAILED tests/test_legacy_http_security.py::test_log_ui_loopback_default_and_explicit_bind[None]
+FAILED tests/test_legacy_http_security.py::test_log_ui_loopback_default_and_explicit_bind[::1]
+6 failed, 1 passed, 9 warnings in 2.10s

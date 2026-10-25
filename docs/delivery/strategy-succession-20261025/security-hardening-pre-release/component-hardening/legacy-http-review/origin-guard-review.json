@@ -1,0 +1,52 @@
+{
+  "scope": "Independent read-only review of the final HTTP mutation Origin guard, strict configured CORS and existing loopback UI change; authored focused in-process TestClient requests only. No source edits, provider/network/listening sockets/Docker/lifespan/training/remote action.",
+  "reviewed_files": [
+    {
+      "path": "alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py",
+      "bytes": 21626,
+      "sha256": "b75ffb2e4440e90442182ad6b43e4ad9c66173e9ba5c19ad73561595006638c8"
+    },
+    {
+      "path": "alpha_factory_v1/demos/alpha_asi_world_model/alpha_asi_world_model_demo.py",
+      "bytes": 33862,
+      "sha256": "73c35da013ad81064f218c1463a4a9a3e8202ac84e61b4bca5846b1a13b8bcc3"
+    },
+    {
+      "path": "alpha_factory_v1/ui/app.py",
+      "bytes": 1634,
+      "sha256": "f9a737f0f31955d5b36f383618aeb333762c79aad7d7838e1e75051849c028ee"
+    },
+    {
+      "path": "tests/test_legacy_http_security.py",
+      "bytes": 10644,
+      "sha256": "0e8d02f9813abda2275104e1cdfa4f3cd0044513dc4fe48d9cb6bce18459132d"
+    }
+  ],
+  "blocking_findings": [],
+  "guard_review": {
+    "before_handler": "Unsafe methods with any Origin field are checked before handlers and AIGA metrics/auth bypass branches. Rejection is403 with generic detail.",
+    "syntax_and_duplicates": "Exactly one header and exactly one untrimmed valid HTTP(S) origin are required; null/empty/userinfo/path/query/fragment/percent/backslash/control/comma/duplicate Origins are refused. Full authority regex closes bracket prefix/suffix and IPvFuture parser pitfalls.",
+    "permitted_paths": "Exact configured origin or actual request scheme+netloc origin is permitted; no-Origin API requests retain previous flow. Existing AIGA bearer/JWT authentication is still applied after Origin acceptance; configured origin is not authority by itself.",
+    "cors": "Default empty CORS grants retained; same-origin browser requests need no CORS grant. Configured origin matching remains exact.",
+    "websocket_scope": "Existing world-model/ws read-only stream unchanged and excluded from HTTP mutation/Origin claim.",
+    "ui": "Previously reviewed loopback default and explicit operator bind remain unchanged."
+  },
+  "tests": {
+    "passed": 32,
+    "warnings": 45,
+    "seconds": 2.43,
+    "command": "python -m pytest --noconftest -o addopts= -q -s tests/test_legacy_http_security.py with read-only cache observer plugin",
+    "requests": "Actual FastAPI handlers execute only authored stub callbacks; no providers or real mutations. Direct POST tests avoid depending on browser preflight behavior.",
+    "covered": "Default/configured CORS; four actual mutation routes; invalid,duplicate,unrelated Origins; same-origin/configured/no-Origin successes; existing auth rejection; UI bind and test-memory access; module-cache restoration."
+  },
+  "previous_findings": {
+    "stub_cache_P2": "Resolved: setitem(None) then delitem registers cleanup, prior AIGA stub module no longer remains cached; UI app test-memory module removed after test.",
+    "remaining_real_world_model_cache": "Expected: package __init__ eagerly imports the real world-model module before the restoration test removes it. Fixture restores that original real module. It has real Orchestrator, orchNone, loop_threadNone; this is not a stub/lifespan leak.",
+    "AIGA_route_precision": "Resolved: test route now/evolve/1."
+  },
+  "evidence": {
+    "path": "module-cache-cleanup-trace.log",
+    "sha256": "bb5cff08724e6c0c03eaa370f8537919e3442607dd03ea17e81bc95a35ada05c"
+  },
+  "limits": "This is scoped local security review/test evidence, not public install, real browser journey, deployed service, provider, research or release qualification. Earlier failed-cache evidence and review are retained."
+}

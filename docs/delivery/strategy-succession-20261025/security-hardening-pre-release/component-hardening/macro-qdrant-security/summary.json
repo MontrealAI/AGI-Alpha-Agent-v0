@@ -1,0 +1,129 @@
+{
+  "scope": "Two-file legacy Qdrant secure-default repair, mocked engineering tests only; no live network/provider/API keys/financial action/Docker/held tests/source-profile changes.",
+  "files": [
+    {
+      "path": "alpha_factory_v1/demos/macro_sentinel/data_feeds.py",
+      "bytes": 14216,
+      "sha256": "f9dde7306cbfd5063a003ab36b51865924f5c885cbe895eec67f92e0ab544f58",
+      "git_blob": "2545f4a609ea8ad129ac0a68d9102d7b73d6903e"
+    },
+    {
+      "path": "tests/test_macro_qdrant_security.py",
+      "bytes": 8040,
+      "sha256": "dde3df1c1fcdf08b22087b7c6144a63f1546747622b06dc9dd426a3ac12c6523",
+      "git_blob": "197d6d5e27d58acb4ba18372a0d4a94cbdb5902f"
+    }
+  ],
+  "original_source_sha256": "97dce875171725a2dca3b1e22ea3e8d8494acf07db4739845e43211147e067eb",
+  "semantics": {
+    "bare_external_host": "HTTPS with same fixed /collections/macro/points route",
+    "plaintext_exception": "Only literal IPv4 in127/8, literal IPv6::1, exactlocalhost; no DNS resolution to grant exception and no remote plaintext opt-in.",
+    "refused_before_transport": [
+      "userinfo",
+      "nonempty path",
+      "query/fragment delimiters",
+      "backslashes",
+      "controls/whitespace/non-ASCII",
+      "percent/zone escapes",
+      "invalid host/port",
+      "IPvFuture or junk-prefixed/suffixed IPv6 authority"
+    ],
+    "redirects": "allow_redirects=False;3xx rejected;5s timeout;TLS verification default retained",
+    "fallback": "Existing af_requests shim lacks allow_redirects, so TypeError refuses configured send before network. Shared wrapper unchanged.",
+    "payload_fanout_offline": "Existing event id/vector/payload and isolated fanout/offline defaults retained."
+  },
+  "checks": {
+    "environment_dependencies": "python scripts/check_python_deps.py passed; all required packages available",
+    "before_red": "2 actual failures in external-origin test; before-red.log retained",
+    "intermediate_failure": "Mapped IPv6 loopback exception exceeded exact grant; after-initial-mapped-ipv6-failure.log retained and predicate corrected",
+    "focused_and_existing_macro_requests_tests": {
+      "passed": 117,
+      "skipped": 1,
+      "seconds": 2.27,
+      "skip_reason": "Existing test_af_requests fallback-wrapper test skips when real requests installed.",
+      "log": "after-green-final.log",
+      "pytest_arguments": [
+        "--noconftest",
+        "-o",
+        "addopts=",
+        "-q",
+        "tests/test_macro_qdrant_security.py",
+        "tests/test_macro_sentinel.py",
+        "tests/test_macro_fanout.py",
+        "tests/test_macro_collector.py",
+        "tests/test_macro_simulation_boundaries.py",
+        "tests/test_af_requests.py"
+      ]
+    },
+    "black": "PASS",
+    "ruff": "PASS explicit files --no-force-exclude",
+    "strict_mypy": "NOT_GREEN: exactsame2baseline errors (optional aiohttp None assignment; af_requests.put missing export); no new error in changed source/tests. before/after receipts retained."
+  },
+  "compatibility_limit": "Existing docker-compose.macro.yml VECTOR_HOST=qdrant:6333 now defaultsHTTPS and requires TLS. That connected sink is not operationally qualified by mocked tests; compose/config values were not edited. No remote plaintext exception was introduced.",
+  "not_performed": [
+    "git commit",
+    "push",
+    "remote mutation",
+    "full CI/release qualification",
+    "Docker or launcher/config tests",
+    "live Qdrant or public API calls",
+    "protected study or held native tests"
+  ],
+  "receipts": [
+    {
+      "path": "after-green-final.log",
+      "bytes": 191,
+      "sha256": "4e74ef7bfa5e12d373707365ead4d8171119d02cff3d05ca232eb4d137466132"
+    },
+    {
+      "path": "after-green-initial.log",
+      "bytes": 2980,
+      "sha256": "11b978dc8ec00868f9db67b3df6de929b327194e9dbf4018d8c752b203c9ad12"
+    },
+    {
+      "path": "after-green.log",
+      "bytes": 191,
+      "sha256": "f3ae5d99b53c8b49bd1638d3013191d7ba298ea034d0d1add414bc8735594047"
+    },
+    {
+      "path": "after-initial-mapped-ipv6-failure.log",
+      "bytes": 2980,
+      "sha256": "11b978dc8ec00868f9db67b3df6de929b327194e9dbf4018d8c752b203c9ad12"
+    },
+    {
+      "path": "before-red.log",
+      "bytes": 4531,
+      "sha256": "d7996fac26816b44f0a10e96fb3ece99ce9f3ad6acea981fec5ac48068d3ddb0"
+    },
+    {
+      "path": "data_feeds_before_typecheck.py",
+      "bytes": 11307,
+      "sha256": "97dce875171725a2dca3b1e22ea3e8d8494acf07db4739845e43211147e067eb"
+    },
+    {
+      "path": "format-check.log",
+      "bytes": 56,
+      "sha256": "b9cf511501d306d2bd8355ccb165c8ddc0a6fdd62d7c72c4a7b1795cf8934c8c"
+    },
+    {
+      "path": "macro-qdrant-security.patch",
+      "bytes": 13154,
+      "sha256": "3c1edae1046948dcbc66e96d341a3c136ac3f31c633e49dea94c7813254a68fc"
+    },
+    {
+      "path": "ruff-check.log",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "typecheck-after.log",
+      "bytes": 325,
+      "sha256": "4d23db4faa33d01172bdfc990a0c7fc7da91f51bcd82c671b6f249c96c2de2df"
+    },
+    {
+      "path": "typecheck-before.log",
+      "bytes": 430,
+      "sha256": "b64d3da771e4f727974ba539af9d8bfdd19cc403e0d0d20a632149e86bba2f71"
+    }
+  ]
+}

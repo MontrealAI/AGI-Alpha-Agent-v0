@@ -1,0 +1,123 @@
+{
+  "schema": "agialpha.final-inactive-matcher-and-public-projection-review/v1",
+  "generated_at": "2026-10-25T06:33:19.652149+00:00",
+  "reviewer": "/root/operator_integration_review/pin_guard_review",
+  "parent": "/root/operator_integration_review",
+  "review_mode": "Independent read-only source review with tiny inert synthetic probes",
+  "source_identities": {
+    "scripts/check_strategy_python_security.py": {
+      "sha256": "a497315ca70e0d34af7cef169236d6b12fb1198fd8da08d747705f330b9820d5",
+      "bytes": 38763
+    },
+    "tests/test_strategy_python_security.py": {
+      "sha256": "156ae26811b14373ee03af700617a52c7d1aa3e735bbf41b121f4cc5ffa3a852",
+      "bytes": 31603
+    },
+    "scripts/semgrep_inapplicability.py": {
+      "sha256": "c833fb3f2b596aaff600b6039450a5fb482e875e264db78b3c6bc0eccd87b82e",
+      "bytes": 25503
+    },
+    "tests/test_semgrep_inapplicability.py": {
+      "sha256": "5d34ea56a22d0e9204562736077e7401fcd67e7701acdf17916051ffe816d63e",
+      "bytes": 27463
+    }
+  },
+  "conclusion": {
+    "remaining_concrete_blockers_found_in_reviewed_changes": 0,
+    "scope": "Latest inactive matcher raw-HEAD binding and typed public projection boundary only",
+    "activation_authorized": false,
+    "release_authorized": false,
+    "production_authority": false
+  },
+  "findings_and_repairs": [
+    {
+      "id": "public-projection-untyped-fields",
+      "confirmed_red_checker_sha256": "f1bf9c43514a7585f702bb966ee2a85e9407cb996542df51502431c930cce1df",
+      "red_observation": "Synthetic body text in errors or official-policy sha256/bytes/observed_at values survived public_report().",
+      "repair": "Public fields now have scalar/count/hash/time/path/version validation; invalid metadata is withheld and projected passed is false.",
+      "independent_final_probe": "Original combined marker probe exported no marker; invalid projection was marked failed.",
+      "result": "REPAIRED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "public-source-identity-untyped-hash",
+      "confirmed_red_checker_sha256": "f1bf9c43514a7585f702bb966ee2a85e9407cb996542df51502431c930cce1df",
+      "red_observation": "Synthetic body text in source-before.json row[0] was copied as a SHA256 into public/source-identities.json.",
+      "repair": "Source projection requires selected canonical paths, three-element records, exact 64-hex hashes and nonnegative integer byte sizes before writing public files.",
+      "independent_final_probe": "Original malformed source identity was refused; no public files were written.",
+      "result": "REPAIRED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "raw-head-pin-overlay",
+      "finding_attribution": "Identified by root; independently rechecked by this reviewer after repair.",
+      "repair": "Raw working length and SHA256 must equal committed HEAD before the module-pin normalization is used for the portable cross-commit digest.",
+      "independent_final_probes": [
+        {
+          "case": "Uncommitted pin-only literal edit in an inert temporary Git repository",
+          "result": "REFUSED",
+          "message": "Working raw bytes overlay committed HEAD"
+        },
+        {
+          "case": "Commit only the synthetic pin literal edit",
+          "result": "PORTABLE_DIGEST_STABLE",
+          "meaning": "Normalization remains a narrow cycle breaker; this creates no map approval or authority."
+        }
+      ],
+      "result": "REPAIR_INDEPENDENTLY_RECHECKED"
+    }
+  ],
+  "prior_epoch_references": {
+    "whole_inventory_review_receipt": {
+      "path": "/workspace/scratch/0d7600b912de/strategy-integration/ci-review-artifacts/semgrep-inapplicability/inactive-matcher-independent-review-d7ea7cfc.json",
+      "sha256": "7a3b35fa7afe6937b0585fd8c7098a9c23607a9706800cfe639e42e3c815a3db",
+      "module_sha256": "d7ea7cfc53f1174a8e51f424637304a64a0a3d979026214f6de07a634ae57d0f",
+      "meaning": "Historical independent evidence for rule-span/formatter repairs, late whole-inventory drift refusal and alternate-index environment refusal; latest raw-HEAD check supersedes its source identity."
+    },
+    "group_cleanup_context": {
+      "source": "scripts/check_strategy_python_security.py::_execute",
+      "review_type": "Static inspection of bounded producer output and owned process-group cleanup; not an independently executed process/scanner campaign.",
+      "execution_attribution": "Broader cleanup/engine tests belong to the owner-reported focused-suite epoch and are not relabelled as this reviewer execution."
+    },
+    "latest_owner_suite": {
+      "expected_cases_reported_by_parent": 158,
+      "status_at_request": "Ongoing",
+      "independently_executed_by_reviewer": false
+    }
+  },
+  "publication_boundary": {
+    "public_projection_files": [
+      "summary.json",
+      "policy-identity.json",
+      "finding-index.json",
+      "source-identities.json"
+    ],
+    "public_data_scope": "Typed counts, IDs, paths, positions, source/policy hashes and byte sizes only",
+    "private_data_scope": "Raw captured rule YAML, raw scanner JSON/stderr, complete metadata/errors and private summary remain local",
+    "real_upstream_body_used_or_redistributed_by_reviewer": false,
+    "rule_admission_changed_by_this_work": false,
+    "bounded_rule_config_sha256": "41b6fcf8b68115407c4671670da9926e91f9402a1be9a733b08ba7d11c68cdd0",
+    "admission_comparison": "Earlier AST comparison found unchanged _NoOfficialRedirect, _capture, capture_sources, _json, validate_report, fetch_official_policy, official_targets and check; projection changes add no waiver.",
+    "separate_boundary_not_cleared": "Validation-ZIP exclusion of private official attempts was reported to the packaging owner; its implementation/verification is outside this receipt."
+  },
+  "inactive_status": {
+    "approved_map_sha256_literal": null,
+    "fixed_map_exists": false,
+    "scanner_acceptance_imports_or_calls_matcher": false,
+    "no_map_case_activation": true,
+    "raw_findings_and_exit_status_preserved": true
+  },
+  "execution_scope": {
+    "independent_final_checks": "Synthetic marker serialization and tiny inert Git pin fixtures only; exact source hashes co-captured with these probes.",
+    "test_suite_rerun_for_receipt": false,
+    "actual_semgrep_engine_execution_by_reviewer": false,
+    "actual_scanner_network_execution_by_reviewer": false,
+    "upstream_rule_body_redistribution_by_reviewer": false,
+    "product_browser_native_executor_or_scientific_execution": false,
+    "held_tests_or_protected_imports": false,
+    "implementation_edits_or_remote_mutations": false
+  },
+  "limits": [
+    "This data receipt is independent code-review evidence, not activation, scientific acceptance, security waiver or release qualification.",
+    "Owner-run mandatory engine/suite results require their own exact-source receipts.",
+    "The historical whole-inventory receipt remains an earlier epoch and is not silently rebound to current hashes."
+  ]
+}

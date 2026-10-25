@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.135" timestamp="2026-10-25T14:58:38.126474+09:00" hostname="467b1f56c7aa"><testcase classname="tests.test_legacy_identity_security" name="test_archive_admission_compares_one_committed_read_snapshot" time="0.163"><failure message="ValueError: Patch identity conflicts with retained archive history">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7fb95c0a5df0&gt;
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-229/test_archive_admission_compare0')
+
+    def test_archive_admission_compares_one_committed_read_snapshot(
+        monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+    ) -&gt; None:
+        """An identical delivery committed after the first read is not partial history."""
+        from sqlalchemy.orm import Session
+    
+        path = tmp_path / "interleaved-archive.sqlite"
+        reader, concurrent = ArchiveDB(path), ArchiveDB(path)
+        entry = ArchiveEntry("archive-patch-v2:sha256:" + "4" * 64, "parent", 0, 0, True, 1)
+        body = '{"diff":"same exact body","parent":"parent"}'
+        original_execute = Session.execute
+        interleaved = False
+    
+        def execute(session: Any, statement: Any, *args: Any, **kwargs: Any) -&gt; Any:
+            nonlocal interleaved
+            result = original_execute(session, statement, *args, **kwargs)
+            if session.bind is reader.engine and not interleaved and str(statement).lstrip().upper().startswith("SELECT"):
+                # Finish this real read before committing through the other connection.
+                # Returning the frozen result keeps precisely the originally observed rows.
+                observed = result.freeze()
+                interleaved = True
+                assert concurrent.add_patch_once(entry, body)
+                return observed()
+            return result
+    
+        monkeypatch.setattr(Session, "execute", execute)
+&gt;       assert reader.add_patch_once(entry, body) is False
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_legacy_identity_security.py:540: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+alpha_factory_v1/core/archive/db.py:107: in add_patch_once
+    if matches(session):
+       ^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = &lt;sqlalchemy.orm.session.Session object at 0x7fb95bfa3b30&gt;
+
+    def matches(session: Session) -&gt; bool:
+        row = session.get(_ArchiveRow, entry.hash)
+        state = session.get(_StateRow, key)
+        if row is None and state is None:
+            return False
+        if row is None or state is None or state.value != body or row.parent != entry.parent:
+&gt;           raise ValueError("Patch identity conflicts with retained archive history")
+E           ValueError: Patch identity conflicts with retained archive history
+
+alpha_factory_v1/core/archive/db.py:103: ValueError</failure></testcase></testsuite></testsuites>

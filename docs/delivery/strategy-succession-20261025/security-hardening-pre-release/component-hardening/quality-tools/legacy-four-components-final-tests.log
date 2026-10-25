@@ -1,0 +1,39 @@
+........................................................................ [ 71%]
+.............................                                            [100%]
+=============================== warnings summary ===============================
+../../../../root/.local/lib/python3.12/site-packages/starlette/testclient.py:45
+  /root/.local/lib/python3.12/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_legacy_http_security.py: 11 warnings
+tests/test_agent_aiga_entrypoint.py: 2 warnings
+  /workspace/scratch/0d7600b912de/strategy-integration/alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py:495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+tests/test_legacy_http_security.py: 22 warnings
+tests/test_agent_aiga_entrypoint.py: 4 warnings
+  /root/.local/lib/python3.12/site-packages/fastapi/applications.py:4681: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)  # ty: ignore[deprecated]
+
+tests/test_legacy_http_security.py: 11 warnings
+tests/test_agent_aiga_entrypoint.py: 2 warnings
+  /workspace/scratch/0d7600b912de/strategy-integration/alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py:534: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+101 passed, 53 warnings in 2.39s

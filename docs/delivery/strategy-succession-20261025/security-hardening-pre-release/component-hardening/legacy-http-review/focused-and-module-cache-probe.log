@@ -1,0 +1,46 @@
+AUDIT_BEFORE={"target_cached": false}
+.....................                                                    [100%]
+=============================== warnings summary ===============================
+../../../../root/.local/lib/python3.12/site-packages/starlette/testclient.py:45
+  /root/.local/lib/python3.12/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_cors_configuration_rejects_wildcards_and_url_smuggling[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+  /workspace/scratch/0d7600b912de/strategy-integration/alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py:483: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_cors_configuration_rejects_wildcards_and_url_smuggling[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_cors_configuration_rejects_wildcards_and_url_smuggling[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+  /root/.local/lib/python3.12/site-packages/fastapi/applications.py:4681: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)  # ty: ignore[deprecated]
+
+tests/test_legacy_http_security.py::test_default_cors_refuses_unrelated_mutation_origin[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_explicit_cors_origin_is_exact_and_keeps_routes[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+tests/test_legacy_http_security.py::test_cors_configuration_rejects_wildcards_and_url_smuggling[alpha_factory_v1.demos.aiga_meta_evolution.agent_aiga_entrypoint-AIGA_CORS_ORIGINS-/evolve]
+  /workspace/scratch/0d7600b912de/strategy-integration/alpha_factory_v1/demos/aiga_meta_evolution/agent_aiga_entrypoint.py:522: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+21 passed, 13 warnings in 2.01s
+AUDIT_AFTER={"pytest_exit": 0, "target_cached": true, "MetaEvolver_is_stub_object": true, "service_initialized": false}

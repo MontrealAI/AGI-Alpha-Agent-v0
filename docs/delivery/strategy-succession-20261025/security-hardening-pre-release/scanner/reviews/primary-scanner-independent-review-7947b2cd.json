@@ -1,0 +1,68 @@
+{
+  "schema": "agialpha.primary-python-scanner-independent-review.v1",
+  "reviewed_checker_sha256": "7947b2cdf90fcf14fdd4c20dcb34d5376bdd6754129f3cc0b55679f7f3dbec2f",
+  "reviewed_tests_sha256": "2fbb61d86f99f2be68472628e58df44e8146d9a8c02c7488041fab91dd702092",
+  "local_two_rule_config_sha256": "41b6fcf8b68115407c4671670da9926e91f9402a1be9a733b08ba7d11c68cdd0",
+  "status": "NO_BLOCKING_SCANNER_BOUNDARY_FINDING",
+  "source_delta_from_af5ed2ac": [
+    "_execute"
+  ],
+  "closed_findings": {
+    "F1": "Separate owned fetch worker enforces 30-second join deadline with bounded termination; fixed endpoint, byte limit and redirect refusal retained.",
+    "F2": "Producer RLIMIT_FSIZE bounds regular stdout/stderr artifacts, capped parent reads avoid oversized allocation; size excess fails.",
+    "F3": "Finally block forces owned group SIGKILL on expiry, nonzero or unknown completion, or output-size excess, regardless of leader liveness; caught EFBIG exit0 included."
+  },
+  "saved_regression_evidence": {
+    "old_checker_sha256": "af5ed2acc7014647011fd12587a602bce83754cb04b2fa3a1fa2c3ae467a8e8e",
+    "old_heartbeat_failures": [
+      {
+        "case": "timeout",
+        "expected_red": true,
+        "reason": "Owned descendant continues working after scanner completion"
+      },
+      {
+        "case": "exit1",
+        "expected_red": true,
+        "reason": "Owned descendant continues working after scanner completion"
+      },
+      {
+        "case": "caught-output-limit",
+        "expected_red": true,
+        "reason": "Owned descendant continues working after scanner completion"
+      }
+    ],
+    "heartbeat_red_log_sha256": "cceaa91d5312044fbf3e200a3bc3c419ea9b0d0c880b7e38a8282a72e4817671",
+    "green_test_cases": 54,
+    "green_failures": 0,
+    "green_errors": 0,
+    "green_skips": 0,
+    "green_log_sha256": "25284350b16662f3718b5cba32de9f617e5bc5c81f4a77a5cc943e3c56ad4a54",
+    "green_junit_sha256": "524190136379a38bb95ef93ce9bd53e1a4256ab0b47f287bcb83b3246c6a404e",
+    "heartbeat_cases": [
+      "test_group_hard_stop_terminates_a_term_ignoring_descendant[timeout]",
+      "test_group_hard_stop_terminates_a_term_ignoring_descendant[exit1]",
+      "test_group_hard_stop_terminates_a_term_ignoring_descendant[caught-output-limit]"
+    ],
+    "owner_recorded_elapsed_seconds": 33.94,
+    "initial_proc_based_probes_status": "UNQUALIFIED: namespace PID views differ; red.log/red.xml/green.log/green.xml/direct-old-probe.log retained, not used as authoritative cleanup evidence"
+  },
+  "current_component_evidence": {
+    "path": "evidence/semgrep-official/attempt-h9fzrfrd",
+    "summary_sha256": "78fe572693607bbf52f2255f207ad4582a5ea3aee9e274b43948aebfd5de76dc",
+    "raw_report_sha256": "a7afe5b48f4673821c2328aa23f8ceab8f18efb654349a13b3ce6ad00025ee8b",
+    "selected_and_scanned": 1,
+    "findings_errors_skips": 0,
+    "policy_body_sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+    "exact_rule_spans_verified": 151,
+    "source_drift": []
+  },
+  "scope_limits": [
+    "Read-only source/delta and saved evidence verification; no reviewer test/scanner/source/native/browser/held execution or source edits.",
+    "No official finding inapplicability matcher or policy admission was reviewed or activated by this report.",
+    "No full repository security pass, future target-list change, runtime qualification or authority clearance is established.",
+    "Original full739 failed77 and later full4cb failed54 findings remain preserved; none is silently admitted."
+  ],
+  "full_repository_qualification": false,
+  "policy_admissions_active": false,
+  "authority_clearance": false
+}

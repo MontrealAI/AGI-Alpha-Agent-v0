@@ -1,0 +1,43 @@
+{
+  "schema": "alpha-independent-source-review/v1",
+  "reviewer": "root integration lead, did not author these components",
+  "source_commit": "4cb71e1e6eee4aba807aaa7035b950661bfe48fd",
+  "observed_at": "2026-10-25T05:49:47.442905+00:00",
+  "files": [
+    {
+      "path": "alpha_factory_v1/backend/memory_fabric.py",
+      "sha256": "1eb83f86a4f65f9f085a72d0a7f09903bd8c3f7f0abebff8a2c3ab8eac131821",
+      "bytes": 34024
+    },
+    {
+      "path": "alpha_factory_v1/core/archive/db.py",
+      "sha256": "57a139d07cbb2f4c3a525f080e89d2cde96dc013c8c9c109ae8d45b911d99e94",
+      "bytes": 5689
+    },
+    {
+      "path": "alpha_factory_v1/core/archive/manager.py",
+      "sha256": "ad56bf63db62911a533e6ef7ad689d79cabc25fab467ce9dde54dec5a791c3d6",
+      "bytes": 2147
+    },
+    {
+      "path": "alpha_factory_v1/core/self_evolution/harness.py",
+      "sha256": "e446dce865df2debe3acead899acd9777dbd68efecc7f750cec53568b64fe273",
+      "bytes": 10580
+    }
+  ],
+  "checked": [
+    "Legacy rows, IDs, parent links and vote maps are not rewritten",
+    "New IDs include explicit SHA256 domain/version namespaces",
+    "SQLite conflict handling compares exact bodies and archive insertion is transactional",
+    "Copied base is checked before patch, preflight or tests, with later source fences retained",
+    "No old or unbound votes are transferred to new proposals"
+  ],
+  "findings": [],
+  "verification_scope": "27 owner-executed focused cases pass; one unchanged tools-dependent case skipped. Root reviewed the source and reproduced-counterexample design, not an independent repeat of that suite.",
+  "disposition": "SOURCE_REVIEW_CLEAR_REQUIRES_CONFIGURED_REVIEW_AND_FINAL_CI",
+  "limits": [
+    "No PostgreSQL or actualFAISS qualification",
+    "No broad legacy merge crash/concurrent-writer safety qualification",
+    "No new production or held authority"
+  ]
+}

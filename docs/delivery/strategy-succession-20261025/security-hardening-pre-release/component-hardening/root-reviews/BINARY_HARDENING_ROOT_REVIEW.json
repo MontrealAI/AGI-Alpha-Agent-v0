@@ -1,0 +1,37 @@
+{
+  "schema": "alpha-independent-source-review/v1",
+  "reviewer": "root integration lead, did not author the binary component",
+  "base_commit": "7392de2c85ae4ed2f9b1c11a61e65cefcbded6e9",
+  "observed_at": "2026-10-25T05:21:13.705729+00:00",
+  "scope": [
+    {
+      "path": "scripts/check_no_binary_diff.py",
+      "sha256": "4d2a90b60e170ba3aa53c891ed1664c964842711ebee4e912ff97352523bf9a6",
+      "bytes": 36260
+    },
+    {
+      "path": "tests/test_strategy_succession_binary_admission.py",
+      "sha256": "7aadcf3589c29646a5c95e9f1637330e2172d87cf18f69310a105f10a4775d59",
+      "bytes": 24123
+    },
+    {
+      "path": "tests/test_autonomous_enterprise_binary_admission.py",
+      "sha256": "5752447d504d3129e0838d8284ea96139c65af5292f0d5988f6470149c46e1f6",
+      "bytes": 12463
+    }
+  ],
+  "method": "Independent full production diff and caller invariants review; owner focused execution receipts reviewed. No target or archived code executed by this review.",
+  "findings": [],
+  "checked": [
+    "HEAD mode and Git blob metadata are retained",
+    "Actual committed object byte count and kind are checked before body read",
+    "Exact object bytes are compared with working bytes; duplicate object identities cannot represent differing expected bodies",
+    "Pinned SHA256 identities and exact scientific/enterprise inventories remain required",
+    "No authorized path/media/provenance rule is broadened",
+    "All239scientific bodies and fixed binary manifest remain unchanged",
+    "Mask/changed HEAD, modes, unknown paths and malformed identities remain rejected"
+  ],
+  "owner_execution": "122 focused tests passed; root does not relabel this as an independently repeated test run",
+  "disposition": "SOURCE_REVIEW_CLEAR_REQUIRES_FINAL_HEAD_GUARDS_CONFIGURED_REVIEW_CI",
+  "production_authority": false
+}
