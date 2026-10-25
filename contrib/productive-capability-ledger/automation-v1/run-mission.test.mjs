@@ -9,7 +9,7 @@ import {spawn,execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {makePlan,runPlan} from './run-mission.mjs';
 
-const REF='0255ebf0a3289e1011f3a8fad165baf140480241';
+const REF=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const source=new URL('./run-mission.mjs',import.meta.url).href;
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 async function temporary(work){const root=await mkdtemp(join(tmpdir(),'alpha-auto-source-'));try{await work(root);}finally{await rm(root,{recursive:true,force:true});}}
@@ -199,5 +199,98 @@ test('actual killed process releases no false completion and stale-lock recovery
     const completed=await runPlan(scope,{approvalDigest,outputRoot});assert.equal(completed.accepted,true);
     assert((await readdir(join(outputRoot,'killed'))).some(name=>name.startsWith('interrupted-lock-')));
     assert.match(await readFile(join(outputRoot,'killed','report.md'),'utf8'),/1 interrupted\/uncommitted attempt/);
+  });
+});
+
+test('expired or not-yet-valid approval refuses before any mission directory or source execution',async()=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await makePlan({manifestPath:'docs/successor/alpha/sources.json',sourceRef:REF,
+      runId:'expired-envelope',createdAt:'2000-01-01T00:00:00.000Z'});
+    assert.equal(scope.schema,'alpha-source-assurance-plan/v3');
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/expired/);
+    const future=await makePlan({manifestPath:'docs/successor/alpha/sources.json',sourceRef:REF,
+      runId:'future-envelope',createdAt:'2099-01-01T00:00:00.000Z'});
+    await assert.rejects(()=>runPlan(future.plan,{approvalDigest:future.approvalDigest,outputRoot}),/not yet valid/);
+    assert.deepEqual(await readdir(outputRoot),[]);
+  });
+});
+
+test('durable reservations cap retries and reconnects without refunding interrupted work',async()=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await makePlan({manifestPath:'docs/successor/alpha/sources.json',sourceRef:REF,
+      runId:'finite-attempts',maxAttempts:2,maxTotalSeconds:40});
+    await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'preparation'});
+    const completed=await runPlan(scope,{approvalDigest,outputRoot});
+    assert.equal(completed.accepted,true);assert.equal(completed.authorization.ordinal,2);
+    const directory=join(outputRoot,scope.runId),before=await readFile(join(directory,'COMPLETE.json'));
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/attempt bound exhausted/);
+    assert.deepEqual(await readFile(join(directory,'COMPLETE.json')),before);
+    assert.equal((await readdir(directory)).filter(name=>name.startsWith('reservation-')).length,2);
+    const reservation=JSON.parse(await readFile(join(directory,'reservation-001.json')));
+    assert.equal(reservation.reservedSeconds,20);
+  });
+});
+
+test('total execution reservation can exhaust before the attempt ceiling and cannot renew in place',async()=>{
+  await temporary(async outputRoot=>{
+    const args={manifestPath:'docs/successor/alpha/sources.json',sourceRef:REF,runId:'finite-total',maxAttempts:8,maxTotalSeconds:20};
+    const {plan:scope,approvalDigest}=await makePlan(args);
+    await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'planning'});
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/total execution reservation exhausted/);
+    const enlarged=await makePlan({...args,maxTotalSeconds:40});
+    await assert.rejects(()=>runPlan(enlarged.plan,{approvalDigest:enlarged.approvalDigest,outputRoot}),/not overwritten/);
+    assert.equal(existsSync(join(outputRoot,scope.runId,'COMPLETE.json')),false);
+  });
+});
+
+test('CANCEL is terminal while STOP remains a checkpoint pause; neither creates an accepted job',async()=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await plan('cancelled');
+    await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'execution'});
+    const directory=join(outputRoot,scope.runId),result=await readFile(join(directory,'result.json'));
+    await writeFile(join(directory,'CANCEL'),'Cancellation by the existing host.');
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/permanently cancelled/);
+    await rm(join(directory,'CANCEL'));
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/permanently cancelled/);
+    assert.equal(existsSync(join(directory,'COMPLETE.json')),false);
+    assert.deepEqual(await readFile(join(directory,'result.json')),result);
+    assert.equal((await readdir(directory)).filter(name=>name.startsWith('reservation-')).length,1);
+  });
+});
+
+test('a malformed reservation history and an interrupted recovery guard fail closed',async()=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await plan('corrupt-reservations');
+    await runPlan(scope,{approvalDigest,outputRoot,stopAfter:'planning'});
+    const directory=join(outputRoot,scope.runId),first=JSON.parse(await readFile(join(directory,'reservation-001.json')));
+    await writeFile(join(directory,'reservation-001.json'),JSON.stringify({...first,reservedSeconds:0}));
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}));
+    await writeFile(join(directory,'reservation-001.json'),JSON.stringify(first));
+    await writeFile(join(directory,'writer.lock'),JSON.stringify({pid:2147483647,approvalDigest}));
+    await writeFile(join(directory,'recovery.lock'),'Unresolved recovery ownership.');
+    await assert.rejects(()=>runPlan(scope,{approvalDigest,outputRoot}),/explicit operator inspection/);
+    assert.equal(existsSync(join(directory,'COMPLETE.json')),false);
+  });
+});
+
+test('simultaneous submissions share one immutable job and cannot duplicate its dispatch',async()=>{
+  await temporary(async outputRoot=>{
+    const {plan:scope,approvalDigest}=await plan('parallel-submit');
+    const command=`const {runPlan}=await import(${JSON.stringify(source)});try{const r=await runPlan(JSON.parse(process.argv[1]),JSON.parse(process.argv[2]));console.log(JSON.stringify({accepted:r.accepted,reconnected:r.reconnected}));}catch(e){console.error(e.message);process.exitCode=1;}`;
+    const invoke=()=>new Promise((resolve,reject)=>{
+      const child=spawn(process.execPath,['--input-type=module','-e',command,JSON.stringify(scope),JSON.stringify({approvalDigest,outputRoot})],{stdio:['ignore','pipe','pipe']});
+      let stdout='',stderr='';child.stdout.on('data',data=>stdout+=data);child.stderr.on('data',data=>stderr+=data);
+      child.once('error',reject);child.once('exit',code=>resolve({code,stdout,stderr}));
+    });
+    const results=await Promise.all([invoke(),invoke()]);
+    assert(results.some(result=>result.code===0));
+    for(const result of results)if(result.code!==0)assert.match(result.stderr,/writer still owns|Recovery already owned|EEXIST/);
+    const directory=join(outputRoot,scope.runId),complete=await readFile(join(directory,'COMPLETE.json'));
+    assert.equal(JSON.parse(complete).accepted,true);
+    const deliveries=results.filter(result=>result.code===0).map(result=>JSON.parse(result.stdout));
+    assert.equal(deliveries.filter(result=>!result.reconnected).length,1);
+    assert.equal((await readdir(outputRoot)).length,1);
+    assert.equal((await readdir(directory)).filter(name=>name.startsWith('reservation-')).length,deliveries.length);
+    assert.deepEqual(await readFile(join(directory,'COMPLETE.json')),complete);
   });
 });

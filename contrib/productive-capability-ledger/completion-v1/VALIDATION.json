@@ -1,0 +1,68 @@
+{
+  "schema": "alpha-source-completion-validation/v1",
+  "sourceBase": "2b442458847ca4655d0ed92afc6b1b62e8672e8d",
+  "mainReconciled": "95d1e97d4d1c0aaebd592767fc5e5d2da56f6aa7",
+  "nodeTests": {
+    "passed": 173,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "examples/successor-alpha/*.test.mjs including17 source-assurance cases"
+  },
+  "pageTests": {
+    "passed": 5,
+    "failed": 0
+  },
+  "releaseBoundaryTests": {
+    "passed": 27,
+    "failed": 0
+  },
+  "totalLocalTests": 205,
+  "independentDeliveryChecks": 928,
+  "distinctRequests": 3,
+  "acceptedLocalRequests": 3,
+  "costOracle": {
+    "schema": "alpha-automated-cost-independent-arithmetic/v1",
+    "passed": true,
+    "checks": 240,
+    "records": 5,
+    "scenarios": 15,
+    "sourceSha256": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506",
+    "recordSha256": {
+      "examples/successor-alpha/fixtures/automated-costs-example.json": "1002291b9c157aeac8f09454a233a3e7df1d3f4f1315cb1b392d4be87bd037c1",
+      "examples/successor-alpha/fixtures/automated-costs-unknown.json": "9a3f63e8c9e27a54abe567eef1be4d13d7b398fba980086422fe6b982aacc638",
+      "contrib/productive-capability-ledger/automation-v1/automated-cost-record.json": "1700b45f82e2b43598e97c90f3ba936cf89eb588a627cb9ab4f19b2f26cc81ee",
+      "contrib/productive-capability-ledger/automation-v1/observed-components-unknown-cost-record.json": "090d9c872f8ecc3ecc596fa76e1800573a61211e2a6170d45e79d2c1f747187b",
+      "contrib/productive-capability-ledger/automation-v1/initial-one-time-human-setup-automated-cost-record.json": "220e7a2a19ea8c58e5aee933ee871aef4eb8f1118b1d1e9e05c0eacdd48cadd8"
+    },
+    "method": "Separately implemented Python fractions.Fraction oracle against the Node implementation",
+    "scope": "Conditional arithmetic only; no live executor, measured full cost or independent organizational custody"
+  },
+  "qualityChecks": {
+    "black": "PASS",
+    "ruff": "PASS",
+    "strictMypyVerifier": "PASS",
+    "diffWhitespace": "PASS",
+    "fullPreCommit": "NOT RUN"
+  },
+  "hostedFinalSource": "PENDING",
+  "merge": "NOT MERGED",
+  "release": "NOT RELEASED; public Alpha remainsv1.43.0",
+  "liveIncrement": "NOT LIVE",
+  "browserToApprovedExecutor": "NOT RUN; exact approved operator home/profile absent",
+  "browserPersistenceAndNetworkRecovery": "NOT RUN",
+  "cleanApprovedProfileInstall": "NOT RUN",
+  "localBrowser": "NOT RUN; Chromium process creation refusedsocketEPERM; no bypass attempted",
+  "originalHarnessFleetRestrictions": "PRESERVED; original task operators must expose/dispose original actions",
+  "monetaryCost": "UNKNOWN; no measured full-currency cost or matched human task time",
+  "autonomousImprovement": "NOT ESTABLISHED; human-authored safety correction with conventional comparison specialist retained",
+  "financialTransactions": false,
+  "securityPolicyChanges": false,
+  "newCredentials": false,
+  "sourceSha256": {
+    "contrib/productive-capability-ledger/automation-v1/run-mission.mjs": "9aa3a9009fac35f03b4a96f2de545ee0403cafaa5a163243185f8c5af77ca216",
+    "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs": "39e44c95794ea335e973b050dbd221437228a5ee1af0d790fba62e07e994e8c5",
+    "contrib/productive-capability-ledger/automation-v1/verify-run.py": "493ce24264c942f4f2cfc15180323ef791b0d5e877ec4a3f41750255a0516674",
+    "examples/successor-alpha/source-assurance.test.mjs": "2f01685b4cf777575ace7534dae9020faea6488a3eadb1c0e8b5544eaa38c6d9",
+    "examples/successor-alpha/automated-costs.mjs": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506"
+  }
+}

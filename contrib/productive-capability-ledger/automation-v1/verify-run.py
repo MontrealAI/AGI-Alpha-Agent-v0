@@ -10,6 +10,7 @@ import os
 import re
 import stat
 import subprocess
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -132,6 +133,7 @@ def verify(directory: Path) -> dict[str, Any]:
             and value not in {".", "..", "COMPLETE.json", "writer.lock"},
             "An artifact reference attempts to leave the approved run scope",
         )
+        assert isinstance(value, str)
         return value
 
     complete = parse(read_bytes(directory / "COMPLETE.json"))
@@ -172,11 +174,45 @@ def verify(directory: Path) -> dict[str, Any]:
     }
     require(required <= artifacts.keys(), "A finished-delivery payload is missing")
     plan = parse(raw_files["plan.json"])
-    require(plan["schema"] == "alpha-source-assurance-plan/v2", "Unexpected bounded-plan schema")
+    require(
+        plan["schema"] in {"alpha-source-assurance-plan/v2", "alpha-source-assurance-plan/v3"},
+        "Unexpected bounded-plan schema",
+    )
     require(plan["authority"] == "none", "A plan cannot grant execution authority")
     require(complete["approvalDigest"] == sha(canonical(plan)), "Approved plan digest differs")
     require(complete["sourceRef"] == plan["sourceRef"], "Complete delivery changed its approved source")
     require(complete["runId"] == plan["runId"], "Run identity changed")
+    if plan["schema"] == "alpha-source-assurance-plan/v3":
+        require(type(plan["maxAttempts"]) is int and 1 <= plan["maxAttempts"] <= 128, "Invalid attempt envelope")
+        require(type(plan["maxSeconds"]) is int and 1 <= plan["maxSeconds"] <= 60, "Invalid per-attempt bound")
+        require(
+            type(plan["maxTotalSeconds"]) is int and plan["maxSeconds"] <= plan["maxTotalSeconds"] <= 3600,
+            "Invalid total reservation bound",
+        )
+        created = datetime.fromisoformat(plan["createdAt"].replace("Z", "+00:00"))
+        expiry = datetime.fromisoformat(plan["expiresAt"].replace("Z", "+00:00"))
+        require(0 < (expiry - created).total_seconds() <= 86400, "Invalid expiry envelope")
+        names = sorted(path.name for path in directory.iterdir() if path.name.startswith("reservation-"))
+        require(1 <= len(names) <= plan["maxAttempts"], "Reservations exceed attempt envelope")
+        require(len(names) * plan["maxSeconds"] <= plan["maxTotalSeconds"], "Reservations exceed total execution")
+        for ordinal, name in enumerate(names, 1):
+            require(name == f"reservation-{ordinal:03}.json", "Reservation history has a gap")
+            reservation = parse(read_bytes(directory / name))
+            require(reservation["schema"] == "alpha-source-reservation/v1", "Unknown reservation schema")
+            require(reservation["approvalDigest"] == complete["approvalDigest"], "Reservation changes approval")
+            require(
+                reservation["ordinal"] == ordinal and reservation["reservedSeconds"] == plan["maxSeconds"],
+                "Interrupted work must retain its complete reservation",
+            )
+            started = datetime.fromisoformat(reservation["startedAt"].replace("Z", "+00:00"))
+            require(created <= started < expiry, "Reservation falls outside approval validity")
+        final_reservation = complete["authorization"]
+        require(1 <= final_reservation["ordinal"] <= len(names), "Completion reservation is missing")
+        require(
+            final_reservation == parse(read_bytes(directory / f"reservation-{final_reservation['ordinal']:03}.json")),
+            "Completion changed its execution reservation",
+        )
+        require(not (directory / "CANCELLED.json").exists(), "A cancelled mission is not an accepted completion")
     source_ref = plan["sourceRef"]
     require(
         isinstance(source_ref, str) and COMMIT.fullmatch(source_ref) is not None,
@@ -192,12 +228,25 @@ def verify(directory: Path) -> dict[str, Any]:
     require(plan["methodIdentity"] == sha(canonical(dependencies)), "Retained executable identity differs")
     require(complete["methodIdentity"] == plan["methodIdentity"], "Result changed the approved method")
     legacy = dependencies[RUNNER] == LEGACY_RUNNER_SHA256 and plan["methodIdentity"] == LEGACY_METHOD_IDENTITY
+    reporting_predecessor = (
+        dependencies[RUNNER] == "2158e34cab75f11242f6d130c696ba276abb53e017f862ecc7ee8e40e1f8779b"
+        and plan["methodIdentity"] == "17e09fd0d79d823e176d7a4f2eb547adc91ff71162766c6d0995fe2d3778fab9"
+    )
+    historical_commit = (
+        LEGACY_SOURCE_COMMIT
+        if legacy
+        else "2b442458847ca4655d0ed92afc6b1b62e8672e8d" if reporting_predecessor else None
+    )
     for path, digest in dependencies.items():
         public_path(path)
-        installed = git_blob(LEGACY_SOURCE_COMMIT, path) if legacy else read_bytes(ROOT / path, 4_000_000)
+        installed = git_blob(historical_commit, path) if historical_commit else read_bytes(ROOT / path, 4_000_000)
         require(
             sha(installed) == digest,
-            ("Preserved historical executable differs: " if legacy else "Current installed executable differs: ")
+            (
+                "Preserved historical executable differs: "
+                if historical_commit
+                else "Current installed executable differs: "
+            )
             + path,
         )
         if path in DEPENDENCIES:
@@ -474,7 +523,7 @@ def verify(directory: Path) -> dict[str, Any]:
         "runId": plan["runId"],
         "sourceRef": source_ref,
         "methodIdentity": plan["methodIdentity"],
-        "runnerSourceMode": "preserved-historical-source" if legacy else "current-installed-source",
+        "runnerSourceMode": "preserved-historical-source" if historical_commit else "current-installed-source",
         "verifierSha256": sha(read_bytes(Path(__file__))),
         "sourceRows": len(sources),
         "changedPaths": changed,

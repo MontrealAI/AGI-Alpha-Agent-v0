@@ -37,6 +37,15 @@ invent a complete cost from its process timings.
 
 ## Current successor and preserved predecessor evidence
 
+The additive [completion candidate](../completion-v1/README.md) now creates
+`alpha-source-assurance-plan/v3` approvals with an explicit expiry, attempt ceiling
+and aggregate execution allowance. Durable reservations charge the full allowance
+before source validation or work, including interrupted attempts and completed
+rechecks. Cancellation is distinct from a resumable STOP. This is still local
+foreground execution; it does not establish a persistent browser connection or
+an approved installed profile. The earlier v2 plans and evidence below retain
+their original identities and scope.
+
 External review reproduced an additional interruption window after `report.md`
 publication but before its stage receipt. The current recovery successor commits
 `report-context.json` before publishing the report, validates its approved scope
@@ -44,7 +53,7 @@ and exact attempt snapshot, and preserves those historical counts on resume.
 Eleven regression cases cover the runner, including both sides of this publication
 boundary and tampered context refusal.
 
-Current runner SHA-256:
+Preserved report-recovery predecessor runner SHA-256:
 `2158e34cab75f11242f6d130c696ba276abb53e017f862ecc7ee8e40e1f8779b`;
 method identity:
 `17e09fd0d79d823e176d7a4f2eb547adc91ff71162766c6d0995fe2d3778fab9`.
@@ -151,3 +160,15 @@ python contrib/productive-capability-ledger/automation-v1/verify-run.py \
 Authenticated browser-to-approved-executor testing, public deployment and fresh
 installation remain separate receiving-owner qualification. Their absence does
 not prevent the separate, honestly labeled automated-cost scenario analysis.
+
+New v3 plans default to 20 seconds per invocation, eight invocations, 160 reserved
+seconds total and expiry one hour after creation. The CLI accepts `--max-seconds`,
+`--max-attempts`, `--total-seconds` and exact-ISO `--expires-at`; all enter the
+approval digest. An invocation reserves its full per-invocation allowance without
+refund, even if it crashes or only revalidates completed output. These are
+conservative authorization reservations, not measured CPU time or a monetary bill.
+Exhaustion requires a new plan, new run identity and explicit new approval.
+The host may create `CANCEL` to cancel; the runner records `CANCELLED.json` and
+refuses subsequent execution even after the signal file is removed. Neither
+control file is a remote authorization interface. An interrupted `recovery.lock`
+requires operator inspection; it is never silently reaped.

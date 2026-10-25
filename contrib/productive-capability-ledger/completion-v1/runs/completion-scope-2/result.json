@@ -1,0 +1,94 @@
+{
+  "schema": "ti-catalogue-result/v1",
+  "leftIdentity": {
+    "sha256": "23546bb6e8b279b8628760fd96df87c85136121ff8c967bc4b18cdee00fc30ba",
+    "bytes": 702
+  },
+  "rightIdentity": {
+    "sha256": "23546bb6e8b279b8628760fd96df87c85136121ff8c967bc4b18cdee00fc30ba",
+    "bytes": 702
+  },
+  "resolution": {
+    "schema": "successor-discrepancy-resolution/v1",
+    "actions": [],
+    "sharedFields": [
+      {
+        "name": "sha256",
+        "leftColumn": 1,
+        "rightColumn": 1
+      }
+    ],
+    "burden": {
+      "pairwiseReviewItems": 0,
+      "groupedActions": 0,
+      "groupingReduction": 0,
+      "timeSavedClaim": false,
+      "sameTaskSuperiority": false
+    },
+    "coverage": {
+      "originalOccurrences": 0,
+      "coveredOccurrences": 0,
+      "complete": true,
+      "missing": [],
+      "duplicates": []
+    },
+    "diagnosis": {
+      "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+      "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+      "duplicateExceptionKeys": 0,
+      "uniqueExceptionKeys": 0,
+      "groupingReducesDecisionItems": false
+    },
+    "decision": {
+      "state": "retain_original_review",
+      "recommendedContract": "original_occurrence_review",
+      "reason": "No repeated exception key reduces the number of decision records; retain the original review contract."
+    },
+    "contract": {
+      "changed": true,
+      "original": "One review item per unmatched source row or conflicting matched row pair.",
+      "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+      "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+    },
+    "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n",
+    "externalAuthority": false,
+    "automaticallyResolved": false,
+    "qualification": "local_engineering_only"
+  },
+  "differences": [],
+  "metrics": {
+    "leftRows": 6,
+    "rightRows": 6,
+    "matchedPairs": 6,
+    "unmatchedRows": 0,
+    "unmatchedKeys": 0,
+    "conflictingPairs": 0,
+    "fieldDifferences": 0,
+    "actionGroups": 0,
+    "evidenceReferences": 0,
+    "leftDuplicates": {
+      "keys": 0,
+      "extraRows": 0
+    },
+    "rightDuplicates": {
+      "keys": 0,
+      "extraRows": 0
+    },
+    "comparedColumns": [
+      "sha256"
+    ],
+    "unsharedLeft": [],
+    "unsharedRight": []
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  }
+}

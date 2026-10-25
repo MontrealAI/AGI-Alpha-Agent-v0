@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {createHash, randomUUID} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-import {constants} from 'node:fs';
+import {constants, existsSync, writeFileSync} from 'node:fs';
 import {mkdir, readFile, writeFile, open, link, unlink, lstat, rename, readdir} from 'node:fs/promises';
 import {dirname, resolve, join, relative} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
@@ -67,18 +67,30 @@ async function installedIdentity() {
   dependencySha256[relative(ROOT,fileURLToPath(import.meta.url))]=hash(await ordinary(fileURLToPath(import.meta.url)));
   return {methodIdentity:hash(guide.canonical(dependencySha256)),dependencySha256};
 }
-export async function makePlan({manifestPath,sourceRef,runId,maxSeconds=20,createdAt=new Date().toISOString()}) {
+export async function makePlan({manifestPath,sourceRef,runId,maxSeconds=20,createdAt=new Date().toISOString(),
+  maxAttempts=8,maxTotalSeconds=maxSeconds*maxAttempts,expiresAt=new Date(Date.parse(createdAt)+3_600_000).toISOString(),
+  schema='alpha-source-assurance-plan/v3'}) {
   const wall=performance.now(),cpu=process.cpuUsage();
   assert(safePath(manifestPath),'Choose an explicit public manifest path.');
   assert.match(sourceRef,/^[0-9a-f]{40}$/);assert.match(runId,/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/);
   assert(Number.isSafeInteger(maxSeconds) && maxSeconds>=1 && maxSeconds<=60,'Use a 1–60 second budget.');
   assert(typeof createdAt==='string' && new Date(createdAt).toISOString()===createdAt,'Use an exact ISO date.');
+  assert(['alpha-source-assurance-plan/v2','alpha-source-assurance-plan/v3'].includes(schema));
+  if(schema==='alpha-source-assurance-plan/v3') {
+    assert(Number.isSafeInteger(maxAttempts) && maxAttempts>=1 && maxAttempts<=128,'Use a 1–128 attempt envelope.');
+    assert(Number.isSafeInteger(maxTotalSeconds) && maxTotalSeconds>=maxSeconds && maxTotalSeconds<=3600,
+      'Total reserved execution must be between one attempt and 3600 seconds.');
+    assert(typeof expiresAt==='string' && new Date(expiresAt).toISOString()===expiresAt &&
+      Date.parse(expiresAt)>Date.parse(createdAt) && Date.parse(expiresAt)-Date.parse(createdAt)<=86_400_000,
+      'Use an explicit expiry within 24 hours of plan creation.');
+  }
   const deadline=wall+maxSeconds*1000,source=committed(sourceRef,manifestPath,deadline), rows=manifestSources(source);
   for(const path of DEPENDENCIES)assert.equal(hash(await ordinary(join(ROOT,path))),hash(committed(sourceRef,path,deadline)),
     'Installed comparison dependency differs from the approved source.');
   const identity=await installedIdentity();
-  const plan={schema:'alpha-source-assurance-plan/v2',offeringId:'committed-source-assurance',runId,createdAt,manifestPath,sourceRef,
+  const plan={schema,offeringId:'committed-source-assurance',runId,createdAt,manifestPath,sourceRef,
     manifestSha256:hash(source),sourceCount:rows.length,maxSeconds,...identity,authority:'none',
+    ...(schema==='alpha-source-assurance-plan/v3'?{maxAttempts,maxTotalSeconds,expiresAt}:{}),
     acceptance:'Exact source identities and lossless difference/action exports; no approval of source behavior.',
     allowedOperations:['read fixed public Git blobs','deterministic catalogue comparison','write this run artifact directory']};
   const used=process.cpuUsage(cpu);
@@ -89,9 +101,21 @@ export async function makePlan({manifestPath,sourceRef,runId,maxSeconds=20,creat
     modelCalls:fact(0,'No model adapter is called by deterministic planning.'),
     monetaryCost:fact(null,'Execution timing is not full monetary cost.','unknown')}};
 }
-async function checkedPlan(raw,approvalDigest) {
+async function checkedPlan(raw,approvalDigest,rebuild=true) {
   const frame=parseBounded(typeof raw==='string'?raw:guide.canonical(raw));
-  assert.equal(frame?.schema,'alpha-source-assurance-plan/v2');
+  assert(['alpha-source-assurance-plan/v2','alpha-source-assurance-plan/v3'].includes(frame?.schema));
+  assert.match(frame.runId,/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/);
+  assert(Number.isSafeInteger(frame.maxSeconds) && frame.maxSeconds>=1 && frame.maxSeconds<=60);
+  assert.equal(hash(guide.canonical(frame)),approvalDigest,'Approve the exact bounded plan digest.');
+  if(frame.schema==='alpha-source-assurance-plan/v3') {
+    assert(Number.isSafeInteger(frame.maxAttempts) && frame.maxAttempts>=1 && frame.maxAttempts<=128);
+    assert(Number.isSafeInteger(frame.maxTotalSeconds) && frame.maxTotalSeconds>=frame.maxSeconds && frame.maxTotalSeconds<=3600);
+    assert(new Date(frame.createdAt).toISOString()===frame.createdAt && new Date(frame.expiresAt).toISOString()===frame.expiresAt);
+    assert(Date.parse(frame.expiresAt)>Date.parse(frame.createdAt) && Date.parse(frame.expiresAt)-Date.parse(frame.createdAt)<=86_400_000);
+    assert(Date.now()>=Date.parse(frame.createdAt),'Approved plan is not yet valid.');
+    assert(Date.now()<Date.parse(frame.expiresAt),'Approved envelope expired; a new exact approval is required.');
+  }
+  if(!rebuild)return frame;
   const rebuilt=await makePlan(frame);
   assert.equal(guide.canonical(rebuilt.plan),guide.canonical(frame),'Plan fields, dependencies or source changed.');
   assert.equal(rebuilt.approvalDigest,approvalDigest,'Approve the exact bounded plan digest.');
@@ -149,10 +173,12 @@ async function checkedReportContext(directory,approvalDigest,traces,snapshot) {
   }
   return {priorStageReceipts:snapshot.priorStageReceipts,unknownAttempts:snapshot.attempts.length-1};
 }
-async function reverifyDelivery(directory,plan,deadline,traces) {
+async function reverifyDelivery(directory,plan,deadline,traces,checkpoint=()=>{}) {
+  checkpoint();
   const wall=performance.now(),cpu=process.cpuUsage(),manifest=committed(plan.sourceRef,plan.manifestPath,deadline);
   assert.equal(hash(manifest),plan.manifestSha256);
-  const declared=manifestSources(manifest),observed=declared.map(([path])=>[path,hash(committed(plan.sourceRef,path,deadline))]);
+  const declared=manifestSources(manifest),observed=declared.map(([path])=>{
+    checkpoint();return [path,hash(committed(plan.sourceRef,path,deadline))];});
   const input={leftCsv:guide.safeCsv([['path','sha256'],...declared]),rightCsv:guide.safeCsv([['path','sha256'],...observed]),leftKey:'path',rightKey:'path'};
   const expectedPrepared={schema:'alpha-source-assurance-inputs/v1',sourceRef:plan.sourceRef,manifestPath:plan.manifestPath,input};
   assert.equal(guide.canonical(await loadJSON(join(directory,'prepared-inputs.json'))),guide.canonical(expectedPrepared),
@@ -175,6 +201,7 @@ async function reverifyDelivery(directory,plan,deadline,traces) {
     reportMarkdown(plan,acceptance,traces.slice(0,context.priorStageReceipts),context.unknownAttempts),
     'Report differs from its exact historical reporting checkpoint.');
   const used=process.cpuUsage(cpu);
+  checkpoint();
   return {schema:'alpha-source-final-revalidation/v1',accepted:true,stage:'verification',
     check:'Full Git-bound preparation, complete existing-guide result, workspace, all deliverable CSVs and report recomputed before completion.',
     wallMicroseconds:fact(Math.ceil((performance.now()-wall)*1000),'Observed final whole-output revalidation.'),
@@ -185,7 +212,7 @@ async function reverifyDelivery(directory,plan,deadline,traces) {
 }
 export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'corrected-runs'),stopAfter=null}={}) {
   const invokedAt=performance.now(),invokedCPU=process.cpuUsage();
-  const plan=await checkedPlan(raw,approvalDigest), directory=join(resolve(outputRoot),plan.runId);
+  const plan=await checkedPlan(raw,approvalDigest,false), directory=join(resolve(outputRoot),plan.runId);
   await mkdir(outputRoot,{recursive:true});
   assert(!(await lstat(outputRoot)).isSymbolicLink(),'Output root cannot be a symlink.');
   await mkdir(directory,{recursive:false}).catch(error=>{if(error.code!=='EEXIST')throw error;});
@@ -193,14 +220,22 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
   const lock=join(directory,'writer.lock');
   try {await exclusive(lock,json({pid:process.pid,approvalDigest}));} catch(error) {
     if(error.code!=='EEXIST')throw error;
-    const previous=await loadJSON(lock);
-    assert.equal(previous.approvalDigest,approvalDigest,'Existing run belongs to a different plan.');
-    let alive=true;try{process.kill(previous.pid,0);}catch(probe){if(probe.code==='ESRCH')alive=false;else throw probe;}
-    assert(!alive,'A writer still owns this run.');
-    await rename(lock,join(directory,'interrupted-lock-'+randomUUID()+'.json'));
-    await exclusive(lock,json({pid:process.pid,approvalDigest}));
+    const recoveryLock=join(directory,'recovery.lock');
+    try {await exclusive(recoveryLock,json({pid:process.pid,approvalDigest}));}
+    catch(recoveryError){if(recoveryError.code==='EEXIST')throw Error('Recovery already owned or interrupted; explicit operator inspection required.');throw recoveryError;}
+    try {
+      const previous=await loadJSON(lock);
+      assert.equal(previous.approvalDigest,approvalDigest,'Existing run belongs to a different plan.');
+      assert(Number.isSafeInteger(previous.pid) && previous.pid>0,'Invalid prior writer identity.');
+      let alive=true;try{process.kill(previous.pid,0);}catch(probe){if(probe.code==='ESRCH')alive=false;else throw probe;}
+      assert(!alive,'A writer still owns this run.');
+      await rename(lock,join(directory,'interrupted-lock-'+randomUUID()+'.json'));
+      await exclusive(lock,json({pid:process.pid,approvalDigest}));
+    } finally {await unlink(recoveryLock);}
   }
-  const attempt=randomUUID(),deadline=invokedAt+plan.maxSeconds*1000,traces=[];
+  const attempt=randomUUID(),bounded=plan.schema==='alpha-source-assurance-plan/v3';
+  const deadline=Math.min(invokedAt+plan.maxSeconds*1000,
+    bounded?performance.now()+Math.max(0,Date.parse(plan.expiresAt)-Date.now()):Infinity),traces=[];
   const overhead=()=>{const used=process.cpuUsage(invokedCPU);return {stage:'recovery',kind:'invocation-validation-and-reconnect',
     wallMicroseconds:fact(Math.ceil((performance.now()-invokedAt)*1000),'Observed plan/source revalidation and recovery overhead.'),
     cpuMicroseconds:fact(used.user+used.system,'Observed Node CPU including local recovery; child Git CPU excluded.'),
@@ -208,6 +243,13 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
     monetaryCost:fact(null,'Allocate compute and maintenance explicitly; do not erase restart costs.','unknown')};};
   const stopped=()=>{
     if(performance.now()>deadline)throw Error('Approved elapsed budget exhausted; checkpoint retained.');
+    if(bounded && Date.now()>=Date.parse(plan.expiresAt))throw Error('Approved envelope expired; no renewal was made.');
+    if(existsSync(join(directory,'CANCEL'))) {
+      try {writeFileSync(join(directory,'CANCELLED.json'),json({schema:'alpha-source-cancellation/v1',approvalDigest,
+        recordedAt:new Date().toISOString(),state:'cancelled'}),{flag:'wx',mode:0o600});}
+      catch(error){if(error.code!=='EEXIST')throw error;}
+    }
+    if(existsSync(join(directory,'CANCELLED.json')))throw Error('Mission permanently cancelled; preserve the record and use a new approved run.');
   };
   const known=async filename=>{try{return await ordinary(join(directory,filename),8_000_000);}catch(error){if(error.code==='ENOENT')return null;throw error;}};
   const retain=async(filename,bytes)=>{
@@ -217,14 +259,33 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
   };
   try {
     await retain('plan.json',json(plan));
+    stopped();
+    let authorization=null;
+    if(bounded) {
+      const names=(await readdir(directory)).filter(name=>name.startsWith('reservation-')).sort();
+      assert(names.length<plan.maxAttempts && names.length<128,
+        `Approved ${plan.maxAttempts}-attempt bound exhausted (absolute 128-attempt bound); no automatic renewal.`);
+      for(let index=0;index<names.length;index++) {
+        assert.equal(names[index],`reservation-${String(index+1).padStart(3,'0')}.json`,'Reservation history is not contiguous.');
+        const prior=await loadJSON(join(directory,names[index]));
+        assert.equal(prior.schema,'alpha-source-reservation/v1');assert.equal(prior.approvalDigest,approvalDigest);
+        assert.equal(prior.ordinal,index+1);assert.equal(prior.reservedSeconds,plan.maxSeconds);
+      }
+      const ordinal=names.length+1,reservedSeconds=ordinal*plan.maxSeconds;
+      assert(reservedSeconds<=plan.maxTotalSeconds,'Approved total execution reservation exhausted; no automatic renewal.');
+      authorization={schema:'alpha-source-reservation/v1',approvalDigest,ordinal,reservedSeconds:plan.maxSeconds,
+        attempt,startedAt:new Date().toISOString(),accounting:'Full attempt allowance retained, including interrupted work and reconnect.'};
+      await exclusive(join(directory,`reservation-${String(ordinal).padStart(3,'0')}.json`),json(authorization));
+    }
+    await checkedPlan(plan,approvalDigest);
     const completed=await known('COMPLETE.json');
     if(completed){const summary=parseBounded(completed.toString());assert.equal(summary.approvalDigest,approvalDigest);
       const required=['plan.json','final-acceptance.json','report-context.json',...STAGES.map(stage=>`stage-${stage}.json`),...Object.values(OUTPUTS).flat()];
       for(const name of required)assert(Object.hasOwn(summary.artifacts,name),'Completed payload is incomplete.');
       for(const [name,digest] of Object.entries(summary.artifacts)){assert(artifactName(name),'Unsafe artifact name.');
         assert.equal(hash(await ordinary(join(directory,name),8_000_000)),digest);}
-      await reverifyDelivery(directory,plan,deadline,summary.stages);
-      return {...summary,reconnected:true,reconnectObservations:overhead()};}
+      await reverifyDelivery(directory,plan,deadline,summary.stages,stopped);
+      return {...summary,reconnected:true,reconnectObservations:overhead(),...(authorization?{authorization}: {})};}
     await exclusive(join(directory,`attempt-${attempt}.json`),json({attempt,approvalDigest,state:'started',
       invocationOverhead:overhead(),monetaryCost:fact(null,'Interrupted or unfinished work is not zero.','unknown')}));
     let prepared,result,acceptance;
@@ -238,7 +299,7 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
           assert.equal(hash(await ordinary(join(directory,name),8_000_000)),digest);}
         traces.push(receipt);continue;}
       const wall=performance.now(),cpu=process.cpuUsage(),artifacts={};let toolInvocations=0,reportContext=null;
-      const save=async(name,value)=>{const bytes=typeof value==='string'?value:json(value);await retain(name,bytes);artifacts[name]=hash(bytes);};
+      const save=async(name,value)=>{stopped();const bytes=typeof value==='string'?value:json(value);await retain(name,bytes);artifacts[name]=hash(bytes);};
       if(stage==='preparation') {
         const source=committed(plan.sourceRef,plan.manifestPath,deadline);toolInvocations+=2;assert.equal(hash(source),plan.manifestSha256);
         const rows=manifestSources(source),observed=[];
@@ -290,7 +351,7 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
       await exclusive(join(directory,`stage-${stage}.json`),json(receipt));traces.push(receipt);
       if(stage===stopAfter)return {state:'checkpointed',stage,directory,approvalDigest};
     }
-    const finalRevalidation=await reverifyDelivery(directory,plan,deadline,traces);
+    const finalRevalidation=await reverifyDelivery(directory,plan,deadline,traces,stopped);
     await exclusive(join(directory,`final-revalidation-${attempt}.json`),json(finalRevalidation));
     await retain('final-acceptance.json',json({schema:'alpha-source-final-acceptance/v1',accepted:true,approvalDigest,
       sourceRef:plan.sourceRef,methodIdentity:plan.methodIdentity,check:finalRevalidation.check,authority:'none'}));
@@ -302,17 +363,23 @@ export async function runPlan(raw,{approvalDigest,outputRoot=join(HERE,'correcte
       interruptedOrUncommittedAttempts:fact((await readdir(directory)).filter(name=>/^attempt-.*\.json$/.test(name)).length-1,
         'Observed earlier unfinished attempt records; retained costs are not automatically refunded or erased.'),
       fullAgentCost:fact(null,'Execution trace is available; full monetary cost requires explicit rates/amortization.','unknown'),
+      ...(authorization?{authorization}:{}),
       connectedExecution:'NOT RUN; foreground local Node only',commercialAcceptance:'unknown',authority:'none'};
+    stopped();
     await exclusive(join(directory,'COMPLETE.json'),json(summary));return {...summary,directory,reconnected:false};
   } finally {await unlink(lock).catch(error=>{if(error.code!=='ENOENT')throw error;});}
 }
 async function main(args) {
   const command=args.shift(), options={};
   assert(['plan','run'].includes(command),'Use plan or run.');
-  while(args.length){const name=args.shift(),value=args.shift();assert(['--manifest','--ref','--run-id','--approve','--plan','--stop-after'].includes(name) && value && !Object.hasOwn(options,name),'Unsupported or duplicate option.');options[name]=value;}
+  while(args.length){const name=args.shift(),value=args.shift();assert(['--manifest','--ref','--run-id','--approve','--plan','--stop-after',
+    '--max-seconds','--max-attempts','--total-seconds','--expires-at'].includes(name) && value && !Object.hasOwn(options,name),'Unsupported or duplicate option.');options[name]=value;}
   if(command==='plan') {
-    assert(Object.keys(options).every(name=>['--manifest','--ref','--run-id'].includes(name)));
-    const result=await makePlan({manifestPath:options['--manifest'],sourceRef:options['--ref'],runId:options['--run-id']});
+    assert(Object.keys(options).every(name=>['--manifest','--ref','--run-id','--max-seconds','--max-attempts','--total-seconds','--expires-at'].includes(name)));
+    const bounds={};for(const [option,field] of [['--max-seconds','maxSeconds'],['--max-attempts','maxAttempts'],['--total-seconds','maxTotalSeconds']])
+      if(Object.hasOwn(options,option)){assert(/^[1-9][0-9]*$/.test(options[option]));bounds[field]=Number(options[option]);}
+    if(options['--expires-at'])bounds.expiresAt=options['--expires-at'];
+    const result=await makePlan({manifestPath:options['--manifest'],sourceRef:options['--ref'],runId:options['--run-id'],...bounds});
     await mkdir(join(HERE,'corrected-plans'),{recursive:true});const path=join(HERE,'corrected-plans',result.plan.runId+'.json');
     await exclusive(path,json(result.plan));await exclusive(path.replace(/\.json$/,'.facts.json'),json(result.planningFacts));
     console.log(json({...result,planFile:relative(ROOT,path)}));
