@@ -934,5 +934,7 @@ def test_primary_source_commit_ignores_foreign_git_selectors(tmp_path: Path, mon
     monkeypatch.setattr(security, "fetch_official_policy", captured)
     monkeypatch.setattr(security, "_execute", execute)
     result = security.check_official(root, ("selected.py",))
-    assert result["passed"] is True
+    # The synthetic pack is intentionally outside the production two-pack
+    # envelope; provenance must remain correct even for an unqualified input.
+    assert result["passed"] is False and result["policy_disposition"] == "REFUSED"
     assert result["commit"] == actual_head and result["commit"] != foreign_head

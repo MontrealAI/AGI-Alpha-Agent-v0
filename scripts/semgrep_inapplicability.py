@@ -36,6 +36,10 @@ from typing import Any, Mapping, cast
 ROOT = Path(__file__).resolve().parents[1]
 MAP_PATH = "scripts/data/semgrep_python_inapplicability.json"
 APPROVED_MAP_SHA256: str | None = None
+REVIEWABLE_PACK_SHA256S = (
+    "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+    "e3c25cf9b28ddfd3cb1b7f240d2fc0998734199efa539fa0b10281487a602e79",
+)
 SEMGREP_VERSION = "1.99.0"
 MAX_REPORT_BYTES = 8 * 1024 * 1024
 MAX_MAP_BYTES = 1024 * 1024
@@ -433,6 +437,12 @@ def _location(value: Any, body: bytes) -> dict[str, int]:
     return cast(dict[str, int], value)
 
 
+def _source_lines(body: bytes, start: dict[str, int], end: dict[str, int]) -> str:
+    # Preserve the pinned1.99 formatter contract; raw span hashes stay exact.
+    lines = itertools.islice(io.StringIO(body.decode("utf-8"), newline=None), start["line"] - 1, end["line"])
+    return "".join(lines).rstrip()
+
+
 def _findings(
     report: dict[str, Any], bodies: dict[str, bytes], rules: dict[str, RuleDefinition]
 ) -> list[dict[str, Any]]:
@@ -457,12 +467,8 @@ def _findings(
             and bool(extra["lines"]),
             "Ignored finding or missing reported source lines",
         )
-        # Pinned1.99 formatter/base.py joins get_lines_from_file's inclusive
-        # start/end lines with universal newline reads, then strips trailing
-        # whitespace. Span hashes retain the exact unnormalized source bytes.
-        source_lines = itertools.islice(io.StringIO(body.decode("utf-8"), newline=None), start["line"] - 1, end["line"])
         _require(
-            extra["lines"] == "".join(source_lines).rstrip(),
+            extra["lines"] == _source_lines(body, start, end),
             "Reported finding lines disagree with the captured source",
         )
         identity = {
@@ -504,6 +510,74 @@ def _approved_map() -> tuple[dict[str, Any], str]:
     return _json(raw, MAX_MAP_BYTES), pin
 
 
+def _case_keys(cases: Any, bodies: dict[str, bytes], rules: dict[str, RuleDefinition]) -> set[bytes]:
+    _require(type(cases) is list and bool(cases), "Variant has no reviewed cases")
+    expected = set()
+    for case in cases:
+        _require(
+            type(case) is dict
+            and set(case) == {"identity", "rationale", "review_reference"}
+            and type(case["identity"]) is dict
+            and all(
+                type(case[field]) is str and 0 < len(case[field]) <= 2000 for field in ("rationale", "review_reference")
+            ),
+            "Map case has no explicit review rationale/reference",
+        )
+        identity = case["identity"]
+        _require(
+            set(identity)
+            == {
+                "rule_id",
+                "rule_definition_sha256",
+                "rule_start_byte",
+                "rule_end_byte",
+                "source_path",
+                "source_sha256",
+                "source_bytes",
+                "start",
+                "end",
+                "snippet_sha256",
+                "reported_lines_sha256",
+            },
+            "Unknown or incomplete case identity",
+        )
+        _require(
+            type(identity["rule_id"]) is str
+            and identity["rule_id"] in rules
+            and type(identity["source_path"]) is str
+            and identity["source_path"] in bodies,
+            "Case references an unknown source or rule",
+        )
+        for field in ("rule_definition_sha256", "source_sha256", "snippet_sha256", "reported_lines_sha256"):
+            value = identity[field]
+            _require(
+                type(value) is str and len(value) == 64 and all(char in "0123456789abcdef" for char in value),
+                "Malformed case digest",
+            )
+        first, last = identity["rule_start_byte"], identity["rule_end_byte"]
+        _require(
+            type(first) is int and type(last) is int and 0 <= first < last <= MAX_PACK_BYTES, "Malformed case rule span"
+        )
+        body = bodies[identity["source_path"]]
+        _require(
+            type(identity["source_bytes"]) is int
+            and identity["source_bytes"] == len(body)
+            and identity["source_sha256"] == _digest(body),
+            "Case source identity changed",
+        )
+        start, end = _location(identity["start"], body), _location(identity["end"], body)
+        _require(
+            start["offset"] < end["offset"]
+            and identity["snippet_sha256"] == _digest(body[start["offset"] : end["offset"]])
+            and identity["reported_lines_sha256"] == _digest(_source_lines(body, start, end).encode("utf-8")),
+            "Case source span or reported lines changed",
+        )
+        key = _canonical(identity)
+        _require(key not in expected, "Duplicate map case")
+        expected.add(key)
+    return expected
+
+
 def assess(raw_report: bytes, raw_exit_code: int, before: CapturedInputs, after: CapturedInputs) -> dict[str, Any]:
     """Preserve raw scan status; every prerequisite fails before any map lookup."""
     decision: dict[str, Any] = {
@@ -543,6 +617,10 @@ def assess(raw_report: bytes, raw_exit_code: int, before: CapturedInputs, after:
         bodies, rules = _inputs(before, after)
         _require(type(raw_exit_code) is int and raw_exit_code in (0, 1), "Scanner did not finish normally")
         _require((raw_exit_code == 0) == (report["results"] == []), "Raw exit/findings inconsistency")
+        _require(
+            _digest(before.official_pack) in REVIEWABLE_PACK_SHA256S,
+            "Actual pack is outside the finite reviewed representations",
+        )
         if raw_exit_code == 0:
             decision.update(raw_scan_passed=True, policy_disposition="NOT_NEEDED_RAW_PASS", policy_accepted=True)
             return decision
@@ -559,37 +637,36 @@ def assess(raw_report: bytes, raw_exit_code: int, before: CapturedInputs, after:
             == {
                 "schema",
                 "semgrep_version",
-                "official_pack_sha256",
                 "target_paths_sha256",
                 "repository_inventory_sha256",
-                "cases",
+                "variants",
             }
-            and approved["schema"] == "agialpha.semgrep-reviewed-inapplicability/v1"
+            and approved["schema"] == "agialpha.semgrep-reviewed-inapplicability/v2"
             and approved["semgrep_version"] == SEMGREP_VERSION
-            and approved["official_pack_sha256"] == _digest(before.official_pack)
             and approved["target_paths_sha256"] == _digest(_canonical(sorted(before.targets)))
             and approved["repository_inventory_sha256"] == before.repository.sha256,
             "Map schema, version, pack or target scope differs from the scan",
         )
-        cases = approved["cases"]
-        _require(type(cases) is list and bool(cases), "Map has no reviewed cases")
-        expected = set()
-        for case in cases:
+        variants = approved["variants"]
+        _require(type(variants) is list and len(variants) == 2, "Map must contain exactly two reviewed pack variants")
+        by_pack = {}
+        for variant in variants:
             _require(
-                type(case) is dict
-                and set(case) == {"identity", "rationale", "review_reference"}
-                and type(case["identity"]) is dict
-                and all(
-                    type(case[field]) is str and 0 < len(case[field]) <= 2000
-                    for field in ("rationale", "review_reference")
-                ),
-                "Map case has no explicit review rationale/reference",
+                type(variant) is dict and set(variant) == {"official_pack_sha256", "cases"},
+                "Malformed pack variant",
             )
-            key = _canonical(case["identity"])
-            _require(key not in expected, "Duplicate map case")
-            expected.add(key)
+            pack = variant["official_pack_sha256"]
+            _require(
+                type(pack) is str and pack in REVIEWABLE_PACK_SHA256S and pack not in by_pack,
+                "Unknown or duplicate pack variant",
+            )
+            by_pack[pack] = _case_keys(variant["cases"], bodies, rules)
+        _require(set(by_pack) == set(REVIEWABLE_PACK_SHA256S), "Reviewed pack variants are missing")
+        actual_pack = _digest(before.official_pack)
+        _require(actual_pack in by_pack, "Actual pack has no exact reviewed variant")
         _require(
-            expected == {_canonical(identity) for identity in identities}, "Unknown, changed, missing or copied finding"
+            by_pack[actual_pack] == {_canonical(identity) for identity in identities},
+            "Unknown, changed, missing or copied finding",
         )
         decision.update(
             policy_disposition="EXACT_REVIEWED_INAPPLICABILITY",

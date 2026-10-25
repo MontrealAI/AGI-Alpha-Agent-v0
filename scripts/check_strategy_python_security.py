@@ -102,7 +102,7 @@ FETCH_WALL_SECONDS = 30
 MATCHER_PATH = "scripts/semgrep_inapplicability.py"
 # The independently reviewed module, with only its approved-map literal set to
 # None. A map-pin edit never changes this code pin; other source edits do.
-MATCHER_CODE_SHA256 = "84b56bfb5531d736934765e9271a77097b20948200f385edbe1cdcaf71158c0f"
+MATCHER_CODE_SHA256 = "3a7d74fcd8bbb4db06ec018dbae81d16dcff9813b35d0dce922f4ce4aef18443"
 
 
 class CheckFailure(ValueError):

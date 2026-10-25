@@ -47,6 +47,18 @@ def position(body: bytes, offset: int) -> dict[str, int]:
     }
 
 
+def alternate_variant(captured: policy.CapturedInputs) -> policy.CapturedInputs:
+    prefix = b"# second exact development representation\n"
+    return replace(
+        captured,
+        official_pack=prefix + captured.official_pack,
+        rule_definitions=tuple(
+            replace(rule, start_byte=rule.start_byte + len(prefix), end_byte=rule.end_byte + len(prefix))
+            for rule in captured.rule_definitions
+        ),
+    )
+
+
 def fixture_case(
     root: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -73,6 +85,11 @@ def fixture_case(
     start, end = pack.index(b"id:"), pack.index(b"# unchanged footer")
     rule = policy.RuleDefinition("fixture-rule", start, end, policy._digest(pack[start:end]))
     captured = policy.capture_inputs(targets, pack, (rule,))
+    monkeypatch.setattr(
+        policy,
+        "REVIEWABLE_PACK_SHA256S",
+        (policy._digest(pack), policy._digest(alternate_variant(captured).official_pack)),
+    )
     first = body.index(b"hashlib.sha1")
     last = body.rindex(b")") + 1
     start_position, end_position = position(body, first), position(body, last)
@@ -105,22 +122,36 @@ def assess(
 def reviewed_fixture(
     root: Path, monkeypatch: pytest.MonkeyPatch, report: dict[str, Any], captured: policy.CapturedInputs
 ) -> dict[str, Any]:
+    alternate = alternate_variant(captured)
+    monkeypatch.setattr(
+        policy,
+        "REVIEWABLE_PACK_SHA256S",
+        (policy._digest(captured.official_pack), policy._digest(alternate.official_pack)),
+    )
     inactive = assess(report, captured)
     assert inactive["policy_disposition"] == "INACTIVE" and not inactive["policy_accepted"]
     value = {
-        "schema": "agialpha.semgrep-reviewed-inapplicability/v1",
+        "schema": "agialpha.semgrep-reviewed-inapplicability/v2",
         "semgrep_version": policy.SEMGREP_VERSION,
-        "official_pack_sha256": policy._digest(captured.official_pack),
         "target_paths_sha256": policy._digest(policy._canonical(sorted(captured.targets))),
         "repository_inventory_sha256": captured.repository.sha256,
-        "cases": [
-            {
-                "identity": inactive["finding_identities"][0],
-                "rationale": "Synthetic fixture only, not an actual applicability judgment",
-                "review_reference": "test-only; no production review or approval",
-            }
-        ],
+        "variants": [],
     }
+    for inputs in (captured, alternate):
+        own = assess(report, inputs)
+        assert own["policy_disposition"] == "INACTIVE"
+        value["variants"].append(
+            {
+                "official_pack_sha256": policy._digest(inputs.official_pack),
+                "cases": [
+                    {
+                        "identity": own["finding_identities"][0],
+                        "rationale": "Synthetic fixture only, not an actual applicability judgment",
+                        "review_reference": "test-only; no production review or approval",
+                    }
+                ],
+            }
+        )
     install_fixture(root, monkeypatch, value)
     return value
 
@@ -136,6 +167,10 @@ def install_fixture(root: Path, monkeypatch: pytest.MonkeyPatch, value: dict[str
 
 def test_production_has_only_the_two_fixed_reviewed_configuration_states(monkeypatch: pytest.MonkeyPatch) -> None:
     assert policy.MAP_PATH == "scripts/data/semgrep_python_inapplicability.json"
+    assert set(policy.REVIEWABLE_PACK_SHA256S) == {
+        "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+        "e3c25cf9b28ddfd3cb1b7f240d2fc0998734199efa539fa0b10281487a602e79",
+    }
     monkeypatch.setenv("SEMGREP_INAPPLICABILITY_MAP", "/unreviewed/alternate-map.json")
     monkeypatch.setenv("SEMGREP_APPROVED_MAP_SHA256", "0" * 64)
     if policy.APPROVED_MAP_SHA256 is None:
@@ -336,22 +371,23 @@ def test_exact_map_refuses_unknown_missing_changed_and_duplicate_cases(
 ) -> None:
     report, captured = fixture_case(tmp_path, monkeypatch)
     value = reviewed_fixture(tmp_path, monkeypatch, report, captured)
+    cases = value["variants"][0]["cases"]
     if change == "duplicate":
-        value["cases"] *= 2
+        cases *= 2
     elif change == "missing-case":
-        value["cases"] = []
+        cases.clear()
     elif change == "extra-case":
-        extra = deepcopy(value["cases"][0])
+        extra = deepcopy(cases[0])
         extra["identity"]["snippet_sha256"] = "0" * 64
-        value["cases"].append(extra)
+        cases.append(extra)
     elif change == "case-identity":
-        del value["cases"][0]["identity"]["snippet_sha256"]
+        del cases[0]["identity"]["snippet_sha256"]
     elif change == "rationale":
-        value["cases"][0]["rationale"] = ""
+        cases[0]["rationale"] = ""
     elif change == "pack":
-        value["official_pack_sha256"] = "0" * 64
+        value["variants"][0]["official_pack_sha256"] = "0" * 64
     elif change == "rule":
-        value["cases"][0]["identity"]["rule_definition_sha256"] = "0" * 64
+        cases[0]["identity"]["rule_definition_sha256"] = "0" * 64
     elif change == "scope":
         value["target_paths_sha256"] = "0" * 64
     elif change == "version":
@@ -683,3 +719,79 @@ def test_git_directory_environment_cannot_select_another_repository(
     monkeypatch.setenv("GIT_DIR", str(tmp_path / "missing-foreign-git"))
     monkeypatch.setenv("GIT_WORK_TREE", str(tmp_path / "missing-foreign-worktree"))
     assert policy.repository_inventory().records
+
+
+@pytest.mark.parametrize("variant", [0, 1])
+def test_each_exact_variant_selects_only_its_own_case_set(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, variant: int
+) -> None:
+    report, captured = fixture_case(tmp_path, monkeypatch)
+    value = reviewed_fixture(tmp_path, monkeypatch, report, captured)
+    selected = captured if variant == 0 else alternate_variant(captured)
+    result = assess(report, selected)
+    assert result["policy_accepted"] is True and result["raw_exit_code"] == 1
+    assert result["raw_finding_count"] == result["inapplicable_finding_count"] == 1
+    assert result["official_pack_sha256"] == value["variants"][variant]["official_pack_sha256"]
+
+
+@pytest.mark.parametrize(
+    "defect",
+    [
+        "duplicate",
+        "unknown",
+        "missing",
+        "extra",
+        "cross-cases",
+        "other-empty",
+        "other-duplicate",
+        "other-unknown-source",
+    ],
+)
+def test_variant_duplicates_unknowns_and_cross_pack_cases_are_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, defect: str
+) -> None:
+    report, captured = fixture_case(tmp_path, monkeypatch)
+    value = reviewed_fixture(tmp_path, monkeypatch, report, captured)
+    variants = value["variants"]
+    if defect == "duplicate":
+        variants[1] = deepcopy(variants[0])
+    elif defect == "unknown":
+        variants[1]["official_pack_sha256"] = "0" * 64
+    elif defect == "missing":
+        variants.pop()
+    elif defect == "extra":
+        variants.append(deepcopy(variants[0]))
+    elif defect == "cross-cases":
+        variants[0]["cases"], variants[1]["cases"] = variants[1]["cases"], variants[0]["cases"]
+    elif defect == "other-empty":
+        variants[1]["cases"] = []
+    elif defect == "other-duplicate":
+        variants[1]["cases"] *= 2
+    else:
+        variants[1]["cases"][0]["identity"]["source_path"] = "unknown.py"
+    install_fixture(tmp_path, monkeypatch, value)
+    result = assess(report, captured)
+    assert result["policy_accepted"] is False and result["raw_exit_code"] == 1
+
+
+@pytest.mark.parametrize("code", [0, 1])
+def test_unknown_actual_pack_cannot_succeed_even_with_a_clean_raw_report(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, code: int
+) -> None:
+    report, captured = fixture_case(tmp_path, monkeypatch)
+    unknown = replace(captured, official_pack=captured.official_pack + b"# unreviewed third representation\n")
+    if code == 0:
+        report["results"] = []
+    monkeypatch.setattr(policy, "_approved_map", lambda: pytest.fail("Unknown actual pack reached map matching"))
+    result = assess(report, unknown, code=code)
+    assert result["policy_disposition"] == "REFUSED" and not result["policy_accepted"]
+    assert result["raw_exit_code"] == code
+
+
+def test_variant_array_order_cannot_select_another_caseset(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    report, captured = fixture_case(tmp_path, monkeypatch)
+    value = reviewed_fixture(tmp_path, monkeypatch, report, captured)
+    value["variants"].reverse()
+    install_fixture(tmp_path, monkeypatch, value)
+    assert assess(report, captured)["policy_accepted"] is True
+    assert assess(report, alternate_variant(captured))["policy_accepted"] is True
