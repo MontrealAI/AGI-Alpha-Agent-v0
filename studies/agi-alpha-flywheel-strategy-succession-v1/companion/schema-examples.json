@@ -1,0 +1,194 @@
+{
+  "notes": "Development examples; no historical or confirmatory result.",
+  "plan": {
+    "task": {
+      "schema": "release-plan/v1",
+      "id": "example-plan",
+      "kind": "plan",
+      "jobs": [
+        {
+          "id": "J1",
+          "duration": 4,
+          "crew": 2,
+          "deps": []
+        },
+        {
+          "id": "J2",
+          "duration": 3,
+          "crew": 1,
+          "deps": []
+        },
+        {
+          "id": "J3",
+          "duration": 2,
+          "crew": 2,
+          "deps": [
+            "J1",
+            "J2"
+          ]
+        }
+      ],
+      "capacity": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "release": {},
+      "locked": {},
+      "deadline": 7,
+      "public_or_synthetic": "synthetic",
+      "planning_only": true
+    },
+    "result": {
+      "schema": "release-plan-result/v1",
+      "task_id": "example-plan",
+      "schedule": [
+        {
+          "id": "J1",
+          "start": 0,
+          "end": 4
+        },
+        {
+          "id": "J2",
+          "start": 0,
+          "end": 3
+        },
+        {
+          "id": "J3",
+          "start": 4,
+          "end": 6
+        }
+      ],
+      "makespan": 6,
+      "movement": 0,
+      "lower_bound": {
+        "value": 6,
+        "critical": 6,
+        "load": 5,
+        "locked": 0
+      },
+      "optimal_by_lower_bound": true,
+      "dispatch_order": [
+        "J1",
+        "J2",
+        "J3"
+      ],
+      "lookahead_steps": 0,
+      "proof": [],
+      "authority": []
+    }
+  },
+  "repair": {
+    "task": {
+      "schema": "release-plan/v1",
+      "id": "example-repair",
+      "kind": "repair",
+      "jobs": [
+        {
+          "id": "J1",
+          "duration": 4,
+          "crew": 2,
+          "deps": []
+        },
+        {
+          "id": "J2",
+          "duration": 3,
+          "crew": 1,
+          "deps": []
+        },
+        {
+          "id": "J3",
+          "duration": 2,
+          "crew": 2,
+          "deps": [
+            "J1",
+            "J2"
+          ]
+        }
+      ],
+      "capacity": [
+        3,
+        3,
+        3,
+        3,
+        1,
+        1,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "release": {
+        "J3": 4
+      },
+      "locked": {
+        "J1": 0,
+        "J2": 0
+      },
+      "deadline": 8,
+      "public_or_synthetic": "synthetic",
+      "planning_only": true,
+      "baseline": {
+        "J1": 0,
+        "J2": 0,
+        "J3": 4
+      },
+      "movement_limit": 2
+    },
+    "result": {
+      "schema": "release-plan-result/v1",
+      "task_id": "example-repair",
+      "schedule": [
+        {
+          "id": "J1",
+          "start": 0,
+          "end": 4
+        },
+        {
+          "id": "J2",
+          "start": 0,
+          "end": 3
+        },
+        {
+          "id": "J3",
+          "start": 6,
+          "end": 8
+        }
+      ],
+      "makespan": 8,
+      "movement": 2,
+      "lower_bound": {
+        "value": 7,
+        "critical": 6,
+        "load": 7,
+        "locked": 4
+      },
+      "optimal_by_lower_bound": false,
+      "dispatch_order": [
+        "J3"
+      ],
+      "lookahead_steps": 0,
+      "proof": [],
+      "authority": []
+    }
+  }
+}

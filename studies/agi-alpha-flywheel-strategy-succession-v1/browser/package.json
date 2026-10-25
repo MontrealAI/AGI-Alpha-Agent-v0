@@ -1,0 +1,15 @@
+{
+    "name": "agi-alpha-strategy-succession-browser-companion",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "license": "Apache-2.0",
+    "engines": {"node": ">=22.17.1 <25"},
+    "scripts": {
+        "build": "python3 build_demo.py",
+        "test:checker": "node checker.test.mjs",
+        "test:ui": "node qa_browser.mjs",
+        "test:stream": "node qa_stream.mjs"
+    },
+    "devDependencies": {"playwright": "1.62.1"}
+}

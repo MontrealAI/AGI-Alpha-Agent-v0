@@ -1,0 +1,162 @@
+{
+  "schema": "agi-alpha-independent-summary-audit/v1",
+  "status": "PASS",
+  "scope": "Post-run consistency checks of recorded diagnostic, native and exploratory window summaries; no new candidate execution.",
+  "scientific_source_hash": "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7",
+  "top_freeze_sha256": "6d0308707f3909fd18d086a950d237835dafd9ab6cfa9a559846715f46613827",
+  "audit_source_sha256": "54be79a6b25f478cf3408113de020015980e926ed48b24620a4d1f36b0bef7e4",
+  "input_hashes": {
+    "SUMMARY.json": "19c8ecb81dc6e3f0a15340489c5968533b42ad5b88908b411e73e0294daca0fa",
+    "trials.jsonl": "71cbbb36644c305baec2ec3a05e4e2d9531a55d539a4e32c8e1a2610b004e523",
+    "native-reference.jsonl": "ed30ea44788bd744733d6d7e93f676ea77047615b20d591b8d9dcf38fc10799d",
+    "NATIVE_REFERENCE.json": "902db4a1e93276c3dbf8aa25338d6bbc426d78f71fa62bee578fdf6b232b8f8c"
+  },
+  "windows_verified": 1008,
+  "diagnostic_verified": [
+    {
+      "treatment": "inherited",
+      "streams": 12,
+      "valid": 48,
+      "qualified": 36,
+      "mean_work": 888009.5,
+      "complete_three_stage_chains": 12,
+      "active_three_stage_chains": 12,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+      },
+      "dispatch_rollout_calls": 2411,
+      "lookahead_repair_decisions": 86,
+      "reconstruction_exact_recoveries": 0
+    },
+    {
+      "treatment": "removed",
+      "streams": 12,
+      "valid": 48,
+      "qualified": 37,
+      "mean_work": 225339.33333333334,
+      "complete_three_stage_chains": 0,
+      "active_three_stage_chains": 0,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 12
+      },
+      "dispatch_rollout_calls": 0,
+      "lookahead_repair_decisions": 0,
+      "reconstruction_exact_recoveries": 0
+    },
+    {
+      "treatment": "rebuild",
+      "streams": 12,
+      "valid": 48,
+      "qualified": 36,
+      "mean_work": 2239765.9166666665,
+      "complete_three_stage_chains": 12,
+      "active_three_stage_chains": 12,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 72
+      },
+      "dispatch_rollout_calls": 4464,
+      "lookahead_repair_decisions": 86,
+      "reconstruction_exact_recoveries": 36
+    },
+    {
+      "treatment": "equivalent",
+      "streams": 12,
+      "valid": 48,
+      "qualified": 36,
+      "mean_work": 889359.0833333334,
+      "complete_three_stage_chains": 12,
+      "active_three_stage_chains": 12,
+      "gates": {
+        "DIAGNOSTIC_CORRECTNESS_ONLY": 36
+      },
+      "dispatch_rollout_calls": 2411,
+      "lookahead_repair_decisions": 86,
+      "reconstruction_exact_recoveries": 0
+    }
+  ],
+  "diagnostic_pairs_verified": 36,
+  "diagnostic_pair_aggregates": {
+    "removed": {
+      "streams": 12,
+      "qualified_difference_total": 1,
+      "work_difference_mean": -662670.1666666666,
+      "same_fresh_schedules_streams": 4
+    },
+    "rebuild": {
+      "streams": 12,
+      "qualified_difference_total": 0,
+      "work_difference_mean": 1351756.4166666667,
+      "same_fresh_schedules_streams": 12
+    },
+    "equivalent": {
+      "streams": 12,
+      "qualified_difference_total": 0,
+      "work_difference_mean": 1349.5833333333333,
+      "same_fresh_schedules_streams": 12
+    }
+  },
+  "native_verified": [
+    {
+      "mode": "deadline",
+      "tasks": 36,
+      "valid": 31,
+      "qualified": 31,
+      "practical_workflow_valid": 36,
+      "practical_workflow_qualified": 31,
+      "mean_end_to_end_ms": 278.1100875833363,
+      "mean_practical_workflow_ms": 298.24048505555,
+      "mean_solver_reported_ms": 273.27604572140746,
+      "timeouts_or_limits": 1,
+      "reported_status_counts": {
+        "0": 31,
+        "2": 4,
+        "1": 1
+      },
+      "objective_targets_makespan": false,
+      "comparison_work_units": null
+    },
+    {
+      "mode": "makespan",
+      "tasks": 36,
+      "valid": 36,
+      "qualified": 31,
+      "practical_workflow_valid": 36,
+      "practical_workflow_qualified": 31,
+      "mean_end_to_end_ms": 1021.7762339722054,
+      "mean_practical_workflow_ms": 1021.7781076944278,
+      "mean_solver_reported_ms": 997.4056063605935,
+      "timeouts_or_limits": 7,
+      "reported_status_counts": {
+        "1": 7,
+        "0": 29
+      },
+      "objective_targets_makespan": true,
+      "comparison_work_units": null
+    }
+  ],
+  "exploratory_rate": {
+    "first_to_last_decline_streams": {
+      "flywheel": 11,
+      "portfolio": 12
+    },
+    "mean_window_rates": {
+      "flywheel": [
+        4.98812168352436,
+        4.297993198604084,
+        3.579695077244086
+      ],
+      "portfolio": [
+        7.121220636252354,
+        4.71042508863592,
+        3.8352663149454425
+      ]
+    },
+    "difference_in_changes_mean": 1.8775277150266374,
+    "percentile_95_interval": [
+      1.5752340345480087,
+      2.1642119546875755
+    ],
+    "interpretation": "Relative difference in rate changes is not absolute acceleration; no primary flywheel asset was retained. This does not establish self-acceleration."
+  },
+  "independence": "Separate stdlib implementation; no producer module imports. Same project commission, author environment and retained data; not an external laboratory replication. Timings are consistency-checked observations, not rerun timing benchmarks."
+}

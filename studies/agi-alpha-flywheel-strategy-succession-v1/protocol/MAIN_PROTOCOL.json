@@ -1,0 +1,171 @@
+{
+  "schema": "agi-alpha-strategy-study/v1",
+  "status": "PROSPECTIVE_SOURCE_REQUIRES_ROOT_FREEZE",
+  "title": "Strategy as a productive asset: selective constructive succession",
+  "historical_status": "New experiment; historical Strategy Laboratory numbers are not recreated as reproduction.",
+  "primary": {
+    "independent_streams": 12,
+    "missions_per_stream": 72,
+    "windows": 3,
+    "missions_per_window": 24,
+    "scope_counts_per_window": {
+      "ordinary": 8,
+      "tight": 8,
+      "repair": 8
+    },
+    "stream_seed_start": 1000001,
+    "stream_seed_step": 100000,
+    "work_budget": 1000000,
+    "sensitivity_budgets": [
+      250000,
+      2000000
+    ],
+    "per_output_pipeline_allocation": 100000,
+    "acquisition_stage_cap": 500000,
+    "qualification_per_output_pipeline_allocation": 50000,
+    "training_per_stage": 6,
+    "fresh_qualification_per_stage": 4,
+    "construction_after_completed_missions": [
+      1,
+      25,
+      49
+    ],
+    "wall_limit_ms": 120000,
+    "checker_ipc_limit_ms": 2000,
+    "primary_endpoint": "Number of independently valid, deadline-qualified outputs among ALL72 offered missions, including the first founder mission, completed within the cumulative counted-work budget; stopped streams and all attributable acquisition/validation/control/storage charges remain included.",
+    "primary_comparison": "flywheel minus workflow, paired by independent stream at 1000000 units",
+    "arms": [
+      "portfolio",
+      "workflow",
+      "learner",
+      "flywheel",
+      "no_discovery",
+      "no_admission",
+      "no_retention",
+      "no_succession"
+    ],
+    "random_search": "Not a separate confirmatory arm. Historical random-search controls are audited separately.",
+    "analysis": "Paired percentile bootstrap over 12 complete streams, 10000 resamples, seed20261024; no per-task IID confidence interval. One primary contrast; other arms and budgets descriptive. Report all stops and no exclusions after launch."
+  },
+  "task_distribution": {
+    "ordinary_jobs": [
+      10,
+      12
+    ],
+    "tight_and_repair_jobs": 14,
+    "capacity_choices": [
+      2,
+      3,
+      4
+    ],
+    "duration_range": [
+      1,
+      9
+    ],
+    "crew_range": "1..min(3, capacity)",
+    "dag_edge_probability_by_seed_parity": [
+      0.05,
+      0.12
+    ],
+    "horizon": 128,
+    "ordinary_slack_percent": [
+      120,
+      135
+    ],
+    "tight_slack_percent": [
+      100,
+      108
+    ],
+    "repair_slack_percent": [
+      108,
+      120
+    ],
+    "deadline_rule": "ceil(registered structural lower bound * independently drawn prespecified slack/100), clipped to horizon; never selected from candidate outputs",
+    "repair_rule": "Synthetic baseline supplied by the same conventional portfolio before disruption; lock jobs starting before floor(0.3*baseline makespan); release remaining jobs at that cut; reduce future capacity for5..9 slots without violating locked usage.",
+    "movement": "Primary movement is descriptive. No primary movement_limit is imposed. Optional browser movement limits and targeted checker tests are separate.",
+    "materials": "Each stream configuration is materialized once and reused byte-for-byte across arms and budgets. Baseline construction work and generation wall/CPU are measured once as common WORLD-input construction, outside conditional mission-work endpoint.",
+    "exposure_check": "Before any primary execution, assert global seed/scope AND semantic task digest disjointness across public development/demo/load, all training, all qualification and all confirmation streams. Comparator reuse is intentional pairing."
+  },
+  "selection_and_admission": {
+    "candidate_order": "Qualified training outputs descending, full counted pipeline work ascending, then makespan ascending, then fixed menu index.",
+    "dispatch_menu_size": 8,
+    "lookahead_menu_size": 6,
+    "repair_menu_size": 3,
+    "candidate_freeze": "One exact selected AST digest is computed before fresh qualification inputs are passed to the executor.",
+    "validation_parity": "All delivered direct-strategy and portfolio results receive the same separate final checker. Discarded portfolio schedules are speculative computations, not independently accepted outputs.",
+    "qualification_fairness": "Pre-reserve equal total pipeline budgets for each candidate/reference pair; alternate order by task ordinal; disclose allocated_total_budget and actual solver budget. If either cannot receive its registered allocation, defer admission. Legitimate inability within a fully funded allocation remains failure.",
+    "correctness_gate": "Every candidate qualification result is independently valid and untruncated; comparator allocations complete. Scope/authority controls are not candidate parameters.",
+    "benefit_gate": "Compare projected qualified coverage within remaining budget and remaining same-scope mission count after acquisition; ties require positive full-cost savings. No hypothetical extra demand. Report break-even and forecast assumptions.",
+    "bounded_discovery": "One search per registered stage; reserve fresh checks before exploration; no unconditional repeated corpus rescanning. Partial searches/candidates and all costs retained. Stop/defer/incumbent are valid decisions.",
+    "retention": "At most3 active assets, current source binding, paid lookup/maintenance, provenance, no inherited active proof or authority.",
+    "conventional_learner": "Exactly the same closed strategy-learning mechanism; outer experimental label only. Any equal result is an expected conventional equivalence, not evidence of AGI uniqueness.",
+    "search_schedule": "Fixed training-only successive halving: expose every surviving method to the same next training task, retain the best ceil(n/2) valid methods after each complete round, then finish the last method through all6 tasks. Eight dispatch methods therefore require at most17 evaluations. Partial budget-stopped rounds never decide elimination; no incomplete candidate may qualify. All eliminated candidates and full costs retained.",
+    "dispatch_menu_order": [
+      "critical-path",
+      "critical-work-short",
+      "critical-long",
+      "descendant-work",
+      "shortest-first",
+      "critical-short",
+      "critical-resource",
+      "longest-first"
+    ]
+  },
+  "diagnostic": {
+    "independent_streams": 12,
+    "stream_seed_start": 5000001,
+    "stream_seed_step": 100000,
+    "missions": [
+      "founder ordinary",
+      "fresh ordinary",
+      "fresh tighter plan",
+      "fresh disruption repair"
+    ],
+    "construction_after_completed_missions": [
+      1,
+      2,
+      3
+    ],
+    "total_work_cap": 5000000,
+    "stage_work_cap": 1500000,
+    "qualification_per_output_allocation": 100000,
+    "variants": [
+      "inherited",
+      "removed",
+      "rebuild",
+      "equivalent"
+    ],
+    "meaning": "Correctness-only retention may force an economically held child for mechanism testing. It is never counted as economic promotion. Remove usable ancestry; reconstruct from the same registered data/search/current checks; replace with a semantically equivalent normalized recipe. Compare concrete fresh schedules, exact identity recovery, construction costs and actual inherited policy-call counters.",
+    "limits": "A structural dependency/refusal alone does not establish performance benefit. Finite closed grammar selection and method composition do not establish an expanded formulation ceiling or general intelligence."
+  },
+  "native_specialist": {
+    "implementation": "SciPy1.17.0 scipy.optimize.milp with bundled HiGHS; time-indexed binary start variables, precedence, per-period crew capacity, releases/locks and optional movement constraints",
+    "subset": "First ordinary, tight and repair confirmation task from each of12 streams:36 fixed tasks, chosen before results",
+    "modes": [
+      "deadline",
+      "makespan"
+    ],
+    "solve_time_limit_seconds": 2,
+    "process_response_limit_seconds": 10,
+    "deadline_mode": "Objective0, horizon constrained by requested deadline. Solver optimal status proves feasibility of this model only, never optimal makespan.",
+    "makespan_mode": "Minimize makespan with subordinate bounded movement tie-breaker on repair. Supply a freshly computed independently checked portfolio upper bound and include its actual work/time separately.",
+    "report": "Preserve infeasible outcomes, timeouts, incumbent gaps, model build, solver, independent check, process startup and end-to-end wall/CPU. Opaque native internals are not converted into JavaScript work units or claimed to receive equal total computation.",
+    "fallback": "Also report the practical portfolio-plus-MILP workflow: preserve its independently checked portfolio result when the native solver times out or cannot improve it. Report solver-only outcomes separately, and include portfolio preparation in combined workflow end-to-end cost."
+  },
+  "accounting_and_claims": {
+    "work_model": "Named deterministic interpreter/graph/calendar operations, independent checker reference operations, validation/envelope64-byte blocks, raw evidence/checkpoint blocks, lookup, maintenance, decision, retry and recovery charges. Counts are not processor instructions, elapsed time or money. Serialized timing telemetry values are normalized to fixed fields for accounting, preventing wall-time number formatting from changing deterministic units; actual physical storage bytes and wall/CPU remain separately measured.",
+    "sort": "Explicit metered deterministic insertion sort, replacing tier-dependent native Array.sort comparison counts before freeze.",
+    "human_work": "One commissioning brief and assistant authoring/setup/debugging are separately acknowledged with unknown unpriced durations/costs. Every stream start/STOP/restart/approval event is recorded. No all-in economic profit claim.",
+    "useful_reuse": "Accepted inherited method executes or constructs/qualifies a distinct later method on fresh work with traceable calls and current checks.",
+    "amortized_productivity": "More qualified outputs under a fixed full attributable counted-work cap, or the same outputs at lower cumulative charged cost, within this supplied-input experiment.",
+    "capability_expansion": "Only newly qualified tasks under declared budgets; no claim of escaping the original closed policy language.",
+    "growth_rate": "Exploratory equal-window qualified outputs per total charged unit, with balanced scope mixture and baseline comparison. No saved-work reinvestment mechanism is implemented; no self-acceleration guarantee or commercial growth claim.",
+    "exclusions": "None after confirmation starts. Crashes, exhausted budgets, rejected candidates, unqualified feasible results and timeouts are retained. Unknown costs remain unknown."
+  },
+  "custody": {
+    "source": "Released AGI ALPHA1.42.0 createWorkbench adapter seam, commitc352bad0a0941fdccd490a7224e3efd1b8de45d5; unchanged vendored closure",
+    "checker": "Separate Python implementation in review/check.py, independently authored within the same project and machine; bound in top-level freeze and checked before execution",
+    "freeze": "Root must create and verify protocol/STUDY_FREEZE.json, preserve durable unexecuted package and authorize one confirmation launch. Companion source manifest must be FROZEN_RESEARCH_SOURCE and unchanged.",
+    "authority": "Unsigned local research receipts only. WORLD/POLICY/PROOF/AUTHORITY remain separate; no native installed runtime initialization, live providers, external outreach, financial transactions or production self-modification."
+  }
+}

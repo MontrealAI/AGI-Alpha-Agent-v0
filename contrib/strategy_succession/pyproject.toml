@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools==84.1.0", "wheel==0.48.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agi-alpha-strategy-succession-engineering"
+version = "0.1.0rc1"
+description = "Bounded local Strategy Succession engineering candidate over the qualified Alpha 1.42 runtime"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "Apache-2.0"
+license-files = ["LICENSE", "notices/AGIJobs-MIT-LICENSE.txt", "worker/LICENSE"]
+dependencies = [
+  "alpha-factory-v1==1.42.0",
+  "annotated-doc==0.0.5",
+  "annotated-types==0.8.0",
+  "anyio==4.15.1",
+  "certifi==2026.10.19",
+  "cffi==2.1.1",
+  "click==8.5.0",
+  "cryptography==50.0.1",
+  "fastapi==0.141.1",
+  "h11==0.16.0",
+  "httpcore==1.0.9",
+  "httpx==0.28.1",
+  "idna==3.20",
+  "numpy==2.4.6",
+  "prometheus-client==0.26.0",
+  "pycparser==3.0",
+  "pydantic==2.13.5",
+  "pydantic-core==2.46.5",
+  "pydantic-settings==2.15.0",
+  "python-dotenv==1.2.3",
+  "pyyaml==6.0.3",
+  "scipy==1.17.0",
+  "starlette==1.7.0",
+  "typing-extensions==4.16.0",
+  "typing-inspection==0.4.4",
+  "uvicorn==0.53.0",
+]
+
+[project.scripts]
+strategy-succession-engineering = "strategy_succession_engineering.serve:main"
+
+[tool.setuptools]
+packages = ["strategy_succession_engineering"]
+package-dir = {strategy_succession_engineering = "."}
+include-package-data = false
+
+[tool.setuptools.package-data]
+strategy_succession_engineering = [
+  "ENGINEERING_MANIFEST.json",
+  "LICENSE",
+  "README.md",
+  "docs/operator.md",
+  "notices/AGIJobs-MIT-LICENSE.txt",
+  "requirements-qualification.txt",
+  "transport/TRANSPORT.md",
+  "transport/static/strategy.css",
+  "transport/static/strategy.html",
+  "transport/static/strategy.js",
+  "transport/strategy_executor.py",
+  "worker/LICENSE",
+  "worker/README.md",
+  "worker/SCIENTIFIC_PROVENANCE.json",
+  "worker/SOURCE_FILES.json",
+  "worker/fixed_worker.mjs",
+  "worker/fixed_worker.py",
+  "worker/native_repair.py",
+  "worker/python_bridge.py",
+  "worker/scientific/companion/adapter.mjs",
+  "worker/scientific/companion/binding.mjs",
+  "worker/scientific/companion/core.mjs",
+  "worker/scientific/companion/learning.mjs",
+  "worker/scientific/companion/specialist.py",
+  "worker/scientific/companion/vendor/docs/assets/successor/engine.mjs",
+  "worker/scientific/companion/vendor/docs/assets/transformational-intelligence/source-understanding.mjs",
+  "worker/scientific/companion/vendor/examples/build-successor/model.mjs",
+  "worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/compiler.mjs",
+  "worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/domain.mjs",
+  "worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/integrity.mjs",
+  "worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/templates.mjs",
+  "worker/scientific/companion/vendor/examples/successor-workbench/engine.mjs",
+  "worker/scientific/review/check.py",
+]

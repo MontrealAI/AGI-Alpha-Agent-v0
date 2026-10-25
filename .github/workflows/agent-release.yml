@@ -1118,9 +1118,14 @@ jobs:
     needs: [paper-scope, publication-preflight]
     uses: ./.github/workflows/successor-capability.yml
 
+  strategy-engineering:
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
+    needs: [paper-scope, publication-preflight]
+    uses: ./.github/workflows/strategy-succession-engineering.yml
+
   package:
     if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}
-    needs: [paper-scope, mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey, transformational-intelligence, successor-capability]
+    needs: [paper-scope, mark-wallet, runtime, regression, browser-contracts, real-model, gallery, native-demos, sovereign-lab, finance-lab, muzero-lab, demo-distribution, quality, historical-ci, dependency-audit, successor-workbench, successor-journey, transformational-intelligence, successor-capability, strategy-engineering]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -1147,7 +1152,7 @@ jobs:
           digest-mismatch: error
       - name: Build, verify and package the exact tested commit
         run: |
-          python -m pip install setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1 twine==6.1.0
+          python -m pip install setuptools==80.9.0 wheel==0.45.1 build==1.2.2.post1 twine==6.1.0 cryptography==50.0.1
           python -m scripts.package_agent_release --output release --evidence evidence
           python scripts/install_agent.py --release-dir release --check-only --venv "$RUNNER_TEMP/release-preflight"
           python scripts/install_agent.py --release-dir release --venv "$RUNNER_TEMP/release-install"
@@ -1294,3 +1299,44 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python -m scripts.publish_agent_release
+
+  public-strategy-install:
+    needs: [paper-scope, publish]
+    if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' && github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.12.14'
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24.22.1'
+      - name: Install only the existing release-verifier dependencies
+        env:
+          PIP_NO_CACHE_DIR: '1'
+        run: python -m pip install cryptography==50.0.1 packaging==25.0
+      - name: Exercise the actual public core and separate Strategy installation
+        env:
+          PYTHONNOUSERSITE: '1'
+          PIP_NO_CACHE_DIR: '1'
+        run: |
+          python -m scripts.accept_public_strategy \
+            --commit "$GITHUB_SHA" \
+            --root "$RUNNER_TEMP/strategy-public-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
+            --evidence "$GITHUB_WORKSPACE/evidence/strategy-public-installed"
+      - name: Preserve sanitized public installation outcomes, including failures
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: strategy-public-installed-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/strategy-public-installed/
+          if-no-files-found: error
+          retention-days: 30

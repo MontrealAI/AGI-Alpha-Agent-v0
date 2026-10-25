@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="A bounded release planner that checks its work and shows what the next mission inherits.">
+    <title>AGI ALPHA FLYWHEEL · Plan the work. Keep what helps.</title>
+    <style>__STYLES__</style>
+</head>
+<body>
+    <a class="skip-link" href="#workspace">Skip to the planner</a>
+    <header class="site-header">
+        <div class="wrap masthead">
+            <a href="#workspace" class="brand" aria-label="AGI Alpha Flywheel home">
+                <span class="omega" aria-hidden="true">Ω</span>
+                <span><b>AGI ALPHA</b><small>F L Y W H E E L</small></span>
+            </a>
+            <span class="mast-note">SUCCESSOR Ω HARNESS <i></i> ACTIVATE. EVOLVE. SCALE.</span>
+            <span class="local-badge"><span aria-hidden="true"></span> Local computation</span>
+        </div>
+        <section class="hero wrap" aria-labelledby="headline">
+            <div>
+                <p class="eyebrow">FROM COMPLETED WORK TO COMPOUNDING CAPABILITY</p>
+                <h1 id="headline">Plan the work.<br><em>Keep what helps.</em></h1>
+                <p class="hero-copy">Turn a constrained release into a checked schedule.<br class="desktop-only"> Then see what a better method can do for the next mission.</p>
+            </div>
+            <div class="hero-figure" aria-label="Mission, method and successor form a measured loop">
+                <svg viewBox="0 0 380 178" role="img" aria-label="A mission can leave a reusable method, subject to fresh checks">
+                    <defs><linearGradient id="loop-gradient"><stop stop-color="#ceb7ff"/><stop offset="1" stop-color="#8fd8cc"/></linearGradient></defs>
+                    <path d="M190 88C144 12 60 8 52 75C43 153 141 154 190 88C239 22 337 23 328 101C320 168 236 164 190 88Z" fill="none" stroke="url(#loop-gradient)" stroke-width="1.6"/>
+                    <path d="M190 88C144 12 60 8 52 75C43 153 141 154 190 88C239 22 337 23 328 101C320 168 236 164 190 88Z" fill="none" stroke="#baa2f5" stroke-width="15" opacity=".06"/>
+                    <g fill="#131127" stroke="#6c5688"><rect x="8" y="59" width="116" height="49" rx="12"/><rect x="132" y="64" width="116" height="49" rx="12"/><rect x="256" y="69" width="116" height="49" rx="12"/></g>
+                    <g fill="#f4f0fc" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12"><text x="66" y="80">Useful mission</text><text x="190" y="85">Tested method</text><text x="314" y="90">Next capability</text></g>
+                    <g fill="#bfb0d3" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9"><text x="66" y="97">PLAN + CHECK</text><text x="190" y="102">RETAIN SELECTIVELY</text><text x="314" y="107">EARN FRESH EVIDENCE</text></g>
+                    <text x="190" y="164" text-anchor="middle" fill="#dec493" font-family="system-ui, sans-serif" font-size="9" letter-spacing="1.5">EVERY ARROW NEEDS EVIDENCE</text>
+                </svg>
+            </div>
+        </section>
+        <div class="wrap tabs" role="tablist" aria-label="Companion sections">
+            <button id="tab-plan" role="tab" aria-selected="true" aria-controls="panel-plan" data-panel="plan">01 <span>Plan a mission</span></button>
+            <button id="tab-stream" role="tab" aria-selected="false" aria-controls="panel-stream" data-panel="stream" tabindex="-1">02 <span>Build the next</span></button>
+            <button id="tab-evidence" role="tab" aria-selected="false" aria-controls="panel-evidence" data-panel="evidence" tabindex="-1">03 <span>Inspect evidence</span></button>
+            <button id="tab-guide" role="tab" aria-selected="false" aria-controls="panel-guide" data-panel="guide" tabindex="-1"><span>How it works</span></button>
+        </div>
+    </header>
+
+    <main id="workspace" class="wrap main" tabindex="-1">
+        <div id="app-status" class="notice" role="status" aria-live="polite" hidden></div>
+        <noscript><p class="notice error">Enable JavaScript to compute a fresh plan. The source and research evidence remain available in the companion archive.</p></noscript>
+
+        <section id="panel-plan" role="tabpanel" aria-labelledby="tab-plan">
+            <div class="section-lead"><p><span class="live-tag">FRESH COMPUTATION</span> A useful first mission. No account, wallet or API key.</p><span class="fine">Synthetic example · Editable inputs</span></div>
+            <div class="workspace-grid">
+                <section class="card mission-card" aria-labelledby="mission-heading">
+                    <div class="card-heading"><div><p class="eyebrow light">YOUR MISSION</p><h2 id="mission-heading">Ship a reliable release</h2></div><span class="tiny-tag">PLANNING ONLY</span></div>
+                    <p class="muted compact">Schedule the work without overbooking your team. Tasks can start after their dependencies finish.</p>
+                    <form id="mission-form">
+                        <div class="input-grid">
+                            <label>Available workers<input id="workers" type="number" min="1" max="4" step="1" value="3" required></label>
+                            <label>Target finish <span class="unit">hours</span><input id="deadline" type="number" min="1" max="128" step="1" value="28" required></label>
+                        </div>
+                        <div class="table-scroll"><table class="job-table"><caption class="sr-only">Editable release tasks</caption><thead><tr><th scope="col">Task</th><th scope="col">Hours</th><th scope="col">Workers</th><th scope="col">After</th></tr></thead><tbody id="job-inputs"></tbody></table></div>
+                        <div class="table-footer"><button type="button" id="add-job" class="text-button">+ Add a task</button><button type="button" id="reset-example" class="text-button">Reset example</button></div>
+                        <details id="advanced-input" class="input-detail"><summary>Use a JSON mission or a changing worker calendar</summary><p class="fine muted">Public or synthetic, nonpersonal planning inputs only. At most 18 tasks, 128 hours and 4 workers. A plan does not execute your release.</p><label class="sr-only" for="mission-json">Mission JSON</label><textarea id="mission-json" rows="9" spellcheck="false"></textarea><button type="button" id="apply-json" class="secondary small">Apply JSON</button></details>
+                        <button id="plan-button" type="submit" class="primary full">Plan this mission <span aria-hidden="true">↗</span></button>
+                        <p class="fine centered muted">Five conventional priority methods are available.<br>The portfolio stops when a checked target is met.</p>
+                    </form>
+                </section>
+
+                <section class="card result-card" aria-labelledby="result-heading" aria-live="polite">
+                    <div class="card-heading"><div><p class="eyebrow light">YOUR CHECKED RESULT</p><h2 id="result-heading">A plan you can inspect</h2></div><span id="result-badge" class="tiny-tag">READY</span></div>
+                    <div id="empty-result" class="empty-result">
+                        <div class="empty-mark" aria-hidden="true">Ω</div>
+                        <h3>Good work starts with a clear plan.</h3>
+                        <p>Choose your constraints and select <strong>Plan this mission</strong>.<br>The schedule will be computed here, then checked again.</p>
+                        <div class="empty-promises"><span>Dependencies</span><span>Worker limits</span><span>Full task coverage</span></div>
+                        <p class="fine muted">No result has been computed yet.</p>
+                    </div>
+                    <div id="plan-result" hidden>
+                        <div id="result-verdict" class="result-verdict"></div>
+                        <div class="metrics"><div><small>FINISH</small><b id="metric-finish">—</b></div><div><small>TO TARGET</small><b id="metric-margin">—</b></div><div><small>CHECKED TASKS</small><b id="metric-tasks">—</b></div></div>
+                        <div class="chart-heading"><h3>Release schedule</h3><span class="fine muted">Hours from start</span></div>
+                        <div id="gantt" class="gantt" role="img" aria-label="Computed release schedule"></div>
+                        <details class="data-detail"><summary>Read the schedule as a table</summary><div class="table-scroll"><table class="plain-table"><thead><tr><th>Task</th><th>Start</th><th>Finish</th><th>Workers</th></tr></thead><tbody id="schedule-table"></tbody></table></div></details>
+                        <p id="verification-note" class="verification-note"></p>
+                        <div class="result-actions"><button id="download-plan" class="secondary">Download plan <span aria-hidden="true">↓</span></button><button id="download-csv" class="text-button">CSV schedule</button><button id="next-missions" class="text-button">Explore the next mission →</button></div>
+                        <details class="evidence-detail"><summary>Costs, methods and verification</summary><div id="plan-costs"></div><div id="method-comparison"></div><p class="fine muted">The separate browser checker verifies feasibility, current inputs and reported bounds. It shares project authorship and local custody. Institutional proof and production authority remain empty.</p><button id="download-receipt" class="text-button">Download complete workbench receipt ↓</button></details>
+                    </div>
+                </section>
+            </div>
+            <div class="bottom-note"><span class="spark" aria-hidden="true">✧</span><p><strong>The result is the starting point.</strong> A mission may also leave a useful method. The next section tests whether retaining one is worth its cost.</p></div>
+        </section>
+
+        <section id="panel-stream" role="tabpanel" aria-labelledby="tab-stream" hidden>
+            <div class="section-lead"><p><span class="live-tag">BOUNDED LOCAL RUN</span> One start. Six missions. Three changed requirements.</p></div>
+            <section class="card stream-intro">
+                <div><p class="eyebrow light">MAKE STRATEGY A PRODUCTIVE ASSET</p><h2>A method can be the inheritance.</h2><p class="muted">Plan a release, explore a bounded improvement, then meet a changed requirement. Each candidate faces a correctness check and a cost decision. Keeping the incumbent is a valid result.</p></div>
+                <div class="stream-actions"><button id="stream-start" class="primary">Start six missions <span aria-hidden="true">↗</span></button><div><button id="stream-stop" class="stop-button" disabled>STOP</button><button id="stream-resume" class="secondary small" disabled>Resume saved run</button></div><button id="stream-diagnostic" class="text-button">Inspect construction chain</button><p class="fine muted" id="stream-lifetime">Runs only while this page is open. This is not a background service.</p></div>
+            </section>
+            <p id="diagnostic-notice" class="diagnostic-notice" hidden><strong>Construction laboratory.</strong> This separate mode can retain a correct method to reveal how a child is built. The full-cost economic gate is still shown; laboratory retention is not an economic promotion.</p>
+            <div class="stream-status"><span id="stream-state" class="state-pill">NOT STARTED</span><span id="stream-progress">Finite mission stream · Fresh computation</span><span id="stream-budget" class="fine muted"></span></div>
+            <div id="mission-cards" class="mission-cards"></div>
+            <section class="card lineage-card"><div class="card-heading"><div><p class="eyebrow light">WHAT ACTUALLY TRANSFERS</p><h2>Keep the method. Re-earn the result.</h2></div><span class="tiny-tag">NO INHERITED AUTHORITY</span></div><div id="lineage" class="lineage"></div><p class="fine muted">Historical evidence and permitted program structure may transfer. A descendant receives no automatic current proof or production authority.</p></section>
+            <div class="stream-detail-grid"><section class="card"><h3>Decisions and full counted cost</h3><div id="stream-costs" class="stream-costs"><p class="muted">The actual run will report work, checking, construction and admission decisions.</p></div><div class="result-actions"><button id="download-stream" class="secondary small" disabled>Download run evidence ↓</button><button id="clear-stream" class="text-button">Clear local history</button></div><p id="storage-note" class="fine muted">Progress is stored on this browser when storage is available. Downloads provide a separate copy.</p></section><section class="card"><h3>Mission log</h3><ol id="event-log" class="event-log"><li>Waiting for one explicit start.</li></ol></section></div>
+        </section>
+
+        <section id="panel-evidence" role="tabpanel" aria-labelledby="tab-evidence" hidden>
+            <div class="section-lead"><p><span class="recorded-tag">RECORDED RESEARCH</span> Inspect the study evidence. Separate from your live plans.</p></div>
+            <section class="card"><div class="card-heading"><div><p class="eyebrow light">THE QUESTION THAT MATTERS</p><h2>Did the retained method pay for itself?</h2></div></div><div id="research-summary"><p class="muted">Confirmatory results are not embedded in this development build. No growth claim is inferred from the live demonstration.</p></div></section>
+            <div class="evidence-grid"><section class="card"><h3>Two gates, two questions</h3><div class="gate-row"><span>01</span><div><b>Correct and applicable?</b><p class="muted">Does the exact method satisfy the present task, capacity and dependency rules?</p></div></div><div class="gate-row"><span>02</span><div><b>Worth retaining?</b><p class="muted">Does its fresh benefit cover discovery, failed proposals, checking, retrieval and maintenance?</p></div></div></section><section class="card"><h3>What each mode establishes</h3><dl class="mode-list"><dt>Live browser</dt><dd>New JavaScript plans and separately implemented feasibility checks on your current inputs.</dd><dt>Recorded research</dt><dd>The frozen campaign, comparators, uncertainty and causal removal/replacement tests.</dd><dt>Python specialist</dt><dd>A separate, explicitly started research process for strict optimization and a stronger independent check.</dd></dl></section></div>
+            <section class="card"><details open><summary>Inspect the evidence and source identities</summary><div id="evidence-downloads" class="download-grid"></div><p class="fine muted">Hashes bind bytes. They are not an independent signature, scientific approval or permission to act.</p><p class="hash" id="bundle-hash"></p></details></section>
+        </section>
+
+        <section id="panel-guide" role="tabpanel" aria-labelledby="tab-guide" hidden>
+            <div class="section-lead"><p>Useful work first. Measured improvement next.</p></div>
+            <div class="guide-grid"><section class="card"><p class="eyebrow light">A THREE-MINUTE JOURNEY</p><h2>From a plan to a better way to plan.</h2><ol class="guide-steps"><li><b>Set the mission.</b><span>Enter tasks, durations, worker needs and dependencies. Pick a target finish.</span></li><li><b>Get a checked result.</b><span>Inspect the schedule, missed constraints, costs and downloadable evidence.</span></li><li><b>Run the next missions.</b><span>Watch what is constructed, reused, refused or deferred when requirements change.</span></li><li><b>Ask what caused the benefit.</b><span>Compare against strong specialists and saved workflows in the recorded research.</span></li></ol></section><section class="card"><h3>Where the agent runs</h3><p class="muted">This file computes in your browser. Closing the tab stops computation. Saved local history does not keep an agent running. On reopening, inspect the retained state and explicitly resume an interrupted run.</p><p class="muted">The full research companion provides a separate local command for the frozen experiment and Python specialist. It runs only while that process is active. See the reproduction guide in the archive.</p><h3>Clear boundaries</h3><p class="muted">Synthetic or public nonpersonal planning data only. This planner does not dispatch workers, send messages, place orders, modify production systems or make financial transactions.</p><p class="muted">The workbench produces unfunded draft jobs. Applicable $AGIALPHA funding and settlement require separate commissioning; Manager’s USDC path remains distinct.</p><a class="text-link" href="https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850" target="_blank" rel="noopener noreferrer">Source and owner coordination ↗</a></section></div>
+        </section>
+    </main>
+    <footer class="site-footer wrap"><div><b>FIND YOUR ALPHA. BUILD YOUR SUCCESSOR Ω.</b><p>Powered by TRANSFORMATIONAL INTELLIGENCE ∞.</p></div><p>Finite local research · Fresh checks · Selective inheritance<br>Release workbench v1.42.0 · No live settlement</p></footer>
+    <script type="application/json" id="bundle-data">__BUNDLE_DATA__</script>
+    <script type="application/json" id="bundle-modules">__BUNDLE_MODULES__</script>
+    <script type="module">__BOOTSTRAP__</script>
+</body>
+</html>

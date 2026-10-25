@@ -9,7 +9,7 @@
 <a id="current-runnable-path-1360"></a>
 
 <!-- CURRENT-DEMO:START -->
-## Current runnable path — 1.43.0
+## Current runnable path — 1.44.0
 
 **Mode:** Synthetic evaluation. Runs provider-driven code proposals, synthetic fitness and SQLite lineage.
 

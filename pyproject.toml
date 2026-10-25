@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "alpha-factory-v1"
-version = "1.43.0"
+version = "1.44.0"
 description = "AGIALPHA Agent: evidence-driven missions, evolutionary optimization and operator controls"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
@@ -113,6 +113,22 @@ exclude = [
 
 [tool.ruff.lint]
 extend-ignore = ["E402", "F401", "E401"]
+
+[tool.ruff.lint.per-file-ignores]
+"contrib/strategy_succession/worker/scientific/companion/specialist.py" = ["E701", "E702"]
+"contrib/strategy_succession/worker/scientific/review/check.py" = ["F841"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/companion/analyze.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/companion/specialist.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/history/audit_original.py" = ["E701"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/history/current-exact-replay/replay_original.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/paper/make_result_figures.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/publication/build_docket.py" = ["E701"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/publication/build_verification.py" = ["E701"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/audit/derive_acquisition_audit.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/results/confirmation-v1/audit/derive_selected_lineage.py" = ["E701", "E702"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/review/check.py" = ["F841"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/review/results/audit_main.py" = ["E701", "E702", "F841"]
+"studies/agi-alpha-flywheel-strategy-succession-v1/scripts/freeze_study.py" = ["E701", "E702"]
 
 [tool.flake8]
 max-line-length = 120

@@ -72,6 +72,13 @@ def _walk_python_files(repo_root: Path) -> list[str]:
 
 def run_ruff(repo_root: Path, targets: list[str], batch_size: int) -> int:
     """Run Ruff over ``targets`` in deterministic batches to avoid long argv."""
+    # Preserve these imported scientific artifacts before applying their finite
+    # exact-file compatibility rules, including the empty-target case.
+    if __package__:
+        from .check_strategy_research_source import require_preserved
+    else:
+        from check_strategy_research_source import require_preserved
+    require_preserved(repo_root)
     if not targets:
         print("No tracked Python files found; skipping Ruff.")
         return 0

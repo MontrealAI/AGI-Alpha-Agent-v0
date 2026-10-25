@@ -1,0 +1,47 @@
+\section{Recovering the Strategy Laboratory before extending it}
+
+The supplied \artifact{202610180921.docx} was recovered with the original \emph{SUCCESSOR $\Omega$---Strategy Laboratory v0.1.0}. Its 62 internal payload hashes match. Source, protocols, development populations, frozen candidates, confirmation inputs, summaries, history and replay logs survive. We audit these originals and replay the frozen policies~\citep{strategyLabOriginal2026,strategyResearchLead2026}.
+
+A separately written current audit regenerated all 27,648 committed confirmation inputs, matched every task hash, rechecked 193,536 stored policy/control artifacts and recomputed six decisions. The original integrity verifier and 51 tests also pass in the current Python 3.12.14 environment. We then obtained the recorded CPython 3.13.5 runtime and freshly executed the original verifier with \artifact{--replay}. All six attempts and 27,648 cases pass exact equality of non-timing policy/control outputs, judgments and decisions. The replay took 78.344 seconds on the current host; no source edit or runtime-guard bypass was used. The record and log are preserved under \artifact{history/current-exact-replay/}.
+
+These are two complementary checks: an independently written artifact/statistical audit and fresh execution of the original frozen-policy implementation. The latter is not independent institutional replication and does not rerun development search as a new historical experiment. Historical timing comparisons remain the original measurements; elapsed time is intentionally excluded from exact replay equality.
+
+\begin{table}[ht]\centering\small
+\begin{tabularx}{\linewidth}{rYrrrr}
+\toprule
+Attempt & Domain & Incumbent & Candidate & Nominal gain LB & Decision \\
+\midrule
+1 & Route & .082543 & .824725 & +.712524 & Promote \\
+2 & Evidence & .877693 & .891657 & $-.001014$ & Hold \\
+3 & Schedule & .660756 & .675751 & $-.003020$ & Hold \\
+4 & Route & .829620 & .917588 & +.062721 & Promote \\
+5 & Evidence & .874611 & .890156 & $-.002091$ & Hold \\
+6 & Schedule & .660477 & .698699 & +.018489 & Promote \\
+\bottomrule
+\end{tabularx}
+\caption{Recomputed historical decisions. Each attempt uses 3,072 nominal and 1,536 shifted tasks. Scores are the historical bounded task objectives, not full-cost value. LB is the original empirical-Bernstein lower-bound formula, independently recalculated.}
+\end{table}
+
+\subsection{What survives the stronger comparison}
+
+The historical search considered 432 evolutionary and 432 random candidates with equal candidate-evaluation counts. It correctly held both evidence-selection nominees. The first route promotion nevertheless scores .824725 against .890632 for the fixed weight-2 A* reference. The second route nominee scores .917588 against .892152 for that specialist and .849101 for the random-search nominee. These last two comparisons are descriptive: the registered promotion hypothesis compares each candidate with its incumbent, not with every alternative.
+
+On the bounded historical domain, the final arithmetic priority simplifies to minimizing
+\begin{equation}
+ g+1.398870138\,h+0.997674183\max(2.203,\mathrm{terrain}).
+\end{equation}
+It is an interpretable terrain-augmented weighted-A* priority. The fixed strong reference did not receive an equally enabled conventional weight-and-terrain tuning search. Equal exploration counts also did not imply equal total work: the final candidate used more expansions, priority evaluations and expression nodes. Its recorded nominal-plus-shift solver interval was 1.616 times the strong reference's interval. Those timers excluded task generation, the Dijkstra oracle, judging, serialization and history work. A score improvement therefore supplies no historical full-cost break-even result.
+
+Repeated testing was accounted for inside the preserved pilot/final pair. Six pilot attempts spend approximately .04285714 of the error allowance; the final workspace reserves .00714286, with its first six attempts spending .00612245. The combined observed spending is approximately .04897959. This does not license arbitrary new workspaces, unregistered strong-control superiority tests or post-hoc benchmark selection. The historical shifted gate also tolerates a lower bound down to $-.08$; it is not a no-regression guarantee. Full details, timings, seed intersections and controls appear in the runnable historical audit.
+
+\subsection{The research lead: make disagreement earn its place}
+
+The DOCX proposes a useful chain: creator, evidence-grounded challenger, independent adjudicator, revision and regression test. The challenger must see the original evidence; a criticism is itself a claim to check. In this edition a challenge identifies a concrete schedule violation, such as overlapping crew demand or a moved locked job. The adjudicator recomputes the disputed predicate. A substantiated counterexample becomes a development regression asset; an unsupported criticism is refused. Protected confirmation cases are never promoted into training during the experiment.
+
+This is executable deterministic checking, not a live multi-model debate. The independently implemented checker shares the same commission and host as the constructor. Its implementation separation reduces one route to correlated error, but does not establish institutional independence or a cryptographic proof of the entire research process. Candidate access is restricted by the AST language; a privileged host administrator remains outside that threat model.
+
+\subsection{Continuity without inherited conclusions}
+
+The Possibility Foundry already demonstrates a simulated instrument helping create a distinct temporal-rate capability, while reporting cheaper conventional construction and an unfavorable ancestor-inclusive affordability result \citep{montreal2026possibility}. The earlier Harness detector likewise ties a cached conventional controller and loses cost to direct expert construction \citep{montreal2026harnessdetector}. Those findings motivate the present strong controls. They are not rerun evidence for this scheduling study.
+
+The neural-symbolic SUCCESSOR $\Omega$ constitution separates WORLD, POLICY, PROOF and AUTHORITY; Mission Gym calls for versioned evaluation and credible alternatives; SUCCESSOR $\Omega\times$ AGI JOBS supplies bounded work/proof contracts and authority non-composition \citep{montreal2026neuralsymbolic,boucher2026missiongym,boucher2026successorjobs}. Preferred published Edition 02 remains unchanged at its existing URL and verified hash \citep{montreal2026flywheeleditiontwo}. This distinct edition adds strategy search, selective admission and a changed planning/repair contract; it does not overwrite an earlier experiment's scope or result.

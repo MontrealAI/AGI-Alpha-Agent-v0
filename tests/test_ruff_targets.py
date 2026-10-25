@@ -6,11 +6,26 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
+import pytest
+
 from scripts.ruff_targets import _repo_root, list_tracked_python_files
 
 
 def _git(cwd: Path, *args: str) -> None:
     subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True)
+
+
+def test_empty_lint_selection_cannot_skip_research_integrity(monkeypatch: Any, tmp_path: Path) -> None:
+    from scripts import check_strategy_research_source
+    from scripts.ruff_targets import run_ruff
+
+    def changed_source(root: Path) -> dict[str, Any]:
+        assert root == tmp_path
+        raise ValueError("Pinned research source changed")
+
+    monkeypatch.setattr(check_strategy_research_source, "require_preserved", changed_source)
+    with pytest.raises(ValueError, match="Pinned research source changed"):
+        run_ruff(tmp_path, [], 200)
 
 
 def test_list_tracked_python_files_uses_git_index(tmp_path: Path) -> None:

@@ -29,6 +29,10 @@ installation, model API or wallet; the flagship opportunity mission above is the
 The [simple planning walkthrough](../start/index.html) remains available in English and French with larger text.
 The instructions below are for installing and operating your own agent.
 
+**Plan → adapt → repair one project:** follow the [Strategy Succession guide](STRATEGY_SUCCESSION.md).
+Its connected interface uses an explicitly approved, separately installed fixed-method executor.
+It keeps service and improvement costs separate and retains stronger specialist wins.
+
 **Starting a Nova-Seed project?** Follow the [English first-use guide](ASCENSION_STACK_RELEASE.md#first-use-english)
 to prepare, encrypt and keep a small project before choosing any wallet or paid service. The guide also
 explains the installed executor and the separate execution, review and payment decisions.
