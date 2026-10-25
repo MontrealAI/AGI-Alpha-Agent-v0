@@ -11,7 +11,7 @@ This additive directory preserves the existing Economics, Strategy Succession an
 | Finished 21-page paper | [paper.pdf](paper.pdf) | LaTeX built and visually verified |
 | Bilingual interactive demonstration | [demo.html](demo.html) | Download and open locally; 23 Chromium checks, no network requests |
 | Complete executable companion | [companion.tar.xz](companion.tar.xz) | 1,404 members, including raw records, figures, paper and editable source |
-| Browsable source and protocol | [review-source/](review-source/) | Selected exact files for review; the complete archive supplies every raw dependency |
+| Browsable source and protocol | [review-source/](review-source/) | Selected formatted review copies; the complete archive supplies exact runnable/frozen sources |
 | File identities | [SOURCE_INDEX.json](SOURCE_INDEX.json) | Source, archive and deliverable hashes |
 
 The full companion expands beneath `productive-capital/`. Extract it into a new directory, enter that extracted directory and run:
@@ -22,7 +22,7 @@ python3 reproduce.py check
 
 That command performs exact identity checks and separate recorded-output audits without modifying the archived evidence, installing packages or making network requests. The extracted README also documents optional timing and financial replays into new external destinations. Native replay uses the recorded Python/NumPy/SciPy/Node environment; the browser demonstration needs only a modern browser.
 
-The `review-source/` tree is a readable selection, not a second runnable distribution. Use the complete companion when running reproduction. Its figure assets, raw mission outputs, modeled economic events, original failed runs and earlier economic results are retained there.
+The `review-source/` tree is a readable selection, not a second runnable distribution. Nineteen Python files are formatted presentation copies; their original and derived identities, narrowly declared binding/closure changes and differential checks appear in [REVIEW_SOURCE_FORMATTING.json](REVIEW_SOURCE_FORMATTING.json), [REVIEW_SOURCE_VALIDATION.json](REVIEW_SOURCE_VALIDATION.json) and [REVIEW_SOURCE_CHANGES.md](REVIEW_SOURCE_CHANGES.md). Displayed freeze records bind exact original archive members. The archive, PDF, demo and original scientific evidence remain byte-for-byte unchanged. Use the complete companion when running reproduction. Its figure assets, raw mission outputs, modeled economic events, original failed runs and earlier economic results are retained there.
 
 ## What this edition establishes
 
@@ -32,9 +32,11 @@ The fresh-change flywheel consumes 4.069055 CPU seconds versus 4.032727 seconds 
 
 After independent review found boundary defects, a separately frozen v1.1 adapter passed 28 finite corrective cases. Original code, results, defects and timing measurements remain unchanged. The demo uses v1.1; it does not relabel the original timing campaign.
 
-Official labor sources support a conditional commercial comparison. Modeled complete costs are $28.26 / $35.16 / $32.93 per accepted service at assumed prices of $90 / $75 / $55. Customer purchase thresholds, including estimated review, are about 59.8 / 78.7 / 57.1 traditional minutes. Actual matched human duration and complete live Agent cost are unmeasured.
+Official labor sources support a conditional commercial comparison. The preserved staffed scenario models complete costs of $28.26 / $35.16 / $32.93 per accepted service at assumed prices of $90 / $75 / $55. Customer purchase thresholds, including estimated review, are about 59.8 / 78.7 / 57.1 traditional minutes. Actual matched human duration and complete live Agent cost are unmeasured.
 
 The direct-sale scenario retains $8,776.09 of modeled earned surplus. The specified next plan has 2.46× cash coverage but fails the unchanged service-spending ceiling. A smaller resource-feasible diagnostic does not overturn the child's investment HOLD. Additional assumed prelaunch remediation can exhaust the seed before any customer work. These are deliberately preserved losing results.
+
+An additive automated-operations edition is in progress. It derives its own workflow activity costs and reports marginal, recurring and fully loaded costs; this historical staffed scenario is not the actual cost of the automated Agent.
 
 All demand, prices, collections and investment transactions are simulated. Authenticated browser-to-approved-executor execution and actual paid self-financing are NOT RUN.
 

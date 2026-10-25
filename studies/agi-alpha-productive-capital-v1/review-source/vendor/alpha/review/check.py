@@ -16,9 +16,17 @@ MAX_LINE_BYTES = 262144
 class Audit:
     def __init__(self, envelope):
         self.errors = []
-        self.c = dict(input_bytes=0, input_fields=0, job_scans=0,
-                      dependency_edges=0, calendar_slots=0, interval_slots=0,
-                      comparisons=0, arithmetic=0, map_operations=0)
+        self.c = dict(
+            input_bytes=0,
+            input_fields=0,
+            job_scans=0,
+            dependency_edges=0,
+            calendar_slots=0,
+            interval_slots=0,
+            comparisons=0,
+            arithmetic=0,
+            map_operations=0,
+        )
         try:
             raw = json.dumps(envelope, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
             self.c["input_bytes"] = len(raw)
@@ -55,9 +63,14 @@ class Audit:
 
     def finish(self, lower=None, qualified=False, optimal=False):
         counts = {**self.c, "total": sum(self.c.values())}
-        return dict(valid=not self.errors, qualified=qualified and not self.errors,
-                    lower_bound=lower, counts=counts, errors=self.errors,
-                    optimal_if_bound=optimal and not self.errors)
+        return dict(
+            valid=not self.errors,
+            qualified=qualified and not self.errors,
+            lower_bound=lower,
+            counts=counts,
+            errors=self.errors,
+            optimal_if_bound=optimal and not self.errors,
+        )
 
 
 def check(envelope):
@@ -71,20 +84,31 @@ def check(envelope):
     if not a.require(isinstance(task, dict), "TASK_TYPE", "task", "Task must be an object."):
         return a.finish()
     a.require(task.get("schema") == "release-plan/v1", "TASK_SCHEMA", "task.schema", "Expected release-plan/v1.")
-    a.require(isinstance(task.get("id"), str) and 1 <= len(task["id"]) <= 128,
-              "TASK_ID", "task.id", "Task id must be a nonempty string of at most 128 characters.")
+    a.require(
+        isinstance(task.get("id"), str) and 1 <= len(task["id"]) <= 128,
+        "TASK_ID",
+        "task.id",
+        "Task id must be a nonempty string of at most 128 characters.",
+    )
     a.require(task.get("kind") in ("plan", "repair"), "TASK_KIND", "task.kind", "Expected plan or repair.")
     jobs, capacity = task.get("jobs"), task.get("capacity")
-    a.require(isinstance(jobs, list) and 1 <= len(jobs) <= 18,
-              "JOB_COUNT", "task.jobs", "Expected 1..18 jobs.")
-    a.require(isinstance(capacity, list) and 1 <= len(capacity) <= 128,
-              "HORIZON", "task.capacity", "Expected 1..128 calendar slots.")
+    a.require(isinstance(jobs, list) and 1 <= len(jobs) <= 18, "JOB_COUNT", "task.jobs", "Expected 1..18 jobs.")
+    a.require(
+        isinstance(capacity, list) and 1 <= len(capacity) <= 128,
+        "HORIZON",
+        "task.capacity",
+        "Expected 1..128 calendar slots.",
+    )
     if a.errors:
         return a.finish()
     horizon = len(capacity)
     if "horizon" in task:
-        a.require(type(task["horizon"]) is int and task["horizon"] == horizon,
-                  "HORIZON_MISMATCH", "task.horizon", "Horizon must equal calendar length.")
+        a.require(
+            type(task["horizon"]) is int and task["horizon"] == horizon,
+            "HORIZON_MISMATCH",
+            "task.horizon",
+            "Horizon must equal calendar length.",
+        )
     for i, value in enumerate(capacity):
         a.c["calendar_slots"] += 1
         a.integer(value, 0, 4, f"task.capacity[{i}]")
@@ -97,8 +121,12 @@ def check(envelope):
         if not a.require(isinstance(job, dict), "JOB_TYPE", path, "Job must be an object."):
             continue
         jid = job.get("id")
-        good_id = a.require(isinstance(jid, str) and JOB_ID.fullmatch(jid) is not None,
-                            "JOB_ID", path + ".id", "Expected J followed by 1..999 without leading zero.")
+        good_id = a.require(
+            isinstance(jid, str) and JOB_ID.fullmatch(jid) is not None,
+            "JOB_ID",
+            path + ".id",
+            "Expected J followed by 1..999 without leading zero.",
+        )
         if good_id:
             a.c["map_operations"] += 1
             if a.require(jid not in by_id, "DUPLICATE_JOB", path + ".id", "Each job must be unique."):
@@ -108,13 +136,19 @@ def check(envelope):
         a.integer(job.get("duration"), 1, 12, path + ".duration")
         a.integer(job.get("crew"), 1, 4, path + ".crew")
         deps = job.get("deps")
-        if a.require(isinstance(deps, list) and len(deps) <= 17,
-                     "DEPENDENCIES_TYPE", path + ".deps", "Dependencies must be a list of at most 17 ids."):
+        if a.require(
+            isinstance(deps, list) and len(deps) <= 17,
+            "DEPENDENCIES_TYPE",
+            path + ".deps",
+            "Dependencies must be a list of at most 17 ids.",
+        ):
             seen = set()
             for d in deps:
                 a.c["dependency_edges"] += 1
                 if a.require(isinstance(d, str), "DEPENDENCY_ID", path + ".deps", "Dependency ids must be strings."):
-                    a.require(d not in seen, "DUPLICATE_DEPENDENCY", path + ".deps", "A dependency may occur only once.")
+                    a.require(
+                        d not in seen, "DUPLICATE_DEPENDENCY", path + ".deps", "A dependency may occur only once."
+                    )
                     seen.add(d)
                     a.c["map_operations"] += 2
     if a.errors:
@@ -123,7 +157,9 @@ def check(envelope):
         for d in by_id[jid]["deps"]:
             a.c["dependency_edges"] += 1
             a.c["map_operations"] += 1
-            a.require(d in by_id, "UNKNOWN_DEPENDENCY", "task.jobs." + jid + ".deps", "Dependency must name a declared job.")
+            a.require(
+                d in by_id, "UNKNOWN_DEPENDENCY", "task.jobs." + jid + ".deps", "Dependency must name a declared job."
+            )
             a.require(d != jid, "SELF_DEPENDENCY", "task.jobs." + jid + ".deps", "A job cannot depend on itself.")
     release, locked = task.get("release", {}), task.get("locked", {})
     baseline = task.get("baseline", {})
@@ -139,25 +175,52 @@ def check(envelope):
                 a.integer(value, 0, upper, "task." + field + "." + jid)
     movement_limit = task.get("movement_limit", 2304)
     if repair:
-        a.require("baseline" in task, "BASELINE_REQUIRED", "task.baseline", "Repair requires the original starts of every job.")
+        a.require(
+            "baseline" in task,
+            "BASELINE_REQUIRED",
+            "task.baseline",
+            "Repair requires the original starts of every job.",
+        )
         if isinstance(baseline, dict):
-            a.require(set(baseline) == set(by_id), "BASELINE_COMPLETENESS", "task.baseline", "Baseline must contain exactly all jobs.")
+            a.require(
+                set(baseline) == set(by_id),
+                "BASELINE_COMPLETENESS",
+                "task.baseline",
+                "Baseline must contain exactly all jobs.",
+            )
             a.c["map_operations"] += len(baseline) + len(by_id)
         a.integer(movement_limit, 0, 2304, "task.movement_limit")
     else:
         a.require(not locked, "PLAN_LOCKS", "task.locked", "Plan accepts no nonempty locks.")
         a.require("baseline" not in task, "PLAN_BASELINE", "task.baseline", "Baseline is a repair-only field.")
-        a.require("movement_limit" not in task, "PLAN_MOVEMENT_LIMIT", "task.movement_limit", "Movement limit is repair-only.")
+        a.require(
+            "movement_limit" not in task, "PLAN_MOVEMENT_LIMIT", "task.movement_limit", "Movement limit is repair-only."
+        )
     if a.errors:
         return a.finish()
     for jid, start in locked.items():
         a.c["job_scans"] += 1
-        a.require(start == baseline[jid], "LOCK_BASELINE_MISMATCH", "task.locked." + jid, "Locked starts must equal original starts.")
-        a.require(start >= release.get(jid, 0), "LOCK_RELEASE_CONFLICT", "task.locked." + jid, "Locked start precedes release.")
+        a.require(
+            start == baseline[jid],
+            "LOCK_BASELINE_MISMATCH",
+            "task.locked." + jid,
+            "Locked starts must equal original starts.",
+        )
+        a.require(
+            start >= release.get(jid, 0),
+            "LOCK_RELEASE_CONFLICT",
+            "task.locked." + jid,
+            "Locked start precedes release.",
+        )
         for d in by_id[jid]["deps"]:
             a.c["dependency_edges"] += 1
             a.c["map_operations"] += 1
-            a.require(d in locked, "LOCK_PREFIX_NOT_CLOSED", "task.locked." + jid, "Every predecessor of a locked job must be locked.")
+            a.require(
+                d in locked,
+                "LOCK_PREFIX_NOT_CLOSED",
+                "task.locked." + jid,
+                "Every predecessor of a locked job must be locked.",
+            )
     if a.errors:
         return a.finish()
 
@@ -196,7 +259,12 @@ def check(envelope):
             a.c["map_operations"] += 1
             start = max(start, earliest_finish[d])
         if jid in locked:
-            a.require(locked[jid] >= start, "LOCK_DEPENDENCY_CONFLICT", "task.locked." + jid, "Locked start precedes a predecessor's earliest finish.")
+            a.require(
+                locked[jid] >= start,
+                "LOCK_DEPENDENCY_CONFLICT",
+                "task.locked." + jid,
+                "Locked start precedes a predecessor's earliest finish.",
+            )
             start = locked[jid]
         end = start + job["duration"]
         earliest_finish[jid] = end
@@ -217,8 +285,18 @@ def check(envelope):
         if load is None and cumulative >= work:
             load = slot + 1
             a.c["arithmetic"] += 1
-    a.require(load is not None, "INSUFFICIENT_CALENDAR_WORK", "task.capacity", "Calendar capacity is below total required crew-work.")
-    a.require(critical <= horizon, "CRITICAL_PATH_OUTSIDE_HORIZON", "task.jobs", "Release/dependency/lock lower bound exceeds the declared horizon.")
+    a.require(
+        load is not None,
+        "INSUFFICIENT_CALENDAR_WORK",
+        "task.capacity",
+        "Calendar capacity is below total required crew-work.",
+    )
+    a.require(
+        critical <= horizon,
+        "CRITICAL_PATH_OUTSIDE_HORIZON",
+        "task.jobs",
+        "Release/dependency/lock lower bound exceeds the declared horizon.",
+    )
     if a.errors:
         return a.finish()
     lower = dict(value=max(critical, load, locked_bound), critical=critical, load=load, locked=locked_bound)
@@ -226,26 +304,53 @@ def check(envelope):
 
     if not a.require(isinstance(result, dict), "RESULT_TYPE", "result", "Result must be an object."):
         return a.finish(lower)
-    a.require(result.get("schema") == "release-plan-result/v1", "RESULT_SCHEMA", "result.schema", "Expected release-plan-result/v1.")
-    a.require(result.get("task_id") == task["id"], "TASK_BINDING", "result.task_id", "Result must name the exact task id.")
+    a.require(
+        result.get("schema") == "release-plan-result/v1",
+        "RESULT_SCHEMA",
+        "result.schema",
+        "Expected release-plan-result/v1.",
+    )
+    a.require(
+        result.get("task_id") == task["id"], "TASK_BINDING", "result.task_id", "Result must name the exact task id."
+    )
     for field in ("proof", "authority"):
         value = result.get(field)
-        a.require(isinstance(value, list) and len(value) == 0,
-                  "NONEMPTY_" + field.upper(), "result." + field, "Current proof and authority must be explicitly empty.")
+        a.require(
+            isinstance(value, list) and len(value) == 0,
+            "NONEMPTY_" + field.upper(),
+            "result." + field,
+            "Current proof and authority must be explicitly empty.",
+        )
     reported_lb = result.get("lower_bound")
-    if a.require(isinstance(reported_lb, dict) and set(reported_lb) == set(lower),
-                 "BOUND_FORMAT", "result.lower_bound", "Expected value, critical, load and locked bounds."):
+    if a.require(
+        isinstance(reported_lb, dict) and set(reported_lb) == set(lower),
+        "BOUND_FORMAT",
+        "result.lower_bound",
+        "Expected value, critical, load and locked bounds.",
+    ):
         for key, value in lower.items():
-            a.require(type(reported_lb[key]) is int and reported_lb[key] == value,
-                      "BOUND_MISMATCH", "result.lower_bound." + key, "Reported registered bound differs from independently derived bound.")
-    makespan_ok = a.integer(result.get("makespan"), 1, horizon, "result.makespan")
-    movement_ok = a.integer(result.get("movement"), 0, 2304, "result.movement")
+            a.require(
+                type(reported_lb[key]) is int and reported_lb[key] == value,
+                "BOUND_MISMATCH",
+                "result.lower_bound." + key,
+                "Reported registered bound differs from independently derived bound.",
+            )
+    _makespan_ok = a.integer(result.get("makespan"), 1, horizon, "result.makespan")
+    _movement_ok = a.integer(result.get("movement"), 0, 2304, "result.movement")
     a.integer(result.get("lookahead_steps"), 0, len(order), "result.lookahead_steps")
-    a.require(type(result.get("optimal_by_lower_bound")) is bool,
-              "OPTIMAL_FLAG_TYPE", "result.optimal_by_lower_bound", "Expected a Boolean bound-equality flag.")
+    a.require(
+        type(result.get("optimal_by_lower_bound")) is bool,
+        "OPTIMAL_FLAG_TYPE",
+        "result.optimal_by_lower_bound",
+        "Expected a Boolean bound-equality flag.",
+    )
     schedule = result.get("schedule")
-    if not a.require(isinstance(schedule, list) and len(schedule) == len(order),
-                     "SCHEDULE_COMPLETENESS", "result.schedule", "Schedule must contain exactly one row per job."):
+    if not a.require(
+        isinstance(schedule, list) and len(schedule) == len(order),
+        "SCHEDULE_COMPLETENESS",
+        "result.schedule",
+        "Schedule must contain exactly one row per job.",
+    ):
         return a.finish(lower)
     intervals = {}
     for index, row in enumerate(schedule):
@@ -254,7 +359,12 @@ def check(envelope):
         if not a.require(isinstance(row, dict), "SCHEDULE_ROW", path, "Assignment must be an object."):
             continue
         jid = row.get("id")
-        if not a.require(isinstance(jid, str) and jid in by_id, "UNKNOWN_SCHEDULE_JOB", path + ".id", "Assignment must name a declared job."):
+        if not a.require(
+            isinstance(jid, str) and jid in by_id,
+            "UNKNOWN_SCHEDULE_JOB",
+            path + ".id",
+            "Assignment must name a declared job.",
+        ):
             continue
         if not a.require(jid not in intervals, "DUPLICATE_ASSIGNMENT", path + ".id", "Job may be assigned only once."):
             continue
@@ -263,10 +373,19 @@ def check(envelope):
         a.c["map_operations"] += 2
         if start_ok and end_ok:
             intervals[jid] = (row["start"], row["end"])
-            a.require(row["end"] - row["start"] == by_id[jid]["duration"],
-                      "WRONG_DURATION", path, "End minus start must equal the declared duration.")
+            a.require(
+                row["end"] - row["start"] == by_id[jid]["duration"],
+                "WRONG_DURATION",
+                path,
+                "End minus start must equal the declared duration.",
+            )
             a.c["arithmetic"] += 1
-    a.require(set(intervals) == set(by_id), "MISSING_ASSIGNMENT", "result.schedule", "Every declared job needs one valid assignment.")
+    a.require(
+        set(intervals) == set(by_id),
+        "MISSING_ASSIGNMENT",
+        "result.schedule",
+        "Every declared job needs one valid assignment.",
+    )
     if a.errors:
         return a.finish(lower)
     usage, actual_makespan, actual_movement = [0] * horizon, 0, 0
@@ -274,12 +393,24 @@ def check(envelope):
         a.c["job_scans"] += 1
         start, end = intervals[jid]
         job = by_id[jid]
-        a.require(start >= release.get(jid, 0), "RELEASE_VIOLATION", "result.schedule." + jid, "Job begins before release.")
+        a.require(
+            start >= release.get(jid, 0), "RELEASE_VIOLATION", "result.schedule." + jid, "Job begins before release."
+        )
         if jid in locked:
-            a.require(start == locked[jid], "LOCK_VIOLATION", "result.schedule." + jid, "Locked job must retain its exact original start.")
+            a.require(
+                start == locked[jid],
+                "LOCK_VIOLATION",
+                "result.schedule." + jid,
+                "Locked job must retain its exact original start.",
+            )
         for d in job["deps"]:
             a.c["dependency_edges"] += 1
-            a.require(intervals[d][1] <= start, "DEPENDENCY_VIOLATION", "result.schedule." + jid, "A predecessor has not finished at job start.")
+            a.require(
+                intervals[d][1] <= start,
+                "DEPENDENCY_VIOLATION",
+                "result.schedule." + jid,
+                "A predecessor has not finished at job start.",
+            )
         for slot in range(start, end):
             a.c["interval_slots"] += 1
             usage[slot] += job["crew"]
@@ -291,24 +422,56 @@ def check(envelope):
             a.c["arithmetic"] += 3
     for slot, required in enumerate(usage):
         a.c["calendar_slots"] += 1
-        a.require(required <= capacity[slot], "CAPACITY_OVERLOAD", f"result.schedule.slot[{slot}]", "Concurrent crew demand exceeds the exact calendar slot.")
-    a.require(result["makespan"] == actual_makespan, "MAKESPAN_MISMATCH", "result.makespan", "Makespan must equal the latest actual end.")
-    a.require(result["movement"] == actual_movement, "MOVEMENT_MISMATCH", "result.movement", "Movement must equal total absolute deviation from baseline, or zero for plan.")
-    a.require(result["optimal_by_lower_bound"] == (actual_makespan == lower["value"]),
-              "OPTIMAL_FLAG_MISMATCH", "result.optimal_by_lower_bound", "Flag must exactly report equality with the independently validated bound.")
+        a.require(
+            required <= capacity[slot],
+            "CAPACITY_OVERLOAD",
+            f"result.schedule.slot[{slot}]",
+            "Concurrent crew demand exceeds the exact calendar slot.",
+        )
+    a.require(
+        result["makespan"] == actual_makespan,
+        "MAKESPAN_MISMATCH",
+        "result.makespan",
+        "Makespan must equal the latest actual end.",
+    )
+    a.require(
+        result["movement"] == actual_movement,
+        "MOVEMENT_MISMATCH",
+        "result.movement",
+        "Movement must equal total absolute deviation from baseline, or zero for plan.",
+    )
+    a.require(
+        result["optimal_by_lower_bound"] == (actual_makespan == lower["value"]),
+        "OPTIMAL_FLAG_MISMATCH",
+        "result.optimal_by_lower_bound",
+        "Flag must exactly report equality with the independently validated bound.",
+    )
     dispatch = result.get("dispatch_order")
     expected = [jid for jid in order if jid not in locked]
-    if a.require(isinstance(dispatch, list) and len(dispatch) == len(expected),
-                 "DISPATCH_COMPLETENESS", "result.dispatch_order", "Dispatch trace must contain exactly the unlocked jobs."):
+    if a.require(
+        isinstance(dispatch, list) and len(dispatch) == len(expected),
+        "DISPATCH_COMPLETENESS",
+        "result.dispatch_order",
+        "Dispatch trace must contain exactly the unlocked jobs.",
+    ):
         dispatched = set(locked)
         for i, jid in enumerate(dispatch):
             a.c["job_scans"] += 1
-            if not a.require(isinstance(jid, str) and jid in by_id and jid not in dispatched,
-                             "DISPATCH_JOB", f"result.dispatch_order[{i}]", "Dispatch jobs must be known, unlocked and unique."):
+            if not a.require(
+                isinstance(jid, str) and jid in by_id and jid not in dispatched,
+                "DISPATCH_JOB",
+                f"result.dispatch_order[{i}]",
+                "Dispatch jobs must be known, unlocked and unique.",
+            ):
                 continue
             for d in by_id[jid]["deps"]:
                 a.c["dependency_edges"] += 1
-                a.require(d in dispatched, "DISPATCH_PRECEDENCE", "result.dispatch_order", "Dispatch order must respect dependency readiness.")
+                a.require(
+                    d in dispatched,
+                    "DISPATCH_PRECEDENCE",
+                    "result.dispatch_order",
+                    "Dispatch order must respect dependency readiness.",
+                )
             dispatched.add(jid)
             a.c["map_operations"] += 1
         a.require(dispatched == set(order), "DISPATCH_MISSING", "result.dispatch_order", "Dispatch trace omits a job.")
