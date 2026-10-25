@@ -13,6 +13,10 @@ import { computeInstalledSourceHash } from './native-cli.mjs';
 
 const cli = fileURLToPath(new URL('./native-cli.mjs', import.meta.url));
 const sourceHash = await computeInstalledSourceHash();
+test('native installed source identity matches the generated browser workspace closure', async () => {
+    const manifest = JSON.parse(await readFile(new URL('../../docs/successor/alpha/sources.json', import.meta.url), 'utf8'));
+    assert.equal(sourceHash, manifest.engineSourceHash);
+});
 const mission = createJoinMission({ leftCsv: 'sku,name\nA,left\nA,same\nB,missing\n',
     rightCsv: 'key,name\nA,same\nA,right\nC,missing\n', leftKey: 'sku', rightKey: 'key' });
 const project = appendCycle(createProject({ name: 'Host catalog Ω' }),
