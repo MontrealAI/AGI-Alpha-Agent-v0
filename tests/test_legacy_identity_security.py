@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import closing
+from copy import deepcopy
 import importlib.util
 import json
 from pathlib import Path
@@ -43,6 +44,187 @@ def memory(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Any:
     module._EMBED = lambda _content: [1.0] + [0.0] * (module.CFG.VECTOR_DIM - 1)
     yield module
     module.mem.close()
+
+
+class _MemoryPgCursor:
+    """Interpret only the fixed memory SQL needed by these inert transaction checks."""
+
+    def __init__(self, connection: _MemoryPgConnection) -> None:
+        self.connection = connection
+        self.result: tuple[Any, ...] | None = None
+
+    def __enter__(self) -> _MemoryPgCursor:
+        assert self.connection.active
+        return self
+
+    def __exit__(self, *_args: Any) -> None:
+        pass
+
+    def execute(self, statement: str, parameters: Any = None) -> None:
+        pg = self.connection
+        assert pg.active
+        pg.statements.append(statement)
+        if statement == "SELECT agent, content FROM memories WHERE content_id=%s":
+            match = next((row for row in pg.rows if row["content_id"] == parameters[0]), None)
+            self.result = None if match is None else (match["agent"], match["content"])
+        elif statement == "SELECT 1 FROM memories WHERE agent=%s AND content=%s LIMIT 1":
+            self.result = (1,) if any((row["agent"], row["content"]) == parameters for row in pg.rows) else None
+        elif statement.startswith("INSERT INTO memories("):
+            agent, embedding, content, identity = parameters
+            pg.inserts += 1
+            pg.rows.append(
+                {
+                    "agent": agent,
+                    "content": content,
+                    "content_id": identity,
+                    "hash": None,
+                    "ts": pg.now,
+                    "embedding": embedding,
+                }
+            )
+            self.result = None
+        elif statement.startswith("DELETE FROM memories WHERE ts < NOW() - INTERVAL '"):
+            ttl = int(statement.split("INTERVAL '", 1)[1].split(" seconds'", 1)[0])
+            assert parameters is None and ttl > 0
+            pg.ttl_deletes += 1
+            pg.rows[:] = [row for row in pg.rows if row["ts"] >= pg.now - ttl]
+            self.result = None
+        else:
+            raise AssertionError("Unexpected SQL in the inert PostgreSQL fixture")
+
+    def fetchone(self) -> tuple[Any, ...] | None:
+        return self.result
+
+
+class _MemoryPgConnection:
+    """Reject reentrant psycopg-style transaction contexts; never open a database."""
+
+    def __init__(self, rows: list[dict[str, Any]]) -> None:
+        self.rows = deepcopy(rows)
+        self.now = 1000
+        self.active = False
+        self.entries = 0
+        self.exits: list[Any] = []
+        self.inserts = 0
+        self.ttl_deletes = 0
+        self.statements: list[str] = []
+
+    def __enter__(self) -> _MemoryPgConnection:
+        assert not self.active, "Do not reenter the same connection transaction"
+        self.active = True
+        self.entries += 1
+        return self
+
+    def __exit__(self, error: Any, *_args: Any) -> None:
+        assert self.active
+        self.active = False
+        self.exits.append(error)
+
+    def cursor(self) -> _MemoryPgCursor:
+        assert self.active
+        return _MemoryPgCursor(self)
+
+    def close(self) -> None:
+        assert not self.active
+
+
+def _pg_ttl_store(memory: Any, monkeypatch: pytest.MonkeyPatch, kind: str, ttl: int) -> tuple[Any, Any, Any]:
+    identity = memory._hash_content("same retained body", "owner")
+    duplicate = {
+        "agent": "owner",
+        "content": "same retained body",
+        "ts": 990,
+        "content_id": identity if kind == "current" else None,
+        "hash": None if kind == "current" else "1" * 40,
+        "embedding": [0.25],
+    }
+    unrelated = [
+        {
+            "agent": "other",
+            "content": "expired unrelated",
+            "ts": 0,
+            "content_id": "expired-fixture",
+            "hash": None,
+            "embedding": [0.5],
+        },
+        {
+            "agent": "other",
+            "content": "fresh unrelated",
+            "ts": 995,
+            "content_id": "fresh-fixture",
+            "hash": None,
+            "embedding": [0.75],
+        },
+    ]
+    pg = _MemoryPgConnection([duplicate, *unrelated])
+    store = memory._VectorStore()
+    store._mode, store._pg = "pg", pg
+    monkeypatch.setattr(memory.CFG, "MEM_TTL_SECONDS", ttl)
+    metric = Mock()
+    monkeypatch.setattr(memory, "_MET_V_ADD", metric)
+    monkeypatch.setattr(store, "_evict_if_needed", Mock())
+    return store, pg, metric
+
+
+@pytest.mark.parametrize("kind", ["current", "legacy"])
+@pytest.mark.parametrize("ttl", [60, 0])
+def test_pg_duplicate_ttl_runs_after_transaction_without_insert_refresh_or_metric(
+    memory: Any, monkeypatch: pytest.MonkeyPatch, kind: str, ttl: int
+) -> None:
+    store, pg, metric = _pg_ttl_store(memory, monkeypatch, kind, ttl)
+    before = deepcopy(pg.rows)
+    for _ in range(2):
+        store.add("owner", "same retained body")
+        assert store._mode == "pg" and not pg.active
+    expected = [row for row in before if row["ts"] >= pg.now - ttl] if ttl else before
+    assert pg.rows == expected
+    assert pg.rows[0] == before[0], "A duplicate must not refresh bytes, timestamp or legacy identity"
+    assert pg.ttl_deletes == (2 if ttl else 0)
+    assert pg.entries == (4 if ttl else 2) and pg.exits == [None] * pg.entries
+    assert pg.inserts == 0
+    store._evict_if_needed.assert_not_called()
+    metric.inc.assert_not_called()
+
+
+@pytest.mark.parametrize("kind", ["current", "legacy"])
+def test_pg_duplicate_ttl_does_not_refresh_an_expired_duplicate(
+    memory: Any, monkeypatch: pytest.MonkeyPatch, kind: str
+) -> None:
+    store, pg, metric = _pg_ttl_store(memory, monkeypatch, kind, 60)
+    pg.rows[0]["ts"] = 0
+    retained_fresh = deepcopy(pg.rows[-1])
+    store.add("owner", "same retained body")
+    assert store._mode == "pg" and not pg.active
+    assert pg.rows == [retained_fresh] and pg.inserts == 0 and pg.ttl_deletes == 1
+    store._evict_if_needed.assert_not_called()
+    metric.inc.assert_not_called()
+
+
+def test_pg_duplicate_identity_conflict_still_raises_without_downgrade_or_ttl(
+    memory: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    store, pg, metric = _pg_ttl_store(memory, monkeypatch, "current", 60)
+    pg.rows[0]["content"] = "conflicting retained body"
+    before = deepcopy(pg.rows)
+    with pytest.raises(memory.MemoryIdentityConflict):
+        store.add("owner", "same retained body")
+    assert store._mode == "pg" and not pg.active
+    assert pg.rows == before and pg.inserts == pg.ttl_deletes == 0
+    assert pg.exits == [memory.MemoryIdentityConflict]
+    store._evict_if_needed.assert_not_called()
+    metric.inc.assert_not_called()
+
+
+def test_pg_new_insert_keeps_existing_metric_quota_and_ttl_behavior(
+    memory: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    store, pg, metric = _pg_ttl_store(memory, monkeypatch, "current", 60)
+    store.add("owner", "genuinely new body")
+    assert store._mode == "pg" and not pg.active
+    assert pg.inserts == pg.ttl_deletes == 1
+    assert {row["content"] for row in pg.rows} == {"same retained body", "fresh unrelated", "genuinely new body"}
+    store._evict_if_needed.assert_called_once_with("owner")
+    metric.inc.assert_called_once_with()
 
 
 def test_ram_identity_binds_agent_and_content_and_rejects_conflicts(

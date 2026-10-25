@@ -401,27 +401,32 @@ class _VectorStore:
                 pg = self._pg
                 if pg is None:
                     raise ConnectionError("pg connection unavailable")
+                duplicate = False
                 with pg, pg.cursor() as cur:
                     cur.execute("SELECT agent, content FROM memories WHERE content_id=%s", (h,))
                     existing = cur.fetchone()
                     if existing is not None:
                         if tuple(existing) != expected:
                             raise MemoryIdentityConflict("Memory identity conflicts with retained content")
-                        return
-                    cur.execute("SELECT 1 FROM memories WHERE agent=%s AND content=%s LIMIT 1", expected)
-                    if cur.fetchone() is not None:
-                        return
-                    cur.execute(
-                        "INSERT INTO memories(agent, hash, embedding, content, content_id) "
-                        "VALUES(%s,NULL,%s,%s,%s) ON CONFLICT(content_id) DO NOTHING;",
-                        (agent, list(map(float, vec)), content, h),
-                    )
-                    cur.execute("SELECT agent, content FROM memories WHERE content_id=%s", (h,))
-                    stored = cur.fetchone()
-                    if stored is None or tuple(stored) != expected:
-                        raise MemoryIdentityConflict("Memory insert conflicted with retained content")
-                self._evict_if_needed(agent)
+                        duplicate = True
+                    else:
+                        cur.execute("SELECT 1 FROM memories WHERE agent=%s AND content=%s LIMIT 1", expected)
+                        duplicate = cur.fetchone() is not None
+                    if not duplicate:
+                        cur.execute(
+                            "INSERT INTO memories(agent, hash, embedding, content, content_id) "
+                            "VALUES(%s,NULL,%s,%s,%s) ON CONFLICT(content_id) DO NOTHING;",
+                            (agent, list(map(float, vec)), content, h),
+                        )
+                        cur.execute("SELECT agent, content FROM memories WHERE content_id=%s", (h,))
+                        stored = cur.fetchone()
+                        if stored is None or tuple(stored) != expected:
+                            raise MemoryIdentityConflict("Memory insert conflicted with retained content")
+                if not duplicate:
+                    self._evict_if_needed(agent)
                 self._apply_ttl_pg()
+                if duplicate:
+                    return
             elif self._mode == "faiss":
                 self._faiss.add(vec.reshape(1, -1))
                 self._vectors.append(vec)
