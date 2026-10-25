@@ -1,0 +1,852 @@
+{
+  "schema": "independent-operational-economics-audit/v1",
+  "status": "PASS",
+  "created_utc": "2026-10-25T13:41:58.150477+00:00",
+  "input_freeze_sha256": "54bc70fec9bb635b473193d966d36ed5bf445460a58255f025cbed4a30854d8b",
+  "results_path": "outputs/run-001/results.json",
+  "results_sha256": "cba5f2cf284e27f7097fc3f4cebe0bf985952cd64bfcabee78af51ca0c17ac9d",
+  "producer_source_path": "src/model.py",
+  "producer_source_sha256": "a82f3d8be82223f753be3e16cbc3f4c81dedf4d24ea66c3bfac6143557f74255",
+  "independent_oracle_path": "evaluation/oracle.py",
+  "independent_oracle_sha256": "1316a39cc83308497080ca0277d2a59816d44627b434e6fd86dfa27c764c8949",
+  "audit_source_path": "evaluation/audit_results.py",
+  "audit_source_sha256": "8eef61c8132c6b3da045413af4a8e60246770a5d1c6ce3a9c74e240f08d02495",
+  "producer_arithmetic_imported": false,
+  "numeric_tolerance": "absolute1e-9 plus relative1e-11; zero and null have distinct meaning",
+  "checks_total": 157435,
+  "failures": [],
+  "groups": {
+    "identities": {
+      "checks": 16,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "0"
+    },
+    "core/US_office/base": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.2413793103448275862068965517241379E-10"
+    },
+    "core/US_professional/base": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.2413793103448275862068965517241379E-10"
+    },
+    "core/Ontario/base": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.2413793103448275862068965517241379E-10"
+    },
+    "core/EU/base": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.2413793103448275862068965517241379E-10"
+    },
+    "core/US_office/conservative": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-11"
+    },
+    "core/US_professional/conservative": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-11"
+    },
+    "core/Ontario/conservative": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-11"
+    },
+    "core/EU/conservative": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-11"
+    },
+    "core/US_office/stress": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.3333333333333333333333333333333334E-11"
+    },
+    "core/US_professional/stress": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.666666666666666666666666666666668E-12"
+    },
+    "core/Ontario/stress": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.7967479674796747967479674796747965E-11"
+    },
+    "core/EU/stress": {
+      "checks": 6939,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "9.5439964735E-12"
+    },
+    "sensitivity/requested_reuse_volume/1": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/requested_reuse_volume/10": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/requested_reuse_volume/100": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/requested_reuse_volume/1000": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/requested_reuse_volume/10000": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.0000000000000000000000000000000000E-10"
+    },
+    "sensitivity/delivery_model_token_multiplier/0.5": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/delivery_model_token_multiplier/1": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/delivery_model_token_multiplier/3": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/delivery_model_token_multiplier/10": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/delivery_model_token_multiplier/30": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/employer_review_effort_multiplier/0.5": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/employer_review_effort_multiplier/1": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/employer_review_effort_multiplier/2": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/employer_review_effort_multiplier/4": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/unsuccessful_initial_construction_human_hours_multiplier/0.5": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/unsuccessful_initial_construction_human_hours_multiplier/1": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/unsuccessful_initial_construction_human_hours_multiplier/2": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/unsuccessful_initial_construction_human_hours_multiplier/4": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/recurring_support_and_upkeep_multiplier/0.5": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/recurring_support_and_upkeep_multiplier/1": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/recurring_support_and_upkeep_multiplier/2": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/recurring_support_and_upkeep_multiplier/4": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "sensitivity/native_delivery_no_model_or_paid_search/True": {
+      "checks": 3117,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.2532467532467532467532467532467532E-11"
+    },
+    "flat_duration/US_office/base/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.140350877192982456140350877192982E-13"
+    },
+    "flat_duration/US_office/base/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.140350877192982456140350877192982E-13"
+    },
+    "flat_duration/US_office/base/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.140350877192982456140350877192982E-13"
+    },
+    "flat_duration/US_office/base/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.140350877192982456140350877192982E-13"
+    },
+    "flat_duration/US_office/base/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.140350877192982456140350877192982E-13"
+    },
+    "flat_duration/US_professional/base/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.017543859649122807017543859649123E-13"
+    },
+    "flat_duration/US_professional/base/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.017543859649122807017543859649123E-13"
+    },
+    "flat_duration/US_professional/base/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.017543859649122807017543859649123E-13"
+    },
+    "flat_duration/US_professional/base/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.017543859649122807017543859649123E-13"
+    },
+    "flat_duration/US_professional/base/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.017543859649122807017543859649123E-13"
+    },
+    "flat_duration/Ontario/base/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.540456833139759969028261711188541E-13"
+    },
+    "flat_duration/Ontario/base/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.540456833139759969028261711188541E-13"
+    },
+    "flat_duration/Ontario/base/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.540456833139759969028261711188541E-13"
+    },
+    "flat_duration/Ontario/base/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.540456833139759969028261711188541E-13"
+    },
+    "flat_duration/Ontario/base/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.540456833139759969028261711188541E-13"
+    },
+    "flat_duration/EU/base/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.1059716207341367803498740597585269E-12"
+    },
+    "flat_duration/EU/base/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.1059716207341367803498740597585269E-12"
+    },
+    "flat_duration/EU/base/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.1059716207341367803498740597585269E-12"
+    },
+    "flat_duration/EU/base/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.1059716207341367803498740597585269E-12"
+    },
+    "flat_duration/EU/base/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.1059716207341367803498740597585269E-12"
+    },
+    "flat_duration/US_office/conservative/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.764705882352941176470588235294118E-12"
+    },
+    "flat_duration/US_office/conservative/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.764705882352941176470588235294118E-12"
+    },
+    "flat_duration/US_office/conservative/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.764705882352941176470588235294118E-12"
+    },
+    "flat_duration/US_office/conservative/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.764705882352941176470588235294118E-12"
+    },
+    "flat_duration/US_office/conservative/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.764705882352941176470588235294118E-12"
+    },
+    "flat_duration/US_professional/conservative/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.94117647058823529411764705882353E-13"
+    },
+    "flat_duration/US_professional/conservative/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.000000000000000000000000000000000E-12"
+    },
+    "flat_duration/US_professional/conservative/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.94117647058823529411764705882353E-13"
+    },
+    "flat_duration/US_professional/conservative/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.94117647058823529411764705882353E-13"
+    },
+    "flat_duration/US_professional/conservative/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.94117647058823529411764705882353E-13"
+    },
+    "flat_duration/Ontario/conservative/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.04058208649313383890141422422629E-13"
+    },
+    "flat_duration/Ontario/conservative/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.098722415795586527293844367015101E-12"
+    },
+    "flat_duration/Ontario/conservative/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.098722415795586527293844367015101E-12"
+    },
+    "flat_duration/Ontario/conservative/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.04058208649313383890141422422629E-13"
+    },
+    "flat_duration/Ontario/conservative/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "9.01277584204413472706155632984899E-13"
+    },
+    "flat_duration/EU/conservative/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.833761647248017405836631087707134E-12"
+    },
+    "flat_duration/EU/conservative/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.833761647248017405836631087707134E-12"
+    },
+    "flat_duration/EU/conservative/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.833761647248017405836631087707134E-12"
+    },
+    "flat_duration/EU/conservative/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.833761647248017405836631087707134E-12"
+    },
+    "flat_duration/EU/conservative/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.833761647248017405836631087707134E-12"
+    },
+    "flat_duration/US_office/stress/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.897435897435897435897435897435897E-12"
+    },
+    "flat_duration/US_office/stress/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.897435897435897435897435897435897E-12"
+    },
+    "flat_duration/US_office/stress/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.897435897435897435897435897435897E-12"
+    },
+    "flat_duration/US_office/stress/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.897435897435897435897435897435897E-12"
+    },
+    "flat_duration/US_office/stress/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.897435897435897435897435897435897E-12"
+    },
+    "flat_duration/US_professional/stress/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.0000000000000000000000000000000E-12"
+    },
+    "flat_duration/US_professional/stress/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.0000000000000000000000000000000E-12"
+    },
+    "flat_duration/US_professional/stress/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.0000000000000000000000000000000E-12"
+    },
+    "flat_duration/US_professional/stress/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.666666666666666666666666666666667E-12"
+    },
+    "flat_duration/US_professional/stress/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.0000000000000000000000000000000E-12"
+    },
+    "flat_duration/Ontario/stress/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.2780011316596682450340986926352778E-11"
+    },
+    "flat_duration/Ontario/stress/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.2780011316596682450340986926352778E-11"
+    },
+    "flat_duration/Ontario/stress/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.2780011316596682450340986926352778E-11"
+    },
+    "flat_duration/Ontario/stress/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.2780011316596682450340986926352778E-11"
+    },
+    "flat_duration/Ontario/stress/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.2780011316596682450340986926352778E-11"
+    },
+    "flat_duration/EU/stress/5": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.193632925340242413413145120462196E-12"
+    },
+    "flat_duration/EU/stress/15": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.193632925340242413413145120462196E-12"
+    },
+    "flat_duration/EU/stress/30": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.193632925340242413413145120462196E-12"
+    },
+    "flat_duration/EU/stress/60": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.193632925340242413413145120462196E-12"
+    },
+    "flat_duration/EU/stress/120": {
+      "checks": 34,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.193632925340242413413145120462196E-12"
+    },
+    "flat_hybrid/US_office/base/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.977753058954393770856507230255839E-15"
+    },
+    "flat_hybrid/US_office/base/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.977753058954393770856507230255839E-15"
+    },
+    "flat_hybrid/US_office/base/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.977753058954393770856507230255839E-15"
+    },
+    "flat_hybrid/US_office/base/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.977753058954393770856507230255839E-15"
+    },
+    "flat_hybrid/US_office/base/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6E-15"
+    },
+    "flat_hybrid/US_professional/base/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.868417407280495184491218349239215E-15"
+    },
+    "flat_hybrid/US_professional/base/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.666666666666666666666666666666666E-15"
+    },
+    "flat_hybrid/US_professional/base/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.666666666666666666666666666666666E-15"
+    },
+    "flat_hybrid/US_professional/base/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.7E-15"
+    },
+    "flat_hybrid/US_professional/base/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.666666666666666666666666666666667E-15"
+    },
+    "flat_hybrid/Ontario/base/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.035280592308228125797820859220336E-15"
+    },
+    "flat_hybrid/Ontario/base/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.035280592308228125797820859220336E-15"
+    },
+    "flat_hybrid/Ontario/base/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.035280592308228125797820859220336E-15"
+    },
+    "flat_hybrid/Ontario/base/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.035280592308228125797820859220336E-15"
+    },
+    "flat_hybrid/Ontario/base/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.035280592308228125797820859220336E-15"
+    },
+    "flat_hybrid/EU/base/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.075938662624995481386931743902511E-15"
+    },
+    "flat_hybrid/EU/base/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.075938662624995481386931743902511E-15"
+    },
+    "flat_hybrid/EU/base/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.075938662624995481386931743902511E-15"
+    },
+    "flat_hybrid/EU/base/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.075938662624995481386931743902511E-15"
+    },
+    "flat_hybrid/EU/base/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6E-15"
+    },
+    "flat_hybrid/US_office/conservative/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.504612968657985997513577177255774E-14"
+    },
+    "flat_hybrid/US_office/conservative/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.504612968657985997513577177255774E-14"
+    },
+    "flat_hybrid/US_office/conservative/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.504612968657985997513577177255774E-14"
+    },
+    "flat_hybrid/US_office/conservative/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.504612968657985997513577177255774E-14"
+    },
+    "flat_hybrid/US_office/conservative/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "4.504612968657985997513577177255774E-14"
+    },
+    "flat_hybrid/US_professional/conservative/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.333333333333333333333333333333333E-14"
+    },
+    "flat_hybrid/US_professional/conservative/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.139126325138727051978846670958174E-14"
+    },
+    "flat_hybrid/US_professional/conservative/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.333333333333333333333333333333333E-14"
+    },
+    "flat_hybrid/US_professional/conservative/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.139126325138727051978846670958174E-14"
+    },
+    "flat_hybrid/US_professional/conservative/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.666666666666666666666666666666667E-14"
+    },
+    "flat_hybrid/Ontario/conservative/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.060823114936430764372617598031097E-14"
+    },
+    "flat_hybrid/Ontario/conservative/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.060823114936430764372617598031097E-14"
+    },
+    "flat_hybrid/Ontario/conservative/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.060823114936430764372617598031097E-14"
+    },
+    "flat_hybrid/Ontario/conservative/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.060823114936430764372617598031097E-14"
+    },
+    "flat_hybrid/Ontario/conservative/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "7.060823114936430764372617598031097E-14"
+    },
+    "flat_hybrid/EU/conservative/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.812821420842699100315655918258969E-14"
+    },
+    "flat_hybrid/EU/conservative/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.812821420842699100315655918258969E-14"
+    },
+    "flat_hybrid/EU/conservative/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.812821420842699100315655918258969E-14"
+    },
+    "flat_hybrid/EU/conservative/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.812821420842699100315655918258969E-14"
+    },
+    "flat_hybrid/EU/conservative/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.812821420842699100315655918258969E-14"
+    },
+    "flat_hybrid/US_office/stress/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.433729785231453752032172499358261E-13"
+    },
+    "flat_hybrid/US_office/stress/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.433729785231453752032172499358261E-13"
+    },
+    "flat_hybrid/US_office/stress/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.433729785231453752032172499358261E-13"
+    },
+    "flat_hybrid/US_office/stress/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.433729785231453752032172499358261E-13"
+    },
+    "flat_hybrid/US_office/stress/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.433729785231453752032172499358261E-13"
+    },
+    "flat_hybrid/US_professional/stress/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.666666666666666666666666666666666E-14"
+    },
+    "flat_hybrid/US_professional/stress/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.3333333333333333333333333333333333E-13"
+    },
+    "flat_hybrid/US_professional/stress/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.666666666666666666666666666666667E-14"
+    },
+    "flat_hybrid/US_professional/stress/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "6.666666666666666666666666666666667E-14"
+    },
+    "flat_hybrid/US_professional/stress/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.333333333333333333333333333333333E-14"
+    },
+    "flat_hybrid/Ontario/stress/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.072291316441551848114912294175276E-13"
+    },
+    "flat_hybrid/Ontario/stress/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.072291316441551848114912294175276E-13"
+    },
+    "flat_hybrid/Ontario/stress/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "2.117692605497483546264034068912117E-13"
+    },
+    "flat_hybrid/Ontario/stress/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.072291316441551848114912294175276E-13"
+    },
+    "flat_hybrid/Ontario/stress/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.072291316441551848114912294175276E-13"
+    },
+    "flat_hybrid/EU/stress/5": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.64846263115776117275980191735203E-14"
+    },
+    "flat_hybrid/EU/stress/15": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.64846263115776117275980191735203E-14"
+    },
+    "flat_hybrid/EU/stress/30": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.475535304803597486524315792608474E-14"
+    },
+    "flat_hybrid/EU/stress/60": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "5.64846263115776117275980191735203E-14"
+    },
+    "flat_hybrid/EU/stress/120": {
+      "checks": 7,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "8.475535304803597486524315792608474E-14"
+    }
+  },
+  "coverage": {
+    "core_rows": 12,
+    "core_terminal_paths": 72,
+    "human_duration_rows": 60,
+    "hybrid_summary_rows": 60,
+    "one_way_sensitivity_rows": 23,
+    "included": "Every primary and sensitivity branch/event category, model-route token cost, fixed account, all three arms' first/annual/feasible cohorts, latency atoms/quantiles, resource pools, capacity limits, and human-duration summary."
+  },
+  "validity_flags": [
+    {
+      "code": "EXPECTED_BUDGET_NOT_HARD_ENFORCEMENT",
+      "severity": "limitation",
+      "detail": "Capacity divides residual pools by expected path consumption. Realized expensive outcomes can exceed a nearly exhausted mean budget. This is an expected-use planning ceiling, not a stochastic budget guarantee; no paid-call enforcement is deployed and the original native work-unit controls do not establish it."
+    },
+    {
+      "code": "SCENARIO_NOT_EMPIRICAL_COST",
+      "severity": "scope",
+      "detail": "Arithmetic consistency with frozen assumed quantities and published prices is not an observed invoice, field reliability, full-system cost or new human trial."
+    },
+    {
+      "code": "SETUP_SCHEDULING_UNVALIDATED",
+      "severity": "limitation",
+      "detail": "Aggregate capacity does not prove a daily staffing schedule. The post-result uniform-allocation diagnostic preserves frozen setup assumptions and reports incompatible windows.",
+      "evidence": "evaluation/SCHEDULING_DIAGNOSTIC.json"
+    },
+    {
+      "code": "UNMEASURED_MATERIAL_CONSEQUENCES",
+      "severity": "scope",
+      "detail": "Downstream liability remains unknown, not zero; high-consequence uses remain unsupported."
+    },
+    {
+      "code": "DECLARED_DEMAND_NOT_ALWAYS_FEASIBLE",
+      "severity": "result",
+      "detail": "Unattainable declared-demand allocation is not used as feasible unit cost. Zero-capacity cases keep fixed losses and null accepted-normalized feasible cost."
+    },
+    {
+      "code": "CALL_COUNT_SCOPE",
+      "severity": "scope",
+      "detail": "Delivery model calls are itemized; fixed construction/upkeep token budgets are priced but fixed call counts are unspecified. No actual provider usage is observed."
+    }
+  ],
+  "authorization_record": {
+    "schema": "operational-economics-amendment-authorization/v1",
+    "authorized_utc": "2026-10-25 13:30:40 UTC",
+    "status": "GO_FOR_LOCAL_SCENARIO_CALCULATION_AND_INDEPENDENT_AUDIT",
+    "public_source_commit": "4d1d2af3e77a5346e3dc1a574f509d5c67c0aef7",
+    "public_notice": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6398263719",
+    "freeze_sha256": "54bc70fec9bb635b473193d966d36ed5bf445460a58255f025cbed4a30854d8b",
+    "frozen_files": 16,
+    "public_readback_exact": true,
+    "allowed": "Local deterministic scenario calculations, independent audit, plots, paper and derivative offline companion; no provider invocation, deployment, spending, new credentials, security changes, transactions or held action."
+  }
+}

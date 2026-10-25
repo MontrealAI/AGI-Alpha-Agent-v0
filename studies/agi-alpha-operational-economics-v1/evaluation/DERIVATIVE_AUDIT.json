@@ -1,0 +1,146 @@
+{
+  "schema": "operational-economics-derivative-audit/v1",
+  "status": "PASS",
+  "checked_utc": "2026-10-25T13:43:25.788174+00:00",
+  "primary_result_sha256": "cba5f2cf284e27f7097fc3f4cebe0bf985952cd64bfcabee78af51ca0c17ac9d",
+  "primary_audit_sha256": "cc11e0ddbe7a71ac2cd3d1ef30d0009c793f37a0f8d6df460038ccce99c1a4f5",
+  "input_freeze_sha256": "54bc70fec9bb635b473193d966d36ed5bf445460a58255f025cbed4a30854d8b",
+  "source_sha256": "7f9f37ed6257e233337262058a43bfdc315265304078fc769449f07d8807d5e6",
+  "audited_file_hashes": {
+    "outputs/run-001/results_summary.csv": "23ffdfea284a420fcf946600b99acde9afef14c28747e1f8c7b87b386e2120a0",
+    "outputs/run-001/component_ledger.csv": "725d52d951c04e8517ae636c6b6c68416b4119fa34189856f7fb9beac0737fbb",
+    "outputs/run-001/sensitivities.csv": "fe4964cd4dcc931976f9d7f5ae45bd897f546fb5e45badaff027f8d375f0699a",
+    "outputs/post_result_reuse_diagnostic.json": "29213ba471bbd6d9ba407828666669d725b4e96babb0b061ca1280c02a5fe140"
+  },
+  "checks_total": 24125,
+  "failures": [],
+  "groups": {
+    "csv/primary_summary": {
+      "checks": 2761,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "0"
+    },
+    "csv/component_ledger": {
+      "checks": 20258,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "0"
+    },
+    "csv/sensitivities": {
+      "checks": 898,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "3.460980036297640653357531760435572E-12"
+    },
+    "post_result/reuse_identity": {
+      "checks": 4,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "0"
+    },
+    "post_result/reuse/US_office/agent_only_expected_accepted_cost": {
+      "checks": 25,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-12"
+    },
+    "post_result/reuse/US_office/complete_demand_hybrid": {
+      "checks": 26,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-12"
+    },
+    "post_result/reuse/US_professional/agent_only_expected_accepted_cost": {
+      "checks": 25,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-12"
+    },
+    "post_result/reuse/US_professional/complete_demand_hybrid": {
+      "checks": 26,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1E-12"
+    },
+    "post_result/reuse/Ontario/agent_only_expected_accepted_cost": {
+      "checks": 25,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.055198973042362002567394094993584E-12"
+    },
+    "post_result/reuse/Ontario/complete_demand_hybrid": {
+      "checks": 26,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "9.75609756097560975609756097560974E-13"
+    },
+    "post_result/reuse/EU/agent_only_expected_accepted_cost": {
+      "checks": 25,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.580922286955663078897995457687371E-12"
+    },
+    "post_result/reuse/EU/complete_demand_hybrid": {
+      "checks": 26,
+      "failures": 0,
+      "maximum_absolute_numeric_difference": "1.418386491557223264540337711069419E-12"
+    }
+  },
+  "independent_reuse_thresholds": [
+    {
+      "price_basis": "US_office",
+      "comparison": "agent_only_expected_accepted_cost",
+      "continuous": "1039.8225737902263415786040134779408607772815221548",
+      "integer": 1040,
+      "common_resource_bound": 829,
+      "within_both_bounds": false
+    },
+    {
+      "price_basis": "US_office",
+      "comparison": "complete_demand_hybrid",
+      "continuous": "1112.1905934516860358444218402473165365004356690410",
+      "integer": 1113,
+      "common_resource_bound": 703,
+      "within_both_bounds": false
+    },
+    {
+      "price_basis": "US_professional",
+      "comparison": "agent_only_expected_accepted_cost",
+      "continuous": "443.65220380862549788712162528979821150899764053166",
+      "integer": 444,
+      "common_resource_bound": 426,
+      "within_both_bounds": false
+    },
+    {
+      "price_basis": "US_professional",
+      "comparison": "complete_demand_hybrid",
+      "continuous": "492.46458068535183187492180722903371721010497332694",
+      "integer": 493,
+      "common_resource_bound": 362,
+      "within_both_bounds": false
+    },
+    {
+      "price_basis": "Ontario",
+      "comparison": "agent_only_expected_accepted_cost",
+      "continuous": "1193.1653235412850067572084130439629037498152635898",
+      "integer": 1194,
+      "common_resource_bound": 895,
+      "within_both_bounds": false
+    },
+    {
+      "price_basis": "Ontario",
+      "comparison": "complete_demand_hybrid",
+      "continuous": "1271.9584628984794430395076344300012804419031661504",
+      "integer": 1272,
+      "common_resource_bound": 765,
+      "within_both_bounds": false
+    },
+    {
+      "price_basis": "EU",
+      "comparison": "agent_only_expected_accepted_cost",
+      "continuous": "932.54717897347495282154132003039031815136135135658",
+      "integer": 933,
+      "common_resource_bound": 777,
+      "within_both_bounds": false
+    },
+    {
+      "price_basis": "EU",
+      "comparison": "complete_demand_hybrid",
+      "continuous": "1000.5095572584083179610831436820790927158959535389",
+      "integer": 1001,
+      "common_resource_bound": 655,
+      "within_both_bounds": false
+    }
+  ],
+  "classification": "CSV transcription/coverage and post-result algebraic diagnostics; no changed primary endpoint, input or scenario."
+}

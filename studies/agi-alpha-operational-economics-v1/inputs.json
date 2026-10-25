@@ -1,0 +1,971 @@
+{
+  "schema": "agi-alpha-operational-economics-amendment/v1",
+  "status": "PROSPECTIVE_SPECIFICATION_NO_RESULTS_AT_FREEZE",
+  "prepared_utc": "2026-10-25T13:22:56.988123+00:00",
+  "study_relation": "Prospective scenario analysis after observed capability study; sealed original remains unchanged.",
+  "operating_arrangement": "Full attributed ownership cost. No provider invoice or fee is added to underlying provider costs.",
+  "employer_brief_anchor": "observed/ANCHOR.json",
+  "scenario_quality_status": "All field path probabilities and assumed human final acceptance are hypothetical, not fitted to 42/42 fixture acceptance.",
+  "model_identity_status": "Hypothetical deployment models; not the actual research host or proof of performance. These orchestration calls were not required or used by the frozen native job.",
+  "prices_file": "sources/pricing_register.json",
+  "labor_file": "sources/labor_rates.json",
+  "labor_role_pricing": "Employer and traditional-worker time use the selected local price basis. Provider operator and engineering time use U.S. professional compensation in every case; no double benefits load.",
+  "model_prices": {
+    "claude-sonnet-5.5": {
+      "input_usd_per_million": 2,
+      "output_usd_per_million": 10
+    },
+    "claude-opus-5.5": {
+      "input_usd_per_million": 4,
+      "output_usd_per_million": 20
+    }
+  },
+  "web_search_usd_per_1000": 10,
+  "cloud": {
+    "price_source": "gcp_run_20261025",
+    "vcpus": 1,
+    "memory_gib": 2,
+    "active_vcpu_second_usd": 2.4e-05,
+    "active_gib_second_usd": 2.5e-06,
+    "requests_per_million_usd": 0.4,
+    "billing_rounding_seconds": 0.1,
+    "free_tier_applied": false,
+    "minimum_idle_instances": 0,
+    "idle_zero_reason": "Declared scale-to-zero prospective configuration; shared support/monitoring remains positively costed.",
+    "parallel_executor_instances": 2,
+    "per_instance_request_concurrency": 1,
+    "billing_scope": "Each scenario request occupies its own allocated instance during executor events; up to two instances run in parallel. There is no assumed cross-request CPU sharing discount.",
+    "fixed_runtime_allocation": "Initial/monthly total occupied seconds are distributed equally over their explicit request counts before 100ms per-request rounding; this is an input allocation assumption, not measured cloud usage."
+  },
+  "storage": {
+    "gib_hour_usd": 2.7397e-05,
+    "artifact_retention_days": 90,
+    "artifact_copies": 2,
+    "hours_per_day": 24,
+    "calendar_days_per_operating_month": 30,
+    "operations_and_egress": "Separate explicit USD allowance per requested job; not included in at-rest tariff."
+  },
+  "fx": {
+    "source": "ecb_fx_20261023",
+    "date": "2026-10-23",
+    "USD_per_EUR": 1.1193,
+    "CAD_per_EUR": 1.5665
+  },
+  "horizons": {
+    "annual_operating_months": 12,
+    "first_commission_operating_months": 1,
+    "working_days": 240,
+    "working_hours_per_day": 8,
+    "first_commission_requested_jobs": 1
+  },
+  "resources": {
+    "annual_full_economic_budget_usd": 25000,
+    "employer_available_minutes_per_workday": 120,
+    "provider_available_minutes_per_workday": 120,
+    "traditional_worker_available_minutes_per_workday": 480,
+    "annual_input_token_budget": 100000000,
+    "annual_output_token_budget": 20000000,
+    "capacity_policy": "Subtract fixed usage from matching pools; apply scenario utilization to available time/token budgets; money budget is full attributed economic cost, not cash. Also constrain occupied executor time by remaining calendar after setup.",
+    "token_budget_status": "ASSUMED_AGGREGATE_ANNUAL_BUDGETS; not actual provider rate limits, quotas, latency guarantees or observed consumption.",
+    "time_pool_residual_rule": {
+      "annual": "working_days * per_workday_available_resource * utilization - initial_fixed_usage - annual_recurring_fixed_usage",
+      "postdeployment": "max(working_days - applicable_setup_elapsed_workdays, 0) * per_workday_available_resource * utilization - annual_recurring_fixed_usage",
+      "effective": "max(0,min(annual,postdeployment)); initial usage is NOT subtracted again from postdeployment.",
+      "applies_to": [
+        "employer minutes",
+        "provider minutes",
+        "traditional-worker minutes",
+        "executor occupied seconds"
+      ],
+      "token_rule": "Annual assumed aggregate token budgets * utilization minus initial and recurring token usage; no time-based quota claimed.",
+      "hybrid_setup_days": "Agent setup plus traditional setup, sequential.",
+      "traditional_setup_days": "human_setup_elapsed_workdays; no Agent setup."
+    }
+  },
+  "events": {
+    "intake": {
+      "label": "Brief clarification, supplied-source preparation and approval",
+      "employer_minutes": {
+        "briefing": 3,
+        "source_preparation": 4,
+        "approval": 1
+      },
+      "provider_operator_minutes": 1,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 0,
+      "executor_requests": 0,
+      "external_wait_seconds": 300,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "initial_attempt": {
+      "label": "Initial provider-orchestrated draft and specialist critique",
+      "employer_minutes": {},
+      "provider_operator_minutes": 0,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 2,
+          "input_tokens": 16000,
+          "output_tokens": 3000
+        },
+        "claude-opus-5.5": {
+          "calls": 1,
+          "input_tokens": 6000,
+          "output_tokens": 1000
+        }
+      },
+      "successful_web_search_calls": 2,
+      "executor_occupied_seconds": 120,
+      "executor_requests": 1,
+      "external_wait_seconds": 0,
+      "native_invocations": 1,
+      "production_attempts": 1,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "human_review": {
+      "label": "Competent human checks scope, passages, source identity and usability",
+      "employer_minutes": {
+        "independent_review": 6
+      },
+      "provider_operator_minutes": 0.5,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 0,
+      "executor_requests": 0,
+      "external_wait_seconds": 600,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "challenge_check": {
+      "label": "Verify the criticism before changing an artifact",
+      "employer_minutes": {
+        "challenge_adjudication": 2
+      },
+      "provider_operator_minutes": 1,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 1,
+          "input_tokens": 6000,
+          "output_tokens": 1500
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 90,
+      "executor_requests": 1,
+      "external_wait_seconds": 0,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "repair_attempt": {
+      "label": "Repair and deterministic verification",
+      "employer_minutes": {},
+      "provider_operator_minutes": 1,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 1,
+          "input_tokens": 10000,
+          "output_tokens": 2000
+        },
+        "claude-opus-5.5": {
+          "calls": 1,
+          "input_tokens": 8000,
+          "output_tokens": 2000
+        }
+      },
+      "successful_web_search_calls": 1,
+      "executor_occupied_seconds": 180,
+      "executor_requests": 1,
+      "external_wait_seconds": 0,
+      "native_invocations": 1,
+      "production_attempts": 1,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "rereview": {
+      "label": "Review corrected deliverable",
+      "employer_minutes": {
+        "independent_rereview": 4
+      },
+      "provider_operator_minutes": 0.5,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 0,
+      "executor_requests": 0,
+      "external_wait_seconds": 300,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "failed_infrastructure_attempt": {
+      "label": "Partially consumed attempt that does not complete",
+      "employer_minutes": {},
+      "provider_operator_minutes": 0,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 1,
+          "input_tokens": 5000,
+          "output_tokens": 500
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 60,
+      "executor_requests": 1,
+      "external_wait_seconds": 0,
+      "native_invocations": 0,
+      "production_attempts": 1,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "failure_diagnosis": {
+      "label": "Investigate failure and authorize a bounded retry",
+      "employer_minutes": {
+        "retry_approval": 1
+      },
+      "provider_operator_minutes": 2,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 0,
+      "executor_requests": 0,
+      "external_wait_seconds": 120,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "retry_wait": {
+      "label": "Backoff and queue before retry",
+      "employer_minutes": {},
+      "provider_operator_minutes": 0,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 0,
+      "executor_requests": 0,
+      "external_wait_seconds": 900,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "manual_specialist_rescue": {
+      "label": "Substantial human correction plus specialist assistance",
+      "employer_minutes": {
+        "manual_correction": 15
+      },
+      "provider_operator_minutes": 5,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 2,
+          "input_tokens": 20000,
+          "output_tokens": 6000
+        }
+      },
+      "successful_web_search_calls": 2,
+      "executor_occupied_seconds": 600,
+      "executor_requests": 1,
+      "external_wait_seconds": 0,
+      "native_invocations": 1,
+      "production_attempts": 1,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "completion": {
+      "label": "Deliver files and record accepted evidence",
+      "employer_minutes": {
+        "file_delivery": 1
+      },
+      "provider_operator_minutes": 0.5,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 10,
+      "executor_requests": 1,
+      "external_wait_seconds": 0,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "eligibility_check": {
+      "label": "Check unsupported request and stop before main work",
+      "employer_minutes": {},
+      "provider_operator_minutes": 1,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 1,
+          "input_tokens": 2000,
+          "output_tokens": 500
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 30,
+      "executor_requests": 1,
+      "external_wait_seconds": 0,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "refusal_closure": {
+      "label": "Explain refusal and preserve evidence",
+      "employer_minutes": {
+        "refusal_review": 2,
+        "file_delivery": 1
+      },
+      "provider_operator_minutes": 1,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 0,
+      "executor_requests": 0,
+      "external_wait_seconds": 0,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    },
+    "exhaustion_closure": {
+      "label": "Close rejected request after bounded rescue",
+      "employer_minutes": {
+        "rejection_review": 3,
+        "file_delivery": 1
+      },
+      "provider_operator_minutes": 2,
+      "model_usage": {
+        "claude-sonnet-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "claude-opus-5.5": {
+          "calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "successful_web_search_calls": 0,
+      "executor_occupied_seconds": 0,
+      "executor_requests": 0,
+      "external_wait_seconds": 0,
+      "native_invocations": 0,
+      "production_attempts": 0,
+      "quantity_status": "ASSUMED_PROSPECTIVE_EVENT_BUDGET",
+      "zero_rule": "An explicit zero means this event does not invoke that route/resource by design; it never fills an unknown observed quantity."
+    }
+  },
+  "branches": {
+    "direct_accept": {
+      "accepted": true,
+      "events": [
+        "intake",
+        "initial_attempt",
+        "human_review",
+        "completion"
+      ]
+    },
+    "model_repair_accept": {
+      "accepted": true,
+      "events": [
+        "intake",
+        "initial_attempt",
+        "human_review",
+        "challenge_check",
+        "repair_attempt",
+        "rereview",
+        "completion"
+      ]
+    },
+    "infrastructure_retry_accept": {
+      "accepted": true,
+      "events": [
+        "intake",
+        "failed_infrastructure_attempt",
+        "failure_diagnosis",
+        "retry_wait",
+        "initial_attempt",
+        "human_review",
+        "completion"
+      ]
+    },
+    "combined_rescue_accept": {
+      "accepted": true,
+      "events": [
+        "intake",
+        "failed_infrastructure_attempt",
+        "failure_diagnosis",
+        "retry_wait",
+        "initial_attempt",
+        "human_review",
+        "manual_specialist_rescue",
+        "rereview",
+        "completion"
+      ]
+    },
+    "final_rejection": {
+      "accepted": false,
+      "events": [
+        "intake",
+        "initial_attempt",
+        "human_review",
+        "challenge_check",
+        "repair_attempt",
+        "rereview",
+        "manual_specialist_rescue",
+        "rereview",
+        "exhaustion_closure"
+      ]
+    },
+    "early_refusal": {
+      "accepted": false,
+      "events": [
+        "intake",
+        "eligibility_check",
+        "refusal_closure"
+      ]
+    }
+  },
+  "maximum_production_attempts_per_request": 3,
+  "scenarios": {
+    "base": {
+      "label": "Base planning assumptions; not estimated or most likely",
+      "branch_weights": {
+        "direct_accept": 0.7,
+        "model_repair_accept": 0.15,
+        "infrastructure_retry_accept": 0.06,
+        "combined_rescue_accept": 0.04,
+        "final_rejection": 0.03,
+        "early_refusal": 0.02
+      },
+      "delivery_multipliers": {
+        "model_tokens": 1,
+        "human_minutes": 1,
+        "executor_occupancy": 1,
+        "external_wait": 1
+      },
+      "requested_demand": 1000,
+      "resource_utilization": 0.8,
+      "setup_elapsed_workdays": 10,
+      "initial_provider_hours": {
+        "requirements_setup": 8,
+        "deployment_configuration": 8,
+        "approved_executor_integration": 16,
+        "successful_capability_construction": 16,
+        "unsuccessful_capability_construction": 16,
+        "independent_qualification": 8
+      },
+      "initial_employer_hours": {
+        "onboarding_and_governance": 2
+      },
+      "monthly_provider_hours": {
+        "support": 1,
+        "runtime_dependency_maintenance": 2,
+        "capability_revalidation": 2,
+        "recovery_security_upkeep": 1,
+        "successful_refresh": 1,
+        "unsuccessful_improvement": 1
+      },
+      "monthly_employer_hours": {
+        "governance": 1
+      },
+      "initial_model_tokens": {
+        "claude-sonnet-5.5": {
+          "input_tokens": 500000,
+          "output_tokens": 100000
+        },
+        "claude-opus-5.5": {
+          "input_tokens": 250000,
+          "output_tokens": 50000
+        }
+      },
+      "monthly_model_tokens": {
+        "claude-sonnet-5.5": {
+          "input_tokens": 100000,
+          "output_tokens": 20000
+        },
+        "claude-opus-5.5": {
+          "input_tokens": 50000,
+          "output_tokens": 10000
+        }
+      },
+      "initial_search_calls": 100,
+      "monthly_search_calls": 20,
+      "initial_executor_seconds": 12000,
+      "monthly_executor_seconds": 3600,
+      "initial_executor_requests": 100,
+      "monthly_executor_requests": 40,
+      "monthly_cash_allowances_usd": {
+        "logging_monitoring": 10,
+        "connector_software_licenses": 10,
+        "insurance_compliance_other_overhead": 10
+      },
+      "shared_storage_gib": 1,
+      "artifact_gib_per_request": 0.01,
+      "operations_egress_allowance_usd_per_request": 0.02,
+      "nonrecoverable_nontechnical_tax_allowance_fraction": 0.05,
+      "human_correction_probability": 0.1,
+      "human_correction_minutes": 8,
+      "hybrid_handoff_employer_minutes": 5,
+      "human_initial_worker_setup_hours": 2,
+      "human_initial_employer_onboarding_hours": 1,
+      "human_monthly_worker_template_support_hours": 0.5,
+      "human_monthly_employer_governance_hours": 0.5,
+      "human_monthly_software_IT_allowance_usd": 15,
+      "human_setup_elapsed_workdays": 1
+    },
+    "conservative": {
+      "label": "Conservative joint workload/quality/utilization scenario",
+      "branch_weights": {
+        "direct_accept": 0.45,
+        "model_repair_accept": 0.2,
+        "infrastructure_retry_accept": 0.12,
+        "combined_rescue_accept": 0.08,
+        "final_rejection": 0.1,
+        "early_refusal": 0.05
+      },
+      "delivery_multipliers": {
+        "model_tokens": 2,
+        "human_minutes": 1.5,
+        "executor_occupancy": 1.5,
+        "external_wait": 2
+      },
+      "requested_demand": 300,
+      "resource_utilization": 0.6,
+      "setup_elapsed_workdays": 30,
+      "initial_provider_hours": {
+        "requirements_setup": 16,
+        "deployment_configuration": 16,
+        "approved_executor_integration": 40,
+        "successful_capability_construction": 40,
+        "unsuccessful_capability_construction": 48,
+        "independent_qualification": 24
+      },
+      "initial_employer_hours": {
+        "onboarding_and_governance": 4
+      },
+      "monthly_provider_hours": {
+        "support": 3,
+        "runtime_dependency_maintenance": 4,
+        "capability_revalidation": 4,
+        "recovery_security_upkeep": 2,
+        "successful_refresh": 2,
+        "unsuccessful_improvement": 3
+      },
+      "monthly_employer_hours": {
+        "governance": 2
+      },
+      "initial_model_tokens": {
+        "claude-sonnet-5.5": {
+          "input_tokens": 1000000,
+          "output_tokens": 200000
+        },
+        "claude-opus-5.5": {
+          "input_tokens": 500000,
+          "output_tokens": 100000
+        }
+      },
+      "monthly_model_tokens": {
+        "claude-sonnet-5.5": {
+          "input_tokens": 200000,
+          "output_tokens": 40000
+        },
+        "claude-opus-5.5": {
+          "input_tokens": 100000,
+          "output_tokens": 20000
+        }
+      },
+      "initial_search_calls": 200,
+      "monthly_search_calls": 40,
+      "initial_executor_seconds": 24000,
+      "monthly_executor_seconds": 7200,
+      "initial_executor_requests": 200,
+      "monthly_executor_requests": 80,
+      "monthly_cash_allowances_usd": {
+        "logging_monitoring": 25,
+        "connector_software_licenses": 25,
+        "insurance_compliance_other_overhead": 25
+      },
+      "shared_storage_gib": 5,
+      "artifact_gib_per_request": 0.025,
+      "operations_egress_allowance_usd_per_request": 0.05,
+      "nonrecoverable_nontechnical_tax_allowance_fraction": 0.1,
+      "human_correction_probability": 0.2,
+      "human_correction_minutes": 15,
+      "hybrid_handoff_employer_minutes": 10,
+      "human_initial_worker_setup_hours": 4,
+      "human_initial_employer_onboarding_hours": 2,
+      "human_monthly_worker_template_support_hours": 1,
+      "human_monthly_employer_governance_hours": 1,
+      "human_monthly_software_IT_allowance_usd": 25,
+      "human_setup_elapsed_workdays": 2
+    },
+    "stress": {
+      "label": "Stress: persistent hard work, repeated review, high upkeep and low demand",
+      "branch_weights": {
+        "direct_accept": 0.2,
+        "model_repair_accept": 0.2,
+        "infrastructure_retry_accept": 0.15,
+        "combined_rescue_accept": 0.1,
+        "final_rejection": 0.25,
+        "early_refusal": 0.1
+      },
+      "delivery_multipliers": {
+        "model_tokens": 4,
+        "human_minutes": 2.5,
+        "executor_occupancy": 3,
+        "external_wait": 4
+      },
+      "requested_demand": 100,
+      "resource_utilization": 0.4,
+      "setup_elapsed_workdays": 60,
+      "initial_provider_hours": {
+        "requirements_setup": 32,
+        "deployment_configuration": 32,
+        "approved_executor_integration": 80,
+        "successful_capability_construction": 80,
+        "unsuccessful_capability_construction": 120,
+        "independent_qualification": 48
+      },
+      "initial_employer_hours": {
+        "onboarding_and_governance": 8
+      },
+      "monthly_provider_hours": {
+        "support": 6,
+        "runtime_dependency_maintenance": 8,
+        "capability_revalidation": 8,
+        "recovery_security_upkeep": 4,
+        "successful_refresh": 4,
+        "unsuccessful_improvement": 6
+      },
+      "monthly_employer_hours": {
+        "governance": 4
+      },
+      "initial_model_tokens": {
+        "claude-sonnet-5.5": {
+          "input_tokens": 2000000,
+          "output_tokens": 400000
+        },
+        "claude-opus-5.5": {
+          "input_tokens": 1000000,
+          "output_tokens": 200000
+        }
+      },
+      "monthly_model_tokens": {
+        "claude-sonnet-5.5": {
+          "input_tokens": 400000,
+          "output_tokens": 80000
+        },
+        "claude-opus-5.5": {
+          "input_tokens": 200000,
+          "output_tokens": 40000
+        }
+      },
+      "initial_search_calls": 400,
+      "monthly_search_calls": 80,
+      "initial_executor_seconds": 48000,
+      "monthly_executor_seconds": 14400,
+      "initial_executor_requests": 400,
+      "monthly_executor_requests": 160,
+      "monthly_cash_allowances_usd": {
+        "logging_monitoring": 50,
+        "connector_software_licenses": 50,
+        "insurance_compliance_other_overhead": 50
+      },
+      "shared_storage_gib": 10,
+      "artifact_gib_per_request": 0.05,
+      "operations_egress_allowance_usd_per_request": 0.1,
+      "nonrecoverable_nontechnical_tax_allowance_fraction": 0.15,
+      "human_correction_probability": 0.3,
+      "human_correction_minutes": 30,
+      "hybrid_handoff_employer_minutes": 20,
+      "human_initial_worker_setup_hours": 8,
+      "human_initial_employer_onboarding_hours": 4,
+      "human_monthly_worker_template_support_hours": 2,
+      "human_monthly_employer_governance_hours": 2,
+      "human_monthly_software_IT_allowance_usd": 50,
+      "human_setup_elapsed_workdays": 4
+    }
+  },
+  "traditional": {
+    "final_acceptance_probability": 1,
+    "acceptance_status": "Favorable assumed competent-human completion; not a measurement.",
+    "productive_minutes": [
+      5,
+      15,
+      30,
+      60,
+      120
+    ],
+    "reference_productive_minutes": 30,
+    "productive_scope": "Source inspection, compiling/formatting brief and slides, and worker self-check; excludes separately charged client intake, independent review, correction and delivery.",
+    "common_employer_minutes": {
+      "briefing": 3,
+      "source_preparation": 4,
+      "approval": 1,
+      "independent_review": 6,
+      "file_delivery": 1
+    },
+    "rereview_employer_minutes_if_correction": 4,
+    "queue_wait_seconds": 600,
+    "correction_probability_and_minutes": "Scenario-specific fields; correction work is traditional worker time, rereview is employer time.",
+    "resource_allocation": "Traditional worker time has its own pool; employer intake/review uses the same employer pool as Agent comparison."
+  },
+  "hybrid": {
+    "enabled": true,
+    "human_rescue_final_acceptance_probability": 1,
+    "charge": "Every failed/refused Agent path plus scenario handoff employer minutes plus full traditional variable workflow; add traditional fixed readiness and ordinary-tool cost. No credit for prior failed Agent labor.",
+    "observed_rescues": null,
+    "setup_calendar": "Agent and human readiness delays are sequential; add both for first-commission latency and service-calendar bound.",
+    "human_worker_pool": "Full traditional production/correction minutes use the traditional-worker pool; employer handoff/intake/review uses employer pool.",
+    "break_even": "For fixed volume, hybrid A0+bA*t versus human H0+bH*t. Positive slope difference gives (A0-H0)/(bH-bA); equal/nonpositive slopes reported explicitly. Pure Agent has bA=0."
+  },
+  "one_way_sensitivities": {
+    "anchor": "US_office base scenario, annual cohort, traditional productive30min; only the named driver changes.",
+    "requested_reuse_volume": [
+      1,
+      10,
+      100,
+      1000,
+      10000
+    ],
+    "delivery_model_token_multiplier": [
+      0.5,
+      1,
+      3,
+      10,
+      30
+    ],
+    "employer_review_effort_multiplier": [
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "recurring_support_and_upkeep_multiplier": [
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "native_delivery_no_model_or_paid_search": {
+      "enabled": true,
+      "set_delivery_model_calls_and_tokens_to_zero": true,
+      "set_delivery_successful_paid_search_calls_to_zero": true,
+      "retain_all_positive_human_setup_integration_construction_review_maintenance_and_occupancy_assumptions": true,
+      "quality_probabilities_unchanged_for_sensitivity_only": "Not performance equivalence; real full-service quality remains unmeasured."
+    },
+    "unsuccessful_initial_construction_human_hours_multiplier": [
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "transform_scope": {
+      "requested_reuse_volume": "Change requested demand only; retain annual fixed horizon, all probabilities and resource budgets.",
+      "delivery_model_token_multiplier": "Multiply delivery input/output tokens only; retain calls, fees, fixed construction/maintenance tokens, latency and quality assumptions.",
+      "employer_review_effort_multiplier": "Multiply employer event fields independent_review, independent_rereview, challenge_adjudication, rejection_review and refusal_review; apply same factor to traditional independent review/rereview. Do not change source prep, productive duration, manual correction, fixed effort, waits or quality.",
+      "unsuccessful_initial_construction_human_hours_multiplier": "Multiply only initial_provider_hours.unsuccessful_capability_construction; initial shared model/tool budget remains unchanged and still fully charged.",
+      "recurring_support_and_upkeep_multiplier": "Multiply monthly provider/employer hours, monthly model tokens/search/executor usage and monthly cash allowances. Keep shared storage and per-request artifact retention unchanged. Human baseline recurring costs remain unchanged because this driver describes Agent upkeep.",
+      "native_delivery_no_model_or_paid_search": "Zero delivery model calls/input/output and successful paid search only; all fixed construction/upkeep and other delivery resources remain positively budgeted. No change to assumed quality/latency."
+    }
+  },
+  "tax_allowance_scope": "Scenario fraction applies to nonlabor technology/cash costs only; not wages or their benefits, not an official tax rate, and not a claim of actual tax liability.",
+  "unknown_observed_fields": {
+    "complete_historical_agent_cost": null,
+    "historical_authoring_model_usage": null,
+    "historical_authoring_human_minutes": null,
+    "actual_employer_attention": null,
+    "matched_human_productive_minutes": null,
+    "actual_provider_revenue": null,
+    "actual_cash_savings": null,
+    "field_acceptance_probability": null,
+    "deployed_executor_latency": null,
+    "undetected_material_error_probability": null,
+    "downstream_liability_expected_loss": null,
+    "field_total_economic_cost_including_unmodeled_consequences": null,
+    "actual_provider_capacity_and_rate_limits": null
+  },
+  "rationale": {
+    "branch_weights": "Declared joint planning assumptions to expose stable jobs, repair, transient failure, persistent difficulty and final failure; no empirical frequency claim.",
+    "event_token_and_time_budgets": "Inspectable prospective allowances for a small evidence pack; broad stress and one-way ranges acknowledge unmeasured model/orchestration usage.",
+    "fixed_hours": "Explicit engineering, unsuccessful search and qualification effort rather than assigning free retained tools; not historical authoring reconstruction.",
+    "demand_and_utilization": "Finite independently declared workload and usable capacity; no infinite-amortization assumption.",
+    "same_prices_for_roles": "Local employer/worker rate varies by price basis; a common disclosed U.S. professional provider-support cost avoids clerical pricing of engineering. This is a scenario geography choice, not an observed bill."
+  },
+  "evaluation_authorization": "Model implementation/run and derived scenario values prohibited until coordinator confirms public freeze hash.",
+  "price_bases": [
+    {
+      "id": "US_office",
+      "geography": "United States",
+      "currency": "USD",
+      "labor_rate_id": "us_office_admin_compensation",
+      "employer_load_multiplier": 1,
+      "primary": true,
+      "scope_limit": "Office/admin total compensation is the primary administrative-brief price basis; no matched task duration or field quality observation."
+    },
+    {
+      "id": "US_professional",
+      "currency": "USD",
+      "labor_rate_id": "us_professional_compensation",
+      "employer_load_multiplier": 1,
+      "scope_limit": "Broad professional total compensation, not a matched occupation or a service billing rate.",
+      "geography": "United States",
+      "primary": false
+    },
+    {
+      "id": "Ontario",
+      "currency": "CAD",
+      "labor_rate_id": "ca_on_technical_writer",
+      "employer_load_multiplier": 1.3,
+      "scope_limit": "Wage-only technical writer median; 1.30 load is assumed, not measured benefits.",
+      "geography": "Ontario, Canada",
+      "primary": false
+    },
+    {
+      "id": "EU",
+      "currency": "EUR",
+      "labor_rate_id": "eu_total_employer_cost",
+      "employer_load_multiplier": 1,
+      "scope_limit": "Covered-economy employer cost, not a matched technical-writer rate.",
+      "geography": "European Union",
+      "primary": false
+    }
+  ],
+  "provider_labor": {
+    "labor_rate_id": "us_professional_compensation",
+    "currency": "USD",
+    "employer_load_multiplier": 1,
+    "scope": "Same U.S.-based professional support/engineering cost basis for all examples; translate with fixed FX. A broad labor-cost proxy, not a contractor quote."
+  },
+  "material_consequence_boundary": {
+    "supported_scope": "Low-consequence administrative evidence draft, with competent review before use.",
+    "unsupported": [
+      "medical decisions",
+      "legal decisions",
+      "investment decisions",
+      "safety-critical decisions",
+      "autonomous external actions"
+    ],
+    "unknown_loss_not_zero": true,
+    "miscellaneous_allowance_is_not_liability_coverage": true,
+    "reported_total": "Modeled operational resource cost, not an empirical all-consequence field cost."
+  },
+  "human_queue_policy": "Traditional queue_wait_seconds is multiplied by scenario external_wait multiplier. Correction/rereview employer effort uses scenario human_minutes multiplier; productive t and explicit correction minutes are not multiplied again.",
+  "scaling_rules": "Delivery model_tokens multiplier applies to event token totals, not call counts. human_minutes multiplier applies to all event employer/provider minutes and traditional common employer/rereview minutes. executor_occupancy and external_wait multiply their event fields. Native measured subcomponent stays unscaled and included; native invocation counts do not change. Fixed initial/monthly scenario quantities are already explicit and receive no delivery multiplier.",
+  "model_execution_identity": {
+    "priced_names": [
+      "Claude Sonnet 5.5",
+      "Claude Opus 5.5"
+    ],
+    "actual_requested_model_id": null,
+    "actual_served_model_id": null,
+    "actual_usage_receipt": null,
+    "status": "No API deployment or invocation is performed. Published product-name tariffs are frozen; no actual served model or operational performance is asserted.",
+    "hypothetical_requested_api_ids": [
+      "claude-sonnet-5-5",
+      "claude-opus-5-5"
+    ]
+  }
+}

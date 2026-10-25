@@ -1,0 +1,67 @@
+{
+  "id": "source-synthesis-01",
+  "work_family": "source-synthesis",
+  "complexity": "low",
+  "brief": "Compile the explicitly requested passages from the frozen public source packets into a usable cited brief and presentation, preserving source and scope.",
+  "spec": {
+    "schema": "successor-workbench/v1",
+    "family": "evidence-brief",
+    "name": "source-synthesis-01",
+    "language": "en",
+    "owner": "public-research-study",
+    "rights": {
+      "dataClass": "public",
+      "source": "Shareable frozen study materials",
+      "license": "Apache-2.0"
+    },
+    "reviewMinutes": 10,
+    "inputs": {
+      "id": "source-synthesis-01",
+      "title": "Publication evidence brief · source-synthesis-01",
+      "source_packets": [
+        {
+          "id": "executor-scope",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/contrib/strategy_succession/transport/TRANSPORT.md",
+          "text": "This is an additive engineering contribution for the existing Strategy Succession\nowner. It does not change the frozen experiment, original Harness, Fleet,\npublication ownership or production authority. It is not repository maintenance\nor a general desktop executor.\n\nImport `SourceFile`, `Limits`, `ExecutorPolicy`, `create_strategy_app`. Supply the\nexisting configured `Journal`, the reviewed fixed worker instance, and a policy.\nDo not initialize another journal automatically or create a credential in this\ntransport. `create_strategy_app` reads the existing journal's `api.token`.",
+          "sha256": "ce4e4ace745470cb865ebfe2206a876f7fa5661f246fc4b95c22957cc549bffc"
+        },
+        {
+          "id": "paper-process",
+          "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f836f06e8351e64db1da770e16e304b5feb01f28/docs/agent/PAPER_UPLOADS.md",
+          "text": "The paper lane publishes research, not new software qualification. Existing\noriginals are immutable. Revised manuscripts need a new versioned ID and files.\nIt never compiles TeX, rewrites a PDF, runs manuscript code, moves a release tag,\nor changes an existing software archive.\n\n2. Save a small metadata file outside the repository, for example `paper.json`:",
+          "sha256": "e385b998724aee7d5fd98fe731b4668bf9d4ec13536abefc9ff7d6cef4ff21d2"
+        }
+      ],
+      "claims": [
+        {
+          "id": "paper-process-p1",
+          "source_id": "paper-process",
+          "quote": "2. Save a small metadata file outside the repository, for example `paper.json`:",
+          "required": true,
+          "section": "Paper publication"
+        },
+        {
+          "id": "paper-process-p0",
+          "source_id": "paper-process",
+          "quote": "The paper lane publishes research, not new software qualification. Existing\noriginals are immutable. Revised manuscripts need a new versioned ID and files.\nIt never compiles TeX, rewrites a PDF, runs manuscript code, moves a release tag,\nor changes an existing software archive.",
+          "required": true,
+          "section": "Paper publication"
+        },
+        {
+          "id": "executor-scope-p0",
+          "source_id": "executor-scope",
+          "quote": "This is an additive engineering contribution for the existing Strategy Succession\nowner. It does not change the frozen experiment, original Harness, Fleet,\npublication ownership or production authority. It is not repository maintenance\nor a general desktop executor.",
+          "required": true,
+          "section": "Executor boundary"
+        },
+        {
+          "id": "executor-scope-p1",
+          "source_id": "executor-scope",
+          "quote": "Import `SourceFile`, `Limits`, `ExecutorPolicy`, `create_strategy_app`. Supply the\nexisting configured `Journal`, the reviewed fixed worker instance, and a policy.\nDo not initialize another journal automatically or create a credential in this\ntransport. `create_strategy_app` reads the existing journal's `api.token`.",
+          "required": true,
+          "section": "Executor boundary"
+        }
+      ]
+    }
+  }
+}
