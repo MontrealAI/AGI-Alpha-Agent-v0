@@ -1,0 +1,571 @@
+{
+  "schema": "agi-alpha-capability-construction-freeze/v1",
+  "study": "Useful Work and Reusable Methods",
+  "status": "FROZEN_BEFORE_CONFIRMATION",
+  "frozen_utc": "2026-10-25T12:31:23.037036+00:00",
+  "source_commit": "f836f06e8351e64db1da770e16e304b5feb01f28",
+  "previous_edition_unchanged": true,
+  "seeds": {
+    "portfolio": 2026102507,
+    "planning": 2026102517,
+    "source_mechanism": 2026102527,
+    "review": 2026102537,
+    "controls": 2026102547,
+    "analysis_bootstrap": 2026102557,
+    "scale": 2026102507
+  },
+  "files": [
+    {
+      "path": "src/analyze.py",
+      "bytes": 6489,
+      "sha256": "86b04e4ae4bde82d5bc1e3d7f34e5c82792fe31bd66c9a183fd2ce57a9a5f6a8"
+    },
+    {
+      "path": "src/control_worker.mjs",
+      "bytes": 1066,
+      "sha256": "6590b6b52615ca97cf9bd60a3dd283063f8d1707b8a97d4da061bbd01acf1f7a"
+    },
+    {
+      "path": "src/controls_run.py",
+      "bytes": 7363,
+      "sha256": "4777b26309127a23822c20726ec47af07823cf5ee78560febc8dcd4a039e5036"
+    },
+    {
+      "path": "src/evidence.mjs",
+      "bytes": 14904,
+      "sha256": "6b321b730d2cfc7954e213bb28eb12c79086d4d07cf95f8b58ae683e9f4a1442"
+    },
+    {
+      "path": "src/generate_portfolio.py",
+      "bytes": 8915,
+      "sha256": "ef13b1727682190c1a981aba3d00eae40ae4a5b3e9ca6186b442f0b5df208064"
+    },
+    {
+      "path": "src/job_process.py",
+      "bytes": 284,
+      "sha256": "bc1aac47f01b4cbd3b6768eefaa6b897a3197add158911c148029be1a5cada13"
+    },
+    {
+      "path": "src/mechanism_run.py",
+      "bytes": 9226,
+      "sha256": "2d99e744a7e0a758d3eda6762f6a2ba3ca2f0a33625e57d07ad440ab049135ea"
+    },
+    {
+      "path": "src/review_worker.mjs",
+      "bytes": 671,
+      "sha256": "43e6bd521d08620ad832052cdbd7f72d8a68fabff1e469291459e3b33f565c72"
+    },
+    {
+      "path": "src/run_portfolio.py",
+      "bytes": 5767,
+      "sha256": "e6d95075b30fedf34f3c7af80988fcb415379141728842c1da2c5790a313cdf6"
+    },
+    {
+      "path": "src/scale_run.py",
+      "bytes": 5185,
+      "sha256": "441b55181d93e332bc83eb3175bee64cbeddf809b76c28c89e999c43a33aeb83"
+    },
+    {
+      "path": "src/worker.mjs",
+      "bytes": 3498,
+      "sha256": "dfb9d68b3d2e6ba1e5dead1aa9aa82d21aeb2a4ead1ca1cbdb4902ed3e4a1030"
+    },
+    {
+      "path": "protocol/INDEPENDENT_ACCEPTANCE.md",
+      "bytes": 4669,
+      "sha256": "d8fd62024ca6fce5f1101f527d76b62dc59b9cd9283157d2e732d3e5650957d4"
+    },
+    {
+      "path": "protocol/PLANNING_PROTOCOL.md",
+      "bytes": 7745,
+      "sha256": "ea176c4bd72184393b30785727210227a578b38e05b23c778753237cd950b41e"
+    },
+    {
+      "path": "protocol/PROTOCOL.md",
+      "bytes": 12149,
+      "sha256": "7b2b6d70978ea382588fc6f7a5f81e8e3899d0a26fbacefec33350251584b45a"
+    },
+    {
+      "path": "protocol/REVIEW_PROTOCOL.md",
+      "bytes": 2892,
+      "sha256": "193d4235485c937e0bde4be4ee5b5e63010d91c45566de80932f497fbaa946ff"
+    },
+    {
+      "path": "evaluation/economics_method_review.json",
+      "bytes": 11907,
+      "sha256": "d606a0d3e88a51c8512bc53f707e7ff32a44725d0360829259e8a1bfacf1a07f"
+    },
+    {
+      "path": "evaluation/economics_method_review_disposition.json",
+      "bytes": 5296,
+      "sha256": "1dda3d449db6da1d0334b1c5260118e6e73842081b69ac1a4e65694537dff613"
+    },
+    {
+      "path": "evaluation/evaluator_selfcheck.py",
+      "bytes": 4428,
+      "sha256": "278f909a4666bc8b99c6b36ace9f3dab1af100ff476012551e1fc06da81a1b63"
+    },
+    {
+      "path": "evaluation/evidence_oracle.py",
+      "bytes": 9563,
+      "sha256": "c4dd5754b071c72626c3f607221b492358ea47b2ab7d460957cff8b2389dc5d8"
+    },
+    {
+      "path": "evaluation/native_oracle.py",
+      "bytes": 14627,
+      "sha256": "d346da3979be5910d25d16dc2c70d0ae7b981bebb1986bd80f5d3bfcf4422190"
+    },
+    {
+      "path": "evaluation/plan_oracle.py",
+      "bytes": 11706,
+      "sha256": "5e4f66d892c746cdf84a94fb6af351553a17accf9d5974ae6ef58cf5a172b31f"
+    },
+    {
+      "path": "evaluation/planning_generator.py",
+      "bytes": 7802,
+      "sha256": "8eab60374644333f223669c0d67210ba9e0bc7d96658ba70d7c5aa7ed38e7b56"
+    },
+    {
+      "path": "evaluation/planning_run.py",
+      "bytes": 17104,
+      "sha256": "662cca52feb72de3d9581f0ace1dc7275470bb9ae9bac7c663d8b5bb7e13fb79"
+    },
+    {
+      "path": "evaluation/review_run.py",
+      "bytes": 13562,
+      "sha256": "8f2d895a2aa61fe3f1f69b6ea0d418c1a1811f92c8f012c17926dfc93bf83ffb"
+    },
+    {
+      "path": "evaluation/summarize_planning.py",
+      "bytes": 9200,
+      "sha256": "67d5dc9f633448e9f7acb3bc2dc3c2a238c334b5559002aa9b334abafa12cb9a"
+    },
+    {
+      "path": "economics/ECONOMICS.md",
+      "bytes": 15263,
+      "sha256": "bdc5d9acf0f0ef483afc64bb409162737d147a241f75dcf257bf32808820ff55"
+    },
+    {
+      "path": "economics/INPUTS_SHA256.json",
+      "bytes": 1163,
+      "sha256": "0658f087fd42c96923bf1b562ffe0833c256e682dbf1de3f25a7e0b5570bc1fa"
+    },
+    {
+      "path": "economics/LABOR_RATES.md",
+      "bytes": 5990,
+      "sha256": "8686d5e5e7ebd96bb72172f069f32a8343eeca8a671de329fee25ec5ec47c775"
+    },
+    {
+      "path": "economics/PHYSICAL_PATHWAYS.md",
+      "bytes": 4599,
+      "sha256": "d602e6179c20392e87e4142ae5cd65e45b9fce0d4d5cea5ef813145f3f7f9d39"
+    },
+    {
+      "path": "economics/PROSPECTIVE_ECONOMICS.md",
+      "bytes": 7274,
+      "sha256": "5507962b56106b65e30d26c665e8bf44362def544979e3d048f4a74c9121089f"
+    },
+    {
+      "path": "economics/VALIDATION.json",
+      "bytes": 223885,
+      "sha256": "d277a4e73950103f5037defc3fd2a39ba8db73b2ba2d8569da72b811fbf0409c"
+    },
+    {
+      "path": "economics/bibliography.bib",
+      "bytes": 12970,
+      "sha256": "537696075e98561fc19b8c7561addc3373f3e9c6f3bbf8a9a45a54a00f9577fa"
+    },
+    {
+      "path": "economics/build_inputs.py",
+      "bytes": 13763,
+      "sha256": "f1799d263b17361d4bff327669c148b214818297ba80e019fdc6163fd595ea72"
+    },
+    {
+      "path": "economics/economic_results.json",
+      "bytes": 1968500,
+      "sha256": "673201d4a9ad821e78fe26f3ee6177f1c13c26c89f9069fe3268030606644713"
+    },
+    {
+      "path": "economics/family_matrix.json",
+      "bytes": 4226,
+      "sha256": "7844adc2bc30c49bade7c3d4a6a7c73df189773402d392fcf58464ed1eb413aa"
+    },
+    {
+      "path": "economics/labor_rates.tex",
+      "bytes": 1970,
+      "sha256": "cd66282ac09d20b0515ab490c0d78e39c5f1a4a3c52e90d41736123a29ba7146"
+    },
+    {
+      "path": "economics/model.py",
+      "bytes": 13354,
+      "sha256": "aae464cc0be150b4c4befe76a43bc6f12f26f8697aa5fd57f897c5dfa34a45c3"
+    },
+    {
+      "path": "economics/physical_pathways.tex",
+      "bytes": 2018,
+      "sha256": "7daeef309b7ff0b2fe1d8abcd018df490c506289b80fe22c19f2338dbdb1deb5"
+    },
+    {
+      "path": "economics/rate_matrix.json",
+      "bytes": 34738,
+      "sha256": "3731ac575431eb16f9e86a8112e27f09f7833822a2cfd80b340fc2ef1518bc34"
+    },
+    {
+      "path": "economics/scenario_inputs.json",
+      "bytes": 10375,
+      "sha256": "2b375dcaf3930b3ad85f0d1a884f976759e760ec20bc1e758159ffef88b56a42"
+    },
+    {
+      "path": "economics/sources/expanded_source_register.json",
+      "bytes": 12330,
+      "sha256": "04c7874d7498bde7bbeb569d6f483348fa0558dfae14dccb95c0fa7563e61eec"
+    },
+    {
+      "path": "economics/sources/prior_human_evidence.md",
+      "bytes": 7334,
+      "sha256": "d89a57865da1d72f39637917b0f5cc2f5146426f3904c35bfbd80fbf98316b18"
+    },
+    {
+      "path": "economics/sources/prior_human_market_benchmarks.json",
+      "bytes": 17074,
+      "sha256": "a1aa19dcdfaa92c5e82a7c9f855bd78421581d9ceba4d1532d507177b62be108"
+    },
+    {
+      "path": "economics/sources/prior_source_register.json",
+      "bytes": 10360,
+      "sha256": "237f05e836d6f6a5201659e8f7b634a3c3a1913580d94949a5f08c20446d9414"
+    },
+    {
+      "path": "economics/validate.py",
+      "bytes": 4283,
+      "sha256": "bbbbe0bb200c2f0f64266ef2cd98b06f7390eab39af743dd4892934c796a0436"
+    },
+    {
+      "path": "sources/ENVIRONMENT.json",
+      "bytes": 767,
+      "sha256": "5ea0b43912a0c9f06f506437fa22aa66e5bc558c8c4d1655bd059ee1b21f8e49"
+    },
+    {
+      "path": "sources/HISTORICAL_REPOSITORIES.json",
+      "bytes": 2467,
+      "sha256": "208bbc298526474d9c7557377fd5af6d7ba5bc1e0f1d499ec1cfb39a46a2c509"
+    },
+    {
+      "path": "sources/HISTORICAL_SOURCE_AUDIT.md",
+      "bytes": 15628,
+      "sha256": "192a55460aff1117f6a4447848f970277eaf884e01a7e2ac7e9bd64d74524e6e"
+    },
+    {
+      "path": "sources/PREVIOUS_EDITION_PRESERVED.json",
+      "bytes": 6909,
+      "sha256": "346f52128dd5216647a4b458b6ee2a44813428cca85d078fe3e507c57ab5aa06"
+    },
+    {
+      "path": "sources/executor-scope.txt",
+      "bytes": 8828,
+      "sha256": "7e4f6ee26513eac0da110899d0fcaa4f5877ee68f0656f729e1e092b5f890d10"
+    },
+    {
+      "path": "sources/operator.txt",
+      "bytes": 9142,
+      "sha256": "f42b8b3e2396b62e90174b0b85d564df50a02051edf6ae97b46365bca3fe4885"
+    },
+    {
+      "path": "sources/paper-process.txt",
+      "bytes": 16874,
+      "sha256": "00729ee5279cb83b0ee9d201685d45c08aedca5c4200063e719574e4662bdfb0"
+    },
+    {
+      "path": "sources/release-policy.txt",
+      "bytes": 4615,
+      "sha256": "ddabc575d025d5229ec6131a352675a0404f11c67e677f799b8387294a3c5c7f"
+    },
+    {
+      "path": "sources/source_packets.json",
+      "bytes": 33052,
+      "sha256": "009b867522a21d620eb24c248a2a2aed68e357ca05a9faa5385f4e5432a17745"
+    },
+    {
+      "path": "sources/strategy-scope.txt",
+      "bytes": 6003,
+      "sha256": "f23e64947eef896849c85c5488484d3a26f18524452aa1d8752a8da5b58c9107"
+    },
+    {
+      "path": "sources/workbench.txt",
+      "bytes": 1443,
+      "sha256": "83a4df7784fe1dff72079b6d70b207363b31845516dff413ad39d2e3dc0d7c25"
+    },
+    {
+      "path": "upstream/AGENTS.md",
+      "bytes": 27763,
+      "sha256": "a85aa6dbb13170a19f315313ed71ebf1c2f0aa4ecbbfd1eb82daaeb80f59bbe3"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/__init__.py",
+      "bytes": 1452,
+      "sha256": "c8a704538ef30d081962ab5cf5360306627a8928823699a87c5bd282806f3892"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/__init__.py",
+      "bytes": 106,
+      "sha256": "b27148c349dd088377d90c6502c1a74d093f5b69d3e3642c55686fded90c53bd"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/__init__.py",
+      "bytes": 254,
+      "sha256": "58936175f8b9734cee347670c38f5fcf1e89fadb2d8d4adaffa522066501a1fa"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/models.py",
+      "bytes": 8098,
+      "sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/store.py",
+      "bytes": 27752,
+      "sha256": "12ce595dc0277a68c8aadf2b0a6f25edb7ece892bba6a5d07f0781d8c82820aa"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/__init__.py",
+      "bytes": 118,
+      "sha256": "d829ad18f81fdc026e820472a06837cf49acf4c577a33044b50514d566553771"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/protocol.py",
+      "bytes": 37652,
+      "sha256": "25981edaa1f84e4b85a8ceaa655054230feda5a8f7b2adb06bd7893eda9cdbbd"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/signatures.py",
+      "bytes": 2490,
+      "sha256": "044f32c7d805876fb4c97f90cc60bc33f461d0d8569c462fcb763703ef457386"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/state.py",
+      "bytes": 64367,
+      "sha256": "048772bb3c311a71b19402f816f7bfbed69f80d1bc619407afb4fadedf026241"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/transport.py",
+      "bytes": 5626,
+      "sha256": "ef3877e00b94395fd72a921451d04bfa8eb187fd7b5b735dbdce659e7fbe42c4"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/trust.py",
+      "bytes": 13264,
+      "sha256": "f1aae20d7ddf8e97ff9eadf9411dae6dea3c8dfd72dc04940341227e6698684e"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/workbench.py",
+      "bytes": 18503,
+      "sha256": "87ad9f365ebf1b5c1e93edc275e6fe933b6c247e51b848b52dc66c34344a8492"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/workbench_sources.json",
+      "bytes": 996,
+      "sha256": "34e704e73188cfa12f5ce857aed6045b8cd77929b6b5fd531ef2e9a53984a4af"
+    },
+    {
+      "path": "upstream/alpha_factory_v1/core/runtime/successor/workbench_worker.mjs",
+      "bytes": 105414,
+      "sha256": "ee450fb1c868f7c0584dda776d717672f798eac23491baeed3dbab55b1f4407b"
+    },
+    {
+      "path": "upstream/docs/assets/successor/engine.mjs",
+      "bytes": 22341,
+      "sha256": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488"
+    },
+    {
+      "path": "upstream/examples/build-successor/model.mjs",
+      "bytes": 13848,
+      "sha256": "8ea94108ef2ed27bce0fcff0b5d312f2e8f6db6584246cc66ab8c1c8d9281175"
+    },
+    {
+      "path": "upstream/examples/build-successor/vendor/agijobs/compiler.mjs",
+      "bytes": 13787,
+      "sha256": "5e4fc86d78af7a22e915d8b19803fc219cb68b9b73201f47cf1f643f19380762"
+    },
+    {
+      "path": "upstream/examples/build-successor/vendor/agijobs/domain.mjs",
+      "bytes": 17209,
+      "sha256": "2869bb750a408e12ada19f6d0b216d47c3b9f67fc66039db4372dae8430e47a3"
+    },
+    {
+      "path": "upstream/examples/build-successor/vendor/agijobs/integrity.mjs",
+      "bytes": 3776,
+      "sha256": "164000134cc9c8b54209c420a348e3e5c324ebf7ff8f71fc84dc44812345c428"
+    },
+    {
+      "path": "upstream/examples/build-successor/vendor/agijobs/templates.mjs",
+      "bytes": 6313,
+      "sha256": "bc035b1c38b36d2db24031ac92fb193946df9cf4f180120394506a8802be2b31"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/capability.mjs",
+      "bytes": 6333,
+      "sha256": "99252c670208f7a5d4017a437a6fd2f28b586fe44582b4b35b1ddc128210c360"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/cli.mjs",
+      "bytes": 6565,
+      "sha256": "b0282dc9079829daea9cf1b4a14c21290ef05af1a1e0f7a9858c2faf3fda0dcb"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/cli.test.mjs",
+      "bytes": 5982,
+      "sha256": "acbdf5cab4df19ec68b4ee4c212509a1fad45b8858413803424eea1349e12751"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/computer.mjs",
+      "bytes": 23024,
+      "sha256": "496e8ba214acff9a4460adc77fcc291f7c7960ac697741d704bb687261580947"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/continuity.mjs",
+      "bytes": 16663,
+      "sha256": "0b13673d291a6a76618f3c289e234bfdc238acad0a8bb154a4f0a67e69ed8e1e"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/deployment.json",
+      "bytes": 12322,
+      "sha256": "705ba66766eeb19ca461828c8afb9ee5d74c6dc745e278911dafbabce5554304"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/engine.mjs",
+      "bytes": 26409,
+      "sha256": "09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/learning.mjs",
+      "bytes": 3335,
+      "sha256": "6cc68c0f03559bb1f3af5489d975a45a0081822e09ef53c14986f1621a206d69"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/project.mjs",
+      "bytes": 15189,
+      "sha256": "9ea8c39f87d894e79c3e64cc66d3acea55ec30eb7737ef461b14abfb2aabde86"
+    },
+    {
+      "path": "upstream/examples/successor-alpha/research.mjs",
+      "bytes": 27959,
+      "sha256": "cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a"
+    },
+    {
+      "path": "upstream/examples/successor-workbench/engine.mjs",
+      "bytes": 26854,
+      "sha256": "f36f4c3fa45124901755bbb530a8161e98c164f5a66e9b8f932548f5286c93d7"
+    },
+    {
+      "path": "upstream/examples/successor-workbench/mission-record.mjs",
+      "bytes": 18652,
+      "sha256": "e80338a4c89905e33b6856189080fd22593a7208b078ddf49a58b296b459ba0f"
+    },
+    {
+      "path": "upstream/examples/successor-workbench/missions/public-data.json",
+      "bytes": 433,
+      "sha256": "4894036ffffb3ec57a677150bd34c435889adad0f5678b27391c57299d18e994"
+    },
+    {
+      "path": "upstream/examples/ti-guide/guide.mjs",
+      "bytes": 8721,
+      "sha256": "327ca9f977f2b860546cee3190147305fd43fc19c8d16d3bf526e81a550f15e2"
+    },
+    {
+      "path": "strategy_worker/SOURCE_FILES.json",
+      "bytes": 3205,
+      "sha256": "432e5f4f3eb38ba3982dabdc74f8b8ec48fef6ed6bb56215f118ed1220330073"
+    },
+    {
+      "path": "strategy_worker/fixed_worker.mjs",
+      "bytes": 37165,
+      "sha256": "76499ced587588942fddbea1b1d22c8f0e8e5c51d627bf9cf86f79b7a8647164"
+    },
+    {
+      "path": "strategy_worker/fixed_worker.py",
+      "bytes": 18737,
+      "sha256": "fdb1675be47387eb64b4e02040d3b7766b2dd4f702a2e3976bdcba4846584a94"
+    },
+    {
+      "path": "strategy_worker/native_repair.py",
+      "bytes": 8868,
+      "sha256": "cafd29ef8b0217b9640209ef088b2038c47a68db14df85422df183694b603f0f"
+    },
+    {
+      "path": "strategy_worker/python_bridge.py",
+      "bytes": 1537,
+      "sha256": "81ab6126fd56f48c3cf097b44e8a5bf2734cb1c730807ed97eee26d1dfbadc9a"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/adapter.mjs",
+      "bytes": 5625,
+      "sha256": "5051d9d08068c22f5892cea8649c8dccece065763e8f68043d027ee2a0cb6d4b"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/binding.mjs",
+      "bytes": 261,
+      "sha256": "3afe7da49b0becff2389f8cb8c025d3d58f69f27df3c8b640c2c66af60422e20"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/core.mjs",
+      "bytes": 18368,
+      "sha256": "9bba17b000c2ae6baa401d2f9a36a4391786d2e31d13e6ff5612f6573733459c"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/learning.mjs",
+      "bytes": 7441,
+      "sha256": "06a09e324db72c990688de9504a4cedc6867931187d117b53ea762f1c2d70da0"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/specialist.py",
+      "bytes": 5347,
+      "sha256": "f799ce9220b091007a2702f5f4ce01983b9675bae6dd830fa3da37e1ade36a88"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/docs/assets/successor/engine.mjs",
+      "bytes": 22341,
+      "sha256": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/docs/assets/transformational-intelligence/source-understanding.mjs",
+      "bytes": 10857,
+      "sha256": "087f5858eeffe92344939b5be02ce68e378fe3b615da7bb4910a095eea07f752"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/examples/build-successor/model.mjs",
+      "bytes": 13848,
+      "sha256": "8ea94108ef2ed27bce0fcff0b5d312f2e8f6db6584246cc66ab8c1c8d9281175"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/compiler.mjs",
+      "bytes": 13787,
+      "sha256": "5e4fc86d78af7a22e915d8b19803fc219cb68b9b73201f47cf1f643f19380762"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/domain.mjs",
+      "bytes": 17209,
+      "sha256": "2869bb750a408e12ada19f6d0b216d47c3b9f67fc66039db4372dae8430e47a3"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/integrity.mjs",
+      "bytes": 3776,
+      "sha256": "164000134cc9c8b54209c420a348e3e5c324ebf7ff8f71fc84dc44812345c428"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/examples/build-successor/vendor/agijobs/templates.mjs",
+      "bytes": 6313,
+      "sha256": "bc035b1c38b36d2db24031ac92fb193946df9cf4f180120394506a8802be2b31"
+    },
+    {
+      "path": "strategy_worker/scientific/companion/vendor/examples/successor-workbench/engine.mjs",
+      "bytes": 26854,
+      "sha256": "f36f4c3fa45124901755bbb530a8161e98c164f5a66e9b8f932548f5286c93d7"
+    },
+    {
+      "path": "strategy_worker/scientific/review/check.py",
+      "bytes": 19416,
+      "sha256": "1733a8d9910e4a2a462cc5dd1c0acd78fd7af629bb4f1ab02facf7b53f8de76c"
+    }
+  ],
+  "confirmation_outputs_generated": false,
+  "cost_basis": "Market-data comparison with material unmeasured full costs; no new human trial or fabricated timings"
+}
