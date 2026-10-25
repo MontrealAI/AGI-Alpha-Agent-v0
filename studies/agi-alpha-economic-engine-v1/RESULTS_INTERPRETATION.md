@@ -1,8 +1,18 @@
 # Results interpretation: cash, reinvestment and source-specific settlement
 
+> **Publication-only link correction.** This public copy corrects the cash-results link for the published file layout; all scientific values, interpretations and result identities are unchanged. The original `reinvestment_amendment_v1/RESULTS_INTERPRETATION.md` remains unmodified in the [sealed source archive](AGI_ALPHA_Economic_Engine_Amendment_v1_Source.tar.xz). The full cash JSON is an archive member, not a loose Git file.
+
+To obtain that exact JSON after downloading the archive:
+
+```sh
+tar -xJf AGI_ALPHA_Economic_Engine_Amendment_v1_Source.tar.xz reinvestment_amendment_v1/outputs/run-002/results.json
+```
+
+Its SHA-256 is `e194f26361e69549b0e29181f2716e4229c63122eecc9b7c72307b4f48dc44eb`. The archive SHA-256 is `4d8dbc66cd96d0d28d0edf2a1ef46b1905fa4e3b319c2113fd13fc8b2ffb428d`.
+
 **Status: audited simulation, not observed business operation.** The [frozen protocol](PROTOCOL.md) was publicly fixed at [commit 76ba784](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/commit/76ba78492da893b235b071cb0a61cf3608f9db37) before execution. The 144 primary cash paths, 32 predeclared demand sensitivities, 27 token-realization rows and nine failure examples now have [independent arithmetic review](evaluation/INDEPENDENT_AUDIT.json): 1,288,965 comparisons, zero remaining discrepancies. Those checks are repeated equation, field and ledger comparisons, not independent experiments or acceptance trials. This report only describes existing audited rows; it adds no scenario, parameter or new performance result.
 
-The [cash results](outputs/run-002/results.json), [token results](outputs/token-run-002/token_waterfalls.json), [scorecard](SCORECARD.json) and [CSV ledgers](outputs/run-002/results_summary.csv) expose every case. The preserved first run and [reporting revision](REPORTING_REVISION.json) show that the revision changed reporting boundaries without changing financial paths.
+The [cash results in the source archive](AGI_ALPHA_Economic_Engine_Amendment_v1_Source.tar.xz) (extract `reinvestment_amendment_v1/outputs/run-002/results.json`), [token results](outputs/token-run-002/token_waterfalls.json), [scorecard](SCORECARD.json) and [CSV ledgers](outputs/run-002/results_summary.csv) expose every case. The preserved first run and [reporting revision](REPORTING_REVISION.json) show that the revision changed reporting boundaries without changing financial paths.
 
 ## 1. Provider viability is separate from customer savings
 
