@@ -1,0 +1,49 @@
+{
+  "schema": "agi-alpha-intake-transfer-market-protocol/v1",
+  "status": "PROSPECTIVE_DESIGN_BEFORE_PRODUCTION_BRIDGE_AND_MARKET_OUTCOMES",
+  "primary_execution_freeze_sha256": "7f505b229212908d32f05b69d7016946a71356261ad88826e52ac5dccbc7493e",
+  "seedFirst": 3001,
+  "seedCount": 8,
+  "scenarios": 166,
+  "primaryControls": 24,
+  "conditionalGrid": 120,
+  "conditionalStresses": 22,
+  "plannedPairedWorlds": 1328,
+  "plannedEnterpriseHistories": 3984,
+  "pricing": {
+    "policy": "fixed",
+    "targetCents": 2000,
+    "retainedCostFloorCentsAboveNominalCost": 100,
+    "stressTargetsCents": [500,1000],
+    "reason": "The earlier empirical pricing defect is already known. This fixed policy is declared before the new outcomes, not optimized on them. Actual offers and invoice prices, not target labels alone, will be reported."
+  },
+  "conditionalGridDesign": {
+    "commonNonmodelNominalCents": 500,
+    "unknownModelStageCentsForBothAandB": [0,25,100,500,1500],
+    "runtimeModelChargeForC": 0,
+    "completeIncrementalReconstructionCents": [2500,10000,50000],
+    "integrationCents": [0,1000],
+    "arrivalProbability": [0.25,0.5],
+    "choiceModel": ["deterministic","logit"],
+    "allMoneyBasis": "Explicit hypothetical envelopes; actual complete source-intake, construction and authoring bills remain unknown.",
+    "completeScopeRequirement": "C must independently complete every registered mission at the same accepted scope. Partial outputs, refusals or subsets cannot receive the zero-runtime-model treatment by silent narrowing.",
+    "modelStageRequirement": "Executed evidence must show a model/curator intake stage in A, model extraction in B and no runtime model call in C. The unknown total stage charge is common to A/B. No B-specific time or quality advantage is granted."
+  },
+  "conditionalStressSlice": {
+    "selection": "All 11 nonreference registered stresses, both buyer rules",
+    "modelStageCents": 500,
+    "completeReconstructionCents": 10000,
+    "integrationCents": 0,
+    "arrivalProbability": 0.5,
+    "status": "Prespecified condition, not a selected successful cell"
+  },
+  "primaryMechanism": "Same complete nominal cost for all arms, zero asserted human saving and no field-quality, customer-effort, integration, trust or demand premium. This is a no-demonstrated-monetized-benefit control, not empirical proof that benefits are zero.",
+  "financialMechanism": "Finite initial cash and existing reserves. Only currently collected operating surplus net of costs, obligations and reserves may pay for prospective reconstruction of the exact tested asset. Initial capital and receivables cannot be relabeled earned financing.",
+  "fullCostBoundary": "Each construction envelope includes discovery, all authoring/model charges, failed candidates, checking, corrections, integration and uncertain shared allocation. It is neither a measured total nor an established upper bound. Nominal delivery includes routine verification; the existing failure multiplier separately charges failed-work corrections. No elapsed agent time is converted into a human wage bill.",
+  "scopeRefusal": "If equivalent complete production or the model-stage distinction fails, preserve the failed gate and do not run or substitute a narrowed scenario campaign. Any follow-up requires a separate protocol decision with the root, preserving this original design.",
+  "comparisons": ["B-A enterprise economic value","C-A enterprise economic value","B-C enterprise economic value","exact-asset cost repayment","earned-funded adoption","cash insolvency","nominal price versus actual offers","accepted equivalent work"],
+  "pairedDraws": "Same seed and semantic keys for A/B/C; original market generator unchanged.",
+  "inference": "Descriptive model-conditional means and ranges; 1.96 SD/sqrt(8) Monte Carlo intervals are not field confidence intervals or correction for uncertain assumptions.",
+  "nextInvestment": "No separate second tested asset supplied; retain reserves. Positive cash alone is not another capability cycle.",
+  "stopping": "Execute all admitted registered cells once; preserve partial failures, refusals and every unfavorable outcome. No price tuning or confirmation-set reuse."
+}

@@ -1,0 +1,162 @@
+{
+  "schema": "agi-alpha-curator-action-ledger/v1",
+  "arm": "A",
+  "curator": "current-session AI agent",
+  "laborClassification": "Not observed human labor",
+  "firstExactObservedTimestampUtc": "2026-10-26T17:21:37.797902+00:00",
+  "selectionWorkBeganBeforeFirstExactObservedTimestamp": true,
+  "workStartUtc": null,
+  "sealedUtc": "2026-10-26T17:23:37.480166+00:00",
+  "knownToolCountsThroughSeal": {
+    "functions.exec": 9,
+    "exec_command": 16,
+    "apply_patch": 2,
+    "collaboration.send_message": 1
+  },
+  "countBoundary": "Includes this sealing action; excludes final readiness delivery and any subsequent parent evaluation. Counts are actions, not human minutes.",
+  "sourceFilesRead": [
+    "study/protocol/primary-protocol.json",
+    "study/vendor/product/contrib/upgrade_decision/core.py",
+    "study/inputs/T01.json",
+    "study/inputs/T02.json",
+    "study/inputs/T03.json",
+    "study/inputs/T04.json",
+    "study/inputs/T05.json",
+    "study/inputs/T06.json"
+  ],
+  "externalNetworkActions": 0,
+  "inspectedSourceExecutions": 0,
+  "coreOutcomeExecutions": 0,
+  "schemaValidationPasses": 1,
+  "requestFirstAttempts": 6,
+  "schemaCorrections": 0,
+  "modelBillingUsd": null,
+  "modelInferenceTokens": null,
+  "activeHumanDurationSeconds": null,
+  "unknownReasons": {
+    "modelBillingUsd": "No actual model/inference invoice or meter supplied",
+    "modelInferenceTokens": "Not metered by this curator role",
+    "activeHumanDurationSeconds": "Current-session AI curation is not observed human work"
+  },
+  "actions": [
+    {
+      "ordinal": 1,
+      "operation": "List allowed protocol, core-directory and raw-input files; obtain cwd",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 1
+      },
+      "commandReceipts": [],
+      "status": "completed",
+      "timestampUtc": null
+    },
+    {
+      "ordinal": 2,
+      "operation": "Read primary protocol, unchanged core, full raw inputs in one parallel batch",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 3
+      },
+      "commandReceipts": [
+        "621738",
+        "840524"
+      ],
+      "status": "completed-output-truncated",
+      "note": "The combined output exceeded display budget. Full raw source output was truncated; later targeted source inspections supplied evidence. No source or outcome alteration followed.",
+      "timestampUtc": null
+    },
+    {
+      "ordinal": 3,
+      "operation": "Read core schema/location helpers and raw task metadata without source bodies",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 2
+      },
+      "commandReceipts": [
+        "b193ec",
+        "3cd66a"
+      ],
+      "status": "completed",
+      "timestampUtc": null
+    },
+    {
+      "ordinal": 4,
+      "operation": "Read core mapping restrictions; list imports, scoped source text and every explicit Call node by stdlib AST",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 2
+      },
+      "commandReceipts": [
+        "c9517a",
+        "edb2fa"
+      ],
+      "status": "completed",
+      "timestampUtc": null
+    },
+    {
+      "ordinal": 5,
+      "operation": "Inspect manually identified HTTPX and SciPy declarations, export paths and consumer base classes",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 3
+      },
+      "commandReceipts": [
+        "3f74f8",
+        "fed481",
+        "e3a9bd"
+      ],
+      "status": "completed",
+      "timestampUtc": null
+    },
+    {
+      "ordinal": 6,
+      "operation": "Inspect HTTPX context binding, response annotations, string result and exports; list existing core helper names",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 2
+      },
+      "commandReceipts": [
+        "343900",
+        "cfc817"
+      ],
+      "status": "completed",
+      "timestampUtc": "2026-10-26T17:21:37.797902+00:00"
+    },
+    {
+      "ordinal": 7,
+      "operation": "Author task-specific manual selector materializer and exact task-instructions copy",
+      "tools": {
+        "functions.exec": 1,
+        "apply_patch": 1
+      },
+      "status": "completed",
+      "timestampUtc": null
+    },
+    {
+      "ordinal": 8,
+      "operation": "Preserve first materializer draft, fix source-root parent index discovered on review, execute materializer once",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 2,
+        "apply_patch": 1
+      },
+      "commandReceipts": [
+        "79c3a8",
+        "781d82"
+      ],
+      "status": "completed",
+      "note": "The parent-index edit preceded materialization. No request existed before it, and there was no schema/binding/outcome feedback. The first authored script is retained.",
+      "timestampUtc": "2026-10-26T17:23:00.516476+00:00"
+    },
+    {
+      "ordinal": 9,
+      "operation": "One unchanged-core schema/location validation pass, preserve protocol and provenance, seal all first-attempt requests",
+      "tools": {
+        "functions.exec": 1,
+        "exec_command": 1
+      },
+      "status": "completed",
+      "timestampUtc": "2026-10-26T17:23:37.480166+00:00"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "schema": "agi-alpha-transfer-prior-audit/v1",
+  "created_utc": "2026-10-26T17:08:52.934186+00:00",
+  "status": "PASS",
+  "independence": "Fresh arithmetic implementation by a separate same-session agent. Same host and institution; not independent institutional replication.",
+  "original_market_core_sha256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27",
+  "source_identities": [
+    {
+      "campaign": "primary",
+      "path": "/workspace/scratch/da407bff0020/study/market/results/primary-01/complete-runs.jsonl.gz",
+      "bytes": 64043859,
+      "sha256": "e466a0fcdac12fc44d21f50a490eda314874862ad87a44c0220fdd7bfab35fc8",
+      "paired_worlds": 2088,
+      "seeds": 24
+    },
+    {
+      "campaign": "exploratory",
+      "path": "/workspace/scratch/da407bff0020/study/market/exploratory/results-01/complete-runs.jsonl.gz",
+      "bytes": 90303222,
+      "sha256": "cb9fabc59fe881ac2cdf811f780a556de4715fae7e36dbe3bccdb7f270d47231",
+      "paired_worlds": 2472,
+      "seeds": 12
+    },
+    {
+      "campaign": "policy-diagnostic",
+      "path": "/workspace/scratch/da407bff0020/study/market/policy-diagnostic/results-01/complete-runs.jsonl.gz",
+      "bytes": 75921340,
+      "sha256": "2afa3d38e9f76d0e68101bbd089903a8a618cebe5c4e4d0296d636625b467c13",
+      "paired_worlds": 1920,
+      "seeds": 12
+    }
+  ],
+  "checks": {
+    "recorded outcome identity": 3,
+    "B C exact symmetric outcomes": 6480,
+    "frozen supplied configuration": 19440,
+    "enterprise output count": 19440,
+    "accepted output count": 19440,
+    "rejected output has no invoice": 19440,
+    "every cash balance conserved nonnegative": 1205899,
+    "one cash payment per bill": 1118757,
+    "one cash receipt per invoice": 87142,
+    "terminal cash conservation": 19440,
+    "all accrued bills charged once": 19440,
+    "unpaid obligations retained": 19440,
+    "profit excludes initial capital": 19440,
+    "simulation not observed revenue": 19440,
+    "liquidity net of reserves obligations": 1111248,
+    "earned funds exclude seed receivables": 1111248,
+    "finite buyer budgets": 19440,
+    "no invented successor action": 19440,
+    "all declared worlds examined": 3,
+    "all declared seeds examined": 3,
+    "original archive unchanged after read": 3,
+    "tested financed original asset identity": 23768,
+    "investment fits current funds and forecast": 808,
+    "no delivery during investment pause": 808
+  },
+  "counts": {
+    "primary:enterprises": 6264,
+    "primary:investments": 0,
+    "primary:earned-investments": 0,
+    "primary:profitable": 0,
+    "primary:attempts": 2967,
+    "exploratory:enterprises": 7416,
+    "exploratory:investments": 12,
+    "exploratory:earned-investments": 0,
+    "exploratory:profitable": 66,
+    "exploratory:attempts": 8958,
+    "policy-diagnostic:enterprises": 5760,
+    "policy-diagnostic:investments": 796,
+    "policy-diagnostic:earned-investments": 0,
+    "policy-diagnostic:profitable": 220,
+    "policy-diagnostic:attempts": 79236
+  },
+  "failures": [],
+  "wall_seconds": 30.786585849000403,
+  "limits": [
+    "Accounting checks are not independent jobs or field demand observations.",
+    "Prior empirical-grid and fixed-policy diagnostics are preserved separately.",
+    "No original source or result was modified."
+  ]
+}

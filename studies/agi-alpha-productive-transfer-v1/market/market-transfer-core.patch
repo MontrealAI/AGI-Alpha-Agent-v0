@@ -1,0 +1,121 @@
+--- inherited/market/src/market.mjs
++++ market-transfer-core.mjs
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: Apache-2.0
+-import {planMission, calculateInvestment} from '../canonical/shadow-ledger.mjs';
+-
+-export const SCHEMA = 'agi-alpha-strategic-market/v1';
++import {planMission, calculateInvestment} from './inherited/market/canonical/shadow-ledger.mjs';
++
++export const SCHEMA = 'agi-alpha-strategic-market-transfer/v1';
+ export const ASSETS = Object.freeze({
+   B: {id:'useful-work-v2-retained-producer', path:'src/package_component.py',
+     sha256:'0b4eb1ae2392176ff61ef91b7da0d13df3c6400ee0b3e317439238881adc182d'},
+@@ -37,6 +37,7 @@
+   investmentEarliestWeek:8, investmentForecastDiscount:0.5, investmentFunding:'operating-surplus',
+   expectedPassThrough:0.25, churnProbability:0.25, churnDurationWeeks:8,
+   stopAfterInsolvency:true, nextAsset:null,
++  activeComputeAndToolCents:null, activeMechanicalWallSeconds:null, activeMechanicalCpuSeconds:null,
+   allMoneyIsAssumed:true
+ });
+ 
+@@ -73,9 +74,12 @@
+   assert(['empirical-grid','fixed','cost-pass-through'].includes(c.pricingPolicy),'Unknown price policy');
+   assert(['responsive','fixed','undercut'].includes(c.competitorStrategy),'Unknown competitor policy');
+   assert(['operating-surplus','seed-funded'].includes(c.investmentFunding),'Unknown investment funding');
+-  assert(['full-history','adoption-only'].includes(c.investmentCostBasis),'Unknown investment cost basis');
++  assert(['full-history','adoption-only','prospective-reconstruction'].includes(c.investmentCostBasis),'Unknown investment cost basis');
+   assert(['at-adoption','opening'].includes(c.historicalCostTiming),'Unknown historical cost timing');
+   assert(Number.isInteger(c.outcomeFeedbackDelayWeeks)&&c.outcomeFeedbackDelayWeeks>=1,'Feedback requires at least one week');
++  for(const k of ['activeComputeAndToolCents','activeMechanicalWallSeconds','activeMechanicalCpuSeconds'])
++    assert(c[k]===null||(typeof c[k]==='number'&&Number.isFinite(c[k])&&c[k]>=0),`Invalid ${k}`);
++  assert(c.activeComputeAndToolCents===null||Number.isSafeInteger(c.activeComputeAndToolCents),'Integer active compute/tool cents required');
+   assert(c.allMoneyIsAssumed===true,'Market monetary values must remain explicit assumptions');
+   assert(c.failureCorrectionMultiplier>=1,'Failed work cannot receive a discount by construction');
+   assert(c.engineeringHoursPerWeek>0,'Positive finite adoption engineering capacity required');
+@@ -167,13 +171,15 @@
+   const adoption=round(c.adoptionHours*c.constructionHourlyCents)+c.adoptionInferenceCents;
+   const reconstruct=history+adoption;
+   return {historicalFullCostCents:history,adoptExistingCents:adoption,reconstructCents:reconstruct,
+-    selectedRoute:'adopt-existing',selectedProspectiveCostCents:adoption,
+-    chargedCents:c.investmentCostBasis==='full-history'&&c.historicalCostTiming==='at-adoption'?history+adoption:adoption};
++    selectedRoute:c.investmentCostBasis==='prospective-reconstruction'?'reconstruct-tested-asset':'adopt-existing',
++    selectedProspectiveCostCents:c.investmentCostBasis==='prospective-reconstruction'?reconstruct:adoption,
++    chargedCents:(c.investmentCostBasis==='full-history'&&c.historicalCostTiming==='at-adoption')||c.investmentCostBasis==='prospective-reconstruction'?reconstruct:adoption};
+ }
+ function constructionCost(c){return constructionRoutes(c).chargedCents;}
+ function providerMinutes(c,active){return c.commonResidualMinutes+(active?c.assetResidualMinutes:c.ordinaryFinalizationMinutes);}
+-function unitCost(c,active){return round(providerMinutes(c,active)*c.hourlyProviderCents/60)+c.computeAndToolCents;}
+-function invest(f,week,c,seed,arm,recentAccepted,decisions){
++function unitCost(c,active){return round(providerMinutes(c,active)*c.hourlyProviderCents/60)+
++  (active&&c.activeComputeAndToolCents!==null?c.activeComputeAndToolCents:c.computeAndToolCents);}
++function invest(f,week,c,seed,arm,recentAccepted,decisions,asset){
+   if(arm==='A'||f.assetActive||f.assetPending||f.assetFailure||f.insolvent||week<c.investmentEarliestWeek)return;
+   const full=constructionCost(c),pauseWeeks=Math.max(1,Math.ceil(c.adoptionHours/c.engineeringHoursPerWeek));
+   const remaining=Math.max(0,c.weeks-week-pauseWeeks);
+@@ -187,7 +193,7 @@
+   const expected=forecast*saving-totalMaintenance-full-lostContribution;
+   const available=c.investmentFunding==='operating-surplus'?operatingSurplus(f,c):liquidity(f,c);
+   const canInvest=expected>0&&available>=full&&saving>0;
+-  const row={week,arm,action:canInvest?'invest':'retain-incumbent',asset:ASSETS[arm],
++  const row={week,arm,action:canInvest?'invest':'retain-incumbent',asset,
+     availableCashCents:available,fullCostCents:full,remainingUsesForecast:forecast,
+     expectedIncrementalSavingPerUseCents:saving,expectedNetBenefitCents:expected,
+     expectedForegoneContributionCents:lostContribution,productiveWeeksAfterAdoption:remaining,servicePauseWeeks:pauseWeeks,
+@@ -197,7 +203,7 @@
+       ...(available<full?['insufficient currently available funding']:[]),...(saving<=0?['no positive task saving']:[])]};
+   decisions.push(row);
+   if(!canInvest)return;
+-  expense(f,week,'capability',full,week,ASSETS[arm].sha256);payBills(f,week,c);
++  expense(f,week,'capability',full,week,asset.sha256);payBills(f,week,c);
+   f.assetFailure=randomDraw(seed,'asset-integration-failure',week)<c.assetFailureProbability;
+   f.assetAvailableWeek=week+pauseWeeks;
+   f.assetPending=!f.assetFailure;
+@@ -234,8 +240,8 @@
+       switchCents:buyer.lastProvider===id?0:round((buyer.lastProvider?c.switchingCents:0)+(id==='enterprise'?c.integrationCents:0))});
+   };
+   if(!enterprise.insolvent&&!enterprise.assetPending&&used.enterprise<c.enterpriseSlotsPerWeek&&
+-    (used.enterprise+1)*c.measuredMechanicalWallSeconds<=c.machineWallSecondsPerWeek&&
+-    (used.enterprise+1)*c.measuredMechanicalCpuSeconds<=c.machineCpuSecondsPerWeek&&
++    (used.enterprise+1)*(enterprise.assetActive&&c.activeMechanicalWallSeconds!==null?c.activeMechanicalWallSeconds:c.measuredMechanicalWallSeconds)<=c.machineWallSecondsPerWeek&&
++    (used.enterprise+1)*(enterprise.assetActive&&c.activeMechanicalCpuSeconds!==null?c.activeMechanicalCpuSeconds:c.measuredMechanicalCpuSeconds)<=c.machineCpuSecondsPerWeek&&
+     providerUsed+providerMinutes(c,enterprise.assetActive)<=c.providerMinutesPerWeek&&
+     liquidity(enterprise,c)>=unitCost(c,enterprise.assetActive)*c.failureCorrectionMultiplier)
+     add('enterprise',price,c.customerReviewMinutes,c.enterpriseDays);
+@@ -291,6 +297,7 @@
+ 
+ export function simulate(supplied={},seed=1,arm='B',options={}){
+   assert(['A','B','C'].includes(arm),'Unknown arm');
++  const asset=arm==='A'?null:(options.asset||ASSETS[arm]);
+   const c=validateConfig(supplied),buyers=Array.from({length:c.buyers},(_,i)=>buyerState(seed,i,c));
+   const f=createFirm('enterprise',c.initialCashCents);
+   const competitors={human:{...createFirm('human',c.competitorInitialCashCents),markup:c.humanMarkup},
+@@ -317,7 +324,7 @@
+         'assumed actual-asset upkeep');
+       payBills(f,week,c);
+       const priorAccepted=sum(weeklySales.slice(Math.max(0,week-8),week));
+-      invest(f,week,c,seed,arm,priorAccepted,decisions);
++      invest(f,week,c,seed,arm,priorAccepted,decisions,asset);
+       const price=selectPrice(c,week,f,priceStats,priorPrice);priorPrice=price;
+       competitorResponse(competitors,f,week,c,price,competition);
+       const used={enterprise:0,human:0,ai:0,diy:0};providerUsed=0;
+@@ -372,8 +379,8 @@
+         }
+         jobs.push({id:`w${week}-${b.id}`,week,buyer:b.id,provider:p,accepted,qualityGood:good,
+           priceCents:o.priceCents,deliveryCostCents:paidCost,invoiceCreated:!!firm&&accepted,
+-          assetUsed:p==='enterprise'&&f.assetActive?ASSETS[arm]?.id:null,
+-          sourceAssetSHA256:p==='enterprise'&&f.assetActive?ASSETS[arm]?.sha256:null,
++          assetUsed:p==='enterprise'&&f.assetActive?asset?.id:null,
++          sourceAssetSHA256:p==='enterprise'&&f.assetActive?asset?.sha256:null,
+           probabilityAssumption:quality,basis:'simulated; constrained to measured supported scope'});
+       }
+       if(!priceStats[price])priceStats[price]={seen:0,won:0};
+@@ -406,7 +413,7 @@
+   assert(jobs.every(j=>j.accepted||!j.invoiceCreated),'Rejected task earned revenue');
+   assert(f.investments.every(x=>x.availableCashCents>=x.fullCostCents),'Unaffordable investment');
+   return {schema:SCHEMA,config:c,seed,arm,basis:'SIMULATED',observedCustomerCollectionsCents:0,
+-    productionEvidence:'Inherited6/6 and new joint-tuple4/4 scoped assessments each arm; no field-reliability estimate inferred.',
++    productionEvidence:options.productionEvidence||'Inherited6/6 and new joint-tuple4/4 scoped assessments each arm; no field-reliability estimate inferred.',
+     summary:{opportunities,supportedOpportunities:supported,declined,enterpriseAttempts:f.attempts,
+       enterpriseAccepted:f.accepted,enterpriseRejected:f.rejected,latentFailures:f.latentFailures,
+       grossInvoicesCents:f.grossInvoicesCents,grossCollectionsCents:f.grossCollectionsCents,

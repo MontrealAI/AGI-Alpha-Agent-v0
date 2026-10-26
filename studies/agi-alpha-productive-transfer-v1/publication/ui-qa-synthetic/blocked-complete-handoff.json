@@ -1,0 +1,609 @@
+{
+  "schema": "agi-alpha-transfer-demo/v1",
+  "qaSynthetic": true,
+  "summary": {
+    "headline": {
+      "en": "SYNTHETIC UI CONTROL",
+      "fr": "CONTRÔLE SYNTHÉTIQUE"
+    },
+    "finding": {
+      "en": "No study outcomes are loaded. These controls exercise presentation and exact engine replay.",
+      "fr": "Aucun résultat d’étude chargé. Ces contrôles vérifient l’interface et le moteur exact."
+    }
+  },
+  "missions": [
+    {
+      "id": "UI-CONTROL-01",
+      "title": {
+        "en": "SYNTHETIC: explicit signature change",
+        "fr": "SYNTHÉTIQUE : changement de signature explicite"
+      },
+      "dependency": {
+        "package": "qa_dependency",
+        "importRoots": [
+          "qa_dependency"
+        ],
+        "before": {
+          "version": "0.1-fixture"
+        },
+        "after": {
+          "version": "0.2-fixture"
+        }
+      },
+      "consumerRepo": "synthetic-ui-control/consumer",
+      "sourceLinks": [
+        {
+          "label": {
+            "en": "Unsafe link control is inert",
+            "fr": "Lien non sûr neutralisé"
+          },
+          "url": "javascript:globalThis.QA_LINK_EXECUTED=true"
+        }
+      ],
+      "rawInput": {
+        "schema": "alpha-transfer-raw-task/v1",
+        "id": "UI-CONTROL-01",
+        "title": "SYNTHETIC UI CONTROL",
+        "purpose": "UI presentation only; not a production mission.",
+        "dependency": {
+          "package": "qa_dependency",
+          "importRoots": [
+            "qa_dependency"
+          ],
+          "before": {
+            "version": "0.1-fixture"
+          },
+          "after": {
+            "version": "0.2-fixture"
+          }
+        },
+        "consumer": {
+          "source": "consumer",
+          "scopeSymbols": [
+            "consumer"
+          ]
+        },
+        "sources": {
+          "consumer": {
+            "repository": "synthetic-ui-control/consumer",
+            "commit": "1111111111111111111111111111111111111111",
+            "path": "src/fixture_consumer.py",
+            "sha256": "9381dd2832079664e879bf3454352e63ca758d9357a6ee9e489bc5d133e0205a",
+            "text": "# SYNTHETIC UI CONTROL — aucune preuve d’étude\r\nfrom qa_dependency import decide\r\ndef consumer(value):\r\n    return decide(value, removed=True)\r\n# </script><script>globalThis.QA_INJECTION_EXECUTED=true</script>\r\n# Literal source tokens: __ENGINE_BUNDLE__ __STUDY_DATA__\r\n"
+          },
+          "before": {
+            "repository": "synthetic-ui-control/dependency",
+            "commit": "2222222222222222222222222222222222222222",
+            "path": "qa_dependency.py",
+            "text": "def decide(value, removed=False):\n    return value\n",
+            "sha256": "f9adb76ef3784475f4665d9fc904b226d7b9900710daf07c3f6ebe91c387e59b"
+          },
+          "after": {
+            "repository": "synthetic-ui-control/dependency",
+            "commit": "3333333333333333333333333333333333333333",
+            "path": "qa_dependency.py",
+            "text": "def decide(value):\n    return value\n",
+            "sha256": "de946a91c89b0fa25c6d62f2fa305474b51535bd52b9b05015963f5d76f77952"
+          }
+        },
+        "providerSides": {
+          "before": [
+            "before"
+          ],
+          "after": [
+            "after"
+          ]
+        },
+        "licenseRecords": []
+      },
+      "arms": {
+        "A": {
+          "accepted": true,
+          "nextAction": "HOLD_UPDATE_AND_TEST",
+          "selectedCalls": 1,
+          "coreRecord": {
+            "engineeringAcceptance": true,
+            "calls": [
+              {
+                "id": "UI-CALL-01",
+                "callee": "decide",
+                "line": 4,
+                "column": 11,
+                "status": "BINDING_CONFLICT",
+                "mappingVerified": true,
+                "beforeAccepts": true,
+                "afterAccepts": false,
+                "qualification": "Synthetic verified-dispatch UI control.",
+                "evidence": [
+                  {
+                    "sourceId": "consumer",
+                    "line": 4,
+                    "endLine": 4
+                  },
+                  {
+                    "sourceId": "before",
+                    "line": 1,
+                    "endLine": 2
+                  },
+                  {
+                    "sourceId": "after",
+                    "line": 1,
+                    "endLine": 2
+                  }
+                ]
+              }
+            ],
+            "nextAction": "HOLD_UPDATE_AND_TEST"
+          },
+          "unresolvedIntake": [],
+          "resources": {
+            "cpuSeconds": 0.001
+          },
+          "notes": {
+            "en": "SYNTHETIC CONTROL: remove the unsupported keyword and verify behavior.",
+            "fr": "CONTRÔLE SYNTHÉTIQUE : retirer l’argument incompatible et vérifier le comportement."
+          }
+        },
+        "B": {
+          "accepted": true,
+          "nextAction": "HOLD_UPDATE_AND_TEST",
+          "selectedCalls": 1,
+          "coreRecord": {
+            "engineeringAcceptance": true,
+            "calls": [
+              {
+                "id": "UI-CALL-01",
+                "callee": "decide",
+                "line": 4,
+                "column": 11,
+                "status": "BINDING_CONFLICT",
+                "mappingVerified": true,
+                "beforeAccepts": true,
+                "afterAccepts": false,
+                "qualification": "Synthetic verified-dispatch UI control.",
+                "evidence": [
+                  {
+                    "sourceId": "consumer",
+                    "line": 4,
+                    "endLine": 4
+                  },
+                  {
+                    "sourceId": "before",
+                    "line": 1,
+                    "endLine": 2
+                  },
+                  {
+                    "sourceId": "after",
+                    "line": 1,
+                    "endLine": 2
+                  }
+                ]
+              }
+            ],
+            "nextAction": "HOLD_UPDATE_AND_TEST"
+          },
+          "unresolvedIntake": [],
+          "resources": {
+            "cpuSeconds": 0.001
+          },
+          "notes": {
+            "en": "SYNTHETIC CONTROL: remove the unsupported keyword and verify behavior.",
+            "fr": "CONTRÔLE SYNTHÉTIQUE : retirer l’argument incompatible et vérifier le comportement."
+          }
+        },
+        "C": {
+          "accepted": true,
+          "nextAction": "HOLD_UPDATE_AND_TEST",
+          "selectedCalls": 1,
+          "coreRecord": {
+            "engineeringAcceptance": true,
+            "calls": [
+              {
+                "id": "UI-CALL-01",
+                "callee": "decide",
+                "line": 4,
+                "column": 11,
+                "status": "BINDING_CONFLICT",
+                "mappingVerified": true,
+                "beforeAccepts": true,
+                "afterAccepts": false,
+                "qualification": "Synthetic verified-dispatch UI control.",
+                "evidence": [
+                  {
+                    "sourceId": "consumer",
+                    "line": 4,
+                    "endLine": 4
+                  },
+                  {
+                    "sourceId": "before",
+                    "line": 1,
+                    "endLine": 2
+                  },
+                  {
+                    "sourceId": "after",
+                    "line": 1,
+                    "endLine": 2
+                  }
+                ]
+              }
+            ],
+            "nextAction": "HOLD_UPDATE_AND_TEST"
+          },
+          "unresolvedIntake": [],
+          "resources": {
+            "cpuSeconds": 0.001
+          },
+          "notes": {
+            "en": "SYNTHETIC CONTROL: remove the unsupported keyword and verify behavior.",
+            "fr": "CONTRÔLE SYNTHÉTIQUE : retirer l’argument incompatible et vérifier le comportement."
+          }
+        }
+      }
+    },
+    {
+      "id": "UI-CONTROL-02",
+      "title": {
+        "en": "SYNTHETIC: unresolved dispatch retained",
+        "fr": "SYNTHÉTIQUE : appel cible non résolu conservé"
+      },
+      "dependency": {
+        "package": "qa_dependency",
+        "importRoots": [
+          "qa_dependency"
+        ],
+        "before": {
+          "version": "0.1-fixture"
+        },
+        "after": {
+          "version": "0.2-fixture"
+        }
+      },
+      "consumerRepo": "synthetic-ui-control/consumer",
+      "sourceLinks": [
+        {
+          "label": {
+            "en": "Unsafe link control is inert",
+            "fr": "Lien non sûr neutralisé"
+          },
+          "url": "javascript:globalThis.QA_LINK_EXECUTED=true"
+        }
+      ],
+      "rawInput": {
+        "schema": "alpha-transfer-raw-task/v1",
+        "id": "UI-CONTROL-02",
+        "title": "SYNTHETIC UI CONTROL",
+        "purpose": "UI presentation only; not a production mission.",
+        "dependency": {
+          "package": "qa_dependency",
+          "importRoots": [
+            "qa_dependency"
+          ],
+          "before": {
+            "version": "0.1-fixture"
+          },
+          "after": {
+            "version": "0.2-fixture"
+          }
+        },
+        "consumer": {
+          "source": "consumer",
+          "scopeSymbols": [
+            "consumer"
+          ]
+        },
+        "sources": {
+          "consumer": {
+            "repository": "synthetic-ui-control/consumer",
+            "commit": "1111111111111111111111111111111111111111",
+            "path": "src/fixture_consumer.py",
+            "sha256": "9381dd2832079664e879bf3454352e63ca758d9357a6ee9e489bc5d133e0205a",
+            "text": "# SYNTHETIC UI CONTROL — aucune preuve d’étude\r\nfrom qa_dependency import decide\r\ndef consumer(value):\r\n    return decide(value, removed=True)\r\n# </script><script>globalThis.QA_INJECTION_EXECUTED=true</script>\r\n# Literal source tokens: __ENGINE_BUNDLE__ __STUDY_DATA__\r\n"
+          },
+          "before": {
+            "repository": "synthetic-ui-control/dependency",
+            "commit": "2222222222222222222222222222222222222222",
+            "path": "qa_dependency.py",
+            "text": "def decide(value, removed=False):\n    return value\n",
+            "sha256": "f9adb76ef3784475f4665d9fc904b226d7b9900710daf07c3f6ebe91c387e59b"
+          },
+          "after": {
+            "repository": "synthetic-ui-control/dependency",
+            "commit": "3333333333333333333333333333333333333333",
+            "path": "qa_dependency.py",
+            "text": "def decide(value):\n    return value\n",
+            "sha256": "de946a91c89b0fa25c6d62f2fa305474b51535bd52b9b05015963f5d76f77952"
+          }
+        },
+        "providerSides": {
+          "before": [
+            "before"
+          ],
+          "after": [
+            "after"
+          ]
+        },
+        "licenseRecords": []
+      },
+      "arms": {
+        "A": {
+          "accepted": true,
+          "nextAction": "REVIEW_UNRESOLVED_SCOPE",
+          "selectedCalls": 1,
+          "coreRecord": {
+            "engineeringAcceptance": false,
+            "calls": [
+              {
+                "id": "UI-CALL-01",
+                "callee": "decide",
+                "line": 4,
+                "column": 11,
+                "status": "BINDING_CONFLICT",
+                "mappingVerified": false,
+                "beforeAccepts": true,
+                "afterAccepts": false,
+                "qualification": "Conditional on the declared target; runtime dispatch remains unproved.",
+                "evidence": [
+                  {
+                    "sourceId": "consumer",
+                    "line": 4,
+                    "endLine": 4
+                  },
+                  {
+                    "sourceId": "before",
+                    "line": 1,
+                    "endLine": 2
+                  },
+                  {
+                    "sourceId": "after",
+                    "line": 1,
+                    "endLine": 2
+                  }
+                ]
+              }
+            ],
+            "nextAction": "REVIEW_UNRESOLVED_SCOPE"
+          },
+          "unresolvedIntake": [],
+          "resources": {
+            "cpuSeconds": 0.001
+          },
+          "notes": {
+            "en": "SYNTHETIC CONTROL: remove the unsupported keyword and verify behavior.",
+            "fr": "CONTRÔLE SYNTHÉTIQUE : retirer l’argument incompatible et vérifier le comportement."
+          }
+        },
+        "B": {
+          "accepted": true,
+          "nextAction": "REVIEW_UNRESOLVED_SCOPE",
+          "selectedCalls": 1,
+          "coreRecord": {
+            "engineeringAcceptance": false,
+            "calls": [
+              {
+                "id": "UI-CALL-01",
+                "callee": "decide",
+                "line": 4,
+                "column": 11,
+                "status": "BINDING_CONFLICT",
+                "mappingVerified": false,
+                "beforeAccepts": true,
+                "afterAccepts": false,
+                "qualification": "Conditional on the declared target; runtime dispatch remains unproved.",
+                "evidence": [
+                  {
+                    "sourceId": "consumer",
+                    "line": 4,
+                    "endLine": 4
+                  },
+                  {
+                    "sourceId": "before",
+                    "line": 1,
+                    "endLine": 2
+                  },
+                  {
+                    "sourceId": "after",
+                    "line": 1,
+                    "endLine": 2
+                  }
+                ]
+              }
+            ],
+            "nextAction": "REVIEW_UNRESOLVED_SCOPE"
+          },
+          "unresolvedIntake": [],
+          "resources": {
+            "cpuSeconds": 0.001
+          },
+          "notes": {
+            "en": "SYNTHETIC CONTROL: remove the unsupported keyword and verify behavior.",
+            "fr": "CONTRÔLE SYNTHÉTIQUE : retirer l’argument incompatible et vérifier le comportement."
+          }
+        },
+        "C": {
+          "accepted": true,
+          "nextAction": "REVIEW_UNRESOLVED_SCOPE",
+          "selectedCalls": 1,
+          "coreRecord": {
+            "engineeringAcceptance": false,
+            "calls": [
+              {
+                "id": "UI-CALL-01",
+                "callee": "decide",
+                "line": 4,
+                "column": 11,
+                "status": "BINDING_CONFLICT",
+                "mappingVerified": false,
+                "beforeAccepts": true,
+                "afterAccepts": false,
+                "qualification": "Conditional on the declared target; runtime dispatch remains unproved.",
+                "evidence": [
+                  {
+                    "sourceId": "consumer",
+                    "line": 4,
+                    "endLine": 4
+                  },
+                  {
+                    "sourceId": "before",
+                    "line": 1,
+                    "endLine": 2
+                  },
+                  {
+                    "sourceId": "after",
+                    "line": 1,
+                    "endLine": 2
+                  }
+                ]
+              }
+            ],
+            "nextAction": "REVIEW_UNRESOLVED_SCOPE"
+          },
+          "unresolvedIntake": [],
+          "resources": {
+            "cpuSeconds": 0.001
+          },
+          "notes": {
+            "en": "SYNTHETIC CONTROL: remove the unsupported keyword and verify behavior.",
+            "fr": "CONTRÔLE SYNTHÉTIQUE : retirer l’argument incompatible et vérifier le comportement."
+          }
+        }
+      }
+    }
+  ],
+  "primaryConfirmation": {
+    "finding": {
+      "en": "SYNTHETIC primary-failure display control; not a study finding.",
+      "fr": "Contrôle SYNTHÉTIQUE d’affichage d’un échec primaire; aucun résultat d’étude."
+    }
+  },
+  "capability": {
+    "title": {
+      "en": "Synthetic retained asset",
+      "fr": "Actif conservé synthétique"
+    },
+    "path": "SYNTHETIC-UI-CONTROL/B",
+    "sha256": "d567411af4d81c403cd0b2e8388c3ad61f137061fd07066771024019e64a4e8b",
+    "mechanism": {
+      "en": "Fixture only; no transfer claim.",
+      "fr": "Exemple uniquement; aucun transfert revendiqué."
+    },
+    "boundary": {
+      "en": "No production source or outcome was inspected to create this fixture.",
+      "fr": "Aucune source de production ni résultat inspecté pour créer cet exemple."
+    }
+  },
+  "priorMarkets": {
+    "summary": {
+      "en": "Synthetic prior-study card.",
+      "fr": "Carte d’étude antérieure synthétique."
+    },
+    "primaryNegative": {
+      "en": "Synthetic preserved-negative marker.",
+      "fr": "Marqueur négatif conservé synthétique."
+    }
+  },
+  "productionMarketRecord": {
+    "schema": "agi-alpha-intake-transfer-production/v1",
+    "missions": [
+      "UI-CONTROL-01",
+      "UI-CONTROL-02"
+    ],
+    "evidenceSHA256": "a23881e94b0d8d22f69051630e6b40fa62ee7859853854fea59810a8a017a6f8",
+    "arms": {
+      "A": {
+        "attemptedMissionIds": [
+          "UI-CONTROL-01",
+          "UI-CONTROL-02"
+        ],
+        "acceptedMissionIds": [
+          "UI-CONTROL-01",
+          "UI-CONTROL-02"
+        ],
+        "completeRecurringCostCents": null,
+        "completeConstructionCostCents": null,
+        "resources": {
+          "scope": "known-process-lower-bound",
+          "cpuSecondsPerAccepted": 0.001,
+          "wallSecondsPerAccepted": 0.002
+        }
+      },
+      "B": {
+        "attemptedMissionIds": [
+          "UI-CONTROL-01",
+          "UI-CONTROL-02"
+        ],
+        "acceptedMissionIds": [
+          "UI-CONTROL-01",
+          "UI-CONTROL-02"
+        ],
+        "completeRecurringCostCents": null,
+        "completeConstructionCostCents": null,
+        "resources": {
+          "scope": "known-process-lower-bound",
+          "cpuSecondsPerAccepted": 0.001,
+          "wallSecondsPerAccepted": 0.002
+        },
+        "asset": {
+          "id": "synthetic-ui-asset-B",
+          "path": "SYNTHETIC-UI-CONTROL/B",
+          "sha256": "d567411af4d81c403cd0b2e8388c3ad61f137061fd07066771024019e64a4e8b"
+        }
+      },
+      "C": {
+        "attemptedMissionIds": [
+          "UI-CONTROL-01",
+          "UI-CONTROL-02"
+        ],
+        "acceptedMissionIds": [
+          "UI-CONTROL-01",
+          "UI-CONTROL-02"
+        ],
+        "completeRecurringCostCents": null,
+        "completeConstructionCostCents": null,
+        "resources": {
+          "scope": "known-process-lower-bound",
+          "cpuSecondsPerAccepted": 0.001,
+          "wallSecondsPerAccepted": 0.002
+        },
+        "asset": {
+          "id": "synthetic-ui-asset-C",
+          "path": "SYNTHETIC-UI-CONTROL/C",
+          "sha256": "24f99d5d960bf53e7c4f9014354527b5705e2a61479fcb0b07be73e7d077bdd3"
+        }
+      }
+    }
+  },
+  "scenarioDefaults": {
+    "costs": {
+      "A": {
+        "completeRecurringCostCents": null,
+        "completeConstructionCostCents": null
+      },
+      "B": {
+        "completeRecurringCostCents": null,
+        "completeConstructionCostCents": null
+      },
+      "C": {
+        "completeRecurringCostCents": null,
+        "completeConstructionCostCents": null
+      }
+    }
+  },
+  "sources": [
+    {
+      "title": "Synthetic source register control",
+      "url": "javascript:alert(1)",
+      "version": "UI-CONTROL",
+      "license": "Synthetic metadata; no license grant",
+      "role": {
+        "en": "Rendering control only.",
+        "fr": "Contrôle d’affichage uniquement."
+      }
+    }
+  ],
+  "limitations": [
+    {
+      "en": "THIS IS NOT STUDY EVIDENCE.",
+      "fr": "CECI N’EST PAS UNE PREUVE D’ÉTUDE."
+    }
+  ]
+}

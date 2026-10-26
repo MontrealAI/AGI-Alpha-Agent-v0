@@ -1,0 +1,774 @@
+{
+  "schema": "agi-alpha-market-parameters/v1",
+  "warning": "Sensitivity ranges are not empirical bounds; unknown full costs may exceed every displayed value.",
+  "parameters": {
+    "id": {
+      "default": "reference-assumptions",
+      "basis": "declared-design",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "weeks": {
+      "default": 52,
+      "basis": "declared-design",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "buyers": {
+      "default": 12,
+      "basis": "declared-design",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "arrivalProbability": {
+      "default": 0.25,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        0,
+        0.1,
+        0.25
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "supportedFraction": {
+      "default": 0.75,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "initialCashCents": {
+      "default": 100000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "reserveCents": {
+      "default": 20000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "initialSetupCents": {
+      "default": 5000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "weeklyOverheadCents": {
+      "default": 200,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "paymentDelayWeeks": {
+      "default": 2,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        0,
+        2,
+        13
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "paymentProbability": {
+      "default": 0.98,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "expenseDelayWeeks": {
+      "default": 0,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "refundProbability": {
+      "default": 0.75,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "refundDelayWeeks": {
+      "default": 1,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "choiceModel": {
+      "default": "deterministic",
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        "deterministic",
+        "logit"
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "logitScaleCents": {
+      "default": 1200,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "hourlyProviderCents": {
+      "default": 6538,
+      "basis": "sourced-anchor-with-assumed-transport",
+      "explanation": "S01 wage-derived USD65.375/hour rounded; treating it as provider cost is an assumption.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "hourlyBuyerCents": {
+      "default": [
+        3000,
+        5014,
+        6538
+      ],
+      "basis": "sourced-anchor-with-assumed-transport",
+      "explanation": "S01 and S03 alternative wage/contract anchors; mixture and relevance are assumptions.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "humanHourlyCents": {
+      "default": 3000,
+      "basis": "sourced-anchor-with-assumed-transport",
+      "explanation": "S03 worldwide historical Python contracts USD20–40/hour, default30; no exact-job quote.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "humanMinutes": {
+      "default": [
+        30,
+        60,
+        90
+      ],
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "usefulnessMultiplier": {
+      "default": 1.25,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "errorLossCents": {
+      "default": 10000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "customerReviewMinutes": {
+      "default": 8,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "diyEffortFraction": {
+      "default": 0.65,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "aiReviewMinutes": {
+      "default": 15,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "humanReviewMinutes": {
+      "default": 6,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "integrationCents": {
+      "default": 1000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "switchingCents": {
+      "default": 500,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "delayCostCentsPerDay": {
+      "default": 250,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "buyerProcurementBudgetCents": {
+      "default": 50000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "outcomeFeedbackDelayWeeks": {
+      "default": 1,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "commonResidualMinutes": {
+      "default": 2,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "ordinaryFinalizationMinutes": {
+      "default": 10,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        0,
+        2,
+        10,
+        30
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "assetResidualMinutes": {
+      "default": 0,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "computeAndToolCents": {
+      "default": 25,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "failureCorrectionMultiplier": {
+      "default": 1.5,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "successProbability": {
+      "default": 0.95,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "qualityShockWeek": {
+      "default": 99,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, realized outcomes and repeat purchase"
+    },
+    "qualityShockFactor": {
+      "default": 1,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, realized outcomes and repeat purchase"
+    },
+    "overloadPenalty": {
+      "default": 0.08,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "humanQuality": {
+      "default": 0.97,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, realized outcomes and repeat purchase"
+    },
+    "diyQuality": {
+      "default": 0.95,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, realized outcomes and repeat purchase"
+    },
+    "aiQuality": {
+      "default": 0.9,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, realized outcomes and repeat purchase"
+    },
+    "initialTrust": {
+      "default": 0.9,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, realized outcomes and repeat purchase"
+    },
+    "skepticalShare": {
+      "default": 0.25,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "enterpriseSlotsPerWeek": {
+      "default": 4,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "providerMinutesPerWeek": {
+      "default": 120,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "humanSlotsPerWeek": {
+      "default": 4,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "aiSlotsPerWeek": {
+      "default": 6,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "measuredMechanicalWallSeconds": {
+      "default": 16.79944029399985,
+      "basis": "measured-within-tested-scope",
+      "explanation": "Maximum arm mean across inherited and fresh joint-tuple measurements; no production capacity qualification.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "measuredMechanicalCpuSeconds": {
+      "default": 2.53920892,
+      "basis": "measured-within-tested-scope",
+      "explanation": "Maximum arm mean local CPU across inherited/fresh measurements; no measured dollar tariff.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "machineWallSecondsPerWeek": {
+      "default": 3600,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "machineCpuSecondsPerWeek": {
+      "default": 3600,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "enterpriseDays": {
+      "default": 1,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "humanDays": {
+      "default": 2,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "diyDays": {
+      "default": 0.5,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "aiDays": {
+      "default": 0.5,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "initialPriceCents": {
+      "default": 4000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "priceGridCents": {
+      "default": [
+        500,
+        1000,
+        2000,
+        4000,
+        8000
+      ],
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "pricingPolicy": {
+      "default": "empirical-grid",
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "aiInitialPriceCents": {
+      "default": 2000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "aiCostCents": {
+      "default": 800,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "humanMarkup": {
+      "default": 1.2,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "competitorStrategy": {
+      "default": "responsive",
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "competitorInitialCashCents": {
+      "default": 50000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "competitorImitationCostCents": {
+      "default": 20000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "competitorImitationAfterWeeks": {
+      "default": 12,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "competitorCostReduction": {
+      "default": 0.25,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "competitorPriceFloorCents": {
+      "default": 500,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "constructionHours": {
+      "default": 4,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        0.5,
+        4,
+        16,
+        40
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "constructionHourlyCents": {
+      "default": 6538,
+      "basis": "sourced-anchor-with-assumed-transport",
+      "explanation": "S01 wage anchor; engineering hours and authoring bills remain unknown.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "authoringCostCents": {
+      "default": 10000,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "investmentCostBasis": {
+      "default": "full-history",
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        "full-history",
+        "adoption-only"
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "adoptionHours": {
+      "default": 0.5,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        0.5,
+        4,
+        16,
+        40
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "adoptionInferenceCents": {
+      "default": 0,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "historicalCostTiming": {
+      "default": "opening",
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": [
+        "opening",
+        "at-adoption"
+      ],
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "engineeringHoursPerWeek": {
+      "default": 4,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "failedConstructionShare": {
+      "default": 0.2,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "assetMaintenanceCentsPerWeek": {
+      "default": 50,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "assetFailureProbability": {
+      "default": 0,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "investmentEarliestWeek": {
+      "default": 8,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "investmentForecastDiscount": {
+      "default": 0.5,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "investmentFunding": {
+      "default": "operating-surplus",
+      "basis": "declared-design",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "expectedPassThrough": {
+      "default": 0.25,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "churnProbability": {
+      "default": 0.25,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "churnDurationWeeks": {
+      "default": 8,
+      "basis": "scenario-assumption",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "stopAfterInsolvency": {
+      "default": true,
+      "basis": "declared-design",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "nextAsset": {
+      "default": null,
+      "basis": "declared-design",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    },
+    "allMoneyIsAssumed": {
+      "default": true,
+      "basis": "declared-design",
+      "explanation": "Not identified by existing production or market evidence; conditional input only.",
+      "range": null,
+      "affects": "choice, costs, cash, timing, capacity or investment; see MODEL.md and source"
+    }
+  },
+  "stressScenarios": [
+    {
+      "id": "reference-assumptions"
+    },
+    {
+      "id": "zero-demand",
+      "arrivalProbability": 0
+    },
+    {
+      "id": "low-demand",
+      "arrivalProbability": 0.1
+    },
+    {
+      "id": "cheap-human",
+      "humanHourlyCents": 2000,
+      "humanMarkup": 1.02
+    },
+    {
+      "id": "cheap-ai",
+      "aiInitialPriceCents": 500,
+      "aiCostCents": 100,
+      "aiQuality": 0.97,
+      "aiReviewMinutes": 8
+    },
+    {
+      "id": "price-war",
+      "competitorStrategy": "undercut",
+      "competitorCostReduction": 0.75,
+      "competitorImitationCostCents": 1000
+    },
+    {
+      "id": "slow-collections",
+      "paymentDelayWeeks": 13,
+      "paymentProbability": 0.85
+    },
+    {
+      "id": "dissatisfied-buyers",
+      "successProbability": 0.8,
+      "churnProbability": 0.75,
+      "refundProbability": 1
+    },
+    {
+      "id": "switching-barriers",
+      "integrationCents": 5000,
+      "switchingCents": 5000
+    },
+    {
+      "id": "quality-shock",
+      "qualityShockWeek": 26,
+      "qualityShockFactor": 0.7
+    },
+    {
+      "id": "high-maintenance",
+      "assetMaintenanceCentsPerWeek": 2000
+    },
+    {
+      "id": "failed-improvement",
+      "assetFailureProbability": 1,
+      "constructionHours": 0.5,
+      "authoringCostCents": 0
+    },
+    {
+      "id": "zero-attention-benefit",
+      "ordinaryFinalizationMinutes": 0,
+      "assetResidualMinutes": 0
+    },
+    {
+      "id": "free-perfect-diy",
+      "diyEffortFraction": 0,
+      "diyQuality": 1,
+      "diyDays": 0,
+      "switchingCents": 0,
+      "integrationCents": 0
+    },
+    {
+      "id": "skeptical-buyers",
+      "initialTrust": 0.7,
+      "skepticalShare": 1
+    },
+    {
+      "id": "logit-choice",
+      "choiceModel": "logit"
+    },
+    {
+      "id": "cash-constrained",
+      "initialCashCents": 30000,
+      "paymentDelayWeeks": 13,
+      "weeklyOverheadCents": 1000
+    },
+    {
+      "id": "full-price-pass-through",
+      "pricingPolicy": "cost-pass-through",
+      "expectedPassThrough": 0.95
+    },
+    {
+      "id": "retrospective-cost-allocation",
+      "historicalCostTiming": "at-adoption"
+    }
+  ]
+}

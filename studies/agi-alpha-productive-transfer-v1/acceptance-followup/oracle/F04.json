@@ -1,0 +1,148 @@
+{
+  "schema": "alpha-transfer-independent-oracle/v1",
+  "id": "F04",
+  "canonical_input_sha256": "92c02ce59dbbbb934e364ba82c5ab9ac749d379fb4905135ed20e75c0a87106c",
+  "oracle_owner": "Separate same-session production audit; not institutional replication",
+  "basis": "Manual whole-scope inventory plus independent inert Python signature reconstruction; no candidate outcome or inspected package execution.",
+  "calls": [
+    {
+      "line": 130,
+      "column": 11,
+      "callee": "httpx.Client",
+      "consumer_sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+      "snippet_sha256": "5c9ee79cb6505b0318ffacead81d70f5c54f108cb0a59f5c88866a33a261065f",
+      "unsupported_reason": "UNSUPPORTED_RECEIVER",
+      "targets": {
+        "before": {
+          "source": "b1",
+          "symbol": "Client.__init__",
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "declaration_line": 628,
+          "declaration_end_line": 724,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, http1=None, http2=None, proxy=None, proxies=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, app=None, trust_env=None, default_encoding=None)"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "Client.__init__",
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "declaration_line": 639,
+          "declaration_end_line": 716,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, trust_env=None, http1=None, http2=None, proxy=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, default_encoding=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": null,
+        "after": null
+      },
+      "expected_core_scope_outcome": "UNRESOLVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    },
+    {
+      "line": 133,
+      "column": 16,
+      "callee": "httpx.Timeout",
+      "consumer_sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+      "snippet_sha256": "15cd5944d90e754c747c46b82fb76722d83ff2bfca8eb0154b36feec9fda47b0",
+      "unsupported_reason": "UNSUPPORTED_RECEIVER",
+      "targets": {
+        "before": {
+          "source": "b2",
+          "symbol": "Timeout.__init__",
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "declaration_line": 210,
+          "declaration_end_line": 254,
+          "decorators": [],
+          "signature": "(self, timeout=None, *, connect=None, read=None, write=None, pool=None)"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "Timeout.__init__",
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "declaration_line": 86,
+          "declaration_end_line": 130,
+          "decorators": [],
+          "signature": "(self, timeout=None, *, connect=None, read=None, write=None, pool=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": null,
+        "after": null
+      },
+      "expected_core_scope_outcome": "UNRESOLVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    },
+    {
+      "line": 141,
+      "column": 11,
+      "callee": "httpx.AsyncClient",
+      "consumer_sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+      "snippet_sha256": "c3e2de723d8682821a1264f97a5323004a08a1d24de0fabcbf0f6084d405c35d",
+      "unsupported_reason": "UNSUPPORTED_RECEIVER",
+      "targets": {
+        "before": {
+          "source": "b1",
+          "symbol": "AsyncClient.__init__",
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "declaration_line": 1375,
+          "declaration_end_line": 1471,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, http1=None, http2=None, proxy=None, proxies=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, app=None, trust_env=None, default_encoding=None)"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "AsyncClient.__init__",
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "declaration_line": 1353,
+          "declaration_end_line": 1430,
+          "decorators": [],
+          "signature": "(self, *, auth=None, params=None, headers=None, cookies=None, verify=None, cert=None, http1=None, http2=None, proxy=None, mounts=None, timeout=None, follow_redirects=None, limits=None, max_redirects=None, event_hooks=None, base_url=None, transport=None, trust_env=None, default_encoding=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": null,
+        "after": null
+      },
+      "expected_core_scope_outcome": "UNRESOLVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    },
+    {
+      "line": 144,
+      "column": 16,
+      "callee": "httpx.Timeout",
+      "consumer_sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+      "snippet_sha256": "15cd5944d90e754c747c46b82fb76722d83ff2bfca8eb0154b36feec9fda47b0",
+      "unsupported_reason": "UNSUPPORTED_RECEIVER",
+      "targets": {
+        "before": {
+          "source": "b2",
+          "symbol": "Timeout.__init__",
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "declaration_line": 210,
+          "declaration_end_line": 254,
+          "decorators": [],
+          "signature": "(self, timeout=None, *, connect=None, read=None, write=None, pool=None)"
+        },
+        "after": {
+          "source": "a2",
+          "symbol": "Timeout.__init__",
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "declaration_line": 86,
+          "declaration_end_line": 130,
+          "decorators": [],
+          "signature": "(self, timeout=None, *, connect=None, read=None, write=None, pool=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": null,
+        "after": null
+      },
+      "expected_core_scope_outcome": "UNRESOLVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    }
+  ],
+  "nondependency_scope_calls": [],
+  "complete_call_count": 4,
+  "accepted_truthful_assessment": "Complete exact inventory, valid conditional targets or substantiated abstention, independent binding agreement, and separately checked complete bilingual handoff."
+}

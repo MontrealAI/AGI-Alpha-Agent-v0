@@ -1,0 +1,87 @@
+{
+  "schema": "alpha-transfer-independent-oracle/v1",
+  "id": "F01",
+  "canonical_input_sha256": "4a841ba34263bf536e24ff1b68a88dd29e7cc60419367a08f64b027182d11540",
+  "oracle_owner": "Separate same-session production audit; not institutional replication",
+  "basis": "Manual whole-scope inventory plus independent inert Python signature reconstruction; no candidate outcome or inspected package execution.",
+  "calls": [
+    {
+      "line": 724,
+      "column": 8,
+      "callee": "click.echo",
+      "consumer_sha256": "3c3c1909f3da822e465336fe0fa74437bcb6d205a25408377a3467c4128d1cf0",
+      "snippet_sha256": "23f101af975bf8187966ffab378ed2da7b86c1f3dc51205806af8a845bdfc63d",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b1",
+          "symbol": "echo",
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "declaration_line": 219,
+          "declaration_end_line": 319,
+          "decorators": [],
+          "signature": "(message=None, file=None, nl=None, err=None, color=None)"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "echo",
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "declaration_line": 222,
+          "declaration_end_line": 322,
+          "decorators": [],
+          "signature": "(message=None, file=None, nl=None, err=None, color=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    },
+    {
+      "line": 727,
+      "column": 8,
+      "callee": "click.echo",
+      "consumer_sha256": "3c3c1909f3da822e465336fe0fa74437bcb6d205a25408377a3467c4128d1cf0",
+      "snippet_sha256": "713aa19f52a3fcac9afc480cfa9136b1f44278d85d35f1e68b68385266214b06",
+      "unsupported_reason": null,
+      "targets": {
+        "before": {
+          "source": "b1",
+          "symbol": "echo",
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "declaration_line": 219,
+          "declaration_end_line": 319,
+          "decorators": [],
+          "signature": "(message=None, file=None, nl=None, err=None, color=None)"
+        },
+        "after": {
+          "source": "a1",
+          "symbol": "echo",
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "declaration_line": 222,
+          "declaration_end_line": 322,
+          "decorators": [],
+          "signature": "(message=None, file=None, nl=None, err=None, color=None)"
+        }
+      },
+      "independent_argument_acceptance": {
+        "before": true,
+        "after": true
+      },
+      "expected_core_scope_outcome": "BINDING_PRESERVED",
+      "mapping_scope": "Nominal captured declaration under standard imports, no monkeypatching and relevant path execution. Binding does not establish runtime identity, successful argument evaluation, behavior, security or deployment readiness."
+    }
+  ],
+  "nondependency_scope_calls": [
+    {
+      "line": 720,
+      "column": 7,
+      "callee": "is_running_from_reloader",
+      "reason": "Builtin, consumer/other-library helper or decorator, not a call to the registered dependency."
+    }
+  ],
+  "complete_call_count": 2,
+  "accepted_truthful_assessment": "Complete exact inventory, valid conditional targets or substantiated abstention, independent binding agreement, and separately checked complete bilingual handoff."
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "alpha-transfer-extraction/v1",
+  "inputSha256": "38e685274fddbffeffcd84c54829b78b8e715d7e6a1365eb689860ded872db03",
+  "claims": [
+    {
+      "line": 259,
+      "column": 12,
+      "callee": "simpson",
+      "before": {
+        "source": "b0",
+        "symbol": "simpson"
+      },
+      "after": {
+        "source": "a0",
+        "symbol": "simpson"
+      },
+      "explanation": "Consumer locally tries from scipy.integrate import simpson at line 249, with an ImportError fallback importing simps as simpson at line 252. Both specified source versions expose simpson: integrate/__init__.py imports _quadrature (before line 91, after line 94), whose __all__ includes simpson and whose explicit definitions begin at before line 536 and after line 535. The selection uses this present simpson export on both sides. The conditional local import and uncaptured import execution remain limitations; no runtime branch or fallback identity is invented."
+    }
+  ],
+  "unresolved": [],
+  "provenance": {
+    "mode": "audit-projection-of-sealed-native-request"
+  }
+}

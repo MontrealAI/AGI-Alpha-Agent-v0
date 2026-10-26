@@ -1,0 +1,445 @@
+{
+  "absentTargetEvidence": [],
+  "arm": "A",
+  "calls": [
+    {
+      "after": {
+        "declaration": {
+          "endLine": 716,
+          "line": 639,
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: ssl.SSLContext | str | bool = True,\n        cert: CertTypes | None = None,\n        trust_env: bool = True,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:\n        super().__init__(\n            auth=auth,\n            params=params,\n            headers=headers,\n            cookies=cookies,\n            timeout=timeout,\n            follow_redirects=follow_redirects,\n            max_redirects=max_redirects,\n            event_hooks=event_hooks,\n            base_url=base_url,\n            trust_env=trust_env,\n            default_encoding=default_encoding,\n        )\n\n        if http2:\n            try:\n                import h2  # noqa\n            except ImportError:  # pragma: no cover\n                raise ImportError(\n                    \"Using http2=True, but the 'h2' package is not installed. \"\n                    \"Make sure to install httpx using `pip install httpx[http2]`.\"\n                ) from None\n\n        allow_env_proxies = trust_env and transport is None\n        proxy_map = self._get_proxy_map(proxy, allow_env_proxies)\n\n        self._transport = self._init_transport(\n            verify=verify,\n            cert=cert,\n            trust_env=trust_env,\n            http1=http1,\n            http2=http2,\n            limits=limits,\n            transport=transport,\n        )\n        self._mounts: dict[URLPattern, BaseTransport | None] = {\n            URLPattern(key): None\n            if proxy is None\n            else self._init_proxy_transport(\n                proxy,\n                verify=verify,\n                cert=cert,\n                trust_env=trust_env,\n                http1=http1,\n                http2=http2,\n                limits=limits,\n            )\n            for key, proxy in proxy_map.items()\n        }\n        if mounts is not None:\n            self._mounts.update(\n                {URLPattern(key): transport for key, transport in mounts.items()}\n            )\n\n        self._mounts = dict(sorted(self._mounts.items()))",
+          "source": "a1",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_client.py#L639-L716"
+        },
+        "signatureLines": {
+          "endLine": 661,
+          "line": 639,
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: ssl.SSLContext | str | bool = True,\n        cert: CertTypes | None = None,\n        trust_env: bool = True,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:",
+          "source": "a1",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_client.py#L639-L661"
+        },
+        "source": "a1",
+        "symbol": "Client.__init__"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 724,
+          "line": 628,
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: VerifyTypes = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        proxies: ProxiesTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        app: typing.Callable[..., typing.Any] | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:\n        super().__init__(\n            auth=auth,\n            params=params,\n            headers=headers,\n            cookies=cookies,\n            timeout=timeout,\n            follow_redirects=follow_redirects,\n            max_redirects=max_redirects,\n            event_hooks=event_hooks,\n            base_url=base_url,\n            trust_env=trust_env,\n            default_encoding=default_encoding,\n        )\n\n        if http2:\n            try:\n                import h2  # noqa\n            except ImportError:  # pragma: no cover\n                raise ImportError(\n                    \"Using http2=True, but the 'h2' package is not installed. \"\n                    \"Make sure to install httpx using `pip install httpx[http2]`.\"\n                ) from None\n\n        if proxies:\n            message = (\n                \"The 'proxies' argument is now deprecated.\"\n                \" Use 'proxy' or 'mounts' instead.\"\n            )\n            warnings.warn(message, DeprecationWarning)\n            if proxy:\n                raise RuntimeError(\"Use either `proxy` or 'proxies', not both.\")\n\n        if app:\n            message = (\n                \"The 'app' shortcut is now deprecated.\"\n                \" Use the explicit style 'transport=WSGITransport(app=...)' instead.\"\n            )\n            warnings.warn(message, DeprecationWarning)\n\n        allow_env_proxies = trust_env and app is None and transport is None\n        proxy_map = self._get_proxy_map(proxies or proxy, allow_env_proxies)\n\n        self._transport = self._init_transport(\n            verify=verify,\n            cert=cert,\n            http1=http1,\n            http2=http2,\n            limits=limits,\n            transport=transport,\n            app=app,\n            trust_env=trust_env,\n        )\n        self._mounts: dict[URLPattern, BaseTransport | None] = {\n            URLPattern(key): None\n            if proxy is None\n            else self._init_proxy_transport(\n                proxy,\n                verify=verify,\n                cert=cert,\n                http1=http1,\n                http2=http2,\n                limits=limits,\n                trust_env=trust_env,\n            )\n            for key, proxy in proxy_map.items()\n        }\n        if mounts is not None:\n            self._mounts.update(\n                {URLPattern(key): transport for key, transport in mounts.items()}\n            )\n\n        self._mounts = dict(sorted(self._mounts.items()))",
+          "source": "b1",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_client.py#L628-L724"
+        },
+        "signatureLines": {
+          "endLine": 652,
+          "line": 628,
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: VerifyTypes = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        proxies: ProxiesTypes | None = None,\n        mounts: None | (typing.Mapping[str, BaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: BaseTransport | None = None,\n        app: typing.Callable[..., typing.Any] | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:",
+          "source": "b1",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_client.py#L628-L652"
+        },
+        "source": "b1",
+        "symbol": "Client.__init__"
+      },
+      "consumer": {
+        "callee": "httpx.Client",
+        "column": 11,
+        "endLine": 134,
+        "line": 130,
+        "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+        "snippet": "httpx.Client(\n        event_hooks={\"request\": [hf_request_event_hook]},\n        follow_redirects=True,\n        timeout=httpx.Timeout(constants.DEFAULT_REQUEST_TIMEOUT, write=60.0),\n    )",
+        "source": "consumer",
+        "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L130-L134"
+      },
+      "id": "F04-c01",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+        "Nested Timeout construction, event hook behavior, transport initialization and successful runtime setup remain unproved."
+      ],
+      "mapping": {
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:4 exports _client; _client.__all__ includes Client (b1:60/a1:54), with explicit Client.__init__ at b1:628/a1:639. Selectors identify those captured initializers only. Package re-export is outside the core direct-import rule, and this class construction requires constructor/descriptor receiver dispatch verification; no receiver is guessed and no constructor compatibility conclusion is made.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "default_client_factory",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 29,
+          "line": 29,
+          "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+          "snippet": "import httpx",
+          "source": "consumer",
+          "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L29-L29"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "b0",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "a0",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 60,
+          "line": 60,
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "snippet": "__all__ = [\"USE_CLIENT_DEFAULT\", \"AsyncClient\", \"Client\"]",
+          "source": "b1",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_client.py#L60-L60"
+        },
+        {
+          "endLine": 54,
+          "line": 54,
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "snippet": "__all__ = [\"USE_CLIENT_DEFAULT\", \"AsyncClient\", \"Client\"]",
+          "source": "a1",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_client.py#L54-L54"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 130,
+          "line": 86,
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:\n        if isinstance(timeout, Timeout):\n            # Passed as a single explicit Timeout.\n            assert connect is UNSET\n            assert read is UNSET\n            assert write is UNSET\n            assert pool is UNSET\n            self.connect = timeout.connect  # type: typing.Optional[float]\n            self.read = timeout.read  # type: typing.Optional[float]\n            self.write = timeout.write  # type: typing.Optional[float]\n            self.pool = timeout.pool  # type: typing.Optional[float]\n        elif isinstance(timeout, tuple):\n            # Passed as a tuple.\n            self.connect = timeout[0]\n            self.read = timeout[1]\n            self.write = None if len(timeout) < 3 else timeout[2]\n            self.pool = None if len(timeout) < 4 else timeout[3]\n        elif not (\n            isinstance(connect, UnsetType)\n            or isinstance(read, UnsetType)\n            or isinstance(write, UnsetType)\n            or isinstance(pool, UnsetType)\n        ):\n            self.connect = connect\n            self.read = read\n            self.write = write\n            self.pool = pool\n        else:\n            if isinstance(timeout, UnsetType):\n                raise ValueError(\n                    \"httpx.Timeout must either include a default, or set all \"\n                    \"four parameters explicitly.\"\n                )\n            self.connect = timeout if isinstance(connect, UnsetType) else connect\n            self.read = timeout if isinstance(read, UnsetType) else read\n            self.write = timeout if isinstance(write, UnsetType) else write\n            self.pool = timeout if isinstance(pool, UnsetType) else pool",
+          "source": "a2",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_config.py#L86-L130"
+        },
+        "signatureLines": {
+          "endLine": 94,
+          "line": 86,
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:",
+          "source": "a2",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_config.py#L86-L94"
+        },
+        "source": "a2",
+        "symbol": "Timeout.__init__"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 254,
+          "line": 210,
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:\n        if isinstance(timeout, Timeout):\n            # Passed as a single explicit Timeout.\n            assert connect is UNSET\n            assert read is UNSET\n            assert write is UNSET\n            assert pool is UNSET\n            self.connect = timeout.connect  # type: typing.Optional[float]\n            self.read = timeout.read  # type: typing.Optional[float]\n            self.write = timeout.write  # type: typing.Optional[float]\n            self.pool = timeout.pool  # type: typing.Optional[float]\n        elif isinstance(timeout, tuple):\n            # Passed as a tuple.\n            self.connect = timeout[0]\n            self.read = timeout[1]\n            self.write = None if len(timeout) < 3 else timeout[2]\n            self.pool = None if len(timeout) < 4 else timeout[3]\n        elif not (\n            isinstance(connect, UnsetType)\n            or isinstance(read, UnsetType)\n            or isinstance(write, UnsetType)\n            or isinstance(pool, UnsetType)\n        ):\n            self.connect = connect\n            self.read = read\n            self.write = write\n            self.pool = pool\n        else:\n            if isinstance(timeout, UnsetType):\n                raise ValueError(\n                    \"httpx.Timeout must either include a default, or set all \"\n                    \"four parameters explicitly.\"\n                )\n            self.connect = timeout if isinstance(connect, UnsetType) else connect\n            self.read = timeout if isinstance(read, UnsetType) else read\n            self.write = timeout if isinstance(write, UnsetType) else write\n            self.pool = timeout if isinstance(pool, UnsetType) else pool",
+          "source": "b2",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_config.py#L210-L254"
+        },
+        "signatureLines": {
+          "endLine": 218,
+          "line": 210,
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:",
+          "source": "b2",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_config.py#L210-L218"
+        },
+        "source": "b2",
+        "symbol": "Timeout.__init__"
+      },
+      "consumer": {
+        "callee": "httpx.Timeout",
+        "column": 16,
+        "endLine": 133,
+        "line": 133,
+        "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+        "snippet": "httpx.Timeout(constants.DEFAULT_REQUEST_TIMEOUT, write=60.0)",
+        "source": "consumer",
+        "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L133-L133"
+      },
+      "id": "F04-c02",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+        "The actual DEFAULT_REQUEST_TIMEOUT value and timeout validation/behavior require separate evidence."
+      ],
+      "mapping": {
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:5 exports _config; _config.__all__ includes Timeout (b2:17/a2:13), with explicit Timeout.__init__ at b2:210/a2:86. Selectors identify those captured initializers only. Re-export and class-constructor receiver dispatch are not proved by the core. The exact nested call and constants.DEFAULT_REQUEST_TIMEOUT expression remain unchanged; timeout behavior is unproved.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "default_client_factory",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 29,
+          "line": 29,
+          "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+          "snippet": "import httpx",
+          "source": "consumer",
+          "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L29-L29"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "b0",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "a0",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 17,
+          "line": 17,
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "snippet": "__all__ = [\"Limits\", \"Proxy\", \"Timeout\", \"create_ssl_context\"]",
+          "source": "b2",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_config.py#L17-L17"
+        },
+        {
+          "endLine": 13,
+          "line": 13,
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "snippet": "__all__ = [\"Limits\", \"Proxy\", \"Timeout\", \"create_ssl_context\"]",
+          "source": "a2",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_config.py#L13-L13"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 1430,
+          "line": 1353,
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: ssl.SSLContext | str | bool = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        mounts: None | (typing.Mapping[str, AsyncBaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: AsyncBaseTransport | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:\n        super().__init__(\n            auth=auth,\n            params=params,\n            headers=headers,\n            cookies=cookies,\n            timeout=timeout,\n            follow_redirects=follow_redirects,\n            max_redirects=max_redirects,\n            event_hooks=event_hooks,\n            base_url=base_url,\n            trust_env=trust_env,\n            default_encoding=default_encoding,\n        )\n\n        if http2:\n            try:\n                import h2  # noqa\n            except ImportError:  # pragma: no cover\n                raise ImportError(\n                    \"Using http2=True, but the 'h2' package is not installed. \"\n                    \"Make sure to install httpx using `pip install httpx[http2]`.\"\n                ) from None\n\n        allow_env_proxies = trust_env and transport is None\n        proxy_map = self._get_proxy_map(proxy, allow_env_proxies)\n\n        self._transport = self._init_transport(\n            verify=verify,\n            cert=cert,\n            trust_env=trust_env,\n            http1=http1,\n            http2=http2,\n            limits=limits,\n            transport=transport,\n        )\n\n        self._mounts: dict[URLPattern, AsyncBaseTransport | None] = {\n            URLPattern(key): None\n            if proxy is None\n            else self._init_proxy_transport(\n                proxy,\n                verify=verify,\n                cert=cert,\n                trust_env=trust_env,\n                http1=http1,\n                http2=http2,\n                limits=limits,\n            )\n            for key, proxy in proxy_map.items()\n        }\n        if mounts is not None:\n            self._mounts.update(\n                {URLPattern(key): transport for key, transport in mounts.items()}\n            )\n        self._mounts = dict(sorted(self._mounts.items()))",
+          "source": "a1",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_client.py#L1353-L1430"
+        },
+        "signatureLines": {
+          "endLine": 1375,
+          "line": 1353,
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: ssl.SSLContext | str | bool = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        mounts: None | (typing.Mapping[str, AsyncBaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: AsyncBaseTransport | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:",
+          "source": "a1",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_client.py#L1353-L1375"
+        },
+        "source": "a1",
+        "symbol": "AsyncClient.__init__"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 1471,
+          "line": 1375,
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: VerifyTypes = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        proxies: ProxiesTypes | None = None,\n        mounts: None | (typing.Mapping[str, AsyncBaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: AsyncBaseTransport | None = None,\n        app: typing.Callable[..., typing.Any] | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:\n        super().__init__(\n            auth=auth,\n            params=params,\n            headers=headers,\n            cookies=cookies,\n            timeout=timeout,\n            follow_redirects=follow_redirects,\n            max_redirects=max_redirects,\n            event_hooks=event_hooks,\n            base_url=base_url,\n            trust_env=trust_env,\n            default_encoding=default_encoding,\n        )\n\n        if http2:\n            try:\n                import h2  # noqa\n            except ImportError:  # pragma: no cover\n                raise ImportError(\n                    \"Using http2=True, but the 'h2' package is not installed. \"\n                    \"Make sure to install httpx using `pip install httpx[http2]`.\"\n                ) from None\n\n        if proxies:\n            message = (\n                \"The 'proxies' argument is now deprecated.\"\n                \" Use 'proxy' or 'mounts' instead.\"\n            )\n            warnings.warn(message, DeprecationWarning)\n            if proxy:\n                raise RuntimeError(\"Use either `proxy` or 'proxies', not both.\")\n\n        if app:\n            message = (\n                \"The 'app' shortcut is now deprecated.\"\n                \" Use the explicit style 'transport=ASGITransport(app=...)' instead.\"\n            )\n            warnings.warn(message, DeprecationWarning)\n\n        allow_env_proxies = trust_env and app is None and transport is None\n        proxy_map = self._get_proxy_map(proxies or proxy, allow_env_proxies)\n\n        self._transport = self._init_transport(\n            verify=verify,\n            cert=cert,\n            http1=http1,\n            http2=http2,\n            limits=limits,\n            transport=transport,\n            app=app,\n            trust_env=trust_env,\n        )\n\n        self._mounts: dict[URLPattern, AsyncBaseTransport | None] = {\n            URLPattern(key): None\n            if proxy is None\n            else self._init_proxy_transport(\n                proxy,\n                verify=verify,\n                cert=cert,\n                http1=http1,\n                http2=http2,\n                limits=limits,\n                trust_env=trust_env,\n            )\n            for key, proxy in proxy_map.items()\n        }\n        if mounts is not None:\n            self._mounts.update(\n                {URLPattern(key): transport for key, transport in mounts.items()}\n            )\n        self._mounts = dict(sorted(self._mounts.items()))",
+          "source": "b1",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_client.py#L1375-L1471"
+        },
+        "signatureLines": {
+          "endLine": 1399,
+          "line": 1375,
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "snippet": "    def __init__(\n        self,\n        *,\n        auth: AuthTypes | None = None,\n        params: QueryParamTypes | None = None,\n        headers: HeaderTypes | None = None,\n        cookies: CookieTypes | None = None,\n        verify: VerifyTypes = True,\n        cert: CertTypes | None = None,\n        http1: bool = True,\n        http2: bool = False,\n        proxy: ProxyTypes | None = None,\n        proxies: ProxiesTypes | None = None,\n        mounts: None | (typing.Mapping[str, AsyncBaseTransport | None]) = None,\n        timeout: TimeoutTypes = DEFAULT_TIMEOUT_CONFIG,\n        follow_redirects: bool = False,\n        limits: Limits = DEFAULT_LIMITS,\n        max_redirects: int = DEFAULT_MAX_REDIRECTS,\n        event_hooks: None | (typing.Mapping[str, list[EventHook]]) = None,\n        base_url: URL | str = \"\",\n        transport: AsyncBaseTransport | None = None,\n        app: typing.Callable[..., typing.Any] | None = None,\n        trust_env: bool = True,\n        default_encoding: str | typing.Callable[[bytes], str] = \"utf-8\",\n    ) -> None:",
+          "source": "b1",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_client.py#L1375-L1399"
+        },
+        "source": "b1",
+        "symbol": "AsyncClient.__init__"
+      },
+      "consumer": {
+        "callee": "httpx.AsyncClient",
+        "column": 11,
+        "endLine": 145,
+        "line": 141,
+        "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+        "snippet": "httpx.AsyncClient(\n        event_hooks={\"request\": [async_hf_request_event_hook], \"response\": [async_hf_response_event_hook]},\n        follow_redirects=True,\n        timeout=httpx.Timeout(constants.DEFAULT_REQUEST_TIMEOUT, write=60.0),\n    )",
+        "source": "consumer",
+        "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L141-L145"
+      },
+      "id": "F04-c03",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+        "Nested Timeout construction, asynchronous hook behavior, transport initialization and successful runtime setup remain unproved."
+      ],
+      "mapping": {
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:4 exports _client; _client.__all__ includes AsyncClient (b1:60/a1:54), with explicit AsyncClient.__init__ at b1:1375/a1:1353. Selectors identify those captured initializers only. Package re-export is outside the core direct-import rule, and this class construction requires constructor/descriptor receiver dispatch verification; no receiver is guessed and no constructor compatibility conclusion is made.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "default_async_client_factory",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 29,
+          "line": 29,
+          "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+          "snippet": "import httpx",
+          "source": "consumer",
+          "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L29-L29"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "b0",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "a0",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 60,
+          "line": 60,
+          "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c",
+          "snippet": "__all__ = [\"USE_CLIENT_DEFAULT\", \"AsyncClient\", \"Client\"]",
+          "source": "b1",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_client.py#L60-L60"
+        },
+        {
+          "endLine": 54,
+          "line": 54,
+          "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d",
+          "snippet": "__all__ = [\"USE_CLIENT_DEFAULT\", \"AsyncClient\", \"Client\"]",
+          "source": "a1",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_client.py#L54-L54"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 130,
+          "line": 86,
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:\n        if isinstance(timeout, Timeout):\n            # Passed as a single explicit Timeout.\n            assert connect is UNSET\n            assert read is UNSET\n            assert write is UNSET\n            assert pool is UNSET\n            self.connect = timeout.connect  # type: typing.Optional[float]\n            self.read = timeout.read  # type: typing.Optional[float]\n            self.write = timeout.write  # type: typing.Optional[float]\n            self.pool = timeout.pool  # type: typing.Optional[float]\n        elif isinstance(timeout, tuple):\n            # Passed as a tuple.\n            self.connect = timeout[0]\n            self.read = timeout[1]\n            self.write = None if len(timeout) < 3 else timeout[2]\n            self.pool = None if len(timeout) < 4 else timeout[3]\n        elif not (\n            isinstance(connect, UnsetType)\n            or isinstance(read, UnsetType)\n            or isinstance(write, UnsetType)\n            or isinstance(pool, UnsetType)\n        ):\n            self.connect = connect\n            self.read = read\n            self.write = write\n            self.pool = pool\n        else:\n            if isinstance(timeout, UnsetType):\n                raise ValueError(\n                    \"httpx.Timeout must either include a default, or set all \"\n                    \"four parameters explicitly.\"\n                )\n            self.connect = timeout if isinstance(connect, UnsetType) else connect\n            self.read = timeout if isinstance(read, UnsetType) else read\n            self.write = timeout if isinstance(write, UnsetType) else write\n            self.pool = timeout if isinstance(pool, UnsetType) else pool",
+          "source": "a2",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_config.py#L86-L130"
+        },
+        "signatureLines": {
+          "endLine": 94,
+          "line": 86,
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:",
+          "source": "a2",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_config.py#L86-L94"
+        },
+        "source": "a2",
+        "symbol": "Timeout.__init__"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 254,
+          "line": 210,
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:\n        if isinstance(timeout, Timeout):\n            # Passed as a single explicit Timeout.\n            assert connect is UNSET\n            assert read is UNSET\n            assert write is UNSET\n            assert pool is UNSET\n            self.connect = timeout.connect  # type: typing.Optional[float]\n            self.read = timeout.read  # type: typing.Optional[float]\n            self.write = timeout.write  # type: typing.Optional[float]\n            self.pool = timeout.pool  # type: typing.Optional[float]\n        elif isinstance(timeout, tuple):\n            # Passed as a tuple.\n            self.connect = timeout[0]\n            self.read = timeout[1]\n            self.write = None if len(timeout) < 3 else timeout[2]\n            self.pool = None if len(timeout) < 4 else timeout[3]\n        elif not (\n            isinstance(connect, UnsetType)\n            or isinstance(read, UnsetType)\n            or isinstance(write, UnsetType)\n            or isinstance(pool, UnsetType)\n        ):\n            self.connect = connect\n            self.read = read\n            self.write = write\n            self.pool = pool\n        else:\n            if isinstance(timeout, UnsetType):\n                raise ValueError(\n                    \"httpx.Timeout must either include a default, or set all \"\n                    \"four parameters explicitly.\"\n                )\n            self.connect = timeout if isinstance(connect, UnsetType) else connect\n            self.read = timeout if isinstance(read, UnsetType) else read\n            self.write = timeout if isinstance(write, UnsetType) else write\n            self.pool = timeout if isinstance(pool, UnsetType) else pool",
+          "source": "b2",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_config.py#L210-L254"
+        },
+        "signatureLines": {
+          "endLine": 218,
+          "line": 210,
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "snippet": "    def __init__(\n        self,\n        timeout: TimeoutTypes | UnsetType = UNSET,\n        *,\n        connect: None | float | UnsetType = UNSET,\n        read: None | float | UnsetType = UNSET,\n        write: None | float | UnsetType = UNSET,\n        pool: None | float | UnsetType = UNSET,\n    ) -> None:",
+          "source": "b2",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_config.py#L210-L218"
+        },
+        "source": "b2",
+        "symbol": "Timeout.__init__"
+      },
+      "consumer": {
+        "callee": "httpx.Timeout",
+        "column": 16,
+        "endLine": 144,
+        "line": 144,
+        "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+        "snippet": "httpx.Timeout(constants.DEFAULT_REQUEST_TIMEOUT, write=60.0)",
+        "source": "consumer",
+        "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L144-L144"
+      },
+      "id": "F04-c04",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "Class-constructor dispatch remains unsupported by the unchanged selected-call core; explicit __init__ is source evidence only.",
+        "The actual DEFAULT_REQUEST_TIMEOUT value and timeout validation/behavior require separate evidence."
+      ],
+      "mapping": {
+        "explanation": "consumer:29 imports httpx. Captured httpx/__init__.py:5 exports _config; _config.__all__ includes Timeout (b2:17/a2:13), with explicit Timeout.__init__ at b2:210/a2:86. Selectors identify those captured initializers only. Re-export and class-constructor receiver dispatch are not proved by the core. The exact nested call and constants.DEFAULT_REQUEST_TIMEOUT expression remain unchanged; timeout behavior is unproved.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "default_async_client_factory",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 29,
+          "line": 29,
+          "sha256": "65c6a3636cd65047e8ba6ca14a1a95ddf2943f9a6702b6b7d39034b382d3e291",
+          "snippet": "import httpx",
+          "source": "consumer",
+          "url": "https://github.com/huggingface/huggingface_hub/blob/cd57d24e013c66181e742f5e3b6c2fe464ee47cd/src/huggingface_hub/utils/_http.py#L29-L29"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "b0",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 5,
+          "line": 4,
+          "sha256": "0ac6997bac998f4ac783adf6d8058a587193315afdb718047c3e4fdff46bcfad",
+          "snippet": "from ._client import *\nfrom ._config import *",
+          "source": "a0",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/__init__.py#L4-L5"
+        },
+        {
+          "endLine": 17,
+          "line": 17,
+          "sha256": "0496434a9de7460ed71cf86f3f6bf3ecafc0f67e2d79fa904b817e52614bc970",
+          "snippet": "__all__ = [\"Limits\", \"Proxy\", \"Timeout\", \"create_ssl_context\"]",
+          "source": "b2",
+          "url": "https://github.com/encode/httpx/blob/609df7ecc0f7cb10a1c998aa9c269bba77337c5f/httpx/_config.py#L17-L17"
+        },
+        {
+          "endLine": 13,
+          "line": 13,
+          "sha256": "a4fa7653ec2271f70ab05f8a6111352d876dddee84446788a1767c1a3a372d67",
+          "snippet": "__all__ = [\"Limits\", \"Proxy\", \"Timeout\", \"create_ssl_context\"]",
+          "source": "a2",
+          "url": "https://github.com/encode/httpx/blob/26d48e0634e6ee9cdc0533996db289ce4b430177/httpx/_config.py#L13-L13"
+        }
+      ]
+    }
+  ],
+  "compatibilityAssessmentPerformed": false,
+  "excludedScopeCalls": [],
+  "rawTaskSha256": "16d6b39e5f253b5f364d649cd906ca06acd6b60e0a357d97016e0c926b0f2594",
+  "relevantCallCount": 4,
+  "schema": "alpha-curator-source-intake-evidence/v1",
+  "schemaGaps": [],
+  "scope": {
+    "scopeSymbols": [
+      "default_client_factory",
+      "default_async_client_factory"
+    ],
+    "source": "consumer"
+  },
+  "sourceExecution": false,
+  "taskId": "F04"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "alpha-transfer-extraction/v1",
+  "inputSha256": "ece163f606e1bce0ee5238a97d04e53ac98998a617b274bce0f5c76957aa30f3",
+  "claims": [
+    {
+      "line": 755,
+      "column": 8,
+      "callee": "super().__init__",
+      "before": {
+        "source": "b1",
+        "symbol": "Client.__init__"
+      },
+      "after": {
+        "source": "a1",
+        "symbol": "Client.__init__"
+      },
+      "explanation": "Consumer line 750 declares _DefaultHttpxClient(httpx.Client), with httpx imported at line 36. Both captured package initializers export Client through _client. The super().__init__(**kwargs) call is declared against the captured Client.__init__ definitions. Inheritance/runtime dispatch and the contents of expanded kwargs are not established by source selection; no keywords are invented."
+    },
+    {
+      "line": 1335,
+      "column": 8,
+      "callee": "super().__init__",
+      "before": {
+        "source": "b1",
+        "symbol": "AsyncClient.__init__"
+      },
+      "after": {
+        "source": "a1",
+        "symbol": "AsyncClient.__init__"
+      },
+      "explanation": "Consumer line 1330 declares _DefaultAsyncHttpxClient(httpx.AsyncClient), with httpx imported at line 36. Both captured package initializers export AsyncClient through _client. The super().__init__(**kwargs) call is declared against captured AsyncClient.__init__ definitions. Inheritance/runtime dispatch and the contents of expanded kwargs are not established by source selection; no keywords are invented."
+    }
+  ],
+  "unresolved": [],
+  "provenance": {
+    "mode": "audit-projection-of-sealed-native-request"
+  }
+}

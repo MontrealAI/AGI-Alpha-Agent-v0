@@ -1,0 +1,141 @@
+{
+  "schema": "agi-alpha-conventional-construction/v1",
+  "authoringModelInferenceUsd": null,
+  "authoringAttentionMinutes": null,
+  "toolMoneyUsd": null,
+  "elapsedAgentTimeIsHumanLabor": false,
+  "freshTaskInputsInspected": false,
+  "upstreamReadOnlyInputs": [
+    "vendored product core.py",
+    "cost-account opening",
+    "meter source"
+  ],
+  "construction": "Current-session conventional AST implementation; no external framework installed",
+  "unmeteredActivities": [
+    "literature discovery",
+    "design and model authoring",
+    "source inspection",
+    "initial patch write",
+    "py_compile"
+  ],
+  "commands": [
+    {
+      "phase": "development tests",
+      "startedAt": "2026-10-26T17:14:54.297526+00:00",
+      "wallNs": 58330807,
+      "childCpuSeconds": 0.056273,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 0.003s\n\nOK\n"
+    },
+    {
+      "phase": "development scope and shadowing regressions before correction",
+      "sourceSha256": "4aaea658fcb6a751414678e2f99564ea9e3a6fadbd108e917d4ca2cafee2b37b",
+      "startedAt": "2026-10-26T17:15:40.693815+00:00",
+      "wallNs": 63388749,
+      "childCpuSeconds": 0.06278299999999999,
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": ".....F..FFF.....F\n======================================================================\nFAIL: test_decorated_super (__main__.Tests.test_decorated_super)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional.py\", line 113, in test_decorated_super\n    self.assertFalse(r[\"claims\"])\nAssertionError: [{'line': 5, 'column': 8, 'callee': 'super().__init__', 'before': {'source': 'before', 'symbol': 'Client.__init__'}, 'after': {'source': 'after', 'symbol': 'Client.__init__'}, 'explanation': 'Static import and assignment resolution to captured declarations; no inspected source executed. Constructor or receiver mapping remains conditional on downstream dispatch verification.'}] is not false\n\n======================================================================\nFAIL: test_import_after_function (__main__.Tests.test_import_after_function)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional.py\", line 101, in test_import_after_function\n    self.assertEqual(len(r[\"claims\"]), 1)\nAssertionError: 0 != 1\n\n======================================================================\nFAIL: test_late_global_shadow (__main__.Tests.test_late_global_shadow)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional.py\", line 105, in test_late_global_shadow\n    self.assertFalse(r[\"claims\"])\nAssertionError: [{'line': 3, 'column': 11, 'callee': 'send', 'before': {'source': 'before', 'symbol': 'send'}, 'after': {'source': 'after', 'symbol': 'send'}, 'explanation': 'Static import and assignment resolution to captured declarations; no inspected source executed.'}] is not false\n\n======================================================================\nFAIL: test_match_body (__main__.Tests.test_match_body)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional.py\", line 118, in test_match_body\n    self.assertEqual(len(r[\"claims\"]), 1)\nAssertionError: 0 != 1\n\n======================================================================\nFAIL: test_unbound_local (__main__.Tests.test_unbound_local)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional.py\", line 109, in test_unbound_local\n    self.assertFalse(r[\"claims\"])\nAssertionError: [{'line': 3, 'column': 13, 'callee': 'send', 'before': {'source': 'before', 'symbol': 'send'}, 'after': {'source': 'after', 'symbol': 'send'}, 'explanation': 'Static import and assignment resolution to captured declarations; no inspected source executed.'}] is not false\n\n----------------------------------------------------------------------\nRan 17 tests in 0.005s\n\nFAILED (failures=5)\n"
+    },
+    {
+      "phase": "development scope and shadowing regressions after correction",
+      "sourceSha256": "6f0792bf30cd08eef68d66e48f674b788110b94629676f5d1122bd4f53e9f6cb",
+      "startedAt": "2026-10-26T17:16:10.090358+00:00",
+      "wallNs": 65670952,
+      "childCpuSeconds": 0.065188,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ".................\n----------------------------------------------------------------------\nRan 17 tests in 0.004s\n\nOK\n"
+    },
+    {
+      "phase": "historical development raw through extractor and compiler",
+      "sourceSha256": "6f0792bf30cd08eef68d66e48f674b788110b94629676f5d1122bd4f53e9f6cb",
+      "inputSha256": "cfa1526e6766cabe665a8046df5604af01ae97ca15f94aafe2fa1dbc55a04ca7",
+      "startedAt": "2026-10-26T17:16:32.751637+00:00",
+      "wallNs": 182525468,
+      "childCpuSeconds": 0.18120999999999998,
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/workspace/scratch/1aee594d47f3/study/src/intake.py\", line 118, in assess_extraction\n    pack, unresolved = compile_extraction(raw, extraction)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/1aee594d47f3/study/src/intake.py\", line 77, in compile_extraction\n    raise ValueError('model-selected call is not present within the captured scope')\nValueError: model-selected call is not present within the captured scope\n"
+    },
+    {
+      "phase": "required optional-import control before correction",
+      "sourceSha256": "6f0792bf30cd08eef68d66e48f674b788110b94629676f5d1122bd4f53e9f6cb",
+      "startedAt": "2026-10-26T17:17:05.655968+00:00",
+      "wallNs": 79945649,
+      "childCpuSeconds": 0.07926799999999999,
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": ".............F....\n======================================================================\nFAIL: test_required_optional_import (__main__.Tests.test_required_optional_import)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional.py\", line 122, in test_required_optional_import\n    self.assertEqual(len(r[\"claims\"]), 1)\nAssertionError: 0 != 1\n\n----------------------------------------------------------------------\nRan 18 tests in 0.006s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "phase": "final 18 development controls after optional-import correction",
+      "sourceSha256": "41eff0144d8400fa66e2bf58a5c388b456bf87732ad214f4cdf4b0827316a2e3",
+      "startedAt": "2026-10-26T17:17:12.077116+00:00",
+      "wallNs": 95333907,
+      "childCpuSeconds": 0.09475499999999999,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.011s\n\nOK\n"
+    },
+    {
+      "phase": "historical integration after intake outer-call identity correction",
+      "sourceSha256": "41eff0144d8400fa66e2bf58a5c388b456bf87732ad214f4cdf4b0827316a2e3",
+      "inputSha256": "cfa1526e6766cabe665a8046df5604af01ae97ca15f94aafe2fa1dbc55a04ca7",
+      "startedAt": "2026-10-26T17:17:38.815450+00:00",
+      "wallNs": 241086601,
+      "childCpuSeconds": 0.23913299999999998,
+      "exitCode": 0,
+      "stdout": "{\"extraction\": {\"schema\": \"alpha-transfer-extraction/v1\", \"inputSha256\": \"12d27cea8f1eff957bcee7b131fdc59a336f470f68364a674fa01ee27f36ae1e\", \"claims\": [], \"unresolved\": [{\"line\": 429, \"column\": 8, \"callee\": \"super().__init__\", \"reason\": \"target is absent or ambiguous in captured provider declarations\"}], \"provenance\": {\"mode\": \"conventional-static\"}}, \"nextAction\": \"REVIEW_UNRESOLVED_SCOPE\", \"coreRecord\": null}\n",
+      "stderr": ""
+    },
+    {
+      "phase": "conventional to compiler to unchanged core known development conflict",
+      "sourceSha256": "41eff0144d8400fa66e2bf58a5c388b456bf87732ad214f4cdf4b0827316a2e3",
+      "startedAt": "2026-10-26T17:17:52.601289+00:00",
+      "wallNs": 84744584,
+      "childCpuSeconds": 0.084165,
+      "exitCode": 0,
+      "stdout": "{\"action\": \"HOLD_UPDATE_AND_TEST\", \"compiledClaims\": 1, \"coreVerified\": null}\n",
+      "stderr": ""
+    },
+    {
+      "phase": "final import ordering and development checks",
+      "command": [
+        "/workspace/scratch/2b1df9d13229/test-env/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        "/workspace/scratch/1aee594d47f3/study/src/conventional.py"
+      ],
+      "sourceSha256": "9abab6a52c56426e27580ad2919a8a29bfab6324f4e31625315f4433aceb0c45",
+      "startedAt": "2026-10-26T17:18:02.129149+00:00",
+      "wallNs": 39239555,
+      "childCpuSeconds": 0.042108,
+      "exitCode": 0,
+      "stdout": "Found 1 error (1 fixed, 0 remaining).\n",
+      "stderr": ""
+    },
+    {
+      "phase": "final import ordering and development checks",
+      "command": [
+        "python",
+        "/workspace/scratch/1aee594d47f3/study/development/test_conventional.py"
+      ],
+      "sourceSha256": "9abab6a52c56426e27580ad2919a8a29bfab6324f4e31625315f4433aceb0c45",
+      "startedAt": "2026-10-26T17:18:02.168474+00:00",
+      "wallNs": 80655749,
+      "childCpuSeconds": 0.07899599999999998,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "..................\n----------------------------------------------------------------------\nRan 18 tests in 0.008s\n\nOK\n"
+    }
+  ],
+  "sourceSha256": "9abab6a52c56426e27580ad2919a8a29bfab6324f4e31625315f4433aceb0c45",
+  "frozenReady": true,
+  "supportedScope": "Static source/import/alias/receiver analysis; missing export identity and dynamic/decorated/expanded paths remain unresolved; methods/constructors conditional in unchanged core"
+}

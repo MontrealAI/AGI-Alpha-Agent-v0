@@ -1,0 +1,58 @@
+{
+  "schema": "agi-alpha-transfer-demo-build/v1",
+  "output": "blocked-complete-handoff.html",
+  "outputBytes": 167629,
+  "outputSha256": "16836f004936497fe6097dee0d2cea2c31af965317c0a682b7c37622d7ff05cd",
+  "dataSha256": "3a76fa3d4b13fb7b159db50c30647f17092b878096df1a10055460a098d7329d",
+  "templateSha256": "9d551ebb5b8310ebe54e77eda42825f6b0720dfa8e22bdca6afeda4b440aa5f4",
+  "bundleSha256": "fc492f6e1d1ef0297efdaf601b0c8022c93579a7c430b66d422dcd2531689bf0",
+  "modules": [
+    {
+      "path": "market/inherited/market/canonical/shadow-ledger.mjs",
+      "bytes": 17514,
+      "sha256": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21",
+      "exports": [
+        "SCHEMA",
+        "appendEvent",
+        "replayLedger",
+        "planMission",
+        "calculateInvestment"
+      ],
+      "transformedSha256": "aa52d6c0e01fbdaf334744457f023e9a0fbf4beed5fcc0e17dd511f1e22b8a78",
+      "transformation": "Exact known import binding substitution; remove declaration export prefixes; isolated closure."
+    },
+    {
+      "path": "market/market-transfer-core.mjs",
+      "bytes": 35443,
+      "sha256": "40d8ecbe1521346a3b993bec3782e1d84fcb6be46e5c9248e9f580e1fe018a61",
+      "exports": [
+        "SCHEMA",
+        "ASSETS",
+        "defaultConfig",
+        "randomDraw",
+        "validateConfig",
+        "pruneDominated",
+        "chooseBuyer",
+        "simulate",
+        "pairedSimulation",
+        "scenarios"
+      ],
+      "transformedSha256": "34aefde2d0cf7078c3b7bfca0eb6d5735c49d72af35f34e8d9e80be6e3ab8c6e",
+      "transformation": "Exact known import binding substitution; remove declaration export prefixes; isolated closure."
+    },
+    {
+      "path": "market/transfer-adapter.mjs",
+      "bytes": 10586,
+      "sha256": "a6c64e1919766e71c29bc3db91906cd828e7bdebf80bf3adcb63ec0ab97a68bf",
+      "exports": [
+        "inspectProduction",
+        "identificationDecision",
+        "conditionalPair",
+        "repaymentThreshold"
+      ],
+      "transformedSha256": "c34cb17783bf29deee819cbbd841299dc3d0a531ced30a0d00898e392d0381dc",
+      "transformation": "Exact known import binding substitution; remove declaration export prefixes; isolated closure."
+    }
+  ],
+  "boundary": "UI presentation only. Market arithmetic is the exact versioned three-module engine, adapted solely for closure loading."
+}

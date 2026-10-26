@@ -1,0 +1,70 @@
+{
+  "schema": "alpha-transfer-independent-extraction-review/v1",
+  "task": "T01",
+  "inputSha256": "399a10aa8e0d2cae0b9ad97b581ee84c19ebd9a084ee1023cc2db0f2d196edaf",
+  "responseSha256": "6d0a930216f7a7e68c20d7d337a7e912ee1b953af09b11f5fe9158a28e40f421",
+  "complete_truthful_inventory": true,
+  "required_calls": 6,
+  "submitted_claims": 6,
+  "submitted_unresolved": 0,
+  "material_errors": [],
+  "conservative_unresolved_on_bindable_source": [],
+  "claim_oracle_expectations": [
+    {
+      "call": [
+        43,
+        12,
+        "httpx.URL"
+      ],
+      "expected_core_scope_outcome": "UNRESOLVED"
+    },
+    {
+      "call": [
+        45,
+        9,
+        "httpx.Client"
+      ],
+      "expected_core_scope_outcome": "UNRESOLVED"
+    },
+    {
+      "call": [
+        53,
+        17,
+        "client.stream"
+      ],
+      "expected_core_scope_outcome": "UNRESOLVED"
+    },
+    {
+      "call": [
+        64,
+        16,
+        "response.raise_for_status"
+      ],
+      "expected_core_scope_outcome": "UNRESOLVED"
+    },
+    {
+      "call": [
+        65,
+        19,
+        "response.headers.get"
+      ],
+      "expected_core_scope_outcome": "UNRESOLVED"
+    },
+    {
+      "call": [
+        68,
+        29,
+        "response.iter_raw"
+      ],
+      "expected_core_scope_outcome": "UNRESOLVED"
+    }
+  ],
+  "limits": [
+    "Long refusal text alone does not substantiate its semantics. Same-session reviewer must inspect unresolved reasons and any stronger downstream prose claim.",
+    "Complete truthful scope includes explicit unresolved work, not compatibility acceptance.",
+    "Counts are calls within a job, not independent maintenance jobs or customers."
+  ],
+  "arm": "A",
+  "sealedProposalSha256": "9080de45d539540037a982bdec4435266d0a13b15f53a95541d07cb991aeabc0",
+  "projectionNote": "Lossless projection of native A calls/targets/mapping explanations; source and ID equality checked before normalization. No call or target added or repaired. A does not use B's compiler."
+}

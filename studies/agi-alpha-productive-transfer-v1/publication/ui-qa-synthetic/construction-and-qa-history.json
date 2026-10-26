@@ -1,0 +1,72 @@
+{
+  "schema": "agi-alpha-transfer-ui-development-resources/v1",
+  "scope": "Offline demo construction and synthetic UI validation only; no primary or follow-up task evidence inspected.",
+  "files": {
+    "study/publication/demo_template.html": "9d551ebb5b8310ebe54e77eda42825f6b0720dfa8e22bdca6afeda4b440aa5f4",
+    "study/publication/build_demo.py": "abe7a27c584ba8038deec765454e48a96a7377fac14aba805c929ad46d717bcc",
+    "study/publication/qa_demo_fixture.py": "223c3f5118ae90b69824f9bf189875271ed7f691ccd2f2fa5c367497cec5b34e",
+    "study/publication/qa_demo.mjs": "1e7e5d9f1a1447d70263133253becc5c7d5f3fccd1c97995d7cc8d0a1adf81cc"
+  },
+  "attempts": [
+    {
+      "phase": "initial restricted launch",
+      "status": "FAILED_BEFORE_BROWSER_PAGE",
+      "reason": "Linux sandbox host shutdown returned Operation not permitted. Retried through normal approved local execution escalation.",
+      "cpuSeconds": null,
+      "wallSeconds": null
+    },
+    {
+      "phase": "first browser helper",
+      "status": "INTERRUPTED_HELPER_DEFECT",
+      "reason": "QA helper tried to fill a control inside a closed details disclosure. Helper repaired to open the actual disclosure first. No production code changed for this defect.",
+      "report": "qa-report-interrupted-before-disclosure-fix.json",
+      "resources": {
+        "nodeProcessCpuSeconds": 0.588119,
+        "wallSeconds": 19.234519308,
+        "browserChildCpuSeconds": null,
+        "completeCostUSD": null
+      }
+    },
+    {
+      "phase": "first complete synthetic QA",
+      "status": "PASS",
+      "testsPassed": 20,
+      "testsFailed": 0,
+      "report": "qa-report-before-final-layout-and-marker-fix.json",
+      "resources": {
+        "nodeProcessCpuSeconds": 4.280934,
+        "wallSeconds": 13.418728754,
+        "browserChildCpuSeconds": null,
+        "completeCostUSD": null
+      }
+    },
+    {
+      "phase": "final synthetic QA",
+      "status": "PASS",
+      "testsPassed": 20,
+      "testsFailed": 0,
+      "report": "qa-report.json",
+      "resources": {
+        "nodeProcessCpuSeconds": 3.456155,
+        "wallSeconds": 11.183470185000001,
+        "browserChildCpuSeconds": null,
+        "completeCostUSD": null
+      }
+    }
+  ],
+  "observedRepairs": [
+    "Clarified C2 and complete-handoff labels; preserved registered primary failure.",
+    "Displayed unproved dispatch separately from conditional signature check.",
+    "Kept null scenario cost inputs blank.",
+    "Used single-pass marker replacement so literal marker tokens in captured source stay exact.",
+    "Prevented compact tablet result cards from cramping and chart unit from overlapping final tick."
+  ],
+  "unknownMonetaryCosts": {
+    "authoringUSD": null,
+    "modelInferenceUSD": null,
+    "toolExecutionUSD": null,
+    "browserProcessResourcesUSD": null,
+    "residualHumanAttentionUSD": null
+  },
+  "accountingBoundary": "Node process CPU is a measured lower bound, not complete browser or workflow cost. No elapsed agent time is converted into wages. No numerical authoring/inference charge is imputed. Synthetic controls and engine scenarios are not independent customer jobs."
+}

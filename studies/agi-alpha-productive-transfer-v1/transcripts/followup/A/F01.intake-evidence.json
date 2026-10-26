@@ -1,0 +1,206 @@
+{
+  "absentTargetEvidence": [],
+  "arm": "A",
+  "calls": [
+    {
+      "after": {
+        "declaration": {
+          "endLine": 322,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: str | bytes | None = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file, color)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L322"
+        },
+        "signatureLines": {
+          "endLine": 228,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L228"
+        },
+        "source": "a1",
+        "symbol": "echo"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 319,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: t.Optional[t.Union[str, bytes]] = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L319"
+        },
+        "signatureLines": {
+          "endLine": 225,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L225"
+        },
+        "source": "b1",
+        "symbol": "echo"
+      },
+      "consumer": {
+        "callee": "click.echo",
+        "column": 8,
+        "endLine": 724,
+        "line": 724,
+        "sha256": "3c3c1909f3da822e465336fe0fa74437bcb6d205a25408377a3467c4128d1cf0",
+        "snippet": "click.echo(f\" * Serving Flask app '{app_import_path}'\")",
+        "source": "consumer",
+        "url": "https://github.com/pallets/flask/blob/3205b53c7cf69d17fee49cac6b84978175b7dd73/src/flask/cli.py#L724-L724"
+      },
+      "id": "F01-c01",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "Conditional app_import_path branch and f-string evaluation remain runtime concerns."
+      ],
+      "mapping": {
+        "explanation": "consumer:15 imports click. Captured b0/a0:66 re-export echo from .utils, whose direct declarations are b1:219 and a1:222. This supports the conditional click.utils.echo target. The core direct-import rule cannot establish the package re-export from click.echo to click.utils.echo; runtime import identity and terminal behavior remain unproved.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "show_server_banner",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 15,
+          "line": 15,
+          "sha256": "3c3c1909f3da822e465336fe0fa74437bcb6d205a25408377a3467c4128d1cf0",
+          "snippet": "import click",
+          "source": "consumer",
+          "url": "https://github.com/pallets/flask/blob/3205b53c7cf69d17fee49cac6b84978175b7dd73/src/flask/cli.py#L15-L15"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "6030db8e6e34e9d4ce03457c6d3b5d1a784def38f98fefdd1517b0645fe92efc",
+          "snippet": "from .utils import echo as echo",
+          "source": "b0",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/__init__.py#L66-L66"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "e98c92d5a7b29276742d8c1e5a8ccd672d00f6767fd75c2660886fddc6d0ad8a",
+          "snippet": "from .utils import echo as echo",
+          "source": "a0",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/__init__.py#L66-L66"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 322,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: str | bytes | None = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file, color)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L322"
+        },
+        "signatureLines": {
+          "endLine": 228,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L228"
+        },
+        "source": "a1",
+        "symbol": "echo"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 319,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: t.Optional[t.Union[str, bytes]] = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L319"
+        },
+        "signatureLines": {
+          "endLine": 225,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L225"
+        },
+        "source": "b1",
+        "symbol": "echo"
+      },
+      "consumer": {
+        "callee": "click.echo",
+        "column": 8,
+        "endLine": 727,
+        "line": 727,
+        "sha256": "3c3c1909f3da822e465336fe0fa74437bcb6d205a25408377a3467c4128d1cf0",
+        "snippet": "click.echo(f\" * Debug mode: {'on' if debug else 'off'}\")",
+        "source": "consumer",
+        "url": "https://github.com/pallets/flask/blob/3205b53c7cf69d17fee49cac6b84978175b7dd73/src/flask/cli.py#L727-L727"
+      },
+      "id": "F01-c02",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "Conditional debug branch, truth-value evaluation and f-string evaluation remain runtime concerns."
+      ],
+      "mapping": {
+        "explanation": "consumer:15 imports click. Captured b0/a0:66 re-export echo from .utils, whose direct declarations are b1:219 and a1:222. This supports the conditional click.utils.echo target. The core direct-import rule cannot establish the package re-export from click.echo to click.utils.echo; runtime import identity and terminal behavior remain unproved.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "show_server_banner",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 15,
+          "line": 15,
+          "sha256": "3c3c1909f3da822e465336fe0fa74437bcb6d205a25408377a3467c4128d1cf0",
+          "snippet": "import click",
+          "source": "consumer",
+          "url": "https://github.com/pallets/flask/blob/3205b53c7cf69d17fee49cac6b84978175b7dd73/src/flask/cli.py#L15-L15"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "6030db8e6e34e9d4ce03457c6d3b5d1a784def38f98fefdd1517b0645fe92efc",
+          "snippet": "from .utils import echo as echo",
+          "source": "b0",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/__init__.py#L66-L66"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "e98c92d5a7b29276742d8c1e5a8ccd672d00f6767fd75c2660886fddc6d0ad8a",
+          "snippet": "from .utils import echo as echo",
+          "source": "a0",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/__init__.py#L66-L66"
+        }
+      ]
+    }
+  ],
+  "compatibilityAssessmentPerformed": false,
+  "excludedScopeCalls": [
+    {
+      "callee": "is_running_from_reloader",
+      "column": 7,
+      "line": 720,
+      "reason": "Werkzeug import; outside the Click dependency scope.",
+      "scopeSymbol": "show_server_banner"
+    }
+  ],
+  "rawTaskSha256": "867421b39c68a538d21e59acf5a51527e6476cbee2e0ca63d3fa83186e348161",
+  "relevantCallCount": 2,
+  "schema": "alpha-curator-source-intake-evidence/v1",
+  "schemaGaps": [],
+  "scope": {
+    "scopeSymbols": [
+      "show_server_banner"
+    ],
+    "source": "consumer"
+  },
+  "sourceExecution": false,
+  "taskId": "F01"
+}

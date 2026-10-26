@@ -1,0 +1,38 @@
+{
+  "schema": "alpha-transfer-extraction/v1",
+  "inputSha256": "120030841866381ae1ba907bcc7249f87e86bf9b5d94dd984362e3e40cc17cfd",
+  "claims": [
+    {
+      "line": 176,
+      "column": 42,
+      "callee": "eigsh",
+      "before": {
+        "source": "b2",
+        "symbol": "eigsh"
+      },
+      "after": {
+        "source": "a2",
+        "symbol": "eigsh"
+      },
+      "explanation": "Consumer line 12 imports eigsh from scipy.sparse.linalg. Captured sparse/linalg initializers import _eigen at before line 123 and after line 132; _eigen imports .arpack at line 9 and includes eigsh in __all__; arpack/__init__.py imports .arpack at line 20. arpack.py includes eigsh in __all__ and defines it at before line 1357 and after line 1360. This captured chain supports a declared target, not runtime object identity or the unchanged core's direct-import mapping."
+    },
+    {
+      "line": 192,
+      "column": 38,
+      "callee": "eigh",
+      "before": {
+        "source": "b0",
+        "symbol": "eigh"
+      },
+      "after": {
+        "source": "a0",
+        "symbol": "eigh"
+      },
+      "explanation": "Consumer line 10 imports eigh from scipy.linalg. Captured scipy/linalg/__init__.py imports ._decomp at before line 200 and after line 206; each _decomp.__all__ lists eigh, defined at before line 270 and after line 283. This captured export path supports the declared target. Runtime export identity is not proved, and the unchanged core's direct-import mapping does not follow this re-export."
+    }
+  ],
+  "unresolved": [],
+  "provenance": {
+    "mode": "audit-projection-of-sealed-native-request"
+  }
+}

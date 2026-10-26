@@ -1,0 +1,394 @@
+{
+  "absentTargetEvidence": [],
+  "arm": "A",
+  "calls": [
+    {
+      "after": {
+        "declaration": {
+          "endLine": 638,
+          "line": 512,
+          "sha256": "bc062b282d9aedffcd7c42210138445587dafff89be5741b4d2086b499400510",
+          "snippet": "def style(\n    text: t.Any,\n    fg: int | tuple[int, int, int] | str | None = None,\n    bg: int | tuple[int, int, int] | str | None = None,\n    bold: bool | None = None,\n    dim: bool | None = None,\n    underline: bool | None = None,\n    overline: bool | None = None,\n    italic: bool | None = None,\n    blink: bool | None = None,\n    reverse: bool | None = None,\n    strikethrough: bool | None = None,\n    reset: bool = True,\n) -> str:\n    \"\"\"Styles a text with ANSI styles and returns the new string.  By\n    default the styling is self contained which means that at the end\n    of the string a reset code is issued.  This can be prevented by\n    passing ``reset=False``.\n\n    Examples::\n\n        click.echo(click.style('Hello World!', fg='green'))\n        click.echo(click.style('ATTENTION!', blink=True))\n        click.echo(click.style('Some things', reverse=True, fg='cyan'))\n        click.echo(click.style('More colors', fg=(255, 12, 128), bg=117))\n\n    Supported color names:\n\n    * ``black`` (might be a gray)\n    * ``red``\n    * ``green``\n    * ``yellow`` (might be an orange)\n    * ``blue``\n    * ``magenta``\n    * ``cyan``\n    * ``white`` (might be light gray)\n    * ``bright_black``\n    * ``bright_red``\n    * ``bright_green``\n    * ``bright_yellow``\n    * ``bright_blue``\n    * ``bright_magenta``\n    * ``bright_cyan``\n    * ``bright_white``\n    * ``reset`` (reset the color code only)\n\n    If the terminal supports it, color may also be specified as:\n\n    -   An integer in the interval [0, 255]. The terminal must support\n        8-bit/256-color mode.\n    -   An RGB tuple of three integers in [0, 255]. The terminal must\n        support 24-bit/true-color mode.\n\n    See https://en.wikipedia.org/wiki/ANSI_color and\n    https://gist.github.com/XVilka/8346728 for more information.\n\n    :param text: the string to style with ansi codes.\n    :param fg: if provided this will become the foreground color.\n    :param bg: if provided this will become the background color.\n    :param bold: if provided this will enable or disable bold mode.\n    :param dim: if provided this will enable or disable dim mode.  This is\n                badly supported.\n    :param underline: if provided this will enable or disable underline.\n    :param overline: if provided this will enable or disable overline.\n    :param italic: if provided this will enable or disable italic.\n    :param blink: if provided this will enable or disable blinking.\n    :param reverse: if provided this will enable or disable inverse\n                    rendering (foreground becomes background and the\n                    other way round).\n    :param strikethrough: if provided this will enable or disable\n        striking through text.\n    :param reset: by default a reset-all code is added at the end of the\n                  string which means that styles do not carry over.  This\n                  can be disabled to compose styles.\n\n    .. versionchanged:: 8.0\n        A non-string ``message`` is converted to a string.\n\n    .. versionchanged:: 8.0\n       Added support for 256 and RGB color codes.\n\n    .. versionchanged:: 8.0\n        Added the ``strikethrough``, ``italic``, and ``overline``\n        parameters.\n\n    .. versionchanged:: 7.0\n        Added support for bright colors.\n\n    .. versionadded:: 2.0\n    \"\"\"\n    if not isinstance(text, str):\n        text = str(text)\n\n    bits = []\n\n    if fg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(fg)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {fg!r}\") from None\n\n    if bg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(bg, 10)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {bg!r}\") from None\n\n    if bold is not None:\n        bits.append(f\"\\033[{1 if bold else 22}m\")\n    if dim is not None:\n        bits.append(f\"\\033[{2 if dim else 22}m\")\n    if underline is not None:\n        bits.append(f\"\\033[{4 if underline else 24}m\")\n    if overline is not None:\n        bits.append(f\"\\033[{53 if overline else 55}m\")\n    if italic is not None:\n        bits.append(f\"\\033[{3 if italic else 23}m\")\n    if blink is not None:\n        bits.append(f\"\\033[{5 if blink else 25}m\")\n    if reverse is not None:\n        bits.append(f\"\\033[{7 if reverse else 27}m\")\n    if strikethrough is not None:\n        bits.append(f\"\\033[{9 if strikethrough else 29}m\")\n    bits.append(text)\n    if reset:\n        bits.append(_ansi_reset_all)\n    return \"\".join(bits)",
+          "source": "a2",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/termui.py#L512-L638"
+        },
+        "signatureLines": {
+          "endLine": 525,
+          "line": 512,
+          "sha256": "bc062b282d9aedffcd7c42210138445587dafff89be5741b4d2086b499400510",
+          "snippet": "def style(\n    text: t.Any,\n    fg: int | tuple[int, int, int] | str | None = None,\n    bg: int | tuple[int, int, int] | str | None = None,\n    bold: bool | None = None,\n    dim: bool | None = None,\n    underline: bool | None = None,\n    overline: bool | None = None,\n    italic: bool | None = None,\n    blink: bool | None = None,\n    reverse: bool | None = None,\n    strikethrough: bool | None = None,\n    reset: bool = True,\n) -> str:",
+          "source": "a2",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/termui.py#L512-L525"
+        },
+        "source": "a2",
+        "symbol": "style"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 588,
+          "line": 462,
+          "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+          "snippet": "def style(\n    text: t.Any,\n    fg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bold: t.Optional[bool] = None,\n    dim: t.Optional[bool] = None,\n    underline: t.Optional[bool] = None,\n    overline: t.Optional[bool] = None,\n    italic: t.Optional[bool] = None,\n    blink: t.Optional[bool] = None,\n    reverse: t.Optional[bool] = None,\n    strikethrough: t.Optional[bool] = None,\n    reset: bool = True,\n) -> str:\n    \"\"\"Styles a text with ANSI styles and returns the new string.  By\n    default the styling is self contained which means that at the end\n    of the string a reset code is issued.  This can be prevented by\n    passing ``reset=False``.\n\n    Examples::\n\n        click.echo(click.style('Hello World!', fg='green'))\n        click.echo(click.style('ATTENTION!', blink=True))\n        click.echo(click.style('Some things', reverse=True, fg='cyan'))\n        click.echo(click.style('More colors', fg=(255, 12, 128), bg=117))\n\n    Supported color names:\n\n    * ``black`` (might be a gray)\n    * ``red``\n    * ``green``\n    * ``yellow`` (might be an orange)\n    * ``blue``\n    * ``magenta``\n    * ``cyan``\n    * ``white`` (might be light gray)\n    * ``bright_black``\n    * ``bright_red``\n    * ``bright_green``\n    * ``bright_yellow``\n    * ``bright_blue``\n    * ``bright_magenta``\n    * ``bright_cyan``\n    * ``bright_white``\n    * ``reset`` (reset the color code only)\n\n    If the terminal supports it, color may also be specified as:\n\n    -   An integer in the interval [0, 255]. The terminal must support\n        8-bit/256-color mode.\n    -   An RGB tuple of three integers in [0, 255]. The terminal must\n        support 24-bit/true-color mode.\n\n    See https://en.wikipedia.org/wiki/ANSI_color and\n    https://gist.github.com/XVilka/8346728 for more information.\n\n    :param text: the string to style with ansi codes.\n    :param fg: if provided this will become the foreground color.\n    :param bg: if provided this will become the background color.\n    :param bold: if provided this will enable or disable bold mode.\n    :param dim: if provided this will enable or disable dim mode.  This is\n                badly supported.\n    :param underline: if provided this will enable or disable underline.\n    :param overline: if provided this will enable or disable overline.\n    :param italic: if provided this will enable or disable italic.\n    :param blink: if provided this will enable or disable blinking.\n    :param reverse: if provided this will enable or disable inverse\n                    rendering (foreground becomes background and the\n                    other way round).\n    :param strikethrough: if provided this will enable or disable\n        striking through text.\n    :param reset: by default a reset-all code is added at the end of the\n                  string which means that styles do not carry over.  This\n                  can be disabled to compose styles.\n\n    .. versionchanged:: 8.0\n        A non-string ``message`` is converted to a string.\n\n    .. versionchanged:: 8.0\n       Added support for 256 and RGB color codes.\n\n    .. versionchanged:: 8.0\n        Added the ``strikethrough``, ``italic``, and ``overline``\n        parameters.\n\n    .. versionchanged:: 7.0\n        Added support for bright colors.\n\n    .. versionadded:: 2.0\n    \"\"\"\n    if not isinstance(text, str):\n        text = str(text)\n\n    bits = []\n\n    if fg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(fg)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {fg!r}\") from None\n\n    if bg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(bg, 10)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {bg!r}\") from None\n\n    if bold is not None:\n        bits.append(f\"\\033[{1 if bold else 22}m\")\n    if dim is not None:\n        bits.append(f\"\\033[{2 if dim else 22}m\")\n    if underline is not None:\n        bits.append(f\"\\033[{4 if underline else 24}m\")\n    if overline is not None:\n        bits.append(f\"\\033[{53 if overline else 55}m\")\n    if italic is not None:\n        bits.append(f\"\\033[{3 if italic else 23}m\")\n    if blink is not None:\n        bits.append(f\"\\033[{5 if blink else 25}m\")\n    if reverse is not None:\n        bits.append(f\"\\033[{7 if reverse else 27}m\")\n    if strikethrough is not None:\n        bits.append(f\"\\033[{9 if strikethrough else 29}m\")\n    bits.append(text)\n    if reset:\n        bits.append(_ansi_reset_all)\n    return \"\".join(bits)",
+          "source": "b2",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/termui.py#L462-L588"
+        },
+        "signatureLines": {
+          "endLine": 475,
+          "line": 462,
+          "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+          "snippet": "def style(\n    text: t.Any,\n    fg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bold: t.Optional[bool] = None,\n    dim: t.Optional[bool] = None,\n    underline: t.Optional[bool] = None,\n    overline: t.Optional[bool] = None,\n    italic: t.Optional[bool] = None,\n    blink: t.Optional[bool] = None,\n    reverse: t.Optional[bool] = None,\n    strikethrough: t.Optional[bool] = None,\n    reset: bool = True,\n) -> str:",
+          "source": "b2",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/termui.py#L462-L475"
+        },
+        "source": "b2",
+        "symbol": "style"
+      },
+      "consumer": {
+        "callee": "style",
+        "column": 18,
+        "endLine": 20,
+        "line": 20,
+        "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+        "snippet": "style(message, **styles)",
+        "source": "consumer",
+        "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L20-L20"
+      },
+      "id": "F02-c01",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "The **styles expansion is retained exactly; no concrete expanded argument set is available.",
+        "The consumer defaults bold only when absent; callers may supply other style keys or values."
+      ],
+      "mapping": {
+        "explanation": "consumer:11 imports style from click. Captured b0/a0:50 re-export style from .termui; b2:462 and a2:512 directly define style. The export relationship supports a conditional target but is outside the core direct-import rule. The exact call retains **styles; its expanded keys and values require runtime evidence and are not replaced with guessed keywords.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "_out",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 11,
+          "line": 11,
+          "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+          "snippet": "from click import echo, style",
+          "source": "consumer",
+          "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L11-L11"
+        },
+        {
+          "endLine": 50,
+          "line": 50,
+          "sha256": "6030db8e6e34e9d4ce03457c6d3b5d1a784def38f98fefdd1517b0645fe92efc",
+          "snippet": "from .termui import style as style",
+          "source": "b0",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/__init__.py#L50-L50"
+        },
+        {
+          "endLine": 50,
+          "line": 50,
+          "sha256": "e98c92d5a7b29276742d8c1e5a8ccd672d00f6767fd75c2660886fddc6d0ad8a",
+          "snippet": "from .termui import style as style",
+          "source": "a0",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/__init__.py#L50-L50"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 322,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: str | bytes | None = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file, color)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L322"
+        },
+        "signatureLines": {
+          "endLine": 228,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L228"
+        },
+        "source": "a1",
+        "symbol": "echo"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 319,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: t.Optional[t.Union[str, bytes]] = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L319"
+        },
+        "signatureLines": {
+          "endLine": 225,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L225"
+        },
+        "source": "b1",
+        "symbol": "echo"
+      },
+      "consumer": {
+        "callee": "echo",
+        "column": 4,
+        "endLine": 21,
+        "line": 21,
+        "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+        "snippet": "echo(message, nl=nl, err=True)",
+        "source": "consumer",
+        "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L21-L21"
+      },
+      "id": "F02-c02",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "message may have passed through style with expanded **styles; message/nl values and terminal behavior remain runtime concerns."
+      ],
+      "mapping": {
+        "explanation": "consumer:11 imports echo from click. Captured b0/a0:66 re-export echo from .utils; b1:219 and a1:222 directly define echo. This supports the conditional click.utils.echo target, while the core direct-import rule cannot prove a package re-export. Runtime imported identity and terminal output remain unproved.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "_out",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 11,
+          "line": 11,
+          "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+          "snippet": "from click import echo, style",
+          "source": "consumer",
+          "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L11-L11"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "6030db8e6e34e9d4ce03457c6d3b5d1a784def38f98fefdd1517b0645fe92efc",
+          "snippet": "from .utils import echo as echo",
+          "source": "b0",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/__init__.py#L66-L66"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "e98c92d5a7b29276742d8c1e5a8ccd672d00f6767fd75c2660886fddc6d0ad8a",
+          "snippet": "from .utils import echo as echo",
+          "source": "a0",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/__init__.py#L66-L66"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 638,
+          "line": 512,
+          "sha256": "bc062b282d9aedffcd7c42210138445587dafff89be5741b4d2086b499400510",
+          "snippet": "def style(\n    text: t.Any,\n    fg: int | tuple[int, int, int] | str | None = None,\n    bg: int | tuple[int, int, int] | str | None = None,\n    bold: bool | None = None,\n    dim: bool | None = None,\n    underline: bool | None = None,\n    overline: bool | None = None,\n    italic: bool | None = None,\n    blink: bool | None = None,\n    reverse: bool | None = None,\n    strikethrough: bool | None = None,\n    reset: bool = True,\n) -> str:\n    \"\"\"Styles a text with ANSI styles and returns the new string.  By\n    default the styling is self contained which means that at the end\n    of the string a reset code is issued.  This can be prevented by\n    passing ``reset=False``.\n\n    Examples::\n\n        click.echo(click.style('Hello World!', fg='green'))\n        click.echo(click.style('ATTENTION!', blink=True))\n        click.echo(click.style('Some things', reverse=True, fg='cyan'))\n        click.echo(click.style('More colors', fg=(255, 12, 128), bg=117))\n\n    Supported color names:\n\n    * ``black`` (might be a gray)\n    * ``red``\n    * ``green``\n    * ``yellow`` (might be an orange)\n    * ``blue``\n    * ``magenta``\n    * ``cyan``\n    * ``white`` (might be light gray)\n    * ``bright_black``\n    * ``bright_red``\n    * ``bright_green``\n    * ``bright_yellow``\n    * ``bright_blue``\n    * ``bright_magenta``\n    * ``bright_cyan``\n    * ``bright_white``\n    * ``reset`` (reset the color code only)\n\n    If the terminal supports it, color may also be specified as:\n\n    -   An integer in the interval [0, 255]. The terminal must support\n        8-bit/256-color mode.\n    -   An RGB tuple of three integers in [0, 255]. The terminal must\n        support 24-bit/true-color mode.\n\n    See https://en.wikipedia.org/wiki/ANSI_color and\n    https://gist.github.com/XVilka/8346728 for more information.\n\n    :param text: the string to style with ansi codes.\n    :param fg: if provided this will become the foreground color.\n    :param bg: if provided this will become the background color.\n    :param bold: if provided this will enable or disable bold mode.\n    :param dim: if provided this will enable or disable dim mode.  This is\n                badly supported.\n    :param underline: if provided this will enable or disable underline.\n    :param overline: if provided this will enable or disable overline.\n    :param italic: if provided this will enable or disable italic.\n    :param blink: if provided this will enable or disable blinking.\n    :param reverse: if provided this will enable or disable inverse\n                    rendering (foreground becomes background and the\n                    other way round).\n    :param strikethrough: if provided this will enable or disable\n        striking through text.\n    :param reset: by default a reset-all code is added at the end of the\n                  string which means that styles do not carry over.  This\n                  can be disabled to compose styles.\n\n    .. versionchanged:: 8.0\n        A non-string ``message`` is converted to a string.\n\n    .. versionchanged:: 8.0\n       Added support for 256 and RGB color codes.\n\n    .. versionchanged:: 8.0\n        Added the ``strikethrough``, ``italic``, and ``overline``\n        parameters.\n\n    .. versionchanged:: 7.0\n        Added support for bright colors.\n\n    .. versionadded:: 2.0\n    \"\"\"\n    if not isinstance(text, str):\n        text = str(text)\n\n    bits = []\n\n    if fg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(fg)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {fg!r}\") from None\n\n    if bg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(bg, 10)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {bg!r}\") from None\n\n    if bold is not None:\n        bits.append(f\"\\033[{1 if bold else 22}m\")\n    if dim is not None:\n        bits.append(f\"\\033[{2 if dim else 22}m\")\n    if underline is not None:\n        bits.append(f\"\\033[{4 if underline else 24}m\")\n    if overline is not None:\n        bits.append(f\"\\033[{53 if overline else 55}m\")\n    if italic is not None:\n        bits.append(f\"\\033[{3 if italic else 23}m\")\n    if blink is not None:\n        bits.append(f\"\\033[{5 if blink else 25}m\")\n    if reverse is not None:\n        bits.append(f\"\\033[{7 if reverse else 27}m\")\n    if strikethrough is not None:\n        bits.append(f\"\\033[{9 if strikethrough else 29}m\")\n    bits.append(text)\n    if reset:\n        bits.append(_ansi_reset_all)\n    return \"\".join(bits)",
+          "source": "a2",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/termui.py#L512-L638"
+        },
+        "signatureLines": {
+          "endLine": 525,
+          "line": 512,
+          "sha256": "bc062b282d9aedffcd7c42210138445587dafff89be5741b4d2086b499400510",
+          "snippet": "def style(\n    text: t.Any,\n    fg: int | tuple[int, int, int] | str | None = None,\n    bg: int | tuple[int, int, int] | str | None = None,\n    bold: bool | None = None,\n    dim: bool | None = None,\n    underline: bool | None = None,\n    overline: bool | None = None,\n    italic: bool | None = None,\n    blink: bool | None = None,\n    reverse: bool | None = None,\n    strikethrough: bool | None = None,\n    reset: bool = True,\n) -> str:",
+          "source": "a2",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/termui.py#L512-L525"
+        },
+        "source": "a2",
+        "symbol": "style"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 588,
+          "line": 462,
+          "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+          "snippet": "def style(\n    text: t.Any,\n    fg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bold: t.Optional[bool] = None,\n    dim: t.Optional[bool] = None,\n    underline: t.Optional[bool] = None,\n    overline: t.Optional[bool] = None,\n    italic: t.Optional[bool] = None,\n    blink: t.Optional[bool] = None,\n    reverse: t.Optional[bool] = None,\n    strikethrough: t.Optional[bool] = None,\n    reset: bool = True,\n) -> str:\n    \"\"\"Styles a text with ANSI styles and returns the new string.  By\n    default the styling is self contained which means that at the end\n    of the string a reset code is issued.  This can be prevented by\n    passing ``reset=False``.\n\n    Examples::\n\n        click.echo(click.style('Hello World!', fg='green'))\n        click.echo(click.style('ATTENTION!', blink=True))\n        click.echo(click.style('Some things', reverse=True, fg='cyan'))\n        click.echo(click.style('More colors', fg=(255, 12, 128), bg=117))\n\n    Supported color names:\n\n    * ``black`` (might be a gray)\n    * ``red``\n    * ``green``\n    * ``yellow`` (might be an orange)\n    * ``blue``\n    * ``magenta``\n    * ``cyan``\n    * ``white`` (might be light gray)\n    * ``bright_black``\n    * ``bright_red``\n    * ``bright_green``\n    * ``bright_yellow``\n    * ``bright_blue``\n    * ``bright_magenta``\n    * ``bright_cyan``\n    * ``bright_white``\n    * ``reset`` (reset the color code only)\n\n    If the terminal supports it, color may also be specified as:\n\n    -   An integer in the interval [0, 255]. The terminal must support\n        8-bit/256-color mode.\n    -   An RGB tuple of three integers in [0, 255]. The terminal must\n        support 24-bit/true-color mode.\n\n    See https://en.wikipedia.org/wiki/ANSI_color and\n    https://gist.github.com/XVilka/8346728 for more information.\n\n    :param text: the string to style with ansi codes.\n    :param fg: if provided this will become the foreground color.\n    :param bg: if provided this will become the background color.\n    :param bold: if provided this will enable or disable bold mode.\n    :param dim: if provided this will enable or disable dim mode.  This is\n                badly supported.\n    :param underline: if provided this will enable or disable underline.\n    :param overline: if provided this will enable or disable overline.\n    :param italic: if provided this will enable or disable italic.\n    :param blink: if provided this will enable or disable blinking.\n    :param reverse: if provided this will enable or disable inverse\n                    rendering (foreground becomes background and the\n                    other way round).\n    :param strikethrough: if provided this will enable or disable\n        striking through text.\n    :param reset: by default a reset-all code is added at the end of the\n                  string which means that styles do not carry over.  This\n                  can be disabled to compose styles.\n\n    .. versionchanged:: 8.0\n        A non-string ``message`` is converted to a string.\n\n    .. versionchanged:: 8.0\n       Added support for 256 and RGB color codes.\n\n    .. versionchanged:: 8.0\n        Added the ``strikethrough``, ``italic``, and ``overline``\n        parameters.\n\n    .. versionchanged:: 7.0\n        Added support for bright colors.\n\n    .. versionadded:: 2.0\n    \"\"\"\n    if not isinstance(text, str):\n        text = str(text)\n\n    bits = []\n\n    if fg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(fg)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {fg!r}\") from None\n\n    if bg:\n        try:\n            bits.append(f\"\\033[{_interpret_color(bg, 10)}m\")\n        except KeyError:\n            raise TypeError(f\"Unknown color {bg!r}\") from None\n\n    if bold is not None:\n        bits.append(f\"\\033[{1 if bold else 22}m\")\n    if dim is not None:\n        bits.append(f\"\\033[{2 if dim else 22}m\")\n    if underline is not None:\n        bits.append(f\"\\033[{4 if underline else 24}m\")\n    if overline is not None:\n        bits.append(f\"\\033[{53 if overline else 55}m\")\n    if italic is not None:\n        bits.append(f\"\\033[{3 if italic else 23}m\")\n    if blink is not None:\n        bits.append(f\"\\033[{5 if blink else 25}m\")\n    if reverse is not None:\n        bits.append(f\"\\033[{7 if reverse else 27}m\")\n    if strikethrough is not None:\n        bits.append(f\"\\033[{9 if strikethrough else 29}m\")\n    bits.append(text)\n    if reset:\n        bits.append(_ansi_reset_all)\n    return \"\".join(bits)",
+          "source": "b2",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/termui.py#L462-L588"
+        },
+        "signatureLines": {
+          "endLine": 475,
+          "line": 462,
+          "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+          "snippet": "def style(\n    text: t.Any,\n    fg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bg: t.Optional[t.Union[int, t.Tuple[int, int, int], str]] = None,\n    bold: t.Optional[bool] = None,\n    dim: t.Optional[bool] = None,\n    underline: t.Optional[bool] = None,\n    overline: t.Optional[bool] = None,\n    italic: t.Optional[bool] = None,\n    blink: t.Optional[bool] = None,\n    reverse: t.Optional[bool] = None,\n    strikethrough: t.Optional[bool] = None,\n    reset: bool = True,\n) -> str:",
+          "source": "b2",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/termui.py#L462-L475"
+        },
+        "source": "b2",
+        "symbol": "style"
+      },
+      "consumer": {
+        "callee": "style",
+        "column": 18,
+        "endLine": 29,
+        "line": 29,
+        "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+        "snippet": "style(message, **styles)",
+        "source": "consumer",
+        "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L29-L29"
+      },
+      "id": "F02-c03",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "The **styles expansion is retained exactly; no concrete expanded argument set is available.",
+        "The consumer defaults fg to red only when absent; callers may supply other style keys or values."
+      ],
+      "mapping": {
+        "explanation": "consumer:11 imports style from click. Captured b0/a0:50 re-export style from .termui; b2:462 and a2:512 directly define style. The export relationship supports a conditional target but is outside the core direct-import rule. The exact call retains **styles; its expanded keys and values require runtime evidence and are not replaced with guessed keywords.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "_err",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 11,
+          "line": 11,
+          "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+          "snippet": "from click import echo, style",
+          "source": "consumer",
+          "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L11-L11"
+        },
+        {
+          "endLine": 50,
+          "line": 50,
+          "sha256": "6030db8e6e34e9d4ce03457c6d3b5d1a784def38f98fefdd1517b0645fe92efc",
+          "snippet": "from .termui import style as style",
+          "source": "b0",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/__init__.py#L50-L50"
+        },
+        {
+          "endLine": 50,
+          "line": 50,
+          "sha256": "e98c92d5a7b29276742d8c1e5a8ccd672d00f6767fd75c2660886fddc6d0ad8a",
+          "snippet": "from .termui import style as style",
+          "source": "a0",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/__init__.py#L50-L50"
+        }
+      ]
+    },
+    {
+      "after": {
+        "declaration": {
+          "endLine": 322,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: str | bytes | None = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file, color)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L322"
+        },
+        "signatureLines": {
+          "endLine": 228,
+          "line": 222,
+          "sha256": "6f5326faeb040c11ed13070f96d3c89f7cd22b89f0d8a4e9e460bbfe849394ba",
+          "snippet": "def echo(\n    message: t.Any | None = None,\n    file: t.IO[t.Any] | None = None,\n    nl: bool = True,\n    err: bool = False,\n    color: bool | None = None,\n) -> None:",
+          "source": "a1",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/utils.py#L222-L228"
+        },
+        "source": "a1",
+        "symbol": "echo"
+      },
+      "before": {
+        "declaration": {
+          "endLine": 319,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:\n    \"\"\"Print a message and newline to stdout or a file. This should be\n    used instead of :func:`print` because it provides better support\n    for different data, files, and environments.\n\n    Compared to :func:`print`, this does the following:\n\n    -   Ensures that the output encoding is not misconfigured on Linux.\n    -   Supports Unicode in the Windows console.\n    -   Supports writing to binary outputs, and supports writing bytes\n        to text outputs.\n    -   Supports colors and styles on Windows.\n    -   Removes ANSI color and style codes if the output does not look\n        like an interactive terminal.\n    -   Always flushes the output.\n\n    :param message: The string or bytes to output. Other objects are\n        converted to strings.\n    :param file: The file to write to. Defaults to ``stdout``.\n    :param err: Write to ``stderr`` instead of ``stdout``.\n    :param nl: Print a newline after the message. Enabled by default.\n    :param color: Force showing or hiding colors and other styles. By\n        default Click will remove color if the output does not look like\n        an interactive terminal.\n\n    .. versionchanged:: 6.0\n        Support Unicode output on the Windows console. Click does not\n        modify ``sys.stdout``, so ``sys.stdout.write()`` and ``print()``\n        will still not support Unicode.\n\n    .. versionchanged:: 4.0\n        Added the ``color`` parameter.\n\n    .. versionadded:: 3.0\n        Added the ``err`` parameter.\n\n    .. versionchanged:: 2.0\n        Support colors on Windows if colorama is installed.\n    \"\"\"\n    if file is None:\n        if err:\n            file = _default_text_stderr()\n        else:\n            file = _default_text_stdout()\n\n        # There are no standard streams attached to write to. For example,\n        # pythonw on Windows.\n        if file is None:\n            return\n\n    # Convert non bytes/text into the native string type.\n    if message is not None and not isinstance(message, (str, bytes, bytearray)):\n        out: t.Optional[t.Union[str, bytes]] = str(message)\n    else:\n        out = message\n\n    if nl:\n        out = out or \"\"\n        if isinstance(out, str):\n            out += \"\\n\"\n        else:\n            out += b\"\\n\"\n\n    if not out:\n        file.flush()\n        return\n\n    # If there is a message and the value looks like bytes, we manually\n    # need to find the binary stream and write the message in there.\n    # This is done separately so that most stream types will work as you\n    # would expect. Eg: you can write to StringIO for other cases.\n    if isinstance(out, (bytes, bytearray)):\n        binary_file = _find_binary_writer(file)\n\n        if binary_file is not None:\n            file.flush()\n            binary_file.write(out)\n            binary_file.flush()\n            return\n\n    # ANSI style code support. For no message or bytes, nothing happens.\n    # When outputting to a file instead of a terminal, strip codes.\n    else:\n        color = resolve_color_default(color)\n\n        if should_strip_ansi(file, color):\n            out = strip_ansi(out)\n        elif WIN:\n            if auto_wrap_for_ansi is not None:\n                file = auto_wrap_for_ansi(file)  # type: ignore\n            elif not color:\n                out = strip_ansi(out)\n\n    file.write(out)  # type: ignore\n    file.flush()",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L319"
+        },
+        "signatureLines": {
+          "endLine": 225,
+          "line": 219,
+          "sha256": "d78efa51db94358e9478f194e26d7cbb35472edd6c28cd8f3f7c96b1085b22d3",
+          "snippet": "def echo(\n    message: t.Optional[t.Any] = None,\n    file: t.Optional[t.IO[t.Any]] = None,\n    nl: bool = True,\n    err: bool = False,\n    color: t.Optional[bool] = None,\n) -> None:",
+          "source": "b1",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/utils.py#L219-L225"
+        },
+        "source": "b1",
+        "symbol": "echo"
+      },
+      "consumer": {
+        "callee": "echo",
+        "column": 4,
+        "endLine": 30,
+        "line": 30,
+        "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+        "snippet": "echo(message, nl=nl, err=True)",
+        "source": "consumer",
+        "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L30-L30"
+      },
+      "id": "F02-c04",
+      "limitationsRetained": [
+        "Conditional source relationship only; runtime import identity and monkeypatching are unproved.",
+        "Successful argument evaluation, runtime behavior, security and production approval are outside this intake.",
+        "message may have passed through style with expanded **styles; message/nl values and terminal behavior remain runtime concerns."
+      ],
+      "mapping": {
+        "explanation": "consumer:11 imports echo from click. Captured b0/a0:66 re-export echo from .utils; b1:219 and a1:222 directly define echo. This supports the conditional click.utils.echo target, while the core direct-import rule cannot prove a package re-export. Runtime imported identity and terminal output remain unproved.",
+        "kind": "declared-target"
+      },
+      "scopeSymbol": "_err",
+      "sourceRelationshipEvidence": [
+        {
+          "endLine": 11,
+          "line": 11,
+          "sha256": "86193aef8ea564131b1ae27554b82397f26b9fb62f6f6e190456827e93bf8a33",
+          "snippet": "from click import echo, style",
+          "source": "consumer",
+          "url": "https://github.com/psf/black/blob/3702ba224ecffbcec30af640c149f231d90aebdb/src/black/output.py#L11-L11"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "6030db8e6e34e9d4ce03457c6d3b5d1a784def38f98fefdd1517b0645fe92efc",
+          "snippet": "from .utils import echo as echo",
+          "source": "b0",
+          "url": "https://github.com/pallets/click/blob/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/src/click/__init__.py#L66-L66"
+        },
+        {
+          "endLine": 66,
+          "line": 66,
+          "sha256": "e98c92d5a7b29276742d8c1e5a8ccd672d00f6767fd75c2660886fddc6d0ad8a",
+          "snippet": "from .utils import echo as echo",
+          "source": "a0",
+          "url": "https://github.com/pallets/click/blob/fd183b2ced1cb5857784fe7fb22f4982f671f098/src/click/__init__.py#L66-L66"
+        }
+      ]
+    }
+  ],
+  "compatibilityAssessmentPerformed": false,
+  "excludedScopeCalls": [
+    {
+      "callee": "mypyc_attr",
+      "column": 1,
+      "line": 15,
+      "reason": "mypy_extensions decorator; outside the Click dependency scope.",
+      "scopeSymbol": "_out"
+    },
+    {
+      "callee": "mypyc_attr",
+      "column": 1,
+      "line": 24,
+      "reason": "mypy_extensions decorator; outside the Click dependency scope.",
+      "scopeSymbol": "_err"
+    }
+  ],
+  "rawTaskSha256": "6224355975759c393a024a17f89c82334afe15f2614b3d89c72fcbfa49426274",
+  "relevantCallCount": 4,
+  "schema": "alpha-curator-source-intake-evidence/v1",
+  "schemaGaps": [],
+  "scope": {
+    "scopeSymbols": [
+      "_out",
+      "_err"
+    ],
+    "source": "consumer"
+  },
+  "sourceExecution": false,
+  "taskId": "F02"
+}

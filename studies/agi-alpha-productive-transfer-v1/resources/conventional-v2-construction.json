@@ -1,0 +1,58 @@
+{
+  "schema": "agi-alpha-conventional-construction/v2",
+  "phase": "opened before C2 construction",
+  "purpose": "Separate follow-up comparator; preserve original frozen C and its outcomes",
+  "priorEvidenceUsed": "Reviewer diagnosis: wildcard exports and import fallbacks can be overly conservative; no primary task/source/result/oracle inspected",
+  "modelAuthoringUsd": null,
+  "researcherAttentionMinutes": null,
+  "toolMoneyUsd": null,
+  "freshFollowupInputsInspected": false,
+  "originalCandidateModified": false,
+  "commands": [
+    {
+      "phase": "initial C2 synthetic source-bound controls",
+      "sourceSha256": "4401472557722fd6f4011b7ddb372b84dc6e062ab2515091d1cb25ace60fb8ed",
+      "startedAt": "2026-10-26T17:32:45.123541+00:00",
+      "wallNs": 64403736,
+      "childCpuSeconds": 0.06393599999999999,
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "F....F.....\n======================================================================\nFAIL: test_all_exclusion_is_not_overruled_by_unique_name (__main__.Controls.test_all_exclusion_is_not_overruled_by_unique_name)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional_v2.py\", line 43, in test_all_exclusion_is_not_overruled_by_unique_name\n    self.assertFalse(result[\"claims\"])\nAssertionError: [{'line': 3, 'column': 11, 'callee': 'hidden', 'before': {'source': 'b1', 'symbol': 'hidden'}, 'after': {'source': 'a1', 'symbol': 'hidden'}, 'explanation': 'Conventional static source mapping, including explicit exports and source-backed unique-target hypotheses. Import availability, fallback selection and receiver dispatch are conditional on the captured sources and standard import behavior; runtime identity is unproved unless the unchanged downstream verifier proves it. Inspected dependency source was not executed.'}] is not false\n\n======================================================================\nFAIL: test_duplicate_definitions (__main__.Controls.test_duplicate_definitions)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/1aee594d47f3/study/development/test_conventional_v2.py\", line 64, in test_duplicate_definitions\n    self.assertFalse(extract(raw)[\"claims\"])\nAssertionError: [{'line': 3, 'column': 11, 'callee': 'operate', 'before': {'source': 'b0', 'symbol': 'operate'}, 'after': {'source': 'a0', 'symbol': 'operate'}, 'explanation': 'Conventional static source mapping, including explicit exports and source-backed unique-target hypotheses. Import availability, fallback selection and receiver dispatch are conditional on the captured sources and standard import behavior; runtime identity is unproved unless the unchanged downstream verifier proves it. Inspected dependency source was not executed.'}] is not false\n\n----------------------------------------------------------------------\nRan 11 tests in 0.004s\n\nFAILED (failures=2)\n"
+    },
+    {
+      "phase": "C2 contradiction and ambiguity correction then targeted checks",
+      "command": [
+        "/workspace/scratch/2b1df9d13229/test-env/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "--select",
+        "I,F",
+        "--fix",
+        "/workspace/scratch/1aee594d47f3/study/src/conventional_v2.py"
+      ],
+      "sourceSha256": "d059a8ee37d7c0e6c1f096d304eccfe3c63c29fa8c8d2f72d345e6654c53dea2",
+      "startedAt": "2026-10-26T17:33:15.288857+00:00",
+      "wallNs": 28418531,
+      "childCpuSeconds": 0.030009,
+      "exitCode": 0,
+      "stdout": "Found 2 errors (2 fixed, 0 remaining).\n",
+      "stderr": ""
+    },
+    {
+      "phase": "C2 contradiction and ambiguity correction then targeted checks",
+      "command": [
+        "python",
+        "/workspace/scratch/1aee594d47f3/study/development/test_conventional_v2.py"
+      ],
+      "sourceSha256": "d059a8ee37d7c0e6c1f096d304eccfe3c63c29fa8c8d2f72d345e6654c53dea2",
+      "startedAt": "2026-10-26T17:33:15.317385+00:00",
+      "wallNs": 56801260,
+      "childCpuSeconds": 0.05571299999999999,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.004s\n\nOK\n"
+    }
+  ],
+  "sourceSha256": "d059a8ee37d7c0e6c1f096d304eccfe3c63c29fa8c8d2f72d345e6654c53dea2"
+}
