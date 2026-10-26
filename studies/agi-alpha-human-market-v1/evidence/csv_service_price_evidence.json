@@ -1,0 +1,326 @@
+{
+  "retrieved_date": "2026-10-26",
+  "purpose": "Human-service market reference for bounded CSV cleanup and reconciliation; not an AI-system benchmark",
+  "important_limits": [
+    "These are advertised prices, not accepted quotes or verified payments.",
+    "Human service providers commonly use Excel, Power Query or Python. No-AI delivery is unverified except where a service specifically limits external AI data processing; that still does not prove no AI-assisted development.",
+    "Upwork listing detail was available through public search indexing, while direct page fetch returned HTTP 403. No signed-in access, outreach or booking was performed.",
+    "Currency is USD for Upwork prices based on the platform's official support page. Tax, FX and marketplace client charges may add to the displayed service fee.",
+    "A single listing cannot establish a market-wide representative price or competent quality; use a declared matched listing as a reference and retain lower-price sensitivity."
+  ],
+  "currency_source": {
+    "url": "https://support.upwork.com/hc/en-us/articles/211068028-How-to-pay-in-your-local-currency",
+    "web_ref": "turn25view4",
+    "fact": "Upwork states all listed costs are in USD; local-currency billing can use conversion rates that vary by billing time."
+  },
+  "offers": [
+    {
+      "id": "patrick_csv_quality_low",
+      "provider_display": "Patrick K., Upwork",
+      "url": "https://www.upwork.com/services/product/development-it-a-cleaned-csv-file-with-a-clear-data-quality-report-2079370782052650683",
+      "web_ref": "turn27search0",
+      "evidence_type": "observed_public_indexed_advertised_fixed_fee",
+      "retrieval_owner": "root verified source; research child exact-name search did not independently return it",
+      "currency": "USD",
+      "price": 20,
+      "max_rows": 10000,
+      "revisions": 1,
+      "scope": "One CSV, whitespace normalization, deduplication, missing-value reporting and quality report",
+      "source_effective_date": null,
+      "reference_fit": "Mandatory lower-price matched human-service anchor; include before freeze, do not discard because it reduces margin"
+    },
+    {
+      "id": "ricardo_csv_quality",
+      "provider_display": "Ricardo M., Upwork",
+      "url": "https://www.upwork.com/services/product/development-it-clean-csv-data-and-deliver-a-clear-quality-report-with-python-2083569219662566184",
+      "web_ref": "turn28search0",
+      "evidence_type": "observed_public_indexed_advertised_fixed_fee",
+      "currency": "USD",
+      "provider_jurisdiction": "Quito, Ecuador",
+      "source_effective_date": null,
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": 25,
+          "delivery_days": 1,
+          "revisions": 1
+        },
+        {
+          "name": "Standard",
+          "price": 50,
+          "delivery_days": 2,
+          "revisions": 1
+        },
+        {
+          "name": "Advanced",
+          "price": 90,
+          "delivery_days": 3,
+          "revisions": 2
+        }
+      ],
+      "scope": "Reproducible Python CSV cleanup, separate cleaned file and quality report for duplicates/blanks/spacing/rule-defined invalid records, row counts verified, original preserved",
+      "limits": "Exact row limits not retrieved; starter one CSV/dedup/report blanks; higher-tier scope not fully known",
+      "reference_fit": "Corroborating inexpensive professional-service evidence; supports low-price sensitivity, not a market median"
+    },
+    {
+      "id": "khalil_csv_quality",
+      "provider_display": "Khalil A., Upwork",
+      "url": "https://www.upwork.com/services/product/development-it-a-cleaned-csv-with-a-data-quality-report-2112258274761084548",
+      "web_ref": "turn22search1",
+      "evidence_type": "observed_public_indexed_advertised_fixed_fee",
+      "currency": "USD",
+      "provider_jurisdiction": "Not shown in retrieved listing",
+      "source_effective_date": null,
+      "retrieval_status": "Search-indexed page content retrieved; direct open 403",
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": 49,
+          "max_rows": 500,
+          "delivery_business_days_or_unspecified_days": 2,
+          "revisions": 1
+        },
+        {
+          "name": "Standard",
+          "price": 99,
+          "max_rows": 10000,
+          "delivery_business_days_or_unspecified_days": 3,
+          "revisions": 1
+        },
+        {
+          "name": "Advanced",
+          "price": 179,
+          "max_rows": 50000,
+          "delivery_business_days_or_unspecified_days": 5,
+          "revisions": 1
+        }
+      ],
+      "input_limits": {
+        "files": 1,
+        "format": "UTF-8 CSV with header",
+        "max_columns": 100,
+        "max_file_mib": 10,
+        "max_characters_per_cell": 10000
+      },
+      "scope": [
+        "Customer-approved cleanup rules",
+        "Cleaned file",
+        "Separate duplicate file",
+        "Exceptions list",
+        "Plain-language quality report",
+        "Sample inspection against original",
+        "Original file preserved",
+        "One revision to agreed rules within original file and row limit"
+      ],
+      "ambiguity_policy": "Missing values flagged rather than invented; rows sharing duplicate key separated for review rather than silently merged",
+      "exclusions": [
+        "New files",
+        "Enrichment",
+        "Fuzzy matching",
+        "Dashboards",
+        "Schema redesign"
+      ],
+      "tool_policy": "Python runs locally without sending CSV data to external AI service; development method not certified",
+      "accountability": "Listing states payment released after customer satisfaction; marketplace payment protection is an additional supported feature, not established in our prototype",
+      "reference_fit": "Strongest retrieved scope match for a single-file deterministic cleanup/exception packet. Primary reference should follow actual row-size scope: 49 for <=500; 99 for 501-10000. Include revision/sample-review cost or disclose a scope gap."
+    },
+    {
+      "id": "nour_excel_cleaning",
+      "provider_display": "Nour O., Upwork",
+      "url": "https://www.upwork.com/services/product/development-it-i-will-clean-and-prepare-your-data-using-excel-and-power-query-2096898645257154232",
+      "web_ref": "turn22search0",
+      "evidence_type": "observed_public_indexed_advertised_fixed_fee",
+      "currency": "USD",
+      "provider_jurisdiction": "Alexandria, Egypt",
+      "source_effective_date": null,
+      "retrieval_status": "Search-indexed page content retrieved; direct open 403",
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": 80,
+          "max_rows": 50000,
+          "delivery_days": 2,
+          "revisions": 1
+        },
+        {
+          "name": "Standard",
+          "price": 160,
+          "delivery_days": 4,
+          "revisions": 2
+        },
+        {
+          "name": "Advanced",
+          "price": 300,
+          "delivery_days": 7,
+          "revisions": 3
+        }
+      ],
+      "scope": [
+        "Review supplied data and goals",
+        "Remove duplicates and errors",
+        "Excel, Power Query and Python stated",
+        "Feature engineering described in workflow"
+      ],
+      "limits": "Column count, schema complexity and precise higher-tier work not resolved from retrieval; no exact comparability assumed",
+      "reference_fit": "Lower-priced human-delivered large-row cleanup stress; not automatically an identical quality-report offer"
+    },
+    {
+      "id": "kamran_reconciled_data",
+      "provider_display": "Kamran, Upwork",
+      "url": "https://www.upwork.com/services/product/development-it-clean-reconciled-excel-or-csv-data-ready-for-reporting-2107194978364896249",
+      "web_ref": "turn22search4",
+      "evidence_type": "observed_public_indexed_advertised_fixed_fee",
+      "currency": "USD",
+      "provider_jurisdiction": "Not shown in retrieved listing",
+      "source_effective_date": null,
+      "retrieval_status": "Search-indexed page content retrieved; direct open 403",
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": 200,
+          "max_rows": 25000,
+          "max_files": 1,
+          "max_rules": 3,
+          "delivery_days": 3,
+          "revisions": 1
+        },
+        {
+          "name": "Standard",
+          "price": 400,
+          "delivery_days": 5,
+          "revisions": 1
+        },
+        {
+          "name": "Advanced",
+          "price": 700,
+          "delivery_days": 7,
+          "revisions": 2
+        }
+      ],
+      "scope": [
+        "Profile files and agree rules/output/acceptance checks",
+        "Repeatable Power Query or Python workflow",
+        "Preserve originals",
+        "Trace ambiguous records",
+        "Starter issue log"
+      ],
+      "exclusions": [
+        "Web scraping",
+        "Fuzzy matching",
+        "Scanned document extraction",
+        "Dashboards",
+        "Scheduled automation"
+      ],
+      "limits": "Higher tiers have file/rule/matching limits not fully captured; not a usable higher-tier exact reference without further scope evidence",
+      "reference_fit": "Broader higher price does not justify assigning 200 to a smaller package by default"
+    },
+    {
+      "id": "vbatoolshub_cleanup",
+      "provider_display": "VBA Tools Hub",
+      "url": "https://www.vbatoolshub.com/services",
+      "web_ref": "turn21view0",
+      "evidence_type": "published_provider_starting_fee",
+      "currency": "USD",
+      "currency_basis": "Explicit USD on page",
+      "provider_jurisdiction": "Not established from pricing page",
+      "source_effective_date": null,
+      "price": 49,
+      "scope": "Reusable workflow for CSV/Excel deduplication, column splitting, list cleaning and exported-report combination",
+      "limits": "Indicative starting price; final scope/time/deliverables agreed separately, no automatic checkout; no fixed row count",
+      "reference_fit": "Corroborating small-service price, not complete matched fee"
+    },
+    {
+      "id": "arotip_quick_clean",
+      "provider_display": "AROTIP Data Services",
+      "url": "https://arotip.com/services.html",
+      "web_ref": "turn6view5",
+      "evidence_type": "published_provider_fixed_fee",
+      "currency": null,
+      "currency_basis": "Dollar sign only; Colorado governing law suggests USD but is not proof of denomination",
+      "provider_jurisdiction": "Colorado law per https://arotip.com/terms.html, updated 2026-04-17",
+      "source_effective_date": null,
+      "price": 299,
+      "scope": "One CSV/Excel/database export up to 50000 records, deduplication/standardization/missing-value handling/quality report, delivery 3-5 business days",
+      "accountability": "Terms require individually agreed SOW with acceptance criteria, data/client responsibilities, quality standards and change management; general terms disclaim warranties and limit indirect liability",
+      "human_tool_mix": "Small professional data shop also advertises automated free browser tools; human-only production not established",
+      "reference_fit": "Secondary professional-service evidence; do not silently assume USD or use as primary to inflate narrow CSV benchmark"
+    },
+    {
+      "id": "anton_ai_assisted_excluded",
+      "provider_display": "Anton V., Upwork",
+      "url": "https://www.upwork.com/services/product/admin-customer-support-clean-and-merged-csv-data-with-a-validation-report-2097406236846224333",
+      "web_ref": "turn22search6",
+      "currency": "USD",
+      "price": 75,
+      "scope": "Up to three UTF-8 CSVs/50000 total rows/20 columns, 5 explicit rules, exact duplicate key, conflicting records flagged, cleaned data/report/reusable Python/run instructions/one revision",
+      "exclusion_reason": "Explicitly AI-assisted human-delivered service; retain as discovery negative and do not make comparison against it a human-only or cross-AI success gate"
+    }
+  ],
+  "need_evidence": [
+    {
+      "id": "freelancer_csv_automation_job",
+      "url": "https://www.freelancer.com/projects/pandas/python-expert-for-data-cleaning",
+      "web_ref": "turn26search1",
+      "project_id": 40511538,
+      "advertised_budget_usd": [
+        30,
+        250
+      ],
+      "status_as_indexed": "Completed; posted 6 days before retrieved search result; 98 proposals",
+      "requested_outcome": "Reusable Python workflow, cleaned/merged CSV outputs, validation, reports and brief run documentation",
+      "claim_limit": "Specific public buyer request and platform completion label support category need; paid amount, delivered quality and repeat purchase not verified; not AGI ALPHA demand"
+    },
+    {
+      "id": "freelancer_text_cleaning_job",
+      "url": "https://www.freelancer.com/projects/data-analysis/text-data-cleaning-project",
+      "web_ref": "turn26search0",
+      "advertised_budget_usd": [
+        250,
+        750
+      ],
+      "status_as_indexed": "Closed; posted 3 months before retrieved result",
+      "requested_outcome": "Deduplicated text CSV/spreadsheet, consistent case/spacing, contextual typo corrections, flagged ambiguous lines, short change log and script if Python used",
+      "claim_limit": "Higher budget includes semantic typo work beyond deterministic normalized-field scope; not a directly comparable price"
+    }
+  ],
+  "recommended_freeze": {
+    "package": "One UTF-8 public or synthetic CSV, declared rulebook, output/duplicates/exceptions/report, original preserved, one correction round within scope",
+    "primary_reference_usd": null,
+    "reference_panel_usd": [
+      20,
+      49,
+      99
+    ],
+    "panel_interpretation": "Designed three-point observed advertised-service-price sensitivity, not quantiles or a representative market distribution. 20 captures Patrick low anchor; 49 captures small matched package; 99 is richer 501-10000-row package reference. Report all cells and scope gaps, not only favorable cells.",
+    "discounts": [
+      0.05,
+      0.1,
+      0.15
+    ],
+    "offered_prices_usd": {
+      "20": [
+        19,
+        18,
+        17
+      ],
+      "49": [
+        46.55,
+        44.1,
+        41.65
+      ],
+      "99": [
+        94.05,
+        89.1,
+        84.15
+      ]
+    },
+    "human_service_scope_requirement": "Check review/revision/support/evidence equivalence separately for each anchor. Never infer professional competence merely from a posted price.",
+    "do_not_claim": "Market average, observed willingness to pay, observed demand probability, certified equivalence, or superiority to all providers"
+  },
+  "discovery_revisions": [
+    {
+      "revision": "CSV price anchor 99 replaced by joint 20/49/99 panel before economic freeze",
+      "reason": "Root found a substantially cheaper close-scope human service listing; child independently corroborated 25-dollar close-scope offer. The study must preserve low-price evidence and avoid selecting the larger fee for profitability."
+    }
+  ]
+}

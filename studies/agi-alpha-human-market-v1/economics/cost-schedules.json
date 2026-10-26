@@ -1,0 +1,105 @@
+{
+  "schema": "agi-alpha-human-market-cost-schedules/v1",
+  "currency": "USD",
+  "evidence_status": "Declared scenario allocations; not observed bills, lower/upper confidence bounds, or estimates of the actual complete research cost.",
+  "actual_complete_cost": null,
+  "actual_authoring_model_bill": null,
+  "actual_active_reviewer_minutes": null,
+  "actual_customer_attention_minutes": null,
+  "resource_pricing": {
+    "complete_service_cpu_tariff_usd_per_core_hour": 1,
+    "cpu_tariff_status": "Assumption applied to measured complete-process CPU; not a provider invoice.",
+    "per_attempt_infrastructure_storage_and_tools_usd": 0.1,
+    "provider_attention_rate_usd_per_hour": 35,
+    "provider_attention_rate_status": "Common declared sensitivity rate; not a measured human comparator quote.",
+    "runtime_model_calls": 0,
+    "runtime_model_calls_scope": "Only the deterministic executed pipeline; researcher model usage is separate and unknown.",
+    "opportunity_prescreening_usd": 0.02,
+    "monetary_rounding": "Integer cents, nearest-cent per modeled cost; the USD0.10 infrastructure allowance remains even when CPU cost rounds below one cent."
+  },
+  "schedules": [
+    {
+      "id": "low",
+      "historical_research_and_discovery_usd": 250,
+      "shared_setup_usd": 100,
+      "provider_review_minutes_per_attempt": 5,
+      "business_support_correction_revision_usd_per_attempt": 1,
+      "prospect_acquisition_usd_per_opportunity": 1,
+      "provider_onboarding_minutes_per_new_customer": 5,
+      "weekly_fixed_operating_cost_usd": 1,
+      "each_capability": {
+        "construction_usd": 12.5,
+        "validation_usd": 5,
+        "unsuccessful_discovery_usd": 2.5,
+        "integration_usd": 5,
+        "total_usd": 25,
+        "weekly_maintenance_usd": 0.25
+      }
+    },
+    {
+      "id": "base",
+      "historical_research_and_discovery_usd": 1000,
+      "shared_setup_usd": 300,
+      "provider_review_minutes_per_attempt": 15,
+      "business_support_correction_revision_usd_per_attempt": 3,
+      "prospect_acquisition_usd_per_opportunity": 3,
+      "provider_onboarding_minutes_per_new_customer": 15,
+      "weekly_fixed_operating_cost_usd": 3,
+      "each_capability": {
+        "construction_usd": 50,
+        "validation_usd": 20,
+        "unsuccessful_discovery_usd": 10,
+        "integration_usd": 20,
+        "total_usd": 100,
+        "weekly_maintenance_usd": 1
+      }
+    },
+    {
+      "id": "high",
+      "historical_research_and_discovery_usd": 4000,
+      "shared_setup_usd": 800,
+      "provider_review_minutes_per_attempt": 45,
+      "business_support_correction_revision_usd_per_attempt": 8,
+      "prospect_acquisition_usd_per_opportunity": 10,
+      "provider_onboarding_minutes_per_new_customer": 45,
+      "weekly_fixed_operating_cost_usd": 10,
+      "each_capability": {
+        "construction_usd": 200,
+        "validation_usd": 80,
+        "unsuccessful_discovery_usd": 40,
+        "integration_usd": 80,
+        "total_usd": 400,
+        "weekly_maintenance_usd": 3
+      }
+    }
+  ],
+  "category_coverage": {
+    "preparation_planning_execution": "Measured complete deterministic execution plus infrastructure and per-opportunity prescreening allowances.",
+    "verification": "Complete process CPU plus explicit provider attention on all attempted deliveries, including failures.",
+    "correction_retries": "Recorded attempts remain in production evidence; per-attempt costs are charged for every modeled attempted job. Business allowance includes expected correction/support/revision effort.",
+    "packaging_reporting_storage": "Included in measured complete process and USD0.10 per-attempt infrastructure allowance.",
+    "onboarding": "Provider onboarding is separately charged once per first enterprise buyer: 5/15/45 minutes at USD35/hour, including failed first deliveries. It is distinct from shared setup, buyer-side integration cost and per-delivery support/revision. Actual necessary onboarding effort is unmeasured.",
+    "prospect_acquisition": "USD1/3/10 per prospective opportunity in low/base/high schedules, including unsupported work and buyer declines; separate USD20 sensitivity. No empirical acquisition cost is known. These are allocations, not bounds. Screening is charged separately at USD0.02 per opportunity; fixed weekly overhead excludes these acquisition charges.",
+    "support_revision": "Explicit per-attempt business allocation, uncertain and stressed; no assumption that promised revisions cost zero.",
+    "fees": "10% of collected invoice value in base schedules, 15% in a stress condition. Fees remain payable on later-refunded invoices.",
+    "refunds": "Base 2% simulated refund probability after accepted collection, 10% in quality/collection stress; accrued refund obligations block reinvestment.",
+    "historical_research": "Common prior research/discovery allocation paid from seed at opening when affordable; never relabeled operating-earned funding.",
+    "shared_setup": "Charged once at opening, allocated across accepted deliverables only when reporting unit cost.",
+    "capability_investment": "Separate construction, validation, failed discovery and integration allocation at modeled investment. These represent counterfactual new construction, not a claim that this completed research was paid by real receipts.",
+    "maintenance_obsolescence": "Recurring cost for every active prerequisite; useful life is finite and stressed to eight weeks.",
+    "prudential_fiscal_reserve": "20% of positive operating contribution before capability outlays, 35% stress. Pure scenario reserve; no statutory tax-rate or actual liability claim.",
+    "fixed_reserve": "USD500 protects liquidity independently of prudential fiscal reserves and accrued unpaid obligations."
+  },
+  "seed_capital_usd": 5000,
+  "cash_horizon_weeks": 52,
+  "initial_sales": 0,
+  "actual_collections_usd": 0,
+  "allocation_integrity": [
+    "Marginal compute is contained in recurring delivery cost, not added twice.",
+    "Shared construction/setup costs are paid once per modeled enterprise path.",
+    "Failed deliveries do not generate invoices and their costs remain in the accepted-deliverable denominator.",
+    "Customer savings never enter the provider cash ledger.",
+    "No token issuance, appreciation, internal transfer or future uncollected invoice is reinvestable revenue.",
+    "Actual unidentified costs remain unidentified regardless of modeled profitability."
+  ]
+}

@@ -1,0 +1,633 @@
+{
+  "schema": "human-market-skills-graph/v1",
+  "status": "POST_FREEZE_DIAGNOSTIC",
+  "originalRootAuth": {
+    "ok": false,
+    "reasons": [
+      "ROOT_COMPARE_AND_SWAP_MISMATCH",
+      "SKILL_ADMISSIONS_NOT_VERIFIED",
+      "LIFECYCLE_EVIDENCE_NOT_VERIFIED"
+    ],
+    "historyValid": true,
+    "currentReuseAllowed": false,
+    "mode": "FIXTURE_ONLY",
+    "liveIdentityEnforcement": "NOT_RUN",
+    "cryptographicAuthentication": false,
+    "nonceKey": "research-graph|COMMIT_GRAPH_ROOT|research.agent.agi.eth|hm-root-1",
+    "authorizedOperation": "COMMIT_GRAPH_ROOT"
+  },
+  "rootContext": {
+    "mode": "FIXTURE_ONLY",
+    "now": 150,
+    "chainId": 31337,
+    "registry": "fixture:ens-v1",
+    "graphId": "research-graph",
+    "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+    "scopeDigest": "134d20e475eb46392ef54cb8414ec76a2819ec4e0b5a59fd9e20df1997c19833",
+    "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+    "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+    "currentSnapshotId": "fixture-state-100",
+    "evidenceAvailable": true,
+    "revokedSkills": [],
+    "supersededSkills": [],
+    "revokedRoots": [],
+    "evidence": "All frozen source identities, fresh acceptance, current authority, and expiry checks passed.",
+    "liveLifecycle": "NOT_RUN",
+    "expectedPreviousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+    "expectedEpoch": 1,
+    "expectedGraphRoot": "ebaa79734f02d36be6209e8368683e5e907ddd29a781597bcd79ddfac885b8e9",
+    "admissionsVerified": true,
+    "lifecycleEvidenceVerified": true
+  },
+  "adverseRootChecks": {
+    "missingAdmission": {
+      "ok": false,
+      "reasons": [
+        "SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "historyValid": true,
+      "currentReuseAllowed": false,
+      "mode": "FIXTURE_ONLY",
+      "liveIdentityEnforcement": "NOT_RUN",
+      "cryptographicAuthentication": false,
+      "nonceKey": "research-graph|COMMIT_GRAPH_ROOT|research.agent.agi.eth|hm-root-1",
+      "authorizedOperation": "COMMIT_GRAPH_ROOT"
+    },
+    "missingLifecycle": {
+      "ok": false,
+      "reasons": [
+        "LIFECYCLE_EVIDENCE_NOT_VERIFIED"
+      ],
+      "historyValid": true,
+      "currentReuseAllowed": false,
+      "mode": "FIXTURE_ONLY",
+      "liveIdentityEnforcement": "NOT_RUN",
+      "cryptographicAuthentication": false,
+      "nonceKey": "research-graph|COMMIT_GRAPH_ROOT|research.agent.agi.eth|hm-root-1",
+      "authorizedOperation": "COMMIT_GRAPH_ROOT"
+    },
+    "staleEpoch": {
+      "ok": false,
+      "reasons": [
+        "ROOT_COMPARE_AND_SWAP_MISMATCH"
+      ],
+      "historyValid": true,
+      "currentReuseAllowed": false,
+      "mode": "FIXTURE_ONLY",
+      "liveIdentityEnforcement": "NOT_RUN",
+      "cryptographicAuthentication": false,
+      "nonceKey": "research-graph|COMMIT_GRAPH_ROOT|research.agent.agi.eth|hm-root-1",
+      "authorizedOperation": "COMMIT_GRAPH_ROOT"
+    },
+    "revokedRoot": {
+      "ok": false,
+      "reasons": [
+        "GRAPH_ROOT_REVOKED"
+      ],
+      "historyValid": true,
+      "currentReuseAllowed": false,
+      "mode": "FIXTURE_ONLY",
+      "liveIdentityEnforcement": "NOT_RUN",
+      "cryptographicAuthentication": false,
+      "nonceKey": "research-graph|COMMIT_GRAPH_ROOT|research.agent.agi.eth|hm-root-1",
+      "authorizedOperation": "COMMIT_GRAPH_ROOT"
+    }
+  },
+  "policy": {
+    "schema": "human-market-graph-policy/v1",
+    "mode": "FIXTURE_ONLY",
+    "liveAuthentication": "NOT_RUN",
+    "validatorEligibility": "direct *.agent.agi.eth; exact authenticated controller and attestation grant required",
+    "creator": "fixture:csv-builder",
+    "validatorSigner": "fixture:attestation-delegate",
+    "rootSigner": "fixture:root-delegate",
+    "executionAuthority": [],
+    "jobsClubValidation": "UNCHANGED",
+    "publicationAuthority": "UNCHANGED",
+    "claim": "Source and factual-scope commitment only; no usefulness or operating grant from inclusion."
+  },
+  "skills": [
+    {
+      "id": "csv-locale-normalization",
+      "version": "1",
+      "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+      "dependencyDigests": [],
+      "scopeDigest": "134d20e475eb46392ef54cb8414ec76a2819ec4e0b5a59fd9e20df1997c19833",
+      "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+      "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+      "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+      "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+      "expiresAt": 600
+    },
+    {
+      "id": "csv-latest-version-reconciliation",
+      "version": "1",
+      "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+      "dependencyDigests": [
+        "7d9f7ff4f7609361349ee766240d83d295d80580f85304f29dca3d403e68f29f"
+      ],
+      "scopeDigest": "7d0470d4bcbd115fe9e331d857bca31fdaf00b19270e9d0d01945d68973b1643",
+      "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+      "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+      "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+      "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+      "expiresAt": 600
+    }
+  ],
+  "attestations": [
+    {
+      "action": "ISSUE_SKILL_ATTESTATION",
+      "schema": "agi-alpha.skill-attestation.v1",
+      "skill": {
+        "dependencyDigests": [],
+        "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+        "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+        "expiresAt": 600,
+        "id": "csv-locale-normalization",
+        "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+        "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+        "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+        "scopeDigest": "134d20e475eb46392ef54cb8414ec76a2819ec4e0b5a59fd9e20df1997c19833",
+        "version": "1"
+      },
+      "verdict": "PASS_WITH_SCOPE",
+      "mode": "FIXTURE_ONLY",
+      "agent": "research.agent.agi.eth",
+      "signer": "fixture:attestation-delegate",
+      "authoritySnapshotId": "fixture-state-100",
+      "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "blockNumber": 100,
+      "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "issuedAt": 100,
+      "expiresAt": 500,
+      "nonce": "hm-att-0",
+      "chainId": 31337,
+      "registry": "fixture:ens-v1",
+      "graphId": "research-graph",
+      "signature": {
+        "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+        "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+        "signer": "fixture:attestation-delegate",
+        "payloadDigest": "e83b64b9240ccd3dbc56f33ab9243601d402d1b5801c57d9aec194b25e08659e"
+      }
+    },
+    {
+      "action": "ISSUE_SKILL_ATTESTATION",
+      "schema": "agi-alpha.skill-attestation.v1",
+      "skill": {
+        "dependencyDigests": [
+          "7d9f7ff4f7609361349ee766240d83d295d80580f85304f29dca3d403e68f29f"
+        ],
+        "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+        "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+        "expiresAt": 600,
+        "id": "csv-latest-version-reconciliation",
+        "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+        "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+        "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+        "scopeDigest": "7d0470d4bcbd115fe9e331d857bca31fdaf00b19270e9d0d01945d68973b1643",
+        "version": "1"
+      },
+      "verdict": "PASS_WITH_SCOPE",
+      "mode": "FIXTURE_ONLY",
+      "agent": "research.agent.agi.eth",
+      "signer": "fixture:attestation-delegate",
+      "authoritySnapshotId": "fixture-state-100",
+      "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "blockNumber": 100,
+      "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "issuedAt": 100,
+      "expiresAt": 500,
+      "nonce": "hm-att-1",
+      "chainId": 31337,
+      "registry": "fixture:ens-v1",
+      "graphId": "research-graph",
+      "signature": {
+        "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+        "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+        "signer": "fixture:attestation-delegate",
+        "payloadDigest": "beda3109f9ec834444961532405ffd136e1361660a604bf25a5fcb633f9ba134"
+      }
+    }
+  ],
+  "admission": [
+    {
+      "ok": true,
+      "reasons": [],
+      "historyValid": true,
+      "currentReuseAllowed": true,
+      "mode": "FIXTURE_ONLY",
+      "liveIdentityEnforcement": "NOT_RUN",
+      "cryptographicAuthentication": false,
+      "nonceKey": "research-graph|ISSUE_SKILL_ATTESTATION|research.agent.agi.eth|hm-att-0",
+      "skillId": "csv-locale-normalization",
+      "skillVersion": "1"
+    },
+    {
+      "ok": true,
+      "reasons": [],
+      "historyValid": true,
+      "currentReuseAllowed": true,
+      "mode": "FIXTURE_ONLY",
+      "liveIdentityEnforcement": "NOT_RUN",
+      "cryptographicAuthentication": false,
+      "nonceKey": "research-graph|ISSUE_SKILL_ATTESTATION|research.agent.agi.eth|hm-att-1",
+      "skillId": "csv-latest-version-reconciliation",
+      "skillVersion": "1"
+    }
+  ],
+  "forest": {
+    "schema": "agi-alpha.merkle-forest.v1",
+    "hashSuite": "SHA256_RESEARCH_V1",
+    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+    "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+    "classes": {
+      "skill": {
+        "root": "bf4d28bc0477ba4b96da4df82231f509360e0ecb93beb51f46ac446a1de0724c",
+        "count": 2,
+        "records": [
+          {
+            "record": {
+              "dependencyDigests": [],
+              "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+              "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+              "expiresAt": 600,
+              "id": "csv-locale-normalization",
+              "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+              "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+              "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+              "scopeDigest": "134d20e475eb46392ef54cb8414ec76a2819ec4e0b5a59fd9e20df1997c19833",
+              "version": "1"
+            },
+            "leafHash": "9782b57c45307e72abac28c37f278dc207e8b48fb653dc4643e1c6b98ca477fc",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 2,
+              "siblings": [
+                "f74c240cfba6c22495047ec55a52e07969c32f5fc63230411292bb5891c6e807"
+              ]
+            }
+          },
+          {
+            "record": {
+              "dependencyDigests": [
+                "7d9f7ff4f7609361349ee766240d83d295d80580f85304f29dca3d403e68f29f"
+              ],
+              "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+              "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+              "expiresAt": 600,
+              "id": "csv-latest-version-reconciliation",
+              "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+              "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+              "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+              "scopeDigest": "7d0470d4bcbd115fe9e331d857bca31fdaf00b19270e9d0d01945d68973b1643",
+              "version": "1"
+            },
+            "leafHash": "f74c240cfba6c22495047ec55a52e07969c32f5fc63230411292bb5891c6e807",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 1,
+              "leafCount": 2,
+              "siblings": [
+                "9782b57c45307e72abac28c37f278dc207e8b48fb653dc4643e1c6b98ca477fc"
+              ]
+            }
+          }
+        ]
+      },
+      "edge": {
+        "root": "ab846a76b0f333f6f0036fd01e839bc9adc38b5e0e11afe734d6da5efc99bec5",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "compositionEvidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+              "from": "csv-latest-version-reconciliation",
+              "kind": "requires",
+              "to": "csv-locale-normalization"
+            },
+            "leafHash": "ab846a76b0f333f6f0036fd01e839bc9adc38b5e0e11afe734d6da5efc99bec5",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      },
+      "evidence": {
+        "root": "ae980b11288535dcd301b7ae28aec8a078f02cb163c8c5eafb5bbc8baeb7d1b6",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "digest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+              "externalProfessionalAssessment": false,
+              "id": "fresh-csv-validation"
+            },
+            "leafHash": "ae980b11288535dcd301b7ae28aec8a078f02cb163c8c5eafb5bbc8baeb7d1b6",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      },
+      "proofbundle": {
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "count": 0,
+        "records": []
+      },
+      "policy": {
+        "root": "f85b1d473b951ec92ea191d87f8276b5cffe012ca7bfa379cb1f8be44a3ce07c",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "claim": "Source and factual-scope commitment only; no usefulness or operating grant from inclusion.",
+              "creator": "fixture:csv-builder",
+              "executionAuthority": [],
+              "jobsClubValidation": "UNCHANGED",
+              "liveAuthentication": "NOT_RUN",
+              "mode": "FIXTURE_ONLY",
+              "publicationAuthority": "UNCHANGED",
+              "rootSigner": "fixture:root-delegate",
+              "schema": "human-market-graph-policy/v1",
+              "validatorEligibility": "direct *.agent.agi.eth; exact authenticated controller and attestation grant required",
+              "validatorSigner": "fixture:attestation-delegate"
+            },
+            "leafHash": "f85b1d473b951ec92ea191d87f8276b5cffe012ca7bfa379cb1f8be44a3ce07c",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      },
+      "attestation": {
+        "root": "a23da2cf46141ca08e3d9758ea1c8da891a05291aea034069e4264d8729d1f89",
+        "count": 2,
+        "records": [
+          {
+            "record": {
+              "action": "ISSUE_SKILL_ATTESTATION",
+              "agent": "research.agent.agi.eth",
+              "authoritySnapshotId": "fixture-state-100",
+              "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+              "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+              "blockNumber": 100,
+              "chainId": 31337,
+              "expiresAt": 500,
+              "graphId": "research-graph",
+              "issuedAt": 100,
+              "mode": "FIXTURE_ONLY",
+              "nonce": "hm-att-0",
+              "registry": "fixture:ens-v1",
+              "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+              "registrySchema": "ENS_V1_FIXTURE",
+              "schema": "agi-alpha.skill-attestation.v1",
+              "signature": {
+                "payloadDigest": "e83b64b9240ccd3dbc56f33ab9243601d402d1b5801c57d9aec194b25e08659e",
+                "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                "signer": "fixture:attestation-delegate"
+              },
+              "signer": "fixture:attestation-delegate",
+              "skill": {
+                "dependencyDigests": [],
+                "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+                "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+                "expiresAt": 600,
+                "id": "csv-locale-normalization",
+                "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+                "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+                "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+                "scopeDigest": "134d20e475eb46392ef54cb8414ec76a2819ec4e0b5a59fd9e20df1997c19833",
+                "version": "1"
+              },
+              "verdict": "PASS_WITH_SCOPE"
+            },
+            "leafHash": "f2a2553d90b94934410c348d5e4505b309fa08a1cf02335584467179648cd804",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 1,
+              "leafCount": 2,
+              "siblings": [
+                "9d5bace0316e252d3bdee8c08aadaa1ecfe50f424ff60cbc20b3b0192afe8610"
+              ]
+            }
+          },
+          {
+            "record": {
+              "action": "ISSUE_SKILL_ATTESTATION",
+              "agent": "research.agent.agi.eth",
+              "authoritySnapshotId": "fixture-state-100",
+              "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+              "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+              "blockNumber": 100,
+              "chainId": 31337,
+              "expiresAt": 500,
+              "graphId": "research-graph",
+              "issuedAt": 100,
+              "mode": "FIXTURE_ONLY",
+              "nonce": "hm-att-1",
+              "registry": "fixture:ens-v1",
+              "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+              "registrySchema": "ENS_V1_FIXTURE",
+              "schema": "agi-alpha.skill-attestation.v1",
+              "signature": {
+                "payloadDigest": "beda3109f9ec834444961532405ffd136e1361660a604bf25a5fcb633f9ba134",
+                "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                "signer": "fixture:attestation-delegate"
+              },
+              "signer": "fixture:attestation-delegate",
+              "skill": {
+                "dependencyDigests": [
+                  "7d9f7ff4f7609361349ee766240d83d295d80580f85304f29dca3d403e68f29f"
+                ],
+                "environmentDigest": "3bd9b86f81a371de04a6c03174f2e1eefc09e42c682dc46efc0a7aea7e0b76e7",
+                "evidenceDigest": "559fbb2e7b1cb586b415532d533fa79345055fe73954fc761889086bc3bd7903",
+                "expiresAt": 600,
+                "id": "csv-latest-version-reconciliation",
+                "implementationDigest": "769d1b779aeb20b904540bc30c00de74e6709137d3c06174366003c075236842",
+                "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+                "rightsDigest": "9553fe2eccad371799ee0523e7757e6c9a46aed9e1a504292920ec7d63da5c2c",
+                "scopeDigest": "7d0470d4bcbd115fe9e331d857bca31fdaf00b19270e9d0d01945d68973b1643",
+                "version": "1"
+              },
+              "verdict": "PASS_WITH_SCOPE"
+            },
+            "leafHash": "9d5bace0316e252d3bdee8c08aadaa1ecfe50f424ff60cbc20b3b0192afe8610",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 2,
+              "siblings": [
+                "f2a2553d90b94934410c348d5e4505b309fa08a1cf02335584467179648cd804"
+              ]
+            }
+          }
+        ]
+      },
+      "revocation": {
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "count": 0,
+        "records": []
+      },
+      "supersession": {
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "count": 0,
+        "records": []
+      },
+      "metadata": {
+        "root": "bcf33337633523f33b92083dd4044991b1c6fc964178d6501a2151154b1fa664",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "creator": "fixture:csv-builder",
+              "freshness": "logical fixture time150; expires500",
+              "supersession": "explicit only"
+            },
+            "leafHash": "bcf33337633523f33b92083dd4044991b1c6fc964178d6501a2151154b1fa664",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "packet": {
+    "schema": "agi-alpha.graph-epoch.v1",
+    "mode": "FIXTURE_ONLY",
+    "hashSuite": "SHA256_RESEARCH_V1",
+    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+    "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+    "graphId": "research-graph",
+    "agent": "research.agent.agi.eth",
+    "chainId": 31337,
+    "registry": "fixture:ens-v1",
+    "epoch": 1,
+    "previousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+    "roots": {
+      "skill": "bf4d28bc0477ba4b96da4df82231f509360e0ecb93beb51f46ac446a1de0724c",
+      "edge": "ab846a76b0f333f6f0036fd01e839bc9adc38b5e0e11afe734d6da5efc99bec5",
+      "evidence": "ae980b11288535dcd301b7ae28aec8a078f02cb163c8c5eafb5bbc8baeb7d1b6",
+      "proofbundle": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "policy": "f85b1d473b951ec92ea191d87f8276b5cffe012ca7bfa379cb1f8be44a3ce07c",
+      "attestation": "a23da2cf46141ca08e3d9758ea1c8da891a05291aea034069e4264d8729d1f89",
+      "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "metadata": "bcf33337633523f33b92083dd4044991b1c6fc964178d6501a2151154b1fa664"
+    },
+    "counts": {
+      "skill": 2,
+      "edge": 1,
+      "evidence": 1,
+      "proofbundle": 0,
+      "policy": 1,
+      "attestation": 2,
+      "revocation": 0,
+      "supersession": 0,
+      "metadata": 1
+    },
+    "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+    "snapshotDigest": "390cd9ad2f875b52bacae80d77522c8fa9fc600a44c1f05f2878d4c127a7ba04",
+    "proofLevel": "FIXTURE_SCOPED_TECHNICAL",
+    "graphRoot": "ebaa79734f02d36be6209e8368683e5e907ddd29a781597bcd79ddfac885b8e9"
+  },
+  "rootRecord": {
+    "action": "COMMIT_GRAPH_ROOT",
+    "agent": "research.agent.agi.eth",
+    "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+    "chainId": 31337,
+    "counts": {
+      "attestation": 2,
+      "edge": 1,
+      "evidence": 1,
+      "metadata": 1,
+      "policy": 1,
+      "proofbundle": 0,
+      "revocation": 0,
+      "skill": 2,
+      "supersession": 0
+    },
+    "epoch": 1,
+    "graphId": "research-graph",
+    "graphRoot": "ebaa79734f02d36be6209e8368683e5e907ddd29a781597bcd79ddfac885b8e9",
+    "hashSuite": "SHA256_RESEARCH_V1",
+    "mode": "FIXTURE_ONLY",
+    "policyDigest": "ac983e9bb9d10a41e2f4aceba79b4a539b3c69e4589d63b0237ef76b842cb3e3",
+    "previousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+    "proofLevel": "FIXTURE_SCOPED_TECHNICAL",
+    "registry": "fixture:ens-v1",
+    "roots": {
+      "attestation": "a23da2cf46141ca08e3d9758ea1c8da891a05291aea034069e4264d8729d1f89",
+      "edge": "ab846a76b0f333f6f0036fd01e839bc9adc38b5e0e11afe734d6da5efc99bec5",
+      "evidence": "ae980b11288535dcd301b7ae28aec8a078f02cb163c8c5eafb5bbc8baeb7d1b6",
+      "metadata": "bcf33337633523f33b92083dd4044991b1c6fc964178d6501a2151154b1fa664",
+      "policy": "f85b1d473b951ec92ea191d87f8276b5cffe012ca7bfa379cb1f8be44a3ce07c",
+      "proofbundle": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "skill": "bf4d28bc0477ba4b96da4df82231f509360e0ecb93beb51f46ac446a1de0724c",
+      "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+    },
+    "schema": "agi-alpha.graph-epoch.v1",
+    "snapshotDigest": "390cd9ad2f875b52bacae80d77522c8fa9fc600a44c1f05f2878d4c127a7ba04",
+    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+    "signer": "fixture:root-delegate",
+    "authoritySnapshotId": "fixture-state-100",
+    "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+    "blockNumber": 100,
+    "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+    "registrySchema": "ENS_V1_FIXTURE",
+    "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+    "issuedAt": 100,
+    "expiresAt": 500,
+    "nonce": "hm-root-1",
+    "signature": {
+      "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+      "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+      "signer": "fixture:root-delegate",
+      "payloadDigest": "75c212cb054013b1e3b0906f0c696cd01ada5ba5f5c913b3e35dc85a6db4b55c"
+    }
+  },
+  "rootAuth": {
+    "ok": true,
+    "reasons": [],
+    "historyValid": true,
+    "currentReuseAllowed": true,
+    "mode": "FIXTURE_ONLY",
+    "liveIdentityEnforcement": "NOT_RUN",
+    "cryptographicAuthentication": false,
+    "nonceKey": "research-graph|COMMIT_GRAPH_ROOT|research.agent.agi.eth|hm-root-1",
+    "authorizedOperation": "COMMIT_GRAPH_ROOT"
+  },
+  "liveENS": "NOT_RUN",
+  "cryptographicAuthentication": false,
+  "executionAuthority": [],
+  "usefulness": "Defined by independent fresh-work acceptance and the separate economic test, not this root."
+}
