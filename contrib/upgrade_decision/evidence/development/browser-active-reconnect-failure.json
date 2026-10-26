@@ -1,0 +1,13 @@
+{
+  "status": "FAILED_ENGINEERING_QA",
+  "observed": "Browser closed while second worker was running. Both operations committed completed in the signed journal; reconnect displayed the initial running snapshot and did not refresh to the available download.",
+  "substantiation": {
+    "states": [
+      "completed",
+      "completed"
+    ],
+    "spentServiceUnits": 2
+  },
+  "correction": "Bounded read-only UI status polling while an approved mission is recorded running; no new execution, approval, scheduler or lease renewal.",
+  "customerJobs": 0
+}

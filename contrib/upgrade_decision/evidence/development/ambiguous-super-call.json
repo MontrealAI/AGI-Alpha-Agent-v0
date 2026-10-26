@@ -1,0 +1,152 @@
+{
+  "status": "FAILED_DEVELOPMENT_ATTEMPT",
+  "sourceSha256": "0e2f3c64ac816fa21d59fae0464314ec2ce038adc8ee5a7c1ceddfbd18ff2354",
+  "observation": {
+    "schema": "alpha-upgrade-decision/v1",
+    "capability": "source-linked-call-contract/v1",
+    "id": "starlette-httpx-historical",
+    "title": "Starlette 0.36.3 + HTTPX 0.27.2 \u2192 0.28.1 \u00b7 historical example",
+    "purpose": "Decide whether the HTTPX-only update can preserve TestClient construction before an in-process application test. This is one historical compatibility assessment, not a current recommended pin set.",
+    "inputSha256": "f1514fe9fb4527b721f169b75cc21de1ad804c9ad7a339ac4ac40317f9011916",
+    "calls": [
+      {
+        "id": "testclient-constructor",
+        "status": "UNRESOLVED",
+        "beforeAccepts": null,
+        "afterAccepts": null,
+        "mapping": {
+          "explanation": "TestClient declares the single base httpx.Client and calls super().__init__. Package reexports/MRO/runtime identity remain outside this static mapper. The separate pinned historical integration reproduction substantiates this particular actual failure.",
+          "kind": "declared-target"
+        },
+        "evidence": [],
+        "reason": "selected consumer call is absent or ambiguous"
+      }
+    ],
+    "sourceInventory": [
+      {
+        "id": "httpx-after",
+        "commit": "26d48e0634e6ee9cdc0533996db289ce4b430177",
+        "path": "httpx/_client.py",
+        "repository": "encode/httpx",
+        "sha256": "c43f941baefe58c91e96d00039e1868fe719d91453026d7db1647194563bff8d"
+      },
+      {
+        "id": "httpx-before",
+        "commit": "609df7ecc0f7cb10a1c998aa9c269bba77337c5f",
+        "path": "httpx/_client.py",
+        "repository": "encode/httpx",
+        "sha256": "c4abf7e3485c2df38f0a78a57b1121da0360e41ac442a212eff3b4641f67c56c"
+      },
+      {
+        "id": "starlette-consumer",
+        "commit": "be4f3e110ed1172ec9cb47a6209bd899a0d3a604",
+        "path": "starlette/testclient.py",
+        "repository": "Kludex/starlette",
+        "sha256": "4ad9cf0a44243a5d82e3becfe19d8aad4d7ac5f7298fb35a6ba6273b940dffe8"
+      }
+    ],
+    "historicalEvidence": [
+      {
+        "statement": "Upstream documents removal of the deprecated app and proxies parameters; check source and your complete application.",
+        "url": "https://github.com/encode/httpx/releases/tag/0.28.0"
+      },
+      {
+        "statement": "The known Starlette 0.37.2 remedy removes the deprecated app argument. This is upstream history, not an invented repair or a current security recommendation.",
+        "url": "https://www.starlette.io/release-notes/#0372-march-5-2024"
+      },
+      {
+        "statement": "An external historical user reports the same TestClient construction error. This is a historical need, not an AGI ALPHA customer or demand observation.",
+        "url": "https://github.com/Kludex/starlette/discussions/2770"
+      }
+    ],
+    "customerAcceptance": "unknown",
+    "productionApproved": false,
+    "limits": [
+      "Selected calls and inert argument binding only; not full application, dependency security or release approval.",
+      "A declared target is a conditional source relationship, not proof of runtime dispatch.",
+      "An accepted binding does not establish behavior, values, types, imports or successful argument evaluation.",
+      "Unselected calls and runtime monkeypatching remain unassessed. Source origin is supplied by the public-input curator; hashes bind bytes, not authorship."
+    ],
+    "nextAction": "REVIEW_UNRESOLVED_SCOPE",
+    "engineeringAcceptance": true,
+    "review": {
+      "creator": "Source-linked call-contract construction",
+      "critic": [],
+      "verifier": {
+        "method": "Fresh source parse and Python inspect.Signature.bind, without executing inspected code; same author/process, not organizational independence.",
+        "accepted": true,
+        "defects": [],
+        "selectedCalls": 1
+      },
+      "corrections": []
+    },
+    "resources": {
+      "stages": [
+        {
+          "stage": "preparation",
+          "status": "completed",
+          "wallNs": 28914636,
+          "cpuNs": 28890518,
+          "basis": "measured"
+        },
+        {
+          "stage": "planning",
+          "status": "completed",
+          "wallNs": 2153,
+          "cpuNs": 2204,
+          "basis": "measured"
+        },
+        {
+          "stage": "execution",
+          "status": "completed",
+          "wallNs": 3054725,
+          "cpuNs": 3049509,
+          "basis": "measured"
+        },
+        {
+          "stage": "verification",
+          "status": "completed",
+          "wallNs": 38803888,
+          "cpuNs": 38781996,
+          "basis": "measured"
+        },
+        {
+          "stage": "correction",
+          "status": "completed",
+          "wallNs": 1542,
+          "cpuNs": 1563,
+          "basis": "measured"
+        },
+        {
+          "stage": "reporting",
+          "status": "completed",
+          "wallNs": 10607,
+          "cpuNs": 10766,
+          "basis": "measured"
+        }
+      ],
+      "runtimeModelCalls": {
+        "value": 0,
+        "basis": "measured"
+      },
+      "networkRequests": {
+        "value": 0,
+        "basis": "measured"
+      },
+      "inputBytes": {
+        "value": 171602,
+        "basis": "measured"
+      },
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "unknown": [
+        "research and authoring inference/billing",
+        "caller preparation, transport, journal, transmission and final packaging overhead",
+        "setup/integration/upkeep",
+        "customer effort and matched human duration",
+        "currency costs and available surplus"
+      ]
+    }
+  },
+  "consequentialDefect": "Outer super().__init__ and inner super() have the same start location. Location-only selection returned an unresolved packet, not the intended historical decision.",
+  "correction": "Bind the selected callee expression in addition to source position; regression checks both nested calls."
+}

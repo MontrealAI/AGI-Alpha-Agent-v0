@@ -1,0 +1,37 @@
+{
+  "source": "97057bd2bf216f3b63ca0839580127f42a3a6cb3",
+  "scope": "Synthetic review controls, actual older interpreter and actual rendering; not consumer missions",
+  "primaryLanguageSource": "https://peps.python.org/pep-0570/#semantic-corner-case",
+  "probes": [
+    {
+      "finding": 4380152203,
+      "observed": {
+        "python": "3.12.3 (main, Jul 15 2026, 23:46:41) [GCC 13.3.0]",
+        "actual": [
+          0,
+          {
+            "x": 1
+          }
+        ],
+        "status": "BINDING_CONFLICT",
+        "action": "HOLD_UPDATE_AND_TEST",
+        "accepted": true
+      }
+    },
+    {
+      "finding": 4380152216,
+      "engineeringAcceptance": true,
+      "renderFailures": {
+        "markdown": "'list' object has no attribute 'get'",
+        "html": "'list' object has no attribute 'get'"
+      }
+    }
+  ],
+  "hostedFailure": {
+    "run": 40364667885,
+    "job": 121719002799,
+    "artifact": 12669772498,
+    "artifactSha256": "089c7f4dee1c315aaf9e9ace3eafcddd02409885d19f1a35e57ba42d940fba09",
+    "scope": "Real browser assertions began:79othercasespassed; plan-summary was read before asynchronous prepare completed. Wait for enabled approval and required plan text; no retry or weakened assertion."
+  }
+}
