@@ -160,6 +160,9 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
   Vincent Boucher · MONTREAL\.AI · 2026-10-25 · English PDF.
 - **[AGI ALPHA FLYWHEEL: The Autonomous Work Economy](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-autonomous-work-economy-v1.pdf)** · An independent bounded study delivers 16 local artifacts across four workflow families, retains eight expected refusals, and tests a successor on eight later quote cases\. Complete costs and reinvestment remain conditional models; customer payments, full authenticated execution and self\-acceleration are not established\.
   Vincent Boucher · MONTREAL\.AI · 2026-10-25 · English PDF.
+- **[THE ADVANTAGE THAT FUNDS THE NEXT](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-funded-advantage-v1.pdf)** · A versioned release\-inventory intake capability serves the actual Alpha Workbench\. Three strong methods correctly complete 16 fresh comparison requests and 64 representations each\. Complete costs and attention savings remain unmeasured; no material incremental advantage is established\. Financing scenarios bind the exact tested asset, preserve adverse outcomes and leave actual economic admission on HOLD\.
+  AGI ALPHA research engineering study · 2026-10-25 · English PDF.
+  [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/33ba0d8a589096cd33fe584fe4ed450bdc3fb729/studies/agi-alpha-funded-advantage-v1/README.md)
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
