@@ -31,6 +31,11 @@ HISTORICAL = {
         "2258d812b2397cad3055fd56d88183b55ad731f5",
         "12d76aeec92b5efa96f62c54d385aa219b336f109c14905c04d96f095a7dc519",
     ),
+    "144": (
+        "ff1e5f0a6db7a4858de92927948024b727423606",
+        "b1f350271535668f7bf9db259b075fb0d59629ad",
+        "a36cee1a48c7ddef5c4ed9eecebde04a65d1cf8ea4324bc5439eb769ef23aa81",
+    ),
 }
 PROFILES = {
     "142": checkout.TI_GUIDE_142_EXTRA_FILES,

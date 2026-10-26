@@ -35,22 +35,26 @@ def test_official_browser_install_has_independent_attempt_and_step_budgets(job_n
     assert "pytest" not in script and "validate_" not in script
 
 
+@pytest.mark.parametrize("job_name", ["regression", "gallery"])
 @pytest.mark.parametrize(
     "codes,expected,count",
     [
         ("0", 0, 1),
-        ("124,0", 0, 2),
+        ("124,0", 124, 1),
+        ("137,0", 137, 1),
         ("1,0", 0, 2),
         ("1,1", 1, 2),
-        ("124,124", 124, 2),
-        ("137,137", 137, 2),
+        ("124,124", 124, 1),
+        ("137,137", 137, 1),
+        ("1,124", 124, 2),
+        ("1,137", 137, 2),
         ("42,43", 43, 2),
     ],
 )
-def test_actual_retry_shell_stops_at_two_and_preserves_final_failure(tmp_path, codes, expected, count):
-    script = named(
-        workflow("agent-release.yml")["jobs"]["regression"], "Install Chromium with bounded official retries"
-    )["run"]
+def test_actual_retry_shell_stops_at_two_and_preserves_final_failure(tmp_path, job_name, codes, expected, count):
+    script = named(workflow("agent-release.yml")["jobs"][job_name], "Install Chromium with bounded official retries")[
+        "run"
+    ]
     binary = tmp_path / "bin"
     binary.mkdir()
     timeout = binary / "timeout"
@@ -77,10 +81,11 @@ exit "${codes[$n]:-98}"
     assert int(counter.read_text()) == count
 
 
-def test_real_timeout_terminates_each_hung_attempt_and_fails(tmp_path):
+@pytest.mark.parametrize("job_name", ["regression", "gallery"])
+def test_real_timeout_stops_without_a_second_same_host_attempt(tmp_path, job_name):
     if not shutil.which("timeout"):
         pytest.skip("GNU timeout is an Ubuntu runner utility")
-    script = named(workflow("agent-release.yml")["jobs"]["gallery"], "Install Chromium with bounded official retries")[
+    script = named(workflow("agent-release.yml")["jobs"][job_name], "Install Chromium with bounded official retries")[
         "run"
     ]
     script = script.replace("--kill-after=30s 5m", "--kill-after=0.05s 0.05s").replace("sleep 5", "true")
@@ -97,7 +102,8 @@ def test_real_timeout_terminates_each_hung_attempt_and_fails(tmp_path):
         env={**os.environ, "PATH": f"{binary}:{os.environ['PATH']}", "COUNTER": str(counter)},
     )
     assert result.returncode == 124
-    assert counter.read_text().splitlines() == ["attempt", "attempt"]
+    assert counter.read_text().splitlines() == ["attempt"]
+    assert b"refusing a same-host retry" in result.stdout
 
 
 @pytest.mark.parametrize("job_name", ["regression", "gallery"])
