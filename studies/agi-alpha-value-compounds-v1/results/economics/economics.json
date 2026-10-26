@@ -1,0 +1,4232 @@
+{
+  "schema": "value-compounds-economics/v1",
+  "capability_id": "call-compatibility",
+  "scope": "Nontransactional economic evidence for the tested static Python call-compatibility capability; no payments or deployment.",
+  "provenance": {
+    "canonical_sources": [
+      {
+        "path": "discovery/canonical/automated-costs.mjs",
+        "sha256": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506",
+        "bytes": 14085,
+        "unmodified": true
+      },
+      {
+        "path": "discovery/canonical/shadow-ledger.mjs",
+        "sha256": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21",
+        "bytes": 17514,
+        "unmodified": true
+      }
+    ],
+    "metrics": {
+      "path": "/workspace/scratch/8586be0c300d/research/value-compounds/results/summary.json",
+      "sha256": "e395cd4fca9ea84413ae3b94d749a9ea2471807018a3881ebaa4435e390d140d",
+      "bytes": 114858
+    },
+    "metrics_reference": "Metrics summary.json SHA256 e395cd4fca9ea84413ae3b94d749a9ea2471807018a3881ebaa4435e390d140d; only explicit economic_input observation mappings are interpreted.",
+    "economic_input": null,
+    "metering": {
+      "files": [
+        {
+          "path": "/workspace/scratch/8586be0c300d/research/value-compounds/metering/confirmation_curator.jsonl",
+          "sha256": "29abee8e6d9324d8c2df43df4ac020fc193f5c679644eddc227c009124b43756",
+          "bytes": 1088,
+          "events": 3
+        },
+        {
+          "path": "/workspace/scratch/8586be0c300d/research/value-compounds/metering/development_curator.jsonl",
+          "sha256": "c8ac0a37aafe6ab1587a75659a832e1afdaafda026e8eaeb7738c9ea148be85d",
+          "bytes": 1471,
+          "events": 4
+        },
+        {
+          "path": "/workspace/scratch/8586be0c300d/research/value-compounds/metering/economics.jsonl",
+          "sha256": "99df59e88018b451c68eb9554e976fe297b836e16d9143cc3a6040568fe2012d",
+          "bytes": 13612,
+          "events": 22
+        },
+        {
+          "path": "/workspace/scratch/8586be0c300d/research/value-compounds/metering/integration-example.jsonl",
+          "sha256": "8c43594ec98e97b199d29baa4f1120c6be771d09b92c80537612c2ee2e66a054",
+          "bytes": 620,
+          "events": 2
+        },
+        {
+          "path": "/workspace/scratch/8586be0c300d/research/value-compounds/metering/session.jsonl",
+          "sha256": "53f287d4e7d3663fa6c26de1b1cbedf59197eb168aa6e63cb1033cd78e2ca140",
+          "bytes": 4840,
+          "events": 9
+        },
+        {
+          "path": "/workspace/scratch/8586be0c300d/research/value-compounds/metering/source_audit.jsonl",
+          "sha256": "9c597479c299271b0c681ed3d1b727b09700c41c8d6e52b2033f8fbc553fedc8",
+          "bytes": 7089,
+          "events": 10
+        },
+        {
+          "path": "/workspace/scratch/8586be0c300d/research/value-compounds/metering/workload_review.jsonl",
+          "sha256": "c7380040f2b4136da3caae9f2ff5f7cc7036d4172c2d2635d29d9e4a2606fa83",
+          "bytes": 7084,
+          "events": 21
+        }
+      ],
+      "events": [
+        {
+          "event": "curator_start",
+          "utc": "2026-10-26T13:09:33.147760+00:00",
+          "phase": "metadata_only",
+          "inference_tokens": null,
+          "inference_usd": null,
+          "selection_rule": "latest five published non-prerelease releases, adjacent chronological pairs, one request per transition",
+          "outcome_inspected": false,
+          "source_file": "confirmation_curator.jsonl",
+          "line": 1
+        },
+        {
+          "event": "metadata_selection_sealed",
+          "utc": "2026-10-26T13:10:29.742351+00:00",
+          "manifest_sha256": "1a010fa7312455e218819827caf3fe76fef54832c6ea6b5c2e534d9c5d2286b7",
+          "missions": 12,
+          "snapshots": 15,
+          "dependency_source_files_fetched": 4,
+          "github_metadata_read_calls": 44,
+          "source_outcomes_inspected": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "confirmation_curator.jsonl",
+          "line": 2
+        },
+        {
+          "event": "metadata_selection_amendment_v3",
+          "utc": "2026-10-26T13:19:06.610706+00:00",
+          "manifest_sha256": "eeddceae75c6b10c97369da9baff2fc69928e9e9fe3c0025499c2529e846160e",
+          "reason": "Pydantic imported in development; replaced with Requests transitive dependency urllib3 before confirmation source retrieval",
+          "github_metadata_read_calls": 11,
+          "source_outcomes_inspected": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "confirmation_curator.jsonl",
+          "line": 3
+        },
+        {
+          "event": "development_curator_start",
+          "utc": "2026-10-26T13:16:03.584637+00:00",
+          "phase": "exposed_development",
+          "source_pin": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+          "holdout_inspected": false,
+          "inference_usd": null,
+          "inference_tokens": null,
+          "source_file": "development_curator.jsonl",
+          "line": 1
+        },
+        {
+          "event": "development_sources_completed",
+          "utc": "2026-10-26T13:16:49.000373+00:00",
+          "files": 65,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "upstream_read_calls": 11,
+          "local_commands": {
+            "wall_seconds": 0.010074237000026187,
+            "python_process_cpu_seconds": 0.0066024590000000015,
+            "git_child_cpu_seconds": 0.003624,
+            "git_read_commands": 2,
+            "inference_tokens": null,
+            "inference_usd": null
+          },
+          "failed_attempts": [
+            {
+              "operation": "git cat-file missing af_requests promisor blob",
+              "outcome": "network unavailable; process exit128, no source data produced",
+              "recovery": "read same exact public file through available GitHub connector; core sources copied from existing checkout after Git identity verification"
+            }
+          ],
+          "holdout_source_inspected": false,
+          "source_file": "development_curator.jsonl",
+          "line": 2
+        },
+        {
+          "event": "development_reexports_added",
+          "utc": "2026-10-26T13:17:34.664992+00:00",
+          "files": 2,
+          "github_read_calls": 2,
+          "holdout_source_inspected": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "development_curator.jsonl",
+          "line": 3
+        },
+        {
+          "event": "full_httpx_development_added",
+          "utc": "2026-10-26T13:23:27.477622+00:00",
+          "github_read_calls": 41,
+          "source_files": 41,
+          "response_source_bytes": 416378,
+          "holdout_source_inspected": false,
+          "source_executed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "development_curator.jsonl",
+          "line": 4
+        },
+        {
+          "event": "economics_started",
+          "utc": "2026-10-26T13:04:40Z",
+          "phase": "discovery",
+          "actor": "research assistant economics subagent",
+          "model_calls": null,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "human_duration_hours": null,
+          "note": "No per-call billing telemetry; timestamps do not represent wage or inference charges.",
+          "source_file": "economics.jsonl",
+          "line": 1
+        },
+        {
+          "event": "web_research",
+          "utc": "2026-10-26T13:04:49Z",
+          "operations": [
+            "system1_search_query x3",
+            "open x5"
+          ],
+          "topics": [
+            "BLS QA wages",
+            "BLS employer compensation June 2026",
+            "Canada Job Bank software QA wages"
+          ],
+          "inference_usd": null,
+          "network_billed_usd": null,
+          "source_file": "economics.jsonl",
+          "line": 2
+        },
+        {
+          "event": "economics_complete",
+          "utc": "2026-10-26T13:07:01Z",
+          "operations_total": {
+            "web_tool_calls": 6,
+            "search_queries": 7,
+            "open_requests": 15,
+            "find_requests": 4,
+            "click_requests": 1
+          },
+          "files": [
+            "discovery/economics.md",
+            "discovery/sources.json"
+          ],
+          "inference_tokens": null,
+          "inference_usd": null,
+          "paid_commitments_initiated": 0,
+          "customer_contacts": 0,
+          "human_task_duration_observed": null,
+          "note": "Elapsed subagent duration is not a bill. Source data checked; no experimental or provider-cost outcome asserted.",
+          "source_file": "economics.jsonl",
+          "line": 3
+        },
+        {
+          "event": "meter_count_correction",
+          "utc": "2026-10-26T13:07:08Z",
+          "corrected_field": "operations_total.open_requests",
+          "prior_value": 15,
+          "correct_value": 14,
+          "reason": "Recount: 5 + 2 + 1 + 4 + 2 opens across the six web calls.",
+          "source_file": "economics.jsonl",
+          "line": 4
+        },
+        {
+          "event": "construction_instrumentation_error",
+          "utc": "2026-10-26T13:09:56Z",
+          "operation": "rg --files canonical src && metering append",
+          "status": "failed_before_append",
+          "reason": "src did not yet exist; rg exit 2 prevented append. Read-only canonical inspection still completed in separate command.",
+          "inference_usd": null,
+          "source_file": "economics.jsonl",
+          "line": 5
+        },
+        {
+          "event": "economics_runner_construction_started",
+          "utc": "2026-10-26T13:09:56Z",
+          "phase": "construction",
+          "task": "additive canonical economics adapter for static Python call-compatibility dossiers",
+          "inference_tokens": null,
+          "inference_usd": null,
+          "human_minutes": null,
+          "source_file": "economics.jsonl",
+          "line": 6
+        },
+        {
+          "event": "economics_runner_constructed_and_checked",
+          "utc": "2026-10-26T13:11:57Z",
+          "phase": "construction",
+          "actions": [
+            "inspect unchanged canonical APIs",
+            "implement additive adapter",
+            "repair internal-mission count terminology before delivery",
+            "four focused economic logic checks",
+            "CLI unknown-input execution with retained metering"
+          ],
+          "files": [
+            {
+              "path": "src/economics.mjs",
+              "sha256": "d91a500d603e9e19c13b937e2c2ba410a7cfdbb624102b7928b3ff8a49408254"
+            },
+            {
+              "path": "src/ECONOMICS.md",
+              "sha256": "4f06e4bb702b93a15416b2622bb3cab15673169695c728f1ba0fb1bed35b0486"
+            },
+            {
+              "path": "tests/economics.test.mjs",
+              "sha256": "02782a2b8470a3de5d05130c3f933562f827766c08386a4bfef989d89b0c2b20"
+            }
+          ],
+          "inference_tokens": null,
+          "inference_usd": null,
+          "human_minutes": null,
+          "paid_commitments_initiated": 0,
+          "external_writes": 0,
+          "check_status": "passed",
+          "note": "Economic logic test inputs are explicit synthetic controls, not prices or actual receipts.",
+          "source_file": "economics.jsonl",
+          "line": 7
+        },
+        {
+          "event": "economics_currency_guard_final_check",
+          "utc": "2026-10-26T13:12:15Z",
+          "change": "Reject mixed-currency cost record before applying the USD finite study ledger; CAD human scenarios stay separate.",
+          "tests_passed": 4,
+          "src_sha256": "dcb7640c89294cc7be707ce5eae92d81ff24b282fa13ffd4d048e31a075f0f61",
+          "inference_usd": null,
+          "source_file": "economics.jsonl",
+          "line": 8
+        },
+        {
+          "event": "commercial_screen_started",
+          "utc": "2026-10-26T13:13:32Z",
+          "phase": "discovery",
+          "allowance_minutes": 15,
+          "purpose": "Price evidence, buyer need, free alternatives and smallest no-outreach buyer test for a bounded Python dependency compatibility dossier",
+          "inference_usd": null,
+          "paid_commitments": 0,
+          "external_contacts": 0,
+          "source_file": "economics.jsonl",
+          "line": 9
+        },
+        {
+          "event": "commercial_screen_primary_evidence",
+          "utc": "2026-10-26T13:15:05Z",
+          "observations": [
+            "Netlandish advertised $1500 assessment; broader than static dossier, no paid transaction verified, currency symbol only",
+            "Griffe free source and built-in diff/Markdown/GitHub reports",
+            "Dependabot included GitHub Free",
+            "Renovate Community Cloud unlimited public/private free tier",
+            "Mend Renovate Enterprise advertised up to $250/developer/year, subscription scope mismatch",
+            "Historical Starlette httpx0.28.0 breakage need evidence"
+          ],
+          "not_observed": [
+            "AGI ALPHA paid demand",
+            "same-scope accepted-deliverable price",
+            "non-AI human task duration",
+            "complete automated monetary cost"
+          ],
+          "inference_usd": null,
+          "paid_commitments": 0,
+          "external_contacts": 0,
+          "source_file": "economics.jsonl",
+          "line": 10
+        },
+        {
+          "event": "commercial_screen_complete",
+          "utc": "2026-10-26T13:16:20Z",
+          "started_utc": "2026-10-26T13:13:32Z",
+          "allowance_minutes": 15,
+          "decision": "ADJACENT_PAID_CATEGORY_FOUND_EXACT_OFFER_UNVALIDATED",
+          "file": "research/value-compounds/discovery/commercial-screen.md",
+          "sha256": "379f2de1cf726004b7032bdf64a4d83ddd4d04d4bc430ffdda77215f50454e14",
+          "actual_price_for_our_offer": null,
+          "actual_collections_minor": 0,
+          "inference_usd": null,
+          "external_contacts": 0,
+          "paid_commitments": 0,
+          "note": "Stopped within bounded allowance after primary price/free-alternative/need evidence sufficient to determine remaining commercial gate; did not fill allowance with unnecessary searches.",
+          "source_file": "economics.jsonl",
+          "line": 11
+        },
+        {
+          "event": "consumer_mapper_construction_started",
+          "utc": "2026-10-26T13:20:01Z",
+          "phase": "construction",
+          "capability_id": "call-compatibility",
+          "scope": "ground consumer callsites in explicit import/re-export source; bounded binding-only impact packet",
+          "held_out_reads": 0,
+          "inference_usd": null,
+          "human_minutes": null,
+          "source_execution": false,
+          "source_file": "economics.jsonl",
+          "line": 12
+        },
+        {
+          "event": "consumer_mapper_initial_implementation",
+          "utc": "2026-10-26T13:24:08.357804+00:00",
+          "files": [
+            "src/consumer.py",
+            "tests/test_consumer.py"
+          ],
+          "phase": "construction",
+          "construction_agent": "/root/economics",
+          "human_authored_solution": false,
+          "model_authored": true,
+          "inference_usd": null,
+          "human_minutes": null,
+          "held_out_reads": 0,
+          "source_file": "economics.jsonl",
+          "line": 13
+        },
+        {
+          "event": "consumer_mapper_failed_attempt",
+          "utc": "2026-10-26T13:24:08.357825+00:00",
+          "command": "python tests/test_consumer.py",
+          "result": "12 errors; _Bindings._add received duplicate node argument",
+          "repair": "Removed unused duplicate node keyword from declaration binding records",
+          "inference_usd": null,
+          "source_file": "economics.jsonl",
+          "line": 14
+        },
+        {
+          "event": "consumer_mapper_verification",
+          "utc": "2026-10-26T13:24:08.357827+00:00",
+          "command": "python tests/test_consumer.py",
+          "tests": 12,
+          "passed": 12,
+          "elapsed_runner_seconds": 0.013,
+          "note": "Focused synthetic validation; not customer work or fresh confirmation",
+          "inference_usd": null,
+          "source_file": "economics.jsonl",
+          "line": 15
+        },
+        {
+          "event": "consumer_candidate_construction_and_controls",
+          "utc": "2026-10-26T13:29:46.214555+00:00",
+          "phase": "construction",
+          "capability_id": "call-compatibility",
+          "changes": [
+            "separate source-closed wildcard candidate lane",
+            "bounded import-or-raise guard candidate",
+            "lexical scopes and unvisited call coverage",
+            "dependency-reference triage with raw scope unchanged"
+          ],
+          "verification_runs": [
+            {
+              "tests": 12,
+              "passed": 12,
+              "seconds": 0.018
+            },
+            {
+              "tests": 17,
+              "passed": 17,
+              "seconds": 0.028
+            },
+            {
+              "tests": 19,
+              "passed": 19,
+              "seconds": 0.035
+            },
+            {
+              "tests": 20,
+              "passed": 20,
+              "seconds": 0.04
+            }
+          ],
+          "note": "Focused synthetic development tests; not fresh missions",
+          "inference_usd": null,
+          "human_minutes": null,
+          "held_out_reads": 0,
+          "source_file": "economics.jsonl",
+          "line": 16
+        },
+        {
+          "event": "consumer_development_evaluations",
+          "utc": "2026-10-26T13:29:46.214555+00:00",
+          "phase": "discovery",
+          "capability_id": "call-compatibility",
+          "artifacts": [
+            "results/consumer-development-starlette.json",
+            "results/consumer-development/summary.json",
+            "results/consumer-development-frozen/summary.json"
+          ],
+          "final_summary": {
+            "phase": "exposed-development-not-confirmation",
+            "consumer_source_execution": false,
+            "producer_report_construction": {
+              "wall_ns": 175629155,
+              "cpu_ns": 175617360,
+              "source_parses": 46,
+              "input_bytes": 577029,
+              "runtime_model_calls": 0,
+              "network_requests": 0
+            },
+            "source_manifest_sha256": "1f4361cfbb584504d3e983e3fb9fd0c08372af24f15846f69d43e8b576fe35d1",
+            "asset_sha256": "ed74527aa013ef3c2f3aafb9ab07ee172039b09eaefebb480be89d2d0dcd82d6",
+            "producer_files": {
+              "before": 24,
+              "after": 23
+            },
+            "groups": {
+              "starlette": {
+                "strict_coverage": {
+                  "consumer_files": 1,
+                  "inspected_calls": 178,
+                  "unvisited_call_nodes": 0,
+                  "scope_triage": {
+                    "unattributed-call": 147,
+                    "other-import-reference": 28,
+                    "dependency-import-reference": 3
+                  },
+                  "potential_break": 0,
+                  "preserved_binding": 0,
+                  "unresolved": 178
+                },
+                "candidate_coverage": {
+                  "potential_break": 1
+                },
+                "candidate_sites": [
+                  {
+                    "path": "starlette/testclient.py",
+                    "line": 429,
+                    "status": "potential_break",
+                    "before_accepts": true,
+                    "after_accepts": false,
+                    "target": "Client.__init__"
+                  }
+                ],
+                "meter": {
+                  "wall_ns": 840947973,
+                  "cpu_ns": 840923768,
+                  "input_bytes": 608632,
+                  "source_parses": 96,
+                  "runtime_model_calls": 0,
+                  "network_requests": 0,
+                  "source_execution": false,
+                  "candidate_pass": {
+                    "wall_ns": 402133060,
+                    "cpu_ns": 402127527,
+                    "input_bytes": 608632,
+                    "source_parses": 48,
+                    "runtime_model_calls": 0,
+                    "network_requests": 0,
+                    "source_execution": false
+                  }
+                },
+                "artifact_sha256": "934b81edd4bc071e2b6c75c23f5148029bb3244a2067055a7f4f7231a5b97f33",
+                "artifact_bytes": 387073
+              },
+              "alpha": {
+                "strict_coverage": {
+                  "consumer_files": 56,
+                  "inspected_calls": 10172,
+                  "unvisited_call_nodes": 0,
+                  "scope_triage": {
+                    "other-import-reference": 2755,
+                    "unattributed-call": 7410,
+                    "dependency-import-reference": 7
+                  },
+                  "potential_break": 0,
+                  "preserved_binding": 0,
+                  "unresolved": 10172
+                },
+                "candidate_coverage": {
+                  "preserved_binding": 7
+                },
+                "candidate_sites": [
+                  {
+                    "path": "alpha_factory_v1/core/runtime/chain.py",
+                    "line": 62,
+                    "status": "preserved_binding",
+                    "before_accepts": true,
+                    "after_accepts": true,
+                    "target": "URL.__init__"
+                  },
+                  {
+                    "path": "alpha_factory_v1/core/runtime/chain.py",
+                    "line": 63,
+                    "status": "preserved_binding",
+                    "before_accepts": true,
+                    "after_accepts": true,
+                    "target": "Client.__init__"
+                  },
+                  {
+                    "path": "alpha_factory_v1/core/runtime/provider.py",
+                    "line": 157,
+                    "status": "preserved_binding",
+                    "before_accepts": true,
+                    "after_accepts": true,
+                    "target": "AsyncClient.__init__"
+                  },
+                  {
+                    "path": "alpha_factory_v1/core/runtime/provider.py",
+                    "line": 201,
+                    "status": "preserved_binding",
+                    "before_accepts": true,
+                    "after_accepts": true,
+                    "target": "URL.__init__"
+                  },
+                  {
+                    "path": "alpha_factory_v1/core/runtime/successor/computer.py",
+                    "line": 265,
+                    "status": "preserved_binding",
+                    "before_accepts": true,
+                    "after_accepts": true,
+                    "target": "Client.__init__"
+                  },
+                  {
+                    "path": "alpha_factory_v1/core/runtime/successor/computer_read.py",
+                    "line": 45,
+                    "status": "preserved_binding",
+                    "before_accepts": true,
+                    "after_accepts": true,
+                    "target": "Client.__init__"
+                  },
+                  {
+                    "path": "alpha_factory_v1/core/runtime/successor/studio_operator.py",
+                    "line": 173,
+                    "status": "preserved_binding",
+                    "before_accepts": true,
+                    "after_accepts": true,
+                    "target": "Client.__init__"
+                  }
+                ],
+                "meter": {
+                  "wall_ns": 13939380411,
+                  "cpu_ns": 13923584546,
+                  "input_bytes": 1640566,
+                  "source_parses": 206,
+                  "runtime_model_calls": 0,
+                  "network_requests": 0,
+                  "source_execution": false,
+                  "candidate_pass": {
+                    "wall_ns": 6920344695,
+                    "cpu_ns": 6905261642,
+                    "input_bytes": 1640566,
+                    "source_parses": 103,
+                    "runtime_model_calls": 0,
+                    "network_requests": 0,
+                    "source_execution": false
+                  }
+                },
+                "artifact_sha256": "20b570ff8f45d1295c6549afed750b9d524a937000564210d3fc6f504251d0fe",
+                "artifact_bytes": 20403803
+              }
+            }
+          },
+          "note": "Three disclosed development runs; report construction, repeated analysis and serialization are study costs, not additional useful missions. Runtime metric excludes assistant inference and report JSON serialization outside assess_consumers.",
+          "inference_usd": null,
+          "human_minutes": null,
+          "source_file": "economics.jsonl",
+          "line": 17
+        },
+        {
+          "event": "consumer_source_frozen",
+          "utc": "2026-10-26T13:29:46.214555+00:00",
+          "phase": "construction",
+          "capability_id": "call-compatibility",
+          "sha256": "ed74527aa013ef3c2f3aafb9ab07ee172039b09eaefebb480be89d2d0dcd82d6",
+          "test_sha256": "156f0bc1ac364d0385a739c3c9ba31a9bec70365113d693f500667f9751c3c0b",
+          "tests_passed": 20,
+          "candidate_runtime_export_identity_proven": false,
+          "strict_findings": 0,
+          "held_out_reads": 0,
+          "inference_usd": null,
+          "human_minutes": null,
+          "source_file": "economics.jsonl",
+          "line": 18
+        },
+        {
+          "event": "economic_zero_label_corrected",
+          "utc": "2026-10-26T13:32:18.109425+00:00",
+          "phase": "construction",
+          "reason": "No financial transaction must not imply zero construction outlay",
+          "files": [
+            "src/economics.mjs",
+            "tests/economics.test.mjs"
+          ],
+          "status": "4 tests passed",
+          "inference_usd": null,
+          "observed_investment_outlay_minor": null,
+          "financial_transactions_executed": 0,
+          "source_file": "economics.jsonl",
+          "line": 19
+        },
+        {
+          "event": "business_case_draft_written",
+          "utc": "2026-10-26T13:32:18.109443+00:00",
+          "phase": "publication",
+          "file": "publication/business-case-draft.md",
+          "sha256": "d2f7d93bbe1d2fe1f13be3360fd471614235fd8cb88b37525ad516ebb18f95c4",
+          "historical_runtime_evidence_read": "results/development/integration-example/run-02/summary.json",
+          "new_web_queries": 0,
+          "new_runtime_reproductions": 0,
+          "external_contacts": 0,
+          "paid_demand_claimed": false,
+          "held_out_reads": 0,
+          "inference_usd": null,
+          "human_minutes": null,
+          "source_file": "economics.jsonl",
+          "line": 20
+        },
+        {
+          "event": "final_economics_review_started",
+          "utc": "2026-10-26T13:53:56.106485+00:00",
+          "phase": "publication-review",
+          "scope": "summary, canonical ledgers, paper economics and claims; no source edits or holdout source-body reads",
+          "inference_usd": null,
+          "human_minutes": null,
+          "source_file": "economics.jsonl",
+          "line": 21
+        },
+        {
+          "event": "final_economics_review_complete",
+          "utc": "2026-10-26T13:56:51.206246+00:00",
+          "phase": "publication-review",
+          "review_file": "publication/economics-review.md",
+          "sha256": "2e36e36bd042f0900f6d35f5476b44a2834b9b01698df343d1aa1301747540c8",
+          "decision": "NO_MATERIAL_ECONOMIC_MISSTATEMENT_FOUND",
+          "accepted_conventional_evidence_hashes_checked": 12,
+          "custom_primary_acceptance": "9/12",
+          "failed_custom_repeat_executions_with_nonzero_cpu": 9,
+          "failed_custom_repeat_cpu_seconds": 110.039814584,
+          "source_edits": 0,
+          "holdout_source_body_reads": 0,
+          "canonical_decision": "HOLD",
+          "finalization_note": "Economic provenance predates new economics/workload-review metering; refresh before final companion hashes if current-file matching is required.",
+          "inference_usd": null,
+          "human_minutes": null,
+          "source_file": "economics.jsonl",
+          "line": 22
+        },
+        {
+          "event": "start",
+          "at": "2026-10-26T13:22:40.421220+00:00",
+          "scope": "exposed historical Starlette-HTTPX in-process upgrade validation",
+          "model_authoring_usd": null,
+          "credentials_used": false,
+          "confirmation": false,
+          "source_file": "integration-example.jsonl",
+          "line": 1
+        },
+        {
+          "event": "completed",
+          "at": "2026-10-26T13:29:57.470714+00:00",
+          "experiment_complete": true,
+          "successful_run_wall_seconds": 6.039078252999843,
+          "successful_run_child_cpu_seconds": 5.887863,
+          "resource_accounting": "data/development/integration-example/resource-accounting.json",
+          "original_failures_preserved": true,
+          "known_upstream_remedy": true,
+          "fresh_confirmation": false,
+          "inference_cost_usd": null,
+          "source_file": "integration-example.jsonl",
+          "line": 2
+        },
+        {
+          "event": "metering_started",
+          "phase": "discovery",
+          "utc": "2026-10-26T13:03:36Z",
+          "recorded_utc": "2026-10-26T13:04:07Z",
+          "inference_tokens": null,
+          "inference_usd": null,
+          "reason": "ChatGPT session does not expose per-call billed inference; timestamps are not monetary costs",
+          "user_prompt_received_utc": "2026-10-26T12:58:47Z",
+          "source_file": "session.jsonl",
+          "line": 1
+        },
+        {
+          "event": "candidate_selected",
+          "utc": "2026-10-26T13:08:48Z",
+          "candidate": "static_python_call_compatibility_dossier",
+          "rejected": [
+            "generic_release_dossier_already_available",
+            "polling_cache_small_unpriced_opportunity",
+            "repair_validation_owned_elsewhere"
+          ],
+          "reason": "Existing source inventory lacks cross-revision callable compatibility and explicit counterexample calls",
+          "construction_inference_usd": null,
+          "source_file": "session.jsonl",
+          "line": 2
+        },
+        {
+          "event": "commercial_scope_amendment_before_confirmation",
+          "utc": "2026-10-26T13:16:24Z",
+          "prior_protocol_sha256": "6f8ba136236695e435ca78bab54102ae5f7f5f390454f565edd959f31402d942",
+          "reason": "Before any confirmation source bodies/outcomes: user commercial steering requires maintainer-specific consumer call-site mapping, not upstream-only report. Add direct undecorated class __init__ declarations with explicit implicit-self handling; arbitrary other methods remain excluded.",
+          "confirmed_no_holdout_bodies": true,
+          "source_file": "session.jsonl",
+          "line": 3
+        },
+        {
+          "event": "native_closure_materialized",
+          "utc": "2026-10-26T13:18:15Z",
+          "files": 19,
+          "prior_failed_attempt": "import regex matched inert example import; no native artifact was made",
+          "correction": "anchored static imports",
+          "money_usd": null,
+          "source_file": "session.jsonl",
+          "line": 4
+        },
+        {
+          "event": "preconfirmation_provenance_amendment",
+          "utc": "2026-10-26T13:23:06Z",
+          "reason": "Before confirmation bodies/outcomes, replace Pydantic with actual transitive dependency urllib3 because native development imports used installed Pydantic2.14.1. Selection remains latest5 stable releases, no outcome screening.",
+          "inference_usd": null,
+          "source_file": "session.jsonl",
+          "line": 5
+        },
+        {
+          "event": "preconfirmation_development_integration",
+          "utc": "2026-10-26T13:30:35.539878+00:00",
+          "candidate_tests": 45,
+          "shared_component_tests": 73,
+          "native_workbench_actual": true,
+          "valid_pack_status": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+          "candidate_development_binding_losses": 31,
+          "conventional_development_binding_losses": 31,
+          "known_development_integration_issue": "conventional report omits consumer metadata; fixing before confirmation so the common consumer mapper is not handicapped",
+          "failed_test_harness": "first manual inspectPack stub omitted manifest scope; native schema refusal preserved in session record; full manifest passes and 3 corrupted packs refused",
+          "research_model_tokens": null,
+          "research_model_usd": null,
+          "source_file": "session.jsonl",
+          "line": 6
+        },
+        {
+          "event": "exact_protocol_and_implementation_freeze",
+          "utc": "2026-10-26T13:32:58.075009+00:00",
+          "freeze_sha256": "25ee20b1cd68710a5eea65fc08e2eba2f47a521bfde2d9ebbf37731280bc6d64",
+          "confirmation_bodies_seen": false,
+          "money_usd": null,
+          "source_file": "session.jsonl",
+          "line": 7
+        },
+        {
+          "event": "publication_and_qa_closure",
+          "utc": "2026-10-26T14:06:39.888024+00:00",
+          "phase": "publication",
+          "observed": [
+            "Completed 108 frozen evaluations and aggregated descriptive outcomes without modifying frozen files.",
+            "Preserved three custom mission rejections and independent diagnosis; conventional scoped packets accepted12/12.",
+            "Built bilingual HTML and standalone16-page XeLaTeX paper; corrected first presentation script syntax error and cover font rendering.",
+            "Playwright Chromium download failed with invalid ZIP on five attempts; retained the failure, fetched official Chrome for Testing headless156.0.8078.47 (125799226bytes), SHA2560d5acc62c3e213f8c87d3c298d66ffcf9a236d12ea4b9f85318bf85dbc279daa.",
+            "Default sandbox browser IPC refused; explicitly approved local browser QA completed. No held operator path or account used.",
+            "Initial browser test inspected a collapsed comparison; corrected QA harness to open it. Final10checks passed with zero JavaScript errors.",
+            "Paper cover, desktop and mobile demonstration visually inspected; final artifact and archive identity checks continue as unpriced publication work."
+          ],
+          "research_model_tokens": null,
+          "research_model_usd": null,
+          "tool_cost_usd": null,
+          "human_attention_minutes": null,
+          "cost_scope": "Inclusive unpriced publication, packaging, upload and source-draft handoff are part of complete research cost, not marginal delivery. All later publication resource unknowns remain unknown in the same investment account.",
+          "billing_statement": "Elapsed session time is not billed inference, human wage, or a complete monetary cost.",
+          "source_file": "session.jsonl",
+          "line": 8
+        },
+        {
+          "event": "economic_evidence_cutoff",
+          "utc": "2026-10-26T14:06:39.888024+00:00",
+          "phase": "accounting",
+          "complete_research_cost_usd": null,
+          "actual_collections_usd": 0,
+          "decision": "HOLD",
+          "metering_policy": "This is a finite accounting snapshot. Later packaging, verification and publication observations are preserved separately and remain unpriced inclusive investment; do not infer zero cost from this cutoff.",
+          "source_file": "session.jsonl",
+          "line": 9
+        },
+        {
+          "event": "agent_start",
+          "utc": "2026-10-26T13:04:37.640115+00:00",
+          "agent": "source_audit",
+          "phase": "discovery",
+          "inference_tokens": null,
+          "inference_usd": null,
+          "operations": {
+            "tool_discovery": 1
+          },
+          "source_file": "source_audit.jsonl",
+          "line": 1
+        },
+        {
+          "event": "audit_complete",
+          "utc": "2026-10-26T13:06:54.696418+00:00",
+          "agent": "source_audit",
+          "phase": "discovery",
+          "github_read_calls": 40,
+          "inspected_source_files": 14,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "human_attention_minutes": null,
+          "remote_mutations": 0,
+          "financial_transactions": 0,
+          "failures": [
+            {
+              "operation": "write 14 sources in one exec argument",
+              "outcome": "rejected argument list too long before process execution",
+              "recovery": "verified existing file bytes against Git blob hashes and normalized only trailing newline to exact original identity"
+            }
+          ],
+          "source_file": "source_audit.jsonl",
+          "line": 2
+        },
+        {
+          "event": "publication_path_audit",
+          "utc": "2026-10-26T13:30:52Z",
+          "agent": "source_audit",
+          "phase": "integration_discovery",
+          "study_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+          "observed_main": "804e1afeb78ea48fb4807d76b336803aa0906a20",
+          "remote_mutations": 0,
+          "financial_transactions": 0,
+          "primary_confirmation_bodies_fetched": 0,
+          "tool_calls_count_exact_for_latest_refresh": 2,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "comment": "Read-only issue ownership, namespace and existing publication implementation audit. Connector mutation schemas inspected, not invoked; prior source audit and development metering remain separate.",
+          "source_file": "source_audit.jsonl",
+          "line": 3
+        },
+        {
+          "event": "confirmation_license_acquisition",
+          "utc": "2026-10-26T13:32:18.675734+00:00",
+          "github_reads": 23,
+          "license_notice_files": 20,
+          "unique_git_blobs": 4,
+          "bytes": 61795,
+          "primary_python_bodies_fetched": 0,
+          "remote_mutations": 0,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "unsuccessful_operations": [
+            {
+              "operation": "parse full metadata after bounded exec output",
+              "result": "output truncated; JSON parse failed",
+              "recovery": "selected metadata only output"
+            }
+          ],
+          "source_file": "source_audit.jsonl",
+          "line": 4
+        },
+        {
+          "schema": "value-compounds-source-fetch/v1",
+          "manifest_sha256": "eeddceae75c6b10c97369da9baff2fc69928e9e9fe3c0025499c2529e846160e",
+          "freeze_path": "research/value-compounds/discovery/final-freeze.json",
+          "freeze_sha256": "25ee20b1cd68710a5eea65fc08e2eba2f47a521bfde2d9ebbf37731280bc6d64",
+          "source_files": 528,
+          "distinct_blob_requests": 172,
+          "downloaded_body_bytes": 3055448,
+          "stored_snapshot_bytes": 7305960,
+          "wall_seconds": 4.690601825714111,
+          "process_cpu_seconds": 0.6692674479999999,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_executed": false,
+          "outcomes_computed": false,
+          "event": "confirmation_source_acquisition_complete",
+          "utc": "2026-10-26T13:34:02.994815+00:00",
+          "agent": "source_audit",
+          "phase": "confirmation_curation",
+          "failures": 0,
+          "remote_mutations": 0,
+          "source_file": "source_audit.jsonl",
+          "line": 5
+        },
+        {
+          "event": "confirmation_registry_integrated",
+          "schema": "value-compounds-confirmation-registry-integration/v1",
+          "utc": "2026-10-26T13:34:02.994815+00:00",
+          "original_registry_sha256": "1b7fbd7ac9c23eda679d824dbc96f648fe09182eb90945e157acc5b347bef9ce",
+          "preserved_original": "data/missions-before-confirmation.json",
+          "confirmation_registry_sha256": "1274a589d28989abccee376c186182078c6a11957ce8a4888cbad3fd0d07569a",
+          "merged_registry_sha256": "bfde710349b7db450031507eb0f14286a0c0dded9f0fd2289115385e125e7a44",
+          "original_missions": [
+            "httpx-development"
+          ],
+          "added_missions": [
+            "fastapi-1",
+            "fastapi-2",
+            "fastapi-3",
+            "fastapi-4",
+            "requests-1",
+            "requests-2",
+            "requests-3",
+            "requests-4",
+            "urllib3-1",
+            "urllib3-2",
+            "urllib3-3",
+            "urllib3-4"
+          ],
+          "merged_missions": 13,
+          "all_frozen_source_identities_preserved": true,
+          "source_custody_sha256": "73adee1cd52ec8477a240b4e7b855038d925d0bdee8ad9c6b403596a6c6f0ee2",
+          "wall_seconds": 0.002082295000036538,
+          "process_cpu_seconds": 0.0020802070000000006,
+          "source_executed": false,
+          "outcomes_computed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "source_audit.jsonl",
+          "line": 6
+        },
+        {
+          "event": "offline_support_packaging",
+          "utc": "2026-10-26T13:38:06.274269+00:00",
+          "phase": "packaging",
+          "agent": "source_audit",
+          "scope": "Existing local wheels, license extraction, isolated replay support",
+          "record_timing": "Recorded after initial inventory and support script construction; session-wide metering already active",
+          "new_network_requests": 0,
+          "frozen_source_edits": 0,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "source_audit.jsonl",
+          "line": 7
+        },
+        {
+          "event": "offline_replay_validation",
+          "utc": "2026-10-26T13:40:24.701750+00:00",
+          "agent": "source_audit",
+          "phase": "packaging",
+          "attempts": 2,
+          "first_attempt_failure": {
+            "schema": "value-compounds-offline-replay/v1",
+            "success": false,
+            "error": "ValueError: FROZEN_SOURCE_NOT_REGULAR: discovery/confirmation-metadata-v3.json",
+            "operations_completed": 0,
+            "wall_seconds": 0.05997747799983699,
+            "inference_usd": null,
+            "original_logs_preserved": true
+          },
+          "successful_attempt": {
+            "schema": "value-compounds-offline-replay/v1",
+            "success": true,
+            "utc": "2026-10-26T13:38:41.877158+00:00",
+            "source": {
+              "freeze_sha256": "25ee20b1cd68710a5eea65fc08e2eba2f47a521bfde2d9ebbf37731280bc6d64",
+              "frozen_files": 20,
+              "native_files": 19,
+              "native_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc"
+            },
+            "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+            "python": "3.12.14",
+            "node": "v24.22.1",
+            "node_matches_observed_runtime": true,
+            "wheel_distributions": 12,
+            "missing_required_dependencies": [],
+            "shared_tests": 75,
+            "candidate_crosschecks": 47,
+            "seeded_pairs_are_cases_within_one_test": 150,
+            "mission": "httpx-development",
+            "arm": "conventional",
+            "workbench": {
+              "decision": "ASSESSMENT_READY",
+              "summary": {
+                "changedModules": 16,
+                "bindingLosses": 31,
+                "strictConsumerFindings": 0,
+                "syntacticCandidateFindings": 1
+              },
+              "elapsed_ms": 13345,
+              "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT"
+            },
+            "native_authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+            "active_authority": [],
+            "wall_seconds": 18.633913480000047,
+            "observed_child_cpu_seconds": 18.589851999999997,
+            "inference_tokens": null,
+            "inference_usd": null,
+            "new_customer_jobs": 0,
+            "network_requested_by_support": false,
+            "network_limit": "pip uses no-index; selected static local workflows make no runtime network calls. No kernel-level network sandbox is claimed.",
+            "role": "Independent environment replay of frozen development and selected registered mission; original primary outputs unchanged"
+          },
+          "new_network_requests": 0,
+          "new_customer_jobs": 0,
+          "frozen_source_edits": 0,
+          "source_file": "source_audit.jsonl",
+          "line": 8
+        },
+        {
+          "event": "additive_source_handoff_prepared",
+          "utc": "2026-10-26T13:56:12.415374+00:00",
+          "agent": "source_audit",
+          "phase": "publication_preparation",
+          "github_read_calls": 9,
+          "remote_mutations": 0,
+          "frozen_files_changed": 0,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "helper": "support/build_public_draft_manifest.py",
+          "helper_executed": false,
+          "final_pdf_zip_identity_pending_lead_QA": true,
+          "source_file": "source_audit.jsonl",
+          "line": 9
+        },
+        {
+          "event": "final_read_only_status_refresh",
+          "utc": "2026-10-26 14:02:37 UTC",
+          "agent": "source_audit",
+          "phase": "final_packaging_snapshot",
+          "status_file": "discovery/final-status.json",
+          "status_sha256": "fd514e931a36fa7882dadb4e9a63da137c1bdcd9ff8fe38faf72aa0d7f84bacc",
+          "github_read_calls": 12,
+          "latest_stable_HTTP404_responses": 2,
+          "remote_mutations": 0,
+          "financial_transactions": 0,
+          "initial_audit_modified": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "metering_final_event_for_this_agent": true,
+          "source_file": "source_audit.jsonl",
+          "line": 10
+        },
+        {
+          "event": "start",
+          "at": "2026-10-26T13:04:45.416675+00:00",
+          "scope": "bounded independent opportunity review",
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 1
+        },
+        {
+          "event": "discovery_source_audit",
+          "at": "2026-10-26T13:05:42.818775+00:00",
+          "remote_read_requests": 13,
+          "source_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+          "confirmation_inspected": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "cpu_s": null,
+          "network_bytes": null,
+          "source_file": "workload_review.jsonl",
+          "line": 2
+        },
+        {
+          "event": "complete",
+          "at": "2026-10-26T13:06:32.598897+00:00",
+          "output": "discovery/opportunity-review.md",
+          "inference_tokens": null,
+          "inference_usd": null,
+          "remote_mutations": 0,
+          "implementation_constructed": false,
+          "source_file": "workload_review.jsonl",
+          "line": 3
+        },
+        {
+          "event": "followup_complete",
+          "at": "2026-10-26T13:09:10.626228+00:00",
+          "scope": "static call-shape novelty, finite acceptance, conventional Griffe alternative",
+          "web_calls": 3,
+          "local_read_calls": 7,
+          "confirmation_inspected": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "output": "discovery/call-compatibility-review.md",
+          "source_file": "workload_review.jsonl",
+          "line": 4
+        },
+        {
+          "event": "construction_started",
+          "at": "2026-10-26T13:10:41.202763+00:00",
+          "artifacts": [
+            "src/conventional.py",
+            "src/validate_dossier.py",
+            "tests/test_conventional.py"
+          ],
+          "inference_tokens": null,
+          "inference_usd": null,
+          "holdouts_accessed": false,
+          "source_file": "workload_review.jsonl",
+          "line": 5
+        },
+        {
+          "event": "construction_checkpoint",
+          "at": "2026-10-26T13:20:12.882632+00:00",
+          "files": [
+            "src/conventional.py",
+            "src/validate_dossier.py"
+          ],
+          "development_test_runs": [
+            {
+              "file": "discovery/conventional-development-tests.log",
+              "tests": 43,
+              "reported_runner_wall_seconds": 0.335,
+              "status": "passed"
+            },
+            {
+              "file": "discovery/conventional-development-tests-v2.log",
+              "tests": 46,
+              "status": "passed"
+            }
+          ],
+          "inference_tokens": null,
+          "inference_usd": null,
+          "holdouts_accessed": false,
+          "model_contribution": "research-assistant-authored comparator and evaluator; not autonomous invention",
+          "source_file": "workload_review.jsonl",
+          "line": 6
+        },
+        {
+          "event": "development_validation",
+          "at": "2026-10-26T13:21:22.221340+00:00",
+          "command": "python3 -m unittest discover -s research/value-compounds/tests -p test_conventional.py -v",
+          "exit_code": 0,
+          "wall_seconds": 0.4041608580000684,
+          "child_cpu_seconds": 0.403119,
+          "reported_cases": 48,
+          "seeded_signature_pairs": 150,
+          "holdouts_accessed": false,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 7
+        },
+        {
+          "event": "construction_frozen",
+          "at": "2026-10-26T13:21:40.616683+00:00",
+          "freeze": "discovery/conventional-freeze-v1.json",
+          "confirmation_exposure": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 8
+        },
+        {
+          "event": "preconfirmation_consumer_adapter_amendment_validation",
+          "at": "2026-10-26T13:31:42.402535+00:00",
+          "exit_code": 0,
+          "wall_seconds": 0.5187625319999825,
+          "child_cpu_seconds": 0.517089,
+          "tests": 50,
+          "holdouts_accessed": false,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 9
+        },
+        {
+          "event": "preconfirmation_amendment_frozen",
+          "at": "2026-10-26T13:32:10.107582+00:00",
+          "freeze": "discovery/conventional-freeze-v2.json",
+          "confirmation_exposure": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 10
+        },
+        {
+          "event": "independent_product_review_start",
+          "at": "2026-10-26T13:33:55.449262+00:00",
+          "scope": "exposed development packets only; first directory inventory and prior runtime summary read preceding entry",
+          "confirmation_exposure": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 11
+        },
+        {
+          "event": "independent_product_review_complete",
+          "at": "2026-10-26T13:35:41.227701+00:00",
+          "report": "publication/independent-product-review.md",
+          "observations": "publication/independent-product-review.json",
+          "reviewer_role": "same-session separate method author, not blinded external customer",
+          "confirmation_exposure": false,
+          "frozen_code_changed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "human_duration_measured": false,
+          "source_file": "workload_review.jsonl",
+          "line": 12
+        },
+        {
+          "event": "technical_appendix_construction_start",
+          "at": "2026-10-26T13:36:49.594494+00:00",
+          "scope": "frozen method and development records only; no confirmation outcomes",
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 13
+        },
+        {
+          "event": "technical_appendix_draft_complete",
+          "at": "2026-10-26T13:39:09.462593+00:00",
+          "path": "publication/methods-draft.tex",
+          "sha256": "535f58c3abec5a05aa992d113d2a6cca94b19a7b9e33b7d792f7903504389fd0",
+          "confirmation_exposure": false,
+          "frozen_code_changed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 14
+        },
+        {
+          "event": "technical_appendix_shell_continuation_correction",
+          "at": "2026-10-26T13:39:20.197179+00:00",
+          "path": "publication/methods-draft.tex",
+          "sha256": "b3cf75b486c5d6df46dc5751dafdac511d76f760bd7e48a547d88c8ec3651f3a",
+          "frozen_code_changed": false,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 15
+        },
+        {
+          "event": "authorized_confirmation_failure_review_start",
+          "at": "2026-10-26T13:39:20.197264+00:00",
+          "authorization": "parent requested urllib3-2 and urllib3-3 frozen candidate failure diagnosis after first repeat",
+          "frozen_code_changed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 16
+        },
+        {
+          "event": "authorized_confirmation_failure_review_complete",
+          "at": "2026-10-26T13:42:26.902290+00:00",
+          "report": "publication/confirmation-failure-analysis.md",
+          "diagnostic": "results/postconfirmation-diagnostics/constructor-scope-v1.json",
+          "classification": "One class-attribute scope-screen mismatch; no observed missed binding-loss witness",
+          "frozen_method_identity_checks": {
+            "src/dossier.py": true,
+            "src/conventional.py": true,
+            "src/validate_dossier.py": true,
+            "src/consumer.py": true
+          },
+          "primary_rejection_preserved": true,
+          "new_confirmation_claim": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 17
+        },
+        {
+          "event": "primary_first_repeat_independent_review_start",
+          "at": "2026-10-26T13:43:11.493206+00:00",
+          "authorization": "parent explicitly authorized all completed first-repeat packets; later repeats not inspected",
+          "frozen_code_changed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 18
+        },
+        {
+          "event": "primary_first_repeat_independent_review_complete",
+          "at": "2026-10-26T13:50:16.687291+00:00",
+          "report": "publication/primary-independent-review.md",
+          "audit": "results/postconfirmation-diagnostics/first-repeat-audit-v2.json",
+          "native_inspection": "results/postconfirmation-diagnostics/first-repeat-native-inspection-v1.json",
+          "failure_extension": "results/postconfirmation-diagnostics/constructor-scope-v2.json",
+          "integrity_discrepancies": 0,
+          "primary_rejection_preserved": true,
+          "frozen_code_changed": false,
+          "later_repeats_inspected": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 19
+        },
+        {
+          "event": "publication_overlay_review_start",
+          "at": "2026-10-26T13:54:09.535796+00:00",
+          "scope": "final EN/FR overlay text and structure, not browser interaction or layout QA",
+          "frozen_code_changed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 20
+        },
+        {
+          "event": "publication_overlay_review_complete",
+          "at": "2026-10-26T13:58:18.307148+00:00",
+          "report": "publication/overlay-review.md",
+          "reviewed_demo_sha256": "ddf8fd9436f2beb3dd4d8f7d7eae4f569eb9bd3bf295935388da63d3c2fdd449",
+          "translation_keys_per_language": 67,
+          "missing_translation_bindings": 0,
+          "historical_and_protocol_embedded_evidence_matches": true,
+          "primary_summary_mismatches": 0,
+          "remaining_clarifications": [
+            "summary download labeling",
+            "fixed historical snippet version label",
+            "French paid-commitment translation"
+          ],
+          "frozen_code_changed": false,
+          "inference_tokens": null,
+          "inference_usd": null,
+          "source_file": "workload_review.jsonl",
+          "line": 21
+        }
+      ],
+      "monetary_cost_inferred": false,
+      "note": "Operation timestamps, model/tool counts, resource samples and unknown charges are retained without converting elapsed assistant time into money."
+    }
+  },
+  "accounting_status": {
+    "actual_collections_minor": 0,
+    "currency": "USD",
+    "starting_funded_capital_minor": null,
+    "complete_investment_cost_minor": null,
+    "unpaid_obligations_minor": null,
+    "required_reserve_minor": null,
+    "unencumbered_cash_minor": null,
+    "earned_available_surplus_minor": null,
+    "financial_transactions_executed": 0,
+    "new_paid_commitments_minor": 0,
+    "observed_investment_outlay_minor": null,
+    "monetary_repayment_proven": false,
+    "economic_admission": "HOLD",
+    "reason": "No paid receipts; complete inference, construction, maintenance and residual attention costs are unidentified."
+  },
+  "empirical_resources": {
+    "complete_confirmation_campaign": {
+      "schema": "campaign-process-resources/v1",
+      "started": "2026-10-26T13:34:18.740675+00:00",
+      "command": [
+        "node",
+        "/workspace/scratch/8586be0c300d/research/value-compounds/src/campaign.mjs",
+        "/workspace/scratch/8586be0c300d/research/value-compounds/results/confirmation"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 886.0528782680003,
+      "child_user_cpu_seconds": 884.047149,
+      "child_system_cpu_seconds": 3.572261,
+      "child_maxrss_kib": 383304,
+      "money_usd": null,
+      "scope": "Complete child campaign including Python workers, verification, serialization and native Workbench; excludes prior acquisition/construction and later publication. Shared-host contention possible; not a capacity guarantee."
+    },
+    "timing_evaluations": 108,
+    "unique_transitions": 12,
+    "runtime_model_calls": 0,
+    "runtime_network_requests": 0,
+    "construction_inference_tokens": null,
+    "construction_inference_usd": null
+  },
+  "observed_limitations": [
+    "Historical research work, no paid demand.",
+    "Same captured consumer scope across revisions; unresolved dynamic and behavioral work persists.",
+    "Canonical acceptance means internally verified scoped packet, not customer acceptance or production qualification.",
+    "Construction includes the rejected custom candidate and all integration and validation attempts; costs unknown.",
+    "One scope-screen handling disagreement recurs across callable rows; no actual lost binding demonstrated in those disputed rows."
+  ],
+  "monetary_unit": "Canonical cost projections use currency micros; canonical shadow ledger/investment grid use cents. They are never added without conversion.",
+  "cost_template_status": "The three canonical scenario names are schema-required unknown templates, not optimistic/conservative/stress forecasts.",
+  "canonical_cost_input": {
+    "schema": "alpha-automated-costs/v1",
+    "offeringId": "call-compatibility",
+    "currency": "USD",
+    "scenarios": [
+      {
+        "name": "base",
+        "capacityRequestsPerMonth": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Real monthly capacity has not been measured."
+        },
+        "utilizationBps": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Paid utilization and demand have not been observed."
+        },
+        "acceptanceBps": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Future operating acceptance cannot be inferred from finite research cases."
+        },
+        "attemptsPerRequestPpm": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Complete production attempts, recovery and fallback rates are unmeasured."
+        },
+        "operations": [
+          {
+            "id": "preparation-inclusive",
+            "stage": "preparation",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable preparation cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "planning-inclusive",
+            "stage": "planning",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable planning cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "execution-inclusive",
+            "stage": "execution",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable execution cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "verification-inclusive",
+            "stage": "verification",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable verification cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "correction-inclusive",
+            "stage": "correction",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable correction cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "packaging-inclusive",
+            "stage": "packaging",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable packaging cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "reporting-inclusive",
+            "stage": "reporting",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable reporting cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "recovery-inclusive",
+            "stage": "recovery",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable recovery cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          }
+        ],
+        "residual": [
+          {
+            "id": "residual-exceptions",
+            "stage": "recovery",
+            "exceptionsPerRequestPpm": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Residual human exception frequency is unmeasured."
+            },
+            "minutesPerException": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No human exception duration has been measured."
+            },
+            "hourlyCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No operator wage or contractor rate is assigned to the research assistant."
+            }
+          }
+        ],
+        "monthly": [
+          {
+            "id": "shared-capacity",
+            "kind": "capacity",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Attributable hosting, storage, tools and idle-capacity charges are unknown."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only; do not charge the whole unrelated enterprise."
+            }
+          },
+          {
+            "id": "shared-maintenance",
+            "kind": "maintenance",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Required recurring maintenance has not been priced."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only."
+            }
+          },
+          {
+            "id": "business-costs",
+            "kind": "business",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Attributable delivery-business costs and obligations have not been priced."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only."
+            }
+          }
+        ],
+        "investments": [
+          {
+            "id": "discovery-and-unsuccessful",
+            "kind": "development",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Include bounded discovery and rejected/unsuccessful candidates; complete inference bill unavailable."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Only costs attributable to this selected capability."
+            },
+            "amortizationMonths": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No supported demand horizon for amortization."
+            }
+          },
+          {
+            "id": "construction-and-validation",
+            "kind": "development",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete construction, validation, integration and packaging costs are unknown."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Only costs attributable to this selected capability; no duplication of discovery."
+            },
+            "amortizationMonths": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No supported demand horizon for amortization."
+            }
+          }
+        ],
+        "humanBaseline": {
+          "minutesPerAccepted": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No matched competent-human duration has been measured."
+          },
+          "hourlyCostMicros": {
+            "value": 50140000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/ocwage.t01.htm; reference period 2025-05; wage only, not customer price."
+          }
+        }
+      },
+      {
+        "name": "conservative",
+        "capacityRequestsPerMonth": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Real monthly capacity has not been measured."
+        },
+        "utilizationBps": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Paid utilization and demand have not been observed."
+        },
+        "acceptanceBps": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Future operating acceptance cannot be inferred from finite research cases."
+        },
+        "attemptsPerRequestPpm": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Complete production attempts, recovery and fallback rates are unmeasured."
+        },
+        "operations": [
+          {
+            "id": "preparation-inclusive",
+            "stage": "preparation",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable preparation cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "planning-inclusive",
+            "stage": "planning",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable planning cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "execution-inclusive",
+            "stage": "execution",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable execution cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "verification-inclusive",
+            "stage": "verification",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable verification cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "correction-inclusive",
+            "stage": "correction",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable correction cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "packaging-inclusive",
+            "stage": "packaging",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable packaging cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "reporting-inclusive",
+            "stage": "reporting",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable reporting cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "recovery-inclusive",
+            "stage": "recovery",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable recovery cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          }
+        ],
+        "residual": [
+          {
+            "id": "residual-exceptions",
+            "stage": "recovery",
+            "exceptionsPerRequestPpm": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Residual human exception frequency is unmeasured."
+            },
+            "minutesPerException": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No human exception duration has been measured."
+            },
+            "hourlyCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No operator wage or contractor rate is assigned to the research assistant."
+            }
+          }
+        ],
+        "monthly": [
+          {
+            "id": "shared-capacity",
+            "kind": "capacity",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Attributable hosting, storage, tools and idle-capacity charges are unknown."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only; do not charge the whole unrelated enterprise."
+            }
+          },
+          {
+            "id": "shared-maintenance",
+            "kind": "maintenance",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Required recurring maintenance has not been priced."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only."
+            }
+          },
+          {
+            "id": "business-costs",
+            "kind": "business",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Attributable delivery-business costs and obligations have not been priced."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only."
+            }
+          }
+        ],
+        "investments": [
+          {
+            "id": "discovery-and-unsuccessful",
+            "kind": "development",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Include bounded discovery and rejected/unsuccessful candidates; complete inference bill unavailable."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Only costs attributable to this selected capability."
+            },
+            "amortizationMonths": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No supported demand horizon for amortization."
+            }
+          },
+          {
+            "id": "construction-and-validation",
+            "kind": "development",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete construction, validation, integration and packaging costs are unknown."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Only costs attributable to this selected capability; no duplication of discovery."
+            },
+            "amortizationMonths": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No supported demand horizon for amortization."
+            }
+          }
+        ],
+        "humanBaseline": {
+          "minutesPerAccepted": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No matched competent-human duration has been measured."
+          },
+          "hourlyCostMicros": {
+            "value": 50140000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/ocwage.t01.htm; reference period 2025-05; wage only, not customer price."
+          }
+        }
+      },
+      {
+        "name": "stress",
+        "capacityRequestsPerMonth": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Real monthly capacity has not been measured."
+        },
+        "utilizationBps": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Paid utilization and demand have not been observed."
+        },
+        "acceptanceBps": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Future operating acceptance cannot be inferred from finite research cases."
+        },
+        "attemptsPerRequestPpm": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Complete production attempts, recovery and fallback rates are unmeasured."
+        },
+        "operations": [
+          {
+            "id": "preparation-inclusive",
+            "stage": "preparation",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable preparation cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "planning-inclusive",
+            "stage": "planning",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable planning cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "execution-inclusive",
+            "stage": "execution",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable execution cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "verification-inclusive",
+            "stage": "verification",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable verification cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "correction-inclusive",
+            "stage": "correction",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable correction cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "packaging-inclusive",
+            "stage": "packaging",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable packaging cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "reporting-inclusive",
+            "stage": "reporting",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable reporting cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          },
+          {
+            "id": "recovery-inclusive",
+            "stage": "recovery",
+            "frequency": "request",
+            "unitsPerOccurrencePpm": {
+              "value": 1000000,
+              "basis": "estimated",
+              "reference": "One inclusive accounting row for this stage per request; not a measured activity count."
+            },
+            "unitCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete attributable recovery cost, including inference, tools and compute, is unpriced."
+            },
+            "implementation": "modeled"
+          }
+        ],
+        "residual": [
+          {
+            "id": "residual-exceptions",
+            "stage": "recovery",
+            "exceptionsPerRequestPpm": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Residual human exception frequency is unmeasured."
+            },
+            "minutesPerException": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No human exception duration has been measured."
+            },
+            "hourlyCostMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No operator wage or contractor rate is assigned to the research assistant."
+            }
+          }
+        ],
+        "monthly": [
+          {
+            "id": "shared-capacity",
+            "kind": "capacity",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Attributable hosting, storage, tools and idle-capacity charges are unknown."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only; do not charge the whole unrelated enterprise."
+            }
+          },
+          {
+            "id": "shared-maintenance",
+            "kind": "maintenance",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Required recurring maintenance has not been priced."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only."
+            }
+          },
+          {
+            "id": "business-costs",
+            "kind": "business",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Attributable delivery-business costs and obligations have not been priced."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Row means attributable share only."
+            }
+          }
+        ],
+        "investments": [
+          {
+            "id": "discovery-and-unsuccessful",
+            "kind": "development",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Include bounded discovery and rejected/unsuccessful candidates; complete inference bill unavailable."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Only costs attributable to this selected capability."
+            },
+            "amortizationMonths": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No supported demand horizon for amortization."
+            }
+          },
+          {
+            "id": "construction-and-validation",
+            "kind": "development",
+            "amountMicros": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "Complete construction, validation, integration and packaging costs are unknown."
+            },
+            "allocationBps": {
+              "value": 10000,
+              "basis": "estimated",
+              "reference": "Only costs attributable to this selected capability; no duplication of discovery."
+            },
+            "amortizationMonths": {
+              "value": null,
+              "basis": "unknown",
+              "reference": "No supported demand horizon for amortization."
+            }
+          }
+        ],
+        "humanBaseline": {
+          "minutesPerAccepted": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "No matched competent-human duration has been measured."
+          },
+          "hourlyCostMicros": {
+            "value": 50140000,
+            "basis": "sourced",
+            "reference": "https://www.bls.gov/news.release/ocwage.t01.htm; reference period 2025-05; wage only, not customer price."
+          }
+        }
+      }
+    ]
+  },
+  "canonical_cost_projection": {
+    "schema": "alpha-automated-cost-summary/v1",
+    "offeringId": "call-compatibility",
+    "currency": "USD",
+    "monetaryUnit": "one million micros per currency unit; final monetary outputs rounded upward once",
+    "scenarios": [
+      {
+        "name": "base",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": null,
+          "attemptsPerMonth": null,
+          "acceptedPerMonth": null,
+          "utilizationBps": null,
+          "acceptanceBps": null
+        },
+        "costs": {
+          "nextRequestMicros": null,
+          "marginalMicrosPerAccepted": null,
+          "recurringMicrosPerAccepted": null,
+          "fullyLoadedMicrosPerAccepted": null,
+          "variableMonthlyMicros": null,
+          "sharedMonthlyMicros": null,
+          "amortizedMonthlyMicros": null
+        },
+        "residualHumanMinutesPerRequest": null,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "capacityRequestsPerMonth",
+          "utilizationBps",
+          "acceptanceBps",
+          "attemptsPerRequestPpm",
+          "operations.0.unitCostMicros",
+          "operations.1.unitCostMicros",
+          "operations.2.unitCostMicros",
+          "operations.3.unitCostMicros",
+          "operations.4.unitCostMicros",
+          "operations.5.unitCostMicros",
+          "operations.6.unitCostMicros",
+          "operations.7.unitCostMicros",
+          "residual.0.exceptionsPerRequestPpm",
+          "residual.0.minutesPerException",
+          "residual.0.hourlyCostMicros",
+          "monthly.0.amountMicros",
+          "monthly.1.amountMicros",
+          "monthly.2.amountMicros",
+          "investments.0.amountMicros",
+          "investments.0.amortizationMonths",
+          "investments.1.amountMicros",
+          "investments.1.amortizationMonths",
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "preparation-inclusive",
+              "stage": "preparation",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "planning-inclusive",
+              "stage": "planning",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "execution-inclusive",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "verification-inclusive",
+              "stage": "verification",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "correction-inclusive",
+              "stage": "correction",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "packaging-inclusive",
+              "stage": "packaging",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "reporting-inclusive",
+              "stage": "reporting",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "recovery-inclusive",
+              "stage": "recovery",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "residual-exceptions",
+              "stage": "recovery",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "investments": [
+            {
+              "id": "discovery-and-unsuccessful",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            },
+            {
+              "id": "construction-and-validation",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "conservative",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": null,
+          "attemptsPerMonth": null,
+          "acceptedPerMonth": null,
+          "utilizationBps": null,
+          "acceptanceBps": null
+        },
+        "costs": {
+          "nextRequestMicros": null,
+          "marginalMicrosPerAccepted": null,
+          "recurringMicrosPerAccepted": null,
+          "fullyLoadedMicrosPerAccepted": null,
+          "variableMonthlyMicros": null,
+          "sharedMonthlyMicros": null,
+          "amortizedMonthlyMicros": null
+        },
+        "residualHumanMinutesPerRequest": null,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "capacityRequestsPerMonth",
+          "utilizationBps",
+          "acceptanceBps",
+          "attemptsPerRequestPpm",
+          "operations.0.unitCostMicros",
+          "operations.1.unitCostMicros",
+          "operations.2.unitCostMicros",
+          "operations.3.unitCostMicros",
+          "operations.4.unitCostMicros",
+          "operations.5.unitCostMicros",
+          "operations.6.unitCostMicros",
+          "operations.7.unitCostMicros",
+          "residual.0.exceptionsPerRequestPpm",
+          "residual.0.minutesPerException",
+          "residual.0.hourlyCostMicros",
+          "monthly.0.amountMicros",
+          "monthly.1.amountMicros",
+          "monthly.2.amountMicros",
+          "investments.0.amountMicros",
+          "investments.0.amortizationMonths",
+          "investments.1.amountMicros",
+          "investments.1.amortizationMonths",
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "preparation-inclusive",
+              "stage": "preparation",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "planning-inclusive",
+              "stage": "planning",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "execution-inclusive",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "verification-inclusive",
+              "stage": "verification",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "correction-inclusive",
+              "stage": "correction",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "packaging-inclusive",
+              "stage": "packaging",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "reporting-inclusive",
+              "stage": "reporting",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "recovery-inclusive",
+              "stage": "recovery",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "residual-exceptions",
+              "stage": "recovery",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "investments": [
+            {
+              "id": "discovery-and-unsuccessful",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            },
+            {
+              "id": "construction-and-validation",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "stress",
+        "currency": "USD",
+        "volume": {
+          "requestsPerMonth": null,
+          "attemptsPerMonth": null,
+          "acceptedPerMonth": null,
+          "utilizationBps": null,
+          "acceptanceBps": null
+        },
+        "costs": {
+          "nextRequestMicros": null,
+          "marginalMicrosPerAccepted": null,
+          "recurringMicrosPerAccepted": null,
+          "fullyLoadedMicrosPerAccepted": null,
+          "variableMonthlyMicros": null,
+          "sharedMonthlyMicros": null,
+          "amortizedMonthlyMicros": null
+        },
+        "residualHumanMinutesPerRequest": null,
+        "humanBaselineMicrosPerAccepted": null,
+        "comparison": {
+          "marginal": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "recurring": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          },
+          "fullyLoaded": {
+            "outcome": "unknown",
+            "breakEvenHumanMinutes": null,
+            "breakEvenHumanSeconds": null
+          }
+        },
+        "unknownInputs": [
+          "capacityRequestsPerMonth",
+          "utilizationBps",
+          "acceptanceBps",
+          "attemptsPerRequestPpm",
+          "operations.0.unitCostMicros",
+          "operations.1.unitCostMicros",
+          "operations.2.unitCostMicros",
+          "operations.3.unitCostMicros",
+          "operations.4.unitCostMicros",
+          "operations.5.unitCostMicros",
+          "operations.6.unitCostMicros",
+          "operations.7.unitCostMicros",
+          "residual.0.exceptionsPerRequestPpm",
+          "residual.0.minutesPerException",
+          "residual.0.hourlyCostMicros",
+          "monthly.0.amountMicros",
+          "monthly.1.amountMicros",
+          "monthly.2.amountMicros",
+          "investments.0.amountMicros",
+          "investments.0.amortizationMonths",
+          "investments.1.amountMicros",
+          "investments.1.amortizationMonths",
+          "humanBaseline.minutesPerAccepted"
+        ],
+        "components": {
+          "operations": [
+            {
+              "id": "preparation-inclusive",
+              "stage": "preparation",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "planning-inclusive",
+              "stage": "planning",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "execution-inclusive",
+              "stage": "execution",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "verification-inclusive",
+              "stage": "verification",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "correction-inclusive",
+              "stage": "correction",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "packaging-inclusive",
+              "stage": "packaging",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "reporting-inclusive",
+              "stage": "reporting",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            },
+            {
+              "id": "recovery-inclusive",
+              "stage": "recovery",
+              "implementation": "modeled",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "humanExceptions": [
+            {
+              "id": "residual-exceptions",
+              "stage": "recovery",
+              "costMicrosPerRequest": null
+            }
+          ],
+          "investments": [
+            {
+              "id": "discovery-and-unsuccessful",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            },
+            {
+              "id": "construction-and-validation",
+              "kind": "development",
+              "amortizedMonthlyMicros": null
+            }
+          ]
+        }
+      }
+    ],
+    "scope": "Conditional automated-configuration planning over explicitly labeled inputs. Expected failed attempts and residual exceptions are charged. Missing live execution is not qualified by this calculation; no payment, guaranteed acceptance or measured saving is established.",
+    "decisionBoundary": "Required objective, input-rights, scope and execution approvals remain user decisions. A zero routine handling scenario never grants authority."
+  },
+  "canonical_ledger": {
+    "schema": "alpha-shadow-ledger/v1",
+    "currency": "USD",
+    "events": [
+      {
+        "id": "study-investment:mission",
+        "type": "mission",
+        "missionId": "study-investment",
+        "acceptance": "unknown",
+        "reference": "Research investment account for the tested asset; accounting container, not a delivered customer mission."
+      },
+      {
+        "id": "fastapi-1:mission",
+        "type": "mission",
+        "missionId": "fastapi-1",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0003-fastapi-1-conventional.json; SHA256 898723b41ecec47a305ea104c7be21ca695491a27c8d72efa126582e7f38e848; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "fastapi-2:mission",
+        "type": "mission",
+        "missionId": "fastapi-2",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0005-fastapi-2-conventional.json; SHA256 ef5e84364234d406af245729fa329493c229eb76accb720cdd6349a695706d32; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "fastapi-3:mission",
+        "type": "mission",
+        "missionId": "fastapi-3",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0007-fastapi-3-conventional.json; SHA256 aafd8b5cf2b46fe5a1bbb19248f421613738f60a8a733763b0cb0c110547970a; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "fastapi-4:mission",
+        "type": "mission",
+        "missionId": "fastapi-4",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0012-fastapi-4-conventional.json; SHA256 322fb03b7a0212f105eff5188d296c468cdbd2645fdd29318837d3d81c9e9336; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "requests-1:mission",
+        "type": "mission",
+        "missionId": "requests-1",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0014-requests-1-conventional.json; SHA256 f09ec5315f3e50f7814c5b2325a86318b9e15dddf8cc4c2eba871b5d16fe7a84; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "requests-2:mission",
+        "type": "mission",
+        "missionId": "requests-2",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0016-requests-2-conventional.json; SHA256 3e564b1e18a5c63d786123445e5125b006acf005635f8ea7b12dfda7bc3e03d8; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "requests-3:mission",
+        "type": "mission",
+        "missionId": "requests-3",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0021-requests-3-conventional.json; SHA256 e7a1b11b4046fcd441158fdbf5723a1a686409c50147fc5bd34f3b427863142d; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "requests-4:mission",
+        "type": "mission",
+        "missionId": "requests-4",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0023-requests-4-conventional.json; SHA256 e9f2a1bc08f76f062d2f3e134a4041c8aa0c9509e281ffe2d41ef843fecad083; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "urllib3-1:mission",
+        "type": "mission",
+        "missionId": "urllib3-1",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0025-urllib3-1-conventional.json; SHA256 4e5575bb85a839499e0649dc42f5dcd45a7a94c2abce574e5c4c4534f9e19adf; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "urllib3-2:mission",
+        "type": "mission",
+        "missionId": "urllib3-2",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0030-urllib3-2-conventional.json; SHA256 8521b4eba9a8126f44668d0656da25f4ca21504c1caea7462d8cb510e83cc9c7; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "urllib3-3:mission",
+        "type": "mission",
+        "missionId": "urllib3-3",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0032-urllib3-3-conventional.json; SHA256 91dc3196043fa0fe73af9f7a09d458c9b4522d008c8acbc0a693dfc723993044; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "urllib3-4:mission",
+        "type": "mission",
+        "missionId": "urllib3-4",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0034-urllib3-4-conventional.json; SHA256 be56b50920196dae64e8ea87a6530d8c4c720ca4a4864babe3bd47dcf304897f; accepted scoped research packet only, not a completed production upgrade"
+      },
+      {
+        "id": "study-investment:revenue:collected",
+        "type": "revenue",
+        "missionId": "study-investment",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "study-investment:cost:delivery",
+        "type": "cost",
+        "missionId": "study-investment",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Research preparation, testing and delivery costs unpriced; excludes separately attributed capability investment."
+      },
+      {
+        "id": "study-investment:cost:business",
+        "type": "cost",
+        "missionId": "study-investment",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "study-investment:cost:maintenance",
+        "type": "cost",
+        "missionId": "study-investment",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "study-investment:cost:capability",
+        "type": "cost",
+        "missionId": "study-investment",
+        "category": "capability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "All attributable discovery, rejected candidates, construction, validation and integration charged once here; monetary sum unavailable."
+      },
+      {
+        "id": "study-investment:reserve:reliability",
+        "type": "reserve",
+        "missionId": "study-investment",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "study-investment:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "study-investment",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "fastapi-1:revenue:collected",
+        "type": "revenue",
+        "missionId": "fastapi-1",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "fastapi-1:cost:delivery",
+        "type": "cost",
+        "missionId": "fastapi-1",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "fastapi-1:cost:business",
+        "type": "cost",
+        "missionId": "fastapi-1",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "fastapi-1:cost:maintenance",
+        "type": "cost",
+        "missionId": "fastapi-1",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "fastapi-1:cost:capability",
+        "type": "cost",
+        "missionId": "fastapi-1",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "fastapi-1:reserve:reliability",
+        "type": "reserve",
+        "missionId": "fastapi-1",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "fastapi-1:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "fastapi-1",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "fastapi-2:revenue:collected",
+        "type": "revenue",
+        "missionId": "fastapi-2",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "fastapi-2:cost:delivery",
+        "type": "cost",
+        "missionId": "fastapi-2",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "fastapi-2:cost:business",
+        "type": "cost",
+        "missionId": "fastapi-2",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "fastapi-2:cost:maintenance",
+        "type": "cost",
+        "missionId": "fastapi-2",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "fastapi-2:cost:capability",
+        "type": "cost",
+        "missionId": "fastapi-2",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "fastapi-2:reserve:reliability",
+        "type": "reserve",
+        "missionId": "fastapi-2",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "fastapi-2:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "fastapi-2",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "fastapi-3:revenue:collected",
+        "type": "revenue",
+        "missionId": "fastapi-3",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "fastapi-3:cost:delivery",
+        "type": "cost",
+        "missionId": "fastapi-3",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "fastapi-3:cost:business",
+        "type": "cost",
+        "missionId": "fastapi-3",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "fastapi-3:cost:maintenance",
+        "type": "cost",
+        "missionId": "fastapi-3",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "fastapi-3:cost:capability",
+        "type": "cost",
+        "missionId": "fastapi-3",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "fastapi-3:reserve:reliability",
+        "type": "reserve",
+        "missionId": "fastapi-3",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "fastapi-3:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "fastapi-3",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "fastapi-4:revenue:collected",
+        "type": "revenue",
+        "missionId": "fastapi-4",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "fastapi-4:cost:delivery",
+        "type": "cost",
+        "missionId": "fastapi-4",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "fastapi-4:cost:business",
+        "type": "cost",
+        "missionId": "fastapi-4",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "fastapi-4:cost:maintenance",
+        "type": "cost",
+        "missionId": "fastapi-4",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "fastapi-4:cost:capability",
+        "type": "cost",
+        "missionId": "fastapi-4",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "fastapi-4:reserve:reliability",
+        "type": "reserve",
+        "missionId": "fastapi-4",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "fastapi-4:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "fastapi-4",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "requests-1:revenue:collected",
+        "type": "revenue",
+        "missionId": "requests-1",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "requests-1:cost:delivery",
+        "type": "cost",
+        "missionId": "requests-1",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "requests-1:cost:business",
+        "type": "cost",
+        "missionId": "requests-1",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "requests-1:cost:maintenance",
+        "type": "cost",
+        "missionId": "requests-1",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "requests-1:cost:capability",
+        "type": "cost",
+        "missionId": "requests-1",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "requests-1:reserve:reliability",
+        "type": "reserve",
+        "missionId": "requests-1",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "requests-1:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "requests-1",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "requests-2:revenue:collected",
+        "type": "revenue",
+        "missionId": "requests-2",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "requests-2:cost:delivery",
+        "type": "cost",
+        "missionId": "requests-2",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "requests-2:cost:business",
+        "type": "cost",
+        "missionId": "requests-2",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "requests-2:cost:maintenance",
+        "type": "cost",
+        "missionId": "requests-2",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "requests-2:cost:capability",
+        "type": "cost",
+        "missionId": "requests-2",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "requests-2:reserve:reliability",
+        "type": "reserve",
+        "missionId": "requests-2",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "requests-2:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "requests-2",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "requests-3:revenue:collected",
+        "type": "revenue",
+        "missionId": "requests-3",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "requests-3:cost:delivery",
+        "type": "cost",
+        "missionId": "requests-3",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "requests-3:cost:business",
+        "type": "cost",
+        "missionId": "requests-3",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "requests-3:cost:maintenance",
+        "type": "cost",
+        "missionId": "requests-3",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "requests-3:cost:capability",
+        "type": "cost",
+        "missionId": "requests-3",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "requests-3:reserve:reliability",
+        "type": "reserve",
+        "missionId": "requests-3",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "requests-3:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "requests-3",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "requests-4:revenue:collected",
+        "type": "revenue",
+        "missionId": "requests-4",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "requests-4:cost:delivery",
+        "type": "cost",
+        "missionId": "requests-4",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "requests-4:cost:business",
+        "type": "cost",
+        "missionId": "requests-4",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "requests-4:cost:maintenance",
+        "type": "cost",
+        "missionId": "requests-4",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "requests-4:cost:capability",
+        "type": "cost",
+        "missionId": "requests-4",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "requests-4:reserve:reliability",
+        "type": "reserve",
+        "missionId": "requests-4",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "requests-4:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "requests-4",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "urllib3-1:revenue:collected",
+        "type": "revenue",
+        "missionId": "urllib3-1",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "urllib3-1:cost:delivery",
+        "type": "cost",
+        "missionId": "urllib3-1",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "urllib3-1:cost:business",
+        "type": "cost",
+        "missionId": "urllib3-1",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "urllib3-1:cost:maintenance",
+        "type": "cost",
+        "missionId": "urllib3-1",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "urllib3-1:cost:capability",
+        "type": "cost",
+        "missionId": "urllib3-1",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "urllib3-1:reserve:reliability",
+        "type": "reserve",
+        "missionId": "urllib3-1",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "urllib3-1:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "urllib3-1",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "urllib3-2:revenue:collected",
+        "type": "revenue",
+        "missionId": "urllib3-2",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "urllib3-2:cost:delivery",
+        "type": "cost",
+        "missionId": "urllib3-2",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "urllib3-2:cost:business",
+        "type": "cost",
+        "missionId": "urllib3-2",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "urllib3-2:cost:maintenance",
+        "type": "cost",
+        "missionId": "urllib3-2",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "urllib3-2:cost:capability",
+        "type": "cost",
+        "missionId": "urllib3-2",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "urllib3-2:reserve:reliability",
+        "type": "reserve",
+        "missionId": "urllib3-2",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "urllib3-2:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "urllib3-2",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "urllib3-3:revenue:collected",
+        "type": "revenue",
+        "missionId": "urllib3-3",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "urllib3-3:cost:delivery",
+        "type": "cost",
+        "missionId": "urllib3-3",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "urllib3-3:cost:business",
+        "type": "cost",
+        "missionId": "urllib3-3",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "urllib3-3:cost:maintenance",
+        "type": "cost",
+        "missionId": "urllib3-3",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "urllib3-3:cost:capability",
+        "type": "cost",
+        "missionId": "urllib3-3",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "urllib3-3:reserve:reliability",
+        "type": "reserve",
+        "missionId": "urllib3-3",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "urllib3-3:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "urllib3-3",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "urllib3-4:revenue:collected",
+        "type": "revenue",
+        "missionId": "urllib3-4",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "This internal, nontransactional study collected no customer payment."
+      },
+      {
+        "id": "urllib3-4:cost:delivery",
+        "type": "cost",
+        "missionId": "urllib3-4",
+        "category": "delivery",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete execution, verification, retries, recovery and delivery charges unknown."
+      },
+      {
+        "id": "urllib3-4:cost:business",
+        "type": "cost",
+        "missionId": "urllib3-4",
+        "category": "business",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable business costs have not been measured."
+      },
+      {
+        "id": "urllib3-4:cost:maintenance",
+        "type": "cost",
+        "missionId": "urllib3-4",
+        "category": "maintenance",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Attributable maintenance and retained storage costs unknown."
+      },
+      {
+        "id": "urllib3-4:cost:capability",
+        "type": "cost",
+        "missionId": "urllib3-4",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "observed",
+        "reference": "Capability investment allocated to the single study-investment account, never repeated per mission."
+      },
+      {
+        "id": "urllib3-4:reserve:reliability",
+        "type": "reserve",
+        "missionId": "urllib3-4",
+        "category": "reliability",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Required reliability and refund reserve not estimated; no arbitrary percentage."
+      },
+      {
+        "id": "urllib3-4:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "urllib3-4",
+        "category": "unpaid",
+        "amountMinor": null,
+        "basis": "unknown",
+        "reference": "Complete unpaid service and research obligations unknown."
+      },
+      {
+        "id": "study-investment:capability:economic-rejection",
+        "type": "capability",
+        "missionId": "study-investment",
+        "capabilityId": "call-compatibility",
+        "action": "rejected",
+        "reference": "Economic admission rejected pending identified complete cost, real demand and supported repayment; separate engineering evaluation may still admit a useful tool."
+      }
+    ]
+  },
+  "canonical_ledger_summary": {
+    "schema": "alpha-shadow-ledger-summary/v1",
+    "currency": "USD",
+    "reinvestmentBps": 0,
+    "eventCount": 105,
+    "missions": [
+      {
+        "missionId": "fastapi-1",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0003-fastapi-1-conventional.json; SHA256 898723b41ecec47a305ea104c7be21ca695491a27c8d72efa126582e7f38e848; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "fastapi-1:cost:business",
+          "fastapi-1:cost:delivery",
+          "fastapi-1:cost:maintenance",
+          "fastapi-1:obligation:unpaid",
+          "fastapi-1:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "fastapi-2",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0005-fastapi-2-conventional.json; SHA256 ef5e84364234d406af245729fa329493c229eb76accb720cdd6349a695706d32; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "fastapi-2:cost:business",
+          "fastapi-2:cost:delivery",
+          "fastapi-2:cost:maintenance",
+          "fastapi-2:obligation:unpaid",
+          "fastapi-2:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "fastapi-3",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0007-fastapi-3-conventional.json; SHA256 aafd8b5cf2b46fe5a1bbb19248f421613738f60a8a733763b0cb0c110547970a; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "fastapi-3:cost:business",
+          "fastapi-3:cost:delivery",
+          "fastapi-3:cost:maintenance",
+          "fastapi-3:obligation:unpaid",
+          "fastapi-3:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "fastapi-4",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0012-fastapi-4-conventional.json; SHA256 322fb03b7a0212f105eff5188d296c468cdbd2645fdd29318837d3d81c9e9336; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "fastapi-4:cost:business",
+          "fastapi-4:cost:delivery",
+          "fastapi-4:cost:maintenance",
+          "fastapi-4:obligation:unpaid",
+          "fastapi-4:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "requests-1",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0014-requests-1-conventional.json; SHA256 f09ec5315f3e50f7814c5b2325a86318b9e15dddf8cc4c2eba871b5d16fe7a84; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "requests-1:cost:business",
+          "requests-1:cost:delivery",
+          "requests-1:cost:maintenance",
+          "requests-1:obligation:unpaid",
+          "requests-1:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "requests-2",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0016-requests-2-conventional.json; SHA256 3e564b1e18a5c63d786123445e5125b006acf005635f8ea7b12dfda7bc3e03d8; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "requests-2:cost:business",
+          "requests-2:cost:delivery",
+          "requests-2:cost:maintenance",
+          "requests-2:obligation:unpaid",
+          "requests-2:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "requests-3",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0021-requests-3-conventional.json; SHA256 e7a1b11b4046fcd441158fdbf5723a1a686409c50147fc5bd34f3b427863142d; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "requests-3:cost:business",
+          "requests-3:cost:delivery",
+          "requests-3:cost:maintenance",
+          "requests-3:obligation:unpaid",
+          "requests-3:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "requests-4",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0023-requests-4-conventional.json; SHA256 e9f2a1bc08f76f062d2f3e134a4041c8aa0c9509e281ffe2d41ef843fecad083; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "requests-4:cost:business",
+          "requests-4:cost:delivery",
+          "requests-4:cost:maintenance",
+          "requests-4:obligation:unpaid",
+          "requests-4:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "study-investment",
+        "acceptance": "unknown",
+        "reference": "Research investment account for the tested asset; accounting container, not a delivered customer mission.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "study-investment:cost:business",
+          "study-investment:cost:capability",
+          "study-investment:cost:delivery",
+          "study-investment:cost:maintenance",
+          "study-investment:obligation:unpaid",
+          "study-investment:reserve:reliability"
+        ],
+        "capabilityEvents": [
+          {
+            "id": "study-investment:capability:economic-rejection",
+            "type": "capability",
+            "missionId": "study-investment",
+            "capabilityId": "call-compatibility",
+            "action": "rejected",
+            "reference": "Economic admission rejected pending identified complete cost, real demand and supported repayment; separate engineering evaluation may still admit a useful tool."
+          }
+        ]
+      },
+      {
+        "missionId": "urllib3-1",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0025-urllib3-1-conventional.json; SHA256 4e5575bb85a839499e0649dc42f5dcd45a7a94c2abce574e5c4c4534f9e19adf; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "urllib3-1:cost:business",
+          "urllib3-1:cost:delivery",
+          "urllib3-1:cost:maintenance",
+          "urllib3-1:obligation:unpaid",
+          "urllib3-1:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "urllib3-2",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0030-urllib3-2-conventional.json; SHA256 8521b4eba9a8126f44668d0656da25f4ca21504c1caea7462d8cb510e83cc9c7; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "urllib3-2:cost:business",
+          "urllib3-2:cost:delivery",
+          "urllib3-2:cost:maintenance",
+          "urllib3-2:obligation:unpaid",
+          "urllib3-2:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "urllib3-3",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0032-urllib3-3-conventional.json; SHA256 91dc3196043fa0fe73af9f7a09d458c9b4522d008c8acbc0a693dfc723993044; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "urllib3-3:cost:business",
+          "urllib3-3:cost:delivery",
+          "urllib3-3:cost:maintenance",
+          "urllib3-3:obligation:unpaid",
+          "urllib3-3:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "urllib3-4",
+        "acceptance": "accepted",
+        "reference": "results/confirmation/repeat-1/evidence/0034-urllib3-4-conventional.json; SHA256 be56b50920196dae64e8ea87a6530d8c4c720ca4a4864babe3bd47dcf304897f; accepted scoped research packet only, not a completed production upgrade",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "assumedPrice": null,
+        "missingCostCategories": [],
+        "unknownEventIds": [
+          "urllib3-4:cost:business",
+          "urllib3-4:cost:delivery",
+          "urllib3-4:cost:maintenance",
+          "urllib3-4:obligation:unpaid",
+          "urllib3-4:reserve:reliability"
+        ],
+        "capabilityEvents": []
+      }
+    ],
+    "observed": {
+      "revenue": 0,
+      "fullCost": null,
+      "operatingMargin": null,
+      "reserve": null,
+      "unpaidObligations": null,
+      "afterReserves": null,
+      "availableSurplus": null,
+      "eligibleInvestment": null
+    },
+    "scenario": {
+      "revenue": 0,
+      "fullCost": null,
+      "operatingMargin": null,
+      "reserve": null,
+      "unpaidObligations": null,
+      "afterReserves": null,
+      "availableSurplus": null,
+      "eligibleInvestment": null
+    },
+    "scope": "Non-transactional supplied accounting; observed labels are user assertions, not authenticated receipts. Customer savings are not revenue. No funds, authority or capability improvement are created."
+  },
+  "recorded_substantive_missions": 12,
+  "accepted_research_missions": 12,
+  "rejected_research_missions": 0,
+  "actual_paid_customer_missions": 0,
+  "accounting_container_count": 1,
+  "accounting_container_counts_as_job": false,
+  "cash_flow": {
+    "starting_capital_minor": null,
+    "observed_collections_minor": 0,
+    "paid_delivery_minor": null,
+    "paid_investment_minor": null,
+    "unpaid_obligations_minor": null,
+    "required_reserves_minor": null,
+    "ending_cash_minor": null,
+    "available_to_commit_minor": null,
+    "equation": "B_t = B_previous + actual_collections + external_capital - paid_delivery - paid_investment; available = B_t - unpaid_obligations - required_reserves.",
+    "investment_execution": "No financial transaction or new paid commitment was executed; constructed-capability resource cost remains unknown. A null balance cannot authorize a new commitment."
+  },
+  "investment_sensitivity": {
+    "label": "Symbolic finite investment; no monetary inputs supplied",
+    "evidence_class": "modeled",
+    "currency": "USD",
+    "monetary_unit": "cents",
+    "horizon_basis": "Assumed numbers of future substantive missions; not observed demand or repeated benchmark runs.",
+    "actual_financial_investment_executed": false,
+    "rows": [
+      {
+        "constructionCostMinor": null,
+        "failedConstructionCostMinor": null,
+        "maintenancePerReuseMinor": null,
+        "expectedSavingPerReuseMinor": null,
+        "remainingReuses": 1,
+        "fixedCost": null,
+        "maintenanceCost": null,
+        "grossSaving": null,
+        "lifetimeCost": null,
+        "netBenefit": null,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": null,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed.",
+        "maximumAffordableCompleteInvestmentMinor": null,
+        "economically_admitted": false,
+        "decision": "UNKNOWN_MONETARY_REPAYMENT"
+      },
+      {
+        "constructionCostMinor": null,
+        "failedConstructionCostMinor": null,
+        "maintenancePerReuseMinor": null,
+        "expectedSavingPerReuseMinor": null,
+        "remainingReuses": 4,
+        "fixedCost": null,
+        "maintenanceCost": null,
+        "grossSaving": null,
+        "lifetimeCost": null,
+        "netBenefit": null,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": null,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed.",
+        "maximumAffordableCompleteInvestmentMinor": null,
+        "economically_admitted": false,
+        "decision": "UNKNOWN_MONETARY_REPAYMENT"
+      },
+      {
+        "constructionCostMinor": null,
+        "failedConstructionCostMinor": null,
+        "maintenancePerReuseMinor": null,
+        "expectedSavingPerReuseMinor": null,
+        "remainingReuses": 12,
+        "fixedCost": null,
+        "maintenanceCost": null,
+        "grossSaving": null,
+        "lifetimeCost": null,
+        "netBenefit": null,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": null,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed.",
+        "maximumAffordableCompleteInvestmentMinor": null,
+        "economically_admitted": false,
+        "decision": "UNKNOWN_MONETARY_REPAYMENT"
+      },
+      {
+        "constructionCostMinor": null,
+        "failedConstructionCostMinor": null,
+        "maintenancePerReuseMinor": null,
+        "expectedSavingPerReuseMinor": null,
+        "remainingReuses": 52,
+        "fixedCost": null,
+        "maintenanceCost": null,
+        "grossSaving": null,
+        "lifetimeCost": null,
+        "netBenefit": null,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": null,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed.",
+        "maximumAffordableCompleteInvestmentMinor": null,
+        "economically_admitted": false,
+        "decision": "UNKNOWN_MONETARY_REPAYMENT"
+      },
+      {
+        "constructionCostMinor": null,
+        "failedConstructionCostMinor": null,
+        "maintenancePerReuseMinor": null,
+        "expectedSavingPerReuseMinor": null,
+        "remainingReuses": 250,
+        "fixedCost": null,
+        "maintenanceCost": null,
+        "grossSaving": null,
+        "lifetimeCost": null,
+        "netBenefit": null,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": null,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed.",
+        "maximumAffordableCompleteInvestmentMinor": null,
+        "economically_admitted": false,
+        "decision": "UNKNOWN_MONETARY_REPAYMENT"
+      }
+    ],
+    "equation": "I_max(N) = N * (incremental_delivery_saving_per_mission - incremental_maintenance_per_mission)",
+    "unknown_cost_policy": "Null is unknown. No simulation changes actual revenue, cash, obligations or admission."
+  },
+  "human_comparison": {
+    "actual_human_duration_minutes": null,
+    "actual_customer_price_minor": null,
+    "normalized": [
+      {
+        "currency": "USD",
+        "hourly_micros": 50140000,
+        "basis": "sourced",
+        "reference": "https://www.bls.gov/news.release/ocwage.t01.htm",
+        "period": "2025-05",
+        "minutes_per_currency_unit": 1.1966493817311528,
+        "interpretation": "Algebraic crossing for equal accepted scope; not an observed duration or saving."
+      },
+      {
+        "currency": "CAD",
+        "hourly_micros": 46260000,
+        "basis": "sourced",
+        "reference": "https://on.jobbank.gc.ca/marketreport/wages-occupation/22511/geo25154",
+        "period": "2024",
+        "minutes_per_currency_unit": 1.297016861219196,
+        "interpretation": "Algebraic crossing for equal accepted scope; not an observed duration or saving."
+      }
+    ],
+    "user_supplied_scenarios": []
+  },
+  "required_cost_inventory": [
+    "discovery",
+    "rejected_opportunities",
+    "unsuccessful_candidates",
+    "construction",
+    "integration",
+    "inference",
+    "tools",
+    "compute",
+    "storage",
+    "requests",
+    "retries",
+    "verification",
+    "recovery",
+    "packaging",
+    "shared_maintenance",
+    "residual_human_attention",
+    "customer_effort"
+  ],
+  "prohibitions": [
+    "No-op checks and benchmark repetitions are not new customer jobs.",
+    "Elapsed assistant time is not a human wage or inference bill.",
+    "Customer savings are not enterprise collections.",
+    "Unknown costs are not zero.",
+    "A hypothetical positive scenario never changes actual economic admission."
+  ]
+}

@@ -1,0 +1,148 @@
+[
+  {
+    "label": "create-venv",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "venv",
+      "--copies",
+      "/tmp/value-compounds-offline-replay-20261026-2/venv"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2",
+    "exit_code": 0,
+    "wall_seconds": 2.1538248060001024,
+    "observed_child_cpu_seconds": 2.1509709999999997,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  {
+    "label": "install-locked-wheels",
+    "command": [
+      "/tmp/value-compounds-offline-replay-20261026-2/venv/bin/python",
+      "-m",
+      "pip",
+      "install",
+      "--no-index",
+      "--require-hashes",
+      "--only-binary=:all:",
+      "--find-links",
+      "/workspace/scratch/8586be0c300d/research/value-compounds/deps/wheels",
+      "-r",
+      "/workspace/scratch/8586be0c300d/research/value-compounds/support/requirements-replay.lock"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2",
+    "exit_code": 0,
+    "wall_seconds": 1.141153292999661,
+    "observed_child_cpu_seconds": 1.1213639999999998,
+    "stdout_bytes": 3303,
+    "stderr_bytes": 0
+  },
+  {
+    "label": "dependency-check",
+    "command": [
+      "/tmp/value-compounds-offline-replay-20261026-2/venv/bin/python",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2",
+    "exit_code": 0,
+    "wall_seconds": 0.24330174099986834,
+    "observed_child_cpu_seconds": 0.24274200000000007,
+    "stdout_bytes": 30,
+    "stderr_bytes": 0
+  },
+  {
+    "label": "environment",
+    "command": [
+      "/tmp/value-compounds-offline-replay-20261026-2/venv/bin/python",
+      "-c",
+      "import importlib,importlib.metadata,json,sys\nfrom pathlib import Path\nimport pipeline\nexpected=json.loads(sys.argv[1]); versions={n:importlib.metadata.version(n) for n in expected}\nassert versions==expected,(versions,expected)\nassert sys.prefix!=sys.base_prefix\nmodules={n:importlib.import_module(n) for n in ['griffe','pydantic','pydantic_core','cryptography','cffi','pycparser','typing_extensions','typing_inspection','annotated_types','colorama']}\norigins={n:str(Path(m.__file__).resolve()) for n,m in modules.items()}\nassert all(Path(p).is_relative_to(Path(sys.prefix)) for p in origins.values()),origins\nprint(json.dumps({'python':sys.version,'executable':sys.executable,'prefix':sys.prefix,'versions':versions,'origins':origins,'pip_bootstrap_version':importlib.metadata.version('pip'),'native_inventory_module':pipeline.reference_report.__module__}))\n",
+      "{\"annotated-types\": \"0.8.0\", \"cffi\": \"2.1.1\", \"colorama\": \"0.4.6\", \"cryptography\": \"50.0.2\", \"griffe\": \"2.4.1\", \"griffecli\": \"2.4.1\", \"griffelib\": \"2.4.1\", \"pycparser\": \"3.11\", \"pydantic\": \"2.14.1\", \"pydantic_core\": \"2.50.1\", \"typing_extensions\": \"4.16.0\", \"typing-inspection\": \"0.4.4\"}"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2/study",
+    "exit_code": 0,
+    "wall_seconds": 0.37020007299997815,
+    "observed_child_cpu_seconds": 0.3693959999999999,
+    "stdout_bytes": 1878,
+    "stderr_bytes": 0
+  },
+  {
+    "label": "shared-tests",
+    "command": [
+      "/tmp/value-compounds-offline-replay-20261026-2/venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/tmp/value-compounds-offline-replay-20261026-2/study/tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2/study",
+    "exit_code": 0,
+    "wall_seconds": 0.8220253989998128,
+    "observed_child_cpu_seconds": 0.8210470000000004,
+    "stdout_bytes": 0,
+    "stderr_bytes": 9327
+  },
+  {
+    "label": "candidate-crosscheck",
+    "command": [
+      "/tmp/value-compounds-offline-replay-20261026-2/venv/bin/python",
+      "/workspace/scratch/8586be0c300d/research/value-compounds/support/candidate_crosscheck.py",
+      "--root",
+      "/tmp/value-compounds-offline-replay-20261026-2/study"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2/study",
+    "exit_code": 0,
+    "wall_seconds": 0.19135325600018405,
+    "observed_child_cpu_seconds": 0.1904539999999993,
+    "stdout_bytes": 413,
+    "stderr_bytes": 5659
+  },
+  {
+    "label": "node-version",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "--version"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2",
+    "exit_code": 0,
+    "wall_seconds": 0.0053074009997544636,
+    "observed_child_cpu_seconds": 0.004377999999999882,
+    "stdout_bytes": 9,
+    "stderr_bytes": 0
+  },
+  {
+    "label": "economics-tests",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "--test",
+      "/tmp/value-compounds-offline-replay-20261026-2/study/tests/economics.test.mjs"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2/study",
+    "exit_code": 0,
+    "wall_seconds": 0.14451260000032562,
+    "observed_child_cpu_seconds": 0.16146400000000038,
+    "stdout_bytes": 209,
+    "stderr_bytes": 0
+  },
+  {
+    "label": "workbench",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/tmp/value-compounds-offline-replay-20261026-2/study/src/workbench.mjs",
+      "httpx-development",
+      "conventional",
+      "/tmp/value-compounds-offline-replay-20261026-2/mission"
+    ],
+    "cwd": "/tmp/value-compounds-offline-replay-20261026-2/study",
+    "exit_code": 0,
+    "wall_seconds": 13.461297377999927,
+    "observed_child_cpu_seconds": 13.528035999999998,
+    "stdout_bytes": 213,
+    "stderr_bytes": 0
+  }
+]

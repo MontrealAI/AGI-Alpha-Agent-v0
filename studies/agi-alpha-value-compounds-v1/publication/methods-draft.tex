@@ -1,0 +1,237 @@
+% Technical appendix fragment; no document preamble and no outcome/price claims.
+% Uses ordinary LaTeX plus amsmath. Integrate before the bibliography.
+% Source: frozen implementation and development records only.
+\section{Source-bound dependency decisions: technical methods}
+\label{app:binding-methods}
+
+This contribution adds argument-binding evidence and consumer-call triage to
+source-pinned dependency assessment. It is separate from recurring repair
+admission or validation-cost optimization. Its endpoint is a bounded decision
+artifact: identify the declarations and captured calls requiring review,
+provide replayable binding counterexamples, and retain explicit uncertainty.
+A binding result is neither application compatibility nor upgrade approval.
+
+\subsection{Declared object and execution boundary}
+
+The declaration model includes direct, undecorated, top-level functions with
+non-underscore names, including asynchronous functions, and qualified direct
+\texttt{PublicClass.\_\_init\_\_} declarations. Constructors must be synchronous
+and undecorated; their classes must be undecorated, have at most one explicit
+base, and have no class keywords or metaclass declaration. Duplicate,
+conditional, rebound or imported replacement bindings remain unresolved.
+Dynamic module constructs, including star imports, module
+\texttt{\_\_getattr\_\_}, and recognized active
+\texttt{exec/eval/globals/locals} calls, also prevent a resolved declaration
+claim. These syntactic checks do not establish general runtime namespace
+stability or that a declaration in an internal module is a supported public
+API.
+
+The declared per-source limits are 1,000,000 UTF-8 bytes, 100,000 AST nodes,
+and 64 parameters per callable. Parsing, scope or resource refusal is recorded
+as unresolved. The existing native source-inventory path retains its own
+tighter admission limits; a successful local analysis does not override a
+native refusal. Unchanged source identities are no-ops rather than new
+missions. Source identities, changed/unchanged inventories, omissions and
+refusals remain in the dossier.
+
+Inspected source is parsed, never imported or executed by the binding tools.
+Original bodies, decorators, annotations, type parameters and default
+expressions are excluded from executable stubs. Optional defaults become
+constant \texttt{None}, and a generated body only returns \texttt{None}.
+Default-expression text may be retained as inert metadata. Separately
+authorized integration experiments on pinned published packages execute
+those packages under their declared isolation controls; that is a different
+evidence layer and is not silently implied by a static report.
+
+\subsection{Finite binding domain and containment theorem}
+
+Represent a call shape as $(n,K)$: $n$ positional arguments and a finite set
+$K$ of distinct keyword names. Values are immaterial to Python argument
+binding once argument evaluation succeeds. Duplicate keyword production or
+failed argument evaluation occurs outside this model.
+Let $s_0$ and $s_1$ be the before and after signatures. Let $P$ be their maximum
+number of fixed positional parameters, and let $U$ contain all parameter
+names in either signature plus one fresh name occurring in neither.
+The finite domain is
+\[
+  D = \{0,\ldots,P+1\}\times\mathcal{P}(U),
+  \qquad |D|=(P+2)2^{|U|}.
+\]
+The endpoint asks whether every before-accepted shape is also accepted after.
+The absence of a supported local declaration is treated as an empty local
+binding language only when the scope checks exclude an unresolved
+replacement; it is not proof about package exports.
+
+For signature $s$ at fixed $n$, first reject positional infeasibility: too
+many positional arguments without \texttt{*args}, or an unfilled required
+positional-only parameter. Otherwise define $R_s(n)$ as the unfilled required
+positional-or-keyword names together with required keyword-only names.
+Define $A_s(n)$ as all keyword-eligible names, excluding
+positional-or-keyword names already filled positionally. With
+\texttt{**kwargs}, every name in $U$ is eligible before that exclusion.
+Without it, only unfilled positional-or-keyword and keyword-only names are
+eligible. Thus
+\[
+ (n,K)\text{ binds to }s
+ \quad\Longleftrightarrow\quad
+ n\text{ is feasible and }R_s(n)\subseteq K\subseteq A_s(n).
+\]
+
+\paragraph{Containment proposition.}
+For each $n$ admitting a before call, containment holds exactly when the
+after signature is feasible and
+\[
+ R_{s_1}(n)\subseteq R_{s_0}(n),
+ \qquad A_{s_0}(n)\subseteq A_{s_1}(n).
+\]
+If the after signature is infeasible, requires a keyword absent from the
+before minimum, or rejects a keyword in that minimum, then
+$K=R_{s_0}(n)$ is a counterexample. Otherwise any
+$x\in A_{s_0}(n)\setminus A_{s_1}(n)$ yields the counterexample
+$K=R_{s_0}(n)\cup\{x\}$.
+
+\paragraph{Proof and finite reduction.}
+The accepted keyword sets at fixed $n$ form the interval
+$[R_s(n),A_s(n)]$ under set inclusion. The minimum before set tests every
+after requirement; one-key extensions test every possible after prohibition.
+There are no additional cross-key constraints for distinct keyword names.
+For $n>P$, both signatures have exhausted their fixed positional slots, so
+every greater count has the same accept/reject behavior determined by
+\texttt{*args}; $P+1$ therefore represents that entire tail. Names outside
+the union of parameter names have identical binding behavior, determined
+only by \texttt{**kwargs}. Any separating set containing such names can
+replace them by the one fresh representative. Consequently a loss anywhere
+in the ordinary binding-shape language has a witness in $D$, and the stated
+minimum-plus-singleton frontier suffices. This establishes a property of the
+declared signature model, not behavior, type compatibility or business value.
+
+The retained implementation, \texttt{src/dossier.py}, computes these
+constraints directly. Witnesses contain only a positional count and sorted
+keyword names, so they can be replayed against inert stubs with constant
+argument values. An unchanged binding language may still hide changed
+defaults, positional meaning, return values, side effects or an asynchronous
+contract; warnings do not turn those untested properties into guarantees.
+
+\subsection{Independent evaluation and strong conventional comparison}
+
+\texttt{src/validate\_dossier.py} independently inventories declarations with
+an AST visitor and independently renders safe stub source. It checks module
+and source identities, exact declaration inventory, signature metadata,
+reported states, coverage reconciliation, findings and every supplied
+counterexample. Stub calls exercise CPython's actual binder.
+\texttt{inspect.signature} is used on generated stubs for metadata;
+\texttt{Signature.bind} is not the binding oracle.
+
+For small domains the evaluator enumerates all positional counts and
+keyword subsets. Identical generated binding signatures permit an exact
+equivalence shortcut. In default automatic mode, a domain exceeding the
+remaining one-million-shape budget uses a separately implemented complete
+minimum-plus-singleton frontier. Each check records its method. Explicit
+exhaustive mode does not use this fallback; exhausted budgets remain unknown.
+A verified concrete counterexample can prove a loss even when full
+enumeration is unaffordable. Report correctness and complete supported-scope
+coverage are separate fields: an honest unresolved report is not a complete
+compatibility finding. Independent code and extraction reduce common
+implementation failure, but the same Python runtime and the frontier
+theorem remain shared assumptions; this is not an external blinded audit.
+
+The strong conventional arm, \texttt{src/conventional.py}, uses the pinned
+Griffe/griffelib 2.4.1 static visitor. It retains before/after snapshots and
+all broader breaking-change alerts, then adds independently authored
+safe-stub witness enrichment using the complete frontier. Griffe's metadata
+label \texttt{runtime} is not evidence that inspected source executed.
+Its broader alerts, including default and other API changes, remain available
+for review and are not scored as false positives merely for falling outside
+the narrow binding endpoint.
+
+Both builders may retain reusable assets and legitimate caches. The
+conventional cache includes source, module, implementation, runtime and
+Griffe identities, with 64 entries and 16,000,000 captured source bytes;
+that byte bound is not a process-memory limit. Returned objects are copied
+to prevent consumer mutation of retained entries. The retained arm's disk
+snapshots check source, implementation and serialized-fact identities.
+Construction, failed attempts, cache operations and verification belong to
+the resource record for the arm that incurred them. A free upstream tool is
+not an assumption of free integration work. Declared cold/warm ablations
+must not remove legitimate reusable assets only from the comparator.
+
+\subsection{Constructor, keyword and consumer subtleties}
+
+Positional-only names require particular care. For
+\texttt{def f(x, /, **kw)}, the shape with one positional argument and keyword
+\texttt{x} is valid: the positional argument fills the parameter and the
+keyword enters \texttt{kw}. For
+\texttt{def f(x, **kw)}, the same shape duplicates a binding and fails.
+For \texttt{def f(x=0, /, **kw)}, a keyword \texttt{x} alone is also accepted
+but does not fill the positional-only parameter. If that parameter becomes
+required, the same keyword cannot satisfy it. Accordingly, only assigned
+positional-or-keyword names are removed from $A_s(n)$; positional-only names
+must not be removed when \texttt{**kwargs} can receive them.
+
+Constructor comparison is of an unbound direct declaration, including its
+receiver parameter. A consumer class call can add one implicit positional
+receiver only under the declared direct-constructor assumptions.
+\texttt{\_\_new\_\_}, metaclasses, runtime method resolution and constructor
+behavior remain outside the claim. If a class remains but loses its direct
+\texttt{\_\_init\_\_}, the result is unresolved because inheritance may
+supply a constructor. It is not automatically a removed callable.
+
+The shared \texttt{src/consumer.py} maps captured lexical imports and source
+call sites. Literal tuple/list positional expansion and literal string-key
+dictionary expansion can yield a shape; dynamic expansions, ambiguous
+bindings, instance methods and unsupported dispatch remain unresolved.
+The mapper handles qualifying single-base \texttt{super().\_\_init\_\_}
+calls only conditionally. A separate candidate channel can follow captured
+closed literal \texttt{\_\_all\_\_} exports, a recognized module-metadata
+write pattern and narrowly screened import guards. These candidates do not
+erase strict unresolved counts or establish runtime export identity.
+Every mapped call assumes its imports and argument expressions succeed.
+
+Both arms use this same consumer mapper and metadata contract. Its use of
+the shared constraint helper makes this layer a common integration
+component, not an independent validation of consumer runtime behavior.
+Separate integration evidence is needed for that stronger conclusion.
+Call-site counts, declaration counts and syntactic candidates are never
+customer-job counts or measurements of independent defect recurrence.
+
+\subsection{Development controls, freeze and preserved failures}
+
+The frozen shared development suite contains 75 tests: 50 conventional and
+evaluator tests, 20 consumer tests, and five pipeline tests. A further
+crosscheck applies 47 of the shared conventional cases to the retained
+implementation; these are reused controls, not 47 new observations from the
+target workload. The three comparator-specific cases concern changed-source
+cache invalidation, returned-object mutation isolation, and preservation of
+broader Griffe alerts.
+
+One shared test constructs 80 synthetic signatures using seed 2645 and
+performs 150 sampled before/after pair evaluations. Those pair evaluations
+are internal assertions within the development test and may reuse generated
+signatures; they are not 150 independent missions. The suite also exercises
+positional-only/variadic edge cases, inert defaults and bodies, constructor
+exclusions, forged identities and metadata, malformed or omitted findings,
+budget abstention, source-byte preservation, symlink refusal, native limits
+and unchanged-source no-ops. Counts document controls rather than customer
+acceptance or experimental sample size.
+
+Original failures, development logs and superseded editions are retained.
+Before confirmation exposure, a comparator metadata interoperability defect
+was corrected: independently parsed signatures and ordered source identities
+were added so the common consumer mapper could assess both arms. No candidate
+comparison algorithm was imported. The original comparator freeze is
+preserved under \texttt{discovery/frozen-conventional-v1/}; the amendment is
+recorded in \texttt{discovery/conventional-freeze-v2.json}. Source identities
+and the final protocol are fixed by
+\texttt{discovery/final-freeze.json}. Subsequent confirmation failures must be
+reported against that freeze, not repaired silently and relabeled untouched
+confirmation.
+
+The reproducible development entry point is:
+\begin{verbatim}
+PYTHONPATH=src:deps/site python3 -m unittest discover \
+  -s tests -p 'test_*.py' -v
+\end{verbatim}
+Run it from the companion root with the retained pinned dependencies.
+The historical integration runner and its original bounded failures are a
+separate development artifact; they do not increase the confirmation sample
+or establish deployment qualification.

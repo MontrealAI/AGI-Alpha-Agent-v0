@@ -1,0 +1,55 @@
+{
+  "schema": "engineering-candidate-rejection/v1",
+  "utc": "2026-10-26T13:38:53.347097+00:00",
+  "candidate": "static-constraint-lens",
+  "decision": "REJECTED_PENDING_CORRECTION_AND_NEW_CONFIRMATION",
+  "cause": "Independent verifier rejected primary confirmation reports. Frozen outputs and source are preserved. No repair/re-evaluation is relabeled held-out.",
+  "failures_observed": [
+    {
+      "mission": "urllib3-2",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ],
+      "evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0029-urllib3-2-retained.json",
+        "sha256": "b5e026d8be1b99a2e0277b5cfdf8d3e2e37c9df6f26496a81141e27723314f5b",
+        "bytes": 15580065
+      }
+    },
+    {
+      "mission": "urllib3-3",
+      "arm": "retained",
+      "errors": [
+        {
+          "path": "src/urllib3/contrib/pyopenssl.py",
+          "errors": [
+            "WrappedSocket.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        },
+        {
+          "path": "src/urllib3/util/retry.py",
+          "errors": [
+            "Retry.__init__: status differs from independent source relation"
+          ],
+          "unknowns": []
+        }
+      ],
+      "evidence": {
+        "path": "results/confirmation/repeat-1/evidence/0031-urllib3-3-retained.json",
+        "sha256": "0fa673de8eb8b228edfbfaf7493d4a79a74542d5a57fb9be40a97417ac43da03",
+        "bytes": 15655763
+      }
+    }
+  ],
+  "conventional_builder": "Continues unchanged under frozen primary evaluation; preferred method provisional research admission requires its own validation.",
+  "economic_admission": "HOLD",
+  "new_financed_asset": false
+}

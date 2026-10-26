@@ -1,0 +1,415 @@
+{
+  "schema": "alpha-automated-cost-summary/v1",
+  "offeringId": "call-compatibility",
+  "currency": "USD",
+  "monetaryUnit": "one million micros per currency unit; final monetary outputs rounded upward once",
+  "scenarios": [
+    {
+      "name": "base",
+      "currency": "USD",
+      "volume": {
+        "requestsPerMonth": null,
+        "attemptsPerMonth": null,
+        "acceptedPerMonth": null,
+        "utilizationBps": null,
+        "acceptanceBps": null
+      },
+      "costs": {
+        "nextRequestMicros": null,
+        "marginalMicrosPerAccepted": null,
+        "recurringMicrosPerAccepted": null,
+        "fullyLoadedMicrosPerAccepted": null,
+        "variableMonthlyMicros": null,
+        "sharedMonthlyMicros": null,
+        "amortizedMonthlyMicros": null
+      },
+      "residualHumanMinutesPerRequest": null,
+      "humanBaselineMicrosPerAccepted": null,
+      "comparison": {
+        "marginal": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        },
+        "recurring": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        },
+        "fullyLoaded": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        }
+      },
+      "unknownInputs": [
+        "capacityRequestsPerMonth",
+        "utilizationBps",
+        "acceptanceBps",
+        "attemptsPerRequestPpm",
+        "operations.0.unitCostMicros",
+        "operations.1.unitCostMicros",
+        "operations.2.unitCostMicros",
+        "operations.3.unitCostMicros",
+        "operations.4.unitCostMicros",
+        "operations.5.unitCostMicros",
+        "operations.6.unitCostMicros",
+        "operations.7.unitCostMicros",
+        "residual.0.exceptionsPerRequestPpm",
+        "residual.0.minutesPerException",
+        "residual.0.hourlyCostMicros",
+        "monthly.0.amountMicros",
+        "monthly.1.amountMicros",
+        "monthly.2.amountMicros",
+        "investments.0.amountMicros",
+        "investments.0.amortizationMonths",
+        "investments.1.amountMicros",
+        "investments.1.amortizationMonths",
+        "humanBaseline.minutesPerAccepted"
+      ],
+      "components": {
+        "operations": [
+          {
+            "id": "preparation-inclusive",
+            "stage": "preparation",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "planning-inclusive",
+            "stage": "planning",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "execution-inclusive",
+            "stage": "execution",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "verification-inclusive",
+            "stage": "verification",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "correction-inclusive",
+            "stage": "correction",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "packaging-inclusive",
+            "stage": "packaging",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "reporting-inclusive",
+            "stage": "reporting",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "recovery-inclusive",
+            "stage": "recovery",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          }
+        ],
+        "humanExceptions": [
+          {
+            "id": "residual-exceptions",
+            "stage": "recovery",
+            "costMicrosPerRequest": null
+          }
+        ],
+        "investments": [
+          {
+            "id": "discovery-and-unsuccessful",
+            "kind": "development",
+            "amortizedMonthlyMicros": null
+          },
+          {
+            "id": "construction-and-validation",
+            "kind": "development",
+            "amortizedMonthlyMicros": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "conservative",
+      "currency": "USD",
+      "volume": {
+        "requestsPerMonth": null,
+        "attemptsPerMonth": null,
+        "acceptedPerMonth": null,
+        "utilizationBps": null,
+        "acceptanceBps": null
+      },
+      "costs": {
+        "nextRequestMicros": null,
+        "marginalMicrosPerAccepted": null,
+        "recurringMicrosPerAccepted": null,
+        "fullyLoadedMicrosPerAccepted": null,
+        "variableMonthlyMicros": null,
+        "sharedMonthlyMicros": null,
+        "amortizedMonthlyMicros": null
+      },
+      "residualHumanMinutesPerRequest": null,
+      "humanBaselineMicrosPerAccepted": null,
+      "comparison": {
+        "marginal": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        },
+        "recurring": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        },
+        "fullyLoaded": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        }
+      },
+      "unknownInputs": [
+        "capacityRequestsPerMonth",
+        "utilizationBps",
+        "acceptanceBps",
+        "attemptsPerRequestPpm",
+        "operations.0.unitCostMicros",
+        "operations.1.unitCostMicros",
+        "operations.2.unitCostMicros",
+        "operations.3.unitCostMicros",
+        "operations.4.unitCostMicros",
+        "operations.5.unitCostMicros",
+        "operations.6.unitCostMicros",
+        "operations.7.unitCostMicros",
+        "residual.0.exceptionsPerRequestPpm",
+        "residual.0.minutesPerException",
+        "residual.0.hourlyCostMicros",
+        "monthly.0.amountMicros",
+        "monthly.1.amountMicros",
+        "monthly.2.amountMicros",
+        "investments.0.amountMicros",
+        "investments.0.amortizationMonths",
+        "investments.1.amountMicros",
+        "investments.1.amortizationMonths",
+        "humanBaseline.minutesPerAccepted"
+      ],
+      "components": {
+        "operations": [
+          {
+            "id": "preparation-inclusive",
+            "stage": "preparation",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "planning-inclusive",
+            "stage": "planning",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "execution-inclusive",
+            "stage": "execution",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "verification-inclusive",
+            "stage": "verification",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "correction-inclusive",
+            "stage": "correction",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "packaging-inclusive",
+            "stage": "packaging",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "reporting-inclusive",
+            "stage": "reporting",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "recovery-inclusive",
+            "stage": "recovery",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          }
+        ],
+        "humanExceptions": [
+          {
+            "id": "residual-exceptions",
+            "stage": "recovery",
+            "costMicrosPerRequest": null
+          }
+        ],
+        "investments": [
+          {
+            "id": "discovery-and-unsuccessful",
+            "kind": "development",
+            "amortizedMonthlyMicros": null
+          },
+          {
+            "id": "construction-and-validation",
+            "kind": "development",
+            "amortizedMonthlyMicros": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "stress",
+      "currency": "USD",
+      "volume": {
+        "requestsPerMonth": null,
+        "attemptsPerMonth": null,
+        "acceptedPerMonth": null,
+        "utilizationBps": null,
+        "acceptanceBps": null
+      },
+      "costs": {
+        "nextRequestMicros": null,
+        "marginalMicrosPerAccepted": null,
+        "recurringMicrosPerAccepted": null,
+        "fullyLoadedMicrosPerAccepted": null,
+        "variableMonthlyMicros": null,
+        "sharedMonthlyMicros": null,
+        "amortizedMonthlyMicros": null
+      },
+      "residualHumanMinutesPerRequest": null,
+      "humanBaselineMicrosPerAccepted": null,
+      "comparison": {
+        "marginal": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        },
+        "recurring": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        },
+        "fullyLoaded": {
+          "outcome": "unknown",
+          "breakEvenHumanMinutes": null,
+          "breakEvenHumanSeconds": null
+        }
+      },
+      "unknownInputs": [
+        "capacityRequestsPerMonth",
+        "utilizationBps",
+        "acceptanceBps",
+        "attemptsPerRequestPpm",
+        "operations.0.unitCostMicros",
+        "operations.1.unitCostMicros",
+        "operations.2.unitCostMicros",
+        "operations.3.unitCostMicros",
+        "operations.4.unitCostMicros",
+        "operations.5.unitCostMicros",
+        "operations.6.unitCostMicros",
+        "operations.7.unitCostMicros",
+        "residual.0.exceptionsPerRequestPpm",
+        "residual.0.minutesPerException",
+        "residual.0.hourlyCostMicros",
+        "monthly.0.amountMicros",
+        "monthly.1.amountMicros",
+        "monthly.2.amountMicros",
+        "investments.0.amountMicros",
+        "investments.0.amortizationMonths",
+        "investments.1.amountMicros",
+        "investments.1.amortizationMonths",
+        "humanBaseline.minutesPerAccepted"
+      ],
+      "components": {
+        "operations": [
+          {
+            "id": "preparation-inclusive",
+            "stage": "preparation",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "planning-inclusive",
+            "stage": "planning",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "execution-inclusive",
+            "stage": "execution",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "verification-inclusive",
+            "stage": "verification",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "correction-inclusive",
+            "stage": "correction",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "packaging-inclusive",
+            "stage": "packaging",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "reporting-inclusive",
+            "stage": "reporting",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          },
+          {
+            "id": "recovery-inclusive",
+            "stage": "recovery",
+            "implementation": "modeled",
+            "costMicrosPerRequest": null
+          }
+        ],
+        "humanExceptions": [
+          {
+            "id": "residual-exceptions",
+            "stage": "recovery",
+            "costMicrosPerRequest": null
+          }
+        ],
+        "investments": [
+          {
+            "id": "discovery-and-unsuccessful",
+            "kind": "development",
+            "amortizedMonthlyMicros": null
+          },
+          {
+            "id": "construction-and-validation",
+            "kind": "development",
+            "amortizedMonthlyMicros": null
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Conditional automated-configuration planning over explicitly labeled inputs. Expected failed attempts and residual exceptions are charged. Missing live execution is not qualified by this calculation; no payment, guaranteed acceptance or measured saving is established.",
+  "decisionBoundary": "Required objective, input-rights, scope and execution approvals remain user decisions. A zero routine handling scenario never grants authority."
+}
