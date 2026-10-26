@@ -122,10 +122,15 @@ def held_step(case: tuple[str, ...]) -> tuple[str, list[str]]:
     workflow = yaml.safe_load((ROOT / ".github/workflows" / case[0]).read_text())
     job = workflow["jobs"][case[1]]
     artifact_root = str(Path(case[6]).parent)
+    expected_upload_paths = [artifact_root + "/"]
+    if case[0] == "agent-release.yml":
+        # Preserve all evidence while keeping licensed scanner captures private.
+        # This is an upload exclusion; the scanner's source targets are unchanged.
+        expected_upload_paths.append("!evidence/semgrep-official/**")
     assert any(
         step.get("uses", "").startswith("actions/upload-artifact@")
         and step.get("if") == "always()"
-        and step.get("with", {}).get("path", "").rstrip("/") == artifact_root
+        and step.get("with", {}).get("path", "").splitlines() == expected_upload_paths
         for step in job["steps"]
     )
     run = next(step["run"] for step in job["steps"] if step.get("name") == case[2])

@@ -1,0 +1,137 @@
+......F....................F............................................ [ 83%]
+..............                                                           [100%]
+=================================== FAILURES ===================================
+____________ test_local_assets_reach_credential_clean_offline_child ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-46/test_local_assets_reach_creden0')
+
+    def test_local_assets_reach_credential_clean_offline_child(tmp_path: Path) -> None:
+        insight_root = tmp_path / "insight assets"
+        fetch_root = tmp_path / "fallback assets"
+        insight_root.mkdir()
+        fetch_root.mkdir()
+        probe = tmp_path / "test_runner_boundary.py"
+        probe.write_text(
+            f"""# SPDX-License-Identifier: Apache-2.0
+    import os
+    from pathlib import Path
+    import runpy
+    import socket
+    import pytest
+    
+    
+    def test_child_boundary():
+        insight_root = Path({str(insight_root)!r})
+        fetch_root = Path({str(fetch_root)!r})
+        assert os.environ["INSIGHT_ASSET_ROOT"] == str(insight_root)
+        assert os.environ["FETCH_ASSETS_DIR"] == str(fetch_root)
+        asset_root = runpy.run_path({str(ROOT / "tests" / "test_assets_replaced.py")!r})["_asset_root"]
+        assert asset_root() == insight_root
+        del os.environ["INSIGHT_ASSET_ROOT"]
+        assert asset_root() == fetch_root
+        for key in ("OPENAI_API_KEY", "GITHUB_TOKEN", "UNRELATED_PRIVATE_TOKEN"):
+            assert key not in os.environ
+        assert os.environ["NEO4J_PASSWORD"] == "local-tests-only-strong-password"
+        assert os.environ["API_TOKEN"] == "test-token"
+        assert os.environ["ALPHA_TEST_OFFLINE"] == "1"
+        with socket.socket() as client:
+            with pytest.raises(OSError, match="external network disabled by offline test runner"):
+                client.connect(("198.51.100.1", 443))
+    """
+        )
+        env = {
+            "PATH": str(Path(sys.executable).parent) + os.pathsep + os.defpath,
+            "HOME": str(tmp_path / "home"),
+            "LANG": "C.UTF-8",
+            "INSIGHT_ASSET_ROOT": str(insight_root),
+            "FETCH_ASSETS_DIR": str(fetch_root),
+            "OPENAI_API_KEY": "fixture-openai-only",
+            "GITHUB_TOKEN": "fixture-github-only",
+            "UNRELATED_PRIVATE_TOKEN": "fixture-private-only",
+            "NEO4J_PASSWORD": "fixture-password-only",
+            "API_TOKEN": "fixture-api-only",
+        }
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "scripts.run_local_tests",
+                "--noconftest",
+                "-c",
+                "/dev/null",
+                "-p",
+                "no:cacheprovider",
+                str(probe),
+                "-q",
+            ],
+            cwd=ROOT,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=60,
+        )
+>       assert completed.returncode == 0, completed.stdout + completed.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 189, in _run_module_as_main
+E           File "<frozen runpy>", line 148, in _get_module_details
+E           File "<frozen runpy>", line 112, in _get_module_details
+E           File "/tmp/alpha-continuation-env/lib/python3.12/site-packages/pytest/__init__.py", line 8, in <module>
+E             from _pytest._code import ExceptionInfo
+E           File "/tmp/alpha-continuation-env/lib/python3.12/site-packages/_pytest/_code/__init__.py", line 5, in <module>
+E             from .code import Code
+E           File "/tmp/alpha-continuation-env/lib/python3.12/site-packages/_pytest/_code/code.py", line 37, in <module>
+E             import pluggy
+E         ModuleNotFoundError: No module named 'pluggy'
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/tmp/alpha-continuation-env/bin/python', '-m', 'scripts.run_local_tests', '--noconftest', '-c'...es/_pytest/_code/code.py", line 37, in <module>\n    import pluggy\nModuleNotFoundError: No module named \'pluggy\'\n').returncode
+
+tests/test_run_local_tests_environment.py:85: AssertionError
+____ PaperCheckoutBytesTests.test_catalog_originals_keep_their_exact_hashes ____
+
+self = <tests.test_paper_checkout_bytes.PaperCheckoutBytesTests testMethod=test_catalog_originals_keep_their_exact_hashes>
+
+    def test_catalog_originals_keep_their_exact_hashes(self) -> None:
+        catalog = json.loads((ROOT / "docs/research-papers.json").read_bytes())
+        files = {}
+        for paper in catalog["papers"]:
+            source = paper["tex"]
+            if source is not None:
+>               raw = (ROOT / source["path"]).read_bytes()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_paper_checkout_bytes.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/alpha-release-fix/docs/papers/autonomous-enterprises.tex')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/alpha-release-fix/docs/papers/autonomous-enterprises.tex'
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py:1013: FileNotFoundError
+=============================== warnings summary ===============================
+tests/test_paper_checkout_bytes.py:16
+  /tmp/alpha-release-fix/tests/test_paper_checkout_bytes.py:16: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    pytestmark = pytest.mark.smoke
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+------------- generated xml file: /tmp/alpha-release-fix-tests.xml -------------
+=========================== short test summary info ============================
+FAILED tests/test_run_local_tests_environment.py::test_local_assets_reach_credential_clean_offline_child
+FAILED tests/test_paper_checkout_bytes.py::PaperCheckoutBytesTests::test_catalog_originals_keep_their_exact_hashes
+2 failed, 84 passed, 4 deselected, 1 warning in 5.00s

@@ -209,6 +209,18 @@ STRATEGY_144_EXTRA_FILES = SOURCE_OPERATION_143_EXTRA_FILES | {
     ),
 }
 
+# Complete generated cache edition already committed by integration owner
+# d7d0dc92 after reconciling the published research. The scientific closure,
+# file/byte limits and historical profiles remain unchanged. Never mix editions.
+RECONCILED_STRATEGY_144_EXTRA_FILES = STRATEGY_144_EXTRA_FILES | {
+    "docs/service-worker.js": (23501, "0234bc924eb2aab1a106cec203ec47eb026b9d3b31cae46c95d37aa65340ee10"),
+    "docs/assets/service-worker.js": (23938, "57904707ee9e08b2abac4445410a576169611aef9392071bea622824372518f0"),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26560,
+        "11be9821a7a42654ee060adbe3ace96da697898bbbc665ec824e661323034575",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -284,6 +296,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, TI_GUIDE_142_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, SOURCE_OPERATION_143_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, STRATEGY_144_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, RECONCILED_STRATEGY_144_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))
