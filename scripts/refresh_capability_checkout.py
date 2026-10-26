@@ -209,6 +209,23 @@ STRATEGY_144_EXTRA_FILES = SOURCE_OPERATION_143_EXTRA_FILES | {
     ),
 }
 
+# The 2026-10-26 paper publication retains the complete scientific closure.
+# Admit only its exact three-worker edition; preserve all historical editions.
+PAPERS_20261026_EXTRA_FILES = STRATEGY_144_EXTRA_FILES | {
+    "docs/service-worker.js": (
+        23501,
+        "6aa02cd64cb370a145a8db8c4d109fe606df8e75aa5598b04d1a5a394ccc5fd6",
+    ),
+    "docs/assets/service-worker.js": (
+        23938,
+        "bf6ffd8898d5df3953b9cd50713e25e8d023e1035df333139793847f6d35db57",
+    ),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26560,
+        "8258252ff66d96330c5b728b69df6e9093727edc006e4ae87c9c5e72dfc06f95",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -284,6 +301,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, TI_GUIDE_142_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, SOURCE_OPERATION_143_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, STRATEGY_144_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, PAPERS_20261026_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))
