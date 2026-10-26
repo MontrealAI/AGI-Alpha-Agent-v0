@@ -260,6 +260,7 @@ def package(
         "NOTICES.md": notices,
         "capability.json": (HERE / "CAPABILITY.json").read_bytes(),
         "workload.json": (HERE / "WORKLOAD.json").read_bytes(),
+        "comparison.json": (HERE / "COMPARISON.json").read_bytes(),
         "README.md": b"Open report.html for English/French. Inspect decision-record.json and source-pack.json for exact claims and sources. Full currency costs remain unknown. This is a bounded source-contract assessment, not performed dependency upgrade, production authority or proof of payback. Preserve original records on rerun.\n",
     }
     record = copy.deepcopy(record)

@@ -86,11 +86,18 @@ against the unchanged original bytes in the packet. This is another invocation o
 the same verifier, not an independent research replication or hostile-recorder
 attestation. No inspected consumer code is executed by the product worker.
 
+The importer requires all 28 original packet paths and reconciles every original
+assembly/correction relationship, lock version and wheel hash, installed profile,
+recorded execution input/output identity, and the exact proposed lock patch.
+Self-consistent subsets and a rewritten envelope cannot replace those checks.
+
 The call-contract path constructs claims, source witnesses and uncertainties
 together. A bounded critic checks missing claims and unproved dispatch. A separate
 Python `inspect.Signature.bind` computation checks alleged binder defects; only
 substantiated defects can cause recomputation. A critic may return no issue.
 The implementation does not claim organizational or model independence.
+Constructor calls and descriptor receiver dispatch without a supported proof
+remain unresolved. Two binders sharing a guessed receiver are insufficient.
 
 Missing/corrupt cases, changed sources/locks/profiles, unsupported declarations,
 unlisted requests and expanded permissions refuse or retain explicit unresolved
@@ -122,6 +129,21 @@ The writer's single frozen fresh-work comparison remains authoritative. The
 product does not start a competing confirmation or convert 61 checks, repeated
 exports, control tests or browser reconnects into distinct customer jobs.
 
+[COMPARISON.json](COMPARISON.json), included as `comparison.json` in the download,
+links the final writer source `068e276fb9cd457c76ef5f8eaebf91b302d70d24`, its
+83-file freeze, complete 18-evaluation campaign and independent cost aggregation.
+All three arms delivered six scoped historical component decisions. Assisted A
+needed six explicit researcher finalizations; retained B and strong conventional
+C both needed zero. Mechanical time was similar. This does not establish a
+complete monetary advantage over C, customer acceptance or additional eventual
+output. Attention, inference/billing, upkeep and payback remain unknown.
+
+This first-packet importer does not support all A/B/C producer layouts merely
+because they share a schema label. The writer's source-linked compatibility
+matrix identifies those differences; unsupported shapes remain refused. The
+fresh experiment qualifies the writer's producers within its stated scope,
+separately from this presentation adapter and its operational adoption.
+
 [WORKLOAD.json](WORKLOAD.json) identifies the maintained public consumer, real
 source/dependency-change trigger, accountable `MontrealAI` maintainer and the
 deduplication rule. The default request ID derives from the underlying source,
@@ -150,6 +172,11 @@ expiry, cancellation, STOP, a real killed component child and recovery under the
 original lease with both attempts charged. Actual Chromium checks cover EN/FR,
 desktop/phone layouts and active browser closure. Failed development and QA
 attempts remain under `evidence/development/`.
+
+The original 54-case source receipts remain under `evidence/qualification/`.
+The three reproduced review failures and corrected 68-case qualification are
+preserved additively under `evidence/review-correction/`. They are local engineering
+evidence; required exact-source review and hosted security remain separate.
 
 The source base is #4915 `c4a7febc02fb9d607e9da5ece2101c4b6b36fc64`; current-main
 and four-repository inspection are recorded separately. No owner source,

@@ -20,8 +20,8 @@ def packet() -> dict[str, Any]:
     return load((HERE / "examples/native-component.json").read_bytes())
 
 
-def replace_file(pack: dict[str, Any], name: str, value: dict[str, Any]) -> None:
-    text = json.dumps(value, indent=2) + "\n"
+def replace_file(pack: dict[str, Any], name: str, value: dict[str, Any] | str) -> None:
+    text = value if isinstance(value, str) else json.dumps(value, indent=2) + "\n"
     pack["files"][name] = {"text": text, "sha256": sha(text.encode())}
     manifest = json.loads(pack["files"]["artifact-manifest.json"]["text"])
     for row in manifest["files"]:
@@ -29,6 +29,44 @@ def replace_file(pack: dict[str, Any], name: str, value: dict[str, Any]) -> None
             row.update(sha256=sha(text.encode()), bytes=len(text.encode()))
     text = json.dumps(manifest, indent=2) + "\n"
     pack["files"]["artifact-manifest.json"] = {"text": text, "sha256": sha(text.encode())}
+    # Synthetic controls explicitly update their correction scope. This never
+    # refreshes execution identities or silently turns a forged lock into proof.
+    correction = json.loads(pack["files"]["correction-receipt.json"]["text"])
+    original = correction["original_files"]
+    changes = [
+        {"path": path, "before_sha256": old, "after_sha256": pack["files"][path]["sha256"]}
+        for path, old in original.items()
+        if path not in {"artifact-manifest.json", "assembly-receipt.json"}
+        and path in pack["files"]
+        and old != pack["files"][path]["sha256"]
+    ]
+    names = {row["path"] for row in changes}
+    correction.update(
+        changed_content_files=changes,
+        corrected_artifact_manifest_sha256=pack["files"]["artifact-manifest.json"]["sha256"],
+        behavioral_evidence_changed=any(path.startswith("evidence/") for path in names),
+        decision_changed="decision.json" in names,
+        method_or_evaluator_changed=bool(
+            names
+            & {
+                "evidence/manual_probe.py",
+                "evidence/measured_run.py",
+                "evidence/verify_component.py",
+                "evidence/component-contract.json",
+                "evidence/component-projections.json",
+            }
+        ),
+    )
+    text = json.dumps(correction, indent=2) + "\n"
+    pack["files"]["correction-receipt.json"] = {"text": text, "sha256": sha(text.encode())}
+
+
+def refresh_decision_evidence(pack: dict[str, Any]) -> None:
+    decision = json.loads(pack["files"]["decision.json"]["text"])
+    for entry in decision["evidence"]:
+        item = pack["files"][entry["package_path"]]
+        entry.update(sha256=item["sha256"], bytes=len(item["text"].encode()))
+    replace_file(pack, "decision.json", decision)
 
 
 def test_complete_native_component_packet_rechecks_61_each_side() -> None:
@@ -103,6 +141,17 @@ def test_synthetic_substantiated_regression_returns_useful_hold_not_preservation
     saved["status"] = "BEHAVIOR_MISMATCH"
     saved["counts"] = {"PASS": 60, "BEHAVIOR_MISMATCH": 1, "INCOMPLETE": 0}
     replace_file(pack, "evidence/target-verification.json", saved)
+    # This is a fabricated handler fixture, not a new recorded execution. Make
+    # all of its relationships coherent so the classification path is exercised.
+    for receipt_name in ("evidence/target-execution.json", "evidence/target-verification-execution.json"):
+        receipt = json.loads(pack["files"][receipt_name]["text"])
+        for collection in ("input_identities_before", "input_identities_after", "output_identities"):
+            for row in receipt[collection]:
+                for leaf in ("target-observations.json", "target-verification.json"):
+                    if row["path"].endswith("/" + leaf):
+                        item = pack["files"]["evidence/" + leaf]
+                        row.update(sha256=item["sha256"], bytes=len(item["text"].encode()))
+        replace_file(pack, receipt_name, receipt)
     decision = json.loads(pack["files"]["decision.json"]["text"])
     decision.update(decision="COMPONENT_REGRESSION", phase="synthetic-handler-control", accepted_properties=[])
     decision["coverage"]["after_pass"] = 60
@@ -133,3 +182,57 @@ def test_unsafe_links_and_unmanifested_files_refuse() -> None:
     pack["files"]["../extra.py"] = {"text": "x", "sha256": sha(b"x")}
     with pytest.raises(ValueError):
         validate(pack)
+
+
+@pytest.mark.parametrize("name", ["proposed-component-lock.patch", "READ-ME.md", "reproduce.txt"])
+def test_self_consistent_reduced_inventory_still_refuses(name: str) -> None:
+    pack = packet()
+    pack["files"].pop(name)
+    manifest = json.loads(pack["files"]["artifact-manifest.json"]["text"])
+    manifest["files"] = [row for row in manifest["files"] if row["path"] != name]
+    replace_file(pack, "artifact-manifest.json", manifest)
+    with pytest.raises(ValueError, match="complete bounded text evidence"):
+        assess(pack)
+
+
+@pytest.mark.parametrize("mutation", ["version", "wheel-hash", "patch", "execution-input", "execution-output"])
+def test_rehashed_lock_or_receipt_cannot_override_executed_profile(mutation: str) -> None:
+    pack = packet()
+    if mutation in {"version", "wheel-hash"}:
+        text = pack["files"]["evidence/target.lock"]["text"]
+        if mutation == "version":
+            text = text.replace("starlette==1.10.0", "starlette==9.9.9")
+        else:
+            text = text.replace("478c0ab3b4ced6e82719849c118fa406f0278a3499c1a898cd15cd31bdc38ce4", "0" * 64)
+        replace_file(pack, "evidence/target.lock", text)
+    elif mutation == "patch":
+        replace_file(pack, "proposed-component-lock.patch", "unrelated patch\n")
+    else:
+        value = json.loads(pack["files"]["evidence/target-execution.json"]["text"])
+        if mutation == "execution-input":
+            for phase in ("input_identities_before", "input_identities_after"):
+                value[phase][6]["sha256"] = "0" * 64
+        else:
+            value["output_identities"][0]["sha256"] = "0" * 64
+        replace_file(pack, "evidence/target-execution.json", value)
+    refresh_decision_evidence(pack)
+    with pytest.raises(ValueError, match="profile|patch|identity"):
+        assess(pack)
+
+
+@pytest.mark.parametrize("mutation", ["manifest", "assembly", "omitted-correction", "false-scope"])
+def test_original_correction_relationships_cannot_be_silently_rewritten(mutation: str) -> None:
+    pack = packet()
+    correction = json.loads(pack["files"]["correction-receipt.json"]["text"])
+    if mutation == "manifest":
+        correction["corrected_artifact_manifest_sha256"] = "0" * 64
+    elif mutation == "assembly":
+        correction["original_files"]["assembly-receipt.json"] = "0" * 64
+    elif mutation == "omitted-correction":
+        correction["changed_content_files"].pop()
+    else:
+        correction["behavioral_evidence_changed"] = True
+    text = json.dumps(correction, indent=2) + "\n"
+    pack["files"]["correction-receipt.json"] = {"text": text, "sha256": sha(text.encode())}
+    with pytest.raises(ValueError, match="custody|correction"):
+        assess(pack)

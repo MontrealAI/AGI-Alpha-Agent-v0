@@ -84,6 +84,7 @@ class UpgradeDecisionWorker(BaseWorker):  # type: ignore[misc]
                     "NOTICES.md",
                     "CAPABILITY.json",
                     "WORKLOAD.json",
+                    "COMPARISON.json",
                 )
             ]
         )

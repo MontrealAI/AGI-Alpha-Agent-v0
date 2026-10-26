@@ -109,6 +109,24 @@ def test_nested_super_calls_are_bound_by_callee_as_well_as_location() -> None:
     assert "unproved" in result["calls"][0]["qualification"]
 
 
+@pytest.mark.parametrize("callee", ["Client(1)", "Client.__init__(object(), 1)"])
+def test_constructor_receiver_cannot_be_guessed_by_two_binders(callee: str) -> None:
+    pack = request(
+        "class Client:\n def __init__(self, x=0): pass\n",
+        "class Client:\n def __init__(self): pass\n",
+        "from pkg.api import Client\n" + callee + "\n",
+    )
+    for side in ("before", "after"):
+        pack["calls"][0][side]["symbol"] = "Client.__init__"
+    result = assess(pack)
+    row = result["calls"][0]
+    assert row["status"] == "UNRESOLVED" and "receiver dispatch" in row["reason"]
+    assert row["beforeAccepts"] is None and row["afterAccepts"] is None
+    assert result["nextAction"] == "REVIEW_UNRESOLVED_SCOPE"
+    row.update(status="BINDING_PRESERVED", beforeAccepts=True, afterAccepts=True, mappingVerified=True)
+    assert verify(pack, result)["accepted"] is False
+
+
 @pytest.mark.parametrize(
     "mutation",
     [

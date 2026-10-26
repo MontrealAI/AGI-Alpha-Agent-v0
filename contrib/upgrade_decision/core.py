@@ -290,18 +290,39 @@ def declaration(tree: ast.Module, symbol: str) -> ast.FunctionDef | ast.AsyncFun
     return selected
 
 
-def call_shape(call: ast.Call) -> dict[str, Any]:
+def call_shape(call: ast.Call, *, bound_receiver: bool = False) -> dict[str, Any]:
     if any(isinstance(arg, ast.Starred) for arg in call.args) or any(kw.arg is None for kw in call.keywords):
         raise ValueError("expanded arguments require runtime verification")
     names = [kw.arg for kw in call.keywords]
     if len(names) != len(set(names)):
         raise ValueError("duplicate call keyword")
-    receiver = isinstance(call.func, ast.Attribute) and call.func.attr == "__init__"
     return {
-        "positionalCount": len(call.args) + int(receiver),
+        "positionalCount": len(call.args) + int(bound_receiver),
         "keywordNames": sorted(names),
-        "implicitReceiver": int(receiver),
+        "implicitReceiver": int(bound_receiver),
     }
+
+
+def selected_shape(call: ast.Call, item: dict[str, Any]) -> dict[str, Any]:
+    """Keep unsupported constructor/descriptor dispatch unresolved."""
+    symbols = [item[side]["symbol"] for side in ("before", "after")]
+    if any("." in symbol for symbol in symbols):
+        # The captured historical path is an explicitly bound super initializer.
+        # Class calls, unbound initializers and other descriptors need a separate
+        # dispatch proof; two binders sharing a guessed receiver cannot supply it.
+        if not (
+            all(symbol.endswith(".__init__") for symbol in symbols)
+            and isinstance(call.func, ast.Attribute)
+            and call.func.attr == "__init__"
+            and isinstance(call.func.value, ast.Call)
+            and isinstance(call.func.value.func, ast.Name)
+            and call.func.value.func.id == "super"
+            and not call.func.value.args
+            and not call.func.value.keywords
+        ):
+            raise ValueError("constructor or descriptor receiver dispatch requires runtime verification")
+        return call_shape(call, bound_receiver=True)
+    return call_shape(call)
 
 
 def metadata(node: ast.FunctionDef | ast.AsyncFunctionDef) -> dict[str, Any]:
@@ -470,7 +491,7 @@ def create(pack: dict[str, Any], trees: dict[str, ast.Module], *, conventional: 
         }
         try:
             call = select_call(trees[item["consumer"]], item)
-            shape = call_shape(call)
+            shape = selected_shape(call, item)
             row["callShape"] = shape
             row["snippet"] = ast.get_source_segment(pack["sources"][item["consumer"]]["text"], call)
             row["evidence"].append(citation(pack, item["consumer"], call.lineno, call.end_lineno or call.lineno))
@@ -563,7 +584,7 @@ def verify(pack: dict[str, Any], record: dict[str, Any]) -> dict[str, Any]:
             continue
         try:
             call = select_call(trees[item["consumer"]], item)
-            shape = call_shape(call)
+            shape = selected_shape(call, item)
             expected = []
             for side in ("before", "after"):
                 target = item[side]
