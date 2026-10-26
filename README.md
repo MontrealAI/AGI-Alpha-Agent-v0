@@ -160,6 +160,8 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
   Vincent Boucher · MONTREAL\.AI · 2026-10-25 · English PDF.
 - **[AGI ALPHA FLYWHEEL: The Autonomous Work Economy](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-autonomous-work-economy-v1.pdf)** · An independent bounded study delivers 16 local artifacts across four workflow families, retains eight expected refusals, and tests a successor on eight later quote cases\. Complete costs and reinvestment remain conditional models; customer payments, full authenticated execution and self\-acceleration are not established\.
   Vincent Boucher · MONTREAL\.AI · 2026-10-25 · English PDF.
+- **[Build an Advantage That Repays Its Cost — The Investment Gate](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/investment-gate.pdf)** · Nine scoped internal requests and eighteen evaluations with overlapping inputs produced eight complete measured local paths, not eight authenticated native missions\. One scope retained its native artifact\-policy refusal\. No productive asset was selected or constructed and no untouched confirmation trial was run\. Full monetary cost, repayment and positive incremental economics remain unestablished\. DISCOVERY/HOLD\.
+  AGI ALPHA Research · MONTREAL\.AI · 2026-10-25 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
