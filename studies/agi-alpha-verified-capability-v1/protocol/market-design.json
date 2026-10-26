@@ -1,0 +1,215 @@
+{
+  "schema": "agi-alpha-verified-capability-market-design/v1",
+  "id": "economy-of-verified-capability-20261026",
+  "status": "FROZEN_BEFORE_MARKET_OUTCOMES",
+  "registrationURL": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6425229649",
+  "registeredAtUTC": "2026-10-26T19:44:47.373006+00:00",
+  "productionSummary": "evidence/production-summary.json",
+  "assetBindings": "market/asset-bindings.json",
+  "costAssumptions": "market/cost-assumptions.json",
+  "productionMissionCount": 18,
+  "armLabels": {
+    "A": "Strong retained incumbent with legitimate tools/caches",
+    "B": "Searchable registry with equivalent skills, admission, freshness and evidence",
+    "C": "Validated graph with relationship selection/composition",
+    "D": "Equally accepted strongest direct conventional alternative; no forced native history integration"
+  },
+  "baseConfig": {
+    "id": "verified-capability-inherited-reference",
+    "weeks": 52,
+    "buyers": 12,
+    "initialCashCents": 100000,
+    "reserveCents": 20000,
+    "initialPriceCents": 2000,
+    "pricingPolicy": "fixed",
+    "ordinaryFinalizationMinutes": 10,
+    "investmentFunding": "seed-funded",
+    "historicalCostTiming": "opening",
+    "constructionHours": 4,
+    "authoringCostCents": 10000,
+    "adoptionHours": 0.5,
+    "adoptionInferenceCents": 0,
+    "nextAsset": null,
+    "integrationCents": 0,
+    "arrivalProbability": 0.5,
+    "choiceModel": "logit",
+    "investmentCostBasis": "full-history"
+  },
+  "conditions": [
+    {
+      "id": "reference",
+      "marketOverrides": {},
+      "profileOverrides": {},
+      "interpretation": "Inherited favorable deployment region; zero integration friction is assumed."
+    },
+    {
+      "id": "lower-demand",
+      "marketOverrides": {
+        "arrivalProbability": 0.1
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "no-demand",
+      "marketOverrides": {
+        "arrivalProbability": 0
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "buyer-integration",
+      "marketOverrides": {
+        "integrationCents": 500
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "maintenance-shock",
+      "marketOverrides": {},
+      "profileOverrides": {
+        "weeklyMaintenanceFloorCents": 200
+      }
+    },
+    {
+      "id": "stronger-competitor",
+      "marketOverrides": {
+        "aiInitialPriceCents": 500,
+        "aiCostCents": 100,
+        "aiQuality": 0.97,
+        "aiReviewMinutes": 8
+      },
+      "profileOverrides": {}
+    }
+  ],
+  "policies": [
+    {
+      "id": "adaptive",
+      "policy": "adaptive",
+      "earliestWeek": 26,
+      "lastDecisionWeek": 40
+    },
+    {
+      "id": "completed-research-replay",
+      "policy": "completed-research-replay",
+      "earliestWeek": 26,
+      "lastDecisionWeek": 26
+    }
+  ],
+  "costProfileIds": [
+    "low",
+    "reference",
+    "high",
+    "actual-unknown"
+  ],
+  "candidateDefaults": {
+    "researchPrototypeConstructed": true,
+    "pauseWeeks": 1,
+    "usefulLifeWeeks": 26,
+    "forecastDiscount": 0.5,
+    "integrationFailureProbability": 0,
+    "researchEnvelopeCents": 50000
+  },
+  "seeds": [
+    9101,
+    9102,
+    9103,
+    9104,
+    9105,
+    9106,
+    9107,
+    9108,
+    9109,
+    9110,
+    9111,
+    9112,
+    9113,
+    9114,
+    9115,
+    9116,
+    9117,
+    9118,
+    9119,
+    9120,
+    9121,
+    9122,
+    9123,
+    9124
+  ],
+  "expected": {
+    "conditions": 6,
+    "policies": 2,
+    "costProfiles": 4,
+    "cells": 48,
+    "seedsPerCell": 24,
+    "pairedWorlds": 1152,
+    "enterpriseHistories": 3456
+  },
+  "calibration": {
+    "cpuTariffUSDPerCoreHour": 1,
+    "cpuTariffSensitivity": [
+      0.1,
+      1,
+      10
+    ],
+    "tariffBasis": "Explicit inherited compute sensitivity, not measured invoice or empirical cost bound.",
+    "humanProviderMinutesSaved": 0,
+    "customerReviewMinutesSaved": 0,
+    "zeroCreditMeaning": "No measured human/customer saving; zero economic credit does not assert zero human work.",
+    "proofPremiumCents": 0,
+    "trustUplift": 0,
+    "qualityUplift": 0,
+    "priceUplift": 0,
+    "machineScope": "Mean inclusive CPU difference on15primary paired-composition missions only; three designed root-scope stresses are separate. Measured tools/caches/verification included. Elapsed time is not human attention.",
+    "sharedOverheadRule": "Measured inclusive CPU beyond per-mission rows is allocated uniformly across18fresh outcomes, then included in15primary mean. Designed-stress row CPU never enters the primary mean. Cohort labels must match across arms."
+  },
+  "primaryOutcomes": [
+    "C_minus_B_projectInclusiveProfitCents",
+    "C_minus_A_projectInclusiveProfitCents",
+    "B_minus_A_projectInclusiveProfitCents",
+    "conditionalModeledFinancialGatePassed",
+    "funded_actual_asset_invocations",
+    "full_cost_known"
+  ],
+  "secondaryOutcomes": [
+    "accepted_outcomes",
+    "final_cash",
+    "unpaid_obligations",
+    "reserve",
+    "generated_resources",
+    "negative_worlds",
+    "median_p05_p95",
+    "subcent_compute_effect",
+    "hypothetical_unmeasured_human_seconds_for_break_even",
+    "direct_D_primary_runtime_comparison"
+  ],
+  "alternatives": [
+    "retain-incumbent-and-preserve-reserves",
+    "adopt-existing-registry-composition",
+    "adopt-existing-graph-composition",
+    "maintain-current-records-without-new-investment"
+  ],
+  "alternativeInterpretation": "Adaptive policy can retain the incumbent after paid discovery; each completed composition is also evaluated as existing research replay. Registry/graph full oneoff costs are deducted once even if outside the modeled enterprise. No-investment spends no new construction and preserves available reserves. Existing initial asset maintenance remains charged by the inherited simulator.",
+  "inference": "24 paired conditional worlds per cell; report all means, quantiles, downside counts and descriptive Monte Carlo intervals; no observed-demand, equilibrium, or unconditional probability claim.",
+  "representative": {
+    "condition": "reference",
+    "seed": 9101,
+    "costProfile": "reference"
+  },
+  "limits": {
+    "maxWallSeconds": 180,
+    "maxCpuSeconds": 180
+  },
+  "stoppingRule": "Exactly frozen 48 cells x24 seeds; no parameter/price/horizon substitution. Retain partial outputs on any invariant/budget failure; no automatic restart.",
+  "financialQualification": "Actual composed pipeline must be technically admitted under fixture policy, used on all accepted confirmation missions, identified by source/evidence hash, funded from prior operating resources, and repay complete incremental cost within52weeks. A graph root or technical admission alone is insufficient.",
+  "actualCustomerCollectionsCents": 0,
+  "actualTransactions": 0,
+  "liveIdentityEnforcement": "NOT RUN",
+  "newFinancialAuthority": false,
+  "primaryMissionCount": 15,
+  "stressMissionCount": 3,
+  "directAlternative": {
+    "arm": "D",
+    "scope": "Matched primary production and deterministic assumed-tariff/break-even comparison; no additional strategic campaign.",
+    "adoptionRule": "The native A/B/C financial comparison is conditional on native-history requirements. It cannot establish global graph superiority over D. Equivalent faster D must be disclosed; complete D integration/adoption costs are unknown unless measured, so global admission remains unresolved."
+  }
+}

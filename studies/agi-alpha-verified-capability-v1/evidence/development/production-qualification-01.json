@@ -1,0 +1,47 @@
+{
+  "schema": "verified-capability-development-qualification/v1",
+  "phase": "DEVELOPMENT_ONLY",
+  "command": "python3 -m unittest discover -s tests -p test_production.py -v",
+  "tests": 23,
+  "passed": 23,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "test_wall_seconds_reported_by_unittest": 2.899,
+  "cpu_seconds": null,
+  "primary_composition_outcomes_executed": 0,
+  "designed_stress_outcomes_executed": 0,
+  "actual_customer_orders": 0,
+  "actual_collections": 0,
+  "production_versions": {
+    "python": "3.12.14",
+    "node": "24.22.1"
+  },
+  "files": [
+    {
+      "path": "src/production.py",
+      "sha256": "6b8d9be54ccd5752bfe7b7a58f3fe4b2b92614b0f494fc498281e1edb99a7663"
+    },
+    {
+      "path": "src/acceptance.py",
+      "sha256": "d43be6d98325901b40356db18bf92983d8b1312e294163b14da87a7913984a3d"
+    },
+    {
+      "path": "src/prepare_missions.py",
+      "sha256": "eacbe9e725df1c858b379e49ef6dfdac6c3d8babca99c7f1c69f93269342ff18"
+    },
+    {
+      "path": "tests/test_production.py",
+      "sha256": "4b1a0ac9d9a824a7b3f831156b9ea4b3766b474de2f130e5a04d0f6f35a7c2aa"
+    },
+    {
+      "path": "protocol/mission-design.json",
+      "sha256": "96f9edf0d15f0a06a00055b85a1435876f02b9cc1c5bac4bece5ccde63d8d028"
+    }
+  ],
+  "limits": [
+    "Same-session technical check, not external/organizational review.",
+    "No live ENS verification, signing, installation, application qualification or hosted full repository suite.",
+    "Ruff, Black and mypy executables absent from PATH; not run."
+  ]
+}

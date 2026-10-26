@@ -1,0 +1,106 @@
+{
+  "schema": "agi-alpha-independent-graph-review/v1",
+  "reviewer": "runtime_audit, separate same-session agent from graph and authority implementers",
+  "status": "REPAIRS_PENDING_BEFORE_FREEZE",
+  "scope": [
+    "src/authority.mjs",
+    "src/commitments.mjs",
+    "src/selection.mjs",
+    "src/build_catalog.mjs"
+  ],
+  "fresh_production_outcomes_run": false,
+  "fixture_only": true,
+  "live_identity_enforcement": "NOT_RUN",
+  "evidence": "review/graph-probes-after-root-repair-03.json",
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "high",
+      "status": "repaired-and-reproduced",
+      "owner": "root",
+      "problem": "Catalog admission initially accepted executed evidence from a previous delivery source revision.",
+      "repair": "Bind accepted packet to its source manifest and compare each executed file to current source; use final-source development baseline.",
+      "evidence": "evidence/development/final-source-baseline"
+    },
+    {
+      "id": "R2",
+      "severity": "high",
+      "status": "repaired-and-reproduced",
+      "owner": "root",
+      "problem": "Membership proofs did not prove complete current class inventory, allowing duplicated unrelated revocation rows to hide the target revocation.",
+      "repair": "Rebuild complete typed forest and compare all records, proofs, roots and counts; reject duplicate leaves.",
+      "test": "duplicated-inclusion-cannot-hide-revocation"
+    },
+    {
+      "id": "R3",
+      "severity": "high",
+      "status": "repaired-and-reproduced",
+      "owner": "root",
+      "problem": "Current root context was self-selected and authorized root history was not checked.",
+      "repair": "Require caller anchored expected root, epoch and predecessor; validate complete authorized historical continuity separately from current technical authorization.",
+      "tests": [
+        "wrong-current-root-refuses",
+        "wrong-current-epoch-refuses",
+        "missing-root-history-refuses",
+        "unauthorized-history-prefix-refuses"
+      ]
+    },
+    {
+      "id": "R4",
+      "severity": "high",
+      "status": "open-owner-informed",
+      "owner": "root",
+      "problem": "A root writer can remove declared dependencies and rewrite composition members while retaining unchanged attested dependencyDigests; selector admits only final delivery node.",
+      "repair_requested": "Recompute declared dependency identities from referenced skill bindings and bind composition to exact admitted member versions and implementation identities.",
+      "test": "root-writer-cannot-remove-attested-dependency"
+    },
+    {
+      "id": "R5",
+      "severity": "high",
+      "status": "open-owner-informed",
+      "owner": "root",
+      "problem": "Uncommitted displayed scope, environment and rights can differ from authenticated context digests while selector reports successful reuse.",
+      "repair_requested": "Recompute descriptive scope/environment/rights digests against context and selected skill binding digests.",
+      "tests": [
+        "displayed-scope-must-match-attested-digest",
+        "displayed-environment-must-match-attested-digest",
+        "displayed-rights-must-match-attested-digest"
+      ]
+    },
+    {
+      "id": "R6",
+      "severity": "high",
+      "status": "open-owner-informed",
+      "owner": "root",
+      "problem": "Public selectWorkflow consumes caller-owned records after proof checks. A genuine fixture verifier callback can mutate dependency and composition objects between proof verification and selection.",
+      "repair_requested": "Own immutable canonical catalog and context before callbacks, including public direct selection path.",
+      "test": "direct-selector-owns-post-proof-catalog-frame"
+    },
+    {
+      "id": "R7",
+      "severity": "high",
+      "status": "open-owner-informed",
+      "owner": "foundations_identity",
+      "problem": "Root authorizer uses raw context and attestation authorizer copies only shallowly; resolver callbacks can alter expected epoch or remove nested current revocations before enforcement.",
+      "repair_requested": "Deep-own canonical context before external callbacks; reject accessors.",
+      "tests": [
+        "root-authorizer-owns-precallback-context",
+        "attestation-authorizer-owns-nested-revocation-context"
+      ]
+    }
+  ],
+  "no_finding": [
+    "Generic graph snapshotDigest and signer authorityStateDigest legitimately bind separate material; equality is not a generic authority requirement.",
+    "Prepared createSelector already owns the catalog and resists caller mutation."
+  ],
+  "retained_inconclusive_artifact": {
+    "path": "review/graph-probes-before-01.json",
+    "reason": "Probe ran during root repair against old catalog context without mandatory epoch/predecessor anchors; baseline failed. Negative results from that setup do not establish defenses."
+  },
+  "limits": [
+    "No live ENS registry or authorized signing was available. All authority tests use clearly labeled fixtures.",
+    "Review checks implementation boundaries and bounded attack cases; it is not exhaustive security certification.",
+    "Reviewer authored the separate production adapter; graph and authority code were implemented by other agents.",
+    "No primary pairwise or designed-root-stress production outcomes were inspected."
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "schema": "verified-capability-independent-graph-probes/v1",
+  "scope": "Same-session independent source reviewer; bounded fixture logic, no live ENS, signature, transaction, application or commercial claim",
+  "catalog": "evidence/development/catalog-03/catalog.json",
+  "source": [
+    {
+      "path": "src/authority.mjs",
+      "sha256": "655ce76269356b038deb5ef5a18aef7e1766c8529e19dac6c8391464ee83ea40"
+    },
+    {
+      "path": "src/commitments.mjs",
+      "sha256": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e"
+    },
+    {
+      "path": "src/selection.mjs",
+      "sha256": "99720381c1f071a9bcb11e8220f2ac904831dc36bd625dfc9171fa9d21e7f31a"
+    },
+    {
+      "path": "src/build_catalog.mjs",
+      "sha256": "9900ea18a6e26733a84122eb66447d5f63ef43b5f0ed1b72ea4e08d17461fc7b"
+    }
+  ],
+  "valid_baseline_control": true,
+  "passed": 11,
+  "failed": 6,
+  "rows": [
+    {
+      "name": "baseline-control",
+      "expected_ok": true,
+      "observed_ok": true,
+      "passed": true,
+      "reasons": [],
+      "selected": [
+        "lock-preflight@1",
+        "metadata-verifier@1",
+        "native-workbench@1",
+        "decision-delivery@1"
+      ]
+    },
+    {
+      "name": "expired-skill-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "ATTESTATION_EXPIRED:decision-delivery@1",
+        "SKILL_EXPIRED:decision-delivery@1",
+        "ATTESTATION_EXPIRED:native-workbench@1",
+        "SKILL_EXPIRED:native-workbench@1",
+        "ATTESTATION_EXPIRED:lock-preflight@1",
+        "SKILL_EXPIRED:lock-preflight@1",
+        "ATTESTATION_EXPIRED:metadata-verifier@1",
+        "SKILL_EXPIRED:metadata-verifier@1",
+        "ROOT_ATTESTATION_EXPIRED",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "changed-authority-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:decision-delivery@1",
+        "CURRENT_OPERATION_NOT_GRANTED:decision-delivery@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:decision-delivery@1",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:native-workbench@1",
+        "CURRENT_OPERATION_NOT_GRANTED:native-workbench@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:native-workbench@1",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:lock-preflight@1",
+        "CURRENT_OPERATION_NOT_GRANTED:lock-preflight@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:lock-preflight@1",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:metadata-verifier@1",
+        "CURRENT_OPERATION_NOT_GRANTED:metadata-verifier@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:metadata-verifier@1",
+        "ROOT_CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE",
+        "ROOT_CURRENT_OPERATION_NOT_GRANTED",
+        "ROOT_AUTHORITY_CHANGED_REVALIDATION_REQUIRED",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "wrong-current-root-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_UNEXPECTED_GRAPH_ROOT",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "wrong-current-epoch-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "missing-root-history-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "AUTHORIZED_ROOT_HISTORY_INVALID",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "unauthorized-history-prefix-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "AUTHORIZED_ROOT_HISTORY_INVALID",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "genuine-current-revocation-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "SKILL_REVOKED:decision-delivery@1",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "duplicated-inclusion-cannot-hide-revocation",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "SELECTION_ERROR:DUPLICATE_LEAF"
+      ],
+      "selected": []
+    },
+    {
+      "name": "root-writer-cannot-remove-attested-dependency",
+      "expected_ok": false,
+      "observed_ok": true,
+      "passed": false,
+      "reasons": [],
+      "selected": [
+        "decision-delivery@1"
+      ]
+    },
+    {
+      "name": "displayed-scope-must-match-attested-digest",
+      "expected_ok": false,
+      "observed_ok": true,
+      "passed": false,
+      "reasons": [],
+      "selected": [
+        "lock-preflight@1",
+        "metadata-verifier@1",
+        "native-workbench@1",
+        "decision-delivery@1"
+      ]
+    },
+    {
+      "name": "displayed-environment-must-match-attested-digest",
+      "expected_ok": false,
+      "observed_ok": true,
+      "passed": false,
+      "reasons": [],
+      "selected": [
+        "lock-preflight@1",
+        "metadata-verifier@1",
+        "native-workbench@1",
+        "decision-delivery@1"
+      ]
+    },
+    {
+      "name": "displayed-rights-must-match-attested-digest",
+      "expected_ok": false,
+      "observed_ok": true,
+      "passed": false,
+      "reasons": [],
+      "selected": [
+        "lock-preflight@1",
+        "metadata-verifier@1",
+        "native-workbench@1",
+        "decision-delivery@1"
+      ]
+    },
+    {
+      "name": "prepared-selector-owns-catalog-frame",
+      "expected_ok": true,
+      "observed_ok": true,
+      "passed": true,
+      "reasons": []
+    },
+    {
+      "name": "graph-snapshot-and-authority-state-digests-remain-distinct",
+      "expected_ok": true,
+      "observed_ok": true,
+      "passed": true,
+      "reasons": []
+    },
+    {
+      "name": "root-authorizer-owns-precallback-context",
+      "expected_ok": false,
+      "observed_ok": true,
+      "passed": false,
+      "reasons": []
+    },
+    {
+      "name": "attestation-authorizer-owns-nested-revocation-context",
+      "expected_ok": false,
+      "observed_ok": true,
+      "passed": false,
+      "reasons": []
+    }
+  ]
+}

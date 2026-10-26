@@ -1,0 +1,169 @@
+{
+  "schema": "agi-alpha-resource-and-reproduction-review/v1",
+  "reviewed_at_utc": "2026-10-26T19:58:54.303967+00:00",
+  "status": "PASS_AFTER_DOCUMENTATION_CORRECTION",
+  "reviewer": "economics_audit; separate same-session reviewer, not external certification",
+  "instructions": {
+    "scope": "Bounded read-only review of root cost builder/ledger, isolated reproduction tool and README commands; focus double counting, reference costs, unknowns and original-evidence preservation.",
+    "authorized_execution": "Plan-only reproduction command; no production, market campaign or ledger reconstruction.",
+    "writes": "This new review receipt only; root repaired README separately.",
+    "scientific_outcomes_inspected": "Existing recorded artifacts only; no new scientific outcomes."
+  },
+  "sources": [
+    {
+      "path": "costs/build_resource_ledger.py",
+      "bytes": 14277,
+      "sha256": "386fe63a6712e5eb1ddd66318e35c501c28880899f9c579b349a94fabf09a348"
+    },
+    {
+      "path": "costs/research-resource-ledger.json",
+      "bytes": 28707,
+      "sha256": "28136600fc2e5d7ae97e23dc6140ff057b57f3017f111f4246a8f69a5fe162bb"
+    },
+    {
+      "path": "tools/reproduce.py",
+      "bytes": 5197,
+      "sha256": "207f9edd021af21bfadd3babfac2140b798824f47ccabc5539eefa368216ca09"
+    },
+    {
+      "path": "tools/verify_frozen.py",
+      "bytes": 2087,
+      "sha256": "d122de060c3fdc7a063d507e09cfc579bf5ff8154aaa521a5c96c0a7b59bca74"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9842,
+      "sha256": "5602d84b91fa0527f2cea49dd4198fe2e73c4f29d80773b041c1d53f528c13d3"
+    },
+    {
+      "path": "market/cost-assumptions.json",
+      "bytes": 5699,
+      "sha256": "386be774e8a0ecf39644f2f5186e0c9346913d8d81aafc727102d49eab9ba0e9"
+    },
+    {
+      "path": "src/run_campaign.mjs",
+      "bytes": 15047,
+      "sha256": "005f111e5240e4f9ec25bfecee8cf22c4ebe23ff54d266ccea141df4d3c18f8d"
+    },
+    {
+      "path": "market/run-campaign.mjs",
+      "bytes": 15551,
+      "sha256": "bb86e42e2cdcaae12ac636f771ca159f813e48a1ea91467c45faa436d4dba1b8"
+    },
+    {
+      "path": "evidence/production-summary.json",
+      "bytes": 298184,
+      "sha256": "5c54f59287acef6e9b9db4fbbabd613994df40c0a9f6ea7284a8a8faf10347a2"
+    },
+    {
+      "path": "evidence/market-primary/execution.json",
+      "bytes": 664,
+      "sha256": "4dd7fe8933967f26861c8ebde9b3ec080b69d0b5d7882995a5a9498095d4c7ee"
+    },
+    {
+      "path": "protocol/production-freeze.json",
+      "bytes": 42699,
+      "sha256": "ad71e32caf4545a1baa1f3b09c8e75381967863a444d26dc01c6f13c6d68a82d"
+    },
+    {
+      "path": "protocol/market-freeze.json",
+      "bytes": 36596,
+      "sha256": "6faac0619fd656918db7a22e6ba2966f813abfacec7892eafaf22fdd32f1eec7"
+    },
+    {
+      "path": "review/reconcile_market.mjs",
+      "bytes": 29178,
+      "sha256": "e35d1be19941c1fede46d66745d21c43014858dfbb2fa12bbaa2fb59ea571966"
+    },
+    {
+      "path": "heritage/second-investment/costs/research-resource-ledger.json",
+      "bytes": 235810,
+      "sha256": "aa79e6178e0b03056253f5a012f81cf54b5d131b22685a694944841826aee0c7"
+    }
+  ],
+  "verification": {
+    "method": "Source inspection plus independent arithmetic and file-identity comparisons. These are review checks, not a new scientific test suite.",
+    "named_test_suite_runs": 0,
+    "fresh_production_runs": 0,
+    "market_simulator_runs": 0,
+    "ledger_rebuilds": 0,
+    "plan_command": {
+      "command": [
+        "python",
+        "tools/reproduce.py",
+        "--destination",
+        "/tmp/agi-alpha-review-reproduction-plan-only"
+      ],
+      "exit_code": 0,
+      "classification": "NEW_REPRODUCTION_NOT_ORIGINAL_CONFIRMATION",
+      "destination_created": false,
+      "executed_without_run_flag": true
+    },
+    "partial_cpu_reconciliation": {
+      "production_seconds": 107.494221752,
+      "cache_seconds": 0.312121,
+      "market_seconds": 27.032209,
+      "sum_seconds": 134.838551752,
+      "recorded_seconds": 134.838551752,
+      "matches": true,
+      "double_counting_review": "The production runner excludes confirmation CPU from arm totals through its explicit accountedParentCPU/residual allocation. The ledger adds confirmations separately once. Nested selector/tool/proof timing is not added again.",
+      "scope": "Selected nonoverlapping execution intervals only; not total research expense or effort."
+    },
+    "unknown_costs": "Actual complete capital, research expense, inference/tool invoice, human minutes and upkeep remain null; partial compute has no assigned monetary value. Zero customer collections is separate from unknown expense.",
+    "scenario_reconciliation": {
+      "oneoff_cents": {
+        "low": {
+          "B": 2213,
+          "C": 2263
+        },
+        "reference": {
+          "B": 8850,
+          "C": 9050
+        },
+        "high": {
+          "B": 35400,
+          "C": 36200
+        },
+        "actual-unknown": {
+          "B": null,
+          "C": null
+        }
+      },
+      "matches": true,
+      "rounding": "Independent decimal round-half-up, matching the declared positive integer-cent scenarios.",
+      "interpretation": "Illustrative complete-category allocations, not measured invoices or empirical bounds."
+    },
+    "previous_snapshot_identity_matches": true,
+    "copy_filter_intersection_with_frozen_paths": {
+      "protocol/production-freeze.json": [],
+      "protocol/market-freeze.json": [
+        "evidence/production-summary.json"
+      ]
+    },
+    "isolation_review": "Destination must be fresh, outside the original source tree and not an ancestor of it. Original frozen inputs are verified before execution; the copy preserves all production-frozen files. Old production output/summary and market output are omitted. A new measured summary is hashed into a distinct reproduction-market-freeze.json, retaining original freeze identity. Existing outputs are refused and partial failure artifacts remain. No full replay was executed.",
+    "command_review": "Production reconciliation supports argparse --help. Market reconciliation is a Node .mjs executable with fresh-output protection and no --help branch; README now uses its actual invocation."
+  },
+  "findings": [
+    {
+      "id": "README-MARKET-CHECKER-COMMAND",
+      "severity": "material documentation defect",
+      "initial_observation": "README named nonexistent review/reconcile_market.py with python3 --help. The delivered checker is review/reconcile_market.mjs and has no --help branch; merely substituting node while retaining --help would execute the audit.",
+      "status": "CORRECTED_BY_ROOT",
+      "verified_correction": "README now gives node review/reconcile_market.mjs --root . --output review/market-reconciliation-NEW.json; the output must be fresh."
+    },
+    {
+      "id": "README-STABLE-PDF-PATH",
+      "severity": "delivery-link correction",
+      "initial_observation": "README pointed to the build-directory PDF rather than the stable final paper artifact.",
+      "status": "CORRECTED_BY_ROOT",
+      "verified_correction": "README now points to paper/AGI_ALPHA_Economy_of_Verified_Capability.pdf."
+    }
+  ],
+  "remaining_material_findings": [],
+  "limitations": [
+    "Bounded same-session code and artifact review, not external accounting certification.",
+    "Full isolated reproduction and different-platform revalidation remain NOT RUN.",
+    "No claim that unknown total research cost is zero or fully covered by the selected 134.838551752 CPU seconds.",
+    "Presentation, persistence and publication work after the resource snapshot requires the already-declared dated closing supplement."
+  ]
+}

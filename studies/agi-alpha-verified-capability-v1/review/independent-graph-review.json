@@ -1,0 +1,216 @@
+{
+  "schema": "agi-alpha-independent-graph-review/v1",
+  "reviewer": "runtime_audit, separate same-session agent from graph and authority implementers",
+  "status": "BOUNDED_RESEARCH_REVIEW_PASS_BEFORE_CONFIRMATION",
+  "scope": [
+    "src/authority.mjs",
+    "src/commitments.mjs",
+    "src/selection.mjs",
+    "src/build_catalog.mjs"
+  ],
+  "fresh_production_outcomes_run": false,
+  "fixture_only": true,
+  "live_identity_enforcement": "NOT_RUN",
+  "evidence": "review/graph-probes-final-02.json",
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "high",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "root",
+      "problem": "Catalog admission initially accepted executed evidence from a previous delivery source revision.",
+      "repair": "Bind accepted packet to its source manifest and compare each executed file to current source; use final-source development baseline.",
+      "evidence": "evidence/development/final-source-baseline",
+      "repaired_test_evidence": "review/source-admission-probe-01.json"
+    },
+    {
+      "id": "R2",
+      "severity": "high",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "root",
+      "problem": "Membership proofs did not prove complete current class inventory, allowing duplicated unrelated revocation rows to hide the target revocation.",
+      "repair": "Rebuild complete typed forest and compare all records, proofs, roots and counts; reject duplicate leaves.",
+      "test": "duplicated-inclusion-cannot-hide-revocation",
+      "repaired_test_evidence": "review/graph-probes-final-02.json"
+    },
+    {
+      "id": "R3",
+      "severity": "high",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "root",
+      "problem": "Current root context was self-selected and authorized root history was not checked.",
+      "repair": "Require caller anchored expected root, epoch and predecessor; validate complete authorized historical continuity separately from current technical authorization.",
+      "tests": [
+        "wrong-current-root-refuses",
+        "wrong-current-epoch-refuses",
+        "missing-root-history-refuses",
+        "unauthorized-history-prefix-refuses"
+      ],
+      "repaired_test_evidence": "review/graph-probes-final-02.json"
+    },
+    {
+      "id": "R4",
+      "severity": "high",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "root",
+      "problem": "A root writer can remove declared dependencies and rewrite composition members while retaining unchanged attested dependencyDigests; selector admits only final delivery node.",
+      "repair_requested": "Recompute declared dependency identities from referenced skill bindings and bind composition to exact admitted member versions and implementation identities.",
+      "test": "root-writer-cannot-remove-attested-dependency",
+      "repaired_test_evidence": "review/graph-probes-final-02.json"
+    },
+    {
+      "id": "R5",
+      "severity": "high",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "root",
+      "problem": "Uncommitted displayed scope, environment and rights can differ from authenticated context digests while selector reports successful reuse.",
+      "repair_requested": "Recompute descriptive scope/environment/rights digests against context and selected skill binding digests.",
+      "tests": [
+        "displayed-scope-must-match-attested-digest",
+        "displayed-environment-must-match-attested-digest",
+        "displayed-rights-must-match-attested-digest"
+      ],
+      "repaired_test_evidence": "review/graph-probes-final-02.json"
+    },
+    {
+      "id": "R6",
+      "severity": "high",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "root",
+      "problem": "Public selectWorkflow consumes caller-owned records after proof checks. A genuine fixture verifier callback can mutate dependency and composition objects between proof verification and selection.",
+      "repair_requested": "Own immutable canonical catalog and context before callbacks, including public direct selection path.",
+      "test": "direct-selector-owns-post-proof-catalog-frame",
+      "repaired_test_evidence": "review/graph-probes-final-02.json"
+    },
+    {
+      "id": "R7",
+      "severity": "high",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "foundations_identity",
+      "problem": "Root authorizer uses raw context and attestation authorizer copies only shallowly; resolver callbacks can alter expected epoch or remove nested current revocations before enforcement.",
+      "repair_requested": "Deep-own canonical context before external callbacks; reject accessors.",
+      "tests": [
+        "root-authorizer-owns-precallback-context",
+        "attestation-authorizer-owns-nested-revocation-context"
+      ],
+      "repaired_test_evidence": "review/graph-probes-final-02.json",
+      "repair": "Both public authority APIs own canonical deep-frozen context before any resolver callback; authority envelope constructors also own payload/options."
+    },
+    {
+      "id": "R8",
+      "severity": "methodological",
+      "status": "repaired-and-reproduced-before-fresh-outcomes",
+      "owner": "root",
+      "discovered_by": "Creator self-critique before fresh outcomes; independent structural confirmation by runtime_audit",
+      "problem": "Initial registry comparator repeatedly scanned relationships while graph indexed adjacency, and both actually selected from requires. This created an avoidable weak-baseline penalty and failed to isolate graph-guided selection.",
+      "repair": "Registry uses ordinary retained validated composition recipe and evidence index. Graph selects through adjacency. Both use identical skills, evidence, policy and indexed validation; both examine4relationship rows.",
+      "evidence": "review/graph-probes-final-01.json",
+      "verified_baseline_counters": {
+        "B": {
+          "relationship_rows_examined": 4,
+          "relationship_traversals": 0,
+          "recipe_members_read": 4,
+          "file_reads": 36,
+          "bytes_hashed": 1993987
+        },
+        "C": {
+          "relationship_rows_examined": 4,
+          "relationship_traversals": 3,
+          "recipe_members_read": 0,
+          "file_reads": 36,
+          "bytes_hashed": 1993987
+        }
+      },
+      "repaired_test_evidence": "review/graph-probes-final-02.json"
+    }
+  ],
+  "no_finding": [
+    "Generic graph snapshotDigest and signer authorityStateDigest legitimately bind separate material; equality is not a generic authority requirement.",
+    "Prepared createSelector already owns the catalog and resists caller mutation."
+  ],
+  "retained_inconclusive_artifact": {
+    "path": "review/graph-probes-before-01.json",
+    "reason": "Probe ran during root repair against old catalog context without mandatory epoch/predecessor anchors; baseline failed. Negative results from that setup do not establish defenses."
+  },
+  "limits": [
+    "No live ENS registry or authorized signing was available. All authority tests use clearly labeled fixtures.",
+    "Review checks implementation boundaries and bounded attack cases; it is not exhaustive security certification.",
+    "Reviewer authored the separate production adapter; graph and authority code were implemented by other agents.",
+    "No primary pairwise or designed-root-stress production outcomes were inspected."
+  ],
+  "supplemental_admission_controls": {
+    "source_guard": "review/source-admission-probe-01.json",
+    "semantic_certificate_replay": "review/admission-reverification-probes-01.json",
+    "foundation_finding": "evidence/development/foundation-review-certificate-copy/review-receipt.json",
+    "outcome": "Current catalog build rejects stale source and forged self-consistent certificates; independent final-source baseline replay passes."
+  },
+  "final_source_identities": [
+    {
+      "path": "src/authority.mjs",
+      "sha256": "5229ee523cc6280debed2c55aff922d7d1192c848ade43676a9db86121294de1"
+    },
+    {
+      "path": "src/commitments.mjs",
+      "sha256": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e"
+    },
+    {
+      "path": "src/selection.mjs",
+      "sha256": "b48f6ea515766b6c661896bf0a711ffeba820e1e5b30b60e86737068d966ff50"
+    },
+    {
+      "path": "src/build_catalog.mjs",
+      "sha256": "19ddd04551f53287657550fd067b2f904fa7c07e0914be9d1b85455fc6de1a24"
+    }
+  ],
+  "independent_probes": {
+    "passed": 21,
+    "failed": 0,
+    "valid_baseline_control": true,
+    "same_registry_graph_acceptance_and_selection": true,
+    "fixture_only": true,
+    "review_resources": {
+      "elapsed_seconds": 0.629875761,
+      "cpu_seconds": 0.707974,
+      "model_calls_in_script": 0,
+      "network_calls": 0,
+      "transactions": 0,
+      "reviewer_attention": "UNKNOWN",
+      "authoring_inference_cost": "UNKNOWN"
+    },
+    "source_sha256": "f59dabb4ead4293b5298803246d58ea238ed59582b8c7642c1319281ccd9575e",
+    "command": "node review/graph-probes.mjs evidence/catalog/catalog.json review/graph-probes-reproduction-NEW.json"
+  },
+  "additional_boundary_review": {
+    "file_identity_symlinks": "Root repaired lexical-only containment with realpath and per-component symlink checks before final review. Source inspection, not an outside-file probe.",
+    "semantic_admission": "Development-only independent verifier replay accepts source-bound baseline and refuses forged self-consistent CONFLICT certificate.",
+    "market_adapter": "Read-only review found no additional substantive economic defect. CPU calibration uses15primary only, scenarios retain unknown actual cost, D remains visible. Production summary/admission provenance and source freeze are still required; market campaign not executed by reviewer."
+  },
+  "production_qualification": {
+    "evidence": "evidence/development/production-qualification-01.json",
+    "passed": 23,
+    "failed": 0,
+    "full_repository_suite": "NOT_RUN",
+    "baseline": "evidence/development/production-controls-286bzujm/native-baseline",
+    "baseline_source_sha256": "33f3075afca390d4e26dd8cac6094242aa9f692e381a8f7b02dae0d3f8b47e06",
+    "source_unchanged_since_qualification": true,
+    "production_sha256": "6b8d9be54ccd5752bfe7b7a58f3fe4b2b92614b0f494fc498281e1edb99a7663",
+    "acceptance_sha256": "d43be6d98325901b40356db18bf92983d8b1312e294163b14da87a7913984a3d",
+    "scope": "Only unchanged development baseline and synthetic controls; authored by this reviewer, so this is not counted as independent production review."
+  },
+  "input_only_audit": "evidence/development/mission-input-identities-01.json",
+  "retained_review_history": [
+    "review/graph-probes-before-01.json",
+    "review/graph-probes-after-root-repair-01.json",
+    "review/graph-probes-after-root-repair-02.json",
+    "review/graph-probes-after-root-repair-03.json",
+    "review/graph-probes-final-01.json",
+    "review/independent-graph-review-pending-01.json",
+    "review/independent-graph-review-pending-02.json"
+  ],
+  "claims_not_established": [
+    "Live ENS ownership/controller/delegation verification or cryptographic authorized signing",
+    "Fresh transfer: primary15and stress3outcomes remain unrun at review completion",
+    "Economic adoption, modeled second-investment repayment or realized commercial success",
+    "Exhaustive security certification or independent external peer review"
+  ]
+}

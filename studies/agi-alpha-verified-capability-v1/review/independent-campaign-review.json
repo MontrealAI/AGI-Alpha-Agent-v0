@@ -1,0 +1,97 @@
+{
+  "schema": "agi-alpha-independent-production-campaign-review/v1",
+  "reviewer": "runtime_audit, separate same-session reviewer from campaign runner implementer",
+  "status": "BOUNDED_RESEARCH_REVIEW_PASS_BEFORE_CONFIRMATION",
+  "fresh_outcomes_inspected": false,
+  "final_source": [
+    {
+      "path": "src/run_campaign.mjs",
+      "sha256": "005f111e5240e4f9ec25bfecee8cf22c4ebe23ff54d266ccea141df4d3c18f8d"
+    },
+    {
+      "path": "src/measure_production.py",
+      "sha256": "9682b04c0dee11acdd874d18d78f892c61097cb721559af02ef4a0ac7f674315"
+    },
+    {
+      "path": "src/production.py",
+      "sha256": "6b8d9be54ccd5752bfe7b7a58f3fe4b2b92614b0f494fc498281e1edb99a7663"
+    },
+    {
+      "path": "src/acceptance.py",
+      "sha256": "d43be6d98325901b40356db18bf92983d8b1312e294163b14da87a7913984a3d"
+    },
+    {
+      "path": "market/adapter.mjs",
+      "sha256": "5c9858357d46501060c5843dc5b44d4dbf0b893f973364fc2437b8c6aa1f9b65"
+    }
+  ],
+  "findings": [
+    {
+      "id": "C1",
+      "status": "repaired-before-outcomes",
+      "problem": "Source freeze accepted missing or duplicate entries and did not enforce complete source/input closure.",
+      "repair": "Mandatory runner, native/producer, fixture, catalog/dossier, protocol, assetbinding, prepared input and allwheel paths; duplicate/kind/path/symlink checks."
+    },
+    {
+      "id": "C2",
+      "status": "repaired-before-outcomes",
+      "problem": "Fixed18denominator lacked runtime enforcement of distinct substantive questions and balanced4arm permutations.",
+      "repair": "15primary+3stress counts, unique jobids/paths, frozen independent semantic-identity audit, exact ABCD permutations, positional balance."
+    },
+    {
+      "id": "C3",
+      "status": "repaired-before-outcomes",
+      "problem": "Serialization/loop work between row samples and final custody check was omitted from allocated parentCPU.",
+      "repair": "Residual measured parentCPU/wall equally allocated after explicit startup,row,and cache costs. Final serialization and pre-clock Node wall remain explicitly unmeasured."
+    },
+    {
+      "id": "C4",
+      "status": "repaired-before-outcomes",
+      "problem": "Missing child measurement became numeric0 without completeness semantics.",
+      "repair": "Measured lower-bound CPU retained with UNKNOWN_NOT_ZERO and child/descendant completeness flags; market adapter rejects incomplete cost calibration."
+    },
+    {
+      "id": "C5",
+      "status": "repaired-before-outcomes",
+      "problem": "Timeouts only killed direct children and driverCPU was sampled twice.",
+      "repair": "Owned descendant process group with bound PID parent receipt and timeout cleanup; one driverCPU sample used for reconciled total."
+    },
+    {
+      "id": "C6",
+      "status": "repaired-before-outcomes",
+      "problem": "Asset usage/accepted packet custody relied on selected flags without binding the actual returned packet to registered job, scope key and route.",
+      "repair": "selection_used reflects actual selected target; returned packet must match exact jobid/hash, substantive key, route, and measurement returncode."
+    },
+    {
+      "id": "C7",
+      "status": "repaired-before-outcomes",
+      "problem": "Experimental repeated source custody overhead could be mistaken for offering deployment latency.",
+      "repair": "Guard CPU/wall separately visible while retained in complete measured campaign costs; deployment inference must account for this boundary."
+    }
+  ],
+  "returned_packet_guard": [
+    "const packetMatches=packet?.job_id===job.id&&packet?.job_sha256===job.job_sha256&&packet?.mission_key===semanticKeys[i]&&packet?.route===(arm==='D'?'direct':'native')&&measurement?.returncode===operation.code;",
+    "const row={id:job.id,cohort:job.group==='primary-composition'?'primary':'stress',families:job.families,arm,order:orders[i],accepted:packet?.accepted===true&&operation.code===0&&packetMatches,",
+    "returned_packet_identity_matches:packetMatches,parent_cpu_seconds:cpuSeconds(usage),child_cpu_known:measurement!==null&&measurement.descendant_cpu_complete===true,unmeasured_child_cost:measurement===null||measurement.descendant_cpu_complete!==true?'UNKNOWN_NOT_ZERO':null,"
+  ],
+  "qualification": {
+    "path": "evidence/development/measurement-wrapper-01/qualification.json",
+    "passed": 10,
+    "failed": 0,
+    "input": "Unchanged development baseline only",
+    "production_source_unchanged": true,
+    "result": "Accepted CONSISTENT native packet, exactsource33f3075..., clean exit, complete descendants, CPU child+driver reconciliation, empty authority and no application qualification."
+  },
+  "source_inspection_not_executed": [
+    "Primary18mission campaign",
+    "Market campaign",
+    "Abnormal timeout process tree termination"
+  ],
+  "scope_limits": [
+    "Same-session source review and one bounded development execution, not external certification.",
+    "The runner still trusts the locally executed source-bound production adapter and its independent verifier; fixture signatures do not establish live ENS identity.",
+    "Final receipt/summary serialization after samples and Node startup wall before the campaign clock remain disclosed unmeasured boundaries.",
+    "No actual customer use, collections, live signing or on-chain transaction."
+  ],
+  "next_authorized_check": "After root freezes and executes, independently reconcile72stored outcomes, exact packets,18question denominator,15primary/3stress partition, cache confirmations, measured costs and B/C asset usage."
+}

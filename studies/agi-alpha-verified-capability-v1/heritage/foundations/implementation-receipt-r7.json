@@ -1,0 +1,56 @@
+{
+  "schema": "verified-capability-authority-implementation-receipt/v2",
+  "mode": "FIXTURE_ONLY",
+  "live_identity_enforcement": "NOT_RUN",
+  "credentials_created": 0,
+  "network_registry_queries": 0,
+  "onchain_transactions": 0,
+  "test_results": {
+    "authority_passed": 54,
+    "commitments_passed": 26,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cross_language": "Python independently reproduced canonical typed leaves, odd-node Merkle root and complete graph epoch",
+  "test_commands": [
+    "node tests/authority.test.mjs",
+    "node tests/commitments.test.mjs"
+  ],
+  "development_failure": "Initial Python stdin cross-language subprocess blocked in this host. Its single owned Node process was terminated. Bounded argv fixture runner passed. No production source or semantic gate was weakened.",
+  "files": {
+    "src/authority.mjs": {
+      "bytes": 13915,
+      "sha256": "5229ee523cc6280debed2c55aff922d7d1192c848ade43676a9db86121294de1"
+    },
+    "src/commitments.mjs": {
+      "bytes": 9972,
+      "sha256": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e"
+    },
+    "fixtures/authority.json": {
+      "bytes": 16257,
+      "sha256": "c130af4be60ab8ab5e61292ddbdd7f9588f2f8817c0edca150ccfc8709624da4"
+    },
+    "tests/authority.test.mjs": {
+      "bytes": 15379,
+      "sha256": "64dfe9cb00a45cc514f62e8cf4cfb3f12d1255286bcf9c0321ba1a76a2145aad"
+    },
+    "tests/commitments.test.mjs": {
+      "bytes": 9223,
+      "sha256": "a65c09463ef060a800891b403e7431fdcf014852063f3e49ce46b6e43cf861d4"
+    }
+  },
+  "independent_review": "Same-session separate implementation/evidence inspection; not external organizational independence.",
+  "supersedes_without_overwriting": "implementation-receipt.json",
+  "repair": "R7: canonical deep-owned immutable context captured before callbacks in both authorizers; fixture envelope options and payload similarly owned.",
+  "independent_review_status": "21/21 saved adversarial graph probes pass, including both R7 callback ownership cases; separate same-session reviewer, not external peer review.",
+  "preserved_prior_findings": [
+    "review/graph-probes-after-root-repair-01.json",
+    "review/graph-probes-final-01.json"
+  ],
+  "independent_probe_receipt": {
+    "path": "review/graph-probes-final-02.json",
+    "sha256": "56d979a82d585f0e85eae5b19b524d9c587aa9ee429590ee1ce448459b5cccf7",
+    "passed": 21,
+    "failed": 0
+  }
+}

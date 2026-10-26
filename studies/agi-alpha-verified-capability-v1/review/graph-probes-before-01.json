@@ -1,0 +1,228 @@
+{
+  "schema": "verified-capability-independent-graph-probes/v1",
+  "scope": "Same-session independent source reviewer; bounded fixture logic, no live ENS, signature, transaction, application or commercial claim",
+  "catalog": "evidence/development/catalog-01/catalog.json",
+  "source": [
+    {
+      "path": "src/authority.mjs",
+      "sha256": "655ce76269356b038deb5ef5a18aef7e1766c8529e19dac6c8391464ee83ea40"
+    },
+    {
+      "path": "src/commitments.mjs",
+      "sha256": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e"
+    },
+    {
+      "path": "src/selection.mjs",
+      "sha256": "99720381c1f071a9bcb11e8220f2ac904831dc36bd625dfc9171fa9d21e7f31a"
+    },
+    {
+      "path": "src/build_catalog.mjs",
+      "sha256": "d2f1acfa4a4c3b3fb394da89127dde7b980df8c5f188a8b5fd00eb86c85cc43f"
+    }
+  ],
+  "passed": 12,
+  "failed": 3,
+  "rows": [
+    {
+      "name": "baseline-control",
+      "expected_ok": true,
+      "observed_ok": false,
+      "passed": false,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "expired-skill-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ATTESTATION_EXPIRED:decision-delivery@1",
+        "SKILL_EXPIRED:decision-delivery@1",
+        "ATTESTATION_EXPIRED:native-workbench@1",
+        "SKILL_EXPIRED:native-workbench@1",
+        "ATTESTATION_EXPIRED:lock-preflight@1",
+        "SKILL_EXPIRED:lock-preflight@1",
+        "ATTESTATION_EXPIRED:metadata-verifier@1",
+        "SKILL_EXPIRED:metadata-verifier@1",
+        "ROOT_ATTESTATION_EXPIRED",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "changed-authority-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:decision-delivery@1",
+        "CURRENT_OPERATION_NOT_GRANTED:decision-delivery@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:decision-delivery@1",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:native-workbench@1",
+        "CURRENT_OPERATION_NOT_GRANTED:native-workbench@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:native-workbench@1",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:lock-preflight@1",
+        "CURRENT_OPERATION_NOT_GRANTED:lock-preflight@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:lock-preflight@1",
+        "CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE:metadata-verifier@1",
+        "CURRENT_OPERATION_NOT_GRANTED:metadata-verifier@1",
+        "AUTHORITY_CHANGED_REVALIDATION_REQUIRED:metadata-verifier@1",
+        "ROOT_CURRENT_SIGNER_NOT_CONTROLLER_OR_DELEGATE",
+        "ROOT_CURRENT_OPERATION_NOT_GRANTED",
+        "ROOT_AUTHORITY_CHANGED_REVALIDATION_REQUIRED",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "wrong-current-root-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_UNEXPECTED_GRAPH_ROOT",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "wrong-current-epoch-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "missing-root-history-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "AUTHORIZED_ROOT_HISTORY_INVALID",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "unauthorized-history-prefix-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "AUTHORIZED_ROOT_HISTORY_INVALID",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "genuine-current-revocation-refuses",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "SKILL_REVOKED:decision-delivery@1",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "duplicated-inclusion-cannot-hide-revocation",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "SELECTION_ERROR:DUPLICATE_LEAF"
+      ],
+      "selected": []
+    },
+    {
+      "name": "root-writer-cannot-remove-attested-dependency",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "displayed-scope-must-match-attested-digest",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "displayed-environment-must-match-attested-digest",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "displayed-rights-must-match-attested-digest",
+      "expected_ok": false,
+      "observed_ok": false,
+      "passed": true,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ],
+      "selected": []
+    },
+    {
+      "name": "prepared-selector-owns-catalog-frame",
+      "expected_ok": true,
+      "observed_ok": false,
+      "passed": false,
+      "reasons": [
+        "UNEXPECTED_CURRENT_ROOT_OR_EPOCH",
+        "ROOT_ROOT_COMPARE_AND_SWAP_MISMATCH",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ]
+    },
+    {
+      "name": "root-snapshot-digest-matches-authority-snapshot",
+      "expected_ok": false,
+      "observed_ok": true,
+      "passed": false,
+      "reasons": []
+    }
+  ]
+}
