@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 from typing import Callable
 
+from .checksum_repair import repair_checksum_write_order
 from .models import FailureBundle, PatchCandidate, SupportMode, ValidatorClass
 from .workspace import copy_workspace, project_path, workspace_files
 from .triage import triage_bundle
@@ -32,7 +33,12 @@ def generate_candidates(repo_root: pathlib.Path, bundle: FailureBundle) -> list[
         return [candidate] if candidate else []
     if bundle.validator_class in {ValidatorClass.PYTEST, ValidatorClass.SMOKE}:
         candidate = _candidate_from_mutation(repo_root, bundle, _fix_known_pytest_regression)
-        return [candidate] if candidate else []
+        candidates = [candidate] if candidate else []
+        if "checksum" in bundle.logs.lower():
+            checksum_candidate = _candidate_from_mutation(repo_root, bundle, repair_checksum_write_order)
+            if checksum_candidate:
+                candidates.append(checksum_candidate)
+        return candidates
     if bundle.validator_class == ValidatorClass.MKDOCS:
         candidate = _candidate_from_mutation(repo_root, bundle, _fix_mkdocs_yaml)
         return [candidate] if candidate else []
