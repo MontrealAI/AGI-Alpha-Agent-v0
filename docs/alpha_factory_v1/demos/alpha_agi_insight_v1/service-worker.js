@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* eslint-env serviceworker */
-const CACHE = "agialpha-gallery-3354de3b886de46b";
+const CACHE = "agialpha-gallery-1120015b41d34b5f";
 const RELEASE = "1.44.0";
 const ASSETS = [
   "../../../TERMS_AND_CONDITIONS/assets/preview.svg",
@@ -400,6 +400,7 @@ const ASSETS = [
   "../../../omni_factory_demo/assets/style.css",
   "../../../omni_factory_demo/index.html",
   "../../../presentation/assets/preview.svg",
+  "../../../reports/agi-alpha-funded-advantage-v1/index.html",
   "../../../reports/research-capability-inheritance-v1/index.html",
   "../../../reports/research-discoverability-v1/index.html",
   "../../../reports/research-foundry-v2/index.html",
