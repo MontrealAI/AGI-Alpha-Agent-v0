@@ -1,0 +1,10 @@
+{
+  "status": "FAILED_QA_INSTRUMENT",
+  "observedStates": [
+    "completed",
+    "approved"
+  ],
+  "cause": "Programmatic click occurred while the run button was still disabled by the pending approval request. Earlier locator-click sampling could occur after fast work had already completed.",
+  "correction": "Wait for the approved run control to be enabled, dispatch its actual handler without pointer auto-wait, then observe real running state before closing. No product safety, source, permission or timing threshold is weakened.",
+  "customerJobs": 0
+}

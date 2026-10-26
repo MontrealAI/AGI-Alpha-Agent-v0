@@ -1,0 +1,21 @@
+{
+  "review": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6420182655",
+  "findings": [
+    {
+      "finding": "Importer supported only preservation; writer standard also admits a verified complete regression as useful hold.",
+      "substantiated": true,
+      "repair": "Accept COMPONENT_REGRESSION only with preserved baseline, complete proposed BEHAVIOR_MISMATCH, matching original verifier/source/observations and exact decision coverage. Synthetic control added; missing cases remain refused."
+    },
+    {
+      "finding": "Generated Markdown incorrectly called an unestablished deployment the production lock.",
+      "substantiated": true,
+      "repair": "Use current native application lock in the generated report; preserve original writer files unchanged."
+    }
+  ],
+  "fullHookAttempt": {
+    "status": "Not completed: fresh Semgrep hook environment initialization timed out at 300 seconds; zero hook pass or Security clearance claimed.",
+    "protectedCriteriaChanged": false
+  },
+  "economicPromotion": "HOLD",
+  "customerAcceptance": "unknown"
+}
