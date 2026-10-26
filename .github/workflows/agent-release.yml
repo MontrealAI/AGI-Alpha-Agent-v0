@@ -45,6 +45,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python -m scripts.publish_agent_release --preflight
+      - name: Reject impossible historical qualification before acceptance (main publication only)
+        if: github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'
+        run: python -m scripts.wait_for_release_ci --preflight
 
   successor-journey:
     if: ${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}

@@ -483,3 +483,290 @@ def test_fetched_job_inventory_rejects_nonbuiltin_integer_fields(
     monkeypatch.setattr(json, "loads", lambda raw: response)
     with pytest.raises(ValueError):
         wait_for_release_ci.fetch_qualification_jobs(REPOSITORY, run())
+
+
+def preflight_environment(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("GITHUB_SHA", SHA)
+    monkeypatch.setenv("GITHUB_REPOSITORY", REPOSITORY)
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.setattr(wait_for_release_ci.time, "sleep", lambda *args: pytest.fail("Preflight must never poll"))
+    monkeypatch.setattr(wait_for_release_ci.time, "monotonic", lambda: pytest.fail("Preflight has no wait deadline"))
+    monkeypatch.setattr(
+        subprocess, "check_output", lambda *args, **kwargs: pytest.fail("Preflight must not use gh credentials")
+    )
+
+
+def preflight_response(evidence: dict, calls: list[str]):
+    def response(endpoint: str) -> dict:
+        calls.append(endpoint)
+        if "/attempts/" in endpoint:
+            assert "/runs/1/attempts/1/jobs?per_page=100&page=1" in endpoint
+            return {"total_count": 1, "jobs": [job()]}
+        assert endpoint.endswith(f"/runs?head_sha={SHA}&per_page=100")
+        workflow = endpoint.split("/workflows/")[1].split("/")[0]
+        return {"workflow_runs": evidence["workflows"][workflow]}
+
+    return response
+
+
+@pytest.mark.parametrize("state", ["complete", "missing", "queued", "in_progress", "requested", "waiting", "pending"])
+def test_preflight_is_one_shot_and_never_records_acceptance(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture, state: str
+) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    evidence, calls = snapshot(), []
+    if state == "missing":
+        evidence["workflows"]["ci.yml"] = []
+    elif state != "complete":
+        evidence["workflows"]["ci.yml"][0].update(status=state, conclusion=None)
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", preflight_response(evidence, calls))
+    assert wait_for_release_ci.preflight() is (state == "complete")
+    assert len(calls) == (6 if state == "complete" else 5)
+    assert len([endpoint for endpoint in calls if "/workflows/" in endpoint]) == 3
+    assert list(tmp_path.iterdir()) == []
+    output = capsys.readouterr().out
+    assert "final release acceptance is still required" in output if state == "complete" else "PENDING" in output
+
+
+@pytest.mark.parametrize("conclusion", ["failure", "cancelled", "skipped", "timed_out", None])
+def test_preflight_rejects_terminal_unsuccessful_exact_push(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, conclusion: str | None
+) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    evidence, calls = snapshot(), []
+    evidence["workflows"]["ci.yml"][0]["conclusion"] = conclusion
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", preflight_response(evidence, calls))
+    with pytest.raises(RuntimeError, match="did not pass"):
+        wait_for_release_ci.preflight()
+    assert len(calls) == 1
+    assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize("conclusion", ["skipped", "failure", "cancelled", "timed_out", None])
+def test_preflight_rejects_green_run_without_successful_full_marker(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, conclusion: str | None
+) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    calls = []
+    response = preflight_response(snapshot(), calls)
+
+    def paper_response(endpoint):
+        result = response(endpoint)
+        if "jobs" in result:
+            result["jobs"][0]["conclusion"] = conclusion
+        return result
+
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", paper_response)
+    with pytest.raises(RuntimeError, match="exact main push has no successful full"):
+        wait_for_release_ci.preflight()
+    assert len(calls) == 2
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_preflight_uses_latest_exact_main_push_and_attempt(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    evidence, calls = snapshot(), []
+    evidence["workflows"]["ci.yml"] += [
+        run(id=2, run_attempt=3, path=".github/workflows/ci.yml"),
+        run(id=3, event="workflow_dispatch", path=".github/workflows/ci.yml"),
+        run(id=4, head_branch="candidate", path=".github/workflows/ci.yml"),
+        run(id=5, head_sha="b" * 40, path=".github/workflows/ci.yml"),
+    ]
+
+    def response(endpoint):
+        calls.append(endpoint)
+        if "/attempts/" in endpoint:
+            assert "/runs/2/attempts/3/jobs?per_page=100&page=1" in endpoint
+            return {"total_count": 1, "jobs": [job(run_id=2, run_attempt=2)]}
+        return {"workflow_runs": evidence["workflows"]["ci.yml"]}
+
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", response)
+    with pytest.raises(ValueError, match="requested run, attempt and SHA"):
+        wait_for_release_ci.preflight()
+    assert len(calls) == 2
+    assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize(
+    "payload",
+    ["not-json", "[]", "{}", '{"workflow_runs":{}}', '{"workflow_runs":[false]}'],
+)
+def test_preflight_refuses_malformed_api_without_writing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, payload: str
+) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", lambda *args, **kwargs: payload)
+    with pytest.raises(ValueError):
+        wait_for_release_ci.preflight()
+    assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"id": True},
+        {"run_attempt": 0},
+        {"path": ".github/workflows/other.yml"},
+        {"status": "unknown"},
+        {"status": "in_progress", "conclusion": "success"},
+        {"head_sha": 1},
+        {"head_sha": "a" * 39},
+        {"head_branch": None},
+        {"event": False},
+    ],
+)
+def test_preflight_refuses_malformed_run_states(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, change: dict) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    evidence, calls = snapshot(), []
+    evidence["workflows"]["ci.yml"][0].update(change)
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", preflight_response(evidence, calls))
+    with pytest.raises(ValueError):
+        wait_for_release_ci.preflight()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_preflight_refuses_duplicate_run_inventory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    evidence, calls = snapshot(), []
+    evidence["workflows"]["ci.yml"] *= 2
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", preflight_response(evidence, calls))
+    with pytest.raises(ValueError, match="Duplicate"):
+        wait_for_release_ci.preflight()
+    assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize(
+    "variable,value",
+    [("GITHUB_REPOSITORY", "other/repo"), ("GITHUB_REF", "refs/heads/candidate"), ("GITHUB_SHA", "a" * 39)],
+)
+def test_preflight_rejects_unauthorized_context_before_api_or_writes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, variable: str, value: str
+) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    monkeypatch.setenv(variable, value)
+    monkeypatch.setattr(
+        wait_for_release_ci, "_public_json", lambda *args: pytest.fail("Invalid context queried GitHub")
+    )
+    with pytest.raises(ValueError, match="authorized exact main"):
+        wait_for_release_ci.preflight()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_preflight_cli_preserves_existing_acceptance_snapshot(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    old = tmp_path / "evidence" / "historical-ci.json"
+    old.parent.mkdir()
+    old.write_bytes(b"existing acceptance must not be overwritten")
+    evidence, calls = snapshot(), []
+    evidence["workflows"]["ci.yml"] = []
+    monkeypatch.setattr(wait_for_release_ci, "_public_json", preflight_response(evidence, calls))
+    monkeypatch.setattr(sys, "argv", ["wait_for_release_ci", "--preflight"])
+    wait_for_release_ci.main()
+    assert old.read_bytes() == b"existing acceptance must not be overwritten"
+
+
+def test_preflight_workflow_is_early_blocking_and_final_queue_is_unchanged() -> None:
+    import yaml
+
+    workflow = yaml.safe_load((Path(__file__).resolve().parents[1] / ".github/workflows/agent-release.yml").read_text())
+    jobs = workflow["jobs"]
+    preflight_job = jobs["publication-preflight"]
+    commands = [step.get("run") for step in preflight_job["steps"]]
+    early = "python -m scripts.wait_for_release_ci --preflight"
+    assert commands.index("python -m scripts.publish_agent_release --preflight") + 1 == commands.index(early)
+    step = preflight_job["steps"][commands.index(early)]
+    assert step["if"] == "github.ref == 'refs/heads/main' && github.repository == 'MontrealAI/AGI-Alpha-Agent-v0'"
+    assert set(step) == {"name", "if", "run"}
+    assert preflight_job["timeout-minutes"] == 5 and not preflight_job.get("continue-on-error")
+    assert "permissions" not in preflight_job
+    assert jobs["regression"]["needs"] == ["paper-scope", "publication-preflight"]
+    expected = (set(jobs["package"]["needs"]) - {"historical-ci"}) | {"publication-preflight"}
+    assert set(jobs["historical-ci"]["needs"]) == expected
+    assert "historical-ci" in jobs["package"]["needs"]
+
+
+class PublicResponse:
+    status = 200
+
+    def __init__(self, raw: bytes):
+        self.raw = raw
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return None
+
+    def read(self, maximum: int) -> bytes:
+        assert maximum == wait_for_release_ci.MAX_SNAPSHOT_BYTES + 1
+        return self.raw
+
+
+def test_preflight_public_reads_are_fixed_anonymous_bounded_gets(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GH_TOKEN", "must-never-be-transmitted")
+    monkeypatch.setenv("GITHUB_TOKEN", "must-never-be-transmitted")
+    endpoints = [
+        f"repos/{REPOSITORY}/actions/workflows/ci.yml/runs?head_sha={SHA}&per_page=100",
+        f"repos/{REPOSITORY}/actions/runs/1/attempts/2/jobs?per_page=100&page=3",
+    ]
+    calls = []
+
+    def open_public(request, **kwargs):
+        calls.append(request.full_url)
+        assert request.full_url == "https://api.github.com/" + endpoints[len(calls) - 1]
+        assert request.get_method() == "GET" and request.data is None
+        assert request.headers == {"User-agent": "Alpha-historical-release-preflight"}
+        assert kwargs == {"timeout": 30}
+        return PublicResponse(b"{}")
+
+    monkeypatch.setattr(wait_for_release_ci, "urlopen", open_public)
+    for endpoint in endpoints:
+        assert wait_for_release_ci._public_json(endpoint) == {}
+    assert len(calls) == 2
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [
+        "https://example.com",
+        "repos/other/repo/actions/runs/1/attempts/1/jobs?per_page=100&page=1",
+        f"repos/{REPOSITORY}/actions/runs/1/jobs",
+        f"repos/{REPOSITORY}/actions/runs/1/attempts/1/jobs?per_page=100&page=0",
+    ],
+)
+def test_preflight_public_reader_refuses_other_endpoints_before_network(
+    monkeypatch: pytest.MonkeyPatch, endpoint: str
+) -> None:
+    monkeypatch.setattr(wait_for_release_ci, "urlopen", lambda *args, **kwargs: pytest.fail("Invalid endpoint queried"))
+    with pytest.raises(ValueError, match="fixed public"):
+        wait_for_release_ci._public_json(endpoint)
+
+
+@pytest.mark.parametrize("raw", [b"not-json", b"[]", b"x" * 65])
+def test_preflight_public_reader_refuses_malformed_or_oversized_bodies(
+    monkeypatch: pytest.MonkeyPatch, raw: bytes
+) -> None:
+    monkeypatch.setattr(wait_for_release_ci, "MAX_SNAPSHOT_BYTES", 64)
+    monkeypatch.setattr(wait_for_release_ci, "urlopen", lambda *args, **kwargs: PublicResponse(raw))
+    with pytest.raises(ValueError):
+        wait_for_release_ci._public_json(
+            f"repos/{REPOSITORY}/actions/workflows/ci.yml/runs?head_sha={SHA}&per_page=100"
+        )
+
+
+@pytest.mark.parametrize("error", [TimeoutError("public API timed out"), OSError("public API refused")])
+def test_preflight_network_errors_stop_without_retry_or_snapshot(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, error: Exception
+) -> None:
+    preflight_environment(tmp_path, monkeypatch)
+    calls = []
+
+    def failed_open(*args, **kwargs):
+        calls.append(args)
+        raise error
+
+    monkeypatch.setattr(wait_for_release_ci, "urlopen", failed_open)
+    with pytest.raises(type(error), match="public API"):
+        wait_for_release_ci.preflight()
+    assert len(calls) == 1 and list(tmp_path.iterdir()) == []
