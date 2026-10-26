@@ -1,0 +1,81 @@
+{
+  "schema": "agi-alpha-independent-control-audit/v1",
+  "sourceSHA256": "f79bbaebf2d81ff784b851afc6cff175c02df7909ef10fae3e76d9264784edb3",
+  "primaryOutcomesInspected": false,
+  "scope": "Synthetic controls only; no primary scenario sweep or production confirmation outcomes inspected",
+  "executedAt": "2026-10-26T16:37:25.145Z",
+  "passed": 15,
+  "failed": 2,
+  "results": [
+    {
+      "name": "cash, receivable, cost and invoice identities reconcile",
+      "pass": true
+    },
+    {
+      "name": "zero arrivals generate no invoices or receipts",
+      "pass": true
+    },
+    {
+      "name": "zero supported scope generates no sale",
+      "pass": true
+    },
+    {
+      "name": "zero buyer value permits deferral",
+      "pass": true
+    },
+    {
+      "name": "strictly dominated offer removed before either choice model",
+      "pass": true
+    },
+    {
+      "name": "free competent equal-effort offer dominates positive-price equivalent",
+      "pass": true
+    },
+    {
+      "name": "matched B/C resources, policies and draws give exact numeric tie",
+      "pass": true
+    },
+    {
+      "name": "zero capability effect is not financed",
+      "pass": true
+    },
+    {
+      "name": "zero capacity creates no enterprise invoice",
+      "pass": true
+    },
+    {
+      "name": "uncollected invoices cannot finance operating-surplus investment",
+      "pass": true
+    },
+    {
+      "name": "defaulted invoices leave costs and no revenue",
+      "pass": true
+    },
+    {
+      "name": "rejected deliveries do not issue accepted invoices",
+      "pass": true
+    },
+    {
+      "name": "zero-week collections execute at invoice week",
+      "pass": true
+    },
+    {
+      "name": "accepted-work investment forecasts exclude rejected attempts",
+      "pass": true
+    },
+    {
+      "name": "direct lifetime repayment charges reported upkeep",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert(r.summary.assetUses>0)\n"
+    },
+    {
+      "name": "zero buyer pass-through leaves posted price unchanged after investment",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert(r.summary.assetUses>0)\n"
+    },
+    {
+      "name": "full buyer pass-through reduces price by full unit saving",
+      "pass": true
+    }
+  ]
+}

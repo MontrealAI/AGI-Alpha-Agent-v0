@@ -1,0 +1,10 @@
+--- src/market.mjs
++++ reporting/market-expose.mjs
+@@ -421,6 +421,7 @@
+     histories:{cash:f.cashEvents,balances:f.balanceHistory,invoices:f.invoices,bills:f.bills,buyerChoices,jobs,
+       buyerProcurement:buyers.map(b=>({id:b.id,budgetCents:b.procurementBudgetCents,committedCents:b.committedProcurementCents})),feedback,
+       investmentDecisions:decisions,investments:f.investments,competitorActions:competition,prices},
++    competitorAccounts:competitors,
+     competitorSummary:Object.fromEntries(Object.entries(competitors).map(([id,x])=>[id,{cashCents:x.cashCents,
+       accepted:x.accepted,insolvent:x.insolvent,collectionsCents:x.grossCollectionsCents,accruedCostCents:sum(Object.values(x.costs))}])),
+     exactAssetDirectCostRepayment:repayment,nextInvestment:next,canonical,

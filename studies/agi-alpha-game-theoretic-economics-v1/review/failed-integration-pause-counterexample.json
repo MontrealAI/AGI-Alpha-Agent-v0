@@ -1,0 +1,56 @@
+{
+  "schema": "agi-alpha-failure-pause-counterexample/v1",
+  "executedAt": "2026-10-26T17:20:47.582Z",
+  "basis": "SYNTHETIC_CONTROL_ONLY",
+  "sourceSHA256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27",
+  "concreteContractMismatch": true,
+  "investment": {
+    "week": 1,
+    "arm": "B",
+    "action": "invest",
+    "asset": {
+      "id": "useful-work-v2-retained-producer",
+      "path": "src/package_component.py",
+      "sha256": "0b4eb1ae2392176ff61ef91b7da0d13df3c6400ee0b3e317439238881adc182d"
+    },
+    "availableCashCents": 800,
+    "fullCostCents": 0,
+    "remainingUsesForecast": 9,
+    "expectedIncrementalSavingPerUseCents": 1000,
+    "expectedNetBenefitCents": 8600,
+    "expectedForegoneContributionCents": 400,
+    "productiveWeeksAfterAdoption": 9,
+    "servicePauseWeeks": 2,
+    "observedPriorAccepted": 1,
+    "funding": "operating-surplus",
+    "costBasis": "full-history",
+    "routes": {
+      "historicalFullCostCents": 0,
+      "adoptExistingCents": 0,
+      "reconstructCents": 0,
+      "selectedRoute": "adopt-existing",
+      "selectedProspectiveCostCents": 0,
+      "chargedCents": 0
+    },
+    "reasons": [],
+    "success": false,
+    "paidInFull": true,
+    "availableWeek": 3,
+    "failuresIncludedCents": 0,
+    "constructionEvidence": "Actual source and finite-scope tests; monetary construction and authoring amounts are scenario assumptions."
+  },
+  "enterpriseJobsDuringRecordedPause": [
+    {
+      "id": "w1-buyer-0",
+      "week": 1,
+      "assetUsed": null
+    },
+    {
+      "id": "w2-buyer-0",
+      "week": 2,
+      "assetUsed": null
+    }
+  ],
+  "interpretation": "Current frozen core models immediate detected integration failure without actual service pause, despite retaining prospective pause metadata in the investment record. No asset use occurs. Register this limitation explicitly before the new adverse corner; do not silently change old results.",
+  "freshCampaignOutcomesInspected": false
+}

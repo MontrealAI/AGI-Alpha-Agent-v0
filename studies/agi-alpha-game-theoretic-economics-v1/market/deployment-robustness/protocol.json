@@ -1,0 +1,204 @@
+{
+  "schema": "agi-alpha-deployment-robustness-succession-availability/v1",
+  "status": "FROZEN_BEFORE_FRESH_EXTENSION_OUTCOMES",
+  "stage": "USER_AUTHORIZED_BOUNDED_FRESH_SEED_EXTENSION",
+  "purpose": "Assess the previously identified fixed-target USD20 deployment region under bounded friction, demand and adverse conditions, and report spendable operating-generated resources without changing original cash or full-history returns.",
+  "prior_campaigns_preserved": [
+    "primary87",
+    "exploratory206",
+    "policy-diagnostic160"
+  ],
+  "core_model_sha256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27",
+  "output_only_exposure_sha256": "845f9212aa1d81a87413f21362031020b28d8d9e49c454b7b27ff8124cdbad40",
+  "output_exposure_note": "The separately reviewed copy adds only competitorAccounts at the final return; original economic fields and behavior are unchanged. Full native competitor states are preserved in this extension at execution.",
+  "fixed": {
+    "weeks": 52,
+    "initialCashCents": 100000,
+    "reserveCents": 20000,
+    "initialPriceCents": 2000,
+    "pricingPolicy": "fixed",
+    "ordinaryFinalizationMinutes": 10,
+    "investmentFunding": "seed-funded",
+    "historicalCostTiming": "opening",
+    "constructionHours": 4,
+    "authoringCostCents": 10000,
+    "adoptionHours": 0.5,
+    "adoptionInferenceCents": 0,
+    "nextAsset": null
+  },
+  "initial_funding_interpretation": "Seed-inclusive available cash under the existing core affordability and expected-benefit gates; same finite USD1000 opening cash and USD200 reserve as before, no replenishment or extra capital. This does not label initial adoption as earned-funded.",
+  "main_grid": {
+    "integrationCents": [
+      0,
+      250,
+      500,
+      1000
+    ],
+    "arrivalProbability": [
+      0.1,
+      0.25,
+      0.5
+    ],
+    "choiceModel": [
+      "deterministic",
+      "logit"
+    ],
+    "investmentCostBasis": [
+      "full-history",
+      "adoption-only"
+    ],
+    "configurations": 48
+  },
+  "adverse_corners": {
+    "integrationCents": [
+      0,
+      500
+    ],
+    "arrivalProbability": 0.5,
+    "choiceModel": [
+      "deterministic",
+      "logit"
+    ],
+    "investmentCostBasis": [
+      "full-history",
+      "adoption-only"
+    ],
+    "variants": [
+      {
+        "id": "upkeep-usd2",
+        "parameters": {
+          "assetMaintenanceCentsPerWeek": 200
+        }
+      },
+      {
+        "id": "upkeep-usd5",
+        "parameters": {
+          "assetMaintenanceCentsPerWeek": 500
+        }
+      },
+      {
+        "id": "collections-week6",
+        "parameters": {
+          "paymentDelayWeeks": 6
+        }
+      },
+      {
+        "id": "collections-week13",
+        "parameters": {
+          "paymentDelayWeeks": 13
+        }
+      },
+      {
+        "id": "cheap-ai",
+        "parameters": {
+          "aiInitialPriceCents": 500,
+          "aiCostCents": 100,
+          "aiQuality": 0.97,
+          "aiReviewMinutes": 8
+        }
+      },
+      {
+        "id": "cheap-human",
+        "parameters": {
+          "humanHourlyCents": 2000,
+          "humanMarkup": 1.02
+        }
+      },
+      {
+        "id": "undercut",
+        "parameters": {
+          "competitorStrategy": "undercut",
+          "competitorCostReduction": 0.75,
+          "competitorImitationCostCents": 1000
+        }
+      },
+      {
+        "id": "quality-shock",
+        "parameters": {
+          "qualityShockWeek": 26,
+          "qualityShockFactor": 0.7
+        }
+      },
+      {
+        "id": "failed-integration",
+        "parameters": {
+          "assetFailureProbability": 1
+        },
+        "interpretation": "IMMEDIATELY_DETECTED_INTEGRATION_FAILURE_FULL_CHARGE_NO_FORCED_DOWNTIME"
+      },
+      {
+        "id": "dissatisfaction",
+        "parameters": {
+          "successProbability": 0.8,
+          "churnProbability": 0.75,
+          "refundProbability": 1
+        }
+      }
+    ],
+    "configurations": 80,
+    "interpretation": "Single adverse intervention per corner. Collection-delay variants change timing alone, leaving payment probability unchanged. Failed integration keeps all construction/adoption costs unchanged, is immediately detected, and allows incumbent delivery without forced downtime; planned successful-adoption pause metadata does not claim failed downtime. This is not a prolonged-failure stress. No mixture is selected after outcomes."
+  },
+  "total_configurations": 128,
+  "seeds": {
+    "first": 3001,
+    "count": 24,
+    "previously_used": false
+  },
+  "paired_worlds": 3072,
+  "enterprise_runs": 9216,
+  "additional_external_capital_cents": 0,
+  "maximum_execution_wall_seconds": 120,
+  "maximum_execution_cpu_seconds": 120,
+  "research_cutoff_utc": "2026-10-26T18:10:33Z",
+  "budget_reference": "../../protocol/succession-envelope.json",
+  "funding_views": {
+    "original_strict_metric": "Preserve core earnedAvailableCents=min(cash-unpaid-reserve, collections-allAccruedCosts-reserve), including negative values, unchanged in every original history and summary.",
+    "generated_spendable": "max(0,min(cash-unpaid-oneReserve, collections-allAccruedCosts+explicitlySeedPaidOpeningHistoricalRD)-outstandingUnaccruedGeneratedEarmarks)",
+    "historical_allocation": "Only the explicitly seed-paid opening historical R&D bill is excluded from operating-generated recovery. It remains charged once in full profit and cash. Unpaid or later R&D is never excluded.",
+    "prospective_cost_recovery": "Shared setup, first adoption, failed integration/construction charges, delivery, upkeep, refunds and all other prospective accrued expenses remain deducted. No seed-supported current operating deficit is called generated surplus.",
+    "reserve": "One liquidity reserve is deducted in the cash bound. It is not deducted again from the generated-cash bound under this disclosed funding convention.",
+    "earmarks": "Only outstanding generated-resource earmarks not yet accrued may be deducted, from BOTH cash and generated-resource bounds. Release an earmark when its bill accrues to avoid double charging. With no actual second-candidate commitment, earmarks are exactly zero. Required counterexample: cash-cap100/generated500/earmark80 gives20, not100.",
+    "full_cost_recovery_sensitivity": "Also report max(0,min(cash-unpaid-reserve,collections-allAccruedCosts)-outstandingUnaccruedGeneratedEarmarks); this keeps historical R&D in the generated-resource recovery requirement.",
+    "unpriced_incremental_discovery": "The actual bounded second-asset search has unknown monetary cost D>=0, outside original core bills. Every reported G is BEFORE_UNPRICED_SECOND_ASSET_DISCOVERY, a funding ceiling. G_after_search<=max(0,G_reported-D); fixed-path profit is reduced by any attributed D. D remains null/unknown, never silently zero, and is never reclassified as seed-paid opening historical R&D.",
+    "authority": "Reporting and provenance views only: no alteration of original prices, decisions, cash, profit, invoices, costs or reserves; no real financial authority."
+  },
+  "successor_gate": {
+    "status": "NO_GO_AFTER_BOUNDED_DISCOVERY",
+    "maximum_candidates": 1,
+    "candidate_manifest": null,
+    "no_go_record": "../../review/second-capability-gate.json",
+    "no_go_record_sha256": "efa89a065807078aa256febb8c8105f1488f574de329af11dc93f6a87478bcda",
+    "generated_earmarks_cents": 0,
+    "automatic_purchase": false,
+    "no_tested_asset_action": "HOLD: report resources and missing qualification; do not purchase or finance a hypothetical successor.",
+    "qualification": "A source-identified actual retained candidate, frozen acceptance before fresh tests, material measured burden/benefit, strong conventional comparator and explicit all-in cost uncertainty must exist before any succession affordability claim. Positive balance alone is insufficient.",
+    "core_nextAsset": null,
+    "core_behavior": "The unchanged core retains reserves; this campaign measures funding availability. A tested candidate would require an explicitly reviewed pre-outcome affordability decision rule, not an automatic second purchase or invented revenue."
+  },
+  "outcomes": [
+    "Full-history and prospective enterprise profit, B-minus-A and B-minus-C under each declared condition",
+    "First adoption timing, failure, cost, exact asset use and seed-permitted funding",
+    "Generated spendable resources by week and at collection drain, original strict metric and full-cost-recovery sensitivity",
+    "Net collected cash, receivables, bills, reserves, refunds, rejected jobs and complete competitor accounts",
+    "All failed/no-adoption/adverse cases without favorable selection",
+    "Affordability and qualification kept separate; no second purchase absent a tested candidate and pre-outcome rule"
+  ],
+  "statistics": "Paired common external draws within each fresh seed. All24 independent fresh seeds per condition; normal-approximation95percent conditional Monte Carlo mean intervals, explicitly unadjusted across128 conditions and excluding unidentified parameter uncertainty. No Nash, optimality, global robustness or real-adoption claim.",
+  "representative_selection_before_outcomes": {
+    "main": {
+      "initialPriceCents": 2000,
+      "integrationCents": 0,
+      "arrivalProbability": 0.5,
+      "choiceModel": "logit",
+      "investmentCostBasis": [
+        "full-history",
+        "adoption-only"
+      ],
+      "history_seed": 3001
+    },
+    "figures": "All integration and arrival levels for both choice models and cost bases; all ten adverse variants; no substitution of a winning history after outcomes."
+  },
+  "stopping_rule": "Exactly128 configurations and24 new seeds. No scenario addition, price search, horizon extension or optional rerun after outcomes. Preserve partial failures if the120second CPU/wall limits or research cutoff bind; do not omit failures or present unfinished results as complete.",
+  "registered_reproduction": "After a completed original archive exists, --replay-registered may reproduce only these identical frozen128 configurations and24 seeds, after verifying source/freeze/archive hashes and requiring exact original paired JSON equality for every world. It bypasses the scientific cutoff only for this registered replication, uses a new output directory, and counts zero new economic scenarios/evidence. It cannot accept different prices, seeds, scenarios or model code.",
+  "amendments": []
+}

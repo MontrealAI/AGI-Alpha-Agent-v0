@@ -1,0 +1,17 @@
+# Final policy-adequacy diagnostic
+
+The first two complete campaigns are preserved. Inspection of their recorded histories exposed a concrete policy weakness: in the low-integration, higher-arrival, ten-minute, deterministic slice, the enterprise posted USD80 for506 of624 aggregate enterprise-weeks, receiving zero wins from2,167 offers; its USD20 action received17 wins from87 offers. This is evidence about the implemented heuristic's finite-horizon behavior, not proof that a different strategy will succeed.
+
+The final bounded diagnostic therefore evaluates **all five already-declared price actions**, across both integration levels, arrival rates, buyer rules and all four financing/cost regimes. It reuses the twelve exploratory seeds for matched policy comparison and leaves the entire economic core unchanged. Every result is reported. The experiment does not retroactively claim an optimized strategy, solved equilibrium, or independently confirmed generalization.
+
+The action is a **fixed target price with a cost floor**: posted price is the greater of the target and current assumed unit cost plus USD1. A low target can therefore post above its target before adoption and fall after adoption reduces costs. Realized prices before and after adoption are explicitly reported; a request target is not an advertised market quotation or revealed willingness to pay.
+
+The already-measured candidate affects provider finalization cost only. Buyer review, usefulness, quality, information, random draws, source, initial capital, reserve, competitors and cash constraints remain unchanged. The competing AI can respond and the conventional builder has equal access. A strategy may earn positive margins while its capability investment still fails incremental repayment. Full historical costs must be incurred at opening in those regimes; adoption-only conditions leave historical research sunk. Seed-funded adoption and collected-surplus-funded adoption stay distinct.
+
+Before outcomes, the representative illustration slice is fixed at USD20 target, zero integration cost, arrival probability.5, ten assumed avoidable minutes, logit choice, all four cost/funding regimes, and seed2001 for full histories. Companion price figures display every target and the USD10-integration counterpart over all twelve seeds. This is an illustration selection, not a claim that the slice is best or viable.
+
+Paired policy-minus-heuristic differences measure strategy sensitivity under the same supplied market. Paired B-minus-A differences measure the actual retained asset's incremental net effect under each policy. B-minus-C equality remains the expected null given matched source-supported capabilities and costs. The fixed-path one-off-cost ceiling has the same narrow accounting interpretation as the preceding exploratory addendum; it is not a global cost threshold when changing cost can change behavior.
+
+No further scenario search is part of this study. The output remains conditional simulation, with zero actual customer collections and no tested second capability.
+
+Quote custody is explicit: a computed weekly price can exist when no buyer saw an offer, during a service pause or after insolvency. Output distinguishes the computed quote schedule, quotes actually offered to at least one modeled buyer, and prices on accepted simulated deliveries. Only the latter create invoices; none is an actual external transaction.

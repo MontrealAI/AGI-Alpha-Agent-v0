@@ -1,0 +1,34 @@
+{
+  "schema":"agi-alpha-prefreeze-independent-review/v1",
+  "review_scope":"same-session independent economic critic; source and synthetic controls, no primary outcomes inspected",
+  "control_runner":"review/audit.mjs",
+  "control_reports":["review/development-audit-01.json","review/development-audit-02.json","review/development-audit-04.json","review/development-audit-06.json","review/development-audit-07.json","review/prefreeze-audit-20261026T164348.json"],
+  "last_control_source_sha256":"52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27",
+  "last_control_result":{"passed":26,"failed":0},
+  "recommendation":"Freeze the reviewed source and declared protocol before primary outcomes; no further optional audit expansion is necessary. This verifies numerical invariants under explicit assumptions, not commercial adoption or complete cost identification.",
+  "preserved_failed_control_note":"Audit 01 contains two fixture-precondition failures: adoptionHours was newly added and defaulted to a positive cost, preventing the intended zero-construction control from investing. The control now explicitly fixes adoptionHours and adoptionInferenceCents to zero. Audit 01 is retained; it is not evidence of an unresolved market-code failure.",
+  "source_issues_reported_before_primary_run":[
+    {"id":"R01","finding":"Attempt count was labeled observed accepted history in investment forecast","resolution":"Market owner changed weeklySales to actual accepted count; independent control passes"},
+    {"id":"R02","finding":"Canonical direct repayment omitted asset upkeep","resolution":"Market owner included capability and upkeep in exact lifetime charge; independent control passes"},
+    {"id":"R03","finding":"Zero-week invoices collected one week late","resolution":"Market owner added same-week collection path; independent control passes"},
+    {"id":"R04","finding":"Buyer cost-pass-through share was inverted in price adjustment","resolution":"Market owner uses delta cost times expectedPassThrough; independent zero-pass-through control passes"},
+    {"id":"R05","finding":"Competitor offered capacity using cash without subtracting unpaid liabilities","resolution":"Source subtracts unpaid liabilities and reserves delivery cost including correction multiplier before offering"},
+    {"id":"R06","finding":"Drain horizon omitted expense delay and stopAfterInsolvency was unused","resolution":"Owner rejects unsupported false stopping policy, stops new overhead after insolvency, and drains delayed bills; control passes"},
+    {"id":"R07","finding":"Some behavioral constants live outside config","resolution":"Need explicit assumption documentation for bad-quality detection, prior strength, skepticism, competitor reaction and exploration constants"},
+    {"id":"R08","finding":"Full-history cost charged only at later adoption can be retrospective cost recovery","resolution":"Default now charges historical construction at opening. At-adoption history allocation is a separately labeled retrospective scenario. Upfront seed exhaustion control passes"},
+    {"id":"R09","finding":"B/C economic equality is imposed by equal modeled attributes","resolution":"Describe as a symmetry result based on no measured differential benefit; not empirical proof equal complete construction efficiency"},
+    {"id":"R10","finding":"Buyer beliefs immediately see true quality, including failures undetected at acceptance","resolution":"Owner added scheduled post-delivery feedback and delayed belief/churn updates. Independent delay control passes"},
+    {"id":"R11","finding":"Direct per-use savings and paired causal benefit differ","resolution":"Report operating profit, collected cash, direct cost accounting and B-minus-A separately. Direct savings on B uses are a fixed-task counterfactual, not the realized causal market effect. Failure correction multiplier is now included and lifetime cohort unit explicitly labeled"},
+    {"id":"R12","finding":"Null or string numeric costs silently coerced to zero","resolution":"Owner added typed numeric validation. A transient scalar-cents check accidentally rejected a valid monetary array, preserved in audit04; corrected source passes null-cost and normal-run controls"},
+    {"id":"R13","finding":"Adoption could be financed in final week despite a known service pause leaving no production horizon","resolution":"Counterexample preserved in audit06. Owner subtracts adoption pause from useful horizon and charges forecast foregone incumbent contribution. Audit07 passes zero-horizon and pause controls"},
+    {"id":"R14","finding":"Buyer financial resources were not explicit","resolution":"Owner added finite procurement budgets and commitment checks. Zero-budget and cumulative-commitment controls pass"}
+  ],
+  "economic_identification_limits":[
+    "Human time per packet and residual attention duration have not been established by wage sources.",
+    "Advertised AI subscriptions and free tools are real alternatives but do not price an equivalent delivered packet.",
+    "Study task success counts constrain tested scope; they do not identify field reliability or buyer trust.",
+    "A modeled surplus can support conditional adoption without establishing observed revenue or paid demand.",
+    "Seed capital, unpaid invoices and customer savings cannot count as collected operating surplus.",
+    "A growing balance or scheduler does not establish a second tested capability or self-acceleration."
+  ]
+}
