@@ -686,6 +686,7 @@ def validate(
             report["checks"] += ["mobile-reflow", "large-touch-targets", "axe-no-violations", "reduced-motion"]
 
             no_js = browser.new_context(java_script_enabled=False, viewport={"width": 390, "height": 844})
+            no_js.tracing.start(screenshots=True, snapshots=True, sources=True)
             fallback = no_js.new_page()
             fallback.goto(origin)
             expect(fallback.get_by_role("heading", level=1).first).to_be_visible()
@@ -702,7 +703,36 @@ def validate(
             fallback.locator(".papers-index a").last.click()
             expect(fallback).to_have_url(origin + last_target)
             expect(fallback.locator(last_target)).to_be_focused()
-            fallback.locator("#home [data-start-link]").click()
+            # Read-only diagnostic evidence; retain the exact ordinary click and its timeout.
+            def no_js_navigation_state() -> dict[str, Any]:
+                return {
+                    "url": fallback.url,
+                    "start_link_box": fallback.locator("#home [data-start-link]").bounding_box(),
+                    "viewport": fallback.viewport_size,
+                    "document": inspect(
+                        fallback,
+                        "({scrollX, scrollY, height: document.documentElement.scrollHeight, "
+                        "scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior, "
+                        "activeElement: document.activeElement?.id, "
+                        "reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches})",
+                    ),
+                }
+
+            report["no_js_navigation_before"] = no_js_navigation_state()
+            try:
+                fallback.locator("#home [data-start-link]").click()
+            except Exception:
+                try:
+                    report["no_js_navigation_failure"] = no_js_navigation_state()
+                    fallback.screenshot(path=str(output / "no-js-navigation-failure.png"))
+                except Exception as diagnostic_error:
+                    report["no_js_diagnostic_error"] = str(diagnostic_error)
+                raise
+            finally:
+                try:
+                    no_js.tracing.stop(path=str(output / "no-js-navigation-trace.zip"))
+                except Exception as diagnostic_error:
+                    report["no_js_trace_error"] = str(diagnostic_error)
             expect(fallback).to_have_url(origin + "start/#journey")
             expect(fallback.locator("#journey")).to_be_focused()
             expect(fallback.locator("#journey noscript .notice")).to_be_visible()
