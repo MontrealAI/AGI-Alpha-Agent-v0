@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {join} from 'node:path';
 import {makePlan,runPlan} from '../automation-v1/run-mission.mjs';
 import {AUTOMATED_COST_SCHEMA,AUTOMATED_STAGES,evaluateAutomatedCosts} from '../../../examples/successor-alpha/automated-costs.mjs';
 
@@ -15,7 +16,7 @@ if(request.operation==='plan') {
   assert.equal(request.operation,'run');
   assert(Number.isSafeInteger(request.attemptNumber)&&request.attemptNumber>=1&&request.attemptNumber<=request.plan.maxAttempts);
   const result=await runPlan(request.plan,{approvalDigest:request.approvalDigest,outputRoot:request.outputRoot});
-  const complete=JSON.parse(await readFile(result.directory+'/COMPLETE.json','utf8'));
+  const complete=JSON.parse(await readFile(join(request.outputRoot,request.plan.runId,'COMPLETE.json'),'utf8'));
   assert.equal(complete.accepted,true);
   const fact=(value,basis,reference)=>({value,basis,reference}),unknown=reference=>fact(null,'unknown',reference);
   const accounting={schema:AUTOMATED_COST_SCHEMA,offeringId:'connected-public-source-assurance',currency:'USD',

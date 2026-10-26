@@ -275,6 +275,41 @@ class SourceAssuranceWorker:
             raise ValueError("source approval digest changed")
         return plan
 
+    def before_recovery(self, payload: dict[str, Any], checkpoint: Callable[[], None]) -> None:
+        """Wait for an orphaned original writer before reserving another attempt.
+
+        PID existence is only a conservative refusal condition. Never signal,
+        replace or remove another writer; the original lease bounds this wait.
+        """
+        self._sources()
+        plan = self._payload(payload)
+        directory = self.output_root / plan["runId"]
+        while True:
+            checkpoint()
+            alive = False
+            for name in ("writer.lock", "recovery.lock"):
+                try:
+                    owner = json.loads(_read(directory / name, 4096), object_pairs_hook=_unique)
+                except FileNotFoundError:
+                    continue
+                if (
+                    not isinstance(owner, dict)
+                    or set(owner) != {"pid", "approvalDigest"}
+                    or owner["approvalDigest"] != payload["approval_digest"]
+                    or type(owner["pid"]) is not int
+                    or not 1 <= owner["pid"] <= 2**31 - 1
+                ):
+                    raise ValueError("original source ownership is ambiguous; inspect before replay")
+                try:
+                    os.kill(owner["pid"], 0)
+                    alive = True
+                except ProcessLookupError:
+                    pass
+            if not alive:
+                checkpoint()
+                return
+            time.sleep(0.02)
+
     def execute(
         self, method: str, payload: dict[str, Any], limits: dict[str, Any], checkpoint: Callable[..., None]
     ) -> dict[str, Any]:

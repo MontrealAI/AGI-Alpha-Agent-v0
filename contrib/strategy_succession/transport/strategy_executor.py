@@ -451,6 +451,28 @@ class StrategyExecutor:
             except BlockingIOError:
                 raise Conflict("another executor process owns this journal") from None
             self._source()
+            if _recover and self.policy.recovery_attempts:
+                pending = self._plan(self._load(), request)
+                if pending["state"] in {"running", "unknown"}:
+                    original_lease = pending.get("lease_id")
+                    def ownership_checkpoint() -> None:
+                        if self._closing.is_set():
+                            raise Conflict("recovery monitor is shutting down")
+                        self._source()
+                        with self.journal.transaction() as cx:
+                            self._global_ready(cx)
+                            current = self._plan(self._load(cx), request)
+                            if (self._load(cx)["state"] != "ready" or current.get("cancel_requested")
+                                    or current["state"] not in {"running", "unknown"}
+                                    or not current.get("approved_at") or not current.get("started_at")
+                                    or not original_lease or current.get("lease_id") != original_lease
+                                    or self.clock() >= min(current["expires_at"], current["lease_expires_at"])):
+                                raise Conflict("original recovery envelope is unavailable; no new attempt charged")
+                    before_recovery = getattr(self.worker, "before_recovery", None)
+                    if not callable(before_recovery):
+                        raise Conflict("this pure worker has no reviewed recovery ownership boundary")
+                    ownership_checkpoint()
+                    before_recovery(pending["input"], ownership_checkpoint)
             with self.journal.transaction() as cx:
                 self._global_ready(cx)
                 value = self._load(cx)

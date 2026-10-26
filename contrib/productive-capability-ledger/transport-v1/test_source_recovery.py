@@ -281,3 +281,108 @@ def test_lock_symlink_is_refused_without_reading_target_or_charging(rig, tmp_pat
         executor.run(ref)
     assert target.read_text() == "unchanged"
     assert "recovery_attempts" not in executor.status()["plans"][ref["plan_id"]]
+
+
+def test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt(rig):
+    import multiprocessing
+
+    _app, journal, registry, _worker, executor, ref, headers = rig
+    context = multiprocessing.get_context("fork")
+    notice = context.Queue()
+
+    def server():
+        application = app_for(Journal(journal.root), registry)
+        active = application.state.strategy_executor
+        worker = application.state.source_assurance_worker
+        checkpoint = active._checkpoint
+        signalled = False
+
+        def barrier(*args, **kwargs):
+            nonlocal signalled
+            prepared = worker.output_root / "recovery-one-job/stage-preparation.json"
+            if prepared.exists() and not signalled:
+                signalled = True
+                os.killpg(worker.last_pid, signal.SIGSTOP)
+                notice.put(worker.last_pid)
+                # Test-only parent barrier: the test kills this server, leaving
+                # its real owned Node child alive with the canonical writer lock.
+                time.sleep(10)
+            return checkpoint(*args, **kwargs)
+
+        active._checkpoint = barrier
+        active.run(ref)
+
+    process = context.Process(target=server)
+    process.start()
+    node_pid = None
+    try:
+        node_pid = notice.get(timeout=10)
+        process.kill()
+        process.join(5)
+        assert process.exitcode == -signal.SIGKILL
+        before = executor.status()["plans"][ref["plan_id"]]
+        assert before["state"] == "running" and len(before["recovery_attempts"]) == 1
+        reopened = app_for(Journal(journal.root), registry)
+        failures = []
+        real_run = reopened.state.strategy_executor.run
+
+        def capture(*args, **kwargs):
+            try:
+                return real_run(*args, **kwargs)
+            except Exception as error:
+                failures.append(repr(error))
+                raise
+
+        reopened.state.strategy_executor.run = capture
+        with TestClient(reopened) as client:
+            # The survivor is deliberately stopped. A restart must monitor it
+            # without consuming the second and final lifetime attempt.
+            end = time.monotonic() + 0.2
+            while time.monotonic() < end:
+                current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                assert len(current["recovery_attempts"]) == 1
+                time.sleep(0.02)
+            os.killpg(node_pid, signal.SIGCONT)
+            end = time.monotonic() + 10
+            while time.monotonic() < end:
+                current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                if current["state"] in {"completed", "unknown", "cancelled", "rejected"}:
+                    break
+                time.sleep(0.02)
+            assert current["state"] == "completed", failures or current
+            assert current["outcome"]["result"]["independentAcceptance"]["accepted"]
+            assert current["observed"]["service_work"] == len(current["recovery_attempts"]) == 2
+            assert all(current[k] == before[k] for k in ("lease_id", "lease_expires_at", "approved_at", "started_at"))
+            output = os.environ.get("SOURCE_ASSURANCE_EVIDENCE_DIR")
+            if output:
+                root = Path(output)
+                root.mkdir(parents=True, exist_ok=True)
+                (root / "server-sigkill-recovery.json").write_text(
+                    json.dumps(
+                        {
+                            "schema": "alpha-source-server-crash-acceptance/v1",
+                            "passed": True,
+                            "serverSignal": "SIGKILL",
+                            "originalSourceChildSurvived": True,
+                            "waitingConsumedNoAttempt": True,
+                            "originalLeaseUnchanged": True,
+                            "accepted": True,
+                            "attemptsCharged": 2,
+                            "outcomeHash": current["outcome_hash"],
+                            "source_hash": current["source_hash"],
+                            "approvedOperator": "NOT RUN",
+                        },
+                        indent=2,
+                    )
+                    + "\n"
+                )
+    finally:
+        if process.is_alive():
+            process.kill()
+        process.join(5)
+        if node_pid is not None:
+            try:
+                os.killpg(node_pid, signal.SIGCONT)
+                os.killpg(node_pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass

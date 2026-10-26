@@ -1,0 +1,96 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt _
+
+rig = (<fastapi.applications.FastAPI object at 0x7f98e41e3830>, <alpha_factory_v1.core.runtime.store.Journal object at 0x7f9...b81cec67f41c030c45828cfd9020286e440d080fd413bf9cd9ee777fd07c88a3', 'plan_id': 'ad326562eb02806d7860163727141c61'}, ...)
+
+    def test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt(rig):
+        import multiprocessing
+    
+        _app, journal, registry, _worker, executor, ref, headers = rig
+        context = multiprocessing.get_context("fork")
+        notice = context.Queue()
+    
+        def server():
+            application = app_for(Journal(journal.root), registry)
+            active = application.state.strategy_executor
+            worker = application.state.source_assurance_worker
+            checkpoint = active._checkpoint
+            signalled = False
+    
+            def barrier(*args, **kwargs):
+                nonlocal signalled
+                prepared = worker.output_root / "recovery-one-job/stage-preparation.json"
+                if prepared.exists() and not signalled:
+                    signalled = True
+                    os.killpg(worker.last_pid, signal.SIGSTOP)
+                    notice.put(worker.last_pid)
+                    # Test-only parent barrier: the test kills this server, leaving
+                    # its real owned Node child alive with the canonical writer lock.
+                    time.sleep(10)
+                return checkpoint(*args, **kwargs)
+    
+            active._checkpoint = barrier
+            active.run(ref)
+    
+        process = context.Process(target=server)
+        process.start()
+        node_pid = None
+        try:
+            node_pid = notice.get(timeout=10)
+            process.kill()
+            process.join(5)
+            assert process.exitcode == -signal.SIGKILL
+            before = executor.status()["plans"][ref["plan_id"]]
+            assert before["state"] == "running" and len(before["recovery_attempts"]) == 1
+            reopened = app_for(Journal(journal.root), registry)
+            failures = []
+            real_run = reopened.state.strategy_executor.run
+            def capture(*args, **kwargs):
+                try:
+                    return real_run(*args, **kwargs)
+                except Exception as error:
+                    failures.append(repr(error) + ": " + getattr(reopened.state.source_assurance_worker, "_last_child_diagnostic", "")[-2000:])
+                    raise
+            reopened.state.strategy_executor.run = capture
+            with TestClient(reopened) as client:
+                # The survivor is deliberately stopped. A restart must monitor it
+                # without consuming the second and final lifetime attempt.
+                end = time.monotonic() + 0.2
+                while time.monotonic() < end:
+                    current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                    assert len(current["recovery_attempts"]) == 1
+                    time.sleep(0.02)
+                os.killpg(node_pid, signal.SIGCONT)
+                end = time.monotonic() + 10
+                while time.monotonic() < end:
+                    current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
+                    if current["state"] == "completed":
+                        break
+                    time.sleep(0.02)
+>               assert current["state"] == "completed", failures or current
+E               AssertionError: ["ValueError('candidate fixed child refused; inspect retained artifacts'): node:internal/fs/promises:1345
+E                   return ne...29 {
+E                   errno: -2,
+E                   code: 'ENOENT',
+E                   syscall: 'open',
+E                   path: 'undefined/COMPLETE.json'
+E                 }
+E                 
+E                 Node.js v24.22.1
+E                 "]
+E               assert 'unknown' == 'completed'
+E                 
+E                 - completed
+E                 + unknown
+
+contrib/productive-capability-ledger/transport-v1/test_source_recovery.py:350: AssertionError
+=============================== warnings summary ===============================
+../../../../tmp/alpha-source-eligible-env/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /tmp/alpha-source-eligible-env/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED contrib/productive-capability-ledger/transport-v1/test_source_recovery.py::test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt
+1 failed, 11 deselected, 1 warning in 11.92s

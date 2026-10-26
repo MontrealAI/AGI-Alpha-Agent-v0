@@ -20,6 +20,11 @@ def collect(root: Path, output: Path) -> dict[str, Any]:
     source = output / "source-candidate"
     browser = json.loads((source / "source-browser-acceptance.json").read_text())
     recovery = json.loads((source / "unattended-recovery.json").read_text())
+    server = json.loads((source / "server-sigkill-recovery.json").read_text())
+    assert server["passed"] and server["serverSignal"] == "SIGKILL"
+    assert server["originalSourceChildSurvived"] and server["waitingConsumedNoAttempt"]
+    assert server["originalLeaseUnchanged"] and server["attemptsCharged"] == 2
+    assert server["source_hash"] == recovery["source_hash"]
     planning = json.loads((output / "qualification.json").read_text())
     assert browser["passed"] and browser["checks"]["realFixedWorker"]
     assert browser["checks"]["sameMissionReconnect"] and browser["checks"]["independentAcceptance"]
@@ -38,6 +43,7 @@ def collect(root: Path, output: Path) -> dict[str, Any]:
         "source-browser.xml",
         "qualification.json",
         "source-candidate/unattended-recovery.json",
+        "source-candidate/server-sigkill-recovery.json",
         "source-candidate/source-browser-acceptance.json",
         "source-candidate/source-customer-result.zip",
         "source-candidate/source-signed-history.json",
