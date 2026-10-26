@@ -1,16 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 import http.server
-import threading
+import re
 import shutil
+import threading
 from functools import partial
 from pathlib import Path
-import re
 
 import pytest
 
 pw = pytest.importorskip("playwright.sync_api")
-from playwright.sync_api import sync_playwright  # noqa: E402
-from playwright._impl._errors import Error as PlaywrightError  # noqa: E402
+expect = pw.expect
+sync_playwright = pw.sync_playwright
+PlaywrightError = pw.Error
 
 
 def _start_server(directory: Path):
@@ -37,16 +38,23 @@ def test_workbox_hash_mismatch(tmp_path: Path, insight_dist: Path) -> None:
     url = f"http://{host}:{port}/index.html"
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
-            context = browser.new_context()
-            page = context.new_page()
-            page.goto(url)
-            page.wait_for_selector("#controls")
-            page.wait_for_function("document.getElementById('toast').textContent.includes('offline mode disabled')")
-            assert page.evaluate("navigator.serviceWorker.controller") is None
-            browser.close()
-    except PlaywrightError as exc:
-        pytest.skip(f"Playwright browser not installed: {exc}")
+            try:
+                browser = p.chromium.launch()
+            except PlaywrightError as exc:
+                if "Executable doesn't exist" in str(exc):
+                    pytest.skip(f"Playwright browser not installed: {exc}")
+                raise
+            try:
+                context = browser.new_context()
+                page = context.new_page()
+                page.goto(url)
+                page.wait_for_selector("#controls")
+                # Locator assertions run in Playwright's isolated world; the
+                # application's CSP must continue to prohibit unsafe eval.
+                expect(page.locator("#toast")).to_contain_text("offline mode disabled", timeout=30000)
+                assert page.locator("html").evaluate("() => navigator.serviceWorker.controller === null")
+            finally:
+                browser.close()
     finally:
         server.shutdown()
         thread.join()
