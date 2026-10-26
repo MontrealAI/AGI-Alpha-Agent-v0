@@ -189,6 +189,11 @@ existing release-contract cases pass locally. The same Strategy workflow now
 selects this component, runs its Python/UI/browser checks in its existing pinned
 environment, and retains sanitized receipts. That is source-overlay qualification;
 actual hosted completion and installed/operator adoption remain distinct.
+The next review/hosted correction is in `evidence/review-correction-v5/`:
+88 component cases plus 126 existing contracts pass, including actual Python
+3.12.3/3.12.14 call controls, early refusal of non-object recorded results, and
+waiting for the actual rendered plan before browser approval. The binder's
+compatibility normalization follows the [PEP 570 keyword rule](https://peps.python.org/pep-0570/#semantic-corner-case).
 
 The source base is #4915 `c4a7febc02fb9d607e9da5ece2101c4b6b36fc64`; current-main
 and four-repository inspection are recorded separately. Implementation stays in

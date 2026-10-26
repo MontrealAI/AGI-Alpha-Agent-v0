@@ -291,6 +291,61 @@ def test_standard_python_bind_oracle_covers_shapes_not_an_implementation_mirror(
                 assert constraint_accepts(metadata(fn), shape) == signature_accepts(fn, shape)
 
 
+def test_positional_only_keyword_routing_on_available_real_interpreters() -> None:
+    pack = request(
+        "def check(**kw): pass\n",
+        "def check(x=0, /, **kw): pass\n",
+        "from pkg.api import check\ncheck(x=1)\n",
+    )
+    code = (
+        "import json,sys\nfrom contrib.upgrade_decision.core import assess\n"
+        "def actual(x=0, /, **kw): return x,kw\n"
+        "result=assess(json.load(sys.stdin))\n"
+        "print(json.dumps({'actual':actual(x=1),'status':result['calls'][0]['status'],"
+        "'action':result['nextAction'],'accepted':result['engineeringAcceptance'],'python':sys.version}))\n"
+    )
+    interpreters = [Path(sys.executable)]
+    older = Path("/usr/bin/python3.12")
+    if older.is_file() and older.resolve() != interpreters[0].resolve():
+        interpreters.append(older)
+    for python in interpreters:
+        completed = subprocess.run(
+            [str(python), "-c", code],
+            input=canonical(pack),
+            cwd=HERE.parents[1],
+            capture_output=True,
+            check=True,
+            timeout=10,
+        )
+        observed = load(completed.stdout)
+        assert observed["actual"] == [0, {"x": 1}]
+        assert observed["status"] == "BINDING_PRESERVED" and observed["accepted"] is True
+        assert observed["action"] == "RUN_BEHAVIOR_AND_SECURITY_CHECKS"
+
+
+def test_keyword_routing_does_not_supply_a_required_positional_argument() -> None:
+    def actual(x: Any, /, **kw: Any) -> Any:
+        return x, kw
+
+    with pytest.raises(TypeError):
+        actual(x=1)
+    pack = request(
+        "def check(**kw): pass\n",
+        "def check(x, /, **kw): pass\n",
+        "from pkg.api import check\ncheck(x=1)\n",
+    )
+    record = assess(pack)
+    assert record["calls"][0]["afterAccepts"] is False and record["nextAction"] == "HOLD_UPDATE_AND_TEST"
+
+
+@pytest.mark.parametrize("result", [[], ["PASS"], None, 1, "PASS", True])
+def test_non_object_recorded_check_results_refuse_before_acceptance(result: Any) -> None:
+    pack = load((HERE / "examples/historical.json").read_bytes())
+    pack["recordedChecks"][0]["result"] = result
+    with pytest.raises(TypeError, match="object result"):
+        assess(pack)
+
+
 def test_rendered_report_is_derived_and_escapes_supplied_text() -> None:
     pack = request()
     pack["title"] = "<script>alert(1)</script>"

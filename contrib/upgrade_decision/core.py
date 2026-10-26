@@ -233,6 +233,8 @@ def validate(pack: dict[str, Any]) -> dict[str, ast.Module]:
             raise ValueError("invalid recorded-check identity")
         if any(not isinstance(check[k], str) or not 1 <= len(check[k]) <= 2000 for k in ("method", "reference")):
             raise ValueError("recorded check needs method and provenance")
+        if not isinstance(check["result"], dict):
+            raise TypeError("recorded check requires an object result")
         if (
             check["sourceHashes"] != {ident: s["sha256"] for ident, s in pack["sources"].items()}
             or len(canonical(check["result"])) > 40000
@@ -387,8 +389,13 @@ def signature_accepts(node: ast.FunctionDef | ast.AsyncFunctionDef, shape: dict[
         )
     if args.kwarg:
         params.append(inspect.Parameter(args.kwarg.arg, inspect.Parameter.VAR_KEYWORD))
+    # PEP 570: a positional-only parameter name may independently occur inside
+    # **kwargs. Older inspect.bind versions reject this valid routing; remove
+    # only those names from the oracle input, never from the captured call.
+    positional_only_names = {arg.arg for arg in args.posonlyargs} if args.kwarg else set()
+    oracle_keywords = [name for name in shape["keywordNames"] if name not in positional_only_names]
     try:
-        inspect.Signature(params).bind(*([None] * shape["positionalCount"]), **dict.fromkeys(shape["keywordNames"]))
+        inspect.Signature(params).bind(*([None] * shape["positionalCount"]), **dict.fromkeys(oracle_keywords))
         return True
     except TypeError:
         return False
@@ -648,7 +655,7 @@ def verify(pack: dict[str, Any], record: dict[str, Any]) -> dict[str, Any]:
         if record["nextAction"] != expected_action:
             checks.append({"call": None, "kind": "unsupported-next-action", "substantiated": True})
     return {
-        "method": "Fresh source parse and Python inspect.Signature.bind, without executing inspected code; same author/process, not organizational independence.",
+        "method": "Fresh source parse and Python inspect.Signature.bind with PEP570 positional-only keyword routing normalized, without executing inspected code; same author/process, not organizational independence.",
         "accepted": not checks,
         "defects": checks,
         "selectedCalls": len(pack["calls"]),
