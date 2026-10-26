@@ -405,7 +405,14 @@ def direct_mapping(pack: dict[str, Any], trees: dict[str, ast.Module], item: dic
         if isinstance(statement, ast.Import):
             for alias in statement.names:
                 if (alias.asname or alias.name.split(".")[0]) == root:
-                    imports.append((alias.asname or alias.name.split(".")[0], alias.name))
+                    # ``import pkg.api`` binds pkg; only an explicit alias
+                    # binds the full dotted module to the local name.
+                    imports.append(
+                        (
+                            alias.asname or alias.name.split(".")[0],
+                            alias.name if alias.asname else alias.name.split(".")[0],
+                        )
+                    )
         elif isinstance(statement, ast.ImportFrom) and statement.level == 0:
             for alias in statement.names:
                 if (alias.asname or alias.name) == root:

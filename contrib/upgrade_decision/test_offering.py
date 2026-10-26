@@ -210,6 +210,30 @@ def test_mutated_module_attribute_does_not_become_a_verified_import() -> None:
     assert assess(pack)["calls"][0]["mappingVerified"] is False
 
 
+@pytest.mark.parametrize(
+    "consumer, verified",
+    [
+        ("import pkg.api\npkg.check(1)\n", False),
+        ("import pkg.api\npkg.api.check(1)\n", True),
+        ("import pkg.api as api\napi.check(1)\n", True),
+        ("from pkg.api import check as captured\ncaptured(1)\n", True),
+    ],
+)
+def test_dotted_imports_bind_the_actual_python_root(consumer: str, verified: bool) -> None:
+    text = "def check(x): pass\n"
+    result = assess(request(text, text, consumer))
+    assert result["calls"][0]["mappingVerified"] is verified
+    assert result["nextAction"] == ("RUN_BEHAVIOR_AND_SECURITY_CHECKS" if verified else "REVIEW_UNRESOLVED_SCOPE")
+
+
+def test_unaliased_dotted_import_can_select_captured_package_initializer() -> None:
+    text = "def check(x): pass\n"
+    pack = request(text, text, "import pkg.api\npkg.check(1)\n")
+    for side in ("before", "after"):
+        pack["sources"][side]["path"] = "pkg/__init__.py"
+    assert assess(pack)["calls"][0]["mappingVerified"] is True
+
+
 def test_decorated_declaration_remains_unresolved() -> None:
     result = assess(request(before="@decorator\ndef check(x, *, strict=False): pass\n"))
     assert result["calls"][0]["status"] == "UNRESOLVED"
