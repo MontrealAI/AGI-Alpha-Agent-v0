@@ -163,6 +163,8 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
 - **[THE ADVANTAGE THAT FUNDS THE NEXT](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/agi-alpha-funded-advantage-v1.pdf)** · A versioned release\-inventory intake capability serves the actual Alpha Workbench\. Three strong methods correctly complete 16 fresh comparison requests and 64 representations each\. Complete costs and attention savings remain unmeasured; no material incremental advantage is established\. Financing scenarios bind the exact tested asset, preserve adverse outcomes and leave actual economic admission on HOLD\.
   AGI ALPHA research engineering study · 2026-10-25 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/33ba0d8a589096cd33fe584fe4ed450bdc3fb729/studies/agi-alpha-funded-advantage-v1/README.md)
+- **[Build an Advantage That Repays Its Cost — The Investment Gate](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/investment-gate.pdf)** · Nine scoped internal requests and eighteen evaluations with overlapping inputs produced eight complete measured local paths, not eight authenticated native missions\. One scope retained its native artifact\-policy refusal\. No productive asset was selected or constructed and no untouched confirmation trial was run\. Full monetary cost, repayment and positive incremental economics remain unestablished\. DISCOVERY/HOLD\.
+  AGI ALPHA Research · MONTREAL\.AI · 2026-10-25 · English PDF.
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
