@@ -1,0 +1,252 @@
+{
+  "case_id": "DEV-05",
+  "arm": "D",
+  "method": "independent conventional difflib plus explicit text rules",
+  "source_hashes": {
+    "original": "6904cebe24358bc8444e5940dd61d9771f8fb4de5010c7f305a87d8e01557ecc",
+    "revised": "6904cebe24358bc8444e5940dd61d9771f8fb4de5010c7f305a87d8e01557ecc",
+    "amendment:A1": "2a7d344b0f1544746c08533f63becf1805acf328469a8668dfcc3d2fefbd82a2"
+  },
+  "changes": [],
+  "obligations": [
+    {
+      "family": "R1_PURPOSE",
+      "source": {
+        "document": "revised",
+        "start": 620,
+        "end": 708,
+        "quote": "5. Residuals. Neither Recipient may use residual information retained in unaided memory."
+      }
+    },
+    {
+      "family": "R1_PURPOSE",
+      "source": {
+        "document": "revised",
+        "start": 52,
+        "end": 186,
+        "quote": "1. Purpose. Each Recipient shall use Confidential Information only to evaluate the proposed business relationship between the parties."
+      }
+    },
+    {
+      "family": "R2_CONFIDENTIALITY_TERM",
+      "source": {
+        "document": "amendment:A1",
+        "start": 69,
+        "end": 187,
+        "quote": "2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 60 months after disclosure."
+      }
+    },
+    {
+      "family": "R2_CONFIDENTIALITY_TERM",
+      "source": {
+        "document": "amendment:A1",
+        "start": 0,
+        "end": 253,
+        "quote": "AMENDMENT 1 - SYNTHETIC\nSection 2 is replaced in its entirety with: \"2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 60 months after disclosure.\"\nThis amendment prevails over inconsistent provisions in the NDA."
+      }
+    },
+    {
+      "family": "R3_RETURN_DEADLINE",
+      "source": {
+        "document": "revised",
+        "start": 306,
+        "end": 463,
+        "quote": "3. Return. Upon the Discloser's written request, the Recipient must return or destroy the Confidential Information within 20 calendar days after the request."
+      }
+    },
+    {
+      "family": "R4_COMPELLED_NOTICE",
+      "source": {
+        "document": "revised",
+        "start": 464,
+        "end": 619,
+        "quote": "4. Compelled Disclosure. If disclosure is legally compelled, the Recipient must give prior written notice to the Discloser to the extent legally permitted."
+      }
+    },
+    {
+      "family": "R5_RESIDUALS",
+      "source": {
+        "document": "revised",
+        "start": 620,
+        "end": 708,
+        "quote": "5. Residuals. Neither Recipient may use residual information retained in unaided memory."
+      }
+    },
+    {
+      "family": "R6_ASSIGNMENT",
+      "source": {
+        "document": "revised",
+        "start": 709,
+        "end": 812,
+        "quote": "6. Assignment. Neither party may assign this Agreement without the other party's prior written consent."
+      }
+    },
+    {
+      "family": "R7_GOVERNING_LAW",
+      "source": {
+        "document": "revised",
+        "start": 813,
+        "end": 889,
+        "quote": "7. Governing Law. This Agreement is governed by the laws of Ontario, Canada."
+      }
+    },
+    {
+      "family": "R8_REPRESENTATIVES",
+      "source": {
+        "document": "revised",
+        "start": 890,
+        "end": 1071,
+        "quote": "8. Representatives. The Recipient may disclose Confidential Information to representatives only on a need-to-know basis and remains responsible for their breaches of this Agreement."
+      }
+    }
+  ],
+  "rule_results": [
+    {
+      "rule_id": "R1_PURPOSE",
+      "status": "pass",
+      "severity": 5,
+      "sources": [
+        {
+          "document": "revised",
+          "start": 620,
+          "end": 708,
+          "quote": "5. Residuals. Neither Recipient may use residual information retained in unaided memory."
+        },
+        {
+          "document": "revised",
+          "start": 52,
+          "end": 186,
+          "quote": "1. Purpose. Each Recipient shall use Confidential Information only to evaluate the proposed business relationship between the parties."
+        }
+      ],
+      "reason": "An express exclusive business-evaluation restriction was located."
+    },
+    {
+      "rule_id": "R2_CONFIDENTIALITY_TERM",
+      "status": "deviation",
+      "severity": 5,
+      "sources": [
+        {
+          "document": "amendment:A1",
+          "start": 69,
+          "end": 187,
+          "quote": "2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 60 months after disclosure."
+        },
+        {
+          "document": "amendment:A1",
+          "start": 0,
+          "end": 253,
+          "quote": "AMENDMENT 1 - SYNTHETIC\nSection 2 is replaced in its entirety with: \"2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 60 months after disclosure.\"\nThis amendment prevails over inconsistent provisions in the NDA."
+        }
+      ],
+      "reason": "Explicit general duration is 60 months, outside the playbook interval."
+    },
+    {
+      "rule_id": "R3_RETURN_DEADLINE",
+      "status": "pass",
+      "severity": 5,
+      "sources": [
+        {
+          "document": "revised",
+          "start": 306,
+          "end": 463,
+          "quote": "3. Return. Upon the Discloser's written request, the Recipient must return or destroy the Confidential Information within 20 calendar days after the request."
+        }
+      ],
+      "reason": "Explicit request-triggered deadline is 20 days."
+    },
+    {
+      "rule_id": "R4_COMPELLED_NOTICE",
+      "status": "pass",
+      "severity": 5,
+      "sources": [
+        {
+          "document": "revised",
+          "start": 464,
+          "end": 619,
+          "quote": "4. Compelled Disclosure. If disclosure is legally compelled, the Recipient must give prior written notice to the Discloser to the extent legally permitted."
+        }
+      ],
+      "reason": "Prior notice subject to legal permission is explicit."
+    },
+    {
+      "rule_id": "R5_RESIDUALS",
+      "status": "pass",
+      "severity": 5,
+      "sources": [
+        {
+          "document": "revised",
+          "start": 620,
+          "end": 708,
+          "quote": "5. Residuals. Neither Recipient may use residual information retained in unaided memory."
+        }
+      ],
+      "reason": "Express prohibition of residual use was located."
+    },
+    {
+      "rule_id": "R6_ASSIGNMENT",
+      "status": "pass",
+      "severity": 3,
+      "sources": [
+        {
+          "document": "revised",
+          "start": 709,
+          "end": 812,
+          "quote": "6. Assignment. Neither party may assign this Agreement without the other party's prior written consent."
+        }
+      ],
+      "reason": "Assignment requires prior written consent."
+    },
+    {
+      "rule_id": "R7_GOVERNING_LAW",
+      "status": "pass",
+      "severity": 5,
+      "sources": [
+        {
+          "document": "revised",
+          "start": 813,
+          "end": 889,
+          "quote": "7. Governing Law. This Agreement is governed by the laws of Ontario, Canada."
+        }
+      ],
+      "reason": "Ontario governing law is explicit."
+    },
+    {
+      "rule_id": "R8_REPRESENTATIVES",
+      "status": "pass",
+      "severity": 3,
+      "sources": [
+        {
+          "document": "revised",
+          "start": 890,
+          "end": 1071,
+          "quote": "8. Representatives. The Recipient may disclose Confidential Information to representatives only on a need-to-know basis and remains responsible for their breaches of this Agreement."
+        }
+      ],
+      "reason": "Need-to-know and continuing responsibility are explicit."
+    }
+  ],
+  "escalations": [
+    {
+      "code": "R2_CONFIDENTIALITY_TERM",
+      "detail": "Explicit general duration is 60 months, outside the playbook interval.",
+      "sources": [
+        {
+          "document": "amendment:A1",
+          "start": 69,
+          "end": 187,
+          "quote": "2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 60 months after disclosure."
+        },
+        {
+          "document": "amendment:A1",
+          "start": 0,
+          "end": 253,
+          "quote": "AMENDMENT 1 - SYNTHETIC\nSection 2 is replaced in its entirety with: \"2. Confidentiality. Each Recipient must keep the Confidential Information confidential for 60 months after disclosure.\"\nThis amendment prevails over inconsistent provisions in the NDA."
+        }
+      ]
+    }
+  ],
+  "proposed_revisions": [],
+  "supported_scope": true,
+  "professional_acceptance": "unknown"
+}

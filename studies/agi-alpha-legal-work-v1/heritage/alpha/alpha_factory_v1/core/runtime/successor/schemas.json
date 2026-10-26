@@ -1,0 +1,5209 @@
+{
+  "canonicalization": "sorted-printable-ASCII-keys/UTF8/no-normalization/safe-integers/no-floats/v1",
+  "digest_prefix": "successor-omega/v1:{domain}\\u0000",
+  "kind": "successor-schema-bundle",
+  "schema_version": 1,
+  "schemas": {
+    "AcceptedOutcome": {
+      "additionalProperties": false,
+      "description": "Realized value requires its own accountable acceptance and evidence.",
+      "properties": {
+        "acceptance_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Acceptance Digest",
+          "type": "string"
+        },
+        "accepted_by": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Accepted By",
+          "type": "string"
+        },
+        "customer": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Customer",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "outcome_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Outcome Id",
+          "type": "string"
+        },
+        "quantity": {
+          "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+          "title": "Quantity",
+          "type": "string"
+        },
+        "realized_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Realized At",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "settlement_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Settlement Ids",
+          "type": "array"
+        },
+        "unit": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome_id",
+        "institution_id",
+        "customer",
+        "accepted_by",
+        "quantity",
+        "unit",
+        "evidence_ids",
+        "acceptance_digest",
+        "realized_at"
+      ],
+      "title": "AcceptedOutcome",
+      "type": "object"
+    },
+    "AdmissionDecision": {
+      "additionalProperties": false,
+      "description": "A separate accountable decision does not itself authorize actions.",
+      "properties": {
+        "decision_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "issued_at": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Issued At"
+        },
+        "outcome": {
+          "enum": [
+            "admit",
+            "refuse"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "principal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Principal",
+          "type": "string"
+        },
+        "proof_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Proof Ids",
+          "type": "array"
+        },
+        "rationale": {
+          "default": "explicit local accountable decision",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Release Digest",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "decision_id",
+        "institution_id",
+        "release_digest",
+        "principal",
+        "outcome"
+      ],
+      "title": "AdmissionDecision",
+      "type": "object"
+    },
+    "AllocationDecision": {
+      "additionalProperties": false,
+      "description": "Authorized allocations account for obligations and reliability reserves.",
+      "properties": {
+        "allocation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Allocation Id",
+          "type": "string"
+        },
+        "available_before": {
+          "maxProperties": 32,
+          "minProperties": 1,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Available Before",
+          "type": "object"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "issued_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Issued At",
+          "type": "string"
+        },
+        "obligations": {
+          "maxProperties": 32,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Obligations",
+          "type": "object"
+        },
+        "principal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Principal",
+          "type": "string"
+        },
+        "rationale": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "reliability_reserves": {
+          "maxProperties": 32,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Reliability Reserves",
+          "type": "object"
+        },
+        "resources": {
+          "maxProperties": 32,
+          "minProperties": 1,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Resources",
+          "type": "object"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "allocation_id",
+        "institution_id",
+        "principal",
+        "resources",
+        "available_before",
+        "rationale",
+        "issued_at"
+      ],
+      "title": "AllocationDecision",
+      "type": "object"
+    },
+    "AuthorityEnvelope": {
+      "additionalProperties": false,
+      "description": "One indivisible permission; independent grants must never be combined.",
+      "properties": {
+        "actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Actions",
+          "type": "array"
+        },
+        "approval_conditions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Approval Conditions",
+          "type": "array"
+        },
+        "approval_required": {
+          "default": true,
+          "title": "Approval Required",
+          "type": "boolean"
+        },
+        "context_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Context Digest",
+          "type": "string"
+        },
+        "grant_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Grant Id",
+          "type": "string"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "issued_at": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Issued At"
+        },
+        "issuer": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Issuer",
+          "type": "string"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "monitoring": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Monitoring",
+          "type": "array"
+        },
+        "proof_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Proof Ids",
+          "type": "array"
+        },
+        "release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Release Digest",
+          "type": "string"
+        },
+        "resources": {
+          "maxProperties": 32,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Resources",
+          "type": "object"
+        },
+        "revocation_conditions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Revocation Conditions",
+          "type": "array"
+        },
+        "rollback_release_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rollback Release Digest"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "scope": {
+          "default": "sandbox",
+          "enum": [
+            "sandbox",
+            "production"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "subject": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Subject",
+          "type": "string"
+        },
+        "targets": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Targets",
+          "type": "array"
+        },
+        "tools": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Tools",
+          "type": "array"
+        },
+        "valid_until": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Valid Until",
+          "type": "string"
+        }
+      },
+      "required": [
+        "grant_id",
+        "institution_id",
+        "mission_id",
+        "release_digest",
+        "subject",
+        "issuer",
+        "actions",
+        "tools",
+        "targets",
+        "valid_until",
+        "context_digest"
+      ],
+      "title": "AuthorityEnvelope",
+      "type": "object"
+    },
+    "CandidateReleaseManifest": {
+      "$defs": {
+        "BehaviorArtifact": {
+          "additionalProperties": false,
+          "description": "One complete behavior-affecting artifact, including configuration or memory.",
+          "properties": {
+            "digest": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Digest",
+              "type": "string"
+            },
+            "location": {
+              "anyOf": [
+                {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Location"
+            },
+            "name": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Name",
+              "type": "string"
+            },
+            "role": {
+              "enum": [
+                "source",
+                "model",
+                "prompt",
+                "routing",
+                "tool",
+                "dependency",
+                "memory",
+                "world",
+                "policy",
+                "other"
+              ],
+              "title": "Role",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "name",
+            "role",
+            "digest"
+          ],
+          "title": "BehaviorArtifact",
+          "type": "object"
+        },
+        "ProviderManifest": {
+          "additionalProperties": false,
+          "description": "Remote requests identify configuration, without claiming immutable remote weights.",
+          "properties": {
+            "behavioral_fingerprint": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Behavioral Fingerprint"
+            },
+            "configuration": {
+              "maxProperties": 64,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "title": "Configuration",
+              "type": "object"
+            },
+            "endpoint": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Endpoint",
+              "type": "string"
+            },
+            "implementation": {
+              "enum": [
+                "deterministic",
+                "remote-model",
+                "local-model"
+              ],
+              "title": "Implementation",
+              "type": "string"
+            },
+            "model": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Model",
+              "type": "string"
+            },
+            "observed_at": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Observed At",
+              "type": "string"
+            },
+            "pinning_limitations": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Pinning Limitations",
+              "type": "string"
+            },
+            "provider": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Provider",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "provider",
+            "model",
+            "endpoint",
+            "observed_at",
+            "pinning_limitations",
+            "implementation"
+          ],
+          "title": "ProviderManifest",
+          "type": "object"
+        },
+        "ResourceBudget": {
+          "additionalProperties": false,
+          "description": "Controllable ceilings and unmeasured costs are explicitly different.",
+          "properties": {
+            "enforceable": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Enforceable",
+              "type": "array"
+            },
+            "limits": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Limits",
+              "type": "object"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "stop_loss": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Stop Loss",
+              "type": "object"
+            },
+            "units": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Units",
+              "type": "object"
+            },
+            "unknown_costs": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Unknown Costs",
+              "type": "array"
+            }
+          },
+          "title": "ResourceBudget",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Exact complete release composition, excluding protected verifier internals.",
+      "properties": {
+        "artifacts": {
+          "items": {
+            "$ref": "#/$defs/BehaviorArtifact"
+          },
+          "maxItems": 256,
+          "title": "Artifacts",
+          "type": "array"
+        },
+        "budget": {
+          "$ref": "#/$defs/ResourceBudget"
+        },
+        "configuration": {
+          "maxProperties": 64,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "title": "Configuration",
+          "type": "object"
+        },
+        "development_evaluator_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Development Evaluator Digest"
+        },
+        "environment_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Environment Digest",
+          "type": "string"
+        },
+        "final_proof_interface_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Final Proof Interface Digest"
+        },
+        "immutable_trial": {
+          "default": true,
+          "title": "Immutable Trial",
+          "type": "boolean"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "memory_digests": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Memory Digests",
+          "type": "array"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "mutable_state_classes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Mutable State Classes",
+          "type": "array"
+        },
+        "parent_release_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Release Digest"
+        },
+        "policy_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Policy Digest"
+        },
+        "producer": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Producer",
+          "type": "string"
+        },
+        "providers": {
+          "items": {
+            "$ref": "#/$defs/ProviderManifest"
+          },
+          "maxItems": 16,
+          "title": "Providers",
+          "type": "array"
+        },
+        "release_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Release Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "world_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "World Digest"
+        }
+      },
+      "required": [
+        "release_id",
+        "institution_id",
+        "mission_id",
+        "producer",
+        "environment_digest"
+      ],
+      "title": "CandidateReleaseManifest",
+      "type": "object"
+    },
+    "ChronicleEvent": {
+      "additionalProperties": false,
+      "description": "Attributable immutable historical event, distinct from current permission.",
+      "properties": {
+        "dependencies": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "details": {
+          "maxProperties": 64,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "title": "Details",
+          "type": "object"
+        },
+        "event_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_type": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Event Type",
+          "type": "string"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "previous_event_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Previous Event Digest"
+        },
+        "principal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Principal",
+          "type": "string"
+        },
+        "recorded_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Recorded At",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "subject_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Subject Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "institution_id",
+        "principal",
+        "event_type",
+        "recorded_at",
+        "subject_digest"
+      ],
+      "title": "ChronicleEvent",
+      "type": "object"
+    },
+    "ComparatorManifest": {
+      "$defs": {
+        "Comparator": {
+          "additionalProperties": false,
+          "description": "A fixed deployable alternative, never a hindsight per-case oracle.",
+          "properties": {
+            "comparator_id": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Comparator Id",
+              "type": "string"
+            },
+            "configuration": {
+              "maxProperties": 64,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "title": "Configuration",
+              "type": "object"
+            },
+            "observed_at": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Observed At",
+              "type": "string"
+            },
+            "permitted_evidence": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 64,
+              "title": "Permitted Evidence",
+              "type": "array"
+            },
+            "release_digest": {
+              "anyOf": [
+                {
+                  "pattern": "^[0-9a-f]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Release Digest"
+            },
+            "resources": {
+              "$ref": "#/$defs/ResourceBudget"
+            },
+            "role": {
+              "enum": [
+                "incumbent",
+                "simple",
+                "specialist",
+                "general",
+                "human",
+                "hybrid"
+              ],
+              "title": "Role",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "selection_rationale": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Selection Rationale",
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "measured",
+                "unavailable"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "tools": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Tools",
+              "type": "array"
+            },
+            "unavailability_reason": {
+              "anyOf": [
+                {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Unavailability Reason"
+            }
+          },
+          "required": [
+            "comparator_id",
+            "role",
+            "observed_at",
+            "selection_rationale",
+            "status"
+          ],
+          "title": "Comparator",
+          "type": "object"
+        },
+        "ResourceBudget": {
+          "additionalProperties": false,
+          "description": "Controllable ceilings and unmeasured costs are explicitly different.",
+          "properties": {
+            "enforceable": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Enforceable",
+              "type": "array"
+            },
+            "limits": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Limits",
+              "type": "object"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "stop_loss": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Stop Loss",
+              "type": "object"
+            },
+            "units": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Units",
+              "type": "object"
+            },
+            "unknown_costs": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Unknown Costs",
+              "type": "array"
+            }
+          },
+          "title": "ResourceBudget",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Frozen comparator set and common comparison conditions.",
+      "properties": {
+        "comparators": {
+          "items": {
+            "$ref": "#/$defs/Comparator"
+          },
+          "maxItems": 32,
+          "minItems": 2,
+          "title": "Comparators",
+          "type": "array"
+        },
+        "cost_rule_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Cost Rule Digest",
+          "type": "string"
+        },
+        "frozen_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Frozen At",
+          "type": "string"
+        },
+        "manifest_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Manifest Id",
+          "type": "string"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "selection_rule": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Selection Rule",
+          "type": "string"
+        }
+      },
+      "required": [
+        "manifest_id",
+        "mission_id",
+        "comparators",
+        "cost_rule_digest",
+        "selection_rule",
+        "frozen_at"
+      ],
+      "title": "ComparatorManifest",
+      "type": "object"
+    },
+    "EnvironmentSpec": {
+      "$defs": {
+        "OutcomeMeasure": {
+          "additionalProperties": false,
+          "description": "A named measurable objective with an explicit unit and hard-gate status.",
+          "properties": {
+            "direction": {
+              "enum": [
+                "minimize",
+                "maximize",
+                "exact"
+              ],
+              "title": "Direction",
+              "type": "string"
+            },
+            "hard_gate": {
+              "default": false,
+              "title": "Hard Gate",
+              "type": "boolean"
+            },
+            "name": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Name",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "threshold": {
+              "anyOf": [
+                {
+                  "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Threshold"
+            },
+            "unit": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Unit",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "unit",
+            "direction"
+          ],
+          "title": "OutcomeMeasure",
+          "type": "object"
+        },
+        "TypedPort": {
+          "additionalProperties": false,
+          "description": "An inspectable typed observation, state or result.",
+          "properties": {
+            "constraints": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Constraints",
+              "type": "array"
+            },
+            "name": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Name",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "type_name": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Type Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type_name"
+          ],
+          "title": "TypedPort",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Declared mission environment and partitions; labels do not establish custody.",
+      "properties": {
+        "allowed_actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Allowed Actions",
+          "type": "array"
+        },
+        "allowed_observations": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Allowed Observations",
+          "type": "array"
+        },
+        "development_partition_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Development Partition Digest",
+          "type": "string"
+        },
+        "environment_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Environment Id",
+          "type": "string"
+        },
+        "hard_constraints": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Hard Constraints",
+          "type": "array"
+        },
+        "known_reality_gaps": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Known Reality Gaps",
+          "type": "array"
+        },
+        "mission_families": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Mission Families",
+          "type": "array"
+        },
+        "proof_partition_commitment": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Proof Partition Commitment",
+          "type": "string"
+        },
+        "reward_dimensions": {
+          "items": {
+            "$ref": "#/$defs/OutcomeMeasure"
+          },
+          "maxItems": 32,
+          "title": "Reward Dimensions",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "states": {
+          "items": {
+            "$ref": "#/$defs/TypedPort"
+          },
+          "maxItems": 32,
+          "title": "States",
+          "type": "array"
+        },
+        "termination": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Termination",
+          "type": "array"
+        },
+        "transitions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Transitions",
+          "type": "array"
+        },
+        "truncation": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Truncation",
+          "type": "array"
+        }
+      },
+      "required": [
+        "environment_id",
+        "mission_families",
+        "hard_constraints",
+        "development_partition_digest",
+        "proof_partition_commitment",
+        "termination"
+      ],
+      "title": "EnvironmentSpec",
+      "type": "object"
+    },
+    "EvidenceRecord": {
+      "additionalProperties": false,
+      "description": "Content integrity, scope, custody, freshness and permission remain distinct.",
+      "properties": {
+        "accepted_by": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accepted By"
+        },
+        "acquired_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Acquired At",
+          "type": "string"
+        },
+        "content_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Digest",
+          "type": "string"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "permitted_uses": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Permitted Uses",
+          "type": "array"
+        },
+        "protected": {
+          "default": false,
+          "title": "Protected",
+          "type": "boolean"
+        },
+        "restrictions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Restrictions",
+          "type": "array"
+        },
+        "retention_until": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retention Until"
+        },
+        "revoked": {
+          "default": false,
+          "title": "Revoked",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "scope": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Scope",
+          "type": "string"
+        },
+        "source": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "transformations": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Transformations",
+          "type": "array"
+        },
+        "uncertainty": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Uncertainty",
+          "type": "string"
+        },
+        "valid_until": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Valid Until",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "source",
+        "acquired_at",
+        "content_digest",
+        "valid_until",
+        "scope",
+        "uncertainty"
+      ],
+      "title": "EvidenceRecord",
+      "type": "object"
+    },
+    "ExecutionAuthorization": {
+      "additionalProperties": false,
+      "description": "Observed assignment binds immutable work terms to one actual execution.",
+      "properties": {
+        "acting_identity": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Acting Identity",
+          "type": "string"
+        },
+        "authorization_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Authorization Id",
+          "type": "string"
+        },
+        "capabilities": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "environment_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Environment Digest",
+          "type": "string"
+        },
+        "expires_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "job_terms_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Job Terms Digest",
+          "type": "string"
+        },
+        "market_binding_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Market Binding Digest"
+        },
+        "release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Release Digest",
+          "type": "string"
+        },
+        "reservation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Reservation Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "authorization_id",
+        "acting_identity",
+        "job_terms_digest",
+        "release_digest",
+        "environment_digest",
+        "reservation_id",
+        "expires_at"
+      ],
+      "title": "ExecutionAuthorization",
+      "type": "object"
+    },
+    "ExperimentalMeasurement": {
+      "additionalProperties": false,
+      "description": "Actual physical or monetary measurement, with unknown values represented explicitly.",
+      "properties": {
+        "evidence_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Digest",
+          "type": "string"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "measurement_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Measurement Id",
+          "type": "string"
+        },
+        "method": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "metric": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Metric",
+          "type": "string"
+        },
+        "observed_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Release Digest",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "measured",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unit": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "measurement_id",
+        "institution_id",
+        "release_digest",
+        "metric",
+        "value",
+        "unit",
+        "status",
+        "method",
+        "observed_at",
+        "evidence_digest"
+      ],
+      "title": "ExperimentalMeasurement",
+      "type": "object"
+    },
+    "ForecastRecord": {
+      "additionalProperties": false,
+      "description": "Modeled value is not accepted customer value or available capital.",
+      "properties": {
+        "amortization_volume": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Amortization Volume",
+          "type": "integer"
+        },
+        "assumptions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "forecast_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Forecast Id",
+          "type": "string"
+        },
+        "horizon": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Horizon",
+          "type": "string"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "quantity": {
+          "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+          "title": "Quantity",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "uncertainty": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Uncertainty",
+          "type": "string"
+        },
+        "unit": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "forecast_id",
+        "institution_id",
+        "assumptions",
+        "quantity",
+        "unit",
+        "horizon",
+        "uncertainty",
+        "amortization_volume"
+      ],
+      "title": "ForecastRecord",
+      "type": "object"
+    },
+    "Institution": {
+      "$defs": {
+        "MissionConstitution": {
+          "additionalProperties": false,
+          "description": "Customer-controlled mission terms, evidence rights and authority ceiling.",
+          "properties": {
+            "accounting_rule": {
+              "default": "each measured cost deducted once; unknown costs remain unknown",
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Accounting Rule",
+              "type": "string"
+            },
+            "alternatives": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Alternatives",
+              "type": "array"
+            },
+            "authority_ceiling": {
+              "default": "none",
+              "enum": [
+                "none",
+                "sandbox",
+                "production"
+              ],
+              "title": "Authority Ceiling",
+              "type": "string"
+            },
+            "beneficiary": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Beneficiary"
+            },
+            "budget": {
+              "$ref": "#/$defs/ResourceBudget"
+            },
+            "constraints": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 64,
+              "title": "Constraints",
+              "type": "array"
+            },
+            "evidence_rights": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Evidence Rights",
+              "type": "array"
+            },
+            "incumbent": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Incumbent"
+            },
+            "mission_distribution": {
+              "default": "bounded public synthetic streaming workloads",
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Mission Distribution",
+              "type": "string"
+            },
+            "mission_id": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Mission Id",
+              "type": "string"
+            },
+            "objective": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Objective",
+              "type": "string"
+            },
+            "outcome_measures": {
+              "items": {
+                "$ref": "#/$defs/OutcomeMeasure"
+              },
+              "maxItems": 32,
+              "title": "Outcome Measures",
+              "type": "array"
+            },
+            "owner": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Owner",
+              "type": "string"
+            },
+            "prohibited_actions": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 64,
+              "title": "Prohibited Actions",
+              "type": "array"
+            },
+            "proof_requirements": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Proof Requirements",
+              "type": "array"
+            },
+            "reviewer_budget_minutes": {
+              "default": 0,
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "title": "Reviewer Budget Minutes",
+              "type": "integer"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "scope": {
+              "default": "offline local rehearsal",
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Scope",
+              "type": "string"
+            },
+            "stop_conditions": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Stop Conditions",
+              "type": "array"
+            },
+            "utility_rule": {
+              "default": "hard correctness gates before measured cost and performance",
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Utility Rule",
+              "type": "string"
+            },
+            "validity": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Validity"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            }
+          },
+          "required": [
+            "mission_id",
+            "owner",
+            "objective"
+          ],
+          "title": "MissionConstitution",
+          "type": "object"
+        },
+        "OutcomeMeasure": {
+          "additionalProperties": false,
+          "description": "A named measurable objective with an explicit unit and hard-gate status.",
+          "properties": {
+            "direction": {
+              "enum": [
+                "minimize",
+                "maximize",
+                "exact"
+              ],
+              "title": "Direction",
+              "type": "string"
+            },
+            "hard_gate": {
+              "default": false,
+              "title": "Hard Gate",
+              "type": "boolean"
+            },
+            "name": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Name",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "threshold": {
+              "anyOf": [
+                {
+                  "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Threshold"
+            },
+            "unit": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Unit",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "unit",
+            "direction"
+          ],
+          "title": "OutcomeMeasure",
+          "type": "object"
+        },
+        "ResourceBudget": {
+          "additionalProperties": false,
+          "description": "Controllable ceilings and unmeasured costs are explicitly different.",
+          "properties": {
+            "enforceable": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Enforceable",
+              "type": "array"
+            },
+            "limits": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Limits",
+              "type": "object"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "stop_loss": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Stop Loss",
+              "type": "object"
+            },
+            "units": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Units",
+              "type": "object"
+            },
+            "unknown_costs": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Unknown Costs",
+              "type": "array"
+            }
+          },
+          "title": "ResourceBudget",
+          "type": "object"
+        },
+        "Validity": {
+          "additionalProperties": false,
+          "description": "Explicit beginning and end; no implicit perpetual validity.",
+          "properties": {
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "valid_from": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid From",
+              "type": "string"
+            },
+            "valid_until": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid Until",
+              "type": "string"
+            }
+          },
+          "required": [
+            "valid_from",
+            "valid_until"
+          ],
+          "title": "Validity",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Identity persists while releases and authorization remain separate records.",
+      "properties": {
+        "constitution": {
+          "$ref": "#/$defs/MissionConstitution"
+        },
+        "controller": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Controller",
+          "type": "string"
+        },
+        "discovery_locations": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Discovery Locations",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "nominated_release_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nominated Release Digest"
+        },
+        "predecessor_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predecessor Id"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "serving_release_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Serving Release Digest"
+        }
+      },
+      "required": [
+        "id",
+        "constitution",
+        "controller"
+      ],
+      "title": "Institution",
+      "type": "object"
+    },
+    "JobContract": {
+      "additionalProperties": false,
+      "description": "Frozen richer work terms, independent of a legacy settlement specification.",
+      "properties": {
+        "acceptance_conditions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Acceptance Conditions",
+          "type": "array"
+        },
+        "acceptance_owner": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Acceptance Owner",
+          "type": "string"
+        },
+        "allowed_tools": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Allowed Tools",
+          "type": "array"
+        },
+        "critical_functions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Critical Functions",
+          "type": "array"
+        },
+        "effects": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Effects",
+          "type": "array"
+        },
+        "environment_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Environment Digest",
+          "type": "string"
+        },
+        "evidence_assumptions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Evidence Assumptions",
+          "type": "array"
+        },
+        "family": {
+          "enum": [
+            "constitution",
+            "evidence",
+            "formation",
+            "challenge",
+            "verification",
+            "admission",
+            "renewal"
+          ],
+          "title": "Family",
+          "type": "string"
+        },
+        "goal": {
+          "default": "bounded evidence-bearing work",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Goal",
+          "type": "string"
+        },
+        "input_evidence": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Input Evidence",
+          "type": "array"
+        },
+        "inputs": {
+          "maxProperties": 64,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "Inputs",
+          "type": "object"
+        },
+        "institution_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Institution Id"
+        },
+        "job_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Job Id",
+          "type": "string"
+        },
+        "lifecycle_obligations": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Lifecycle Obligations",
+          "type": "array"
+        },
+        "max_attempts": {
+          "default": 1,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "mission_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mission Id"
+        },
+        "outputs": {
+          "maxProperties": 64,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "Outputs",
+          "type": "object"
+        },
+        "prohibited_effects": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Prohibited Effects",
+          "type": "array"
+        },
+        "release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Release Digest",
+          "type": "string"
+        },
+        "repair_routes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Repair Routes",
+          "type": "array"
+        },
+        "resources": {
+          "maxProperties": 32,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Resources",
+          "type": "object"
+        },
+        "rollback_target": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rollback Target"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "valid_until": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Valid Until",
+          "type": "string"
+        },
+        "verifier": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verifier"
+        },
+        "worker": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Worker"
+        }
+      },
+      "required": [
+        "job_id",
+        "family",
+        "acceptance_owner",
+        "release_digest",
+        "environment_digest",
+        "valid_until"
+      ],
+      "title": "JobContract",
+      "type": "object"
+    },
+    "JobGraph": {
+      "$defs": {
+        "JobContract": {
+          "additionalProperties": false,
+          "description": "Frozen richer work terms, independent of a legacy settlement specification.",
+          "properties": {
+            "acceptance_conditions": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Acceptance Conditions",
+              "type": "array"
+            },
+            "acceptance_owner": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Acceptance Owner",
+              "type": "string"
+            },
+            "allowed_tools": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Allowed Tools",
+              "type": "array"
+            },
+            "critical_functions": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 64,
+              "title": "Critical Functions",
+              "type": "array"
+            },
+            "effects": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Effects",
+              "type": "array"
+            },
+            "environment_digest": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Environment Digest",
+              "type": "string"
+            },
+            "evidence_assumptions": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Evidence Assumptions",
+              "type": "array"
+            },
+            "family": {
+              "enum": [
+                "constitution",
+                "evidence",
+                "formation",
+                "challenge",
+                "verification",
+                "admission",
+                "renewal"
+              ],
+              "title": "Family",
+              "type": "string"
+            },
+            "goal": {
+              "default": "bounded evidence-bearing work",
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Goal",
+              "type": "string"
+            },
+            "input_evidence": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 128,
+              "title": "Input Evidence",
+              "type": "array"
+            },
+            "inputs": {
+              "maxProperties": 64,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Inputs",
+              "type": "object"
+            },
+            "institution_id": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Institution Id"
+            },
+            "job_id": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Job Id",
+              "type": "string"
+            },
+            "lifecycle_obligations": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Lifecycle Obligations",
+              "type": "array"
+            },
+            "max_attempts": {
+              "default": 1,
+              "maximum": 10,
+              "minimum": 1,
+              "title": "Max Attempts",
+              "type": "integer"
+            },
+            "mission_id": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Mission Id"
+            },
+            "outputs": {
+              "maxProperties": 64,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Outputs",
+              "type": "object"
+            },
+            "prohibited_effects": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Prohibited Effects",
+              "type": "array"
+            },
+            "release_digest": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Release Digest",
+              "type": "string"
+            },
+            "repair_routes": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 16,
+              "title": "Repair Routes",
+              "type": "array"
+            },
+            "resources": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Resources",
+              "type": "object"
+            },
+            "rollback_target": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Rollback Target"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "valid_until": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid Until",
+              "type": "string"
+            },
+            "verifier": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Verifier"
+            },
+            "worker": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Worker"
+            }
+          },
+          "required": [
+            "job_id",
+            "family",
+            "acceptance_owner",
+            "release_digest",
+            "environment_digest",
+            "valid_until"
+          ],
+          "title": "JobContract",
+          "type": "object"
+        },
+        "JobDependency": {
+          "additionalProperties": false,
+          "description": "Typed dispatch obligations with explicit control ownership.",
+          "properties": {
+            "kind": {
+              "enum": [
+                "evidence",
+                "control",
+                "challenge",
+                "rollback"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "principal": {
+              "anyOf": [
+                {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Principal"
+            },
+            "required_type": {
+              "anyOf": [
+                {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Required Type"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "source": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Source",
+              "type": "string"
+            },
+            "target": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Target",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source",
+            "target",
+            "kind"
+          ],
+          "title": "JobDependency",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "A bounded graph; runtime compilation enforces coverage and dependency guards.",
+      "properties": {
+        "edges": {
+          "items": {
+            "$ref": "#/$defs/JobDependency"
+          },
+          "maxItems": 1024,
+          "title": "Edges",
+          "type": "array"
+        },
+        "jobs": {
+          "items": {
+            "$ref": "#/$defs/JobContract"
+          },
+          "maxItems": 256,
+          "minItems": 1,
+          "title": "Jobs",
+          "type": "array"
+        },
+        "required_families": {
+          "items": {
+            "enum": [
+              "constitution",
+              "evidence",
+              "formation",
+              "challenge",
+              "verification",
+              "admission",
+              "renewal"
+            ],
+            "type": "string"
+          },
+          "maxItems": 7,
+          "title": "Required Families",
+          "type": "array"
+        },
+        "required_functions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Required Functions",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "jobs"
+      ],
+      "title": "JobGraph",
+      "type": "object"
+    },
+    "MemoryAdmission": {
+      "additionalProperties": false,
+      "description": "Permission to influence later work, distinct from retaining historical records.",
+      "properties": {
+        "admission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Admission Id",
+          "type": "string"
+        },
+        "artifact_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Digest",
+          "type": "string"
+        },
+        "dependency_digests": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Dependency Digests",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "admit",
+            "quarantine",
+            "reject"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "permitted_uses": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Permitted Uses",
+          "type": "array"
+        },
+        "principal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Principal",
+          "type": "string"
+        },
+        "restrictions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Restrictions",
+          "type": "array"
+        },
+        "retention_until": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Retention Until",
+          "type": "string"
+        },
+        "rights": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Rights",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "scope": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Scope",
+          "type": "string"
+        },
+        "valid_until": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Valid Until",
+          "type": "string"
+        }
+      },
+      "required": [
+        "admission_id",
+        "institution_id",
+        "principal",
+        "artifact_digest",
+        "evidence_ids",
+        "permitted_uses",
+        "scope",
+        "rights",
+        "valid_until",
+        "retention_until",
+        "outcome"
+      ],
+      "title": "MemoryAdmission",
+      "type": "object"
+    },
+    "MissionConstitution": {
+      "$defs": {
+        "OutcomeMeasure": {
+          "additionalProperties": false,
+          "description": "A named measurable objective with an explicit unit and hard-gate status.",
+          "properties": {
+            "direction": {
+              "enum": [
+                "minimize",
+                "maximize",
+                "exact"
+              ],
+              "title": "Direction",
+              "type": "string"
+            },
+            "hard_gate": {
+              "default": false,
+              "title": "Hard Gate",
+              "type": "boolean"
+            },
+            "name": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Name",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "threshold": {
+              "anyOf": [
+                {
+                  "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Threshold"
+            },
+            "unit": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Unit",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "unit",
+            "direction"
+          ],
+          "title": "OutcomeMeasure",
+          "type": "object"
+        },
+        "ResourceBudget": {
+          "additionalProperties": false,
+          "description": "Controllable ceilings and unmeasured costs are explicitly different.",
+          "properties": {
+            "enforceable": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Enforceable",
+              "type": "array"
+            },
+            "limits": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Limits",
+              "type": "object"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "stop_loss": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Stop Loss",
+              "type": "object"
+            },
+            "units": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Units",
+              "type": "object"
+            },
+            "unknown_costs": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Unknown Costs",
+              "type": "array"
+            }
+          },
+          "title": "ResourceBudget",
+          "type": "object"
+        },
+        "Validity": {
+          "additionalProperties": false,
+          "description": "Explicit beginning and end; no implicit perpetual validity.",
+          "properties": {
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "valid_from": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid From",
+              "type": "string"
+            },
+            "valid_until": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid Until",
+              "type": "string"
+            }
+          },
+          "required": [
+            "valid_from",
+            "valid_until"
+          ],
+          "title": "Validity",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Customer-controlled mission terms, evidence rights and authority ceiling.",
+      "properties": {
+        "accounting_rule": {
+          "default": "each measured cost deducted once; unknown costs remain unknown",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Accounting Rule",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "authority_ceiling": {
+          "default": "none",
+          "enum": [
+            "none",
+            "sandbox",
+            "production"
+          ],
+          "title": "Authority Ceiling",
+          "type": "string"
+        },
+        "beneficiary": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Beneficiary"
+        },
+        "budget": {
+          "$ref": "#/$defs/ResourceBudget"
+        },
+        "constraints": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Constraints",
+          "type": "array"
+        },
+        "evidence_rights": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Evidence Rights",
+          "type": "array"
+        },
+        "incumbent": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Incumbent"
+        },
+        "mission_distribution": {
+          "default": "bounded public synthetic streaming workloads",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Mission Distribution",
+          "type": "string"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "objective": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "outcome_measures": {
+          "items": {
+            "$ref": "#/$defs/OutcomeMeasure"
+          },
+          "maxItems": 32,
+          "title": "Outcome Measures",
+          "type": "array"
+        },
+        "owner": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Owner",
+          "type": "string"
+        },
+        "prohibited_actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Prohibited Actions",
+          "type": "array"
+        },
+        "proof_requirements": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Proof Requirements",
+          "type": "array"
+        },
+        "reviewer_budget_minutes": {
+          "default": 0,
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Reviewer Budget Minutes",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "scope": {
+          "default": "offline local rehearsal",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Scope",
+          "type": "string"
+        },
+        "stop_conditions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Stop Conditions",
+          "type": "array"
+        },
+        "utility_rule": {
+          "default": "hard correctness gates before measured cost and performance",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Utility Rule",
+          "type": "string"
+        },
+        "validity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Validity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "mission_id",
+        "owner",
+        "objective"
+      ],
+      "title": "MissionConstitution",
+      "type": "object"
+    },
+    "PolicyProgram": {
+      "additionalProperties": false,
+      "description": "Proposed decisions are separate from actual action permission.",
+      "properties": {
+        "abstention": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Abstention",
+          "type": "array"
+        },
+        "admissible_actions": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Admissible Actions",
+          "type": "array"
+        },
+        "artifact_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Digest",
+          "type": "string"
+        },
+        "configuration": {
+          "maxProperties": 64,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "title": "Configuration",
+          "type": "object"
+        },
+        "constraints": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Constraints",
+          "type": "array"
+        },
+        "decision_rules": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Decision Rules",
+          "type": "array"
+        },
+        "dependencies": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "escalation": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Escalation",
+          "type": "array"
+        },
+        "objective": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "policy_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "policy_id",
+        "artifact_digest",
+        "objective",
+        "decision_rules"
+      ],
+      "title": "PolicyProgram",
+      "type": "object"
+    },
+    "ProofProtocol": {
+      "$defs": {
+        "OutcomeMeasure": {
+          "additionalProperties": false,
+          "description": "A named measurable objective with an explicit unit and hard-gate status.",
+          "properties": {
+            "direction": {
+              "enum": [
+                "minimize",
+                "maximize",
+                "exact"
+              ],
+              "title": "Direction",
+              "type": "string"
+            },
+            "hard_gate": {
+              "default": false,
+              "title": "Hard Gate",
+              "type": "boolean"
+            },
+            "name": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Name",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "threshold": {
+              "anyOf": [
+                {
+                  "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Threshold"
+            },
+            "unit": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Unit",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "unit",
+            "direction"
+          ],
+          "title": "OutcomeMeasure",
+          "type": "object"
+        },
+        "Validity": {
+          "additionalProperties": false,
+          "description": "Explicit beginning and end; no implicit perpetual validity.",
+          "properties": {
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "valid_from": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid From",
+              "type": "string"
+            },
+            "valid_until": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid Until",
+              "type": "string"
+            }
+          },
+          "required": [
+            "valid_from",
+            "valid_until"
+          ],
+          "title": "Validity",
+          "type": "object"
+        },
+        "VerifierDisclosure": {
+          "additionalProperties": false,
+          "description": "Disclosure is evidence to check, not authority to appoint a trusted verifier.",
+          "properties": {
+            "control_separation": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Control Separation",
+              "type": "string"
+            },
+            "custodian": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Custodian",
+              "type": "string"
+            },
+            "funding_and_conflicts": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Funding And Conflicts",
+              "type": "string"
+            },
+            "organization": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Organization",
+              "type": "string"
+            },
+            "protocol_controller": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Protocol Controller",
+              "type": "string"
+            },
+            "provenance": {
+              "default": "local",
+              "enum": [
+                "local",
+                "independent"
+              ],
+              "title": "Provenance",
+              "type": "string"
+            },
+            "replication_status": {
+              "enum": [
+                "not-replicated",
+                "local-replay",
+                "external-replication"
+              ],
+              "title": "Replication Status",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "verifier": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Verifier",
+              "type": "string"
+            }
+          },
+          "required": [
+            "verifier",
+            "organization",
+            "control_separation",
+            "custodian",
+            "funding_and_conflicts",
+            "protocol_controller",
+            "replication_status"
+          ],
+          "title": "VerifierDisclosure",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Preregistered examination binding scope, thresholds, units and uncertainty.",
+      "properties": {
+        "candidate_release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Candidate Release Digest",
+          "type": "string"
+        },
+        "comparator_manifest_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Comparator Manifest Digest",
+          "type": "string"
+        },
+        "cost_rule_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Cost Rule Digest",
+          "type": "string"
+        },
+        "environment_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Environment Digest",
+          "type": "string"
+        },
+        "evaluation_unit": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Evaluation Unit",
+          "type": "string"
+        },
+        "evidence_commitment": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Commitment",
+          "type": "string"
+        },
+        "exclusions_policy": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Exclusions Policy",
+          "type": "string"
+        },
+        "frozen_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Frozen At",
+          "type": "string"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "multiplicity_policy": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Multiplicity Policy",
+          "type": "string"
+        },
+        "protocol_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Protocol Id",
+          "type": "string"
+        },
+        "randomization": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Randomization",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "thresholds": {
+          "items": {
+            "$ref": "#/$defs/OutcomeMeasure"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Thresholds",
+          "type": "array"
+        },
+        "timeout_ms": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Timeout Ms",
+          "type": "integer"
+        },
+        "uncertainty_method": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Uncertainty Method",
+          "type": "string"
+        },
+        "validity": {
+          "$ref": "#/$defs/Validity"
+        },
+        "verifier_disclosure": {
+          "$ref": "#/$defs/VerifierDisclosure"
+        },
+        "warmup_and_cache": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Warmup And Cache",
+          "type": "string"
+        }
+      },
+      "required": [
+        "protocol_id",
+        "mission_id",
+        "candidate_release_digest",
+        "comparator_manifest_digest",
+        "environment_digest",
+        "evidence_commitment",
+        "verifier_disclosure",
+        "evaluation_unit",
+        "thresholds",
+        "randomization",
+        "warmup_and_cache",
+        "timeout_ms",
+        "exclusions_policy",
+        "uncertainty_method",
+        "multiplicity_policy",
+        "cost_rule_digest",
+        "validity",
+        "frozen_at"
+      ],
+      "title": "ProofProtocol",
+      "type": "object"
+    },
+    "ProofReceipt": {
+      "$defs": {
+        "ResourceBudget": {
+          "additionalProperties": false,
+          "description": "Controllable ceilings and unmeasured costs are explicitly different.",
+          "properties": {
+            "enforceable": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Enforceable",
+              "type": "array"
+            },
+            "limits": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Limits",
+              "type": "object"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "stop_loss": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Stop Loss",
+              "type": "object"
+            },
+            "units": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Units",
+              "type": "object"
+            },
+            "unknown_costs": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Unknown Costs",
+              "type": "array"
+            }
+          },
+          "title": "ResourceBudget",
+          "type": "object"
+        },
+        "VerifierDisclosure": {
+          "additionalProperties": false,
+          "description": "Disclosure is evidence to check, not authority to appoint a trusted verifier.",
+          "properties": {
+            "control_separation": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Control Separation",
+              "type": "string"
+            },
+            "custodian": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Custodian",
+              "type": "string"
+            },
+            "funding_and_conflicts": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Funding And Conflicts",
+              "type": "string"
+            },
+            "organization": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Organization",
+              "type": "string"
+            },
+            "protocol_controller": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Protocol Controller",
+              "type": "string"
+            },
+            "provenance": {
+              "default": "local",
+              "enum": [
+                "local",
+                "independent"
+              ],
+              "title": "Provenance",
+              "type": "string"
+            },
+            "replication_status": {
+              "enum": [
+                "not-replicated",
+                "local-replay",
+                "external-replication"
+              ],
+              "title": "Replication Status",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "verifier": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Verifier",
+              "type": "string"
+            }
+          },
+          "required": [
+            "verifier",
+            "organization",
+            "control_separation",
+            "custodian",
+            "funding_and_conflicts",
+            "protocol_controller",
+            "replication_status"
+          ],
+          "title": "VerifierDisclosure",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "An attributed result; trust and scientific claim qualification are checked separately.",
+      "properties": {
+        "claim": {
+          "enum": [
+            "safety",
+            "alpha",
+            "correctness",
+            "portability"
+          ],
+          "title": "Claim",
+          "type": "string"
+        },
+        "comparator_manifest_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Comparator Manifest Digest",
+          "type": "string"
+        },
+        "costs": {
+          "$ref": "#/$defs/ResourceBudget"
+        },
+        "dependency_digests": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 256,
+          "title": "Dependency Digests",
+          "type": "array"
+        },
+        "disclosure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerifierDisclosure"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "environment_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Environment Digest",
+          "type": "string"
+        },
+        "evaluation_units": {
+          "default": 0,
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Evaluation Units",
+          "type": "integer"
+        },
+        "evidence_commitment": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Commitment",
+          "type": "string"
+        },
+        "evidence_scope": {
+          "default": "local",
+          "enum": [
+            "local",
+            "independent"
+          ],
+          "title": "Evidence Scope",
+          "type": "string"
+        },
+        "exclusions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Exclusions",
+          "type": "array"
+        },
+        "failures": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Failures",
+          "type": "array"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "interventions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Interventions",
+          "type": "array"
+        },
+        "issued_at": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Issued At"
+        },
+        "measurements": {
+          "maxProperties": 128,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+              "type": "string"
+            }
+          },
+          "title": "Measurements",
+          "type": "object"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "pass",
+            "fail",
+            "tie",
+            "insufficient_evidence",
+            "retain_incumbent",
+            "retain_alternative"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "proof_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Proof Id",
+          "type": "string"
+        },
+        "protocol_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Protocol Digest",
+          "type": "string"
+        },
+        "release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Release Digest",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "uncertainty": {
+          "default": "not externally established",
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Uncertainty",
+          "type": "string"
+        },
+        "valid_until": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Valid Until",
+          "type": "string"
+        },
+        "verifier": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Verifier",
+          "type": "string"
+        }
+      },
+      "required": [
+        "proof_id",
+        "institution_id",
+        "mission_id",
+        "release_digest",
+        "environment_digest",
+        "verifier",
+        "valid_until",
+        "outcome",
+        "claim",
+        "comparator_manifest_digest",
+        "protocol_digest",
+        "evidence_commitment"
+      ],
+      "title": "ProofReceipt",
+      "type": "object"
+    },
+    "RehearsalRequest": {
+      "additionalProperties": false,
+      "description": "One bounded, credential-free browser/native request.",
+      "properties": {
+        "formation_trials": {
+          "default": 2,
+          "maximum": 6,
+          "minimum": 1,
+          "title": "Formation Trials",
+          "type": "integer"
+        },
+        "kind": {
+          "const": "successor-rehearsal",
+          "default": "successor-rehearsal",
+          "title": "Kind",
+          "type": "string"
+        },
+        "language": {
+          "default": "en",
+          "enum": [
+            "en",
+            "fr"
+          ],
+          "title": "Language",
+          "type": "string"
+        },
+        "max_candidates": {
+          "default": 4,
+          "maximum": 12,
+          "minimum": 2,
+          "title": "Max Candidates",
+          "type": "integer"
+        },
+        "max_events": {
+          "default": 1000,
+          "maximum": 20000,
+          "minimum": 64,
+          "title": "Max Events",
+          "type": "integer"
+        },
+        "mission": {
+          "const": "streaming-metrics-v1",
+          "default": "streaming-metrics-v1",
+          "title": "Mission",
+          "type": "string"
+        },
+        "request_id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "seed": {
+          "default": 42,
+          "maximum": 4294967295,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "request_id"
+      ],
+      "title": "RehearsalRequest",
+      "type": "object"
+    },
+    "RehearsalResult": {
+      "$defs": {
+        "RehearsalSignature": {
+          "additionalProperties": false,
+          "description": "Locally supplied signature data never installs its own trusted key.",
+          "properties": {
+            "public_key": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Public Key",
+              "type": "string"
+            },
+            "signature": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Signature",
+              "type": "string"
+            }
+          },
+          "required": [
+            "public_key",
+            "signature"
+          ],
+          "title": "RehearsalSignature",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Bounded file handoff; evidence is checked recursively and by its originating models.",
+      "properties": {
+        "evidence": {
+          "additionalProperties": true,
+          "maxProperties": 128,
+          "title": "Evidence",
+          "type": "object"
+        },
+        "evidence_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Hash",
+          "type": "string"
+        },
+        "kind": {
+          "const": "successor-result",
+          "default": "successor-result",
+          "title": "Kind",
+          "type": "string"
+        },
+        "request_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Request Hash",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "scope": {
+          "const": "local-native-rehearsal",
+          "default": "local-native-rehearsal",
+          "title": "Scope",
+          "type": "string"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RehearsalSignature"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "request_hash",
+        "evidence",
+        "evidence_hash"
+      ],
+      "title": "RehearsalResult",
+      "type": "object"
+    },
+    "ResourceReservation": {
+      "additionalProperties": false,
+      "description": "Atomic resource hold with an explicit idempotency identity.",
+      "properties": {
+        "expires_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Expires At",
+          "type": "string"
+        },
+        "idempotency_key": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Idempotency Key",
+          "type": "string"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "observed_usage": {
+          "maxProperties": 32,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Observed Usage",
+          "type": "object"
+        },
+        "principal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Principal",
+          "type": "string"
+        },
+        "reservation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Reservation Id",
+          "type": "string"
+        },
+        "resources": {
+          "maxProperties": 32,
+          "minProperties": 1,
+          "patternProperties": {
+            "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "title": "Resources",
+          "type": "object"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "reserved",
+            "consumed",
+            "released"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unknown_costs": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 32,
+          "title": "Unknown Costs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reservation_id",
+        "institution_id",
+        "idempotency_key",
+        "principal",
+        "resources",
+        "status",
+        "expires_at"
+      ],
+      "title": "ResourceReservation",
+      "type": "object"
+    },
+    "SettlementReceipt": {
+      "additionalProperties": false,
+      "description": "Settlement attribution is distinct from superiority and customer value.",
+      "properties": {
+        "amount_atomic": {
+          "pattern": "^(?:0|[1-9][0-9]{0,77})$",
+          "title": "Amount Atomic",
+          "type": "string"
+        },
+        "asset": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Asset",
+          "type": "string"
+        },
+        "asset_decimals": {
+          "maximum": 255,
+          "minimum": 0,
+          "title": "Asset Decimals",
+          "type": "integer"
+        },
+        "chain_id": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Chain Id",
+          "type": "integer"
+        },
+        "evidence_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Evidence Digest",
+          "type": "string"
+        },
+        "execution_authorization_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Execution Authorization Digest",
+          "type": "string"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "job_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Job Id",
+          "type": "string"
+        },
+        "log_index": {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "title": "Log Index",
+          "type": "integer"
+        },
+        "market": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Market",
+          "type": "string"
+        },
+        "market_job_id": {
+          "pattern": "^(?:0|[1-9][0-9]{0,77})$",
+          "title": "Market Job Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "settlement_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Settlement Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "paid",
+            "refunded",
+            "failed",
+            "pending"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "transaction_hash": {
+          "pattern": "^0x[0-9a-fA-F]{64}$",
+          "title": "Transaction Hash",
+          "type": "string"
+        },
+        "worker": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Worker",
+          "type": "string"
+        }
+      },
+      "required": [
+        "settlement_id",
+        "institution_id",
+        "job_id",
+        "execution_authorization_digest",
+        "chain_id",
+        "market",
+        "market_job_id",
+        "transaction_hash",
+        "log_index",
+        "worker",
+        "asset",
+        "amount_atomic",
+        "asset_decimals",
+        "status",
+        "evidence_digest"
+      ],
+      "title": "SettlementReceipt",
+      "type": "object"
+    },
+    "SpecialistDesignationPolicy": {
+      "$defs": {
+        "ComparatorRequirement": {
+          "additionalProperties": false,
+          "description": "Applicability is explicit for every credible alternative family.",
+          "properties": {
+            "rationale": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Rationale",
+              "type": "string"
+            },
+            "required": {
+              "title": "Required",
+              "type": "boolean"
+            },
+            "role": {
+              "enum": [
+                "incumbent",
+                "simple",
+                "specialist",
+                "general",
+                "human",
+                "hybrid"
+              ],
+              "title": "Role",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "role",
+            "required",
+            "rationale"
+          ],
+          "title": "ComparatorRequirement",
+          "type": "object"
+        },
+        "Validity": {
+          "additionalProperties": false,
+          "description": "Explicit beginning and end; no implicit perpetual validity.",
+          "properties": {
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "valid_from": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid From",
+              "type": "string"
+            },
+            "valid_until": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Valid Until",
+              "type": "string"
+            }
+          },
+          "required": [
+            "valid_from",
+            "valid_until"
+          ],
+          "title": "Validity",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Versioned designation requirements; the software name grants no designation.",
+      "properties": {
+        "accountable_policy_owner": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Accountable Policy Owner",
+          "type": "string"
+        },
+        "comparator_requirements": {
+          "items": {
+            "$ref": "#/$defs/ComparatorRequirement"
+          },
+          "maxItems": 6,
+          "minItems": 6,
+          "title": "Comparator Requirements",
+          "type": "array"
+        },
+        "designation": {
+          "const": "specialist-asi",
+          "default": "specialist-asi",
+          "title": "Designation",
+          "type": "string"
+        },
+        "minimum_evaluation_units": {
+          "maximum": 9007199254740991,
+          "minimum": 1,
+          "title": "Minimum Evaluation Units",
+          "type": "integer"
+        },
+        "mission_family": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Family",
+          "type": "string"
+        },
+        "policy_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Policy Id",
+          "type": "string"
+        },
+        "required_claim": {
+          "const": "alpha",
+          "default": "alpha",
+          "title": "Required Claim",
+          "type": "string"
+        },
+        "required_independent_replications": {
+          "maximum": 1000,
+          "minimum": 1,
+          "title": "Required Independent Replications",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "superiority_metric": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Superiority Metric",
+          "type": "string"
+        },
+        "superiority_threshold_bps": {
+          "maximum": 1000000,
+          "minimum": 1,
+          "title": "Superiority Threshold Bps",
+          "type": "integer"
+        },
+        "uncertainty_requirement": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Uncertainty Requirement",
+          "type": "string"
+        },
+        "validity": {
+          "$ref": "#/$defs/Validity"
+        }
+      },
+      "required": [
+        "policy_id",
+        "mission_family",
+        "validity",
+        "superiority_metric",
+        "superiority_threshold_bps",
+        "minimum_evaluation_units",
+        "required_independent_replications",
+        "comparator_requirements",
+        "uncertainty_requirement",
+        "accountable_policy_owner"
+      ],
+      "title": "SpecialistDesignationPolicy",
+      "type": "object"
+    },
+    "SuccessorRecord": {
+      "additionalProperties": false,
+      "description": "Lineage carries permitted knowledge, never predecessor proof or grants.",
+      "properties": {
+        "excluded_assets": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Excluded Assets",
+          "type": "array"
+        },
+        "failures_and_incidents": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Failures And Incidents",
+          "type": "array"
+        },
+        "inherited_memory": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Inherited Memory",
+          "type": "array"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "new_admission_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "New Admission Id"
+        },
+        "new_grant_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "New Grant Ids",
+          "type": "array"
+        },
+        "new_proof_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "New Proof Ids",
+          "type": "array"
+        },
+        "predecessor_disposition": {
+          "enum": [
+            "serving",
+            "retained-fallback",
+            "retired",
+            "impaired"
+          ],
+          "title": "Predecessor Disposition",
+          "type": "string"
+        },
+        "predecessor_release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Predecessor Release Digest",
+          "type": "string"
+        },
+        "recovery_release_digest": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recovery Release Digest"
+        },
+        "rejected_candidates": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Rejected Candidates",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "successor_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Successor Id",
+          "type": "string"
+        },
+        "successor_release_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Successor Release Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "successor_id",
+        "institution_id",
+        "predecessor_release_digest",
+        "successor_release_digest",
+        "predecessor_disposition"
+      ],
+      "title": "SuccessorRecord",
+      "type": "object"
+    },
+    "UnderwritingDecision": {
+      "$defs": {
+        "ResourceBudget": {
+          "additionalProperties": false,
+          "description": "Controllable ceilings and unmeasured costs are explicitly different.",
+          "properties": {
+            "enforceable": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Enforceable",
+              "type": "array"
+            },
+            "limits": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Limits",
+              "type": "object"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "stop_loss": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "Stop Loss",
+              "type": "object"
+            },
+            "units": {
+              "maxProperties": 32,
+              "patternProperties": {
+                "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$": {
+                  "maxLength": 4000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "title": "Units",
+              "type": "object"
+            },
+            "unknown_costs": {
+              "items": {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Unknown Costs",
+              "type": "array"
+            }
+          },
+          "title": "ResourceBudget",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "An accountable bounded evidence programme, not an operational grant.",
+      "properties": {
+        "changed_assumption": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Changed Assumption",
+          "type": "string"
+        },
+        "considered_alternatives": {
+          "items": {
+            "enum": [
+              "retain",
+              "repair",
+              "rent",
+              "build",
+              "partner",
+              "reserve",
+              "stop"
+            ],
+            "type": "string"
+          },
+          "maxItems": 7,
+          "minItems": 1,
+          "title": "Considered Alternatives",
+          "type": "array"
+        },
+        "decision_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "decisive_evidence": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Decisive Evidence",
+          "type": "array"
+        },
+        "institution_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Institution Id",
+          "type": "string"
+        },
+        "issued_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+          "title": "Issued At",
+          "type": "string"
+        },
+        "mission_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Mission Id",
+          "type": "string"
+        },
+        "principal": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "Principal",
+          "type": "string"
+        },
+        "proof_budget": {
+          "$ref": "#/$defs/ResourceBudget"
+        },
+        "rationale": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "selected": {
+          "enum": [
+            "retain",
+            "repair",
+            "rent",
+            "build",
+            "partner",
+            "reserve",
+            "stop"
+          ],
+          "title": "Selected",
+          "type": "string"
+        }
+      },
+      "required": [
+        "decision_id",
+        "institution_id",
+        "mission_id",
+        "principal",
+        "changed_assumption",
+        "considered_alternatives",
+        "selected",
+        "proof_budget",
+        "rationale",
+        "issued_at"
+      ],
+      "title": "UnderwritingDecision",
+      "type": "object"
+    },
+    "WorldProgram": {
+      "$defs": {
+        "Prediction": {
+          "additionalProperties": false,
+          "description": "A prediction committed before observation and retained when falsified.",
+          "properties": {
+            "decision_effect": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Decision Effect",
+              "type": "string"
+            },
+            "experiment_id": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Experiment Id",
+              "type": "string"
+            },
+            "falsified": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Falsified"
+            },
+            "lower": {
+              "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+              "title": "Lower",
+              "type": "string"
+            },
+            "metric": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Metric",
+              "type": "string"
+            },
+            "observation": {
+              "anyOf": [
+                {
+                  "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Observation"
+            },
+            "predicted": {
+              "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+              "title": "Predicted",
+              "type": "string"
+            },
+            "prediction_id": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Prediction Id",
+              "type": "string"
+            },
+            "recorded_at": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$",
+              "title": "Recorded At",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "unit": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Unit",
+              "type": "string"
+            },
+            "upper": {
+              "pattern": "^-?(?:0|[1-9][0-9]{0,29})(?:\\.[0-9]{1,18})?$",
+              "title": "Upper",
+              "type": "string"
+            }
+          },
+          "required": [
+            "prediction_id",
+            "metric",
+            "unit",
+            "predicted",
+            "lower",
+            "upper",
+            "recorded_at",
+            "experiment_id",
+            "decision_effect"
+          ],
+          "title": "Prediction",
+          "type": "object"
+        },
+        "TypedPort": {
+          "additionalProperties": false,
+          "description": "An inspectable typed observation, state or result.",
+          "properties": {
+            "constraints": {
+              "items": {
+                "maxLength": 4000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 32,
+              "title": "Constraints",
+              "type": "array"
+            },
+            "name": {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+              "title": "Name",
+              "type": "string"
+            },
+            "schema_version": {
+              "const": 1,
+              "default": 1,
+              "title": "Schema Version",
+              "type": "integer"
+            },
+            "type_name": {
+              "maxLength": 4000,
+              "minLength": 1,
+              "title": "Type Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "type_name"
+          ],
+          "title": "TypedPort",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Typed explanatory state and executable experiment-selection relationships.",
+      "properties": {
+        "artifact_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Digest",
+          "type": "string"
+        },
+        "assumptions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "falsifiers": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Falsifiers",
+          "type": "array"
+        },
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/TypedPort"
+          },
+          "maxItems": 32,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "invariants": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Invariants",
+          "type": "array"
+        },
+        "outputs": {
+          "items": {
+            "$ref": "#/$defs/TypedPort"
+          },
+          "maxItems": 32,
+          "title": "Outputs",
+          "type": "array"
+        },
+        "predictions": {
+          "items": {
+            "$ref": "#/$defs/Prediction"
+          },
+          "maxItems": 128,
+          "title": "Predictions",
+          "type": "array"
+        },
+        "revision_history": {
+          "items": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "title": "Revision History",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "state": {
+          "items": {
+            "$ref": "#/$defs/TypedPort"
+          },
+          "maxItems": 32,
+          "title": "State",
+          "type": "array"
+        },
+        "transitions": {
+          "items": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "Transitions",
+          "type": "array"
+        },
+        "uncertainty": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Uncertainty",
+          "type": "string"
+        },
+        "world_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+          "title": "World Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "world_id",
+        "artifact_digest",
+        "uncertainty"
+      ],
+      "title": "WorldProgram",
+      "type": "object"
+    }
+  }
+}

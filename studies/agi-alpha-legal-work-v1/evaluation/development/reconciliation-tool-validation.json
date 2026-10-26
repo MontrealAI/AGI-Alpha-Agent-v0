@@ -1,0 +1,72 @@
+{
+  "scope": "Preconfirmation final controls and static checks",
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "label": "controls",
+        "cmd": "python -m unittest test_reconciliation_check -v",
+        "result": {
+          "chunk_id": "d90cfd",
+          "wall_time_seconds": 0.000023035,
+          "exit_code": 0,
+          "original_token_count": 462,
+          "output": "test_bool_offset_rejected (test_reconciliation_check.ReconciliationControls.test_bool_offset_rejected) ... ok\ntest_cross_document_reference_rejected (test_reconciliation_check.ReconciliationControls.test_cross_document_reference_rejected) ... ok\ntest_duplicate_amendment_rejected (test_reconciliation_check.ReconciliationControls.test_duplicate_amendment_rejected) ... ok\ntest_duplicate_operations_rejected (test_reconciliation_check.ReconciliationControls.test_duplicate_operations_rejected) ... ok\ntest_false_equal_rejected (test_reconciliation_check.ReconciliationControls.test_false_equal_rejected) ... ok\ntest_false_insert_rejected (test_reconciliation_check.ReconciliationControls.test_false_insert_rejected) ... ok\ntest_interpreted_amendment_rejected (test_reconciliation_check.ReconciliationControls.test_interpreted_amendment_rejected) ... ok\ntest_omitted_material_cannot_pass (test_reconciliation_check.ReconciliationControls.test_omitted_material_cannot_pass) ... ok\ntest_self_consistent_substituted_source_is_rejected (test_reconciliation_check.ReconciliationControls.test_self_consistent_substituted_source_is_rejected) ... ok\ntest_semantic_or_professional_claim_rejected (test_reconciliation_check.ReconciliationControls.test_semantic_or_professional_claim_rejected) ... ok\ntest_unicode_codepoints_and_empty_insertion_span (test_reconciliation_check.ReconciliationControls.test_unicode_codepoints_and_empty_insertion_span) ... ok\ntest_unknown_operation_rejected (test_reconciliation_check.ReconciliationControls.test_unknown_operation_rejected) ... ok\ntest_valid_alternative_segmentation_does_not_require_difflib (test_reconciliation_check.ReconciliationControls.test_valid_alternative_segmentation_does_not_require_difflib) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.001s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "label": "ruff",
+        "cmd": "/workspace/scratch/2b1df9d13229/test-env/bin/ruff check --config /workspace/scratch/c4e9aee15454/agi-alpha/pyproject.toml reconciliation_check.py test_reconciliation_check.py",
+        "result": {
+          "chunk_id": "135f67",
+          "wall_time_seconds": 0.000029114,
+          "exit_code": 0,
+          "original_token_count": 5,
+          "output": "All checks passed!\n"
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "label": "mypy",
+        "cmd": "/workspace/scratch/2b1df9d13229/test-env/bin/mypy --strict --follow-imports=skip reconciliation_check.py",
+        "result": {
+          "chunk_id": "223410",
+          "wall_time_seconds": 0.061310235,
+          "exit_code": 0,
+          "original_token_count": 11,
+          "output": "Success: no issues found in 1 source file\n"
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "label": "source_hashes",
+        "cmd": "sha256sum ../reconciliation/reconcile.py ../reconciliation/package.mjs",
+        "result": {
+          "chunk_id": "c3b7f2",
+          "wall_time_seconds": 0.000036295,
+          "exit_code": 0,
+          "original_token_count": 49,
+          "output": "e074f83a03fec5f3f0e8b62bc56a3db6669da33a3da897822539b4bff724a033  ../reconciliation/reconcile.py\nc664f75bd2c7d9fca3d950252ca77c40239208fffe2c7f5eef51966db3ba3683  ../reconciliation/package.mjs\n"
+        }
+      }
+    }
+  ],
+  "prior_construction_diagnostics": [
+    {
+      "kind": "ruff",
+      "finding": "Two PLC0206 dictionary iteration diagnostics; changed to items before source freeze."
+    },
+    {
+      "kind": "mypy",
+      "finding": "Optional amendment document identity type rejected; explicit string validation added before source freeze."
+    }
+  ],
+  "cost_limit": "Construction elapsed time, inference token billing and professional time were not comprehensively instrumented."
+}

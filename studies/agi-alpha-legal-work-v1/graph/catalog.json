@@ -1,0 +1,794 @@
+{
+  "schema": "agi-alpha-validated-skill-catalog/v1",
+  "mode": "FIXTURE_ONLY",
+  "targetSkill": "nda-amendment@1",
+  "policy": {
+    "id": "legal-source-fidelity-only-v1",
+    "proofLevel": "FIXTURE_EXACT_SOURCE_AND_COMPOSITION_ONLY",
+    "technicalScope": "Exact source passages and changed-text coverage on six fixed synthetic development documents",
+    "legalCorrectness": "NOT_ASSESSED",
+    "professionalAcceptance": "NOT_ASSESSED",
+    "economicAdmission": "UNASSESSED",
+    "attestationRole": "EXACT_DIRECT_AGENT_WITH_ISSUE_SKILL_ATTESTATION_GRANT",
+    "rootRole": "SEPARATE_COMMIT_GRAPH_ROOT_GRANT",
+    "authenticatedLiveIdentity": "NOT_RUN",
+    "jobsClubValidationChanged": false,
+    "contractsChanged": false,
+    "settlementChanged": false
+  },
+  "scope": {
+    "jurisdiction": "Ontario, Canada",
+    "documentFamily": "commercial mutual NDA",
+    "playbook": "ONT-NDA-RESEARCH-1.0",
+    "lawEpoch": "2026-10-26-research-scope-marker-not-legal-opinion",
+    "outputs": [
+      "source-linked-mechanical-NDA-support"
+    ],
+    "failures": [
+      "No professional legal acceptance",
+      "Fresh legal-status generalization unassessed",
+      "Ambiguity escalated"
+    ]
+  },
+  "environment": {
+    "documentFormat": "UTF-8-plain-text",
+    "hostDigest": "a1a123982e98471288e5f5c191ed09f652e04136959a07546c4e5a74f89535de",
+    "python": "3.12",
+    "offsets": "Unicode-code-points-end-exclusive"
+  },
+  "rights": {
+    "code": "Apache-2.0 inherited notices retained",
+    "input": "original synthetic development cases",
+    "restrictions": [
+      "No client data",
+      "No client advice or negotiation",
+      "No signer credentials",
+      "No live ENS or settlement"
+    ]
+  },
+  "context": {
+    "mode": "FIXTURE_ONLY",
+    "now": 150,
+    "chainId": 31337,
+    "registry": "fixture:ens-v1",
+    "graphId": "legal-nda-source-fidelity-research",
+    "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+    "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf",
+    "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+    "rightsDigest": "21412fc95b50031434e6a33db95cf4bf2e9a0da364292c8a5f038849be31a033",
+    "currentSnapshotId": "fixture-state-100",
+    "intent": "reuse",
+    "evidenceAvailable": true,
+    "output": "source-linked-mechanical-NDA-support",
+    "expectedGraphRoot": "c9ee459eaffd9ff7f897e097cd8696817f38d166d58d0a0eedf68707b2918fff",
+    "expectedEpoch": 2,
+    "expectedPreviousRoot": "6133892d7c8c19d32545227d6ddf35d498d722f210c41dde6755633aed8286d4"
+  },
+  "composition": {
+    "id": "legal-two-asset-source-composition-v1",
+    "evidenceDigest": "5039becfad24f58ec0c1f0a4c4a5413e95efa80744621af4fd0497be76cdc252"
+  },
+  "forest": {
+    "schema": "agi-alpha.merkle-forest.v1",
+    "hashSuite": "SHA256_RESEARCH_V1",
+    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+    "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+    "classes": {
+      "skill": {
+        "root": "6f876d9aabacdead22195cf9c2aeae2401efcb383478972558f60f74939fa13f",
+        "count": 2,
+        "records": [
+          {
+            "record": {
+              "binding": {
+                "dependencyDigests": [],
+                "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+                "evidenceDigest": "550c516d29829c95f628eb584cd4e31227ab0a843e571630e7c0eb0db5e532e0",
+                "expiresAt": 500,
+                "id": "nda-reference",
+                "implementationDigest": "ec07eee416f910e85067b47c2602a4b718a1c39479c1baeb3c0686f5dda9ea36",
+                "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+                "rightsDigest": "21412fc95b50031434e6a33db95cf4bf2e9a0da364292c8a5f038849be31a033",
+                "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf",
+                "version": "1"
+              },
+              "contract": {
+                "inputs": [
+                  "synthetic-NDA-and-versioned-research-playbook"
+                ],
+                "limitations": [
+                  "No professional legal acceptance",
+                  "Fresh legal-status generalization unassessed",
+                  "Ambiguity escalated"
+                ],
+                "outputs": [
+                  "source-reference-context"
+                ],
+                "purpose": "Resolve explicitly supported references and defined periods while preserving exact source spans"
+              },
+              "id": "nda-reference",
+              "implementation": {
+                "entrypoint": "assets/references.py",
+                "files": [
+                  {
+                    "path": "assets/references.py",
+                    "sha256": "265b5294463ac3a8808381cec85a28036769ba6c3e2a07e9dc6b2dd66199d05c"
+                  },
+                  {
+                    "path": "assets/legal_packet.py",
+                    "sha256": "a1a123982e98471288e5f5c191ed09f652e04136959a07546c4e5a74f89535de"
+                  }
+                ]
+              },
+              "knownFailures": [
+                "No professional legal acceptance",
+                "Fresh legal-status generalization unassessed",
+                "Ambiguity escalated"
+              ],
+              "requires": [],
+              "rights": {
+                "code": "Apache-2.0 inherited notices retained",
+                "input": "original synthetic development cases",
+                "restrictions": [
+                  "No client data",
+                  "No client advice or negotiation",
+                  "No signer credentials",
+                  "No live ENS or settlement"
+                ]
+              },
+              "state": "ADMITTED_FIXTURE_ONLY",
+              "validationDossier": "legal-source-fidelity-dossier-v1",
+              "version": "1"
+            },
+            "leafHash": "6477ed84794e818156806daf8425e835e66469b8193a038888047d7b5222487c",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 1,
+              "leafCount": 2,
+              "siblings": [
+                "27bfa13c94bfcda6ad47e042a50173d6b740d00e19c5cb9a90688d42ec4a70b6"
+              ]
+            }
+          },
+          {
+            "record": {
+              "binding": {
+                "dependencyDigests": [
+                  "539a933548f6e39d2f4ee3f0244784429f3402d5f4ef62b719d311444e8f5b62"
+                ],
+                "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+                "evidenceDigest": "550c516d29829c95f628eb584cd4e31227ab0a843e571630e7c0eb0db5e532e0",
+                "expiresAt": 500,
+                "id": "nda-amendment",
+                "implementationDigest": "6da1d9ef736b385d32bddf9800aa39b04d0aced59945e20d43760f67d4403189",
+                "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+                "rightsDigest": "21412fc95b50031434e6a33db95cf4bf2e9a0da364292c8a5f038849be31a033",
+                "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf",
+                "version": "1"
+              },
+              "contract": {
+                "inputs": [
+                  "synthetic-NDA-and-versioned-research-playbook"
+                ],
+                "limitations": [
+                  "No professional legal acceptance",
+                  "Fresh legal-status generalization unassessed",
+                  "Ambiguity escalated"
+                ],
+                "outputs": [
+                  "source-linked-mechanical-NDA-support"
+                ],
+                "purpose": "Compose explicit whole-section replacement and reference resolution; unresolved amendments escalate"
+              },
+              "id": "nda-amendment",
+              "implementation": {
+                "entrypoint": "assets/amendments.py",
+                "files": [
+                  {
+                    "path": "assets/amendments.py",
+                    "sha256": "a09c790692ce40d5dcc8d04336f79bc3fc4146e432831feb8f84fa802214bec2"
+                  },
+                  {
+                    "path": "assets/legal_packet.py",
+                    "sha256": "a1a123982e98471288e5f5c191ed09f652e04136959a07546c4e5a74f89535de"
+                  }
+                ]
+              },
+              "knownFailures": [
+                "No professional legal acceptance",
+                "Fresh legal-status generalization unassessed",
+                "Ambiguity escalated"
+              ],
+              "requires": [
+                "nda-reference@1"
+              ],
+              "rights": {
+                "code": "Apache-2.0 inherited notices retained",
+                "input": "original synthetic development cases",
+                "restrictions": [
+                  "No client data",
+                  "No client advice or negotiation",
+                  "No signer credentials",
+                  "No live ENS or settlement"
+                ]
+              },
+              "state": "ADMITTED_FIXTURE_ONLY",
+              "validationDossier": "legal-source-fidelity-dossier-v1",
+              "version": "1"
+            },
+            "leafHash": "27bfa13c94bfcda6ad47e042a50173d6b740d00e19c5cb9a90688d42ec4a70b6",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 2,
+              "siblings": [
+                "6477ed84794e818156806daf8425e835e66469b8193a038888047d7b5222487c"
+              ]
+            }
+          }
+        ]
+      },
+      "edge": {
+        "root": "26f3866fbf3d66d58984d87d0cbb0f6a685e555b17774ee83ac03e166a30a954",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "compositionEvidence": "5039becfad24f58ec0c1f0a4c4a5413e95efa80744621af4fd0497be76cdc252",
+              "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+              "from": "nda-amendment@1",
+              "id": "amendment-requires-reference",
+              "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+              "relation": "depends_on",
+              "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf",
+              "state": "VALIDATED_FIXTURE_ONLY",
+              "to": "nda-reference@1"
+            },
+            "leafHash": "26f3866fbf3d66d58984d87d0cbb0f6a685e555b17774ee83ac03e166a30a954",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      },
+      "evidence": {
+        "root": "03f11f113bee4c04fab7fd967e52a58e3da90f859b7e29a12f6e4fae690fb5ec",
+        "count": 4,
+        "records": [
+          {
+            "record": {
+              "composition": {
+                "decision": "PASS_COMBINED_WORKFLOW",
+                "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+                "files": [
+                  {
+                    "path": "assets/development-validation.json",
+                    "sha256": "a18bae238e21575271dbdf0dca635fe1f6347dc17095e09e939170a6bfa96142"
+                  }
+                ],
+                "id": "legal-two-asset-source-composition-v1",
+                "implementationIdentities": [
+                  {
+                    "implementationDigest": "ec07eee416f910e85067b47c2602a4b718a1c39479c1baeb3c0686f5dda9ea36",
+                    "requires": [],
+                    "skill": "nda-reference@1"
+                  },
+                  {
+                    "implementationDigest": "6da1d9ef736b385d32bddf9800aa39b04d0aced59945e20d43760f67d4403189",
+                    "requires": [
+                      "nda-reference@1"
+                    ],
+                    "skill": "nda-amendment@1"
+                  }
+                ],
+                "kind": "composition-validation",
+                "meaningOfPass": "Exact source references and changed coverage only; no correctness assertion for legal-rule classifications",
+                "members": [
+                  "nda-reference@1",
+                  "nda-amendment@1"
+                ],
+                "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf"
+              },
+              "files": [
+                {
+                  "path": "assets/development-validation.json",
+                  "sha256": "a18bae238e21575271dbdf0dca635fe1f6347dc17095e09e939170a6bfa96142"
+                },
+                {
+                  "path": "assets/scorer.py",
+                  "sha256": "6c8ec2dbe311b128bb4cba9d7b1ef77f470e89ccbd98a2915d08bf5b80fff6b0"
+                },
+                {
+                  "path": "assets/production-freeze.json",
+                  "sha256": "7b4b0afed9861ed59d53e146d7b2d63b2ffb22a999d878344cb761000d6ad85b"
+                }
+              ],
+              "id": "legal-source-fidelity-dossier-v1",
+              "kind": "validation-dossier",
+              "observed": "12 executed stage/case combinations; independent source-reference and changed-coverage functions, no keys",
+              "unobserved": [
+                "Legal correctness",
+                "Human professional judgment",
+                "Market demand",
+                "Complete costs",
+                "Live identities"
+              ]
+            },
+            "leafHash": "d2b9f69a0bb7c34b924a386446655eab50f87eb94e4389483afd5a54661ded5d",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 2,
+              "leafCount": 4,
+              "siblings": [
+                "e5f8ae715472676620438da96974b5a637514759531ce6e00b008263b8199519",
+                "31455493d5b726e26242706c67ca10a94f7f79d630a4c838433728ee340c90e1"
+              ]
+            }
+          },
+          {
+            "record": {
+              "decision": "PASS_COMBINED_WORKFLOW",
+              "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+              "files": [
+                {
+                  "path": "assets/development-validation.json",
+                  "sha256": "a18bae238e21575271dbdf0dca635fe1f6347dc17095e09e939170a6bfa96142"
+                }
+              ],
+              "id": "legal-two-asset-source-composition-v1",
+              "implementationIdentities": [
+                {
+                  "implementationDigest": "ec07eee416f910e85067b47c2602a4b718a1c39479c1baeb3c0686f5dda9ea36",
+                  "requires": [],
+                  "skill": "nda-reference@1"
+                },
+                {
+                  "implementationDigest": "6da1d9ef736b385d32bddf9800aa39b04d0aced59945e20d43760f67d4403189",
+                  "requires": [
+                    "nda-reference@1"
+                  ],
+                  "skill": "nda-amendment@1"
+                }
+              ],
+              "kind": "composition-validation",
+              "meaningOfPass": "Exact source references and changed coverage only; no correctness assertion for legal-rule classifications",
+              "members": [
+                "nda-reference@1",
+                "nda-amendment@1"
+              ],
+              "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf"
+            },
+            "leafHash": "4ffa909e6a13908869b701d0969559da8df85a25c949944ff2ee7010aac69c2c",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 1,
+              "leafCount": 4,
+              "siblings": [
+                "302d20e14d4a03c94214145e5950d59670771111e82c53c738c41809a268e960",
+                "827044cc5af20e3386e40358694c0170187bddfb428f4d590517942bc74294c7"
+              ]
+            }
+          },
+          {
+            "record": {
+              "claimScope": "Exact source passages and changed-text coverage on six fixed synthetic development documents",
+              "decision": "ADMIT_FIXTURE_ONLY",
+              "evidenceDigest": "550c516d29829c95f628eb584cd4e31227ab0a843e571630e7c0eb0db5e532e0",
+              "id": "admit-nda-reference",
+              "kind": "technical-admission",
+              "legalAcceptance": "NOT_ASSESSED",
+              "skill": "nda-reference@1",
+              "skillBindingDigest": "539a933548f6e39d2f4ee3f0244784429f3402d5f4ef62b719d311444e8f5b62"
+            },
+            "leafHash": "e5f8ae715472676620438da96974b5a637514759531ce6e00b008263b8199519",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 3,
+              "leafCount": 4,
+              "siblings": [
+                "d2b9f69a0bb7c34b924a386446655eab50f87eb94e4389483afd5a54661ded5d",
+                "31455493d5b726e26242706c67ca10a94f7f79d630a4c838433728ee340c90e1"
+              ]
+            }
+          },
+          {
+            "record": {
+              "claimScope": "Exact source passages and changed-text coverage on six fixed synthetic development documents",
+              "decision": "ADMIT_FIXTURE_ONLY",
+              "evidenceDigest": "550c516d29829c95f628eb584cd4e31227ab0a843e571630e7c0eb0db5e532e0",
+              "id": "admit-nda-amendment",
+              "kind": "technical-admission",
+              "legalAcceptance": "NOT_ASSESSED",
+              "skill": "nda-amendment@1",
+              "skillBindingDigest": "8e241b3bbe3691281b89e10883e6ec9c5001987a089fa4fe1857d8725ac4ac19"
+            },
+            "leafHash": "302d20e14d4a03c94214145e5950d59670771111e82c53c738c41809a268e960",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 4,
+              "siblings": [
+                "4ffa909e6a13908869b701d0969559da8df85a25c949944ff2ee7010aac69c2c",
+                "827044cc5af20e3386e40358694c0170187bddfb428f4d590517942bc74294c7"
+              ]
+            }
+          }
+        ]
+      },
+      "proofbundle": {
+        "root": "61e405697b954a95ac5fb1751c09213262a9622661aa7f014a5319159b8e62e5",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "evidenceDigest": "550c516d29829c95f628eb584cd4e31227ab0a843e571630e7c0eb0db5e532e0",
+              "id": "source-only-proof-bundle",
+              "professionalAcceptance": "NOT_ASSESSED"
+            },
+            "leafHash": "61e405697b954a95ac5fb1751c09213262a9622661aa7f014a5319159b8e62e5",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      },
+      "policy": {
+        "root": "1b7e50d8d0240bd756579aa4d88c0e299972342a3d27ac053a601593c15109f3",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "attestationRole": "EXACT_DIRECT_AGENT_WITH_ISSUE_SKILL_ATTESTATION_GRANT",
+              "authenticatedLiveIdentity": "NOT_RUN",
+              "contractsChanged": false,
+              "economicAdmission": "UNASSESSED",
+              "id": "legal-source-fidelity-only-v1",
+              "jobsClubValidationChanged": false,
+              "legalCorrectness": "NOT_ASSESSED",
+              "professionalAcceptance": "NOT_ASSESSED",
+              "proofLevel": "FIXTURE_EXACT_SOURCE_AND_COMPOSITION_ONLY",
+              "rootRole": "SEPARATE_COMMIT_GRAPH_ROOT_GRANT",
+              "settlementChanged": false,
+              "technicalScope": "Exact source passages and changed-text coverage on six fixed synthetic development documents"
+            },
+            "leafHash": "1b7e50d8d0240bd756579aa4d88c0e299972342a3d27ac053a601593c15109f3",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      },
+      "attestation": {
+        "root": "9d5ffc4a5ed455c1ffb9a2cafbb8bc6fe2b4a562e3331dc5a0bf1a2f35d6420a",
+        "count": 2,
+        "records": [
+          {
+            "record": {
+              "action": "ISSUE_SKILL_ATTESTATION",
+              "agent": "research.agent.agi.eth",
+              "authoritySnapshotId": "fixture-state-100",
+              "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+              "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+              "blockNumber": 100,
+              "chainId": 31337,
+              "expiresAt": 500,
+              "graphId": "legal-nda-source-fidelity-research",
+              "issuedAt": 100,
+              "mode": "FIXTURE_ONLY",
+              "nonce": "legal-attest-nda-reference",
+              "registry": "fixture:ens-v1",
+              "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+              "registrySchema": "ENS_V1_FIXTURE",
+              "schema": "agi-alpha.skill-attestation.v1",
+              "signature": {
+                "payloadDigest": "d83f94fa7792a3b2382e24f9e138182596efc95d4780410d7ece64a93c3788ff",
+                "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                "signer": "fixture:attestation-delegate"
+              },
+              "signer": "fixture:attestation-delegate",
+              "skill": {
+                "dependencyDigests": [],
+                "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+                "evidenceDigest": "550c516d29829c95f628eb584cd4e31227ab0a843e571630e7c0eb0db5e532e0",
+                "expiresAt": 500,
+                "id": "nda-reference",
+                "implementationDigest": "ec07eee416f910e85067b47c2602a4b718a1c39479c1baeb3c0686f5dda9ea36",
+                "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+                "rightsDigest": "21412fc95b50031434e6a33db95cf4bf2e9a0da364292c8a5f038849be31a033",
+                "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf",
+                "version": "1"
+              },
+              "verdict": "PASS_WITH_SCOPE"
+            },
+            "leafHash": "11d2750eb2a2a56f1020ce16f665282023416adb94ab42d1e4cecc7b239d5e8c",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 2,
+              "siblings": [
+                "9e3e6f8df92227eaec2a2b0126aaf3c898e23a7414f0b3f96b52057bc14c83bd"
+              ]
+            }
+          },
+          {
+            "record": {
+              "action": "ISSUE_SKILL_ATTESTATION",
+              "agent": "research.agent.agi.eth",
+              "authoritySnapshotId": "fixture-state-100",
+              "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+              "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+              "blockNumber": 100,
+              "chainId": 31337,
+              "expiresAt": 500,
+              "graphId": "legal-nda-source-fidelity-research",
+              "issuedAt": 100,
+              "mode": "FIXTURE_ONLY",
+              "nonce": "legal-attest-nda-amendment",
+              "registry": "fixture:ens-v1",
+              "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+              "registrySchema": "ENS_V1_FIXTURE",
+              "schema": "agi-alpha.skill-attestation.v1",
+              "signature": {
+                "payloadDigest": "83d788d23e629ea11771d1fe2ccdaec58b0b250763bb03c4ef208eccf4db40b9",
+                "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                "signer": "fixture:attestation-delegate"
+              },
+              "signer": "fixture:attestation-delegate",
+              "skill": {
+                "dependencyDigests": [
+                  "539a933548f6e39d2f4ee3f0244784429f3402d5f4ef62b719d311444e8f5b62"
+                ],
+                "environmentDigest": "ad2b61cf00728eb8f045f0d82e63a0ef0acaf2522abcdf9e5cf52b2b902e35b9",
+                "evidenceDigest": "550c516d29829c95f628eb584cd4e31227ab0a843e571630e7c0eb0db5e532e0",
+                "expiresAt": 500,
+                "id": "nda-amendment",
+                "implementationDigest": "6da1d9ef736b385d32bddf9800aa39b04d0aced59945e20d43760f67d4403189",
+                "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+                "rightsDigest": "21412fc95b50031434e6a33db95cf4bf2e9a0da364292c8a5f038849be31a033",
+                "scopeDigest": "31209cddb3546b6dead77d5a840fe8d0db0b3b77635454ddb2eb7366459f38cf",
+                "version": "1"
+              },
+              "verdict": "PASS_WITH_SCOPE"
+            },
+            "leafHash": "9e3e6f8df92227eaec2a2b0126aaf3c898e23a7414f0b3f96b52057bc14c83bd",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 1,
+              "leafCount": 2,
+              "siblings": [
+                "11d2750eb2a2a56f1020ce16f665282023416adb94ab42d1e4cecc7b239d5e8c"
+              ]
+            }
+          }
+        ]
+      },
+      "revocation": {
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "count": 0,
+        "records": []
+      },
+      "supersession": {
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "count": 0,
+        "records": []
+      },
+      "metadata": {
+        "root": "7e43039686c33427ff2bde969018b4ba14fff9bfa2bb508b49e35606868bb43c",
+        "count": 1,
+        "records": [
+          {
+            "record": {
+              "actualCollections": 0,
+              "contractsAndSettlement": "UNCHANGED",
+              "id": "scope-boundary",
+              "jobsClubValidation": "UNCHANGED",
+              "liveAuthentication": false,
+              "mode": "FIXTURE_ONLY",
+              "nativeAuthority": []
+            },
+            "leafHash": "7e43039686c33427ff2bde969018b4ba14fff9bfa2bb508b49e35606868bb43c",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+              "leafIndex": 0,
+              "leafCount": 1,
+              "siblings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "root": {
+    "action": "COMMIT_GRAPH_ROOT",
+    "agent": "research.agent.agi.eth",
+    "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+    "chainId": 31337,
+    "counts": {
+      "attestation": 2,
+      "edge": 1,
+      "evidence": 4,
+      "metadata": 1,
+      "policy": 1,
+      "proofbundle": 1,
+      "revocation": 0,
+      "skill": 2,
+      "supersession": 0
+    },
+    "epoch": 2,
+    "graphId": "legal-nda-source-fidelity-research",
+    "graphRoot": "c9ee459eaffd9ff7f897e097cd8696817f38d166d58d0a0eedf68707b2918fff",
+    "hashSuite": "SHA256_RESEARCH_V1",
+    "mode": "FIXTURE_ONLY",
+    "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+    "previousRoot": "6133892d7c8c19d32545227d6ddf35d498d722f210c41dde6755633aed8286d4",
+    "proofLevel": "FIXTURE_EXACT_SOURCE_AND_COMPOSITION_ONLY",
+    "registry": "fixture:ens-v1",
+    "roots": {
+      "attestation": "9d5ffc4a5ed455c1ffb9a2cafbb8bc6fe2b4a562e3331dc5a0bf1a2f35d6420a",
+      "edge": "26f3866fbf3d66d58984d87d0cbb0f6a685e555b17774ee83ac03e166a30a954",
+      "evidence": "03f11f113bee4c04fab7fd967e52a58e3da90f859b7e29a12f6e4fae690fb5ec",
+      "metadata": "7e43039686c33427ff2bde969018b4ba14fff9bfa2bb508b49e35606868bb43c",
+      "policy": "1b7e50d8d0240bd756579aa4d88c0e299972342a3d27ac053a601593c15109f3",
+      "proofbundle": "61e405697b954a95ac5fb1751c09213262a9622661aa7f014a5319159b8e62e5",
+      "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "skill": "6f876d9aabacdead22195cf9c2aeae2401efcb383478972558f60f74939fa13f",
+      "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+    },
+    "schema": "agi-alpha.graph-epoch.v1",
+    "snapshotDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+    "signer": "fixture:root-delegate",
+    "authoritySnapshotId": "fixture-state-100",
+    "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+    "blockNumber": 100,
+    "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+    "registrySchema": "ENS_V1_FIXTURE",
+    "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+    "issuedAt": 100,
+    "expiresAt": 500,
+    "nonce": "legal-root-2",
+    "signature": {
+      "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+      "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+      "signer": "fixture:root-delegate",
+      "payloadDigest": "d59a4a2faab92b301e2775e745da0351454151793e4da9f016e3a117a411542e"
+    }
+  },
+  "history": [
+    {
+      "action": "COMMIT_GRAPH_ROOT",
+      "agent": "research.agent.agi.eth",
+      "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+      "chainId": 31337,
+      "counts": {
+        "attestation": 1,
+        "edge": 0,
+        "evidence": 1,
+        "metadata": 1,
+        "policy": 1,
+        "proofbundle": 0,
+        "revocation": 0,
+        "skill": 1,
+        "supersession": 0
+      },
+      "epoch": 1,
+      "graphId": "legal-nda-source-fidelity-research",
+      "graphRoot": "6133892d7c8c19d32545227d6ddf35d498d722f210c41dde6755633aed8286d4",
+      "hashSuite": "SHA256_RESEARCH_V1",
+      "mode": "FIXTURE_ONLY",
+      "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+      "previousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+      "proofLevel": "FIXTURE_EXACT_SOURCE_AND_COMPOSITION_ONLY",
+      "registry": "fixture:ens-v1",
+      "roots": {
+        "attestation": "11d2750eb2a2a56f1020ce16f665282023416adb94ab42d1e4cecc7b239d5e8c",
+        "edge": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "evidence": "d2b9f69a0bb7c34b924a386446655eab50f87eb94e4389483afd5a54661ded5d",
+        "metadata": "7e43039686c33427ff2bde969018b4ba14fff9bfa2bb508b49e35606868bb43c",
+        "policy": "1b7e50d8d0240bd756579aa4d88c0e299972342a3d27ac053a601593c15109f3",
+        "proofbundle": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "skill": "f79f5eecc5476e587087369a12827e29bad328c620a2276ce817aee647f7e1ac",
+        "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+      },
+      "schema": "agi-alpha.graph-epoch.v1",
+      "snapshotDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+      "signer": "fixture:root-delegate",
+      "authoritySnapshotId": "fixture-state-100",
+      "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "blockNumber": 100,
+      "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "issuedAt": 100,
+      "expiresAt": 500,
+      "nonce": "legal-root-1",
+      "signature": {
+        "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+        "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+        "signer": "fixture:root-delegate",
+        "payloadDigest": "128ecafb07df95e4b454fc658cba738613fc0b2db45045509b5ee7298460fba6"
+      }
+    },
+    {
+      "action": "COMMIT_GRAPH_ROOT",
+      "agent": "research.agent.agi.eth",
+      "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+      "chainId": 31337,
+      "counts": {
+        "attestation": 2,
+        "edge": 1,
+        "evidence": 4,
+        "metadata": 1,
+        "policy": 1,
+        "proofbundle": 1,
+        "revocation": 0,
+        "skill": 2,
+        "supersession": 0
+      },
+      "epoch": 2,
+      "graphId": "legal-nda-source-fidelity-research",
+      "graphRoot": "c9ee459eaffd9ff7f897e097cd8696817f38d166d58d0a0eedf68707b2918fff",
+      "hashSuite": "SHA256_RESEARCH_V1",
+      "mode": "FIXTURE_ONLY",
+      "policyDigest": "81e81b2007d2d86a5b4bc43f0646c9a781d0fb7a9860b6899b1c187107c2c906",
+      "previousRoot": "6133892d7c8c19d32545227d6ddf35d498d722f210c41dde6755633aed8286d4",
+      "proofLevel": "FIXTURE_EXACT_SOURCE_AND_COMPOSITION_ONLY",
+      "registry": "fixture:ens-v1",
+      "roots": {
+        "attestation": "9d5ffc4a5ed455c1ffb9a2cafbb8bc6fe2b4a562e3331dc5a0bf1a2f35d6420a",
+        "edge": "26f3866fbf3d66d58984d87d0cbb0f6a685e555b17774ee83ac03e166a30a954",
+        "evidence": "03f11f113bee4c04fab7fd967e52a58e3da90f859b7e29a12f6e4fae690fb5ec",
+        "metadata": "7e43039686c33427ff2bde969018b4ba14fff9bfa2bb508b49e35606868bb43c",
+        "policy": "1b7e50d8d0240bd756579aa4d88c0e299972342a3d27ac053a601593c15109f3",
+        "proofbundle": "61e405697b954a95ac5fb1751c09213262a9622661aa7f014a5319159b8e62e5",
+        "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+        "skill": "6f876d9aabacdead22195cf9c2aeae2401efcb383478972558f60f74939fa13f",
+        "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+      },
+      "schema": "agi-alpha.graph-epoch.v1",
+      "snapshotDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1",
+      "signer": "fixture:root-delegate",
+      "authoritySnapshotId": "fixture-state-100",
+      "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "blockNumber": 100,
+      "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "issuedAt": 100,
+      "expiresAt": 500,
+      "nonce": "legal-root-2",
+      "signature": {
+        "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+        "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+        "signer": "fixture:root-delegate",
+        "payloadDigest": "d59a4a2faab92b301e2775e745da0351454151793e4da9f016e3a117a411542e"
+      }
+    }
+  ]
+}

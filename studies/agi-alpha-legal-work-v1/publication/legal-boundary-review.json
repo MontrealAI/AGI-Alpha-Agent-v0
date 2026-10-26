@@ -1,0 +1,96 @@
+{
+  "schema": "legal-boundary-publication-review/v1",
+  "reviewer": "/root/legal_scope",
+  "reviewed_at_utc": "2026-10-26T21:35:00.175616+00:00",
+  "file": "paper/AGI_ALPHA_Legal_Work_Advantage.tex",
+  "file_sha256": "f44d4fb03aeb3916055ca812bb0939d223459ef047da9af4b3999dc29e7e216f",
+  "review_scope": [
+    "Professional boundary",
+    "External productivity-study methods",
+    "Descriptions of independently authored cases",
+    "French abstract"
+  ],
+  "reviewer_status": "AI research agent; not an independent licensed legal reviewer",
+  "overall": "The principal boundaries are accurate: synthetic technical work, unknown professional acceptance, no commercial or self-financing success, current Ontario authority with exceptions, and no comprehensive deployment opinion. Six concise clarifications are recommended below.",
+  "corrections": [
+    {
+      "id": "LB-01",
+      "priority": "medium",
+      "location": "Second prototype example, RECON-01",
+      "find": "The packet displays the exact insertion and both complete source documents.",
+      "replace": "The packet displays the deleted and added text in that replacement, together with both complete source documents.",
+      "reason": "RECON-01 changes an existing sentence fragment, removing text as well as adding proof-of-concept use. Calling it only an insertion understates the actual edit.",
+      "evidence": [
+        "inputs/reconciliation/RECON-01.json",
+        "evaluation/private-keys/reconciliation/RECON-01.json"
+      ]
+    },
+    {
+      "id": "LB-02",
+      "priority": "medium",
+      "location": "First prototype, after sentence identifying PRIMARY-17 and PRIMARY-20",
+      "insert_after": "However, B, C1 and C accepted only PRIMARY-17 and PRIMARY-20 as complete primary packets.",
+      "insert": "These two technical passes include correctly reported absences and unresolved terms: acceptance means that the support packet matches the declared key and surfaces its review questions, not that the agreement is complete, legally acceptable or ready to sign.",
+      "reason": "The only accepted primary packets concern missing provisions or uncertainty. Make their accepted support boundary explicit, rather than letting readers infer resolved substantive review.",
+      "evidence": [
+        "evaluation/private-keys/primary/PRIMARY-17.json",
+        "evaluation/private-keys/primary/PRIMARY-20.json"
+      ]
+    },
+    {
+      "id": "LB-03",
+      "priority": "low",
+      "location": "External productivity-study methods paragraph",
+      "find": "Participants worked across conditions; three legally experienced coauthors graded anonymized work on five seven-point dimensions, and time was self-reported. Productivity combined quality with the fraction of allotted time.",
+      "replace": "Randomized stable groups assigned two tasks per condition. Three coauthors with legal practice experience graded work blind to condition and participant identity on five seven-point dimensions; time was self-reported. Productivity divided the sum of quality scores by the fraction of allotted time used.",
+      "reason": "States randomization, actual grading blindness and metric definition precisely. Counts, dates, lack of significant NDA improvement and limits elsewhere are correct.",
+      "source_url": "https://journals.sagepub.com/doi/full/10.1177/2755323X261427048",
+      "source_sections": [
+        "3. Data and Methods",
+        "Table 10",
+        "Table 12",
+        "5. Limitations"
+      ]
+    },
+    {
+      "id": "LB-04",
+      "priority": "low",
+      "location": "Candidate table, playbook-support disposition",
+      "find": "First prototype; failed complete acceptance.",
+      "replace": "First prototype; 2/24 complete technical passes; service unqualified.",
+      "reason": "Avoids implying zero technical passes while retaining the negative service conclusion."
+    },
+    {
+      "id": "LB-05",
+      "priority": "low",
+      "location": "French resume",
+      "find": "Le contrôle complet du premier prototype n’a accepté que 2 dossiers sur 24 pour les méthodes B, C1 et C.",
+      "replace": "Seuls 2 dossiers sur 24 ont satisfait à l’ensemble des critères techniques du premier prototype pour les méthodes B, C1 et C.",
+      "reason": "Natural French that explicitly distinguishes technical acceptance from professional acceptance."
+    },
+    {
+      "id": "LB-06",
+      "priority": "low",
+      "location": "French resume, reinvestment sentence",
+      "find": "Aucun des 216 scénarios de réinvestissement n’a financé une nouvelle capacité à partir d’un surplus d’exploitation.",
+      "replace": "Aucune des 216 réalisations simulées n’a financé une première ou une deuxième capacité à partir d’un surplus d’exploitation.",
+      "reason": "The design has nine scenarios and 24 paired worlds per scenario. Avoid describing all 216 as distinct scenario specifications."
+    }
+  ],
+  "verified_without_requested_change": [
+    "Current e-Laws reference is the canonical /90l08 page, with statutory/by-law exceptions and licence scope retained.",
+    "LSO April 2024 guidance is identified by document date and current retrieval date; human verification and professional responsibility are preserved.",
+    "External study enrollment/completion counts, October 2024 field period and lack of significant NDA-task benefit are accurate.",
+    "Primary-09/10 explanations match the authored definitions and cross-reference quantities.",
+    "RECON-07/08 each contain two separate amendments; RECON-09/10 preserve genuine Unicode and formatting distinctions.",
+    "Spellbook documentation date August 28, 2026 verified on the official help page during review.",
+    "French interface appropriately does not translate or replace the frozen English contract corpus.",
+    "No professional correctness, intended-meaning preservation, actual buyer delivery or operating-funded capability success is asserted as established."
+  ],
+  "frozen_source_or_key_changes": false,
+  "paper_changed_by_reviewer": false,
+  "limits": [
+    "This is claim-boundary and language review, not legal certification.",
+    "Economic arithmetic, native implementation, rendering and repository publication qualification are outside this review."
+  ]
+}

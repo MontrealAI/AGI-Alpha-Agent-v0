@@ -1,0 +1,110 @@
+{
+  "schema": "synthetic-mechanical-answer-key/v1",
+  "case_id": "PRIMARY-20",
+  "supported_scope": true,
+  "expected_statuses": {
+    "R1_PURPOSE": "pass",
+    "R2_CONFIDENTIALITY_TERM": "pass",
+    "R3_RETURN_DEADLINE": "uncertain",
+    "R4_COMPELLED_NOTICE": "uncertain",
+    "R5_RESIDUALS": "pass",
+    "R6_ASSIGNMENT": "uncertain",
+    "R7_GOVERNING_LAW": "pass",
+    "R8_REPRESENTATIVES": "pass"
+  },
+  "required_sources": [
+    {
+      "rule_id": "R1_PURPOSE",
+      "document": "revised",
+      "quote": "A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 340,
+      "end": 521
+    },
+    {
+      "rule_id": "R2_CONFIDENTIALITY_TERM",
+      "document": "revised",
+      "quote": "Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 541,
+      "end": 652
+    },
+    {
+      "rule_id": "R3_RETURN_DEADLINE",
+      "document": "revised",
+      "quote": "The Receiver shall return or destroy Protected Material within 20 calendar days.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 688,
+      "end": 768
+    },
+    {
+      "rule_id": "R4_COMPELLED_NOTICE",
+      "document": "revised",
+      "quote": "If compelled disclosure is required, the Receiver must give the disclosing company notice whenever legally permitted; the timing of that notice will be agreed later.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 798,
+      "end": 963
+    },
+    {
+      "rule_id": "R5_RESIDUALS",
+      "document": "revised",
+      "quote": "A Receiver must not use residual information retained in unaided memory.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 990,
+      "end": 1062
+    },
+    {
+      "rule_id": "R6_ASSIGNMENT",
+      "document": "revised",
+      "quote": "An assignment is allowed with consent from the other company; no form or timing for that consent is specified.",
+      "severity": 3,
+      "kind": "obligation",
+      "start": 1094,
+      "end": 1204
+    },
+    {
+      "rule_id": "R7_GOVERNING_LAW",
+      "document": "revised",
+      "quote": "The laws of Ontario, Canada govern this Agreement.",
+      "severity": 5,
+      "kind": "obligation",
+      "start": 1224,
+      "end": 1274
+    },
+    {
+      "rule_id": "R8_REPRESENTATIVES",
+      "document": "revised",
+      "quote": "Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+      "severity": 3,
+      "kind": "obligation",
+      "start": 1299,
+      "end": 1502
+    }
+  ],
+  "required_escalation_rules": [
+    "R3_RETURN_DEADLINE",
+    "R4_COMPELLED_NOTICE",
+    "R6_ASSIGNMENT"
+  ],
+  "required_escalation_codes": [],
+  "prohibited_substantive_response": false,
+  "rationale": {
+    "R1_PURPOSE": "Explicit provision satisfies the declared mechanical research policy.",
+    "R2_CONFIDENTIALITY_TERM": "Explicit provision satisfies the declared mechanical research policy.",
+    "R3_RETURN_DEADLINE": "No event starts the 20-day clock.",
+    "R4_COMPELLED_NOTICE": "Notice exists but prior timing is unresolved.",
+    "R5_RESIDUALS": "Explicit provision satisfies the declared mechanical research policy.",
+    "R6_ASSIGNMENT": "Consent is neither expressly prior nor written.",
+    "R7_GOVERNING_LAW": "Explicit provision satisfies the declared mechanical research policy.",
+    "R8_REPRESENTATIVES": "Explicit provision satisfies the declared mechanical research policy."
+  },
+  "stratum": "P5-absence-ambiguity",
+  "professional_legal_assessment": "NOT_ASSESSED",
+  "author": "/root/legal_scope",
+  "author_basis": "Frozen research playbook; original synthetic text; no engine or evaluator source inspected"
+}

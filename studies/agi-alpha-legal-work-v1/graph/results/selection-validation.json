@@ -1,0 +1,52 @@
+{
+  "scope": "pre-measurement integrity checks, not timed benchmark",
+  "checks": [
+    {
+      "strategy": "direct",
+      "base": true,
+      "live": false,
+      "expired": false,
+      "base_selected": [
+        "nda-reference@1",
+        "nda-amendment@1"
+      ],
+      "live_reasons": [
+        "LIVE_IDENTITY_ENFORCEMENT_NOT_RUN"
+      ]
+    },
+    {
+      "strategy": "registry",
+      "base": true,
+      "live": false,
+      "expired": false,
+      "base_selected": [
+        "nda-reference@1",
+        "nda-amendment@1"
+      ],
+      "live_reasons": [
+        "AUTHORIZED_ROOT_HISTORY_INVALID",
+        "LIVE_IDENTITY_ENFORCEMENT_NOT_RUN:nda-reference@1",
+        "LIVE_IDENTITY_ENFORCEMENT_NOT_RUN:nda-amendment@1",
+        "ROOT_LIVE_IDENTITY_ENFORCEMENT_NOT_RUN",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ]
+    },
+    {
+      "strategy": "graph",
+      "base": true,
+      "live": false,
+      "expired": false,
+      "base_selected": [
+        "nda-reference@1",
+        "nda-amendment@1"
+      ],
+      "live_reasons": [
+        "AUTHORIZED_ROOT_HISTORY_INVALID",
+        "LIVE_IDENTITY_ENFORCEMENT_NOT_RUN:nda-amendment@1",
+        "LIVE_IDENTITY_ENFORCEMENT_NOT_RUN:nda-reference@1",
+        "ROOT_LIVE_IDENTITY_ENFORCEMENT_NOT_RUN",
+        "ROOT_SKILL_ADMISSIONS_NOT_VERIFIED"
+      ]
+    }
+  ]
+}

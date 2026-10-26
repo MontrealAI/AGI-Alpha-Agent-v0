@@ -1,0 +1,1929 @@
+{
+  "pack": {
+    "schema": "successor-workbench/v1",
+    "spec": {
+      "family": "legal-nda-support",
+      "inputs": {
+        "arm": "C",
+        "packet": {
+          "case_id": "PRIMARY-17",
+          "changes": [
+            {
+              "kind": "delete",
+              "original_span": {
+                "document": "original",
+                "end": 1230,
+                "quote": "3. Material at end of discussions. Within 10 calendar days after a written request from the disclosing company, the Receiver shall return or destroy all Protected Material.\n4. Public authority demands. Where disclosure is compelled by law, the Receiver shall notify the disclosing company in writing before disclosure to the extent legally permitted.\n5. Unaided recollections. A Receiver must not use residual information retained in unaided memory.\n6. Transfer of this agreement. A party may assign this Agreement only after receiving the other party's prior written consent.\n",
+                "start": 653
+              },
+              "revised_span": null
+            }
+          ],
+          "decision": "COUNSEL_REVIEW_REQUIRED",
+          "escalations": [
+            {
+              "code": "R3_RETURN_DEADLINE",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            },
+            {
+              "code": "R4_COMPELLED_NOTICE",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            },
+            {
+              "code": "R6_ASSIGNMENT",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            }
+          ],
+          "implementation_stage": "C",
+          "legal_correctness": "NOT_ASSESSED",
+          "limitations": [
+            "Original synthetic research documents; not real client work.",
+            "A mechanical policy match is not a conclusion about legal sufficiency or enforceability.",
+            "Every packet requires independent qualified professional review before legal reliance.",
+            "No automatic legal revision, negotiation, filing, signature or settlement."
+          ],
+          "obligations": [
+            {
+              "family": "R1_PURPOSE",
+              "source": {
+                "document": "revised",
+                "end": 521,
+                "quote": "1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+                "start": 317
+              }
+            },
+            {
+              "family": "R2_CONFIDENTIALITY_TERM",
+              "source": {
+                "document": "revised",
+                "end": 652,
+                "quote": "2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+                "start": 522
+              }
+            },
+            {
+              "family": "R7_GOVERNING_LAW",
+              "source": {
+                "document": "revised",
+                "end": 722,
+                "quote": "7. Applicable law. The laws of Ontario, Canada govern this Agreement.",
+                "start": 653
+              }
+            },
+            {
+              "family": "R8_REPRESENTATIVES",
+              "source": {
+                "document": "revised",
+                "end": 950,
+                "quote": "8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+                "start": 723
+              }
+            }
+          ],
+          "playbook_version": "ONT-NDA-RESEARCH-1.0",
+          "professional_acceptance": "unknown",
+          "proposed_revisions": [],
+          "rule_results": [
+            {
+              "reason": "Express exclusive evaluation-use wording was located.",
+              "rule_id": "R1_PURPOSE",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 521,
+                  "quote": "1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+                  "start": 317
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "Explicit general duration: 24 months; policy range 12-36.",
+              "rule_id": "R2_CONFIDENTIALITY_TERM",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 652,
+                  "quote": "2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+                  "start": 522
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R3_RETURN_DEADLINE",
+              "severity": 5,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R4_COMPELLED_NOTICE",
+              "severity": 5,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "No express residual-use permission was found; this policy does not require a residuals clause.",
+              "rule_id": "R5_RESIDUALS",
+              "severity": 5,
+              "sources": [],
+              "status": "pass"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R6_ASSIGNMENT",
+              "severity": 3,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "Express Ontario governing-law wording was located; enforceability is not assessed.",
+              "rule_id": "R7_GOVERNING_LAW",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 722,
+                  "quote": "7. Applicable law. The laws of Ontario, Canada govern this Agreement.",
+                  "start": 653
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "Need-to-know limitation and responsibility wording were located.",
+              "rule_id": "R8_REPRESENTATIVES",
+              "severity": 3,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 950,
+                  "quote": "8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+                  "start": 723
+                }
+              ],
+              "status": "pass"
+            }
+          ],
+          "schema": "legal-support-packet/v1",
+          "scope": "Source-linked NDA change-control and explicit playbook-support packet",
+          "source_hashes": {
+            "original": "8cea1ae7ff7aa717f4634ce0e69c532e22c0c04b874ca3ef4c721099ba2c6a35",
+            "revised": "6f89b9a2e6b01ff1ce8e9f25d55fe4ed8f6494bd5df6d2780018e39ac25b0a95"
+          },
+          "superseded_passages": [],
+          "supported_scope": true
+        },
+        "request": {
+          "amendments": [],
+          "case_id": "PRIMARY-17",
+          "document_family": "commercial mutual NDA",
+          "jurisdiction": "Ontario, Canada",
+          "original_text": "SYNTHETIC RESEARCH DOCUMENT — NOT AN EXECUTABLE AGREEMENT\nCompany Alder (synthetic) and Company Boreal (synthetic) are evaluating a proposed software supply and integration relationship. Each is a Receiver when receiving the other company's Protected Material. These bilateral duties apply equally to both companies.\n1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.\n2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.\n3. Material at end of discussions. Within 10 calendar days after a written request from the disclosing company, the Receiver shall return or destroy all Protected Material.\n4. Public authority demands. Where disclosure is compelled by law, the Receiver shall notify the disclosing company in writing before disclosure to the extent legally permitted.\n5. Unaided recollections. A Receiver must not use residual information retained in unaided memory.\n6. Transfer of this agreement. A party may assign this Agreement only after receiving the other party's prior written consent.\n7. Applicable law. The laws of Ontario, Canada govern this Agreement.\n8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.\n",
+          "playbook_version": "ONT-NDA-RESEARCH-1.0",
+          "request": "Prepare a source-linked change-control and research-playbook packet for qualified Ontario commercial counsel.",
+          "revised_text": "SYNTHETIC RESEARCH DOCUMENT — NOT AN EXECUTABLE AGREEMENT\nCompany Alder (synthetic) and Company Boreal (synthetic) are evaluating a proposed software supply and integration relationship. Each is a Receiver when receiving the other company's Protected Material. These bilateral duties apply equally to both companies.\n1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.\n2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.\n7. Applicable law. The laws of Ontario, Canada govern this Agreement.\n8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.\n",
+          "source_class": "synthetic"
+        }
+      },
+      "language": "en",
+      "name": "PRIMARY-17",
+      "owner": "legal-research-unprivileged",
+      "reviewMinutes": 30,
+      "rights": {
+        "dataClass": "synthetic",
+        "license": "Apache-2.0",
+        "source": "Independent synthetic case PRIMARY-17"
+      },
+      "schema": "successor-workbench/v1"
+    },
+    "createdAt": "2026-10-26T21:14:06.114Z",
+    "frozen": {
+      "schema": "successor-workbench/v1",
+      "missionDigest": "a5d6057b0c6af854fec144af9dae73118dd72bcf82f0b6d8160d470164c279fc",
+      "sourceHash": "53f87ae10c8269b771267d107fbfec9864edc23bdc67846885dec44c4fc7a137",
+      "adapter": "legal-nda-support",
+      "adapterVersion": 1,
+      "model": null,
+      "provider": null,
+      "authority": [],
+      "inputPolicy": {
+        "dataClass": "synthetic",
+        "license": "Apache-2.0",
+        "source": "Independent synthetic case PRIMARY-17"
+      },
+      "reviewMinutes": 30
+    },
+    "releaseDigest": "4f3098fb8d4136d9c74e4104d63349f6bbe9e1082efd9e2cb2235e1f254e2721",
+    "compilation": {
+      "schemaVersion": "1.0.0",
+      "status": "SEALED",
+      "mode": "SYNTHETIC_REHEARSAL",
+      "constitution": {
+        "allowedActions": [
+          "inspect-local"
+        ],
+        "allowedTools": [
+          "fixed-workbench-legal-nda-support"
+        ],
+        "alternatives": [
+          {
+            "description": "Measured deterministic sort-and-reduce baseline; not a frontier AI comparator.",
+            "id": "alpha-beta",
+            "version": "successor-browser-v1"
+          }
+        ],
+        "authorityCeiling": {
+          "externalEffects": false,
+          "level": "A0",
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ]
+        },
+        "beneficiary": "Owner of this local synthetic mission",
+        "budget": {
+          "limitBaseUnits": "0",
+          "maxDurationMs": 60000,
+          "maxJobs": 7,
+          "maxRetries": 0,
+          "unit": "AGIALPHA"
+        },
+        "criticalFunctions": [
+          "mission-constitution",
+          "incumbent-baseline",
+          "alternative-set",
+          "rights-data",
+          "mission-gym",
+          "oracle-teacher",
+          "failure-taxonomy",
+          "architecture-frontier",
+          "experience-formation",
+          "specialist-formation",
+          "tools-retrieval",
+          "verifier-formation",
+          "security-privacy",
+          "complete-economics",
+          "human-agency",
+          "resilience-rollback",
+          "fresh-evaluation",
+          "independent-validation",
+          "accountable-acceptance",
+          "chronicle-authority",
+          "capital-requalification"
+        ],
+        "expiresAt": "2026-11-02T21:14:06.114Z",
+        "hardGates": [
+          {
+            "description": "All grouped counts and durations agree exactly.",
+            "id": "exact-output",
+            "maxViolations": 0
+          },
+          {
+            "description": "Malformed and unsupported records are rejected.",
+            "id": "invalid-input",
+            "maxViolations": 0
+          },
+          {
+            "description": "No network request, live job, payment or authority grant.",
+            "id": "no-external-effect",
+            "maxViolations": 0
+          }
+        ],
+        "incumbent": {
+          "description": "Measured one-pass Map baseline.",
+          "id": "alpha-current",
+          "version": "successor-browser-v1"
+        },
+        "institutionId": "local-successor-workshop",
+        "kind": "MissionConstitution",
+        "missionId": "work-a5d6057b0c6af854fec144af",
+        "objective": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed.",
+        "principal": "example-human-principal",
+        "proofProtocol": {
+          "criticalErrorCeiling": 0,
+          "custodian": "example-verifier",
+          "formationOwner": "example-producer",
+          "id": "public-local-rehearsal",
+          "minimumMargin": 0,
+          "mode": "SYNTHETIC_REHEARSAL",
+          "requiredIndependence": "I0",
+          "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+          "version": "1"
+        },
+        "rights": [
+          {
+            "dataClass": "synthetic",
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "license": "Apache-2.0",
+            "permittedUses": [
+              "mission-evaluation",
+              "fixture-export"
+            ],
+            "sourceId": "mission-input"
+          }
+        ],
+        "roles": {
+          "acceptor": "example-acceptor",
+          "admitter": "example-admitter",
+          "producer": "example-producer",
+          "verifier": "example-verifier"
+        },
+        "rollback": {
+          "available": true,
+          "reason": "Discard the local candidate and return to the retained fixed baseline.",
+          "target": "alpha-current"
+        },
+        "schemaVersion": "1.0.0",
+        "title": "PRIMARY-17",
+        "version": "1"
+      },
+      "graph": {
+        "authorityCreated": "NONE",
+        "edges": [
+          {
+            "from": "work-a5d6057b0c6af854fec144af:constitution",
+            "kind": "evidence",
+            "to": "work-a5d6057b0c6af854fec144af:evidence"
+          },
+          {
+            "from": "work-a5d6057b0c6af854fec144af:evidence",
+            "kind": "evidence",
+            "to": "work-a5d6057b0c6af854fec144af:formation"
+          },
+          {
+            "from": "work-a5d6057b0c6af854fec144af:formation",
+            "kind": "evidence",
+            "to": "work-a5d6057b0c6af854fec144af:challenge"
+          },
+          {
+            "from": "work-a5d6057b0c6af854fec144af:challenge",
+            "kind": "evidence",
+            "to": "work-a5d6057b0c6af854fec144af:verification"
+          },
+          {
+            "from": "work-a5d6057b0c6af854fec144af:verification",
+            "kind": "evidence",
+            "to": "work-a5d6057b0c6af854fec144af:admission"
+          },
+          {
+            "from": "work-a5d6057b0c6af854fec144af:admission",
+            "kind": "evidence",
+            "to": "work-a5d6057b0c6af854fec144af:renewal"
+          }
+        ],
+        "graphId": "work-a5d6057b0c6af854fec144af:graph",
+        "kind": "JobGraph",
+        "missionId": "work-a5d6057b0c6af854fec144af",
+        "nodes": [
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-11-02T21:14:06.114Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed."
+            },
+            "covers": [
+              "mission-constitution",
+              "alternative-set",
+              "rights-data",
+              "human-agency"
+            ],
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "family": "constitution",
+            "jobId": "work-a5d6057b0c6af854fec144af:constitution",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-a5d6057b0c6af854fec144af",
+            "objective": "Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-legal-nda-support"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "digest": "sha256:62c1975e4c1b53ef0347df3c81dcbeadeb5328621a2429c00661c322e03125ae"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-a5d6057b0c6af854fec144af:constitution"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-11-02T21:14:06.114Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed."
+            },
+            "covers": [
+              "incumbent-baseline",
+              "oracle-teacher",
+              "complete-economics"
+            ],
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "family": "evidence",
+            "jobId": "work-a5d6057b0c6af854fec144af:evidence",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-a5d6057b0c6af854fec144af",
+            "objective": "Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-legal-nda-support"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "digest": "sha256:40211dd694c77162a9491782fa08c0092b9f274afd581401b663074102d95b19"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-a5d6057b0c6af854fec144af:evidence"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-11-02T21:14:06.114Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed."
+            },
+            "covers": [
+              "mission-gym",
+              "architecture-frontier",
+              "experience-formation",
+              "specialist-formation",
+              "tools-retrieval"
+            ],
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "family": "formation",
+            "jobId": "work-a5d6057b0c6af854fec144af:formation",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-a5d6057b0c6af854fec144af",
+            "objective": "Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-legal-nda-support"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "digest": "sha256:998565a8a90cae0fc981957713b21bbddf6c6cedcaabb249265472cf8c111ef9"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Classify errors, severity, causes, abstention, adversarial cases and stop conditions."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-a5d6057b0c6af854fec144af:formation"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-11-02T21:14:06.114Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed."
+            },
+            "covers": [
+              "failure-taxonomy"
+            ],
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "family": "challenge",
+            "jobId": "work-a5d6057b0c6af854fec144af:challenge",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-a5d6057b0c6af854fec144af",
+            "objective": "Classify errors, severity, causes, abstention, adversarial cases and stop conditions.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-legal-nda-support"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "digest": "sha256:ee226dea2c04a812e361e454b23213e7517f81e78f07632a212ac572e1a3af80"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-a5d6057b0c6af854fec144af:challenge"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-11-02T21:14:06.114Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed."
+            },
+            "covers": [
+              "verifier-formation",
+              "security-privacy",
+              "resilience-rollback",
+              "fresh-evaluation",
+              "independent-validation"
+            ],
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "family": "verification",
+            "jobId": "work-a5d6057b0c6af854fec144af:verification",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-a5d6057b0c6af854fec144af",
+            "objective": "Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-legal-nda-support"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "digest": "sha256:91bc9b3341447a5d459082107bb9a32f5405a4fb35a4a031dca182414c0306dc"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-a5d6057b0c6af854fec144af:verification"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-11-02T21:14:06.114Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed."
+            },
+            "covers": [
+              "accountable-acceptance",
+              "chronicle-authority"
+            ],
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "family": "admission",
+            "jobId": "work-a5d6057b0c6af854fec144af:admission",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-a5d6057b0c6af854fec144af",
+            "objective": "Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-legal-nda-support"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "digest": "sha256:9728fe50d3cd3a66599fc3bec32cfea0b50cd4a693a9464eb3d6c413eaa7006d"
+          },
+          {
+            "acceptance": {
+              "evidenceSources": [
+                "mission-input"
+              ],
+              "owner": "example-acceptor",
+              "predicate": "Review the exact input, delivered artifacts and retained failures for: Allocate verified available value and define next-successor and fresh-transfer triggers."
+            },
+            "actor": "example-producer",
+            "authorizedInputs": [
+              "mission-input",
+              "work-a5d6057b0c6af854fec144af:admission"
+            ],
+            "budget": {
+              "limitBaseUnits": "0",
+              "maxDurationMs": 60000,
+              "maxRetries": 0,
+              "unit": "AGIALPHA"
+            },
+            "chronicle": {
+              "eligible": false,
+              "expiresAt": "2026-11-02T21:14:06.114Z",
+              "rights": "Requires a separate rights and admission review.",
+              "scope": "Verify source fidelity and package synthetic Ontario-NDA research analysis; professional correctness unassessed."
+            },
+            "covers": [
+              "capital-requalification"
+            ],
+            "evidenceObligation": [
+              "source-lineage",
+              "complete-cost",
+              "failure-record"
+            ],
+            "expiresAt": "2026-11-02T21:14:06.114Z",
+            "family": "renewal",
+            "jobId": "work-a5d6057b0c6af854fec144af:renewal",
+            "kind": "SealedWorkOrder",
+            "missionId": "work-a5d6057b0c6af854fec144af",
+            "objective": "Allocate verified available value and define next-successor and fresh-transfer triggers.",
+            "outputSchema": {
+              "required": [
+                "evidence",
+                "findings",
+                "cost"
+              ],
+              "type": "object"
+            },
+            "permittedActions": [
+              "inspect-local"
+            ],
+            "permittedTools": [
+              "fixed-workbench-legal-nda-support"
+            ],
+            "principal": "example-human-principal",
+            "prohibitedActions": [
+              "send-payment",
+              "post-live-job",
+              "access-private-data",
+              "self-admit"
+            ],
+            "rollback": {
+              "available": true,
+              "reason": "Discard the local candidate and return to the retained fixed baseline.",
+              "target": "alpha-current"
+            },
+            "schemaVersion": "1.0.0",
+            "state": "DRAFT",
+            "verifier": {
+              "identity": "example-verifier",
+              "independence": "I0",
+              "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+            },
+            "version": "1",
+            "sealed": true,
+            "signatureStatus": "UNSIGNED_COMMITMENT",
+            "digest": "sha256:9755853d14dbe02c1c41d7fa4f37e18ba462b4418d8608077115b73726c9037a"
+          }
+        ],
+        "schemaVersion": "1.0.0",
+        "version": "1",
+        "digest": "sha256:115a5a728c22a17c2f414f818fe16ddb45afa55a975655d9a86dfa6a6805b4ec"
+      },
+      "executionOrder": [
+        "work-a5d6057b0c6af854fec144af:constitution",
+        "work-a5d6057b0c6af854fec144af:evidence",
+        "work-a5d6057b0c6af854fec144af:formation",
+        "work-a5d6057b0c6af854fec144af:challenge",
+        "work-a5d6057b0c6af854fec144af:verification",
+        "work-a5d6057b0c6af854fec144af:admission",
+        "work-a5d6057b0c6af854fec144af:renewal"
+      ],
+      "coverage": [
+        {
+          "functionId": "mission-constitution",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "incumbent-baseline",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:evidence"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "alternative-set",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "rights-data",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "mission-gym",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "oracle-teacher",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:evidence"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "failure-taxonomy",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:challenge"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "architecture-frontier",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "experience-formation",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "specialist-formation",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "tools-retrieval",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "verifier-formation",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "security-privacy",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "complete-economics",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:evidence"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "human-agency",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "resilience-rollback",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "fresh-evaluation",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "independent-validation",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "accountable-acceptance",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:admission"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "chronicle-authority",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:admission"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        },
+        {
+          "functionId": "capital-requalification",
+          "jobIds": [
+            "work-a5d6057b0c6af854fec144af:renewal"
+          ],
+          "status": "PLANNED_NOT_ACCEPTED"
+        }
+      ],
+      "criticalEvidenceCuts": [
+        {
+          "functionId": "mission-constitution",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "incumbent-baseline",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:evidence"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "alternative-set",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "rights-data",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "mission-gym",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "oracle-teacher",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:evidence"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "failure-taxonomy",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:challenge"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "architecture-frontier",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "experience-formation",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "specialist-formation",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "tools-retrieval",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:formation"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "verifier-formation",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "security-privacy",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "complete-economics",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:evidence"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "human-agency",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:constitution"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "resilience-rollback",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "fresh-evaluation",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "independent-validation",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:verification"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "accountable-acceptance",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:admission"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "chronicle-authority",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:admission"
+          ],
+          "exhaustive": false
+        },
+        {
+          "functionId": "capital-requalification",
+          "removeJobIds": [
+            "work-a5d6057b0c6af854fec144af:renewal"
+          ],
+          "exhaustive": false
+        }
+      ],
+      "budgetReservations": {
+        "unit": "AGIALPHA",
+        "reservedBaseUnits": "0",
+        "limitBaseUnits": "0",
+        "includesRetries": true
+      },
+      "dependencyMap": {
+        "work-a5d6057b0c6af854fec144af:constitution": [],
+        "work-a5d6057b0c6af854fec144af:evidence": [
+          {
+            "jobId": "work-a5d6057b0c6af854fec144af:constitution",
+            "kind": "evidence"
+          }
+        ],
+        "work-a5d6057b0c6af854fec144af:formation": [
+          {
+            "jobId": "work-a5d6057b0c6af854fec144af:evidence",
+            "kind": "evidence"
+          }
+        ],
+        "work-a5d6057b0c6af854fec144af:challenge": [
+          {
+            "jobId": "work-a5d6057b0c6af854fec144af:formation",
+            "kind": "evidence"
+          }
+        ],
+        "work-a5d6057b0c6af854fec144af:verification": [
+          {
+            "jobId": "work-a5d6057b0c6af854fec144af:challenge",
+            "kind": "evidence"
+          }
+        ],
+        "work-a5d6057b0c6af854fec144af:admission": [
+          {
+            "jobId": "work-a5d6057b0c6af854fec144af:verification",
+            "kind": "evidence"
+          }
+        ],
+        "work-a5d6057b0c6af854fec144af:renewal": [
+          {
+            "jobId": "work-a5d6057b0c6af854fec144af:admission",
+            "kind": "evidence"
+          }
+        ]
+      },
+      "invalidationMap": {
+        "mission-input": [
+          "work-a5d6057b0c6af854fec144af:constitution",
+          "work-a5d6057b0c6af854fec144af:evidence",
+          "work-a5d6057b0c6af854fec144af:formation",
+          "work-a5d6057b0c6af854fec144af:challenge",
+          "work-a5d6057b0c6af854fec144af:verification",
+          "work-a5d6057b0c6af854fec144af:admission",
+          "work-a5d6057b0c6af854fec144af:renewal"
+        ],
+        "work-a5d6057b0c6af854fec144af:constitution": [
+          "work-a5d6057b0c6af854fec144af:evidence"
+        ],
+        "work-a5d6057b0c6af854fec144af:evidence": [
+          "work-a5d6057b0c6af854fec144af:formation"
+        ],
+        "work-a5d6057b0c6af854fec144af:formation": [
+          "work-a5d6057b0c6af854fec144af:challenge"
+        ],
+        "work-a5d6057b0c6af854fec144af:challenge": [
+          "work-a5d6057b0c6af854fec144af:verification"
+        ],
+        "work-a5d6057b0c6af854fec144af:verification": [
+          "work-a5d6057b0c6af854fec144af:admission"
+        ],
+        "work-a5d6057b0c6af854fec144af:admission": [
+          "work-a5d6057b0c6af854fec144af:renewal"
+        ],
+        "work-a5d6057b0c6af854fec144af:renewal": []
+      },
+      "capabilityRequests": [
+        {
+          "jobId": "work-a5d6057b0c6af854fec144af:constitution",
+          "actor": "example-producer",
+          "tools": [
+            "fixed-workbench-legal-nda-support"
+          ],
+          "actions": [
+            "inspect-local"
+          ],
+          "status": "REQUESTED_NOT_GRANTED"
+        },
+        {
+          "jobId": "work-a5d6057b0c6af854fec144af:evidence",
+          "actor": "example-producer",
+          "tools": [
+            "fixed-workbench-legal-nda-support"
+          ],
+          "actions": [
+            "inspect-local"
+          ],
+          "status": "REQUESTED_NOT_GRANTED"
+        },
+        {
+          "jobId": "work-a5d6057b0c6af854fec144af:formation",
+          "actor": "example-producer",
+          "tools": [
+            "fixed-workbench-legal-nda-support"
+          ],
+          "actions": [
+            "inspect-local"
+          ],
+          "status": "REQUESTED_NOT_GRANTED"
+        },
+        {
+          "jobId": "work-a5d6057b0c6af854fec144af:challenge",
+          "actor": "example-producer",
+          "tools": [
+            "fixed-workbench-legal-nda-support"
+          ],
+          "actions": [
+            "inspect-local"
+          ],
+          "status": "REQUESTED_NOT_GRANTED"
+        },
+        {
+          "jobId": "work-a5d6057b0c6af854fec144af:verification",
+          "actor": "example-producer",
+          "tools": [
+            "fixed-workbench-legal-nda-support"
+          ],
+          "actions": [
+            "inspect-local"
+          ],
+          "status": "REQUESTED_NOT_GRANTED"
+        },
+        {
+          "jobId": "work-a5d6057b0c6af854fec144af:admission",
+          "actor": "example-producer",
+          "tools": [
+            "fixed-workbench-legal-nda-support"
+          ],
+          "actions": [
+            "inspect-local"
+          ],
+          "status": "REQUESTED_NOT_GRANTED"
+        },
+        {
+          "jobId": "work-a5d6057b0c6af854fec144af:renewal",
+          "actor": "example-producer",
+          "tools": [
+            "fixed-workbench-legal-nda-support"
+          ],
+          "actions": [
+            "inspect-local"
+          ],
+          "status": "REQUESTED_NOT_GRANTED"
+        }
+      ],
+      "evaluationPlan": {
+        "criticalErrorCeiling": 0,
+        "custodian": "example-verifier",
+        "formationOwner": "example-producer",
+        "id": "public-local-rehearsal",
+        "minimumMargin": 0,
+        "mode": "SYNTHETIC_REHEARSAL",
+        "requiredIndependence": "I0",
+        "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+        "version": "1"
+      },
+      "authorityCreated": "NONE",
+      "signatureStatus": "UNSIGNED_COMMITMENT",
+      "digest": "sha256:2c4c8cc8aad1bf69898e3b5c0d60754a82b184450fa26cd35bb1cf0a0ec65c5b"
+    },
+    "result": {
+      "decision": "COUNSEL_REVIEW_REQUIRED",
+      "summary": {
+        "caseId": "PRIMARY-17",
+        "arm": "C",
+        "checks": 8,
+        "sourceChanges": 1
+      },
+      "evidence": {
+        "packet": {
+          "case_id": "PRIMARY-17",
+          "changes": [
+            {
+              "kind": "delete",
+              "original_span": {
+                "document": "original",
+                "end": 1230,
+                "quote": "3. Material at end of discussions. Within 10 calendar days after a written request from the disclosing company, the Receiver shall return or destroy all Protected Material.\n4. Public authority demands. Where disclosure is compelled by law, the Receiver shall notify the disclosing company in writing before disclosure to the extent legally permitted.\n5. Unaided recollections. A Receiver must not use residual information retained in unaided memory.\n6. Transfer of this agreement. A party may assign this Agreement only after receiving the other party's prior written consent.\n",
+                "start": 653
+              },
+              "revised_span": null
+            }
+          ],
+          "decision": "COUNSEL_REVIEW_REQUIRED",
+          "escalations": [
+            {
+              "code": "R3_RETURN_DEADLINE",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            },
+            {
+              "code": "R4_COMPELLED_NOTICE",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            },
+            {
+              "code": "R6_ASSIGNMENT",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            }
+          ],
+          "implementation_stage": "C",
+          "legal_correctness": "NOT_ASSESSED",
+          "limitations": [
+            "Original synthetic research documents; not real client work.",
+            "A mechanical policy match is not a conclusion about legal sufficiency or enforceability.",
+            "Every packet requires independent qualified professional review before legal reliance.",
+            "No automatic legal revision, negotiation, filing, signature or settlement."
+          ],
+          "obligations": [
+            {
+              "family": "R1_PURPOSE",
+              "source": {
+                "document": "revised",
+                "end": 521,
+                "quote": "1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+                "start": 317
+              }
+            },
+            {
+              "family": "R2_CONFIDENTIALITY_TERM",
+              "source": {
+                "document": "revised",
+                "end": 652,
+                "quote": "2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+                "start": 522
+              }
+            },
+            {
+              "family": "R7_GOVERNING_LAW",
+              "source": {
+                "document": "revised",
+                "end": 722,
+                "quote": "7. Applicable law. The laws of Ontario, Canada govern this Agreement.",
+                "start": 653
+              }
+            },
+            {
+              "family": "R8_REPRESENTATIVES",
+              "source": {
+                "document": "revised",
+                "end": 950,
+                "quote": "8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+                "start": 723
+              }
+            }
+          ],
+          "playbook_version": "ONT-NDA-RESEARCH-1.0",
+          "professional_acceptance": "unknown",
+          "proposed_revisions": [],
+          "rule_results": [
+            {
+              "reason": "Express exclusive evaluation-use wording was located.",
+              "rule_id": "R1_PURPOSE",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 521,
+                  "quote": "1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+                  "start": 317
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "Explicit general duration: 24 months; policy range 12-36.",
+              "rule_id": "R2_CONFIDENTIALITY_TERM",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 652,
+                  "quote": "2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+                  "start": 522
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R3_RETURN_DEADLINE",
+              "severity": 5,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R4_COMPELLED_NOTICE",
+              "severity": 5,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "No express residual-use permission was found; this policy does not require a residuals clause.",
+              "rule_id": "R5_RESIDUALS",
+              "severity": 5,
+              "sources": [],
+              "status": "pass"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R6_ASSIGNMENT",
+              "severity": 3,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "Express Ontario governing-law wording was located; enforceability is not assessed.",
+              "rule_id": "R7_GOVERNING_LAW",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 722,
+                  "quote": "7. Applicable law. The laws of Ontario, Canada govern this Agreement.",
+                  "start": 653
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "Need-to-know limitation and responsibility wording were located.",
+              "rule_id": "R8_REPRESENTATIVES",
+              "severity": 3,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 950,
+                  "quote": "8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+                  "start": 723
+                }
+              ],
+              "status": "pass"
+            }
+          ],
+          "schema": "legal-support-packet/v1",
+          "scope": "Source-linked NDA change-control and explicit playbook-support packet",
+          "source_hashes": {
+            "original": "8cea1ae7ff7aa717f4634ce0e69c532e22c0c04b874ca3ef4c721099ba2c6a35",
+            "revised": "6f89b9a2e6b01ff1ce8e9f25d55fe4ed8f6494bd5df6d2780018e39ac25b0a95"
+          },
+          "superseded_passages": [],
+          "supported_scope": true
+        },
+        "structural": {
+          "status": "EXECUTED",
+          "scope": "TI exact-extractive structural coverage only; no legal truth or expert verification",
+          "record": {
+            "structural_score": 4,
+            "selected": [
+              "S1",
+              "S2",
+              "S3",
+              "S4"
+            ],
+            "supported": [
+              "S1",
+              "S2",
+              "S3",
+              "S4"
+            ],
+            "missing": [],
+            "exact_source_clauses": [
+              {
+                "id": "S1",
+                "text": "1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+                "provenance": "revised:317:521"
+              },
+              {
+                "id": "S2",
+                "text": "2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+                "provenance": "revised:522:652"
+              },
+              {
+                "id": "S3",
+                "text": "7. Applicable law. The laws of Ontario, Canada govern this Agreement.",
+                "provenance": "revised:653:722"
+              },
+              {
+                "id": "S4",
+                "text": "8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+                "provenance": "revised:723:950"
+              }
+            ]
+          },
+          "dependency_annotations": "Not legally audited; no graph-value claim"
+        },
+        "analysisLocation": "Independent local Python stage, before this source-verification Workbench job",
+        "transfer": "none"
+      },
+      "artifacts": [
+        {
+          "name": "review-packet.json",
+          "type": "application/json",
+          "content": "{\n  \"case_id\": \"PRIMARY-17\",\n  \"changes\": [\n    {\n      \"kind\": \"delete\",\n      \"original_span\": {\n        \"document\": \"original\",\n        \"end\": 1230,\n        \"quote\": \"3. Material at end of discussions. Within 10 calendar days after a written request from the disclosing company, the Receiver shall return or destroy all Protected Material.\\n4. Public authority demands. Where disclosure is compelled by law, the Receiver shall notify the disclosing company in writing before disclosure to the extent legally permitted.\\n5. Unaided recollections. A Receiver must not use residual information retained in unaided memory.\\n6. Transfer of this agreement. A party may assign this Agreement only after receiving the other party's prior written consent.\\n\",\n        \"start\": 653\n      },\n      \"revised_span\": null\n    }\n  ],\n  \"decision\": \"COUNSEL_REVIEW_REQUIRED\",\n  \"escalations\": [\n    {\n      \"code\": \"R3_RETURN_DEADLINE\",\n      \"detail\": \"No supported passage for this required playbook item was identified.\",\n      \"sources\": []\n    },\n    {\n      \"code\": \"R4_COMPELLED_NOTICE\",\n      \"detail\": \"No supported passage for this required playbook item was identified.\",\n      \"sources\": []\n    },\n    {\n      \"code\": \"R6_ASSIGNMENT\",\n      \"detail\": \"No supported passage for this required playbook item was identified.\",\n      \"sources\": []\n    }\n  ],\n  \"implementation_stage\": \"C\",\n  \"legal_correctness\": \"NOT_ASSESSED\",\n  \"limitations\": [\n    \"Original synthetic research documents; not real client work.\",\n    \"A mechanical policy match is not a conclusion about legal sufficiency or enforceability.\",\n    \"Every packet requires independent qualified professional review before legal reliance.\",\n    \"No automatic legal revision, negotiation, filing, signature or settlement.\"\n  ],\n  \"obligations\": [\n    {\n      \"family\": \"R1_PURPOSE\",\n      \"source\": {\n        \"document\": \"revised\",\n        \"end\": 521,\n        \"quote\": \"1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.\",\n        \"start\": 317\n      }\n    },\n    {\n      \"family\": \"R2_CONFIDENTIALITY_TERM\",\n      \"source\": {\n        \"document\": \"revised\",\n        \"end\": 652,\n        \"quote\": \"2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.\",\n        \"start\": 522\n      }\n    },\n    {\n      \"family\": \"R7_GOVERNING_LAW\",\n      \"source\": {\n        \"document\": \"revised\",\n        \"end\": 722,\n        \"quote\": \"7. Applicable law. The laws of Ontario, Canada govern this Agreement.\",\n        \"start\": 653\n      }\n    },\n    {\n      \"family\": \"R8_REPRESENTATIVES\",\n      \"source\": {\n        \"document\": \"revised\",\n        \"end\": 950,\n        \"quote\": \"8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.\",\n        \"start\": 723\n      }\n    }\n  ],\n  \"playbook_version\": \"ONT-NDA-RESEARCH-1.0\",\n  \"professional_acceptance\": \"unknown\",\n  \"proposed_revisions\": [],\n  \"rule_results\": [\n    {\n      \"reason\": \"Express exclusive evaluation-use wording was located.\",\n      \"rule_id\": \"R1_PURPOSE\",\n      \"severity\": 5,\n      \"sources\": [\n        {\n          \"document\": \"revised\",\n          \"end\": 521,\n          \"quote\": \"1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.\",\n          \"start\": 317\n        }\n      ],\n      \"status\": \"pass\"\n    },\n    {\n      \"reason\": \"Explicit general duration: 24 months; policy range 12-36.\",\n      \"rule_id\": \"R2_CONFIDENTIALITY_TERM\",\n      \"severity\": 5,\n      \"sources\": [\n        {\n          \"document\": \"revised\",\n          \"end\": 652,\n          \"quote\": \"2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.\",\n          \"start\": 522\n        }\n      ],\n      \"status\": \"pass\"\n    },\n    {\n      \"reason\": \"No supported passage for this required playbook item was identified.\",\n      \"rule_id\": \"R3_RETURN_DEADLINE\",\n      \"severity\": 5,\n      \"sources\": [],\n      \"status\": \"absent\"\n    },\n    {\n      \"reason\": \"No supported passage for this required playbook item was identified.\",\n      \"rule_id\": \"R4_COMPELLED_NOTICE\",\n      \"severity\": 5,\n      \"sources\": [],\n      \"status\": \"absent\"\n    },\n    {\n      \"reason\": \"No express residual-use permission was found; this policy does not require a residuals clause.\",\n      \"rule_id\": \"R5_RESIDUALS\",\n      \"severity\": 5,\n      \"sources\": [],\n      \"status\": \"pass\"\n    },\n    {\n      \"reason\": \"No supported passage for this required playbook item was identified.\",\n      \"rule_id\": \"R6_ASSIGNMENT\",\n      \"severity\": 3,\n      \"sources\": [],\n      \"status\": \"absent\"\n    },\n    {\n      \"reason\": \"Express Ontario governing-law wording was located; enforceability is not assessed.\",\n      \"rule_id\": \"R7_GOVERNING_LAW\",\n      \"severity\": 5,\n      \"sources\": [\n        {\n          \"document\": \"revised\",\n          \"end\": 722,\n          \"quote\": \"7. Applicable law. The laws of Ontario, Canada govern this Agreement.\",\n          \"start\": 653\n        }\n      ],\n      \"status\": \"pass\"\n    },\n    {\n      \"reason\": \"Need-to-know limitation and responsibility wording were located.\",\n      \"rule_id\": \"R8_REPRESENTATIVES\",\n      \"severity\": 3,\n      \"sources\": [\n        {\n          \"document\": \"revised\",\n          \"end\": 950,\n          \"quote\": \"8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.\",\n          \"start\": 723\n        }\n      ],\n      \"status\": \"pass\"\n    }\n  ],\n  \"schema\": \"legal-support-packet/v1\",\n  \"scope\": \"Source-linked NDA change-control and explicit playbook-support packet\",\n  \"source_hashes\": {\n    \"original\": \"8cea1ae7ff7aa717f4634ce0e69c532e22c0c04b874ca3ef4c721099ba2c6a35\",\n    \"revised\": \"6f89b9a2e6b01ff1ce8e9f25d55fe4ed8f6494bd5df6d2780018e39ac25b0a95\"\n  },\n  \"superseded_passages\": [],\n  \"supported_scope\": true\n}\n",
+          "digest": "914388f24f60a0a054dddaee1b7e79e3b66acb9505f282fe75e8cc0e641f50e9"
+        },
+        {
+          "name": "source-context.json",
+          "type": "application/json",
+          "content": "{\n  \"status\": \"EXECUTED\",\n  \"scope\": \"TI exact-extractive structural coverage only; no legal truth or expert verification\",\n  \"record\": {\n    \"structural_score\": 4,\n    \"selected\": [\n      \"S1\",\n      \"S2\",\n      \"S3\",\n      \"S4\"\n    ],\n    \"supported\": [\n      \"S1\",\n      \"S2\",\n      \"S3\",\n      \"S4\"\n    ],\n    \"missing\": [],\n    \"exact_source_clauses\": [\n      {\n        \"id\": \"S1\",\n        \"text\": \"1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.\",\n        \"provenance\": \"revised:317:521\"\n      },\n      {\n        \"id\": \"S2\",\n        \"text\": \"2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.\",\n        \"provenance\": \"revised:522:652\"\n      },\n      {\n        \"id\": \"S3\",\n        \"text\": \"7. Applicable law. The laws of Ontario, Canada govern this Agreement.\",\n        \"provenance\": \"revised:653:722\"\n      },\n      {\n        \"id\": \"S4\",\n        \"text\": \"8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.\",\n        \"provenance\": \"revised:723:950\"\n      }\n    ]\n  },\n  \"dependency_annotations\": \"Not legally audited; no graph-value claim\"\n}\n",
+          "digest": "1ccc98aadf4fda4aa34fa2b26f8bcbb0ceaa2c0ccb48a86ab4b5986d7627ba86"
+        },
+        {
+          "name": "review-notes.txt",
+          "type": "text/plain",
+          "content": "COUNSEL REVIEW REQUIRED / EXAMEN JURIDIQUE REQUIS. Source fidelity is verified, legal correctness is not. Synthetic research input; no client advice or transaction.\n",
+          "digest": "6e7c01f131b98937991bf32ee6de5090bf2340b7726036a358d01cb473336c57"
+        }
+      ],
+      "limits": [
+        "Two-stage local workflow: Python analysis then unchanged portable Alpha Workbench verification/packaging.",
+        "Synthetic research production; no customer or qualified professional legal acceptance.",
+        "Native signed-operator Harness, Fleet execution and settlement NOT RUN. Authority remains empty."
+      ]
+    },
+    "economics": {
+      "elapsedMilliseconds": 13,
+      "providerSpendBaseUnits": "0",
+      "settlementSpendBaseUnits": "0",
+      "computeCost": null,
+      "humanMinutes": null,
+      "reviewCapacityMinutes": 30,
+      "allowanceIs": "UNFUNDED"
+    },
+    "evaluation": {
+      "scope": "PUBLIC_LOCAL_EXECUTION",
+      "independentProof": false,
+      "admission": "HOLD",
+      "authority": [],
+      "settlement": "NOT_CONNECTED"
+    },
+    "chronicle": [
+      {
+        "kind": "local-result",
+        "decision": "COUNSEL_REVIEW_REQUIRED",
+        "missionDigest": "a5d6057b0c6af854fec144af9dae73118dd72bcf82f0b6d8160d470164c279fc",
+        "releaseDigest": "4f3098fb8d4136d9c74e4104d63349f6bbe9e1082efd9e2cb2235e1f254e2721",
+        "inheritedProof": false,
+        "inheritedAuthority": false
+      }
+    ],
+    "integrityDigest": "e320efc157a5c8c8d5ee4374743aedbacff469195954b0998da17f43fe70b57b"
+  },
+  "inspection": {
+    "spec": {
+      "family": "legal-nda-support",
+      "inputs": {
+        "arm": "C",
+        "packet": {
+          "case_id": "PRIMARY-17",
+          "changes": [
+            {
+              "kind": "delete",
+              "original_span": {
+                "document": "original",
+                "end": 1230,
+                "quote": "3. Material at end of discussions. Within 10 calendar days after a written request from the disclosing company, the Receiver shall return or destroy all Protected Material.\n4. Public authority demands. Where disclosure is compelled by law, the Receiver shall notify the disclosing company in writing before disclosure to the extent legally permitted.\n5. Unaided recollections. A Receiver must not use residual information retained in unaided memory.\n6. Transfer of this agreement. A party may assign this Agreement only after receiving the other party's prior written consent.\n",
+                "start": 653
+              },
+              "revised_span": null
+            }
+          ],
+          "decision": "COUNSEL_REVIEW_REQUIRED",
+          "escalations": [
+            {
+              "code": "R3_RETURN_DEADLINE",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            },
+            {
+              "code": "R4_COMPELLED_NOTICE",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            },
+            {
+              "code": "R6_ASSIGNMENT",
+              "detail": "No supported passage for this required playbook item was identified.",
+              "sources": []
+            }
+          ],
+          "implementation_stage": "C",
+          "legal_correctness": "NOT_ASSESSED",
+          "limitations": [
+            "Original synthetic research documents; not real client work.",
+            "A mechanical policy match is not a conclusion about legal sufficiency or enforceability.",
+            "Every packet requires independent qualified professional review before legal reliance.",
+            "No automatic legal revision, negotiation, filing, signature or settlement."
+          ],
+          "obligations": [
+            {
+              "family": "R1_PURPOSE",
+              "source": {
+                "document": "revised",
+                "end": 521,
+                "quote": "1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+                "start": 317
+              }
+            },
+            {
+              "family": "R2_CONFIDENTIALITY_TERM",
+              "source": {
+                "document": "revised",
+                "end": 652,
+                "quote": "2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+                "start": 522
+              }
+            },
+            {
+              "family": "R7_GOVERNING_LAW",
+              "source": {
+                "document": "revised",
+                "end": 722,
+                "quote": "7. Applicable law. The laws of Ontario, Canada govern this Agreement.",
+                "start": 653
+              }
+            },
+            {
+              "family": "R8_REPRESENTATIVES",
+              "source": {
+                "document": "revised",
+                "end": 950,
+                "quote": "8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+                "start": 723
+              }
+            }
+          ],
+          "playbook_version": "ONT-NDA-RESEARCH-1.0",
+          "professional_acceptance": "unknown",
+          "proposed_revisions": [],
+          "rule_results": [
+            {
+              "reason": "Express exclusive evaluation-use wording was located.",
+              "rule_id": "R1_PURPOSE",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 521,
+                  "quote": "1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.",
+                  "start": 317
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "Explicit general duration: 24 months; policy range 12-36.",
+              "rule_id": "R2_CONFIDENTIALITY_TERM",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 652,
+                  "quote": "2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.",
+                  "start": 522
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R3_RETURN_DEADLINE",
+              "severity": 5,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R4_COMPELLED_NOTICE",
+              "severity": 5,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "No express residual-use permission was found; this policy does not require a residuals clause.",
+              "rule_id": "R5_RESIDUALS",
+              "severity": 5,
+              "sources": [],
+              "status": "pass"
+            },
+            {
+              "reason": "No supported passage for this required playbook item was identified.",
+              "rule_id": "R6_ASSIGNMENT",
+              "severity": 3,
+              "sources": [],
+              "status": "absent"
+            },
+            {
+              "reason": "Express Ontario governing-law wording was located; enforceability is not assessed.",
+              "rule_id": "R7_GOVERNING_LAW",
+              "severity": 5,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 722,
+                  "quote": "7. Applicable law. The laws of Ontario, Canada govern this Agreement.",
+                  "start": 653
+                }
+              ],
+              "status": "pass"
+            },
+            {
+              "reason": "Need-to-know limitation and responsibility wording were located.",
+              "rule_id": "R8_REPRESENTATIVES",
+              "severity": 3,
+              "sources": [
+                {
+                  "document": "revised",
+                  "end": 950,
+                  "quote": "8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.",
+                  "start": 723
+                }
+              ],
+              "status": "pass"
+            }
+          ],
+          "schema": "legal-support-packet/v1",
+          "scope": "Source-linked NDA change-control and explicit playbook-support packet",
+          "source_hashes": {
+            "original": "8cea1ae7ff7aa717f4634ce0e69c532e22c0c04b874ca3ef4c721099ba2c6a35",
+            "revised": "6f89b9a2e6b01ff1ce8e9f25d55fe4ed8f6494bd5df6d2780018e39ac25b0a95"
+          },
+          "superseded_passages": [],
+          "supported_scope": true
+        },
+        "request": {
+          "amendments": [],
+          "case_id": "PRIMARY-17",
+          "document_family": "commercial mutual NDA",
+          "jurisdiction": "Ontario, Canada",
+          "original_text": "SYNTHETIC RESEARCH DOCUMENT — NOT AN EXECUTABLE AGREEMENT\nCompany Alder (synthetic) and Company Boreal (synthetic) are evaluating a proposed software supply and integration relationship. Each is a Receiver when receiving the other company's Protected Material. These bilateral duties apply equally to both companies.\n1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.\n2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.\n3. Material at end of discussions. Within 10 calendar days after a written request from the disclosing company, the Receiver shall return or destroy all Protected Material.\n4. Public authority demands. Where disclosure is compelled by law, the Receiver shall notify the disclosing company in writing before disclosure to the extent legally permitted.\n5. Unaided recollections. A Receiver must not use residual information retained in unaided memory.\n6. Transfer of this agreement. A party may assign this Agreement only after receiving the other party's prior written consent.\n7. Applicable law. The laws of Ontario, Canada govern this Agreement.\n8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.\n",
+          "playbook_version": "ONT-NDA-RESEARCH-1.0",
+          "request": "Prepare a source-linked change-control and research-playbook packet for qualified Ontario commercial counsel.",
+          "revised_text": "SYNTHETIC RESEARCH DOCUMENT — NOT AN EXECUTABLE AGREEMENT\nCompany Alder (synthetic) and Company Boreal (synthetic) are evaluating a proposed software supply and integration relationship. Each is a Receiver when receiving the other company's Protected Material. These bilateral duties apply equally to both companies.\n1. Permitted activity. A Receiver may use Protected Material solely to evaluate whether the two companies should enter the proposed software supply and integration relationship. No other use is permitted.\n2. Secrecy period. Each Receiver shall preserve the confidentiality of Protected Material for 24 months following each disclosure.\n7. Applicable law. The laws of Ontario, Canada govern this Agreement.\n8. Access by personnel. Disclosure to advisers and other representatives is allowed only where they need to know the material for the permitted evaluation. The Receiver remains responsible for breaches by those representatives.\n",
+          "source_class": "synthetic"
+        }
+      },
+      "language": "en",
+      "name": "PRIMARY-17",
+      "owner": "legal-research-unprivileged",
+      "reviewMinutes": 30,
+      "rights": {
+        "dataClass": "synthetic",
+        "license": "Apache-2.0",
+        "source": "Independent synthetic case PRIMARY-17"
+      },
+      "schema": "successor-workbench/v1"
+    },
+    "history": {
+      "missionDigest": "a5d6057b0c6af854fec144af9dae73118dd72bcf82f0b6d8160d470164c279fc",
+      "releaseDigest": "4f3098fb8d4136d9c74e4104d63349f6bbe9e1082efd9e2cb2235e1f254e2721",
+      "decision": "COUNSEL_REVIEW_REQUIRED"
+    },
+    "authentication": "UNAUTHENTICATED_HISTORICAL_IMPORT",
+    "activeProof": [],
+    "activeAuthority": []
+  },
+  "runtime": {
+    "node": "v24.22.1",
+    "sourceHash": "53f87ae10c8269b771267d107fbfec9864edc23bdc67846885dec44c4fc7a137",
+    "stage": "C",
+    "elapsed_seconds": 0.04886638800000037,
+    "cpu_seconds": 0.046934
+  }
+}

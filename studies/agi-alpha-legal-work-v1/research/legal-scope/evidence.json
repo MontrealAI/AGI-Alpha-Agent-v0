@@ -1,0 +1,67 @@
+{
+  "checked_on": "2026-10-26",
+  "assessment_status": "Research synthesis by an AI agent; no independent licensed legal review",
+  "study": {
+    "title": "AI-Powered Lawyering: AI Reasoning Models, Retrieval Augmented Generation, and the Future of Legal Practice",
+    "authors": ["Daniel Schwarcz", "Sam Manning", "J. J. Prescott", "Patrick Barry", "David R. Cleveland", "Beverly Rich"],
+    "doi": "10.1177/2755323X261427048",
+    "published": "2026-04-09",
+    "experiment_dates": ["2024-10-01", "2024-10-31"],
+    "enrolled": 153,
+    "completed_at_least_one": 137,
+    "completed_all_six": 125,
+    "population": "Upper-level and LL.M. students at Michigan and Minnesota",
+    "conditions": ["No AI", "Vincent AI mid-2024", "OpenAI o1-preview"],
+    "assignment": "Randomized stable groups; each participant two tasks per condition",
+    "task_time_limits_minutes": {"Client email": 60, "Partner memo": 240, "Complaint analysis": 120, "NDA drafting": 180, "Consolidation motion": 150, "Persuasive noncompete letter": 150},
+    "assessment": "Three coauthors with practice experience; treatment/identity-blind; five 1–7 quality attributes; hallucination indicator",
+    "timing": "Self-reported",
+    "productivity_definition": "Sum of quality scores divided by fraction of allotted time used",
+    "NDA": {"N":127,"no_AI_mean_time_fraction":0.54,"Vincent_time_change_percent":-11.9,"o1_time_change_percent":-3.9,"Vincent_productivity_change_percent":23.4,"o1_productivity_change_percent":4.8,"interpretation":"No statistically significant speed, quality, or productivity improvement"},
+    "limits": ["Students, not licensed practitioners", "Six constrained tasks", "Self-reported time", "Participant awareness/demand effects", "No autonomous-agent, commercial-price, professional-acceptance or operating-surplus test"],
+    "license": "CC BY-NC 4.0; cite findings, do not redistribute paper as a commercial product",
+    "source_urls": ["https://repository.law.umich.edu/facarticles/3173/", "https://journals.sagepub.com/doi/full/10.1177/2755323X261427048", "https://journals.sagepub.com/doi/pdf/10.1177/2755323X261427048"],
+    "source_sections": ["3. Data and Methods", "Table 10", "Table 12", "5. Limitations"],
+    "web_refs": ["turn7view0", "turn7view1", "turn9view1", "turn9view2", "turn9view5"]
+  },
+  "professional_boundary": {
+    "jurisdiction": "Ontario, Canada",
+    "intended_professional_user": "An Ontario-qualified commercial lawyer or supervised legal team",
+    "statute": {
+      "url": "https://www.ontario.ca/laws/statute/90l08",
+      "sections": ["1(5)", "1(6)", "26.1"],
+      "summary": "Applying legal principles and judgment to a person's circumstances can constitute legal services; practice and provision are restricted to licensees, subject to authorized exceptions. A support label alone does not determine legal characterization.",
+      "retrieval_limit": "Government page direct retrieval returned 403; current primary indexed excerpts verified definitions and section 26.1 restriction, not full consolidated exceptions.",
+      "web_refs": ["turn10search0", "turn13search0"]
+    },
+    "LSO_guidance": {
+      "date": "2024-04-10",
+      "url": "https://lawsocietyontario-dwd0dscmayfwh7bj.a01.azurefd.net/media/lso/media/lawyers/practice-supports-resources/generative-ai-your-professional-obligations.pdf",
+      "summary": "Relevant obligations are competence, confidentiality, honesty/candour, supervision, reasonable fees and candour to tribunals. AI output relied upon must be independently verified by a human. Professional judgment remains with the licensee. Confidential material requires appropriate safeguards; this study uses no such material. Disclosure depends on the use and its implications. Tool costs passed through as disbursements must be actual, reasonable and disclosed.",
+      "rules_identified": ["3.1-2", "3.3-1", "3.2-2", "6.1-1", "3.6", "5.1"],
+      "web_refs": ["turn4view0"]
+    },
+    "LSO_white_paper": {
+      "date": "2024-04",
+      "url": "https://lawsocietyontario-dwd0dscmayfwh7bj.a01.azurefd.net/media/lso/media/lawyers/practice-supports-resources/white-paper-on-licensee-use-of-generative-artificial-intelligence-en.pdf",
+      "summary": "Licensees retain responsibility for AI-assisted work and must exercise active expert independent judgment. The professional may delegate appropriate tasks but cannot replace necessary professional competence with a tool.",
+      "web_refs": ["turn13view0"]
+    },
+    "freshness_note": "Primary LSO resource listing still presents the April 2024 guidance at the check date. A May 2026 A2I consultation is not authorization for this provider. No regulatory approval or comprehensive legal opinion is claimed.",
+    "current_resources_url": "https://lso.ca/lawyers/technology-resource-centre/practice-resources-and-supports/using-technology"
+  },
+  "templates": [{
+    "name": "Common Paper Mutual NDA v1.0",
+    "url": "https://commonpaper.com/standards/mutual-nda/",
+    "license": "CC BY 4.0",
+    "evidence": "Official template page permits use/modification, identifies version 1.0 and provides Word/PDF/Markdown formats. Default governing law is Delaware. Changes are identified on the cover page.",
+    "use": "Attribution-preserving public reference or clearly labeled synthetic adaptation; no assertion that changing the jurisdiction creates an Ontario-validated contract.",
+    "web_refs": ["turn12view1"]
+  }],
+  "comparators": [
+    {"name":"Microsoft Word legal blackline + lawyer checklist","url":"https://support.microsoft.com/en-us/word/compare-document-differences-using-the-legal-blackline-option","fact":"Word compares document versions and shows changes in a separate document.","interpretation":"Required conventional comparator for reconciliation; availability does not establish semantic or legal correctness.","web_refs":["turn14search0"]},
+    {"name":"Spellbook Playbooks and Redline Review","url":"https://help.spellbook.legal/en/articles/13875622-first-party-playbooks-redline-review","fact":"Official documentation describes applying saved playbooks directly to tracked changes, with accept/reject/revise suggestions and comments.","interpretation":"Strong practical AI-assisted comparator; no performance measurement or subscription access established by this study.","web_refs":["turn14search2"]},
+    {"name":"LegalOn contract review playbooks","url":"https://www.legalontech.com/contract-playbooks","fact":"Official product page describes supplied/custom playbooks and conversion from review guidelines or prior redlines.","interpretation":"Capability availability is vendor evidence; not independent accuracy or economics evidence.","web_refs":["turn14search8"]},
+    {"name":"oneNDA Playbook","url":"https://www.onenda.org/playbook","fact":"Official page describes a Word add-in reviewing third-party NDAs against oneNDA principles.","interpretation":"Shows existing competition for the core offering. Do not assume historical beta-free terms remain current pricing.","web_refs":["turn12view3"]}
+  ]
+}

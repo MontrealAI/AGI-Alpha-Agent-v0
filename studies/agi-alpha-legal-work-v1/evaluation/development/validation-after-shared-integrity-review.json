@@ -1,0 +1,48 @@
+{
+  "checked_at": "2026-10-26T21:09:51.383086+00:00",
+  "results": [
+    {
+      "command": [
+        "/workspace/scratch/2b1df9d13229/test-env/bin/ruff",
+        "check",
+        "--config",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/pyproject.toml",
+        "conventional.py",
+        "scorer.py",
+        "test_conventional.py",
+        "test_scorer.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.011357004001183668,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/2b1df9d13229/test-env/bin/mypy",
+        "--strict",
+        "--follow-imports=skip",
+        "conventional.py",
+        "scorer.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.17640588699941873,
+      "stdout": "Success: no issues found in 2 source files\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "test_conventional",
+        "test_scorer",
+        "-v"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.1421055550017627,
+      "stdout": "",
+      "stderr": "test_duplicate_target_in_one_amendment_is_explicit (test_conventional.ConventionalEvidenceTests.test_duplicate_target_in_one_amendment_is_explicit) ... ok\ntest_insertions_and_deletions_have_valid_empty_spans (test_conventional.ConventionalEvidenceTests.test_insertions_and_deletions_have_valid_empty_spans) ... ok\ntest_missing_reference_is_explicit (test_conventional.ConventionalEvidenceTests.test_missing_reference_is_explicit) ... ok\ntest_professional_acceptance_is_never_inferred (test_conventional.ConventionalEvidenceTests.test_professional_acceptance_is_never_inferred) ... ok\ntest_reference_ambiguity_is_not_resolved_by_first_hit (test_conventional.ConventionalEvidenceTests.test_reference_ambiguity_is_not_resolved_by_first_hit) ... ok\ntest_repeated_tokens_keep_exact_source_evidence (test_conventional.ConventionalEvidenceTests.test_repeated_tokens_keep_exact_source_evidence) ... ok\ntest_unparsed_operative_amendment_is_not_silently_ignored (test_conventional.ConventionalEvidenceTests.test_unparsed_operative_amendment_is_not_silently_ignored) ... ok\ntest_development_packet_passes (test_scorer.ScoringControls.test_development_packet_passes) ... ok\ntest_duplicate_rule_cannot_overwrite_wrong_rule (test_scorer.ScoringControls.test_duplicate_rule_cannot_overwrite_wrong_rule) ... ok\ntest_false_material_pass_cannot_hide_in_other_correct_rules (test_scorer.ScoringControls.test_false_material_pass_cannot_hide_in_other_correct_rules) ... ok\ntest_missing_change_coverage_rejected (test_scorer.ScoringControls.test_missing_change_coverage_rejected) ... ok\ntest_source_byte_substitution_rejected (test_scorer.ScoringControls.test_source_byte_substitution_rejected) ... ok\ntest_unearned_professional_acceptance_rejected (test_scorer.ScoringControls.test_unearned_professional_acceptance_rejected) ... ok\ntest_unsupported_revision_rejected (test_scorer.ScoringControls.test_unsupported_revision_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.093s\n\nOK\n"
+    }
+  ]
+}

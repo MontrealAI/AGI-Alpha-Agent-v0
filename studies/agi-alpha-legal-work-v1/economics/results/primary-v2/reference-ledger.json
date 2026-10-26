@@ -1,0 +1,5717 @@
+{
+  "schema": "agi-alpha-legal-market/v1",
+  "currency": "CAD",
+  "basis": "CONDITIONAL_SIMULATION",
+  "seed": 1,
+  "strategy": "reinvest",
+  "config": {
+    "weeks": 26,
+    "buyers": 12,
+    "arrivalProbability": 0.4,
+    "initialSeedCents": 200000,
+    "reserveCents": 20000,
+    "providerHourlyCents": 4000,
+    "lawyerHourlyCents": 6521,
+    "laborBurdenFactor": 1.3,
+    "humanMinutes": 45,
+    "reviewMinutesB": 45,
+    "reviewMinutesC": 45,
+    "reviewMinutesD": 45,
+    "operatorMinutesB": 4,
+    "operatorMinutesC": 4,
+    "operatorMinutesD": 4,
+    "technicalCorrectionMinutes": 0,
+    "supportMinutes": 1,
+    "computeHourlyCents": 25,
+    "toolCentsPerAttempt": 25,
+    "fixedWeeklyCents": 500,
+    "maintenanceWeeklyCents": 200,
+    "acquisitionCentsPerProspect": 200,
+    "providerOnboardingMinutes": 60,
+    "buyerOnboardingMinutes": 60,
+    "expectedBuyerLifetimeJobs": 12,
+    "offerPriceCents": 1000,
+    "alternativeToolCentsPerJob": 300,
+    "alternativeReviewMinutes": 20,
+    "alternativeOnboardingMinutes": 30,
+    "buyerValueMultiplier": 1,
+    "buyerMinimumSavingsCents": 0,
+    "professionalAcceptanceProbability": 0.95,
+    "collectionProbability": 0.98,
+    "paymentDelayWeeks": 2,
+    "qualityLossCents": 5000,
+    "capacityRealizationFraction": 0.5,
+    "cashRealizationFraction": 0,
+    "capabilityConstructionCents": 30000,
+    "capabilityFailedConstructionCents": 10000,
+    "capabilityMaintenancePerUseCents": 25,
+    "capabilityUsefulLifeWeeks": 13,
+    "investmentEarliestWeek": 6,
+    "secondCapabilityConstructionCents": 40000,
+    "secondCapabilityFailedConstructionCents": 10000,
+    "secondCapabilityMaintenancePerUseCents": 25,
+    "investmentPauseWeeks": 1,
+    "historicalResearchCostCents": null
+  },
+  "productionSummary": {
+    "B": {
+      "cases": 24,
+      "technicalAccepted": 2,
+      "technicalPassRate": 0.08333333333333333,
+      "professionallyAccepted": 0,
+      "professionalAcceptanceUnknown": 24,
+      "escalations": 24,
+      "totalRuntimeSeconds": 2.728335316001891,
+      "meanRuntimeSeconds": 0.11368063816674545,
+      "meanAttempts": 1,
+      "measuredProfessionalReviewMinutes": null
+    },
+    "C1": {
+      "cases": 24,
+      "technicalAccepted": 2,
+      "technicalPassRate": 0.08333333333333333,
+      "professionallyAccepted": 0,
+      "professionalAcceptanceUnknown": 24,
+      "escalations": 24,
+      "totalRuntimeSeconds": 2.489237856998469,
+      "meanRuntimeSeconds": 0.10371824404160286,
+      "meanAttempts": 1,
+      "measuredProfessionalReviewMinutes": null
+    },
+    "C": {
+      "cases": 24,
+      "technicalAccepted": 2,
+      "technicalPassRate": 0.08333333333333333,
+      "professionallyAccepted": 0,
+      "professionalAcceptanceUnknown": 24,
+      "escalations": 24,
+      "totalRuntimeSeconds": 2.426520610995592,
+      "meanRuntimeSeconds": 0.10110502545814966,
+      "meanAttempts": 1,
+      "measuredProfessionalReviewMinutes": null
+    },
+    "D": {
+      "cases": 24,
+      "technicalAccepted": 0,
+      "technicalPassRate": 0,
+      "professionallyAccepted": 0,
+      "professionalAcceptanceUnknown": 24,
+      "escalations": 24,
+      "totalRuntimeSeconds": 2.447596675011341,
+      "meanRuntimeSeconds": 0.1019831947921392,
+      "meanAttempts": 1,
+      "measuredProfessionalReviewMinutes": null
+    }
+  },
+  "summary": {
+    "opportunities": 134,
+    "buyerDeclines": 0,
+    "alternativeChoices": 134,
+    "providerAttempts": 0,
+    "simulatedAccepted": 0,
+    "simulatedRejected": 0,
+    "simulatedCollectionsCents": 0,
+    "allProviderCostsCents": 45000,
+    "cashOperatingProfitCents": -45000,
+    "providerCostCategoriesCents": {
+      "delivery": 0,
+      "business": 39800,
+      "capability": 0,
+      "maintenance": 5200
+    },
+    "recurringCostPerSimulatedAcceptedCents": null,
+    "modeledAllocatedCostPerSimulatedAcceptedCents": null,
+    "heldReserveCents": 20000,
+    "availableOperatingSurplusCents": 0,
+    "unpaidObligationsCents": 0,
+    "remainingSeedPlusEarnedCashCents": 155000,
+    "historicalResearchCostCents": null,
+    "fullyAllocatedProfitCents": null,
+    "researchCostRecovered": null,
+    "firstInvestmentFunded": false,
+    "secondInvestmentFunded": false,
+    "firstCapabilityUses": 0,
+    "secondCapabilityUses": 0,
+    "firstModeledAvoidedCostCents": 0,
+    "secondModeledAvoidedCostCents": 0,
+    "firstConstructionAndFailedCostCents": 0,
+    "secondConstructionAndFailedCostCents": 0,
+    "firstEstimatedPauseContributionCents": 0,
+    "firstDirectRepaymentWeek": null,
+    "secondDirectRepaymentWeek": null,
+    "firstDirectCostRepaid": false,
+    "secondDirectCostRepaid": false,
+    "customerProfessionalAndIntegrationMinutes": 0,
+    "customerOpportunityMinutesSaved": 0,
+    "customerInvoicedCents": 0,
+    "customerNetAvoidedCashCents": 0,
+    "observedCollectionsCents": 0,
+    "insolvent": false
+  },
+  "canonicalLedger": {
+    "schema": "alpha-shadow-ledger/v1",
+    "currency": "CAD",
+    "events": [
+      {
+        "id": "w0:mission",
+        "type": "mission",
+        "missionId": "w0",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w0:revenue:collected",
+        "type": "revenue",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w0:revenue:price",
+        "type": "revenue",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w0:cost:delivery",
+        "type": "cost",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w0:cost:business",
+        "type": "cost",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1100,
+        "basis": "assumed"
+      },
+      {
+        "id": "w0:cost:capability",
+        "type": "cost",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w0:cost:maintenance",
+        "type": "cost",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w0:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 20000,
+        "basis": "assumed"
+      },
+      {
+        "id": "w0:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w0",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w1:mission",
+        "type": "mission",
+        "missionId": "w1",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w1:revenue:collected",
+        "type": "revenue",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w1:revenue:price",
+        "type": "revenue",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w1:cost:delivery",
+        "type": "cost",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w1:cost:business",
+        "type": "cost",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1900,
+        "basis": "assumed"
+      },
+      {
+        "id": "w1:cost:capability",
+        "type": "cost",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w1:cost:maintenance",
+        "type": "cost",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w1:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w1:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w1",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w2:mission",
+        "type": "mission",
+        "missionId": "w2",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w2:revenue:collected",
+        "type": "revenue",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w2:revenue:price",
+        "type": "revenue",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w2:cost:delivery",
+        "type": "cost",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w2:cost:business",
+        "type": "cost",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w2:cost:capability",
+        "type": "cost",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w2:cost:maintenance",
+        "type": "cost",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w2:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w2:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w2",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w3:mission",
+        "type": "mission",
+        "missionId": "w3",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w3:revenue:collected",
+        "type": "revenue",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w3:revenue:price",
+        "type": "revenue",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w3:cost:delivery",
+        "type": "cost",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w3:cost:business",
+        "type": "cost",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1300,
+        "basis": "assumed"
+      },
+      {
+        "id": "w3:cost:capability",
+        "type": "cost",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w3:cost:maintenance",
+        "type": "cost",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w3:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w3:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w3",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w4:mission",
+        "type": "mission",
+        "missionId": "w4",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w4:revenue:collected",
+        "type": "revenue",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w4:revenue:price",
+        "type": "revenue",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w4:cost:delivery",
+        "type": "cost",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w4:cost:business",
+        "type": "cost",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1700,
+        "basis": "assumed"
+      },
+      {
+        "id": "w4:cost:capability",
+        "type": "cost",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w4:cost:maintenance",
+        "type": "cost",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w4:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w4:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w4",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w5:mission",
+        "type": "mission",
+        "missionId": "w5",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w5:revenue:collected",
+        "type": "revenue",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w5:revenue:price",
+        "type": "revenue",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w5:cost:delivery",
+        "type": "cost",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w5:cost:business",
+        "type": "cost",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w5:cost:capability",
+        "type": "cost",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w5:cost:maintenance",
+        "type": "cost",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w5:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w5:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w5",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w6:mission",
+        "type": "mission",
+        "missionId": "w6",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w6:revenue:collected",
+        "type": "revenue",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w6:revenue:price",
+        "type": "revenue",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w6:cost:delivery",
+        "type": "cost",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w6:cost:business",
+        "type": "cost",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1300,
+        "basis": "assumed"
+      },
+      {
+        "id": "w6:cost:capability",
+        "type": "cost",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w6:cost:maintenance",
+        "type": "cost",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w6:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w6:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w6",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w7:mission",
+        "type": "mission",
+        "missionId": "w7",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w7:revenue:collected",
+        "type": "revenue",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w7:revenue:price",
+        "type": "revenue",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w7:cost:delivery",
+        "type": "cost",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w7:cost:business",
+        "type": "cost",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w7:cost:capability",
+        "type": "cost",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w7:cost:maintenance",
+        "type": "cost",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w7:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w7:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w7",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w8:mission",
+        "type": "mission",
+        "missionId": "w8",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w8:revenue:collected",
+        "type": "revenue",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w8:revenue:price",
+        "type": "revenue",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w8:cost:delivery",
+        "type": "cost",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w8:cost:business",
+        "type": "cost",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1900,
+        "basis": "assumed"
+      },
+      {
+        "id": "w8:cost:capability",
+        "type": "cost",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w8:cost:maintenance",
+        "type": "cost",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w8:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w8:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w8",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w9:mission",
+        "type": "mission",
+        "missionId": "w9",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w9:revenue:collected",
+        "type": "revenue",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w9:revenue:price",
+        "type": "revenue",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w9:cost:delivery",
+        "type": "cost",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w9:cost:business",
+        "type": "cost",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 2300,
+        "basis": "assumed"
+      },
+      {
+        "id": "w9:cost:capability",
+        "type": "cost",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w9:cost:maintenance",
+        "type": "cost",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w9:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w9:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w9",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w10:mission",
+        "type": "mission",
+        "missionId": "w10",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w10:revenue:collected",
+        "type": "revenue",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w10:revenue:price",
+        "type": "revenue",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w10:cost:delivery",
+        "type": "cost",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w10:cost:business",
+        "type": "cost",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1700,
+        "basis": "assumed"
+      },
+      {
+        "id": "w10:cost:capability",
+        "type": "cost",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w10:cost:maintenance",
+        "type": "cost",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w10:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w10:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w10",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w11:mission",
+        "type": "mission",
+        "missionId": "w11",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w11:revenue:collected",
+        "type": "revenue",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w11:revenue:price",
+        "type": "revenue",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w11:cost:delivery",
+        "type": "cost",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w11:cost:business",
+        "type": "cost",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w11:cost:capability",
+        "type": "cost",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w11:cost:maintenance",
+        "type": "cost",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w11:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w11:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w11",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w12:mission",
+        "type": "mission",
+        "missionId": "w12",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w12:revenue:collected",
+        "type": "revenue",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w12:revenue:price",
+        "type": "revenue",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w12:cost:delivery",
+        "type": "cost",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w12:cost:business",
+        "type": "cost",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w12:cost:capability",
+        "type": "cost",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w12:cost:maintenance",
+        "type": "cost",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w12:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w12:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w12",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w13:mission",
+        "type": "mission",
+        "missionId": "w13",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w13:revenue:collected",
+        "type": "revenue",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w13:revenue:price",
+        "type": "revenue",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w13:cost:delivery",
+        "type": "cost",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w13:cost:business",
+        "type": "cost",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w13:cost:capability",
+        "type": "cost",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w13:cost:maintenance",
+        "type": "cost",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w13:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w13:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w13",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w14:mission",
+        "type": "mission",
+        "missionId": "w14",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w14:revenue:collected",
+        "type": "revenue",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w14:revenue:price",
+        "type": "revenue",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w14:cost:delivery",
+        "type": "cost",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w14:cost:business",
+        "type": "cost",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1100,
+        "basis": "assumed"
+      },
+      {
+        "id": "w14:cost:capability",
+        "type": "cost",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w14:cost:maintenance",
+        "type": "cost",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w14:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w14:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w14",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w15:mission",
+        "type": "mission",
+        "missionId": "w15",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w15:revenue:collected",
+        "type": "revenue",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w15:revenue:price",
+        "type": "revenue",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w15:cost:delivery",
+        "type": "cost",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w15:cost:business",
+        "type": "cost",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1900,
+        "basis": "assumed"
+      },
+      {
+        "id": "w15:cost:capability",
+        "type": "cost",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w15:cost:maintenance",
+        "type": "cost",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w15:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w15:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w15",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w16:mission",
+        "type": "mission",
+        "missionId": "w16",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w16:revenue:collected",
+        "type": "revenue",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w16:revenue:price",
+        "type": "revenue",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w16:cost:delivery",
+        "type": "cost",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w16:cost:business",
+        "type": "cost",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1300,
+        "basis": "assumed"
+      },
+      {
+        "id": "w16:cost:capability",
+        "type": "cost",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w16:cost:maintenance",
+        "type": "cost",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w16:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w16:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w16",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w17:mission",
+        "type": "mission",
+        "missionId": "w17",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w17:revenue:collected",
+        "type": "revenue",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w17:revenue:price",
+        "type": "revenue",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w17:cost:delivery",
+        "type": "cost",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w17:cost:business",
+        "type": "cost",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1300,
+        "basis": "assumed"
+      },
+      {
+        "id": "w17:cost:capability",
+        "type": "cost",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w17:cost:maintenance",
+        "type": "cost",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w17:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w17:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w17",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w18:mission",
+        "type": "mission",
+        "missionId": "w18",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w18:revenue:collected",
+        "type": "revenue",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w18:revenue:price",
+        "type": "revenue",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w18:cost:delivery",
+        "type": "cost",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w18:cost:business",
+        "type": "cost",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1300,
+        "basis": "assumed"
+      },
+      {
+        "id": "w18:cost:capability",
+        "type": "cost",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w18:cost:maintenance",
+        "type": "cost",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w18:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w18:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w18",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w19:mission",
+        "type": "mission",
+        "missionId": "w19",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w19:revenue:collected",
+        "type": "revenue",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w19:revenue:price",
+        "type": "revenue",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w19:cost:delivery",
+        "type": "cost",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w19:cost:business",
+        "type": "cost",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1700,
+        "basis": "assumed"
+      },
+      {
+        "id": "w19:cost:capability",
+        "type": "cost",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w19:cost:maintenance",
+        "type": "cost",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w19:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w19:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w19",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w20:mission",
+        "type": "mission",
+        "missionId": "w20",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w20:revenue:collected",
+        "type": "revenue",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w20:revenue:price",
+        "type": "revenue",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w20:cost:delivery",
+        "type": "cost",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w20:cost:business",
+        "type": "cost",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1300,
+        "basis": "assumed"
+      },
+      {
+        "id": "w20:cost:capability",
+        "type": "cost",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w20:cost:maintenance",
+        "type": "cost",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w20:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w20:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w20",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w21:mission",
+        "type": "mission",
+        "missionId": "w21",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w21:revenue:collected",
+        "type": "revenue",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w21:revenue:price",
+        "type": "revenue",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w21:cost:delivery",
+        "type": "cost",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w21:cost:business",
+        "type": "cost",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1100,
+        "basis": "assumed"
+      },
+      {
+        "id": "w21:cost:capability",
+        "type": "cost",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w21:cost:maintenance",
+        "type": "cost",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w21:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w21:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w21",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w22:mission",
+        "type": "mission",
+        "missionId": "w22",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w22:revenue:collected",
+        "type": "revenue",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w22:revenue:price",
+        "type": "revenue",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w22:cost:delivery",
+        "type": "cost",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w22:cost:business",
+        "type": "cost",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1700,
+        "basis": "assumed"
+      },
+      {
+        "id": "w22:cost:capability",
+        "type": "cost",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w22:cost:maintenance",
+        "type": "cost",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w22:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w22:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w22",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w23:mission",
+        "type": "mission",
+        "missionId": "w23",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w23:revenue:collected",
+        "type": "revenue",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w23:revenue:price",
+        "type": "revenue",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w23:cost:delivery",
+        "type": "cost",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w23:cost:business",
+        "type": "cost",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1900,
+        "basis": "assumed"
+      },
+      {
+        "id": "w23:cost:capability",
+        "type": "cost",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w23:cost:maintenance",
+        "type": "cost",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w23:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w23:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w23",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w24:mission",
+        "type": "mission",
+        "missionId": "w24",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w24:revenue:collected",
+        "type": "revenue",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w24:revenue:price",
+        "type": "revenue",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w24:cost:delivery",
+        "type": "cost",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w24:cost:business",
+        "type": "cost",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w24:cost:capability",
+        "type": "cost",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w24:cost:maintenance",
+        "type": "cost",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w24:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w24:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w24",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w25:mission",
+        "type": "mission",
+        "missionId": "w25",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w25:revenue:collected",
+        "type": "revenue",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w25:revenue:price",
+        "type": "revenue",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w25:cost:delivery",
+        "type": "cost",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w25:cost:business",
+        "type": "cost",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 1500,
+        "basis": "assumed"
+      },
+      {
+        "id": "w25:cost:capability",
+        "type": "cost",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w25:cost:maintenance",
+        "type": "cost",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 200,
+        "basis": "assumed"
+      },
+      {
+        "id": "w25:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w25:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w25",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w26:mission",
+        "type": "mission",
+        "missionId": "w26",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w26:revenue:collected",
+        "type": "revenue",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w26:revenue:price",
+        "type": "revenue",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w26:cost:delivery",
+        "type": "cost",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w26:cost:business",
+        "type": "cost",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w26:cost:capability",
+        "type": "cost",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w26:cost:maintenance",
+        "type": "cost",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w26:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w26:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w26",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w27:mission",
+        "type": "mission",
+        "missionId": "w27",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w27:revenue:collected",
+        "type": "revenue",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w27:revenue:price",
+        "type": "revenue",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w27:cost:delivery",
+        "type": "cost",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w27:cost:business",
+        "type": "cost",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w27:cost:capability",
+        "type": "cost",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w27:cost:maintenance",
+        "type": "cost",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w27:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w27:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w27",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w28:mission",
+        "type": "mission",
+        "missionId": "w28",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed."
+      },
+      {
+        "id": "w28:revenue:collected",
+        "type": "revenue",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "collected",
+        "amountMinor": 0,
+        "basis": "observed"
+      },
+      {
+        "id": "w28:revenue:price",
+        "type": "revenue",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "price",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w28:cost:delivery",
+        "type": "cost",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "delivery",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w28:cost:business",
+        "type": "cost",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "business",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w28:cost:capability",
+        "type": "cost",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "capability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w28:cost:maintenance",
+        "type": "cost",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "maintenance",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w28:reserve:reliability",
+        "type": "reserve",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "reliability",
+        "amountMinor": 0,
+        "basis": "assumed"
+      },
+      {
+        "id": "w28:obligation:unpaid",
+        "type": "obligation",
+        "missionId": "w28",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "category": "unpaid",
+        "amountMinor": 0,
+        "basis": "assumed"
+      }
+    ]
+  },
+  "canonicalSummary": {
+    "schema": "alpha-shadow-ledger-summary/v1",
+    "currency": "CAD",
+    "reinvestmentBps": 10000,
+    "eventCount": 261,
+    "missions": [
+      {
+        "missionId": "w0",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1300,
+          "operatingMargin": -1300,
+          "reserve": 20000,
+          "unpaidObligations": 0,
+          "afterReserves": -21300,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w10",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1900,
+          "operatingMargin": -1900,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1900,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w11",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w12",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w13",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w14",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1300,
+          "operatingMargin": -1300,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1300,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w15",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 2100,
+          "operatingMargin": -2100,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -2100,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w16",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1500,
+          "operatingMargin": -1500,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1500,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w17",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1500,
+          "operatingMargin": -1500,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1500,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w18",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1500,
+          "operatingMargin": -1500,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1500,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w19",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1900,
+          "operatingMargin": -1900,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1900,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w1",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 2100,
+          "operatingMargin": -2100,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -2100,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w20",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1500,
+          "operatingMargin": -1500,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1500,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w21",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1300,
+          "operatingMargin": -1300,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1300,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w22",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1900,
+          "operatingMargin": -1900,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1900,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w23",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 2100,
+          "operatingMargin": -2100,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -2100,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w24",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w25",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w26",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 0,
+          "operatingMargin": 0,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": 0,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w27",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 0,
+          "operatingMargin": 0,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": 0,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w28",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 0,
+          "operatingMargin": 0,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": 0,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w2",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w3",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1500,
+          "operatingMargin": -1500,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1500,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w4",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1900,
+          "operatingMargin": -1900,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1900,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w5",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w6",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1500,
+          "operatingMargin": -1500,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1500,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w7",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 1700,
+          "operatingMargin": -1700,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -1700,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w8",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 2100,
+          "operatingMargin": -2100,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -2100,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      },
+      {
+        "missionId": "w9",
+        "acceptance": "accepted",
+        "reference": "SIMULATION ONLY; conditional professional acceptance, hypothetical CAD receipts and costs; no market or legal acceptance is observed.",
+        "observed": {
+          "revenue": 0,
+          "fullCost": null,
+          "operatingMargin": null,
+          "reserve": null,
+          "unpaidObligations": null,
+          "afterReserves": null,
+          "availableSurplus": null,
+          "eligibleInvestment": null
+        },
+        "scenario": {
+          "revenue": 0,
+          "fullCost": 2500,
+          "operatingMargin": -2500,
+          "reserve": 0,
+          "unpaidObligations": 0,
+          "afterReserves": -2500,
+          "availableSurplus": 0,
+          "eligibleInvestment": 0
+        },
+        "assumedPrice": 0,
+        "missingCostCategories": [],
+        "unknownEventIds": [],
+        "capabilityEvents": []
+      }
+    ],
+    "observed": {
+      "revenue": 0,
+      "fullCost": null,
+      "operatingMargin": null,
+      "reserve": null,
+      "unpaidObligations": null,
+      "afterReserves": null,
+      "availableSurplus": null,
+      "eligibleInvestment": null
+    },
+    "scenario": {
+      "revenue": 0,
+      "fullCost": 45000,
+      "operatingMargin": -45000,
+      "reserve": 20000,
+      "unpaidObligations": 0,
+      "afterReserves": -65000,
+      "availableSurplus": 0,
+      "eligibleInvestment": 0
+    },
+    "scope": "Non-transactional supplied accounting; observed labels are user assertions, not authenticated receipts. Customer savings are not revenue. No funds, authority or capability improvement are created."
+  },
+  "weekly": [
+    {
+      "week": 0,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1100,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 178700,
+      "insolvent": false
+    },
+    {
+      "week": 1,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1900,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 176600,
+      "insolvent": false
+    },
+    {
+      "week": 2,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 174900,
+      "insolvent": false
+    },
+    {
+      "week": 3,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1300,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 173400,
+      "insolvent": false
+    },
+    {
+      "week": 4,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1700,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 171500,
+      "insolvent": false
+    },
+    {
+      "week": 5,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 169800,
+      "insolvent": false
+    },
+    {
+      "week": 6,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1300,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 168300,
+      "insolvent": false
+    },
+    {
+      "week": 7,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 166600,
+      "insolvent": false
+    },
+    {
+      "week": 8,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1900,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 164500,
+      "insolvent": false
+    },
+    {
+      "week": 9,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 2300,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 162000,
+      "insolvent": false
+    },
+    {
+      "week": 10,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1700,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 160100,
+      "insolvent": false
+    },
+    {
+      "week": 11,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 158400,
+      "insolvent": false
+    },
+    {
+      "week": 12,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 156700,
+      "insolvent": false
+    },
+    {
+      "week": 13,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 155000,
+      "insolvent": false
+    },
+    {
+      "week": 14,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1100,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 153700,
+      "insolvent": false
+    },
+    {
+      "week": 15,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1900,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 151600,
+      "insolvent": false
+    },
+    {
+      "week": 16,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1300,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 150100,
+      "insolvent": false
+    },
+    {
+      "week": 17,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1300,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 148600,
+      "insolvent": false
+    },
+    {
+      "week": 18,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1300,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 147100,
+      "insolvent": false
+    },
+    {
+      "week": 19,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1700,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 145200,
+      "insolvent": false
+    },
+    {
+      "week": 20,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1300,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 143700,
+      "insolvent": false
+    },
+    {
+      "week": 21,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1100,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 142400,
+      "insolvent": false
+    },
+    {
+      "week": 22,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1700,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 140500,
+      "insolvent": false
+    },
+    {
+      "week": 23,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1900,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 138400,
+      "insolvent": false
+    },
+    {
+      "week": 24,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 136700,
+      "insolvent": false
+    },
+    {
+      "week": 25,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 1500,
+      "capability": 0,
+      "maintenance": 200,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 135000,
+      "insolvent": false
+    },
+    {
+      "week": 26,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 0,
+      "capability": 0,
+      "maintenance": 0,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 135000,
+      "insolvent": false
+    },
+    {
+      "week": 27,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 0,
+      "capability": 0,
+      "maintenance": 0,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 135000,
+      "insolvent": false
+    },
+    {
+      "week": 28,
+      "stage": "B",
+      "pausedUntil": -1,
+      "expiresWeek": null,
+      "collections": 0,
+      "delivery": 0,
+      "business": 0,
+      "capability": 0,
+      "maintenance": 0,
+      "earnedAvailableCents": 0,
+      "cashAfterReserveCents": 135000,
+      "insolvent": false
+    }
+  ],
+  "jobs": [
+    {
+      "week": 0,
+      "buyer": 2,
+      "case_id": "PRIMARY-22",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 0,
+      "buyer": 6,
+      "case_id": "PRIMARY-23",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 0,
+      "buyer": 10,
+      "case_id": "PRIMARY-15",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 1,
+      "buyer": 4,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 1,
+      "buyer": 5,
+      "case_id": "PRIMARY-01",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 1,
+      "buyer": 7,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 1,
+      "buyer": 8,
+      "case_id": "PRIMARY-07",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 1,
+      "buyer": 9,
+      "case_id": "PRIMARY-06",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 1,
+      "buyer": 10,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 1,
+      "buyer": 11,
+      "case_id": "PRIMARY-15",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 2,
+      "buyer": 1,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 2,
+      "buyer": 3,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 2,
+      "buyer": 4,
+      "case_id": "PRIMARY-12",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 2,
+      "buyer": 7,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 2,
+      "buyer": 11,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 3,
+      "buyer": 0,
+      "case_id": "PRIMARY-08",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 3,
+      "buyer": 1,
+      "case_id": "PRIMARY-18",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 3,
+      "buyer": 4,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 3,
+      "buyer": 9,
+      "case_id": "PRIMARY-23",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 4,
+      "buyer": 0,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 4,
+      "buyer": 4,
+      "case_id": "PRIMARY-11",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 4,
+      "buyer": 5,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 4,
+      "buyer": 9,
+      "case_id": "PRIMARY-06",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 4,
+      "buyer": 10,
+      "case_id": "PRIMARY-18",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 4,
+      "buyer": 11,
+      "case_id": "PRIMARY-08",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 5,
+      "buyer": 1,
+      "case_id": "PRIMARY-07",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 5,
+      "buyer": 4,
+      "case_id": "PRIMARY-22",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 5,
+      "buyer": 8,
+      "case_id": "PRIMARY-08",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 5,
+      "buyer": 10,
+      "case_id": "PRIMARY-01",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 5,
+      "buyer": 11,
+      "case_id": "PRIMARY-06",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 6,
+      "buyer": 1,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 6,
+      "buyer": 2,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 6,
+      "buyer": 9,
+      "case_id": "PRIMARY-19",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 6,
+      "buyer": 10,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 7,
+      "buyer": 0,
+      "case_id": "PRIMARY-18",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 7,
+      "buyer": 1,
+      "case_id": "PRIMARY-14",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 7,
+      "buyer": 2,
+      "case_id": "PRIMARY-03",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 7,
+      "buyer": 5,
+      "case_id": "PRIMARY-18",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 7,
+      "buyer": 7,
+      "case_id": "PRIMARY-01",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 8,
+      "buyer": 0,
+      "case_id": "PRIMARY-15",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 8,
+      "buyer": 4,
+      "case_id": "PRIMARY-06",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 8,
+      "buyer": 5,
+      "case_id": "PRIMARY-05",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 8,
+      "buyer": 6,
+      "case_id": "PRIMARY-22",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 8,
+      "buyer": 7,
+      "case_id": "PRIMARY-17",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 8,
+      "buyer": 9,
+      "case_id": "PRIMARY-05",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 8,
+      "buyer": 11,
+      "case_id": "PRIMARY-11",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 1,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 2,
+      "case_id": "PRIMARY-05",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 3,
+      "case_id": "PRIMARY-23",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 6,
+      "case_id": "PRIMARY-02",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 7,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 8,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 9,
+      "case_id": "PRIMARY-18",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 10,
+      "case_id": "PRIMARY-03",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 9,
+      "buyer": 11,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 10,
+      "buyer": 1,
+      "case_id": "PRIMARY-06",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 10,
+      "buyer": 5,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 10,
+      "buyer": 6,
+      "case_id": "PRIMARY-17",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 10,
+      "buyer": 8,
+      "case_id": "PRIMARY-17",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 10,
+      "buyer": 9,
+      "case_id": "PRIMARY-15",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 10,
+      "buyer": 11,
+      "case_id": "PRIMARY-15",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 11,
+      "buyer": 0,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 11,
+      "buyer": 1,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 11,
+      "buyer": 2,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 11,
+      "buyer": 6,
+      "case_id": "PRIMARY-01",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 11,
+      "buyer": 10,
+      "case_id": "PRIMARY-21",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 12,
+      "buyer": 0,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 12,
+      "buyer": 1,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 12,
+      "buyer": 6,
+      "case_id": "PRIMARY-10",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 12,
+      "buyer": 10,
+      "case_id": "PRIMARY-12",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 12,
+      "buyer": 11,
+      "case_id": "PRIMARY-07",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 13,
+      "buyer": 2,
+      "case_id": "PRIMARY-07",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 13,
+      "buyer": 3,
+      "case_id": "PRIMARY-05",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 13,
+      "buyer": 5,
+      "case_id": "PRIMARY-16",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 13,
+      "buyer": 10,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 13,
+      "buyer": 11,
+      "case_id": "PRIMARY-12",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 14,
+      "buyer": 1,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 14,
+      "buyer": 9,
+      "case_id": "PRIMARY-22",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 14,
+      "buyer": 10,
+      "case_id": "PRIMARY-03",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 15,
+      "buyer": 0,
+      "case_id": "PRIMARY-07",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 15,
+      "buyer": 1,
+      "case_id": "PRIMARY-03",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 15,
+      "buyer": 5,
+      "case_id": "PRIMARY-17",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 15,
+      "buyer": 6,
+      "case_id": "PRIMARY-23",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 15,
+      "buyer": 7,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 15,
+      "buyer": 10,
+      "case_id": "PRIMARY-18",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 15,
+      "buyer": 11,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 16,
+      "buyer": 1,
+      "case_id": "PRIMARY-16",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 16,
+      "buyer": 2,
+      "case_id": "PRIMARY-21",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 16,
+      "buyer": 4,
+      "case_id": "PRIMARY-15",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 16,
+      "buyer": 6,
+      "case_id": "PRIMARY-02",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 17,
+      "buyer": 3,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 17,
+      "buyer": 7,
+      "case_id": "PRIMARY-22",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 17,
+      "buyer": 9,
+      "case_id": "PRIMARY-22",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 17,
+      "buyer": 10,
+      "case_id": "PRIMARY-06",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 18,
+      "buyer": 0,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 18,
+      "buyer": 3,
+      "case_id": "PRIMARY-19",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 18,
+      "buyer": 7,
+      "case_id": "PRIMARY-23",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 18,
+      "buyer": 8,
+      "case_id": "PRIMARY-14",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 19,
+      "buyer": 1,
+      "case_id": "PRIMARY-12",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 19,
+      "buyer": 2,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 19,
+      "buyer": 3,
+      "case_id": "PRIMARY-14",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 19,
+      "buyer": 6,
+      "case_id": "PRIMARY-06",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 19,
+      "buyer": 7,
+      "case_id": "PRIMARY-14",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 19,
+      "buyer": 9,
+      "case_id": "PRIMARY-10",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 20,
+      "buyer": 4,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 20,
+      "buyer": 6,
+      "case_id": "PRIMARY-11",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 20,
+      "buyer": 7,
+      "case_id": "PRIMARY-19",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 20,
+      "buyer": 10,
+      "case_id": "PRIMARY-18",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 21,
+      "buyer": 2,
+      "case_id": "PRIMARY-05",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 21,
+      "buyer": 3,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 21,
+      "buyer": 6,
+      "case_id": "PRIMARY-02",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 22,
+      "buyer": 0,
+      "case_id": "PRIMARY-12",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 22,
+      "buyer": 4,
+      "case_id": "PRIMARY-01",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 22,
+      "buyer": 6,
+      "case_id": "PRIMARY-02",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 22,
+      "buyer": 9,
+      "case_id": "PRIMARY-10",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 22,
+      "buyer": 10,
+      "case_id": "PRIMARY-10",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 22,
+      "buyer": 11,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 23,
+      "buyer": 0,
+      "case_id": "PRIMARY-08",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 23,
+      "buyer": 2,
+      "case_id": "PRIMARY-12",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 23,
+      "buyer": 3,
+      "case_id": "PRIMARY-10",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 23,
+      "buyer": 4,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 23,
+      "buyer": 8,
+      "case_id": "PRIMARY-17",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 23,
+      "buyer": 10,
+      "case_id": "PRIMARY-05",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 23,
+      "buyer": 11,
+      "case_id": "PRIMARY-20",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 24,
+      "buyer": 3,
+      "case_id": "PRIMARY-04",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 24,
+      "buyer": 4,
+      "case_id": "PRIMARY-15",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 24,
+      "buyer": 5,
+      "case_id": "PRIMARY-09",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 24,
+      "buyer": 8,
+      "case_id": "PRIMARY-07",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 24,
+      "buyer": 11,
+      "case_id": "PRIMARY-19",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 25,
+      "buyer": 0,
+      "case_id": "PRIMARY-23",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 25,
+      "buyer": 1,
+      "case_id": "PRIMARY-16",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 25,
+      "buyer": 2,
+      "case_id": "PRIMARY-24",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 25,
+      "buyer": 5,
+      "case_id": "PRIMARY-21",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    },
+    {
+      "week": 25,
+      "buyer": 7,
+      "case_id": "PRIMARY-19",
+      "choice": "practical-alternative-proxy",
+      "basis": "SIMULATED_BUYER_CHOICE"
+    }
+  ],
+  "investmentDecisions": [
+    {
+      "week": 6,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 6,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 7,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 7,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 8,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 8,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 9,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 9,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 10,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 10,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 11,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 11,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 12,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 12,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 13,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 13,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 12,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 13,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 12,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 14,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 11,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 14,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 11,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 15,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 10,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 15,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 10,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 16,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 9,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 16,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 9,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 17,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 8,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 17,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 8,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 18,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 7,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 18,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 7,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 19,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 6,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 19,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 6,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 20,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 5,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 20,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 5,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 21,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 4,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 21,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 4,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 22,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 3,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 22,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 3,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 23,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 2,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 23,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 2,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 24,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 1,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 24,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 1,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 25,
+      "candidate": "C1",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 0,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    },
+    {
+      "week": 25,
+      "candidate": "D",
+      "investment": {
+        "constructionCostMinor": 30000,
+        "failedConstructionCostMinor": 10000,
+        "maintenancePerReuseMinor": 25,
+        "expectedSavingPerReuseMinor": 0,
+        "remainingReuses": 0,
+        "fixedCost": 40000,
+        "maintenanceCost": 0,
+        "grossSaving": 0,
+        "lifetimeCost": 40000,
+        "netBenefit": -40000,
+        "breakEvenReuses": null,
+        "paysBackWithinHorizon": false,
+        "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+      },
+      "foregoneContributionCents": 0,
+      "expectedNetAfterPauseCents": -40000,
+      "fundingRequiredCents": 40000,
+      "earnedAvailableCents": 0,
+      "remainingWeeks": 0,
+      "action": "considered",
+      "basis": "CONDITIONAL_MODEL_NO_ACTUAL_INVESTMENT"
+    }
+  ],
+  "investments": [],
+  "limits": [
+    "Professional acceptance, review effort, demand and all monetary costs remain conditional assumptions.",
+    "Technical pass rates affect only assumed correction burden; they are not legal-accuracy probabilities.",
+    "Human-only, buyer review and commercial-alternative timings were not measured; generic price is not a vendor quote.",
+    "Prices are support-packet prices, not complete legal-service invoices; professional work stays in the buyer cost.",
+    "No historical cost-recovery conclusion while historicalResearchCostCents is null.",
+    "No Nash-equilibrium or optimal pricing claim. No $AGIALPHA earnings, funding or appreciation."
+  ]
+}
