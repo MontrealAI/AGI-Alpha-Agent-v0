@@ -234,6 +234,8 @@ jobs:
     runs-on: ubuntu-latest
     # Allow the complete locked suite plus cold strict-type checks to finish.
     timeout-minutes: 90
+    outputs:
+      artifact-name: ${{ steps.regression-name.outputs.name }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -315,7 +317,7 @@ jobs:
       - name: Release contract preflight before full regression
         timeout-minutes: 5
         run: |
-          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py tests/test_held_native_source_guard.py tests/test_workbox_integrity_contract.py
+          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py tests/test_held_native_source_guard.py tests/test_workbox_integrity_contract.py tests/test_release_artifact_handoffs.py
           mkdir -p evidence
           ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests -o addopts= tests/test_workbox_integrity.py -q --junitxml=evidence/workbox-preflight.xml
           python - <<'PY'
@@ -374,10 +376,14 @@ jobs:
           python -m scripts.check_successor_preservation --output evidence/successor-preservation.json
           python -m scripts.check_manuscript > evidence/manuscript.json
           python -m scripts.check_factory_readiness > evidence/factory-preservation.json
+      - name: Name this attempt's regression evidence
+        id: regression-name
+        if: always()
+        run: echo "name=regression-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
-          name: regression
+          name: ${{ steps.regression-name.outputs.name }}
           path: evidence/
           if-no-files-found: error
 
@@ -634,6 +640,9 @@ jobs:
     needs: [paper-scope, publication-preflight]
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    outputs:
+      full-artifact-name: ${{ steps.gallery-name.outputs.full-name }}
+      minimal-artifact-name: ${{ steps.gallery-name.outputs.minimal-name }}
     strategy:
       fail-fast: false
       matrix:
@@ -784,10 +793,19 @@ jobs:
           model_args=()
           if [[ "${{ matrix.assets }}" == "full" ]]; then model_args+=(--model); fi
           python -m scripts.validate_insight_offline --layout --dist site/alpha_agi_insight_v1 --output evidence/gallery-offline.json "${model_args[@]}"
+      - name: Name this attempt's gallery evidence
+        id: gallery-name
+        if: always()
+        env:
+          ASSETS: ${{ matrix.assets }}
+        run: |
+          name="gallery-${ASSETS}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "${ASSETS}-name=$name" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
-          name: gallery-${{ matrix.assets }}
+          name: ${{ steps.gallery-name.outputs.name }}
           path: evidence/
           if-no-files-found: warn
       - name: Archive the exact tested full site
@@ -1169,11 +1187,38 @@ jobs:
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
+      - name: Require successful producer artifact names
+        env:
+          REGRESSION_ARTIFACT: ${{ needs.regression.outputs.artifact-name }}
+          FULL_GALLERY_ARTIFACT: ${{ needs.gallery.outputs.full-artifact-name }}
+          MINIMAL_GALLERY_ARTIFACT: ${{ needs.gallery.outputs.minimal-artifact-name }}
+        run: |
+          [[ "$REGRESSION_ARTIFACT" =~ ^regression-${GITHUB_RUN_ID}-[1-9][0-9]*$ ]]
+          [[ "$FULL_GALLERY_ARTIFACT" =~ ^gallery-full-${GITHUB_RUN_ID}-[1-9][0-9]*$ ]]
+          [[ "$MINIMAL_GALLERY_ARTIFACT" =~ ^gallery-minimal-${GITHUB_RUN_ID}-[1-9][0-9]*$ ]]
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           # Ignore failed historical snapshots and outputs from previous attempts.
-          pattern: '!{historical-ci,release-package,public-pages,github-pages,advisory-formatting}*'
+          pattern: '!{historical-ci,release-package,public-pages,github-pages,advisory-formatting,regression,gallery-}*'
           path: evidence
+          digest-mismatch: error
+      - name: Download the successful regression job's exact evidence
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.regression.outputs.artifact-name }}
+          path: evidence/regression
+          digest-mismatch: error
+      - name: Download the successful full gallery job's exact evidence
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.gallery.outputs.full-artifact-name }}
+          path: evidence/gallery-full
+          digest-mismatch: error
+      - name: Download the successful minimal gallery job's exact evidence
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.gallery.outputs.minimal-artifact-name }}
+          path: evidence/gallery-minimal
           digest-mismatch: error
       - name: Download the successful historical job's exact evidence
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1

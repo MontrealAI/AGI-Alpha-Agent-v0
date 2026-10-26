@@ -5,10 +5,10 @@ from __future__ import annotations
 
 import fnmatch
 import os
-from pathlib import Path
 import re
 import shutil
 import subprocess
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -22,21 +22,28 @@ def jobs() -> dict[str, Any]:
     return yaml.safe_load(WORKFLOW.read_text(encoding="utf-8"))["jobs"]
 
 
-def producer_name(job: dict[str, Any], attempt: int, temporary: Path) -> str:
+def producer_name(
+    job: dict[str, Any], attempt: int, temporary: Path, output_key: str = "artifact-name", assets: str | None = None
+) -> str:
     """Execute the actual producer naming step with GitHub's output-file contract."""
-    expression = job["outputs"]["artifact-name"]
-    match = re.fullmatch(r"\$\{\{ steps\.([\w-]+)\.outputs\.name }}", expression)
+    expression = job["outputs"][output_key]
+    match = re.fullmatch(r"\$\{\{ steps\.([\w-]+)\.outputs\.([\w-]+) }}", expression)
     assert match, "The artifact name must be saved by its producing job"
     step = next(step for step in job["steps"] if step.get("id") == match[1])
-    output = temporary / f"output-{attempt}.txt"
+    output = temporary / f"output-{output_key}-{assets or 'single'}-{attempt}.txt"
     environment = dict(
         os.environ, GITHUB_RUN_ID="37836936731", GITHUB_RUN_ATTEMPT=str(attempt), GITHUB_OUTPUT=str(output)
     )
+    if assets is not None:
+        assert step["env"] == {"ASSETS": "${{ matrix.assets }}"}
+        environment["ASSETS"] = assets
     subprocess.run(["bash", "-eu", "-o", "pipefail", "-c", step["run"]], env=environment, check=True, cwd=temporary)
     values = dict(line.split("=", 1) for line in output.read_text(encoding="utf-8").splitlines())
     upload = next(step for step in job["steps"] if step.get("uses", "").startswith("actions/upload-artifact@"))
-    assert upload["with"]["name"] == expression
-    return values["name"]
+    assert upload["with"]["name"] == "${{ steps." + match[1] + ".outputs.name }}"
+    assert values[match[2]] == values["name"]
+    assert step.get("if", "success()") == upload.get("if", "success()")
+    return values[match[2]]
 
 
 @pytest.mark.skipif(shutil.which("bash") is None, reason="The release workflow runs its naming steps with Bash")
@@ -44,6 +51,7 @@ def producer_name(job: dict[str, Any], attempt: int, temporary: Path) -> str:
     ("producer", "consumer", "destination"),
     [
         ("historical-ci", "package", "evidence/historical-ci"),
+        ("regression", "package", "evidence/regression"),
         ("package", "publish", "release"),
         ("pages", "publish", "public-evidence"),
     ],
@@ -88,13 +96,85 @@ def test_bulk_download_excludes_failed_history_and_previous_release_outputs() ->
     def retained(name: str) -> bool:
         return not any(fnmatch.fnmatchcase(name, exclusion) for exclusion in exclusions)
 
-    for prefix in ("historical-ci", "release-package", "public-pages", "github-pages"):
+    for prefix in ("historical-ci", "release-package", "public-pages", "github-pages", "regression", "gallery-"):
         assert not retained(prefix)
         assert not retained(prefix + "-37836936731-1")
         assert not retained(prefix + "-37836936731-2")
-    for name in ("runtime-3.12", "regression", "browser-contracts", "browser-distribution", "pages-distribution"):
+    for name in ("runtime-3.12", "browser-contracts", "browser-distribution", "pages-distribution"):
         assert retained(name)
     assert download["with"]["digest-mismatch"] == "error"
+
+
+@pytest.mark.skipif(shutil.which("bash") is None, reason="The release workflow uses Bash")
+def test_matrix_retry_keeps_both_successful_profiles_without_selecting_failed_higher_ids(tmp_path: Path) -> None:
+    workflow_jobs = jobs()
+    gallery = workflow_jobs["gallery"]
+    outputs = {}
+    for assets, successful_attempt in (("full", 1), ("minimal", 3)):
+        key = assets + "-artifact-name"
+        successful = producer_name(gallery, successful_attempt, tmp_path, key, assets)
+        failed = producer_name(gallery, 2, tmp_path, key, assets)
+        assert successful != failed
+        outputs[key] = successful
+        artifacts = [
+            {"id": 12689498426, "name": failed, "files": {"historical-fixture.json"}},
+            {"id": 12688624907, "name": successful, "files": {"successor-alpha/report.json"}},
+        ]
+        download = next(
+            step
+            for step in workflow_jobs["package"]["steps"]
+            if step.get("with", {}).get("path") == "evidence/gallery-" + assets
+        )
+        assert download["with"]["name"] == "${{ needs.gallery.outputs." + key + " }}"
+        assert download["with"]["digest-mismatch"] == "error"
+        assert "gallery" in workflow_jobs["package"]["needs"]
+        selected = [artifact for artifact in artifacts if artifact["name"] == outputs[key]]
+        assert len(selected) == 1 and "successor-alpha/report.json" in selected[0]["files"]
+        assert selected[0]["id"] < artifacts[0]["id"]
+    assert outputs["full-artifact-name"].endswith("-1")
+    assert outputs["minimal-artifact-name"].endswith("-3")
+
+
+@pytest.mark.skipif(shutil.which("bash") is None, reason="The release workflow uses Bash")
+@pytest.mark.parametrize(
+    ("key", "value", "accepted"),
+    [
+        ("MINIMAL_GALLERY_ARTIFACT", "gallery-minimal-37836936731-3", True),
+        ("REGRESSION_ARTIFACT", "", False),
+        ("FULL_GALLERY_ARTIFACT", "", False),
+        ("MINIMAL_GALLERY_ARTIFACT", "", False),
+        ("MINIMAL_GALLERY_ARTIFACT", "gallery-full-37836936731-3", False),
+        ("MINIMAL_GALLERY_ARTIFACT", "gallery-minimal-999-3", False),
+        ("MINIMAL_GALLERY_ARTIFACT", "gallery-minimal-37836936731-0", False),
+        ("REGRESSION_ARTIFACT", "regression-37836936731-2/untrusted", False),
+    ],
+)
+def test_missing_or_cross_run_producer_output_cannot_fall_back_to_bulk_download(
+    tmp_path: Path, key: str, value: str, accepted: bool
+) -> None:
+    sequence = jobs()["package"]["steps"]
+    guard = next(step for step in sequence if step.get("name") == "Require successful producer artifact names")
+    assert sequence.index(guard) < next(
+        index for index, step in enumerate(sequence) if step.get("uses", "").startswith("actions/download-artifact@")
+    )
+    assert guard["env"] == {
+        "REGRESSION_ARTIFACT": "${{ needs.regression.outputs.artifact-name }}",
+        "FULL_GALLERY_ARTIFACT": "${{ needs.gallery.outputs.full-artifact-name }}",
+        "MINIMAL_GALLERY_ARTIFACT": "${{ needs.gallery.outputs.minimal-artifact-name }}",
+    }
+    environment = dict(
+        os.environ,
+        GITHUB_RUN_ID="37836936731",
+        GITHUB_RUN_ATTEMPT="4",
+        REGRESSION_ARTIFACT="regression-37836936731-2",
+        FULL_GALLERY_ARTIFACT="gallery-full-37836936731-1",
+        MINIMAL_GALLERY_ARTIFACT="gallery-minimal-37836936731-3",
+    )
+    environment[key] = value
+    result = subprocess.run(
+        ["bash", "-eu", "-o", "pipefail", "-c", guard["run"]], env=environment, check=False, cwd=tmp_path, timeout=5
+    )
+    assert (result.returncode == 0) is accepted
 
 
 def test_pages_deploys_the_unique_artifact_uploaded_in_its_own_attempt() -> None:

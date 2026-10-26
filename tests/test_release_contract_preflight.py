@@ -23,6 +23,7 @@ CONTRACTS = {
     "tests/test_release_contract_preflight.py",
     "tests/test_held_native_source_guard.py",
     "tests/test_workbox_integrity_contract.py",
+    "tests/test_release_artifact_handoffs.py",
 }
 
 
