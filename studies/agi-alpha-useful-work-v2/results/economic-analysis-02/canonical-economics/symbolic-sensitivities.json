@@ -1,0 +1,38 @@
+{
+  "schema": "symbolic-investment-sensitivity/v1",
+  "horizon_missions": null,
+  "utilization": null,
+  "amortization_months": null,
+  "demand_evidence": null,
+  "canonical_unknown_investment": {
+    "constructionCostMinor": null,
+    "failedConstructionCostMinor": null,
+    "maintenancePerReuseMinor": null,
+    "expectedSavingPerReuseMinor": null,
+    "remainingReuses": null,
+    "fixedCost": null,
+    "maintenanceCost": null,
+    "grossSaving": null,
+    "lifetimeCost": null,
+    "netBenefit": null,
+    "breakEvenReuses": null,
+    "paysBackWithinHorizon": null,
+    "scope": "Conditional finite-reuse scenario. Supplied savings are assumptions, not demonstrated improvement; failed construction and maintenance remain costs. No investment is executed."
+  },
+  "equations": {
+    "net_benefit": "B(N) = sum_{j=1..N}(C_incumbent,j - C_retained,j - incremental_maintenance_j) - I_complete",
+    "repayment": "Repayment requires B(N) >= 0 with equivalent accepted outcomes and complete attributable costs.",
+    "constant_case_threshold": "If s-m > 0, N_break_even = ceil(I_complete/(s-m)); otherwise positive I has no finite payoff under that assumption.",
+    "acceptance_and_failures": "Cost per accepted delivery includes every failed attempt and correction in the numerator.",
+    "low_utilization": "Recurring cost per accepted delivery = total recurring delivery and shared costs / accepted deliveries; zero accepted output has no finite per-accepted cost.",
+    "financing": "Available_to_commit = cash - unpaid_obligations - required_reserves; simulated savings or allocations are not collections."
+  },
+  "money_inputs": {
+    "complete_investment_minor": null,
+    "saving_per_equivalent_accepted_mission_minor": null,
+    "incremental_maintenance_minor": null,
+    "available_to_commit_minor": null
+  },
+  "numeric_price_or_horizon_assumed": false,
+  "positive_repayment_asserted": false
+}

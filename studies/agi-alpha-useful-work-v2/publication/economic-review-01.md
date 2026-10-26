@@ -1,0 +1,9 @@
+# Economic review of the publication snapshot
+
+**Finding:** No consequential economic claim error was found in the reviewed manuscript snapshot. Exact source hashes, checks and qualifications are preserved in `economic-review-01.json`. This same-team reviewer authored the economic adapter and requirement verifier; the review is not an external financial audit.
+
+The completed comparison supports six accepted scoped decisions in each arm, with six explicit incumbent finalizations and none in either automated arm. All eighteen evaluations represent six substantive missions. The manuscript correctly separates the incumbent’s researcher response and scheduling interval from mechanical execution and from an unmeasured competent non-AI worker’s active time. Its medians and CPU totals agree with an independent arithmetic reconstruction from the original terminal receipts. The strong conventional builder achieved the same accepted outcome and contributed the receipt validator adopted by the retained asset.
+
+The complete same-capability account retains shared work, both builders, the initial incumbent, rejected candidates, unsuccessful execution and criticism/correction. Unknown monetary construction, delivery, maintenance, customer effort and price remain unknown. Collections are zero. Symbolic payback and human-duration crossings are appropriate; no numeric surplus, return or financeable expansion is established.
+
+The primary snapshot is `results/economic-analysis-01/`. Publication, relocation verification and later economic analysis should enter a new edition while preserving the original. The manuscript economics reference must identify the later edition once available. The small common campaign-driver residual is separately recorded without changing any per-arm result. Conventional evidence includes additional raw ASGI payloads, so its larger logical file footprint should not be presented as an unqualified efficiency loss.

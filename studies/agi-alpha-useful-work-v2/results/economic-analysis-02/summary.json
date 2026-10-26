@@ -1,0 +1,4592 @@
+{
+  "schema": "postfreeze-complete-campaign-analysis/v1",
+  "created_at": "2026-10-26T15:45:04.824624+00:00",
+  "collector_sha256": "5c07c63da7e1f4f73e134ebe91740e457f9325c07f731e6a43fda54425103a5f",
+  "freeze_check": {
+    "freeze": {
+      "path": "protocol/source-freeze.json",
+      "sha256": "f417768b69a6729000d5ce9d10393bfac7eec45b7ce448a0d61c711a6662530c",
+      "bytes": 15549
+    },
+    "files_checked": 83,
+    "all_match": true,
+    "frozen_at": "2026-10-26T15:17:08.752748+00:00"
+  },
+  "primary_protocol": {
+    "path": "protocol/primary-protocol.json",
+    "sha256": "001fd8356f2389d4f09dd329533410910208c85f8af8d7ba21452be1442e1bf2",
+    "bytes": 8474
+  },
+  "input_construction": {
+    "path": "data/confirmation-inputs/construction.json",
+    "sha256": "496b50acbcaab582507c0893fc206e004620cb66c3daac55b03f2c20c849a06f",
+    "bytes": 9606
+  },
+  "unique_missions": 6,
+  "arm_evaluations": 18,
+  "campaign_receipt": {
+    "path": "results/confirmation/campaign.json",
+    "sha256": "ac5406d2328bc9258e7ad2a3d31ecd5c0b30620f469b4c81abeadecea22c1c90",
+    "bytes": 4220
+  },
+  "campaign_envelope_not_added_again": {
+    "wall_seconds": 424.72426611399897,
+    "process_cpu_seconds": 0.24997053200000002,
+    "child_cpu_seconds": 35.271756999999994,
+    "aggregation": "Campaign envelope includes all run resources and root scheduling; do not sum with nested receipts."
+  },
+  "paid_customer_missions": 0,
+  "by_arm": {
+    "manual": {
+      "evaluations": 6,
+      "accepted": 6,
+      "incomplete": 0,
+      "service_span_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 225.55295404000026,
+        "median": 36.21969123349936,
+        "minimum": 25.809259321000354,
+        "maximum": 50.462376161000066,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      },
+      "mechanical_wall_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 97.96518621399991,
+        "median": 16.310013683500074,
+        "minimum": 16.24252338200131,
+        "maximum": 16.443420898000113,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      },
+      "measured_local_cpu_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 10.770071736999999,
+        "median": 1.7858303344999982,
+        "minimum": 1.6591583439999995,
+        "maximum": 1.953311551,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      }
+    },
+    "retained": {
+      "evaluations": 6,
+      "accepted": 6,
+      "incomplete": 0,
+      "service_span_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 99.3365096100024,
+        "median": 16.55389281550015,
+        "minimum": 16.438966696001444,
+        "maximum": 16.668533258000025,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      },
+      "mechanical_wall_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 99.00233314999969,
+        "median": 16.506342891500026,
+        "minimum": 16.393878164000853,
+        "maximum": 16.58264459899874,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      },
+      "measured_local_cpu_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 12.093828436999996,
+        "median": 2.0431681504999966,
+        "minimum": 1.849179093000001,
+        "maximum": 2.1290232040000006,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      }
+    },
+    "conventional": {
+      "evaluations": 6,
+      "accepted": 6,
+      "incomplete": 0,
+      "service_span_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 99.81986377200155,
+        "median": 16.627591529999336,
+        "minimum": 16.529743087001407,
+        "maximum": 16.75756491300126,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      },
+      "mechanical_wall_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 99.51314501000343,
+        "median": 16.576405476999753,
+        "minimum": 16.484384171000784,
+        "maximum": 16.699706765000883,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      },
+      "measured_local_cpu_seconds": {
+        "observations": 6,
+        "missing": 0,
+        "sum": 12.643164120000007,
+        "median": 2.0849502084999996,
+        "minimum": 1.9754209400000002,
+        "maximum": 2.347188295000005,
+        "scope": "Descriptive single-run measurements on a shared host, not a reliability estimate or significance test."
+      }
+    }
+  },
+  "runs": [
+    {
+      "mission_id": "starlette-1",
+      "arm": "manual",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-1/manual/package/decision.json",
+      "evidence_sha256": "983e89f9ced816ec582efb3c40774f7b524343aaf7d7d8a13b9128196040a8cf",
+      "manifest_files": 42,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:25:22.968555+00:00",
+      "ended_at": "2026-10-26T15:25:48.777792+00:00",
+      "request_to_package_wall_seconds": 25.809259321000354,
+      "mechanical_wall_seconds": 16.443420898000113,
+      "finalization_wall_seconds": 0.6206754249997175,
+      "manual_pair_wall_seconds": 15.822745473000396,
+      "actual_manual_finalizations": 1,
+      "earlier_arms_visible": [],
+      "sequence": 1,
+      "measured_local_child_cpu_seconds": 1.929079,
+      "measured_local_controller_cpu_seconds": 0.024232550999999998,
+      "measured_local_cpu_seconds": 1.953311551,
+      "runtime_model_calls": null,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-1-manual-delivery.json",
+        "sha256": "dcce0c61dd6bb020de0c5c55b25b8b65450350ba37fc48cd214011ff864adcc1",
+        "bytes": 1966
+      }
+    },
+    {
+      "mission_id": "starlette-1",
+      "arm": "retained",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-1/retained/delivery/package/decision.json",
+      "evidence_sha256": "2ac88132f4b206f1c2d6caa87e4230f35f15880f4f8d5c5d2ee6a80ff87b02e7",
+      "manifest_files": 31,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:25:48.778310+00:00",
+      "ended_at": "2026-10-26T15:26:05.271534+00:00",
+      "request_to_package_wall_seconds": 16.493231874999765,
+      "mechanical_wall_seconds": 16.439681920999647,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "manual"
+      ],
+      "sequence": 2,
+      "measured_local_child_cpu_seconds": 1.9278760000000001,
+      "measured_local_controller_cpu_seconds": 0.007105226000000006,
+      "measured_local_cpu_seconds": 1.934981226,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-1-retained-delivery.json",
+        "sha256": "778dc49d14ea9dec07e245542d5e965dfb0827ebf71abcdafd993b34d48bdbb5",
+        "bytes": 1816
+      }
+    },
+    {
+      "mission_id": "starlette-1",
+      "arm": "conventional",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-1/conventional/delivery/package/decision.json",
+      "evidence_sha256": "bbfa5adebb192f22bacc6d8ea2be19962a50f205f0e634e1a34d6b77521e3c4e",
+      "manifest_files": 39,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:26:05.271958+00:00",
+      "ended_at": "2026-10-26T15:26:21.801695+00:00",
+      "request_to_package_wall_seconds": 16.529743087001407,
+      "mechanical_wall_seconds": 16.484384171000784,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "manual",
+        "retained"
+      ],
+      "sequence": 3,
+      "measured_local_child_cpu_seconds": 1.9665190000000001,
+      "measured_local_controller_cpu_seconds": 0.008901939999999997,
+      "measured_local_cpu_seconds": 1.9754209400000002,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-1-conventional-delivery.json",
+        "sha256": "97e26290c81628ca1479cd7d719f716534ffd12df9423126489d1572f8a88815",
+        "bytes": 1832
+      }
+    },
+    {
+      "mission_id": "starlette-2",
+      "arm": "retained",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-2/retained/delivery/package/decision.json",
+      "evidence_sha256": "5dc576b2b78ef0ed7f656a725f3481295068475df21bef64e5c578a40b26fad5",
+      "manifest_files": 31,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:26:21.802093+00:00",
+      "ended_at": "2026-10-26T15:26:38.241054+00:00",
+      "request_to_package_wall_seconds": 16.438966696001444,
+      "mechanical_wall_seconds": 16.393878164000853,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [],
+      "sequence": 4,
+      "measured_local_child_cpu_seconds": 1.8435260000000009,
+      "measured_local_controller_cpu_seconds": 0.005653092999999998,
+      "measured_local_cpu_seconds": 1.849179093000001,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-2-retained-delivery.json",
+        "sha256": "e3e8d8e38a194aaac26971a3e069da2fa27c2f91dee360c1991d38d117a4173a",
+        "bytes": 1816
+      }
+    },
+    {
+      "mission_id": "starlette-2",
+      "arm": "conventional",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-2/conventional/delivery/package/decision.json",
+      "evidence_sha256": "69442863352f52de1832790c1dc00f5459468d3c82c9a730bb49ecf8957d17bf",
+      "manifest_files": 39,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:26:38.241491+00:00",
+      "ended_at": "2026-10-26T15:26:54.817749+00:00",
+      "request_to_package_wall_seconds": 16.576265006999165,
+      "mechanical_wall_seconds": 16.52849699699982,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "retained"
+      ],
+      "sequence": 5,
+      "measured_local_child_cpu_seconds": 2.141189,
+      "measured_local_controller_cpu_seconds": 0.009552338999999993,
+      "measured_local_cpu_seconds": 2.1507413389999996,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-2-conventional-delivery.json",
+        "sha256": "f81a152434bf3398175b0b918e3874b01a1c63e4e43007eac96767a73348bcaa",
+        "bytes": 1821
+      }
+    },
+    {
+      "mission_id": "starlette-2",
+      "arm": "manual",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-2/manual/package/decision.json",
+      "evidence_sha256": "3150b3ba482c6975614aee4d88d461be173f353e83ae64e5672db1821181fbcf",
+      "manifest_files": 42,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:26:54.818184+00:00",
+      "ended_at": "2026-10-26T15:27:32.135071+00:00",
+      "request_to_package_wall_seconds": 37.31689306699991,
+      "mechanical_wall_seconds": 16.24252338200131,
+      "finalization_wall_seconds": 0.5687706610005989,
+      "manual_pair_wall_seconds": 15.67375272100071,
+      "actual_manual_finalizations": 1,
+      "earlier_arms_visible": [
+        "retained",
+        "conventional"
+      ],
+      "sequence": 6,
+      "measured_local_child_cpu_seconds": 1.6395979999999994,
+      "measured_local_controller_cpu_seconds": 0.019560343999999993,
+      "measured_local_cpu_seconds": 1.6591583439999995,
+      "runtime_model_calls": null,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-2-manual-delivery.json",
+        "sha256": "83e70e48b3c1dac9057ee05edb6a872e4f854b61ebae22050a0e604bdce4ea3f",
+        "bytes": 1973
+      }
+    },
+    {
+      "mission_id": "starlette-3",
+      "arm": "conventional",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-3/conventional/delivery/package/decision.json",
+      "evidence_sha256": "808e4886867a6b808b877bff3d7501d4ad6ec0fcea469c5230de012f5c085821",
+      "manifest_files": 39,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:27:32.135604+00:00",
+      "ended_at": "2026-10-26T15:27:48.814515+00:00",
+      "request_to_package_wall_seconds": 16.678918052999506,
+      "mechanical_wall_seconds": 16.624313956999686,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [],
+      "sequence": 7,
+      "measured_local_child_cpu_seconds": 2.0092709999999996,
+      "measured_local_controller_cpu_seconds": 0.009888077999999995,
+      "measured_local_cpu_seconds": 2.0191590779999995,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-3-conventional-delivery.json",
+        "sha256": "f38f0ca1676d42236f951be50ec514d4ccdf27caa6fda8cb22d0523b4ddefa2f",
+        "bytes": 1832
+      }
+    },
+    {
+      "mission_id": "starlette-3",
+      "arm": "manual",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-3/manual/package/decision.json",
+      "evidence_sha256": "a3a89a03a75c8019ef97609643423312d047d5a4c40d171a6a2aa8e753c4135a",
+      "manifest_files": 42,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:27:48.815096+00:00",
+      "ended_at": "2026-10-26T15:28:19.553987+00:00",
+      "request_to_package_wall_seconds": 30.738898450001216,
+      "mechanical_wall_seconds": 16.314444770998307,
+      "finalization_wall_seconds": 0.6199938029985788,
+      "manual_pair_wall_seconds": 15.694450967999728,
+      "actual_manual_finalizations": 1,
+      "earlier_arms_visible": [
+        "conventional"
+      ],
+      "sequence": 8,
+      "measured_local_child_cpu_seconds": 1.7082300000000004,
+      "measured_local_controller_cpu_seconds": 0.01965805000000001,
+      "measured_local_cpu_seconds": 1.7278880500000005,
+      "runtime_model_calls": null,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-3-manual-delivery.json",
+        "sha256": "71117c209e14083924121fa12fd021898a9d4d89c278bc043658d44d0c9be3d8",
+        "bytes": 1975
+      }
+    },
+    {
+      "mission_id": "starlette-3",
+      "arm": "retained",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/starlette-3/retained/delivery/package/decision.json",
+      "evidence_sha256": "ec69697d01e6fc15a14e0ba816fa462218d1a10a5a9c9a430b97265f58b8c7dd",
+      "manifest_files": 31,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:28:19.554484+00:00",
+      "ended_at": "2026-10-26T15:28:36.223011+00:00",
+      "request_to_package_wall_seconds": 16.668533258000025,
+      "mechanical_wall_seconds": 16.58264459899874,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "conventional",
+        "manual"
+      ],
+      "sequence": 9,
+      "measured_local_child_cpu_seconds": 2.1216310000000007,
+      "measured_local_controller_cpu_seconds": 0.007392204000000013,
+      "measured_local_cpu_seconds": 2.1290232040000006,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/starlette-3-retained-delivery.json",
+        "sha256": "31ecbda4cd55c9914631738810a442f813341ef1f1c741a46796077a714905cc",
+        "bytes": 1815
+      }
+    },
+    {
+      "mission_id": "pydantic-1",
+      "arm": "conventional",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-1/conventional/delivery/package/decision.json",
+      "evidence_sha256": "49157c93376978d06655805be7cb83ae607160bcce24c2677c009c36ac4196ad",
+      "manifest_files": 39,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:28:36.223595+00:00",
+      "ended_at": "2026-10-26T15:28:52.960862+00:00",
+      "request_to_package_wall_seconds": 16.73727288000009,
+      "mechanical_wall_seconds": 16.68090092100101,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [],
+      "sequence": 10,
+      "measured_local_child_cpu_seconds": 2.154867,
+      "measured_local_controller_cpu_seconds": 0.014157181000000019,
+      "measured_local_cpu_seconds": 2.1690241809999997,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-1-conventional-delivery.json",
+        "sha256": "238ff9c7349a63d29c9cd00021c1741bf15bbe6cebeb4377319f6ec5f6df88c9",
+        "bytes": 1816
+      }
+    },
+    {
+      "mission_id": "pydantic-1",
+      "arm": "retained",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-1/retained/delivery/package/decision.json",
+      "evidence_sha256": "e5b8c63331664c54b1ad9754817ce207393ded16e70dfcd3319f27a35788ecb9",
+      "manifest_files": 31,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:28:52.961319+00:00",
+      "ended_at": "2026-10-26T15:29:09.589304+00:00",
+      "request_to_package_wall_seconds": 16.627992150000864,
+      "mechanical_wall_seconds": 16.573442683000394,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "conventional"
+      ],
+      "sequence": 11,
+      "measured_local_child_cpu_seconds": 2.085169000000002,
+      "measured_local_controller_cpu_seconds": 0.009139612999999991,
+      "measured_local_cpu_seconds": 2.0943086130000017,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-1-retained-delivery.json",
+        "sha256": "41abc2b0c61a2d4c56f9dece20359aca59cf15f99d0cad9bb845fbb97d9116d0",
+        "bytes": 1811
+      }
+    },
+    {
+      "mission_id": "pydantic-1",
+      "arm": "manual",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-1/manual/package/decision.json",
+      "evidence_sha256": "f7dee1e1d9ec5546ff3124f033e66f6858b521f4eb0bc0a051262784cd28ecfe",
+      "manifest_files": 42,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:29:09.589937+00:00",
+      "ended_at": "2026-10-26T15:30:00.052307+00:00",
+      "request_to_package_wall_seconds": 50.462376161000066,
+      "mechanical_wall_seconds": 16.385798059998706,
+      "finalization_wall_seconds": 0.6198434379984974,
+      "manual_pair_wall_seconds": 15.765954622000208,
+      "actual_manual_finalizations": 1,
+      "earlier_arms_visible": [
+        "conventional",
+        "retained"
+      ],
+      "sequence": 12,
+      "measured_local_child_cpu_seconds": 1.8375480000000017,
+      "measured_local_controller_cpu_seconds": 0.020505123000000014,
+      "measured_local_cpu_seconds": 1.8580531230000017,
+      "runtime_model_calls": null,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-1-manual-delivery.json",
+        "sha256": "46221b7ac48184817c41c8a4d372aeb0be8de2fac9d0a0ca7d44083cdb7abc1a",
+        "bytes": 1972
+      }
+    },
+    {
+      "mission_id": "pydantic-2",
+      "arm": "retained",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-2/retained/delivery/package/decision.json",
+      "evidence_sha256": "11255036e4f1ccfcc2a30d24c836a2783441af97c5acee123c323e8f0013168e",
+      "manifest_files": 31,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:30:00.052700+00:00",
+      "ended_at": "2026-10-26T15:30:16.638103+00:00",
+      "request_to_package_wall_seconds": 16.585409641000297,
+      "mechanical_wall_seconds": 16.531383199999254,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [],
+      "sequence": 13,
+      "measured_local_child_cpu_seconds": 2.0775919999999974,
+      "measured_local_controller_cpu_seconds": 0.00764131400000001,
+      "measured_local_cpu_seconds": 2.0852333139999972,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-2-retained-delivery.json",
+        "sha256": "dae73120cbcca1e1624abd337e52a6f36d6c803afaa0a213f9686cdc9845a093",
+        "bytes": 1811
+      }
+    },
+    {
+      "mission_id": "pydantic-2",
+      "arm": "manual",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-2/manual/package/decision.json",
+      "evidence_sha256": "cfd8caca26699245d11f98f13b1e28264ba58e99691a3205ccdf057f7c8fb83c",
+      "manifest_files": 42,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:30:16.638822+00:00",
+      "ended_at": "2026-10-26T15:31:02.741830+00:00",
+      "request_to_package_wall_seconds": 46.1030376409999,
+      "mechanical_wall_seconds": 16.273416506999638,
+      "finalization_wall_seconds": 0.5184900749991357,
+      "manual_pair_wall_seconds": 15.754926432000502,
+      "actual_manual_finalizations": 1,
+      "earlier_arms_visible": [
+        "retained"
+      ],
+      "sequence": 14,
+      "measured_local_child_cpu_seconds": 1.7257379999999998,
+      "measured_local_controller_cpu_seconds": 0.025182443,
+      "measured_local_cpu_seconds": 1.7509204429999998,
+      "runtime_model_calls": null,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-2-manual-delivery.json",
+        "sha256": "b0c613dae955a836c5b3f9521565ef6724cc250588d5bfb2418ff658dcdfa3e6",
+        "bytes": 1961
+      }
+    },
+    {
+      "mission_id": "pydantic-2",
+      "arm": "conventional",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-2/conventional/delivery/package/decision.json",
+      "evidence_sha256": "4d71ad5387bd36df75c320f84ee15339c09bdd4bd482e796c4478b49a39773b2",
+      "manifest_files": 39,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:31:02.742436+00:00",
+      "ended_at": "2026-10-26T15:31:19.282529+00:00",
+      "request_to_package_wall_seconds": 16.540099832000124,
+      "mechanical_wall_seconds": 16.495342199001243,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "retained",
+        "manual"
+      ],
+      "sequence": 15,
+      "measured_local_child_cpu_seconds": 1.9725220000000032,
+      "measured_local_controller_cpu_seconds": 0.00910828700000002,
+      "measured_local_cpu_seconds": 1.9816302870000033,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-2-conventional-delivery.json",
+        "sha256": "53318614007aaecf5294f939adeebf3e4d972aa47c30a1d0feb1223b71eb058a",
+        "bytes": 1827
+      }
+    },
+    {
+      "mission_id": "pydantic-3",
+      "arm": "manual",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-3/manual/package/decision.json",
+      "evidence_sha256": "f9866117d54d80b4b45866b123fc0590dfada443064fcccd70c28494414c11c0",
+      "manifest_files": 42,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:31:19.282929+00:00",
+      "ended_at": "2026-10-26T15:31:54.405412+00:00",
+      "request_to_package_wall_seconds": 35.12248939999881,
+      "mechanical_wall_seconds": 16.30558259600184,
+      "finalization_wall_seconds": 0.5192010440005106,
+      "manual_pair_wall_seconds": 15.78638155200133,
+      "actual_manual_finalizations": 1,
+      "earlier_arms_visible": [],
+      "sequence": 16,
+      "measured_local_child_cpu_seconds": 1.8028249999999968,
+      "measured_local_controller_cpu_seconds": 0.017915226000000006,
+      "measured_local_cpu_seconds": 1.8207402259999967,
+      "runtime_model_calls": null,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-3-manual-delivery.json",
+        "sha256": "1b0c1ed043a8357ce0cb3eb91e569c66009b40f8cb0b6a79d5ef75591ccf3098",
+        "bytes": 1969
+      }
+    },
+    {
+      "mission_id": "pydantic-3",
+      "arm": "conventional",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-3/conventional/delivery/package/decision.json",
+      "evidence_sha256": "7b5576ad33d8758c4edd98fa56a2ce43a0d0aa6d02b08c1e1a51d2265d293b6e",
+      "manifest_files": 39,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:31:54.405903+00:00",
+      "ended_at": "2026-10-26T15:32:11.163461+00:00",
+      "request_to_package_wall_seconds": 16.75756491300126,
+      "mechanical_wall_seconds": 16.699706765000883,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "manual"
+      ],
+      "sequence": 17,
+      "measured_local_child_cpu_seconds": 2.335239000000005,
+      "measured_local_controller_cpu_seconds": 0.011949295000000026,
+      "measured_local_cpu_seconds": 2.347188295000005,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-3-conventional-delivery.json",
+        "sha256": "96f8a14881a52479934d6186d3547bb596f995a7096e0c9273cc75b1d8242696",
+        "bytes": 1826
+      }
+    },
+    {
+      "mission_id": "pydantic-3",
+      "arm": "retained",
+      "accepted": true,
+      "decision": "SCOPED_COMPONENT_PRESERVED",
+      "independently_verified": true,
+      "errors": [],
+      "evidence_path": "results/confirmation/pydantic-3/retained/delivery/package/decision.json",
+      "evidence_sha256": "f4546f954860922d7682ffb4ace1b59891ff944a03ad9770ddc61ffd36fded5d",
+      "manifest_files": 31,
+      "verification_status": {
+        "before": "PRESERVED_WITHIN_COMPONENT_CONTRACT",
+        "after": "PRESERVED_WITHIN_COMPONENT_CONTRACT"
+      },
+      "verification_counts": {
+        "before": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        },
+        "after": {
+          "PASS": 61,
+          "BEHAVIOR_MISMATCH": 0,
+          "INCOMPLETE": 0
+        }
+      },
+      "started_at": "2026-10-26T15:32:11.163989+00:00",
+      "ended_at": "2026-10-26T15:32:27.686359+00:00",
+      "request_to_package_wall_seconds": 16.52237599,
+      "mechanical_wall_seconds": 16.481302583000797,
+      "finalization_wall_seconds": null,
+      "manual_pair_wall_seconds": null,
+      "actual_manual_finalizations": 0,
+      "earlier_arms_visible": [
+        "manual",
+        "conventional"
+      ],
+      "sequence": 18,
+      "measured_local_child_cpu_seconds": 1.993337999999996,
+      "measured_local_controller_cpu_seconds": 0.007764987000000001,
+      "measured_local_cpu_seconds": 2.001102986999996,
+      "runtime_model_calls": 0,
+      "complete_cost_usd": null,
+      "researcher_or_customer_minutes": null,
+      "cost_provenance": {
+        "path": "results/economic-analysis-02/derived/pydantic-3-retained-delivery.json",
+        "sha256": "d04a177d6f6558d380498167f32262a32e2903590fe9c9e95a064daaa4e86aee",
+        "bytes": 1804
+      }
+    }
+  ],
+  "shared_acquisition": {
+    "schema": "postfreeze-shared-acquisition-resource/v1",
+    "wall_seconds": 30.922251219999453,
+    "child_cpu_seconds": 29.663853,
+    "meter_cpu_seconds": 0.018731733,
+    "network_requests": 16,
+    "network_response_bytes": 11124909,
+    "logical_storage_bytes_before_final_reports": 208546128,
+    "inference_tokens": null,
+    "money_usd": null,
+    "source_identity": {
+      "path": "data/confirmation-inputs/acquisition-summary.json",
+      "sha256": "1099a6ab486da3b1391408a34a05282d8f216d189a9af2cd1aff11bd32ee14b5",
+      "bytes": 22569
+    },
+    "aggregation": "Outer driver child CPU includes all eight builders/setup children. Inner preparation CPU and wall are nested diagnostics, not added.",
+    "attempts": 8,
+    "failed_attempts": 0,
+    "inner_preparation_diagnostics": {
+      "preparation_wall_seconds_sum": 30.122360474002562,
+      "preparation_process_cpu_seconds_sum": 1.336157242,
+      "preparation_child_cpu_seconds_sum": 27.548388
+    }
+  },
+  "lifecycle": {
+    "mapping": {
+      "path": "analysis/lifecycle-resource-map-v3.json",
+      "sha256": "6e037b041fa7f2fc119bdd866ab36959038e66b35aa617ea3b22d48bbde56d39",
+      "bytes": 43090
+    },
+    "records": [
+      {
+        "id": "lifecycle-001",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/baseline-bridge-execution.json",
+        "evidence_sha256": "96e46de9e81798d7509454f0a0138abec9e369d3c5d2688fe8bf1f6f8a38de9c",
+        "lifecycle_phase": "original-contract-development",
+        "original_evidence": {
+          "path": "results/development/baseline-bridge-execution.json",
+          "sha256": "96e46de9e81798d7509454f0a0138abec9e369d3c5d2688fe8bf1f6f8a38de9c",
+          "bytes": 6194
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-001.json",
+          "sha256": "8c2c1de9faba48b28653959856d35ac69fd542dedb0edc3d3d887309de8e3504",
+          "bytes": 773
+        },
+        "resources": {
+          "wall_seconds": 15.508949494000262,
+          "child_cpu_seconds": 0.37943,
+          "meter_cpu_seconds": 0.100283335,
+          "child_peak_rss_kib": 41728,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/baseline-bridge-execution.json",
+            "sha256": "96e46de9e81798d7509454f0a0138abec9e369d3c5d2688fe8bf1f6f8a38de9c",
+            "bytes": 6194
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "original-contract-development",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-002",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/baseline-bridge-verification-execution.json",
+        "evidence_sha256": "de514b71665bcb39925e40e10c682f7beb835486f76cef89b7c69078401c1956",
+        "lifecycle_phase": "original-contract-development",
+        "original_evidence": {
+          "path": "results/development/baseline-bridge-verification-execution.json",
+          "sha256": "de514b71665bcb39925e40e10c682f7beb835486f76cef89b7c69078401c1956",
+          "bytes": 6034
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-002.json",
+          "sha256": "cb377f8349f5935cabff38e2b894e51c77e4f24ab2c158cb91c75ec72432699d",
+          "bytes": 798
+        },
+        "resources": {
+          "wall_seconds": 0.06696515299881867,
+          "child_cpu_seconds": 0.049491,
+          "meter_cpu_seconds": 0.0022941460000000004,
+          "child_peak_rss_kib": 14080,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/baseline-bridge-verification-execution.json",
+            "sha256": "de514b71665bcb39925e40e10c682f7beb835486f76cef89b7c69078401c1956",
+            "bytes": 6034
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "original-contract-development",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-003",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/baseline-execution.json",
+        "evidence_sha256": "53d8c965a9ef44d00ef8895d13954fe70822466e6a4b88e3ff7402a54b6a77bf",
+        "lifecycle_phase": "original-contract-development",
+        "original_evidence": {
+          "path": "results/development/baseline-execution.json",
+          "sha256": "53d8c965a9ef44d00ef8895d13954fe70822466e6a4b88e3ff7402a54b6a77bf",
+          "bytes": 1085
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-003.json",
+          "sha256": "63868ca43e9416f4a2287efc555aa085b67d65f3066f551c53f0b19417b2a05f",
+          "bytes": 770
+        },
+        "resources": {
+          "wall_seconds": 15.244216347000474,
+          "child_cpu_seconds": 0.22575099999999998,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/baseline-execution.json",
+            "sha256": "53d8c965a9ef44d00ef8895d13954fe70822466e6a4b88e3ff7402a54b6a77bf",
+            "bytes": 1085
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "original-contract-development",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-004",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/conventional-controls-02-execution.json",
+        "evidence_sha256": "3682bc5011a079883d33503b5c1c99653285f438d1089b6bb66b019a867ee84d",
+        "lifecycle_phase": "conventional-construction-validation",
+        "original_evidence": {
+          "path": "results/development/conventional-controls-02-execution.json",
+          "sha256": "3682bc5011a079883d33503b5c1c99653285f438d1089b6bb66b019a867ee84d",
+          "bytes": 3253
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-004.json",
+          "sha256": "724b51c4076656d39e768240ad43e044c86845209a095658e7ba72128e20714b",
+          "bytes": 800
+        },
+        "resources": {
+          "wall_seconds": 0.6183656560006057,
+          "child_cpu_seconds": 0.575209,
+          "meter_cpu_seconds": 0.0026736109999999993,
+          "child_peak_rss_kib": 49684,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/conventional-controls-02-execution.json",
+            "sha256": "3682bc5011a079883d33503b5c1c99653285f438d1089b6bb66b019a867ee84d",
+            "bytes": 3253
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-005",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/conventional-controls-execution.json",
+        "evidence_sha256": "6f09284c9a7cf273daad054b493916c698fbd6bfbee1f12f1ec64b0a53fa8c13",
+        "lifecycle_phase": "conventional-construction-validation",
+        "original_evidence": {
+          "path": "results/development/conventional-controls-execution.json",
+          "sha256": "6f09284c9a7cf273daad054b493916c698fbd6bfbee1f12f1ec64b0a53fa8c13",
+          "bytes": 3248
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-005.json",
+          "sha256": "349a4235376954f448c4dde25749af82773bc2ccb3dc14ad7a4c119bafd99ffc",
+          "bytes": 797
+        },
+        "resources": {
+          "wall_seconds": 0.6683480459996645,
+          "child_cpu_seconds": 0.638049,
+          "meter_cpu_seconds": 0.0026871290000000034,
+          "child_peak_rss_kib": 49364,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/conventional-controls-execution.json",
+            "sha256": "6f09284c9a7cf273daad054b493916c698fbd6bfbee1f12f1ec64b0a53fa8c13",
+            "bytes": 3248
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-006",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/conventional-lint-02-execution.json",
+        "evidence_sha256": "0f8d05e78208dd26d14bf06a02bc9781145106516e01a372afedf8875790c84f",
+        "lifecycle_phase": "conventional-construction-validation",
+        "original_evidence": {
+          "path": "results/development/conventional-lint-02-execution.json",
+          "sha256": "0f8d05e78208dd26d14bf06a02bc9781145106516e01a372afedf8875790c84f",
+          "bytes": 3327
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-006.json",
+          "sha256": "52a7849c23531a4c97ea2ee32d14ecade4374c84010e160b0722e79d666f9683",
+          "bytes": 800
+        },
+        "resources": {
+          "wall_seconds": 0.017872534999696654,
+          "child_cpu_seconds": 0.015059999999999999,
+          "meter_cpu_seconds": 0.001311283,
+          "child_peak_rss_kib": 25004,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/conventional-lint-02-execution.json",
+            "sha256": "0f8d05e78208dd26d14bf06a02bc9781145106516e01a372afedf8875790c84f",
+            "bytes": 3327
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-007",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/conventional-lint-execution.json",
+        "evidence_sha256": "90cb01a2af652cd3b1fa5ac515f5e32ebfa6e02f8d45e939d0e67f84fe6a020d",
+        "lifecycle_phase": "conventional-construction-validation",
+        "original_evidence": {
+          "path": "results/development/conventional-lint-execution.json",
+          "sha256": "90cb01a2af652cd3b1fa5ac515f5e32ebfa6e02f8d45e939d0e67f84fe6a020d",
+          "bytes": 3312
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-007.json",
+          "sha256": "4552a56094b01a7f426e6487ec6536b9bd5298ae574bd03ca9c884cb0241dbdf",
+          "bytes": 794
+        },
+        "resources": {
+          "wall_seconds": 0.01787674099978176,
+          "child_cpu_seconds": 0.016647,
+          "meter_cpu_seconds": 0.0014929730000000016,
+          "child_peak_rss_kib": 26032,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/conventional-lint-execution.json",
+            "sha256": "90cb01a2af652cd3b1fa5ac515f5e32ebfa6e02f8d45e939d0e67f84fe6a020d",
+            "bytes": 3312
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-008",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/conventional-package-02-execution.json",
+        "evidence_sha256": "3ac49f76e19d29bbb09b7be394bffe4075450b77845131e16dcc76fd4bfe8950",
+        "lifecycle_phase": "conventional-construction-validation",
+        "original_evidence": {
+          "path": "results/development/conventional-package-02-execution.json",
+          "sha256": "3ac49f76e19d29bbb09b7be394bffe4075450b77845131e16dcc76fd4bfe8950",
+          "bytes": 4379
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-008.json",
+          "sha256": "7699046bc52af421f6a52ffced980c6237c21126077e971f16b69312c2ee4ae2",
+          "bytes": 798
+        },
+        "resources": {
+          "wall_seconds": 0.5682493309996062,
+          "child_cpu_seconds": 0.54341,
+          "meter_cpu_seconds": 0.0024999209999999952,
+          "child_peak_rss_kib": 47312,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/conventional-package-02-execution.json",
+            "sha256": "3ac49f76e19d29bbb09b7be394bffe4075450b77845131e16dcc76fd4bfe8950",
+            "bytes": 4379
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-009",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/conventional-package-execution.json",
+        "evidence_sha256": "626605bb8e8c95da00f62b20dbbd725d6d7c612e843f079562a13231fc5d269e",
+        "lifecycle_phase": "conventional-construction-validation",
+        "original_evidence": {
+          "path": "results/development/conventional-package-execution.json",
+          "sha256": "626605bb8e8c95da00f62b20dbbd725d6d7c612e843f079562a13231fc5d269e",
+          "bytes": 4383
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-009.json",
+          "sha256": "0ab37f205e7b9e819331c383b76cd16b4f2c29abb1270f286a9b990ea2542749",
+          "bytes": 806
+        },
+        "resources": {
+          "wall_seconds": 0.6183848319997196,
+          "child_cpu_seconds": 0.6016729999999999,
+          "meter_cpu_seconds": 0.0023765280000000027,
+          "child_peak_rss_kib": 47224,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/conventional-package-execution.json",
+            "sha256": "626605bb8e8c95da00f62b20dbbd725d6d7c612e843f079562a13231fc5d269e",
+            "bytes": 4383
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-010",
+        "ownership": "manual_construction",
+        "arm": "manual",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/manual-parameterization-lint-execution.json",
+        "evidence_sha256": "125222019d284d719a99e31085fb5c0883987e7ec98323c71d3c5d19006de7d5",
+        "lifecycle_phase": "manual-parameterization-validation",
+        "original_evidence": {
+          "path": "results/development/manual-parameterization-lint-execution.json",
+          "sha256": "125222019d284d719a99e31085fb5c0883987e7ec98323c71d3c5d19006de7d5",
+          "bytes": 2902
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-010.json",
+          "sha256": "77b7f7a72d8cd40814f8133ddc87d613a7a5fb53a71cea2bdaf859a3505ed1a7",
+          "bytes": 794
+        },
+        "resources": {
+          "wall_seconds": 0.018477088000508957,
+          "child_cpu_seconds": 0.021667,
+          "meter_cpu_seconds": 0.001754182,
+          "child_peak_rss_kib": 25208,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/manual-parameterization-lint-execution.json",
+            "sha256": "125222019d284d719a99e31085fb5c0883987e7ec98323c71d3c5d19006de7d5",
+            "bytes": 2902
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "manual-parameterization-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-011",
+        "ownership": "manual_construction",
+        "arm": "manual",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/manual-parameterization-setup-execution.json",
+        "evidence_sha256": "eed6719ee20218e858468169df3b9641da837be570e848612c05b96716e893d1",
+        "lifecycle_phase": "manual-parameterization-validation",
+        "original_evidence": {
+          "path": "results/development/manual-parameterization-setup-execution.json",
+          "sha256": "eed6719ee20218e858468169df3b9641da837be570e848612c05b96716e893d1",
+          "bytes": 3316
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-011.json",
+          "sha256": "4784d65c29cec341b352140b4ca8cca00148dbcc821b1ca5247717c6bbc9fbb9",
+          "bytes": 802
+        },
+        "resources": {
+          "wall_seconds": 1.0748995060002926,
+          "child_cpu_seconds": 1.049232,
+          "meter_cpu_seconds": 0.008519569999999997,
+          "child_peak_rss_kib": 44596,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/manual-parameterization-setup-execution.json",
+            "sha256": "eed6719ee20218e858468169df3b9641da837be570e848612c05b96716e893d1",
+            "bytes": 3316
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "manual-parameterization-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-012",
+        "ownership": "manual_construction",
+        "arm": "manual",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/manual-parameterized-package-execution.json",
+        "evidence_sha256": "7953c94078f5b0f7ab68ad459ac9055ab74d746cb7abd31c76e646fab5b88227",
+        "lifecycle_phase": "manual-parameterization-validation",
+        "original_evidence": {
+          "path": "results/development/manual-parameterized-package-execution.json",
+          "sha256": "7953c94078f5b0f7ab68ad459ac9055ab74d746cb7abd31c76e646fab5b88227",
+          "bytes": 4610
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-012.json",
+          "sha256": "feee48b96b4ec556b8a3f6ab45b536b60263e0f517459b10199502418ca2ffdd",
+          "bytes": 801
+        },
+        "resources": {
+          "wall_seconds": 0.5190574680000282,
+          "child_cpu_seconds": 0.490864,
+          "meter_cpu_seconds": 0.003687586999999999,
+          "child_peak_rss_kib": 42812,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/manual-parameterized-package-execution.json",
+            "sha256": "7953c94078f5b0f7ab68ad459ac9055ab74d746cb7abd31c76e646fab5b88227",
+            "bytes": 4610
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "manual-parameterization-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-013",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/native-conventional-execution.json",
+        "evidence_sha256": "10b0bb2efa5c14f0f062a8125e0d9e6171b5cbe19eb1e05383c5f9278659505b",
+        "lifecycle_phase": "conventional-construction-validation",
+        "original_evidence": {
+          "path": "results/development/native-conventional-execution.json",
+          "sha256": "10b0bb2efa5c14f0f062a8125e0d9e6171b5cbe19eb1e05383c5f9278659505b",
+          "bytes": 5014
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-013.json",
+          "sha256": "a5dd237fc2db5f3d566e00c1a82eb315bda841a5642e46d033b4c28991cd60c1",
+          "bytes": 784
+        },
+        "resources": {
+          "wall_seconds": 16.42826536299981,
+          "child_cpu_seconds": 1.822252,
+          "meter_cpu_seconds": 0.033137344,
+          "child_peak_rss_kib": 47040,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/native-conventional-execution.json",
+            "sha256": "10b0bb2efa5c14f0f062a8125e0d9e6171b5cbe19eb1e05383c5f9278659505b",
+            "bytes": 5014
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-014",
+        "ownership": "retained_construction",
+        "arm": "retained",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/native-retained-02-execution.json",
+        "evidence_sha256": "0cf8e9e21288dcc4b2dfbd787da4aa49791c46a9a88bd6abb7a0ddaaf8ac3193",
+        "lifecycle_phase": "retained-construction-validation",
+        "original_evidence": {
+          "path": "results/development/native-retained-02-execution.json",
+          "sha256": "0cf8e9e21288dcc4b2dfbd787da4aa49791c46a9a88bd6abb7a0ddaaf8ac3193",
+          "bytes": 5019
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-014.json",
+          "sha256": "04954dca3ae0fdd7c4084c2dbe2832d7812e9bdacfd6a9f6935b5ca744b43b7c",
+          "bytes": 789
+        },
+        "resources": {
+          "wall_seconds": 16.451274537001154,
+          "child_cpu_seconds": 1.852427,
+          "meter_cpu_seconds": 0.034829424000000005,
+          "child_peak_rss_kib": 44340,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/native-retained-02-execution.json",
+            "sha256": "0cf8e9e21288dcc4b2dfbd787da4aa49791c46a9a88bd6abb7a0ddaaf8ac3193",
+            "bytes": 5019
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "retained-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-015",
+        "ownership": "retained_construction",
+        "arm": "retained",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/native-retained-execution.json",
+        "evidence_sha256": "3853f8f613ea1cf62c69930b0db4d080a7eff1bcb50273f02e01d5b9a0042877",
+        "lifecycle_phase": "retained-construction-validation",
+        "original_evidence": {
+          "path": "results/development/native-retained-execution.json",
+          "sha256": "3853f8f613ea1cf62c69930b0db4d080a7eff1bcb50273f02e01d5b9a0042877",
+          "bytes": 3711
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-015.json",
+          "sha256": "6d3f193e599503a53d37ff3f6f183dabf70307bcdd29bdd6e62fc5a738a86e5f",
+          "bytes": 785
+        },
+        "resources": {
+          "wall_seconds": 16.02740481500041,
+          "child_cpu_seconds": 1.456305,
+          "meter_cpu_seconds": 0.030658094000000004,
+          "child_peak_rss_kib": 44340,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/native-retained-execution.json",
+            "sha256": "3853f8f613ea1cf62c69930b0db4d080a7eff1bcb50273f02e01d5b9a0042877",
+            "bytes": 3711
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "retained-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-016",
+        "ownership": "retained_construction",
+        "arm": "retained",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/retained-delivery-execution.json",
+        "evidence_sha256": "99a1d731e22c192631f00120c96380b18f1b09986f5c4dc1a6ea04b5ce9491a1",
+        "lifecycle_phase": "retained-construction-validation",
+        "original_evidence": {
+          "path": "results/development/retained-delivery-execution.json",
+          "sha256": "99a1d731e22c192631f00120c96380b18f1b09986f5c4dc1a6ea04b5ce9491a1",
+          "bytes": 4443
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-016.json",
+          "sha256": "3e6b3a75de89172ac730c98a41903811a446f2a823b1e0d9416e3c9897d608c0",
+          "bytes": 779
+        },
+        "resources": {
+          "wall_seconds": 15.766466118000608,
+          "child_cpu_seconds": 1.132867,
+          "meter_cpu_seconds": 0.024865788,
+          "child_peak_rss_kib": 41792,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/retained-delivery-execution.json",
+            "sha256": "99a1d731e22c192631f00120c96380b18f1b09986f5c4dc1a6ea04b5ce9491a1",
+            "bytes": 4443
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "retained-construction-validation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-017",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/target-execution.json",
+        "evidence_sha256": "7163c46d8b7cf9e81a2446c1916d34a8238dbc2386ff2e4058d156f19ea64430",
+        "lifecycle_phase": "original-contract-development",
+        "original_evidence": {
+          "path": "results/development/target-execution.json",
+          "sha256": "7163c46d8b7cf9e81a2446c1916d34a8238dbc2386ff2e4058d156f19ea64430",
+          "bytes": 6103
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-017.json",
+          "sha256": "779e47dc90f9cc90243342bce8db75af7b74ea5ae2dd0e0a5ae3486541cabeb3",
+          "bytes": 763
+        },
+        "resources": {
+          "wall_seconds": 15.47370371100078,
+          "child_cpu_seconds": 0.343592,
+          "meter_cpu_seconds": 0.11772899,
+          "child_peak_rss_kib": 41728,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/target-execution.json",
+            "sha256": "7163c46d8b7cf9e81a2446c1916d34a8238dbc2386ff2e4058d156f19ea64430",
+            "bytes": 6103
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "original-contract-development",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-018",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/target-verification-execution.json",
+        "evidence_sha256": "fb6f05722c7d4d4aeb1f1dbfe308dc87df21680ade0a35c06eaffa593973b9c0",
+        "lifecycle_phase": "original-contract-development",
+        "original_evidence": {
+          "path": "results/development/target-verification-execution.json",
+          "sha256": "fb6f05722c7d4d4aeb1f1dbfe308dc87df21680ade0a35c06eaffa593973b9c0",
+          "bytes": 5946
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-018.json",
+          "sha256": "6cdb110733a0075ce0dba60c707271a19200311959df56a11798e179ed2c973e",
+          "bytes": 800
+        },
+        "resources": {
+          "wall_seconds": 0.0674720580009307,
+          "child_cpu_seconds": 0.045156999999999996,
+          "meter_cpu_seconds": 0.0030135249999999995,
+          "child_peak_rss_kib": 14080,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/target-verification-execution.json",
+            "sha256": "fb6f05722c7d4d4aeb1f1dbfe308dc87df21680ade0a35c06eaffa593973b9c0",
+            "bytes": 5946
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "original-contract-development",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-019",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/corrected-launch-attempt1-failure.json",
+        "evidence_sha256": "b9ea0950982fcc7ddb4a5b4294716c8b141bec761b950da4841341ed8ae01fc0",
+        "lifecycle_phase": "failed-launch-diagnostics",
+        "original_evidence": {
+          "path": "results/development/corrected-launch-attempt1-failure.json",
+          "sha256": "b9ea0950982fcc7ddb4a5b4294716c8b141bec761b950da4841341ed8ae01fc0",
+          "bytes": 875
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-019.json",
+          "sha256": "7c3076cf251b2389f6dfe47b8e31397f2fbd63149d95a86c658920758e023f1b",
+          "bytes": 751
+        },
+        "resources": {
+          "wall_seconds": null,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/corrected-launch-attempt1-failure.json",
+            "sha256": "b9ea0950982fcc7ddb4a5b4294716c8b141bec761b950da4841341ed8ae01fc0",
+            "bytes": 875
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "failed-launch-diagnostics",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-020",
+        "ownership": "manual_construction",
+        "arm": "manual",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/first-delivery/assembly-receipt.json",
+        "evidence_sha256": "6912d8042440069c284cca7e0587ccd129eafff3358fd37a2dda17a9b5ef9175",
+        "lifecycle_phase": "first-useful-manual-delivery-and-correction",
+        "original_evidence": {
+          "path": "results/development/first-delivery/assembly-receipt.json",
+          "sha256": "6912d8042440069c284cca7e0587ccd129eafff3358fd37a2dda17a9b5ef9175",
+          "bytes": 337
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-020.json",
+          "sha256": "36f8e01007bfb21d3962ac4833fbdb82c3aa5a7b0dfcc41b9cc1168253ba0878",
+          "bytes": 799
+        },
+        "resources": {
+          "wall_seconds": 0.006765557000107947,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.006763397000000001,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/first-delivery/assembly-receipt.json",
+            "sha256": "6912d8042440069c284cca7e0587ccd129eafff3358fd37a2dda17a9b5ef9175",
+            "bytes": 337
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "first-useful-manual-delivery-and-correction",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-021",
+        "ownership": "manual_construction",
+        "arm": "manual",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/first-delivery-corrected/correction-receipt.json",
+        "evidence_sha256": "b68ddf4831ca0c8267a729f6a4d536ba7f0013ec0570c3babfddf131a55bc293",
+        "lifecycle_phase": "first-useful-manual-delivery-and-correction",
+        "original_evidence": {
+          "path": "results/development/first-delivery-corrected/correction-receipt.json",
+          "sha256": "b68ddf4831ca0c8267a729f6a4d536ba7f0013ec0570c3babfddf131a55bc293",
+          "bytes": 4471
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-021.json",
+          "sha256": "4d4261c5df17c387d8c1753b435d9d56faf93351ce32d55051121e24ab7a4ace",
+          "bytes": 811
+        },
+        "resources": {
+          "wall_seconds": 0.02367429900004936,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.023651795000000003,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/first-delivery-corrected/correction-receipt.json",
+            "sha256": "b68ddf4831ca0c8267a729f6a4d536ba7f0013ec0570c3babfddf131a55bc293",
+            "bytes": 4471
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "first-useful-manual-delivery-and-correction",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-022",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "data/development-environment/acquisition.json",
+        "evidence_sha256": "1e1bc8766f1bdb4547482889a1252f1bd72535715af6750f6734436726ced355",
+        "lifecycle_phase": "development-acquisition-and-setup",
+        "original_evidence": {
+          "path": "data/development-environment/acquisition.json",
+          "sha256": "1e1bc8766f1bdb4547482889a1252f1bd72535715af6750f6734436726ced355",
+          "bytes": 8436
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-022.json",
+          "sha256": "250c0c55b8baf01c953bcb498322af019aa674bb3e087a0c6836ae5c83450f82",
+          "bytes": 768
+        },
+        "resources": {
+          "wall_seconds": 0.6305390340003214,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.063104276,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "data/development-environment/acquisition.json",
+            "sha256": "1e1bc8766f1bdb4547482889a1252f1bd72535715af6750f6734436726ced355",
+            "bytes": 8436
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "development-acquisition-and-setup",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-023",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "data/development-environment/setup.json",
+        "evidence_sha256": "d6e2dda095a8ad8fad855162c599a76d14148488cf45b4b93419cfdf36b7f71b",
+        "lifecycle_phase": "development-acquisition-and-setup",
+        "original_evidence": {
+          "path": "data/development-environment/setup.json",
+          "sha256": "d6e2dda095a8ad8fad855162c599a76d14148488cf45b4b93419cfdf36b7f71b",
+          "bytes": 3529
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-023.json",
+          "sha256": "5717c80382bb53bf9f5b06321f38f008f820a53b5944890f96c3f128ff355fc2",
+          "bytes": 759
+        },
+        "resources": {
+          "wall_seconds": 2.9564172740001595,
+          "child_cpu_seconds": 2.942885,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "data/development-environment/setup.json",
+            "sha256": "d6e2dda095a8ad8fad855162c599a76d14148488cf45b4b93419cfdf36b7f71b",
+            "bytes": 3529
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "development-acquisition-and-setup",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-024",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "data/development-baseline-bridge-environment-attempt-1-failed/preparation.json",
+        "evidence_sha256": "40f6721a848a63a32dc3efa5d7c89b00b887deb96d5b0cb9de41aa940b3314cb",
+        "lifecycle_phase": "development-acquisition-and-setup",
+        "original_evidence": {
+          "path": "data/development-baseline-bridge-environment-attempt-1-failed/preparation.json",
+          "sha256": "40f6721a848a63a32dc3efa5d7c89b00b887deb96d5b0cb9de41aa940b3314cb",
+          "bytes": 12904
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-024.json",
+          "sha256": "0cb6cedfc3e28750dca5ecab0e4255aff2b77532fd16ff77b5017c9bea3aede5",
+          "bytes": 808
+        },
+        "resources": {
+          "wall_seconds": 0.10361565699895436,
+          "child_cpu_seconds": 0.0,
+          "meter_cpu_seconds": 0.06942034200000001,
+          "child_peak_rss_kib": 640,
+          "network_requests": 1,
+          "network_response_bytes": 131954,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "data/development-baseline-bridge-environment-attempt-1-failed/preparation.json",
+            "sha256": "40f6721a848a63a32dc3efa5d7c89b00b887deb96d5b0cb9de41aa940b3314cb",
+            "bytes": 12904
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "development-acquisition-and-setup",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-025",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "data/development-baseline-bridge-environment/preparation.json",
+        "evidence_sha256": "90a2c60e589e00fe126db94f58cc1b5817ca406e4601d00dd26ea8e7eeae50e7",
+        "lifecycle_phase": "development-acquisition-and-setup",
+        "original_evidence": {
+          "path": "data/development-baseline-bridge-environment/preparation.json",
+          "sha256": "90a2c60e589e00fe126db94f58cc1b5817ca406e4601d00dd26ea8e7eeae50e7",
+          "bytes": 19294
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-025.json",
+          "sha256": "ca091c6f827ab117a70b705a3aae70316dda4b5432b1db2d6d13f572409d3486",
+          "bytes": 807
+        },
+        "resources": {
+          "wall_seconds": 3.4716890569998213,
+          "child_cpu_seconds": 3.2940609999999997,
+          "meter_cpu_seconds": 0.10415430700000002,
+          "child_peak_rss_kib": 65520,
+          "network_requests": 2,
+          "network_response_bytes": 137256,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "data/development-baseline-bridge-environment/preparation.json",
+            "sha256": "90a2c60e589e00fe126db94f58cc1b5817ca406e4601d00dd26ea8e7eeae50e7",
+            "bytes": 19294
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "development-acquisition-and-setup",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-026",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "data/development-target-environment/preparation.json",
+        "evidence_sha256": "64a7e770c036aea9ef1cc4387f71a4b29f6ffe9dd6ee86765490ab1fd335c77b",
+        "lifecycle_phase": "development-acquisition-and-setup",
+        "original_evidence": {
+          "path": "data/development-target-environment/preparation.json",
+          "sha256": "64a7e770c036aea9ef1cc4387f71a4b29f6ffe9dd6ee86765490ab1fd335c77b",
+          "bytes": 19313
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-026.json",
+          "sha256": "f56354442399aacff21fd1e3143f647b1357b81f3f2f09828b9ee6619c2a4be4",
+          "bytes": 798
+        },
+        "resources": {
+          "wall_seconds": 3.4371695940008067,
+          "child_cpu_seconds": 3.2398110000000004,
+          "meter_cpu_seconds": 0.11488675000000001,
+          "child_peak_rss_kib": 65572,
+          "network_requests": 2,
+          "network_response_bytes": 208837,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "data/development-target-environment/preparation.json",
+            "sha256": "64a7e770c036aea9ef1cc4387f71a4b29f6ffe9dd6ee86765490ab1fd335c77b",
+            "bytes": 19313
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "development-acquisition-and-setup",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-027",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/development/relocated-offline-replay-review/replay.json",
+        "evidence_sha256": "2c67cdc4844520523fcdd96cc928dc93cc774126e6a3849e4562ecb831ee3eb9",
+        "lifecycle_phase": "independent-offline-reproduction",
+        "original_evidence": {
+          "path": "results/development/relocated-offline-replay-review/replay.json",
+          "sha256": "2c67cdc4844520523fcdd96cc928dc93cc774126e6a3849e4562ecb831ee3eb9",
+          "bytes": 14937
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-027.json",
+          "sha256": "a39544e3157245cd44e4e50d8b4eba015a3db735820c338ce787c9ed8e868e13",
+          "bytes": 799
+        },
+        "resources": {
+          "wall_seconds": 38.435845689000416,
+          "child_cpu_seconds": 8.346947,
+          "meter_cpu_seconds": 0.007055872000000005,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/relocated-offline-replay-review/replay.json",
+            "sha256": "2c67cdc4844520523fcdd96cc928dc93cc774126e6a3849e4562ecb831ee3eb9",
+            "bytes": 14937
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "independent-offline-reproduction",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-032",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/review-controls/retained-custody-v1/controls.json",
+        "evidence_sha256": "0e6d62611700c4fe99e92b31a41ca30b788277d0ea407e65025996c048a4b2a3",
+        "lifecycle_phase": "independent-custody-scrutiny",
+        "original_evidence": {
+          "path": "results/review-controls/retained-custody-v1/controls.json",
+          "sha256": "0e6d62611700c4fe99e92b31a41ca30b788277d0ea407e65025996c048a4b2a3",
+          "bytes": 3832
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-032.json",
+          "sha256": "8dd3cd183fbc107668ac68beec887fa65db502e46a86e2d2892019aa740921da",
+          "bytes": 775
+        },
+        "resources": {
+          "wall_seconds": 0.0940934219997871,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.093795497,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/review-controls/retained-custody-v1/controls.json",
+            "sha256": "0e6d62611700c4fe99e92b31a41ca30b788277d0ea407e65025996c048a4b2a3",
+            "bytes": 3832
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "independent-custody-scrutiny",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-033",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "results/review-controls/retained-custody-v2/controls.json",
+        "evidence_sha256": "e129f99bad442f35682f3d213a5fdab368dff13304e89ee7bbb25916c1a16e6b",
+        "lifecycle_phase": "independent-custody-scrutiny",
+        "original_evidence": {
+          "path": "results/review-controls/retained-custody-v2/controls.json",
+          "sha256": "e129f99bad442f35682f3d213a5fdab368dff13304e89ee7bbb25916c1a16e6b",
+          "bytes": 7195
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-033.json",
+          "sha256": "80889063bbdacea01cf0e2cc6810d244ad4d56a92e3371fdf7350c324e9c89cc",
+          "bytes": 781
+        },
+        "resources": {
+          "wall_seconds": 7.698353935000341,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 7.5175370489999995,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/review-controls/retained-custody-v2/controls.json",
+            "sha256": "e129f99bad442f35682f3d213a5fdab368dff13304e89ee7bbb25916c1a16e6b",
+            "bytes": 7195
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "independent-custody-scrutiny",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-034",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "discovery/first-result-critic.json",
+        "evidence_sha256": "f706b26fc9b2d480b3b4d202b5ccade78eeb793463f10fce0264498f2fe5fce7",
+        "lifecycle_phase": "independent-first-result-mechanical-scrutiny",
+        "resource_pointer": "review_resources",
+        "original_evidence": {
+          "path": "discovery/first-result-critic.json",
+          "sha256": "f706b26fc9b2d480b3b4d202b5ccade78eeb793463f10fce0264498f2fe5fce7",
+          "bytes": 13103
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-034.json",
+          "sha256": "eefe6ca12d7d25a413ed5c31eb1fb5defc07c0157914a1c771971a298e2198a0",
+          "bytes": 780
+        },
+        "resources": {
+          "wall_seconds": 0.010400528999525704,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.010374611999999998,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "discovery/first-result-critic.json",
+            "sha256": "f706b26fc9b2d480b3b4d202b5ccade78eeb793463f10fce0264498f2fe5fce7",
+            "bytes": 13103
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "independent-first-result-mechanical-scrutiny",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-035",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "preparation",
+          "verification",
+          "correction",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "data/confirmation-input-construction-receipt.json",
+        "evidence_sha256": "34d3ba4ed6e07d7c63e6d1b44f0ff614eaa2347bed347a4da98e865f2e76dcaa",
+        "lifecycle_phase": "fixed-primary-input-construction",
+        "original_evidence": {
+          "path": "data/confirmation-input-construction-receipt.json",
+          "sha256": "34d3ba4ed6e07d7c63e6d1b44f0ff614eaa2347bed347a4da98e865f2e76dcaa",
+          "bytes": 840
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-035.json",
+          "sha256": "5d3ac6eafcf3181326ba0e4d1e3a2ff13ab4805cf98ce6d5404768d0347f6f9c",
+          "bytes": 781
+        },
+        "resources": {
+          "wall_seconds": 0.047583129000486224,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.007033849000000002,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "data/confirmation-input-construction-receipt.json",
+            "sha256": "34d3ba4ed6e07d7c63e6d1b44f0ff614eaa2347bed347a4da98e865f2e76dcaa",
+            "bytes": 840
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "fixed-primary-input-construction",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "lifecycle-conventional-initial-pair",
+        "ownership": "conventional_construction",
+        "arm": "conventional",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "execution",
+          "verification"
+        ],
+        "evidence_path": "results/development/conventional-pair-01/pair.json",
+        "evidence_sha256": "2ff3a9b8c9f46b7a9dc4e9a3b255653dec6e2d743b8baffdc88903b70ba7db99",
+        "lifecycle_phase": "conventional-initial-pair",
+        "original_evidence": {
+          "path": "results/development/conventional-pair-01/pair.json",
+          "sha256": "2ff3a9b8c9f46b7a9dc4e9a3b255653dec6e2d743b8baffdc88903b70ba7db99",
+          "bytes": 5383
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/lifecycle-conventional-initial-pair.json",
+          "sha256": "ae7c7423e7d8b64ffe649960699f388b6009632ffe66d5399417baf389a3a75a",
+          "bytes": 776
+        },
+        "resources": {
+          "wall_seconds": 15.81582871700084,
+          "child_cpu_seconds": 1.2819770000000001,
+          "meter_cpu_seconds": 0.019937286,
+          "child_peak_rss_kib": 41804,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": 0,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "results/development/conventional-pair-01/pair.json",
+            "sha256": "2ff3a9b8c9f46b7a9dc4e9a3b255653dec6e2d743b8baffdc88903b70ba7db99",
+            "bytes": 5383
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "conventional-initial-pair",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-relocation-copy",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__relocation-qa-preparation.json",
+        "evidence_sha256": "0e35a61eb2346f1eac67d8d530923db5e883d56084a8e394f14eea4f6dd1591d",
+        "lifecycle_phase": "publication-relocation-preparation",
+        "original_source_path": "publication/relocation-qa-preparation.json",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__relocation-qa-preparation.json",
+          "sha256": "0e35a61eb2346f1eac67d8d530923db5e883d56084a8e394f14eea4f6dd1591d",
+          "bytes": 454
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-relocation-copy.json",
+          "sha256": "64840815588f950f5c18f595a410b48a77d49b782e16d6fa3425858945ac427a",
+          "bytes": 799
+        },
+        "resources": {
+          "wall_seconds": 0.20784191500024463,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.207830989,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__relocation-qa-preparation.json",
+            "sha256": "0e35a61eb2346f1eac67d8d530923db5e883d56084a8e394f14eea4f6dd1591d",
+            "bytes": 454
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-relocation-preparation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-relocation-replay",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__relocation-qa-execution.json",
+        "evidence_sha256": "b0eeaf38e11bd5c60932c9af32548a9c96592eec37089a1c4e0d1ab9c130361a",
+        "lifecycle_phase": "publication-relocation-replay",
+        "original_source_path": "publication/relocation-qa-execution.json",
+        "scope_note": "Enclosing replay command once; all nested environment/build/probe records excluded.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__relocation-qa-execution.json",
+          "sha256": "b0eeaf38e11bd5c60932c9af32548a9c96592eec37089a1c4e0d1ab9c130361a",
+          "bytes": 2625
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-relocation-replay.json",
+          "sha256": "c4f37a55a9133586dbea314eb757107d40712a9c30a3da789f208b0c1b5c0227",
+          "bytes": 797
+        },
+        "resources": {
+          "wall_seconds": 23.603891890999876,
+          "child_cpu_seconds": 8.894551,
+          "meter_cpu_seconds": 0.035621148,
+          "child_peak_rss_kib": 65640,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__relocation-qa-execution.json",
+            "sha256": "b0eeaf38e11bd5c60932c9af32548a9c96592eec37089a1c4e0d1ab9c130361a",
+            "bytes": 2625
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-relocation-replay",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-browser-install-failed",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__browser-acquisition-execution.json",
+        "evidence_sha256": "4f415dd3ea45398be83bcd8c7747bb92213ac689f63b3ab592086dadcc0f483a",
+        "lifecycle_phase": "publication-browser-acquisition",
+        "original_source_path": "publication/browser-acquisition-execution.json",
+        "scope_note": "Five logged download attempts are nested in this one command. Failed-transfer HTTP counts and response bytes were not metered; unknown, not zero.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__browser-acquisition-execution.json",
+          "sha256": "4f415dd3ea45398be83bcd8c7747bb92213ac689f63b3ab592086dadcc0f483a",
+          "bytes": 1993
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-browser-install-failed.json",
+          "sha256": "161e2583bfd2adeb8de324ceaebba0f1676239e1132b0216b9f5c06d1c59fac3",
+          "bytes": 825
+        },
+        "resources": {
+          "wall_seconds": 3.8450716770003055,
+          "child_cpu_seconds": 4.0144470000000005,
+          "meter_cpu_seconds": 0.010765641999999999,
+          "child_peak_rss_kib": 140912,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__browser-acquisition-execution.json",
+            "sha256": "4f415dd3ea45398be83bcd8c7747bb92213ac689f63b3ab592086dadcc0f483a",
+            "bytes": 1993
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-browser-acquisition",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-browser-acquisition-success",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/combined-browser-acquisition.json",
+        "evidence_sha256": "8af36e63a0f5e1609e16c24a2c51b54db7b8c77ec42e8e8cd9fd3e9930f7ea76",
+        "lifecycle_phase": "publication-browser-acquisition",
+        "original_source_path": "publication/browser-acquisition-bounded-execution.json",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/combined-browser-acquisition.json",
+          "sha256": "8af36e63a0f5e1609e16c24a2c51b54db7b8c77ec42e8e8cd9fd3e9930f7ea76",
+          "bytes": 3423
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-browser-acquisition-success.json",
+          "sha256": "67505934b9fd961fb2f1d2a65d45faa3234063faed359de762695e277df132f1",
+          "bytes": 810
+        },
+        "resources": {
+          "wall_seconds": 6.805201058999955,
+          "child_cpu_seconds": 4.447483999999999,
+          "meter_cpu_seconds": 0.012249224000000003,
+          "child_peak_rss_kib": 22036,
+          "network_requests": 1,
+          "network_response_bytes": 125799226,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/combined-browser-acquisition.json",
+            "sha256": "8af36e63a0f5e1609e16c24a2c51b54db7b8c77ec42e8e8cd9fd3e9930f7ea76",
+            "bytes": 3423
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-browser-acquisition",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-browser-metadata",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "unknown",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__browser-official-metadata.json",
+        "evidence_sha256": "2e487670eddd66260e199c02c5bcd86d009f386977a2a19841312b467ba1af48",
+        "lifecycle_phase": "publication-browser-metadata",
+        "original_source_path": "publication/browser-official-metadata.json",
+        "scope_note": "Official metadata lookup exists; execution, HTTP count and byte costs were not metered.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__browser-official-metadata.json",
+          "sha256": "2e487670eddd66260e199c02c5bcd86d009f386977a2a19841312b467ba1af48",
+          "bytes": 10450
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-browser-metadata.json",
+          "sha256": "8d18fbbb20445fa7a1a12dcc5e8553acf4253af1e9580524a9bca8fb51af2000",
+          "bytes": 773
+        },
+        "resources": {
+          "wall_seconds": null,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__browser-official-metadata.json",
+            "sha256": "2e487670eddd66260e199c02c5bcd86d009f386977a2a19841312b467ba1af48",
+            "bytes": 10450
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-browser-metadata",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-demo-launch-01",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution.json",
+        "evidence_sha256": "d9f3f4d55e318c834e891f462064abf5d7fa71e0ada8adae6d0b73f4f9fe5c1b",
+        "lifecycle_phase": "publication-demo-browser-qa",
+        "original_source_path": "publication/demo-browser-execution.json",
+        "scope_note": "Each enclosing command charged once; successful inner14 language/mission combinations and two downloads are checks, not missions.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution.json",
+          "sha256": "d9f3f4d55e318c834e891f462064abf5d7fa71e0ada8adae6d0b73f4f9fe5c1b",
+          "bytes": 2341
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-demo-launch-01.json",
+          "sha256": "fa6249a420c2e1db6e1dfd78b69536a06c823dd1553ba469df65833ccb0e5a0b",
+          "bytes": 804
+        },
+        "resources": {
+          "wall_seconds": 0.6719234899992443,
+          "child_cpu_seconds": 0.734958,
+          "meter_cpu_seconds": 0.004410466000000002,
+          "child_peak_rss_kib": 108204,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution.json",
+            "sha256": "d9f3f4d55e318c834e891f462064abf5d7fa71e0ada8adae6d0b73f4f9fe5c1b",
+            "bytes": 2341
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-demo-browser-qa",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-demo-launch-02",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution-02.json",
+        "evidence_sha256": "44590682eac4da6839188b7fda229807a3b6e8baa200860a0b38d911c91bb213",
+        "lifecycle_phase": "publication-demo-browser-qa",
+        "original_source_path": "publication/demo-browser-execution-02.json",
+        "scope_note": "Each enclosing command charged once; successful inner14 language/mission combinations and two downloads are checks, not missions.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution-02.json",
+          "sha256": "44590682eac4da6839188b7fda229807a3b6e8baa200860a0b38d911c91bb213",
+          "bytes": 2374
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-demo-launch-02.json",
+          "sha256": "a18f11044aec2d90017dc2acca9ea820fb2df6def2fdb60ef4a23c97b664e4fd",
+          "bytes": 816
+        },
+        "resources": {
+          "wall_seconds": 0.772245523001402,
+          "child_cpu_seconds": 0.9181499999999998,
+          "meter_cpu_seconds": 0.004940163000000004,
+          "child_peak_rss_kib": 108976,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution-02.json",
+            "sha256": "44590682eac4da6839188b7fda229807a3b6e8baa200860a0b38d911c91bb213",
+            "bytes": 2374
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-demo-browser-qa",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-demo-browser-03",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution-03.json",
+        "evidence_sha256": "fa255ec70bb45a79e8fd8e70132912ef178b26731475dc15352ccf1095b3eddd",
+        "lifecycle_phase": "publication-demo-browser-qa",
+        "original_source_path": "publication/demo-browser-execution-03.json",
+        "scope_note": "Each enclosing command charged once; successful inner14 language/mission combinations and two downloads are checks, not missions.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution-03.json",
+          "sha256": "fa255ec70bb45a79e8fd8e70132912ef178b26731475dc15352ccf1095b3eddd",
+          "bytes": 2519
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-demo-browser-03.json",
+          "sha256": "4b63e9c9c375509ad0150842d58a47f019860e0ffc204827dae0400dce605cfd",
+          "bytes": 805
+        },
+        "resources": {
+          "wall_seconds": 2.23066781200032,
+          "child_cpu_seconds": 1.571741,
+          "meter_cpu_seconds": 0.007484203000000002,
+          "child_peak_rss_kib": 123544,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__demo-browser-execution-03.json",
+            "sha256": "fa255ec70bb45a79e8fd8e70132912ef178b26731475dc15352ccf1095b3eddd",
+            "bytes": 2519
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-demo-browser-qa",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-demo-build",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__demo-construction.json",
+        "evidence_sha256": "26bfa1f4b148d3feb21bf48b87172adf44da3dbdcfb4172c579928785140c32c",
+        "lifecycle_phase": "publication-demo-construction",
+        "original_source_path": "publication/demo-construction.json",
+        "scope_note": "Latest completed demo build at cutoff, after source-wrapper/license work. Earlier unmetered builds and all model authoring remain unknown costs.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__demo-construction.json",
+          "sha256": "26bfa1f4b148d3feb21bf48b87172adf44da3dbdcfb4172c579928785140c32c",
+          "bytes": 2200
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-demo-build.json",
+          "sha256": "48503a4959d5462d3b2870080ecfa615b315a78fb45e60bd9fbe09e4087e353e",
+          "bytes": 795
+        },
+        "resources": {
+          "wall_seconds": 0.14992938799878175,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.14988754799999998,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__demo-construction.json",
+            "sha256": "26bfa1f4b148d3feb21bf48b87172adf44da3dbdcfb4172c579928785140c32c",
+            "bytes": 2200
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-demo-construction",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-demo-download-check",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__demo-download-verification.json",
+        "evidence_sha256": "f03fcc5b9aac4bd3a4b59a83d4cf4e809a03c7c7e86a3446a6f19123af59a9bf",
+        "lifecycle_phase": "publication-download-verification",
+        "original_source_path": "publication/demo-download-verification.json",
+        "scope_note": "Actual two downloaded packet ZIP validations; independent local CPU/wall absent and not assigned zero.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__demo-download-verification.json",
+          "sha256": "f03fcc5b9aac4bd3a4b59a83d4cf4e809a03c7c7e86a3446a6f19123af59a9bf",
+          "bytes": 403
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-demo-download-check.json",
+          "sha256": "51c0a4d9e83053553298cc0b3e708db6bc37186df4e6402c01c98143ebbab920",
+          "bytes": 777
+        },
+        "resources": {
+          "wall_seconds": null,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__demo-download-verification.json",
+            "sha256": "f03fcc5b9aac4bd3a4b59a83d4cf4e809a03c7c7e86a3446a6f19123af59a9bf",
+            "bytes": 403
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-download-verification",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-figures",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__figure-construction.json",
+        "evidence_sha256": "44806d166743a5d386b96359b005f559d17c13e31e397666aab23955db33b989",
+        "lifecycle_phase": "publication-figure-construction",
+        "original_source_path": "publication/figure-construction.json",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__figure-construction.json",
+          "sha256": "44806d166743a5d386b96359b005f559d17c13e31e397666aab23955db33b989",
+          "bytes": 1139
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-figures.json",
+          "sha256": "70616eb5ddc27463471bad50e557bc3de0237b933a8d7e968b20f68798f7397d",
+          "bytes": 797
+        },
+        "resources": {
+          "wall_seconds": 0.9833810410000297,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.9832529939999999,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__figure-construction.json",
+            "sha256": "44806d166743a5d386b96359b005f559d17c13e31e397666aab23955db33b989",
+            "bytes": 1139
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-figure-construction",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-pdf-prelaunch-failure",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/normalized-pdf-prelaunch-failure.json",
+        "evidence_sha256": "e9a5259b5867e716b4825724e46ebd0e5739fd8339724fb274b165fb767bf4a4",
+        "lifecycle_phase": "publication-pdf-compilation",
+        "original_source_path": "publication/pdf-compile-launch-failure.json",
+        "scope_note": "Failed compiler launcher; compiler did not start. Tool-observed wall retained; CPU unknown.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/normalized-pdf-prelaunch-failure.json",
+          "sha256": "e9a5259b5867e716b4825724e46ebd0e5739fd8339724fb274b165fb767bf4a4",
+          "bytes": 707
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-pdf-prelaunch-failure.json",
+          "sha256": "06bd0a2cb24f5c235a9328b59a2a622cb51ec7390faacee853dcf045f14e5295",
+          "bytes": 770
+        },
+        "resources": {
+          "wall_seconds": 0.04203244,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/normalized-pdf-prelaunch-failure.json",
+            "sha256": "e9a5259b5867e716b4825724e46ebd0e5739fd8339724fb274b165fb767bf4a4",
+            "bytes": 707
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-pdf-compilation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-pdf-compile-01",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__pdf-compile-01.json",
+        "evidence_sha256": "d3c6c7fa88e8ecd0122b7e64b187dce06856045d50bd717a91329a89768943a6",
+        "lifecycle_phase": "publication-pdf-compilation",
+        "original_source_path": "publication/pdf-compile-01.json",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__pdf-compile-01.json",
+          "sha256": "d3c6c7fa88e8ecd0122b7e64b187dce06856045d50bd717a91329a89768943a6",
+          "bytes": 2111
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-pdf-compile-01.json",
+          "sha256": "b12f9033879b4a6699bf51663f536a38c17eeae765079d33da9e568f318a6752",
+          "bytes": 796
+        },
+        "resources": {
+          "wall_seconds": 0.7755865609997272,
+          "child_cpu_seconds": 0.737802,
+          "meter_cpu_seconds": 0.0029452950000000006,
+          "child_peak_rss_kib": 38912,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__pdf-compile-01.json",
+            "sha256": "d3c6c7fa88e8ecd0122b7e64b187dce06856045d50bd717a91329a89768943a6",
+            "bytes": 2111
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-pdf-compilation",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-manuscript-handoff",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/publication__manuscript-prose-handoff.json",
+        "evidence_sha256": "75550b97ed2a7ba4f5eb6259431a416b0821ae281562e52507fa097eb836f61f",
+        "lifecycle_phase": "publication-manuscript-authoring",
+        "original_source_path": "publication/manuscript-prose-handoff.json",
+        "scope_note": "Completed prose artifact; authoring inference, active attention and primitive process resource totals unmetered.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/publication__manuscript-prose-handoff.json",
+          "sha256": "75550b97ed2a7ba4f5eb6259431a416b0821ae281562e52507fa097eb836f61f",
+          "bytes": 739
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-manuscript-handoff.json",
+          "sha256": "f7af734dede32daff28ca995aa81ccb4d56e6bbf35bf7ebe60b77cd5b875de4f",
+          "bytes": 774
+        },
+        "resources": {
+          "wall_seconds": null,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/publication__manuscript-prose-handoff.json",
+            "sha256": "75550b97ed2a7ba4f5eb6259431a416b0821ae281562e52507fa097eb836f61f",
+            "bytes": 739
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-manuscript-authoring",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-public-source-comparison",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/normalized-public-source-comparison.json",
+        "evidence_sha256": "e1d1e0ff6a34df80774cb371d9e3ea588eec50988c6d040630311b5ff05b70cb",
+        "lifecycle_phase": "publication-public-source-verification",
+        "original_source_path": "publication/public-source-verification.json",
+        "scope_note": "Local comparison resources only. Eleven remote read calls remain recorded as calls, not an inferred HTTP count or a fully metered remote latency.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/normalized-public-source-comparison.json",
+          "sha256": "e1d1e0ff6a34df80774cb371d9e3ea588eec50988c6d040630311b5ff05b70cb",
+          "bytes": 817
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-public-source-comparison.json",
+          "sha256": "7100f225fb27d2c61e512ce5732eb069658d43fdc6f859bd88363e9bac943669",
+          "bytes": 811
+        },
+        "resources": {
+          "wall_seconds": 0.007124269000996719,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.0071243350000000025,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/normalized-public-source-comparison.json",
+            "sha256": "e1d1e0ff6a34df80774cb371d9e3ea588eec50988c6d040630311b5ff05b70cb",
+            "bytes": 817
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-public-source-verification",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-custody-attempt-1",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/normalized-custody-attempt-1.json",
+        "evidence_sha256": "73b9149e0778c7dda54af076f0e7d784dce09373d8b0cfe0b98fb4b3127a3a19",
+        "lifecycle_phase": "publication-source-custody-audit",
+        "original_source_path": "results/review-controls/postcampaign-custody/attempt-1-failure.json",
+        "scope_note": "Auditor format-assumption failure; no consumer execution or primary outcome change.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/normalized-custody-attempt-1.json",
+          "sha256": "73b9149e0778c7dda54af076f0e7d784dce09373d8b0cfe0b98fb4b3127a3a19",
+          "bytes": 750
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-custody-attempt-1.json",
+          "sha256": "0ff7042ecddd09feb47c27ca15fee20bd714b44b7e8650abd9f815adc866d53b",
+          "bytes": 772
+        },
+        "resources": {
+          "wall_seconds": 0.047042474,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/normalized-custody-attempt-1.json",
+            "sha256": "73b9149e0778c7dda54af076f0e7d784dce09373d8b0cfe0b98fb4b3127a3a19",
+            "bytes": 750
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-source-custody-audit",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-custody-attempt-2",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "failed",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/results__review-controls__postcampaign-custody-v2__review.json",
+        "evidence_sha256": "b7f83d734e31797751431c715bd64858e399b21d2962f067d0424fce1514b44e",
+        "lifecycle_phase": "publication-source-custody-audit",
+        "original_source_path": "results/review-controls/postcampaign-custody-v2/review.json",
+        "scope_note": "Completed audit with unresolved reviewer disagreement; preserved cost, no consumer execution.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/results__review-controls__postcampaign-custody-v2__review.json",
+          "sha256": "b7f83d734e31797751431c715bd64858e399b21d2962f067d0424fce1514b44e",
+          "bytes": 1229457
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-custody-attempt-2.json",
+          "sha256": "b5618ac9eab4235e7faa898afa5bd5b116c098952ae35d926f920454ac2a3b0d",
+          "bytes": 820
+        },
+        "resources": {
+          "wall_seconds": 0.45363171600001806,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.453594227,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/results__review-controls__postcampaign-custody-v2__review.json",
+            "sha256": "b7f83d734e31797751431c715bd64858e399b21d2962f067d0424fce1514b44e",
+            "bytes": 1229457
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-source-custody-audit",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-custody-attempt-3",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/results__review-controls__postcampaign-custody-v3__review.json",
+        "evidence_sha256": "d3ab95a56f9629cef05c82fb5261df3e8b5f98c87b26c6b0a978789e28244eff",
+        "lifecycle_phase": "publication-source-custody-audit",
+        "original_source_path": "results/review-controls/postcampaign-custody-v3/review.json",
+        "scope_note": "Final83-source/18-packet audit, zero new missions.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/results__review-controls__postcampaign-custody-v3__review.json",
+          "sha256": "d3ab95a56f9629cef05c82fb5261df3e8b5f98c87b26c6b0a978789e28244eff",
+          "bytes": 1238146
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-custody-attempt-3.json",
+          "sha256": "06876471b34eee13d11d30bff697e969698aac24d96d75f8ed895bc9be06e731",
+          "bytes": 828
+        },
+        "resources": {
+          "wall_seconds": 0.46076122600061353,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.45647736499999997,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/results__review-controls__postcampaign-custody-v3__review.json",
+            "sha256": "d3ab95a56f9629cef05c82fb5261df3e8b5f98c87b26c6b0a978789e28244eff",
+            "bytes": 1238146
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-source-custody-audit",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-campaign-between-runs",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/analysis__campaign-overhead-receipt-01.json",
+        "evidence_sha256": "2356d79353549b7608d978d116e49529ec0e6365b389e94984a989d4043fed12",
+        "lifecycle_phase": "primary-common-orchestration-overhead",
+        "original_source_path": "analysis/campaign-overhead-receipt-01.json",
+        "scope_note": "Only enclosing-campaign minus18 terminal residual; never add full campaign again.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/analysis__campaign-overhead-receipt-01.json",
+          "sha256": "2356d79353549b7608d978d116e49529ec0e6365b389e94984a989d4043fed12",
+          "bytes": 857
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-campaign-between-runs.json",
+          "sha256": "bf910770ba94564e1be097c7754b160fec528d58150aa5e1e29cda626772a77d",
+          "bytes": 810
+        },
+        "resources": {
+          "wall_seconds": 0.014938691994757392,
+          "child_cpu_seconds": 0.0,
+          "meter_cpu_seconds": 0.01466323799999994,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/analysis__campaign-overhead-receipt-01.json",
+            "sha256": "2356d79353549b7608d978d116e49529ec0e6365b389e94984a989d4043fed12",
+            "bytes": 857
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "primary-common-orchestration-overhead",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-analysis01-collector",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/normalized-analysis01-collector.json",
+        "evidence_sha256": "cbd6ca16b3d7c0c1ae9cf0987879d45e26f0c8a291862b2c5034e5e353d7ae28",
+        "lifecycle_phase": "economic-analysis-collection",
+        "original_source_path": "results/economic-analysis-01/summary.json",
+        "scope_note": "Collector interval before canonical adapter launch and final output serialization. Canonical process has no complete elapsed/CPU receipt; its separate row remains unknown.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/normalized-analysis01-collector.json",
+          "sha256": "cbd6ca16b3d7c0c1ae9cf0987879d45e26f0c8a291862b2c5034e5e353d7ae28",
+          "bytes": 803
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-analysis01-collector.json",
+          "sha256": "97a60ba4c23ffab3a7fe39499ce8d190694396b3cf42d3e735b28dfb72347eb5",
+          "bytes": 786
+        },
+        "resources": {
+          "wall_seconds": 0.17710315200019977,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.177088841,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/normalized-analysis01-collector.json",
+            "sha256": "cbd6ca16b3d7c0c1ae9cf0987879d45e26f0c8a291862b2c5034e5e353d7ae28",
+            "bytes": 803
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "economic-analysis-collection",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-analysis01-canonical",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/results__economic-analysis-01__canonical-execution.json",
+        "evidence_sha256": "8b9b145bd70227c3e668f00c4f932e880d769d2c3a51bc066f1944c7df4c49f9",
+        "lifecycle_phase": "economic-canonical-analysis",
+        "original_source_path": "results/economic-analysis-01/canonical-execution.json",
+        "scope_note": "Executed canonical adapter; resource timing absent, not zero.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/results__economic-analysis-01__canonical-execution.json",
+          "sha256": "8b9b145bd70227c3e668f00c4f932e880d769d2c3a51bc066f1944c7df4c49f9",
+          "bytes": 839
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-analysis01-canonical.json",
+          "sha256": "0522a19c6d9a0aff1706e4fcd1ebcb2de679c2148e5e71ccdaa15b1fd91482de",
+          "bytes": 782
+        },
+        "resources": {
+          "wall_seconds": null,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": null,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/results__economic-analysis-01__canonical-execution.json",
+            "sha256": "8b9b145bd70227c3e668f00c4f932e880d769d2c3a51bc066f1944c7df4c49f9",
+            "bytes": 839
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "economic-canonical-analysis",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-analysis01-audit",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/normalized-analysis01-audit.json",
+        "evidence_sha256": "4d8f645e153623ebcf7012f431d54befb976cfa5705c110b99bd7434d9356f7b",
+        "lifecycle_phase": "economic-independent-arithmetic-audit",
+        "original_source_path": "results/economic-analysis-01/independent-aggregation-audit.json",
+        "scope_note": "Read-only arithmetic audit, not new consumer execution.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/normalized-analysis01-audit.json",
+          "sha256": "4d8f645e153623ebcf7012f431d54befb976cfa5705c110b99bd7434d9356f7b",
+          "bytes": 738
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-analysis01-audit.json",
+          "sha256": "127d7ea0d0262294a5f7268f3c54aac7e2f6d4e93520b6b9f909f033dfe8d614",
+          "bytes": 799
+        },
+        "resources": {
+          "wall_seconds": 0.07158741099920007,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.07157608900000001,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/normalized-analysis01-audit.json",
+            "sha256": "4d8f645e153623ebcf7012f431d54befb976cfa5705c110b99bd7434d9356f7b",
+            "bytes": 738
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "economic-independent-arithmetic-audit",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-economic-review-record",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/normalized-economic-review-record.json",
+        "evidence_sha256": "33bb2d6229078fbc918ebf2054767554463236b48b34e5c5b2ec120f97cd0b3a",
+        "lifecycle_phase": "publication-economic-review",
+        "original_source_path": "publication/economic-review-01.json",
+        "scope_note": "Only measured review-record writing. Reading, model critique and source scrutiny remain unknown where not metered.",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/normalized-economic-review-record.json",
+          "sha256": "33bb2d6229078fbc918ebf2054767554463236b48b34e5c5b2ec120f97cd0b3a",
+          "bytes": 743
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-economic-review-record.json",
+          "sha256": "a9d5df230288496f5136123788a49d19a110684855544b5117d430d61956f312",
+          "bytes": 799
+        },
+        "resources": {
+          "wall_seconds": 0.0008193379999283934,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.0008147130000000016,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/normalized-economic-review-record.json",
+            "sha256": "33bb2d6229078fbc918ebf2054767554463236b48b34e5c5b2ec120f97cd0b3a",
+            "bytes": 743
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "publication-economic-review",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-economic-table-writing",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/economic-table-writing.json",
+        "evidence_sha256": "d814f7d9e34749f552c66ee66bea9767aa110baccaf30eb341242acdb2910a70",
+        "lifecycle_phase": "economic-publication-table-writing",
+        "original_source_path": "metering/economics.jsonl:19",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/economic-table-writing.json",
+          "sha256": "d814f7d9e34749f552c66ee66bea9767aa110baccaf30eb341242acdb2910a70",
+          "bytes": 1990
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-economic-table-writing.json",
+          "sha256": "14d15f4f5712bf88e6d2eb23bbd1d742312ffd71db595e5cad171ed192d25711",
+          "bytes": 794
+        },
+        "resources": {
+          "wall_seconds": 0.004800418999366229,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.004759774000000001,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/economic-table-writing.json",
+            "sha256": "d814f7d9e34749f552c66ee66bea9767aa110baccaf30eb341242acdb2910a70",
+            "bytes": 1990
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "economic-publication-table-writing",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      },
+      {
+        "id": "postprimary-overhead-record-writing",
+        "ownership": "shared_investment",
+        "arm": "shared",
+        "outcome": "succeeded",
+        "accounting_role": "additive",
+        "stages": [
+          "verification",
+          "packaging",
+          "reporting"
+        ],
+        "evidence_path": "analysis/analysis02-cost-inputs/overhead-record-writing.json",
+        "evidence_sha256": "fd2ef12732f40fac398a4149f72afeacbf36d4e56c55684d8cf7f7a2303301a3",
+        "lifecycle_phase": "economic-publication-table-writing",
+        "original_source_path": "metering/economics.jsonl:20",
+        "original_evidence": {
+          "path": "analysis/analysis02-cost-inputs/overhead-record-writing.json",
+          "sha256": "fd2ef12732f40fac398a4149f72afeacbf36d4e56c55684d8cf7f7a2303301a3",
+          "bytes": 1405
+        },
+        "normalized_evidence": {
+          "path": "results/economic-analysis-02/derived/lifecycle/postprimary-overhead-record-writing.json",
+          "sha256": "d4a3a56519057c4e70d8c318ef1e4b7cc342c96fb928d9697e5b62f483cec3e3",
+          "bytes": 796
+        },
+        "resources": {
+          "wall_seconds": 0.001103530999898794,
+          "child_cpu_seconds": null,
+          "meter_cpu_seconds": 0.0011007290000000017,
+          "child_peak_rss_kib": null,
+          "network_requests": null,
+          "network_response_bytes": null,
+          "runtime_model_calls": null,
+          "inference_tokens": null,
+          "human_minutes": null,
+          "customer_minutes": null,
+          "money_usd": null,
+          "schema": "postfreeze-normalized-lifecycle-resource/v1",
+          "source_identity": {
+            "path": "analysis/analysis02-cost-inputs/overhead-record-writing.json",
+            "sha256": "fd2ef12732f40fac398a4149f72afeacbf36d4e56c55684d8cf7f7a2303301a3",
+            "bytes": 1405
+          },
+          "monetary_cost_usd": null,
+          "lifecycle_phase": "economic-publication-table-writing",
+          "note": "Resource field normalization only; original receipt retained. No unknown filled as zero."
+        }
+      }
+    ],
+    "by_phase": {
+      "original-contract-development": {
+        "records": 5,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 46.36130676300127,
+            "known_subtotal": 46.36130676300127,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 1.043421,
+            "known_subtotal": 1.043421,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": 0.22331999600000002,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "conventional-construction-validation": {
+        "records": 7,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 18.937362503998884,
+            "known_subtotal": 18.937362503998884,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 4.2123,
+            "known_subtotal": 4.2123,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.046178789,
+            "known_subtotal": 0.046178789,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "manual-parameterization-validation": {
+        "records": 3,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 1.6124340620008297,
+            "known_subtotal": 1.6124340620008297,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 1.561763,
+            "known_subtotal": 1.561763,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.013961338999999996,
+            "known_subtotal": 0.013961338999999996,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "retained-construction-validation": {
+        "records": 3,
+        "failed_records": 2,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 48.24514547000217,
+            "known_subtotal": 48.24514547000217,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 4.441599,
+            "known_subtotal": 4.441599,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.09035330600000001,
+            "known_subtotal": 0.09035330600000001,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "failed-launch-diagnostics": {
+        "records": 1,
+        "failed_records": 1,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "first-useful-manual-delivery-and-correction": {
+        "records": 2,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.030439856000157306,
+            "known_subtotal": 0.030439856000157306,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 2
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.030415192000000004,
+            "known_subtotal": 0.030415192000000004,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "development-acquisition-and-setup": {
+        "records": 5,
+        "failed_records": 1,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 10.599430616000063,
+            "known_subtotal": 10.599430616000063,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": 9.476757,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": 0.351565675,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "independent-offline-reproduction": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 38.435845689000416,
+            "known_subtotal": 38.435845689000416,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 8.346947,
+            "known_subtotal": 8.346947,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.007055872000000005,
+            "known_subtotal": 0.007055872000000005,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "independent-custody-scrutiny": {
+        "records": 2,
+        "failed_records": 1,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 7.792447357000128,
+            "known_subtotal": 7.792447357000128,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 2
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 7.611332546,
+            "known_subtotal": 7.611332546,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "independent-first-result-mechanical-scrutiny": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.010400528999525704,
+            "known_subtotal": 0.010400528999525704,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.010374611999999998,
+            "known_subtotal": 0.010374611999999998,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "fixed-primary-input-construction": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.047583129000486224,
+            "known_subtotal": 0.047583129000486224,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.007033849000000002,
+            "known_subtotal": 0.007033849000000002,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "conventional-initial-pair": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 15.81582871700084,
+            "known_subtotal": 15.81582871700084,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 1.2819770000000001,
+            "known_subtotal": 1.2819770000000001,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.019937286,
+            "known_subtotal": 0.019937286,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-relocation-preparation": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.20784191500024463,
+            "known_subtotal": 0.20784191500024463,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.207830989,
+            "known_subtotal": 0.207830989,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-relocation-replay": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 23.603891890999876,
+            "known_subtotal": 23.603891890999876,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 8.894551,
+            "known_subtotal": 8.894551,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.035621148,
+            "known_subtotal": 0.035621148,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-browser-acquisition": {
+        "records": 2,
+        "failed_records": 1,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 10.650272736000261,
+            "known_subtotal": 10.650272736000261,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 8.461931,
+            "known_subtotal": 8.461931,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.023014866000000002,
+            "known_subtotal": 0.023014866000000002,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-browser-metadata": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "publication-demo-browser-qa": {
+        "records": 3,
+        "failed_records": 2,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 3.674836825000966,
+            "known_subtotal": 3.674836825000966,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 3.224849,
+            "known_subtotal": 3.224849,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.016834832000000008,
+            "known_subtotal": 0.016834832000000008,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-demo-construction": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.14992938799878175,
+            "known_subtotal": 0.14992938799878175,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.14988754799999998,
+            "known_subtotal": 0.14988754799999998,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-download-verification": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "publication-figure-construction": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.9833810410000297,
+            "known_subtotal": 0.9833810410000297,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.9832529939999999,
+            "known_subtotal": 0.9832529939999999,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-pdf-compilation": {
+        "records": 2,
+        "failed_records": 1,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.8176190009997272,
+            "known_subtotal": 0.8176190009997272,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": 0.737802,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": 0.0029452950000000006,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "publication-manuscript-authoring": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "publication-public-source-verification": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.007124269000996719,
+            "known_subtotal": 0.007124269000996719,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.0071243350000000025,
+            "known_subtotal": 0.0071243350000000025,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-source-custody-audit": {
+        "records": 3,
+        "failed_records": 2,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.9614354160006315,
+            "known_subtotal": 0.9614354160006315,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 3
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": 0.910071592,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "primary-common-orchestration-overhead": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.014938691994757392,
+            "known_subtotal": 0.014938691994757392,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": 0.0,
+            "known_subtotal": 0.0,
+            "missing_count": 0
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.01466323799999994,
+            "known_subtotal": 0.01466323799999994,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "economic-analysis-collection": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.17710315200019977,
+            "known_subtotal": 0.17710315200019977,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.177088841,
+            "known_subtotal": 0.177088841,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "economic-canonical-analysis": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          }
+        },
+        "money_usd": null
+      },
+      "economic-independent-arithmetic-audit": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.07158741099920007,
+            "known_subtotal": 0.07158741099920007,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.07157608900000001,
+            "known_subtotal": 0.07157608900000001,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "publication-economic-review": {
+        "records": 1,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.0008193379999283934,
+            "known_subtotal": 0.0008193379999283934,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 1
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.0008147130000000016,
+            "known_subtotal": 0.0008147130000000016,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      },
+      "economic-publication-table-writing": {
+        "records": 2,
+        "failed_records": 0,
+        "quantities": {
+          "wall_seconds": {
+            "complete_total": 0.0059039499992650235,
+            "known_subtotal": 0.0059039499992650235,
+            "missing_count": 0
+          },
+          "child_cpu_seconds": {
+            "complete_total": null,
+            "known_subtotal": null,
+            "missing_count": 2
+          },
+          "meter_cpu_seconds": {
+            "complete_total": 0.005860503000000003,
+            "known_subtotal": 0.005860503000000003,
+            "missing_count": 0
+          }
+        },
+        "money_usd": null
+      }
+    },
+    "exclusions": [
+      {
+        "path": "results/development/first-delivery-corrected/assembly-receipt.json",
+        "reason": "Byte-identical preserved copy of an already counted resource receipt; not another execution."
+      },
+      {
+        "path": "results/**/pair/**, results/**/delivery/delivery.json, results/**/package/**",
+        "reason": "Nested observed receipt/evidence copies are included in their enclosing development or primary-delivery intervals; do not sum again."
+      },
+      {
+        "path": "results/review-controls/*/*/pair/** and package/**",
+        "reason": "Deliberately synthetic relocated or malformed fixture receipts are not actual executions. Actual control-run resources are counted through controls.json."
+      },
+      {
+        "path": "data/confirmation-environments/*/preparation.json",
+        "reason": "Eight actual preparations are nested under the separately normalized acquisition-summary driver; diagnostic quantities retained without double count."
+      },
+      {
+        "path": "data/confirmation-inputs/construction.json",
+        "reason": "Metadata generator is enclosed by confirmation-input-construction-receipt; retained as provenance, not added again."
+      },
+      {
+        "path": "research/value-compounds/**",
+        "reason": "Previous study preserved; legacy asset reuse attribution remains unknown. Old cash/resource spend is not fabricated as newly incurred v2 construction."
+      },
+      {
+        "path": "metering/*.jsonl",
+        "reason": "Collector snapshots all logs as documentary records; overlapping assistant timestamps and duplicate embedded metrics are not additive CPU or monetary bills."
+      },
+      {
+        "path": "results/development/conventional-pair-01/after-execution.json",
+        "reason": "Nested under conventional-pair-01/pair.json inclusive receipt; preserved but not added."
+      },
+      {
+        "path": "results/development/conventional-pair-01/after-verification-execution.json",
+        "reason": "Nested under conventional-pair-01/pair.json inclusive receipt; preserved but not added."
+      },
+      {
+        "path": "results/development/conventional-pair-01/before-execution.json",
+        "reason": "Nested under conventional-pair-01/pair.json inclusive receipt; preserved but not added."
+      },
+      {
+        "path": "results/development/conventional-pair-01/before-verification-execution.json",
+        "reason": "Nested under conventional-pair-01/pair.json inclusive receipt; preserved but not added."
+      },
+      {
+        "path": "metering/prior-delivery-recovery.jsonl",
+        "reason": "Source owner explicitly assigned this to separate prior V1 delivery recovery; not part of the V2 tested asset."
+      },
+      {
+        "path": "publication/relocation-qa-results/",
+        "reason": "All replay execution nested in publication/relocation-qa-execution.json; copied inner receipts are not new operations."
+      },
+      {
+        "path": "publication/browser-acquisition-bounded.json",
+        "reason": "Nested CPU/wall excluded; observed1 request and125799226 response bytes incorporated once into outer resource record."
+      },
+      {
+        "path": "publication/demo-browser-qa.json",
+        "reason": "Nested execution within successful outer browserQA03; fourteen combinations and two downloads are not missions."
+      },
+      {
+        "path": "metering/prior-delivery-recovery.jsonl",
+        "sha256_at_collection": "ae56e1ae3aa6e5ada91702dd477bed78748620f5054445d388ce9d5391a611c0",
+        "cost_account": "Prior V1 delivery recovery, explicitly assigned by the source owner and root",
+        "reason": "Separate historical deliverable recovery; not an attributable V2 component-capability investment."
+      }
+    ],
+    "complete_cost": null,
+    "scope": "Known physical subtotals plus explicit gaps; no elapsed-assistant wage or inference charge inferred."
+  },
+  "manual_scope": "Observed researcher-assisted first-completion workflow constructed in this study, all legitimate helpers/caches retained; one-time assembler parameterization charged; actual manual finalization recorded; not a human-without-AI timing sample.",
+  "freshness": "No selected source/wheel body or outcome accessed before protocol freeze. Historical public releases, possible pretraining exposure, not prospective jobs or actual Alpha adoptions.",
+  "quality_and_timing_limits": {
+    "quality": "Report all six pairings and both clusters, exact counts and every failure. No p-values or generalized reliability rate from sixhistoricalmissions.",
+    "timing": "One observed run per arm/mission, same limits; report descriptive paired values. No timingprecisionclaim onsharedhost or unsupportedhumanminutecomparison.",
+    "money": "Complete marginal, recurring and fully loaded cost remain null where billing, inference, maintenance or utilization missing. Known quantities plus unknowns.",
+    "pricing": "Sourced wage/procurement context plus symbolic break-even thresholds; no chosen market price or invented matched duration.",
+    "repayment": "Same testedasset investment including unsuccessfulB01, common and conventional construction, verification/integration and upkeep. No customer savings reclassified as provider receipts.",
+    "financeability": "Actualcollections0, startingcapital/allocation/obligations/reserves unknown; no financednextasset or dollarvaluation."
+  },
+  "monetary_cost_usd": null,
+  "customer_price_usd": null,
+  "customer_savings_usd": null,
+  "investment_repaid": null,
+  "available_to_commit_usd": null,
+  "source_freeze_rechecked_after_collection": {
+    "freeze": {
+      "path": "protocol/source-freeze.json",
+      "sha256": "f417768b69a6729000d5ce9d10393bfac7eec45b7ce448a0d61c711a6662530c",
+      "bytes": 15549
+    },
+    "files_checked": 83,
+    "all_match": true,
+    "frozen_at": "2026-10-26T15:17:08.752748+00:00"
+  },
+  "collector_wall_seconds": 0.2056245020012284,
+  "collector_process_cpu_seconds": 0.205607909
+}

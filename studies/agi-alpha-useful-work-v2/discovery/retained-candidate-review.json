@@ -1,0 +1,81 @@
+{
+  "schema": "independent-retained-candidate-review/v1",
+  "created_at": "2026-10-26T15:05:59.714615+00:00",
+  "reviewer": "/root/economics",
+  "candidate_author": false,
+  "shared_contract_verifier_author": true,
+  "independence_scope": "Separate from retained candidate author; not a blinded external audit. Earlier independent contract/verifier authorship disclosed.",
+  "development_evidence": "results/development/retained-delivery",
+  "defects": [
+    {
+      "id": "D1",
+      "verdict": "CONFIRMED_AND_CORRECTED",
+      "title": "Retained package omitted required provenance checks",
+      "source_before": "discovery/review-snapshots/pre-custody-package_component.py",
+      "source_positions": "assemble receipt loop; pair/job/worker identity checks absent",
+      "reproductions": [
+        "missing-execution-prebindings",
+        "stale-verifier-source-binding",
+        "wrong-output-path-matching-hash",
+        "stale-pair-worker-hash",
+        "wrong-job-consumer-hash"
+      ],
+      "before_result": "All five incorrectly produced accepted SCOPED_COMPONENT_PRESERVED",
+      "correction": "Explicit original job/source/worker/arm/schema/manifest checks and adoption of conventional_package.receipt_check with exact paths, bytes, hashes and phase exit types.",
+      "cost_and_authorship": "Conventional validator reuse is attributed; its construction and retained integration remain attributable costs. No independent algorithmic superiority claim."
+    },
+    {
+      "id": "D2",
+      "verdict": "CONFIRMED_AND_CORRECTED",
+      "title": "Valid verifier mismatch exit code invalidated custody",
+      "source_before": "discovery/review-snapshots/pre-custody-run_pair.py:136-140",
+      "before_result": "Exact custody predicate returns false for after-verifier exit2 despite intact observations and completed execution.",
+      "correction": "Typed phase-specific worker exits0/1 and verifier exits0/2; wrong/missing/timed-out launches remain incomplete.",
+      "control": "A labeled semantic-fault observation passed through the real independent verifier yielded child exit2, BEHAVIOR_MISMATCH, and COMPONENT_REGRESSION after the fix; this is not an observed dependency defect."
+    }
+  ],
+  "control_evidence": {
+    "before": {
+      "path": "results/review-controls/retained-custody-v1/controls.json",
+      "sha256": "0e6d62611700c4fe99e92b31a41ca30b788277d0ea407e65025996c048a4b2a3",
+      "passed": 3,
+      "total": 9
+    },
+    "after": {
+      "path": "results/review-controls/retained-custody-v2/controls.json",
+      "sha256": "e129f99bad442f35682f3d213a5fdab368dff13304e89ee7bbb25916c1a16e6b",
+      "passed": 14,
+      "total": 14,
+      "wall_seconds": 7.698353935000341,
+      "process_cpu_seconds": 7.5175370489999995,
+      "source_pins_unchanged": true
+    },
+    "reproduce": "python tests/retained_custody_controls.py --pair results/development/retained-delivery/pair --out NEW_CONTROL_DIRECTORY --semantic-control",
+    "synthetic_relocated_receipts_are_not_new_execution_attestations": true,
+    "primary_input_reads": false,
+    "consumer_execution": false
+  },
+  "postfix_source_sha256": {
+    "/workspace/scratch/8586be0c300d/research/useful-work-v2/src/package_component.py": "0b4eb1ae2392176ff61ef91b7da0d13df3c6400ee0b3e317439238881adc182d",
+    "/workspace/scratch/8586be0c300d/research/useful-work-v2/src/run_pair.py": "6426c64b93d5f387fcbaed81bd8da86ba59be783f91edbbd71b772cfd8790cc9",
+    "/workspace/scratch/8586be0c300d/research/useful-work-v2/src/conventional_package.py": "cd28579ecf72eba5bdfffa6b3b5483aaaa960322989d2a2369da5431062207ba"
+  },
+  "readiness": {
+    "source_level_freeze_blockers_cleared": true,
+    "fresh_confirmation_completed_by_this_review": false,
+    "new_legitimate_postfix_delivery_required": true,
+    "engineering_admission": "Pending predeclared complete outcome and resource comparison on untouched confirmation",
+    "economic_admission": "HOLD; full costs, real demand, supported repayment and available funds remain unknown",
+    "production_or_operator_adoption": "Not granted; native Workbench HOLD retained"
+  },
+  "freeze_recommendation": [
+    "Pin all builder/shared validator/observer/verifier/controller/contract/projection/native closure files after the legitimate corrected development delivery.",
+    "Preserve candidate01 and failed controls, allocate correction and comparator-validator integration costs to this same asset.",
+    "Run both builders with identical allowed environments, caches, source information, original15s timeout, two concurrent before/after probes and matching delivery boundary.",
+    "Accept only exact source/contract/environment bound complete packets with verified scoped decision and reproducible evidence; refuse missing/stale/failure evidence.",
+    "Count unique substantive triggers only; controls, assertions, repeats and no-ops do not increase mission count.",
+    "Retain failed attempts in complete resource vectors and finite investment ledger.",
+    "Report operational improvement, monetary repayment and financeable expansion independently. A conventional tie or adopted conventional component supports usefulness without a method-superiority claim."
+  ],
+  "monetary_review_cost_usd": null
+}

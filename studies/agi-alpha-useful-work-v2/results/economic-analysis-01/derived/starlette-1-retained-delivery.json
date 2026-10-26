@@ -1,0 +1,45 @@
+{
+  "wall_seconds": 16.493231874999765,
+  "child_cpu_seconds": 1.9278760000000001,
+  "meter_cpu_seconds": 0.007105226000000006,
+  "child_peak_rss_kib": 44216,
+  "network_requests": 0,
+  "network_response_bytes": null,
+  "runtime_model_calls": 0,
+  "inference_tokens": null,
+  "human_minutes": null,
+  "customer_minutes": null,
+  "money_usd": null,
+  "schema": "postfreeze-derived-delivery-resource/v1",
+  "mission_id": "starlette-1",
+  "arm": "retained",
+  "source_identities": [
+    {
+      "path": "results/confirmation/starlette-1/retained/terminal.json",
+      "sha256": "6c8c050c06605d5d181101ce4d7488967b2610f10ff04aefe02e7435fb780d05",
+      "bytes": 1673
+    },
+    {
+      "path": "results/confirmation/starlette-1/retained-execution.json",
+      "sha256": "7ad9726bc13ef47fc080ba3c508397073d24bfe861eb27278b8590047a862e8b",
+      "bytes": 4607
+    },
+    {
+      "path": "results/confirmation/starlette-1/retained/delivery/delivery.json",
+      "sha256": "59b08950e2bd345fc4091f1d869ebb6ab2ac07d5a24cf01841b99054fa791e0e",
+      "bytes": 1229
+    }
+  ],
+  "span_basis": "Campaign terminal encloses this complete arm delivery and its local driver overhead; never add nested receipts.",
+  "complete_delivery_scope": true,
+  "observed_mechanical_wall_seconds": 16.439681920999647,
+  "observed_finalization_wall_seconds": null,
+  "observed_manual_pair_wall_seconds": null,
+  "actual_manual_finalizations": 0,
+  "limitations": [
+    "Terminal totals enclose external command totals, which themselves enclose delivery, pair, verifier and case receipts; sum this hierarchy only once.",
+    "Known runtime worker activity excludes research/construction inference, which is unknown and charged separately."
+  ],
+  "started_at": "2026-10-26T15:25:48.778310+00:00",
+  "ended_at": "2026-10-26T15:26:05.271534+00:00"
+}

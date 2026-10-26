@@ -1,0 +1,47 @@
+{
+  "wall_seconds": 37.31689306699991,
+  "child_cpu_seconds": 1.6395979999999994,
+  "meter_cpu_seconds": 0.019560343999999993,
+  "child_peak_rss_kib": 47040,
+  "network_requests": null,
+  "network_response_bytes": null,
+  "runtime_model_calls": null,
+  "inference_tokens": null,
+  "human_minutes": null,
+  "customer_minutes": null,
+  "money_usd": null,
+  "runtime_network_requests": null,
+  "schema": "postfreeze-derived-delivery-resource/v1",
+  "mission_id": "starlette-2",
+  "arm": "manual",
+  "source_identities": [
+    {
+      "path": "results/confirmation/starlette-2/manual/terminal.json",
+      "sha256": "6b9712bb8a91d93360c80da471ece8d3994e980bf57db602e95ce48224034a07",
+      "bytes": 1817
+    },
+    {
+      "path": "results/confirmation/starlette-2/manual/pair/pair.json",
+      "sha256": "73ca172699dacc1078688d947da389c5dc8fdccbbaeb1ac15ab96ee3174ef48a",
+      "bytes": 5388
+    },
+    {
+      "path": "results/confirmation/starlette-2/manual/finalization-execution.json",
+      "sha256": "f6792b487a3c23c533cbab7160355bf51303102baa36b6cbdf90bff80d4d28ed",
+      "bytes": 4877
+    }
+  ],
+  "span_basis": "Campaign terminal encloses this complete arm delivery and its local driver overhead; never add nested receipts.",
+  "complete_delivery_scope": true,
+  "observed_mechanical_wall_seconds": 16.24252338200131,
+  "observed_finalization_wall_seconds": 0.5687706610005989,
+  "observed_manual_pair_wall_seconds": 15.67375272100071,
+  "actual_manual_finalizations": 1,
+  "limitations": [
+    "Manual elapsed span is observed researcher-assisted turnaround, not measured no-AI human work.",
+    "Terminal CPU includes the local mechanics/finalization and driver; researcher inference and unmetered remote resources remain unknown.",
+    "Mechanical elapsed and finalization elapsed are retained separately and are not added to the inclusive service span."
+  ],
+  "started_at": "2026-10-26T15:26:54.818184+00:00",
+  "ended_at": "2026-10-26T15:27:32.135071+00:00"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "final-supplement-readiness-controls/v1",
+  "created_at": "2026-10-26T15:55:36.672641+00:00",
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/test_final_delivery_cost_supplement.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".............\n----------------------------------------------------------------------\nRan 13 tests in 0.012s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final_delivery_cost_supplement.py",
+        "--plan",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final-delivery-cost-plan-01.json",
+        "--out",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/results/final-delivery-cost-draft-03"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"status\": \"DRAFT_NOT_FINALIZED\", \"completed_records\": 7, \"required_pending\": 6, \"new_missions\": 0, \"complete_monetary_cost\": null, \"out\": \"/workspace/scratch/8586be0c300d/research/useful-work-v2/results/final-delivery-cost-draft-03\"}\n",
+      "stderr": ""
+    }
+  ],
+  "all_expected_outcomes": true,
+  "exact_input_plan_snapshot_preserved": true,
+  "wall_seconds": 0.1690176940010133,
+  "process_cpu_seconds": 0.001669367000000005,
+  "child_cpu_seconds": 0.16597099999999998,
+  "new_primary_missions": 0,
+  "money_usd": null,
+  "inference_tokens": null,
+  "source_sha256": "f19aed05c605b915245e9ebda85d04e227509771eff28f61b343be8166f4e5b6",
+  "change": "Only final immutable input-plan preservation added after readiness02; direct output check and13 controls executed on the final helper bytes."
+}
