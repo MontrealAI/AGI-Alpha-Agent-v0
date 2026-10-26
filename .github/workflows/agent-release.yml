@@ -315,7 +315,18 @@ jobs:
       - name: Release contract preflight before full regression
         timeout-minutes: 5
         run: |
-          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py tests/test_held_native_source_guard.py
+          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py tests/test_held_native_source_guard.py tests/test_workbox_integrity_contract.py
+          mkdir -p evidence
+          ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests -o addopts= tests/test_workbox_integrity.py -q --junitxml=evidence/workbox-preflight.xml
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          report = ET.parse('evidence/workbox-preflight.xml')
+          cases = list(report.iter('testcase'))
+          assert len(cases) == 1
+          assert cases[0].get('classname') == 'tests.test_workbox_integrity'
+          assert cases[0].get('name') == 'test_workbox_hash_mismatch'
+          assert not any(list(report.iter(tag)) for tag in ('failure', 'error', 'skipped'))
+          PY
       - name: Preserve held native source identities (no behavioral qualification)
         run: |
           mkdir -p evidence
