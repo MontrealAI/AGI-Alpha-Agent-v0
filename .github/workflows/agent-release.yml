@@ -222,7 +222,9 @@ jobs:
         if: always()
         with:
           name: runtime-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   regression:
@@ -354,7 +356,9 @@ jobs:
         if: always()
         with:
           name: regression
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   browser-contracts:
@@ -442,6 +446,7 @@ jobs:
           name: browser-contracts
           path: |
             evidence/
+            !evidence/semgrep-official/**
             alpha_factory_v1/core/interface/web_client/test-results/
           if-no-files-found: error
 
@@ -485,7 +490,9 @@ jobs:
         if: always()
         with:
           name: real-model
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   quality:
@@ -518,9 +525,15 @@ jobs:
           python -m pip install --require-hashes --only-binary=:all: -r requirements-papers.lock
           python -m scripts.research_papers check
           python -m pytest --noconftest -o addopts= tests/test_research_papers.py tests/test_paper_changes.py tests/test_paper_publication.py tests/test_paper_workflow_policy.py -q
+      - name: Verify immutable sources and committed release evidence
+        run: |
+          python scripts/check_strategy_research_source.py
+          python scripts/check_no_binary_diff.py --base 5499495911bf8822ac0aa8c9007f00789c1132b5
+          python scripts/dp_scrubber.py --base 5499495911bf8822ac0aa8c9007f00789c1132b5
       - name: Require the blocking repository hook report
         env:
           SKIP: black,ruff-format,flake8,update-actions
+          STRATEGY_REQUIRE_COMMITTED_CONTEXT: '1'
         run: |
           mkdir -p evidence
           python - <<'PY'
@@ -540,10 +553,30 @@ jobs:
           PY
       - name: Require blocking hooks on every release change
         env:
-          SKIP: black,ruff-format,flake8,update-actions
+          SKIP: black,ruff-format,flake8,update-actions,semgrep
         run: |
+          # Semgrep (official and bounded) was already required on all files above.
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --exit-code HEAD
+          git diff --cached --exit-code HEAD
           git diff --name-only -z d1df708e3e08ee58b7cbe74758767ddb2da2d5f9 HEAD | xargs -0 pre-commit run --files
-          git diff --exit-code
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --exit-code HEAD
+          git diff --cached --exit-code HEAD
+      - name: Retain actual repository Python security evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: repository-python-security
+          # Publish projections only; captured upstream rules and raw errors remain local.
+          path: |
+            evidence/semgrep-official/public/attempt-*/summary.json
+            evidence/semgrep-official/public/attempt-*/policy-identity.json
+            evidence/semgrep-official/public/attempt-*/finding-index.json
+            evidence/semgrep-official/public/attempt-*/source-identities.json
+          if-no-files-found: error
+      - name: Verify scoped security hook with its installed tool
+        run: STRATEGY_REQUIRE_SEMGREP=1 python -m pytest --noconftest -o addopts= -p no:cacheprovider tests/test_strategy_python_security.py -q
       - name: Verify the documented contributor setup in a fresh environment
         run: |
           python -m venv "$RUNNER_TEMP/contributor-env"
@@ -568,7 +601,9 @@ jobs:
         if: always()
         with:
           name: quality
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   style-advisory:
@@ -758,7 +793,9 @@ jobs:
         if: always()
         with:
           name: gallery-${{ matrix.assets }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
       - name: Archive the exact tested full site
         if: matrix.assets == 'full'
@@ -830,7 +867,9 @@ jobs:
         if: always()
         with:
           name: native-demos
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   sovereign-lab:
@@ -873,7 +912,9 @@ jobs:
         if: always()
         with:
           name: sovereign-lab-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   finance-lab:
@@ -915,7 +956,9 @@ jobs:
         if: always()
         with:
           name: finance-lab-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   muzero-lab:
@@ -967,7 +1010,9 @@ jobs:
         if: always()
         with:
           name: muzero-lab-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   demo-distribution:
@@ -1002,7 +1047,9 @@ jobs:
         if: always()
         with:
           name: demo-distribution-${{ matrix.python }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
 
   historical-ci:
@@ -1029,6 +1076,7 @@ jobs:
       - successor-journey
       - transformational-intelligence
       - successor-capability
+      - strategy-engineering
     runs-on: ubuntu-latest
     timeout-minutes: 125
     outputs:
@@ -1058,7 +1106,9 @@ jobs:
         if: always()
         with:
           name: ${{ steps.evidence-name.outputs.name }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
 
   successor-workbench:
@@ -1105,7 +1155,9 @@ jobs:
         if: always()
         with:
           name: successor-workbench
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: error
 
   transformational-intelligence:
@@ -1265,7 +1317,9 @@ jobs:
         if: always()
         with:
           name: ${{ steps.public-name.outputs.name }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/semgrep-official/**
           if-no-files-found: warn
 
   publish:
@@ -1322,7 +1376,7 @@ jobs:
       - name: Install only the existing release-verifier dependencies
         env:
           PIP_NO_CACHE_DIR: '1'
-        run: python -m pip install cryptography==50.0.1 packaging==25.0
+        run: python -m pip install cryptography==50.0.1 packaging==25.0 defusedxml==0.7.1
       - name: Exercise the actual public core and separate Strategy installation
         env:
           PYTHONNOUSERSITE: '1'

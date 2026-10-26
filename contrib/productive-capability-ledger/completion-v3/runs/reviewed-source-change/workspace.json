@@ -1,0 +1,230 @@
+{
+  "schema": "ti-catalogue-workspace/v1",
+  "sourceHash": "3e2a9cab0dd0dfe89729b3c5dda3cb2013cc7b8a7d72066f713444323e5629bd",
+  "runId": "reviewed-source-change",
+  "createdAt": "2026-10-25T21:03:40.026Z",
+  "language": "en",
+  "approach": "grouped",
+  "input": {
+    "leftCsv": "\"path\",\"sha256\"\r\n\"contrib/productive-capability-ledger/automation-v1/run-mission.mjs\",\"9ac945d9ce62580e6c4b15418bf6c99d0e1aab9833b6b51d7e0469ef00fdcd46\"\r\n\"contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs\",\"87a7d36e436fa2018465a8b23f71704d57ad4e76742f79b705a156a28ae057ff\"\r\n\"contrib/productive-capability-ledger/automation-v1/verify-run.py\",\"922c68a437bf1432829ecfa66869839828379a03818dbfd873995b1fc02c589f\"\r\n\"examples/successor-alpha/automated-costs.mjs\",\"0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506\"\r\n\"examples/successor-alpha/shadow-ledger.mjs\",\"cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21\"\r\n",
+    "rightCsv": "\"path\",\"sha256\"\r\n\"contrib/productive-capability-ledger/automation-v1/run-mission.mjs\",\"571032112384201eb27383ef7313115f1c0737b214d022c8dbd033b48050bac4\"\r\n\"contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs\",\"08a5acce895174f5011b96175f11d1457adc2aea446b3d60a993e8c2625ad5d5\"\r\n\"contrib/productive-capability-ledger/automation-v1/verify-run.py\",\"07511369125498d9c1bfaa894ad6818c7e020bb8bf93b274fa290951e5720ebd\"\r\n\"examples/successor-alpha/automated-costs.mjs\",\"0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506\"\r\n\"examples/successor-alpha/shadow-ledger.mjs\",\"cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21\"\r\n",
+    "leftKey": "path",
+    "rightKey": "path"
+  },
+  "result": {
+    "schema": "ti-catalogue-result/v1",
+    "leftIdentity": {
+      "sha256": "fdb38bf974ac602fe02d9520523d406257f220711eb0fbea13b164c6418f3db3",
+      "bytes": 659
+    },
+    "rightIdentity": {
+      "sha256": "bcac89c47f028ee527dab928516caa729f85d20bf677f86a690d51547b46001e",
+      "bytes": 659
+    },
+    "resolution": {
+      "schema": "successor-discrepancy-resolution/v1",
+      "actions": [
+        {
+          "id": "action-0001",
+          "key": "contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+          "type": "review_shared_values",
+          "leftRows": [
+            0
+          ],
+          "rightRows": [
+            0
+          ],
+          "occurrences": [
+            "conflict:0:0"
+          ],
+          "conflicts": [
+            {
+              "leftIndex": 0,
+              "rightIndex": 0,
+              "fieldIndices": [
+                0
+              ]
+            }
+          ],
+          "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+        },
+        {
+          "id": "action-0002",
+          "key": "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs",
+          "type": "review_shared_values",
+          "leftRows": [
+            1
+          ],
+          "rightRows": [
+            1
+          ],
+          "occurrences": [
+            "conflict:1:1"
+          ],
+          "conflicts": [
+            {
+              "leftIndex": 1,
+              "rightIndex": 1,
+              "fieldIndices": [
+                0
+              ]
+            }
+          ],
+          "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+        },
+        {
+          "id": "action-0003",
+          "key": "contrib/productive-capability-ledger/automation-v1/verify-run.py",
+          "type": "review_shared_values",
+          "leftRows": [
+            2
+          ],
+          "rightRows": [
+            2
+          ],
+          "occurrences": [
+            "conflict:2:2"
+          ],
+          "conflicts": [
+            {
+              "leftIndex": 2,
+              "rightIndex": 2,
+              "fieldIndices": [
+                0
+              ]
+            }
+          ],
+          "nextStep": "Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite."
+        }
+      ],
+      "sharedFields": [
+        {
+          "name": "sha256",
+          "leftColumn": 1,
+          "rightColumn": 1
+        }
+      ],
+      "burden": {
+        "pairwiseReviewItems": 3,
+        "groupedActions": 3,
+        "groupingReduction": 0,
+        "timeSavedClaim": false,
+        "sameTaskSuperiority": false
+      },
+      "coverage": {
+        "originalOccurrences": 3,
+        "coveredOccurrences": 3,
+        "complete": true,
+        "missing": [],
+        "duplicates": []
+      },
+      "diagnosis": {
+        "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+        "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+        "duplicateExceptionKeys": 0,
+        "uniqueExceptionKeys": 3,
+        "groupingReducesDecisionItems": false
+      },
+      "decision": {
+        "state": "retain_original_review",
+        "recommendedContract": "original_occurrence_review",
+        "reason": "No repeated exception key reduces the number of decision records; retain the original review contract."
+      },
+      "contract": {
+        "changed": true,
+        "original": "One review item per unmatched source row or conflicting matched row pair.",
+        "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+        "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+      },
+      "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n\"action-0001\",\"contrib/productive-capability-ledger/automation-v1/run-mission.mjs\",\"review_shared_values\",\"1\",\"1\",\"conflict:0:0\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0002\",\"contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs\",\"review_shared_values\",\"2\",\"2\",\"conflict:1:1\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n\"action-0003\",\"contrib/productive-capability-ledger/automation-v1/verify-run.py\",\"review_shared_values\",\"3\",\"3\",\"conflict:2:2\",\"Review all referenced differences for this exact key and choose the authoritative values; do not auto-overwrite.\"\r\n",
+      "externalAuthority": false,
+      "automaticallyResolved": false,
+      "qualification": "local_engineering_only"
+    },
+    "differences": [
+      {
+        "id": "conflict:0:0:0",
+        "occurrence": "conflict:0:0",
+        "action": "action-0001",
+        "key": "contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+        "kind": "conflict",
+        "leftRow": 1,
+        "rightRow": 1,
+        "field": "sha256",
+        "leftValue": "9ac945d9ce62580e6c4b15418bf6c99d0e1aab9833b6b51d7e0469ef00fdcd46",
+        "rightValue": "571032112384201eb27383ef7313115f1c0737b214d022c8dbd033b48050bac4"
+      },
+      {
+        "id": "conflict:1:1:0",
+        "occurrence": "conflict:1:1",
+        "action": "action-0002",
+        "key": "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs",
+        "kind": "conflict",
+        "leftRow": 2,
+        "rightRow": 2,
+        "field": "sha256",
+        "leftValue": "87a7d36e436fa2018465a8b23f71704d57ad4e76742f79b705a156a28ae057ff",
+        "rightValue": "08a5acce895174f5011b96175f11d1457adc2aea446b3d60a993e8c2625ad5d5"
+      },
+      {
+        "id": "conflict:2:2:0",
+        "occurrence": "conflict:2:2",
+        "action": "action-0003",
+        "key": "contrib/productive-capability-ledger/automation-v1/verify-run.py",
+        "kind": "conflict",
+        "leftRow": 3,
+        "rightRow": 3,
+        "field": "sha256",
+        "leftValue": "922c68a437bf1432829ecfa66869839828379a03818dbfd873995b1fc02c589f",
+        "rightValue": "07511369125498d9c1bfaa894ad6818c7e020bb8bf93b274fa290951e5720ebd"
+      }
+    ],
+    "metrics": {
+      "leftRows": 5,
+      "rightRows": 5,
+      "matchedPairs": 5,
+      "unmatchedRows": 0,
+      "unmatchedKeys": 0,
+      "conflictingPairs": 3,
+      "fieldDifferences": 3,
+      "actionGroups": 3,
+      "evidenceReferences": 3,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "sha256"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    },
+    "limitations": {
+      "localOnly": true,
+      "authority": "none",
+      "automaticallyResolved": false,
+      "timeSavedMeasured": false,
+      "accuracyImprovementMeasured": false,
+      "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+      "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+      "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+      "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+    }
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  },
+  "authority": "none"
+}

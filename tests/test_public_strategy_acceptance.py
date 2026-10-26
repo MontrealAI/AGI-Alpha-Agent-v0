@@ -4,9 +4,10 @@
 from __future__ import annotations
 
 import io
-import hashlib
 import json
+import os
 from pathlib import Path
+import subprocess
 from typing import Any
 import zipfile
 
@@ -19,6 +20,56 @@ class Response(io.BytesIO):
     """Minimal public HTTP response; never performs network I/O."""
 
     status = 200
+
+
+def test_public_preparer_qa_uses_exact_commit_despite_index_and_worktree_edits(tmp_path: Path) -> None:
+    repo = tmp_path / "repository"
+    repo.mkdir()
+    html = repo / "docs/try/index.html"
+    html.parent.mkdir(parents=True)
+    body = b"<!doctype html><title>Committed inert public-preparer fixture</title>"
+    html.write_bytes(body)
+    subprocess.run(["git", "-C", str(repo), "-c", "init.templateDir=", "init", "-q"], check=True)
+    subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
+    subprocess.run(
+        [
+            "git",
+            "-C",
+            str(repo),
+            "-c",
+            "user.name=Inert source fixture",
+            "-c",
+            "user.email=fixture@example.invalid",
+            "-c",
+            "commit.gpgsign=false",
+            "-c",
+            "core.hooksPath=/dev/null",
+            "commit",
+            "-qm",
+            "Committed fixture",
+        ],
+        check=True,
+    )
+    commit = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"], text=True).strip()
+    html.write_bytes(b"Uncommitted indexed fixture")
+    subprocess.run(["git", "-C", str(repo), "add", "."], check=True)
+    html.write_bytes(b"Different uncommitted worktree fixture")
+    destination = tmp_path / "public-planning-preparer.html"
+    record = public.stage_public_planning_preparer(repo, commit, destination)
+    assert destination.read_bytes() == body
+    assert record == {
+        "commit": commit,
+        "path": "docs/try/index.html",
+        "sha256": public.sha(body),
+        "scope": public.checks.PUBLIC_PREPARER_SCOPE,
+    }
+
+
+@pytest.mark.parametrize("commit", ["HEAD", "main", "a" * 39, "--untrusted"])
+def test_public_preparer_qa_refuses_unpinned_commit(tmp_path: Path, commit: str) -> None:
+    with pytest.raises(ValueError, match="Exact public-preparer source commit"):
+        public.stage_public_planning_preparer(tmp_path, commit, tmp_path / "not-created.html")
+    assert not (tmp_path / "not-created.html").exists()
 
 
 def release(raw: bytes = b"checked public body") -> dict[str, Any]:
@@ -160,24 +211,22 @@ def test_failure_artifacts_redact_token_and_preserve_full_failed_log(tmp_path: P
     assert (evidence / "public-installation.json").is_file()
 
 
-def test_core_wheel_source_and_installed_bytes_cannot_be_substituted(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_core_wheel_source_and_installed_bytes_cannot_be_substituted(tmp_path: Path) -> None:
     """Exact public labels cannot hide changed code or a changed installed member."""
     original = b"VERSION = 'inert-fixture'\n"
-    blob = hashlib.sha1(b"blob " + str(len(original)).encode() + b"\0" + original).hexdigest()
     data = b'{"schema":"inert-original"}'
-    data_blob = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
-    listing = (
-        "100644 blob "
-        + blob
-        + "\talpha_factory_v1/__init__.py\0"
-        + "100644 blob "
-        + data_blob
-        + "\talpha_factory_v1/schema.json\0"
-    ).encode()
     project = b'[project]\nname="alpha-factory-v1"\nversion="1.44.0"\n[project.scripts]\nalpha-agent="fixture:main"\n'
-    monkeypatch.setattr(public.subprocess, "check_output", lambda args, **_k: listing if "ls-tree" in args else project)
+    repo = tmp_path / "repo"
+    (repo / "alpha_factory_v1").mkdir(parents=True)
+    (repo / "alpha_factory_v1/__init__.py").write_bytes(original)
+    (repo / "alpha_factory_v1/schema.json").write_bytes(data)
+    (repo / "pyproject.toml").write_bytes(project)
+    git(repo, "init", "--quiet")
+    git(repo, "config", "user.name", "Public Acceptance Fixture")
+    git(repo, "config", "user.email", "fixture@example.invalid")
+    git(repo, "add", ".")
+    git(repo, "-c", "commit.gpgsign=false", "commit", "--quiet", "-m", "Exact inert accepted source")
+    commit = git(repo, "rev-parse", "HEAD")
     wheel = tmp_path / "alpha_factory_v1-1.44.0-py3-none-any.whl"
     site = tmp_path / "site"
     target = site / "alpha_factory_v1/__init__.py"
@@ -201,25 +250,119 @@ def test_core_wheel_source_and_installed_bytes_cannot_be_substituted(
                 path = site / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(archive.read(name))
-    assert public.core_payload(tmp_path, "a" * 40, wheel, site)["python_files"] == 1
+    accepted = public.core_payload(repo, commit, wheel, site)
+    assert accepted["python_files"] == 1 and len(accepted["inventory_sha256"]) == 64
+    # Current worktree and HEAD do not replace the accepted immutable commit.
+    (repo / "alpha_factory_v1/__init__.py").write_bytes(b"changed source after acceptance")
+    assert public.core_payload(repo, commit, wheel, site) == accepted
+    git(repo, "add", ".")
+    git(repo, "-c", "commit.gpgsign=false", "commit", "--quiet", "-m", "Different source remains unqualified")
+    different = git(repo, "rev-parse", "HEAD")
+    with pytest.raises(ValueError, match="Core package body"):
+        public.core_payload(repo, different, wheel)
+    assert public.core_payload(repo, commit, wheel, site) == accepted
     target.write_bytes(b"changed installed body")
     with pytest.raises(ValueError, match="Installed core payload"):
-        public.core_payload(tmp_path, "a" * 40, wheel, site)
+        public.core_payload(repo, commit, wheel, site)
     fixture(raw=b"changed public body")
     with pytest.raises(ValueError, match="Core package body"):
-        public.core_payload(tmp_path, "a" * 40, wheel)
+        public.core_payload(repo, commit, wheel)
     fixture(json_body=b'{"schema":"substituted"}')
     with pytest.raises(ValueError, match="Core package body"):
-        public.core_payload(tmp_path, "a" * 40, wheel)
+        public.core_payload(repo, commit, wheel)
     fixture()
     with zipfile.ZipFile(wheel, "a") as archive:
         archive.writestr("alpha_factory_v1/unrecognized.json", b"inert uncommitted payload")
     with pytest.raises(ValueError, match="Core package body"):
-        public.core_payload(tmp_path, "a" * 40, wheel)
+        public.core_payload(repo, commit, wheel)
     with zipfile.ZipFile(wheel, "w") as archive:
         archive.writestr("unauthorized.pth", b"inert never executed")
     with pytest.raises(ValueError, match="top-level"):
-        public.core_payload(tmp_path, "a" * 40, wheel)
+        public.core_payload(repo, commit, wheel)
+
+
+def git(root: Path, *args: str) -> str:
+    """Use real ephemeral Git objects, never a computed or mocked SHA1 identity."""
+    return subprocess.check_output(
+        ["git", "-C", str(root), "-c", f"core.hooksPath={os.devnull}", *args], stderr=subprocess.PIPE, text=True
+    ).strip()
+
+
+@pytest.mark.parametrize("commit", ["HEAD", "main", "A" * 40, "a" * 39])
+def test_core_payload_refuses_non_exact_source_before_opening_a_wheel(tmp_path: Path, commit: str) -> None:
+    """Public source qualification cannot silently select another ref or working tree."""
+    with pytest.raises(ValueError, match="exact accepted commit"):
+        public.core_payload(tmp_path, commit, tmp_path / "never-opened.whl")
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        b'<testsuite><testcase name="checked"/></testsuite>',
+        b'<testsuites><testsuite><testcase name="checked"/></testsuite></testsuites>',
+    ],
+)
+def test_bounded_regular_junit_with_actual_passing_case_is_accepted(tmp_path: Path, raw: bytes) -> None:
+    """Only synthetic inert XML is parsed; this does not establish an actual QA pass."""
+    path = tmp_path / "checked.xml"
+    path.write_bytes(raw)
+    public.verify_junit(path)
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        b'<!DOCTYPE testsuite><testsuite><testcase name="checked"/></testsuite>',
+        b'<!DOCTYPE testsuite [<!ENTITY x "qualified">]><testsuite><testcase name="&x;"/></testsuite>',
+        b'<!DOCTYPE testsuite SYSTEM "https://invalid.test/external.dtd"><testsuite><testcase/></testsuite>',
+        b'<!DOCTYPE testsuite [<!ENTITY x SYSTEM "file:///untrusted-local-file">]><testsuite><testcase>&x;</testcase></testsuite>',
+        b"<testsuite><testcase>",
+        b"",
+    ],
+)
+def test_junit_dtd_entities_external_sources_and_malformed_xml_are_refused(tmp_path: Path, raw: bytes) -> None:
+    path = tmp_path / "untrusted.xml"
+    path.write_bytes(raw)
+    with pytest.raises(ValueError, match="Unsafe or malformed"):
+        public.verify_junit(path)
+
+
+@pytest.mark.parametrize("outcome", ["failure", "error", "skipped", "missing-case"])
+def test_junit_unsuccessful_or_empty_results_cannot_qualify(tmp_path: Path, outcome: str) -> None:
+    path = tmp_path / "outcome.xml"
+    raw = "<testsuite/>" if outcome == "missing-case" else f"<testsuite><testcase><{outcome}/></testcase></testsuite>"
+    path.write_text(raw)
+    with pytest.raises(ValueError, match="failed, skipped or omitted"):
+        public.verify_junit(path)
+
+
+@pytest.mark.parametrize("case", ["symlink", "symlink-ancestor", "directory", "oversized", "missing", "fifo"])
+def test_junit_input_must_be_a_bounded_regular_file_without_symlink_ancestors(tmp_path: Path, case: str) -> None:
+    actual = tmp_path / "actual"
+    actual.mkdir()
+    path = actual / "report.xml"
+    path.write_bytes(b"<testsuite><testcase/></testsuite>")
+    if case == "symlink":
+        link = actual / "linked.xml"
+        link.symlink_to(path)
+        path = link
+    elif case == "symlink-ancestor":
+        parent = tmp_path / "linked-parent"
+        parent.symlink_to(actual, target_is_directory=True)
+        path = parent / path.name
+    elif case == "directory":
+        path.unlink()
+        path.mkdir()
+    elif case == "oversized":
+        with path.open("wb") as stream:
+            stream.truncate(public.MAX_JUNIT_BYTES + 1)
+    elif case == "missing":
+        path.unlink()
+    else:
+        path.unlink()
+        os.mkfifo(path)
+    with pytest.raises(ValueError, match="JUnit artifact"):
+        public.verify_junit(path)
 
 
 def test_failure_log_cannot_export_escaped_private_key(tmp_path: Path) -> None:

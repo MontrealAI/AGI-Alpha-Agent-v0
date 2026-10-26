@@ -18,7 +18,7 @@ from typing import Any
 SOURCE_COMMIT = "d69133291d72942c7d5f6be8ee0571cd83267110"
 PINS_FILE = Path(__file__).with_name("strategy_research_source_pins.json")
 # This proposed identity is reviewed with this source; there is no regeneration mode.
-PINS_SHA256 = "c1e49a841fcb33849dec5a8e54849b6aa8a4625e85991664b28a404c5da8bb52"
+PINS_SHA256 = "d7acd30f8f47e4d589c89e8e97dd701cdef0d12a05dd8cbddc3ecf927908b7d6"
 STUDY = "studies/agi-alpha-flywheel-strategy-succession-v1"
 ALLOWED_RULES = {"E701", "E702", "F841"}
 CONFIG_NAMES = ("ruff.toml", ".ruff.toml", "pyproject.toml")

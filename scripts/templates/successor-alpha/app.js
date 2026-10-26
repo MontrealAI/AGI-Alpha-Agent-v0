@@ -5,6 +5,7 @@ let language = pageOptions.get('lang') === 'fr' || document.documentElement.data
 let largeText = pageOptions.get('text') === 'large' || document.documentElement.dataset.textSize === 'large';
 let stage = 0, mode = 'example', mission = null, result = null, dossier = null;
 let valueEstimate = null;
+let shadowArchive = null, shadowCurrent = null, shadowImportVersion = 0, shadowFormCycleId = null;
 let artifacts = null, busy = false, controller = null, runToken = 0, revision = 0, importToken = 0;
 let notice = null, lastStatus = null, lastError = null;
 let learningRecords = [], nativeHandoffRaw = null, nativeReturnRaw = null, nativeContinuityRaw = null, nativeChecked = null;
@@ -19,6 +20,37 @@ for (const el of document.querySelectorAll('[data-i18n]')) {
     en[el.dataset.i18n] = clone.textContent;
 }
 const fr = {
+    shadowAcceptance:"Acceptation pour ce scénario de planification",
+    shadowAcceptanceUnknown:"Acceptation du client inconnue",
+    shadowAcceptanceAccepted:"Supposer un travail équivalent accepté",
+    shadowAcceptanceRejected:"Livraison refusée ou infructueuse",
+    shadowAcceptanceHelp:"Ce choix est uniquement une hypothèse explicite de scénario. Il n’établit ni acceptation réelle du client, ni qualification indépendante, ni admissibilité au règlement.",
+
+    shadowTitle:"Combien cette livraison a-t-elle coûté ?",
+    shadowIntro:"Conservez une fiche de planification avec ce résultat. Saisissez le coût complet de livraison et comparez-le à un travail traditionnel équivalent. Un champ vide signifie inconnu ; ce calcul n’établit ni économie ni surplus.",
+    shadowBoundary:"Planification uniquement. Ces montants sont vos hypothèses ou vos déclarations, sans authentification des recettes, acceptation indépendante ni permission de dépenser. Aucun paiement, transfert de jetons ou portefeuille connecté.",
+    shadowCurrency:"Une devise pour tous les montants",
+    shadowCost:"Coût total d’exploitation de cette livraison",
+    shadowCurrencyHelp:"Saisissez chaque montant dans la devise choisie. Aucun taux de change ni conversion de jetons n’est appliqué.",
+    shadowCostHelp:"Incluez outils et modèles ; supervision et vérification humaines ; nouvelles tentatives, échecs et récupération ; quote-part de mise en place, maintenance et frais d’entreprise. Indiquez la construction de capacités, y compris les échecs, dans le champ distinct ci-dessous. Un coût non mesuré reste inconnu.",
+    shadowCostComplete:"J’ai inclus tous les coûts d’exploitation applicables du prestataire, dont son travail humain, ou établi explicitement qu’ils étaient nuls.",
+    shadowPrice:"Hypothèse de prix facturé au client",
+    shadowCollected:"Recettes réellement encaissées · votre déclaration",
+    shadowReserve:"Réserves nécessaires",
+    shadowObligation:"Obligations restant à payer",
+    shadowConstruction:"Coût de construction de capacités · échecs inclus",
+    shadowTraditionalMinutes:"Travail traditionnel · minutes pour une livraison équivalente acceptée",
+    shadowHourly:"Coût humain horaire complet",
+    shadowAttention:"Attention restante du client · minutes",
+    shadowReinvestment:"Réinvestissement possible du surplus disponible",
+    shadowRevenueHelp:"Économie du client, prix proposé et recettes encaissées sont distincts. Seul un encaissement saisi peut étayer la vue de trésorerie déclarative ; le prix supposé sert au scénario.",
+    shadowHumanHelp:"Comparez un travail humain compétent soumis aux mêmes critères d’acceptation. Durée et coût horaire sont vos données, pas des mesures de référence observées. L’attention du client est valorisée séparément dans sa comparaison. Incluez supervision et exceptions du prestataire dans son coût ; le coût d’opportunité du client n’est pas automatiquement une dépense du prestataire.",
+    shadowInvestmentHelp:"Réserves et obligations impayées réduisent le surplus disponible. Ne comptez pas une dépense déjà payée parmi les obligations impayées. Le coût de construction est déduit séparément du coût d’exploitation : saisissez-le une seule fois. Le réinvestissement est un plafond de planification, sans paiement ni preuve d’amélioration. Le réinvestissement nul est possible.",
+    shadowCalculate:"Calculer ma fiche de planification",
+    shadowDownload:"Télécharger le registre de planification",
+    shadowImport:"Restaurer un registre de planification",
+    shadowRecovery:"Téléchargez le registre ou votre espace complet pour conserver hypothèses et historique des événements. Un registre restauré reste historique et n’autorise ni exécution, ni dépense, ni règlement.",
+
     licenseNotices: "Licences du code",
     researchTitle:'Aller plus loin : composer une meilleure stratégie',researchIntro:'Explorez des combinaisons délimitées d’opérations connues : partitionnement, réutilisation des clés dupliquées et choix d’index. Figez le plan sélectionné, puis confirmez-le sur de nouvelles données synthétiques publiques. Un HOLD légitime conserve la référence.',researchMemory:'Maximum de références de lignes auxiliaires',researchWeight:'Poids de chaque référence auxiliaire',researchRun:'Composer et tester des stratégies',researchScope:'RECHERCHE DE STRATÉGIE LOCALE · NON QUALIFIÉE INDÉPENDAMMENT',researchCandidates:'Stratégies composées et références',researchPlan:'Plan',researchAuxiliary:'Références de lignes au pic',researchFeasible:'Budget respecté',researchLimits:'Composition délimitée d’opérations examinées, avec une confirmation synthétique publique. Ce n’est ni une évaluation protégée, ni la découverte d’un nouvel algorithme, ni une certification indépendante, ni une valeur organisationnelle réalisée.',researchDownload:'Stratégie, engagement et confirmation',researchExampleNote:'Pour voir pourquoi la structure compte, commencez un cycle synthétique distinct riche en doublons. Cette mission reste dans votre historique.',researchExample:'Essayer une mission d’apprentissage riche en doublons ↗',researchTool:'Télécharger la capacité du plan conservé · .mjs',
     resolutionTitle:'Reformuler : que faut-il décider ?',resolutionIntro:'Une longue liste de divergences peut répéter le même problème. Construisez une action par clé concernée en préservant les références de chaque occurrence originale.',resolutionRun:'Construire mon plan d’action sur les divergences',resolutionScope:'REFORMULATION EXÉCUTABLE · CONTRAT DE SORTIE MODIFIÉ',resolutionLimits:'La tâche passe d’une liste d’occurrences à un regroupement de décisions. Cela ne prouve ni un temps de revue équivalent, ni l’exactitude d’une source, ni une supériorité sur la tâche originale. Jointure et divergences originales restent disponibles.',resolutionDownload:'Plan d’action complet avec références sources',
@@ -237,7 +269,7 @@ function translate() {
     renderNotice();
     if (lastStatus) $('status').textContent = say(...lastStatus);
     if (lastError && !$('error').hidden) $('error').textContent = errorMessage(lastError);
-    renderValue();
+    renderValue(); renderShadow(); renderAutomatedCosts();
     renderLearning(); renderComputer();
     if (!$('key-mapping').hidden) updateMappingSummary();
 }
@@ -482,6 +514,7 @@ function syncName() {
     dossier = project.renameProject(dossier,name);
 }
 function renderHistory() {
+    renderShadow(); renderAutomatedCosts();
     $('cycle-history').replaceChildren();
     $('cycle-count').textContent = dossier ? say(`${dossier.cycles.length} ${dossier.cycles.length === 1?'cycle':'cycles'}`,`${dossier.cycles.length} ${dossier.cycles.length === 1?'cycle':'cycles'}`) : say('No cycles yet','Aucun cycle');
     if (!dossier) return;
@@ -514,6 +547,8 @@ function restoreSerialized(serialized) {
     const restored = project.inspectProject(serialized);
     learningRecords = []; nativeContinuityRaw = null;
     computerHistoryRaw = null; computerHistoryChecked = null; computerHandoffRaw = null; computerChecked = null; computerSelectedIndex = -1;
+    shadowArchive = null; shadowCurrent = null; shadowImportVersion++; shadowFormCycleId = null;
+    automationRecord = null; automationSummary = null; automationImportVersion++;
     clearCurrent(); dossier = restored; $('project-name').value = restored.name;
     notice = {type:'restored',name:restored.name,cycles:restored.cycles.length};
     if (restored.cycles.length) fillMission(restored.cycles.at(-1).mission);
@@ -1224,5 +1259,7 @@ translate(); go(0,false);
     try {
         if (savedLearning && savedLearning !== '{}') await restoreLearning(savedLearning);
         else if (saved && saved !== '{}') await restoreSerialized(saved);
+        restoreShadow();
+        restoreAutomatedCosts();
     } catch(error) { showError(error); }
 })();

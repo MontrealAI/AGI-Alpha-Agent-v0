@@ -1,0 +1,733 @@
+{
+  "schema": "alpha-automated-costs/v1",
+  "offeringId": "unpriced-automated-delivery",
+  "currency": "USD",
+  "scenarios": [
+    {
+      "name": "base",
+      "capacityRequestsPerMonth": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "utilizationBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "acceptanceBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "attemptsPerRequestPpm": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "operations": [
+        {
+          "id": "preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exception",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "minutesPerException": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-capacity-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "one-time-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        },
+        {
+          "id": "shared-development",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+        },
+        "hourlyCostMicros": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+        }
+      }
+    },
+    {
+      "name": "conservative",
+      "capacityRequestsPerMonth": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "utilizationBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "acceptanceBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "attemptsPerRequestPpm": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "operations": [
+        {
+          "id": "preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exception",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "minutesPerException": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-capacity-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "one-time-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        },
+        {
+          "id": "shared-development",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+        },
+        "hourlyCostMicros": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+        }
+      }
+    },
+    {
+      "name": "stress",
+      "capacityRequestsPerMonth": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "utilizationBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "acceptanceBps": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "attemptsPerRequestPpm": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+      },
+      "operations": [
+        {
+          "id": "preparation",
+          "stage": "preparation",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "planning",
+          "stage": "planning",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "execution",
+          "stage": "execution",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "verification",
+          "stage": "verification",
+          "frequency": "attempt",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "correction",
+          "stage": "correction",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "packaging",
+          "stage": "packaging",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "reporting",
+          "stage": "reporting",
+          "frequency": "accepted",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        },
+        {
+          "id": "recovery",
+          "stage": "recovery",
+          "frequency": "request",
+          "unitsPerOccurrencePpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "unitCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "implementation": "modeled"
+        }
+      ],
+      "residual": [
+        {
+          "id": "residual-exception",
+          "stage": "recovery",
+          "exceptionsPerRequestPpm": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "minutesPerException": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "hourlyCostMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "monthly": [
+        {
+          "id": "allocated-capacity-maintenance",
+          "kind": "maintenance",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "investments": [
+        {
+          "id": "one-time-setup",
+          "kind": "setup",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        },
+        {
+          "id": "shared-development",
+          "kind": "development",
+          "amountMicros": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "allocationBps": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          },
+          "amortizationMonths": {
+            "value": null,
+            "basis": "unknown",
+            "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+          }
+        }
+      ],
+      "humanBaseline": {
+        "minutesPerAccepted": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+        },
+        "hourlyCostMicros": {
+          "value": null,
+          "basis": "unknown",
+          "reference": "Offering-specific observation or explicit estimate required; unknown is not zero."
+        }
+      }
+    }
+  ]
+}

@@ -83,8 +83,8 @@ def test_runtime_gates_preserve_original_permissions_dependencies_and_failure_se
         added_dependencies = {"paper-scope"}
         if (name, key) == ("agent-release.yml", "package"):
             # The combined software release adds, never substitutes, its exact-source
-            # capability/browser/recovery gate. The delivery test binds that call.
-            added_dependencies.add("successor-capability")
+            # capability/browser/recovery and Strategy gates. Contracts bind those calls.
+            added_dependencies.update({"successor-capability", "strategy-engineering"})
         expected_dependencies = dependencies(before) | added_dependencies
         if (name, key) == ("agent-release.yml", "historical-ci"):
             # Waiting is deferred until every substantive package prerequisite completes.
@@ -112,6 +112,38 @@ def test_runtime_gates_preserve_original_permissions_dependencies_and_failure_se
     if "concurrency" in old:
         assert "${{ github.sha }}" in new["concurrency"]["group"]
         assert new["concurrency"]["cancel-in-progress"] == old["concurrency"]["cancel-in-progress"]
+
+
+def test_strategy_engineering_is_a_blocking_full_software_release_gate() -> None:
+    jobs = workflow("agent-release.yml")["jobs"]
+    gate = jobs["strategy-engineering"]
+    condition = "${{ !cancelled() && success() && needs.paper-scope.outputs.mode == 'full' }}"
+    assert gate["uses"] == "./.github/workflows/strategy-succession-engineering.yml"
+    assert dependencies(gate) == {"paper-scope", "publication-preflight"}
+    assert gate["if"] == condition
+    assert gate.get("permissions") is None
+    assert gate.get("continue-on-error", False) is False
+    for name in ("package", "historical-ci"):
+        job = jobs[name]
+        assert "strategy-engineering" in dependencies(job), name
+        assert job["if"] == condition, name
+        assert job.get("continue-on-error", False) is False, name
+
+
+def test_pull_request_smoke_checks_release_policy_with_baseline_history() -> None:
+    job = workflow("pr-ci.yml")["jobs"]["smoke"]
+    steps = job["steps"]
+    checkout = next(step for step in steps if step.get("uses", "").startswith("actions/checkout@"))
+    assert checkout.get("with", {}).get("fetch-depth") == 0
+    command = "python -m pytest --noconftest -o addopts= tests/test_paper_workflow_policy.py -q"
+    policy_steps = [step for step in steps if step.get("run") == command]
+    assert len(policy_steps) == 1
+    policy = policy_steps[0]
+    dependencies_index = next(index for index, step in enumerate(steps) if step.get("name") == "Install dependencies")
+    assert steps.index(policy) == dependencies_index + 1
+    assert policy.get("if") is None
+    assert policy.get("continue-on-error", False) is False
+    assert job.get("continue-on-error", False) is False
 
 
 @pytest.mark.parametrize("name", ("ci.yml", "pr-ci.yml", "smoke.yml"))

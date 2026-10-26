@@ -1,0 +1,1655 @@
+{
+  "schema": "agi-alpha.source-context-security-review/v1",
+  "sourceHead": "e2503611666ee170266cbce51dc250492285f2e8",
+  "reviewScope": "Fresh source-path and AST/context review, not Security clearance or rule-applicability admission. No raw scanner diagnostic/rule body republished.",
+  "currentOfficialPolicySha256": "e3c25cf9b28ddfd3cb1b7f240d2fc0998734199efa539fa0b10281487a602e79",
+  "rawScan": {
+    "findings": 57,
+    "exit": 1,
+    "admissions": 0,
+    "rawReportSha256": "c61e141e93fb68986605f5e9da4dd6895b11fd2e13dc89aeb6ae64707c416a74"
+  },
+  "exactRuleBodyDependency": {
+    "originalPackBytes": 446176,
+    "retrievalMethod": "Actual repository _fetch_body; fixed official URL, Accept application/json, no auth, no redirects.",
+    "retrievedPolicyBytes": 502198,
+    "retrievedPolicySha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+    "matchesOriginal": false,
+    "oldDefinitionOpinionsTransferred": false,
+    "ownerAction": "Existing Security maintainer/process must supply or privately inspect the captured E3C25 definitions for the five current rule IDs, disposition all57 exact source bindings, and assign any further repairs. Changed source needs a fresh scan and review. No map/exception/suppression requested."
+  },
+  "engineeringValidation": {
+    "files": "7 lock verification scripts plus one new regression file; locks/policy untouched",
+    "unittest": "5 methods/70 behavioral subcases pass",
+    "ruff": "pass8 files",
+    "black": "pass8 files",
+    "strictMypy": "pass8 files",
+    "ordinaryPytest": "BLOCKED AT COLLECTION: conftest refused missingcoverage before tests; not bypassed",
+    "fullLockedInstall": "NOT RUN",
+    "setupPreconditions": "check_python_deps passed; check_env --auto-install --skip-net-check exited0 with missing optional integration warnings."
+  },
+  "cases": [
+    {
+      "case": "E250-PY-001",
+      "path": "alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "sourceSha256": "2ad225701952de359a6faf69f9239812f3962ade671bc5a707cb58ac23da95ab",
+      "start": {
+        "line": 580,
+        "col": 12,
+        "offset": 29345
+      },
+      "end": {
+        "line": 580,
+        "col": 73,
+        "offset": 29406
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Git blob protocol identifier computed after an independent SHA256 equality check.",
+      "existingControls": "Public bounded Python source bytes are screened; the Git identifier is not the sole integrity check.",
+      "nextAction": "Preserve protocol identifier and SHA256; Security must review intended compatibility use against exact current definition."
+    },
+    {
+      "case": "E250-PY-002",
+      "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+      "sourceSha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+      "start": {
+        "line": 230,
+        "col": 5,
+        "offset": 8007
+      },
+      "end": {
+        "line": 230,
+        "col": 34,
+        "offset": 8036
+      },
+      "rule": {
+        "id": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+        "sha256": "5fcec5becdd97d5b47aa16885b701351167ef23058c57e46f1944ebe5d7bee08",
+        "start_byte": 229532,
+        "end_byte": 231926
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The operator-selected simulation-results path is created as a directory and receives chmod0o700.",
+      "existingControls": "Owner rwx permits directory traversal; no group/other permissions. This is not a request to make arbitrary regular files executable.",
+      "nextAction": "Security must inspect exact R4 comparison semantics and directory target; explicit results path trust remains separate."
+    },
+    {
+      "case": "E250-PY-003",
+      "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+      "sourceSha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+      "start": {
+        "line": 375,
+        "col": 20,
+        "offset": 12935
+      },
+      "end": {
+        "line": 375,
+        "col": 49,
+        "offset": 12964
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "A locally generated simulation ID is SHA1-hashed to the scenario key passed to orchestrator.evolve.",
+      "existingControls": "Scenario key is simulation/island namespace; API authentication uses a separate bearer-token predicate.",
+      "nextAction": "Review current R5 applicability for a numerical namespace; changing digest would change historical scenario identities."
+    },
+    {
+      "case": "E250-PY-004",
+      "path": "alpha_factory_v1/demos/era_of_experience/reward_backends/curiosity_reward.py",
+      "sourceSha256": "bc8177e8d603ed3d750abd6e7a347cc7d8c4c33da8dfa76768e41bdcd450ab9e",
+      "start": {
+        "line": 80,
+        "col": 12,
+        "offset": 2857
+      },
+      "end": {
+        "line": 80,
+        "col": 30,
+        "offset": 2875
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Observation repr is truncated and hashed for an in-memory novelty counter.",
+      "existingControls": "This is an approximate reward heuristic; the result is not an access-control or artifact-admission digest.",
+      "nextAction": "Review heuristic applicability; do not change historical numerical behavior merely to remove a scanner match."
+    },
+    {
+      "case": "E250-PY-005",
+      "path": "alpha_factory_v1/demos/era_of_experience/reward_backends/novel_solution_reward.py",
+      "sourceSha256": "4ada727916aae39c61df062c2d6b3f601609b98ba552df0c4dde750e5fd24d0e",
+      "start": {
+        "line": 82,
+        "col": 28,
+        "offset": 3147
+      },
+      "end": {
+        "line": 82,
+        "col": 52,
+        "offset": 3171
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Token SHA1 bits feed64-bit SimHash numerical features.",
+      "existingControls": "Similarity and collisions belong to the heuristic; no credential or security-boundary use was identified at this sink.",
+      "nextAction": "Review numerical use; preserve original scientific evidence."
+    },
+    {
+      "case": "E250-PY-006",
+      "path": "alpha_factory_v1/demos/meta_agentic_agi/core/prompts.py",
+      "sourceSha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+      "start": {
+        "line": 80,
+        "col": 9,
+        "offset": 2627
+      },
+      "end": {
+        "line": 80,
+        "col": 23,
+        "offset": 2641
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "SHA1 creates optional ten-hex display metadata for exported prompt code.",
+      "existingControls": "Prompt retrieval/registration use name; fingerprint is optional metadata, not an authentication/signature admission predicate.",
+      "nextAction": "Review optional metadata use against current definition; do not claim collision resistance or overwrite user-provided evidence."
+    },
+    {
+      "case": "E250-PY-007",
+      "path": "alpha_factory_v1/demos/meta_agentic_agi_v2/core/prompts.py",
+      "sourceSha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+      "start": {
+        "line": 80,
+        "col": 9,
+        "offset": 2627
+      },
+      "end": {
+        "line": 80,
+        "col": 23,
+        "offset": 2641
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "SHA1 creates optional ten-hex display metadata for exported prompt code.",
+      "existingControls": "Prompt retrieval/registration use name; fingerprint is optional metadata, not an authentication/signature admission predicate.",
+      "nextAction": "Review optional metadata use against current definition; do not claim collision resistance or overwrite user-provided evidence."
+    },
+    {
+      "case": "E250-PY-008",
+      "path": "alpha_factory_v1/demos/meta_agentic_agi_v3/core/prompts.py",
+      "sourceSha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+      "start": {
+        "line": 80,
+        "col": 9,
+        "offset": 2627
+      },
+      "end": {
+        "line": 80,
+        "col": 23,
+        "offset": 2641
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "SHA1 creates optional ten-hex display metadata for exported prompt code.",
+      "existingControls": "Prompt retrieval/registration use name; fingerprint is optional metadata, not an authentication/signature admission predicate.",
+      "nextAction": "Review optional metadata use against current definition; do not claim collision resistance or overwrite user-provided evidence."
+    },
+    {
+      "case": "E250-PY-009",
+      "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+      "sourceSha256": "50bf31ac8d85581cf2af61b0f1428826fbee95aecb1219f571c1cd6b416cf6ad",
+      "start": {
+        "line": 64,
+        "col": 29,
+        "offset": 2057
+      },
+      "end": {
+        "line": 64,
+        "col": 32,
+        "offset": 2060
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Caller selects command/local mounts; environment-default image passes a full image-reference grammar.",
+      "existingControls": "Docker argv uses no shell and refuses option-shaped/URL/control-containing image operands; fixed current SelfHealer call uses pytest.",
+      "nextAction": "Review generic execution authority separately; no Docker run or held Harness path was exercised."
+    },
+    {
+      "case": "E250-PY-010",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "start": {
+        "line": 354,
+        "col": 36,
+        "offset": 10958
+      },
+      "end": {
+        "line": 354,
+        "col": 39,
+        "offset": 10961
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance."
+    },
+    {
+      "case": "E250-PY-011",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "start": {
+        "line": 372,
+        "col": 28,
+        "offset": 11700
+      },
+      "end": {
+        "line": 372,
+        "col": 31,
+        "offset": 11703
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance."
+    },
+    {
+      "case": "E250-PY-012",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "start": {
+        "line": 411,
+        "col": 28,
+        "offset": 13273
+      },
+      "end": {
+        "line": 411,
+        "col": 31,
+        "offset": 13276
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance."
+    },
+    {
+      "case": "E250-PY-013",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "start": {
+        "line": 450,
+        "col": 32,
+        "offset": 14968
+      },
+      "end": {
+        "line": 450,
+        "col": 35,
+        "offset": 14971
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance."
+    },
+    {
+      "case": "E250-PY-014",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "start": {
+        "line": 538,
+        "col": 21,
+        "offset": 18687
+      },
+      "end": {
+        "line": 538,
+        "col": 24,
+        "offset": 18690
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance."
+    },
+    {
+      "case": "E250-PY-015",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "start": {
+        "line": 613,
+        "col": 32,
+        "offset": 22133
+      },
+      "end": {
+        "line": 613,
+        "col": 35,
+        "offset": 22136
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance."
+    },
+    {
+      "case": "E250-PY-016",
+      "path": "scripts/audit_agent_dependencies.py",
+      "sourceSha256": "271f3f7cf9617033897125059bc11c596627f2abe508a46356aed29f80217249",
+      "start": {
+        "line": 56,
+        "col": 32,
+        "offset": 2052
+      },
+      "end": {
+        "line": 56,
+        "col": 39,
+        "offset": 2059
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Operator CLI lock and report paths are argv operands of current-interpreter pip_audit.",
+      "existingControls": "Fixed module/subcommand and600-second timeout; no shell interpolation.",
+      "nextAction": "Review explicit audit CLI authority and lock provenance; not a mission execution path."
+    },
+    {
+      "case": "E250-PY-017",
+      "path": "scripts/package_agent_release.py",
+      "sourceSha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+      "start": {
+        "line": 684,
+        "col": 13,
+        "offset": 34020
+      },
+      "end": {
+        "line": 684,
+        "col": 87,
+        "offset": 34094
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixed build/twine modules operate on current committed source archive and operator-selected output path.",
+      "existingControls": "Current interpreter, argv lists, generated archive origin, wheel content checks.",
+      "nextAction": "Review source/package-build authority; no fetched command text or arbitrary request becomes executable code."
+    },
+    {
+      "case": "E250-PY-018",
+      "path": "scripts/package_agent_release.py",
+      "sourceSha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+      "start": {
+        "line": 699,
+        "col": 9,
+        "offset": 34899
+      },
+      "end": {
+        "line": 699,
+        "col": 118,
+        "offset": 35008
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixed build/twine modules operate on current committed source archive and operator-selected output path.",
+      "existingControls": "Current interpreter, argv lists, generated archive origin, wheel content checks.",
+      "nextAction": "Review source/package-build authority; no fetched command text or arbitrary request becomes executable code."
+    },
+    {
+      "case": "E250-PY-019",
+      "path": "scripts/validate_agent_model.py",
+      "sourceSha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+      "start": {
+        "line": 47,
+        "col": 17,
+        "offset": 1805
+      },
+      "end": {
+        "line": 62,
+        "col": 18,
+        "offset": 2298
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Operator CLI intentionally selects local model-server executable and model path.",
+      "existingControls": "Loopback host, separate argv values, fixed server options; release workflow separately supplies archive SHA256.",
+      "nextAction": "Review explicit model-validator executable authority; path existence alone is not provenance."
+    },
+    {
+      "case": "E250-PY-020",
+      "path": "scripts/validate_agent_model.py",
+      "sourceSha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+      "start": {
+        "line": 163,
+        "col": 25,
+        "offset": 7613
+      },
+      "end": {
+        "line": 163,
+        "col": 56,
+        "offset": 7644
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Operator CLI intentionally selects local model-server executable and model path.",
+      "existingControls": "Loopback host, separate argv values, fixed server options; release workflow separately supplies archive SHA256.",
+      "nextAction": "Review explicit model-validator executable authority; path existence alone is not provenance."
+    },
+    {
+      "case": "E250-PY-021",
+      "path": "scripts/validate_nova_studio.py",
+      "sourceSha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+      "start": {
+        "line": 55,
+        "col": 48,
+        "offset": 2431
+      },
+      "end": {
+        "line": 55,
+        "col": 76,
+        "offset": 2459
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        40
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-022",
+      "path": "scripts/validate_nova_studio.py",
+      "sourceSha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+      "start": {
+        "line": 105,
+        "col": 48,
+        "offset": 5634
+      },
+      "end": {
+        "line": 105,
+        "col": 76,
+        "offset": 5662
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        40
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-023",
+      "path": "scripts/validate_onboarding.py",
+      "sourceSha256": "78ba3f2e83d48c201682e3eb2dc33d4b14084492de3ec46a1d55f98cc5d12f5f",
+      "start": {
+        "line": 88,
+        "col": 48,
+        "offset": 4187
+      },
+      "end": {
+        "line": 88,
+        "col": 76,
+        "offset": 4215
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        87
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-024",
+      "path": "scripts/validate_successor_build.py",
+      "sourceSha256": "6e1f95ead70d845f36d6860a41997021318dc6ed3b1d7c0062dd63fc271ecca1",
+      "start": {
+        "line": 23,
+        "col": 40,
+        "offset": 835
+      },
+      "end": {
+        "line": 23,
+        "col": 68,
+        "offset": 863
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        20
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-025",
+      "path": "scripts/verify_aiga_requirements_lock.py",
+      "sourceSha256": "ed9b542af90b2c0a5ccd56439e5d50da769db3057bbfa31a133a9246ad2b9d91",
+      "start": {
+        "line": 31,
+        "col": 33,
+        "offset": 1093
+      },
+      "end": {
+        "line": 31,
+        "col": 36,
+        "offset": 1096
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "WHEELHOUSE is an operator environment value forwarded as a pip-compile --find-links operand; old scripts did not require a local directory.",
+      "existingControls": "Before correction: argv list/shell=False prevented shell parsing, but --no-index alone did not implement a local-directory input contract or finite compiler deadline.",
+      "nextAction": "Engineering repair now resolves an existing local directory to an absolute operand, rejects invalid/file/URL inputs before launch, and fails a600-second timeout. Exact changed-source scan and owner review remain required.",
+      "narrowRepair": "IMPLEMENTED_UNCOMMITTED_PENDING_ROOT_INTEGRATION",
+      "beforeProbe": "All seven forwarded URL-shaped operand with no subprocess timeout; mocked resolver returned17. No network or compiler was run.",
+      "regression": "5 unittest methods,70 subcases; exact/mismatched lock gate,28 invalid inputs,14 compiler/path configurations,7 timeouts,7 online controls,14 lock-output cases."
+    },
+    {
+      "case": "E250-PY-026",
+      "path": "scripts/verify_alpha_colab_requirements_lock.py",
+      "sourceSha256": "93d3bb030441e7e2f1aa1c5d0b6490494a623eb1d66e53d777c1c9fe892d2a3d",
+      "start": {
+        "line": 31,
+        "col": 33,
+        "offset": 1046
+      },
+      "end": {
+        "line": 31,
+        "col": 36,
+        "offset": 1049
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "WHEELHOUSE is an operator environment value forwarded as a pip-compile --find-links operand; old scripts did not require a local directory.",
+      "existingControls": "Before correction: argv list/shell=False prevented shell parsing, but --no-index alone did not implement a local-directory input contract or finite compiler deadline.",
+      "nextAction": "Engineering repair now resolves an existing local directory to an absolute operand, rejects invalid/file/URL inputs before launch, and fails a600-second timeout. Exact changed-source scan and owner review remain required.",
+      "narrowRepair": "IMPLEMENTED_UNCOMMITTED_PENDING_ROOT_INTEGRATION",
+      "beforeProbe": "All seven forwarded URL-shaped operand with no subprocess timeout; mocked resolver returned17. No network or compiler was run.",
+      "regression": "5 unittest methods,70 subcases; exact/mismatched lock gate,28 invalid inputs,14 compiler/path configurations,7 timeouts,7 online controls,14 lock-output cases."
+    },
+    {
+      "case": "E250-PY-027",
+      "path": "scripts/verify_alpha_requirements_lock.py",
+      "sourceSha256": "1b372a63d5256fa103592aa60c01ef9196b5edfa77c9f0b96963efa65bd40186",
+      "start": {
+        "line": 31,
+        "col": 33,
+        "offset": 1040
+      },
+      "end": {
+        "line": 31,
+        "col": 36,
+        "offset": 1043
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "WHEELHOUSE is an operator environment value forwarded as a pip-compile --find-links operand; old scripts did not require a local directory.",
+      "existingControls": "Before correction: argv list/shell=False prevented shell parsing, but --no-index alone did not implement a local-directory input contract or finite compiler deadline.",
+      "nextAction": "Engineering repair now resolves an existing local directory to an absolute operand, rejects invalid/file/URL inputs before launch, and fails a600-second timeout. Exact changed-source scan and owner review remain required.",
+      "narrowRepair": "IMPLEMENTED_UNCOMMITTED_PENDING_ROOT_INTEGRATION",
+      "beforeProbe": "All seven forwarded URL-shaped operand with no subprocess timeout; mocked resolver returned17. No network or compiler was run.",
+      "regression": "5 unittest methods,70 subcases; exact/mismatched lock gate,28 invalid inputs,14 compiler/path configurations,7 timeouts,7 online controls,14 lock-output cases."
+    },
+    {
+      "case": "E250-PY-028",
+      "path": "scripts/verify_backend_requirements_lock.py",
+      "sourceSha256": "897223c5718e9bc647136e83ef051c7682c7265cf8070ee1728f01728f350b43",
+      "start": {
+        "line": 31,
+        "col": 33,
+        "offset": 1045
+      },
+      "end": {
+        "line": 31,
+        "col": 36,
+        "offset": 1048
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "WHEELHOUSE is an operator environment value forwarded as a pip-compile --find-links operand; old scripts did not require a local directory.",
+      "existingControls": "Before correction: argv list/shell=False prevented shell parsing, but --no-index alone did not implement a local-directory input contract or finite compiler deadline.",
+      "nextAction": "Engineering repair now resolves an existing local directory to an absolute operand, rejects invalid/file/URL inputs before launch, and fails a600-second timeout. Exact changed-source scan and owner review remain required.",
+      "narrowRepair": "IMPLEMENTED_UNCOMMITTED_PENDING_ROOT_INTEGRATION",
+      "beforeProbe": "All seven forwarded URL-shaped operand with no subprocess timeout; mocked resolver returned17. No network or compiler was run.",
+      "regression": "5 unittest methods,70 subcases; exact/mismatched lock gate,28 invalid inputs,14 compiler/path configurations,7 timeouts,7 online controls,14 lock-output cases."
+    },
+    {
+      "case": "E250-PY-029",
+      "path": "scripts/verify_era_experience_requirements_lock.py",
+      "sourceSha256": "4a07d87669a695b7751829bd6a33a520b78f89239fd80c008f748c51c5c3c4d4",
+      "start": {
+        "line": 31,
+        "col": 33,
+        "offset": 1087
+      },
+      "end": {
+        "line": 31,
+        "col": 36,
+        "offset": 1090
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "WHEELHOUSE is an operator environment value forwarded as a pip-compile --find-links operand; old scripts did not require a local directory.",
+      "existingControls": "Before correction: argv list/shell=False prevented shell parsing, but --no-index alone did not implement a local-directory input contract or finite compiler deadline.",
+      "nextAction": "Engineering repair now resolves an existing local directory to an absolute operand, rejects invalid/file/URL inputs before launch, and fails a600-second timeout. Exact changed-source scan and owner review remain required.",
+      "narrowRepair": "IMPLEMENTED_UNCOMMITTED_PENDING_ROOT_INTEGRATION",
+      "beforeProbe": "All seven forwarded URL-shaped operand with no subprocess timeout; mocked resolver returned17. No network or compiler was run.",
+      "regression": "5 unittest methods,70 subcases; exact/mismatched lock gate,28 invalid inputs,14 compiler/path configurations,7 timeouts,7 online controls,14 lock-output cases."
+    },
+    {
+      "case": "E250-PY-030",
+      "path": "scripts/verify_mats_requirements_lock.py",
+      "sourceSha256": "71bf3a40686921e1cbf66d3902e24a6494e1082022e74300cdef6af8bfa5c4ca",
+      "start": {
+        "line": 31,
+        "col": 33,
+        "offset": 1117
+      },
+      "end": {
+        "line": 31,
+        "col": 36,
+        "offset": 1120
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "WHEELHOUSE is an operator environment value forwarded as a pip-compile --find-links operand; old scripts did not require a local directory.",
+      "existingControls": "Before correction: argv list/shell=False prevented shell parsing, but --no-index alone did not implement a local-directory input contract or finite compiler deadline.",
+      "nextAction": "Engineering repair now resolves an existing local directory to an absolute operand, rejects invalid/file/URL inputs before launch, and fails a600-second timeout. Exact changed-source scan and owner review remain required.",
+      "narrowRepair": "IMPLEMENTED_UNCOMMITTED_PENDING_ROOT_INTEGRATION",
+      "beforeProbe": "All seven forwarded URL-shaped operand with no subprocess timeout; mocked resolver returned17. No network or compiler was run.",
+      "regression": "5 unittest methods,70 subcases; exact/mismatched lock gate,28 invalid inputs,14 compiler/path configurations,7 timeouts,7 online controls,14 lock-output cases."
+    },
+    {
+      "case": "E250-PY-031",
+      "path": "scripts/verify_requirements_lock.py",
+      "sourceSha256": "72c19a3a218880a45bb178522ca01a1ebf72cbfafd94fd26087e811588a3fb44",
+      "start": {
+        "line": 33,
+        "col": 33,
+        "offset": 1041
+      },
+      "end": {
+        "line": 33,
+        "col": 36,
+        "offset": 1044
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "WHEELHOUSE is an operator environment value forwarded as a pip-compile --find-links operand; old scripts did not require a local directory.",
+      "existingControls": "Before correction: argv list/shell=False prevented shell parsing, but --no-index alone did not implement a local-directory input contract or finite compiler deadline.",
+      "nextAction": "Engineering repair now resolves an existing local directory to an absolute operand, rejects invalid/file/URL inputs before launch, and fails a600-second timeout. Exact changed-source scan and owner review remain required.",
+      "narrowRepair": "IMPLEMENTED_UNCOMMITTED_PENDING_ROOT_INTEGRATION",
+      "beforeProbe": "All seven forwarded URL-shaped operand with no subprocess timeout; mocked resolver returned17. No network or compiler was run.",
+      "regression": "5 unittest methods,70 subcases; exact/mismatched lock gate,28 invalid inputs,14 compiler/path configurations,7 timeouts,7 online controls,14 lock-output cases."
+    },
+    {
+      "case": "E250-PY-032",
+      "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+      "sourceSha256": "cca163b796d173c483683d65771d625fc07668e465926d89b195165af0395978",
+      "start": {
+        "line": 8,
+        "col": 36,
+        "offset": 682
+      },
+      "end": {
+        "line": 8,
+        "col": 93,
+        "offset": 739
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixed literal replay-script list runs under current Python in a newly copied output kit.",
+      "existingControls": "No shell; output path must be fresh and outside source.",
+      "nextAction": "Preserve frozen original; review replay authority rather than rewriting original evidence."
+    },
+    {
+      "case": "E250-PY-033",
+      "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+      "sourceSha256": "537f5be821c82c30d87282ef6b580308b00c39ec7c49588a8a691245c1c05abf",
+      "start": {
+        "line": 333,
+        "col": 13,
+        "offset": 14567
+      },
+      "end": {
+        "line": 333,
+        "col": 76,
+        "offset": 14630
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixed literal replay-script list runs under current Python after source verification.",
+      "existingControls": "Fresh output, exact source checks and240-second timeout; no shell.",
+      "nextAction": "Preserve original study and verify source provenance; no replay was executed in this review."
+    },
+    {
+      "case": "E250-PY-034",
+      "path": "tests/browser/out_evolve_recovery.py",
+      "sourceSha256": "6af4cce631cc32c66348e4375fb9d1c87d18af724231ec8dd2ec01e1a67700f8",
+      "start": {
+        "line": 454,
+        "col": 9,
+        "offset": 23105
+      },
+      "end": {
+        "line": 461,
+        "col": 10,
+        "offset": 23440
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Operator-selected Node runs fixed repository fixture generator with separate paths.",
+      "existingControls": "Fixed generator source; JSON/source package operands; no shell.",
+      "nextAction": "Review test interpreter authority; not approved-operator acceptance."
+    },
+    {
+      "case": "E250-PY-035",
+      "path": "tests/browser/test_discovery_lab_browser.py",
+      "sourceSha256": "f6255542655b74810efc672cff9d5f451fc123a6d91aea98cf08e6927830cebf",
+      "start": {
+        "line": 111,
+        "col": 51,
+        "offset": 5059
+      },
+      "end": {
+        "line": 111,
+        "col": 79,
+        "offset": 5087
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        105
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-036",
+      "path": "tests/browser/test_out_evolve_browser.py",
+      "sourceSha256": "92e04eeeafea75829eb4bae947dba1cd277eea6ac6afc73a76523a15b5600847",
+      "start": {
+        "line": 86,
+        "col": 51,
+        "offset": 3575
+      },
+      "end": {
+        "line": 86,
+        "col": 79,
+        "offset": 3603
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        80
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-037",
+      "path": "tests/browser/test_out_execute_browser.py",
+      "sourceSha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e",
+      "start": {
+        "line": 43,
+        "col": 51,
+        "offset": 1751
+      },
+      "end": {
+        "line": 43,
+        "col": 79,
+        "offset": 1779
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        36
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-038",
+      "path": "tests/browser/test_shadow_ledger_browser.py",
+      "sourceSha256": "544b1e3e5003371d3df49f8563bd80e95e5a26115f98c4b1dfb50430b4754ab0",
+      "start": {
+        "line": 68,
+        "col": 13,
+        "offset": 2375
+      },
+      "end": {
+        "line": 68,
+        "col": 41,
+        "offset": 2403
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        58
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-039",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "sourceSha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+      "start": {
+        "line": 201,
+        "col": 9,
+        "offset": 8924
+      },
+      "end": {
+        "line": 201,
+        "col": 110,
+        "offset": 9025
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixed trusted reconstruction code runs under operator Node; inputs/strategy are bounded JSON stdin.",
+      "existingControls": "Data byte count is capped8MB; generated source is derived from rediscovered trusted modules, not imported from this stdin call.",
+      "nextAction": "Review fixed code/data separation; runtime/operator identity must be independently qualified."
+    },
+    {
+      "case": "E250-PY-040",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "sourceSha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+      "start": {
+        "line": 257,
+        "col": 9,
+        "offset": 11706
+      },
+      "end": {
+        "line": 264,
+        "col": 10,
+        "offset": 11917
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Operator Node imports a full-byte-verified trusted reconstruction, then passes changed inputs as JSON argv.",
+      "existingControls": "Downloaded bytes must exactly equal expected trusted reconstruction before write/import; command has no shell.",
+      "nextAction": "Review expected-byte proof and operator Node authority against exact current R3 definition."
+    },
+    {
+      "case": "E250-PY-041",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "sourceSha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+      "start": {
+        "line": 652,
+        "col": 13,
+        "offset": 32418
+      },
+      "end": {
+        "line": 657,
+        "col": 14,
+        "offset": 32630
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Operator Node runs the repository native-cli.mjs with temporary handoff/return paths.",
+      "existingControls": "Fixed repository program and bounded JSON protocol; this is distinct from browser-downloaded module imports.",
+      "nextAction": "Review native CLI/source identity and explicit test authority; no approved-operator claim follows."
+    },
+    {
+      "case": "E250-PY-042",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "start": {
+        "line": 99,
+        "col": 51,
+        "offset": 4241
+      },
+      "end": {
+        "line": 99,
+        "col": 79,
+        "offset": 4269
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        97
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-043",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "start": {
+        "line": 215,
+        "col": 57,
+        "offset": 11449
+      },
+      "end": {
+        "line": 215,
+        "col": 85,
+        "offset": 11477
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        97
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-044",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "start": {
+        "line": 340,
+        "col": 51,
+        "offset": 18666
+      },
+      "end": {
+        "line": 340,
+        "col": 79,
+        "offset": 18694
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        97
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-045",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "start": {
+        "line": 352,
+        "col": 51,
+        "offset": 19474
+      },
+      "end": {
+        "line": 352,
+        "col": 79,
+        "offset": 19502
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        97
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-046",
+      "path": "tests/contracts/authority-test/creator-pty.test.py",
+      "sourceSha256": "f25125c29ad836e6e320b7f28e49f904e64abcda5b50d6bd5fe0c1954aa7e6d8",
+      "start": {
+        "line": 28,
+        "col": 13,
+        "offset": 660
+      },
+      "end": {
+        "line": 28,
+        "col": 31,
+        "offset": 678
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Explicit operator CLI chooses Node for a fixed sibling PTY test child.",
+      "existingControls": "Argument list and explicit minimal PATH; PTY conversation is not command code.",
+      "nextAction": "Review test interpreter authority; no credential or persistent grant introduced."
+    },
+    {
+      "case": "E250-PY-047",
+      "path": "tests/runtime/test_ecosystem_browser.py",
+      "sourceSha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+      "start": {
+        "line": 236,
+        "col": 48,
+        "offset": 10593
+      },
+      "end": {
+        "line": 236,
+        "col": 76,
+        "offset": 10621
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        234,
+        273
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-048",
+      "path": "tests/runtime/test_ecosystem_browser.py",
+      "sourceSha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+      "start": {
+        "line": 276,
+        "col": 29,
+        "offset": 12702
+      },
+      "end": {
+        "line": 276,
+        "col": 57,
+        "offset": 12730
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        234,
+        273
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-049",
+      "path": "tests/runtime/test_successor_studio_interruptions.py",
+      "sourceSha256": "78739943a3821c4a7f6ec62b242d756c95593cbe79f83d639d3fa74dc766d237",
+      "start": {
+        "line": 45,
+        "col": 14,
+        "offset": 1653
+      },
+      "end": {
+        "line": 52,
+        "col": 6,
+        "offset": 1903
+      },
+      "rule": {
+        "id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+        "sha256": "b8ad3c6842618daa05ab681d454c963c588bdb1e16f127bbe647369f7ce961f6",
+        "start_byte": 391552,
+        "end_byte": 394308
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "A parameter named request is a Python dict serialized as JSON stdin to fixed interpreter code.",
+      "existingControls": "The -c program is a fixed module-level constant; request/home/binding values are not concatenated into it.",
+      "nextAction": "Review source-to-sink separation and non-Django request type using the exact current R1 body."
+    },
+    {
+      "case": "E250-PY-050",
+      "path": "tests/runtime/test_supplier_browser_browser.py",
+      "sourceSha256": "190ebcb9ad4634302f508d23ee27355a8038d3e7d51ed9166eef54f3b536e7b7",
+      "start": {
+        "line": 167,
+        "col": 44,
+        "offset": 7684
+      },
+      "end": {
+        "line": 167,
+        "col": 72,
+        "offset": 7712
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "010a7396b7d75fae88d34375abfc18842d7ae52d432b72fe1cb5a9dad65f41c0",
+        "start_byte": 144700,
+        "end_byte": 152102
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Security should inspect exact E3C25 source/sink semantics and disposition this list-event recording. Browser navigation elsewhere retains separate controls and claims.",
+      "listBindingLines": [
+        166
+      ],
+      "requestsLibraryImported": false
+    },
+    {
+      "case": "E250-PY-051",
+      "path": "tests/runtime/test_transformation_source_audit.py",
+      "sourceSha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+      "start": {
+        "line": 30,
+        "col": 18,
+        "offset": 1011
+      },
+      "end": {
+        "line": 30,
+        "col": 79,
+        "offset": 1072
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixture Git blob identifiers coexist with independently computed SHA256 source digests.",
+      "existingControls": "Git object framing is protocol compatibility; fixtures preserve both fields.",
+      "nextAction": "Review Git compatibility use; preserve the independent SHA256 gate."
+    },
+    {
+      "case": "E250-PY-052",
+      "path": "tests/runtime/test_transformation_source_audit.py",
+      "sourceSha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+      "start": {
+        "line": 684,
+        "col": 18,
+        "offset": 31076
+      },
+      "end": {
+        "line": 684,
+        "col": 79,
+        "offset": 31137
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixture Git blob identifiers coexist with independently computed SHA256 source digests.",
+      "existingControls": "Git object framing is protocol compatibility; fixtures preserve both fields.",
+      "nextAction": "Review Git compatibility use; preserve the independent SHA256 gate."
+    },
+    {
+      "case": "E250-PY-053",
+      "path": "tests/test_featured_research.py",
+      "sourceSha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+      "start": {
+        "line": 57,
+        "col": 12,
+        "offset": 2453
+      },
+      "end": {
+        "line": 57,
+        "col": 67,
+        "offset": 2508
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Historical Out_Execute.tex bytes are checked against a fixed Git blob ID.",
+      "existingControls": "Assertion preserves historical Git object compatibility; this function has no adjacent SHA256 assertion.",
+      "nextAction": "Security must disposition narrow historical compatibility evidence; do not upgrade it to a new cryptographic integrity claim."
+    },
+    {
+      "case": "E250-PY-054",
+      "path": "tests/test_featured_research.py",
+      "sourceSha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+      "start": {
+        "line": 75,
+        "col": 12,
+        "offset": 3246
+      },
+      "end": {
+        "line": 75,
+        "col": 67,
+        "offset": 3301
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Historical enterprise PDF bytes are checked against SHA256, Git blob ID and destination-byte equality.",
+      "existingControls": "Line74 separately asserts the same bytes SHA256 before the Git assertion; destination is checked byte-for-byte.",
+      "nextAction": "Review SHA1 as protocol compatibility only while preserving SHA256/byte equality."
+    },
+    {
+      "case": "E250-PY-055",
+      "path": "tests/test_featured_research.py",
+      "sourceSha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+      "start": {
+        "line": 110,
+        "col": 12,
+        "offset": 5335
+      },
+      "end": {
+        "line": 110,
+        "col": 63,
+        "offset": 5386
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "a4c81b05c3b8a4826fdc1f9635dd8b0b9a72dc79750de719ad847ac3da930f32",
+        "start_byte": 188007,
+        "end_byte": 190071
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Seven original PDF files are checked against fixed declared historical Git blob IDs.",
+      "existingControls": "This function preserves Git object identity; it does not itself contain an adjacent SHA256 predicate.",
+      "nextAction": "Review narrow historical preservation evidence; no authentication/collision-resistance claim."
+    },
+    {
+      "case": "E250-PY-056",
+      "path": "tests/test_strategy_python_security.py",
+      "sourceSha256": "608c42e215b8a287183ae483bbe95435ce973d35aa9ada103940571fa6ae5c42",
+      "start": {
+        "line": 114,
+        "col": 13,
+        "offset": 3963
+      },
+      "end": {
+        "line": 114,
+        "col": 104,
+        "offset": 4054
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Fixture probes operator-owned pre-commit cached interpreters with fixed metadata-version code.",
+      "existingControls": "Existing tool cache only, fixed -c string, output capture,10-second timeout and exact Semgrep version.",
+      "nextAction": "Review trusted tool-cache authority; candidate data supplies neither interpreter path nor code."
+    },
+    {
+      "case": "E250-PY-057",
+      "path": "tests/test_successor_capability_reconstruction.py",
+      "sourceSha256": "09b71362d7f6eee3ff4b909a033d025f87c0e1f46abf228e59eeb5a779dc0629",
+      "start": {
+        "line": 48,
+        "col": 9,
+        "offset": 2339
+      },
+      "end": {
+        "line": 48,
+        "col": 110,
+        "offset": 2440
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "6abd4d6a41afdca7a34a1344554d2256e8744bb41c4d00063d8d9e89becc9359",
+        "start_byte": 342990,
+        "end_byte": 347589
+      },
+      "currentRuleBodyAvailable": false,
+      "disposition": "PENDING_ELIGIBLE_SECURITY_REVIEW",
+      "securityClearance": false,
+      "sourceExposure": "Operator Node runs fixed repository exporter fixture using hardcoded public inputs.",
+      "existingControls": "Generated module strings are returned as base64 data and not imported at this call.",
+      "nextAction": "Review test interpreter authority and inert generated-data boundary."
+    }
+  ]
+}

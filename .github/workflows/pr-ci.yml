@@ -64,6 +64,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
       - name: Free disk space
         run: bash scripts/ci_free_disk.sh
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
@@ -80,6 +82,28 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.lock
           pip install -r requirements-dev.lock
+      - name: Check release workflow policy before merge
+        run: python -m pytest --noconftest -o addopts= tests/test_paper_workflow_policy.py -q
+      - name: Check official and additional Python security before merge
+        timeout-minutes: 12
+        env:
+          STRATEGY_REQUIRE_COMMITTED_CONTEXT: '1'
+        run: |
+          mkdir -p evidence/semgrep-official
+          set -o pipefail
+          pre-commit run semgrep --all-files --verbose --show-diff-on-failure 2>&1 | tee evidence/semgrep-official/precommit-pr.log
+      - name: Retain actual Python security evidence
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: pr-python-security
+          # Publish projections only; captured upstream rules and raw errors remain local.
+          path: |
+            evidence/semgrep-official/public/attempt-*/summary.json
+            evidence/semgrep-official/public/attempt-*/policy-identity.json
+            evidence/semgrep-official/public/attempt-*/finding-index.json
+            evidence/semgrep-official/public/attempt-*/source-identities.json
+          if-no-files-found: error
       - name: Run smoke tests
         run: |
           pytest -m smoke \

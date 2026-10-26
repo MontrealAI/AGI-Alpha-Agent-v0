@@ -14,7 +14,7 @@ import sys
 import tempfile
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 from playwright.sync_api import Browser, BrowserContext, Page, Response, expect, sync_playwright
 
@@ -103,6 +103,13 @@ def document_identity(url: str) -> tuple[str, str, str]:
     return parsed.scheme, parsed.netloc, parsed.path
 
 
+def require_document_source(response: Response | None) -> None:
+    """Refuse a different browser response before using its downloaded code."""
+    assert EXPECTED_PAGE_SHA256 is not None, "Browser entry requires a trusted source digest"
+    assert response is not None and document_identity(response.url) == document_identity(URL)
+    assert hashlib.sha256(response.body()).hexdigest() == EXPECTED_PAGE_SHA256, "Browser document source changed"
+
+
 def observe_response(response: Response, errors: list[str]) -> None:
     if response.status >= 400:
         errors.append(f"HTTP_FAILURE:{response.status}:{response.url}")
@@ -147,9 +154,120 @@ def context_page(
         ),
     )
     page.on("response", lambda response: observe_response(response, errors))
-    page.goto(URL)
+    response = page.goto(URL)
+    require_document_source(response)
     expect(page.locator("#hero-start")).to_be_enabled()
     return context, page
+
+
+def expected_plan_tool(inputs: dict[str, str], strategy: dict[str, Any]) -> bytes:
+    """Rebuild expected bytes using only reviewed repository modules and JSON data."""
+    script = """
+import {readFileSync} from 'node:fs';
+const root = process.argv[1];
+const {createJoinMission} = await import(new URL('examples/successor-alpha/engine.mjs', root));
+const {buildPlanCapability} = await import(new URL('examples/successor-alpha/capability.mjs', root));
+const {discoverStrategy, validateResearch} = await import(new URL('examples/successor-alpha/research.mjs', root));
+const {canonical} = await import(new URL('docs/assets/successor/engine.mjs', root));
+const {computeInstalledSourceHash} = await import(new URL('examples/successor-alpha/native-cli.mjs', root));
+const value = JSON.parse(readFileSync(0, 'utf8'));
+const read = name => readFileSync(new URL(name, root), 'utf8').replace(/\\r\\n?/g, '\\n');
+const mission = createJoinMission(value.inputs), supplied = value.strategy;
+const sourceHash = await computeInstalledSourceHash();
+const bounded = (n, maximum) => Number.isSafeInteger(n) && !Object.is(n, -0) && n >= 0 && n <= maximum;
+if (!supplied || supplied.schema !== 'successor-strategy-research/v1' || supplied.sourceHash !== sourceHash
+    || !bounded(supplied.objective?.maxAuxiliaryRows, 4500)
+    || !bounded(supplied.objective?.auxiliaryWeight, 1000000)
+    || !bounded(supplied.confirmation?.seed, 0xffffffff)) throw Error('Invalid reviewed strategy context.');
+await validateResearch(supplied, mission, {sourceHash});
+// The JSON download canonically sorts keys; the unchanged exporter preserves
+// the original reviewed algorithm's nested insertion order in emitted metadata.
+// Recreate that order from fixed source and validated data, never downloaded code.
+const recomputed = await discoverStrategy(mission, {sourceHash,
+    maxAuxiliaryRows: supplied.objective.maxAuxiliaryRows,
+    auxiliaryWeight: supplied.objective.auxiliaryWeight,
+    confirmationSeed: supplied.confirmation.seed});
+if (canonical(recomputed) !== canonical(supplied)) throw Error('Strategy differs from trusted recomputation.');
+const source = await buildPlanCapability(mission, recomputed, {
+    sourceHash,
+    engineSource: read('examples/successor-alpha/engine.mjs'),
+    researchSource: read('examples/successor-alpha/research.mjs'),
+});
+process.stdout.write(source);
+"""
+    data = json.dumps({"inputs": inputs, "strategy": strategy}, allow_nan=False).encode()
+    assert len(data) <= 8_000_000, "Strategy data exceeds the reviewed exporter budget"
+    result = subprocess.run(
+        [os.environ.get("NODE_EXECUTABLE", "node"), "--input-type=module", "-e", script, ROOT.as_uri() + "/"],
+        input=data,
+        capture_output=True,
+        timeout=30,
+        check=True,
+        cwd=ROOT,
+    )
+    assert 0 < len(result.stdout) <= 520_000, "Reviewed exporter returned an invalid artifact size"
+    return result.stdout
+
+
+def execute_verified_plan_tool(
+    downloaded: bytes,
+    inputs: dict[str, str],
+    strategy: dict[str, Any],
+    changed_inputs: dict[str, str],
+    directory: str,
+    errors: list[str],
+    external: list[str],
+    diagnostic_directory: Path | None = None,
+) -> subprocess.CompletedProcess[str]:
+    """Import only independently reconstructed bytes after complete equality."""
+    assert not errors and not external, "Browser source or request verification failed before host execution"
+    assert 0 < len(downloaded) <= 520_000, "Downloaded capability exceeds the reviewed exporter budget"
+    expected = expected_plan_tool(inputs, strategy)
+    if diagnostic_directory is not None:
+        # Fixed authored public/synthetic acceptance only. Retain bounded hashes
+        # and byte context, never execute the download or upload a directory.
+        offset = next(
+            (i for i, (a, b) in enumerate(zip(downloaded, expected)) if a != b), min(len(downloaded), len(expected))
+        )
+        different = downloaded != expected
+        diagnostic = {
+            "schema": "reviewed-capability-byte-comparison/v1",
+            "scope": "authored public/synthetic browser acceptance; QA verification cost",
+            "downloaded_sha256": hashlib.sha256(downloaded).hexdigest(),
+            "expected_sha256": hashlib.sha256(expected).hexdigest(),
+            "downloaded_bytes": len(downloaded),
+            "expected_bytes": len(expected),
+            "equal": not different,
+            "first_differing_byte": offset if different else None,
+            "downloaded_context_hex": downloaded[max(0, offset - 16) : offset + 32].hex() if different else "",
+            "expected_context_hex": expected[max(0, offset - 16) : offset + 32].hex() if different else "",
+        }
+        (diagnostic_directory / "capability-export-byte-comparison.json").write_text(
+            json.dumps(diagnostic, indent=2) + "\n"
+        )
+    assert downloaded == expected, "Downloaded capability differs from the reviewed repository exporter"
+    tool_path = Path(directory) / "retained.mjs"
+    # Execute the trusted reconstruction, never an unchecked browser download.
+    tool_path.write_bytes(expected)
+    script = (
+        "const m=await import(process.argv[1]);const r=m.reconcileCatalogs(JSON.parse(process.argv[2]));"
+        "console.log(JSON.stringify({metadata:m.metadata,result:r}));"
+    )
+    return subprocess.run(
+        [
+            os.environ.get("NODE_EXECUTABLE", "node"),
+            "--input-type=module",
+            "-e",
+            script,
+            tool_path.as_uri(),
+            json.dumps(changed_inputs),
+        ],
+        cwd=directory,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
 
 
 def verify_comparison(page: Page, result: dict[str, Any]) -> None:
@@ -359,9 +477,15 @@ def custom_and_errors(browser: Browser, output: Path, errors: list[str], externa
 
 def advanced_continuity(browser: Browser, output: Path, errors: list[str], external: list[str]) -> None:
     context, page = context_page(browser, errors, external)
+    original_inputs = {
+        "leftCsv": 'sku,name,price\nA,"Alpha, one",10\nA,=SUM(1),11\nZ,Missing,0\n',
+        "rightCsv": 'id,name,price\nA,"Alpha, one",10\nA,Other,12\nY,New,3\n',
+        "leftKey": "sku",
+        "rightKey": "id",
+    }
     page.locator("#hero-custom").click()
-    page.locator("#left-csv").fill('sku,name,price\nA,"Alpha, one",10\nA,=SUM(1),11\nZ,Missing,0\n')
-    page.locator("#right-csv").fill('id,name,price\nA,"Alpha, one",10\nA,Other,12\nY,New,3\n')
+    page.locator("#left-csv").fill(original_inputs["leftCsv"])
+    page.locator("#right-csv").fill(original_inputs["rightCsv"])
     page.locator("#check-columns").click()
     page.locator("#left-key").select_option("sku")
     page.locator("#right-key").select_option("id")
@@ -400,26 +524,8 @@ def advanced_continuity(browser: Browser, output: Path, errors: list[str], exter
         "rightKey": "id",
     }
     with tempfile.TemporaryDirectory(prefix="alpha-downloaded-capability-") as directory:
-        tool_path = Path(directory) / "retained.mjs"
-        tool_path.write_bytes(plan_tool)
-        script = (
-            "const m=await import(process.argv[1]);const r=m.reconcileCatalogs(JSON.parse(process.argv[2]));"
-            "console.log(JSON.stringify({metadata:m.metadata,result:r}));"
-        )
-        outcome = subprocess.run(
-            [
-                os.environ.get("NODE_EXECUTABLE", "node"),
-                "--input-type=module",
-                "-e",
-                script,
-                tool_path.as_uri(),
-                json.dumps(changed_inputs),
-            ],
-            cwd=directory,
-            capture_output=True,
-            text=True,
-            timeout=30,
-            check=False,
+        outcome = execute_verified_plan_tool(
+            plan_tool, original_inputs, strategy, changed_inputs, directory, errors, external, output
         )
         assert outcome.returncode == 0, outcome.stderr
         executable_result = json.loads(outcome.stdout)
@@ -1118,6 +1224,12 @@ def computer_mission_presets(browser: Browser, errors: list[str], external: list
 def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | None = None) -> dict[str, Any]:
     """Run the same complete journey against a source-bound packaged or public page."""
     global URL, EXPECTED_PAGE_SHA256
+    source_digest_supplied = expected_page_sha256 is not None
+    if expected_page_sha256 is None:
+        local = urlsplit(entry_url)
+        if local.scheme != "file" or local.netloc:
+            raise ValueError("A public browser entry requires its reviewed page SHA-256")
+        expected_page_sha256 = hashlib.sha256(Path(unquote(local.path)).read_bytes()).hexdigest()
     previous_url, previous_digest = URL, EXPECTED_PAGE_SHA256
     URL, EXPECTED_PAGE_SHA256 = entry_url, expected_page_sha256
     output.mkdir(parents=True, exist_ok=True)
@@ -1147,10 +1259,15 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 browser.close()
         assert not errors, errors
         assert not external, external
+        from tests.browser.test_shadow_ledger_browser import run_acceptance as run_shadow_acceptance
+
+        shadow_report = run_shadow_acceptance(
+            output / "shadow-ledger.json", entry_url=entry_url, expected_page_sha256=expected_page_sha256
+        )
         return {
             "passed": True,
             "entryUrl": entry_url,
-            "documentSourceVerified": expected_page_sha256 is not None,
+            "documentSourceVerified": source_digest_supplied,
             "checks": [
                 "first-use-and-keyboard-focus",
                 "exact-csv-artifacts",
@@ -1172,8 +1289,10 @@ def run_acceptance(entry_url: str, output: Path, *, expected_page_sha256: str | 
                 "computer-use-public-reading-pane-and-visible-work-product",
                 "computer-use-bilingual-mission-presets-and-complete-strategy-slate",
                 "no-page-errors-no-csp-violations-no-external-dependencies",
+                "mission-shadow-ledger-and-offline-recovery",
             ],
             "accessibilityAudited": bool(os.environ.get("AXE_SCRIPT")),
+            "shadowLedger": shadow_report,
             "languages": ["en", "fr"],
             "viewports": [1440, 1363, 1280, 1024, 900, 768, 600, 390, 320],
             "errors": list(errors) + list(external),

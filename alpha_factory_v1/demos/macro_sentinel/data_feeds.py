@@ -21,9 +21,11 @@ from __future__ import annotations
 
 import asyncio
 import csv
+import ipaddress
 import os
 import pathlib
 import datetime as dt
+import re
 from types import SimpleNamespace
 
 try:  # aiohttp optional at test time
@@ -36,6 +38,7 @@ except ModuleNotFoundError:  # pragma: no cover - offline fallback
     feedparser = SimpleNamespace(parse=lambda _url: SimpleNamespace(entries=()))
 from typing import AsyncIterator, Dict, Any, Optional, cast
 from collections import deque
+from urllib.parse import urlsplit
 from urllib.request import urlopen
 
 # Source snapshot revision for offline CSVs
@@ -250,21 +253,94 @@ def _push_redis(evt: Dict[str, Any]) -> None:
     r.xadd("macro_stream", {"json": _j.dumps(evt)}, maxlen=10000)
 
 
+def _qdrant_endpoint(target: str) -> str:
+    """Validate an origin; bare external hosts use HTTPS, literal loopback HTTP.
+
+    ``VECTOR_HOST`` accepts a host with an optional port or an HTTP(S) origin
+    without a path, user information, query or fragment. Plain HTTP is limited
+    to literal loopback addresses and exact ``localhost`` for local development.
+    Hostnames are never resolved to grant the plaintext exception.
+    """
+    if (
+        not target
+        or len(target) > 2048
+        or any(ord(char) <= 32 or ord(char) >= 127 for char in target)
+        or any(char in target for char in "\\%?#@")
+    ):
+        raise ValueError("Invalid Qdrant target")
+    try:
+        parsed = urlsplit(target if "://" in target else "//" + target)
+        host, port = parsed.hostname, parsed.port
+    except ValueError as exc:
+        raise ValueError("Invalid Qdrant target") from exc
+    if (
+        parsed.scheme not in {"", "http", "https"}
+        or not parsed.netloc
+        or not host
+        or parsed.path
+        or parsed.query
+        or parsed.fragment
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.netloc.endswith(":")
+        or port is not None
+        and not 1 <= port <= 65535
+    ):
+        raise ValueError("Invalid Qdrant origin")
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        if (
+            len(host) > 253
+            or "[" in parsed.netloc
+            or "]" in parsed.netloc
+            or re.fullmatch(r"[0-9.]+", host)
+            or any(not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?", label) for label in host.split("."))
+        ):
+            raise ValueError("Invalid Qdrant hostname") from None
+        loopback = host == "localhost"
+        authority = host
+    else:
+        if address.version == 6 and not re.fullmatch(r"\[[0-9a-fA-F:.]+\](?::[0-9]+)?", parsed.netloc):
+            raise ValueError("Invalid Qdrant IPv6 authority")
+        loopback = (
+            address in ipaddress.ip_network("127.0.0.0/8")
+            if address.version == 4
+            else address == ipaddress.ip_address("::1")
+        )
+        authority = f"[{address.compressed}]" if address.version == 6 else str(address)
+    scheme = parsed.scheme or ("http" if loopback else "https")
+    if scheme == "http" and not loopback:
+        raise ValueError("Qdrant HTTP requires a literal loopback target")
+    if port is not None:
+        authority += f":{port}"
+    return f"{scheme}://{authority}/collections/macro/points"
+
+
 def _push_qdrant(evt: Dict[str, Any]) -> None:
-    """Insert ``evt`` into a Qdrant collection when configured."""
+    """Insert ``evt`` into a validated Qdrant origin without following redirects.
+
+    Transports that cannot disable redirects fail closed before sending.
+    """
     if not VEC_URL:
         return
+    endpoint = _qdrant_endpoint(VEC_URL)
     import af_requests as requests
     import hashlib
     import json as _j
 
     vec = hashlib.sha256(evt["fed_speech"].encode()).digest()[:8]
     payload = {"points": [{"id": evt["timestamp"], "vector": list(vec), "payload": evt}]}
-    requests.put(
-        f"http://{VEC_URL}/collections/macro/points",
+    response = requests.put(
+        endpoint,
         data=_j.dumps(payload),
         headers={"Content-Type": "application/json"},
+        timeout=5,
+        allow_redirects=False,
     )
+    if 300 <= response.status_code < 400:
+        raise ValueError("Qdrant redirects are refused")
+    response.raise_for_status()
 
 
 def _fanout(evt: Dict[str, Any]) -> None:

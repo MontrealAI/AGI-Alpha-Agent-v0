@@ -1,0 +1,140 @@
+{
+  "schema": "alpha-human-benchmark-sources/v1",
+  "verificationDate": "2026-10-25",
+  "recordPurpose": "Source facts for the existing product automated-cost record; no new research experiment or changed frozen input.",
+  "moneyUnit": "1,000,000 micros = one currency unit",
+  "researchRegister": {
+    "repository": "MontrealAI/AGI-Alpha-Agent-v0",
+    "commit": "5caa871db78352557699f783027cf64357403d8b",
+    "path": "studies/agi-alpha-operational-economics-v1/sources/labor_rates.json",
+    "gitBlob": "7bca3d8bcadb53abac2d37f6ef629f3150ee2e64",
+    "bytes": 5739,
+    "sha256": "738791565c702190798f96323378041bcb5f6b6bb9ca9fd9d360de944460eee7",
+    "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/5caa871db78352557699f783027cf64357403d8b/studies/agi-alpha-operational-economics-v1/sources/labor_rates.json",
+    "sourcePreserved": true
+  },
+  "rates": [
+    {
+      "id": "us_office_admin_compensation_dec2025",
+      "scope": "preserved_research_input",
+      "geography": "United States, private industry",
+      "occupation": "Office and administrative support occupations",
+      "currency": "USD",
+      "hourlyCostMicros": {
+        "value": 35960000,
+        "basis": "sourced",
+        "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Office and administrative support occupations; December 2025"
+      },
+      "wagesMicrosPerHour": 24790000,
+      "benefitsMicrosPerHour": 11170000,
+      "referencePeriod": "2025-12",
+      "releaseDate": "2026-03-20",
+      "table": 4,
+      "sourceUrl": "https://www.bls.gov/news.release/archives/ecec_03202026.htm",
+      "benefitsIncluded": true,
+      "taskFit": "Broad administration employer-cost sensitivity",
+      "minutesPerEquivalentAcceptedDeliverable": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "No matched traditional-work timing observation for these actual software source-assurance missions."
+      }
+    },
+    {
+      "id": "us_professional_compensation_dec2025",
+      "scope": "preserved_research_input",
+      "geography": "United States, private industry",
+      "occupation": "Professional and related occupations",
+      "currency": "USD",
+      "hourlyCostMicros": {
+        "value": 72190000,
+        "basis": "sourced",
+        "reference": "https://www.bls.gov/news.release/archives/ecec_03202026.htm; Table 4, Occupational group, Professional and related occupations; December 2025"
+      },
+      "wagesMicrosPerHour": 50100000,
+      "benefitsMicrosPerHour": 22090000,
+      "referencePeriod": "2025-12",
+      "releaseDate": "2026-03-20",
+      "table": 4,
+      "sourceUrl": "https://www.bls.gov/news.release/archives/ecec_03202026.htm",
+      "benefitsIncluded": true,
+      "taskFit": "Higher-skill employer-cost sensitivity; not the primary clerical comparator",
+      "minutesPerEquivalentAcceptedDeliverable": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "No matched traditional-work timing observation for these actual software source-assurance missions."
+      }
+    },
+    {
+      "id": "us_office_admin_compensation_jun2026",
+      "scope": "separate_freshness_sensitivity_not_retroactive_replacement",
+      "geography": "United States, private industry",
+      "occupation": "Office and administrative support occupations",
+      "currency": "USD",
+      "hourlyCostMicros": {
+        "value": 36730000,
+        "basis": "sourced",
+        "reference": "https://www.bls.gov/news.release/archives/ecec_09092026.htm; Table 4, Occupational group, Office and administrative support occupations; June 2026"
+      },
+      "wagesMicrosPerHour": 25220000,
+      "benefitsMicrosPerHour": 11510000,
+      "referencePeriod": "2026-06",
+      "releaseDate": "2026-09-09",
+      "table": 4,
+      "sourceUrl": "https://www.bls.gov/news.release/archives/ecec_09092026.htm",
+      "benefitsIncluded": true,
+      "taskFit": "Administrative source reconciliation sensitivity; not a matched specialist rate.",
+      "minutesPerEquivalentAcceptedDeliverable": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "No matched traditional-work timing observation for these actual software source-assurance missions."
+      }
+    },
+    {
+      "id": "us_professional_compensation_jun2026",
+      "scope": "separate_freshness_sensitivity_not_retroactive_replacement",
+      "geography": "United States, private industry",
+      "occupation": "Professional and related occupations",
+      "currency": "USD",
+      "hourlyCostMicros": {
+        "value": 73690000,
+        "basis": "sourced",
+        "reference": "https://www.bls.gov/news.release/archives/ecec_09092026.htm; Table 4, Occupational group, Professional and related occupations; June 2026"
+      },
+      "wagesMicrosPerHour": 50980000,
+      "benefitsMicrosPerHour": 22710000,
+      "referencePeriod": "2026-06",
+      "releaseDate": "2026-09-09",
+      "table": 4,
+      "sourceUrl": "https://www.bls.gov/news.release/archives/ecec_09092026.htm",
+      "benefitsIncluded": true,
+      "taskFit": "Professional work sensitivity; not a task-specific engineering quote.",
+      "minutesPerEquivalentAcceptedDeliverable": {
+        "value": null,
+        "basis": "unknown",
+        "reference": "No matched traditional-work timing observation for these actual software source-assurance missions."
+      }
+    }
+  ],
+  "selectionRule": "Use one dated row explicitly. Preserve Dec2025 values when reproducing the research; June2026 values are a separately labeled sensitivity. Do not silently update frozen assumptions.",
+  "sourceVerification": {
+    "officialArchivedPagesRead": [
+      "https://www.bls.gov/news.release/archives/ecec_03202026.htm",
+      "https://www.bls.gov/news.release/archives/ecec_09092026.htm"
+    ],
+    "tableLocation": "First occupational-group block of Table 4, before industry and occupational subgroups.",
+    "repeatedRowWarning": "These pages repeat occupation labels inside industry subgroups. A search hit alone is insufficient; use the first private-industry occupational block.",
+    "preservedResearchValuesMatchPrimaryTable": true
+  },
+  "comparisonLimits": {
+    "benefitsMultiplierAlreadyIncluded": true,
+    "billableServicePriceObserved": false,
+    "matchedHumanTaskDurationObserved": false,
+    "matchedHumanTaskQualityObserved": false,
+    "aiUseOfSurveyWorkers": "unknown",
+    "traditionalNonAIWorkflow": "A comparator specification to model or measure; not a claim about AI use by surveyed workers.",
+    "humanTaskDurationSensitivity": "Any 5/15/30/60/120-minute examples are estimated assumptions, not sourced timings.",
+    "additionalBusinessOverhead": "Not quantified here; do not interpret compensation as every possible business cost.",
+    "agentCostInferredFromHumanRate": false,
+    "customerRevenueInferredFromSavings": false
+  }
+}

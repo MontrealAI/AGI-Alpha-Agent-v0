@@ -43,6 +43,7 @@ def build(root: Path = ROOT) -> None:
         return name
 
     guide = visit(root / "examples/ti-guide/guide.mjs")
+    planner = visit(root / "examples/ti-guide/planning.mjs")
     template = root / "scripts/templates/ti-guide"
     for path in [*template.iterdir(), Path(__file__).resolve(), root / "LICENSE"]:
         if path.is_file():
@@ -64,7 +65,7 @@ self.onmessage=async({data})=>{
 """
     )
     code = "\n(()=>{\n'use strict';\n" + "\n".join(chunks)
-    code += f"\nconst guide={guide},SOURCE_HASH={json.dumps(source_hash)};\n"
+    code += f"\nconst guide={guide},planner={planner},SOURCE_HASH={json.dumps(source_hash)};\n"
     code += "const WORKER_SOURCE=" + json.dumps(worker, ensure_ascii=False) + ";\n"
     code += (template / "app.js").read_text(encoding="utf-8") + "\n})();\n"
     if "</script" in code.lower():

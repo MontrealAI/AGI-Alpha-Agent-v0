@@ -10,8 +10,9 @@ import dataclasses
 from pathlib import Path
 from typing import Iterator, Optional
 
-from sqlalchemy import Boolean, Column, Float, String, create_engine
+from sqlalchemy import Boolean, Column, Float, String, create_engine, text
 from sqlalchemy.orm import Session, DeclarativeBase
+from sqlalchemy.exc import IntegrityError
 
 
 class Base(DeclarativeBase):
@@ -88,6 +89,42 @@ class ArchiveDB:
         with Session(self.engine) as session:
             session.merge(_ArchiveRow(**dataclasses.asdict(entry)))
             session.commit()
+
+    def add_patch_once(self, entry: ArchiveEntry, body: str) -> bool:
+        """Atomically insert a patch; identical retries retain all accepted history."""
+        key = f"patch:{entry.hash}"
+
+        def matches(session: Session) -> bool:
+            # One SQLite statement sees one committed snapshot. Two separate
+            # lookups could straddle another connection's otherwise atomic commit.
+            row_count, parent, state_count, value = session.execute(
+                text(
+                    "SELECT (SELECT COUNT(*) FROM archive WHERE hash=:identity), "
+                    "(SELECT parent FROM archive WHERE hash=:identity), "
+                    "(SELECT COUNT(*) FROM state WHERE key=:state_key), "
+                    "(SELECT value FROM state WHERE key=:state_key)"
+                ),
+                {"identity": entry.hash, "state_key": key},
+            ).one()
+            if row_count == 0 and state_count == 0:
+                return False
+            if row_count != 1 or state_count != 1 or value != body or parent != entry.parent:
+                raise ValueError("Patch identity conflicts with retained archive history")
+            return True
+
+        with Session(self.engine) as session:
+            if matches(session):
+                return False
+            session.add(_ArchiveRow(**dataclasses.asdict(entry)))
+            session.add(_StateRow(key=key, value=body))
+            try:
+                session.commit()
+            except IntegrityError:
+                session.rollback()
+                if matches(session):
+                    return False
+                raise ValueError("Patch admission raced with conflicting archive history") from None
+        return True
 
     def get(self, h: str) -> ArchiveEntry | None:
         """Return the entry matching ``h`` or ``None`` if missing."""

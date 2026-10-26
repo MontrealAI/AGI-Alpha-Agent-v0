@@ -12,6 +12,7 @@ import json
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -157,7 +158,7 @@ def release_documents(version: str) -> tuple[str, ...]:
             "docs/agent/FLYWHEEL_CAPABILITIES.json",
         )
     if tuple(map(int, version.split("."))) >= (1, 44, 0):
-        documents += ("docs/agent/STRATEGY_SUCCESSION.md",)
+        documents += ("docs/agent/STRATEGY_SUCCESSION.md", "docs/agent/STRATEGY_SECURITY_OPERATOR.md")
     return documents
 
 
@@ -553,6 +554,79 @@ def package_operator_guide(root: Path, output: Path, version: str, commit: str) 
     return destination
 
 
+def package_validation_evidence(evidence: Path, destination: Path, local_documents: Path) -> None:
+    """Retain ordinary evidence and downloaded CI projections, excluding local captures."""
+    direct_root = Path(os.path.abspath(evidence))
+    if evidence.resolve(strict=True) != direct_root or "semgrep-official" in direct_root.parts:
+        raise ValueError("Validation evidence root is an alias or private capture")
+    paths = sorted(evidence.rglob("*"))
+    private_identities = {
+        (info.st_dev, info.st_ino)
+        for path in paths
+        if "semgrep-official" in path.relative_to(evidence).parts and path.is_file()
+        for info in (path.stat(),)
+    }
+
+    def write_direct(archive: zipfile.ZipFile, path: Path, name: str) -> None:
+        if path.is_symlink() or path.resolve(strict=True) != Path(os.path.abspath(path)):
+            raise ValueError("Validation evidence aliases are refused")
+        before = path.lstat()
+        if not stat.S_ISREG(before.st_mode):
+            raise ValueError("Validation evidence must be a regular file")
+        if (before.st_dev, before.st_ino) in private_identities:
+            raise ValueError("Validation evidence aliases private capture bytes")
+        keys = ("st_dev", "st_ino", "st_mode", "st_size", "st_mtime_ns", "st_ctime_ns")
+        with os.fdopen(os.open(path, os.O_RDONLY | os.O_NOFOLLOW), "rb") as source:
+            opened = os.fstat(source.fileno())
+            if any(getattr(before, key) != getattr(opened, key) for key in keys):
+                raise ValueError("Validation evidence changed before capture")
+            member = zipfile.ZipInfo.from_file(path, name)
+            member.compress_type = archive.compression
+            with archive.open(member, "w") as output:
+                shutil.copyfileobj(source, output, length=1024 * 1024)
+            after, named = os.fstat(source.fileno()), path.lstat()
+            if any(getattr(before, key) != getattr(observed, key) for observed in (after, named) for key in keys):
+                raise ValueError("Validation evidence changed during capture")
+
+    omitted = []
+    with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in paths:
+            relative = path.relative_to(evidence)
+            # The whole generated capture tree is local-only, including its
+            # local public copies. Qualified downloaded public CI artifacts
+            # live outside this tree and retain their ordinary evidence path.
+            if "semgrep-official" in relative.parts:
+                if path.is_file():
+                    omitted.append(relative.as_posix())
+                continue
+            if {"browser-distribution", "pages-distribution", "github-pages"}.intersection(relative.parts):
+                continue
+            if path.is_symlink():
+                raise ValueError("Validation evidence aliases are refused")
+            if path.is_file():
+                write_direct(archive, path, relative.as_posix())
+        for path in sorted(local_documents.glob("*.json")):
+            write_direct(archive, path, "local/" + path.name)
+        note = "local/semgrep-private-input-omissions.json"
+        if note in archive.namelist():
+            raise ValueError("Private evidence omission record collides with ordinary evidence")
+        archive.writestr(
+            note,
+            json.dumps(
+                {
+                    "schema": "alpha.validation-private-evidence-omissions/v1",
+                    "excluded_directory_component": "semgrep-official",
+                    "omitted_files": sorted(omitted),
+                    "reason": "Local licensed inputs and raw diagnostics remain local; downloaded public CI projections outside this tree are retained",
+                    "raw_inputs_modified": False,
+                    "policy_pass": False,
+                },
+                indent=2,
+            )
+            + "\n",
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -676,14 +750,11 @@ def main() -> None:
         distributions[kind] = {"manifest": pack_manifest.name, "files": len(data["files"]), "packs": len(data["packs"])}
     preservation = verify_successor_preservation()
     (output / "successor-preservation.json").write_text(json.dumps(preservation, indent=2) + "\n", encoding="utf-8")
-    with zipfile.ZipFile(output / f"alpha-agent-v{version}-validation.zip", "w", zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(args.evidence.rglob("*")):
-            if path.is_file() and not {"browser-distribution", "pages-distribution", "github-pages"}.intersection(
-                path.relative_to(args.evidence).parts
-            ):
-                archive.write(path, path.relative_to(args.evidence))
-        for path in sorted(Path("docs/agent/release-evidence").glob("*.json")):
-            archive.write(path, "local/" + path.name)
+    package_validation_evidence(
+        args.evidence,
+        output / f"alpha-agent-v{version}-validation.zip",
+        Path("docs/agent/release-evidence"),
+    )
     manifest = {
         "version": version,
         "manuscript": {"pages": 198, "files": manuscript_hashes},

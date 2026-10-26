@@ -1,0 +1,120 @@
+{
+  "schema": "ti-catalogue-workspace/v1",
+  "sourceHash": "fa12a246aafcb5cb52f972e3cfb190a92c302eaafe27436bacdcf4fb9a46912c",
+  "runId": "completion-scope-2",
+  "createdAt": "2026-10-25T20:15:50.608Z",
+  "language": "en",
+  "approach": "grouped",
+  "input": {
+    "leftCsv": "\"path\",\"sha256\"\r\n\"docs/assets/successor/engine.mjs\",\"38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488\"\r\n\"examples/specialist-evaluation/engine.mjs\",\"ec57b316bdf91f4df361ba3047ceada8889cff569da93ca6b0a04c93491e7c2a\"\r\n\"scripts/generate_specialist_evaluation.py\",\"6bc81f064e6c114efb2ae5b088504f3c98406ec65cd7e4a5e2d3b64dc54d0e61\"\r\n\"scripts/templates/specialist-evaluation/app.js\",\"2b09a4b2d45183fbddd2dfa848dced0b69b4ac4ab356a6511ca19dc6ad1b10e5\"\r\n\"scripts/templates/specialist-evaluation/index.html\",\"68dba36124f4681ec28f510735c1c6ba9b25f753161f2046fc9bdc32ef094bad\"\r\n\"scripts/templates/specialist-evaluation/style.css\",\"81252333cd642332bd87935abf93442baf959dda67e82efc317b8f89759f4153\"\r\n",
+    "rightCsv": "\"path\",\"sha256\"\r\n\"docs/assets/successor/engine.mjs\",\"38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488\"\r\n\"examples/specialist-evaluation/engine.mjs\",\"ec57b316bdf91f4df361ba3047ceada8889cff569da93ca6b0a04c93491e7c2a\"\r\n\"scripts/generate_specialist_evaluation.py\",\"6bc81f064e6c114efb2ae5b088504f3c98406ec65cd7e4a5e2d3b64dc54d0e61\"\r\n\"scripts/templates/specialist-evaluation/app.js\",\"2b09a4b2d45183fbddd2dfa848dced0b69b4ac4ab356a6511ca19dc6ad1b10e5\"\r\n\"scripts/templates/specialist-evaluation/index.html\",\"68dba36124f4681ec28f510735c1c6ba9b25f753161f2046fc9bdc32ef094bad\"\r\n\"scripts/templates/specialist-evaluation/style.css\",\"81252333cd642332bd87935abf93442baf959dda67e82efc317b8f89759f4153\"\r\n",
+    "leftKey": "path",
+    "rightKey": "path"
+  },
+  "result": {
+    "schema": "ti-catalogue-result/v1",
+    "leftIdentity": {
+      "sha256": "23546bb6e8b279b8628760fd96df87c85136121ff8c967bc4b18cdee00fc30ba",
+      "bytes": 702
+    },
+    "rightIdentity": {
+      "sha256": "23546bb6e8b279b8628760fd96df87c85136121ff8c967bc4b18cdee00fc30ba",
+      "bytes": 702
+    },
+    "resolution": {
+      "schema": "successor-discrepancy-resolution/v1",
+      "actions": [],
+      "sharedFields": [
+        {
+          "name": "sha256",
+          "leftColumn": 1,
+          "rightColumn": 1
+        }
+      ],
+      "burden": {
+        "pairwiseReviewItems": 0,
+        "groupedActions": 0,
+        "groupingReduction": 0,
+        "timeSavedClaim": false,
+        "sameTaskSuperiority": false
+      },
+      "coverage": {
+        "originalOccurrences": 0,
+        "coveredOccurrences": 0,
+        "complete": true,
+        "missing": [],
+        "duplicates": []
+      },
+      "diagnosis": {
+        "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+        "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+        "duplicateExceptionKeys": 0,
+        "uniqueExceptionKeys": 0,
+        "groupingReducesDecisionItems": false
+      },
+      "decision": {
+        "state": "retain_original_review",
+        "recommendedContract": "original_occurrence_review",
+        "reason": "No repeated exception key reduces the number of decision records; retain the original review contract."
+      },
+      "contract": {
+        "changed": true,
+        "original": "One review item per unmatched source row or conflicting matched row pair.",
+        "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+        "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+      },
+      "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n",
+      "externalAuthority": false,
+      "automaticallyResolved": false,
+      "qualification": "local_engineering_only"
+    },
+    "differences": [],
+    "metrics": {
+      "leftRows": 6,
+      "rightRows": 6,
+      "matchedPairs": 6,
+      "unmatchedRows": 0,
+      "unmatchedKeys": 0,
+      "conflictingPairs": 0,
+      "fieldDifferences": 0,
+      "actionGroups": 0,
+      "evidenceReferences": 0,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "sha256"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    },
+    "limitations": {
+      "localOnly": true,
+      "authority": "none",
+      "automaticallyResolved": false,
+      "timeSavedMeasured": false,
+      "accuracyImprovementMeasured": false,
+      "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+      "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+      "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+      "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+    }
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  },
+  "authority": "none"
+}

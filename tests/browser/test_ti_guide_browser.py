@@ -73,6 +73,30 @@ def run_acceptance(entry: str, output: Path, expected: bytes, axe_script: Path) 
         ], "Data interaction unexpectedly made a network request"
         checks.append("no-network-after-page-load")
 
+        # The public page prepares a fresh request; it cannot contact an executor.
+        page.locator("#planning-preparer > summary").click()
+        request_count = len(requests)
+        planned = json.loads(download(page, "#planning-download", "planning-mission-input.json"))
+        assert len(planned["initial"]["jobs"]) == 7
+        assert planned["initial"]["jobs"][3]["deps"] == ["J2", "J3"]
+        assert planned["construction"]["enabled"] is False
+        assert "baseline" not in planned["repair"] and "locked" not in planned["repair"]
+        expect(page.locator("#planning-status")).to_contain_text("No work has run")
+        page.locator("#fr").click()
+        expect(page.locator("#planning-title")).to_have_text("Planifier un projet. Adapter. Réparer.")
+        expect(page.locator("#planning-local")).to_have_attribute("href", "http://127.0.0.1:8768/?lang=fr")
+        expect(page.locator("#planning-setup")).to_have_attribute(
+            "href", "https://montrealai.github.io/AGI-Alpha-Agent-v0/agent/STRATEGY_SUCCESSION/"
+        )
+        page.locator("#planning-outage-start").fill("1")
+        page.locator("#planning-download").click()
+        expect(page.locator("#planning-status")).to_contain_text("OUTAGE")
+        assert len(requests) == request_count
+        assert page.locator('input[type="password"]').count() == 0
+        page.locator("#en").click()
+        expect(page.locator("#planning-local")).to_have_attribute("href", "http://127.0.0.1:8768/")
+        checks.extend(["planning-preparer-download", "navigation-only-executor-handoff"])
+
         page.close()
         context.close()
         browser.close()
@@ -185,6 +209,9 @@ def run_acceptance(entry: str, output: Path, expected: bytes, axe_script: Path) 
             assert not audit["violations"], audit["violations"]
             mobile.locator("#fr").click()
             expect(mobile.locator("#step-title")).to_have_text("Utilisez le résultat.")
+            mobile.locator("#planning-preparer > summary").click()
+            expect(mobile.locator("#planning-download")).to_have_text("Télécharger les données de mission")
+            assert mobile.evaluate("document.documentElement.scrollWidth <= innerWidth")
             mobile.screenshot(path=str(output / f"phone-fr-{width}.png"), full_page=True)
             phone.close()
         checks.extend(["390-and-320-phone-flow", "keyboard-primary-flow", "en-fr", "axe-wcag2-aa"])

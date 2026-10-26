@@ -51,6 +51,7 @@ class GuideDeliveryTests(unittest.TestCase):
             self.assertEqual(digest, hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), path)
         self.assertIn("examples/successor-alpha/engine.mjs", manifest["sources"])
         self.assertIn("examples/successor-alpha/research.mjs", manifest["sources"])
+        self.assertIn("examples/ti-guide/planning.mjs", manifest["sources"])
         self.assertFalse(any("harness" in x or "fleet" in x for x in manifest["sources"]))
 
     def test_csp_and_local_data_boundary(self) -> None:
@@ -67,4 +68,8 @@ class GuideDeliveryTests(unittest.TestCase):
         self.assertNotRegex(code, r"\b(?:fetch|XMLHttpRequest|WebSocket|sendBeacon|eval)\s*\(")
 
     def test_executable_fixtures(self) -> None:
-        subprocess.run(["node", "--test", "examples/ti-guide/guide.test.mjs"], cwd=ROOT, check=True)
+        subprocess.run(
+            ["node", "--test", "examples/ti-guide/guide.test.mjs", "examples/ti-guide/planning.test.mjs"],
+            cwd=ROOT,
+            check=True,
+        )

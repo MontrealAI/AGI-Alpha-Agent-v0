@@ -18,6 +18,7 @@ import logging
 import os
 import hashlib
 import secrets
+import stat
 import time
 from collections import OrderedDict, deque
 from pathlib import Path
@@ -79,6 +80,61 @@ else:
     _IMPORT_ERROR = None
 
 API_TOKEN_DEFAULT = "changeme"
+
+
+def _prepare_results_directory(path: Path | None = None) -> Path:
+    """Prepare an owned results directory without following configured links."""
+    if (
+        not all(hasattr(os, name) for name in ("O_DIRECTORY", "O_NOFOLLOW", "fchmod", "geteuid"))
+        or os.open not in os.supports_dir_fd
+        or os.mkdir not in os.supports_dir_fd
+    ):
+        raise RuntimeError("Private simulation results require POSIX directory handles; this platform is unqualified")
+    if path is None:
+        configured = os.getenv("SIM_RESULTS_DIR")
+        if configured is not None:
+            path = Path(configured)
+        else:
+            data_dir = os.getenv("ALPHA_DATA_DIR")
+            if data_dir is None:
+                system_tmp = Path("/tmp")
+                if system_tmp.lstat().st_uid != 0:
+                    raise ValueError("The default system temporary directory must be root-owned")
+                data_path = system_tmp.resolve(strict=True) / "alphafactory"
+            else:
+                data_path = Path(data_dir)
+            path = data_path / "simulations"
+    absolute = path.absolute()
+    if absolute == Path(absolute.anchor) or ".." in absolute.parts:
+        raise ValueError("Use a dedicated results directory without parent traversal")
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    descriptor = os.open(absolute.anchor, flags)
+    try:
+        for part in absolute.parts[1:]:
+            parent = os.fstat(descriptor)
+            if parent.st_uid not in {0, os.geteuid()} or (parent.st_mode & 0o022 and not parent.st_mode & stat.S_ISVTX):
+                raise ValueError("Results directory ancestors must have trusted ownership and write permissions")
+            try:
+                child = os.open(part, flags, dir_fd=descriptor)
+            except FileNotFoundError:
+                try:
+                    os.mkdir(part, mode=0o700, dir_fd=descriptor)
+                except FileExistsError:
+                    pass
+                child = os.open(part, flags, dir_fd=descriptor)
+            os.close(descriptor)
+            descriptor = child
+        owned = os.fstat(descriptor)
+        if not stat.S_ISDIR(owned.st_mode) or owned.st_uid != os.geteuid():
+            raise ValueError("Results directory must be owned by the current operator")
+        os.fchmod(descriptor, 0o700)
+        current = absolute.stat(follow_symlinks=False)
+        if not stat.S_ISDIR(current.st_mode) or (current.st_dev, current.st_ino) != (owned.st_dev, owned.st_ino):
+            raise ValueError("Results directory changed during preparation")
+    finally:
+        os.close(descriptor)
+    return absolute
+
 
 app = FastAPI(title="α‑AGI Insight") if FastAPI is not None else None
 
@@ -217,17 +273,10 @@ if app is not None:
     _simulations: OrderedDict[str, ResultsResponse] = OrderedDict()
     _progress_ws: Set[Any] = set()
     _latest_id: str | None = None
-    _results_dir = Path(
-        os.getenv(
-            "SIM_RESULTS_DIR",
-            os.path.join(os.getenv("ALPHA_DATA_DIR", "/tmp/alphafactory"), "simulations"),
-        )
-    )
+    _results_dir = _prepare_results_directory()
     _max_results = int(os.getenv("MAX_RESULTS", "100"))
     _max_sim_tasks = int(os.getenv("MAX_SIM_TASKS", "4"))
     _sim_semaphore = asyncio.Semaphore(_max_sim_tasks)
-    _results_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
-    os.chmod(_results_dir, 0o700)
 
     def _load_results() -> None:
         entries: list[tuple[float, ResultsResponse]] = []

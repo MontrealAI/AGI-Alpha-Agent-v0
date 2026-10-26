@@ -1,0 +1,120 @@
+{
+  "schema": "ti-catalogue-workspace/v1",
+  "sourceHash": "fa12a246aafcb5cb52f972e3cfb190a92c302eaafe27436bacdcf4fb9a46912c",
+  "runId": "completion-scope-1",
+  "createdAt": "2026-10-25T20:15:50.146Z",
+  "language": "en",
+  "approach": "grouped",
+  "input": {
+    "leftCsv": "\"path\",\"sha256\"\r\n\"docs/assets/successor/engine.mjs\",\"38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488\"\r\n\"examples/alpha-discovery/draft.mjs\",\"6c2d87a8eb2c37d05acac1ee5f545a5a77cdb60cf22e30b66d7ff862d58668cc\"\r\n\"examples/alpha-discovery/engine.mjs\",\"452a25348a3209a99fef9eecbd94bdbfafdc9595777dc5d2bd2a70e9245ea850\"\r\n\"scripts/generate_alpha_discovery.py\",\"076611b74974073802f24ea92f2a77c601453dce93ac5c1e7da3d45364fd1941\"\r\n\"scripts/templates/alpha-discovery/app.js\",\"b1ce893b678f1e125eb5fc857fb3af7a81c6fc025bc5e9b7c18fe0211c98d9ed\"\r\n\"scripts/templates/alpha-discovery/index.html\",\"c24bc74be350c1473178fdf1204559f25270823bfe6d3b9c9c3c4404479e45e7\"\r\n\"scripts/templates/alpha-discovery/style.css\",\"370901ee195ade3824d8231ceda710f39d24fac8769dd41416871ba61a630a31\"\r\n",
+    "rightCsv": "\"path\",\"sha256\"\r\n\"docs/assets/successor/engine.mjs\",\"38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488\"\r\n\"examples/alpha-discovery/draft.mjs\",\"6c2d87a8eb2c37d05acac1ee5f545a5a77cdb60cf22e30b66d7ff862d58668cc\"\r\n\"examples/alpha-discovery/engine.mjs\",\"452a25348a3209a99fef9eecbd94bdbfafdc9595777dc5d2bd2a70e9245ea850\"\r\n\"scripts/generate_alpha_discovery.py\",\"076611b74974073802f24ea92f2a77c601453dce93ac5c1e7da3d45364fd1941\"\r\n\"scripts/templates/alpha-discovery/app.js\",\"b1ce893b678f1e125eb5fc857fb3af7a81c6fc025bc5e9b7c18fe0211c98d9ed\"\r\n\"scripts/templates/alpha-discovery/index.html\",\"c24bc74be350c1473178fdf1204559f25270823bfe6d3b9c9c3c4404479e45e7\"\r\n\"scripts/templates/alpha-discovery/style.css\",\"370901ee195ade3824d8231ceda710f39d24fac8769dd41416871ba61a630a31\"\r\n",
+    "leftKey": "path",
+    "rightKey": "path"
+  },
+  "result": {
+    "schema": "ti-catalogue-result/v1",
+    "leftIdentity": {
+      "sha256": "dd8de9ad44235dbf5745c3c01ca7f77553b4877ce3b226c14eb8c1ade82e4c1b",
+      "bytes": 777
+    },
+    "rightIdentity": {
+      "sha256": "dd8de9ad44235dbf5745c3c01ca7f77553b4877ce3b226c14eb8c1ade82e4c1b",
+      "bytes": 777
+    },
+    "resolution": {
+      "schema": "successor-discrepancy-resolution/v1",
+      "actions": [],
+      "sharedFields": [
+        {
+          "name": "sha256",
+          "leftColumn": 1,
+          "rightColumn": 1
+        }
+      ],
+      "burden": {
+        "pairwiseReviewItems": 0,
+        "groupedActions": 0,
+        "groupingReduction": 0,
+        "timeSavedClaim": false,
+        "sameTaskSuperiority": false
+      },
+      "coverage": {
+        "originalOccurrences": 0,
+        "coveredOccurrences": 0,
+        "complete": true,
+        "missing": [],
+        "duplicates": []
+      },
+      "diagnosis": {
+        "originalGoal": "Materialize matching row pairs and inspect each unmatched or conflicting occurrence.",
+        "proposedGoal": "Decide which product keys need correction, retaining every source occurrence for review.",
+        "duplicateExceptionKeys": 0,
+        "uniqueExceptionKeys": 0,
+        "groupingReducesDecisionItems": false
+      },
+      "decision": {
+        "state": "retain_original_review",
+        "recommendedContract": "original_occurrence_review",
+        "reason": "No repeated exception key reduces the number of decision records; retain the original review contract."
+      },
+      "contract": {
+        "changed": true,
+        "original": "One review item per unmatched source row or conflicting matched row pair.",
+        "reframed": "One proposed corrective action per exact key, retaining every underlying original occurrence reference.",
+        "limitation": "Grouping changes the unit of work. Fewer action records do not establish equal reviewer effort, correct resolution, time savings, or superiority on the original pairwise-output task."
+      },
+      "actionsCsv": "\"action\",\"exact_key\",\"type\",\"left_data_rows\",\"right_data_rows\",\"original_review_occurrences\",\"next_step\"\r\n",
+      "externalAuthority": false,
+      "automaticallyResolved": false,
+      "qualification": "local_engineering_only"
+    },
+    "differences": [],
+    "metrics": {
+      "leftRows": 7,
+      "rightRows": 7,
+      "matchedPairs": 7,
+      "unmatchedRows": 0,
+      "unmatchedKeys": 0,
+      "conflictingPairs": 0,
+      "fieldDifferences": 0,
+      "actionGroups": 0,
+      "evidenceReferences": 0,
+      "leftDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "rightDuplicates": {
+        "keys": 0,
+        "extraRows": 0
+      },
+      "comparedColumns": [
+        "sha256"
+      ],
+      "unsharedLeft": [],
+      "unsharedRight": []
+    },
+    "limitations": {
+      "localOnly": true,
+      "authority": "none",
+      "automaticallyResolved": false,
+      "timeSavedMeasured": false,
+      "accuracyImprovementMeasured": false,
+      "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+      "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+      "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+      "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+    }
+  },
+  "limitations": {
+    "localOnly": true,
+    "authority": "none",
+    "automaticallyResolved": false,
+    "timeSavedMeasured": false,
+    "accuracyImprovementMeasured": false,
+    "supportedTask": "Exact string identifiers; compare shared non-identifier column names. No fuzzy matching or automatic correction.",
+    "sourceRows": "Data rows are numbered from 1 after the header. Quoted multiline cells are one data row.",
+    "duplicates": "Duplicate identifiers retain every matching pair; they are never silently deduplicated.",
+    "csvSafety": "CSV cells starting with formula characters receive a leading apostrophe. Workspace retains exact originals."
+  },
+  "authority": "none"
+}

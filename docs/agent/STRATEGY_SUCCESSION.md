@@ -10,11 +10,20 @@ This is a bounded planning product. It does not execute physical jobs, run arbit
 desktop, fund a job or activate the held Harness/Fleet integrations. The free [flagship browser experience](../try/index.html)
 remains local and requires no account, wallet, installation or API key. A static tab is not an unattended executor.
 
+| Status | Coverage |
+| --- | --- |
+| Supported public local work | Exact CSV comparison/reconciliation and inspectable exports in the free browser experience. |
+| Assisted, connected qualification pending | Operator setup guidance and public/synthetic planning-input preparation. Connected rc2 remains pending exact package, browser and public-release qualification. |
+| Experimental | Bounded strategy construction, inheritance and repair comparisons. Preserve measured LOSS/HOLD and unknown economics; candidate correctness does not establish improvement. |
+| Unsupported or unqualified | General desktop or arbitrary repository execution, physical work, held Fleet/Harness operations, unknown four-product combinations and live financial actions. |
+
 ## Install the supported connected subset
 
-The companion is `agi-alpha-strategy-succession-engineering` **0.1.0rc1**. Core release 1.44 distributes it, while its
+The companion is `agi-alpha-strategy-succession-engineering` **0.1.0rc2**. Core release 1.44 distributes it, while its
 qualified runtime remains the separately installed public **Alpha 1.42.0** wheel. Other runtime versions and product
 combinations remain unqualified. Keep existing accepted Alpha, Jobs and Manager installations intact.
+This rc2 candidate requires a new exact installation profile and fresh installed acceptance. Earlier component
+receipts remain historical and do not qualify its changed interface or package bytes.
 
 Use Ubuntu 24.04 x86_64/glibc 2.39, CPython 3.12.14 and Node 24.22.1. The installation profile pins all 26 core dependency
 versions, including SciPy 1.17.0, NumPy 2.4.6 and patched Starlette 1.7.0. The launcher checks parent and actual child
@@ -31,7 +40,7 @@ Create a separate virtual environment. From a neutral directory outside any Alph
 
 ```sh
 python3.12 -m venv strategy-env
-strategy-env/bin/python -m pip install ./alpha_factory_v1-1.42.0-py3-none-any.whl ./agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl
+strategy-env/bin/python -m pip install ./alpha_factory_v1-1.42.0-py3-none-any.whl ./agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl
 strategy-env/bin/python -m pip check
 strategy-env/bin/strategy-succession-engineering --home /absolute/path/to/existing-approved-home --native
 ```
@@ -40,6 +49,12 @@ The executor binds `127.0.0.1:8768` and serves its interface there. It requires 
 does not create new persistent credentials. The operator supplies that home's existing access token. Enter it in the
 password field; the field clears and the token stays only in that tab's memory. Credentials are excluded from exports.
 No model API key, account or wallet is required for these fixed algorithms.
+
+For your own project, open the free [planning preparer](../try/index.html#planning-title), edit its public or synthetic
+nonpersonal planning data and download `planning-mission-input.json`. This stays in the browser and starts no mission.
+The local-executor link only opens the fixed loopback address. In that configured executor, choose **Use my own planning
+data**, import the JSON and check it before Start. Both interfaces offer English and French. Imported data cannot change
+executor paths, providers, authority or budgets.
 
 ## One explicit start
 
@@ -51,6 +66,9 @@ No model API key, account or wallet is required for these fixed algorithms.
    These records contain no inherited proof or production authority. **Improve** is available only for an admitted separate proposal.
 6. **Export** downloads the signed local evidence package. Its signature establishes local attribution, not truth or authority.
 
+**Download report** also saves readable English or French text showing the actual schedules, selected methods, receipt
+hashes, caps, charged costs and unknowns. Keep the signed export for complete machine-readable evidence.
+
 The default request caps are 500,000 declared service units, 3,000,000 improvement units, six native invocation attempts
 and twenty solve-allowance seconds. Every native attempt charges its two-second allowance before starting, including
 startup or import failures; actual physical wall/CPU measurements stay separate. The request expires within 120 seconds,
@@ -58,9 +76,11 @@ approval within 600 seconds, with one active request and finite installation-wid
 
 ## What the comparisons mean
 
-The authored example first yields makespans 15 and 17. Reducing capacity during slots 12–14 makes the actual preceding
+The default local six-job example first yields makespans 15 and 17. Reducing capacity during slots 12–14 makes the actual preceding
 plan invalid at slots 12/13. Repair preserves the starts already committed at the supplied planning time and produces a
 valid makespan-19 schedule. These are planning classifications; physical job execution is not observed.
+The public preparer begins with a different editable seven-job synthetic project. Its results must be checked on that
+actual input; the six-job outcome is not a promised result for another project.
 
 Parent construction and repair usefulness are separate tests. Inherited, rebuilt and equivalent parents have matched
 total and child allowances. Retrieval, reconstruction, failed proposals, checks, integration and retention are charged.
@@ -74,6 +94,11 @@ Correctness does not imply economic admission. Human effort, model-assisted auth
 HTTP/journal/cryptographic overhead and whole QA/development cost remain partly unknown. Model inference calls in the
 fixed executor are zero. Forecast maintenance is an assumption. Work units, CPU seconds, monetary value and revenue are
 different quantities; no synthetic saving is profit.
+
+Human time breaks even only if setup + approvals + review + intervention + recovery + remaining work is less than a
+matched ordinary workflow at equal accepted quality. Those effort terms and residual human attention remain unknown.
+Economic payback also requires measured value to exceed delivery + allocated improvement + checking/retries + integration +
+maintenance costs in consistent monetary units; those totals remain unknown. No empirical human speedup or payback is established.
 
 ## Pause, stop and recover
 

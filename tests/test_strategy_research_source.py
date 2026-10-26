@@ -246,3 +246,14 @@ def test_prior_dependency_metadata_cannot_reuse_the_updated_pin(prepared):
     report = guard.check(root)
     assert report["matched"] is False
     assert report["projectConfigurationChecks"][0]["matched"] is False
+
+
+def test_prior_companion_version_cannot_reuse_the_reviewed_package_metadata_pin(prepared):
+    root, _, _ = prepared
+    metadata = root / guard.NON_RUFF_PROJECT
+    body = metadata.read_bytes()
+    assert b'version = "0.1.0rc2"' in body
+    metadata.write_bytes(body.replace(b'version = "0.1.0rc2"', b'version = "0.1.0rc1"'))
+    report = guard.check(root)
+    assert report["matched"] is False
+    assert report["projectConfigurationChecks"][0]["matched"] is False

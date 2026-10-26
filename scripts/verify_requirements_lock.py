@@ -25,12 +25,24 @@ def main() -> int:
         else:
             cmd = [sys.executable, "-m", "piptools", "compile"]
         wheelhouse = os.getenv("WHEELHOUSE")
+        if wheelhouse:
+            try:
+                wheelhouse_path = Path(wheelhouse).resolve(strict=True)
+                if not wheelhouse_path.is_dir():
+                    raise ValueError("not a directory")
+            except (OSError, RuntimeError, ValueError):
+                sys.stderr.write("WHEELHOUSE must name an existing local directory.\n")
+                return 1
+            wheelhouse = str(wheelhouse_path)
         cmd += ["--generate-hashes", "--quiet"]
         if wheelhouse:
-            wheelhouse_path = str(Path(wheelhouse))
-            cmd += ["--no-index", "--find-links", wheelhouse_path]
+            cmd += ["--no-index", "--find-links", wheelhouse]
         cmd += [str(req_txt), "-o", str(out_path)]
-        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=600, check=False)
+        except subprocess.TimeoutExpired:
+            sys.stderr.write("Lock compilation exceeded 600 seconds.\n")
+            return 1
         sys.stdout.write(result.stdout)
         sys.stderr.write(result.stderr)
         if result.returncode != 0:
@@ -38,7 +50,7 @@ def main() -> int:
         if out_path.read_bytes() != lock_file.read_bytes():
             extra = ""
             if wheelhouse:
-                extra = f"--no-index --find-links {shlex.quote(wheelhouse_path)} "
+                extra = f"--no-index --find-links {shlex.quote(wheelhouse)} "
             sys.stderr.write(
                 f"requirements.lock is outdated. Run 'pip-compile {extra}--generate-hashes --quiet "
                 "requirements.txt -o requirements.lock'\n"

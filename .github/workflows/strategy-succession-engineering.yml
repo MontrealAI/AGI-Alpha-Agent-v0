@@ -4,12 +4,16 @@ on:
   pull_request:
     paths:
       - 'contrib/strategy_succession/**'
+      - 'contrib/productive-capability-ledger/automation-v1/**'
+      - 'contrib/productive-capability-ledger/transport-v1/**'
       - 'scripts/strategy_engineering_release.py'
       - '.github/workflows/strategy-succession-engineering.yml'
   push:
     branches: [codex/strategy-succession-20261025-344b3126]
     paths:
       - 'contrib/strategy_succession/**'
+      - 'contrib/productive-capability-ledger/automation-v1/**'
+      - 'contrib/productive-capability-ledger/transport-v1/**'
       - 'scripts/strategy_engineering_release.py'
       - '.github/workflows/strategy-succession-engineering.yml'
   workflow_dispatch:
@@ -50,7 +54,7 @@ jobs:
           target.write_bytes(data)
           PY
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip install "$RUNNER_TEMP/alpha_factory_v1-1.42.0-py3-none-any.whl" -r contrib/strategy_succession/requirements-qualification.txt
-          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install setuptools==84.1.0 wheel==0.48.0 build==1.2.2.post1 pytest==8.4.2 playwright==1.64.1 ruff==0.12.5 mypy==1.17.0
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install setuptools==84.1.0 wheel==0.48.0 build==1.2.2.post1 pytest==8.4.2 playwright==1.64.1 ruff==0.12.5 mypy==1.17.0 defusedxml==0.7.1
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip check
           "$RUNNER_TEMP/strategy-env/bin/python" -m playwright install --with-deps chromium
       - name: Preserve the original study and exact lint compatibility scope
@@ -108,8 +112,8 @@ jobs:
           cp -R contrib/strategy_succession "$RUNNER_TEMP/strategy-build-two"
           "$RUNNER_TEMP/strategy-env/bin/python" -m build --wheel --no-isolation --outdir "$RUNNER_TEMP/strategy-wheel-one" "$RUNNER_TEMP/strategy-build-one"
           "$RUNNER_TEMP/strategy-env/bin/python" -m build --wheel --no-isolation --outdir "$RUNNER_TEMP/strategy-wheel-two" "$RUNNER_TEMP/strategy-build-two"
-          cmp "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl" "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
-          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install --no-deps "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
+          cmp "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl" "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl"
+          "$RUNNER_TEMP/strategy-env/bin/python" -m pip install --no-deps "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pip check
       - name: Actual installed API, Chromium approval, reconnect, downloads and crash recovery
         env:
@@ -118,11 +122,27 @@ jobs:
           PYTHONNOUSERSITE: '1'
         run: |
           cp -R contrib/strategy_succession/qa "$RUNNER_TEMP/strategy-installed-tests"
+          cp docs/try/index.html "$RUNNER_TEMP/strategy-installed-tests/public-planning-preparer.html"
           cd "$RUNNER_TEMP/strategy-installed-tests"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_integration.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/integration.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_browser.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/browser.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" -m pytest -q test_crash.py --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/crash_recovery.xml"
-          "$RUNNER_TEMP/strategy-env/bin/python" collect_qualification.py --root "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/evidence/strategy-engineering" --first-wheel "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl" --second-wheel "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc1-py3-none-any.whl"
+          "$RUNNER_TEMP/strategy-env/bin/python" collect_qualification.py --root "$GITHUB_WORKSPACE" --output "$GITHUB_WORKSPACE/evidence/strategy-engineering" --first-wheel "$RUNNER_TEMP/strategy-wheel-one/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl" --second-wheel "$RUNNER_TEMP/strategy-wheel-two/agi_alpha_strategy_succession_engineering-0.1.0rc2-py3-none-any.whl"
+      - name: Qualify the separate source-assurance candidate without operator adoption
+        env:
+          PYTHONNOUSERSITE: '1'
+          SOURCE_ASSURANCE_CHECKOUT: ${{ github.workspace }}
+          SOURCE_ASSURANCE_COMMIT: ${{ github.sha }}
+          SOURCE_ASSURANCE_EVIDENCE_DIR: ${{ github.workspace }}/evidence/strategy-engineering/source-candidate
+        run: |
+          cp contrib/productive-capability-ledger/transport-v1/test_source_browser.py "$RUNNER_TEMP/test_source_browser.py"
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_worker.py" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/test_source_api.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-worker.xml"
+          node --test "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/transport-v1/strategy.test.mjs"
+          "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$RUNNER_TEMP/test_source_browser.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-browser.xml"
+          "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/automation-v1/test_csv_integrity.py"
+          "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_lock_compiler_offline_boundary.py"
+          "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_results_directory_boundary.py"
       - name: Retain executed and failed evidence; never private operator homes
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

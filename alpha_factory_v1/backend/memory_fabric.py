@@ -229,8 +229,13 @@ _EMBED = _load_embedder()
 _NOW: Callable[[], datetime] = lambda: datetime.now(timezone.utc)  # noqa: E731
 
 
-def _hash_content(s: str) -> str:
-    return hashlib.sha1(s.encode()).hexdigest()
+def _hash_content(s: str, agent: str = "") -> str:
+    body = json.dumps(["alpha-memory-content/v2", agent, s], ensure_ascii=False, separators=(",", ":"))
+    return "memory-content-v2:sha256:" + hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
+class MemoryIdentityConflict(ValueError):
+    """A retained identity names different content; never silently drop that content."""
 
 
 # ═════════════════════ VECTOR STORE ══════════════════════════
@@ -243,6 +248,8 @@ class _VectorStore:
         self._alock = asyncio.Lock()
         self._mode = "ram"
         self._fail_until = 0.0
+        self._identities: Dict[str, Tuple[str, str]] = {}
+        self._ram: List[Tuple[str, str, str]] = []
         self._pg: Optional[psycopg2.extensions.connection] = None
         self._sql: Optional[sqlite3.Connection] = None
         self._init_postgres()  # may set self._mode
@@ -275,6 +282,8 @@ class _VectorStore:
                        );"""
                 )
                 cur.execute("CREATE INDEX IF NOT EXISTS idx_mem_agent_ts ON memories(agent, ts DESC);")
+                cur.execute("ALTER TABLE memories ADD COLUMN IF NOT EXISTS content_id TEXT;")
+                cur.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_mem_content_id_v2 ON memories(content_id);")
                 cur.execute(
                     f"""CREATE INDEX IF NOT EXISTS idx_mem_embedding
                         ON memories USING ivfflat (embedding vector_cosine_ops)
@@ -304,6 +313,16 @@ class _VectorStore:
                     "vec BLOB, content TEXT)"
                 )
             )
+            columns = {row[1] for row in self._sql.execute("PRAGMA table_info(memories)")}
+            if "content_id" not in columns:
+                try:
+                    self._sql.execute("ALTER TABLE memories ADD COLUMN content_id TEXT")
+                except sqlite3.OperationalError:
+                    # Another connection may have completed the same additive migration.
+                    if "content_id" not in {row[1] for row in self._sql.execute("PRAGMA table_info(memories)")}:
+                        raise
+            self._sql.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_mem_content_id_v2 ON memories(content_id)")
+            self._sql.commit()
             self._mode = "sqlite"
             logger.info("VectorStore: SQLite fallback ready.")
         elif "faiss" in globals():
@@ -328,20 +347,29 @@ class _VectorStore:
                     (agent, CFG.MEM_MAX_PER_AGENT),
                 )
         elif self._mode == "sqlite":
-            cur = self._sql.execute("SELECT hash FROM memories WHERE agent=? ORDER BY ts ASC", (agent,)).fetchall()
+            cur = self._sql.execute(
+                "SELECT rowid FROM memories WHERE agent=? ORDER BY ts ASC, rowid ASC", (agent,)
+            ).fetchall()
             if len(cur) > CFG.MEM_MAX_PER_AGENT:
                 to_del = cur[: len(cur) - CFG.MEM_MAX_PER_AGENT]
-                self._sql.executemany("DELETE FROM memories WHERE hash=?", to_del)
+                self._sql.executemany("DELETE FROM memories WHERE rowid=?", to_del)
                 self._sql.commit()
         elif self._mode == "faiss":
             # lightweight: we simply pop oldest from meta/vectors
             while sum(1 for a, *_ in self._meta if a == agent) > CFG.MEM_MAX_PER_AGENT:
                 idx = next(i for i, (a, *_) in enumerate(self._meta) if a == agent)
+                old_agent, old_content, _ = self._meta[idx]
+                self._identities.pop(_hash_content(old_content, old_agent), None)
                 self._meta.pop(idx)
                 self._vectors.pop(idx)
                 self._faiss.reset()
                 if self._vectors:
                     self._faiss.add(np.vstack(self._vectors))
+        elif self._mode == "ram":
+            while sum(1 for a, *_ in self._ram if a == agent) > CFG.MEM_MAX_PER_AGENT:
+                idx = next(i for i, (a, *_) in enumerate(self._ram) if a == agent)
+                old_agent, old_content, _ = self._ram.pop(idx)
+                self._identities.pop(_hash_content(old_content, old_agent), None)
 
     def _apply_ttl_pg(self) -> None:
         if CFG.MEM_TTL_SECONDS <= 0:
@@ -350,9 +378,18 @@ class _VectorStore:
             cur.execute("DELETE FROM memories WHERE ts < NOW() - INTERVAL '%s seconds'" % CFG.MEM_TTL_SECONDS)
 
     # ───── public (sync) API ─────
-    def add(self, agent: str, content: str):
-        """Insert one memory row idempotently (by SHA-1 hash)."""
-        h = _hash_content(content)
+    def add(self, agent: str, content: str) -> None:
+        """Retain legacy rows and deduplicate new identities only after exact body checks."""
+        with self._lock:
+            return self._add_locked(agent, content)
+
+    def _add_locked(self, agent: str, content: str) -> None:
+        h = _hash_content(content, agent)
+        expected = (agent, content)
+        if self._mode in {"ram", "faiss"} and h in self._identities:
+            if self._identities[h] != expected:
+                raise MemoryIdentityConflict("Memory identity conflicts with retained content")
+            return
         vec: Any = _EMBED(content)
         if np is not None:
             vec = np.asarray(vec, dtype="float32")
@@ -361,35 +398,73 @@ class _VectorStore:
             if self._mode == "pg":
                 if time.time() < self._fail_until:
                     raise ConnectionError("pg in grace-period")
-                with self._pg, self._pg.cursor() as cur:
-                    cur.execute(
-                        "INSERT INTO memories(agent, hash, embedding, content) "
-                        "VALUES(%s,%s,%s,%s) ON CONFLICT DO NOTHING;",
-                        (agent, h, list(map(float, vec)), content),
-                    )
-                self._evict_if_needed(agent)
+                pg = self._pg
+                if pg is None:
+                    raise ConnectionError("pg connection unavailable")
+                duplicate = False
+                with pg, pg.cursor() as cur:
+                    cur.execute("SELECT agent, content FROM memories WHERE content_id=%s", (h,))
+                    existing = cur.fetchone()
+                    if existing is not None:
+                        if tuple(existing) != expected:
+                            raise MemoryIdentityConflict("Memory identity conflicts with retained content")
+                        duplicate = True
+                    else:
+                        cur.execute("SELECT 1 FROM memories WHERE agent=%s AND content=%s LIMIT 1", expected)
+                        duplicate = cur.fetchone() is not None
+                    if not duplicate:
+                        cur.execute(
+                            "INSERT INTO memories(agent, hash, embedding, content, content_id) "
+                            "VALUES(%s,NULL,%s,%s,%s) ON CONFLICT(content_id) DO NOTHING;",
+                            (agent, list(map(float, vec)), content, h),
+                        )
+                        cur.execute("SELECT agent, content FROM memories WHERE content_id=%s", (h,))
+                        stored = cur.fetchone()
+                        if stored is None or tuple(stored) != expected:
+                            raise MemoryIdentityConflict("Memory insert conflicted with retained content")
+                if not duplicate:
+                    self._evict_if_needed(agent)
                 self._apply_ttl_pg()
-            elif self._mode == "faiss":
-                if h in {m[1] for m in self._meta}:
+                if duplicate:
                     return
+            elif self._mode == "faiss":
                 self._faiss.add(vec.reshape(1, -1))
                 self._vectors.append(vec)
                 self._meta.append((agent, content, now))
+                self._identities[h] = expected
                 self._evict_if_needed(agent)
             elif self._mode == "sqlite":
-                try:
-                    self._sql.execute(
-                        "INSERT OR IGNORE INTO memories VALUES(?,?,?,?,?)",
-                        (h, agent, now, vec.tobytes(), content),
+                sql = self._sql
+                if sql is None:
+                    raise ConnectionError("SQLite connection unavailable")
+                with sql:
+                    existing = sql.execute("SELECT agent, content FROM memories WHERE content_id=?", (h,)).fetchone()
+                    if existing is not None:
+                        if tuple(existing) != expected:
+                            raise MemoryIdentityConflict("Memory identity conflicts with retained content")
+                        return
+                    if (
+                        sql.execute("SELECT 1 FROM memories WHERE agent=? AND content=? LIMIT 1", expected).fetchone()
+                        is not None
+                    ):
+                        return
+                    sql.execute(
+                        "INSERT INTO memories(hash,agent,ts,vec,content,content_id) VALUES(NULL,?,?,?,?,?) "
+                        "ON CONFLICT(content_id) DO NOTHING",
+                        (agent, now, vec.tobytes(), content, h),
                     )
-                    self._sql.commit()
-                except sqlite3.OperationalError:
-                    pass
+                    stored = sql.execute("SELECT agent, content FROM memories WHERE content_id=?", (h,)).fetchone()
+                    if stored is None or tuple(stored) != expected:
+                        raise MemoryIdentityConflict("Memory insert conflicted with retained content")
                 self._evict_if_needed(agent)
             else:  # ram list
-                pass
+                self._ram.append((agent, content, now))
+                self._identities[h] = expected
+                self._evict_if_needed(agent)
             if _MET_V_ADD:
                 _MET_V_ADD.inc()
+        except MemoryIdentityConflict:
+            raise
         except Exception as e:  # noqa: BLE001
             logger.error("VectorStore.add error → %s  (downgrading)", e)
             self._mode = "ram"
@@ -415,7 +490,7 @@ class _VectorStore:
             return [r[0] for r in cur.fetchall()]
         if self._mode == "faiss":
             return [c for a, c, *_ in reversed(self._meta) if a == agent][:limit]
-        return []
+        return [c for a, c, *_ in reversed(self._ram) if a == agent][:limit]
 
     # search (single query) ------------------------------------
     def search(self, query: str, k: int = 5) -> List[Dict[str, Any]]:
@@ -468,6 +543,8 @@ class _VectorStore:
             rows = self._sql.execute("SELECT agent, content, ts FROM memories").fetchall()
         elif self._mode == "faiss":
             rows = [(a, c, ts) for a, c, ts in self._meta]
+        elif self._mode == "ram":
+            rows = list(self._ram)
         if path.suffix == ".jsonl":
             with path.open("w", encoding="utf-8") as f:
                 for a, c, ts in rows:

@@ -20,6 +20,7 @@ from unittest.mock import patch
 
 from scripts import check_no_binary_diff as gate
 from scripts import research_papers as papers
+from tests.test_no_binary_diff_entrypoint import git, save
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -39,6 +40,10 @@ class EnterpriseAdmissionTests(unittest.TestCase):
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / name, path)
+        git(self.root, "init", "-b", "main")
+        git(self.root, "config", "user.name", "Enterprise Admission Fixture")
+        git(self.root, "config", "user.email", "fixture@example.invalid")
+        save(self.root)
 
     def rewrite_manifest(self, data: object) -> AbstractContextManager[Any]:
         raw = json.dumps(data).encode()
@@ -121,7 +126,6 @@ class EnterpriseAdmissionTests(unittest.TestCase):
                 patch.object(gate, "_base_ref", return_value="base"),
                 patch.object(gate, "_iter_changed_paths", return_value=paths),
                 patch.object(gate, "_has_binary_diff", return_value=[]),
-                patch.object(gate, "_run", return_value=subprocess.CompletedProcess([], 1)),
                 patch.object(papers, "load_catalog", return_value={}),
                 patch.object(papers, "verify_files"),
                 patch.object(papers, "asset_hashes", return_value={}),
@@ -199,9 +203,27 @@ class EnterpriseAdmissionTests(unittest.TestCase):
                 (self.root / name).write_bytes(raw)
                 rows = copy.deepcopy(self.rows)
                 rows[name]["sha256"] = hashlib.sha256(raw).hexdigest()
-                rows[name]["git_blob"] = hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
+                save(self.root)
+                rows[name]["git_blob"] = git(self.root, "rev-parse", "HEAD:" + name)
                 with patch.object(gate, "_load_enterprise_manifest", return_value=rows):
                     self.assertEqual(gate._enterprise_admissions(self.root, [name]), set())
+
+    def test_changed_committed_body_cannot_be_hidden_by_safe_worktree_bytes(self) -> None:
+        path = self.root / self.png
+        original = path.read_bytes()
+        path.write_bytes(b"changed committed binary")
+        save(self.root)
+        path.write_bytes(original)
+        self.assertEqual(gate._enterprise_admissions(self.root, [self.png]), set())
+
+    def test_changed_committed_manifest_cannot_be_hidden_by_safe_worktree_bytes(self) -> None:
+        path = self.root / gate.ENTERPRISE_MANIFEST
+        original = path.read_bytes()
+        path.write_bytes(original + b" ")
+        save(self.root)
+        path.write_bytes(original)
+        with self.assertRaisesRegex(ValueError, "Committed enterprise"):
+            gate._enterprise_admissions(self.root, [self.png])
 
     def test_png_crc_truncation_and_trailing_data_are_rejected(self) -> None:
         raw = (ROOT / self.png).read_bytes()

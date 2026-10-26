@@ -1,0 +1,94 @@
+✖ expired or not-yet-valid approval refuses before any mission directory or source execution (48.202712ms)
+✖ durable reservations cap retries and reconnects without refunding interrupted work (569.369327ms)
+✖ total execution reservation can exhaust before the attempt ceiling and cannot renew in place (666.522679ms)
+✖ CANCEL is terminal while STOP remains a checkpoint pause; neither creates an accepted job (712.346944ms)
+✖ a malformed reservation history and an interrupted recovery guard fail closed (136.04233ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2246.17591
+
+✖ failing tests:
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:205:1
+✖ expired or not-yet-valid approval refuses before any mission directory or source execution (48.202712ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'alpha-source-assurance-plan/v2'
+  - 'alpha-source-assurance-plan/v3'
+                                  ^
+  
+      at file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:209:12
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:15:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:206:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'alpha-source-assurance-plan/v2',
+    expected: 'alpha-source-assurance-plan/v3',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:218:1
+✖ durable reservations cap retries and reconnects without refunding interrupted work (569.369327ms)
+  TypeError [Error]: Cannot read properties of undefined (reading 'ordinal')
+      at file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:224:80
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:15:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:219:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:234:1
+✖ total execution reservation can exhaust before the attempt ceiling and cannot renew in place (666.522679ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:239:5
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:15:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:235:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /total execution reservation exhausted/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:246:1
+✖ CANCEL is terminal while STOP remains a checkpoint pause; neither creates an accepted job (712.346944ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:252:5
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:15:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:247:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /permanently cancelled/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:261:1
+✖ a malformed reservation history and an interrupted recovery guard fail closed (136.04233ms)
+  Error: ENOENT: no such file or directory, open '/tmp/alpha-auto-source-gN82Qh/corrupt-reservations/reservation-001.json'
+      at async open (node:internal/fs/promises:1345:25)
+      at async readFile (node:internal/fs/promises:2003:14)
+      at async file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:265:67
+      at async temporary (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:15:98)
+      at async TestContext.<anonymous> (file:///workspace/scratch/6dede7dfa0fa/alpha/contrib/productive-capability-ledger/automation-v1/.pre-envelope.test.mjs:262:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/tmp/alpha-auto-source-gN82Qh/corrupt-reservations/reservation-001.json'
+  }

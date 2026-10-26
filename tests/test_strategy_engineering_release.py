@@ -17,6 +17,7 @@ from typing import Any
 import zipfile
 
 import pytest
+import yaml
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
@@ -24,6 +25,7 @@ from scripts import strategy_engineering_release as release
 
 ROOT = Path(__file__).resolve().parents[1]
 SCIENCE = "7e5a1dd2dcf7eb00ec055f1858d5dd722cc950f15f33314bb94c456c753845a7"
+PREPARER_HTML = b"<!doctype html><title>Inert synthetic public-preparer source fixture</title>"
 BROWSER_CHECKS = {
     "exact_browser_approval",
     "real_fixed_executor",
@@ -37,7 +39,47 @@ BROWSER_CHECKS = {
     "no_duplicate_native_calls",
     "mobile_layout",
     "real_calendar_repair",
+    "fresh_distinct_graph",
+    "bilingual_scope_and_recovery",
+    "readable_report_download",
+    "input_preflight_no_authority",
+    "public_preparer_input_identity",
 }
+
+
+def test_hosted_build_install_and_collector_bind_the_current_companion_filename() -> None:
+    metadata = tomllib.loads((ROOT / "contrib/strategy_succession/pyproject.toml").read_text())
+    version = metadata["project"]["version"]
+    assert version == "0.1.0rc2"
+    filename = release.DIST + "-" + version + "-py3-none-any.whl"
+    workflow = yaml.safe_load((ROOT / ".github/workflows/strategy-succession-engineering.yml").read_text())
+    job = workflow["jobs"]["qualify"]
+    assert job.get("continue-on-error", False) is False
+    steps = job["steps"]
+    build = next(
+        step for step in steps if step.get("name") == "Build two identical wheels and install the actual candidate"
+    )
+    installed = next(
+        step
+        for step in steps
+        if step.get("name") == "Actual installed API, Chromium approval, reconnect, downloads and crash recovery"
+    )
+    assert steps.index(build) < steps.index(installed)
+    for step in (build, installed):
+        assert step.get("if") is None
+        assert step.get("continue-on-error", False) is False
+        assert "0.1.0rc1" not in step["run"]
+    assert (
+        f'cmp "$RUNNER_TEMP/strategy-wheel-one/{filename}" "$RUNNER_TEMP/strategy-wheel-two/{filename}"'
+        in build["run"].splitlines()
+    )
+    assert (
+        f'"$RUNNER_TEMP/strategy-env/bin/python" -m pip install --no-deps "$RUNNER_TEMP/strategy-wheel-one/{filename}"'
+        in build["run"].splitlines()
+    )
+    collector = next(line for line in installed["run"].splitlines() if " collect_qualification.py " in line)
+    assert f'--first-wheel "$RUNNER_TEMP/strategy-wheel-one/{filename}"' in collector
+    assert f'--second-wheel "$RUNNER_TEMP/strategy-wheel-two/{filename}"' in collector
 
 
 def digest(value: Any) -> str:
@@ -359,7 +401,136 @@ def browser_fixture(export: dict[str, Any]) -> tuple[dict[str, Any], bytes]:
         "unchanged_baseline_invalid_calendar_slots": [4],
         "committed_prefix_preserved": True,
         "requests": [{"url": "http://127.0.0.1:8768/api/strategy-executor/status", "method": "GET"}],
+        **preparer_identity(plan),
     }, raw
+
+
+def service_only_fixture(primary: dict[str, Any], source: str) -> tuple[dict[str, Any], dict[str, Any], bytes]:
+    """Author a signed toy control; no runtime, native solve or browser is executed."""
+    plan = deepcopy(primary)
+    plan["request_id"] = "synthetic-service-only-control"
+    plan["plan_id"] = digest({"request_id": plan["request_id"]})[:32]
+    plan["input"]["construction"] = {"enabled": False}
+    plan["outcome"]["costs"]["improvement_work"] = plan["observed"]["improvement_work"] = 0
+    result = plan["outcome"]["result"]
+    result.update(
+        capabilities=[],
+        inheritance={"diagnostics": [], "lineage": [], "parent_benefit": "NOT_ESTABLISHED"},
+        repair_usefulness={
+            "candidate_trial": None,
+            "candidate_frozen_digest": None,
+            "training_qualification": None,
+            "consequence": "DEFER_NO_FROZEN_REPAIR",
+            "economic_decision": "HOLD_FULL_COST_UNKNOWN",
+            "production_promotion": False,
+        },
+        accounting={
+            "improvement_total": 0,
+            "improvement_ledger": [],
+            "service_total": plan["outcome"]["costs"]["service_work"],
+        },
+        events=[{"costs": {"improvement_work": 0}}],
+        runtime_telemetry={"node_cpu_seconds": 0.1, "wall_seconds": 1.0},
+        native_telemetry=[
+            {
+                "role": "specialist",
+                "status": 0,
+                "signal": None,
+                "error": None,
+                "ok": True,
+                "process_wall_seconds": 0.1,
+                "call_wall_seconds": 0.05,
+                "call_cpu_seconds": 0.03,
+                "startup": {"wall_seconds": 0.04, "cpu_seconds": 0.02},
+            }
+            for _ in range(6)
+        ],
+    )
+    for index, phase in enumerate(result["phases"]):
+        methods = ["ordinary-portfolio", "native-makespan", "native-repair" if index == 2 else "native-deadline"]
+        phase["attempts"] = [
+            {"method": method, "valid": True, "qualified": True, "result": deepcopy(phase["result"])}
+            for method in methods
+        ]
+    refresh_approval(plan)
+    plan["outcome_hash"] = digest(plan["outcome"])
+    raw = json.dumps(signed_export(plan, source), indent=2).encode()
+    projected = [
+        {
+            k: row[k]
+            for k in (
+                "role",
+                "status",
+                "signal",
+                "error",
+                "process_wall_seconds",
+                "startup",
+                "call_wall_seconds",
+                "call_cpu_seconds",
+            )
+        }
+        for row in result["native_telemetry"]
+    ]
+    summary = {
+        "schema": "strategy-engineering-service-only-acceptance/v1",
+        "construction_enabled": False,
+        "same_input_except_construction": True,
+        "caps_unchanged": True,
+        "committed_prefix_preserved": True,
+        "no_constructed_assets": True,
+        "deduplicated_without_new_charges": True,
+        "journal_verified": True,
+        "comparison_outcome_hash": primary["outcome_hash"],
+        "comparison_input_sha256": digest(primary["input"]),
+        "input_sha256": digest(plan["input"]),
+        "source_hash": source,
+        "plan_id": plan["plan_id"],
+        "outcome_hash": plan["outcome_hash"],
+        "costs": deepcopy(plan["outcome"]["costs"]),
+        "charged_native_solve_allowance_seconds": 12,
+        "phase_makespans": [p["result"]["makespan"] for p in result["phases"]],
+        "phase_receipts": [p["receipt_hash"] for p in result["phases"]],
+        "unchanged_baseline_invalid_calendar_slots": [4],
+        "signed_export_sha256": hashlib.sha256(raw).hexdigest(),
+        "worker_runtime_telemetry": deepcopy(result["runtime_telemetry"]),
+        "python_call_observations": projected,
+        "api_call_wall_seconds": 1.0,
+        "api_test_process_cpu_seconds": 0.01,
+        "independent_verification_wall_seconds": 0.1,
+        "independent_verification_test_process_cpu_seconds": 0.01,
+        "control_window_wall_seconds": 1.2,
+        "timing_scope": "Authored synthetic unit values; not empirical timing.",
+        "human_minutes": None,
+        "monetary_cost": None,
+    }
+    return plan, summary, raw
+
+
+def preparer_downloads(plan: dict[str, Any]) -> dict[str, bytes]:
+    opted_in = deepcopy(plan["input"])
+    default = deepcopy(opted_in)
+    default["construction"]["enabled"] = False
+    return {
+        "browser-prepared-input-default.json": json.dumps(default, indent=2).encode(),
+        "browser-prepared-input-optin.json": json.dumps(opted_in, indent=2).encode(),
+    }
+
+
+def preparer_identity(plan: dict[str, Any]) -> dict[str, Any]:
+    downloads = {name: hashlib.sha256(raw).hexdigest() for name, raw in preparer_downloads(plan).items()}
+    return {
+        "downloads": downloads,
+        "prepared_input_sha256": downloads["browser-prepared-input-optin.json"],
+        "input_sha256": digest(plan["input"]),
+        "public_preparer_source_sha256": hashlib.sha256(PREPARER_HTML).hexdigest(),
+        "public_preparer_scope": release.PUBLIC_PREPARER_SCOPE,
+        "construction_opt_in": {
+            "public_default": False,
+            "explicit_browser_checkbox": True,
+            "only_changed_setting": "construction.enabled",
+            "approved_input_matches_actual_download": True,
+        },
+    }
 
 
 def crash_fixture(profile: dict[str, Any]) -> tuple[dict[str, Any], str]:
@@ -620,6 +791,80 @@ def test_each_actual_browser_check_is_required(profile: dict[str, Any], missing:
         release._verify_browser(report, raw, source, profile)
 
 
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "none",
+        "approved-input",
+        "default-optin",
+        "default-other-field",
+        "raw-hash",
+        "canonical-hash",
+        "source",
+        "scope",
+        "consent",
+        "optin-boolean-alias",
+        "default-boolean-alias",
+        "consent-boolean-alias",
+    ],
+)
+def test_public_preparer_binds_exact_downloads_to_actual_approved_input(profile: dict[str, Any], mutation: str) -> None:
+    plan, source = completed_plan(profile)
+    report, _ = browser_fixture(signed_export(plan, source))
+    artifacts = preparer_downloads(plan)
+    default = artifacts["browser-prepared-input-default.json"]
+    opted_in = artifacts["browser-prepared-input-optin.json"]
+    if mutation in {"approved-input", "optin-boolean-alias"}:
+        changed = json.loads(opted_in)
+        if mutation == "optin-boolean-alias":
+            changed["construction"]["enabled"] = 1
+        else:
+            changed["initial"]["jobs"][0]["duration"] += 1
+        opted_in = json.dumps(changed).encode()
+    elif mutation in {"default-optin", "default-other-field", "default-boolean-alias"}:
+        changed = json.loads(default)
+        if mutation == "default-optin":
+            changed["construction"]["enabled"] = True
+        elif mutation == "default-boolean-alias":
+            changed["construction"]["enabled"] = 0
+        else:
+            changed["initial"]["jobs"][0]["duration"] += 1
+        default = json.dumps(changed).encode()
+    elif mutation == "raw-hash":
+        report["prepared_input_sha256"] = "0" * 64
+    elif mutation == "canonical-hash":
+        report["input_sha256"] = "0" * 64
+    elif mutation == "source":
+        report["public_preparer_source_sha256"] = "0" * 64
+    elif mutation == "scope":
+        report["public_preparer_scope"] = "Public Pages already qualified"
+    elif mutation == "consent":
+        report["construction_opt_in"]["explicit_browser_checkbox"] = False
+    elif mutation == "consent-boolean-alias":
+        report["construction_opt_in"]["explicit_browser_checkbox"] = 1
+    if mutation in {
+        "approved-input",
+        "optin-boolean-alias",
+        "default-optin",
+        "default-other-field",
+        "default-boolean-alias",
+    }:
+        # Hash-consistent forged bytes must still fail exact JSON/type binding.
+        report["downloads"] = {
+            "browser-prepared-input-default.json": hashlib.sha256(default).hexdigest(),
+            "browser-prepared-input-optin.json": hashlib.sha256(opted_in).hexdigest(),
+        }
+        report["prepared_input_sha256"] = hashlib.sha256(opted_in).hexdigest()
+    if mutation == "optin-boolean-alias":
+        assert json.loads(opted_in) == plan["input"]
+        assert digest(json.loads(opted_in)) != digest(plan["input"])
+    if mutation == "none":
+        release._verify_public_preparer(report, plan, default, opted_in, PREPARER_HTML)
+    else:
+        with pytest.raises(ValueError):
+            release._verify_public_preparer(report, plan, default, opted_in, PREPARER_HTML)
+
+
 def test_crash_receipt_retains_unknown_reservations_and_disallows_replay(profile: dict[str, Any]) -> None:
     report, source = crash_fixture(profile)
     release._verify_crash(report, source, profile)
@@ -697,7 +942,7 @@ def wheel_fixture(files: dict[str, bytes], changes: dict[str, bytes] | None = No
 def test_exact_payload_wheel_is_required_and_extra_or_changed_members_are_refused() -> None:
     files = payload_files()
     accepted = release._verify_wheel(wheel_fixture(files), files)
-    assert accepted["version"] == "0.1.0rc1"
+    assert accepted["version"] == "0.1.0rc2"
     for changes in (
         {release.PACKAGE + "setup.py": b"unlisted module"},
         {release.PACKAGE + "transport/strategy_executor.py": b"changed code"},
@@ -706,10 +951,30 @@ def test_exact_payload_wheel_is_required_and_extra_or_changed_members_are_refuse
             release._verify_wheel(wheel_fixture(files, changes), files)
 
 
+@pytest.mark.parametrize(
+    "version_statement",
+    [
+        '__version__ = "0.1.0rc1"',
+        '__version__ = "0.1.0" + "rc2"',
+        'other = "0.1.0rc2"',
+        '__version__ = "0.1.0rc2"\n__version__ = "0.1.0rc1"',
+    ],
+)
+def test_literal_module_version_must_match_distribution_without_executing_package(version_statement: str) -> None:
+    files = payload_files()
+    module = ('"""Inert authored module metadata fixture."""\n' + version_statement + "\n").encode()
+    files[release.CONTRIB + "__init__.py"] = module
+    profile = json.loads(files[release.CONTRIB + "ENGINEERING_MANIFEST.json"])
+    profile["files"]["__init__.py"] = hashlib.sha256(module).hexdigest()
+    files[release.CONTRIB + "ENGINEERING_MANIFEST.json"] = json.dumps(profile, indent=2).encode()
+    with pytest.raises(ValueError, match="Literal package __version__"):
+        release._verify_wheel(wheel_fixture(files), files)
+
+
 def test_wheel_metadata_cannot_expand_python_or_entrypoint_scope() -> None:
     files = payload_files()
     raw = wheel_fixture(files)
-    prefix = release.DIST + "-0.1.0rc1.dist-info/"
+    prefix = release.DIST + "-0.1.0rc2.dist-info/"
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         metadata = archive.read(prefix + "METADATA")
     modified = metadata.replace(b"Requires-Python: <3.13,>=3.12", b"Requires-Python: >=3.9")
@@ -730,7 +995,7 @@ def test_wheel_metadata_cannot_expand_python_or_entrypoint_scope() -> None:
 )
 def test_wheel_tags_imports_and_license_copies_match_declared_source(name: str, body: bytes) -> None:
     files = payload_files()
-    prefix = release.DIST + "-0.1.0rc1.dist-info/"
+    prefix = release.DIST + "-0.1.0rc2.dist-info/"
     with pytest.raises(ValueError):
         release._verify_wheel(wheel_fixture(files, {prefix + name: body}), files)
 
@@ -738,7 +1003,7 @@ def test_wheel_tags_imports_and_license_copies_match_declared_source(name: str, 
 @pytest.mark.parametrize("kind", ["wheel", "metadata"])
 def test_unknown_wheel_or_metadata_format_versions_are_refused(kind: str) -> None:
     files = payload_files()
-    prefix = release.DIST + "-0.1.0rc1.dist-info/"
+    prefix = release.DIST + "-0.1.0rc2.dist-info/"
     raw = wheel_fixture(files)
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         name = "WHEEL" if kind == "wheel" else "METADATA"
@@ -758,6 +1023,9 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
         target = root / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(body)
+    public_html = root / "docs/try/index.html"
+    public_html.parent.mkdir(parents=True)
+    public_html.write_bytes(PREPARER_HTML)
     subprocess.run(["git", "-c", "init.templateDir=", "init", "--quiet", str(root)], check=True, capture_output=True)
     subprocess.run(["git", "-C", str(root), "add", "."], check=True, capture_output=True)
     subprocess.run(
@@ -785,7 +1053,7 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
         ["git", "-C", str(root), "rev-parse", "HEAD"], check=True, capture_output=True, text=True
     ).stdout.strip()
     evidence.mkdir()
-    name = release.DIST + "-0.1.0rc1-py3-none-any.whl"
+    name = release.DIST + "-0.1.0rc2-py3-none-any.whl"
     raw = wheel_fixture(files)
     (evidence / name).write_bytes(raw)
     (evidence / "reproduced-wheel").mkdir()
@@ -802,7 +1070,7 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
         "schema": "strategy-engineering-release-qualification/v1",
         "commit": commit,
         "version": "1.44.0",
-        "companion_version": "0.1.0rc1",
+        "companion_version": "0.1.0rc2",
         "wheel": {"name": name, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)},
         "source_inventory_sha256": hashlib.sha256(inventory_raw).hexdigest(),
         "installed_outside_checkout": True,
@@ -842,7 +1110,13 @@ def package_fixture(tmp_path: Path, profile: dict[str, Any]) -> tuple[Path, Path
     browser, download = browser_fixture(signed_export(plan, source))
     (public / "browser-acceptance.json").write_text(json.dumps(browser))
     (public / "browser-mission-export.json").write_bytes(download)
+    for name, body in preparer_downloads(plan).items():
+        (public / name).write_bytes(body)
     (public / "integrated-journey.json").write_text(json.dumps(plan))
+    service, service_summary, service_export = service_only_fixture(plan, source)
+    (public / "service-only-journey.json").write_text(json.dumps(service))
+    (public / "service-only-summary.json").write_text(json.dumps(service_summary))
+    (public / "service-only-export.json").write_bytes(service_export)
     (public / "integrated-summary.json").write_text(
         json.dumps(
             {
@@ -870,11 +1144,141 @@ def test_package_copies_only_three_assets_after_complete_integrity_admission(pac
 def test_existing_release_asset_is_never_overwritten(package_fixture) -> None:
     root, evidence, output, commit, _ = package_fixture
     output.mkdir()
-    target = output / (release.DIST + "-0.1.0rc1-py3-none-any.whl")
+    target = output / (release.DIST + "-0.1.0rc2-py3-none-any.whl")
     target.write_bytes(b"accepted existing bytes")
     with pytest.raises(ValueError):
         release.package(root, output, evidence, commit, "1.44.0")
     assert target.read_bytes() == b"accepted existing bytes" and len(list(output.iterdir())) == 1
+
+
+@pytest.mark.parametrize(
+    "missing", ["service-only-journey.json", "service-only-summary.json", "service-only-export.json"]
+)
+def test_service_only_control_is_required_for_package_qualification(package_fixture, missing: str) -> None:
+    root, evidence, output, commit, _ = package_fixture
+    (evidence / "acceptance-public" / missing).unlink()
+    with pytest.raises(ValueError):
+        release.package(root, output, evidence, commit, "1.44.0")
+    assert not output.exists()
+
+
+def test_service_only_does_not_waive_primary_improvement_and_preserves_signed_control(profile) -> None:
+    primary, source = completed_plan(profile)
+    service, summary, raw = service_only_fixture(primary, source)
+    release._verify_service_only(service, summary, raw, primary, source, profile)
+    with pytest.raises(ValueError, match="productive work"):
+        release._verify_plan(service, source, profile)
+    with pytest.raises(ValueError, match="productive work"):
+        release._verify_export(json.loads(raw), source, profile)
+
+
+@pytest.mark.parametrize("duration", [12, 13])
+def test_service_schedule_enforces_actual_duration_grammar_boundary(duration: int) -> None:
+    task = {
+        "schema": "release-plan/v1",
+        "id": "authored-duration-boundary",
+        "kind": "plan",
+        "jobs": [{"id": "J1", "duration": duration, "crew": 1, "deps": []}],
+        "capacity": [1] * duration,
+        "deadline": duration,
+    }
+    result = {
+        "schema": "release-plan-result/v1",
+        "task_id": task["id"],
+        "schedule": [{"id": "J1", "start": 0, "end": duration}],
+        "makespan": duration,
+        "movement": 0,
+    }
+    if duration == 12:
+        release._verify_service_schedule(task, result)
+    else:
+        with pytest.raises(ValueError, match="job requirements exceed the fixed grammar"):
+            release._verify_service_schedule(task, result)
+
+
+def test_service_control_rejects_consistently_resealed_separate_policy_binding(profile) -> None:
+    primary, source = completed_plan(profile)
+    service, summary, _ = service_only_fixture(primary, source)
+    separate = "f" * 64
+    assert separate != primary["policy_binding"]
+    service["policy_binding"] = separate
+    for partial in service["partial_receipts"]:
+        partial["policy_binding"] = separate
+    refresh_approval(service)
+    raw = json.dumps(signed_export(service, source), indent=2).encode()
+    summary["signed_export_sha256"] = hashlib.sha256(raw).hexdigest()
+    # Approval, receipt and signature integrity all pass for the separate envelope.
+    # Only the claim of a matched control in the same installed policy must fail.
+    release._verify_plan(service, source, profile, require_improvement=False)
+    release._verify_export(json.loads(raw), source, profile, require_improvement=False)
+    with pytest.raises(ValueError, match="same installed policy binding"):
+        release._verify_service_only(service, summary, raw, primary, source, profile)
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "construction-true",
+        "input-change",
+        "positive-improvement",
+        "asset",
+        "ledger",
+        "native-count",
+        "native-unknown",
+        "schedule",
+        "signature",
+        "summary-input",
+        "summary-cost",
+        "money",
+        "timing",
+    ],
+)
+def test_service_only_control_refuses_scope_accounting_identity_or_evidence_mutations(profile, mutation: str) -> None:
+    primary, source = completed_plan(profile)
+    service, summary, raw = service_only_fixture(primary, source)
+    result = service["outcome"]["result"]
+    if mutation == "construction-true":
+        service["input"]["construction"]["enabled"] = True
+    elif mutation == "input-change":
+        service["input"]["initial"]["id"] += "-different"
+    elif mutation == "positive-improvement":
+        service["outcome"]["costs"]["improvement_work"] = service["observed"]["improvement_work"] = 1
+    elif mutation == "asset":
+        result["capabilities"] = [{"synthetic": "unexpected asset"}]
+    elif mutation == "ledger":
+        result["accounting"]["improvement_ledger"] = [{"work": 0}]
+    elif mutation == "native-count":
+        service["outcome"]["costs"]["native_calls"] = service["observed"]["native_calls"] = 5
+        service["outcome"]["costs"]["native_solve_seconds"] = service["observed"]["native_solve_seconds"] = 10
+    elif mutation == "native-unknown":
+        result["native_telemetry"][0]["error"] = "SYNTHETIC_UNCERTAIN"
+    elif mutation == "schedule":
+        result["phases"][0]["result"]["schedule"][0]["end"] += 1
+        refresh_delivery(service, 0)
+    elif mutation == "summary-input":
+        summary["input_sha256"] = "0" * 64
+    elif mutation == "summary-cost":
+        summary["costs"]["improvement_work"] = 1
+    elif mutation == "money":
+        summary["monetary_cost"] = 1
+    elif mutation == "timing":
+        summary["api_call_wall_seconds"] = None
+    if mutation not in {"signature", "summary-input", "summary-cost", "money", "timing"}:
+        refresh_approval(service)
+        service["outcome_hash"] = digest(service["outcome"])
+        raw = json.dumps(signed_export(service, source), indent=2).encode()
+        summary.update(
+            outcome_hash=service["outcome_hash"],
+            input_sha256=digest(service["input"]),
+            costs=deepcopy(service["outcome"]["costs"]),
+            signed_export_sha256=hashlib.sha256(raw).hexdigest(),
+        )
+    if mutation == "signature":
+        document = json.loads(raw)
+        document["signature"] = base64.b64encode(bytes(64)).decode()
+        raw = json.dumps(document).encode()
+    with pytest.raises(ValueError):
+        release._verify_service_only(service, summary, raw, primary, source, profile)
 
 
 @pytest.mark.parametrize("case", ["missing", "false"])

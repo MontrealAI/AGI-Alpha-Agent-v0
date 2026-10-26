@@ -7,6 +7,10 @@ listed fixed worker/transport/UI bytes. A different version or source identity
 is unqualified and must receive separate review; changing a label or rebuilding
 does not admit it.
 
+Candidate **0.1.0rc2** requires its own exact source/profile review and fresh
+installed browser and recovery checks. Earlier candidate evidence remains
+historical; it grants this build no release or operational authority.
+
 ## Start useful work
 
 1. Create and activate a separate Python 3.12 virtual environment, then install
@@ -18,7 +22,10 @@ does not admit it.
 3. Open `http://127.0.0.1:8768`. Enter the existing operator token using your
    approved credential-access method. The page clears the input after connection
    and keeps the token in memory only. Do not place it in URLs, exports, prompts
-   or browser storage.
+   or browser storage. Choose English or French; changing language grants no scope.
+   To use a mission from the free public planning preparer, import its
+   `planning-mission-input.json` under **Use my own planning data**, then check it.
+   The public preparer does not connect to an executor or start work.
 4. Choose **Start**. The server prepares a fixed plan; preparation performs no
    mission work. Inspect its exact input, executor identity, source hash,
    separate service/improvement caps and expiry. Editing the form does not
@@ -27,6 +34,8 @@ does not admit it.
    initial plan, changed requirements and repair. The browser does not trigger
    the phases one by one. Inspect each checked schedule and the method that
    actually supplied it. Keep or export useful results and strategy records.
+   **Download report** saves readable text with actual schedules, receipt hashes,
+   costs and unknowns. **Export** retains the complete signed evidence record.
 
 The supported planning grammar contains 1–18 jobs, bounded durations/crew,
 dependencies and a finite calendar. It accepts public or synthetic nonpersonal

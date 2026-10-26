@@ -19,7 +19,8 @@ PROOF = "a13f397a0ca7a28a75db7c99928ad696850f777f"
 RECEIPT_SHA256 = "5939939343fcd834ad67fb007ad3ee9cd01b0bb1f02c49d974b5e287db628786"
 RECEIPT_BYTES = 11536
 RECEIPT_URL = (
-    "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/" + PROOF
+    "https://raw.githubusercontent.com/MontrealAI/AGI-Alpha-Agent-v0/"
+    + PROOF
     + "/docs/delivery/recovery-20261023/completion-qualification/site-companion141/ce2-http-acceptance.json"
 )
 STUDY = "studies/transformational-autonomous-enterprises-v1"
@@ -35,7 +36,9 @@ GUARD_INPUTS = (
     "tests/browser/fleet_module_boundary.mjs",
     "tests/browser/test_discovery_lab_continuation.py",
 )
-Inventory = dict[str, tuple[str, str, int]]
+Inventory = dict[str, tuple[str, str, int, str]]
+MAX_COMPONENT_FILE_BYTES = 16 * 1024 * 1024
+MAX_COMPONENT_TOTAL_BYTES = 64 * 1024 * 1024
 
 
 def same_component(expected: Inventory, actual: Inventory) -> bool:
@@ -48,42 +51,81 @@ def git(root: Path, *arguments: str) -> bytes:
     environment.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL="/dev/null", GIT_OPTIONAL_LOCKS="0")
     result = subprocess.run(
         ["git", "--no-replace-objects", "-c", "core.fsmonitor=false", "-C", str(root), *arguments],
-        env=environment, capture_output=True, check=False,
+        env=environment,
+        capture_output=True,
+        check=False,
     )
     if result.returncode:
         raise ValueError("Complete qualifying Git ancestry is unavailable")
     return result.stdout
 
 
-def committed(root: Path, commit: str, paths: tuple[str, ...]) -> Inventory:
-    result = {}
+def committed(root: Path, commit: str, paths: tuple[str, ...], *, expected: Inventory | None = None) -> Inventory:
+    """Validate the complete bounded metadata inventory before reading any body."""
+    entries: dict[str, tuple[str, str, int]] = {}
+    seen: set[str] = set()
+    total = 0
     for row in git(root, "ls-tree", "-r", "-l", "-z", commit, "--", *paths).split(b"\0"):
         if not row:
             continue
         metadata, name_bytes = row.split(b"\t", 1)
         mode, kind, digest, size = metadata.decode("ascii").split()
         name = name_bytes.decode("utf-8")
-        if kind != "blob" or mode not in {"100644", "100755"} or name in result:
+        if kind != "blob" or mode not in {"100644", "100755"} or name in seen:
             raise ValueError("Unexpected component source entry")
+        seen.add(name)
+        byte_count = int(size)
+        total += byte_count
+        if not 0 <= byte_count <= MAX_COMPONENT_FILE_BYTES or total > MAX_COMPONENT_TOTAL_BYTES:
+            raise ValueError("Committed component exceeds source byte bounds")
         if name not in DOCUMENTS:
-            result[name] = (mode, digest, int(size))
+            entries[name] = (mode, digest, byte_count)
+    if expected is not None and entries != {name: value[:3] for name, value in expected.items()}:
+        raise ValueError("Committed component metadata differs from accepted source")
+    result = {}
+    for name, (mode, digest, byte_count) in entries.items():
+        raw = git(root, "cat-file", "blob", digest)
+        if len(raw) != byte_count:
+            raise ValueError("Committed component blob size differs")
+        result[name] = (mode, digest, len(raw), hashlib.sha256(raw).hexdigest())
     return result
 
 
-def physical(root: Path, names: set[str]) -> Inventory:
+def physical(root: Path, names: set[str], committed_source: Inventory) -> Inventory:
+    """Bind direct physical bytes to actual accepted Git blob bytes and SHA-256."""
     result = {}
+    total = 0
+    for name in sorted(names):
+        if name not in committed_source:
+            raise ValueError("Physical component path is not in the committed source")
+        size = committed_source[name][2]
+        total += size
+        if not 0 <= size <= MAX_COMPONENT_FILE_BYTES or total > MAX_COMPONENT_TOTAL_BYTES:
+            raise ValueError("Physical component exceeds source byte bounds")
+    captures: dict[str, tuple[Path, os.stat_result]] = {}
     for name in sorted(names):
         target = root / name
         if target.resolve(strict=True) != target or not stat.S_ISREG(target.lstat().st_mode):
             raise ValueError("Component source is not a direct regular file")
         before = target.stat()
-        raw = target.read_bytes()
+        if before.st_size != committed_source[name][2] or before.st_size > MAX_COMPONENT_FILE_BYTES:
+            raise ValueError("Physical component size differs from accepted source bounds")
+        captures[name] = (target, before)
+    for name, (target, before) in captures.items():
+        _, digest, size, content_sha256 = committed_source[name]
+        accepted = git(root, "cat-file", "blob", digest)
+        if len(accepted) != size or hashlib.sha256(accepted).hexdigest() != content_sha256:
+            raise ValueError("Committed component content identity differs")
+        with target.open("rb") as stream:
+            raw = stream.read(MAX_COMPONENT_FILE_BYTES + 1)
         after = target.stat()
         keys = ("st_dev", "st_ino", "st_mode", "st_size", "st_mtime_ns", "st_ctime_ns")
         if any(getattr(before, key) != getattr(after, key) for key in keys):
             raise ValueError("Component source changed during capture")
-        digest = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
-        result[name] = ("100755" if before.st_mode & 0o111 else "100644", digest, len(raw))
+        physical_sha256 = hashlib.sha256(raw).hexdigest()
+        if raw != accepted or physical_sha256 != content_sha256:
+            raise ValueError("Physical component bytes differ from the committed source")
+        result[name] = ("100755" if before.st_mode & 0o111 else "100644", digest, len(raw), physical_sha256)
     return result
 
 
@@ -95,15 +137,22 @@ def validate_prior(raw: bytes) -> dict[str, Any]:
         raise ValueError("Qualifying receipt must be a JSON object")
     prior: dict[str, Any] = decoded
     if not (
-        prior["schema"] == "tae.http-ui-ci-acceptance.v1" and prior["passed"] is True
-        and prior["head"] == QUALIFIED and prior["runId"] == "40056653650" and prior["attempt"] == "1"
-        and prior["failure"] is None and len(prior["phases"]) == 12
+        prior["schema"] == "tae.http-ui-ci-acceptance.v1"
+        and prior["passed"] is True
+        and prior["head"] == QUALIFIED
+        and prior["runId"] == "40056653650"
+        and prior["attempt"] == "1"
+        and prior["failure"] is None
+        and len(prior["phases"]) == 12
         and all(value == 0 for value in prior["phases"].values())
-        and prior["report"]["passed"] is True and prior["report"]["errors"] == []
+        and prior["report"]["passed"] is True
+        and prior["report"]["errors"] == []
         and len(prior["report"]["checks"]) == 11
         and all(check["passed"] is True for check in prior["report"]["checks"])
-        and prior["omittedOriginalFourQualified"] is False and prior["priorDeniedObjectivesAttempted"] is False
-        and prior["browserExport"]["currentProof"] is None and prior["browserExport"]["authority"] == []
+        and prior["omittedOriginalFourQualified"] is False
+        and prior["priorDeniedObjectivesAttempted"] is False
+        and prior["browserExport"]["currentProof"] is None
+        and prior["browserExport"]["authority"] == []
     ):
         raise ValueError("Qualifying receipt does not record the accepted bounded result")
     return prior
@@ -125,7 +174,7 @@ def main() -> int:
         git(root, "merge-base", "--is-ancestor", base, head)
         git(root, "merge-base", "--is-ancestor", QUALIFIED, head)
         expected = committed(root, QUALIFIED, (STUDY,))
-        current = committed(root, head, (STUDY,))
+        current = committed(root, head, (STUDY,), expected=expected)
         if len(expected) != 293 or not same_component(expected, current):
             raise ValueError("Study path/mode/body set changed")
         study = root / STUDY
@@ -140,13 +189,14 @@ def main() -> int:
                 raise ValueError("Study contains a symlink")
             if path.is_file():
                 actual_names.add(name)
-        if not same_component(expected, physical(root, actual_names)):
+        if not same_component(expected, physical(root, actual_names, current)):
             raise ValueError("Actual study path/mode/body set changed")
         guards = committed(root, QUALIFIED, GUARD_INPUTS)
+        current_guards = committed(root, head, GUARD_INPUTS, expected=guards)
         if (
             len(guards) != len(GUARD_INPUTS)
-            or not same_component(guards, committed(root, head, GUARD_INPUTS))
-            or not same_component(guards, physical(root, set(guards)))
+            or not same_component(guards, current_guards)
+            or not same_component(guards, physical(root, set(guards), current_guards))
         ):
             raise ValueError("Original wrapper or critical guard inputs changed")
         if hashlib.sha256((root / WRAPPER).read_bytes()).hexdigest() != WRAPPER_SHA256:
@@ -172,21 +222,34 @@ def main() -> int:
         raise RuntimeError("Fresh task-owned public evidence directory required")
     public.mkdir(parents=True)
     receipt = {
-        "schema": "tae.http-ui-exact-component-reuse.v1", "status": "REUSED_EXACT_COMPONENT",
-        "head": head, "base": base, "runId": os.environ["GITHUB_RUN_ID"],
+        "schema": "tae.http-ui-exact-component-reuse.v1",
+        "status": "REUSED_EXACT_COMPONENT",
+        "head": head,
+        "base": base,
+        "runId": os.environ["GITHUB_RUN_ID"],
         "currentTree": git(root, "rev-parse", "HEAD^{tree}").decode().strip(),
-        "qualifyingHead": QUALIFIED, "qualifyingRun": "40056653650", "proofCommit": PROOF,
-        "qualifyingTree": "3d64c035df6a9b3cab7b1aee4471819a64e57a7e", "qualifyingAttempt": "1",
-        "priorReceiptUrl": RECEIPT_URL, "priorReceiptSha256": RECEIPT_SHA256,
-        "componentFiles": len(expected), "excludedMaintainedDocumentsOnly": sorted(DOCUMENTS),
+        "qualifyingHead": QUALIFIED,
+        "qualifyingRun": "40056653650",
+        "proofCommit": PROOF,
+        "qualifyingTree": "3d64c035df6a9b3cab7b1aee4471819a64e57a7e",
+        "qualifyingAttempt": "1",
+        "priorReceiptUrl": RECEIPT_URL,
+        "priorReceiptSha256": RECEIPT_SHA256,
+        "componentFiles": len(expected),
+        "excludedMaintainedDocumentsOnly": sorted(DOCUMENTS),
         "componentIdentitySha256": hashlib.sha256(json.dumps(expected, sort_keys=True).encode()).hexdigest(),
-        "originalFullQaWrapperSha256": WRAPPER_SHA256, "currentRuntimeObserved": runtime,
+        "originalFullQaWrapperSha256": WRAPPER_SHA256,
+        "currentRuntimeObserved": runtime,
         "browserInputs": "Unchanged whole-study pinned package.json/package-lock.json; prior actual browser proof reused",
         "historicalResearchPins": prior["setupRecords"][0]["pins"],
         "priorDerivedSourceClosure": prior["derivedSourceClosure"],
         "originalArchiveSha256": prior["originalArchiveSha256"],
-        "freshQaExecuted": False, "freshNativeMissionsExecuted": False, "fullSourceQualified": False,
-        "scope": prior["scope"], "omittedOriginalFourQualified": False, "priorDeniedObjectivesAttempted": False,
+        "freshQaExecuted": False,
+        "freshNativeMissionsExecuted": False,
+        "fullSourceQualified": False,
+        "scope": prior["scope"],
+        "omittedOriginalFourQualified": False,
+        "priorDeniedObjectivesAttempted": False,
     }
     (public / "reuse.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     print("REUSED_EXACT_COMPONENT: qualifying ce2 run40056653650; no fresh HTTP/native run")

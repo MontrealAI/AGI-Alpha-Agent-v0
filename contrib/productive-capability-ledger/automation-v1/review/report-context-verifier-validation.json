@@ -1,0 +1,38 @@
+{
+  "verifierSha256": "617c2a81b6bb7a6286d0e0146dd8804c63bcce86f4efcc80957f455f437f8307",
+  "legacy": {
+    "runs": 4,
+    "checks": 1042,
+    "mode": [
+      "preserved-historical-source"
+    ]
+  },
+  "finalNewSource": {
+    "runs": 2,
+    "checks": 557,
+    "methodIdentity": "17e09fd0d79d823e176d7a4f2eb547adc91ff71162766c6d0995fe2d3778fab9",
+    "sourceRef": "d12e955909cb5b52a5225c39d4f7fab4a5f93d50"
+  },
+  "negativeCases": [
+    {
+      "case": "missing-current-context",
+      "refused": true,
+      "reason": "Current runner requires durable report context"
+    },
+    {
+      "case": "rehashed-wrong-context",
+      "refused": true,
+      "reason": "Durable report context changed its approved scope"
+    },
+    {
+      "case": "rehashed-false-report",
+      "refused": true,
+      "reason": "Finished report differs from its exact independently reconstructed context"
+    },
+    {
+      "case": "lifetime-attempt-cap",
+      "refused": true,
+      "reason": "Complete retry history exceeded its lifetime attempt bound"
+    }
+  ]
+}

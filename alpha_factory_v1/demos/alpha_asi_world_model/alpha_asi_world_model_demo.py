@@ -39,11 +39,13 @@ import json
 import logging
 import os
 import random
+import re
 import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple
+from urllib.parse import urlsplit
 
 import numpy as np
 
@@ -688,19 +690,78 @@ if os.getenv("OPENAI_API_KEY") and not os.getenv("NO_LLM"):
 # =============================================================================
 # 🔟  FastAPI UI / REST / Web‑Socket endpoint
 # =============================================================================
-from fastapi import FastAPI, WebSocket  # noqa: E402
+from fastapi import FastAPI, Request, WebSocket  # noqa: E402
 from contextlib import asynccontextmanager
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Awaitable
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
+from fastapi.responses import JSONResponse, Response  # noqa: E402
 import uvicorn  # noqa: E402
 
+
+def _cors_origins(value: str) -> list[str]:
+    """Accept explicit HTTP(S) origins without enabling unrelated browser clients."""
+    if len(value) > 4096 or any(ord(char) < 32 or ord(char) == 127 for char in value):
+        raise ValueError("ALPHA_ASI_CORS_ORIGINS must contain exact HTTP(S) origins")
+    if not value.strip():
+        return []
+    origins = []
+    for item in value.split(","):
+        origin = item.strip()
+        try:
+            target = urlsplit(origin)
+            port = target.port
+        except ValueError:
+            raise ValueError("ALPHA_ASI_CORS_ORIGINS must contain exact HTTP(S) origins") from None
+        if (
+            not origin.startswith(("http://", "https://"))
+            or target.scheme not in {"http", "https"}
+            or not target.hostname
+            or target.username is not None
+            or target.password is not None
+            or target.path
+            or "?" in origin
+            or "#" in origin
+            or "%" in target.netloc
+            or "\\" in origin
+            or any(char.isspace() for char in origin)
+            or port == 0
+            or re.fullmatch(
+                r"(?:\[[0-9A-Fa-f:.]+\]|[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::[0-9]+)?", target.netloc
+            )
+            is None
+        ):
+            raise ValueError("ALPHA_ASI_CORS_ORIGINS must contain exact HTTP(S) origins")
+        origins.append(origin)
+    if len(origins) > 32:
+        raise ValueError("ALPHA_ASI_CORS_ORIGINS contains too many origins")
+    return list(dict.fromkeys(origins))
+
+
+_CORS_ORIGINS = _cors_origins(os.getenv("ALPHA_ASI_CORS_ORIGINS", ""))
 app = FastAPI(title="Alpha‑ASI World Model")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_CORS_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def _protect_mutations(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
+    """Reject unrelated browser origins before HTTP mutations; retain existing API auth."""
+    origins = request.headers.getlist("origin")
+    if request.method not in {"GET", "HEAD", "OPTIONS"} and origins:
+        origin = origins[0]
+        try:
+            valid = len(origins) == 1 and _cors_origins(origin) == [origin]
+        except ValueError:
+            valid = False
+        same_origin = f"{request.url.scheme}://{request.url.netloc}"
+        if not valid or (origin != same_origin and origin not in _CORS_ORIGINS):
+            return JSONResponse({"detail": "origin not permitted"}, status_code=403)
+    return await call_next(request)
+
 
 orch: Optional[Orchestrator] = None
 loop_thread: Optional[threading.Thread | _LoopThreadStub] = None

@@ -1,0 +1,57 @@
+{
+  "finding": 4372481324,
+  "source": "e2503611666ee170266cbce51dc250492285f2e8",
+  "fixture": "completion-v4/runs/inventory-repair-replication",
+  "mutation": "differences.csv leftValue changed, packaging stage/complete hashes recomputed",
+  "before": {
+    "schema": "alpha-independent-automated-source-acceptance/v1",
+    "accepted": true,
+    "checks": 353,
+    "runId": "inventory-repair-replication",
+    "sourceRef": "443246db37b30b83f4b9c8a854ceb226601e0155",
+    "methodIdentity": "6171b25c611cf9d23f90a2deebf8adcb982e5733652228c653bf5671742298e0",
+    "runnerSourceMode": "current-installed-source",
+    "verifierSha256": "d0f5df803e76327b4f75ec845a2fa8aa4635cff0aba8b74b94924f71908754e2",
+    "sourceRows": 5,
+    "changedPaths": [
+      "contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+      "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs",
+      "contrib/productive-capability-ledger/automation-v1/verify-run.py"
+    ],
+    "completeSha256": "1ccdf6db57529924e3403ffa0744ec30342e1bbe1705ab7d20c44174e055421a",
+    "authority": "none",
+    "commercialAcceptance": "unknown",
+    "connectedExecution": "NOT RUN; local Node only",
+    "implementation": "Separately implemented Python CSV/Git/hash acceptance; no JavaScript comparison code imported.",
+    "scope": "Accepted deterministic source-assurance deliverable; not authenticated executor or monetary-cost qualification."
+  },
+  "after": {
+    "accepted": false,
+    "reason": "Download differs from independently reconstructed source: differences.csv"
+  },
+  "counterexampleCompleteSha256": "1ccdf6db57529924e3403ffa0744ec30342e1bbe1705ab7d20c44174e055421a",
+  "originalEvidenceUnmodified": true,
+  "correctedVerifierSha256": "0750059f8587b650624ced4abbada12bc4a231857b0cde76a7e48e373da48639",
+  "correctedOriginalAcceptance": {
+    "schema": "alpha-independent-automated-source-acceptance/v1",
+    "accepted": true,
+    "checks": 351,
+    "runId": "inventory-repair-replication",
+    "sourceRef": "443246db37b30b83f4b9c8a854ceb226601e0155",
+    "methodIdentity": "6171b25c611cf9d23f90a2deebf8adcb982e5733652228c653bf5671742298e0",
+    "runnerSourceMode": "current-installed-source",
+    "verifierSha256": "0750059f8587b650624ced4abbada12bc4a231857b0cde76a7e48e373da48639",
+    "sourceRows": 5,
+    "changedPaths": [
+      "contrib/productive-capability-ledger/automation-v1/run-mission.mjs",
+      "contrib/productive-capability-ledger/automation-v1/run-mission.test.mjs",
+      "contrib/productive-capability-ledger/automation-v1/verify-run.py"
+    ],
+    "completeSha256": "176d0e8ac4d37d6c4f3e9233ccd532dbae29e2e056a644f64575b12d9fd9302c",
+    "authority": "none",
+    "commercialAcceptance": "unknown",
+    "connectedExecution": "NOT RUN; local Node only",
+    "implementation": "Separately implemented Python CSV/Git/hash acceptance; no JavaScript comparison code imported.",
+    "scope": "Accepted deterministic source-assurance deliverable; not authenticated executor or monetary-cost qualification."
+  }
+}

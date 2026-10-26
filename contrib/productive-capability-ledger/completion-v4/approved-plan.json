@@ -1,0 +1,59 @@
+{
+  "plan": {
+    "schema": "alpha-source-assurance-plan/v3",
+    "offeringId": "committed-source-assurance",
+    "runId": "inventory-repair-replication",
+    "createdAt": "2026-10-25T21:41:14.793Z",
+    "manifestPath": "contrib/productive-capability-ledger/completion-v3/previous-published-source.json",
+    "sourceRef": "443246db37b30b83f4b9c8a854ceb226601e0155",
+    "manifestSha256": "ec94d548c7b5d833cd42a6745f33ee1f3a09acece397b5ed4c0c3f4931192c9c",
+    "sourceCount": 5,
+    "maxSeconds": 20,
+    "methodIdentity": "6171b25c611cf9d23f90a2deebf8adcb982e5733652228c653bf5671742298e0",
+    "dependencySha256": {
+      "examples/ti-guide/guide.mjs": "327ca9f977f2b860546cee3190147305fd43fc19c8d16d3bf526e81a550f15e2",
+      "examples/successor-alpha/engine.mjs": "09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2",
+      "examples/successor-alpha/research.mjs": "cac318319051de4dc1fdbe2d8a148416b3ceffe206d7fc64f111f2fe6f099c8a",
+      "docs/assets/successor/engine.mjs": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488",
+      "contrib/productive-capability-ledger/automation-v1/run-mission.mjs": "3e7f27433f85e5d1203565972fb569ab2ae8b606b656edcd59a484143fe7e9d3"
+    },
+    "authority": "none",
+    "maxAttempts": 4,
+    "maxTotalSeconds": 80,
+    "expiresAt": "2026-10-25T22:41:14.793Z",
+    "acceptance": "Exact source identities and lossless difference/action exports; no approval of source behavior.",
+    "allowedOperations": [
+      "read fixed public Git blobs",
+      "deterministic catalogue comparison",
+      "write this run artifact directory"
+    ]
+  },
+  "approvalDigest": "963d3e83e298604d482d6e832c33fee92d76dd18aab805a0271e375c24ff652d",
+  "planningFacts": {
+    "wallMicroseconds": {
+      "value": 41689,
+      "basis": "measured",
+      "reference": "Observed automatic scope preparation and planning."
+    },
+    "cpuMicroseconds": {
+      "value": 24913,
+      "basis": "measured",
+      "reference": "Observed local Node CPU; child Git CPU excluded."
+    },
+    "toolInvocations": {
+      "value": 10,
+      "basis": "measured",
+      "reference": "Fixed Git blob reads during automatic planning."
+    },
+    "modelCalls": {
+      "value": 0,
+      "basis": "measured",
+      "reference": "No model adapter is called by deterministic planning."
+    },
+    "monetaryCost": {
+      "value": null,
+      "basis": "unknown",
+      "reference": "Execution timing is not full monetary cost."
+    }
+  }
+}

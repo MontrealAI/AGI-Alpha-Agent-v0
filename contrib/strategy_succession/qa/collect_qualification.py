@@ -6,11 +6,68 @@ import argparse
 import hashlib
 import importlib.metadata
 import json
+import os
 from pathlib import Path
+import stat
 import subprocess
 import tomllib
 import zipfile
-import xml.etree.ElementTree as ET
+
+from defusedxml import ElementTree as SafeET
+
+MAX_JUNIT_BYTES = 8 * 1024 * 1024
+
+
+def _junit_bytes(path: Path) -> bytes:
+    """Read one bounded regular report without traversing any symbolic link."""
+    if ".." in path.parts or os.open not in os.supports_dir_fd or not getattr(os, "O_NOFOLLOW", 0):
+        raise ValueError("Safe regular-file JUnit inspection is unavailable")
+    absolute = path.absolute()
+    directories = absolute.parts[1:-1]
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+    descriptor = os.open(absolute.anchor, directory_flags)
+    try:
+        for name in directories:
+            child = os.open(name, directory_flags, dir_fd=descriptor)
+            os.close(descriptor)
+            descriptor = child
+        flags = os.O_RDONLY | os.O_NOFOLLOW | getattr(os, "O_NONBLOCK", 0) | getattr(os, "O_CLOEXEC", 0)
+        report_fd = os.open(absolute.name, flags, dir_fd=descriptor)
+        with os.fdopen(report_fd, "rb") as stream:
+            before = os.fstat(stream.fileno())
+            if not stat.S_ISREG(before.st_mode) or not 0 < before.st_size <= MAX_JUNIT_BYTES:
+                raise ValueError("JUnit input must be a bounded nonempty regular file")
+            raw = stream.read(MAX_JUNIT_BYTES + 1)
+            after = os.fstat(stream.fileno())
+            named = os.stat(absolute.name, dir_fd=descriptor, follow_symlinks=False)
+
+            def identity(info: os.stat_result) -> tuple[int, int, int, int]:
+                return info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns
+
+            if (
+                len(raw) > MAX_JUNIT_BYTES
+                or len(raw) != before.st_size
+                or not stat.S_ISREG(named.st_mode)
+                or identity(before) != identity(after)
+                or identity(after) != identity(named)
+            ):
+                raise ValueError("JUnit input changed during bounded inspection")
+            return raw
+    except OSError:
+        raise ValueError("JUnit input must have ordinary regular-file ancestry") from None
+    finally:
+        os.close(descriptor)
+
+
+def verify_junit(path: Path) -> None:
+    """Require actual passing cases and reject DTDs, entities and external references."""
+    document = SafeET.fromstring(_junit_bytes(path), forbid_dtd=True, forbid_entities=True, forbid_external=True)
+    if (
+        document.tag not in {"testsuite", "testsuites"}
+        or not list(document.iter("testcase"))
+        or any(list(document.iter(tag)) for tag in ("failure", "error", "skipped"))
+    ):
+        raise ValueError("JUnit qualification requires nonempty cases with no failure, error or skip")
 
 
 def sha(path: Path) -> str:
@@ -24,7 +81,7 @@ def main() -> None:
     parser.add_argument("--first-wheel", type=Path, required=True)
     parser.add_argument("--second-wheel", type=Path, required=True)
     args = parser.parse_args()
-    root, output = args.root.resolve(), args.output.resolve()
+    root, output = args.root.resolve(), args.output.absolute()
     project = root / "contrib/strategy_succession"
     commit = subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
     version = tomllib.loads((root / "pyproject.toml").read_text())["project"]["version"]
@@ -60,14 +117,7 @@ def main() -> None:
     )
     checks = {"dependency_audit": True}
     for name in ("transport", "worker", "environment", "integration", "browser", "crash_recovery"):
-        document = ET.parse(output / (name + ".xml"))
-        cases = list(document.iter("testcase"))
-        assert (
-            cases
-            and not list(document.iter("failure"))
-            and not list(document.iter("error"))
-            and not list(document.iter("skipped"))
-        ), name
+        verify_junit(output / (name + ".xml"))
         checks[name] = True
     metadata = tomllib.loads((project / "pyproject.toml").read_text())
     names = set(metadata["tool"]["setuptools"]["package-data"]["strategy_succession_engineering"]) | {

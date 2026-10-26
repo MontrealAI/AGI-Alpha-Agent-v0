@@ -12,27 +12,36 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 import sys
 import time
 import tomllib
 from typing import Any
 from urllib.request import Request, urlopen
-import xml.etree.ElementTree as ET
 import zipfile
+
+from defusedxml import ElementTree as SafeET
+from defusedxml.common import DefusedXmlException
 
 from scripts import strategy_engineering_release as checks
 
 REPOSITORY = "MontrealAI/AGI-Alpha-Agent-v0"
 API = "https://api.github.com/repos/" + REPOSITORY
 QA_FILES = ("test_integration.py", "test_browser.py", "test_crash.py", "proc_namespace.py")
+MAX_JUNIT_BYTES = 8 * 1024 * 1024
 SAFE_JSON = (
     "integrated-journey.json",
     "integrated-summary.json",
+    "service-only-journey.json",
+    "service-only-summary.json",
+    "service-only-export.json",
     "browser-acceptance.json",
     "browser-mission-export.json",
     "browser-kept-methods.json",
     "browser-mobile-layout.json",
+    "browser-prepared-input-default.json",
+    "browser-prepared-input-optin.json",
     "crash-recovery.json",
 )
 
@@ -59,6 +68,15 @@ def sha(data: bytes) -> str:
 def write_json(path: Path, value: Any) -> None:
     """Write a local receipt, never an authority grant."""
     path.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
+
+
+def stage_public_planning_preparer(repo: Path, commit: str, destination: Path) -> dict[str, str]:
+    """Copy exact committed public HTML for local-file QA, never from the worktree."""
+    require(re.fullmatch(r"[0-9a-f]{40}", commit) is not None, "Exact public-preparer source commit is required")
+    name = "docs/try/index.html"
+    raw = subprocess.check_output(["git", "-C", str(repo), "show", "--no-textconv", commit + ":" + name])
+    destination.write_bytes(raw)
+    return {"commit": commit, "path": name, "sha256": sha(raw), "scope": checks.PUBLIC_PREPARER_SCOPE}
 
 
 def public_json(url: str) -> dict[str, Any]:
@@ -149,13 +167,17 @@ def verify_environment(report: dict[str, Any], prefix: Path, version: str, compa
 
 def core_payload(repo: Path, commit: str, wheel: Path, installed: Path | None = None) -> dict[str, Any]:
     """Bind all executable/data payload to Git and installed bytes to the public wheel."""
+    require(re.fullmatch(r"[0-9a-f]{40}", commit) is not None, "Core source must be an exact accepted commit")
+    resolved = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "--verify", commit + "^{commit}"])
+    require(resolved.decode().strip() == commit, "Core source does not identify that exact accepted commit")
     listing = subprocess.check_output(["git", "-C", str(repo), "ls-tree", "-rz", commit])
-    blobs = {}
+    blobs: dict[str, str] = {}
     for item in listing.split(b"\0"):
         if item:
             meta, byte_name = item.split(b"\t", 1)
             mode, kind, identity = meta.decode().split()
             if kind == "blob" and mode in {"100644", "100755"}:
+                require(re.fullmatch(r"[0-9a-f]{40}", identity) is not None, "Invalid accepted Git blob metadata")
                 blobs[byte_name.decode()] = identity
     rows, python_files = [], 0
     project_raw = subprocess.check_output(["git", "-C", str(repo), "show", "--no-textconv", commit + ":pyproject.toml"])
@@ -191,8 +213,12 @@ def core_payload(repo: Path, commit: str, wheel: Path, installed: Path | None = 
                 continue
             raw = archive.read(info)
             if not name.startswith(metadata_prefix):
+                accepted_identity = blobs.get(name)
+                require(accepted_identity is not None, "Core package body differs from accepted Git source")
+                assert accepted_identity is not None
+                accepted = subprocess.check_output(["git", "-C", str(repo), "cat-file", "blob", accepted_identity])
                 require(
-                    hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest() == blobs.get(name),
+                    accepted == raw,
                     "Core package body differs from accepted Git source",
                 )
             if name.endswith(".py"):
@@ -220,6 +246,41 @@ def core_payload(repo: Path, commit: str, wheel: Path, installed: Path | None = 
         )
     require(python_files > 0, "Public core wheel omitted its Python source")
     return {"python_files": python_files, "payload_members": len(rows), "inventory_sha256": checks._digest(rows)}
+
+
+def verify_junit(path: Path) -> None:
+    """Require bounded regular JUnit evidence without DTDs, entities or external references."""
+    absolute = path.absolute()
+    require(len(absolute.parts) > 1 and ".." not in absolute.parts, "Invalid JUnit artifact path")
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    try:
+        directory = os.open(absolute.anchor, directory_flags)
+        try:
+            for part in absolute.parts[1:-1]:
+                next_directory = os.open(part, directory_flags, dir_fd=directory)
+                os.close(directory)
+                directory = next_directory
+            descriptor = os.open(absolute.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+            with os.fdopen(descriptor, "rb") as stream:
+                info = os.fstat(stream.fileno())
+                require(
+                    stat.S_ISREG(info.st_mode) and info.st_size <= MAX_JUNIT_BYTES,
+                    "JUnit artifact must be a bounded regular file",
+                )
+                raw = stream.read(MAX_JUNIT_BYTES + 1)
+        finally:
+            os.close(directory)
+    except OSError as error:
+        raise ValueError("JUnit artifact must have regular non-symlink ancestors and file") from error
+    require(len(raw) <= MAX_JUNIT_BYTES, "JUnit artifact grew beyond its bound")
+    try:
+        xml = SafeET.fromstring(raw, forbid_dtd=True, forbid_entities=True, forbid_external=True)
+    except (DefusedXmlException, SyntaxError) as error:
+        raise ValueError("Unsafe or malformed JUnit XML") from error
+    require(
+        bool(list(xml.iter("testcase"))) and not any(list(xml.iter(key)) for key in ("failure", "error", "skipped")),
+        "Installed acceptance failed, skipped or omitted a case",
+    )
 
 
 def safe_artifacts(work: Path, evidence: Path, summary: dict[str, Any]) -> None:
@@ -467,7 +528,7 @@ def accept(repo: Path, commit: str, work: Path, evidence: Path) -> None:
         run("companion-venv", [sys.executable, "-m", "venv", str(companion_env)])
         py = str(companion_env / "bin/python")
         run("companion-install", [py, "-m", "pip", "install", str(runtime_wheel), str(wheel)])
-        run("qa-tools", [py, "-m", "pip", "install", "pytest==8.4.2", "playwright==1.64.1"])
+        run("qa-tools", [py, "-m", "pip", "install", "pytest==8.4.2", "playwright==1.64.1", "defusedxml==0.7.1"])
         run("companion-pip-check", [py, "-I", "-m", "pip", "check"])
         probe = (
             "import json,sys,pathlib,alpha_factory_v1 as a;"
@@ -512,6 +573,9 @@ def accept(repo: Path, commit: str, work: Path, evidence: Path) -> None:
             qa_path = "contrib/strategy_succession/qa/" + name
             raw = subprocess.check_output(["git", "-C", str(repo), "show", "--no-textconv", commit + ":" + qa_path])
             (work / "qa" / name).write_bytes(raw)
+        summary["public_preparer_source"] = stage_public_planning_preparer(
+            repo, commit, work / "qa" / "public-planning-preparer.html"
+        )
         run("chromium", [py, "-m", "playwright", "install", "--with-deps", "chromium"])
         test_env = {"STRATEGY_INSTALLED_ACCEPTANCE": "1", "STRATEGY_EVIDENCE_DIR": str(work / "public-results")}
         for name, test in (("api", "integration"), ("browser", "browser"), ("crash", "crash")):
@@ -534,24 +598,41 @@ def accept(repo: Path, commit: str, work: Path, evidence: Path) -> None:
                 cwd=work / "qa",
                 extra=test_env,
             )
-            xml = ET.parse(work / "logs" / (name + ".xml"))
-            require(
-                bool(list(xml.iter("testcase")))
-                and not any(list(xml.iter(k)) for k in ("failure", "error", "skipped")),
-                "Installed acceptance failed, skipped or omitted a case",
-            )
+            verify_junit(work / "logs" / (name + ".xml"))
         stage = "validate-executed-records"
         output = work / "public-results"
         plan = checks._read_json(output / "integrated-journey.json")
         checks._verify_plan(plan, source, profile)
+        service_only = checks._verify_service_only(
+            checks._read_json(output / "service-only-journey.json"),
+            checks._read_json(output / "service-only-summary.json"),
+            checks._read(output / "service-only-export.json"),
+            plan,
+            source,
+            profile,
+        )
+        summary["service_only_control"] = {
+            "plan_id": service_only["plan_id"],
+            "outcome_hash": service_only["outcome_hash"],
+            "costs": service_only["outcome"]["costs"],
+            "qualification": "Matched construction-off API control; no causal speedup or monetary payback claim",
+        }
         checks._verify_child_environment(
             checks._read_json(output / "integrated-summary.json")["child_environment"], profile
         )
+        browser_report = checks._read_json(output / "browser-acceptance.json")
         browser_plan = checks._verify_browser(
-            checks._read_json(output / "browser-acceptance.json"),
+            browser_report,
             checks._read(output / "browser-mission-export.json"),
             source,
             profile,
+        )
+        checks._verify_public_preparer(
+            browser_report,
+            browser_plan,
+            checks._read(output / "browser-prepared-input-default.json"),
+            checks._read(output / "browser-prepared-input-optin.json"),
+            checks._read(work / "qa" / "public-planning-preparer.html"),
         )
         crash = checks._verify_crash(checks._read_json(output / "crash-recovery.json"), source, profile)
         after = release_identity(version, commit)

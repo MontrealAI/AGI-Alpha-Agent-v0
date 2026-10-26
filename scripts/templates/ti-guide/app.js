@@ -2,6 +2,24 @@
 const $ = id => document.getElementById(id);
 const english = Object.fromEntries([...document.querySelectorAll('[data-t]')].map(el => [el.dataset.t, el.innerHTML]));
 const french = {
+    planningMode:'PLANIFICATION CONNECTÉE · CONFIGURATION DISTINCTE PAR UN OPÉRATEUR',
+    planningTitle:'Planifier un projet. Adapter. Réparer.',
+    planningLead:'Préparez ici votre propre demande de planification autorisée. L’exécuteur configuré calcule et vérifie le calendrier après votre examen et votre autorisation du code, des données et des budgets distincts.',
+    planningBoundary:'Cette page prépare uniquement les données. Elle ne se connecte pas, n’envoie rien, ne lance aucun travail et ne demande aucun jeton. L’exécuteur installé produit des plans ; il n’exécute ni travail physique ni code arbitraire.',
+    planningOpen:'Préparer une mission de planification',planningId:'Identifiant du projet (lettres, chiffres, point, tiret)',
+    planningClass:'Autorisation des données',planningSynthetic:'Hypothèses de planification synthétiques',planningPublic:'Données publiques dont l’utilisation m’est permise',
+    planningJobs:'Tâches : identifiant, durée, personnes, dépendances',
+    planningHelp:'Conservez l’en-tête id,duration,crew,deps. Utilisez J1…J999 et des créneaux et effectifs entiers. Séparez les dépendances par |. Maximum 18 tâches, durée 1–12, capacité 1–4, horizon 2–128 créneaux. Aucune donnée personnelle ou sensible.',
+    planningSlots:'Horizon (créneaux)',planningCapacity:'Personnes disponibles par créneau',planningDeadline:'Terminer au plus tard au créneau',planningChangedJob:'Tâche dont la durée change',planningChangedDuration:'Sa nouvelle durée',
+    planningObserved:'Instant de planification pour préserver le préfixe antérieur',planningOutageStart:'Début de la capacité réduite',planningOutageEnd:'Fin exclusive de la capacité réduite',planningOutageCapacity:'Personnes disponibles pendant cet intervalle',
+    planningConstruction:'Demander une construction de méthodes et des comparaisons sur un budget distinct. Sinon conserver les spécialistes existants.',
+    planningCosts:'L’opérateur contrôle les budgets. Les unités de travail ne sont pas de l’argent. Les coûts humains et monétaires peuvent rester inconnus. Une nouvelle méthode peut perdre ou être différée ; le service utile n’exige pas sa victoire.',
+    planningDownload:'Télécharger les données de mission',planningStep1:'Téléchargez le JSON. Il s’agit d’une demande, pas d’un plan calculé ou accepté.',
+    planningStep2:'Un opérateur installe et lance l’exécuteur pris en charge avec un accès existant autorisé.',
+    planningStep3:'Ouvrez l’exécuteur local, connectez-vous sur place, collez le JSON sous « Utiliser mes propres données de planification autorisées », puis Démarrer et vérifiez la portée exacte avant d’autoriser.',
+    planningStep4:'Examinez les calendriers vérifiés, la comparaison des spécialistes et les coûts. Téléchargez le rapport lisible et les preuves signées ; reconnectez-vous pour examiner le travail conservé.',
+    planningSetup:'Configuration et récupération par l’opérateur',planningLocal:'Ouvrir mon exécuteur local configuré',
+    planningLocalNote:'Le lien local ouvre uniquement 127.0.0.1:8768. Rien ne démarre automatiquement. S’il est indisponible, suivez la configuration. Saisissez les identifiants existants uniquement dans l’exécuteur local approuvé.',
     skip:'Aller à la tâche', brand:'INTELLIGENCE TRANSFORMATIONNELLE',eyebrow:'UN PETIT CHANGEMENT. UN RÉSULTAT UTILE.',
     title:'Deux listes.<br>La suite devient claire.',lead:'Repérez ce qui mérite attention. Rassemblez les écarts. Gardez une méthode à réutiliser.',
     free:'Gratuit · Sans compte · Sans installation · Vos données restent ici',nav1:'Votre objectif',nav2:'L’obstacle',nav3:'Une autre méthode ?',nav4:'Votre résultat',
@@ -60,8 +78,30 @@ function setLanguage(value) {
         if (el.dataset.t === 'title') el.innerHTML = content; else el.textContent = content;
     }
     $('en').setAttribute('aria-pressed',String(value === 'en')); $('fr').setAttribute('aria-pressed',String(value === 'fr'));
+    $('planning-local').href='http://127.0.0.1:8768/'+(value==='fr'?'?lang=fr':'');
+    $('planning-status').textContent='';
     refreshPreviews(); render(false);
 }
+// Preparation is entirely local; no fetch, token, authority or remote execution.
+$('planning-jobs').value=planner.SAMPLE_JOBS;
+$('planning-download').addEventListener('click',()=>{
+    const value=id=>$('planning-'+id).value;
+    try {
+        const mission=planner.preparePlanning({id:value('id'),dataClass:value('class'),jobsCsv:value('jobs'),
+            slots:value('slots'),capacity:value('capacity'),deadline:value('deadline'),changedJob:value('changed-job'),
+            changedDuration:value('changed-duration'),observedAt:value('observed'),outageStart:value('outage-start'),
+            outageEnd:value('outage-end'),outageCapacity:value('outage-capacity'),construction:$('planning-construction').checked});
+        const raw=JSON.stringify(mission,null,2)+'\n';
+        $('planning-preview').textContent=raw;$('planning-preview').hidden=false;
+        download('planning-mission-input.json',raw,'application/json');
+        $('planning-status').textContent=say('Input prepared locally. No work has run. Feasibility, exact source, budgets and approval are checked by the configured executor.',
+            'Données préparées localement. Aucun travail exécuté. L’exécuteur configuré contrôle la faisabilité, le code exact, les budgets et l’autorisation.');
+    } catch(error) {
+        $('planning-preview').textContent='';$('planning-preview').hidden=true;
+        $('planning-status').textContent=say('Input needs correction: ','Données à corriger : ')+error.message+say('. Check the stated column names, ranges, identifiers and dependencies. No work ran.',
+            '. Vérifiez les colonnes, bornes, identifiants et dépendances indiqués. Aucun travail exécuté.');
+    }
+});
 function table(parent, headers, rows) {
     const wrap = node('div',parent,undefined,'table-wrap'), t = node('table',wrap), head = node('tr',node('thead',t));
     for (const name of headers) { const th = node('th',head,name); th.scope = 'col'; }
