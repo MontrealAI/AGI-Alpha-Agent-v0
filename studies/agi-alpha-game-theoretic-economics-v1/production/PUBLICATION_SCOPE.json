@@ -1,0 +1,57 @@
+{
+  "schema": "game-market-production-publication-scope/v1",
+  "created_at": "2026-10-26T16:42:57.320249+00:00",
+  "public_new_source_and_selected_evidence": [
+    "production/GROUPED_DECISIONS_EN_FR.md",
+    "production/OFFERING_AND_CAPABILITY.md",
+    "production/README.md",
+    "production/audit_joint_results.py",
+    "production/four-repository-refs-normalized.json",
+    "production/four-repository-refs.json",
+    "production/instantiate_replay.py",
+    "production/joint-freeze.json",
+    "production/joint-packaging-receipt.json",
+    "production/joint-protocol.json",
+    "production/joint-results-audit.json",
+    "production/joint-selection.json",
+    "production/joint-summary.json",
+    "production/measured-bridge.json",
+    "production/package_joint_results.py",
+    "production/product-snapshot.json",
+    "production/public-product-runtime-identities.json",
+    "production/public-product-source.json",
+    "production/reproduce_packet.py",
+    "production/run_joint_missions.py"
+  ],
+  "reused_product_source": {
+    "commit": "269af6f9dd8d511fc387d0cecdff62a88ea96b02",
+    "manifest": "production/product-snapshot.json",
+    "license": "Apache-2.0 plus retained third-party notices",
+    "duplicated_runtime": false
+  },
+  "reused_research_source": {
+    "commit": "068e276fb9cd457c76ef5f8eaebf91b302d70d24",
+    "manifest": "production/inherited/protocol/source-freeze.json",
+    "native_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+    "license": "Apache-2.0 and vendored AGIJobs MIT",
+    "publication_route": "Exact immutable upstream source references; full local bytes in companion. A source-only PR without vendor/inputs is explicitly NOT_OFFLINE_COMPLETE."
+  },
+  "binary_data_for_complete_companion": [
+    "vendor/useful-work-v2/joint-study/inputs/wheels/*.whl",
+    "production/packets/*.zip",
+    "production/export-001/AGI_ALPHA_Upgrade_Decision_Packet.zip"
+  ],
+  "raw_evidence_for_complete_companion": [
+    "vendor/useful-work-v2/joint-study/run-001 (except venv and __pycache__)",
+    "production/inherited",
+    "production/export-001"
+  ],
+  "exclude_rebuildable": [
+    "**/venv/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "production/packets/extraction-check/**"
+  ],
+  "unchanged_primary": "144-file2da7e8191... freeze; four actual joint tuples/12assessments; no primary retry",
+  "source_only_pr_requirement": "Keep setup/reproduction limits explicit and reference complete companion; do not claim root clone alone can replay without preserved dependencies. Do not relabel a source archive as a way to waive required hosted checks."
+}

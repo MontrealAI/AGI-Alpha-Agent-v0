@@ -1,0 +1,5078 @@
+{
+  "basis": "Exact frozen primary scenario replay with extra offer logging only; no new scenario",
+  "config": {
+    "id": "stress-reference-assumptions",
+    "weeks": 52,
+    "buyers": 12,
+    "arrivalProbability": 0.25,
+    "supportedFraction": 0.75,
+    "initialCashCents": 100000,
+    "reserveCents": 20000,
+    "initialSetupCents": 5000,
+    "weeklyOverheadCents": 200,
+    "paymentDelayWeeks": 2,
+    "paymentProbability": 0.98,
+    "expenseDelayWeeks": 0,
+    "refundProbability": 0.75,
+    "refundDelayWeeks": 1,
+    "choiceModel": "deterministic",
+    "logitScaleCents": 1200,
+    "hourlyProviderCents": 6538,
+    "hourlyBuyerCents": [
+      3000,
+      5014,
+      6538
+    ],
+    "humanHourlyCents": 3000,
+    "humanMinutes": [
+      30,
+      60,
+      90
+    ],
+    "usefulnessMultiplier": 1.25,
+    "errorLossCents": 10000,
+    "customerReviewMinutes": 8,
+    "diyEffortFraction": 0.65,
+    "aiReviewMinutes": 15,
+    "humanReviewMinutes": 6,
+    "integrationCents": 1000,
+    "switchingCents": 500,
+    "delayCostCentsPerDay": 250,
+    "buyerProcurementBudgetCents": 50000,
+    "outcomeFeedbackDelayWeeks": 1,
+    "commonResidualMinutes": 2,
+    "ordinaryFinalizationMinutes": 10,
+    "assetResidualMinutes": 0,
+    "computeAndToolCents": 25,
+    "failureCorrectionMultiplier": 1.5,
+    "successProbability": 0.95,
+    "qualityShockWeek": 99,
+    "qualityShockFactor": 1,
+    "overloadPenalty": 0.08,
+    "humanQuality": 0.97,
+    "diyQuality": 0.95,
+    "aiQuality": 0.9,
+    "initialTrust": 0.9,
+    "skepticalShare": 0.25,
+    "enterpriseSlotsPerWeek": 4,
+    "providerMinutesPerWeek": 120,
+    "humanSlotsPerWeek": 4,
+    "aiSlotsPerWeek": 6,
+    "measuredMechanicalWallSeconds": 16.79944029399985,
+    "measuredMechanicalCpuSeconds": 2.53920892,
+    "machineWallSecondsPerWeek": 3600,
+    "machineCpuSecondsPerWeek": 3600,
+    "enterpriseDays": 1,
+    "humanDays": 2,
+    "diyDays": 0.5,
+    "aiDays": 0.5,
+    "initialPriceCents": 4000,
+    "priceGridCents": [
+      500,
+      1000,
+      2000,
+      4000,
+      8000
+    ],
+    "pricingPolicy": "empirical-grid",
+    "aiInitialPriceCents": 2000,
+    "aiCostCents": 800,
+    "humanMarkup": 1.2,
+    "competitorStrategy": "responsive",
+    "competitorInitialCashCents": 50000,
+    "competitorImitationCostCents": 20000,
+    "competitorImitationAfterWeeks": 12,
+    "competitorCostReduction": 0.25,
+    "competitorPriceFloorCents": 500,
+    "constructionHours": 4,
+    "constructionHourlyCents": 6538,
+    "authoringCostCents": 10000,
+    "investmentCostBasis": "full-history",
+    "adoptionHours": 0.5,
+    "adoptionInferenceCents": 0,
+    "historicalCostTiming": "opening",
+    "engineeringHoursPerWeek": 4,
+    "failedConstructionShare": 0.2,
+    "assetMaintenanceCentsPerWeek": 50,
+    "assetFailureProbability": 0,
+    "investmentEarliestWeek": 8,
+    "investmentForecastDiscount": 0.5,
+    "investmentFunding": "operating-surplus",
+    "expectedPassThrough": 0.25,
+    "churnProbability": 0.25,
+    "churnDurationWeeks": 8,
+    "stopAfterInsolvency": true,
+    "nextAsset": null,
+    "allMoneyIsAssumed": true
+  },
+  "seed": 1001,
+  "summary": {
+    "opportunities": 138,
+    "supportedOpportunities": 102,
+    "declined": 7,
+    "enterpriseAttempts": 0,
+    "enterpriseAccepted": 0,
+    "enterpriseRejected": 0,
+    "latentFailures": 0,
+    "grossInvoicesCents": 0,
+    "grossCollectionsCents": 0,
+    "writtenOffCents": 0,
+    "refundsCents": 0,
+    "accruedCostsCents": 51552,
+    "paidCostsCents": 51552,
+    "finalCashCents": 48448,
+    "obligationsCents": 0,
+    "profitCents": -51552,
+    "availableOperatingSurplusCents": -71552,
+    "insolvent": false,
+    "insolvencyWeek": null,
+    "investmentWeek": null,
+    "assetActive": false,
+    "failedInvestment": false,
+    "assetUses": 0,
+    "directAvoidedCostCents": 0,
+    "assetFullCostAndUpkeepCents": 36152,
+    "directNetSavingCents": -36152,
+    "investmentCostBasis": "full-history",
+    "historicalCostRepaidClaimAllowed": true,
+    "directCostPayback": false,
+    "actualRevenueCents": 0
+  },
+  "choices": [
+    {
+      "week": 0,
+      "buyer": "buyer-4",
+      "mission": "w0-buyer-4",
+      "choice": "diy",
+      "utilityCents": 161,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 2000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -3003.3999999999996
+        },
+        {
+          "id": "human",
+          "priceCents": 1755,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": -1048.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 1700,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -1928.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 160.7999999999995
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 1,
+      "buyer": "buyer-6",
+      "mission": "w1-buyer-6",
+      "choice": "diy",
+      "utilityCents": 1299,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -4720.5
+        },
+        {
+          "id": "human",
+          "priceCents": 1710,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 899.8599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 1445,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -1803.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1299.0999999999995
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 1,
+      "buyer": "buyer-0",
+      "mission": "w1-buyer-0",
+      "choice": "human",
+      "utilityCents": 2997,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": 43.80000000000018
+        },
+        {
+          "id": "human",
+          "priceCents": 3420,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 2996.8399999999992
+        },
+        {
+          "id": "ai",
+          "priceCents": 1445,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2960.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2794.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 2,
+      "buyer": "buyer-8",
+      "mission": "w2-buyer-8",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 2,
+      "buyer": "buyer-10",
+      "mission": "w2-buyer-10",
+      "choice": "diy",
+      "utilityCents": 885,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -7773.7
+        },
+        {
+          "id": "human",
+          "priceCents": 1710,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 126.38999999999984
+        },
+        {
+          "id": "ai",
+          "priceCents": 1228,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -461.69999999999993
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 884.6499999999994
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 2,
+      "buyer": "buyer-11",
+      "mission": "w2-buyer-11",
+      "choice": "diy",
+      "utilityCents": 924,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -7401.5
+        },
+        {
+          "id": "human",
+          "priceCents": 3420,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": -920.4500000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 1228,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 145.50000000000023
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 924.2499999999995
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 3,
+      "buyer": "buyer-9",
+      "mission": "w3-buyer-9",
+      "choice": "diy",
+      "utilityCents": 1197,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -9233
+        },
+        {
+          "id": "human",
+          "priceCents": 1665,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 883.3599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 1044,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -1915
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1196.5999999999995
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 3,
+      "buyer": "buyer-6",
+      "mission": "w3-buyer-6",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 3,
+      "buyer": "buyer-8",
+      "mission": "w3-buyer-8",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 4,
+      "buyer": "buyer-9",
+      "mission": "w4-buyer-9",
+      "choice": "diy",
+      "utilityCents": 1255,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9733
+        },
+        {
+          "id": "human",
+          "priceCents": 1620,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 428.35999999999984
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -2271
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1254.7272727272732
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 4,
+      "buyer": "buyer-2",
+      "mission": "w4-buyer-2",
+      "choice": "diy",
+      "utilityCents": 725,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -8093.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1620,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 120.32999999999976
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.89999999999986
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 724.5499999999993
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 4,
+      "buyer": "buyer-3",
+      "mission": "w4-buyer-3",
+      "choice": "ai",
+      "utilityCents": 5249,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -2391.5
+        },
+        {
+          "id": "human",
+          "priceCents": 4860,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 2977.949999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 5248.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4889,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 3450.2499999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 5,
+      "buyer": "buyer-9",
+      "mission": "w5-buyer-9",
+      "choice": "diy",
+      "utilityCents": 1303,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9733
+        },
+        {
+          "id": "human",
+          "priceCents": 1575,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 473.35999999999984
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -2271
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1303.166666666667
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 6,
+      "buyer": "buyer-5",
+      "mission": "w6-buyer-5",
+      "choice": "ai",
+      "utilityCents": 2035,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -5605
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 1620.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2035
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1906.9999999999989
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 7,
+      "buyer": "buyer-4",
+      "mission": "w7-buyer-4",
+      "choice": "diy",
+      "utilityCents": 217,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 216.63636363636402
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 7,
+      "buyer": "buyer-2",
+      "mission": "w7-buyer-2",
+      "choice": "diy",
+      "utilityCents": 784,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 784.045454545455
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 8,
+      "buyer": "buyer-8",
+      "mission": "w8-buyer-8",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 8,
+      "buyer": "buyer-4",
+      "mission": "w8-buyer-4",
+      "choice": "diy",
+      "utilityCents": 263,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 263.166666666667
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 9,
+      "buyer": "buyer-2",
+      "mission": "w9-buyer-2",
+      "choice": "diy",
+      "utilityCents": 834,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 833.6250000000007
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 9,
+      "buyer": "buyer-1",
+      "mission": "w9-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1004,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -7241.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": -512.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 633.6000000000003
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1004.2999999999995
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 9,
+      "buyer": "buyer-3",
+      "mission": "w9-buyer-3",
+      "choice": "ai",
+      "utilityCents": 5419,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -2891.5
+        },
+        {
+          "id": "human",
+          "priceCents": 4590,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 2747.949999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9090909090909091,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 5418.818181818181
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4889,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2950.2499999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 10,
+      "buyer": "buyer-9",
+      "mission": "w10-buyer-9",
+      "choice": "diy",
+      "utilityCents": 1344,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9733
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 518.3599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -2271
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1344.1538461538464
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 10,
+      "buyer": "buyer-4",
+      "mission": "w10-buyer-4",
+      "choice": "diy",
+      "utilityCents": 303,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 302.5384615384619
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 10,
+      "buyer": "buyer-1",
+      "mission": "w10-buyer-1",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 10,
+      "buyer": "buyer-5",
+      "mission": "w10-buyer-5",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 11,
+      "buyer": "buyer-8",
+      "mission": "w11-buyer-8",
+      "choice": "diy",
+      "utilityCents": 743,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -4057.7999999999997
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 221.15999999999974
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -417.79999999999984
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 742.5999999999992
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 11,
+      "buyer": "buyer-2",
+      "mission": "w11-buyer-2",
+      "choice": "diy",
+      "utilityCents": 876,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 875.5769230769234
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 12,
+      "buyer": "buyer-0",
+      "mission": "w12-buyer-0",
+      "choice": "human",
+      "utilityCents": 3412,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4456.2
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.9727272727272727,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 3411.5818181818167
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 3005.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2294.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 12,
+      "buyer": "buyer-11",
+      "mission": "w12-buyer-11",
+      "choice": "diy",
+      "utilityCents": 993,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7901.5
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1060.4500000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -26.499999999999773
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 992.5000000000005
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 13,
+      "buyer": "buyer-10",
+      "mission": "w13-buyer-10",
+      "choice": "diy",
+      "utilityCents": 930,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 929.5909090909093
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 14,
+      "buyer": "buyer-5",
+      "mission": "w14-buyer-5",
+      "choice": "ai",
+      "utilityCents": 2213,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -6105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9090909090909091,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2212.636363636363
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 1406.9999999999989
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 14,
+      "buyer": "buyer-6",
+      "mission": "w14-buyer-6",
+      "choice": "diy",
+      "utilityCents": 1348,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9220.5
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 579.8599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1758.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1347.9090909090914
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 15,
+      "buyer": "buyer-0",
+      "mission": "w15-buyer-0",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 15,
+      "buyer": "buyer-9",
+      "mission": "w15-buyer-9",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 15,
+      "buyer": "buyer-10",
+      "mission": "w15-buyer-10",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 16,
+      "buyer": "buyer-2",
+      "mission": "w16-buyer-2",
+      "choice": "diy",
+      "utilityCents": 912,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 911.5357142857143
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 16,
+      "buyer": "buyer-9",
+      "mission": "w16-buyer-9",
+      "choice": "diy",
+      "utilityCents": 1379,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9733
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 518.3599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -2271
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1379.2857142857142
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 17,
+      "buyer": "buyer-9",
+      "mission": "w17-buyer-9",
+      "choice": "diy",
+      "utilityCents": 1410,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9733
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 518.3599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -2271
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9666666666666667,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1409.7333333333336
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 17,
+      "buyer": "buyer-8",
+      "mission": "w17-buyer-8",
+      "choice": "diy",
+      "utilityCents": 800,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8557.8
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -278.84000000000026
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -917.7999999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 800.4545454545457
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 18,
+      "buyer": "buyer-8",
+      "mission": "w18-buyer-8",
+      "choice": "diy",
+      "utilityCents": 849,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4557.8
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -278.84000000000026
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -917.7999999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 848.6666666666673
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 18,
+      "buyer": "buyer-0",
+      "mission": "w18-buyer-0",
+      "choice": "human",
+      "utilityCents": 3457,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -456.1999999999998
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.975,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 3457.2
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 3005.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2294.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 18,
+      "buyer": "buyer-3",
+      "mission": "w18-buyer-3",
+      "choice": "ai",
+      "utilityCents": 5561,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": 1108.5
+        },
+        {
+          "id": "human",
+          "priceCents": 4590,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 2747.949999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9166666666666666,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 5560.749999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4889,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2950.2499999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 19,
+      "buyer": "buyer-3",
+      "mission": "w19-buyer-3",
+      "choice": "ai",
+      "utilityCents": 5681,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -2891.5
+        },
+        {
+          "id": "human",
+          "priceCents": 4590,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 2747.949999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9230769230769231,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 5680.846153846154
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4889,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2950.2499999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 19,
+      "buyer": "buyer-10",
+      "mission": "w19-buyer-10",
+      "choice": "diy",
+      "utilityCents": 967,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 967.0416666666672
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 20,
+      "buyer": "buyer-2",
+      "mission": "w20-buyer-2",
+      "choice": "diy",
+      "utilityCents": 943,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9666666666666667,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 942.7
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 20,
+      "buyer": "buyer-4",
+      "mission": "w20-buyer-4",
+      "choice": "diy",
+      "utilityCents": 336,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 336.2857142857144
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 21,
+      "buyer": "buyer-6",
+      "mission": "w21-buyer-6",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 21,
+      "buyer": "buyer-11",
+      "mission": "w21-buyer-11",
+      "choice": "diy",
+      "utilityCents": 1049,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7901.5
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1060.4500000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -26.499999999999773
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1049.3750000000005
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 21,
+      "buyer": "buyer-10",
+      "mission": "w21-buyer-10",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 22,
+      "buyer": "buyer-1",
+      "mission": "w22-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1065,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1065.2727272727275
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 22,
+      "buyer": "buyer-8",
+      "mission": "w22-buyer-8",
+      "choice": "diy",
+      "utilityCents": 889,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8557.8
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -278.84000000000026
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -917.7999999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 889.4615384615388
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 22,
+      "buyer": "buyer-11",
+      "mission": "w22-buyer-11",
+      "choice": "diy",
+      "utilityCents": 1098,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7901.5
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1060.4500000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -26.499999999999773
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1097.5000000000005
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 22,
+      "buyer": "buyer-9",
+      "mission": "w22-buyer-9",
+      "choice": "diy",
+      "utilityCents": 1436,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9733
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 518.3599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -2271
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.96875,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1436.375
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 22,
+      "buyer": "buyer-6",
+      "mission": "w22-buyer-6",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 22,
+      "buyer": "buyer-0",
+      "mission": "w22-buyer-0",
+      "choice": "human",
+      "utilityCents": 3496,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4456.2
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.9769230769230769,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 3495.7999999999993
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 3005.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2294.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 22,
+      "buyer": "buyer-7",
+      "mission": "w22-buyer-7",
+      "choice": "diy",
+      "utilityCents": 596,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1000,
+          "utilityCents": -10697.75
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 133.4699999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -3057.75
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 596.4499999999991
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 23,
+      "buyer": "buyer-8",
+      "mission": "w23-buyer-8",
+      "choice": "diy",
+      "utilityCents": 924,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8557.8
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -278.84000000000026
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -917.7999999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 924.4285714285714
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 23,
+      "buyer": "buyer-1",
+      "mission": "w23-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1116,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1116.0833333333337
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 24,
+      "buyer": "buyer-5",
+      "mission": "w24-buyer-5",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 24,
+      "buyer": "buyer-9",
+      "mission": "w24-buyer-9",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 24,
+      "buyer": "buyer-7",
+      "mission": "w24-buyer-7",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 25,
+      "buyer": "buyer-3",
+      "mission": "w25-buyer-3",
+      "choice": "ai",
+      "utilityCents": 5784,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": 1108.5
+        },
+        {
+          "id": "human",
+          "priceCents": 4590,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 2747.949999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9285714285714286,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 5783.785714285715
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4889,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2950.2499999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 26,
+      "buyer": "buyer-9",
+      "mission": "w26-buyer-9",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 26,
+      "buyer": "buyer-8",
+      "mission": "w26-buyer-8",
+      "choice": "diy",
+      "utilityCents": 955,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8557.8
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -278.84000000000026
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -917.7999999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9666666666666667,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 954.7333333333333
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 26,
+      "buyer": "buyer-2",
+      "mission": "w26-buyer-2",
+      "choice": "diy",
+      "utilityCents": 970,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.96875,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 969.96875
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 27,
+      "buyer": "buyer-2",
+      "mission": "w27-buyer-2",
+      "choice": "diy",
+      "utilityCents": 994,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9705882352941176,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 994.029411764706
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 27,
+      "buyer": "buyer-10",
+      "mission": "w27-buyer-10",
+      "choice": "diy",
+      "utilityCents": 999,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 998.7307692307695
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 28,
+      "buyer": "buyer-5",
+      "mission": "w28-buyer-5",
+      "choice": "ai",
+      "utilityCents": 2361,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -2105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9166666666666666,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2360.6666666666656
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 1406.9999999999989
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 28,
+      "buyer": "buyer-10",
+      "mission": "w28-buyer-10",
+      "choice": "diy",
+      "utilityCents": 1026,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4273.7
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1025.892857142857
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 28,
+      "buyer": "buyer-11",
+      "mission": "w28-buyer-11",
+      "choice": "diy",
+      "utilityCents": 1139,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -3901.5
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1060.4500000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -26.499999999999773
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1138.75
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 28,
+      "buyer": "buyer-4",
+      "mission": "w28-buyer-4",
+      "choice": "defer",
+      "utilityCents": 0,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -5503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.39999999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 29,
+      "buyer": "buyer-2",
+      "mission": "w29-buyer-2",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 29,
+      "buyer": "buyer-5",
+      "mission": "w29-buyer-5",
+      "choice": "ai",
+      "utilityCents": 2486,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -6105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9230769230769231,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2485.923076923078
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 1406.9999999999989
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 29,
+      "buyer": "buyer-6",
+      "mission": "w29-buyer-6",
+      "choice": "diy",
+      "utilityCents": 1389,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9220.5
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 579.8599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1758.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1388.5833333333335
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 29,
+      "buyer": "buyer-1",
+      "mission": "w29-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1159,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1159.0769230769235
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 29,
+      "buyer": "buyer-11",
+      "mission": "w29-buyer-11",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 29,
+      "buyer": "buyer-4",
+      "mission": "w29-buyer-4",
+      "choice": "defer",
+      "utilityCents": 0,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.39999999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 29,
+      "buyer": "buyer-3",
+      "mission": "w29-buyer-3",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 30,
+      "buyer": "buyer-4",
+      "mission": "w30-buyer-4",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 30,
+      "buyer": "buyer-3",
+      "mission": "w30-buyer-3",
+      "choice": "diy",
+      "utilityCents": 2950,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -2891.5
+        },
+        {
+          "id": "human",
+          "priceCents": 4590,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 2747.949999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4889,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2950.2499999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 31,
+      "buyer": "buyer-6",
+      "mission": "w31-buyer-6",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 32,
+      "buyer": "buyer-7",
+      "mission": "w32-buyer-7",
+      "choice": "diy",
+      "utilityCents": 668,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -11197.75
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -366.5300000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -3557.75
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 667.5909090909096
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 33,
+      "buyer": "buyer-8",
+      "mission": "w33-buyer-8",
+      "choice": "diy",
+      "utilityCents": 981,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8557.8
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -278.84000000000026
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -917.7999999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.96875,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 981.25
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 33,
+      "buyer": "buyer-10",
+      "mission": "w33-buyer-10",
+      "choice": "diy",
+      "utilityCents": 1049,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9666666666666667,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1049.4333333333334
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 33,
+      "buyer": "buyer-5",
+      "mission": "w33-buyer-5",
+      "choice": "ai",
+      "utilityCents": 2593,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -6105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9285714285714286,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2593.285714285715
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 1406.9999999999989
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 33,
+      "buyer": "buyer-2",
+      "mission": "w33-buyer-2",
+      "choice": "diy",
+      "utilityCents": 1015,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9722222222222222,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1015.4166666666665
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 34,
+      "buyer": "buyer-9",
+      "mission": "w34-buyer-9",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 34,
+      "buyer": "buyer-5",
+      "mission": "w34-buyer-5",
+      "choice": "diy",
+      "utilityCents": 1407,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -6105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.8666666666666667,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1383.6666666666667
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 1406.9999999999989
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 34,
+      "buyer": "buyer-1",
+      "mission": "w34-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1196,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1195.9285714285716
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 34,
+      "buyer": "buyer-0",
+      "mission": "w34-buyer-0",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 34,
+      "buyer": "buyer-4",
+      "mission": "w34-buyer-4",
+      "choice": "defer",
+      "utilityCents": 0,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.39999999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 35,
+      "buyer": "buyer-8",
+      "mission": "w35-buyer-8",
+      "choice": "diy",
+      "utilityCents": 1005,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8557.8
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -278.84000000000026
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -917.7999999999998
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9705882352941176,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1004.6470588235295
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 35,
+      "buyer": "buyer-10",
+      "mission": "w35-buyer-10",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 35,
+      "buyer": "buyer-5",
+      "mission": "w35-buyer-5",
+      "choice": "diy",
+      "utilityCents": 1996,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -6105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.8666666666666667,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 883.6666666666667
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1995.8181818181824
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 35,
+      "buyer": "buyer-0",
+      "mission": "w35-buyer-0",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 36,
+      "buyer": "buyer-9",
+      "mission": "w36-buyer-9",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 36,
+      "buyer": "buyer-7",
+      "mission": "w36-buyer-7",
+      "choice": "diy",
+      "utilityCents": 727,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -11197.75
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -366.5300000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -3557.75
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 726.8750000000008
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 36,
+      "buyer": "buyer-0",
+      "mission": "w36-buyer-0",
+      "choice": "human",
+      "utilityCents": 3529,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4456.2
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.9785714285714285,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 3528.885714285714
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 3005.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2294.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 37,
+      "buyer": "buyer-10",
+      "mission": "w37-buyer-10",
+      "choice": "diy",
+      "utilityCents": 1070,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.96875,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1070.03125
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 37,
+      "buyer": "buyer-7",
+      "mission": "w37-buyer-7",
+      "choice": "diy",
+      "utilityCents": 777,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -11197.75
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -366.5300000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -3557.75
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 777.0384615384619
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 37,
+      "buyer": "buyer-2",
+      "mission": "w37-buyer-2",
+      "choice": "diy",
+      "utilityCents": 1035,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9736842105263158,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1034.5526315789477
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 38,
+      "buyer": "buyer-3",
+      "mission": "w38-buyer-3",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 38,
+      "buyer": "buyer-6",
+      "mission": "w38-buyer-6",
+      "choice": "diy",
+      "utilityCents": 1423,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -5220.5
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 579.8599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1758.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1423.0000000000002
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 39,
+      "buyer": "buyer-1",
+      "mission": "w39-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1228,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9666666666666667,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1227.8666666666668
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 39,
+      "buyer": "buyer-7",
+      "mission": "w39-buyer-7",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 40,
+      "buyer": "buyer-3",
+      "mission": "w40-buyer-3",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 40,
+      "buyer": "buyer-4",
+      "mission": "w40-buyer-4",
+      "choice": "defer",
+      "utilityCents": 0,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.39999999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 40,
+      "buyer": "buyer-6",
+      "mission": "w40-buyer-6",
+      "choice": "diy",
+      "utilityCents": 1453,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9220.5
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 579.8599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1758.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1452.5
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 40,
+      "buyer": "buyer-0",
+      "mission": "w40-buyer-0",
+      "choice": "human",
+      "utilityCents": 3558,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4456.2
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.98,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 3557.56
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 3005.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2294.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 40,
+      "buyer": "buyer-7",
+      "mission": "w40-buyer-7",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 41,
+      "buyer": "buyer-6",
+      "mission": "w41-buyer-6",
+      "choice": "diy",
+      "utilityCents": 1478,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -5220.5
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 579.8599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1758.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9666666666666667,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1478.0666666666668
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 41,
+      "buyer": "buyer-11",
+      "mission": "w41-buyer-11",
+      "choice": "diy",
+      "utilityCents": 1175,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -3901.5
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1060.4500000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -26.499999999999773
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9666666666666667,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1174.5
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 41,
+      "buyer": "buyer-10",
+      "mission": "w41-buyer-10",
+      "choice": "diy",
+      "utilityCents": 1088,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4273.7
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9705882352941176,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1088.2058823529412
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 41,
+      "buyer": "buyer-0",
+      "mission": "w41-buyer-0",
+      "choice": "human",
+      "utilityCents": 3583,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -456.1999999999998
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.98125,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 3582.6499999999987
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 3005.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2294.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 42,
+      "buyer": "buyer-3",
+      "mission": "w42-buyer-3",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 42,
+      "buyer": "buyer-6",
+      "mission": "w42-buyer-6",
+      "choice": "diy",
+      "utilityCents": 1500,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9220.5
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 579.8599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1758.5
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.96875,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1500.4375
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 43,
+      "buyer": "buyer-10",
+      "mission": "w43-buyer-10",
+      "choice": "diy",
+      "utilityCents": 1104,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9722222222222222,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1104.3611111111109
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 43,
+      "buyer": "buyer-7",
+      "mission": "w43-buyer-7",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 43,
+      "buyer": "buyer-4",
+      "mission": "w43-buyer-4",
+      "choice": "defer",
+      "utilityCents": 0,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.39999999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 43,
+      "buyer": "buyer-5",
+      "mission": "w43-buyer-5",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 44,
+      "buyer": "buyer-1",
+      "mission": "w44-buyer-1",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 44,
+      "buyer": "buyer-11",
+      "mission": "w44-buyer-11",
+      "choice": "diy",
+      "utilityCents": 1206,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7901.5
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1060.4500000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -26.499999999999773
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.96875,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1205.78125
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 44,
+      "buyer": "buyer-2",
+      "mission": "w44-buyer-2",
+      "choice": "diy",
+      "utilityCents": 1052,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8593.9
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -289.67000000000024
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -953.8999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.975,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1051.7749999999999
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 45,
+      "buyer": "buyer-5",
+      "mission": "w45-buyer-5",
+      "choice": "diy",
+      "utilityCents": 2070,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -6105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.8666666666666667,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 883.6666666666667
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9583333333333334,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2069.8333333333344
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 45,
+      "buyer": "buyer-1",
+      "mission": "w45-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1256,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.96875,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1255.8125
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 46,
+      "buyer": "buyer-10",
+      "mission": "w46-buyer-10",
+      "choice": "diy",
+      "utilityCents": 1119,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9736842105263158,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1118.8157894736844
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 46,
+      "buyer": "buyer-0",
+      "mission": "w46-buyer-0",
+      "choice": "human",
+      "utilityCents": 3605,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -4456.2
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.9823529411764705,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 0,
+          "utilityCents": 3604.788235294117
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 3005.8
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.95,
+          "effortCents": 4250,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 2294.3999999999987
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 47,
+      "buyer": "buyer-5",
+      "mission": "w47-buyer-5",
+      "choice": "diy",
+      "utilityCents": 2132,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -6105
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 1120.7999999999997
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.8666666666666667,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 883.6666666666667
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9615384615384616,
+          "effortCents": 3259,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 2132.461538461539
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 47,
+      "buyer": "buyer-3",
+      "mission": "w47-buyer-3",
+      "choice": "ai",
+      "utilityCents": 4124,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -2891.5
+        },
+        {
+          "id": "human",
+          "priceCents": 4590,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 2747.949999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.8666666666666667,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 4124.000000000001
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9545454545454546,
+          "effortCents": 4889,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 3535.409090909091
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 47,
+      "buyer": "buyer-9",
+      "mission": "w47-buyer-9",
+      "choice": "diy",
+      "utilityCents": 708,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 872,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9733
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 654,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": 518.3599999999999
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1635,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -2271
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9117647058823529,
+          "effortCents": 2125,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 707.6470588235293
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 47,
+      "buyer": "buyer-1",
+      "mission": "w47-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1280,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9705882352941176,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1280.470588235294
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 48,
+      "buyer": "buyer-4",
+      "mission": "w48-buyer-4",
+      "choice": "defer",
+      "utilityCents": 0,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -9503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.39999999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 49,
+      "buyer": "buyer-1",
+      "mission": "w49-buyer-1",
+      "choice": "diy",
+      "utilityCents": 1302,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -7741.4
+        },
+        {
+          "id": "human",
+          "priceCents": 3060,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1012.4200000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": 133.60000000000025
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9722222222222222,
+          "effortCents": 1950,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1302.388888888889
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 50,
+      "buyer": "buyer-10",
+      "mission": "w50-buyer-10",
+      "choice": "diy",
+      "utilityCents": 1132,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.9,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -8273.699999999999
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -193.61000000000016
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -633.6999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.975,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 1131.8249999999998
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 50,
+      "buyer": "buyer-9",
+      "mission": "w50-buyer-9",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    },
+    {
+      "week": 50,
+      "buyer": "buyer-7",
+      "mission": "w50-buyer-7",
+      "choice": "diy",
+      "utilityCents": 820,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 8000,
+          "quality": 0.75,
+          "effortCents": 669,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -11197.75
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 501,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -366.5300000000003
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.75,
+          "effortCents": 1254,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -3557.75
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9642857142857143,
+          "effortCents": 1630,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": 820.0357142857143
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 51,
+      "buyer": "buyer-4",
+      "mission": "w51-buyer-4",
+      "choice": "defer",
+      "utilityCents": 0,
+      "offers": [
+        {
+          "id": "enterprise",
+          "priceCents": 4000,
+          "quality": 0.9,
+          "effortCents": 400,
+          "delayCents": 250,
+          "switchCents": 1500,
+          "utilityCents": -5503.4
+        },
+        {
+          "id": "human",
+          "priceCents": 1530,
+          "quality": 0.97,
+          "effortCents": 300,
+          "delayCents": 500,
+          "switchCents": 500,
+          "utilityCents": -1323.5200000000002
+        },
+        {
+          "id": "ai",
+          "priceCents": 900,
+          "quality": 0.9,
+          "effortCents": 750,
+          "delayCents": 125,
+          "switchCents": 500,
+          "utilityCents": -1628.3999999999999
+        },
+        {
+          "id": "diy",
+          "priceCents": 0,
+          "quality": 0.9,
+          "effortCents": 975,
+          "delayCents": 125,
+          "switchCents": 0,
+          "utilityCents": -453.39999999999986
+        }
+      ],
+      "basis": "simulated buyer action, not observed demand"
+    },
+    {
+      "week": 51,
+      "buyer": "buyer-11",
+      "mission": "w51-buyer-11",
+      "choice": "unsupported",
+      "basis": "simulated new changed-input opportunity"
+    }
+  ]
+}

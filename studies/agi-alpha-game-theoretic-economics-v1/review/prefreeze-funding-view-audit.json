@@ -1,0 +1,46 @@
+{
+  "schema": "agi-alpha-independent-funding-view-controls/v1",
+  "executedAt": "2026-10-26T17:19:22.769Z",
+  "passed": true,
+  "failedAssertions": 0,
+  "firstFailures": [],
+  "tests": [
+    {
+      "name": "Finite seed alone cannot become generated funds",
+      "passed": true
+    },
+    {
+      "name": "A physically consistent liquidity-bound earmark leaves 20, not 100",
+      "passed": true
+    },
+    {
+      "name": "Reservation, liability accrual and payment preserve the same available amount",
+      "passed": true
+    },
+    {
+      "name": "Historical addback requires a paid opening liability",
+      "passed": true
+    },
+    {
+      "name": "An opening historical bill paid after receipts is not certified seed provenance",
+      "passed": true
+    },
+    {
+      "name": "Setup and first adoption remain recovered prospective costs",
+      "passed": true
+    },
+    {
+      "name": "Receipts after service cannot fund earlier in-horizon construction",
+      "passed": true
+    },
+    {
+      "name": "Unpriced failed discovery stays unknown and no second investment is created",
+      "passed": true
+    }
+  ],
+  "fundingSourceSHA256": "7c017e77f26ca7c755e8fb832ec4e7eddfe241c758b769931e72fadedbb3e083",
+  "newMarketWorldsExecuted": 0,
+  "newProductionMissions": 0,
+  "preservedCounterexample": "A draft earmark subtraction only in the generated bound overcommitted a liquidity-bound budget. This was corrected before any fresh campaign. The verified physically consistent control has cash600, reserve500, generated500 and earmark80; spendable amount20.",
+  "interpretation": "Checks the declared attribution convention and nonmutation; does not identify unknown discovery cost, validate buyer demand or qualify a second asset."
+}

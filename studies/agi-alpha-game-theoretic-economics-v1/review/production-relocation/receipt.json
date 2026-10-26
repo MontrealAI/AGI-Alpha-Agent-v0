@@ -1,0 +1,151 @@
+{
+  "schema": "game-market-relocated-production-replay/v1",
+  "started_at": "2026-10-26T16:45:28.228945+00:00",
+  "mission": "joint-1",
+  "arm": "retained",
+  "steps": [
+    {
+      "name": "prepare-baseline",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/curation/prepare_environment.py",
+        "--plan",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/relocated-one-b/plans/baseline.json",
+        "--out",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/relocated-one-b/environments/baseline",
+        "--metadata-reuse",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/inputs/metadata",
+        "--wheel-reuse",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/inputs/wheels",
+        "--confirmation-freeze",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/production/joint-freeze.json",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-26T16:45:28.244147+00:00",
+      "ended_at": "2026-10-26T16:45:31.596889+00:00",
+      "wall_seconds": 3.352767483000207,
+      "meter_cpu_seconds": 0.0013801139999999948,
+      "child_cpu_seconds": 3.325943,
+      "stdout_sha256": "f8cd8b173a1a22eba2599aa6a1e245d3d0678a762694d31fd52556fa9dc299b6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "prepare-joint-1",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/curation/prepare_environment.py",
+        "--plan",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/relocated-one-b/plans/joint-1.json",
+        "--out",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/relocated-one-b/environments/joint-1",
+        "--metadata-reuse",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/inputs/metadata",
+        "--wheel-reuse",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/inputs/wheels",
+        "--confirmation-freeze",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/production/joint-freeze.json",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-26T16:45:31.602361+00:00",
+      "ended_at": "2026-10-26T16:45:35.210186+00:00",
+      "wall_seconds": 3.6078724409999268,
+      "meter_cpu_seconds": 0.0007634559999999957,
+      "child_cpu_seconds": 3.580741,
+      "stdout_sha256": "b5f45638adeb1a6c630333e412f8b7b2220f551529b8f1262204ecf310c2abaa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "workbench-retained-joint-1",
+      "command": [
+        "node",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/src/workbench.mjs",
+        "joint-1",
+        "retained",
+        "/workspace/scratch/da407bff0020/tmp/portable-production-verification/vendor/useful-work-v2/joint-study/relocated-one-b/native",
+        "joint-study/relocated-one-b/registry.json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-26T16:45:35.211428+00:00",
+      "ended_at": "2026-10-26T16:45:51.865489+00:00",
+      "wall_seconds": 16.654077705999953,
+      "meter_cpu_seconds": 0.0008295649999999974,
+      "child_cpu_seconds": 2.3122449999999994,
+      "stdout_sha256": "d5f7cbaa00d0a5ec84b4a50b129ee07cc88760b4c718b32584e30e91695ff9c3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "complete": true,
+  "new_primary_missions": 0,
+  "new_customer_jobs": 0,
+  "complete_money_usd": null,
+  "active_human_minutes": null,
+  "scope": "One exact-asset reproduction at a fresh relocated root using original public wheels; no new primary outcome or operator authority.",
+  "freeze_before": {
+    "files": 144,
+    "sha256": "2da7e8191eb2fb80adcd7d808d0494ab3247313e997607e7166e71c352ea7cee",
+    "unchanged": true
+  },
+  "plan_relocations": [
+    {
+      "profile": "baseline",
+      "original_sha256": "fac48befbd880ec4e6ad9a98a9e9fb5684c52687cdf97d57c8dc27374eb97648",
+      "relocated_sha256": "d0816500a1b68f0114c4102277192869f7db06f19da11dc72e411fceb17431ed",
+      "changes": "Only three absolute local path fields; pins and scientific conditions unchanged."
+    },
+    {
+      "profile": "joint-1",
+      "original_sha256": "ec0862e4d52e24e501285a2fecc120124994ad54e06a06199d60f13e45f75596",
+      "relocated_sha256": "149deed53251f63acd03269001ee8427565809afb4a5f1d3fd067c639d7606fd",
+      "changes": "Only three absolute local path fields; pins and scientific conditions unchanged."
+    }
+  ],
+  "job_relocation": {
+    "original_sha256": "a7cb0c033383bdd29aa095610ed8293406ddcb997cced9d0b5370c21a12e74c3",
+    "relocated_sha256": "45c1e9981485f5698b67d867bdd15746de3c3570a1c51b37e32d9b6df3981afe",
+    "changes": "Only before/after environment paths; same mission identity, versions and consumer contract."
+  },
+  "decision": "SCOPED_COMPONENT_PRESERVED",
+  "semantic_results": [
+    {
+      "side": "before",
+      "counts": {
+        "PASS": 61,
+        "BEHAVIOR_MISMATCH": 0,
+        "INCOMPLETE": 0
+      },
+      "exact_requirement_results_equal": true,
+      "verification_sha256": "7065f04b46af1c06a0f3a89601c27a908d1b33f73dd9d1aae68732f1cb8a2ff5",
+      "original_verification_sha256": "f68f30c95bfc880868de158810f5edf678ca78942473e35acda1c3f713e3bad2"
+    },
+    {
+      "side": "after",
+      "counts": {
+        "PASS": 61,
+        "BEHAVIOR_MISMATCH": 0,
+        "INCOMPLETE": 0
+      },
+      "exact_requirement_results_equal": true,
+      "verification_sha256": "db442582888873df87b98ffe9d704c1cd387f7f3c6ad45722c8b4749d317d18c",
+      "original_verification_sha256": "bc122f8236fb72ba12da68c25acee2d544c124ae8d6216035eb0d5831c4fa6db"
+    }
+  ],
+  "runtime_network_requests": 0,
+  "native_evaluation": {
+    "scope": "PUBLIC_LOCAL_EXECUTION",
+    "independentProof": false,
+    "admission": "HOLD",
+    "authority": [],
+    "settlement": "NOT_CONNECTED"
+  },
+  "decision_sha256": "f6f055d11c3d27c1b324b4aaa4c044481939dcb508dcadd9c769770277ccf429",
+  "freeze_after": {
+    "files": 144,
+    "sha256": "2da7e8191eb2fb80adcd7d808d0494ab3247313e997607e7166e71c352ea7cee",
+    "unchanged": true
+  },
+  "ended_at": "2026-10-26T16:45:51.878363+00:00"
+}

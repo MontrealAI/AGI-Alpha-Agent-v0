@@ -1,0 +1,38 @@
+{
+  "schema": "game-market-claim-criteria/v1",
+  "set_before_market_primary_outcomes": true,
+  "question_1": {
+    "claim": "Conditional service viability",
+    "requires": ["Buyer decisions come from explicit utility, alternatives, budget and capacity", "Final economic profit includes full declared costs", "No insolvency or unfunded payable is hidden", "Demand, task value, quality transport and human duration remain scenario assumptions"],
+    "does_not_establish": ["Actual customer demand", "Actual collections", "General field reliability"]
+  },
+  "question_2": {
+    "claim": "Conditional incremental investment value",
+    "estimand": "Paired B-minus-A terminal net economic wealth after the actual named asset's complete declared construction, integration, maintenance and operating costs",
+    "requires": ["Common exogenous draws and comparable starting resources", "Investment fits contemporaneous spendable cash and, for earned-financing mode, collected operating surplus", "Full historical construction cost and adoption-only cost are distinguished", "Report all worlds including refused investments and failure", "Repayment is incremental benefit exceeding investment cost, not gross receipts exceeding it"],
+    "does_not_establish": ["Observed historic full-cost repayment", "Real-world self-financing"]
+  },
+  "question_3": {
+    "claim": "Improvement-process superiority",
+    "estimand": "Paired B-minus-C outcome at equal information, capital, method access and cost assumptions",
+    "requires": ["Strong conventional builder can construct or adopt reusable tools", "No quality or revenue premium assigned to a method label"],
+    "null_result_is_valid": true
+  },
+  "next_cycle": {
+    "requires": ["A distinct constructed and tested asset", "Fresh-work benefit", "Complete declared cost", "Positive incremental value", "Available cash at the time"],
+    "no_unrelated_hypothetical_successor": true,
+    "cash_growth_alone_is_not_capability_growth": true
+  },
+  "uncertainty": {
+    "monte_carlo_intervals": "Conditional sampling uncertainty under each declared model; not confidence in market truth",
+    "technical_trials": "Finite component tests and related package tuples are not independent field reliability samples",
+    "unidentified_costs": "Sensitivity values do not constitute observed upper bounds"
+  },
+  "financial_boundary": {
+    "market_numeraire": "USD scenario units",
+    "actual_customer_collections_usd": 0,
+    "token_appreciation_profit": false,
+    "real_financial_transactions": false,
+    "protocol_route_fees": "No actual settlement route assumed; no token rights, distributions, buybacks or conversion proceeds invented"
+  }
+}

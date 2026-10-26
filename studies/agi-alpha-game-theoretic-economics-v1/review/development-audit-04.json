@@ -1,0 +1,128 @@
+{
+  "schema": "agi-alpha-independent-control-audit/v1",
+  "sourceSHA256": "dd5b8f7c79d45e433003aea4b1eea9fa71551ceb7e86fefdd788c61326dce45c",
+  "primaryOutcomesInspected": false,
+  "scope": "Synthetic controls only; no primary scenario sweep or production confirmation outcomes inspected",
+  "executedAt": "2026-10-26T16:40:18.640Z",
+  "passed": 3,
+  "failed": 21,
+  "results": [
+    {
+      "name": "cash, receivable, cost and invoice identities reconcile",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "zero arrivals generate no invoices or receipts",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "zero supported scope generates no sale",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "zero buyer value permits deferral",
+      "pass": true
+    },
+    {
+      "name": "strictly dominated offer removed before either choice model",
+      "pass": true
+    },
+    {
+      "name": "free competent equal-effort offer dominates positive-price equivalent",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "matched B/C resources, policies and draws give exact numeric tie",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "zero capability effect is not financed",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "zero capacity creates no enterprise invoice",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "uncollected invoices cannot finance operating-surplus investment",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "defaulted invoices leave costs and no revenue",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "rejected deliveries do not issue accepted invoices",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "zero-week collections execute at invoice week",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "accepted-work investment forecasts exclude rejected attempts",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "direct lifetime repayment charges reported upkeep",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "zero buyer pass-through leaves posted price unchanged after investment",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "full buyer pass-through reduces price by full unit saving",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "unknown numeric costs are rejected, never coerced to free",
+      "pass": true
+    },
+    {
+      "name": "zero procurement budget excludes paid providers",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "buyer commitments never exceed finite procurement budgets",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "quality information is unavailable until feedback is due",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "upfront historical expense precedes operating collections and can exhaust seed",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "failed-delivery direct savings use the same cost multiplier",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    },
+    {
+      "name": "expenses with delay longer than collections are drained before final state",
+      "pass": false,
+      "error": "Safe integer cents required: hourlyBuyerCents"
+    }
+  ]
+}

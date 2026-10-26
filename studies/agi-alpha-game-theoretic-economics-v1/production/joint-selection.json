@@ -1,0 +1,88 @@
+{
+  "schema": "game-market-joint-profile-selection/v1",
+  "baseline": {
+    "starlette": "1.7.0",
+    "anyio": "4.15.1",
+    "pydantic": "2.13.5",
+    "pydantic-core": "2.46.5",
+    "annotated-types": "0.8.0",
+    "typing-extensions": "4.16.0",
+    "typing-inspection": "0.4.4",
+    "idna": "3.20",
+    "fastapi": "0.141.1",
+    "annotated-doc": "0.0.5"
+  },
+  "targets": [
+    {
+      "mission_id": "joint-1",
+      "versions": {
+        "starlette": "1.8.0",
+        "anyio": "4.15.1",
+        "pydantic": "2.14.0",
+        "pydantic-core": "2.50.0",
+        "annotated-types": "0.8.0",
+        "typing-extensions": "4.16.0",
+        "typing-inspection": "0.4.4",
+        "idna": "3.20",
+        "fastapi": "0.141.1",
+        "annotated-doc": "0.0.5"
+      }
+    },
+    {
+      "mission_id": "joint-2",
+      "versions": {
+        "starlette": "1.9.0",
+        "anyio": "4.15.1",
+        "pydantic": "2.14.0",
+        "pydantic-core": "2.50.0",
+        "annotated-types": "0.8.0",
+        "typing-extensions": "4.16.0",
+        "typing-inspection": "0.4.4",
+        "idna": "3.20",
+        "fastapi": "0.141.1",
+        "annotated-doc": "0.0.5"
+      }
+    },
+    {
+      "mission_id": "joint-3",
+      "versions": {
+        "starlette": "1.8.0",
+        "anyio": "4.15.1",
+        "pydantic": "2.14.1",
+        "pydantic-core": "2.50.1",
+        "annotated-types": "0.8.0",
+        "typing-extensions": "4.16.0",
+        "typing-inspection": "0.4.4",
+        "idna": "3.20",
+        "fastapi": "0.141.1",
+        "annotated-doc": "0.0.5"
+      }
+    },
+    {
+      "mission_id": "joint-4",
+      "versions": {
+        "starlette": "1.9.0",
+        "anyio": "4.15.1",
+        "pydantic": "2.14.1",
+        "pydantic-core": "2.50.1",
+        "annotated-types": "0.8.0",
+        "typing-extensions": "4.16.0",
+        "typing-inspection": "0.4.4",
+        "idna": "3.20",
+        "fastapi": "0.141.1",
+        "annotated-doc": "0.0.5"
+      }
+    }
+  ],
+  "source_consumer": {
+    "directory": "data/consumer",
+    "api_sha256": "096e97ba9433b988f4cef3b96a6a53cc5d8d42f7cb775d3e0a7dc90fdfac5215",
+    "models_sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab"
+  },
+  "contract": {
+    "path": "protocol/component-contract.json",
+    "sha256": "89d9c776a7c9f32444b1e14479b9403e8beaaef81c0832f0237af027ddf41735"
+  },
+  "freshness": "Dependency package bytes were exposed in prior study; complete target tuples unexecuted/unseen before this study freeze. Historical versions, not prospective external requests.",
+  "selection": "The full 2x2 Cartesian product of already available Starlette 1.8.0/1.9.0 and Pydantic 2.14.0/2.14.1; excludes development1.10.0/2.14.1 and all six one-package confirmation transitions."
+}

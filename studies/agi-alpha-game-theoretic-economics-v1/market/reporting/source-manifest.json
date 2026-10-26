@@ -1,0 +1,141 @@
+{
+  "schema": "agi-alpha-reporting-only-replay-source/v1",
+  "preparedUTC": "2026-10-26T17:10:18.973312+00:00",
+  "purpose": "Posthoc custody completion of competitor accounts for existing frozen worlds; no new scenarios, policies or economic results.",
+  "originalCoreSHA256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27",
+  "instrumentedCoreSHA256": "845f9212aa1d81a87413f21362031020b28d8d9e49c454b7b27ff8124cdbad40",
+  "instrumentation": "Only one property is added to the final simulate return object: competitorAccounts:competitors. No computation, decision, event, RNG key, import or mutation is changed.",
+  "originalNativeCompetitorBalanceHistory": "Preserved exactly, including empty native arrays. Separate weekly balances are reconstructed after simulation from invoice/bill/cash-event dates.",
+  "comparison": "Every original paired JSON byte after removing the added arm property and reproducing exact frozen-runner postprocessing; per-arm SHA256 receipts.",
+  "annotationBlocks": [
+    {
+      "label": "exploratory",
+      "source": "exploratory/run.mjs",
+      "sourceSHA256": "535d44878e9238975c6816cf9a0670dece6dfc4e98f59fa3a1d68f38aa95e79b",
+      "startByte": 3120,
+      "endByteExclusive": 3561,
+      "blockSHA256": "dc59d1736a961d72f8df2c54f63a920e1391f58de4a03ba12fd91a03efeac19d"
+    },
+    {
+      "label": "policy",
+      "source": "policy-diagnostic/run.mjs",
+      "sourceSHA256": "de184e221644fa8d576f592fa9e7a2edaf9d5dd1f6825f9280d4930db3da4d50",
+      "startByte": 3121,
+      "endByteExclusive": 5265,
+      "blockSHA256": "5062720197318bbf82a977bfee6abd5591fb0cca7a31af786709de9eacb1f258"
+    },
+    {
+      "label": "priceRange",
+      "source": "policy-diagnostic/run.mjs",
+      "sourceSHA256": "de184e221644fa8d576f592fa9e7a2edaf9d5dd1f6825f9280d4930db3da4d50",
+      "startByte": 2874,
+      "endByteExclusive": 2987,
+      "blockSHA256": "5ef8c83e53c7aeb2d4a6e29f2336e542049afe2a620bd40a527d344bf2054548"
+    }
+  ],
+  "files": [
+    {
+      "path": "reporting/prepare.py",
+      "bytes": 5807,
+      "sha256": "1ba94a82bc2fabe376351346a87a1fe13b4a51094df14e404c2bbc2da451bff0"
+    },
+    {
+      "path": "reporting/replay-export.mjs",
+      "bytes": 10150,
+      "sha256": "57f3b1a19d1af4b32c52d57d3e7f583abd2cd7f14a29e39a25866362fdff27d9"
+    },
+    {
+      "path": "reporting/README.md",
+      "bytes": 3864,
+      "sha256": "1d16402e39022f29db88503045e3a0c75b99659d68e398af2e8ee9c29d6aeff2"
+    },
+    {
+      "path": "reporting/market-expose.mjs",
+      "bytes": 34447,
+      "sha256": "845f9212aa1d81a87413f21362031020b28d8d9e49c454b7b27ff8124cdbad40"
+    },
+    {
+      "path": "reporting/annotations.mjs",
+      "bytes": 2901,
+      "sha256": "5e9d2d68f0cdb92d35685e7cdf937f7415db9c23a2d75c40ebf4de5c314c7a94"
+    },
+    {
+      "path": "reporting/instrumentation.diff",
+      "bytes": 792,
+      "sha256": "9089e4d0d700659ecd0efcbac7dd7e54682d570e0e8fcb54027287dae82f9970"
+    },
+    {
+      "path": "src/market.mjs",
+      "bytes": 34411,
+      "sha256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27"
+    },
+    {
+      "path": "canonical/shadow-ledger.mjs",
+      "bytes": 17514,
+      "sha256": "cdc7c5a73593050a9af79b54589462e27f61b868e88ca6985d5cb639f3066d21"
+    },
+    {
+      "path": "canonical/automated-costs.mjs",
+      "bytes": 14085,
+      "sha256": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506"
+    },
+    {
+      "path": "src/run.mjs",
+      "bytes": 5674,
+      "sha256": "82076069490e4772b55cce72716c1678002765b0186e7d70fa1a384c55e8c84a"
+    },
+    {
+      "path": "exploratory/run.mjs",
+      "bytes": 6317,
+      "sha256": "535d44878e9238975c6816cf9a0670dece6dfc4e98f59fa3a1d68f38aa95e79b"
+    },
+    {
+      "path": "policy-diagnostic/run.mjs",
+      "bytes": 8927,
+      "sha256": "de184e221644fa8d576f592fa9e7a2edaf9d5dd1f6825f9280d4930db3da4d50"
+    },
+    {
+      "path": "exploratory/results-01/outcomes.jsonl",
+      "bytes": 9106312,
+      "sha256": "6290870fa674cdf3946b0ed85f8c1b0e9f482bf5a83e048d645dbb18cd9bc61b"
+    }
+  ],
+  "stages": [
+    {
+      "id": "primary",
+      "originalDirectory": "results/primary-01",
+      "originalFreeze": "protocol/freeze.json",
+      "originalFreezeSHA256": "7bbb0919ede3d4389d9eb36c23a7b775ec8093e40d51ac4da3f9c5714920406d",
+      "originalArchive": "results/primary-01/complete-runs.jsonl.gz",
+      "originalArchiveSHA256": "e466a0fcdac12fc44d21f50a490eda314874862ad87a44c0220fdd7bfab35fc8",
+      "pairedWorlds": 2088,
+      "enterpriseRuns": 6264
+    },
+    {
+      "id": "exploratory",
+      "originalDirectory": "exploratory/results-01",
+      "originalFreeze": "exploratory/freeze.json",
+      "originalFreezeSHA256": "7b4eb9450278cbe00400f442d964191a4bf15fd6726966955c03a0ebd22fa875",
+      "originalArchive": "exploratory/results-01/complete-runs.jsonl.gz",
+      "originalArchiveSHA256": "cb9fabc59fe881ac2cdf811f780a556de4715fae7e36dbe3bccdb7f270d47231",
+      "pairedWorlds": 2472,
+      "enterpriseRuns": 7416
+    },
+    {
+      "id": "policy-diagnostic",
+      "originalDirectory": "policy-diagnostic/results-01",
+      "originalFreeze": "policy-diagnostic/freeze.json",
+      "originalFreezeSHA256": "640492e70fa9c4af9cd7093da24248b7b141cedb770941033a36e91f9094ea55",
+      "originalArchive": "policy-diagnostic/results-01/complete-runs.jsonl.gz",
+      "originalArchiveSHA256": "2afa3d38e9f76d0e68101bbd089903a8a618cebe5c4e4d0296d636625b467c13",
+      "pairedWorlds": 1920,
+      "enterpriseRuns": 5760
+    }
+  ],
+  "pairedWorldsToReplay": 6480,
+  "enterpriseHistoriesToMatch": 19440,
+  "competitorFirmAccountsToExpose": 38880,
+  "newEconomicScenarios": 0,
+  "observedCustomerCollectionsCents": 0,
+  "financialAuthority": "NONE"
+}

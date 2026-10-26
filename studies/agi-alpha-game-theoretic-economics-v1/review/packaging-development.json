@@ -1,0 +1,20 @@
+{
+  "schema": "agialpha-packaging-development/v1",
+  "all_final_archive_builds_deferred": true,
+  "new_primary_missions": 0,
+  "new_customer_jobs": 0,
+  "failures": [
+    {
+      "step": "First read-only package preflight",
+      "observed": "Credential scanner matched its own literal X-Amz-Signature= pattern, before any archive creation.",
+      "resolution": "Require an actual long signature value, preserve scanner source, test synthetic signed credential rejection and no self-match."
+    },
+    {
+      "step": "First bounded public-source preflight",
+      "observed": "The 5,039,919-byte publication/representative-histories.json exceeded the declared 4 MiB per-file public selection cap.",
+      "resolution": "Keep the complete representative history in the full companion; explicitly omit it from bounded public source alongside raw campaign histories. No source bytes changed."
+    }
+  ],
+  "verification": "Eight synthetic archive/credential custody cases passed. The preflight independently rehashed all 1,498 sealed production files; no primary result was rerun or changed.",
+  "full_companion_archive_created": false
+}

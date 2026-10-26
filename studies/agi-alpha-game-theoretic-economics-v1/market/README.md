@@ -1,0 +1,76 @@
+# Game-theoretic economics companion
+
+`MODEL.md` specifies the repeated procurement game, explicit information, price responses, cash restrictions and interpretation. `protocol/parameter-manifest.json` distinguishes measured narrow production quantities, external price/wage anchors, design choices and unidentified assumptions. Source and scenario hashes are frozen before primary market outcomes.
+
+Requires Node.js 24.22.1 (used locally), with no external package install, API key, account or financial transaction. The browser-compatible market core and unchanged canonical accounting modules also power the bilingual demonstration. This is a local research simulation, not an operational runtime or live protocol ledger.
+
+```sh
+node tests/test_market.mjs
+node src/run.mjs --output results/reproduction-01
+```
+
+Run from this directory. Output directories must be new. The runner verifies every frozen input before executing the complete predeclared scenario set with the fixed 24 seeds. `complete-runs.jsonl.gz` contains concatenated standard gzip members, one complete matched A/B/C world per JSON line after decompression. Standard Python `gzip.open` reads all members; no failed world is omitted. `outcomes.jsonl`, `summary.json`, `configurations.json` and `completion.json` provide compact review paths. Monetary amounts are integer USD cents; probabilities, time parameters and value assumptions are explicit. All observed customer-collection fields stay zero.
+
+The primary full-history grid pays the declared original research cost at opening, then considers cash-funded adoption after useful work. The prospective adoption-only grid excludes sunk research and cannot demonstrate historical repayment. A separate retrospective-allocation sensitivity is not evidence that original R&D could have been funded when incurred. Successful adoption requires finite engineering time and pauses delivery. The frozen failed-integration case charges the full cost but detects failure immediately and permits incumbent delivery without forced downtime. There is no tested second capability in this study; the next-investment policy therefore retains reserves.
+
+The same actual retained and conventional producers receive equal economic treatment. B/C parity is deliberate and required by the source evidence. Internally verified component tests do not estimate real customer acceptance or market reliability. Confidence intervals are conditional simulation intervals, not empirical evidence of a profitable market.
+
+The final canonical projection uses the existing shadow-ledger API with simulated receipts in its **assumed** scenario field. Its observed collected category remains zero. Dynamic invoice, expense, cash and buyer events are inspectable market state, without payment authority. Original invoices and refunds remain distinct; unpaid obligations are deducted once in the liquidity view and never charged twice in the accrual view.
+
+For an exploratory one-world run, import `pairedSimulation` from `src/market.mjs`; changing assumptions yields an exploratory scenario, never a replacement primary result. Unknown costs must not be passed as null: the simulator refuses them instead of interpreting them as zero. Supply explicitly assumed finite values and preserve the actual unknown in the evidence record.
+
+## Four preserved campaigns
+
+The study has one primary campaign, two explicitly subsequent diagnostic stages, and a separately user-authorized fresh-seed extension. They use the same frozen core (`52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27`). The later stages do not replace earlier results. The bounded scientific work is complete; the exact accounting replay described below creates no additional scenarios or independent evidence.
+
+| Stage | Configurations | Seeds per configuration | Paired worlds | Enterprise histories | Complete output |
+|---|---:|---:|---:|---:|---|
+| Primary | 87 | 24 | 2,088 | 6,264 | `results/primary-01/` |
+| Postprimary exploration | 206 | 12 | 2,472 | 7,416 | `exploratory/results-01/` |
+| Post-exploratory pricing diagnostic | 160 | 12 reused exploratory seeds | 1,920 | 5,760 | `policy-diagnostic/results-01/` |
+| User-authorized deployment robustness extension | 128 | 24 fresh seeds | 3,072 | 9,216 | `deployment-robustness/results-01/` |
+
+All 28,656 enterprise histories from 9,552 paired world evaluations are preserved, including failures, refusals and null cases. Counts across configuration grids are not independent market observations; the pricing diagnostic deliberately reuses exploratory seeds. Reproduce the two diagnostic stages in fresh output directories:
+
+```sh
+node exploratory/run.mjs --output exploratory/reproduction-01
+node policy-diagnostic/run.mjs --output policy-diagnostic/reproduction-01
+```
+
+The pricing diagnostic compares all five already-declared **target prices with a cost floor**, USD5/10/20/40/80. Actual quotes equal the larger of the target and current unit cost plus USD1. This distinction matters: before adoption the USD5 and USD10 targets both quote USD14.33 under the stated ten-minute effort assumption. Computed weekly quotes, quotes actually offered to simulated buyers, and accepted simulated invoice prices have separate fields.
+
+The primary campaign produced no adoption and no profitable enterprises. Exploration found six B adoptions, all seed-funded, and no positive-mean enterprise configuration. Its recorded histories exposed a finite-horizon pricing weakness: the optimistic margin-weighted heuristic repeatedly selected USD80 despite no conversions and lower-price sales. The pricing diagnostic addresses that specific policy risk using reused seeds. It is not independent confirmation, an equilibrium calculation or an achieved optimal policy.
+
+In the pricing diagnostic, B adopted in 398 of 1,920 worlds, all seed-funded; 199 used full-history accounting and 199 adoption-only accounting. There were no operating-surplus-funded adoptions. Four of 160 configurations had positive mean B enterprise profit, all with adoption-only accounting, seed funding, zero integration cost, arrival probability 0.5, and targets USD10 or USD20. No full-history configuration had positive mean profit or positive mean B-minus-A. B and C were exact numeric ties throughout all four campaigns. These scenario-grid counts are not population adoption probabilities.
+
+`policy-diagnostic/results-01/summary.csv` contains all 160 configuration results. `predeclared-price-slice.csv` contains all prices for the pre-outcome-selected publication slice, including its USD10-integration counterpart. `predeclared-representative-histories.json` contains all four funding/accounting regimes at the preselected target USD20 and seed2001. `investment-events.csv` lists all B/C adoption events. `analyze.py` produces these arithmetic-only derivatives from the preserved outcomes; it does not run a simulation.
+
+The preselected logit, zero-integration, arrival-0.5, USD20 prospective seed-funded condition yielded mean B profit USD183.28 and mean B-minus-A USD184.967. Its fixed-path one-off capital ceiling is USD217.657 after accounting for noncapital effects, compared with the scenario's total historical-plus-adoption charge of USD394.21. This is an arithmetic ceiling holding the realized policy path fixed, not a nonlinear capital-cost experiment or cash available to invest. The corresponding full-history mean B profit is negative USD178.24. The same condition under earned-surplus funding does not adopt. No second tested capability is available to finance.
+
+## Fresh-seed deployment robustness and funding attribution
+
+The final user-authorized extension fixes the USD20 target and ten-minute provider-finalization assumption. Its 48 main conditions vary integration cost, arrival probability, buyer-choice model and historical/prospective cost basis. Eighty predeclared corners vary competition, collection delays, upkeep, quality, dissatisfaction and immediately detected integration failure. It uses the same finite initial cash and allows seed-inclusive first adoption. It does not add capital, change the frozen economic core or purchase an unqualified successor.
+
+In the predeclared zero-integration, arrival-0.5, logit reference condition, prospective B mean profit is USD151.70, with a conditional Monte Carlo interval of USD93.56 to USD209.84. Paired mean B-minus-A is USD173.67, with an interval of USD137.44 to USD209.90. The corresponding full-history mean profit is negative USD209.82 and mean B-minus-A is negative USD187.85. No full-history condition among all 128 has positive mean profit or positive mean B-minus-A. Eighteen conditions have positive mean B profit, all prospective; eleven have a conditional lower interval above zero. All quantities precede the newly disclosed, unknown cost of second-capability discovery.
+
+At arrival probability 0.5 under logit choice, prospective mean profit remains positive at integration cost USD5 and is negative at USD10. At zero integration it is negative at arrival probability 0.25 and positive at 0.5. These are tested sign brackets, not interpolated thresholds or measured demand boundaries. Deterministic choice is less favorable in several cells. Full outcomes appear in `deployment-robustness/results-01/summary.csv`; `main-threshold-table.csv`, `adverse-table.csv`, `descriptive-findings.json` and `funding-availability-by-run.csv` retain every declared condition and run.
+
+The pure browser-compatible `deployment-robustness/funding.mjs` computes a separate attribution view without changing any cash balance, expense, policy or profit. With cash C, unpaid liabilities L, one reserve R, collections Y, accrued costs E, explicitly seed-paid opening historical R&D H, and outstanding unaccrued earmarks U, the funding ceiling is `max(0, min(C-L-R, Y-E+H)-U)`. H remains fully charged in cash and full-history profit. Setup, adoption, upkeep, failures and refunds stay deducted; only the specified paid opening bill receives this historical attribution. The original stricter metric and an H=0 full-cost-recovery view remain visible.
+
+The bounded search for another productive capability ended NO-GO. Candidate=null, earmarks=0 and actual second investments=0. Its monetary cost D remains unknown and is outside the frozen core bills. Every new funding value is therefore explicitly **BEFORE_UNPRICED_SECOND_ASSET_DISCOVERY**, not all-in spendable funds: after attributed D>=0 the ceiling is at most `max(0,G-D)`, and fixed-path profit is reduced by D. There is no assumed D=0. In the reference condition, 21 of 24 runs have positive terminal ceilings before D and 20 have positive ceilings during the service horizon; this does not establish financeable succession.
+
+The preselected seed3001 trace is in `predeclared-representative-histories.json`. Its high paired benefit was not selected after seeing outcomes; the full 24-run dispersion accompanies it. `mechanism-comparisons.json` and its arithmetic-only reader explain why the undercut policy and 13-week collections can raise terminal enterprise profit. The undercut AI quotes USD16 against the enterprise's USD20, while the baseline adaptive AI usually quotes less than USD16. Longer collections can temporarily remove human offers through finite working-capital constraints without insolvency. At the reference condition, longer collections reduce the mean maximum funding ceiling during service from USD153.04 to USD69.68 despite slightly higher terminal profit. These variants are not uniformly adverse, and they do not show that delayed payment helps in general.
+
+Registered reproduction of this completed extension is restricted to exact frozen configurations, seeds, source and serialized paired output equality:
+
+```sh
+node deployment-robustness/run.mjs --replay-registered --output deployment-robustness/reproduction-01
+```
+
+This reproduction may run after the scientific cutoff because it supplies no new scenario or independent evidence. The original bounded run completed within its 120-second CPU and wall limits. Its full archive includes enterprise and competitor invoices, bills and cash events, funding attribution, all outcomes and all refusals. The independent `../review/deployment-robustness-outcome-audit.json` reconciles every one of 9,216 enterprise and 18,432 competitor accounts.
+
+## Complete competitor-account custody
+
+The first three frozen campaign returns omitted detailed competitor accounts even though the simulator retained them internally. A separately identified, reporting-only copy inserts one final-return property exposing those accounts; it changes no decisions, random keys or original fields. `reporting/results-01/` supplies three complete compressed supplements for the original 6,480 paired worlds. Every original paired JSON object and all 19,440 arm returns matched exactly. All 38,880 competitor accounts reconcile in `../review/competitor-account-outcome-audit.json`. Native empty competitor weekly-balance arrays are preserved; separate derived balances are labeled post-hoc reconstructions. This custody replay adds zero economic scenarios. Its source diff, hashes, exact-equality checks and resource receipts are retained in `reporting/`.
+
+Public freezes precede each stage's outcomes in issue4850: primary comment6421724738, exploratory comment6421879271, pricing diagnostic comment6422222209, and deployment robustness comment6422814875. Resource receipts report executable child CPU and wall time while retaining total monetary, authoring/inference and active human costs as unknown. Independent reviews are separate same-session agents, not organizationally independent validation. The sibling `review/` directory covers every complete history, investment funding event, competitor account and canonical reconciliation.
