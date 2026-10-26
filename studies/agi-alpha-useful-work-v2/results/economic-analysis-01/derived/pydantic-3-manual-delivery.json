@@ -1,0 +1,47 @@
+{
+  "wall_seconds": 35.12248939999881,
+  "child_cpu_seconds": 1.8028249999999968,
+  "meter_cpu_seconds": 0.017915226000000006,
+  "child_peak_rss_kib": 47040,
+  "network_requests": null,
+  "network_response_bytes": null,
+  "runtime_model_calls": null,
+  "inference_tokens": null,
+  "human_minutes": null,
+  "customer_minutes": null,
+  "money_usd": null,
+  "runtime_network_requests": null,
+  "schema": "postfreeze-derived-delivery-resource/v1",
+  "mission_id": "pydantic-3",
+  "arm": "manual",
+  "source_identities": [
+    {
+      "path": "results/confirmation/pydantic-3/manual/terminal.json",
+      "sha256": "3a465df4337121db40b8804238581de95deaec0a2c89751e851aeac6790e0f19",
+      "bytes": 1775
+    },
+    {
+      "path": "results/confirmation/pydantic-3/manual/pair/pair.json",
+      "sha256": "5328de9624b02b1d516eb9d89baa52a95d96b996cadec9d86bb82f4a92bbbc84",
+      "bytes": 5362
+    },
+    {
+      "path": "results/confirmation/pydantic-3/manual/finalization-execution.json",
+      "sha256": "2585c5ae5f081dce509c963027203b2b8fc01fd548269aa5d932f70509e8a202",
+      "bytes": 4873
+    }
+  ],
+  "span_basis": "Campaign terminal encloses this complete arm delivery and its local driver overhead; never add nested receipts.",
+  "complete_delivery_scope": true,
+  "observed_mechanical_wall_seconds": 16.30558259600184,
+  "observed_finalization_wall_seconds": 0.5192010440005106,
+  "observed_manual_pair_wall_seconds": 15.78638155200133,
+  "actual_manual_finalizations": 1,
+  "limitations": [
+    "Manual elapsed span is observed researcher-assisted turnaround, not measured no-AI human work.",
+    "Terminal CPU includes the local mechanics/finalization and driver; researcher inference and unmetered remote resources remain unknown.",
+    "Mechanical elapsed and finalization elapsed are retained separately and are not added to the inclusive service span."
+  ],
+  "started_at": "2026-10-26T15:31:19.282929+00:00",
+  "ended_at": "2026-10-26T15:31:54.405412+00:00"
+}

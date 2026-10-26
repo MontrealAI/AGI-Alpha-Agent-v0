@@ -1,0 +1,183 @@
+{
+  "schema": "economic-publication-tables/v1",
+  "analysis_edition": "01",
+  "created_at": "2026-10-26T15:37:44.005185+00:00",
+  "source_audit": {
+    "path": "results/economic-analysis-01/independent-aggregation-audit.json",
+    "sha256": "3b3e7f6177cef35a773a11504f01b98bf6f1efb760fc48c6914f7165e4e69a71"
+  },
+  "per_arm": [
+    {
+      "arm": "manual",
+      "label": "A \u2014 researcher-assisted incumbent",
+      "accepted": 6,
+      "evaluations": 6,
+      "mean_mechanical_wall_seconds": 16.327531035666652,
+      "total_mechanical_wall_seconds": 97.96518621399991,
+      "mean_service_span_seconds": 37.59215900666671,
+      "total_service_span_seconds": 225.55295404000026,
+      "total_local_cpu_seconds": 10.770071736999999,
+      "mean_local_cpu_seconds": 1.7950119561666664,
+      "logical_output_bytes": 3656805,
+      "explicit_manual_finalizations": 6
+    },
+    {
+      "arm": "retained",
+      "label": "B \u2014 retained capability",
+      "accepted": 6,
+      "evaluations": 6,
+      "mean_mechanical_wall_seconds": 16.50038885833328,
+      "total_mechanical_wall_seconds": 99.00233314999969,
+      "mean_service_span_seconds": 16.5560849350004,
+      "total_service_span_seconds": 99.3365096100024,
+      "total_local_cpu_seconds": 12.093828436999996,
+      "mean_local_cpu_seconds": 2.0156380728333327,
+      "logical_output_bytes": 3447397,
+      "explicit_manual_finalizations": 0
+    },
+    {
+      "arm": "conventional",
+      "label": "C \u2014 conventional reusable builder",
+      "accepted": 6,
+      "evaluations": 6,
+      "mean_mechanical_wall_seconds": 16.585524168333905,
+      "total_mechanical_wall_seconds": 99.51314501000343,
+      "mean_service_span_seconds": 16.63664396200026,
+      "total_service_span_seconds": 99.81986377200155,
+      "total_local_cpu_seconds": 12.643164120000007,
+      "mean_local_cpu_seconds": 2.1071940200000014,
+      "logical_output_bytes": 55413090,
+      "explicit_manual_finalizations": 0
+    }
+  ],
+  "paired_retained_minus_conventional": {
+    "rows": [
+      {
+        "mission_id": "starlette-1",
+        "both_accepted": true,
+        "service_span_seconds": -0.03651121200164198,
+        "mechanical_wall_seconds": -0.044702250001137145,
+        "enclosing_local_cpu_seconds": -0.040439714000000127,
+        "logical_output_bytes": -8661091
+      },
+      {
+        "mission_id": "starlette-2",
+        "both_accepted": true,
+        "service_span_seconds": -0.13729831099772127,
+        "mechanical_wall_seconds": -0.13461883299896726,
+        "enclosing_local_cpu_seconds": -0.3015622459999987,
+        "logical_output_bytes": -8661194
+      },
+      {
+        "mission_id": "starlette-3",
+        "both_accepted": true,
+        "service_span_seconds": -0.010384794999481528,
+        "mechanical_wall_seconds": -0.04166935800094507,
+        "enclosing_local_cpu_seconds": 0.10986412600000106,
+        "logical_output_bytes": -8661149
+      },
+      {
+        "mission_id": "pydantic-1",
+        "both_accepted": true,
+        "service_span_seconds": -0.10928072999922733,
+        "mechanical_wall_seconds": -0.10745823800061771,
+        "enclosing_local_cpu_seconds": -0.07471556799999801,
+        "logical_output_bytes": -8660750
+      },
+      {
+        "mission_id": "pydantic-2",
+        "both_accepted": true,
+        "service_span_seconds": 0.04530980900017312,
+        "mechanical_wall_seconds": 0.03604100099801144,
+        "enclosing_local_cpu_seconds": 0.10360302699999391,
+        "logical_output_bytes": -8660812
+      },
+      {
+        "mission_id": "pydantic-3",
+        "both_accepted": true,
+        "service_span_seconds": -0.23518892300126026,
+        "mechanical_wall_seconds": -0.2184041820000857,
+        "enclosing_local_cpu_seconds": -0.34608530800000903,
+        "logical_output_bytes": -8660697
+      }
+    ],
+    "summary": {
+      "service_span_seconds": {
+        "n": 6,
+        "sum": -0.48335416199915926,
+        "mean": -0.08055902699985988,
+        "median": -0.07289597100043466,
+        "min": -0.23518892300126026,
+        "max": 0.04530980900017312
+      },
+      "mechanical_wall_seconds": {
+        "n": 6,
+        "sum": -0.5108118600037415,
+        "mean": -0.08513531000062358,
+        "median": -0.07608024400087743,
+        "min": -0.2184041820000857,
+        "max": 0.03604100099801144
+      },
+      "enclosing_local_cpu_seconds": {
+        "n": 6,
+        "sum": -0.5493356830000109,
+        "mean": -0.09155594716666848,
+        "median": -0.05757764099999907,
+        "min": -0.34608530800000903,
+        "max": 0.10986412600000106
+      },
+      "logical_output_bytes": {
+        "n": 6,
+        "sum": -51965693,
+        "mean": -8660948.833333334,
+        "median": -8660951.5,
+        "min": -8661194,
+        "max": -8660697
+      }
+    },
+    "sign": "Negative means the retained arm used less measured resource; no inferential significance or monetary saving is implied."
+  },
+  "shared_acquisition": {
+    "schema": "postfreeze-shared-acquisition-resource/v1",
+    "wall_seconds": 30.922251219999453,
+    "child_cpu_seconds": 29.663853,
+    "meter_cpu_seconds": 0.018731733,
+    "network_requests": 16,
+    "network_response_bytes": 11124909,
+    "logical_storage_bytes_before_final_reports": 208546128,
+    "inference_tokens": null,
+    "money_usd": null,
+    "source_identity": {
+      "path": "data/confirmation-inputs/acquisition-summary.json",
+      "sha256": "1099a6ab486da3b1391408a34a05282d8f216d189a9af2cd1aff11bd32ee14b5",
+      "bytes": 22569
+    },
+    "aggregation": "Outer driver child CPU includes all eight builders/setup children. Inner preparation CPU and wall are nested diagnostics, not added.",
+    "attempts": 8,
+    "failed_attempts": 0,
+    "inner_preparation_diagnostics": {
+      "preparation_wall_seconds_sum": 30.122360474002562,
+      "preparation_process_cpu_seconds_sum": 1.336157242,
+      "preparation_child_cpu_seconds_sum": 27.548388
+    }
+  },
+  "financial_status": {
+    "actual_collections_minor": 0,
+    "starting_capital_minor": null,
+    "approved_allocation_minor": null,
+    "customer_price_minor": null,
+    "complete_delivery_cost_minor": null,
+    "complete_investment_minor": null,
+    "obligations_minor": null,
+    "reserves_minor": null,
+    "available_surplus_minor": null,
+    "available_to_commit_minor": null,
+    "actual_new_paid_commitments_minor": 0,
+    "financial_transactions": 0,
+    "operational_benefit": "Assess separately using accepted scope and complete measured resource envelopes.",
+    "monetary_repayment": "NOT_ESTABLISHED",
+    "financeable_expansion": "NOT_ESTABLISHED",
+    "economic_admission": "HOLD"
+  },
+  "scope": "Six distinct representative historical dependency transitions; 18 arm evaluations are not 18 customer jobs. Descriptive one-run measurements. A service span includes root response and scheduling; not labor. C raw-ASGI evidence retention differs. Full monetary costs unknown."
+}

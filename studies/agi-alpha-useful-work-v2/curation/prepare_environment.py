@@ -54,6 +54,25 @@ def active_requirements(info: dict) -> list[Requirement]:
     return [item for item in requirements if item.marker is None or item.marker.evaluate(env)]
 
 
+def validate_selected_primary_wheel(plan: dict, wheels: list[dict]) -> dict | None:
+    """Bind confirmation acquisition to the prespecified package and wheel."""
+    if plan["phase"] != "confirmation":
+        return None
+    package = plan.get("selected_primary_package")
+    expected = plan.get("selected_primary_wheel")
+    if package not in {"starlette", "pydantic"} or not isinstance(expected, dict):
+        raise ValueError("FROZEN_PRIMARY_SELECTION_REQUIRED")
+    acquired = [wheel for wheel in wheels if wheel["name"] == package]
+    if len(acquired) != 1:
+        raise ValueError("FROZEN_PRIMARY_PACKAGE_IDENTITY")
+    wheel = acquired[0]
+    if (wheel["filename"] != expected.get("filename") or wheel["sha256"] != expected.get("sha256")
+            or wheel["version"] != plan["pins"][package]):
+        raise ValueError("FROZEN_PRIMARY_WHEEL_IDENTITY")
+    return {"package": package, "version": wheel["version"], "filename": wheel["filename"],
+            "sha256": wheel["sha256"], "matched_before_install": True}
+
+
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         raise ValueError("REDIRECT_NOT_PERMITTED")
@@ -258,7 +277,7 @@ class Preparation:
         return stdout
 
     def run(self) -> dict:
-        error, checks, incoming, inventory, bridge = None, [], [], None, None
+        error, checks, incoming, inventory, bridge, selected_wheel = None, [], [], None, None, None
         plan = json.loads(self.args.plan.read_text())
         (self.out / "plan.json").write_bytes(self.args.plan.read_bytes())
         try:
@@ -286,6 +305,9 @@ class Preparation:
             incoming = self.incoming_checks(pins, plan["incoming_constraint_metadata"])
             for name, version in pins.items():
                 self.acquire_wheel(name, version, native_raw.decode(), plan["unchanged_native_packages"])
+            selected_wheel = validate_selected_primary_wheel(plan, self.wheels)
+            if selected_wheel is not None:
+                self.event("frozen_primary_wheel_verified_before_install", **selected_wheel)
             lock = "".join(f"{r['name']}=={r['version']} --hash=sha256:{r['sha256']}\n" for r in self.wheels)
             (self.out / "requirements.lock").write_text(lock)
             python = self.out / "venv/bin/python"
@@ -321,6 +343,7 @@ class Preparation:
                   "complete": error is None, "error": error, "python": sys.version,
                   "builder_sha256": sha(Path(__file__).read_bytes()), "plan_sha256": sha(self.args.plan.read_bytes()),
                   "wheels": self.wheels, "closure_checks": checks, "incoming_profile_checks": incoming,
+                  "selected_primary_wheel_validation": selected_wheel,
                   "installed_distributions": inventory, "fastapi_import_bridge": bridge, "steps": self.steps,
                   "network_requests": self.requests, "network_response_bytes": self.network_bytes,
                   "wheel_bytes_reused": sum(item["bytes"] for item in self.wheels if item["reused_from"]),

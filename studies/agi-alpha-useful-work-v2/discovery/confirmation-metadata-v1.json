@@ -1,0 +1,5760 @@
+{
+  "schema": "useful-work-v2-confirmation-metadata/v1",
+  "cutoff_utc": "2026-10-26T14:33:37Z",
+  "selection_rule": "For each primary major, select the latest four stable PEP440 versions satisfying current-profile metadata and Python3.12 wheel availability before cutoff, after excluding all known v1 source/runtime and development versions. Compare chronological eligible neighbors.",
+  "selection_made_without_candidate_source_or_outcomes": true,
+  "consumer_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+  "current_profile_reread_commit": "804e1afeb78ea48fb4807d76b336803aa0906a20",
+  "native_lock_git_blob": "d450350998018b691f04fa99093d2fef68b929f0",
+  "development": {
+    "incumbent": {
+      "starlette": "1.7.0",
+      "pydantic": "2.13.5"
+    },
+    "proposed_latest": {
+      "starlette": "1.10.0",
+      "pydantic": "2.14.1"
+    },
+    "role": "One concrete internal native-profile refresh question, not paid demand"
+  },
+  "incoming_constraints": {
+    "starlette": [
+      "starlette>=0.46.0"
+    ],
+    "pydantic": [
+      "pydantic<3,>=2.11",
+      "pydantic>=2.9.0",
+      "pydantic>=2.7.0"
+    ]
+  },
+  "unchanged_support_versions": {
+    "anyio": "4.15.1",
+    "annotated-types": "0.8.0",
+    "typing-extensions": "4.16.0",
+    "typing-inspection": "0.4.4"
+  },
+  "exposure_ledger": {
+    "starlette": {
+      "0.36.3": "v1 exact source and executed historical integration wheel",
+      "0.37.2": "v1 executed known-remedy integration wheel"
+    },
+    "pydantic": {
+      "2.14.1": "v1 native import/runtime and bundled wheel; also proposed development version"
+    }
+  },
+  "exposure_evidence": [
+    "Prior companion deps/native-versions.json and deps/wheels",
+    "Prior companion data/development/integration-example/wheels and executed three-pair replay",
+    "Development incumbent and proposed versions excluded by design"
+  ],
+  "selected_versions_ascending": {
+    "starlette": [
+      "1.5.1",
+      "1.6.0",
+      "1.8.0",
+      "1.9.0"
+    ],
+    "pydantic": [
+      "2.13.2",
+      "2.13.3",
+      "2.13.4",
+      "2.14.0"
+    ]
+  },
+  "primary_mission_count": 6,
+  "package_clusters": 2,
+  "missions": [
+    {
+      "id": "starlette-1",
+      "cluster": "starlette",
+      "before_version": "1.5.1",
+      "after_version": "1.6.0",
+      "unchanged_other_component": {
+        "pydantic": "2.13.5"
+      },
+      "trigger": "Changed released dependency version and exact wheel identity",
+      "role": "Representative historical compatibility assessment; not a paid order or actual prior Alpha adoption",
+      "adjacency": "Adjacent among eligible unexposed versions; exclusions can skip intervening releases"
+    },
+    {
+      "id": "starlette-2",
+      "cluster": "starlette",
+      "before_version": "1.6.0",
+      "after_version": "1.8.0",
+      "unchanged_other_component": {
+        "pydantic": "2.13.5"
+      },
+      "trigger": "Changed released dependency version and exact wheel identity",
+      "role": "Representative historical compatibility assessment; not a paid order or actual prior Alpha adoption",
+      "adjacency": "Adjacent among eligible unexposed versions; exclusions can skip intervening releases"
+    },
+    {
+      "id": "starlette-3",
+      "cluster": "starlette",
+      "before_version": "1.8.0",
+      "after_version": "1.9.0",
+      "unchanged_other_component": {
+        "pydantic": "2.13.5"
+      },
+      "trigger": "Changed released dependency version and exact wheel identity",
+      "role": "Representative historical compatibility assessment; not a paid order or actual prior Alpha adoption",
+      "adjacency": "Adjacent among eligible unexposed versions; exclusions can skip intervening releases"
+    },
+    {
+      "id": "pydantic-1",
+      "cluster": "pydantic",
+      "before_version": "2.13.2",
+      "after_version": "2.13.3",
+      "unchanged_other_component": {
+        "starlette": "1.7.0"
+      },
+      "trigger": "Changed released dependency version and exact wheel identity",
+      "role": "Representative historical compatibility assessment; not a paid order or actual prior Alpha adoption",
+      "adjacency": "Adjacent among eligible unexposed versions; exclusions can skip intervening releases"
+    },
+    {
+      "id": "pydantic-2",
+      "cluster": "pydantic",
+      "before_version": "2.13.3",
+      "after_version": "2.13.4",
+      "unchanged_other_component": {
+        "starlette": "1.7.0"
+      },
+      "trigger": "Changed released dependency version and exact wheel identity",
+      "role": "Representative historical compatibility assessment; not a paid order or actual prior Alpha adoption",
+      "adjacency": "Adjacent among eligible unexposed versions; exclusions can skip intervening releases"
+    },
+    {
+      "id": "pydantic-3",
+      "cluster": "pydantic",
+      "before_version": "2.13.4",
+      "after_version": "2.14.0",
+      "unchanged_other_component": {
+        "starlette": "1.7.0"
+      },
+      "trigger": "Changed released dependency version and exact wheel identity",
+      "role": "Representative historical compatibility assessment; not a paid order or actual prior Alpha adoption",
+      "adjacency": "Adjacent among eligible unexposed versions; exclusions can skip intervening releases"
+    }
+  ],
+  "version_records": {
+    "starlette==1.7.0": {
+      "package": "starlette",
+      "version": "1.7.0",
+      "metadata_url": "https://pypi.org/pypi/starlette/1.7.0/json",
+      "raw_metadata_sha256": "bb99192bfa57ca9de6fbe4260f1a6e2a7c60c8cba54217413c049e402b06d2bb",
+      "requires_python": ">=3.10",
+      "requires_dist": [
+        "anyio<5,>=4.0.0",
+        "typing-extensions>=4.10.0; python_version < \"3.13\"",
+        "httpx2>=2.0.0; extra == \"full\"",
+        "httpx<0.29.0,>=0.27.0; extra == \"full\"",
+        "itsdangerous; extra == \"full\"",
+        "jinja2; extra == \"full\"",
+        "opentelemetry-api; extra == \"full\"",
+        "python-multipart>=0.0.18; extra == \"full\"",
+        "pyyaml; extra == \"full\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "anyio<5,>=4.0.0",
+          "resolved_version": "4.15.1",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-extensions>=4.10.0; python_version < \"3.13\"",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": null,
+      "wheel": {
+        "filename": "starlette-1.7.0-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 78980,
+        "url": "https://files.pythonhosted.org/packages/4e/d6/1ec1b290f9e0fb067899b61e1d37a30c923068bad260b216dbe37a7d2967/starlette-1.7.0-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "4ed61ec1b290f9e0fb067899b61e1d37a30c923068bad260b216dbe37a7d2967",
+          "md5": "201eb63a05628462fd18fa4bff460efa",
+          "sha256": "67f8e99895493dd2911a03f11314af6ceebeae4e704bb9f43dfc6a9db151c93e"
+        },
+        "upload_time_iso_8601": "2026-09-23T07:30:24.567239Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "starlette==1.10.0": {
+      "package": "starlette",
+      "version": "1.10.0",
+      "metadata_url": "https://pypi.org/pypi/starlette/json",
+      "raw_metadata_sha256": "b8a932130ab9a2412b94771b15dc841b1e1115d628451ecff87de551b78d373f",
+      "requires_python": ">=3.11",
+      "requires_dist": [
+        "anyio<5,>=4.0.0",
+        "typing-extensions>=4.10.0; python_version < \"3.13\"",
+        "httpx2>=2.0.0; extra == \"full\"",
+        "httpx<0.29.0,>=0.27.0; extra == \"full\"",
+        "itsdangerous; extra == \"full\"",
+        "jinja2; extra == \"full\"",
+        "opentelemetry-api; extra == \"full\"",
+        "python-multipart>=0.0.18; extra == \"full\"",
+        "pyyaml; extra == \"full\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "anyio<5,>=4.0.0",
+          "resolved_version": "4.15.1",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-extensions>=4.10.0; python_version < \"3.13\"",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": null,
+      "wheel": {
+        "filename": "starlette-1.10.0-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.11",
+        "size": 80571,
+        "url": "https://files.pythonhosted.org/packages/88/2e/947cfe02def9371c07cd5bf5b6b61c829e9aecb9904db02a66cfafbc1eec/starlette-1.10.0-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "882e947cfe02def9371c07cd5bf5b6b61c829e9aecb9904db02a66cfafbc1eec",
+          "md5": "dd6953136a05400c96edb875194d50cd",
+          "sha256": "478c0ab3b4ced6e82719849c118fa406f0278a3499c1a898cd15cd31bdc38ce4"
+        },
+        "upload_time_iso_8601": "2026-10-24T15:04:10.371825Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "starlette==1.5.1": {
+      "package": "starlette",
+      "version": "1.5.1",
+      "metadata_url": "https://pypi.org/pypi/starlette/1.5.1/json",
+      "raw_metadata_sha256": "985768f7557b7af8d3520dee8b43ef93d8bbe56cf4118450615ca4f7c68733ac",
+      "requires_python": ">=3.10",
+      "requires_dist": [
+        "anyio<5,>=3.6.2",
+        "typing-extensions>=4.10.0; python_version < \"3.13\"",
+        "httpx2>=2.0.0; extra == \"full\"",
+        "httpx<0.29.0,>=0.27.0; extra == \"full\"",
+        "itsdangerous; extra == \"full\"",
+        "jinja2; extra == \"full\"",
+        "python-multipart>=0.0.18; extra == \"full\"",
+        "pyyaml; extra == \"full\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "anyio<5,>=3.6.2",
+          "resolved_version": "4.15.1",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-extensions>=4.10.0; python_version < \"3.13\"",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": null,
+      "wheel": {
+        "filename": "starlette-1.5.1-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 74376,
+        "url": "https://files.pythonhosted.org/packages/e7/e9/b68fe9746932000210e4116bf8ed1246f86540e2b876d3f9f869f4b442de/starlette-1.5.1-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "e7e9b68fe9746932000210e4116bf8ed1246f86540e2b876d3f9f869f4b442de",
+          "md5": "84b0e3134ac73b2e480509cdabb81be9",
+          "sha256": "08b5aa725dbb52de43633a6318628444b8979bf94396d93196703f73a466e9af"
+        },
+        "upload_time_iso_8601": "2026-08-08T17:01:44.414520Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "starlette==1.6.0": {
+      "package": "starlette",
+      "version": "1.6.0",
+      "metadata_url": "https://pypi.org/pypi/starlette/1.6.0/json",
+      "raw_metadata_sha256": "f203a72cee50be4cc71d4fe8496b40c26d9a2f6fbde42b41d5a524d4b2c28940",
+      "requires_python": ">=3.10",
+      "requires_dist": [
+        "anyio<5,>=3.6.2",
+        "typing-extensions>=4.10.0; python_version < \"3.13\"",
+        "httpx2>=2.0.0; extra == \"full\"",
+        "httpx<0.29.0,>=0.27.0; extra == \"full\"",
+        "itsdangerous; extra == \"full\"",
+        "jinja2; extra == \"full\"",
+        "python-multipart>=0.0.18; extra == \"full\"",
+        "pyyaml; extra == \"full\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "anyio<5,>=3.6.2",
+          "resolved_version": "4.15.1",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-extensions>=4.10.0; python_version < \"3.13\"",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": null,
+      "wheel": {
+        "filename": "starlette-1.6.0-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 75969,
+        "url": "https://files.pythonhosted.org/packages/c8/cb/6a6a47d5b464bd08695d254f3da6e7986cc70c9fa5d778eda57538edfe56/starlette-1.6.0-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "c8cb6a6a47d5b464bd08695d254f3da6e7986cc70c9fa5d778eda57538edfe56",
+          "md5": "0cc6460b41f0b2b3f10f4cd9a758ee0e",
+          "sha256": "a86dd39d14bb45f85a3d18525215a9ef0cfd1f192ac793220e72598c90335f0c"
+        },
+        "upload_time_iso_8601": "2026-08-08T18:27:56.196765Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "starlette==1.8.0": {
+      "package": "starlette",
+      "version": "1.8.0",
+      "metadata_url": "https://pypi.org/pypi/starlette/1.8.0/json",
+      "raw_metadata_sha256": "dab68e422477120e0d01e92d2d80fc5f34a5a50b5f5f94f30a62c61775bacf4e",
+      "requires_python": ">=3.11",
+      "requires_dist": [
+        "anyio<5,>=4.0.0",
+        "typing-extensions>=4.10.0; python_version < \"3.13\"",
+        "httpx2>=2.0.0; extra == \"full\"",
+        "httpx<0.29.0,>=0.27.0; extra == \"full\"",
+        "itsdangerous; extra == \"full\"",
+        "jinja2; extra == \"full\"",
+        "opentelemetry-api; extra == \"full\"",
+        "python-multipart>=0.0.18; extra == \"full\"",
+        "pyyaml; extra == \"full\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "anyio<5,>=4.0.0",
+          "resolved_version": "4.15.1",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-extensions>=4.10.0; python_version < \"3.13\"",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": null,
+      "wheel": {
+        "filename": "starlette-1.8.0-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.11",
+        "size": 79612,
+        "url": "https://files.pythonhosted.org/packages/c1/b0/5742e4ac7af5eb58ec3470a537a49d7aa507e5539413e504b3a65ef50ba8/starlette-1.8.0-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "c1b05742e4ac7af5eb58ec3470a537a49d7aa507e5539413e504b3a65ef50ba8",
+          "md5": "b864a1c12e23745f5e03e33efec7278e",
+          "sha256": "dfdd6b29c26483288088d990eee59631dedadd66ce20d203402a7ca8e3c4656f"
+        },
+        "upload_time_iso_8601": "2026-10-13T07:54:38.019580Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "starlette==1.9.0": {
+      "package": "starlette",
+      "version": "1.9.0",
+      "metadata_url": "https://pypi.org/pypi/starlette/1.9.0/json",
+      "raw_metadata_sha256": "de21a44d5d9232ec7f76bc66d8259e678be0c66101b6c36e5b83d1f8e0d5e2f9",
+      "requires_python": ">=3.11",
+      "requires_dist": [
+        "anyio<5,>=4.0.0",
+        "typing-extensions>=4.10.0; python_version < \"3.13\"",
+        "httpx2>=2.0.0; extra == \"full\"",
+        "httpx<0.29.0,>=0.27.0; extra == \"full\"",
+        "itsdangerous; extra == \"full\"",
+        "jinja2; extra == \"full\"",
+        "opentelemetry-api; extra == \"full\"",
+        "python-multipart>=0.0.18; extra == \"full\"",
+        "pyyaml; extra == \"full\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "anyio<5,>=4.0.0",
+          "resolved_version": "4.15.1",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-extensions>=4.10.0; python_version < \"3.13\"",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": null,
+      "wheel": {
+        "filename": "starlette-1.9.0-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.11",
+        "size": 80335,
+        "url": "https://files.pythonhosted.org/packages/f3/93/181df62699d9b5aca1d87e5cfda131dac87e3cdaebf668662f7206ca3470/starlette-1.9.0-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "f393181df62699d9b5aca1d87e5cfda131dac87e3cdaebf668662f7206ca3470",
+          "md5": "54f2d6125af171affa6bf379d3308b71",
+          "sha256": "fd3f159936e882d06c1108f84688f7cda2cf85fc6a592a50edbd175e882c2ddc"
+        },
+        "upload_time_iso_8601": "2026-10-18T15:50:31.526548Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "pydantic==2.13.5": {
+      "package": "pydantic",
+      "version": "2.13.5",
+      "metadata_url": "https://pypi.org/pypi/pydantic/2.13.5/json",
+      "raw_metadata_sha256": "20a994795e3341324a7da30ae19b815669c2bf1722c5077089cfdc379215009d",
+      "requires_python": ">=3.9",
+      "requires_dist": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.46.5",
+        "typing-extensions>=4.14.1",
+        "typing-inspection>=0.4.2",
+        "email-validator>=2.0.0; extra == \"email\"",
+        "tzdata; (python_version >= \"3.9\" and platform_system == \"Windows\") and extra == \"timezone\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "annotated-types>=0.6.0",
+          "resolved_version": "0.8.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "pydantic-core==2.46.5",
+          "resolved_version": "2.46.5",
+          "kind": "required_coupled_change"
+        },
+        {
+          "requirement": "typing-extensions>=4.14.1",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-inspection>=0.4.2",
+          "resolved_version": "0.4.4",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": "2.46.5",
+      "wheel": {
+        "filename": "pydantic-2.13.5-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.9",
+        "size": 472589,
+        "url": "https://files.pythonhosted.org/packages/eb/47/c95ffc2009878c7aac0c5e08528022dcb885933252a88b5f170058014464/pydantic-2.13.5-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "eb47c95ffc2009878c7aac0c5e08528022dcb885933252a88b5f170058014464",
+          "md5": "40d43f06ec754228362bd1b1a616a1c7",
+          "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73"
+        },
+        "upload_time_iso_8601": "2026-08-28T14:03:59.136157Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "pydantic==2.14.1": {
+      "package": "pydantic",
+      "version": "2.14.1",
+      "metadata_url": "https://pypi.org/pypi/pydantic/json",
+      "raw_metadata_sha256": "1a4aab1e7e64c5f341717f2d3f3e863dcd7cc53cfe704addd053b738368e6b34",
+      "requires_python": ">=3.10",
+      "requires_dist": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.50.1",
+        "typing-extensions>=4.16.0",
+        "typing-inspection>=0.4.4",
+        "email-validator>=2.0.0; extra == \"email\"",
+        "tzdata; platform_system == \"Windows\" and extra == \"timezone\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "annotated-types>=0.6.0",
+          "resolved_version": "0.8.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "pydantic-core==2.50.1",
+          "resolved_version": "2.50.1",
+          "kind": "required_coupled_change"
+        },
+        {
+          "requirement": "typing-extensions>=4.16.0",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-inspection>=0.4.4",
+          "resolved_version": "0.4.4",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": "2.50.1",
+      "wheel": {
+        "filename": "pydantic-2.14.1-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 488106,
+        "url": "https://files.pythonhosted.org/packages/35/ea/a56b9fe5066f3537b7882f77e9c5dfb26d8c2eefdaed9b5fc73d57b4dc22/pydantic-2.14.1-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "35eaa56b9fe5066f3537b7882f77e9c5dfb26d8c2eefdaed9b5fc73d57b4dc22",
+          "md5": "a18d2045917164658772b7ac95fc1910",
+          "sha256": "9195d967ec791692a04438115466764fb8b9a27b31f14a760437694f40d6b454"
+        },
+        "upload_time_iso_8601": "2026-10-11T18:37:53.437059Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "pydantic==2.13.2": {
+      "package": "pydantic",
+      "version": "2.13.2",
+      "metadata_url": "https://pypi.org/pypi/pydantic/2.13.2/json",
+      "raw_metadata_sha256": "be1bb38797dfd93d0a40844844a440ac7abd78b1660d02fd5efa3feec6c04de8",
+      "requires_python": ">=3.9",
+      "requires_dist": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.46.2",
+        "typing-extensions>=4.14.1",
+        "typing-inspection>=0.4.2",
+        "email-validator>=2.0.0; extra == \"email\"",
+        "tzdata; (python_version >= \"3.9\" and platform_system == \"Windows\") and extra == \"timezone\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "annotated-types>=0.6.0",
+          "resolved_version": "0.8.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "pydantic-core==2.46.2",
+          "resolved_version": "2.46.2",
+          "kind": "required_coupled_change"
+        },
+        {
+          "requirement": "typing-extensions>=4.14.1",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-inspection>=0.4.2",
+          "resolved_version": "0.4.4",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": "2.46.2",
+      "wheel": {
+        "filename": "pydantic-2.13.2-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.9",
+        "size": 471947,
+        "url": "https://files.pythonhosted.org/packages/77/ca/b45c378e6e8d0b90577288b533e04e95b7afd61bb1d51b6c263176435489/pydantic-2.13.2-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "77cab45c378e6e8d0b90577288b533e04e95b7afd61bb1d51b6c263176435489",
+          "md5": "0f1e48c2612fb688b4ed926382b96d0a",
+          "sha256": "a525087f4c03d7e7456a3de89b64cd693d2229933bb1068b9af6befd5563694e"
+        },
+        "upload_time_iso_8601": "2026-04-17T09:31:57.541199Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "pydantic==2.13.3": {
+      "package": "pydantic",
+      "version": "2.13.3",
+      "metadata_url": "https://pypi.org/pypi/pydantic/2.13.3/json",
+      "raw_metadata_sha256": "1e2e0493f40c5e3b093fd8f2521710b09f0adfb403c7fa3109021798bcd7b189",
+      "requires_python": ">=3.9",
+      "requires_dist": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.46.3",
+        "typing-extensions>=4.14.1",
+        "typing-inspection>=0.4.2",
+        "email-validator>=2.0.0; extra == \"email\"",
+        "tzdata; (python_version >= \"3.9\" and platform_system == \"Windows\") and extra == \"timezone\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "annotated-types>=0.6.0",
+          "resolved_version": "0.8.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "pydantic-core==2.46.3",
+          "resolved_version": "2.46.3",
+          "kind": "required_coupled_change"
+        },
+        {
+          "requirement": "typing-extensions>=4.14.1",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-inspection>=0.4.2",
+          "resolved_version": "0.4.4",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": "2.46.3",
+      "wheel": {
+        "filename": "pydantic-2.13.3-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.9",
+        "size": 471981,
+        "url": "https://files.pythonhosted.org/packages/f3/0a/fd7d723f8f8153418fb40cf9c940e82004fce7e987026b08a68a36dd3fe7/pydantic-2.13.3-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "f30afd7d723f8f8153418fb40cf9c940e82004fce7e987026b08a68a36dd3fe7",
+          "md5": "0ce04efffb1bda48d43e36fbea619509",
+          "sha256": "6db14ac8dfc9a1e57f87ea2c0de670c251240f43cb0c30a5130e9720dc612927"
+        },
+        "upload_time_iso_8601": "2026-04-20T14:46:41.402738Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "pydantic==2.13.4": {
+      "package": "pydantic",
+      "version": "2.13.4",
+      "metadata_url": "https://pypi.org/pypi/pydantic/2.13.4/json",
+      "raw_metadata_sha256": "3fd33147b782c8c2d9152af69b77d41d39cdaab4d2b4dc05ee0b8f3d86322e1c",
+      "requires_python": ">=3.9",
+      "requires_dist": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.46.4",
+        "typing-extensions>=4.14.1",
+        "typing-inspection>=0.4.2",
+        "email-validator>=2.0.0; extra == \"email\"",
+        "tzdata; (python_version >= \"3.9\" and platform_system == \"Windows\") and extra == \"timezone\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "annotated-types>=0.6.0",
+          "resolved_version": "0.8.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "pydantic-core==2.46.4",
+          "resolved_version": "2.46.4",
+          "kind": "required_coupled_change"
+        },
+        {
+          "requirement": "typing-extensions>=4.14.1",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-inspection>=0.4.2",
+          "resolved_version": "0.4.4",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": "2.46.4",
+      "wheel": {
+        "filename": "pydantic-2.13.4-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.9",
+        "size": 472262,
+        "url": "https://files.pythonhosted.org/packages/fd/7b/122376b1fd3c62c1ed9dc80c931ace4844b3c55407b6fb2d199377c9736f/pydantic-2.13.4-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "fd7b122376b1fd3c62c1ed9dc80c931ace4844b3c55407b6fb2d199377c9736f",
+          "md5": "36ddb76c95e4d2d1a828793cda3bb527",
+          "sha256": "45a282cde31d808236fd7ea9d919b128653c8b38b393d1c4ab335c62924d9aba"
+        },
+        "upload_time_iso_8601": "2026-05-06T13:43:02.641507Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    },
+    "pydantic==2.14.0": {
+      "package": "pydantic",
+      "version": "2.14.0",
+      "metadata_url": "https://pypi.org/pypi/pydantic/2.14.0/json",
+      "raw_metadata_sha256": "c68727a5bea2a38b6a2c60a966faba9f005c718d8bf5f7266a3e170bfb1dae73",
+      "requires_python": ">=3.10",
+      "requires_dist": [
+        "annotated-types>=0.6.0",
+        "pydantic-core==2.50.0",
+        "typing-extensions>=4.16.0",
+        "typing-inspection>=0.4.4",
+        "email-validator>=2.0.0; extra == \"email\"",
+        "tzdata; platform_system == \"Windows\" and extra == \"timezone\""
+      ],
+      "active_direct_dependencies": [
+        {
+          "requirement": "annotated-types>=0.6.0",
+          "resolved_version": "0.8.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "pydantic-core==2.50.0",
+          "resolved_version": "2.50.0",
+          "kind": "required_coupled_change"
+        },
+        {
+          "requirement": "typing-extensions>=4.16.0",
+          "resolved_version": "4.16.0",
+          "kind": "unchanged_native_support_version"
+        },
+        {
+          "requirement": "typing-inspection>=0.4.4",
+          "resolved_version": "0.4.4",
+          "kind": "unchanged_native_support_version"
+        }
+      ],
+      "pydantic_core": "2.50.0",
+      "wheel": {
+        "filename": "pydantic-2.14.0-py3-none-any.whl",
+        "packagetype": "bdist_wheel",
+        "python_version": "py3",
+        "requires_python": ">=3.10",
+        "size": 487109,
+        "url": "https://files.pythonhosted.org/packages/2d/eb/9146591cc819d040475bf7f2be786710c7f7eb8083693bf859728da2ca9c/pydantic-2.14.0-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "2deb9146591cc819d040475bf7f2be786710c7f7eb8083693bf859728da2ca9c",
+          "md5": "cec71a11d19d2336459845e8b6ea89a9",
+          "sha256": "15fab1bea6f1dc5003b54fc2ecab230c1fd1dbade2acd4addc52d81e32416d4b"
+        },
+        "upload_time_iso_8601": "2026-10-08T14:34:46.864517Z",
+        "yanked": false,
+        "yanked_reason": null
+      },
+      "wheel_downloaded": false,
+      "source_body_read": false,
+      "outcome_seen": false
+    }
+  },
+  "all_release_eligibility_records": [
+    {
+      "package": "starlette",
+      "version": "0.1.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-25T13:13:07.859399Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-25T13:59:01.516536Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.10",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-13T12:48:16.114329Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.11",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-13T13:37:34.870777Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.12",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-18T12:10:43.686849Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.13",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-18T12:14:52.279948Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.14",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-18T14:43:11.139211Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.15",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-26T13:43:28.273682Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.16",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-08-17T15:40:52.913207Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.17",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-08-27T14:01:26.709171Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-25T14:57:53.699570Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-26T09:14:12.678126Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-26T09:55:20.510373Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-27T20:49:15.128709Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-10T14:34:28.420993Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-11T15:53:44.065179Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-12T13:15:50.139773Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.1.9",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-12T15:31:45.804893Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-01-25T22:40:44.526160Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-01-30T15:24:26.248521Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-11T10:46:32.121778Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-14T16:04:29.704234Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-18T13:44:16.408680Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-18T19:33:57.365643Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-19T10:58:17.719354Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.10.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-20T14:45:23.264574Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.11.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-19T12:55:23.417039Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.11.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-19T13:21:25.525514Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.11.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-20T14:41:46.324693Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.11.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-26T14:38:29.397262Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.11.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-03-18T08:56:09.161162Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-05-21T14:39:39.527025Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-03-20T10:34:34.806791Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-04-02T10:01:21.972205Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.0b3",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-04-03T09:29:16.327987Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-06-19T09:40:50.406162Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.10",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-10-15T12:44:08.524343Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.11",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-11-01T14:13:20.074036Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.12",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-11-01T15:30:30.207333Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.13",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-11-04T15:09:03.192757Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-04T15:53:32.904889Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-15T08:50:22.469490Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-16T11:58:17.186228Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-25T09:06:00.678120Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-29T13:21:59.636334Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-08-01T16:38:24.302658Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-08-16T09:43:01.240004Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.12.9",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-09-02T13:24:36.599792Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-11-13T12:28:32.819541Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-01-30T11:41:24.612902Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-02-20T15:43:18.861325Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-04-15T11:21:06.126975Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-04-30T08:50:09.128850Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-07-17T12:42:18.328046Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-07-20T12:14:33.680686Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-08-05T15:09:40.208876Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.13.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-08-14T03:53:00.426871Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.14.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-11-08T19:54:16.951514Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.14.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-11-09T15:18:24.754780Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.14.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-02-02T20:13:15.543068Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.15.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-06-23T08:35:43.521936Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.16.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-07-19T07:09:47.103607Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.17.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-11-04T09:50:27.254186Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.17.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-11-17T16:11:38.131401Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.18.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-01-23T11:11:59.866326Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.19.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-03-09T18:45:53.709236Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.19.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-04-22T05:27:58.423577Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.2.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-08-28T13:47:16.339443Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.2.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-08-30T12:54:36.540755Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.2.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-08-30T13:42:56.772086Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.2.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-09-04T10:54:31.900798Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.20.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-05-03T05:34:31.915573Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.20.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-05-28T07:59:43.157469Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.20.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-06-07T20:15:31.361278Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.20.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-06-10T05:18:17.202946Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.20.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-06-28T12:09:24.728533Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.21.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-09-26T17:10:58.682895Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.22.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-11-17T06:31:07.346109Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.23.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-12-05T12:36:54.234484Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.23.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-12-09T14:47:35.338764Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.24.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-02-06T16:04:35.259649Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.25.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-02-14T09:07:28.395178Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.26.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-03-09T23:10:53.740456Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.26.0.post1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-03-09T23:57:26.189472Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.26.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-03-13T18:09:54.352280Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.27.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-05-16T10:59:53.927486Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.28.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-06-07T06:27:19.708959Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.29.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-13T08:13:29.400253Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-09-05T10:39:54.249027Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-09-14T09:21:49.296749Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-09-17T13:59:32.326720Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-02T12:31:18.492961Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-05T15:39:21.420636Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-08T07:56:36.450858Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-09T14:48:48.155553Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.3.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-10T08:01:13.398322Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.30.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-13T11:32:36.341178Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.31.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-24T15:48:29.846627Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.31.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-08-26T16:44:02.314019Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.32.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-11-04T19:30:29.940758Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.32.0.post1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-11-06T06:30:37.537442Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.33.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-12-01T13:40:16.369137Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.34.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-12-16T15:37:08.602828Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.35.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-01-11T14:31:44.304636Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.35.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-01-11T19:58:58.451473Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.36.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-01-22T20:39:16.879221Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.36.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-01-23T08:33:21.333294Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.36.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-02-03T12:40:26.765759Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.36.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints",
+        "v1_source_or_runtime_exposure"
+      ],
+      "first_file_upload": "2024-02-04T18:16:21.392105Z",
+      "source_or_runtime_exposure": "v1 exact source and executed historical integration wheel",
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.37.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-02-05T06:56:30.540385Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.37.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-02-09T22:00:00.079130Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.37.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints",
+        "v1_source_or_runtime_exposure"
+      ],
+      "first_file_upload": "2024-03-05T16:16:50.957686Z",
+      "source_or_runtime_exposure": "v1 executed known-remedy integration wheel",
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.38.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-07-20T09:18:22.348543Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.38.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-07-23T10:19:03.352230Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.38.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-07-27T17:57:56.600916Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.38.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-01T07:19:07.553300Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.38.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-01T15:16:10.397165Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.38.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-08T09:50:55.498474Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.38.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-22T17:01:43.076653Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.39.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-23T06:15:16.625367Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.39.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-25T15:26:00.870758Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.39.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-29T10:35:46.429326Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.4.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-10T16:13:09.812194Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.4.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-12T17:16:04.286146Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.4.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-15T11:21:13.027932Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.40.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-10-15T06:52:32.486095Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.41.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-10-15T17:32:02.931270Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.41.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-10-24T14:41:19.219329Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.41.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-10-27T08:20:00.052615Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.41.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-11-18T19:45:02.027443Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.42.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-12-14T09:01:44.497464Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.43.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-12-25T15:37:23.172697Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.44.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-12-28T07:32:53.871364Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.45.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-12-29T09:28:02.372877Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.45.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-12-30T21:10:51.144172Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.45.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-01-04T09:54:28.255318Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.45.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-01-24T11:17:34.182219Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.46.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-02-22T17:34:43.786942Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.46.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-03-08T10:55:32.662890Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.46.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-04-13T13:56:16.210607Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.47.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-05-29T15:45:26.305180Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.47.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-06-21T04:03:15.705282Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.47.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-07-20T17:31:56.738866Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.47.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-08-24T13:36:40.887364Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.48.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-09-13T08:41:03.869533Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.49.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-10-28T08:11:40.895458Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.49.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-10-28T17:34:09.130517Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.49.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-11-01T11:38:45.137073Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.49.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-11-01T15:12:24.387284Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.5.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-17T12:07:26.392962Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.5.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-17T15:58:36.417728Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.5.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-18T13:46:09.488755Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.5.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-18T14:25:14.546930Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.5.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-18T15:59:17.392171Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.5.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-22T14:10:25.651306Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.50.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2025-11-01T15:25:25.461535Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.51.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2026-01-10T20:23:13.445836Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.52.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2026-01-18T10:07:06.678844Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.52.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major"
+      ],
+      "first_file_upload": "2026-01-18T13:34:09.188742Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "0.6.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-29T11:16:24.446546Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.6.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-29T13:03:05.866812Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.6.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-29T16:44:00.567514Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.6.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-30T16:11:30.925704Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.7.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-01T12:56:31.813886Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.7.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-05T12:08:46.393386Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.7.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-06T12:22:06.170115Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.7.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-06T17:00:18.764821Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.7.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-07T13:42:54.711288Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-08T12:07:30.266689Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-08T16:14:31.802012Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-08T17:00:41.029377Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-09T13:42:01.256730Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-09T18:03:40.179484Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-16T14:04:19.924296Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-22T16:13:14.940534Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-23T11:14:50.016335Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.8.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-23T16:42:49.811182Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-28T11:51:40.634037Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-28T13:36:35.678180Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.10",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-01-15T11:16:41.247256Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.11",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-01-23T09:04:56.020592Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-04T16:46:19.797698Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-05T11:56:30.058692Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-05T16:39:20.714522Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-06T10:46:40.791060Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-07T13:05:49.523927Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-07T14:57:28.608265Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-10T14:37:51.408324Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "0.9.9",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-14T16:23:36.052930Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "starlette",
+      "version": "1.0.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-03-22T18:29:45.111955Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.0.0rc1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2026-02-23T22:12:30.573676Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.0.1",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-05-21T21:58:56.551258Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.1.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-05-23T16:55:39.201356Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.10.0",
+      "eligible": false,
+      "reasons": [
+        "development_proposed_latest_version"
+      ],
+      "first_file_upload": "2026-10-24T15:04:10.371825Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.2.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-05-28T11:42:48.801623Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.2.1",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-05-31T01:07:50.090167Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.3.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-06-11T06:27:40.444114Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.3.1",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-06-12T09:23:10.017643Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.4.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-08-05T09:36:41.944712Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.4.1",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-08-05T15:17:24.357108Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.5.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-08-08T07:23:14.675424Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.5.1",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-08-08T17:01:44.414520Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.6.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-08-08T18:27:56.196765Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.7.0",
+      "eligible": false,
+      "reasons": [
+        "development_incumbent_version"
+      ],
+      "first_file_upload": "2026-09-23T07:30:24.567239Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.8.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-10-13T07:54:38.019580Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "starlette",
+      "version": "1.9.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-10-18T15:50:31.526548Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-03T20:58:44.335432Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-06T14:53:18.249584Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-09T16:02:26.057678Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-10T12:11:29.690217Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-11T21:28:36.008127Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-23T18:17:35.566635Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-31T11:20:31.487791Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.0.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-05-31T12:57:56.433707Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-06-03T16:53:08.448736Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.10",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-11T12:14:39.636111Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.11",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-06-28T18:55:13.558866Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.11.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-02T17:16:57.009255Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.11.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-05T13:54:53.950760Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.12",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-31T13:06:44.380006Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.12.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-07-31T18:49:26.335258Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.13",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-08-25T16:24:04.292924Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.13.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-09-21T09:57:08.655929Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.14",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-10-02T16:55:10.485285Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.15",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-11-18T16:28:06.960752Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.16",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-03T12:51:38.855345Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.16.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-10T10:06:34.938094Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.17",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-12-27T22:30:35.169436Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.18",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-01-13T09:20:42.112803Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.18.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-01-17T21:09:08.580760Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.18.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-01-22T18:37:47.567455Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.19",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-04T22:14:09.966334Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-06-07T21:59:02.113332Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.2.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-06-07T22:49:30.839335Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.20",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-18T08:48:57.648488Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.20.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-26T09:32:11.141885Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.20a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-02-13T15:53:46.591436Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.21",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-03-15T12:54:30.882875Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.22",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-03-29T10:28:56.186523Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.23",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-04-04T13:09:57.514785Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.24",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-04-23T14:19:36.985063Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.25",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-05-05T13:13:40.769453Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.26",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-05-22T13:14:43.014135Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.27",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-05-30T15:53:39.488044Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.27a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-05-26T12:42:36.121274Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 4
+    },
+    {
+      "package": "pydantic",
+      "version": "0.28",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-06-11T07:20:15.749110Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.29",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-06-19T11:07:23.216732Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-06-21T17:32:32.075656Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.30",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-07T10:34:09.746360Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.30.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-15T18:49:38.214391Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.31",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-24T18:25:24.718782Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.31.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-07-31T11:38:02.585484Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.32",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-08-06T15:16:56.988448Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.32.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-08-08T11:28:10.187460Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.32.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-08-17T19:28:43.595123Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "0.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-07-08T18:29:32.342665Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-10-23T19:15:56.022337Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-11-07T13:40:03.453041Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.6.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-11-08T14:45:41.155020Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.6.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-11-13T15:37:04.582180Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.6.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2017-11-26T16:57:18.769697Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.6.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-02-01T17:26:41.894311Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-02-06T19:41:35.255189Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.7.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-02-07T17:36:15.251714Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-03-25T17:36:13.113583Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.9",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-04-28T18:55:25.247504Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "0.9.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2018-05-10T15:11:31.463376Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "1.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-10-23T11:33:30.110925Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "1.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-10-01T17:07:38.354780Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "1.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-10-07T18:15:29.527014Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "1.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-11-07T15:51:34.432236Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 5
+    },
+    {
+      "package": "pydantic",
+      "version": "1.1.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-11-20T16:54:26.864323Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 9
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-08-30T16:37:34.966451Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.0a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-08-22T21:10:46.172394Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.0a2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-08-24T12:52:58.659303Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-08-24T22:53:29.975686Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-08-31T10:53:15.444281Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.10",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-06-30T12:21:39.583200Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.11",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-04T17:24:53.522794Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.12",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-24T21:43:40.193929Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.13",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-09-27T17:43:07.172408Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.14",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-01-19T16:33:33.141211Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.15",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-04-03T13:05:51.365782Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.16",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-06-11T19:41:49.000288Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.17",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-06-20T14:21:24.399501Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 42
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.18",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-08-22T23:17:35.432295Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 42
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.19",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-11-06T16:49:04.540642Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 42
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-09-05T18:37:50.309248Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.20",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-01-07T19:44:47.301424Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 49
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.21",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-01-14T14:08:00.527847Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 49
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.22",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-04-24T13:36:55.045138Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 49
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.23",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-09-13T02:38:05.322422Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 49
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.24",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-09-25T01:35:02.451537Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 49
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.25",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-12-18T10:13:07.612742Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 36
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.26",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-12-18T15:46:28.882555Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 36
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "no_non_yanked_python312_wheel_before_cutoff",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-12-29T12:12:25.442455Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-12-30T10:32:05.095393Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-02-15T18:27:47.623855Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-03-08T20:11:46.068898Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-03-22T20:01:12.931911Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-05-23T18:22:09.612022Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.10.9",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-06-07T17:34:22.005155Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 35
+    },
+    {
+      "package": "pydantic",
+      "version": "1.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-11-28T18:26:26.733812Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 13
+    },
+    {
+      "package": "pydantic",
+      "version": "1.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2019-12-21T16:28:31.313550Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 13
+    },
+    {
+      "package": "pydantic",
+      "version": "1.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-01-24T11:48:37.651359Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 13
+    },
+    {
+      "package": "pydantic",
+      "version": "1.5",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-04-18T17:25:13.152683Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 16
+    },
+    {
+      "package": "pydantic",
+      "version": "1.5.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-04-23T13:00:50.676381Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 16
+    },
+    {
+      "package": "pydantic",
+      "version": "1.6",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-07-11T12:21:05.659196Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 16
+    },
+    {
+      "package": "pydantic",
+      "version": "1.6.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-07-15T20:01:14.118776Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 16
+    },
+    {
+      "package": "pydantic",
+      "version": "1.6.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-05-11T19:32:31.557059Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 16
+    },
+    {
+      "package": "pydantic",
+      "version": "1.7",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-10-26T12:18:44.155804Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.7.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-10-28T20:03:39.864511Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.7.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-11-01T15:49:06.062179Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.7.3",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2020-11-30T23:58:44.101864Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.7.4",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-05-11T19:52:32.772879Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.8",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-02-26T17:07:52.605832Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.8.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-03-03T17:30:11.167722Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.8.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-05-11T20:28:54.663153Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 21
+    },
+    {
+      "package": "pydantic",
+      "version": "1.9.0",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-12-31T15:42:38.180907Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 34
+    },
+    {
+      "package": "pydantic",
+      "version": "1.9.0a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-12-18T22:34:35.819201Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 27
+    },
+    {
+      "package": "pydantic",
+      "version": "1.9.0a2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2021-12-24T16:27:24.930683Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 34
+    },
+    {
+      "package": "pydantic",
+      "version": "1.9.1",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-05-19T11:28:33.292028Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 34
+    },
+    {
+      "package": "pydantic",
+      "version": "1.9.2",
+      "eligible": false,
+      "reasons": [
+        "outside_declared_primary_major",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2022-08-11T13:26:04.575848Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 34
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-06-30T16:27:55.003477Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-04T17:28:35.726931Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-05T17:37:56.939463Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0.3",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-14T11:10:52.864425Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-04-03T20:45:03.388278Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0a2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-04-12T17:21:25.181881Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0a3",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-04-20T16:58:48.117244Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0a4",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-05-05T22:53:09.788910Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-06-01T20:27:51.309970Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-06-03T10:08:31.484966Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.0b3",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-06-17T07:12:10.085770Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.1.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-25T17:07:06.310994Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.1.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-07-25T23:11:45.747313Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-11-20T20:39:21.100446Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-11-06T20:30:53.696017Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-11-13T21:15:09.153343Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-11-22T00:58:40.347020Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-11-26T13:02:27.147110Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.3",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-12-03T15:58:59.867067Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.4",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-12-18T17:09:21.953973Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.5",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-01-09T13:33:22.312789Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.10.6",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-01-24T01:42:10.371104Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-03-27T18:00:52.202904Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.0a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-01-30T18:43:57.613580Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.0a2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-02-10T14:00:45.974224Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-03-06T16:29:16.693856Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2025-03-17T16:25:02.408369Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.1",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-03-28T21:14:55.856262Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.10",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-10-04T10:40:39.055818Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.2",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-04-03T13:12:47.995245Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.3",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-04-08T13:27:03.789100Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.4",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-04-29T20:38:52.724633Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.5",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-05-22T21:18:06.329970Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.6",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-06-13T09:00:27.134517Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.7",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-06-14T08:33:14.905580Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.8",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-09-13T01:39:30.095448Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.11.9",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-09-13T11:26:36.909507Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-10-07T15:58:01.576252Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.0a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2025-07-26T18:28:52.799615Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2025-10-02T22:07:41.855166Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.1",
+      "eligible": false,
+      "reasons": [
+        "no_non_yanked_python312_wheel_before_cutoff"
+      ],
+      "first_file_upload": "2025-10-13T21:00:38.935628Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 0
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.2",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-10-14T15:02:19.623649Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.3",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-10-17T15:04:19.346473Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.4",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-11-05T10:50:06.732134Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.12.5",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2025-11-26T15:11:44.605145Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-04-13T10:51:33.343795Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2026-02-23T17:58:19.973752Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2026-02-24T17:07:42.545856Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.0b3",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2026-03-31T06:51:50.457441Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.1",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-04-15T14:57:17.277313Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.2",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-04-17T09:31:57.541199Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.3",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-04-20T14:46:41.402738Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.4",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-05-06T13:43:02.641507Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.13.5",
+      "eligible": false,
+      "reasons": [
+        "development_incumbent_version"
+      ],
+      "first_file_upload": "2026-08-28T14:03:59.136157Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.14.0",
+      "eligible": true,
+      "reasons": [],
+      "first_file_upload": "2026-10-08T14:34:46.864517Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.14.0a1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2026-05-22T13:23:40.570634Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.14.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2026-08-06T14:29:28.507991Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.14.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev"
+      ],
+      "first_file_upload": "2026-09-09T21:55:04.669864Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.14.1",
+      "eligible": false,
+      "reasons": [
+        "v1_source_or_runtime_exposure",
+        "development_proposed_latest_version"
+      ],
+      "first_file_upload": "2026-10-11T18:37:53.437059Z",
+      "source_or_runtime_exposure": "v1 native import/runtime and bundled wheel; also proposed development version",
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.2.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-08-17T12:25:23.631670Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.2.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-08-18T16:47:39.583999Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.3.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-08-23T18:59:43.720177Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.4.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-09-25T13:59:58.122512Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.4.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-09-26T14:49:12.729843Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.4.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-09-28T07:08:34.955822Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.5.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-11-13T17:17:45.239261Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.5.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-11-09T18:03:07.185256Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.5.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-11-15T13:42:46.438850Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.5.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-11-22T13:52:00.230342Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.5.3",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2023-12-22T10:39:43.758993Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.6.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-01-29T14:39:01.673225Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.6.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-01-19T17:38:57.818779Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.6.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-02-05T14:12:40.176628Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.6.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-02-23T16:53:59.379192Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.6.3",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-02-27T19:01:57.382129Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.6.4",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-03-12T13:20:33.351857Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.7.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-04-11T16:56:05.988223Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.7.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-04-03T19:12:20.049341Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.7.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-04-23T13:38:16.616829Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.7.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-05-28T18:38:44.607564Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.7.3",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-06-03T18:50:39.602084Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.7.4",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-06-12T14:11:54.176681Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.8.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-07-01T15:56:10.678988Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.8.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-06-27T14:37:37.096116Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.8.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-07-03T23:11:27.471126Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.8.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-07-04T02:59:45.330287Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.9.0",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-05T16:23:47.683058Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.9.0b1",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-08-26T17:12:50.353718Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.9.0b2",
+      "eligible": false,
+      "reasons": [
+        "prerelease_or_dev",
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-08-31T01:46:21.161828Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.9.1",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-09T09:12:47.597045Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    },
+    {
+      "package": "pydantic",
+      "version": "2.9.2",
+      "eligible": false,
+      "reasons": [
+        "outside_current_profile_dependency_constraints"
+      ],
+      "first_file_upload": "2024-09-17T15:59:51.827231Z",
+      "source_or_runtime_exposure": null,
+      "eligible_wheel_files": 1
+    }
+  ],
+  "metadata_artifact_identities": {
+    "fastapi-0.141.1.json": {
+      "sha256": "1a405349a4c89d959158c986c95a95ef58c1fdb7ceaa5466e11e7db03d909e01",
+      "bytes": 3758
+    },
+    "pydantic-2.13.2.json": {
+      "sha256": "40a2cbe8ceefad3a2d2de8ae902f8ec3cc2542c0fcfc78e677bd447a1d9306ff",
+      "bytes": 2269
+    },
+    "pydantic-2.13.3.json": {
+      "sha256": "2ddaa84928d293659e5191df6d101e1b0d15f4f0a7d6d7b5a43868579f11a6c8",
+      "bytes": 2269
+    },
+    "pydantic-2.13.4.json": {
+      "sha256": "5fd98b1e4f9427ddeddc4d7f482356b3e5bcab18e9ac545827bef95ff0c9e117",
+      "bytes": 2269
+    },
+    "pydantic-2.13.5.json": {
+      "sha256": "915f7f850ad828586c68bb7994873b5cdc0f985653844a136a181755c5c89712",
+      "bytes": 2269
+    },
+    "pydantic-2.14.0.json": {
+      "sha256": "16f4cccfbbf34091f4125f7b8d5fd41b1cf6e76eb61261aff2f883426789fa31",
+      "bytes": 2240
+    },
+    "pydantic-project.json": {
+      "sha256": "e47ff1debaa2d787e5619e16485ec59a6c8562d9709c58477b96e12dea0af857",
+      "bytes": 1597131
+    },
+    "pydantic-settings-2.15.0.json": {
+      "sha256": "9957fd7b2ad0a62e47cd14938fd67d7c892a221be5090da7bc190f320fa635bd",
+      "bytes": 2472
+    },
+    "starlette-1.5.1.json": {
+      "sha256": "41cf6b8db38f0c296276a6260dbb56be889bbf58e82e2192326a89aa829ab187",
+      "bytes": 2332
+    },
+    "starlette-1.6.0.json": {
+      "sha256": "c34189225ef73cc10473d8df4947edb68e75217d2db646b0f2ba09ee945e1152",
+      "bytes": 2332
+    },
+    "starlette-1.7.0.json": {
+      "sha256": "7a587074d85fe3e7d1a76cb6ab963fa874cb32635058955f47662d838e5f8b63",
+      "bytes": 2378
+    },
+    "starlette-1.8.0.json": {
+      "sha256": "dbcf895db4da57f946a7a89e83ee2c4c533a5a70dedc7c7c22f1038eb8ece537",
+      "bytes": 2378
+    },
+    "starlette-1.9.0.json": {
+      "sha256": "f96e0d548ec823a03d2730a93a0b068d4d97ae0b961ff55792f8d1dc64bef7b2",
+      "bytes": 2378
+    },
+    "starlette-project.json": {
+      "sha256": "1f76e40fea80dcbda0f6ef4373d9ed26dc91395212c1f78a70fe305fa9679312",
+      "bytes": 234818
+    }
+  },
+  "limitations": [
+    "Public historical releases may have model pretraining exposure; held out only from this study's source/runtime inspection.",
+    "Common support dependencies and unchanged consumer source are legitimate reused inputs, not claimed fresh code.",
+    "Metadata compatibility is not a successful installation or behavior result; full closure and execution follow the protocol freeze.",
+    "Historical recurrence is representative; no actual customer recurrence, demand or orders are asserted.",
+    "Development and primary versions never count as extra missions merely because of repeated cases or evaluations."
+  ],
+  "wheel_or_source_body_downloads": 0,
+  "execution_outcomes_observed": 0
+}

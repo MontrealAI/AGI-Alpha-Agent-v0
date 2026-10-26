@@ -1,0 +1,43 @@
+{
+  "schema": "postfreeze-economic-analysis-execution/v1",
+  "started_at": "2026-10-26T15:45:04.586722+00:00",
+  "ended_at": "2026-10-26T15:45:05.016310+00:00",
+  "wall_seconds": 0.42959345700000995,
+  "process_cpu_seconds": 0.0009491039999999992,
+  "child_cpu_seconds": 0.44149499999999997,
+  "child_peak_rss_kib": 43156,
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/collect_evidence.py",
+        "--out",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/results/economic-analysis-02",
+        "--lifecycle",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/lifecycle-resource-map-v3.json",
+        "--emit-canonical"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"out\": \"/workspace/scratch/8586be0c300d/research/useful-work-v2/results/economic-analysis-02\", \"unique_missions\": 6, \"arm_evaluations\": 18, \"accepted_by_arm\": {\"manual\": 6, \"retained\": 6, \"conventional\": 6}, \"actual_collections_minor\": 0, \"complete_cost_minor\": null}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/audit_economics.py",
+        "--analysis",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/results/economic-analysis-02"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"errors\": [],\n  \"by_arm\": {\n    \"manual\": {\n      \"accepted\": 6,\n      \"evaluations\": 6,\n      \"service_span_seconds\": {\n        \"n\": 6,\n        \"sum\": 225.55295404000026,\n        \"mean\": 37.59215900666671,\n        \"median\": 36.21969123349936,\n        \"min\": 25.809259321000354,\n        \"max\": 50.462376161000066\n      },\n      \"mechanical_wall_seconds\": {\n        \"n\": 6,\n        \"sum\": 97.96518621399991,\n        \"mean\": 16.327531035666652,\n        \"median\": 16.310013683500074,\n        \"min\": 16.24252338200131,\n        \"max\": 16.443420898000113\n      },\n      \"enclosing_local_cpu_seconds\": {\n        \"n\": 6,\n        \"sum\": 10.770071736999999,\n        \"mean\": 1.7950119561666664,\n        \"median\": 1.7858303344999982,\n        \"min\": 1.6591583439999995,\n        \"max\": 1.953311551\n      },\n      \"logical_output_bytes\": 3656805,\n      \"output_files\": 402,\n      \"explicit_manual_finalizations\": 6\n    },\n    \"retained\": {\n      \"accepted\": 6,\n      \"evaluations\": 6,\n      \"service_span_seconds\": {\n        \"n\": 6,\n        \"sum\": 99.3365096100024,\n        \"mean\": 16.5560849350004,\n        \"median\": 16.55389281550015,\n        \"min\": 16.438966696001444,\n        \"max\": 16.668533258000025\n      },\n      \"mechanical_wall_seconds\": {\n        \"n\": 6,\n        \"sum\": 99.00233314999969,\n        \"mean\": 16.50038885833328,\n        \"median\": 16.506342891500026,\n        \"min\": 16.393878164000853,\n        \"max\": 16.58264459899874\n      },\n      \"enclosing_local_cpu_seconds\": {\n        \"n\": 6,\n        \"sum\": 12.093828436999996,\n        \"mean\": 2.0156380728333327,\n        \"median\": 2.0431681504999966,\n        \"min\": 1.849179093000001,\n        \"max\": 2.1290232040000006\n      },\n      \"logical_output_bytes\": 3447397,\n      \"output_files\": 348,\n      \"explicit_manual_finalizations\": 0\n    },\n    \"conventional\": {\n      \"accepted\": 6,\n      \"evaluations\": 6,\n      \"service_span_seconds\": {\n        \"n\": 6,\n        \"sum\": 99.81986377200155,\n        \"mean\": 16.63664396200026,\n        \"median\": 16.627591529999336,\n        \"min\": 16.529743087001407,\n        \"max\": 16.75756491300126\n      },\n      \"mechanical_wall_seconds\": {\n        \"n\": 6,\n        \"sum\": 99.51314501000343,\n        \"mean\": 16.585524168333905,\n        \"median\": 16.576405476999753,\n        \"min\": 16.484384171000784,\n        \"max\": 16.699706765000883\n      },\n      \"enclosing_local_cpu_seconds\": {\n        \"n\": 6,\n        \"sum\": 12.643164120000007,\n        \"mean\": 2.1071940200000014,\n        \"median\": 2.0849502084999996,\n        \"min\": 1.9754209400000002,\n        \"max\": 2.347188295000005\n      },\n      \"logical_output_bytes\": 55413090,\n      \"output_files\": 390,\n      \"explicit_manual_finalizations\": 0\n    }\n  },\n  \"paired_retained_minus_conventional\": {\n    \"service_span_seconds\": {\n      \"n\": 6,\n      \"sum\": -0.48335416199915926,\n      \"mean\": -0.08055902699985988,\n      \"median\": -0.07289597100043466,\n      \"min\": -0.23518892300126026,\n      \"max\": 0.04530980900017312\n    },\n    \"mechanical_wall_seconds\": {\n      \"n\": 6,\n      \"sum\": -0.5108118600037415,\n      \"mean\": -0.08513531000062358,\n      \"median\": -0.07608024400087743,\n      \"min\": -0.2184041820000857,\n      \"max\": 0.03604100099801144\n    },\n    \"enclosing_local_cpu_seconds\": {\n      \"n\": 6,\n      \"sum\": -0.5493356830000109,\n      \"mean\": -0.09155594716666848,\n      \"median\": -0.05757764099999907,\n      \"min\": -0.34608530800000903,\n      \"max\": 0.10986412600000106\n    },\n    \"logical_output_bytes\": {\n      \"n\": 6,\n      \"sum\": -51965693,\n      \"mean\": -8660948.833333334,\n      \"median\": -8660951.5,\n      \"min\": -8661194,\n      \"max\": -8660697\n    }\n  }\n}\n",
+      "stderr": ""
+    }
+  ],
+  "complete_success": true,
+  "primary_consumer_executions": 0,
+  "new_primary_missions": 0,
+  "accounting": "Enclosing analysis02 collection+canonical+audit, belongs to final delivery cost supplement; do not add inner audit/collector resources again.",
+  "inference_tokens": null,
+  "human_minutes": null,
+  "money_usd": null
+}

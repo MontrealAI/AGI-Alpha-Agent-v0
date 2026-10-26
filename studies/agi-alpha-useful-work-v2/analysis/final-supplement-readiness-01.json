@@ -1,0 +1,57 @@
+{
+  "schema": "final-supplement-readiness-controls/v1",
+  "created_at": "2026-10-26T15:53:04.683763+00:00",
+  "commands": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/test_final_delivery_cost_supplement.py"
+      ],
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 0.011s\n\nOK\n",
+      "passed": true
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final_delivery_cost_supplement.py",
+        "--plan",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final-delivery-cost-plan-template.json",
+        "--out",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/results/final-delivery-cost-draft-01"
+      ],
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "{\"status\": \"DRAFT_NOT_FINALIZED\", \"completed_records\": 5, \"required_pending\": 7, \"new_missions\": 0, \"complete_monetary_cost\": null, \"out\": \"/workspace/scratch/8586be0c300d/research/useful-work-v2/results/final-delivery-cost-draft-01\"}\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final_delivery_cost_supplement.py",
+        "--plan",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final-delivery-cost-plan-template.json",
+        "--out",
+        "/workspace/scratch/8586be0c300d/research/useful-work-v2/results/final-delivery-cost-premature-01",
+        "--finalize"
+      ],
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final_delivery_cost_supplement.py\", line 230, in <module>\n    main()\n  File \"/workspace/scratch/8586be0c300d/research/useful-work-v2/analysis/final_delivery_cost_supplement.py\", line 188, in main\n    raise ValueError('Cannot finalize while required activities are pending: ' + ', '.join(row['id'] for row in required_pending))\nValueError: Cannot finalize while required activities are pending: pdf-render-02, ruff-first-failure, ruff-final-pass, public-source-publication, complete-zip-seal, independent-actual-extraction, library-delivery\n",
+      "passed": true
+    }
+  ],
+  "all_expected_outcomes": true,
+  "premature_final_directory_absent": true,
+  "wall_seconds": 0.22355646200048795,
+  "process_cpu_seconds": 0.0020380899999999993,
+  "child_cpu_seconds": 0.221991,
+  "new_primary_missions": 0,
+  "money_usd": null,
+  "inference_tokens": null,
+  "source_sha256": "7799f5e81959b85a7f454e89608cf733fed7fed5374a3d508ac79e59ee6af5df"
+}

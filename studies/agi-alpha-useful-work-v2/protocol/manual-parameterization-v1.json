@@ -1,0 +1,64 @@
+{
+  "schema": "manual-incumbent-parameterization/v1",
+  "completed_at": "2026-10-26T15:15:17.991724+00:00",
+  "purpose": "One-time charged adaptation of retained first manual assembler before primary freeze; root supplies disposition, common verifier evidence constrains it.",
+  "original_preserved": {
+    "path": "curation/assemble_first_delivery.py",
+    "sha256": "bab215beb2dc19e412f5b87fa56543a5d6082c32198a53d135d4dcebe6344f28",
+    "bytes": 11918
+  },
+  "new_assets": [
+    {
+      "path": "curation/assemble_manual_mission.py",
+      "sha256": "1f4846ad54c8d0a29650fc793ab494e37ed26049959167ed7f4dd09a13ddf805",
+      "bytes": 17810
+    },
+    {
+      "path": "tests/test_manual_parameterization.py",
+      "sha256": "bc5c8b2fe0e93169da48d3ddaf2221fec369f04121d2fd48b880362df6084fff",
+      "bytes": 2818
+    },
+    {
+      "path": "protocol/baseline-cache-permission.md",
+      "sha256": "6efa0d9bfc5848cd15c8931961227d89369a690ec373c4d9dbc0fed6c6830358",
+      "bytes": 1954
+    }
+  ],
+  "shared_quality_gate": {
+    "path": "src/conventional_package.py",
+    "sha256": "cd28579ecf72eba5bdfffa6b3b5483aaaa960322989d2a2369da5431062207ba",
+    "bytes": 20821
+  },
+  "interface": "--job JOB --pair-root RECORDS --out NEW_PACKAGE --decision SCOPED_COMPONENT_PRESERVED|COMPONENT_REGRESSION|INCOMPLETE_HOLD",
+  "development": {
+    "pair": "results/development/native-retained-02/delivery/pair",
+    "probe_reruns": 0,
+    "setup_controls": 3,
+    "setup_result": "PASS",
+    "package": "results/development/manual-parameterized-package",
+    "decision": "SCOPED_COMPONENT_PRESERVED",
+    "verified_package_files": 42,
+    "receipts": [
+      {
+        "path": "results/development/manual-parameterization-setup-execution.json",
+        "sha256": "eed6719ee20218e858468169df3b9641da837be570e848612c05b96716e893d1",
+        "bytes": 3316
+      },
+      {
+        "path": "results/development/manual-parameterized-package-execution.json",
+        "sha256": "7953c94078f5b0f7ab68ad459ac9055ab74d746cb7abd31c76e646fab5b88227",
+        "bytes": 4610
+      },
+      {
+        "path": "results/development/manual-parameterization-lint-execution.json",
+        "sha256": "125222019d284d719a99e31085fb5c0883987e7ec98323c71d3c5d19006de7d5",
+        "bytes": 2902
+      }
+    ],
+    "lint": "Ruff0.12.5 with actual alpha/pyproject.toml; no findings"
+  },
+  "fresh_confirmation_inputs_inspected": false,
+  "method": "Researcher-assisted incumbent with explicit manual disposition; not a no-AI human benchmark, not B decision producer.",
+  "cache_permission": "Exact unchanged baseline proof chains permitted equally; existing builders elect fresh parallel before/after. New target executes; identical whole job no-op.",
+  "cost": "Construction and shared quality gate are charged; complete inference/attention/money costs remain unknown."
+}

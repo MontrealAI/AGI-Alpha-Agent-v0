@@ -1,0 +1,9 @@
+# Baseline evidence reuse: permission and observed implementation
+
+All three builders may retain and reuse a previously verified baseline when the exact consumer, contract, dependency environment, worker and verifier identities still match and the complete original custody plus the new mission's reference to that evidence are preserved. This is legitimate reusable evidence; it is not prohibited by the protocol. A changed proposed target requires fresh execution. An identical whole job is a no-op or evidence lookup, not a new customer mission.
+
+The evaluated conventional implementation **elects to execute both environments in parallel**. It retains its suite, wheel/environment assets and ordinary source tools, but it has not constructed a cross-mission cached-observation proof chain. Its `observation_cache_used: false` records what it did, not what permission it lacked. The other currently implemented workflows make the same fresh-pair choice. The original 15-second timeout therefore occurs concurrently in both processes; the recorded elapsed interval must not be doubled to estimate turnaround.
+
+Earlier wording that a fresh mission executes its required probes concerns the evidence required for changed inputs. It must not be read as requiring an unchanged, exactly bound baseline to be recomputed when a valid reusable proof chain is available. The fresh-pair instructions in the manual operational protocol describe the selected implementation, not a ban on legitimate baseline reuse.
+
+Building and checking such a proof chain would have its own construction, integration, storage and maintenance costs. No implementation, economic benefit or attention saving for it is asserted here. No new cache is built merely to optimize this small component cost, and no comparator is denied that option to manufacture an advantage. This clarification changes no frozen code, outcomes, semantic acceptance, resource limits or mission selection.

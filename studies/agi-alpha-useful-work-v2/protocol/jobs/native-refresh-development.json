@@ -1,0 +1,45 @@
+{
+  "schema": "alpha-component-job/v1",
+  "mission_id": "native-refresh-development",
+  "phase": "development",
+  "trigger": "Assess the proposed native Starlette1.7.0/Pydantic2.13.5 to1.10.0/2.14.1 component tuple; a real source-profile maintenance question, not a paid order.",
+  "contract": {
+    "path": "protocol/component-contract.json",
+    "sha256": "89d9c776a7c9f32444b1e14479b9403e8beaaef81c0832f0237af027ddf41735"
+  },
+  "consumer": {
+    "directory": "data/consumer",
+    "api_sha256": "096e97ba9433b988f4cef3b96a6a53cc5d8d42f7cb775d3e0a7dc90fdfac5215",
+    "models_sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab"
+  },
+  "before": {
+    "environment": "data/development-baseline-bridge-environment",
+    "expected_versions": {
+      "starlette": "1.7.0",
+      "anyio": "4.15.1",
+      "pydantic": "2.13.5",
+      "pydantic-core": "2.46.5",
+      "annotated-types": "0.8.0",
+      "typing-extensions": "4.16.0",
+      "typing-inspection": "0.4.4",
+      "idna": "3.20",
+      "fastapi": "0.141.1",
+      "annotated-doc": "0.0.5"
+    }
+  },
+  "after": {
+    "environment": "data/development-target-environment",
+    "expected_versions": {
+      "starlette": "1.10.0",
+      "anyio": "4.15.1",
+      "pydantic": "2.14.1",
+      "pydantic-core": "2.50.1",
+      "annotated-types": "0.8.0",
+      "typing-extensions": "4.16.0",
+      "typing-inspection": "0.4.4",
+      "idna": "3.20",
+      "fastapi": "0.141.1",
+      "annotated-doc": "0.0.5"
+    }
+  }
+}
