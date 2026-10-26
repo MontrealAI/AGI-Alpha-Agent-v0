@@ -16,14 +16,14 @@ def _git(cwd: Path, *args: str) -> None:
 
 
 def test_empty_lint_selection_cannot_skip_research_integrity(monkeypatch: Any, tmp_path: Path) -> None:
-    from scripts import check_strategy_research_source
+    from scripts import check_strategy_research_compatibility_v2
     from scripts.ruff_targets import run_ruff
 
     def changed_source(root: Path) -> dict[str, Any]:
         assert root == tmp_path
         raise ValueError("Pinned research source changed")
 
-    monkeypatch.setattr(check_strategy_research_source, "require_preserved", changed_source)
+    monkeypatch.setattr(check_strategy_research_compatibility_v2, "require_preserved", changed_source)
     with pytest.raises(ValueError, match="Pinned research source changed"):
         run_ruff(tmp_path, [], 200)
 

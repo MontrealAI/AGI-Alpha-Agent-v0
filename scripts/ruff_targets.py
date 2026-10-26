@@ -6,8 +6,6 @@ from __future__ import annotations
 
 import argparse
 import subprocess
-import sys
-from itertools import islice
 from pathlib import Path
 
 PYTHON_FILE_GLOBS: tuple[str, ...] = ("*.py", "*.pyi", "*.ipynb")
@@ -72,29 +70,13 @@ def _walk_python_files(repo_root: Path) -> list[str]:
 
 def run_ruff(repo_root: Path, targets: list[str], batch_size: int) -> int:
     """Run Ruff over ``targets`` in deterministic batches to avoid long argv."""
-    # Preserve these imported scientific artifacts before applying their finite
-    # exact-file compatibility rules, including the empty-target case.
+    # The successor executes the unchanged v1 guard from captured, verified
+    # bytes before any exception-bearing lint invocation, even with no targets.
     if __package__:
-        from .check_strategy_research_source import require_preserved
+        from .check_strategy_research_compatibility_v2 import run_ruff as run_compatible_ruff
     else:
-        from check_strategy_research_source import require_preserved
-    require_preserved(repo_root)
-    if not targets:
-        print("No tracked Python files found; skipping Ruff.")
-        return 0
-
-    command_prefix = [sys.executable, "-m", "ruff", "check", "--force-exclude"]
-    start = 0
-    total = len(targets)
-    while start < total:
-        stop = start + batch_size
-        batch = list(islice(targets, start, stop))
-        command = command_prefix + batch
-        result = subprocess.run(command, cwd=repo_root)
-        if result.returncode != 0:
-            return result.returncode
-        start = stop
-    return 0
+        from check_strategy_research_compatibility_v2 import run_ruff as run_compatible_ruff
+    return run_compatible_ruff(repo_root, targets, batch_size)
 
 
 def parse_args() -> argparse.Namespace:
