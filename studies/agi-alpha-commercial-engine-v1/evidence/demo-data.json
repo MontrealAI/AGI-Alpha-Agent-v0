@@ -1,0 +1,454 @@
+{
+  "actual": {
+    "packet_filename": "AGI_ALPHA_Upgrade_Decision_Packet_Reviewed.zip",
+    "packet_sha256": "dee86f581bfbc4ae013ebe6994037926ea7d5aaf0695a006e1a0fd42995219cc",
+    "customer_outcome_en": "A source-bound decision on the native AGI ALPHA request boundary and strict mission inputs, with exact before/after dependency profiles, original observations, a reviewable component-lock patch and next action.",
+    "customer_outcome_fr": "Une décision fondée sur les sources concernant le contrôle des requêtes et les entrées strictes des missions AGI ALPHA, avec profils de dépendances avant/après, observations originales, correctif du verrou des composants et prochaine action.",
+    "next_action_en": "Retain the native application lock. Advance the component evidence to the existing full-application qualification process.",
+    "next_action_fr": "Conserver le verrou de l’application native. Transmettre les preuves des composants au processus existant de qualification complète.",
+    "scope_en": "Internal project requirement. The exported packet rechecks registered evidence; it does not acquire new releases or qualify the whole application. Customer acceptance and paid demand remain unobserved.",
+    "scope_fr": "Besoin interne du projet. Le dossier exporté revérifie les preuves enregistrées; il n’acquiert pas de nouvelles versions et ne qualifie pas l’application complète. L’acceptation par un client et la demande payante ne sont pas observées.",
+    "source_revision": "Consumer eb07086ac427; writer freeze f417768b69a6; product base c4a7febc02fb",
+    "distinct_transitions": 6,
+    "arm_evaluations": 18,
+    "conditions_before": 61,
+    "conditions_after": 61,
+    "incumbent_finalizations": 6,
+    "improved_finalizations": 0,
+    "actual_collections_usd": 0,
+    "timings": [
+      {
+        "arm": "A",
+        "label_en": "Researcher-assisted incumbent",
+        "label_fr": "Méthode initiale assistée",
+        "seconds": 36.21969123349936
+      },
+      {
+        "arm": "B",
+        "label_en": "Retained automatic workflow",
+        "label_fr": "Parcours automatisé conservé",
+        "seconds": 16.55389281550015
+      },
+      {
+        "arm": "C",
+        "label_en": "Strong conventional builder",
+        "label_fr": "Méthode conventionnelle solide",
+        "seconds": 16.627591529999336
+      }
+    ],
+    "evidence_rows": [
+      {
+        "mission_id": "starlette-1",
+        "transition_en": "starlette 1.5.1 → 1.6.0",
+        "transition_fr": "starlette 1.5.1 → 1.6.0",
+        "outcome_en": "Scoped preservation · all three arms",
+        "outcome_fr": "Préservation limitée · trois méthodes"
+      },
+      {
+        "mission_id": "starlette-2",
+        "transition_en": "starlette 1.6.0 → 1.8.0",
+        "transition_fr": "starlette 1.6.0 → 1.8.0",
+        "outcome_en": "Scoped preservation · all three arms",
+        "outcome_fr": "Préservation limitée · trois méthodes"
+      },
+      {
+        "mission_id": "starlette-3",
+        "transition_en": "starlette 1.8.0 → 1.9.0",
+        "transition_fr": "starlette 1.8.0 → 1.9.0",
+        "outcome_en": "Scoped preservation · all three arms",
+        "outcome_fr": "Préservation limitée · trois méthodes"
+      },
+      {
+        "mission_id": "pydantic-1",
+        "transition_en": "pydantic 2.13.2 → 2.13.3, pydantic-core 2.46.2 → 2.46.3",
+        "transition_fr": "pydantic 2.13.2 → 2.13.3, pydantic-core 2.46.2 → 2.46.3",
+        "outcome_en": "Scoped preservation · all three arms",
+        "outcome_fr": "Préservation limitée · trois méthodes"
+      },
+      {
+        "mission_id": "pydantic-2",
+        "transition_en": "pydantic 2.13.3 → 2.13.4, pydantic-core 2.46.3 → 2.46.4",
+        "transition_fr": "pydantic 2.13.3 → 2.13.4, pydantic-core 2.46.3 → 2.46.4",
+        "outcome_en": "Scoped preservation · all three arms",
+        "outcome_fr": "Préservation limitée · trois méthodes"
+      },
+      {
+        "mission_id": "pydantic-3",
+        "transition_en": "pydantic 2.13.4 → 2.14.0, pydantic-core 2.46.4 → 2.50.0",
+        "transition_fr": "pydantic 2.13.4 → 2.14.0, pydantic-core 2.46.4 → 2.50.0",
+        "outcome_en": "Scoped preservation · all three arms",
+        "outcome_fr": "Préservation limitée · trois méthodes"
+      }
+    ],
+    "result": {
+      "economic_cost_usd": null,
+      "margin_usd": null,
+      "available_usd": null,
+      "asset_payback_reuses": null,
+      "next_investment_status_en": "Not established — no investment admitted",
+      "next_investment_status_fr": "Non établi — aucun investissement admis"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "no-demand",
+      "label_en": "No paid demand",
+      "label_fr": "Aucune demande payante",
+      "assumptions": [
+        {
+          "label_en": "All values are conditions, not measured estimates",
+          "label_fr": "Toutes les valeurs sont des conditions, pas des estimations mesurées",
+          "value": {
+            "en": "USD · one finite period; no demand or duration is validated",
+            "fr": "USD · une période finie; demande et durée non validées"
+          }
+        },
+        {
+          "label_en": "Price per accepted request",
+          "label_fr": "Prix par demande acceptée",
+          "value": "US$99"
+        },
+        {
+          "label_en": "Accepted / failed attempts",
+          "label_fr": "Acceptés / tentatives échouées",
+          "value": "0 / 0"
+        },
+        {
+          "label_en": "Collections",
+          "label_fr": "Encaissements",
+          "value": "95%"
+        },
+        {
+          "label_en": "Full routine cost per attempt",
+          "label_fr": "Coût courant complet par tentative",
+          "value": "US$20"
+        },
+        {
+          "label_en": "Business + service maintenance per period",
+          "label_fr": "Frais commerciaux + entretien par période",
+          "value": "US$70"
+        },
+        {
+          "label_en": "Exact tested asset construction, charged once",
+          "label_fr": "Construction de l’actif testé, comptée une fois",
+          "value": "US$600"
+        },
+        {
+          "label_en": "Incremental upkeep per accepted use",
+          "label_fr": "Entretien additionnel par utilisation acceptée",
+          "value": "US$1"
+        },
+        {
+          "label_en": "Reserve / distinct opening unpaid bill",
+          "label_fr": "Réserve / facture impayée antérieure distincte",
+          "value": "US$100 / US$50"
+        },
+        {
+          "label_en": "Hypothetical next-item cost cap",
+          "label_fr": "Plafond hypothétique de l’élément suivant",
+          "value": "US$200"
+        },
+        {
+          "label_en": "Incremental saving versus strongest alternative",
+          "label_fr": "Économie additionnelle face à la meilleure solution",
+          "value": {
+            "en": "Unknown — repayment remains unknown",
+            "fr": "Inconnue — remboursement non établi"
+          }
+        }
+      ],
+      "result": {
+        "modeled_collections_usd": 0.0,
+        "economic_cost_usd": 670.0,
+        "margin_usd": -670.0,
+        "available_usd": 0.0,
+        "asset_payback_reuses": null,
+        "next_investment_status_en": "HOLD — affordability does not justify investment",
+        "next_investment_status_fr": "SUSPENDU — la capacité de payer ne justifie pas l’investissement"
+      }
+    },
+    {
+      "id": "low-demand",
+      "label_en": "Low demand: 4 accepted",
+      "label_fr": "Faible demande : 4 acceptés",
+      "assumptions": [
+        {
+          "label_en": "All values are conditions, not measured estimates",
+          "label_fr": "Toutes les valeurs sont des conditions, pas des estimations mesurées",
+          "value": {
+            "en": "USD · one finite period; no demand or duration is validated",
+            "fr": "USD · une période finie; demande et durée non validées"
+          }
+        },
+        {
+          "label_en": "Price per accepted request",
+          "label_fr": "Prix par demande acceptée",
+          "value": "US$99"
+        },
+        {
+          "label_en": "Accepted / failed attempts",
+          "label_fr": "Acceptés / tentatives échouées",
+          "value": "4 / 1"
+        },
+        {
+          "label_en": "Collections",
+          "label_fr": "Encaissements",
+          "value": "95%"
+        },
+        {
+          "label_en": "Full routine cost per attempt",
+          "label_fr": "Coût courant complet par tentative",
+          "value": "US$20"
+        },
+        {
+          "label_en": "Business + service maintenance per period",
+          "label_fr": "Frais commerciaux + entretien par période",
+          "value": "US$70"
+        },
+        {
+          "label_en": "Exact tested asset construction, charged once",
+          "label_fr": "Construction de l’actif testé, comptée une fois",
+          "value": "US$600"
+        },
+        {
+          "label_en": "Incremental upkeep per accepted use",
+          "label_fr": "Entretien additionnel par utilisation acceptée",
+          "value": "US$1"
+        },
+        {
+          "label_en": "Reserve / distinct opening unpaid bill",
+          "label_fr": "Réserve / facture impayée antérieure distincte",
+          "value": "US$100 / US$50"
+        },
+        {
+          "label_en": "Hypothetical next-item cost cap",
+          "label_fr": "Plafond hypothétique de l’élément suivant",
+          "value": "US$200"
+        },
+        {
+          "label_en": "Incremental saving versus strongest alternative",
+          "label_fr": "Économie additionnelle face à la meilleure solution",
+          "value": {
+            "en": "Unknown — repayment remains unknown",
+            "fr": "Inconnue — remboursement non établi"
+          }
+        }
+      ],
+      "result": {
+        "modeled_collections_usd": 376.2,
+        "economic_cost_usd": 774.0,
+        "margin_usd": -397.8,
+        "available_usd": 0.0,
+        "asset_payback_reuses": null,
+        "next_investment_status_en": "HOLD — affordability does not justify investment",
+        "next_investment_status_fr": "SUSPENDU — la capacité de payer ne justifie pas l’investissement"
+      }
+    },
+    {
+      "id": "conditional-pilot",
+      "label_en": "Conditional pilot: 12 accepted",
+      "label_fr": "Pilote conditionnel : 12 acceptés",
+      "assumptions": [
+        {
+          "label_en": "All values are conditions, not measured estimates",
+          "label_fr": "Toutes les valeurs sont des conditions, pas des estimations mesurées",
+          "value": {
+            "en": "USD · one finite period; no demand or duration is validated",
+            "fr": "USD · une période finie; demande et durée non validées"
+          }
+        },
+        {
+          "label_en": "Price per accepted request",
+          "label_fr": "Prix par demande acceptée",
+          "value": "US$99"
+        },
+        {
+          "label_en": "Accepted / failed attempts",
+          "label_fr": "Acceptés / tentatives échouées",
+          "value": "12 / 2"
+        },
+        {
+          "label_en": "Collections",
+          "label_fr": "Encaissements",
+          "value": "95%"
+        },
+        {
+          "label_en": "Full routine cost per attempt",
+          "label_fr": "Coût courant complet par tentative",
+          "value": "US$20"
+        },
+        {
+          "label_en": "Business + service maintenance per period",
+          "label_fr": "Frais commerciaux + entretien par période",
+          "value": "US$70"
+        },
+        {
+          "label_en": "Exact tested asset construction, charged once",
+          "label_fr": "Construction de l’actif testé, comptée une fois",
+          "value": "US$600"
+        },
+        {
+          "label_en": "Incremental upkeep per accepted use",
+          "label_fr": "Entretien additionnel par utilisation acceptée",
+          "value": "US$1"
+        },
+        {
+          "label_en": "Reserve / distinct opening unpaid bill",
+          "label_fr": "Réserve / facture impayée antérieure distincte",
+          "value": "US$100 / US$50"
+        },
+        {
+          "label_en": "Hypothetical next-item cost cap",
+          "label_fr": "Plafond hypothétique de l’élément suivant",
+          "value": "US$200"
+        },
+        {
+          "label_en": "Incremental saving versus strongest alternative",
+          "label_fr": "Économie additionnelle face à la meilleure solution",
+          "value": {
+            "en": "Unknown — repayment remains unknown",
+            "fr": "Inconnue — remboursement non établi"
+          }
+        }
+      ],
+      "result": {
+        "modeled_collections_usd": 1128.6,
+        "economic_cost_usd": 962.0,
+        "margin_usd": 166.6,
+        "available_usd": 16.6,
+        "asset_payback_reuses": null,
+        "next_investment_status_en": "HOLD — affordability does not justify investment",
+        "next_investment_status_fr": "SUSPENDU — la capacité de payer ne justifie pas l’investissement"
+      }
+    },
+    {
+      "id": "high-demand",
+      "label_en": "Higher demand: 24 accepted",
+      "label_fr": "Demande accrue : 24 acceptés",
+      "assumptions": [
+        {
+          "label_en": "All values are conditions, not measured estimates",
+          "label_fr": "Toutes les valeurs sont des conditions, pas des estimations mesurées",
+          "value": {
+            "en": "USD · one finite period; no demand or duration is validated",
+            "fr": "USD · une période finie; demande et durée non validées"
+          }
+        },
+        {
+          "label_en": "Price per accepted request",
+          "label_fr": "Prix par demande acceptée",
+          "value": "US$99"
+        },
+        {
+          "label_en": "Accepted / failed attempts",
+          "label_fr": "Acceptés / tentatives échouées",
+          "value": "24 / 3"
+        },
+        {
+          "label_en": "Collections",
+          "label_fr": "Encaissements",
+          "value": "95%"
+        },
+        {
+          "label_en": "Full routine cost per attempt",
+          "label_fr": "Coût courant complet par tentative",
+          "value": "US$20"
+        },
+        {
+          "label_en": "Business + service maintenance per period",
+          "label_fr": "Frais commerciaux + entretien par période",
+          "value": "US$70"
+        },
+        {
+          "label_en": "Exact tested asset construction, charged once",
+          "label_fr": "Construction de l’actif testé, comptée une fois",
+          "value": "US$600"
+        },
+        {
+          "label_en": "Incremental upkeep per accepted use",
+          "label_fr": "Entretien additionnel par utilisation acceptée",
+          "value": "US$1"
+        },
+        {
+          "label_en": "Reserve / distinct opening unpaid bill",
+          "label_fr": "Réserve / facture impayée antérieure distincte",
+          "value": "US$100 / US$50"
+        },
+        {
+          "label_en": "Hypothetical next-item cost cap",
+          "label_fr": "Plafond hypothétique de l’élément suivant",
+          "value": "US$200"
+        },
+        {
+          "label_en": "Incremental saving versus strongest alternative",
+          "label_fr": "Économie additionnelle face à la meilleure solution",
+          "value": {
+            "en": "Unknown — repayment remains unknown",
+            "fr": "Inconnue — remboursement non établi"
+          }
+        }
+      ],
+      "result": {
+        "modeled_collections_usd": 2257.2,
+        "economic_cost_usd": 1234.0,
+        "margin_usd": 1023.2,
+        "available_usd": 873.2,
+        "asset_payback_reuses": null,
+        "next_investment_status_en": "HOLD — affordability does not justify investment",
+        "next_investment_status_fr": "SUSPENDU — la capacité de payer ne justifie pas l’investissement"
+      }
+    }
+  ],
+  "source_links": [
+    {
+      "label": "Original coordination and source freeze",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6419703808"
+    },
+    {
+      "label": "Writer’s scoped outcome and original evidence · PR4932",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/pull/4932"
+    },
+    {
+      "label": "Commercial owner coordination",
+      "url": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850#issuecomment-6420145694"
+    },
+    {
+      "label": "BLS May2025 hourly wage medians",
+      "url": "https://www.bls.gov/news.release/ocwage.t01.htm"
+    },
+    {
+      "label": "Strong existing alternative: Dependabot",
+      "url": "https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-version-updates"
+    },
+    {
+      "label": "Strong existing alternative: Renovate",
+      "url": "https://docs.mend.io/renovate/latest/mend-renovate-cloud-resource-tiers"
+    }
+  ],
+  "price_hurdles": [
+    {
+      "price_usd": 25,
+      "qa_minutes": 29.92,
+      "developer_minutes": 22.94,
+      "max_cost_at_50pct": 12.5
+    },
+    {
+      "price_usd": 49,
+      "qa_minutes": 58.64,
+      "developer_minutes": 44.97,
+      "max_cost_at_50pct": 24.5
+    },
+    {
+      "price_usd": 99,
+      "qa_minutes": 118.47,
+      "developer_minutes": 90.85,
+      "max_cost_at_50pct": 49.5
+    },
+    {
+      "price_usd": 149,
+      "qa_minutes": 178.3,
+      "developer_minutes": 136.74,
+      "max_cost_at_50pct": 74.5
+    }
+  ]
+}

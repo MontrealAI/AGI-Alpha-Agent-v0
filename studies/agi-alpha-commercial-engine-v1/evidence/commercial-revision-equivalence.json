@@ -1,0 +1,77 @@
+{
+  "schema": "agi-alpha-commercial-revision-equivalence/v1",
+  "verified_at": "2026-10-26T15:57:50.687698+00:00",
+  "status": "PASS",
+  "model_source_sha256": "75038bbe34628e37d19b3dd6e22e3d1a7b09a3adad310f00319cffde343c30bf",
+  "input_and_result_equivalence": {
+    "input": {
+      "original_sha256": "3b4f239b74655e09080d4aeadbaa03360ba97c1559e34a33f0c55b0bbbb3eb2b",
+      "corrected_sha256": "eb9fa9d66bf50e49bb3feb5e444dce593cb85c2f244fb556bd98cf83481d9f68",
+      "changed_paths": [
+        "/scenarios/1/next_investment/asset_id",
+        "/scenarios/1/next_investment/reference",
+        "/scenarios/2/next_investment/asset_id",
+        "/scenarios/2/next_investment/reference",
+        "/scenarios/3/next_investment/asset_id",
+        "/scenarios/3/next_investment/reference",
+        "/scenarios/4/next_investment/asset_id",
+        "/scenarios/4/next_investment/reference"
+      ],
+      "all_numeric_boolean_null_values_unchanged": true,
+      "changes_only_next_investment_id_and_reference": true
+    },
+    "result": {
+      "original_sha256": "1ae97c8c35c5fc63a600027c788143a958f41be1505e6f57a3fb54c75e88f13d",
+      "corrected_sha256": "f77d4310e6a22aafb9ed1498a6a0429086b002c32d6d225a99fe9a71b722c5b2",
+      "changed_paths": [
+        "/scenarios/1/assumptions/next_investment/asset_id",
+        "/scenarios/1/assumptions/next_investment/reference",
+        "/scenarios/1/next_investment/asset_id",
+        "/scenarios/1/next_investment/reference",
+        "/scenarios/2/assumptions/next_investment/asset_id",
+        "/scenarios/2/assumptions/next_investment/reference",
+        "/scenarios/2/next_investment/asset_id",
+        "/scenarios/2/next_investment/reference",
+        "/scenarios/3/assumptions/next_investment/asset_id",
+        "/scenarios/3/assumptions/next_investment/reference",
+        "/scenarios/3/next_investment/asset_id",
+        "/scenarios/3/next_investment/reference",
+        "/scenarios/4/assumptions/next_investment/asset_id",
+        "/scenarios/4/assumptions/next_investment/reference",
+        "/scenarios/4/next_investment/asset_id",
+        "/scenarios/4/next_investment/reference"
+      ],
+      "all_numeric_boolean_null_values_unchanged": true,
+      "changes_only_next_investment_id_and_reference": true
+    }
+  },
+  "corrected_model_replay_equal": true,
+  "preserved_original_packet": {
+    "path": "deliverables/AGI_ALPHA_Upgrade_Decision_Packet.zip",
+    "sha256": "121fdcbc73245c7e9ca53d11d07da046e5b2ad0e2d21ca871c67e2dd6a132d87",
+    "zip_entries": 43,
+    "payload_hashes_verified": 42,
+    "crc_passed": true,
+    "scope": "Existing inert product export; not a new mission or live operator qualification."
+  },
+  "reviewed_usable_packet": {
+    "path": "deliverables/AGI_ALPHA_Upgrade_Decision_Packet_Reviewed.zip",
+    "sha256": "dee86f581bfbc4ae013ebe6994037926ea7d5aaf0695a006e1a0fd42995219cc",
+    "zip_entries": 43,
+    "payload_hashes_verified": 42,
+    "crc_passed": true,
+    "scope": "Existing inert product export; not a new mission or live operator qualification."
+  },
+  "owner_correction_inventory": {
+    "receipt_sha256": "605a6240e3e97e24b5b01b4760f6626e211530e578b1e51598ffa70778a206f4",
+    "source_files_verified": 73,
+    "source_base_commit": "35821ffe9131117a6c9873ec6fb877d796202649",
+    "scope": "Exact owner's correction inventory; diagnostic command paths remain historical records, not portable launch commands."
+  },
+  "new_next_asset_id": "unselected-next-investment-envelope",
+  "economic_admission_unchanged": true,
+  "original_confirmed_missions": 6,
+  "new_customer_jobs": 0,
+  "new_confirmation_missions": 0,
+  "scope": "Existing owner regression-import correction is complete. Numeric USD200 next-item envelope is unselected and unjustified; no new capability, saving or financing is inferred."
+}
