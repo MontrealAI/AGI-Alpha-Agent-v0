@@ -191,3 +191,33 @@ def test_underlying_read_contract_violation_is_recorded_and_rejected() -> None:
             stream.read()
     assert response.closed and bounded.exhausted
     assert bounded.body_bytes == len(b"too many returned bytes")
+
+
+class IntSubclass(int):
+    pass
+
+
+class FloatSubclass(float):
+    pass
+
+
+@pytest.mark.parametrize("value", [True, IntSubclass(1), FloatSubclass(1.0)])
+@pytest.mark.parametrize("field", ["max_body_bytes", "max_requests", "attempts", "backoff", "read_size"])
+def test_exact_builtin_controls_reject_bool_and_subclasses_before_work(tmp_path, value, field):
+    opener = Mock(return_value=io.BytesIO(b"x"))
+    if field in {"max_body_bytes", "max_requests"}:
+        limits = {"max_body_bytes": 5, "max_requests": 2}
+        limits[field] = value
+        with pytest.raises(ValueError):
+            BoundedOpener(opener, **limits)
+        opener.assert_not_called()
+    elif field == "read_size":
+        bounded = BoundedOpener(opener, max_body_bytes=5, max_requests=2)
+        with bounded("url") as response:
+            with pytest.raises(TypeError):
+                response.read(value)
+        assert bounded.body_bytes == 0
+    else:
+        with pytest.raises(ValueError):
+            downloader.download_with_retry(tmp_path, opener=opener, **{field: value})
+        opener.assert_not_called()
