@@ -283,7 +283,8 @@ def test_lock_symlink_is_refused_without_reading_target_or_charging(rig, tmp_pat
     assert "recovery_attempts" not in executor.status()["plans"][ref["plan_id"]]
 
 
-def test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt(rig):
+@pytest.mark.parametrize("cancel_during_wait", [False, True, "stop"])
+def test_server_sigkill_waits_for_surviving_original_writer_without_spending_attempt(rig, cancel_during_wait):
     import multiprocessing
 
     _app, journal, registry, _worker, executor, ref, headers = rig
@@ -342,6 +343,13 @@ def test_server_sigkill_waits_for_surviving_original_writer_without_spending_att
                 current = client.get("/api/strategy-executor/status", headers=headers).json()["plans"][ref["plan_id"]]
                 assert len(current["recovery_attempts"]) == 1
                 time.sleep(0.02)
+            if cancel_during_wait == "stop":
+                response = client.post("/api/strategy-executor/control", json={"state": "stopped"}, headers=headers)
+                assert response.status_code == 200 and response.json()["state"] == "stopped"
+            elif cancel_during_wait:
+                response = client.post("/api/strategy-executor/cancel", json=ref, headers=headers)
+                assert response.status_code == 200
+                assert response.json()["cancel_requested"]
             os.killpg(node_pid, signal.SIGCONT)
             end = time.monotonic() + 10
             while time.monotonic() < end:
@@ -349,6 +357,87 @@ def test_server_sigkill_waits_for_surviving_original_writer_without_spending_att
                 if current["state"] in {"completed", "unknown", "cancelled", "rejected"}:
                     break
                 time.sleep(0.02)
+            if cancel_during_wait == "stop":
+                marker = journal.root / "source-assurance/recovery-one-job/CANCELLED.json"
+                end = time.monotonic() + 5
+                while not marker.exists() and time.monotonic() < end:
+                    time.sleep(0.02)
+                assert current["state"] in {"running", "unknown"}
+                assert current["observed"]["service_work"] == len(current["recovery_attempts"]) == 1
+                assert reopened.state.strategy_executor.status()["state"] == "stopped"
+                with pytest.raises(Conflict):
+                    reopened.state.strategy_executor.control("ready")
+                assert (journal.root / "source-assurance/recovery-one-job/CANCELLED.json").is_file()
+                output = os.environ.get("SOURCE_ASSURANCE_EVIDENCE_DIR")
+                if output:
+                    path = Path(output) / "server-stop-recovery.json"
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(
+                        json.dumps(
+                            {
+                                "passed": True,
+                                "serverSignal": "SIGKILL",
+                                "permanentStop": True,
+                                "orphanSawCancellationMarker": True,
+                                "chargedAttempts": 1,
+                                "reservationRetained": 2,
+                                "originalLeaseUnchanged": current["lease_expires_at"] == before["lease_expires_at"],
+                                "source_hash": current["source_hash"],
+                                "approvedOperator": "NOT RUN",
+                            },
+                            indent=2,
+                        )
+                        + "\n"
+                    )
+                return
+            if cancel_during_wait:
+                assert current["state"] == "cancelled", failures or current
+                assert current["observed"]["service_work"] == len(current["recovery_attempts"]) == 1
+                assert "outcome" not in current
+                status = reopened.state.strategy_executor.status()
+                assert status["reserved"]["service_work"] == 2
+                assert current["lease_id"] == before["lease_id"]
+                assert current["lease_expires_at"] == before["lease_expires_at"]
+                assert (journal.root / "source-assurance/recovery-one-job/CANCELLED.json").is_file()
+                now = datetime.now(timezone.utc)
+
+                def fmt(dt):
+                    return dt.isoformat(timespec="milliseconds").replace("+00:00", "Z")
+
+                next_input = reopened.state.source_assurance_worker.prepare_input(
+                    "public-five-paths",
+                    "next-after-cancel",
+                    created_at=fmt(now),
+                    expires_at=fmt(now + timedelta(minutes=10)),
+                )
+                next_plan = reopened.state.strategy_executor.prepare(
+                    {"method": "run-mission", "input": next_input, "request_id": "next-after-cancel"}
+                )
+                next_ref = {k: next_plan[k] for k in ("plan_id", "plan_digest")}
+                reopened.state.strategy_executor.approve(next_ref)
+                assert reopened.state.strategy_executor.run(next_ref)["state"] == "completed"
+                output = os.environ.get("SOURCE_ASSURANCE_EVIDENCE_DIR")
+                if output:
+                    path = Path(output) / "server-cancel-recovery.json"
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(
+                        json.dumps(
+                            {
+                                "passed": True,
+                                "serverSignal": "SIGKILL",
+                                "cancelledAfterOriginalWriterExit": True,
+                                "chargedAttempts": 1,
+                                "reservationRetained": 2,
+                                "nextSeparatelyApprovedMissionAccepted": True,
+                                "originalLeaseUnchanged": True,
+                                "source_hash": current["source_hash"],
+                                "approvedOperator": "NOT RUN",
+                            },
+                            indent=2,
+                        )
+                        + "\n"
+                    )
+                return
             assert current["state"] == "completed", failures or current
             assert current["outcome"]["result"]["independentAcceptance"]["accepted"]
             assert current["observed"]["service_work"] == len(current["recovery_attempts"]) == 2

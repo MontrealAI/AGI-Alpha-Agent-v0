@@ -28,8 +28,8 @@
       "bytes": 3843
     },
     "contrib/productive-capability-ledger/transport-v1/collect_source_delivery.py": {
-      "sha256": "08ea45805ec4efbcd6c24f6d7ddac380b268767f6aabe9f180bc7903a3fc5991",
-      "bytes": 3482
+      "sha256": "1f88cc94c44c23ea4f8fc45a0aa4e67ab53a30ad35a2bc7888168d4a36e922f5",
+      "bytes": 4362
     },
     "contrib/productive-capability-ledger/transport-v1/scopes.example.json": {
       "sha256": "e9c25ae97460099a2b9aa4496d9d39cbc026dbd59375cb50b382c5ab2af805e8",
@@ -40,8 +40,8 @@
       "bytes": 3144
     },
     "contrib/productive-capability-ledger/transport-v1/source_worker.py": {
-      "sha256": "51030cfaf9b16b70e3fffcfe51f39682a0ce4e9348b1943d6fe8bb21f4e348ca",
-      "bytes": 24466
+      "sha256": "400f9b924cbc441a232622c517588833e51c4537661a79ea42d29777c42b18ee",
+      "bytes": 25755
     },
     "contrib/productive-capability-ledger/transport-v1/strategy.css": {
       "sha256": "25ce825a9c53a4cb2be103b87c18a3b5bca2915512cf17a053aba324e2700f94",
@@ -68,15 +68,15 @@
       "bytes": 18452
     },
     "contrib/productive-capability-ledger/transport-v1/test_source_recovery.py": {
-      "sha256": "2216b08ba7199c8bac72e5803fe6b7f96fbd7461eede107c678733d051fc16c6",
-      "bytes": 16674
+      "sha256": "a6e0a856ae014feb8789c308dd7ae132c64424350b11af4c61f3795788ac6185",
+      "bytes": 21736
     },
     "contrib/productive-capability-ledger/transport-v1/test_source_worker.py": {
       "sha256": "d10cfcde425bd94c7262bfe6538af8b870818ee3ca64a5cc7cac56bce17220cf",
       "bytes": 10367
     },
     "contrib/strategy_succession/ENGINEERING_MANIFEST.json": {
-      "sha256": "ae98479d7ba6affb98d82e286be1ce824e745f4e1c57783ce3e04391437e7ff2",
+      "sha256": "07e9f4ab249541240b92967df91366922935e795d498ade0022199fa82307bfb",
       "bytes": 63146
     },
     "contrib/strategy_succession/requirements-qualification.txt": {
@@ -92,8 +92,8 @@
       "bytes": 3632
     },
     "contrib/strategy_succession/transport/strategy_executor.py": {
-      "sha256": "8eb7b3cfefa6648df1e0aa0b00fca904c1d7c4f5fe3c55415b2b312b6ea2ae6c",
-      "bytes": 42142
+      "sha256": "59a00d4ddd4e4445b5de35f727a63def854a51946e92bbdf30fc82f4bc0291cd",
+      "bytes": 42931
     },
     "docs/assets/successor/engine.mjs": {
       "sha256": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488",
@@ -116,7 +116,7 @@
       "bytes": 8721
     }
   },
-  "sourceIdentity": "935ac16d7332e23ba6725351a31f1f111d5bdb2b9fa43d1159c89ebf16a635ef",
+  "sourceIdentity": "ac00db6dcfca8526021c749dddfe0c0c744984b1d1b7d26e831e1a972c5a1ad9",
   "versions": {
     "python": "3.12.14",
     "node": "24.22.1",
@@ -185,16 +185,18 @@
     }
   },
   "qualification": {
-    "localSourceCases": 54,
+    "localSourceCases": 56,
     "localPlanningWorkerTransportCases": 85,
     "nodeUiGroups": 4,
     "independentRecoveredDeliverableChecks": 348,
     "actualSIGKILL": "PASS in isolated candidate; original checkpoint/lease, both attempts charged",
     "localFullHooks": "FAIL sparse-checkout missing sources/tools/assets; actionlint PASS",
-    "hostedSourceBrowser": "a95 prior pass retained in completion-v7; changed repair commit requires fresh hosted qualification",
+    "hostedSourceBrowser": "dc770ee prior202-case pass retained; changed cancellation repair requires fresh hosted qualification",
     "approvedOperator": "NOT RUN",
     "operationalAdoption": "NOT APPROVED",
     "security": "Pending final scan and distinct responsible-owner dispositions",
-    "actualServerSIGKILL": "PASS isolated actual server SIGKILL with surviving original source child, no attempt consumed while waiting, same original lease and verified result"
+    "actualServerSIGKILL": "PASS isolated actual server SIGKILL with surviving original source child, no attempt consumed while waiting, same original lease and verified result",
+    "orphanCancellation": "PASS actual server SIGKILL, canonical CANCEL marker, writer exit before terminal cancellation, original reservation retained, next separately approved mission accepted",
+    "orphanPermanentStop": "PASS actual source marker reaches orphan, no extra attempt or envelope renewal"
   }
 }

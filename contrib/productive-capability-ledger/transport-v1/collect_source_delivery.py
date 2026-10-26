@@ -21,6 +21,15 @@ def collect(root: Path, output: Path) -> dict[str, Any]:
     browser = json.loads((source / "source-browser-acceptance.json").read_text())
     recovery = json.loads((source / "unattended-recovery.json").read_text())
     server = json.loads((source / "server-sigkill-recovery.json").read_text())
+    cancelled = json.loads((source / "server-cancel-recovery.json").read_text())
+    stopped = json.loads((source / "server-stop-recovery.json").read_text())
+    assert stopped["passed"] and stopped["permanentStop"] and stopped["orphanSawCancellationMarker"]
+    assert stopped["chargedAttempts"] == 1 and stopped["reservationRetained"] == 2
+    assert stopped["originalLeaseUnchanged"] and stopped["source_hash"] == server["source_hash"]
+    assert cancelled["passed"] and cancelled["cancelledAfterOriginalWriterExit"]
+    assert cancelled["chargedAttempts"] == 1 and cancelled["reservationRetained"] == 2
+    assert cancelled["nextSeparatelyApprovedMissionAccepted"] and cancelled["originalLeaseUnchanged"]
+    assert cancelled["source_hash"] == server["source_hash"]
     assert server["passed"] and server["serverSignal"] == "SIGKILL"
     assert server["originalSourceChildSurvived"] and server["waitingConsumedNoAttempt"]
     assert server["originalLeaseUnchanged"] and server["attemptsCharged"] == 2
@@ -44,6 +53,8 @@ def collect(root: Path, output: Path) -> dict[str, Any]:
         "qualification.json",
         "source-candidate/unattended-recovery.json",
         "source-candidate/server-sigkill-recovery.json",
+        "source-candidate/server-cancel-recovery.json",
+        "source-candidate/server-stop-recovery.json",
         "source-candidate/source-browser-acceptance.json",
         "source-candidate/source-customer-result.zip",
         "source-candidate/source-signed-history.json",

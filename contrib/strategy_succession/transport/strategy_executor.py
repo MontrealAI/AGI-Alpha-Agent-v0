@@ -293,6 +293,12 @@ class StrategyExecutor:
                 raise Conflict("STOP is permanent for this installed envelope")
             value["state"] = state
             self._save(cx, value)
+        if state == "stopped":
+            cancel_worker = getattr(self.worker, "cancel_mission", None)
+            if callable(cancel_worker):
+                for plan in value["plans"].values():
+                    if plan["state"] in {"running", "unknown"} and plan.get("started_at"):
+                        cancel_worker(plan["input"])
         if state == "ready":
             self.start_recovery()
         return self.status()
@@ -308,7 +314,10 @@ class StrategyExecutor:
             if plan["state"] in {"prepared", "approved", "unknown"}:
                 plan["state"] = "cancelled"
             self._save(cx, value)
-            return plan
+        cancel_worker = getattr(self.worker, "cancel_mission", None)
+        if callable(cancel_worker) and plan.get("started_at"):
+            cancel_worker(plan["input"])
+        return plan
 
     def start_recovery(self) -> None:
         """One bounded startup/resume pass; no periodic scheduler or new authorization."""
@@ -462,7 +471,7 @@ class StrategyExecutor:
                         with self.journal.transaction() as cx:
                             self._global_ready(cx)
                             current = self._plan(self._load(cx), request)
-                            if (self._load(cx)["state"] != "ready" or current.get("cancel_requested")
+                            if (self._load(cx)["state"] != "ready"
                                     or current["state"] not in {"running", "unknown"}
                                     or not current.get("approved_at") or not current.get("started_at")
                                     or not original_lease or current.get("lease_id") != original_lease
@@ -485,6 +494,11 @@ class StrategyExecutor:
                                   and plan["state"] in {"running", "unknown"} and plan.get("approved_at")
                                   and plan.get("lease_id") and plan.get("started_at"))
                 if plan.get("cancel_requested"):
+                    if recovering:
+                        plan.update(state="cancelled", cancellation_completed_at=self.clock(),
+                                    costs_status="cancelled-original-reservation-retained-no-refund")
+                        self._save(cx, value)
+                        return plan
                     raise Conflict("mission cancellation is durable")
                 if ((plan["state"] != "approved" and not recovering)
                         or any(p["state"] == "running" and p["plan_id"] != plan["plan_id"]

@@ -275,6 +275,33 @@ class SourceAssuranceWorker:
             raise ValueError("source approval digest changed")
         return plan
 
+    def cancel_mission(self, payload: dict[str, Any]) -> None:
+        """Persist the existing specialist's cancellation marker for an orphan too."""
+        self._sources()
+        plan = self._payload(payload)
+        directory = self.output_root / plan["runId"]
+        if not directory.exists():
+            return  # The journal already fences every future dispatch.
+        if directory.is_symlink() or not directory.is_dir():
+            raise ValueError("cancelled source directory is not ordinary")
+        body = _canonical({"schema": "alpha-source-cancel-request/v1", "approvalDigest": payload["approval_digest"]})
+        path = directory / "CANCEL"
+        try:
+            descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+        except FileExistsError:
+            if _read(path, 4096) != body:
+                raise ValueError("source cancellation marker changed")
+        else:
+            with os.fdopen(descriptor, "wb") as stream:
+                stream.write(body)
+                stream.flush()
+                os.fsync(stream.fileno())
+            parent = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+            try:
+                os.fsync(parent)
+            finally:
+                os.close(parent)
+
     def before_recovery(self, payload: dict[str, Any], checkpoint: Callable[[], None]) -> None:
         """Wait for an orphaned original writer before reserving another attempt.
 
