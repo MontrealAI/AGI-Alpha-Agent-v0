@@ -1,0 +1,53 @@
+{
+  "schema": "agi-alpha-companion-static-review/v1",
+  "reviewed_at_utc": "2026-10-26T18:33:54.220579+00:00",
+  "status": "PASS_STATIC_REVIEW",
+  "scope": "Read-only review of portability/packaging source and instructions; no additional reproduction, bootstrap or packaging execution by reviewer.",
+  "sources": [
+    {
+      "path": "tools/verify_companion.py",
+      "sha256": "3eab5e10965f42acba8c51ac2c76d878d339c89f37c79aea492e14b0df4cb031",
+      "bytes": 21699
+    },
+    {
+      "path": "tools/build_companion.py",
+      "sha256": "d8c15a4f2c72b07858e17782783770b8f5435c94035dd4a5776d33f315abc3bd",
+      "bytes": 9844
+    },
+    {
+      "path": "tools/COMPANION.md",
+      "sha256": "c0d283785efdd9efc651aed2a26e469febd7c7b40ae3ddb1e78d088b5091d280",
+      "bytes": 7043
+    },
+    {
+      "path": "resources/portable-companion/REPRODUCTION_RECEIPT.json",
+      "sha256": "de29163a1e902386795117b47986344c3dae50f085998fa3f481e93f5cc3a8e9",
+      "bytes": 1749
+    }
+  ],
+  "findings": [
+    "Default verifier performs no network request, install, simulation or mission execution.",
+    "Network bootstrap requires both explicit flags, accepts only saved HTTPS files.pythonhosted.org URLs, checks final host, SHA256 and size, refuses mismatched existing bytes and installs no package.",
+    "Relative source paths are contained within the root and symlinks are rejected.",
+    "Staging refuses overwrite, copies exact included bytes, checks source/staged semantic identities, and creates an all-included-file manifest.",
+    "Manifest intentionally cannot include its own digest; final outer archive hash supplies that identity.",
+    "Canonical research wheels are checked against frozen jobs. Duplicate selected-wheel copies are omitted only when exact hash matches the canonical wheel; distinct synthetic failures remain in the full edition.",
+    "GitHub edition explicitly omits all wheel binaries and documents missing offline closure and synthetic fixture limitation.",
+    "Final archive requires completed evidence, README and LaTeX/PDF, uses a new outside-source destination, preserves partial failures and fixed entry metadata.",
+    "Existing relocation receipt records18 evaluations of the same6 jobs, identical decisions, no new missions, exact same native runtime and unchanged primary bytes; this review did not rerun it."
+  ],
+  "required_corrections": [],
+  "documentation_recommendation": "Add M02 market replay/immutable-copy interpretation from manuscript review; do not alter frozen runner.",
+  "limits": [
+    "Static review plus the builder owner's existing receipts, not a fresh independent packaging execution.",
+    "No cryptographic identity turns an untrusted recorder into independent attestation.",
+    "Same-runtime relocation does not establish arbitrary-platform support.",
+    "Post-snapshot delivery checks must be recorded in an outside delivery supplement to avoid impossible self-inclusion."
+  ],
+  "resource_accounting": {
+    "researcher_contribution": true,
+    "model_billing_usd": null,
+    "human_attention_minutes": null,
+    "new_research_runs": 0
+  }
+}

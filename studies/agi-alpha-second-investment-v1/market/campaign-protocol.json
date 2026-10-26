@@ -1,0 +1,237 @@
+{
+  "schema": "agi-alpha-second-investment-campaign/v1",
+  "id": "second-investment-confirmation-20261026",
+  "status": "FROZEN_BEFORE_MARKET_OUTCOMES",
+  "registeredAtUTC": "2026-10-26T18:20:46.204040+00:00",
+  "registrationURL": "https://github.com/MontrealAI/AGI-Alpha-Agent-v0/issues/4850",
+  "baseConfig": {
+    "id": "second-investment-inherited-favorable-reference",
+    "weeks": 52,
+    "buyers": 12,
+    "initialCashCents": 100000,
+    "reserveCents": 20000,
+    "initialPriceCents": 2000,
+    "pricingPolicy": "fixed",
+    "ordinaryFinalizationMinutes": 10,
+    "investmentFunding": "seed-funded",
+    "historicalCostTiming": "opening",
+    "constructionHours": 4,
+    "authoringCostCents": 10000,
+    "adoptionHours": 0.5,
+    "adoptionInferenceCents": 0,
+    "nextAsset": null,
+    "integrationCents": 0,
+    "arrivalProbability": 0.5,
+    "choiceModel": "logit",
+    "investmentCostBasis": "full-history"
+  },
+  "baseInterpretation": "Same finite enterprise and frozen first-asset parameters as the prior favorable conditional deployment study; all defaults not overridden remain in the immutable original core. No parameter difference across A/B/C except explicitly evidenced second-asset effects and cost.",
+  "effectProfileFile": "effect-profile.json",
+  "costProfilesFile": "cost-profiles.json",
+  "costProfileIds": [
+    "low",
+    "reference",
+    "high"
+  ],
+  "unknownProfileId": "actual-unknown",
+  "conditions": [
+    {
+      "id": "reference",
+      "marketOverrides": {},
+      "profileOverrides": {},
+      "interpretation": "Inherited favorable conditional region. Zero buyer integration is assumed, not measured."
+    },
+    {
+      "id": "arrival-quarter",
+      "marketOverrides": {
+        "arrivalProbability": 0.25
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "arrival-tenth",
+      "marketOverrides": {
+        "arrivalProbability": 0.1
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "no-demand",
+      "marketOverrides": {
+        "arrivalProbability": 0
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "buyer-integration-250c",
+      "marketOverrides": {
+        "integrationCents": 250
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "buyer-integration-500c",
+      "marketOverrides": {
+        "integrationCents": 500
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "collections-13weeks",
+      "marketOverrides": {
+        "paymentDelayWeeks": 13
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "stronger-cheap-ai",
+      "marketOverrides": {
+        "aiInitialPriceCents": 500,
+        "aiCostCents": 100,
+        "aiQuality": 0.97,
+        "aiReviewMinutes": 8
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "price-1600c",
+      "marketOverrides": {
+        "initialPriceCents": 1600
+      },
+      "profileOverrides": {}
+    },
+    {
+      "id": "undercut-competition",
+      "marketOverrides": {
+        "competitorStrategy": "undercut",
+        "competitorCostReduction": 0.75,
+        "competitorImitationCostCents": 1000
+      },
+      "profileOverrides": {},
+      "interpretation": "Same calibrated competitor-undercut stress tuple; treated as one named mechanism."
+    },
+    {
+      "id": "second-integration-failure",
+      "marketOverrides": {},
+      "profileOverrides": {
+        "integrationFailureProbability": 0.2
+      }
+    },
+    {
+      "id": "second-upkeep-200c",
+      "marketOverrides": {},
+      "profileOverrides": {
+        "weeklyMaintenanceCents": 200
+      }
+    },
+    {
+      "id": "quality-shock",
+      "marketOverrides": {
+        "qualityShockWeek": 26,
+        "qualityShockFactor": 0.7
+      },
+      "profileOverrides": {}
+    }
+  ],
+  "policies": [
+    {
+      "id": "adaptive",
+      "policy": "adaptive",
+      "earliestWeek": 26,
+      "lastDecisionWeek": 40
+    },
+    {
+      "id": "completed-research-replay",
+      "policy": "completed-research-replay",
+      "earliestWeek": 26,
+      "lastDecisionWeek": 26
+    }
+  ],
+  "candidateDefaults": {
+    "researchPrototypeConstructed": true,
+    "pauseWeeks": 1,
+    "usefulLifeWeeks": 26,
+    "forecastDiscount": 0.5,
+    "integrationFailureProbability": 0,
+    "researchEnvelopeCents": 50000
+  },
+  "resourceEnvelopeInterpretation": "USD500 modeled commitment cap only, never a real paid commitment or a statement of available generated funds.",
+  "seeds": [
+    8001,
+    8002,
+    8003,
+    8004,
+    8005,
+    8006,
+    8007,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8014,
+    8015,
+    8016,
+    8017,
+    8018,
+    8019,
+    8020,
+    8021,
+    8022,
+    8023,
+    8024
+  ],
+  "seedProvenance": "New market-confirmation seeds; chosen before inspecting these market outcomes. Production outcomes were already observed and independently checked before economic effect calibration.",
+  "expected": {
+    "conditions": 13,
+    "pricedGroups": 78,
+    "unknownGroups": 2,
+    "groups": 80,
+    "seedsPerGroup": 24,
+    "pairedWorlds": 1920,
+    "enterpriseRuns": 5760
+  },
+  "limits": {
+    "maxWallSeconds": 180,
+    "maxCpuSeconds": 180
+  },
+  "unknownProfileScope": {
+    "conditionId": "reference",
+    "allPolicies": true
+  },
+  "representativeSelection": {
+    "conditionId": "reference",
+    "seed": 8001,
+    "costProfileIds": [
+      "low",
+      "reference",
+      "high",
+      "actual-unknown"
+    ],
+    "allPolicies": true
+  },
+  "primaryOutcomes": [
+    "B_minus_A_projectInclusiveProfitCents",
+    "C_minus_A_projectInclusiveProfitCents",
+    "B_minus_C_projectInclusiveProfitCents",
+    "conditionalModeledFinancialGatePassed",
+    "investmentPaidFromGeneratedResources"
+  ],
+  "secondaryOutcomes": [
+    "enterpriseProfitCents",
+    "completePrototypeOneoffCostCents",
+    "outsideEnterprisePrototypeCostCents",
+    "directAvoidedDeliveryCostCents",
+    "actualAssetInvocationsInModel",
+    "subcentComputeEffect",
+    "acceptedOutcomes",
+    "insolvency",
+    "cashAndFundingAtDecision"
+  ],
+  "inference": "All24seeds per cell; report empirical conditional quantiles, downside count and normal-approximation95percent interval for mean. Intervals are conditional Monte Carlo summaries, unadjusted across80cells, not empirical market confidence.",
+  "stoppingRule": "Exactly the frozen1920paired worlds; no scenario/price/seed/horizon substitution. Stop and retain partial outputs on180second wall/CPU budget or any failed invariant. Do not silently extend/restart a failed campaign.",
+  "actualCustomerCollectionsCents": 0,
+  "actualTransactions": 0,
+  "newFinancialAuthority": false
+}

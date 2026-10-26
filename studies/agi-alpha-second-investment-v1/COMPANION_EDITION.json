@@ -1,0 +1,19 @@
+{
+  "schema": "agi-alpha-companion-edition/v1",
+  "edition": "full",
+  "presentation_and_packaging_added_after_confirmation": true,
+  "original_primary_artifacts": "Exact preserved bytes, including historical absolute command and report URLs.",
+  "portable_replay_inputs": "Relative job paths; the frozen runner resolves its new study location.",
+  "research_wheels": "47 exact wheel binaries included once in inputs/wheels.",
+  "execution_tools": "pip 26.2.2 and packaging 26.3 are separately identified post-confirmation support.",
+  "host_prerequisites": "Recorded CPython 3.12.14, Node 24.22.1 and the exact native target environment. Interpreter, Node and OS binaries are not redistributed. See inputs/execution-tools/tool-closure.json.",
+  "default_network_behavior": "No network. No automatic package installation or confirmation rerun.",
+  "verify": "python tools/verify_companion.py --edition full",
+  "verify_runtime": "python tools/verify_companion.py --edition full --runtime",
+  "explicit_github_wheel_bootstrap": "python tools/verify_companion.py --bootstrap-wheels --allow-network",
+  "synthetic_fixture_wheels": "Retained in the full edition as failure evidence; omitted from GitHub. Public-wheel bootstrap restores primary reproduction dependencies, not every synthetic failure fixture.",
+  "reproduction": "python tools/run_confirmation.py --phase reproduction --out results/reproduction-new",
+  "reproduction_interpretation": "Reuses the same six registered questions for 18 branch evaluations; creates zero new research missions or customer orders. Use a fresh disposable copy.",
+  "full_market_ledgers": "Included unchanged when present, with raw and compressed identities checked.",
+  "manifest": "Every included file is hashed. The manifest excludes itself; the outer archive hash binds it."
+}

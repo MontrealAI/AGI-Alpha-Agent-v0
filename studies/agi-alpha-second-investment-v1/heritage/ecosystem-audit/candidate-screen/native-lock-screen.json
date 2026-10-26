@@ -1,0 +1,111 @@
+{
+  "candidate_id": "native-lock-metadata-closure",
+  "disposition": "SCREEN_ONLY_NOT_SELECTED",
+  "scope": "Read-only feasibility screen; no implementation, candidate execution, lock change, dependency installation or fresh-outcome evaluation",
+  "root_commit": "b1d52a7d010da5e245f0cb3f54756d0153c94eec",
+  "pins": 41,
+  "pin_names": [
+    "annotated-doc",
+    "annotated-types",
+    "anyio",
+    "bitarray",
+    "certifi",
+    "cffi",
+    "ckzg",
+    "click",
+    "cryptography",
+    "cytoolz",
+    "eth-abi",
+    "eth-account",
+    "eth-hash",
+    "eth-keyfile",
+    "eth-keys",
+    "eth-rlp",
+    "eth-typing",
+    "eth-utils",
+    "fastapi",
+    "h11",
+    "hexbytes",
+    "httpcore",
+    "httpx",
+    "idna",
+    "numpy",
+    "parsimonious",
+    "prometheus-client",
+    "pycparser",
+    "pycryptodome",
+    "pydantic",
+    "pydantic-core",
+    "pydantic-settings",
+    "python-dotenv",
+    "pyyaml",
+    "regex",
+    "rlp",
+    "starlette",
+    "toolz",
+    "typing-extensions",
+    "typing-inspection",
+    "uvicorn"
+  ],
+  "source_files": [
+    {
+      "path": "requirements-agent.lock",
+      "bytes": 85690,
+      "sha256": "d58df2a38d099f8123d7445f62fec4684d029e588ce4b615151387c4decd1392"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 7787,
+      "sha256": "042380c2e3e90872027acc1053ebef09472cc34db142318af1ff2390aec5483f"
+    },
+    {
+      "path": "scripts/install_agent.py",
+      "bytes": 6734,
+      "sha256": "e0d165632be031627e601adf6a68b2a26a1dc29ed127de4473b93212a0bb2925"
+    },
+    {
+      "path": "scripts/audit_agent_dependencies.py",
+      "bytes": 2960,
+      "sha256": "271f3f7cf9617033897125059bc11c596627f2abe508a46356aed29f80217249"
+    },
+    {
+      "path": "docs/agent/OPERATIONS.md",
+      "bytes": 26736,
+      "sha256": "9cc961512ecb7312002eb1fa142f976cfffc3ee56f779121755880518817769a"
+    },
+    {
+      "path": ".github/workflows/agent-release.yml",
+      "bytes": 79320,
+      "sha256": "8cad4cb7cc310f53ed5ac28d452ad43e45875e4f39fe9c77f83528d0418213df"
+    },
+    {
+      "path": "docs/papers/the-next-upgrade.tex",
+      "bytes": 57374,
+      "sha256": "e64e793a39f82e8494b46ed3f0cca5144ca5d3d5eb8f19b34b85125a06d455ee"
+    }
+  ],
+  "observable_current_baseline": [
+    "hash-locked dependency installation",
+    "pip check",
+    "actual runtime/application regression tests",
+    "pip-audit full pin coverage"
+  ],
+  "existing_local_wheelhouse": false,
+  "screen_timing": {
+    "elapsed_agent_wall_seconds": 80.08938511399901,
+    "final_snapshot_process_wall_seconds": 0.003041383999516256,
+    "final_snapshot_process_cpu_seconds": 0.0013545959999999996,
+    "all_tool_cpu_seconds": null,
+    "model_billing": null,
+    "human_attention_minutes": null,
+    "note": "Agent wall time is not human labor or provider billing. This snapshot CPU excludes earlier tools and the model.",
+    "ended_utc_host": "2026-10-26T18:00:49Z"
+  },
+  "external_primary_sources": [
+    "https://pip.pypa.io/en/stable/cli/pip_install/",
+    "https://pip.pypa.io/en/stable/cli/pip_check/",
+    "https://pip.pypa.io/en/stable/cli/pip_inspect/",
+    "https://packaging.pypa.io/en/stable/markers.html"
+  ],
+  "notes_sha256": "6ac72b95181198911f7dabf64f7ce336de55cf8802faf1c6b5480045b90d2885"
+}

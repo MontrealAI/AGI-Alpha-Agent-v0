@@ -1,0 +1,56 @@
+{
+  "schema": "agialpha-lock-result/v1",
+  "job_sha256": "0d92d289d688752d8e1d452aa60dc080e96bd59e11982ce3406693ddf09f1f53",
+  "job_id": "development-current-native-lock",
+  "decision": "CONSISTENT",
+  "pip_exit_code": 0,
+  "files": {
+    "stdout": "pip.stdout.txt",
+    "stderr": "pip.stderr.txt",
+    "report": "pip-report.json"
+  },
+  "tool_versions": {
+    "python": "3.12.14",
+    "pip": "26.2.2",
+    "packaging": "26.3"
+  },
+  "application_qualified": false,
+  "authority": [],
+  "financial_action": false,
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pip",
+      "--isolated",
+      "--disable-pip-version-check",
+      "install",
+      "--dry-run",
+      "--ignore-installed",
+      "--no-index",
+      "--find-links",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/development/retained-01/selected-wheels",
+      "--only-binary=:all:",
+      "--require-hashes",
+      "--report",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/development/retained-01/pip-report.json",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/development/requirements-agent.lock",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/development/retained-01/root-requirements.lock"
+    ]
+  ],
+  "method": "retained ordinary-pip full-lock preflight",
+  "preflight_findings": [],
+  "elapsed_wall_seconds": 0.6880747659997724,
+  "cpu_seconds": 0.6745387119999999,
+  "artifacts_sha256": {
+    "pip.stdout.txt": "5c4fd87c127951a7f9aa3aae4215c2e4a9b09b352703c4d3161804971bd0ac5e",
+    "pip.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pip-report.json": "3f5ae980d3cc44b5362b53093b7802bb483f875ba5eddf0f9de3fd10fadbe578"
+  },
+  "limits": [
+    "Wheel metadata consistency only; application behavior, vulnerabilities and release qualification remain separate.",
+    "Research-proposed lock; no customer order, installation, authority or financial transaction."
+  ]
+}

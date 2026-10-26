@@ -1,0 +1,2324 @@
+{
+  "schema": "useful-work-component-contract/v1",
+  "contract_id": "alpha-request-boundary-mission-input-v1",
+  "created_at": "2026-10-26T14:43:03.324125+00:00",
+  "phase": "independent-pre-execution-development-oracle",
+  "author": "/root/economics",
+  "target_execution_used_to_construct_oracle": false,
+  "purpose": "Decide whether exact proposed dependency environments preserve the listed original RequestBoundary and Mission/Review/Control input properties; no full-release or operator authority.",
+  "sources": [
+    {
+      "path": "data/consumer/api.py",
+      "upstream_path": "alpha_factory_v1/core/runtime/api.py",
+      "consumer_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "sha256": "096e97ba9433b988f4cef3b96a6a53cc5d8d42f7cb775d3e0a7dc90fdfac5215",
+      "bytes": 15877
+    },
+    {
+      "path": "data/consumer/models.py",
+      "upstream_path": "alpha_factory_v1/core/runtime/models.py",
+      "consumer_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+      "bytes": 8098
+    },
+    {
+      "path": "discovery/test_api_boundary.py",
+      "upstream_path": "tests/runtime/test_api_boundary.py",
+      "consumer_commit": "eb07086ac42799ff45f7b1c946a2f7c514bd3bbc",
+      "sha256": "afa41ae0e428e9be048544e03daaf7a4e2c3e45a0b83d889d6883e8121fdcd45",
+      "bytes": 5089
+    }
+  ],
+  "security_headers": {
+    "cache-control": "no-store",
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "no-referrer",
+    "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+  },
+  "security_header_policy": "Every emitted HTTP response start must contain exactly one occurrence of each required header, case-insensitive name and exact Latin1 value; other headers are allowed. No headers are required when no response is emitted.",
+  "asgi_defaults": {
+    "type": "http",
+    "asgi": {
+      "version": "3.0"
+    },
+    "http_version": "1.1",
+    "scheme": "http",
+    "server": [
+      "127.0.0.1",
+      8765
+    ],
+    "client": [
+      "127.0.0.1",
+      10000
+    ],
+    "path": "/api/missions",
+    "raw_path": "/api/missions",
+    "root_path": "",
+    "query_string": "",
+    "default_host_header": [
+      "host",
+      "127.0.0.1:8765"
+    ],
+    "add_default_host_only_if_no_explicit_host": true,
+    "header_encoding": "latin-1",
+    "text_chunk_encoding": "utf-8",
+    "chunk_byte_count_max": 524289
+  },
+  "receive_semantics": {
+    "chunks": "Each supplied chunk becomes http.request; more_body is true until the final chunk, or remains true on the final chunk when disconnect=true. After chunks, return http.disconnect.",
+    "delay": "If receive_delay_seconds is specified, delay every scripted receive by that duration. Use the actual original BODY_TIMEOUT_SECONDS=15.0, with no clock/timeout monkeypatch.",
+    "timeout_case": "Expected408 after actual original timeout; record actual elapsed time and do not replace it by the configured15-second threshold."
+  },
+  "downstream_contract": {
+    "response_status": 200,
+    "response_headers": [
+      [
+        "cache-control",
+        "public, max-age=3600"
+      ]
+    ],
+    "behavior": "Count one entry per invocation, consume request bytes through final http.request, record exact bytes/hash, emit a harmless HTTP200 response. No journal, authorization, routing or work execution.",
+    "security_check": "The original boundary must replace the deliberately weak downstream cache-control header with no-store."
+  },
+  "model_semantics": {
+    "allowed_models": [
+      "Mission",
+      "Review",
+      "Control"
+    ],
+    "allowed_methods": [
+      "model_validate",
+      "model_validate_json"
+    ],
+    "json_method": "Serialize input.value as strict JSON UTF8 for model_validate_json. Cases needing IEEE nonfinite materialization use model_validate only.",
+    "nonfinite_overrides": "Copy input.value, then replace only the listed existing path with float nan, positive infinity or negative infinity according to the closed token vocabulary. Record the materialized token/path; never pass the tag object or a string to the model instead.",
+    "output_comparison": "Compare complete model_dump output to expected.output with JSON scalar types preserved; do not accept subset matches or Python bool/int equality as exact serialization equality.",
+    "rejection_comparison": "accepted=false means validation rejects the supplied value; exact exception text is not a cross-version requirement. Nonfinite cases also require recorded actual IEEE materialization."
+  },
+  "decision_policy": {
+    "preserved": "Every required case executed against exact source/environment identity; all observed fields match expected; original timeout/constants and materializations verified.",
+    "regression": "At least one attributable required behavior mismatch, with baseline evidence and exact reproduction.",
+    "incomplete": "Any missing/stale/unexecuted case, environment/source failure, observation capture failure or unresolved required field. Incomplete cannot become a positive component decision.",
+    "authority": "A preserved result advances only this component-compatibility package to further qualification; it never approves the entire dependency lock, release, authentication or operator action."
+  },
+  "coverage_limits": [
+    "Finite representative source-grounded cases, not a proof over all Python/ASGI/model inputs.",
+    "No create_app, Journal initialization, credentials, authentication, TrustedHostMiddleware or journal persistence tests.",
+    "No ChainConfig/RuntimeConfig or complete mission execution/whole-application serialization claim.",
+    "Review/Control checks validate inert input objects only; no approval/control action is performed.",
+    "No non-HTTP ASGI lifecycle/WebSocket qualification.",
+    "Cases/assertions and repeated environments are not customer jobs or independent defect families."
+  ],
+  "cases": [
+    {
+      "id": "asgi.missing-length",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 411,
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          64,
+          66
+        ]
+      }
+    },
+    {
+      "id": "asgi.nondigit-length",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "two"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 411,
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          64,
+          66
+        ]
+      }
+    },
+    {
+      "id": "asgi.negative-length",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "-2"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 411,
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          64,
+          66
+        ]
+      }
+    },
+    {
+      "id": "asgi.latin1-nondigit-length",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "²"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 411,
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          64,
+          66
+        ]
+      }
+    },
+    {
+      "id": "asgi.duplicate-length",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "2"
+          ],
+          [
+            "content-length",
+            "2"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 400,
+        "error": "Ambiguous request framing",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          60,
+          63
+        ]
+      }
+    },
+    {
+      "id": "asgi.transfer-encoding",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "2"
+          ],
+          [
+            "transfer-encoding",
+            "chunked"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 400,
+        "error": "Ambiguous request framing",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          60,
+          63
+        ]
+      }
+    },
+    {
+      "id": "asgi.oversize-declared-length",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "524289"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 413,
+        "error": "Request exceeds 512 KiB",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          67,
+          69
+        ]
+      }
+    },
+    {
+      "id": "asgi.excessive-length-digits",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "999999999999999999999"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 413,
+        "error": "Request exceeds 512 KiB",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          67,
+          69
+        ]
+      }
+    },
+    {
+      "id": "asgi.cross-origin-mutation",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "2"
+          ],
+          [
+            "origin",
+            "https://attacker.example"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 403,
+        "error": "Cross-origin mutation denied",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          70,
+          74
+        ]
+      }
+    },
+    {
+      "id": "asgi.same-origin-mutation",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "2"
+          ],
+          [
+            "origin",
+            "http://127.0.0.1:8765"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 200,
+        "error": null,
+        "downstream_invocations": 1,
+        "security_headers_required": true,
+        "body_preserved": true,
+        "downstream_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": 2
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          70,
+          74
+        ]
+      }
+    },
+    {
+      "id": "asgi.short-body",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "3"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 400,
+        "error": "Request length mismatch",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          97,
+          99
+        ]
+      }
+    },
+    {
+      "id": "asgi.long-fragmented-body",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "1"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{"
+          },
+          {
+            "text": "}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 400,
+        "error": "Request length mismatch",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          83,
+          93
+        ]
+      }
+    },
+    {
+      "id": "asgi.oversize-actual-body",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "2"
+          ]
+        ],
+        "chunks": [
+          {
+            "byte": 120,
+            "count": 524289
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 413,
+        "error": "Request exceeds 512 KiB",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          83,
+          90
+        ]
+      }
+    },
+    {
+      "id": "asgi.valid-fragmented-utf8",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "10"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{\"x\":"
+          },
+          {
+            "text": "\"é\"}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 200,
+        "error": null,
+        "downstream_invocations": 1,
+        "security_headers_required": true,
+        "body_preserved": true,
+        "downstream_body_sha256": "97f06f396a709c3a29824e1cc794eeb98e2d1a262d7d455439d286d42803f0fe",
+        "downstream_body_bytes": 10
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          75,
+          110
+        ]
+      }
+    },
+    {
+      "id": "asgi.exact-byte-limit",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "524288"
+          ]
+        ],
+        "chunks": [
+          {
+            "byte": 120,
+            "count": 524288
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 200,
+        "error": null,
+        "downstream_invocations": 1,
+        "security_headers_required": true,
+        "body_preserved": true,
+        "downstream_body_sha256": "ec8bb338811bbf800a8b5e507d06e08a1d9d05bde74294f6f7388f3bbfba82e5",
+        "downstream_body_bytes": 524288
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          24,
+          110
+        ]
+      }
+    },
+    {
+      "id": "asgi.zero-length-body",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "0"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": ""
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 200,
+        "error": null,
+        "downstream_invocations": 1,
+        "security_headers_required": true,
+        "body_preserved": true,
+        "downstream_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "downstream_body_bytes": 0
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          64,
+          110
+        ]
+      }
+    },
+    {
+      "id": "asgi.get-passthrough",
+      "kind": "asgi",
+      "input": {
+        "method": "GET",
+        "headers": [
+          [
+            "content-length",
+            "not-required"
+          ],
+          [
+            "origin",
+            "https://attacker.example"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "get-body"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 200,
+        "error": null,
+        "downstream_invocations": 1,
+        "security_headers_required": true,
+        "body_preserved": true,
+        "downstream_body_sha256": "dfea371273c54b38b2b16179f6a10331637374c927babd62de1f7278422e6727",
+        "downstream_body_bytes": 8
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          48,
+          59
+        ]
+      }
+    },
+    {
+      "id": "asgi.put-requires-length",
+      "kind": "asgi",
+      "input": {
+        "method": "PUT",
+        "headers": [],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 411,
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          57,
+          66
+        ]
+      }
+    },
+    {
+      "id": "asgi.patch-valid",
+      "kind": "asgi",
+      "input": {
+        "method": "PATCH",
+        "headers": [
+          [
+            "Content-Length",
+            "2"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ]
+      },
+      "expected": {
+        "response_present": true,
+        "status": 200,
+        "error": null,
+        "downstream_invocations": 1,
+        "security_headers_required": true,
+        "body_preserved": true,
+        "downstream_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": 2
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          57,
+          110
+        ]
+      }
+    },
+    {
+      "id": "asgi.disconnect",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "2"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{"
+          }
+        ],
+        "disconnect": true
+      },
+      "expected": {
+        "response_present": false,
+        "status": null,
+        "error": null,
+        "downstream_invocations": 0,
+        "security_headers_required": false,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          79,
+          82
+        ]
+      }
+    },
+    {
+      "id": "asgi.actual-timeout",
+      "kind": "asgi",
+      "input": {
+        "method": "POST",
+        "headers": [
+          [
+            "content-length",
+            "2"
+          ]
+        ],
+        "chunks": [
+          {
+            "text": "{}"
+          }
+        ],
+        "receive_delay_seconds": 15.2
+      },
+      "expected": {
+        "response_present": true,
+        "status": 408,
+        "error": "Request body timed out",
+        "downstream_invocations": 0,
+        "security_headers_required": true,
+        "body_preserved": null,
+        "downstream_body_sha256": null,
+        "downstream_body_bytes": null
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          25,
+          95
+        ]
+      }
+    },
+    {
+      "id": "model.mission-research-json",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate_json",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "research",
+            "sources": [
+              {
+                "id": "s1",
+                "title": "Release evidence",
+                "text": "A pinned statement."
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "research",
+            "sources": [
+              {
+                "id": "s1",
+                "title": "Release evidence",
+                "text": "A pinned statement.",
+                "url": ""
+              }
+            ]
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          18,
+          32
+        ]
+      }
+    },
+    {
+      "id": "model.mission-allocation",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "seed": 0,
+          "population": 4,
+          "generations": 1
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2,
+                "risk": 0
+              }
+            ],
+            "budget": 1,
+            "max_risk": 180000,
+            "unit": "planning units"
+          },
+          "seed": 0,
+          "population": 4,
+          "generations": 1
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          34,
+          50
+        ]
+      }
+    },
+    {
+      "id": "model.mission-schedule",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "schedule",
+            "jobs": [
+              {
+                "id": "j1",
+                "operations": [
+                  {
+                    "machine": "m1",
+                    "duration": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "schedule",
+            "jobs": [
+              {
+                "id": "j1",
+                "operations": [
+                  {
+                    "machine": "m1",
+                    "duration": 1
+                  }
+                ],
+                "due": 10000000
+              }
+            ],
+            "unit": "minutes"
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          53,
+          73
+        ]
+      }
+    },
+    {
+      "id": "model.mission-forecast",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ],
+            "horizon": 3,
+            "holdout": 4,
+            "season": 1,
+            "unit": "observed units"
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          76,
+          95
+        ]
+      }
+    },
+    {
+      "id": "model.mission-code",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "code",
+            "heldout": [
+              {
+                "args": [
+                  1
+                ],
+                "expected": 1
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "code",
+            "examples": [],
+            "heldout": [
+              {
+                "args": [
+                  1
+                ],
+                "expected": 1
+              }
+            ],
+            "candidate": ""
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          98,
+          124
+        ]
+      }
+    },
+    {
+      "id": "model.mission-upper-engine-bounds",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "seed": 4294967295,
+          "population": 50,
+          "generations": 50
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2,
+                "risk": 0
+              }
+            ],
+            "budget": 1,
+            "max_risk": 180000,
+            "unit": "planning units"
+          },
+          "seed": 4294967295,
+          "population": 50,
+          "generations": 50
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          120,
+          124
+        ]
+      }
+    },
+    {
+      "id": "model.forbid-extra-root",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "allow_code_execution": true
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          12,
+          15
+        ]
+      }
+    },
+    {
+      "id": "model.forbid-extra-nested",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2,
+                "unexpected": 1
+              }
+            ],
+            "budget": 1
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          12,
+          40
+        ]
+      }
+    },
+    {
+      "id": "model.strict-string-seed",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate_json",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "seed": "42"
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          12,
+          15
+        ]
+      }
+    },
+    {
+      "id": "model.strict-bool-seed",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "seed": true
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          12,
+          15
+        ]
+      }
+    },
+    {
+      "id": "model.goal-too-short",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "ab",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          120,
+          120
+        ]
+      }
+    },
+    {
+      "id": "model.goal-too-long",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          120,
+          120
+        ]
+      }
+    },
+    {
+      "id": "model.seed-below-bound",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "seed": -1
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          122,
+          122
+        ]
+      }
+    },
+    {
+      "id": "model.seed-above-bound",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "seed": 4294967296
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          122,
+          122
+        ]
+      }
+    },
+    {
+      "id": "model.population-below-bound",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "population": 3
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          123,
+          123
+        ]
+      }
+    },
+    {
+      "id": "model.population-above-bound",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "population": 51
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          123,
+          123
+        ]
+      }
+    },
+    {
+      "id": "model.generations-below-bound",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "generations": 0
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          124,
+          124
+        ]
+      }
+    },
+    {
+      "id": "model.generations-above-bound",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          },
+          "generations": 51
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          124,
+          124
+        ]
+      }
+    },
+    {
+      "id": "model.unknown-work-kind",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "unrecognized"
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          114,
+          121
+        ]
+      }
+    },
+    {
+      "id": "model.research-empty",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "research",
+            "sources": []
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          30,
+          31
+        ]
+      }
+    },
+    {
+      "id": "model.allocation-zero-cost",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 0,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          37,
+          39
+        ]
+      }
+    },
+    {
+      "id": "model.allocation-float-cost",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1.0,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          12,
+          39
+        ]
+      }
+    },
+    {
+      "id": "model.schedule-zero-duration",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "schedule",
+            "jobs": [
+              {
+                "id": "j1",
+                "operations": [
+                  {
+                    "machine": "m1",
+                    "duration": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          53,
+          57
+        ]
+      }
+    },
+    {
+      "id": "model.duplicate-research-id",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "research",
+            "sources": [
+              {
+                "id": "s1",
+                "title": "Release evidence",
+                "text": "A pinned statement."
+              },
+              {
+                "id": "s1",
+                "title": "Release evidence",
+                "text": "A pinned statement."
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          126,
+          143
+        ]
+      }
+    },
+    {
+      "id": "model.duplicate-allocation-id",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              },
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2
+              }
+            ],
+            "budget": 1
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          126,
+          143
+        ]
+      }
+    },
+    {
+      "id": "model.duplicate-schedule-id",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "schedule",
+            "jobs": [
+              {
+                "id": "j1",
+                "operations": [
+                  {
+                    "machine": "m1",
+                    "duration": 1
+                  }
+                ]
+              },
+              {
+                "id": "j1",
+                "operations": [
+                  {
+                    "machine": "m1",
+                    "duration": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          126,
+          143
+        ]
+      }
+    },
+    {
+      "id": "model.forecast-excess-holdout",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ],
+            "holdout": 5
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          86,
+          90
+        ]
+      }
+    },
+    {
+      "id": "model.forecast-excess-season",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ],
+            "season": 5
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          91,
+          92
+        ]
+      }
+    },
+    {
+      "id": "model.forecast-magnitude",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              1000000000000001.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ]
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          93,
+          94
+        ]
+      }
+    },
+    {
+      "id": "model.forecast-nan",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ]
+          }
+        },
+        "nonfinite_overrides": [
+          {
+            "path": [
+              "work",
+              "observations",
+              0
+            ],
+            "token": "NaN"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "materialized_nonfinite_tokens": [
+          "NaN"
+        ]
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          93,
+          94
+        ]
+      }
+    },
+    {
+      "id": "model.forecast-positive-infinity",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ]
+          }
+        },
+        "nonfinite_overrides": [
+          {
+            "path": [
+              "work",
+              "observations",
+              0
+            ],
+            "token": "Infinity"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "materialized_nonfinite_tokens": [
+          "Infinity"
+        ]
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          93,
+          94
+        ]
+      }
+    },
+    {
+      "id": "model.forecast-negative-infinity",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ]
+          }
+        },
+        "nonfinite_overrides": [
+          {
+            "path": [
+              "work",
+              "observations",
+              0
+            ],
+            "token": "-Infinity"
+          }
+        ]
+      },
+      "expected": {
+        "accepted": false,
+        "materialized_nonfinite_tokens": [
+          "-Infinity"
+        ]
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          93,
+          94
+        ]
+      }
+    },
+    {
+      "id": "model.code-empty-heldout",
+      "kind": "model",
+      "input": {
+        "model": "Mission",
+        "method": "model_validate",
+        "value": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "code",
+            "heldout": []
+          }
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/models.py",
+        "lines": [
+          108,
+          111
+        ]
+      }
+    },
+    {
+      "id": "model.review-valid",
+      "kind": "model",
+      "input": {
+        "model": "Review",
+        "method": "model_validate",
+        "value": {
+          "revision": 1,
+          "result_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "approve": false,
+          "note": "Evidence reviewed."
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "revision": 1,
+          "result_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "approve": false,
+          "note": "Evidence reviewed."
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          113,
+          119
+        ]
+      }
+    },
+    {
+      "id": "model.review-invalid-revision",
+      "kind": "model",
+      "input": {
+        "model": "Review",
+        "method": "model_validate",
+        "value": {
+          "revision": 0,
+          "result_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "approve": false,
+          "note": "Evidence reviewed."
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          116,
+          116
+        ]
+      }
+    },
+    {
+      "id": "model.review-invalid-hash",
+      "kind": "model",
+      "input": {
+        "model": "Review",
+        "method": "model_validate",
+        "value": {
+          "revision": 1,
+          "result_hash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "approve": false,
+          "note": "Evidence reviewed."
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          117,
+          117
+        ]
+      }
+    },
+    {
+      "id": "model.review-strict-approval",
+      "kind": "model",
+      "input": {
+        "model": "Review",
+        "method": "model_validate",
+        "value": {
+          "revision": 1,
+          "result_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "approve": 1,
+          "note": "Evidence reviewed."
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          113,
+          118
+        ]
+      }
+    },
+    {
+      "id": "model.review-empty-note",
+      "kind": "model",
+      "input": {
+        "model": "Review",
+        "method": "model_validate",
+        "value": {
+          "revision": 1,
+          "result_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "approve": false,
+          "note": ""
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          119,
+          119
+        ]
+      }
+    },
+    {
+      "id": "model.control-valid",
+      "kind": "model",
+      "input": {
+        "model": "Control",
+        "method": "model_validate",
+        "value": {
+          "state": "paused"
+        }
+      },
+      "expected": {
+        "accepted": true,
+        "output": {
+          "state": "paused"
+        }
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          122,
+          125
+        ]
+      }
+    },
+    {
+      "id": "model.control-invalid",
+      "kind": "model",
+      "input": {
+        "model": "Control",
+        "method": "model_validate",
+        "value": {
+          "state": "running"
+        }
+      },
+      "expected": {
+        "accepted": false
+      },
+      "requirement": {
+        "path": "data/consumer/api.py",
+        "lines": [
+          122,
+          125
+        ]
+      }
+    }
+  ]
+}

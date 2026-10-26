@@ -1,0 +1,22 @@
+{
+  "schema": "independent-campaign-reporting-review/v1",
+  "scope": "Read-only freeze guard and reporting statistics source review; synthetic arrays only. No market outcomes executed.",
+  "sourceSHA256": "259bb8f7904a2f7005fb1e7fe21be05a8f12c356cd7681e840b849b26a48b96d",
+  "syntheticChecks": 3,
+  "passed": true,
+  "elapsedWallSeconds": 0.0007619690000000006,
+  "cpuSeconds": 0.000331,
+  "findings": [
+    "Null/nonfinite costs remain missing and yield null numeric summaries when all values are unknown.",
+    "Signed outcomes retain negative/zero/positive counts and denominator includes only finite numeric observations.",
+    "Singleton normal-approximation mean interval remains null; quantile interpolation and Monte Carlo limitation are explicit.",
+    "Execution requires frozen status, registration reference/time, exact source and input hashes, and fresh output path.",
+    "180-second budget covers execution, serialization, compression and stream finalization; summary formatting and artifact hashing are disclosed separately."
+  ],
+  "limitations": [
+    "Registration URL/time are declared inputs; caller must substantiate actual public registration.",
+    "No fresh market outcomes or full campaign run reviewed. No source mutation by reviewer."
+  ],
+  "modelBillingUSD": null,
+  "humanAttentionMinutes": null
+}

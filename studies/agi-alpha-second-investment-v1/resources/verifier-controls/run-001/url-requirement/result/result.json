@@ -1,0 +1,42 @@
+{
+  "application_qualified": false,
+  "authority": [],
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pip",
+      "install",
+      "--dry-run",
+      "--ignore-installed",
+      "--no-index",
+      "--only-binary=:all:",
+      "--require-hashes",
+      "--report",
+      "pip-report.json",
+      "--find-links",
+      "wheels",
+      "-r",
+      "requirements.lock"
+    ]
+  ],
+  "cpu_seconds": 0.01,
+  "decision": "CONSISTENT",
+  "elapsed_wall_seconds": 0.01,
+  "files": {
+    "report": "pip-report.json",
+    "stderr": "pip.stderr.txt",
+    "stdout": "pip.stdout.txt"
+  },
+  "financial_action": false,
+  "job_id": "synthetic-url-requirement",
+  "job_sha256": "4b98d594cb28141d6382e9b130d3848993398c01d35bbd75fdc9c4896fd13604",
+  "pip_exit_code": 0,
+  "schema": "agialpha-lock-result/v1",
+  "synthetic_control_only": true,
+  "tool_versions": {
+    "packaging": "synthetic",
+    "pip": "synthetic",
+    "python": "3.12.14"
+  }
+}

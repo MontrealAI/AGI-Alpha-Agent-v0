@@ -1,0 +1,86 @@
+{
+  "status": "READ_ONLY_AUDIT_NO_NEW_MARKET_EXECUTION",
+  "files": [
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/src/market.mjs",
+      "sha256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/protocol/freeze.json",
+      "sha256": "7bbb0919ede3d4389d9eb36c23a7b775ec8093e40d51ac4da3f9c5714920406d"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/protocol/protocol.json",
+      "sha256": "9f88497590ebb9b1e736552fa6c851d80edd16dd6d64fc5f5fef066d4948649d"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/protocol/external-sources.json",
+      "sha256": "6f8c0c3a0223a9b0c8a5f286bb49201753a3fc34e7dcde08f97d421277599ed8"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/deployment-robustness/funding.mjs",
+      "sha256": "7c017e77f26ca7c755e8fb832ec4e7eddfe241c758b769931e72fadedbb3e083"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/deployment-robustness/protocol.json",
+      "sha256": "11ed0f292322ca822a1b34e9018ffb631eca7931bafd6f7a28ed1d7005ce752b"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/deployment-robustness/freeze.json",
+      "sha256": "e822d8a49f1d13f117543e17f628a8e230e672bc7d15b4d1bed4f5383f5bfd55"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/deployment-robustness/results-01/predeclared-representative-histories.json",
+      "sha256": "9fd09e08a060f6a85eaf4660b2dcb16ffef9f81f76ac4fa8a52a5db455186ba3"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/market/deployment-robustness/results-01/completion.json",
+      "sha256": "159ce5c4e1b9a631a8912caff76aac09db7c3799761026eb11d5ffc30dd52f47"
+    },
+    {
+      "path": "/workspace/scratch/da407bff0020/study/review/second-capability-gate.json",
+      "sha256": "efa89a065807078aa256febb8c8105f1488f574de329af11dc93f6a87478bcda"
+    }
+  ],
+  "critical_constraints": [
+    "New A/B/C must share existing first-asset history; old A removes first asset and is not valid continuation A.",
+    "$351 terminal funding is before unknown discovery cost D; it is not a decision-time balance.",
+    "Existing core has no purchase/use of nextAsset; passing tested:true does not execute second investment.",
+    "Same52-week horizon must remain finite; no borrowing terminal collection drain to earlier investment.",
+    "Original ten-minute initial benefit assumed, not measured; remaining provider time2min/job assumed.",
+    "Human/model monetary cost unknowns can be explicit scenario inputs but not factual all-in bounds."
+  ],
+  "representative_existing_full_history_seed3001": {
+    "seed": 3001,
+    "opening_USD": 1000,
+    "reserve_USD": 200,
+    "historical_RD_assumption_USD": 361.52,
+    "first_adoption_assumption_USD": 32.69,
+    "first_adoption_week": 8,
+    "first_available_week": 9,
+    "collections_terminal_USD": 720,
+    "full_history_costs_USD": 730.52,
+    "prospective_costs_USD": 369,
+    "full_history_profit_USD": -10.52,
+    "prospective_profit_USD": 351,
+    "funding_ceiling_before_D_by_week_USD": {
+      "20": 28.04,
+      "24": 55.61,
+      "26": 44.53,
+      "32": 67.1,
+      "40": 140.37,
+      "51": 311,
+      "55": 351
+    },
+    "post_week26_enterprise_jobs": 22,
+    "ceiling_on_eliminating_remaining_2min_provider_labor_USD": 47.96
+  },
+  "existing_model_reuse": {
+    "primary_source": "market/src/market.mjs",
+    "complete_immutable_histories": "market/deployment-robustness/results-01/complete-runs.jsonl.gz",
+    "funding_attribution": "market/deployment-robustness/funding.mjs",
+    "canonical_inert_cash_api": "market/canonical/shadow-ledger.mjs",
+    "calibration": "market/protocol/external-sources.json"
+  },
+  "recommendation": "Implement additive second-investment hook in a source-pinned copy, preserve legacy behavior when disabled, use frozen historical-prefix equality then same-seed continuation; funding bound min(cash-unpaid-reserve, collected-allAccrued+seedPaidHistoricalRD)-unaccruedEarmarks. New costs stay in full history and no fresh subsidy enters."
+}

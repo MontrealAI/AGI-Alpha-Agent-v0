@@ -1,0 +1,52 @@
+{
+  "schema": "agialpha-prefreeze-protocol-review/v1",
+  "reviewed_at": "2026-10-26T18:08:42.863428+00:00",
+  "source_identities": [
+    {
+      "path": "tools/acquire_confirmation.py",
+      "sha256": "dde4f71d385a774ba687d6b22a3ba8057186239f8a4f99524ef6dc682d08fc3a"
+    },
+    {
+      "path": "tools/run_confirmation.py",
+      "sha256": "990e514b5e4abbefcea44ef680d62df9193a2c3d55aa7e12559bef8d7904cdc7"
+    }
+  ],
+  "fresh_candidate_metadata_inspected": false,
+  "fresh_outcomes_inspected": false,
+  "sound_properties": [
+    "Six fixed families chosen before candidate metadata",
+    "Immediate predecessor by stable version identity, no outcome-based fallback",
+    "Deterministic native wheel rank/name selection",
+    "Shared incumbent wheels and strong standard pip available",
+    "Balanced arm order; one scheduled invocation per arm",
+    "Common independent verification and full child-inclusive service resource receipt"
+  ],
+  "findings": [
+    {
+      "id": "S01",
+      "status": "REPORTED_PENDING_OWNER_CORRECTION",
+      "finding": "Selection registration can be overwritten by rerunning select; refuse existing selected-inputs.json."
+    },
+    {
+      "id": "S02",
+      "status": "REPORTED_PENDING_OWNER_CORRECTION",
+      "finding": "Acquisition must bind selected-inputs SHA and baseline inputs to registered freeze, and verify selected wheel filename name/version equals chosen identity."
+    },
+    {
+      "id": "S03",
+      "status": "REPORTED_PENDING_OWNER_CORRECTION",
+      "finding": "Per-slot acquisition failures must remain recorded, without replacing target or losing remaining declared slots."
+    },
+    {
+      "id": "D01",
+      "status": "REPORTED_PENDING_OWNER_CORRECTION",
+      "finding": "Recheck job hash after every operation and require certificate job_sha256 equals registered job identity before acceptance."
+    },
+    {
+      "id": "D02",
+      "status": "REPORTED_PENDING_OWNER_CORRECTION",
+      "finding": "Timeout/parse/source guard failure must preserve partial campaign manifest and failed/unfinished slots; never retry or resample."
+    }
+  ],
+  "no_source_changes_by_reviewer": true
+}

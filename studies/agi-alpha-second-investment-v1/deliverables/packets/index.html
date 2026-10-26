@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" data-language="both"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Bilingual post-evaluation dependency decision packet with frozen evidence.">
+<title>Six dependency decisions · AGI ALPHA</title><style>
+:root{color-scheme:light;--ink:#18213b;--muted:#58637a;--navy:#11172f;--purple:#6b39c5;
+--light:#f4f1fc;--line:#e1e3ee;--red:#9f2845;--redlight:#fff2f5}
+*{box-sizing:border-box}body{margin:0;background:#f8f9fd;color:var(--ink);
+font:16px/1.58 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:#54249f;text-underline-offset:.19em}a:hover{color:#29125e}a:focus-visible,button:focus-visible,
+summary:focus-visible{outline:3px solid #cfa8ff;outline-offset:4px}button{font:inherit;cursor:pointer}
+.wrap{max-width:1140px;margin:auto;padding:0 28px}.top{display:flex;align-items:center;justify-content:space-between;
+gap:16px;padding-top:23px;padding-bottom:23px;flex-wrap:wrap}.brand{font-weight:800;letter-spacing:.12em;
+text-decoration:none;color:var(--navy);font-size:.91rem}.brand b{color:var(--purple);font-size:1.35rem}
+.controls{display:flex;gap:7px;flex-wrap:wrap}.controls button{border:1px solid var(--line);border-radius:8px;
+padding:7px 12px;background:white;color:var(--ink);font-size:.82rem}.controls button[aria-pressed=true]
+{background:var(--navy);color:white}.hero{color:#fff;background:radial-gradient(ellipse at 100% 0,#493072 0,
+transparent 57%),var(--navy);padding:45px 0 43px;border-bottom:5px solid #a780e0}.eyebrow{color:#d0b6f5;
+text-transform:uppercase;letter-spacing:.13em;font-weight:700;font-size:.75rem;margin:0 0 12px}
+h1{font-size:clamp(2rem,4.3vw,3.1rem);line-height:1.12;letter-spacing:-.035em;margin:0 0 18px;font-weight:750}
+.hero p{max-width:800px;margin:12px 0 0;color:#e1e3ef}.hero .badge{background:#fff1;color:#e9dfff;
+border:1px solid #b197d255}.hero .badge.conflict{background:#ffecf1;color:#851b38;border:none}
+main{padding-top:26px;padding-bottom:64px}.subnav{font-size:.87rem;margin:0 0 21px}.metrics{display:grid;
+grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 25px}.metric{padding:21px;background:white;
+border:1px solid var(--line);border-radius:12px}.metric strong{font-size:1.8rem;display:block;line-height:1.2}
+.metric span{font-size:.85rem;color:var(--muted)}.panel{background:#fff;border:1px solid var(--line);
+border-radius:14px;padding:26px;margin:0 0 24px;box-shadow:0 4px 16px #1a244004}h2{font-size:1.3rem;
+letter-spacing:-.025em;line-height:1.3;margin:0 0 13px}h3{font-size:1rem;margin:18px 0 8px}p{margin:9px 0 14px}
+.muted,.small{color:var(--muted)}.small{font-size:.83rem}.badge{display:inline-block;padding:4px 10px;
+border-radius:30px;background:var(--light);font-weight:750;font-size:.74rem;letter-spacing:.035em;
+color:#58328d}.badge.conflict{background:var(--redlight);color:var(--red)}.notice{border-left:4px solid #9167ce;
+background:var(--light);padding:16px 18px;border-radius:0 9px 9px 0}.notice.conflict{background:var(--redlight);
+border-color:var(--red)}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;font-size:.76rem;text-transform:uppercase;letter-spacing:.045em;color:var(--muted);
+border-bottom:2px solid var(--line);padding:11px 12px;vertical-align:bottom}td{border-bottom:1px solid var(--line);
+padding:13px 12px;vertical-align:top}td:first-child,th:first-child{padding-left:0}tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}.arm{font-size:1.15rem;display:block}
+.arm-name{font-size:.78rem;max-width:180px;display:block}.evidence-links{display:flex;gap:8px 16px;flex-wrap:wrap}
+code{font: .86em/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f1f2f8;
+border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}.hero code{background:#ffffff15;color:#fff}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f5fa;padding:14px;border-radius:8px;font-size:.8rem}
+pre code{padding:0;background:none}.hash{word-break:break-all;font-size:.74rem}.grid{display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.kv{display:grid;grid-template-columns:180px minmax(0,1fr);
+gap:8px 18px;font-size:.86rem}.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}
+details{border-top:1px solid var(--line);padding-top:15px;margin-top:16px}summary{cursor:pointer;font-weight:650;
+color:#553483}details details{border:0;padding:0;margin:5px 0}.changed{background:#f7f3ff}
+.card{display:block;color:var(--ink);text-decoration:none;background:white;border:1px solid var(--line);
+border-radius:12px;padding:24px;transition:border-color .15s}.card:hover{border-color:#8b63c7;color:var(--ink)}
+.card h2{margin:12px 0 8px}.card .versions{font-size:.93rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.card .open{display:block;color:var(--purple);font-weight:650;margin-top:17px;font-size:.9rem}
+footer{border-top:1px solid var(--line);padding:27px 0 38px;color:var(--muted);font-size:.8rem}
+[lang=fr]{font-weight:inherit}html[data-language=en] [lang=fr],html[data-language=fr] [lang=en]{display:none}
+html[data-language=both] .bilingual>span+span:before{content:" / ";color:#9c91ad}
+html[data-language=both] p[lang=fr]{color:var(--muted)}html[data-language=both] .hero p[lang=fr]{color:#d5c9e8}
+@media(max-width:720px){.wrap{padding-left:18px;padding-right:18px}.hero{padding:31px 0}.panel{padding:20px}
+.grid{grid-template-columns:1fr}.metrics{gap:9px}.metric{padding:15px 12px}.metric strong{font-size:1.45rem}
+.kv{grid-template-columns:1fr;gap:4px}.kv dd{margin-bottom:12px}th,td{padding:10px 8px}h1{overflow-wrap:anywhere}}
+@media print{body{background:white;font-size:11px}.controls,.subnav{display:none}.hero{background:white;color:#18213b;
+border-bottom:2px solid #6b39c5;padding:20px 0}.hero p,.hero p[lang=fr],.eyebrow{color:#4e3d62!important}
+.hero code{color:#18213b;background:#eee}.panel,.metric{box-shadow:none;break-inside:avoid}.wrap{max-width:none}
+.table-scroll{overflow:visible}.grid{display:block}.card{margin-bottom:12px}a{color:#492178}footer{padding:15px 0}}
+</style></head><body>
+<header class="wrap top"><a class="brand" href="index.html">AGI ALPHA <b>∞</b></a>
+<nav class="controls" aria-label="Language and print">
+<button data-set-language="en" aria-pressed="false">English</button>
+<button data-set-language="fr" aria-pressed="false">Français</button>
+<button data-set-language="both" aria-pressed="true">EN + FR</button>
+<button data-print><span class="bilingual"><span lang="en">Print</span><span lang="fr">Imprimer</span></span></button></nav></header>
+<section class="hero"><div class="wrap"><p class="eyebrow">THE SECOND INVESTMENT · EVIDENCE COMPANION</p>
+<h1><span class="bilingual"><span lang="en">Dependency decision packets</span><span lang="fr">Dossiers de décision sur les dépendances</span></span></h1><p lang="en">Six complete dependency decisions, with the same independent acceptance standard for A, B and C.</p><p lang="fr">Six décisions complètes sur les dépendances, avec le même critère d’acceptation indépendant pour A, B et C.</p></div></section>
+<main class="wrap"><div class="metrics"><div class="metric"><strong>6</strong>
+<span><span class="bilingual"><span lang="en">Fresh research questions</span><span lang="fr">Questions de recherche nouvelles</span></span></span></div>
+<div class="metric"><strong>4</strong>
+<span><span class="bilingual"><span lang="en">Metadata-consistent proposals</span><span lang="fr">Propositions aux métadonnées cohérentes</span></span></span></div>
+<div class="metric"><strong>2</strong>
+<span><span class="bilingual"><span lang="en">Substantiated conflicts</span><span lang="fr">Conflits établis</span></span></span></div></div>
+<section class="panel"><h2>
+<span class="bilingual"><span lang="en">Read the decision, inspect the evidence</span><span lang="fr">Lire la décision, examiner les preuves</span></span></h2>
+<p lang="en">Each proposal changes one package in the 41-pin native lock. All three branches produced an accepted evidence packet for all six questions. These are six research inputs evaluated three ways, not 18 customer orders. The four metadata-consistent proposals still require consumer and runtime qualification.</p><p lang="fr">Chaque proposition modifie un paquet du verrou natif de 41 versions. Les trois branches ont produit un dossier accepté pour chacune des six questions. Il s’agit de six entrées de recherche évaluées selon trois méthodes, et non de 18 commandes clients. Les quatre propositions cohérentes exigent encore une qualification consommateur et à l’exécution.</p>
+<p><a href="../../results/confirmation-01/campaign.json"><span class="bilingual"><span lang="en">Primary campaign record</span><span lang="fr">Enregistrement de la campagne primaire</span></span></a> ·
+<a href="../../protocol/production-freeze.json"><span class="bilingual"><span lang="en">Frozen protocol</span><span lang="fr">Protocole figé</span></span></a></p></section>
+<div class="grid"><a class="card" href="cryptography.html">
+<span class="badge conflict">CONFLICT</span><h2>cryptography</h2>
+<p class="versions">50.0.1 → 50.0.0</p>
+<p lang="en">Retain the baseline; project requirement violated.</p><p lang="fr">Conserver la référence ; exigence du projet enfreinte.</p><span class="open"><span class="bilingual"><span lang="en">Open decision packet →</span><span lang="fr">Ouvrir le dossier →</span></span></span></a><a class="card" href="eth-account.html">
+<span class="badge conflict">CONFLICT</span><h2>eth-account</h2>
+<p class="versions">0.13.7 → 0.13.6</p>
+<p lang="en">Retain the baseline; project requirement violated.</p><p lang="fr">Conserver la référence ; exigence du projet enfreinte.</p><span class="open"><span class="bilingual"><span lang="en">Open decision packet →</span><span lang="fr">Ouvrir le dossier →</span></span></span></a><a class="card" href="prometheus-client.html">
+<span class="badge consistent">CONSISTENT</span><h2>prometheus-client</h2>
+<p class="versions">0.26.0 → 0.25.0</p>
+<p lang="en">Metadata consistent; runtime qualification remains.</p><p lang="fr">Métadonnées cohérentes ; qualification à l’exécution requise.</p><span class="open"><span class="bilingual"><span lang="en">Open decision packet →</span><span lang="fr">Ouvrir le dossier →</span></span></span></a><a class="card" href="pydantic-settings.html">
+<span class="badge consistent">CONSISTENT</span><h2>pydantic-settings</h2>
+<p class="versions">2.15.0 → 2.14.2</p>
+<p lang="en">Metadata consistent; runtime qualification remains.</p><p lang="fr">Métadonnées cohérentes ; qualification à l’exécution requise.</p><span class="open"><span class="bilingual"><span lang="en">Open decision packet →</span><span lang="fr">Ouvrir le dossier →</span></span></span></a><a class="card" href="pyyaml.html">
+<span class="badge consistent">CONSISTENT</span><h2>pyyaml</h2>
+<p class="versions">6.0.3 → 6.0.2</p>
+<p lang="en">Metadata consistent; runtime qualification remains.</p><p lang="fr">Métadonnées cohérentes ; qualification à l’exécution requise.</p><span class="open"><span class="bilingual"><span lang="en">Open decision packet →</span><span lang="fr">Ouvrir le dossier →</span></span></span></a><a class="card" href="uvicorn.html">
+<span class="badge consistent">CONSISTENT</span><h2>uvicorn</h2>
+<p class="versions">0.53.0 → 0.52.4</p>
+<p lang="en">Metadata consistent; runtime qualification remains.</p><p lang="fr">Métadonnées cohérentes ; qualification à l’exécution requise.</p><span class="open"><span class="bilingual"><span lang="en">Open decision packet →</span><span lang="fr">Ouvrir le dossier →</span></span></span></a></div>
+<section class="panel" style="margin-top:24px"><h2><span class="bilingual"><span lang="en">How to use these packets</span><span lang="fr">Utilisation de ces dossiers</span></span></h2>
+<p lang="en">For a conflict, keep the baseline while reviewing the exact project constraint. For a consistent result, use the exact hashes and environment to plan the next consumer acceptance check. The linked certificates, logs and full package inventories support independent review. This shared renderer was added after confirmation; its presentation work is not part of the frozen capability or a measured productivity gain.</p><p lang="fr">En cas de conflit, conserver la référence pendant l’examen de la contrainte exacte du projet. Pour un résultat cohérent, utiliser les empreintes et l’environnement exacts pour préparer la prochaine vérification d’acceptation consommateur. Les certificats, journaux et inventaires complets permettent un examen indépendant. Ce rendu commun a été ajouté après confirmation ; sa présentation ne fait pas partie de la capacité figée ni d’un gain de productivité mesuré.</p>
+</section></main>
+<footer><div class="wrap"><p lang="en">Common presentation produced after evaluation. No presentation saving is credited to A, B or C. This packet grants no operational authority and triggers no installation, release, payment or runtime action.</p><p lang="fr">Présentation commune produite après l’évaluation. Aucun gain de présentation n’est attribué à A, B ou C. Ce dossier n’accorde aucune autorité opérationnelle et ne déclenche aucune installation, publication, transaction ni action d’exécution.</p></div></footer><script>
+(() => {
+  const buttons = document.querySelectorAll('[data-set-language]');
+  function setLanguage(value) {
+    if (!['en', 'fr', 'both'].includes(value)) return;
+    document.documentElement.dataset.language = value;
+    document.documentElement.lang = value === 'fr' ? 'fr' : 'en';
+    buttons.forEach(button => button.setAttribute('aria-pressed',
+      String(button.dataset.setLanguage === value)));
+    try { localStorage.setItem('agialpha-packet-language', value); } catch (_) {}
+  }
+  buttons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.setLanguage)));
+  document.querySelector('[data-print]').addEventListener('click', () => window.print());
+  let language = 'both';
+  try { language = localStorage.getItem('agialpha-packet-language') || language; } catch (_) {}
+  setLanguage(language);
+})();
+</script></body></html>

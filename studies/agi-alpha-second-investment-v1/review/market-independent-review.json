@@ -1,0 +1,185 @@
+{
+  "schema": "agi-alpha-second-investment-independent-market-review/v1",
+  "reviewer_role": "Independent conventional builder and runtime reviewer; no B production source or fresh confirmation outcomes inspected.",
+  "status": "PASS_WITH_REPORTING_LIMITS",
+  "scope": "Source integrity, same-ledger invariants, unknown costs, delayed activation, refunds/reserves, no-policy/common-prefix equality, prevention of first-asset benefit duplication, complete prototype cost disclosure, signed effects, and paired financial gate. Synthetic arithmetic controls only.",
+  "started_utc": "2026-10-26T18:08:10Z",
+  "completed_utc": "2026-10-26T18:11:42.321166+00:00",
+  "review_window_wall_seconds": 211.5464888619972,
+  "source_sha256": {
+    "market/continuation.mjs": "5248bd12b0130f2630d449aeda0d76c6ad78980a8cad45fb5c5907661aa29c26",
+    "market/continuation-core.mjs": "5f675c6b979ee8d73f67953a9101abfa776516c4260cf4695cc73407d00a70f4",
+    "market/build-core.mjs": "302e0d497e7093901c57fe2abfae260072841558691a2e048e76fad0a15afe86",
+    "market/tests/test-continuation.mjs": "97ab1c6e5a21cf6f207da09b3d4462321ef8c4d13b977c76a3e9ca01c48a6938",
+    "review/market-independent-probes.mjs": "78ad98a1cc255f3f04e5dbab024ce6067c4a08f018062a48d77e3083575f4d4f"
+  },
+  "independence": {
+    "production_B_source_inspected": false,
+    "fresh_production_outcomes_inspected": false,
+    "fresh_market_campaign_executed": false,
+    "economics_source_edited_by_reviewer": false
+  },
+  "verification": {
+    "author_registered_synthetic_checks_passed": 17,
+    "independent_synthetic_controls_passed": 7,
+    "independent_control_details": [
+      {
+        "name": "generated continuation core is exactly the disclosed frozen-source transformation",
+        "passed": true,
+        "observation": {
+          "singleOccurrencePatches": 9,
+          "exactByteMatch": true
+        }
+      },
+      {
+        "name": "neutral hook-free core matches original with transactions, defaults, and delayed refunds",
+        "passed": true,
+        "observation": {
+          "comparisons": 12,
+          "syntheticCashEvents": 1201
+        }
+      },
+      {
+        "name": "same checkpoint, all second costs, delayed activation, and cash identity hold",
+        "passed": true,
+        "observation": {
+          "attempted": true,
+          "financiallyAdmitted": false,
+          "syntheticSecondInvocations": 15,
+          "completeSyntheticCostCents": 13
+        }
+      },
+      {
+        "name": "direct repayment is narrower than paired economic repayment",
+        "passed": true,
+        "observation": {
+          "directCostRepayment": true,
+          "projectInclusiveIncrementalProfitNegative": true,
+          "explanation": "Construction pauses forgo revenue; direct avoided delivery cost does not measure that loss."
+        }
+      },
+      {
+        "name": "signed regressions remain penalties and cannot pass the financial qualification",
+        "passed": true,
+        "observation": {
+          "negativeEffectsPreserved": true,
+          "qualificationPassed": false,
+          "syntheticModeledUses": 15
+        }
+      },
+      {
+        "name": "unknown research fees remain unknown and do not enter available capital",
+        "passed": true,
+        "observation": {
+          "projectProfit": null,
+          "fullPrototypeCost": null,
+          "hiddenCashInjection": false
+        }
+      },
+      {
+        "name": "unpaid refunds and delivery obligations constrain funds, historical seed is added back once",
+        "passed": true,
+        "observation": {
+          "availableBeforeLateHistoryCents": 2500,
+          "availableAfterLateHistoryCents": 1500
+        }
+      }
+    ],
+    "exact_generated_core_reconstruction": true,
+    "neutral_original_patched_comparisons": 12,
+    "synthetic_cash_events_in_neutral_comparisons": 1201,
+    "test_execution_receipt": "review/market-review-execution.json",
+    "independent_controls": "review/market-independent-probes.mjs",
+    "independent_control_results": "review/market-independent-probes.json",
+    "suite_output": "review/market-review-suite-direct.stdout.txt"
+  },
+  "findings": [
+    {
+      "id": "M01",
+      "severity": "none",
+      "status": "verified",
+      "finding": "The nine disclosed exact single-occurrence substitutions reconstruct the generated continuation core byte for byte from the frozen upstream source. No-hook results equal the inherited model under 12 active synthetic cases including payment delays, defaults, refunds and quality shocks.",
+      "evidence": [
+        "market/core-transformation.json",
+        "review/market-independent-probes.json"
+      ]
+    },
+    {
+      "id": "M02",
+      "severity": "none",
+      "status": "verified",
+      "finding": "Second construction is capped by both collected generated resources and cash after unpaid obligations and reserve. A narrowly identified historical cost actually paid from initial seed is added back only when computing subsequently generated resources; it remains in full-history profit. Future invoices and unspent seed do not become operating surplus.",
+      "evidence": [
+        "market/continuation.mjs:generatedResources",
+        "review/market-independent-probes.json"
+      ]
+    },
+    {
+      "id": "M03",
+      "severity": "none",
+      "status": "verified",
+      "finding": "All eight one-off categories and maintenance are explicit. An unknown category remains null, blocks enterprise financing, and leaves project-inclusive profit unknown. Completed prototypes not financed by the enterprise remain explicit outside research cost and never create cash.",
+      "evidence": [
+        "market/continuation.mjs:validateProfile,finalize,simulateContinuation",
+        "market/tests/test-continuation.mjs"
+      ]
+    },
+    {
+      "id": "M04",
+      "severity": "none",
+      "status": "verified",
+      "finding": "Construction pause, activation, integration failure and finite lifetime remain causal. Synthetic delayed activation produced no second-asset jobs before completion or after expiration, charged the complete prototype and upkeep, and reconciled final cash to starting capital plus every cash event.",
+      "evidence": [
+        "review/market-independent-probes.json",
+        "market/tests/test-continuation.mjs"
+      ]
+    },
+    {
+      "id": "M05",
+      "severity": "none",
+      "status": "verified",
+      "finding": "All continuation arms share the same inherited first asset and enterprise history before the registered decision. Positive second savings cannot exceed residual burden remaining after that asset, preventing reuse of its initial ten-minute gain. Identical B/C profiles give identical histories.",
+      "evidence": [
+        "market/continuation.mjs:initialize,pairedContinuation",
+        "market/tests/test-continuation.mjs",
+        "review/market-independent-probes.json"
+      ]
+    },
+    {
+      "id": "M06",
+      "severity": "reporting_limit",
+      "status": "resolved_in_source_and_requires_correct_use",
+      "finding": "Direct avoided-cost repayment is insufficient for enterprise repayment. An independent synthetic case passes direct repayment while construction downtime causes negative paired project-inclusive profit. The revised paired qualification correctly fails it and explicitly requires a positive project-inclusive increment alongside financial admission, generated funding, use, and complete-cost/direct repayment.",
+      "evidence": [
+        "market/continuation.mjs:pairedContinuation",
+        "review/market-independent-probes.json"
+      ],
+      "required_reporting": "Use qualification.<arm>.conditionalModeledFinancialGatePassed plus separate frozen production/effect evidence. Do not promote directCostRepayment, invested, or legacy upstream repayment counters alone to a completed flywheel claim."
+    },
+    {
+      "id": "M07",
+      "severity": "none",
+      "status": "verified_after_owner_revision",
+      "finding": "Signed provider, compute and customer-effort effects preserve observed regressions. The independent negative-effect case increases direct costs, preserves a negative finer-than-cent residual, and fails both direct repayment and paired financial qualification.",
+      "evidence": [
+        "market/continuation.mjs:validateProfile,effectiveConfig,finalize",
+        "review/market-independent-probes.json"
+      ]
+    }
+  ],
+  "limitations": [
+    "This is software and arithmetic review, not validation of modeled buyer preferences, price calibration, demand, wages, timing or candidate-effect provenance.",
+    "No paid customer observation, operating receipt, field reliability estimate, market equilibrium or distinct AGI improvement-method advantage is established by these checks.",
+    "A completed-research replay can execute an operating-funded unqualified attempt; modeledConstructionAttempted and investmentPaidFromGeneratedResources alone do not mean the asset was worthwhile.",
+    "The signed microcent field is disclosed precision analysis for modeled invocations; it does not independently validate measured compute effects or alter the integer-cent market ledger.",
+    "Human attention and model fees were unavailable. Their null values in this review receipt must not be interpreted as zero costs."
+  ],
+  "cost_receipt": {
+    "review_window_wall_seconds_basis": "Elapsed wall clock from the saved review-start monotonic timestamp; includes reading, tool waits and report preparation, not human labor time.",
+    "measured_test_child_cpu_seconds": 0.578,
+    "measured_test_wall_seconds": 0.4629154010035563,
+    "model_billing_usd": null,
+    "human_attention_minutes": null,
+    "remote_tool_service_cpu_seconds": null
+  }
+}

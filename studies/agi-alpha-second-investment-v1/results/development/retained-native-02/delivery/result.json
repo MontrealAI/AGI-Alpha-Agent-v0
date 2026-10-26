@@ -1,0 +1,56 @@
+{
+  "schema": "agialpha-lock-result/v1",
+  "job_sha256": "0d92d289d688752d8e1d452aa60dc080e96bd59e11982ce3406693ddf09f1f53",
+  "job_id": "development-current-native-lock",
+  "decision": "CONSISTENT",
+  "pip_exit_code": 0,
+  "files": {
+    "stdout": "pip.stdout.txt",
+    "stderr": "pip.stderr.txt",
+    "report": "pip-report.json"
+  },
+  "tool_versions": {
+    "python": "3.12.14",
+    "pip": "26.2.2",
+    "packaging": "26.3"
+  },
+  "application_qualified": false,
+  "authority": [],
+  "financial_action": false,
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pip",
+      "--isolated",
+      "--disable-pip-version-check",
+      "install",
+      "--dry-run",
+      "--ignore-installed",
+      "--no-index",
+      "--find-links",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/development/retained-native-02/delivery/selected-wheels",
+      "--only-binary=:all:",
+      "--require-hashes",
+      "--report",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/development/retained-native-02/delivery/pip-report.json",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/development/requirements-agent.lock",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/development/retained-native-02/delivery/root-requirements.lock"
+    ]
+  ],
+  "method": "retained ordinary-pip full-lock preflight",
+  "preflight_findings": [],
+  "elapsed_wall_seconds": 0.7439911259971268,
+  "cpu_seconds": 0.7347151249999999,
+  "artifacts_sha256": {
+    "pip.stdout.txt": "9a6caaca7c0ccb2cc3f0fbaeaa5a33123de7df3e29396e76ca0b02afd1cdaf2b",
+    "pip.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pip-report.json": "2dd9dac3377ab4eb0e86b616f02d6f3903e54e4734108a954649b8482cd4ffe5"
+  },
+  "limits": [
+    "Wheel metadata consistency only; application behavior, vulnerabilities and release qualification remain separate.",
+    "Research-proposed lock; no customer order, installation, authority or financial transaction."
+  ]
+}

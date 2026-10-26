@@ -1,0 +1,49 @@
+{
+  "schema": "agialpha-lock-result/v1",
+  "job_sha256": "1fa0cab089edd836d87753e7a0cbce18bb1095bb9d9a7d713b3243a5cbd6f26d",
+  "job_id": "full-lock-uvicorn-0.52.4",
+  "decision": "CONSISTENT",
+  "pip_exit_code": 0,
+  "files": {
+    "stdout": "pip.stdout.txt",
+    "stderr": "pip.stderr.txt",
+    "report": "pip-report.json"
+  },
+  "tool_versions": {
+    "python": "3.12.14",
+    "pip": "26.2.2",
+    "packaging": "26.3"
+  },
+  "elapsed_wall_seconds": 0.8332514479989186,
+  "cpu_seconds": 0.796141118,
+  "application_qualified": false,
+  "authority": [],
+  "financial_action": false,
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pip",
+      "--isolated",
+      "--disable-pip-version-check",
+      "install",
+      "--dry-run",
+      "--ignore-installed",
+      "--no-index",
+      "--find-links",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/wheels",
+      "--only-binary=:all:",
+      "--require-hashes",
+      "--report",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/uvicorn/A/delivery/pip-report.json",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/confirmation/uvicorn/requirements.lock",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/uvicorn/A/delivery/root-requirements.lock"
+    ]
+  ],
+  "root_conflicts": [],
+  "method": "direct standard pip workflow; generic measurement wrapper",
+  "new_retained_enterprise_capability": false,
+  "human_finalization_minutes": null
+}

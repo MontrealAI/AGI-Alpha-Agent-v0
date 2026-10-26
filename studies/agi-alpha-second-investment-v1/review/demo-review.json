@@ -1,0 +1,297 @@
+{
+  "schema": "agi-alpha-second-investment-independent-demo-review/v1",
+  "disposition": "PASS_AFTER_TWO_FUNCTIONAL_LAYOUT_CORRECTIONS_AND_ONE_TYPOGRAPHIC_REFINEMENT",
+  "completed_utc": "2026-10-26T18:52:58.634775+00:00",
+  "scope": "Common post-evaluation presentation only; no credited production benefit, autonomous invention, extra production mission, or market outcome.",
+  "artifact": {
+    "path": "publication/AGI_ALPHA_Second_Investment_Demo.html",
+    "sha256": "d2e9d19556a154f0ee68a07d28bc651cd9042c8e7f03f047399280c199022169",
+    "bytes": 1832862
+  },
+  "source_and_execution_receipts": {
+    "review/test_demo.py": "6b045bfea574d542dc762301024e8cbf19427f2ba58e161ca7832a8f750dd5b9",
+    "review/test_demo.cjs": "4aeaf4c5c0678c680d0a4f37e455e1efe7b492500c9796efd7111194e01dbc3e",
+    "review/test_demo_browser.cjs": "a22ffaafc445744246cce70c0f02f7163e2b93e1e268a99471b1ca8aff0e70a2",
+    "review/demo-functional-final.json": "f367f2105d6470f8de0272dd0a478c6d95caff5c22f8a7b9e59f52c16914873f",
+    "review/demo-browser-results.json": "70a800590e1b455654e35e787d01072a32eb1d63e528b6cd60169d893f40defe",
+    "resources/demo-qa/browser-execution-06.json": "aeb269334f78b1afe12f3335761c894d1104779f8a03570594703247052ff46b",
+    "review/test_demo_currency_fit.cjs": "88f6c089f6e6d960bea3dcff00662d5f0429334369b6e4caafb88de5f9c211d9",
+    "review/demo-currency-fit-results.json": "eb0a23fa111b57619a10220b3cb67f575e41f276ebdda2dd468c077f93fa7022",
+    "resources/demo-qa/browser-execution-07.json": "46347bdd30705c40ba41c6127bbb5ec381bbbf57f9a86364b4874becf1e48eb1",
+    "review/demo-functional-before-currency-fit.json": "f367f2105d6470f8de0272dd0a478c6d95caff5c22f8a7b9e59f52c16914873f",
+    "review/demo-browser-before-currency-fit.json": "70a800590e1b455654e35e787d01072a32eb1d63e528b6cd60169d893f40defe"
+  },
+  "primary_evidence_unchanged": {
+    "production_campaign": "results/confirmation-01/campaign.json",
+    "sha256": "7081c4b19c6df3558a86b4887b68bd8753ea287f73782701b308b3bc1cf34d2f",
+    "market_source_freeze": "market/campaign-freeze.json",
+    "new_production_campaigns": 0,
+    "new_market_campaigns": 0,
+    "extra_relocated_reproductions": 0,
+    "app_runtime_restarts": 0,
+    "market_source_freeze_sha256": "e6c9b8bd1a085459fedb8d22c1d47a9459b1793edd1093c85a1b39b278d96120"
+  },
+  "findings": [
+    {
+      "id": "all-saved-cells",
+      "status": "PASS",
+      "evidence": "80 saved groups were selected through actual inline controls in both languages (160 selections); every profit distribution, funded count and gate count equals frozen summary.json. Unknown profiles keep null values and only registered reference conditions."
+    },
+    {
+      "id": "same-ledger",
+      "status": "PASS",
+      "evidence": "All eight seed8001 representatives restore exact frozen A/B summaries, cash, bills, invoices and balances. Shared A data deduplication is lossless."
+    },
+    {
+      "id": "denominator",
+      "status": "PASS",
+      "evidence": "Low/replay has15 second-capability uses,34 eventual accepted outcomes,$25.97 oneoff+$1.50 upkeep=$27.47 cost and a−$27.47 paired project-profit difference. It is never financially admitted or qualified. Reference replay has zero second uses; available generated resources$82.74 are distinct from cash."
+    },
+    {
+      "id": "language",
+      "status": "PASS",
+      "evidence": "Actual language buttons preserve selectors, localize all dynamic prose/options and unknown values; literal archived filenames remain language-independent identifiers. French ledger/market/calculator screenshots were reviewed."
+    },
+    {
+      "id": "source-downloads",
+      "status": "PASS",
+      "evidence": "All39 embedded artifacts decompress to exact archived SHA256/size;6,698,988 uncompressed bytes checked. Native JSON and PDF downloads match source bytes. PDF hasapplication/pdf MIME and intended filename. Bad hashes refuse output; absent DecompressionStream offers exact.gz fallback."
+    },
+    {
+      "id": "exploratory-input",
+      "status": "FIXED",
+      "defect": "Cleared number inputs were coerced by Number('') tozero, which could treat missing cost as zero.",
+      "correction": "Author requires nonempty input before finite numeric validation. Explicit0 remains accepted. Five blanks and six invalid boundaries, reset, zero-use boundary and a positive hypothetical example tested. Frozen results remain unchanged by calculator."
+    },
+    {
+      "id": "mobile-layout",
+      "status": "FIXED",
+      "defect": "Actual French360px browser document expanded to398px because nowrap calculator badge imposed a grid min-content width.",
+      "correction": "Author set mobile grid minmax(0,1fr), child min-width:0 and wrapped badge/total. Native final EN/FR document and body widths are360px; all controls remain within viewport. No content hidden to force result.",
+      "preserved_failure": "resources/demo-qa/mobile-overflow.json",
+      "failed_html": "resources/demo/history/demo-before-mobile-wrap-fix.html",
+      "exact_patch": "resources/demo/history/mobile-wrap-fix.patch"
+    },
+    {
+      "id": "no-js",
+      "status": "PASS",
+      "evidence": "A real JavaScript-disabled context shows the reference financing failure, zero second uses and all six production outcomes. A bilingual notice identifies unavailable interactive features; the default substantive fallback is English."
+    },
+    {
+      "id": "network-and-authority",
+      "status": "PASS",
+      "evidence": "No external page requests or browser page errors. Existing local browser reused; no browser download, paid commitment, runtime restart, or persistent security configuration change."
+    },
+    {
+      "id": "currency-typography",
+      "status": "REFINED",
+      "evidence": "Root requested French market currency suffixUS remain on one line. A single mobile metric font-size rule was added. Actual Chromium360px character bounds show the entire−107,56$US value on one line, document/body360px, no page errors or externalrequests. All bytes outside<style> are identical to comprehensive passing sourcea710..., so unchanged80-cell/eight-ledger/39-file tests were reused without rerunning them.",
+      "exact_patch": "resources/demo/history/mobile-currency-fit.patch",
+      "receipt": "review/demo-currency-fit-results.json"
+    }
+  ],
+  "browser": {
+    "engine": "156.0.8078.47",
+    "executable": "/tmp/agi-alpha-autonomous-work-20261026/browser_runtime/chrome-headless-shell-linux64/chrome-headless-shell",
+    "reused_existing_binary": true,
+    "initial_sandbox_launch_failed": true,
+    "scoped_process_escalation_approved": true,
+    "persistent_security_changes": 0,
+    "desktop_viewport": [
+      1360,
+      1000
+    ],
+    "mobile_viewport": [
+      360,
+      800
+    ],
+    "final_screenshots": [
+      {
+        "path": "resources/demo-qa/screenshots/desktop-en.png",
+        "sha256": "f42a18cb56a4a8081b02d036e653f4c06a8f191ab5ff1423f0095856f0984b54"
+      },
+      {
+        "path": "resources/demo-qa/screenshots/desktop-fr.png",
+        "sha256": "2b88ac1359e0aa29e10077bf9a576780a0fdbf2cc7bde11cfff4ca40f0230111"
+      },
+      {
+        "path": "resources/demo-qa/screenshots/mobile-en.png",
+        "sha256": "20278662e1d2ed17993d46fa60b929c869db66dcad4f58b7b4767952a154e566"
+      },
+      {
+        "path": "resources/demo-qa/screenshots/mobile-fr-calculator.png",
+        "sha256": "bfff4d8df725bafbd7dadb464ec0d7ceec737c1c0723ea4ea21ed64c52fdbdb1"
+      },
+      {
+        "path": "resources/demo-qa/screenshots/mobile-fr-ledger.png",
+        "sha256": "40b41943ab166d6826c937174a36e6df6a5ba915f570c4c26d90a2ee0bd31864"
+      },
+      {
+        "path": "resources/demo-qa/screenshots/mobile-fr-market.png",
+        "sha256": "88b779797a6e0eb775ba8bc9832baa8727af0139244cca543cd290010bd4570e"
+      },
+      {
+        "path": "resources/demo-qa/screenshots/mobile-fr.png",
+        "sha256": "dcefd963efaf00f3aefba860fed52c4ffc75df90f7a44285159531f029d9448d"
+      },
+      {
+        "path": "resources/demo-qa/screenshots/mobile-nojs.png",
+        "sha256": "9ba7246f984096f8b952cf6f131afa69bd6917756f72498ad195d5131437cfd1"
+      }
+    ],
+    "preserved_pre_fix_screenshot": "resources/demo-qa/screenshots/fr-overflow.png",
+    "visual_review": "Reviewer inspected final French calculator and market screenshots; root separately reported desktopEN/FR inspection. All final screenshot files available for root review.",
+    "latest_html_source_binding": {
+      "current": "d2e9d19556a154f0ee68a07d28bc651cd9042c8e7f03f047399280c199022169",
+      "previous_comprehensive_pass": "a7108b80af3a1b4b1bbe7f456ff6f6ae91c5e4a6c6756b6858a5c484caa87016",
+      "non_style_html_sha256": "7a7889115c2438370cc64f6a95400a08fb7ff888b23515e55fc33d4b8c39d6cc",
+      "non_style_html_byte_identical": true
+    },
+    "final_market_screenshot": {
+      "path": "resources/demo-qa/screenshots/mobile-fr-market-final.png",
+      "sha256": "638dfbc05452a65571819c49b21c95fc2de7a63fbe8c2fed9621b87e167584e6"
+    },
+    "comprehensive_screenshots_source_sha256": "a7108b80af3a1b4b1bbe7f456ff6f6ae91c5e4a6c6756b6858a5c484caa87016",
+    "screenshot_note": "Earlier complete captures are bound toa710; finald2e9 changes only mobile market metric typography, shown in mobile-fr-market-final.png. All other non-stylebytes identical; earlier captures are preserved rather than mislabeled."
+  },
+  "preserved_attempts": {
+    "product_corrections": [
+      "Initial blank-input coercion reproduced against preserved initial inline source.",
+      "French360px398px overflow measured in existing browser and repaired."
+    ],
+    "harness_corrections": [
+      "Identical source filenames are valid in both languages, not untranslated prose.",
+      "Historical pre-dedup script cannot read final deduplicated data without restoration; its original successful defect probe is retained instead.",
+      "Source selector lies inside a details element and must first be opened.",
+      "EmbeddedPDF has its own button and is intentionally excluded from text-inspection selector.",
+      "MinimalDOM needed preventDefault and async download completion for real PDF button.",
+      "Static CSS check initially expected literal1fr and was corrected to accept narrower minmax layout."
+    ],
+    "failed_browser_launch": "review/demo-browser-initial-launch-failure.json",
+    "all_distinct_execution_receipts": [
+      {
+        "path": "review/demo-functional-initial-harness.json",
+        "sha256": "5c54e4b8a3a6cdd86c8a02a553f7b4fb2fe3fdd281d79de5557ff395d573eaa4",
+        "elapsed_wall_seconds": 0.7312856290009222,
+        "child_cpu_seconds": 0.6300779999999999,
+        "passed": false
+      },
+      {
+        "path": "review/demo-functional-before-pdf.json",
+        "sha256": "da07861bfb39061525aa06439bb226c817945ee5929233ead1135c7b5519b970",
+        "elapsed_wall_seconds": 0.5913661269987642,
+        "child_cpu_seconds": 0.528841,
+        "passed": true
+      },
+      {
+        "path": "review/demo-functional-encoding-harness.json",
+        "sha256": "6fb7a9da01b7516888bd5846cc6cbb915b17396f766587ce4e3b4837f88eaf7d",
+        "elapsed_wall_seconds": 0.6959370329968806,
+        "child_cpu_seconds": 0.649676,
+        "passed": false
+      },
+      {
+        "path": "review/demo-functional-results.json",
+        "sha256": "c1c7433a0445372f80d498ca52048c963dd71e1cf8dd3a602e5ce7299460843d",
+        "elapsed_wall_seconds": 0.6515623049999704,
+        "child_cpu_seconds": 0.5913999999999999,
+        "passed": true
+      },
+      {
+        "path": "review/demo-functional-final-controls.json",
+        "sha256": "e68de0d37fae9ce8c63b32c554398169e17bd87492931d2a7ce0f79d35b747e5",
+        "elapsed_wall_seconds": 0.6129124910003156,
+        "child_cpu_seconds": 0.5653419999999999,
+        "passed": false
+      },
+      {
+        "path": "review/demo-functional-css-harness.json",
+        "sha256": "0598bd3b03fd6f384b3e5f9bb34c5642625bab5361e7392b9081093b5ee0d74e",
+        "elapsed_wall_seconds": 0.6534252679994097,
+        "child_cpu_seconds": 0.55977,
+        "passed": false
+      },
+      {
+        "path": "review/demo-functional-final.json",
+        "sha256": "f367f2105d6470f8de0272dd0a478c6d95caff5c22f8a7b9e59f52c16914873f",
+        "elapsed_wall_seconds": 0.6062948860017059,
+        "child_cpu_seconds": 0.568829,
+        "passed": true
+      },
+      {
+        "path": "resources/demo-qa/browser-execution-01.json",
+        "sha256": "baa0932e2ff62d0896757eb6ff8ac6440f7ed42ac80ad8168f84c24179f621bd",
+        "elapsed_wall_seconds": 0.35244001999672037,
+        "child_cpu_seconds": 0.410934,
+        "passed": false
+      },
+      {
+        "path": "resources/demo-qa/browser-execution-02.json",
+        "sha256": "fcee7d8e588b9e1e2a096955ce513650c7e49f312d99fcd6965ab9ad955d38bf",
+        "elapsed_wall_seconds": 34.00910728300005,
+        "child_cpu_seconds": 2.130884,
+        "passed": false
+      },
+      {
+        "path": "resources/demo-qa/browser-execution-03.json",
+        "sha256": "aa0f073935cc592aeccc148bff492d806da1df3dbab3d87bc4c775802ce8390f",
+        "elapsed_wall_seconds": 35.03162247700311,
+        "child_cpu_seconds": 1.8746239999999998,
+        "passed": false
+      },
+      {
+        "path": "resources/demo-qa/browser-execution-04.json",
+        "sha256": "23159434cc4b60b5f7db75c7ba0d7d8864ab882a34326d0b1b0b8986ce335f46",
+        "elapsed_wall_seconds": 5.631659876999038,
+        "child_cpu_seconds": 2.01256,
+        "passed": false
+      },
+      {
+        "path": "resources/demo-qa/browser-execution-05.json",
+        "sha256": "2178f97264f5ec08622daeb07a83d883a62b68946be03bc42efcb830ca8e2042",
+        "elapsed_wall_seconds": 6.3336433860022225,
+        "child_cpu_seconds": 2.485797,
+        "passed": false
+      },
+      {
+        "path": "resources/demo-qa/browser-execution-06.json",
+        "sha256": "aeb269334f78b1afe12f3335761c894d1104779f8a03570594703247052ff46b",
+        "elapsed_wall_seconds": 7.143437804003042,
+        "child_cpu_seconds": 2.9677759999999997,
+        "passed": true
+      },
+      {
+        "path": "resources/demo-qa/browser-execution-07.json",
+        "sha256": "46347bdd30705c40ba41c6127bbb5ec381bbbf57f9a86364b4874becf1e48eb1",
+        "elapsed_wall_seconds": 1.034431586998835,
+        "child_cpu_seconds": 1.041182,
+        "passed": true
+      }
+    ],
+    "alias_exclusion": "resources/demo-qa/browser-execution.json is a byte-identical alias of browser-execution-01.json and must not be counted again. report aliases are not separate executions.",
+    "additional_alias_exclusions": [
+      "review/demo-functional-before-currency-fit.json aliases review/demo-functional-final.json; one execution.",
+      "review/demo-browser-before-currency-fit.json aliases review/demo-browser-results.json; one execution.",
+      "review/demo-review-before-currency-fit.json preserves prior report; not a separate execution."
+    ]
+  },
+  "resources": {
+    "started_utc": "2026-10-26T18:35:43.614355+00:00",
+    "review_window_elapsed_seconds": 1035.0224665449969,
+    "elapsed_is_human_labor": false,
+    "distinct_functional_executions": 7,
+    "distinct_browser_executions": 7,
+    "measured_execution_wall_seconds_sum": 94.07912617300099,
+    "measured_child_cpu_seconds_sum": 17.017692999999998,
+    "actual_model_billing_usd": null,
+    "human_attention_minutes": null,
+    "unmeasured_read_and_authoring_cpu_seconds": null,
+    "accounting_note": "Authoring window overlaps execution durations; do not add them as separate labor. Failed attempts included. Presentation QA remains research support outside frozen asset economics; no delivery saving credited.",
+    "final_refinement": "Onlyone1.034431587s/1.041182CPU native CSS check after source-byteidentity; no repeat scientificor fullunchangedfunctional campaign."
+  },
+  "limits": [
+    "Headless Chromium156 was exercised; no cross-browser or assistive-technology compatibility claim.",
+    "Browser rendering and source-derived simulation UI do not validate market demand or unknown actual research fees.",
+    "Native numerical inputs use browser number-entry conventions; displayed financial outputs are locale-formatted."
+  ]
+}

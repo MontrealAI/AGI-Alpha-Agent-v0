@@ -1,0 +1,58 @@
+{
+  "schema": "agialpha-lock-result/v1",
+  "builder": "conventional-c-pip-adoption/v1",
+  "job_sha256": "b7b9dbe9aae3a2527f699f8b657ec5ae7e6eb8a832093cfcf09bf0c520d03de0",
+  "job_id": "C-development-target-mismatch",
+  "decision": "INCOMPLETE",
+  "pip_exit_code": -1,
+  "files": {
+    "stdout": "pip.stdout.txt",
+    "stderr": "pip.stderr.txt",
+    "report": null
+  },
+  "tool_versions": {
+    "python": "3.12.14",
+    "pip": "26.2.2",
+    "packaging": "26.3"
+  },
+  "commands": [],
+  "target_environment": {
+    "implementation_name": "cpython",
+    "implementation_version": "3.12.14",
+    "os_name": "posix",
+    "platform_machine": "x86_64",
+    "platform_release": "6.18.55",
+    "platform_system": "Linux",
+    "platform_version": "#1 SMP Wed Oct 14 19:45:18 UTC 2026",
+    "python_full_version": "3.12.14",
+    "platform_python_implementation": "CPython",
+    "python_version": "3.12",
+    "sys_platform": "linux"
+  },
+  "root_issues": [],
+  "input_issues": [
+    "ValueError: target environment does not match this native process"
+  ],
+  "application_qualified": false,
+  "authority": [],
+  "financial_action": false,
+  "scope": "Offline dependency metadata consistency for the exact supplied lock and native environment only.",
+  "actual_receipts": 0,
+  "model_calls_during_production": 0,
+  "file_sha256": {
+    "pip.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pip.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "next_action": {
+    "en": "Do not clear the proposed lock. Supply the missing or matching evidence, then repeat the bounded offline check.",
+    "fr": "Ne validez pas le verrou proposé. Fournissez les preuves manquantes ou concordantes, puis reprenez la vérification hors ligne bornée."
+  },
+  "elapsed_wall_seconds": 0.003045770998141961,
+  "cpu_seconds": 0.002815061999999993,
+  "cost_unknowns": [
+    "provider/model authoring fees",
+    "human attention",
+    "hardware price",
+    "maintenance price"
+  ]
+}

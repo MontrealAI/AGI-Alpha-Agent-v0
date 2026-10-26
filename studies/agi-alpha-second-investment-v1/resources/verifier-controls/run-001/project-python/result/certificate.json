@@ -1,0 +1,77 @@
+{
+  "application_qualified": false,
+  "authority": [],
+  "dependency_edges": [
+    {
+      "active": true,
+      "metadata_requirement_index": 0,
+      "metadata_sha256": "b45238652dbe4dfd6220addf59a76d7a9df7f1c7ecd0181d1c33fc97bfa11853",
+      "requirement": "helper>=1.0",
+      "satisfied": true,
+      "selected_version": "1.0",
+      "source": "candidate-app",
+      "source_version": "1.0",
+      "target": "helper"
+    }
+  ],
+  "errors": [],
+  "evidence": {
+    "active_lock_count": 2,
+    "lock_sha256": "0ab126add2b968851ddc0fd30bc0878fb2452fc1d3f2eb0cf8bfbce0cbd58162",
+    "pyproject_sha256": "3b47a4247215a495128e213d42c41ac9ab092e54873af65f743b574c7d2b7575",
+    "roots": [
+      {
+        "active": true,
+        "requirement": "candidate-app>=1.0"
+      }
+    ],
+    "selected_extras": {
+      "candidate-app": [],
+      "helper": []
+    },
+    "stderr_sha256": "ed59fae8e63285b17d2cebb6455714f7b1f2bd81e376d7144f966ad4903e97a1",
+    "stdout_sha256": "4a757c4438dde7030d0b9cf39302a1b53c2a79c54473f83028cb4fd117607c60",
+    "wheels": [
+      {
+        "filename": "candidate_app-1.0-py3-none-any.whl",
+        "metadata_sha256": "b45238652dbe4dfd6220addf59a76d7a9df7f1c7ecd0181d1c33fc97bfa11853",
+        "name": "candidate-app",
+        "requires_python": ">=3.11",
+        "sha256": "99d6fe28bee037ba5a78ee782a3f0d33b16dec625d463c1bf5ea3a02910766dd",
+        "version": "1.0"
+      },
+      {
+        "filename": "helper-1.0-py3-none-any.whl",
+        "metadata_sha256": "f1d011640960d145347d59f8c5fb428d5759a6566cf1e9a8a6c3e8c0201fd051",
+        "name": "helper",
+        "requires_python": ">=3.11",
+        "sha256": "16b867c86bd3a239e5c8a98c054611a08caf050834eb54d13d3aa84d4bc473ec",
+        "version": "1.0"
+      }
+    ]
+  },
+  "evidence_limit": "Independent byte and metadata checking of supplied artifacts and recorded pip output; no hostile-recorder attestation or fresh consumer execution.",
+  "financial_action": false,
+  "independent_metadata_verdict": "CONFLICT",
+  "job_id": "synthetic-project-python",
+  "job_sha256": "5242f633164575f5e6685ccc0a188f318ef3b630cb855e5e3298b1d001795201",
+  "result_sha256": "91c01265f75a712e4b4384ad678efd362c9b97e2b83ec2a9eb1c647745b5128c",
+  "schema": "agialpha-independent-lock-certificate/v1",
+  "scope": "Exact declared native interpreter and wheel metadata dependency constraints only; no application behavior, security, runtime, release or installation qualification.",
+  "status": "COMPLETE",
+  "substantiated_witnesses": [
+    {
+      "actual": "3.12.14",
+      "kind": "project_python",
+      "requires": "<3"
+    }
+  ],
+  "verdict": "CONFLICT",
+  "verifier": {
+    "cpu_seconds": 0.002282546999999996,
+    "packaging": "26.3",
+    "python": "3.12.14",
+    "source_sha256": "583bc6d7cb5736d6805ceb87407fcf1b3c234de813aad1fba38270d875cfb586",
+    "wall_seconds": 0.0022822360006102826
+  }
+}

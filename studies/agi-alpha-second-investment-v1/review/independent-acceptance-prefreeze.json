@@ -1,0 +1,64 @@
+{
+  "schema": "agialpha-prefreeze-independent-acceptance-review/v1",
+  "review_utc": "2026-10-26T18:06:53.962604+00:00",
+  "role": "Independent same-session acceptance designer and verifier; B implementation not read until verifier/control construction completed",
+  "fresh_candidate_metadata_inspected": false,
+  "confirmation_outcomes_inspected": false,
+  "source_identities": [
+    {
+      "path": "production/verify.py",
+      "sha256": "583bc6d7cb5736d6805ceb87407fcf1b3c234de813aad1fba38270d875cfb586"
+    },
+    {
+      "path": "production/test_verify.py",
+      "sha256": "2d0823ae3016ea2fbf115643d9435e3951ff6449664aec41d4df34e7d6886d92"
+    },
+    {
+      "path": "protocol/acceptance-contract.json",
+      "sha256": "507c1bcf5b6d03be727d69a6fd8354936ae9bab7e1b554acbd418a44f927e117"
+    },
+    {
+      "path": "production/retained.py",
+      "sha256": "9d223262ab58043c6d03da24384c13d75f362547d72a5d94bf662f75e9a7f471"
+    },
+    {
+      "path": "production/workbench.mjs",
+      "sha256": "450df8c140e35d89a9777be7e2d884d0b9a13004c37aa6a4c0bbd4bc76289414"
+    },
+    {
+      "path": "production/conventional.py",
+      "sha256": "5ca54becb45a3dbf60a9fed2ad9730975baf7cbe543e95a89a975af176825eac"
+    }
+  ],
+  "verification": {
+    "synthetic_controls": "resources/verifier-controls/run-001/summary.json",
+    "passed": 24,
+    "total": 24,
+    "customer_jobs": 0,
+    "development_A": "results/development/incumbent-01/certificate-independent.json",
+    "development_B": "results/development/retained-01/certificate-independent.json",
+    "development_A_B_outcome": "COMPLETE / CONSISTENT,41 exact wheels,244 metadata edges,57 active edges"
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "material",
+      "path": "production/workbench.mjs",
+      "status": "REPORTED_TO_ROOT_PENDING_FIX_CONFIRMATION",
+      "finding": "Pack decision uses raw producer decision even when independent verification is INCOMPLETE. Headline must be INCOMPLETE unless independent certificate is COMPLETE; preserve raw producer record separately."
+    },
+    {
+      "id": "F02",
+      "severity": "scope limitation",
+      "path": "production/retained.py",
+      "status": "REPORTED_SAFE_CONSERVATIVE_BEHAVIOR",
+      "finding": "Nonzero pip results are classified CONFLICT only for ResolutionImpossible string, although independent graph may substantiate another Python/dependency contradiction. This can lose accepted negative outcomes but cannot create false positive benefit."
+    }
+  ],
+  "limits": [
+    "No institutional independence claim.",
+    "Recorded pip artifacts cannot attest hostile recorder.",
+    "Metadata consistency is not application behavior, installation, release approval or security clearance.",
+    "No new paid resources or model runtime calls were used by verifier. Authoring cost is not measured by elapsed time."
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "schema": "agialpha-lock-acceptance-contract/v1",
+  "id": "native-wheel-metadata-closure-v1",
+  "phase": "PRE_CONFIRMATION",
+  "author_role": "Independent same-session acceptance designer and verifier; not an external institution",
+  "customer_question": "Does this exact proposed native wheel-only lock satisfy the declared application's root constraints and all active wheel-metadata dependency constraints for the current Python/platform and selected chain extra?",
+  "starting_sources": {
+    "application_repo": "MontrealAI/AGI-Alpha-Agent-v0",
+    "lock": "requirements-agent.lock",
+    "development_lock_sha256": "d58df2a38d099f8123d7445f62fec4684d029e588ce4b615151387c4decd1392",
+    "active_distribution_rows": 41,
+    "prior_component_behavior_cases": 61,
+    "prior_component_verifier_sha256": "fc002f8b13429585e97bc2c1216a4c666ca162dfeb9b509d10da34298b9950be",
+    "prior_component_status": "Preserved as an unchanged inherited reference; no new full-lock or application behavior implication"
+  },
+  "job_schema": {
+    "schema": "agialpha-lock-job/v1",
+    "required": [
+      "id",
+      "lock_path",
+      "lock_sha256",
+      "pyproject_path",
+      "pyproject_sha256",
+      "project_extras",
+      "wheelhouse_path",
+      "wheels",
+      "target_environment"
+    ],
+    "path_basis": "relative to the job JSON directory",
+    "wheel_row": [
+      "filename",
+      "name",
+      "version",
+      "sha256"
+    ],
+    "environment": "Exact packaging.markers.default_environment() for executing CPython3.12/Linux; all marker fields required; cross-target claims out of scope"
+  },
+  "result_schema": {
+    "schema": "agialpha-lock-result/v1",
+    "required": [
+      "job_id",
+      "job_sha256",
+      "decision",
+      "pip_exit_code",
+      "files",
+      "tool_versions",
+      "commands",
+      "elapsed_wall_seconds",
+      "cpu_seconds",
+      "application_qualified",
+      "authority",
+      "financial_action"
+    ],
+    "files": {
+      "stdout": "relative captured stdout",
+      "stderr": "relative captured stderr",
+      "report": "relative pip report or null on failure"
+    },
+    "tool_versions": [
+      "python",
+      "pip",
+      "packaging"
+    ],
+    "decision": [
+      "CONSISTENT",
+      "CONFLICT",
+      "INCOMPLETE"
+    ],
+    "application_qualified": false,
+    "authority": [],
+    "financial_action": false
+  },
+  "acceptance": [
+    "Frozen job, lock and pyproject identities match exactly.",
+    "Every active lock row has one exact selected wheel; normalized names are unique; no unpinned/direct-URL/unsupported lock directive is silently accepted.",
+    "Each selected wheel's bytes match both independent job SHA256 and the lock's hash allowlist; filename/name/version/METADATA/WHEEL tags agree.",
+    "All declared root requirements and selected project extras are evaluated; project Requires-Python is checked.",
+    "Wheel Requires-Python is checked; all Requires-Dist edges are parsed, marker-evaluated for the explicit native target and recursively activated extras, then checked against exact selected versions.",
+    "Unknown extras, unsupported metadata or requirements, missing artifacts, missing declared capture, stale identities or unhandled output are INCOMPLETE, never CONSISTENT.",
+    "CONSISTENT requires complete graph and identity checking plus successful wheel-only offline pip resolution, exact report distribution set, hashes and metadata.",
+    "CONFLICT requires an independently substantiated root/Python/dependency counterexample; all available closure records are preserved. This is a useful rejection, not a failed product outcome.",
+    "A pip failure without an independently verified metadata contradiction is INCOMPLETE, even if its stderr says dependency conflict.",
+    "Result paths cannot escape result directory. Pip reports bind wheels by basename/name/version/hash, not original absolute storage path.",
+    "Every arm receives the same acceptance criterion and common bilingual renderer. Negative conclusions do not receive weaker artifact requirements.",
+    "Dependency consistency does not prove install success, ABI behavior, application compatibility, security, source authenticity beyond recorded hashes, release qualification or operator authority."
+  ],
+  "strong_baselines": {
+    "A": "Existing retained producer plus direct ordinary offline pip resolution, root constraints, supplied wheel/hash caches and common measurement/acceptance/rendering instrumentation; no new reusable production asset.",
+    "B": "Actual AGI ALPHA/Workbench retained orchestration wrapper for the same ordinary pip process; source-bound capability record.",
+    "C": "Independent conventional builder with comparable resources and the same legitimate tools/caches.",
+    "cost_rule": "Common verifier, fixtures, research instrumentation and rendering have construction/verification costs recorded separately; no elapsed research-agent duration is labeled observed human labor. No invented manual minutes or extra demand from a wrapper."
+  },
+  "fresh_selection": {
+    "status": "IDENTITY_RULE_ONLY_NOT_YET_EXECUTED",
+    "families": [
+      "cryptography",
+      "eth-account",
+      "prometheus-client",
+      "pydantic-settings",
+      "pyyaml",
+      "uvicorn"
+    ],
+    "rule": "For each listed family, select the immediately preceding non-yanked stable release below the development pin using public release-version/file identities only. Replace exactly that pin and its public source hashes in the41-row native lock; keep all other pin identities fixed. Freeze selected version identities before reading dependency metadata or running resolution.",
+    "unavailable": "Missing eligible release or compatible wheel remains a recorded no-candidate/incomplete slot; no favorable substitution.",
+    "label": "Research-proposed historical single-package substitutions, not actual historical application locks or customer orders.",
+    "disjointness": "Families are outside prior ten-package component projection and the six Starlette/Pydantic transitions plus four joint tuples; no re-execution of those frozen missions.",
+    "units": "Six questions; three arm evaluations per question. Cases, edges, synthetic controls and repetitions are not additional customer jobs."
+  },
+  "controls": {
+    "phase": "SYNTHETIC_DEVELOPMENT_ONLY",
+    "never_customer_jobs": true,
+    "required": [
+      "valid closure",
+      "missing active dependency pin",
+      "wrong dependency version",
+      "root version mismatch",
+      "package Requires-Python conflict",
+      "project Requires-Python conflict",
+      "inactive platform marker does not create false defect",
+      "active platform marker obligation",
+      "recursive requested extra dependency",
+      "unknown requested extra incomplete",
+      "wheel hash tamper",
+      "wheel name/version metadata mismatch",
+      "unsupported target wheel tag",
+      "pip report missing distribution",
+      "stale job hash",
+      "escaping result artifact path",
+      "missing output capture",
+      "unsupported URL requirement",
+      "malformed marker fails closed",
+      "invalid runtime resource capture"
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://pip.pypa.io/en/stable/cli/pip_check/",
+      "supports": "pip check validates installed dependencies, not application behavior"
+    },
+    {
+      "url": "https://pip.pypa.io/en/stable/cli/pip_install/",
+      "supports": "dry-run/ignore-installed/report/no-index/wheel-only/hash modes"
+    },
+    {
+      "url": "https://pip.pypa.io/en/stable/reference/installation-report/",
+      "supports": "report format1 and selected distribution metadata; report is not itself a lock"
+    },
+    {
+      "url": "https://packaging.python.org/en/latest/specifications/core-metadata/",
+      "supports": "Requires-Dist, Requires-Python, Provides-Extra"
+    },
+    {
+      "url": "https://packaging.python.org/en/latest/specifications/dependency-specifiers/",
+      "supports": "markers, extras and requirement semantics"
+    },
+    {
+      "url": "https://packaging.python.org/specifications/binary-distribution-format/",
+      "supports": "wheel METADATA and compatibility tags"
+    },
+    {
+      "url": "https://packaging.pypa.io/en/stable/markers.html",
+      "supports": "explicit marker environment and evaluation"
+    }
+  ],
+  "not_claimed": [
+    "actual customer acceptance",
+    "actual customer receipts",
+    "actual human minutes",
+    "whole-application behavior",
+    "security clearance",
+    "installation",
+    "runtime restart",
+    "release qualification",
+    "distinctive advantage over C",
+    "self-financing success before measured full-cost economics"
+  ]
+}
