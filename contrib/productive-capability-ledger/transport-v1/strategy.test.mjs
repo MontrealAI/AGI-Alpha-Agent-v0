@@ -23,8 +23,13 @@ test('download requires exact SHA-256, length and bounded safe filename',async()
 
 test('plain bilingual summary states exact source, expiry, attempt and full request cap',()=>{
   const plan={input:{scope_id:'public-guide',plan:{sourceRef:'a'.repeat(40),manifestPath:'docs/try/sources.json',
-    sourceCount:8,expiresAt:'2026-10-26T01:00:00.000Z',maxSeconds:20}},expires_at:1792976400,request_seconds:45};
+    sourceCount:8,expiresAt:'2026-10-26T01:00:00.000Z',maxSeconds:20,maxAttempts:1}},expires_at:1792976400,request_seconds:45};
   for(const lang of ['en','fr']){const text=planSummary(plan,lang);assert(text.includes('a'.repeat(40)));
     assert(text.includes('45 s'));assert(text.includes('20 s'));assert(text.includes('2026-10-26T01:00:00.000Z'));}
   assert.equal(planSummary(null),'');
+});
+
+test('recoverable plan shows its exact lifetime bound in both languages',()=>{
+  const plan={input:{scope_id:'fixed',plan:{sourceRef:'a'.repeat(40),manifestPath:'public.json',sourceCount:5,maxSeconds:20,maxAttempts:2,expiresAt:'2026-10-26T01:00:00.000Z'}},expires_at:1792976400,request_seconds:90};
+  for(const language of ['en','fr']){const text=planSummary(plan,language);assert(text.includes('2'));assert(text.includes('90 s'));assert(text.includes(language==='fr'?'aucune prolongation':'no renewal'));}
 });

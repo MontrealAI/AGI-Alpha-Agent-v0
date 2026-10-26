@@ -4,7 +4,7 @@
   "approvedOperatorAcceptance": "NOT RUN",
   "status": "ENGINEERING_CANDIDATE_ONLY",
   "baseCheckpoint": "e2503611666ee170266cbce51dc250492285f2e8",
-  "scope": "Additive source-checkout adapter and EN/FR view over existing StrategyExecutor/Journal; no scheduler, credentials, planning-profile change or adopted service.",
+  "scope": "Existing source overlay with explicit bounded recovery and shared accounting; default planning methods/behavior preserved, changed shared-transport manifest requires fresh exact-source qualification.",
   "distribution": "Source overlay for exact reviewed public checkout with already-local ordinary Git objects and installed verified Alpha1.42/core26/strategy companion; not a standalone wheel.",
   "files": {
     "contrib/productive-capability-ledger/automation-v1/run-mission.mjs": {
@@ -20,12 +20,16 @@
       "bytes": 1231
     },
     "contrib/productive-capability-ledger/transport-v1/README.md": {
-      "sha256": "a304046bb2e895735c0977f1ef21c09358b67580d9867edd8e45e01e5782da16",
-      "bytes": 17020
+      "sha256": "c0f13e69efd45a2732e69310c7ad65120ed26ea22e6dd7b51efe398644a5bb36",
+      "bytes": 17289
     },
     "contrib/productive-capability-ledger/transport-v1/bridge.mjs": {
-      "sha256": "8511dfc89b600e359492a1934def18e752c00c4921badda1b083ab4dd6f7ccba",
-      "bytes": 1145
+      "sha256": "ad2089e32cc46b1fc8ea7dc7f4bc7c9addde4c75c227656102257d061e16edd3",
+      "bytes": 3785
+    },
+    "contrib/productive-capability-ledger/transport-v1/collect_source_delivery.py": {
+      "sha256": "eb199dc50256ba6a6ed111f72e762a0321dcfe1ef67503c23d66b1617619784b",
+      "bytes": 3051
     },
     "contrib/productive-capability-ledger/transport-v1/scopes.example.json": {
       "sha256": "e9c25ae97460099a2b9aa4496d9d39cbc026dbd59375cb50b382c5ab2af805e8",
@@ -36,39 +40,43 @@
       "bytes": 3144
     },
     "contrib/productive-capability-ledger/transport-v1/source_worker.py": {
-      "sha256": "b38e0c164e2386bfd5f6199c8b8229cfece0985219d4790c58dd3f32c6b10879",
-      "bytes": 20808
+      "sha256": "4c39b2dc9216df93fad9a69f54ee8f77e2333571480d8439e1e78f56ef9a8571",
+      "bytes": 22969
     },
     "contrib/productive-capability-ledger/transport-v1/strategy.css": {
       "sha256": "25ce825a9c53a4cb2be103b87c18a3b5bca2915512cf17a053aba324e2700f94",
       "bytes": 1550
     },
     "contrib/productive-capability-ledger/transport-v1/strategy.html": {
-      "sha256": "84172b1f4245eeeeace56545f4d2ca3e7a1110a44d2102922aec9eb28515cc0d",
-      "bytes": 4705
+      "sha256": "511cb106fd61d367ba8f925602c8e25920c8aa44f51b70ad7779e13dcebe3f47",
+      "bytes": 5159
     },
     "contrib/productive-capability-ledger/transport-v1/strategy.js": {
-      "sha256": "dde327c2b6cc724e996adc94f66c1f4a0aaa18a85f2a9e7eeaefc15d2934eb4c",
-      "bytes": 10049
+      "sha256": "03ed227f892a5bd806de015aed9a78f52a77b0b7ceeb2e24f0e42e36c191d253",
+      "bytes": 11058
     },
     "contrib/productive-capability-ledger/transport-v1/strategy.test.mjs": {
-      "sha256": "8f20ac748ed58c675dc04a69c2fc8cc4c20f92d9c61d19df50bf8a34f5ac21bb",
-      "bytes": 2079
+      "sha256": "18e311b68beccddba4dfaeb769228e7efbfff02d4f1c99950dd49a0d088abf35",
+      "bytes": 2605
     },
     "contrib/productive-capability-ledger/transport-v1/test_source_api.py": {
       "sha256": "f79ef46c36f2b7ea18179e1357e91f53f98b3699cb8d7f6b721bdef912537d6b",
       "bytes": 15488
     },
     "contrib/productive-capability-ledger/transport-v1/test_source_browser.py": {
-      "sha256": "ca45533a98adfd68747d537232d4720c6bf7623ba62b6362143561026550b77c",
-      "bytes": 16878
+      "sha256": "128b34b4d9157410de4cac8787dcd66f4c185f4aac56d10212c8dcb68dfddfc3",
+      "bytes": 18452
+    },
+    "contrib/productive-capability-ledger/transport-v1/test_source_recovery.py": {
+      "sha256": "11c39b82642f742f7cc26148022d960489149378b7091858ae74b90d92fb3e2e",
+      "bytes": 12049
     },
     "contrib/productive-capability-ledger/transport-v1/test_source_worker.py": {
-      "sha256": "9a268a6ccbe733146ceb373b287abc22917c8367f853709f451652f91332cc76",
-      "bytes": 9591
+      "sha256": "d10cfcde425bd94c7262bfe6538af8b870818ee3ca64a5cc7cac56bce17220cf",
+      "bytes": 10367
     },
     "contrib/strategy_succession/ENGINEERING_MANIFEST.json": {
-      "sha256": "8a0043cb444b46f839e84e650f08270a0fbe198b48532fc3dbff78568db13e3d",
+      "sha256": "ed40dcfc0d71c239b2ff682ad53e7846ed787b1d8310c9ed25b16733c9c79de1",
       "bytes": 63146
     },
     "contrib/strategy_succession/requirements-qualification.txt": {
@@ -79,13 +87,21 @@
       "sha256": "8cd7dfd13addd4d743360779b3ffeec16c37938bb5434339c2bb3f31316fe131",
       "bytes": 14404
     },
+    "contrib/strategy_succession/setup.py": {
+      "sha256": "e4baefa8269bbd721d76bd4e6e15b9c3bb83132d9201e1070121d06a2c210066",
+      "bytes": 3632
+    },
     "contrib/strategy_succession/transport/strategy_executor.py": {
-      "sha256": "ba083af26336e2883367f9c081ea172950fe9da0558f5b7521afb83b1deab027",
-      "bytes": 33780
+      "sha256": "95a4a127c89d887ee3db47ef2de0ff6e0a9e9d8f7f3b01016d32c3a906590f0e",
+      "bytes": 40502
     },
     "docs/assets/successor/engine.mjs": {
       "sha256": "38c4f38978bf9fc29f207bae3adee0755bc6530d04502a36c491cc430787e488",
       "bytes": 22341
+    },
+    "examples/successor-alpha/automated-costs.mjs": {
+      "sha256": "0dfca3ae4e7ef1d17bc78521f91917ef068280cf832d3565c354de2085c52506",
+      "bytes": 14085
     },
     "examples/successor-alpha/engine.mjs": {
       "sha256": "09a673d124b9ddcf47e29250f1aad4fa737ce99cdc2364afbfb9911ec9579ea2",
@@ -100,8 +116,44 @@
       "bytes": 8721
     }
   },
-  "sourceIdentity": "4f7f6028a6df26ca61aac0799bb31b0e80457b1f456c647c150fc8e4dea30666",
-  "qualification": {
+  "sourceIdentity": "3ac9db12da1e9261e23a7ea3c4f1cad9e122e8201fb4174492e0a9d894f4741e",
+  "versions": {
+    "python": "3.12.14",
+    "node": "24.22.1",
+    "git": [
+      "2.51.1",
+      "2.55.0"
+    ],
+    "runtime": "alpha-factory-v1==1.42.0",
+    "coreProfile": "contrib/strategy_succession/ENGINEERING_MANIFEST.json qualified_environment; exact 26 dependencies and 505 runtime-source identities"
+  },
+  "limits": {
+    "methods": [
+      "run-mission"
+    ],
+    "maxSourceAttemptsPerRun": 4,
+    "maxRequestsDefault": 4,
+    "serviceUnitsPerAttempt": 1,
+    "constructionUnits": 0,
+    "nativeCalls": 0,
+    "nodeHeapMiB": 256,
+    "selectedCustomerFilesUncompressedBytes": 512000,
+    "childStdoutBytes": 1000000,
+    "childStderrBytes": 65536,
+    "defaultSourceAttemptsPerRun": 1,
+    "testedRecoveryAttempts": 2
+  },
+  "unqualified": [
+    "operator adoption",
+    "real approved session",
+    "commercial acceptance",
+    "fully loaded monetary costs",
+    "website delivery",
+    "self-acceleration",
+    "approved-operator unattended recovery"
+  ],
+  "integrationParent": "78da6b69e168b23d3c16f406f63270cbf0e53386",
+  "historicalQualification": {
     "workerCases": {
       "passed": 23,
       "scope": "Actual Git/Node runner, separate Python checker, ZIP custody, bounds and termination components"
@@ -132,37 +184,16 @@
       "existingPlanningCasesPassed": 147
     }
   },
-  "versions": {
-    "python": "3.12.14",
-    "node": "24.22.1",
-    "git": [
-      "2.51.1",
-      "2.55.0"
-    ],
-    "runtime": "alpha-factory-v1==1.42.0",
-    "coreProfile": "contrib/strategy_succession/ENGINEERING_MANIFEST.json qualified_environment; exact 26 dependencies and 505 runtime-source identities"
-  },
-  "limits": {
-    "methods": [
-      "run-mission"
-    ],
-    "maxSourceAttemptsPerRun": 1,
-    "maxRequestsDefault": 4,
-    "serviceUnitsPerAttempt": 1,
-    "constructionUnits": 0,
-    "nativeCalls": 0,
-    "nodeHeapMiB": 256,
-    "selectedCustomerFilesUncompressedBytes": 512000,
-    "childStdoutBytes": 1000000,
-    "childStderrBytes": 65536
-  },
-  "unqualified": [
-    "operator adoption",
-    "real approved session",
-    "unattended recovery",
-    "commercial acceptance",
-    "fully loaded monetary costs",
-    "website delivery",
-    "self-acceleration"
-  ]
+  "qualification": {
+    "localSourceCases": 53,
+    "localPlanningWorkerTransportCases": 85,
+    "nodeUiGroups": 4,
+    "independentRecoveredDeliverableChecks": 348,
+    "actualSIGKILL": "PASS in isolated candidate; original checkpoint/lease, both attempts charged",
+    "localFullHooks": "FAIL sparse-checkout missing sources/tools/assets; actionlint PASS",
+    "hostedSourceBrowser": "PENDING final published source; actual tab closure procedure included",
+    "approvedOperator": "NOT RUN",
+    "operationalAdoption": "NOT APPROVED",
+    "security": "Pending final scan and distinct responsible-owner dispositions"
+  }
 }

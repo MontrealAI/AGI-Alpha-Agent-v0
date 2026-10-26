@@ -53,6 +53,20 @@ def test_candidate_source_browser_approval_download_and_completed_reconnect(tmp_
     token = (journal.root / "api.token").read_text().strip()
     app = module.create_candidate_app(journal, registry, node=Path(node), git=Path(git), python=Path(sys.executable))
     worker = app.state.source_assurance_worker
+    entered, release = threading.Event(), threading.Event()
+    real_execute = worker.execute
+
+    def controlled_start(method, payload, limits, checkpoint):
+        # A test-only progress barrier holds the active approved mission before
+        # real computation, so closing the tab cannot race a fast completion.
+        entered.set()
+        deadline = time.monotonic() + 20
+        while not release.wait(0.02):
+            checkpoint()
+            assert time.monotonic() < deadline
+        return real_execute(method, payload, limits, checkpoint)
+
+    worker.execute = controlled_start
     now = datetime.now(timezone.utc)
 
     def iso(value: datetime) -> str:
@@ -148,7 +162,7 @@ def test_candidate_source_browser_approval_download_and_completed_reconnect(tmp_
                 expect(page.locator("#approve")).to_be_enabled()
                 expect(page.locator("#plan-summary")).to_contain_text("Périmètre : public-guide")
                 expect(page.locator("#plan-summary")).to_contain_text("Révision publique exacte : " + commit)
-                expect(page.locator("#plan-summary")).to_contain_text("Une tentative source")
+                expect(page.locator("#plan-summary")).to_contain_text("Jusqu’à 1 tentative(s) source")
                 page.get_by_text("Plan technique exact", exact=True).click()
                 expect(page.locator("#plan")).to_be_visible()
                 expect(page.locator("#plan")).to_contain_text('"plan_id"')
@@ -173,6 +187,21 @@ def test_candidate_source_browser_approval_download_and_completed_reconnect(tmp_
                     "Plan exact approuvé. Vous pouvez exécuter sa mission fixe."
                 )
                 page.locator("#run").click()
+                assert entered.wait(10)
+                active = client.get("/api/strategy-executor/status").json()["plans"][prepared["plan_id"]]
+                assert active["state"] == "running" and "outcome" not in active
+                context.close()
+                release.set()
+                context, page = open_page("fr")
+                end = time.monotonic() + 60
+                while time.monotonic() < end:
+                    if (
+                        client.get("/api/strategy-executor/status").json()["plans"][prepared["plan_id"]]["state"]
+                        == "completed"
+                    ):
+                        break
+                    time.sleep(0.02)
+                page.locator("#refresh").click()
                 expect(page.locator("#history article p")).to_contain_text("completed", timeout=90_000)
                 expect(page.locator("#run")).to_be_disabled()
                 completed_status = client.get("/api/strategy-executor/status").json()
@@ -286,8 +315,9 @@ def test_candidate_source_browser_approval_download_and_completed_reconnect(tmp_
                     },
                     "approvedOperator": "NOT RUN",
                     "operationalAdoption": "NOT APPROVED",
-                    "unattendedRecovery": "NOT QUALIFIED; completed-mission reconnect only",
-                    "tabClosedDuringActiveWork": False,
+                    "unattendedRecovery": "Separate SIGKILL/startup recovery receipt; this default profile has one attempt and does not auto-recover.",
+                    "tabClosedDuringActiveWork": True,
+                    "closureBoundary": "Approved mission running before real computation; real Node/Git/Python work proceeds after tab closure.",
                     "commercialAcceptance": "unknown",
                     "fullyLoadedCurrencyCost": None,
                     "wallSeconds": time.monotonic() - started,
@@ -296,5 +326,6 @@ def test_candidate_source_browser_approval_download_and_completed_reconnect(tmp_
                 context.close()
                 browser.close()
     finally:
+        release.set()
         server.should_exit = True
         thread.join(timeout=10)
