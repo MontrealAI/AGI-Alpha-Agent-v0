@@ -35,7 +35,8 @@ class BoundedOpener:
 
     def __init__(self, opener: Callable[..., Any], *, max_body_bytes: int, max_requests: int) -> None:
         for name, value in (("max_body_bytes", max_body_bytes), ("max_requests", max_requests)):
-            if type(value) is not int or value < 1:
+            # Exact builtins exclude bool and subclasses with custom arithmetic.
+            if type(value) is not int or value < 1:  # noqa: E721
                 raise ValueError(f"{name} must be a positive integer")
         self._opener = opener
         self._body_limit = max_body_bytes
@@ -72,7 +73,8 @@ class _Response:
         budget = self._budget
         if budget.exhausted:
             raise ResourceLimitExceeded("cumulative body limit exhausted")
-        if type(size) is not int:
+        # Exact builtins exclude bool and subclasses with custom arithmetic.
+        if type(size) is not int:  # noqa: E721
             raise TypeError("read size must be an integer")
         if size == 0:
             return b""
@@ -137,9 +139,11 @@ def download_with_retry(
     Permanent, integrity and unknown errors propagate directly.
     This is not a whole-operation deadline, Retry-After policy or concurrent lock.
     """
-    if type(attempts) is not int or not 1 <= attempts <= 3:
+    # Exact builtins exclude bool and subclasses with custom arithmetic.
+    if type(attempts) is not int or not 1 <= attempts <= 3:  # noqa: E721
         raise ValueError("attempts must be an integer from 1 to 3")
-    if type(backoff) is not int and type(backoff) is not float:
+    # Exact builtins exclude bool and subclasses with custom arithmetic.
+    if type(backoff) is not int and type(backoff) is not float:  # noqa: E721
         raise ValueError("backoff must be from 0 to 2 seconds")
     if not 0 <= backoff <= 2:
         raise ValueError("backoff must be from 0 to 2 seconds")
