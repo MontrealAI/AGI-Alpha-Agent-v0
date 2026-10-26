@@ -8,6 +8,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -86,7 +87,9 @@ def test_retry_downloads_successful_producer_even_when_its_artifact_id_is_lower(
 
 
 def test_bulk_download_excludes_failed_history_and_previous_release_outputs() -> None:
-    download = next(step for step in jobs()["package"]["steps"] if step.get("with", {}).get("path") == "evidence")
+    download = next(
+        step for step in jobs()["package"]["steps"] if step.get("with", {}).get("path") == "release-producer-artifacts"
+    )
     pattern = download["with"]["pattern"]
     # The action uses Minimatch with default leading-! negation and brace expansion.
     match = re.fullmatch(r"!\{([\w,-]+)}\*", pattern)
@@ -96,13 +99,94 @@ def test_bulk_download_excludes_failed_history_and_previous_release_outputs() ->
     def retained(name: str) -> bool:
         return not any(fnmatch.fnmatchcase(name, exclusion) for exclusion in exclusions)
 
-    for prefix in ("historical-ci", "release-package", "public-pages", "github-pages", "regression", "gallery-"):
+    for prefix in ("historical-ci", "release-package", "public-pages", "github-pages"):
         assert not retained(prefix)
         assert not retained(prefix + "-37836936731-1")
         assert not retained(prefix + "-37836936731-2")
-    for name in ("runtime-3.12", "browser-contracts", "browser-distribution", "pages-distribution"):
+    for name in (
+        "runtime-3.12",
+        "regression",
+        "gallery-minimal",
+        "gallery-full",
+        "browser-contracts",
+        "browser-distribution",
+        "pages-distribution",
+    ):
         assert retained(name)
     assert download["with"]["digest-mismatch"] == "error"
+
+
+def staging_program() -> str:
+    """Execute the shipped selector, preserving the inherited active bulk contract."""
+    steps = jobs()["package"]["steps"]
+    download = next(step for step in steps if step.get("uses", "").startswith("actions/download-artifact@"))
+    select = next(
+        step for step in steps if step.get("name") == "Select remaining producer artifacts without rewriting evidence"
+    )
+    explicit = next(step for step in steps if step.get("with", {}).get("path") == "evidence/regression")
+    assert steps.index(download) < steps.index(select) < steps.index(explicit)
+    assert (
+        download["with"]["pattern"] == "!{historical-ci,release-package,public-pages,github-pages,advisory-formatting}*"
+    )
+    assert download["with"]["digest-mismatch"] == "error"
+    return select["run"].split("python - <<'PY'\n", 1)[1].removesuffix("PY\n")
+
+
+def test_staging_preserves_failed_attempts_and_transfers_other_substantive_evidence(tmp_path: Path) -> None:
+    source = tmp_path / "release-producer-artifacts"
+    destination = tmp_path / "evidence"
+    source.mkdir()
+    destination.mkdir()
+    (destination / "historical-original.json").write_bytes(b"original accepted bytes")
+    remaining = ("runtime-3.12", "successor-capability-source", "pages-distribution", "browser-distribution")
+    deferred = (
+        "regression",
+        "regression-37836936731-1",
+        "gallery-full-37836936731-1",
+        "gallery-minimal-37836936731-2",
+        "gallery-minimal-37836936731-3",
+    )
+    for name in (*remaining, *deferred):
+        (source / name).mkdir()
+        (source / name / "record.json").write_bytes(name.encode())
+    subprocess.run([sys.executable, "-c", staging_program()], check=True, cwd=tmp_path, timeout=5)
+    assert (destination / "historical-original.json").read_bytes() == b"original accepted bytes"
+    assert sorted(path.name for path in source.iterdir()) == sorted(deferred)
+    for name in remaining:
+        assert (destination / name / "record.json").read_bytes() == name.encode()
+    for name in deferred:
+        assert (source / name / "record.json").read_bytes() == name.encode()
+        assert not (destination / name).exists()
+
+
+@pytest.mark.parametrize("mutation", ["collision", "file", "symlink"])
+def test_staging_refuses_invalid_artifacts_before_moving_or_overwriting_any_record(
+    tmp_path: Path, mutation: str
+) -> None:
+    source = tmp_path / "release-producer-artifacts"
+    destination = tmp_path / "evidence"
+    source.mkdir()
+    destination.mkdir()
+    good = source / "a-valid-artifact"
+    good.mkdir()
+    (good / "record.json").write_bytes(b"retained source bytes")
+    if mutation == "collision":
+        (destination / good.name).mkdir()
+        (destination / good.name / "record.json").write_bytes(b"accepted existing bytes")
+    elif mutation == "file":
+        (source / "z-invalid-file").write_bytes(b"invalid artifact root")
+    else:
+        try:
+            (source / "z-invalid-symlink").symlink_to(good, target_is_directory=True)
+        except OSError:
+            pytest.skip("This platform cannot create the rejection-test symlink")
+    result = subprocess.run(
+        [sys.executable, "-c", staging_program()], check=False, cwd=tmp_path, capture_output=True, timeout=5
+    )
+    assert result.returncode != 0
+    assert (good / "record.json").read_bytes() == b"retained source bytes"
+    if mutation == "collision":
+        assert (destination / good.name / "record.json").read_bytes() == b"accepted existing bytes"
 
 
 @pytest.mark.skipif(shutil.which("bash") is None, reason="The release workflow uses Bash")
