@@ -142,6 +142,7 @@ jobs:
           "$RUNNER_TEMP/strategy-env/bin/python" -I -m pytest --noconftest -o addopts= --import-mode=importlib -q "$RUNNER_TEMP/test_source_browser.py" --junitxml="$GITHUB_WORKSPACE/evidence/strategy-engineering/source-browser.xml"
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/contrib/productive-capability-ledger/automation-v1/test_csv_integrity.py"
           "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_lock_compiler_offline_boundary.py"
+          "$RUNNER_TEMP/strategy-env/bin/python" "$GITHUB_WORKSPACE/tests/test_results_directory_boundary.py"
       - name: Retain executed and failed evidence; never private operator homes
         if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

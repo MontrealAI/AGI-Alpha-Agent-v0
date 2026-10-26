@@ -1,0 +1,2292 @@
+{
+  "schema": "agi-alpha.current-rule-source-security-review/v2",
+  "scope": "Private typed engineering review of actual d7 current-rule/source findings; no raw licensed upstream definitions or diagnostics republished. Not final-source qualification.",
+  "sourceHead": "d7d0dc920e8bccd093fe7cbdc487283a42c6fd35",
+  "executedMerge": "e2f431827ea80ed807f037000a1995a1051d0762",
+  "sourceAndMergeTree": "f7fb26606458cf1d3ae87333ca66ae2c7b68f39b",
+  "commitTreesIndependentlyReadViaGithub": true,
+  "finalSource": false,
+  "laterSourceNeedsNewScan": true,
+  "artifactZipSha256": "7660df9117b70d41ecd578e1e485a2d3ac4aecfbd86e24b174f81f716eae4e2e",
+  "actualScan": {
+    "commit": "e2f431827ea80ed807f037000a1995a1051d0762",
+    "selected_files": 1558,
+    "findings": 57,
+    "exit_code": 1,
+    "tool_version": "1.99.0",
+    "raw_report_sha256": "1b8e9f5aaeff28ac3d9d523163b49b2b4355d8d26790673f4ceff967918f1c0f",
+    "source_drift": [],
+    "wall_budget_expired": false,
+    "policy_disposition": "INACTIVE",
+    "policy_accepted": false,
+    "inapplicable_finding_count": 0,
+    "repository_inventory_sha256": "d0addc8e17d83e2b9f9fe7da2ab0fa605580b3cddf2d629c32aecddec2a33fdc",
+    "repository_files": 5616,
+    "committed_context_qualified": true,
+    "observed_error_count": 0,
+    "observed_skipped_rule_count": 0
+  },
+  "exactCurrentPolicy": {
+    "sha256": "de5bc79d074c3b4146338a0bf95830406f169bd91ac590a2f1ef111f162e23f5",
+    "bytes": 502198,
+    "privateFileSha256Matches": true,
+    "findingRuleCount": 5,
+    "allFindingDefinitionSpanHashesMatch": true,
+    "e3MissingBodyDependencyAppliesToThisScan": false,
+    "ruleBodiesPublished": false
+  },
+  "ruleSemanticReviews": [
+    {
+      "alias": "R1",
+      "reviewedSemantics": "A taint rule treats a function parameter named request as a source and generic subprocess calls as sinks; fixed list/string command exclusions and selected sanitizer patterns are present. The sink can encompass keyword data arguments, so code-versus-stdin separation requires source review.",
+      "sourceSpecificQuestion": "Does the named request value become executable code or command selection, or only JSON stdin to a fixed interpreter program?",
+      "reviewRecommendation": "SOURCE_DATA_CHANNEL_SEPARATION_REVIEW",
+      "id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+      "sha256": "3ff4fd088fbfa8ee0512e67b7741e6ec1ef9afde14d27385283a8e8b5c5ee789",
+      "start_byte": 443735,
+      "end_byte": 446751
+    },
+    {
+      "alias": "R2",
+      "reviewedSemantics": "A syntactic rule matches requests receiver method calls containing values obtained through a parameter/property named request. Its enumerated patterns are not limited to HTTP-method names and do not establish the receiver runtime type.",
+      "sourceSpecificQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "reviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+      "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+      "start_byte": 167510,
+      "end_byte": 176226
+    },
+    {
+      "alias": "R3",
+      "reviewedSemantics": "A symbolic-propagation taint audit treats CLI/parsed-CLI and environment values as sources and nonliteral subprocess command arguments as sinks. It includes no general approval for shell=False argv lists or operator-selected interpreters.",
+      "sourceSpecificQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "reviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+      "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+      "start_byte": 385577,
+      "end_byte": 390868
+    },
+    {
+      "alias": "R4",
+      "reviewedSemantics": "The permissions audit includes numeric chmod modes in a broad range covering0o700 as well as symbolic group/other write/execute combinations. It does not distinguish a directory requiring owner traversal from an ordinary file.",
+      "sourceSpecificQuestion": "Is the target a directory with owner-only traversal and is the target path itself trustworthy?",
+      "reviewRecommendation": "DIRECTORY_MODE_AND_TARGET_BOUNDARY_REVIEW",
+      "id": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+      "sha256": "a8215217b91be9c2122b4863001f8d037c3e7e515ff70275a729d8b879476b19",
+      "start_byte": 260532,
+      "end_byte": 263185
+    },
+    {
+      "alias": "R5",
+      "reviewedSemantics": "The rule matches hashlib.sha1 calls generally; the predicate does not distinguish authentication/integrity from Git object compatibility, display IDs or numerical heuristics. A general SHA256 replacement would change protocol/numerical identities.",
+      "sourceSpecificQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "reviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+      "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+      "start_byte": 216415,
+      "end_byte": 218600
+    }
+  ],
+  "privateDefectRecord": {
+    "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+    "lines": [
+      229,
+      230
+    ],
+    "status": "REPRODUCED_AWAITING_EXISTING_ENGINEERING_OWNER_ACTION",
+    "observation": "Executing exactly the two current AST statements with an owned configured directory symlink accepts the link and changes the unrelated owned target directory from0755to0700.",
+    "reproductionEnvironment": "Owned temporary directories only; no server, network, credentials or held execution.",
+    "threatLimit": "This demonstrates path-following and unintended chmod, not a remote exploit. Security relevance depends on whether the configured/default directory or an ancestor is writable by an untrusted local actor. Default path is below/tmp; exclusive trusted ownership is not established by these statements.",
+    "publication": "Keep private until responsible owner disposition/repair under SECURITY.md."
+  },
+  "ownerDecisionRequest": "Existing eligible Security owner must review exact current DE5 semantics and all57 source bindings, approve or reject individual dispositions through the existing process, and assign remaining validated repairs. Approval references remain null. No exception map, suppression, altered scan scope or automatic admission requested.",
+  "cases": [
+    {
+      "sourceExposure": "Git blob protocol identifier computed after an independent SHA256 equality check.",
+      "existingControls": "Public bounded Python source bytes are screened; the Git identifier is not the sole integrity check.",
+      "nextAction": "Preserve protocol identifier and SHA256; Security must review intended compatibility use against exact exact DE5 definition.",
+      "case": "D7-PY-001",
+      "path": "alpha_factory_v1/core/runtime/successor/transformation_source_audit.py",
+      "sourceSha256": "2ad225701952de359a6faf69f9239812f3962ade671bc5a707cb58ac23da95ab",
+      "sourceBytes": 78383,
+      "start": {
+        "line": 580,
+        "col": 12,
+        "offset": 29345
+      },
+      "end": {
+        "line": 580,
+        "col": 73,
+        "offset": 29406
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "The operator-selected simulation-results path is created as a directory and receives chmod0o700.",
+      "existingControls": "Owner rwx permits directory traversal; no group/other permissions. This is not a request to make arbitrary regular files executable.",
+      "nextAction": "Existing engineering owner must resolve or explicitly scope the reproduced linked-directory target behavior; Security then reviews both correct directory-mode semantics and target-path controls against the final source. No severity or exposure is invented.",
+      "case": "D7-PY-002",
+      "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+      "sourceSha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+      "sourceBytes": 20410,
+      "start": {
+        "line": 230,
+        "col": 5,
+        "offset": 8007
+      },
+      "end": {
+        "line": 230,
+        "col": 34,
+        "offset": 8036
+      },
+      "rule": {
+        "id": "python.lang.security.audit.insecure-file-permissions.insecure-file-permissions",
+        "sha256": "a8215217b91be9c2122b4863001f8d037c3e7e515ff70275a729d8b879476b19",
+        "start_byte": 260532,
+        "end_byte": 263185
+      },
+      "ruleAlias": "R4",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is the target a directory with owner-only traversal and is the target path itself trustworthy?",
+      "engineeringReviewRecommendation": "DIRECTORY_MODE_AND_TARGET_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Owner-only0o700 is appropriate for directory traversal, while this rule also matches that mode. A separate validated source-path issue is retained privately: existing directory symlinks are followed by mkdir(exist_ok=True)/chmod; see privateDefectRecord."
+    },
+    {
+      "sourceExposure": "A locally generated simulation ID is SHA1-hashed to the scenario key passed to orchestrator.evolve.",
+      "existingControls": "Scenario key is simulation/island namespace; API authentication uses a separate bearer-token predicate.",
+      "nextAction": "Review current R5 applicability for a numerical namespace; changing digest would change historical scenario identities.",
+      "case": "D7-PY-003",
+      "path": "alpha_factory_v1/demos/alpha_agi_insight_v1/src/interface/api_server.py",
+      "sourceSha256": "bcfaa038f240bed23d67578d8116c40642fc42fcb36c0a239c4c8cc94b1f217f",
+      "sourceBytes": 20410,
+      "start": {
+        "line": 375,
+        "col": 20,
+        "offset": 12935
+      },
+      "end": {
+        "line": 375,
+        "col": 49,
+        "offset": 12964
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Observation repr is truncated and hashed for an in-memory novelty counter.",
+      "existingControls": "This is an approximate reward heuristic; the result is not an access-control or artifact-admission digest.",
+      "nextAction": "Review heuristic applicability; do not change historical numerical behavior merely to remove a scanner match.",
+      "case": "D7-PY-004",
+      "path": "alpha_factory_v1/demos/era_of_experience/reward_backends/curiosity_reward.py",
+      "sourceSha256": "bc8177e8d603ed3d750abd6e7a347cc7d8c4c33da8dfa76768e41bdcd450ab9e",
+      "sourceBytes": 3431,
+      "start": {
+        "line": 80,
+        "col": 12,
+        "offset": 2857
+      },
+      "end": {
+        "line": 80,
+        "col": 30,
+        "offset": 2875
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Token SHA1 bits feed64-bit SimHash numerical features.",
+      "existingControls": "Similarity and collisions belong to the heuristic; no credential or security-boundary use was identified at this sink.",
+      "nextAction": "Review numerical use; preserve original scientific evidence.",
+      "case": "D7-PY-005",
+      "path": "alpha_factory_v1/demos/era_of_experience/reward_backends/novel_solution_reward.py",
+      "sourceSha256": "4ada727916aae39c61df062c2d6b3f601609b98ba552df0c4dde750e5fd24d0e",
+      "sourceBytes": 5800,
+      "start": {
+        "line": 82,
+        "col": 28,
+        "offset": 3147
+      },
+      "end": {
+        "line": 82,
+        "col": 52,
+        "offset": 3171
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "SHA1 creates optional ten-hex display metadata for exported prompt code.",
+      "existingControls": "Prompt retrieval/registration use name; fingerprint is optional metadata, not an authentication/signature admission predicate.",
+      "nextAction": "Review optional metadata use against exact DE5 definition; do not claim collision resistance or overwrite user-provided evidence.",
+      "case": "D7-PY-006",
+      "path": "alpha_factory_v1/demos/meta_agentic_agi/core/prompts.py",
+      "sourceSha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+      "sourceBytes": 7011,
+      "start": {
+        "line": 80,
+        "col": 9,
+        "offset": 2627
+      },
+      "end": {
+        "line": 80,
+        "col": 23,
+        "offset": 2641
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "SHA1 creates optional ten-hex display metadata for exported prompt code.",
+      "existingControls": "Prompt retrieval/registration use name; fingerprint is optional metadata, not an authentication/signature admission predicate.",
+      "nextAction": "Review optional metadata use against exact DE5 definition; do not claim collision resistance or overwrite user-provided evidence.",
+      "case": "D7-PY-007",
+      "path": "alpha_factory_v1/demos/meta_agentic_agi_v2/core/prompts.py",
+      "sourceSha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+      "sourceBytes": 7011,
+      "start": {
+        "line": 80,
+        "col": 9,
+        "offset": 2627
+      },
+      "end": {
+        "line": 80,
+        "col": 23,
+        "offset": 2641
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "SHA1 creates optional ten-hex display metadata for exported prompt code.",
+      "existingControls": "Prompt retrieval/registration use name; fingerprint is optional metadata, not an authentication/signature admission predicate.",
+      "nextAction": "Review optional metadata use against exact DE5 definition; do not claim collision resistance or overwrite user-provided evidence.",
+      "case": "D7-PY-008",
+      "path": "alpha_factory_v1/demos/meta_agentic_agi_v3/core/prompts.py",
+      "sourceSha256": "8dc62bae30f2c96f5c5aa1ad82b96a44cde05f8383d305c9dc4db2a849ddd41a",
+      "sourceBytes": 7011,
+      "start": {
+        "line": 80,
+        "col": 9,
+        "offset": 2627
+      },
+      "end": {
+        "line": 80,
+        "col": 23,
+        "offset": 2641
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Caller selects command/local mounts; environment-default image passes a full image-reference grammar.",
+      "existingControls": "Docker argv uses no shell and refuses option-shaped/URL/control-containing image operands; fixed current SelfHealer call uses pytest.",
+      "nextAction": "Review generic execution authority separately; no Docker run or held Harness path was exercised.",
+      "case": "D7-PY-009",
+      "path": "alpha_factory_v1/demos/self_healing_repo/agent_core/sandbox.py",
+      "sourceSha256": "50bf31ac8d85581cf2af61b0f1428826fbee95aecb1219f571c1cd6b416cf6ad",
+      "sourceBytes": 2170,
+      "start": {
+        "line": 64,
+        "col": 29,
+        "offset": 2057
+      },
+      "end": {
+        "line": 64,
+        "col": 32,
+        "offset": 2060
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance.",
+      "case": "D7-PY-010",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "sourceBytes": 22549,
+      "start": {
+        "line": 354,
+        "col": 36,
+        "offset": 10958
+      },
+      "end": {
+        "line": 354,
+        "col": 39,
+        "offset": 10961
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance.",
+      "case": "D7-PY-011",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "sourceBytes": 22549,
+      "start": {
+        "line": 372,
+        "col": 28,
+        "offset": 11700
+      },
+      "end": {
+        "line": 372,
+        "col": 31,
+        "offset": 11703
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance.",
+      "case": "D7-PY-012",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "sourceBytes": 22549,
+      "start": {
+        "line": 411,
+        "col": 28,
+        "offset": 13273
+      },
+      "end": {
+        "line": 411,
+        "col": 31,
+        "offset": 13276
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance.",
+      "case": "D7-PY-013",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "sourceBytes": 22549,
+      "start": {
+        "line": 450,
+        "col": 32,
+        "offset": 14968
+      },
+      "end": {
+        "line": 450,
+        "col": 35,
+        "offset": 14971
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance.",
+      "case": "D7-PY-014",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "sourceBytes": 22549,
+      "start": {
+        "line": 538,
+        "col": 21,
+        "offset": 18687
+      },
+      "end": {
+        "line": 538,
+        "col": 24,
+        "offset": 18690
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Explicit operator setup composes fixed current-interpreter pip commands with finite source-defined package sets.",
+      "existingControls": "Argument lists, shell=False default, resolved existing local wheelhouse and timeout; installation is setup authority rather than mission-supplied command text.",
+      "nextAction": "Review trusted setup/environment authority; argv safety does not establish dependency provenance.",
+      "case": "D7-PY-015",
+      "path": "check_env.py",
+      "sourceSha256": "f8cd0c33fa575e82ef66816d92821d7757fcaff9f737ef7ee2605b761a7f1880",
+      "sourceBytes": 22549,
+      "start": {
+        "line": 613,
+        "col": 32,
+        "offset": 22133
+      },
+      "end": {
+        "line": 613,
+        "col": 35,
+        "offset": 22136
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Operator CLI lock and report paths are argv operands of current-interpreter pip_audit.",
+      "existingControls": "Fixed module/subcommand and600-second timeout; no shell interpolation.",
+      "nextAction": "Review explicit audit CLI authority and lock provenance; not a mission execution path.",
+      "case": "D7-PY-016",
+      "path": "scripts/audit_agent_dependencies.py",
+      "sourceSha256": "271f3f7cf9617033897125059bc11c596627f2abe508a46356aed29f80217249",
+      "sourceBytes": 2960,
+      "start": {
+        "line": 56,
+        "col": 32,
+        "offset": 2052
+      },
+      "end": {
+        "line": 56,
+        "col": 39,
+        "offset": 2059
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Fixed build/twine modules operate on current committed source archive and operator-selected output path.",
+      "existingControls": "Current interpreter, argv lists, generated archive origin, wheel content checks.",
+      "nextAction": "Review source/package-build authority; no fetched command text or arbitrary request becomes executable code.",
+      "case": "D7-PY-017",
+      "path": "scripts/package_agent_release.py",
+      "sourceSha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+      "sourceBytes": 44943,
+      "start": {
+        "line": 684,
+        "col": 13,
+        "offset": 34020
+      },
+      "end": {
+        "line": 684,
+        "col": 87,
+        "offset": 34094
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Fixed build/twine modules operate on current committed source archive and operator-selected output path.",
+      "existingControls": "Current interpreter, argv lists, generated archive origin, wheel content checks.",
+      "nextAction": "Review source/package-build authority; no fetched command text or arbitrary request becomes executable code.",
+      "case": "D7-PY-018",
+      "path": "scripts/package_agent_release.py",
+      "sourceSha256": "209204e7d9a118f8802c010bba5056b7589516fe96f5f0581d050af306b687d9",
+      "sourceBytes": 44943,
+      "start": {
+        "line": 699,
+        "col": 9,
+        "offset": 34899
+      },
+      "end": {
+        "line": 699,
+        "col": 118,
+        "offset": 35008
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Operator CLI intentionally selects local model-server executable and model path.",
+      "existingControls": "Loopback host, separate argv values, fixed server options; release workflow separately supplies archive SHA256.",
+      "nextAction": "Review explicit model-validator executable authority; path existence alone is not provenance.",
+      "case": "D7-PY-019",
+      "path": "scripts/validate_agent_model.py",
+      "sourceSha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+      "sourceBytes": 9156,
+      "start": {
+        "line": 47,
+        "col": 17,
+        "offset": 1805
+      },
+      "end": {
+        "line": 62,
+        "col": 18,
+        "offset": 2298
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Operator CLI intentionally selects local model-server executable and model path.",
+      "existingControls": "Loopback host, separate argv values, fixed server options; release workflow separately supplies archive SHA256.",
+      "nextAction": "Review explicit model-validator executable authority; path existence alone is not provenance.",
+      "case": "D7-PY-020",
+      "path": "scripts/validate_agent_model.py",
+      "sourceSha256": "41c8a17ddc126278a0d19eeef3716692af2ede9c74ef106210a81e4087c0c9d4",
+      "sourceBytes": 9156,
+      "start": {
+        "line": 163,
+        "col": 25,
+        "offset": 7613
+      },
+      "end": {
+        "line": 163,
+        "col": 56,
+        "offset": 7644
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-021",
+      "path": "scripts/validate_nova_studio.py",
+      "sourceSha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+      "sourceBytes": 11413,
+      "start": {
+        "line": 55,
+        "col": 48,
+        "offset": 2431
+      },
+      "end": {
+        "line": 55,
+        "col": 76,
+        "offset": 2459
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        40
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-022",
+      "path": "scripts/validate_nova_studio.py",
+      "sourceSha256": "5dc7a3924049b3377063a619c197a6ea505019184193459eacd900ff46f250d6",
+      "sourceBytes": 11413,
+      "start": {
+        "line": 105,
+        "col": 48,
+        "offset": 5634
+      },
+      "end": {
+        "line": 105,
+        "col": 76,
+        "offset": 5662
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        40
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-023",
+      "path": "scripts/validate_onboarding.py",
+      "sourceSha256": "78ba3f2e83d48c201682e3eb2dc33d4b14084492de3ec46a1d55f98cc5d12f5f",
+      "sourceBytes": 13668,
+      "start": {
+        "line": 88,
+        "col": 48,
+        "offset": 4187
+      },
+      "end": {
+        "line": 88,
+        "col": 76,
+        "offset": 4215
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        87
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-024",
+      "path": "scripts/validate_successor_build.py",
+      "sourceSha256": "6e1f95ead70d845f36d6860a41997021318dc6ed3b1d7c0062dd63fc271ecca1",
+      "sourceBytes": 5045,
+      "start": {
+        "line": 23,
+        "col": 40,
+        "offset": 835
+      },
+      "end": {
+        "line": 23,
+        "col": 68,
+        "offset": 863
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        20
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "Operator WHEELHOUSE and compiler/Python selection affect the fixed pip-compile argv. Current source resolves WHEELHOUSE strictly to an existing local directory before launch.",
+      "existingControls": "Canonical absolute --find-links operand, --no-index option, argv list without shell parsing,600-second timeout with failure return, and unchanged exact lock-byte comparison. This does not claim network isolation for all possible committed requirement directives or trusted package provenance.",
+      "nextAction": "Security owner must review the documented local-wheelhouse/operator input boundary and actual repaired source; fresh final-source scan/review is still required. No policy admission is made.",
+      "case": "D7-PY-025",
+      "path": "scripts/verify_aiga_requirements_lock.py",
+      "sourceSha256": "ad8faf1944be8abe0a72d4d1a1a705f4b9d82375243720afc52c258361fd31a0",
+      "sourceBytes": 2562,
+      "start": {
+        "line": 41,
+        "col": 37,
+        "offset": 1542
+      },
+      "end": {
+        "line": 41,
+        "col": 40,
+        "offset": 1545
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "The repaired directory value is still environment-derived; the current broad audit continues to flag that intentional operator operand. Using shell quoting as an argv sanitizer would change the actual path and is not a valid repair.",
+      "repairedDefect": "Offline-local WHEELHOUSE input contract and missing compiler deadline; current d7 scan still reports this audit finding.",
+      "regressionEvidence": "Five focused unittest methods/70 subcases passed on the correction; exact final hosted source qualification is separate."
+    },
+    {
+      "sourceExposure": "Operator WHEELHOUSE and compiler/Python selection affect the fixed pip-compile argv. Current source resolves WHEELHOUSE strictly to an existing local directory before launch.",
+      "existingControls": "Canonical absolute --find-links operand, --no-index option, argv list without shell parsing,600-second timeout with failure return, and unchanged exact lock-byte comparison. This does not claim network isolation for all possible committed requirement directives or trusted package provenance.",
+      "nextAction": "Security owner must review the documented local-wheelhouse/operator input boundary and actual repaired source; fresh final-source scan/review is still required. No policy admission is made.",
+      "case": "D7-PY-026",
+      "path": "scripts/verify_alpha_colab_requirements_lock.py",
+      "sourceSha256": "d7fa7feb15be4565542d1596d63c7089fa571cbb54b0a2f44961c672993ecb1f",
+      "sourceBytes": 2429,
+      "start": {
+        "line": 41,
+        "col": 37,
+        "offset": 1495
+      },
+      "end": {
+        "line": 41,
+        "col": 40,
+        "offset": 1498
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "The repaired directory value is still environment-derived; the current broad audit continues to flag that intentional operator operand. Using shell quoting as an argv sanitizer would change the actual path and is not a valid repair.",
+      "repairedDefect": "Offline-local WHEELHOUSE input contract and missing compiler deadline; current d7 scan still reports this audit finding.",
+      "regressionEvidence": "Five focused unittest methods/70 subcases passed on the correction; exact final hosted source qualification is separate."
+    },
+    {
+      "sourceExposure": "Operator WHEELHOUSE and compiler/Python selection affect the fixed pip-compile argv. Current source resolves WHEELHOUSE strictly to an existing local directory before launch.",
+      "existingControls": "Canonical absolute --find-links operand, --no-index option, argv list without shell parsing,600-second timeout with failure return, and unchanged exact lock-byte comparison. This does not claim network isolation for all possible committed requirement directives or trusted package provenance.",
+      "nextAction": "Security owner must review the documented local-wheelhouse/operator input boundary and actual repaired source; fresh final-source scan/review is still required. No policy admission is made.",
+      "case": "D7-PY-027",
+      "path": "scripts/verify_alpha_requirements_lock.py",
+      "sourceSha256": "47afe80dd902a424e90e0b4e8764dca7a47fc5a966c2462d2501f28383001f5b",
+      "sourceBytes": 2405,
+      "start": {
+        "line": 41,
+        "col": 37,
+        "offset": 1489
+      },
+      "end": {
+        "line": 41,
+        "col": 40,
+        "offset": 1492
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "The repaired directory value is still environment-derived; the current broad audit continues to flag that intentional operator operand. Using shell quoting as an argv sanitizer would change the actual path and is not a valid repair.",
+      "repairedDefect": "Offline-local WHEELHOUSE input contract and missing compiler deadline; current d7 scan still reports this audit finding.",
+      "regressionEvidence": "Five focused unittest methods/70 subcases passed on the correction; exact final hosted source qualification is separate."
+    },
+    {
+      "sourceExposure": "Operator WHEELHOUSE and compiler/Python selection affect the fixed pip-compile argv. Current source resolves WHEELHOUSE strictly to an existing local directory before launch.",
+      "existingControls": "Canonical absolute --find-links operand, --no-index option, argv list without shell parsing,600-second timeout with failure return, and unchanged exact lock-byte comparison. This does not claim network isolation for all possible committed requirement directives or trusted package provenance.",
+      "nextAction": "Security owner must review the documented local-wheelhouse/operator input boundary and actual repaired source; fresh final-source scan/review is still required. No policy admission is made.",
+      "case": "D7-PY-028",
+      "path": "scripts/verify_backend_requirements_lock.py",
+      "sourceSha256": "a5cb5e3c113e2b254316fc687930c0b5cd5a58c2a3a4c51f004849321ece1b54",
+      "sourceBytes": 2373,
+      "start": {
+        "line": 41,
+        "col": 37,
+        "offset": 1494
+      },
+      "end": {
+        "line": 41,
+        "col": 40,
+        "offset": 1497
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "The repaired directory value is still environment-derived; the current broad audit continues to flag that intentional operator operand. Using shell quoting as an argv sanitizer would change the actual path and is not a valid repair.",
+      "repairedDefect": "Offline-local WHEELHOUSE input contract and missing compiler deadline; current d7 scan still reports this audit finding.",
+      "regressionEvidence": "Five focused unittest methods/70 subcases passed on the correction; exact final hosted source qualification is separate."
+    },
+    {
+      "sourceExposure": "Operator WHEELHOUSE and compiler/Python selection affect the fixed pip-compile argv. Current source resolves WHEELHOUSE strictly to an existing local directory before launch.",
+      "existingControls": "Canonical absolute --find-links operand, --no-index option, argv list without shell parsing,600-second timeout with failure return, and unchanged exact lock-byte comparison. This does not claim network isolation for all possible committed requirement directives or trusted package provenance.",
+      "nextAction": "Security owner must review the documented local-wheelhouse/operator input boundary and actual repaired source; fresh final-source scan/review is still required. No policy admission is made.",
+      "case": "D7-PY-029",
+      "path": "scripts/verify_era_experience_requirements_lock.py",
+      "sourceSha256": "13742c2693ad67ea4efae095a84679ee4bc541caf7dc095af7f22cb7e9a6b3db",
+      "sourceBytes": 2569,
+      "start": {
+        "line": 41,
+        "col": 37,
+        "offset": 1536
+      },
+      "end": {
+        "line": 41,
+        "col": 40,
+        "offset": 1539
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "The repaired directory value is still environment-derived; the current broad audit continues to flag that intentional operator operand. Using shell quoting as an argv sanitizer would change the actual path and is not a valid repair.",
+      "repairedDefect": "Offline-local WHEELHOUSE input contract and missing compiler deadline; current d7 scan still reports this audit finding.",
+      "regressionEvidence": "Five focused unittest methods/70 subcases passed on the correction; exact final hosted source qualification is separate."
+    },
+    {
+      "sourceExposure": "Operator WHEELHOUSE and compiler/Python selection affect the fixed pip-compile argv. Current source resolves WHEELHOUSE strictly to an existing local directory before launch.",
+      "existingControls": "Canonical absolute --find-links operand, --no-index option, argv list without shell parsing,600-second timeout with failure return, and unchanged exact lock-byte comparison. This does not claim network isolation for all possible committed requirement directives or trusted package provenance.",
+      "nextAction": "Security owner must review the documented local-wheelhouse/operator input boundary and actual repaired source; fresh final-source scan/review is still required. No policy admission is made.",
+      "case": "D7-PY-030",
+      "path": "scripts/verify_mats_requirements_lock.py",
+      "sourceSha256": "fd8f1263e6ef58f6ce0eb4a06135e4b710b539378606aedc364536dcdbb53671",
+      "sourceBytes": 2648,
+      "start": {
+        "line": 41,
+        "col": 37,
+        "offset": 1566
+      },
+      "end": {
+        "line": 41,
+        "col": 40,
+        "offset": 1569
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "The repaired directory value is still environment-derived; the current broad audit continues to flag that intentional operator operand. Using shell quoting as an argv sanitizer would change the actual path and is not a valid repair.",
+      "repairedDefect": "Offline-local WHEELHOUSE input contract and missing compiler deadline; current d7 scan still reports this audit finding.",
+      "regressionEvidence": "Five focused unittest methods/70 subcases passed on the correction; exact final hosted source qualification is separate."
+    },
+    {
+      "sourceExposure": "Operator WHEELHOUSE and compiler/Python selection affect the fixed pip-compile argv. Current source resolves WHEELHOUSE strictly to an existing local directory before launch.",
+      "existingControls": "Canonical absolute --find-links operand, --no-index option, argv list without shell parsing,600-second timeout with failure return, and unchanged exact lock-byte comparison. This does not claim network isolation for all possible committed requirement directives or trusted package provenance.",
+      "nextAction": "Security owner must review the documented local-wheelhouse/operator input boundary and actual repaired source; fresh final-source scan/review is still required. No policy admission is made.",
+      "case": "D7-PY-031",
+      "path": "scripts/verify_requirements_lock.py",
+      "sourceSha256": "289d946f1cd9d41a64f8d1067801439be405a6393ab17ffcbbd0ef86c8948b0f",
+      "sourceBytes": 2268,
+      "start": {
+        "line": 42,
+        "col": 37,
+        "offset": 1433
+      },
+      "end": {
+        "line": 42,
+        "col": 40,
+        "offset": 1436
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "The repaired directory value is still environment-derived; the current broad audit continues to flag that intentional operator operand. Using shell quoting as an argv sanitizer would change the actual path and is not a valid repair.",
+      "repairedDefect": "Offline-local WHEELHOUSE input contract and missing compiler deadline; current d7 scan still reports this audit finding.",
+      "regressionEvidence": "Five focused unittest methods/70 subcases passed on the correction; exact final hosted source qualification is separate."
+    },
+    {
+      "sourceExposure": "Fixed literal replay-script list runs under current Python in a newly copied output kit.",
+      "existingControls": "No shell; output path must be fresh and outside source.",
+      "nextAction": "Preserve frozen original; review replay authority rather than rewriting original evidence.",
+      "case": "D7-PY-032",
+      "path": "studies/computer-use/2026-10-14/04_Reproduce/reproduce_all.py",
+      "sourceSha256": "cca163b796d173c483683d65771d625fc07668e465926d89b195165af0395978",
+      "sourceBytes": 1188,
+      "start": {
+        "line": 8,
+        "col": 36,
+        "offset": 682
+      },
+      "end": {
+        "line": 8,
+        "col": 93,
+        "offset": 739
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Fixed literal replay-script list runs under current Python after source verification.",
+      "existingControls": "Fresh output, exact source checks and240-second timeout; no shell.",
+      "nextAction": "Preserve original study and verify source provenance; no replay was executed in this review.",
+      "case": "D7-PY-033",
+      "path": "studies/computer-use/2026-10-14/verify_and_replay.py",
+      "sourceSha256": "537f5be821c82c30d87282ef6b580308b00c39ec7c49588a8a691245c1c05abf",
+      "sourceBytes": 14947,
+      "start": {
+        "line": 333,
+        "col": 13,
+        "offset": 14567
+      },
+      "end": {
+        "line": 333,
+        "col": 76,
+        "offset": 14630
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Operator-selected Node runs fixed repository fixture generator with separate paths.",
+      "existingControls": "Fixed generator source; JSON/source package operands; no shell.",
+      "nextAction": "Review test interpreter authority; not approved-operator acceptance.",
+      "case": "D7-PY-034",
+      "path": "tests/browser/out_evolve_recovery.py",
+      "sourceSha256": "6af4cce631cc32c66348e4375fb9d1c87d18af724231ec8dd2ec01e1a67700f8",
+      "sourceBytes": 35716,
+      "start": {
+        "line": 454,
+        "col": 9,
+        "offset": 23105
+      },
+      "end": {
+        "line": 461,
+        "col": 10,
+        "offset": 23440
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-035",
+      "path": "tests/browser/test_discovery_lab_browser.py",
+      "sourceSha256": "f6255542655b74810efc672cff9d5f451fc123a6d91aea98cf08e6927830cebf",
+      "sourceBytes": 16906,
+      "start": {
+        "line": 111,
+        "col": 51,
+        "offset": 5059
+      },
+      "end": {
+        "line": 111,
+        "col": 79,
+        "offset": 5087
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        105
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-036",
+      "path": "tests/browser/test_out_evolve_browser.py",
+      "sourceSha256": "92e04eeeafea75829eb4bae947dba1cd277eea6ac6afc73a76523a15b5600847",
+      "sourceBytes": 35621,
+      "start": {
+        "line": 86,
+        "col": 51,
+        "offset": 3575
+      },
+      "end": {
+        "line": 86,
+        "col": 79,
+        "offset": 3603
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        80
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-037",
+      "path": "tests/browser/test_out_execute_browser.py",
+      "sourceSha256": "d104d8eb45744ea4879900a4969c52b93b2e9773ce7a897aebfb4f0a0f062a5e",
+      "sourceBytes": 8271,
+      "start": {
+        "line": 43,
+        "col": 51,
+        "offset": 1751
+      },
+      "end": {
+        "line": 43,
+        "col": 79,
+        "offset": 1779
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        36
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-038",
+      "path": "tests/browser/test_shadow_ledger_browser.py",
+      "sourceSha256": "544b1e3e5003371d3df49f8563bd80e95e5a26115f98c4b1dfb50430b4754ab0",
+      "sourceBytes": 16349,
+      "start": {
+        "line": 68,
+        "col": 13,
+        "offset": 2375
+      },
+      "end": {
+        "line": 68,
+        "col": 41,
+        "offset": 2403
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        58
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "Fixed trusted reconstruction code runs under operator Node; inputs/strategy are bounded JSON stdin.",
+      "existingControls": "Data byte count is capped8MB; generated source is derived from rediscovered trusted modules, not imported from this stdin call.",
+      "nextAction": "Review fixed code/data separation; runtime/operator identity must be independently qualified.",
+      "case": "D7-PY-039",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "sourceSha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+      "sourceBytes": 70880,
+      "start": {
+        "line": 201,
+        "col": 9,
+        "offset": 8924
+      },
+      "end": {
+        "line": 201,
+        "col": 110,
+        "offset": 9025
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Operator Node imports a full-byte-verified trusted reconstruction, then passes changed inputs as JSON argv.",
+      "existingControls": "Downloaded bytes must exactly equal expected trusted reconstruction before write/import; command has no shell.",
+      "nextAction": "Review expected-byte proof and operator Node authority against exact DE5 R3 definition.",
+      "case": "D7-PY-040",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "sourceSha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+      "sourceBytes": 70880,
+      "start": {
+        "line": 257,
+        "col": 9,
+        "offset": 11706
+      },
+      "end": {
+        "line": 264,
+        "col": 10,
+        "offset": 11917
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Operator Node runs the repository native-cli.mjs with temporary handoff/return paths.",
+      "existingControls": "Fixed repository program and bounded JSON protocol; this is distinct from browser-downloaded module imports.",
+      "nextAction": "Review native CLI/source identity and explicit test authority; no approved-operator claim follows.",
+      "case": "D7-PY-041",
+      "path": "tests/browser/test_successor_alpha_browser.py",
+      "sourceSha256": "908c1e3308ca7ea10c0f55680dc886ef5c73ead398a2efc9b6e9b1405b76c8c4",
+      "sourceBytes": 70880,
+      "start": {
+        "line": 652,
+        "col": 13,
+        "offset": 32418
+      },
+      "end": {
+        "line": 657,
+        "col": 14,
+        "offset": 32630
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-042",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "sourceBytes": 21837,
+      "start": {
+        "line": 99,
+        "col": 51,
+        "offset": 4241
+      },
+      "end": {
+        "line": 99,
+        "col": 79,
+        "offset": 4269
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        97
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-043",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "sourceBytes": 21837,
+      "start": {
+        "line": 215,
+        "col": 57,
+        "offset": 11449
+      },
+      "end": {
+        "line": 215,
+        "col": 85,
+        "offset": 11477
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        97
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-044",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "sourceBytes": 21837,
+      "start": {
+        "line": 340,
+        "col": 51,
+        "offset": 18666
+      },
+      "end": {
+        "line": 340,
+        "col": 79,
+        "offset": 18694
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        97
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-045",
+      "path": "tests/browser/test_successor_capability_browser.py",
+      "sourceSha256": "772fe6d2e8d41232b9b786312537b62119e4c6a32516d87cc673e23eb20f5c7b",
+      "sourceBytes": 21837,
+      "start": {
+        "line": 352,
+        "col": 51,
+        "offset": 19474
+      },
+      "end": {
+        "line": 352,
+        "col": 79,
+        "offset": 19502
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        97
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "Explicit operator CLI chooses Node for a fixed sibling PTY test child.",
+      "existingControls": "Argument list and explicit minimal PATH; PTY conversation is not command code.",
+      "nextAction": "Review test interpreter authority; no credential or persistent grant introduced.",
+      "case": "D7-PY-046",
+      "path": "tests/contracts/authority-test/creator-pty.test.py",
+      "sourceSha256": "f25125c29ad836e6e320b7f28e49f904e64abcda5b50d6bd5fe0c1954aa7e6d8",
+      "sourceBytes": 3052,
+      "start": {
+        "line": 28,
+        "col": 13,
+        "offset": 660
+      },
+      "end": {
+        "line": 28,
+        "col": 31,
+        "offset": 678
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-047",
+      "path": "tests/runtime/test_ecosystem_browser.py",
+      "sourceSha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+      "sourceBytes": 19967,
+      "start": {
+        "line": 236,
+        "col": 48,
+        "offset": 10593
+      },
+      "end": {
+        "line": 236,
+        "col": 76,
+        "offset": 10621
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        234,
+        273
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-048",
+      "path": "tests/runtime/test_ecosystem_browser.py",
+      "sourceSha256": "873867371bee8b8cfa782c2cb08c7c48c4dcf5f6818c38df2437a4ef79c1ee4f",
+      "sourceBytes": 19967,
+      "start": {
+        "line": 276,
+        "col": 29,
+        "offset": 12702
+      },
+      "end": {
+        "line": 276,
+        "col": 57,
+        "offset": 12730
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        234,
+        273
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "A parameter named request is a Python dict serialized as JSON stdin to fixed interpreter code.",
+      "existingControls": "The -c program is a fixed module-level constant; request/home/binding values are not concatenated into it.",
+      "nextAction": "Eligible Security owner should verify fixed FRESH_READ program/json.loads path and classify this data-channel match using the current rule, without altering the rule or calling ordinary Code Review Security clearance.",
+      "case": "D7-PY-049",
+      "path": "tests/runtime/test_successor_studio_interruptions.py",
+      "sourceSha256": "78739943a3821c4a7f6ec62b242d756c95593cbe79f83d639d3fa74dc766d237",
+      "sourceBytes": 7202,
+      "start": {
+        "line": 45,
+        "col": 14,
+        "offset": 1653
+      },
+      "end": {
+        "line": 52,
+        "col": 6,
+        "offset": 1903
+      },
+      "rule": {
+        "id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+        "sha256": "3ff4fd088fbfa8ee0512e67b7741e6ec1ef9afde14d27385283a8e8b5c5ee789",
+        "start_byte": 443735,
+        "end_byte": 446751
+      },
+      "ruleAlias": "R1",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does the named request value become executable code or command selection, or only JSON stdin to a fixed interpreter program?",
+      "engineeringReviewRecommendation": "SOURCE_DATA_CHANNEL_SEPARATION_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "fixedCommandAst": "[sys.executable, '-c', FRESH_READ]",
+      "requestChannel": "JSON serialized only into subprocess input keyword",
+      "currentRuleSourceAssessment": "The rule treats the parameter name request as a source, but this value is a Python dict used only in JSON stdin at the flagged call. The command and -c program are fixed; no request text is interpolated into executable code."
+    },
+    {
+      "sourceExposure": "The flagged receiver requests is a locally initialized list of observed Playwright request URLs; the sink appends a URL.",
+      "existingControls": "AST inspection confirms list initialization and no requests-library import; the flagged expression does not issue an HTTP request.",
+      "nextAction": "Eligible Security owner should review exact matched rule/source and record disposition for a non-HTTP list mutation; no alias rename or rule suppression is proposed.",
+      "case": "D7-PY-050",
+      "path": "tests/runtime/test_supplier_browser_browser.py",
+      "sourceSha256": "190ebcb9ad4634302f508d23ee27355a8038d3e7d51ed9166eef54f3b536e7b7",
+      "sourceBytes": 11276,
+      "start": {
+        "line": 167,
+        "col": 44,
+        "offset": 7684
+      },
+      "end": {
+        "line": 167,
+        "col": 72,
+        "offset": 7712
+      },
+      "rule": {
+        "id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+        "sha256": "df4fa5f7e1d3d69e602792220032e68a2e175ef134d6e009daea8e65d03ab01a",
+        "start_byte": 167510,
+        "end_byte": 176226
+      },
+      "ruleAlias": "R2",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Is requests an HTTP client at the flagged call, or a local list collecting observed Playwright URLs?",
+      "engineeringReviewRecommendation": "NON_HTTP_LIST_SINK_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "listBindingLines": [
+        166
+      ],
+      "requestsHttpClientImported": false,
+      "currentRuleSourceAssessment": "The current rule permits any method name, and this exact flagged method is list.append. No HTTP request is issued by this expression. Separate browser navigation remains outside this sink assessment."
+    },
+    {
+      "sourceExposure": "Fixture Git blob identifiers coexist with independently computed SHA256 source digests.",
+      "existingControls": "Git object framing is protocol compatibility; fixtures preserve both fields.",
+      "nextAction": "Review Git compatibility use; preserve the independent SHA256 gate.",
+      "case": "D7-PY-051",
+      "path": "tests/runtime/test_transformation_source_audit.py",
+      "sourceSha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+      "sourceBytes": 31858,
+      "start": {
+        "line": 30,
+        "col": 18,
+        "offset": 1011
+      },
+      "end": {
+        "line": 30,
+        "col": 79,
+        "offset": 1072
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Fixture Git blob identifiers coexist with independently computed SHA256 source digests.",
+      "existingControls": "Git object framing is protocol compatibility; fixtures preserve both fields.",
+      "nextAction": "Review Git compatibility use; preserve the independent SHA256 gate.",
+      "case": "D7-PY-052",
+      "path": "tests/runtime/test_transformation_source_audit.py",
+      "sourceSha256": "cce6d5ebc71fc6691a3a3e309ec18ead015faa5ba988be4ef2596b6f1a7fa1a8",
+      "sourceBytes": 31858,
+      "start": {
+        "line": 684,
+        "col": 18,
+        "offset": 31076
+      },
+      "end": {
+        "line": 684,
+        "col": 79,
+        "offset": 31137
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Historical Out_Execute.tex bytes are checked against a fixed Git blob ID.",
+      "existingControls": "Assertion preserves historical Git object compatibility; this function has no adjacent SHA256 assertion.",
+      "nextAction": "Security must disposition narrow historical compatibility evidence; do not upgrade it to a new cryptographic integrity claim.",
+      "case": "D7-PY-053",
+      "path": "tests/test_featured_research.py",
+      "sourceSha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+      "sourceBytes": 10342,
+      "start": {
+        "line": 57,
+        "col": 12,
+        "offset": 2453
+      },
+      "end": {
+        "line": 57,
+        "col": 67,
+        "offset": 2508
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Historical enterprise PDF bytes are checked against SHA256, Git blob ID and destination-byte equality.",
+      "existingControls": "Line74 separately asserts the same bytes SHA256 before the Git assertion; destination is checked byte-for-byte.",
+      "nextAction": "Review SHA1 as protocol compatibility only while preserving SHA256/byte equality.",
+      "case": "D7-PY-054",
+      "path": "tests/test_featured_research.py",
+      "sourceSha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+      "sourceBytes": 10342,
+      "start": {
+        "line": 75,
+        "col": 12,
+        "offset": 3246
+      },
+      "end": {
+        "line": 75,
+        "col": 67,
+        "offset": 3301
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Seven original PDF files are checked against fixed declared historical Git blob IDs.",
+      "existingControls": "This function preserves Git object identity; it does not itself contain an adjacent SHA256 predicate.",
+      "nextAction": "Review narrow historical preservation evidence; no authentication/collision-resistance claim.",
+      "case": "D7-PY-055",
+      "path": "tests/test_featured_research.py",
+      "sourceSha256": "ab25414408a9697054070025fee0258ab6abb88038977a2c8cfe20fe5981b357",
+      "sourceBytes": 10342,
+      "start": {
+        "line": 110,
+        "col": 12,
+        "offset": 5335
+      },
+      "end": {
+        "line": 110,
+        "col": 63,
+        "offset": 5386
+      },
+      "rule": {
+        "id": "python.lang.security.insecure-hash-algorithms.insecure-hash-algorithm-sha1",
+        "sha256": "d03dc8349d10dd4fd0f211f18897df3e87e7001412a099305a7d66e23f23fe6c",
+        "start_byte": 216415,
+        "end_byte": 218600
+      },
+      "ruleAlias": "R5",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Does this digest admit a security-sensitive action, or preserve a protocol, historical identity or noncryptographic heuristic with independent content checks where present?",
+      "engineeringReviewRecommendation": "PROTOCOL_OR_NONCRYPTO_USE_CONTEXT_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Fixture probes operator-owned pre-commit cached interpreters with fixed metadata-version code.",
+      "existingControls": "Existing tool cache only, fixed -c string, output capture,10-second timeout and exact Semgrep version.",
+      "nextAction": "Review trusted tool-cache authority; candidate data supplies neither interpreter path nor code.",
+      "case": "D7-PY-056",
+      "path": "tests/test_strategy_python_security.py",
+      "sourceSha256": "608c42e215b8a287183ae483bbe95435ce973d35aa9ada103940571fa6ae5c42",
+      "sourceBytes": 53313,
+      "start": {
+        "line": 114,
+        "col": 13,
+        "offset": 3963
+      },
+      "end": {
+        "line": 114,
+        "col": 104,
+        "offset": 4054
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    },
+    {
+      "sourceExposure": "Operator Node runs fixed repository exporter fixture using hardcoded public inputs.",
+      "existingControls": "Generated module strings are returned as base64 data and not imported at this call.",
+      "nextAction": "Review test interpreter authority and inert generated-data boundary.",
+      "case": "D7-PY-057",
+      "path": "tests/test_successor_capability_reconstruction.py",
+      "sourceSha256": "09b71362d7f6eee3ff4b909a033d025f87c0e1f46abf228e59eeb5a779dc0629",
+      "sourceBytes": 7794,
+      "start": {
+        "line": 48,
+        "col": 9,
+        "offset": 2339
+      },
+      "end": {
+        "line": 48,
+        "col": 110,
+        "offset": 2440
+      },
+      "rule": {
+        "id": "python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args",
+        "sha256": "8286c1c73385f4c668f9e9b4a8e7565e7c4b02f08cc20f522e5eb21e2ffae673",
+        "start_byte": 385577,
+        "end_byte": 390868
+      },
+      "ruleAlias": "R3",
+      "exactCurrentDefinitionHashVerified": true,
+      "currentRuleBodyAvailablePrivately": true,
+      "ruleSemanticQuestion": "Which exact CLI/environment values affect executable selection or operands, who controls them, and what command/input/provenance limits apply?",
+      "engineeringReviewRecommendation": "INTENDED_OPERATOR_CONFIGURATION_BOUNDARY_REVIEW",
+      "eligibleOwnerDisposition": "UNKNOWN",
+      "admitted": false,
+      "securityClearance": false,
+      "responsibleEngineeringOwner": "Existing root/#4899 integration and source owner",
+      "responsibleDispositionOwner": "Existing eligible Security maintainer/process in SECURITY.md and #4850; internal operator identity not established by public records",
+      "eligibleApprovalReference": null,
+      "currentRuleSourceAssessment": "Source-specific code/data/operator or protocol separation above is reviewed against the exact matching current rule definition. This is engineering evidence for an eligible Security decision, not an applicability admission."
+    }
+  ]
+}
