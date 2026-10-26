@@ -165,6 +165,9 @@ Vincent Boucher · MONTREAL\.AI · 2026-10 · English PDF.
   [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/33ba0d8a589096cd33fe584fe4ed450bdc3fb729/studies/agi-alpha-funded-advantage-v1/README.md)
 - **[Build an Advantage That Repays Its Cost — The Investment Gate](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/investment-gate.pdf)** · Nine scoped internal requests and eighteen evaluations with overlapping inputs produced eight complete measured local paths, not eight authenticated native missions\. One scope retained its native artifact\-policy refusal\. No productive asset was selected or constructed and no untouched confirmation trial was run\. Full monetary cost, repayment and positive incremental economics remain unestablished\. DISCOVERY/HOLD\.
   AGI ALPHA Research · MONTREAL\.AI · 2026-10-25 · English PDF.
+- **[The Next Upgrade](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/main/docs/papers/the-next-upgrade.pdf)** · A consumer\-specific dependency assessment accepted nine of twelve custom\-method scopes versus twelve of twelve for the conventional comparator\. The custom method was rejected; local task support and reuse do not establish cheaper capability construction or commercial success\. Complete monetary costs, repayment and sustained acceleration remain unestablished\. Economic HOLD\.
+  AGI ALPHA Research · 2026-10-26 · English PDF.
+  [Historical experimental companion source and assembly](https://github.com/MontrealAI/AGI-Alpha-Agent-v0/blob/f019a1d2d1c1c678c7363bf9cde61dab6ec0de12/studies/agi-alpha-value-compounds-v1/README.md)
 
 Research proposals and bounded studies, not claims of general autonomous capability or physical deployment.
 [Explore the papers in English or French](https://montrealai.github.io/AGI-Alpha-Agent-v0/#papers)
