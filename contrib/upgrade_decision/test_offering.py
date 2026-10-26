@@ -235,6 +235,30 @@ def test_conditional_export_redefinition_does_not_verify_selected_import(replace
     assert verify(pack, result)["accepted"] is False
 
 
+@pytest.mark.parametrize(
+    "consumer",
+    [
+        "from pkg.api import check\ndef run[check](): check(1)\n",
+        "from pkg.api import check\ndef run[*check](): check(1)\n",
+        "from pkg.api import check\ndef run[**check](): check(1)\n",
+        "from pkg.api import check\nclass Box[check]:\n def run(self): check(1)\n",
+        "from pkg.api import check\ntype Alias[check] = check(1)\n",
+    ],
+)
+def test_type_parameters_cannot_verify_a_shadowed_import(consumer: str) -> None:
+    if not hasattr(ast, "type_param"):
+        with pytest.raises(ValueError, match="unparseable"):
+            parse(consumer)
+        return
+    text = "def check(x): pass\n"
+    pack = request(text, text, consumer)
+    record = assess(pack)
+    assert record["calls"][0]["mappingVerified"] is False
+    assert record["nextAction"] == "REVIEW_UNRESOLVED_SCOPE"
+    record["calls"][0]["mappingVerified"] = True
+    assert verify(pack, record)["accepted"] is False
+
+
 def test_mutated_module_attribute_does_not_become_a_verified_import() -> None:
     pack = request(consumer="import pkg.api as api\napi.check = replacement\napi.check(1, strict=True)\n")
     call = next(n for n in ast.walk(ast.parse(pack["sources"]["consumer"]["text"])) if isinstance(n, ast.Call))

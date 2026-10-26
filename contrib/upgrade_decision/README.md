@@ -194,6 +194,9 @@ The next review/hosted correction is in `evidence/review-correction-v5/`:
 3.12.3/3.12.14 call controls, early refusal of non-object recorded results, and
 waiting for the actual rendered plan before browser approval. The binder's
 compatibility normalization follows the [PEP 570 keyword rule](https://peps.python.org/pep-0570/#semantic-corner-case).
+Type-parameter shadowing and 93-case component qualification are additive under
+`evidence/review-correction-v6/`; generic function/class/alias scopes cannot
+substitute a type parameter for a verified imported callable.
 
 The source base is #4915 `c4a7febc02fb9d607e9da5ece2101c4b6b36fc64`; current-main
 and four-repository inspection are recorded separately. Implementation stays in

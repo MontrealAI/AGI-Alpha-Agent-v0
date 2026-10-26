@@ -428,6 +428,8 @@ def direct_mapping(pack: dict[str, Any], trees: dict[str, ast.Module], item: dic
         return False
     local, qualified = imports[0]
     for node in ast.walk(tree):
+        if isinstance(node, getattr(ast, "type_param", ())) and getattr(node, "name", None) == root:
+            return False
         if isinstance(node, ast.Name) and node.id == root and isinstance(node.ctx, (ast.Store, ast.Del)):
             return False
         if isinstance(node, ast.arg) and node.arg == root:
