@@ -1,0 +1,242 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> production/check_result.py:1:1
+   |
+ 1 | / from __future__ import annotations
+ 2 | |
+ 3 | | import argparse
+ 4 | | import json
+ 5 | | from pathlib import Path
+ 6 | | import resource
+ 7 | | import sys
+ 8 | | import time
+   | |___________^
+ 9 |
+10 |   ROOT = Path(__file__).resolve().parents[1]
+   |
+help: Organize imports
+  |
+4 | import json
+  - from pathlib import Path
+5 | import resource
+6 | import sys
+7 | import time
+8 + from pathlib import Path
+9 |
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> production/freeze_runtime.py:1:1
+  |
+1 | / from __future__ import annotations
+2 | |
+3 | | import hashlib
+4 | | import json
+5 | | from pathlib import Path
+6 | | from datetime import datetime, timezone
+  | |_______________________________________^
+7 |
+8 |   ROOT = Path(__file__).resolve().parents[1]
+  |
+help: Organize imports
+  |
+4 | import json
+5 + from datetime import datetime, timezone
+6 | from pathlib import Path
+  - from datetime import datetime, timezone
+7 |
+  |
+
+UP017 [*] Use `datetime.UTC` alias
+  --> production/freeze_runtime.py:22:93
+   |
+20 |         data = path.read_bytes()
+21 |         files.append({'path': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+22 | manifest = {'schema': 'capability-advantage-runtime-source/v1', 'recorded_at': datetime.now(timezone.utc).isoformat(), 'files': files}
+   |                                                                                             ^^^^^^^^^^^^
+23 | (ROOT / 'protocol/runtime-source.json').write_text(json.dumps(manifest, indent=2) + '\n')
+24 | print(json.dumps({'files': len(files), 'sha256': hashlib.sha256((ROOT / 'protocol/runtime-source.json').read_bytes()).hexdigest()}))
+   |
+help: Convert to `datetime.UTC` alias
+   |
+5  | from pathlib import Path
+   - from datetime import datetime, timezone
+6  + from datetime import datetime, timezone, UTC
+7  |
+--------------------------------------------------------------------------------
+21 |         files.append({'path': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+   - manifest = {'schema': 'capability-advantage-runtime-source/v1', 'recorded_at': datetime.now(timezone.utc).isoformat(), 'files': files}
+22 + manifest = {'schema': 'capability-advantage-runtime-source/v1', 'recorded_at': datetime.now(UTC).isoformat(), 'files': files}
+23 | (ROOT / 'protocol/runtime-source.json').write_text(json.dumps(manifest, indent=2) + '\n')
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> production/run_campaign.py:1:1
+   |
+ 1 | / from __future__ import annotations
+ 2 | |
+ 3 | | import argparse
+ 4 | | import hashlib
+ 5 | | import json
+ 6 | | import os
+ 7 | | from pathlib import Path
+ 8 | | import resource
+ 9 | | import signal
+10 | | import subprocess
+11 | | import sys
+12 | | import time
+13 | | from datetime import datetime, timezone
+14 | | from typing import Any
+   | |______________________^
+15 |
+16 |   ROOT = Path(__file__).resolve().parents[1]
+   |
+help: Organize imports
+   |
+6  | import os
+   - from pathlib import Path
+7  | import resource
+--------------------------------------------------------------------------------
+12 | from datetime import datetime, timezone
+13 + from pathlib import Path
+14 | from typing import Any
+   |
+
+UP017 [*] Use `datetime.UTC` alias
+  --> production/run_campaign.py:37:28
+   |
+35 |     begin = time.perf_counter()
+36 |     before = resource.getrusage(resource.RUSAGE_CHILDREN)
+37 |     started = datetime.now(timezone.utc).isoformat()
+   |                            ^^^^^^^^^^^^
+38 |     process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+39 |                                text=True, start_new_session=True)
+   |
+help: Convert to `datetime.UTC` alias
+   |
+12 | import time
+   - from datetime import datetime, timezone
+13 + from datetime import datetime, timezone, UTC
+14 | from typing import Any
+--------------------------------------------------------------------------------
+36 |     before = resource.getrusage(resource.RUSAGE_CHILDREN)
+   -     started = datetime.now(timezone.utc).isoformat()
+37 +     started = datetime.now(UTC).isoformat()
+38 |     process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> production/worker.py:1:1
+   |
+ 1 | / from __future__ import annotations
+ 2 | |
+ 3 | | import argparse
+ 4 | | import importlib.util
+ 5 | | import json
+ 6 | | import os
+ 7 | | from pathlib import Path
+ 8 | | import resource
+ 9 | | import sys
+10 | | import time
+11 | | import traceback
+   | |________________^
+12 |
+13 |   ROOT = Path(__file__).resolve().parents[1]
+   |
+help: Organize imports
+   |
+6  | import os
+   - from pathlib import Path
+7  | import resource
+8  | import sys
+9  | import time
+10 | import traceback
+11 + from pathlib import Path
+12 |
+   |
+
+TRY004 Prefer `TypeError` exception for invalid type
+  --> production/worker.py:39:13
+   |
+37 |         result = module.solve(task)
+38 |         if not isinstance(result, dict):
+39 |             raise ValueError('INVALID_RESULT')
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+40 |         json.dumps(result, allow_nan=False)
+41 |     except Exception as exc:
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> production/worker.py:41:12
+   |
+39 |             raise ValueError('INVALID_RESULT')
+40 |         json.dumps(result, allow_nan=False)
+41 |     except Exception as exc:
+   |            ^^^^^^^^^
+42 |         result = {'status': 'error', 'error_type': type(exc).__name__, 'reason': str(exc), 'traceback': traceback.format_exc()}
+43 |     result['resource_measurement'] = {'wall_seconds': time.perf_counter() - begin, 'cpu_seconds': time.process_time() - cpu,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> skills/design.py:1:1
+  |
+1 | / from __future__ import annotations
+2 | |
+3 | | from typing import Any
+4 | |
+5 | | import numpy as np
+6 | | from scipy.optimize import minimize
+7 | |
+8 | | from core import Network
+  | |________________________^
+help: Organize imports
+  |
+5 | import numpy as np
+  - from scipy.optimize import minimize
+  -
+6 | from core import Network
+7 + from scipy.optimize import minimize
+8 |
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> skills/forward.py:1:1
+  |
+1 | / from __future__ import annotations
+2 | |
+3 | | from typing import Any
+4 | |
+5 | | import numpy as np
+6 | |
+7 | | from core import Network
+  | |________________________^
+help: Organize imports
+  |
+5 | import numpy as np
+  -
+6 | from core import Network
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> skills/inverse.py:1:1
+  |
+1 | / from __future__ import annotations
+2 | |
+3 | | from typing import Any
+4 | |
+5 | | import numpy as np
+6 | | from scipy.optimize import least_squares
+7 | |
+8 | | from core import Network
+  | |________________________^
+help: Organize imports
+  |
+5 | import numpy as np
+  - from scipy.optimize import least_squares
+  -
+6 | from core import Network
+7 + from scipy.optimize import least_squares
+8 |
+  |
+
+Found 11 errors.
+[*] 9 fixable with `--fix`.

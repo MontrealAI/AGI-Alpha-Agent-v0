@@ -1,0 +1,91 @@
+{
+  "schema": "preoutcome-transfer-source-freeze/v1",
+  "frozen_utc": "2026-10-26T20:27:41.826355+00:00",
+  "any_panel_solver_calls_before_freeze": false,
+  "any_panel_outcomes_before_freeze": false,
+  "protocol_sha256": "aae67495e7de590592425a53c955a72f4a23305ac29645d6c8421261c0e45f55",
+  "amendments": [
+    {
+      "path": "/workspace/scratch/df878d450e85/independent/acquisition/amendment_001.json",
+      "sha256": "8aae6e660b71ecb8dba36fbc1b269703e444cb99c712e47c2b86be378a3f62d7"
+    }
+  ],
+  "methods": {
+    "retained_independent": {
+      "path": "/workspace/scratch/df878d450e85/independent/solver.py",
+      "sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+    },
+    "acquired_shared": {
+      "path": "/workspace/scratch/df878d450e85/independent/acquisition/acquired_solver.py",
+      "sha256": "8bd2ac59c4b50af384c55fc47e56b9b243894dac98f9337210130b68adedfdd6"
+    }
+  },
+  "method_display_labels": {
+    "retained_independent": "YOUR_RETAINED",
+    "acquired_shared": "ORIGINAL_ROOT"
+  },
+  "executable_sources": [
+    {
+      "path": "/workspace/scratch/df878d450e85/independent/solver.py",
+      "sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/independent/acquisition/acquired_solver.py",
+      "sha256": "8bd2ac59c4b50af384c55fc47e56b9b243894dac98f9337210130b68adedfdd6"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/independent/acquisition/worker.py",
+      "sha256": "326914bc9e887da2313d4e5c10e910fae3e1086f03db2c677fc17f0e01f0b585"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/independent/acquisition/run_panel.py",
+      "sha256": "71dfbd6cf950226790556164da6be3ec3c5631718d09e1cdd1cab7918f894d87"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/independent/acquisition/acquired_sources.json",
+      "sha256": "a58f85622cc94585194043cc984f8cdb358eec4004fa050a4faeacfc8864d8dc"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/workloads/workload_generator.py",
+      "sha256": "08e1eca97fa585bb2570fc3e600157d905047b1d27ac13026cc373d52f2668f7"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/workloads/verifier.py",
+      "sha256": "549dd132356999611554441ffd2c6482ef3db0f7ffe1cd57d8577a2f7d446f48"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/skills/core.py",
+      "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/skills/forward.py",
+      "sha256": "1c77363f0807fcc5a87d9b5101cfc681503e1097b7f78cdc3a9771752b61c24f"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/skills/inverse.py",
+      "sha256": "9ad704e46ad3137b9ea90b12ffb02560e7e638ea4567ed2cf7a47c2c67bf9b02"
+    },
+    {
+      "path": "/workspace/scratch/df878d450e85/skills/design.py",
+      "sha256": "9fc2042e5db1b0f1455d1498a1e76dfae95065bb48e3804714c20aa409b27325"
+    }
+  ],
+  "acceptance_tolerances": {
+    "state_relative": 1e-07,
+    "balance_backward": 1e-10,
+    "inverse_fit_relative": 1e-07,
+    "inverse_prediction_relative": 1e-05,
+    "identifiability_relative_singular": 1e-08,
+    "design_relative_gap": 5e-05,
+    "design_true_state_relative": 2e-05,
+    "feasibility": 1e-08
+  },
+  "source_versions": {
+    "baseline": 1,
+    "adapter": 2,
+    "adapter_v001_was_never_executed": true
+  },
+  "numerical_method_changes": false,
+  "preflight": "/workspace/scratch/df878d450e85/independent/acquisition/preflight.json",
+  "contribution_manifest_sha256": "e518775e0ada276134f4a81d5789d24befc190335dd6db94f89dec68e615a1b1"
+}

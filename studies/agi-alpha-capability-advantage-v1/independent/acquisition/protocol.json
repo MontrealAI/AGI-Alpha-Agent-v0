@@ -1,0 +1,93 @@
+{
+  "schema": "independent-transfer-development-preregistration/v1",
+  "created_utc": "2026-10-26T20:24:46.000705+00:00",
+  "panel_scope": "preregistered development transfer; not primary outcomes or final native-pack execution times",
+  "claims": {
+    "independent_capability_already_reconstructable": true,
+    "uniqueness_claim": false,
+    "distinct_foundation_models_claim": false,
+    "model_identity_as_declared_in_session": "GPT-6 Astra Pro",
+    "same_agent_before_after": true
+  },
+  "methods": [
+    {
+      "id": "retained_independent",
+      "source": "/workspace/scratch/df878d450e85/independent/solver.py",
+      "sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+    },
+    {
+      "id": "acquired_shared",
+      "source": "to be frozen under independent/acquisition before any panel outcome",
+      "origin": "/workspace/scratch/df878d450e85/skills"
+    }
+  ],
+  "chains": [
+    {
+      "id": "TRANSFER-01",
+      "seed": 84021,
+      "profile": {
+        "name": "anisotropic-grid",
+        "side": 25,
+        "loads": 8,
+        "parameters": 12,
+        "design_edges": 24
+      }
+    },
+    {
+      "id": "TRANSFER-02",
+      "seed": 84022,
+      "profile": {
+        "name": "long-range-grid",
+        "side": 50,
+        "loads": 16,
+        "parameters": 32,
+        "design_edges": 80
+      }
+    }
+  ],
+  "stages": [
+    "forward",
+    "inverse",
+    "design"
+  ],
+  "method_execution_order": [
+    "retained_independent",
+    "acquired_shared"
+  ],
+  "case_execution_order": [
+    "TRANSFER-01",
+    "TRANSFER-02"
+  ],
+  "stage_execution_order": [
+    "forward",
+    "inverse",
+    "design"
+  ],
+  "expected_attempts": 12,
+  "repetitions_per_method_stage": 1,
+  "repeats_for_speed_selection": false,
+  "source_freeze_rule": "all executable source and adapter hashes frozen before any panel solve is called; no source edits in response to panel outcomes",
+  "same_input_rule": "each method receives exactly the same generated forward and inverse task/template; design is separately materialized from that method actual accepted inverse result, with no truth substitution",
+  "materialization_rule": "workload_generator.materialize_design(template, actual_parent_task, actual_parent_result, actual_parent_acceptance)",
+  "acceptance_rule": "workloads/verifier.py verify with exact public TOLERANCES unchanged; connected design receives actual parent task and result",
+  "failures_rule": "preserve every attempt, exception, incomplete result, blocked downstream stage, full numerical arrays, and verification report",
+  "timing_rule": "time.perf_counter around solve(task) numerical method call, with task generation, file IO, and independent verification recorded separately; single-thread BLAS environment and threadpool limit used identically; one first invocation per method and stage only",
+  "single_thread_environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "acquisition_interval_rule": "wall clock from first authorized shared-source discovery through adapter source freeze; separate from original independent construction and panel execution",
+  "time_interpretation": "observed elapsed wall time; not active human attention, model token cost, inference billing, or monetary bill",
+  "root_contribution_rule": "portable manifest references immutable independent/solver.py design dispatcher without duplicate copied implementation assets",
+  "excluded_sources": [
+    "all primary cases/outcomes",
+    "all sealed seed or answer files"
+  ],
+  "source_specification_hashes": {
+    "workload_generator.py": "08e1eca97fa585bb2570fc3e600157d905047b1d27ac13026cc373d52f2668f7",
+    "verifier.py": "549dd132356999611554441ffd2c6482ef3db0f7ffe1cd57d8577a2f7d446f48"
+  }
+}

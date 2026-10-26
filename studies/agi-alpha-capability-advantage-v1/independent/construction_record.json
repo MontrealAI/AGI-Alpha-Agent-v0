@@ -1,0 +1,45 @@
+{
+  "schema": "independent-reconstruction/v1",
+  "construction_start_utc": "2026-10-26 20:17:45 UTC",
+  "author": "independent_recipient",
+  "prior_portfolio": "general integration/testing",
+  "initial_capabilities": [
+    "General NumPy/SciPy programming",
+    "Sparse graph Laplacian assembly and direct solution",
+    "Implicit differentiation of parameter-dependent linear systems",
+    "Bound-constrained nonlinear least squares",
+    "Convex minimax epigraph optimization and first-order supporting-plane certificates",
+    "Sherman-Morrison-Woodbury reduction for low-rank conductance updates"
+  ],
+  "initial_limitations": [
+    "No solver module constructed for these exact task inputs before this interval",
+    "No claim of mathematical inability due to absence of task-specific files"
+  ],
+  "allowed_source_reads": [
+    "workloads/workload_generator.py",
+    "workloads/verifier.py",
+    "workloads/development/tasks",
+    "workloads/development/oracles",
+    "workloads/discovery/tasks",
+    "workloads/discovery/oracles"
+  ],
+  "excluded_sources": [
+    "skills",
+    "conventional",
+    "evidence",
+    "identity",
+    "primary cases and sealed answers"
+  ],
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "source_sha256": {
+    "workloads/workload_generator.py": "08e1eca97fa585bb2570fc3e600157d905047b1d27ac13026cc373d52f2668f7",
+    "workloads/verifier.py": "549dd132356999611554441ffd2c6482ef3db0f7ffe1cd57d8577a2f7d446f48"
+  },
+  "time_interpretation": "wall-clock task-begin/end elapsed; not active human effort or monetary bill",
+  "construction_end_utc": "2026-10-26T20:21:30.038953+00:00",
+  "freeze_sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+}

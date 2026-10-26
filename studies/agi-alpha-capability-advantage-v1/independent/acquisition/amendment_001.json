@@ -1,0 +1,65 @@
+{
+  "schema": "preoutcome-protocol-amendment/v1",
+  "amendment": 1,
+  "created_utc": "2026-10-26T20:27:25.137942+00:00",
+  "prior_protocol_sha256": "aae67495e7de590592425a53c955a72f4a23305ac29645d6c8421261c0e45f55",
+  "any_panel_solver_calls_before_amendment": false,
+  "any_panel_outcomes_before_amendment": false,
+  "reason": "Root selected the contributed independent design and changed the shared dispatcher before panel execution. Bind the original root numerical methods directly so acquisition remains a distinct, immutable comparison.",
+  "unchanged": [
+    "seeds84021/84022",
+    "exactly2newchains",
+    "profiles",
+    "12method-stageattempts",
+    "onecallpermethodperstage",
+    "sameacceptancethresholds",
+    "actualacceptedparentmaterialization",
+    "no speed-selection repeats"
+  ],
+  "method_display_labels": {
+    "retained_independent": "YOUR_RETAINED",
+    "acquired_shared": "ORIGINAL_ROOT"
+  },
+  "acquired_source_binding": {
+    "schema": "acquired-shared-source-references/v1",
+    "ordered_modules": [
+      {
+        "module": "core",
+        "path": "/workspace/scratch/df878d450e85/skills/core.py",
+        "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+      },
+      {
+        "module": "forward",
+        "path": "/workspace/scratch/df878d450e85/skills/forward.py",
+        "sha256": "1c77363f0807fcc5a87d9b5101cfc681503e1097b7f78cdc3a9771752b61c24f"
+      },
+      {
+        "module": "inverse",
+        "path": "/workspace/scratch/df878d450e85/skills/inverse.py",
+        "sha256": "9ad704e46ad3137b9ea90b12ffb02560e7e638ea4567ed2cf7a47c2c67bf9b02"
+      },
+      {
+        "module": "design",
+        "path": "/workspace/scratch/df878d450e85/skills/design.py",
+        "sha256": "9fc2042e5db1b0f1455d1498a1e76dfae95065bb48e3804714c20aa409b27325"
+      }
+    ],
+    "numerical_changes": false,
+    "copied_implementation_assets": false,
+    "entrypoints": {
+      "forward": "forward.solve_forward",
+      "inverse": "inverse.solve_inverse",
+      "design": "design.solve_design"
+    },
+    "dispatcher_excluded": "skills/network_capability.py changed to contributed design before any panel outcome; never executed in this panel"
+  },
+  "executed_source_definition": "Four unchanged original numerical modules plus the local direct-dispatch acquisition adapter; modified network_capability.py is excluded from execution.",
+  "original_inspection_receipt": "/workspace/scratch/df878d450e85/independent/acquisition/versions/v001_unexecuted_acquired_sources.json",
+  "pre_amendment_adapter": "/workspace/scratch/df878d450e85/independent/acquisition/versions/v001_unexecuted_acquired_solver.py",
+  "runtime_controls": {
+    "fresh_worker_per_method_stage": true,
+    "worker_process_timeout_seconds": 60,
+    "address_space_limit_bytes": 3221225472,
+    "same_controls_for_both_methods": true
+  }
+}
