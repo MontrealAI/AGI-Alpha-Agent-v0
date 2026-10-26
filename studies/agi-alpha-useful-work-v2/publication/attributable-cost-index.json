@@ -1,0 +1,50 @@
+{
+  "schema": "first-delivery-attributable-cost-index/v1",
+  "actual_customer_receipts_usd": 0,
+  "marginal_money_usd": null,
+  "recurring_money_usd": null,
+  "fully_loaded_money_usd": null,
+  "customer_price_usd": null,
+  "customer_minutes": null,
+  "operator_minutes": null,
+  "inference_tokens": null,
+  "inference_usd": null,
+  "records": [
+    {
+      "path": "results/development/first-delivery-corrected/evidence/baseline-bridge-environment.json",
+      "scope": "Corrected baseline environment acquisition/setup"
+    },
+    {
+      "path": "results/development/first-delivery-corrected/evidence/target-environment.json",
+      "scope": "Target environment acquisition/setup"
+    },
+    {
+      "path": "data/development-baseline-bridge-environment-attempt-1-failed/preparation.json",
+      "scope": "Retained failed logger setup attempt"
+    },
+    {
+      "path": "results/development/first-delivery-corrected/evidence/",
+      "scope": "Original before/after observation and verification receipts"
+    },
+    {
+      "path": "results/development/first-delivery/assembly-receipt.json",
+      "scope": "Original package assembly"
+    },
+    {
+      "path": "results/development/first-delivery-corrected/correction-receipt.json",
+      "scope": "Reporting correction assembly; does not price agent construction"
+    },
+    {
+      "path": "publication/replay-review.json",
+      "scope": "Independent runnable offline replay; zero new missions"
+    }
+  ],
+  "not_fully_priced": [
+    "Discovery and all model-assisted construction",
+    "Earlier provisional eight-package setup and execution",
+    "Tool provisioning, review, failed prelaunch bindings and verifier correction",
+    "Future maintenance, storage/compute tariff, residual exceptions and customer attention"
+  ],
+  "aggregation": "Nested process totals and individual step records overlap; do not sum them indiscriminately. Full study meter remains required for loaded analysis.",
+  "monetary_inference": "No elapsed assistant time converted to a bill, wage or saving."
+}

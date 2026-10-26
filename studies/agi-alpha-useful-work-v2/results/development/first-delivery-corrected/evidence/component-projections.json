@@ -1,0 +1,45 @@
+{
+  "schema": "independent-component-projections/v1",
+  "created_at": "2026-10-26T14:47:37.178557+00:00",
+  "reason": "Independently confirmed source scope criticism before candidate freeze. Original api.py lines11-12 import Request/JSONResponse through FastAPI. Version1 remains historical/provisional; native-route acceptance requires version2. No behavior outcomes were inspected for this decision.",
+  "profiles": [
+    {
+      "id": "provisional-starlette-direct-v1",
+      "imports_source": "from __future__ import annotations\nimport asyncio\nfrom typing import Literal\nfrom pydantic import Field\nfrom starlette.requests import Request\nfrom starlette.responses import JSONResponse\nfrom starlette.types import ASGIApp, Message, Receive, Scope, Send\n",
+      "imports_ast_sha256": "d697c0524c852285989c5c8950cef8dd3e2bdc68b76ea0ce54d148bc6d21ef29",
+      "native_import_route": false,
+      "required_packages": [
+        "starlette",
+        "anyio",
+        "pydantic",
+        "pydantic-core",
+        "annotated-types",
+        "typing-extensions",
+        "typing-inspection",
+        "idna"
+      ],
+      "scope": "Provisional original component bodies with direct defining Starlette imports; original FastAPI import bridge not exercised"
+    },
+    {
+      "id": "native-fastapi-bridge-v2",
+      "imports_source": "from __future__ import annotations\nimport asyncio\nfrom typing import Literal\nfrom pydantic import Field\nfrom fastapi import Request\nfrom fastapi.responses import JSONResponse\nfrom starlette.types import ASGIApp, Message, Receive, Scope, Send\n",
+      "imports_ast_sha256": "9e8adf10483ebf3cb8c8717b1589dae4aff842a8bc635a197c06e9442bb8f758",
+      "native_import_route": true,
+      "required_packages": [
+        "starlette",
+        "anyio",
+        "pydantic",
+        "pydantic-core",
+        "annotated-types",
+        "typing-extensions",
+        "typing-inspection",
+        "idna",
+        "fastapi",
+        "annotated-doc"
+      ],
+      "scope": "Original component bodies and original used FastAPI import bridge; no create_app, Journal, authentication or release authority"
+    }
+  ],
+  "original_verifier_archive": "src/verify_component_starlette_provisional_v1.py",
+  "original_verifier_sha256": "89d777498a5c427fa6ac8b90c2a5925fbac7b9f623c2ea1fea6514349c4afc33"
+}

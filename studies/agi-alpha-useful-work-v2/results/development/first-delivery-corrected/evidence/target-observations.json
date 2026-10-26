@@ -1,0 +1,1973 @@
+{
+  "schema": "manual-component-observations/v1",
+  "source_identity": {
+    "projection_id": "native-fastapi-bridge-v2",
+    "api_sha256": "096e97ba9433b988f4cef3b96a6a53cc5d8d42f7cb775d3e0a7dc90fdfac5215",
+    "models_sha256": "9ecd2ccd5b8f17be6f94fda0bc887c831518ed7ca79e619ed03593742a11b5ab",
+    "api_slices": [
+      {
+        "names": [
+          "MAX_REQUEST_BYTES"
+        ],
+        "start_line": 24,
+        "end_line": 24,
+        "sha256": "165448edde01d0e065af215fe9c7ee978fc13202c6c93832a09fa9aca18b7dac"
+      },
+      {
+        "names": [
+          "BODY_TIMEOUT_SECONDS"
+        ],
+        "start_line": 25,
+        "end_line": 25,
+        "sha256": "d2c9662b2147dbfa7dd221c014d8db86f2d01a49e5b3d0da2b8285acc2b57809"
+      },
+      {
+        "names": [
+          "SECURITY_HEADERS"
+        ],
+        "start_line": 26,
+        "end_line": 34,
+        "sha256": "aa599e283426451bb1f987e364f2099f4a9e4685889c92ef53b3d4230cefd503"
+      },
+      {
+        "names": [
+          "RequestBoundary"
+        ],
+        "start_line": 37,
+        "end_line": 110,
+        "sha256": "1f9d88758184e6d1b0bfb61b0abe1605f6dbd70644622379ba8c4fdea3f6dc0b"
+      },
+      {
+        "names": [
+          "Review"
+        ],
+        "start_line": 113,
+        "end_line": 119,
+        "sha256": "351706a36f6cd2bb380d6599312e2daacaf4a990e0106e2245581a639ffd8560"
+      },
+      {
+        "names": [
+          "Control"
+        ],
+        "start_line": 122,
+        "end_line": 125,
+        "sha256": "dd67216d4064bb0f0a7b5897a03c2681e358b09092fd41e9e0d5660a423c0f5c"
+      }
+    ],
+    "projection_imports_sha256": "9e8adf10483ebf3cb8c8717b1589dae4aff842a8bc635a197c06e9442bb8f758",
+    "original_timeout_seconds": 15.0,
+    "original_byte_limit": 524288,
+    "whole_api_imported": false,
+    "create_app_called": false,
+    "journal_created": false,
+    "credentials_created": false
+  },
+  "contract_sha256": "89d9c776a7c9f32444b1e14479b9403e8beaaef81c0832f0237af027ddf41735",
+  "versions": {
+    "starlette": "1.10.0",
+    "anyio": "4.15.1",
+    "pydantic": "2.14.1",
+    "pydantic-core": "2.50.1",
+    "annotated-types": "0.8.0",
+    "typing-extensions": "4.16.0",
+    "typing-inspection": "0.4.4",
+    "idna": "3.20",
+    "fastapi": "0.141.1",
+    "annotated-doc": "0.0.5"
+  },
+  "observations": [
+    {
+      "id": "asgi.missing-length",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 411,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "41"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Valid Content-Length required\"}",
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.0006506730005639838,
+      "cpu_seconds": 0.0006486949999999769
+    },
+    {
+      "id": "asgi.nondigit-length",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 411,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "41"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Valid Content-Length required\"}",
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00027057799889007583,
+      "cpu_seconds": 0.00027104399999999806
+    },
+    {
+      "id": "asgi.negative-length",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 411,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "41"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Valid Content-Length required\"}",
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00016207500084419735,
+      "cpu_seconds": 0.00016249200000001407
+    },
+    {
+      "id": "asgi.latin1-nondigit-length",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 411,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "41"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Valid Content-Length required\"}",
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00015086799976415932,
+      "cpu_seconds": 0.00015126599999998325
+    },
+    {
+      "id": "asgi.duplicate-length",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 400,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "37"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Ambiguous request framing\"}",
+        "error": "Ambiguous request framing",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00018691299919737503,
+      "cpu_seconds": 0.00018761899999997222
+    },
+    {
+      "id": "asgi.transfer-encoding",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 400,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "37"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Ambiguous request framing\"}",
+        "error": "Ambiguous request framing",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00016956600120465737,
+      "cpu_seconds": 0.00016998300000004019
+    },
+    {
+      "id": "asgi.oversize-declared-length",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 413,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "35"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Request exceeds 512 KiB\"}",
+        "error": "Request exceeds 512 KiB",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.0001405020011588931,
+      "cpu_seconds": 0.0001407499999999673
+    },
+    {
+      "id": "asgi.excessive-length-digits",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 413,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "35"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Request exceeds 512 KiB\"}",
+        "error": "Request exceeds 512 KiB",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00013218899948697072,
+      "cpu_seconds": 0.00013248700000001445
+    },
+    {
+      "id": "asgi.cross-origin-mutation",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 403,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "40"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Cross-origin mutation denied\"}",
+        "error": "Cross-origin mutation denied",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00021835900042788126,
+      "cpu_seconds": 0.00021885499999996227
+    },
+    {
+      "id": "asgi.same-origin-mutation",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 200,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"component\":\"accepted\"}",
+        "error": null,
+        "downstream_invocations": 1,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": 2,
+        "downstream_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "body_preserved": true,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00021708800159103703,
+      "cpu_seconds": 0.00021752400000002448
+    },
+    {
+      "id": "asgi.short-body",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 400,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "35"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Request length mismatch\"}",
+        "error": "Request length mismatch",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.0002209029989899136,
+      "cpu_seconds": 0.00022147999999999612
+    },
+    {
+      "id": "asgi.long-fragmented-body",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 400,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "35"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Request length mismatch\"}",
+        "error": "Request length mismatch",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 2
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00018019200069829822,
+      "cpu_seconds": 0.00018054900000002982
+    },
+    {
+      "id": "asgi.oversize-actual-body",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 413,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "35"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Request exceeds 512 KiB\"}",
+        "error": "Request exceeds 512 KiB",
+        "downstream_invocations": 0,
+        "input_bytes": 524289,
+        "input_body_sha256": "84079794567a4362a19cbd5d771303b130580e18aa40f80e23c3c4432a6fa558",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.0007415399995807093,
+      "cpu_seconds": 0.0007422850000000092
+    },
+    {
+      "id": "asgi.valid-fragmented-utf8",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 200,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"component\":\"accepted\"}",
+        "error": null,
+        "downstream_invocations": 1,
+        "input_bytes": 10,
+        "input_body_sha256": "97f06f396a709c3a29824e1cc794eeb98e2d1a262d7d455439d286d42803f0fe",
+        "downstream_body_bytes": 10,
+        "downstream_body_sha256": "97f06f396a709c3a29824e1cc794eeb98e2d1a262d7d455439d286d42803f0fe",
+        "body_preserved": true,
+        "receive_calls": 2
+      },
+      "execution_error": null,
+      "wall_seconds": 0.0001751950003381353,
+      "cpu_seconds": 0.0001755709999999855
+    },
+    {
+      "id": "asgi.exact-byte-limit",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 200,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"component\":\"accepted\"}",
+        "error": null,
+        "downstream_invocations": 1,
+        "input_bytes": 524288,
+        "input_body_sha256": "ec8bb338811bbf800a8b5e507d06e08a1d9d05bde74294f6f7388f3bbfba82e5",
+        "downstream_body_bytes": 524288,
+        "downstream_body_sha256": "ec8bb338811bbf800a8b5e507d06e08a1d9d05bde74294f6f7388f3bbfba82e5",
+        "body_preserved": true,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.0009151119993475731,
+      "cpu_seconds": 0.0009157730000000086
+    },
+    {
+      "id": "asgi.zero-length-body",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 200,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"component\":\"accepted\"}",
+        "error": null,
+        "downstream_invocations": 1,
+        "input_bytes": 0,
+        "input_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "downstream_body_bytes": 0,
+        "downstream_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "body_preserved": true,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00022053300017432775,
+      "cpu_seconds": 0.0002210490000000287
+    },
+    {
+      "id": "asgi.get-passthrough",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 200,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"component\":\"accepted\"}",
+        "error": null,
+        "downstream_invocations": 1,
+        "input_bytes": 8,
+        "input_body_sha256": "dfea371273c54b38b2b16179f6a10331637374c927babd62de1f7278422e6727",
+        "downstream_body_bytes": 8,
+        "downstream_body_sha256": "dfea371273c54b38b2b16179f6a10331637374c927babd62de1f7278422e6727",
+        "body_preserved": true,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00012859399976150598,
+      "cpu_seconds": 0.00012899199999999444
+    },
+    {
+      "id": "asgi.put-requires-length",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 411,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "41"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Valid Content-Length required\"}",
+        "error": "Valid Content-Length required",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00013198899978306144,
+      "cpu_seconds": 0.00013232699999998765
+    },
+    {
+      "id": "asgi.patch-valid",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 200,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"component\":\"accepted\"}",
+        "error": null,
+        "downstream_invocations": 1,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": 2,
+        "downstream_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "body_preserved": true,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00014760299927729648,
+      "cpu_seconds": 0.000147979999999992
+    },
+    {
+      "id": "asgi.disconnect",
+      "kind": "asgi",
+      "observation": {
+        "response_present": false,
+        "status": null,
+        "response_starts": 0,
+        "headers": [],
+        "response_body_utf8": "",
+        "error": null,
+        "downstream_invocations": 0,
+        "input_bytes": 1,
+        "input_body_sha256": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 1
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00012265499935892876,
+      "cpu_seconds": 0.00012304400000001658
+    },
+    {
+      "id": "asgi.actual-timeout",
+      "kind": "asgi",
+      "observation": {
+        "response_present": true,
+        "status": 408,
+        "response_starts": 1,
+        "headers": [
+          [
+            "content-length",
+            "34"
+          ],
+          [
+            "content-type",
+            "application/json"
+          ],
+          [
+            "cache-control",
+            "no-store"
+          ],
+          [
+            "x-content-type-options",
+            "nosniff"
+          ],
+          [
+            "referrer-policy",
+            "no-referrer"
+          ],
+          [
+            "content-security-policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+          ]
+        ],
+        "response_body_utf8": "{\"error\":\"Request body timed out\"}",
+        "error": "Request body timed out",
+        "downstream_invocations": 0,
+        "input_bytes": 2,
+        "input_body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "downstream_body_bytes": null,
+        "downstream_body_sha256": null,
+        "body_preserved": null,
+        "receive_calls": 0
+      },
+      "execution_error": null,
+      "wall_seconds": 15.015789400998983,
+      "cpu_seconds": 0.0007716289999999959
+    },
+    {
+      "id": "model.mission-research-json",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "research",
+            "sources": [
+              {
+                "id": "s1",
+                "title": "Release evidence",
+                "text": "A pinned statement.",
+                "url": ""
+              }
+            ]
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 0.00016190499991353136,
+      "cpu_seconds": 0.00016207099999998587
+    },
+    {
+      "id": "model.mission-allocation",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2,
+                "risk": 0
+              }
+            ],
+            "budget": 1,
+            "max_risk": 180000,
+            "unit": "planning units"
+          },
+          "seed": 0,
+          "population": 4,
+          "generations": 1
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 9.001600119518116e-05,
+      "cpu_seconds": 9.022400000002762e-05
+    },
+    {
+      "id": "model.mission-schedule",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "schedule",
+            "jobs": [
+              {
+                "id": "j1",
+                "operations": [
+                  {
+                    "machine": "m1",
+                    "duration": 1
+                  }
+                ],
+                "due": 10000000
+              }
+            ],
+            "unit": "minutes"
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 5.827799941471312e-05,
+      "cpu_seconds": 5.838699999999308e-05
+    },
+    {
+      "id": "model.mission-forecast",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "forecast",
+            "observations": [
+              0.0,
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0,
+              9.0,
+              10.0,
+              11.0
+            ],
+            "horizon": 3,
+            "holdout": 4,
+            "season": 1,
+            "unit": "observed units"
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 4.37360013165744e-05,
+      "cpu_seconds": 4.384499999998681e-05
+    },
+    {
+      "id": "model.mission-code",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "code",
+            "examples": [],
+            "heldout": [
+              {
+                "args": [
+                  1
+                ],
+                "expected": 1
+              }
+            ],
+            "candidate": ""
+          },
+          "seed": 42,
+          "population": 20,
+          "generations": 12
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 3.3039999834727496e-05,
+      "cpu_seconds": 3.298899999998328e-05
+    },
+    {
+      "id": "model.mission-upper-engine-bounds",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "goal": "Assess the scoped component",
+          "work": {
+            "kind": "allocation",
+            "items": [
+              {
+                "id": "a1",
+                "cost": 1,
+                "value": 2,
+                "risk": 0
+              }
+            ],
+            "budget": 1,
+            "max_risk": 180000,
+            "unit": "planning units"
+          },
+          "seed": 4294967295,
+          "population": 50,
+          "generations": 50
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 2.1441999706439674e-05,
+      "cpu_seconds": 2.1532000000046292e-05
+    },
+    {
+      "id": "model.forbid-extra-root",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "extra_forbidden",
+            "loc": [
+              "allow_code_execution"
+            ],
+            "msg": "Extra inputs are not permitted"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 3.5584000215749256e-05,
+      "cpu_seconds": 3.5632999999979376e-05
+    },
+    {
+      "id": "model.forbid-extra-nested",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "extra_forbidden",
+            "loc": [
+              "work",
+              "allocation",
+              "items",
+              0,
+              "unexpected"
+            ],
+            "msg": "Extra inputs are not permitted"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.9458999304333702e-05,
+      "cpu_seconds": 1.9498999999978395e-05
+    },
+    {
+      "id": "model.strict-string-seed",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "int_type",
+            "loc": [
+              "seed"
+            ],
+            "msg": "Input should be a valid integer"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 2.617999962239992e-05,
+      "cpu_seconds": 2.6189000000009788e-05
+    },
+    {
+      "id": "model.strict-bool-seed",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "int_type",
+            "loc": [
+              "seed"
+            ],
+            "msg": "Input should be a valid integer"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.4871999155730009e-05,
+      "cpu_seconds": 1.4892000000044092e-05
+    },
+    {
+      "id": "model.goal-too-short",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "goal"
+            ],
+            "msg": "String should have at least 3 characters"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.6545000107726082e-05,
+      "cpu_seconds": 1.6614999999997604e-05
+    },
+    {
+      "id": "model.goal-too-long",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "string_too_long",
+            "loc": [
+              "goal"
+            ],
+            "msg": "String should have at most 2000 characters"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 2.2443999114329927e-05,
+      "cpu_seconds": 2.248299999996206e-05
+    },
+    {
+      "id": "model.seed-below-bound",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "seed"
+            ],
+            "msg": "Input should be greater than or equal to 0"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.6154999684658833e-05,
+      "cpu_seconds": 1.619400000002491e-05
+    },
+    {
+      "id": "model.seed-above-bound",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "less_than_equal",
+            "loc": [
+              "seed"
+            ],
+            "msg": "Input should be less than or equal to 4294967295"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.5573999917251058e-05,
+      "cpu_seconds": 1.5603000000030676e-05
+    },
+    {
+      "id": "model.population-below-bound",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "population"
+            ],
+            "msg": "Input should be greater than or equal to 4"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.2909000361105427e-05,
+      "cpu_seconds": 1.2938999999989598e-05
+    },
+    {
+      "id": "model.population-above-bound",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "less_than_equal",
+            "loc": [
+              "population"
+            ],
+            "msg": "Input should be less than or equal to 50"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.2028000128339045e-05,
+      "cpu_seconds": 1.2057999999981472e-05
+    },
+    {
+      "id": "model.generations-below-bound",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "generations"
+            ],
+            "msg": "Input should be greater than or equal to 1"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.241899917658884e-05,
+      "cpu_seconds": 1.2457999999992975e-05
+    },
+    {
+      "id": "model.generations-above-bound",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "less_than_equal",
+            "loc": [
+              "generations"
+            ],
+            "msg": "Input should be less than or equal to 50"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.1656999049591832e-05,
+      "cpu_seconds": 1.1698000000004427e-05
+    },
+    {
+      "id": "model.unknown-work-kind",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "union_tag_invalid",
+            "loc": [
+              "work"
+            ],
+            "msg": "Input tag 'unrecognized' found using 'kind' does not match any of the expected tags: 'research', 'allocation', 'schedule', 'forecast', 'code'"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.2508999134297483e-05,
+      "cpu_seconds": 1.2549000000028343e-05
+    },
+    {
+      "id": "model.research-empty",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "too_short",
+            "loc": [
+              "work",
+              "research",
+              "sources"
+            ],
+            "msg": "List should have at least 1 item after validation, not 0"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.3880999176762998e-05,
+      "cpu_seconds": 1.3790000000013514e-05
+    },
+    {
+      "id": "model.allocation-zero-cost",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "work",
+              "allocation",
+              "items",
+              0,
+              "cost"
+            ],
+            "msg": "Input should be greater than or equal to 1"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.7795999156078324e-05,
+      "cpu_seconds": 1.7847000000015267e-05
+    },
+    {
+      "id": "model.allocation-float-cost",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "int_type",
+            "loc": [
+              "work",
+              "allocation",
+              "items",
+              0,
+              "cost"
+            ],
+            "msg": "Input should be a valid integer"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.2839998817071319e-05,
+      "cpu_seconds": 1.2889000000015916e-05
+    },
+    {
+      "id": "model.schedule-zero-duration",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "work",
+              "schedule",
+              "jobs",
+              0,
+              "operations",
+              0,
+              "duration"
+            ],
+            "msg": "Input should be greater than or equal to 1"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.5061999874887988e-05,
+      "cpu_seconds": 1.5131999999973278e-05
+    },
+    {
+      "id": "model.duplicate-research-id",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [],
+            "msg": "Value error, input IDs must be unique"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 3.260999983467627e-05,
+      "cpu_seconds": 3.267899999997992e-05
+    },
+    {
+      "id": "model.duplicate-allocation-id",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [],
+            "msg": "Value error, input IDs must be unique"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.8136999642592855e-05,
+      "cpu_seconds": 1.8177000000008103e-05
+    },
+    {
+      "id": "model.duplicate-schedule-id",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [],
+            "msg": "Value error, input IDs must be unique"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.938900095410645e-05,
+      "cpu_seconds": 1.9468999999994185e-05
+    },
+    {
+      "id": "model.forecast-excess-holdout",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [
+              "work",
+              "forecast"
+            ],
+            "msg": "Value error, holdout must be at most one third of the observations"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.8026999896392226e-05,
+      "cpu_seconds": 1.8046999999965507e-05
+    },
+    {
+      "id": "model.forecast-excess-season",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [
+              "work",
+              "forecast"
+            ],
+            "msg": "Value error, training data must include two full seasons"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.5763998817419633e-05,
+      "cpu_seconds": 1.5843000000015373e-05
+    },
+    {
+      "id": "model.forecast-magnitude",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [
+              "work",
+              "forecast"
+            ],
+            "msg": "Value error, observations must be finite and bounded by 1e15"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 2.21030004468048e-05,
+      "cpu_seconds": 2.214299999997449e-05
+    },
+    {
+      "id": "model.forecast-nan",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [
+              "work",
+              "forecast"
+            ],
+            "msg": "Value error, observations must be finite and bounded by 1e15"
+          }
+        ],
+        "materialized_nonfinite": [
+          {
+            "path": [
+              "work",
+              "observations",
+              0
+            ],
+            "token": "NaN",
+            "actual_type": "float",
+            "actual_repr": "nan"
+          }
+        ]
+      },
+      "execution_error": null,
+      "wall_seconds": 2.2033000277588144e-05,
+      "cpu_seconds": 2.211299999999028e-05
+    },
+    {
+      "id": "model.forecast-positive-infinity",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [
+              "work",
+              "forecast"
+            ],
+            "msg": "Value error, observations must be finite and bounded by 1e15"
+          }
+        ],
+        "materialized_nonfinite": [
+          {
+            "path": [
+              "work",
+              "observations",
+              0
+            ],
+            "token": "Infinity",
+            "actual_type": "float",
+            "actual_repr": "inf"
+          }
+        ]
+      },
+      "execution_error": null,
+      "wall_seconds": 1.803700070013292e-05,
+      "cpu_seconds": 1.8086999999999964e-05
+    },
+    {
+      "id": "model.forecast-negative-infinity",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "value_error",
+            "loc": [
+              "work",
+              "forecast"
+            ],
+            "msg": "Value error, observations must be finite and bounded by 1e15"
+          }
+        ],
+        "materialized_nonfinite": [
+          {
+            "path": [
+              "work",
+              "observations",
+              0
+            ],
+            "token": "-Infinity",
+            "actual_type": "float",
+            "actual_repr": "-inf"
+          }
+        ]
+      },
+      "execution_error": null,
+      "wall_seconds": 1.541399979032576e-05,
+      "cpu_seconds": 1.5452999999998607e-05
+    },
+    {
+      "id": "model.code-empty-heldout",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "too_short",
+            "loc": [
+              "work",
+              "code",
+              "heldout"
+            ],
+            "msg": "List should have at least 1 item after validation, not 0"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.2709000657196157e-05,
+      "cpu_seconds": 1.2859000000031706e-05
+    },
+    {
+      "id": "model.review-valid",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "revision": 1,
+          "result_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "approve": false,
+          "note": "Evidence reviewed."
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 4.262400034349412e-05,
+      "cpu_seconds": 4.274399999998346e-05
+    },
+    {
+      "id": "model.review-invalid-revision",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "revision"
+            ],
+            "msg": "Input should be greater than or equal to 1"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.1377000191714615e-05,
+      "cpu_seconds": 1.1427000000008292e-05
+    },
+    {
+      "id": "model.review-invalid-hash",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "string_pattern_mismatch",
+            "loc": [
+              "result_hash"
+            ],
+            "msg": "String should match pattern '^[0-9a-f]{64}$'"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.2228998457430862e-05,
+      "cpu_seconds": 1.2318000000011153e-05
+    },
+    {
+      "id": "model.review-strict-approval",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "bool_type",
+            "loc": [
+              "approve"
+            ],
+            "msg": "Input should be a valid boolean"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 9.854999007075094e-06,
+      "cpu_seconds": 9.935000000016458e-06
+    },
+    {
+      "id": "model.review-empty-note",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "note"
+            ],
+            "msg": "String should have at least 1 character"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.0076000762637705e-05,
+      "cpu_seconds": 1.0124999999971962e-05
+    },
+    {
+      "id": "model.control-valid",
+      "kind": "model",
+      "observation": {
+        "accepted": true,
+        "output": {
+          "state": "paused"
+        },
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 1.2398999388096854e-05,
+      "cpu_seconds": 1.2408000000019292e-05
+    },
+    {
+      "id": "model.control-invalid",
+      "kind": "model",
+      "observation": {
+        "accepted": false,
+        "error_type": "ValidationError",
+        "errors": [
+          {
+            "type": "literal_error",
+            "loc": [
+              "state"
+            ],
+            "msg": "Input should be 'paused' or 'ready'"
+          }
+        ],
+        "materialized_nonfinite": []
+      },
+      "execution_error": null,
+      "wall_seconds": 7.841999831725843e-06,
+      "cpu_seconds": 7.851999999974879e-06
+    }
+  ],
+  "wall_seconds": 15.231823567999527,
+  "cpu_seconds": 0.21672846700000004,
+  "runtime_model_calls": 0,
+  "runtime_network_requests": 0,
+  "money_usd": null,
+  "scope": "Pure unchanged component definitions; harmless downstream fixture; not full API or release qualification"
+}

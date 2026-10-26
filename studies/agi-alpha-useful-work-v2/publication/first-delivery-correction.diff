@@ -1,0 +1,65 @@
+--- first-delivery/READ-ME.md
++++ first-delivery-corrected/READ-ME.md
+@@ -1,6 +1,6 @@
+ # Dependency refresh: the component evidence is ready
+ 
+-**Decision: preserve the current production lock; accept this component evidence for the next application qualification.**
++**Decision: preserve the current native lock; accept this component evidence for the next application qualification.**
+ 
+ The proposed Starlette 1.7.0 → 1.10.0 and Pydantic 2.13.5 → 2.14.1 refresh,
+ with pydantic-core 2.46.5 → 2.50.1, preserved the declared request-boundary
+@@ -31,7 +31,7 @@
+ 
+ ## Résultat utile
+ 
+-**Décision : conserver le verrou de production actuel et accepter ces preuves
++**Décision : conserver le verrou natif actuel et accepter ces preuves
+ de compatibilité des composants pour la qualification suivante.** Le changement
+ proposé conserve les comportements déclarés de la frontière des requêtes et de
+ la validation des entrées. Les 61 cas ont réussi avant et après le changement,
+--- first-delivery/reproduce.txt
++++ first-delivery-corrected/reproduce.txt
+@@ -1,15 +1,30 @@
+-From the complete companion root (Python 3.12 / Linux x86_64):
++Runnable replay from the source handoff or complete companion (Python 3.12 / Linux x86_64):
+ 
+-1. Recreate the declared ten-package environments from their exact wheel locks,
+-   using curation/prepare_environment.py --offline and the saved plans. Paths in
+-   saved command receipts identify the original execution; relocate only through
+-   an explicit regenerated plan, retaining original source/wheel/contract hashes.
+-2. Run src/manual_probe.py with each environment's venv/bin/python -I -B,
+-   --consumer data/consumer --contract protocol/component-contract.json and a new --out.
+-3. Run src/verify_component.py with --projection native-fastapi-bridge-v2,
+-   the same consumer/contract, the matching environment preparation.json,
+-   --observations from step2 and a new --out.
++1. Change directory to the study root containing protocol/, src/, curation/ and publication/.
++   In the repository this is studies/agi-alpha-useful-work-v2/.
++2. Choose a fresh writable output path; existing evidence is never overwritten.
++3. If the complete companion includes both development wheel directories, run:
+ 
+-The complete before/after argv and pre/post input hashes are in evidence/*execution.json.
+-Do not overwrite historical observations. Passing this finite component contract
+-does not authorize application deployment or replacement of the full native lock.
++   python publication/replay_first_delivery.py --out /tmp/agialpha-first-delivery-replay --offline
++
++   For the source-only public draft, omit --offline. This downloads only the declared
++   public distribution wheels, validates their exact preserved official SHA256 hashes,
++   and installs from those local files with --no-index --require-hashes. There are no
++   model, customer, blockchain, paid-service or application-activation requests.
++
++The script creates new plans with absolute input paths at the current location, records
++both original and relocated plan hashes, and changes no package version or input hash.
++It recreates the ten-package environments, checks the original FastAPI bridge, runs
++the unchanged original component definitions and all 61 cases with the actual
++15-second timeout in each environment, then runs the separate verifier. Expect at
++least 30 seconds of deliberate timeout observation plus setup. Its replay.json and
++per-command receipts preserve costs, bindings, status and failures. Replaying this
++development mission is not a new customer job or fresh confirmation.
++
++Expected result: PRESERVED_WITHIN_COMPONENT_CONTRACT, PASS=61, INCOMPLETE=0,
++BEHAVIOR_MISMATCH=0 on both sides. This is not full application or release approval.
++The entire native application lock remains unchanged pending broader qualification.
++
++The original execution argv and hashes remain in evidence/*execution.json. This
++corrected edition changes reporting/replay guidance only; its decision and behavioral
++evidence are byte-identical to ../first-delivery/. See correction-receipt.json.

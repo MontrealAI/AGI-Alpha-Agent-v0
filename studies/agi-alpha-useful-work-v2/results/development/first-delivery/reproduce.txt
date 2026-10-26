@@ -1,0 +1,15 @@
+From the complete companion root (Python 3.12 / Linux x86_64):
+
+1. Recreate the declared ten-package environments from their exact wheel locks,
+   using curation/prepare_environment.py --offline and the saved plans. Paths in
+   saved command receipts identify the original execution; relocate only through
+   an explicit regenerated plan, retaining original source/wheel/contract hashes.
+2. Run src/manual_probe.py with each environment's venv/bin/python -I -B,
+   --consumer data/consumer --contract protocol/component-contract.json and a new --out.
+3. Run src/verify_component.py with --projection native-fastapi-bridge-v2,
+   the same consumer/contract, the matching environment preparation.json,
+   --observations from step2 and a new --out.
+
+The complete before/after argv and pre/post input hashes are in evidence/*execution.json.
+Do not overwrite historical observations. Passing this finite component contract
+does not authorize application deployment or replacement of the full native lock.

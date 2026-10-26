@@ -1,0 +1,30 @@
+Runnable replay from the source handoff or complete companion (Python 3.12 / Linux x86_64):
+
+1. Change directory to the study root containing protocol/, src/, curation/ and publication/.
+   In the repository this is studies/agi-alpha-useful-work-v2/.
+2. Choose a fresh writable output path; existing evidence is never overwritten.
+3. If the complete companion includes both development wheel directories, run:
+
+   python publication/replay_first_delivery.py --out /tmp/agialpha-first-delivery-replay --offline
+
+   For the source-only public draft, omit --offline. This downloads only the declared
+   public distribution wheels, validates their exact preserved official SHA256 hashes,
+   and installs from those local files with --no-index --require-hashes. There are no
+   model, customer, blockchain, paid-service or application-activation requests.
+
+The script creates new plans with absolute input paths at the current location, records
+both original and relocated plan hashes, and changes no package version or input hash.
+It recreates the ten-package environments, checks the original FastAPI bridge, runs
+the unchanged original component definitions and all 61 cases with the actual
+15-second timeout in each environment, then runs the separate verifier. Expect at
+least 30 seconds of deliberate timeout observation plus setup. Its replay.json and
+per-command receipts preserve costs, bindings, status and failures. Replaying this
+development mission is not a new customer job or fresh confirmation.
+
+Expected result: PRESERVED_WITHIN_COMPONENT_CONTRACT, PASS=61, INCOMPLETE=0,
+BEHAVIOR_MISMATCH=0 on both sides. This is not full application or release approval.
+The entire native application lock remains unchanged pending broader qualification.
+
+The original execution argv and hashes remain in evidence/*execution.json. This
+corrected edition changes reporting/replay guidance only; its decision and behavioral
+evidence are byte-identical to ../first-delivery/. See correction-receipt.json.
