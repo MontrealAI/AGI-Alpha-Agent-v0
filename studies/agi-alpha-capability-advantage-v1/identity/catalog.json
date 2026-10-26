@@ -1,0 +1,1407 @@
+{
+  "schema": "capability-advantage-catalog/v2",
+  "skills": [
+    {
+      "id": "forward",
+      "version": "1",
+      "creator": "constructor.agent.agi.eth (FIXTURE ATTRIBUTION; root model session)",
+      "motivatingJob": "Connected DISC-01/DISC-02 forward work and identified repeated-solve bottleneck",
+      "outputs": [
+        "forward-result"
+      ],
+      "dependencies": [],
+      "implementation": {
+        "entrypoint": "skills/forward.py",
+        "callable": "solve_forward",
+        "files": [
+          {
+            "path": "independent/solver.py",
+            "sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+          },
+          {
+            "path": "production/worker.py",
+            "sha256": "57f43a1002438b671fb935543645cb5554eeb272ca0258172a905a5689a77500"
+          },
+          {
+            "path": "skills/core.py",
+            "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+          },
+          {
+            "path": "skills/design.py",
+            "sha256": "9fc2042e5db1b0f1455d1498a1e76dfae95065bb48e3804714c20aa409b27325"
+          },
+          {
+            "path": "skills/forward.py",
+            "sha256": "1c77363f0807fcc5a87d9b5101cfc681503e1097b7f78cdc3a9771752b61c24f"
+          },
+          {
+            "path": "skills/inverse.py",
+            "sha256": "9ad704e46ad3137b9ea90b12ffb02560e7e638ea4567ed2cf7a47c2c67bf9b02"
+          },
+          {
+            "path": "skills/network_capability.py",
+            "sha256": "97992a7deb9c61d405852026550cb542ba9c4abb3b38a13ee6c15ae6b6effe89"
+          },
+          {
+            "path": "skills/selected_design.py",
+            "sha256": "fa477cd587f076eb583063a9a852957800c6de70eb48fb59222813ebd2e3c1f2"
+          }
+        ],
+        "dispatch": "skills/network_capability.py"
+      },
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "sha256": "d027860031de87412e25fab1e326d9ea5d5368a602cb4678743e839c6f11b922"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "sha256": "a9660f5f2fa1534e1f4631c8921dd8bb15bd631b5b3a6075fe7d5f790e006724"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json",
+            "sha256": "8ff112d26ec434d434775540938a6d7703afd573e959cdd072eecd6791dd3eff"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "sha256": "8d7e8463b4e01dc6abd1e4ef1c763255368c0e20f743579c49720b86aef06e35"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "sha256": "24a5180bdf3c92c9cf1123b15c3f175db1e567162a287a9527ca00075abc4a1f"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json",
+            "sha256": "3aeb9db2aed94bbae30c7904f8ee02f1e785d7875665df98b3fa2c6f4be46926"
+          },
+          {
+            "path": "evidence/admission-current-v2/execution-summary.json",
+            "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/result.json",
+            "sha256": "d619f10692812c2ca3b5b59f194af4bdce85f3900557576dd46feefec2f68350"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/task.json",
+            "sha256": "a9660f5f2fa1534e1f4631c8921dd8bb15bd631b5b3a6075fe7d5f790e006724"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/verification.json",
+            "sha256": "8ff112d26ec434d434775540938a6d7703afd573e959cdd072eecd6791dd3eff"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/result.json",
+            "sha256": "27dbe1d523c1b540b2eeb5c1fdb87855522a6fccd0ba0327b22a14849e029aec"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/task.json",
+            "sha256": "24a5180bdf3c92c9cf1123b15c3f175db1e567162a287a9527ca00075abc4a1f"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/verification.json",
+            "sha256": "3aeb9db2aed94bbae30c7904f8ee02f1e785d7875665df98b3fa2c6f4be46926"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "sha256": "c1d69c1d1598ddaf9d7ae53b97df6ace0ba82b60cc6bb913d3bfc2fc6c4b71c6"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "sha256": "1e5d814d25355f8d98f51960ba83f56938d444b3c1d600e09beaeca1e872b7b7"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json"
+          }
+        ],
+        "dispatchCases": [
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/verification.json"
+          }
+        ],
+        "executionReceipt": {
+          "path": "evidence/admission-current-v2/execution-summary.json",
+          "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+        },
+        "scope": "Actual current-version execution on two discovery chains; no primary answers in skill index"
+      },
+      "scope": {
+        "family": "forward",
+        "schema": "agi-alpha-conductance-job/v1",
+        "empiricalNodeCounts": [
+          225,
+          400
+        ],
+        "maximumNodes": 4096,
+        "maximumLoads": 16,
+        "maximumInverseParameters": 32,
+        "maximumDesignVariables": 80,
+        "permission": "PROSPECTIVE_BOUNDED_RESEARCH_TRIAL",
+        "largerScopeStatus": "FRESH_CONFIRMATION_PENDING"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "execution": "fixed-local-research",
+        "threadPolicy": "OPENBLAS_OMP_MKL_1"
+      },
+      "rights": {
+        "license": "Apache-2.0",
+        "dataClass": "synthetic"
+      },
+      "expiresAt": 9000,
+      "costStatus": "ACTUAL_COMPLETE_COST_UNKNOWN",
+      "liveAuthentication": "NOT RUN"
+    },
+    {
+      "id": "inverse",
+      "version": "1",
+      "creator": "constructor.agent.agi.eth (FIXTURE ATTRIBUTION; root model session)",
+      "motivatingJob": "Connected DISC-01/DISC-02 inverse work and identified repeated-solve bottleneck",
+      "outputs": [
+        "inverse-result"
+      ],
+      "dependencies": [
+        "forward@1"
+      ],
+      "implementation": {
+        "entrypoint": "skills/inverse.py",
+        "callable": "solve_inverse",
+        "files": [
+          {
+            "path": "independent/solver.py",
+            "sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+          },
+          {
+            "path": "production/worker.py",
+            "sha256": "57f43a1002438b671fb935543645cb5554eeb272ca0258172a905a5689a77500"
+          },
+          {
+            "path": "skills/core.py",
+            "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+          },
+          {
+            "path": "skills/design.py",
+            "sha256": "9fc2042e5db1b0f1455d1498a1e76dfae95065bb48e3804714c20aa409b27325"
+          },
+          {
+            "path": "skills/forward.py",
+            "sha256": "1c77363f0807fcc5a87d9b5101cfc681503e1097b7f78cdc3a9771752b61c24f"
+          },
+          {
+            "path": "skills/inverse.py",
+            "sha256": "9ad704e46ad3137b9ea90b12ffb02560e7e638ea4567ed2cf7a47c2c67bf9b02"
+          },
+          {
+            "path": "skills/network_capability.py",
+            "sha256": "97992a7deb9c61d405852026550cb542ba9c4abb3b38a13ee6c15ae6b6effe89"
+          },
+          {
+            "path": "skills/selected_design.py",
+            "sha256": "fa477cd587f076eb583063a9a852957800c6de70eb48fb59222813ebd2e3c1f2"
+          }
+        ],
+        "dispatch": "skills/network_capability.py"
+      },
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "sha256": "948fe6b01811a3224f25b5ab769c1016d69f6fda812de93d68d618a5eb69e814"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "sha256": "c3b2c33e266f8de8602b8e7b64f1c8b14c2c797b555f173e8ee41c559a87e5d6"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "evidence/admission-current-v2/execution-summary.json",
+            "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "sha256": "13377f3cba28632345dde773884f440718700bf2ee9c8429612d37c2c486a1f4"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "sha256": "e013fc1cb7e236e13f2675b3018c3aa4b72137a812dc27e924f44f2aca7ad559"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "sha256": "98a96e64886c7e8d7d5e0121877c829d3fa98cffc6f4634c11d3cb3c453f43b0"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "sha256": "554ae5919962b03654c7a28b2a7d50c23818dc38bd648f06d136571a820b581e"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          }
+        ],
+        "dispatchCases": [
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json"
+          }
+        ],
+        "executionReceipt": {
+          "path": "evidence/admission-current-v2/execution-summary.json",
+          "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+        },
+        "scope": "Actual current-version execution on two discovery chains; no primary answers in skill index"
+      },
+      "scope": {
+        "family": "inverse",
+        "schema": "agi-alpha-conductance-job/v1",
+        "empiricalNodeCounts": [
+          225,
+          400
+        ],
+        "maximumNodes": 4096,
+        "maximumLoads": 16,
+        "maximumInverseParameters": 32,
+        "maximumDesignVariables": 80,
+        "permission": "PROSPECTIVE_BOUNDED_RESEARCH_TRIAL",
+        "largerScopeStatus": "FRESH_CONFIRMATION_PENDING"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "execution": "fixed-local-research",
+        "threadPolicy": "OPENBLAS_OMP_MKL_1"
+      },
+      "rights": {
+        "license": "Apache-2.0",
+        "dataClass": "synthetic"
+      },
+      "expiresAt": 9000,
+      "costStatus": "ACTUAL_COMPLETE_COST_UNKNOWN",
+      "liveAuthentication": "NOT RUN"
+    },
+    {
+      "id": "design",
+      "version": "1",
+      "creator": "constructor.agent.agi.eth (FIXTURE ATTRIBUTION; root model session)",
+      "motivatingJob": "Connected DISC-01/DISC-02 design work and identified repeated-solve bottleneck",
+      "outputs": [
+        "design-result"
+      ],
+      "dependencies": [
+        "inverse@1"
+      ],
+      "implementation": {
+        "entrypoint": "skills/design.py",
+        "callable": "solve_design",
+        "files": [
+          {
+            "path": "independent/solver.py",
+            "sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+          },
+          {
+            "path": "production/worker.py",
+            "sha256": "57f43a1002438b671fb935543645cb5554eeb272ca0258172a905a5689a77500"
+          },
+          {
+            "path": "skills/core.py",
+            "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+          },
+          {
+            "path": "skills/design.py",
+            "sha256": "9fc2042e5db1b0f1455d1498a1e76dfae95065bb48e3804714c20aa409b27325"
+          },
+          {
+            "path": "skills/forward.py",
+            "sha256": "1c77363f0807fcc5a87d9b5101cfc681503e1097b7f78cdc3a9771752b61c24f"
+          },
+          {
+            "path": "skills/inverse.py",
+            "sha256": "9ad704e46ad3137b9ea90b12ffb02560e7e638ea4567ed2cf7a47c2c67bf9b02"
+          },
+          {
+            "path": "skills/network_capability.py",
+            "sha256": "97992a7deb9c61d405852026550cb542ba9c4abb3b38a13ee6c15ae6b6effe89"
+          },
+          {
+            "path": "skills/selected_design.py",
+            "sha256": "fa477cd587f076eb583063a9a852957800c6de70eb48fb59222813ebd2e3c1f2"
+          }
+        ],
+        "dispatch": "skills/network_capability.py"
+      },
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v1/result.json",
+            "sha256": "70ddb1e828e694c4bf53af79ffb1758d229bed569380451b6ef39a6ccd173183"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v1/task.json",
+            "sha256": "2510df5e52a93a6cc25f42f8a9361dbb359acf543724cf27a2b6658c9b44e0fb"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v1/verification.json",
+            "sha256": "8f0bcfd4b0268d4332e196bb3ba194df1e1dada934b7772826da7dc86d6d861f"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "sha256": "948fe6b01811a3224f25b5ab769c1016d69f6fda812de93d68d618a5eb69e814"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v1/result.json",
+            "sha256": "c811d9356525d7d098e941f812d385d0d5b4aba25710e6326d3834a4fd4174bb"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v1/task.json",
+            "sha256": "86220e6aa76eb04ab1e5040134db227075be196a8e9546d5c5f62a9a4aec1afd"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v1/verification.json",
+            "sha256": "11ed826f038fec45968f1184857c8ebb6d03af835f704a06aa5d39798a4ec70a"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "sha256": "c3b2c33e266f8de8602b8e7b64f1c8b14c2c797b555f173e8ee41c559a87e5d6"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "evidence/admission-current-v2/execution-summary.json",
+            "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "sha256": "1a3903da49029ecb063817e25b76a62b67640c99abb704872d7adaf14487e91c"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "sha256": "1c6356db5ab6e7cd74369a2e650407d70a64714aee95e6b850a9f50474427464"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/admission-current-v2/DISC-01/design-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/design-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-01/design-v1/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/design-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/design-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-02/design-v1/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          }
+        ],
+        "dispatchCases": [],
+        "executionReceipt": {
+          "path": "evidence/admission-current-v2/execution-summary.json",
+          "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+        },
+        "scope": "Actual current-version execution on two discovery chains; no primary answers in skill index"
+      },
+      "scope": {
+        "family": "design",
+        "schema": "agi-alpha-conductance-job/v1",
+        "empiricalNodeCounts": [
+          225,
+          400
+        ],
+        "maximumNodes": 4096,
+        "maximumLoads": 16,
+        "maximumInverseParameters": 32,
+        "maximumDesignVariables": 80,
+        "permission": "PROSPECTIVE_BOUNDED_RESEARCH_TRIAL",
+        "largerScopeStatus": "FRESH_CONFIRMATION_PENDING"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "execution": "fixed-local-research",
+        "threadPolicy": "OPENBLAS_OMP_MKL_1"
+      },
+      "rights": {
+        "license": "Apache-2.0",
+        "dataClass": "synthetic"
+      },
+      "expiresAt": 9000,
+      "costStatus": "ACTUAL_COMPLETE_COST_UNKNOWN",
+      "liveAuthentication": "NOT RUN"
+    },
+    {
+      "id": "design",
+      "version": "2",
+      "creator": "independent-recipient.agent.agi.eth (FIXTURE ATTRIBUTION; actual same-session independent contributor)",
+      "motivatingJob": "Connected DISC-01/DISC-02 design work and identified repeated-solve bottleneck",
+      "outputs": [
+        "design-result"
+      ],
+      "dependencies": [
+        "inverse@1"
+      ],
+      "implementation": {
+        "entrypoint": "skills/selected_design.py",
+        "callable": "solve_design",
+        "files": [
+          {
+            "path": "independent/solver.py",
+            "sha256": "ebac83103628a8824e88484ab643a2ff359dec26ff26f99285d54642758aa7de"
+          },
+          {
+            "path": "production/worker.py",
+            "sha256": "57f43a1002438b671fb935543645cb5554eeb272ca0258172a905a5689a77500"
+          },
+          {
+            "path": "skills/core.py",
+            "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+          },
+          {
+            "path": "skills/design.py",
+            "sha256": "9fc2042e5db1b0f1455d1498a1e76dfae95065bb48e3804714c20aa409b27325"
+          },
+          {
+            "path": "skills/forward.py",
+            "sha256": "1c77363f0807fcc5a87d9b5101cfc681503e1097b7f78cdc3a9771752b61c24f"
+          },
+          {
+            "path": "skills/inverse.py",
+            "sha256": "9ad704e46ad3137b9ea90b12ffb02560e7e638ea4567ed2cf7a47c2c67bf9b02"
+          },
+          {
+            "path": "skills/network_capability.py",
+            "sha256": "97992a7deb9c61d405852026550cb542ba9c4abb3b38a13ee6c15ae6b6effe89"
+          },
+          {
+            "path": "skills/selected_design.py",
+            "sha256": "fa477cd587f076eb583063a9a852957800c6de70eb48fb59222813ebd2e3c1f2"
+          }
+        ],
+        "dispatch": "skills/network_capability.py"
+      },
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v2/result.json",
+            "sha256": "cef86c6818d23c17970afd3cc6641f97874a6e945d0b89eb5e8eb75ce522be1d"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v2/task.json",
+            "sha256": "2510df5e52a93a6cc25f42f8a9361dbb359acf543724cf27a2b6658c9b44e0fb"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v2/verification.json",
+            "sha256": "39e66705ead35eb10d221b4ad5fecd119d40a0c5137431e43b71c779b28341be"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "sha256": "948fe6b01811a3224f25b5ab769c1016d69f6fda812de93d68d618a5eb69e814"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v2/result.json",
+            "sha256": "62e7c54c79d3e8a08b87f2387ea7f1969c876347ec9ab15c98befdc5269084f1"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v2/task.json",
+            "sha256": "86220e6aa76eb04ab1e5040134db227075be196a8e9546d5c5f62a9a4aec1afd"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v2/verification.json",
+            "sha256": "5b00307496ff9e120b8d637a5194c27fe210c47dd0b67dbdf3d5b877dec9a0a8"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "sha256": "c3b2c33e266f8de8602b8e7b64f1c8b14c2c797b555f173e8ee41c559a87e5d6"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "evidence/admission-current-v2/execution-summary.json",
+            "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/design/result.json",
+            "sha256": "91adea71cb0ceb2250e9491607a5025a4ded50ddcbadf3266cd2a0fd186d1478"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/design/task.json",
+            "sha256": "737c5fa43a1e22fab1857bfadb36a80fcdb044b5ba3fa807e580bd994f5b99cb"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/design/verification.json",
+            "sha256": "39e66705ead35eb10d221b4ad5fecd119d40a0c5137431e43b71c779b28341be"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "sha256": "13377f3cba28632345dde773884f440718700bf2ee9c8429612d37c2c486a1f4"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/design/result.json",
+            "sha256": "b779ad5966040ac843a34917875320cb346aa6537f0893a5f41c531b3628e3fc"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/design/task.json",
+            "sha256": "c9c5e682e5478a40ba1e478f5ec65387c9af2166065741d3052fcf8fa91be3e2"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/design/verification.json",
+            "sha256": "5b00307496ff9e120b8d637a5194c27fe210c47dd0b67dbdf3d5b877dec9a0a8"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "sha256": "e013fc1cb7e236e13f2675b3018c3aa4b72137a812dc27e924f44f2aca7ad559"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "sha256": "1a3903da49029ecb063817e25b76a62b67640c99abb704872d7adaf14487e91c"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "sha256": "1c6356db5ab6e7cd74369a2e650407d70a64714aee95e6b850a9f50474427464"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/admission-current-v2/DISC-01/design-v2/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/design-v2/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-01/design-v2/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/design-v2/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/design-v2/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-02/design-v2/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          }
+        ],
+        "dispatchCases": [
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/design/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/design/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/design/verification.json",
+            "parent_task": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "parent_result": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/design/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/design/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/design/verification.json",
+            "parent_task": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "parent_result": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json"
+          }
+        ],
+        "executionReceipt": {
+          "path": "evidence/admission-current-v2/execution-summary.json",
+          "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+        },
+        "scope": "Actual current-version execution on two discovery chains; no primary answers in skill index"
+      },
+      "scope": {
+        "family": "design",
+        "schema": "agi-alpha-conductance-job/v1",
+        "empiricalNodeCounts": [
+          225,
+          400
+        ],
+        "maximumNodes": 4096,
+        "maximumLoads": 16,
+        "maximumInverseParameters": 32,
+        "maximumDesignVariables": 80,
+        "permission": "PROSPECTIVE_BOUNDED_RESEARCH_TRIAL",
+        "largerScopeStatus": "FRESH_CONFIRMATION_PENDING"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "execution": "fixed-local-research",
+        "threadPolicy": "OPENBLAS_OMP_MKL_1"
+      },
+      "rights": {
+        "license": "Apache-2.0",
+        "dataClass": "synthetic"
+      },
+      "expiresAt": 9000,
+      "costStatus": "ACTUAL_COMPLETE_COST_UNKNOWN",
+      "liveAuthentication": "NOT RUN"
+    }
+  ],
+  "compositions": [
+    {
+      "id": "inverse-v1-validated-composition",
+      "target": "inverse@1",
+      "members": [
+        "forward@1",
+        "inverse@1"
+      ],
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "sha256": "d027860031de87412e25fab1e326d9ea5d5368a602cb4678743e839c6f11b922"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "sha256": "a9660f5f2fa1534e1f4631c8921dd8bb15bd631b5b3a6075fe7d5f790e006724"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json",
+            "sha256": "8ff112d26ec434d434775540938a6d7703afd573e959cdd072eecd6791dd3eff"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "sha256": "948fe6b01811a3224f25b5ab769c1016d69f6fda812de93d68d618a5eb69e814"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "sha256": "8d7e8463b4e01dc6abd1e4ef1c763255368c0e20f743579c49720b86aef06e35"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "sha256": "24a5180bdf3c92c9cf1123b15c3f175db1e567162a287a9527ca00075abc4a1f"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json",
+            "sha256": "3aeb9db2aed94bbae30c7904f8ee02f1e785d7875665df98b3fa2c6f4be46926"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "sha256": "c3b2c33e266f8de8602b8e7b64f1c8b14c2c797b555f173e8ee41c559a87e5d6"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "evidence/admission-current-v2/execution-summary.json",
+            "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/result.json",
+            "sha256": "d619f10692812c2ca3b5b59f194af4bdce85f3900557576dd46feefec2f68350"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/task.json",
+            "sha256": "a9660f5f2fa1534e1f4631c8921dd8bb15bd631b5b3a6075fe7d5f790e006724"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/verification.json",
+            "sha256": "8ff112d26ec434d434775540938a6d7703afd573e959cdd072eecd6791dd3eff"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "sha256": "13377f3cba28632345dde773884f440718700bf2ee9c8429612d37c2c486a1f4"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/result.json",
+            "sha256": "27dbe1d523c1b540b2eeb5c1fdb87855522a6fccd0ba0327b22a14849e029aec"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/task.json",
+            "sha256": "24a5180bdf3c92c9cf1123b15c3f175db1e567162a287a9527ca00075abc4a1f"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/verification.json",
+            "sha256": "3aeb9db2aed94bbae30c7904f8ee02f1e785d7875665df98b3fa2c6f4be46926"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "sha256": "e013fc1cb7e236e13f2675b3018c3aa4b72137a812dc27e924f44f2aca7ad559"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "sha256": "c1d69c1d1598ddaf9d7ae53b97df6ace0ba82b60cc6bb913d3bfc2fc6c4b71c6"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "sha256": "98a96e64886c7e8d7d5e0121877c829d3fa98cffc6f4634c11d3cb3c453f43b0"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "sha256": "1e5d814d25355f8d98f51960ba83f56938d444b3c1d600e09beaeca1e872b7b7"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "sha256": "554ae5919962b03654c7a28b2a7d50c23818dc38bd648f06d136571a820b581e"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          }
+        ],
+        "dispatchCases": [
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json"
+          }
+        ],
+        "executionReceipt": {
+          "path": "evidence/admission-current-v2/execution-summary.json",
+          "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+        },
+        "scope": "Actual current-version execution on two discovery chains; no primary answers in skill index"
+      },
+      "scope": "Both actual freshly executed connected chains, version-specific design and accepted inherited calibration"
+    },
+    {
+      "id": "design-v1-validated-composition",
+      "target": "design@1",
+      "members": [
+        "forward@1",
+        "inverse@1",
+        "design@1"
+      ],
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v1/result.json",
+            "sha256": "70ddb1e828e694c4bf53af79ffb1758d229bed569380451b6ef39a6ccd173183"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v1/task.json",
+            "sha256": "2510df5e52a93a6cc25f42f8a9361dbb359acf543724cf27a2b6658c9b44e0fb"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v1/verification.json",
+            "sha256": "8f0bcfd4b0268d4332e196bb3ba194df1e1dada934b7772826da7dc86d6d861f"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "sha256": "d027860031de87412e25fab1e326d9ea5d5368a602cb4678743e839c6f11b922"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "sha256": "a9660f5f2fa1534e1f4631c8921dd8bb15bd631b5b3a6075fe7d5f790e006724"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json",
+            "sha256": "8ff112d26ec434d434775540938a6d7703afd573e959cdd072eecd6791dd3eff"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "sha256": "948fe6b01811a3224f25b5ab769c1016d69f6fda812de93d68d618a5eb69e814"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v1/result.json",
+            "sha256": "c811d9356525d7d098e941f812d385d0d5b4aba25710e6326d3834a4fd4174bb"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v1/task.json",
+            "sha256": "86220e6aa76eb04ab1e5040134db227075be196a8e9546d5c5f62a9a4aec1afd"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v1/verification.json",
+            "sha256": "11ed826f038fec45968f1184857c8ebb6d03af835f704a06aa5d39798a4ec70a"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "sha256": "8d7e8463b4e01dc6abd1e4ef1c763255368c0e20f743579c49720b86aef06e35"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "sha256": "24a5180bdf3c92c9cf1123b15c3f175db1e567162a287a9527ca00075abc4a1f"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json",
+            "sha256": "3aeb9db2aed94bbae30c7904f8ee02f1e785d7875665df98b3fa2c6f4be46926"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "sha256": "c3b2c33e266f8de8602b8e7b64f1c8b14c2c797b555f173e8ee41c559a87e5d6"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "evidence/admission-current-v2/execution-summary.json",
+            "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "sha256": "1a3903da49029ecb063817e25b76a62b67640c99abb704872d7adaf14487e91c"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "sha256": "c1d69c1d1598ddaf9d7ae53b97df6ace0ba82b60cc6bb913d3bfc2fc6c4b71c6"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "sha256": "98a96e64886c7e8d7d5e0121877c829d3fa98cffc6f4634c11d3cb3c453f43b0"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "sha256": "1c6356db5ab6e7cd74369a2e650407d70a64714aee95e6b850a9f50474427464"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "sha256": "1e5d814d25355f8d98f51960ba83f56938d444b3c1d600e09beaeca1e872b7b7"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "sha256": "554ae5919962b03654c7a28b2a7d50c23818dc38bd648f06d136571a820b581e"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-01/design-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/design-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-01/design-v1/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/design-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/design-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-02/design-v1/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          }
+        ],
+        "dispatchCases": [],
+        "executionReceipt": {
+          "path": "evidence/admission-current-v2/execution-summary.json",
+          "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+        },
+        "scope": "Actual current-version execution on two discovery chains; no primary answers in skill index"
+      },
+      "scope": "Both actual freshly executed connected chains, version-specific design and accepted inherited calibration"
+    },
+    {
+      "id": "design-v2-validated-composition",
+      "target": "design@2",
+      "members": [
+        "forward@1",
+        "inverse@1",
+        "design@2"
+      ],
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v2/result.json",
+            "sha256": "cef86c6818d23c17970afd3cc6641f97874a6e945d0b89eb5e8eb75ce522be1d"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v2/task.json",
+            "sha256": "2510df5e52a93a6cc25f42f8a9361dbb359acf543724cf27a2b6658c9b44e0fb"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/design-v2/verification.json",
+            "sha256": "39e66705ead35eb10d221b4ad5fecd119d40a0c5137431e43b71c779b28341be"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "sha256": "d027860031de87412e25fab1e326d9ea5d5368a602cb4678743e839c6f11b922"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "sha256": "a9660f5f2fa1534e1f4631c8921dd8bb15bd631b5b3a6075fe7d5f790e006724"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json",
+            "sha256": "8ff112d26ec434d434775540938a6d7703afd573e959cdd072eecd6791dd3eff"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "sha256": "948fe6b01811a3224f25b5ab769c1016d69f6fda812de93d68d618a5eb69e814"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v2/result.json",
+            "sha256": "62e7c54c79d3e8a08b87f2387ea7f1969c876347ec9ab15c98befdc5269084f1"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v2/task.json",
+            "sha256": "86220e6aa76eb04ab1e5040134db227075be196a8e9546d5c5f62a9a4aec1afd"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/design-v2/verification.json",
+            "sha256": "5b00307496ff9e120b8d637a5194c27fe210c47dd0b67dbdf3d5b877dec9a0a8"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "sha256": "8d7e8463b4e01dc6abd1e4ef1c763255368c0e20f743579c49720b86aef06e35"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "sha256": "24a5180bdf3c92c9cf1123b15c3f175db1e567162a287a9527ca00075abc4a1f"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json",
+            "sha256": "3aeb9db2aed94bbae30c7904f8ee02f1e785d7875665df98b3fa2c6f4be46926"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "sha256": "c3b2c33e266f8de8602b8e7b64f1c8b14c2c797b555f173e8ee41c559a87e5d6"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "evidence/admission-current-v2/execution-summary.json",
+            "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/design/result.json",
+            "sha256": "91adea71cb0ceb2250e9491607a5025a4ded50ddcbadf3266cd2a0fd186d1478"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/design/task.json",
+            "sha256": "737c5fa43a1e22fab1857bfadb36a80fcdb044b5ba3fa807e580bd994f5b99cb"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/design/verification.json",
+            "sha256": "39e66705ead35eb10d221b4ad5fecd119d40a0c5137431e43b71c779b28341be"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/result.json",
+            "sha256": "d619f10692812c2ca3b5b59f194af4bdce85f3900557576dd46feefec2f68350"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/task.json",
+            "sha256": "a9660f5f2fa1534e1f4631c8921dd8bb15bd631b5b3a6075fe7d5f790e006724"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/verification.json",
+            "sha256": "8ff112d26ec434d434775540938a6d7703afd573e959cdd072eecd6791dd3eff"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "sha256": "13377f3cba28632345dde773884f440718700bf2ee9c8429612d37c2c486a1f4"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "sha256": "0891c21c64c7398a7c5890e7f94e5cec648e6f2f811b4fcb54dbe80ae24f0100"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json",
+            "sha256": "596f276e09483ab7fc839b84f86f2dce959ea9288e36765524ea89d1197bc226"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/design/result.json",
+            "sha256": "b779ad5966040ac843a34917875320cb346aa6537f0893a5f41c531b3628e3fc"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/design/task.json",
+            "sha256": "c9c5e682e5478a40ba1e478f5ec65387c9af2166065741d3052fcf8fa91be3e2"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/design/verification.json",
+            "sha256": "5b00307496ff9e120b8d637a5194c27fe210c47dd0b67dbdf3d5b877dec9a0a8"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/result.json",
+            "sha256": "27dbe1d523c1b540b2eeb5c1fdb87855522a6fccd0ba0327b22a14849e029aec"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/task.json",
+            "sha256": "24a5180bdf3c92c9cf1123b15c3f175db1e567162a287a9527ca00075abc4a1f"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/verification.json",
+            "sha256": "3aeb9db2aed94bbae30c7904f8ee02f1e785d7875665df98b3fa2c6f4be46926"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "sha256": "e013fc1cb7e236e13f2675b3018c3aa4b72137a812dc27e924f44f2aca7ad559"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "sha256": "fc6d567e4dedc708dd808bd3ee26a9a26b6df8cef2199c657d5af84dd0df8d33"
+          },
+          {
+            "path": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json",
+            "sha256": "0e9c1eef97696c490a308d02d8c7bf17c33cd2c119de5a00316a41161b51052b"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "sha256": "1a3903da49029ecb063817e25b76a62b67640c99abb704872d7adaf14487e91c"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "sha256": "c1d69c1d1598ddaf9d7ae53b97df6ace0ba82b60cc6bb913d3bfc2fc6c4b71c6"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "sha256": "98a96e64886c7e8d7d5e0121877c829d3fa98cffc6f4634c11d3cb3c453f43b0"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "sha256": "1c6356db5ab6e7cd74369a2e650407d70a64714aee95e6b850a9f50474427464"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "sha256": "1e5d814d25355f8d98f51960ba83f56938d444b3c1d600e09beaeca1e872b7b7"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "sha256": "554ae5919962b03654c7a28b2a7d50c23818dc38bd648f06d136571a820b581e"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/admission-current-v2/DISC-01/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-01/forward-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-01/design-v2/task.json",
+            "result": "evidence/admission-current-v2/DISC-01/design-v2/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-01/design-v2/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-01/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-01/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-01/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/forward-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/forward-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "verification": "evidence/admission-current-v2/DISC-02/forward-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "verification": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/DISC-02/design-v2/task.json",
+            "result": "evidence/admission-current-v2/DISC-02/design-v2/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "verification": "evidence/admission-current-v2/DISC-02/design-v2/verification.json",
+            "parent_task": "evidence/admission-current-v2/DISC-02/inverse-v1/task.json",
+            "parent_result": "evidence/admission-current-v2/DISC-02/inverse-v1/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/DISC-02/inverse-v1/verification.json"
+          }
+        ],
+        "dispatchCases": [
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/forward/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-01/design/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-01/design/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-01/design/verification.json",
+            "parent_task": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/task.json",
+            "parent_result": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/production-dispatch/DISC-01/inverse/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-FORWARD.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/forward/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-INVERSE.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json"
+          },
+          {
+            "task": "evidence/admission-current-v2/production-dispatch/DISC-02/design/task.json",
+            "result": "evidence/admission-current-v2/production-dispatch/DISC-02/design/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-02-DESIGN.json",
+            "verification": "evidence/admission-current-v2/production-dispatch/DISC-02/design/verification.json",
+            "parent_task": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/task.json",
+            "parent_result": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/result.json",
+            "parent_acceptance": "evidence/admission-current-v2/production-dispatch/DISC-02/inverse/verification.json"
+          }
+        ],
+        "executionReceipt": {
+          "path": "evidence/admission-current-v2/execution-summary.json",
+          "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+        },
+        "scope": "Actual current-version execution on two discovery chains; no primary answers in skill index"
+      },
+      "scope": "Both actual freshly executed connected chains, version-specific design and accepted inherited calibration"
+    }
+  ],
+  "supersessions": [
+    {
+      "old": "design@1",
+      "new": "design@2",
+      "reason": "Actual independently authored contribution selected before primary; original version/evidence retained"
+    }
+  ],
+  "executionReceipt": {
+    "path": "evidence/admission-current-v2/execution-summary.json",
+    "sha256": "422f7ac7f0195233df0fd3856b8b1c4272db70c47af4d229e314b3e810afbacd"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  }
+}

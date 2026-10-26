@@ -1,0 +1,341 @@
+{
+  "skills": [
+    {
+      "id": "forward",
+      "version": "1",
+      "creator": "constructor.agent.agi.eth (FIXTURE ATTRIBUTION; root model session)",
+      "motivatingJob": "DEV-FORWARD then connected DISC-01-FORWARD",
+      "outputs": [
+        "forward-result"
+      ],
+      "dependencies": [],
+      "implementation": {
+        "entrypoint": "skills/forward.py",
+        "files": [
+          {
+            "path": "skills/core.py",
+            "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+          },
+          {
+            "path": "skills/forward.py",
+            "sha256": "1c77363f0807fcc5a87d9b5101cfc681503e1097b7f78cdc3a9771752b61c24f"
+          }
+        ]
+      },
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/discovery-qualified/DISC-01/forward/B/result.json",
+            "sha256": "ab9ff80c1b411a963aa280b6f4519ca00920167bf977396466d99dfa4970fdf4"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "sha256": "c1d69c1d1598ddaf9d7ae53b97df6ace0ba82b60cc6bb913d3bfc2fc6c4b71c6"
+          },
+          {
+            "path": "workloads/discovery/tasks/DISC-01-FORWARD.json",
+            "sha256": "b769444488a0aa8dfa0728985c337820a41b8827352065ca04ad154f9ade0075"
+          }
+        ],
+        "cases": [
+          {
+            "task": "workloads/discovery/tasks/DISC-01-FORWARD.json",
+            "result": "evidence/discovery-qualified/DISC-01/forward/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json"
+          }
+        ],
+        "scope": "Independent replay of connected discovery evidence; primary answers excluded"
+      },
+      "scope": {
+        "family": "forward",
+        "schema": "agi-alpha-conductance-job/v1",
+        "maximumNodes": 4096,
+        "currentEvidence": "49-node development and 225/400-node connected discovery",
+        "largerScopeStatus": "FRESH_CONFIRMATION_PENDING"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "execution": "fixed-local-research"
+      },
+      "rights": {
+        "license": "Apache-2.0",
+        "dataClass": "synthetic"
+      },
+      "expiresAt": 9000,
+      "costStatus": "ACTUAL_COMPLETE_COST_UNKNOWN",
+      "liveAuthentication": "NOT RUN"
+    },
+    {
+      "id": "inverse",
+      "version": "1",
+      "creator": "constructor.agent.agi.eth (FIXTURE ATTRIBUTION; root model session)",
+      "motivatingJob": "DEV-INVERSE then connected DISC-01-INVERSE",
+      "outputs": [
+        "inverse-result"
+      ],
+      "dependencies": [
+        "forward@1"
+      ],
+      "implementation": {
+        "entrypoint": "skills/inverse.py",
+        "files": [
+          {
+            "path": "skills/core.py",
+            "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+          },
+          {
+            "path": "skills/inverse.py",
+            "sha256": "9ad704e46ad3137b9ea90b12ffb02560e7e638ea4567ed2cf7a47c2c67bf9b02"
+          }
+        ]
+      },
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/discovery-qualified/DISC-01/inverse/B/result.json",
+            "sha256": "8436d85a5f2e0057f99cf8c9f3e23373892a525c1dbd79e0c4d7c76563055468"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "sha256": "98a96e64886c7e8d7d5e0121877c829d3fa98cffc6f4634c11d3cb3c453f43b0"
+          },
+          {
+            "path": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "sha256": "aa42f3512733f0cb872c5cdf8c14d2d1bd5f872346d07622883a3a92543d9f80"
+          }
+        ],
+        "cases": [
+          {
+            "task": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "result": "evidence/discovery-qualified/DISC-01/inverse/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json"
+          }
+        ],
+        "scope": "Independent replay of connected discovery evidence; primary answers excluded"
+      },
+      "scope": {
+        "family": "inverse",
+        "schema": "agi-alpha-conductance-job/v1",
+        "maximumNodes": 4096,
+        "currentEvidence": "49-node development and 225/400-node connected discovery",
+        "largerScopeStatus": "FRESH_CONFIRMATION_PENDING"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "execution": "fixed-local-research"
+      },
+      "rights": {
+        "license": "Apache-2.0",
+        "dataClass": "synthetic"
+      },
+      "expiresAt": 9000,
+      "costStatus": "ACTUAL_COMPLETE_COST_UNKNOWN",
+      "liveAuthentication": "NOT RUN"
+    },
+    {
+      "id": "design",
+      "version": "1",
+      "creator": "constructor.agent.agi.eth (FIXTURE ATTRIBUTION; root model session)",
+      "motivatingJob": "DEV-DESIGN then connected DISC-01-DESIGN",
+      "outputs": [
+        "design-result"
+      ],
+      "dependencies": [
+        "inverse@1"
+      ],
+      "implementation": {
+        "entrypoint": "skills/design.py",
+        "files": [
+          {
+            "path": "skills/core.py",
+            "sha256": "96ce61afcc3ebcc6a11a44d7214fcb5eb1b8b78ca000c727fb5ac60f63e5a4d2"
+          },
+          {
+            "path": "skills/design.py",
+            "sha256": "9fc2042e5db1b0f1455d1498a1e76dfae95065bb48e3804714c20aa409b27325"
+          }
+        ]
+      },
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/discovery-qualified/DISC-01/design/B/result.json",
+            "sha256": "1abccc2192f216d5c65bb2fb48f2c48a9d5e6c83c7cc6d3044d9b5f42c5b75ef"
+          },
+          {
+            "path": "evidence/discovery-qualified/DISC-01/inverse/B/result.json",
+            "sha256": "8436d85a5f2e0057f99cf8c9f3e23373892a525c1dbd79e0c4d7c76563055468"
+          },
+          {
+            "path": "evidence/discovery-qualified/materialized/DISC-01/B-DESIGN.json",
+            "sha256": "d71a32467eb435346765211107dd3bb4d660aaa113540c1a5fe7ddab5cc3b9d9"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "sha256": "1a3903da49029ecb063817e25b76a62b67640c99abb704872d7adaf14487e91c"
+          },
+          {
+            "path": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "sha256": "aa42f3512733f0cb872c5cdf8c14d2d1bd5f872346d07622883a3a92543d9f80"
+          }
+        ],
+        "cases": [
+          {
+            "task": "evidence/discovery-qualified/materialized/DISC-01/B-DESIGN.json",
+            "result": "evidence/discovery-qualified/DISC-01/design/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "parent_task": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "parent_result": "evidence/discovery-qualified/DISC-01/inverse/B/result.json"
+          }
+        ],
+        "scope": "Independent replay of connected discovery evidence; primary answers excluded"
+      },
+      "scope": {
+        "family": "design",
+        "schema": "agi-alpha-conductance-job/v1",
+        "maximumNodes": 4096,
+        "currentEvidence": "49-node development and 225/400-node connected discovery",
+        "largerScopeStatus": "FRESH_CONFIRMATION_PENDING"
+      },
+      "environment": {
+        "python": "3.12.14",
+        "numpy": "2.3.5",
+        "scipy": "1.17.0",
+        "execution": "fixed-local-research"
+      },
+      "rights": {
+        "license": "Apache-2.0",
+        "dataClass": "synthetic"
+      },
+      "expiresAt": 9000,
+      "costStatus": "ACTUAL_COMPLETE_COST_UNKNOWN",
+      "liveAuthentication": "NOT RUN"
+    }
+  ],
+  "compositions": [
+    {
+      "id": "inverse-validated-composition",
+      "target": "inverse@1",
+      "members": [
+        "forward@1",
+        "inverse@1"
+      ],
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/discovery-qualified/DISC-01/forward/B/result.json",
+            "sha256": "ab9ff80c1b411a963aa280b6f4519ca00920167bf977396466d99dfa4970fdf4"
+          },
+          {
+            "path": "evidence/discovery-qualified/DISC-01/inverse/B/result.json",
+            "sha256": "8436d85a5f2e0057f99cf8c9f3e23373892a525c1dbd79e0c4d7c76563055468"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "sha256": "c1d69c1d1598ddaf9d7ae53b97df6ace0ba82b60cc6bb913d3bfc2fc6c4b71c6"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "sha256": "98a96e64886c7e8d7d5e0121877c829d3fa98cffc6f4634c11d3cb3c453f43b0"
+          },
+          {
+            "path": "workloads/discovery/tasks/DISC-01-FORWARD.json",
+            "sha256": "b769444488a0aa8dfa0728985c337820a41b8827352065ca04ad154f9ade0075"
+          },
+          {
+            "path": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "sha256": "aa42f3512733f0cb872c5cdf8c14d2d1bd5f872346d07622883a3a92543d9f80"
+          }
+        ],
+        "cases": [
+          {
+            "task": "workloads/discovery/tasks/DISC-01-FORWARD.json",
+            "result": "evidence/discovery-qualified/DISC-01/forward/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json"
+          },
+          {
+            "task": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "result": "evidence/discovery-qualified/DISC-01/inverse/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json"
+          }
+        ],
+        "scope": "Independent replay of connected discovery evidence; primary answers excluded"
+      },
+      "scope": "Actual independently accepted connected chain; no live grants"
+    },
+    {
+      "id": "design-validated-composition",
+      "target": "design@1",
+      "members": [
+        "forward@1",
+        "inverse@1",
+        "design@1"
+      ],
+      "evidence": {
+        "files": [
+          {
+            "path": "evidence/discovery-qualified/DISC-01/design/B/result.json",
+            "sha256": "1abccc2192f216d5c65bb2fb48f2c48a9d5e6c83c7cc6d3044d9b5f42c5b75ef"
+          },
+          {
+            "path": "evidence/discovery-qualified/DISC-01/forward/B/result.json",
+            "sha256": "ab9ff80c1b411a963aa280b6f4519ca00920167bf977396466d99dfa4970fdf4"
+          },
+          {
+            "path": "evidence/discovery-qualified/DISC-01/inverse/B/result.json",
+            "sha256": "8436d85a5f2e0057f99cf8c9f3e23373892a525c1dbd79e0c4d7c76563055468"
+          },
+          {
+            "path": "evidence/discovery-qualified/materialized/DISC-01/B-DESIGN.json",
+            "sha256": "d71a32467eb435346765211107dd3bb4d660aaa113540c1a5fe7ddab5cc3b9d9"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "sha256": "1a3903da49029ecb063817e25b76a62b67640c99abb704872d7adaf14487e91c"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-FORWARD.json",
+            "sha256": "c1d69c1d1598ddaf9d7ae53b97df6ace0ba82b60cc6bb913d3bfc2fc6c4b71c6"
+          },
+          {
+            "path": "workloads/discovery/oracles/DISC-01-INVERSE.json",
+            "sha256": "98a96e64886c7e8d7d5e0121877c829d3fa98cffc6f4634c11d3cb3c453f43b0"
+          },
+          {
+            "path": "workloads/discovery/tasks/DISC-01-FORWARD.json",
+            "sha256": "b769444488a0aa8dfa0728985c337820a41b8827352065ca04ad154f9ade0075"
+          },
+          {
+            "path": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "sha256": "aa42f3512733f0cb872c5cdf8c14d2d1bd5f872346d07622883a3a92543d9f80"
+          }
+        ],
+        "cases": [
+          {
+            "task": "workloads/discovery/tasks/DISC-01-FORWARD.json",
+            "result": "evidence/discovery-qualified/DISC-01/forward/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-FORWARD.json"
+          },
+          {
+            "task": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "result": "evidence/discovery-qualified/DISC-01/inverse/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-INVERSE.json"
+          },
+          {
+            "task": "evidence/discovery-qualified/materialized/DISC-01/B-DESIGN.json",
+            "result": "evidence/discovery-qualified/DISC-01/design/B/result.json",
+            "oracle": "workloads/discovery/oracles/DISC-01-DESIGN.json",
+            "parent_task": "workloads/discovery/tasks/DISC-01-INVERSE.json",
+            "parent_result": "evidence/discovery-qualified/DISC-01/inverse/B/result.json"
+          }
+        ],
+        "scope": "Independent replay of connected discovery evidence; primary answers excluded"
+      },
+      "scope": "Actual independently accepted connected chain; no live grants"
+    }
+  ]
+}

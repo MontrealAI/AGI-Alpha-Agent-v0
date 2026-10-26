@@ -1,0 +1,41 @@
+{
+  "schema": "observed-transfer-cost-records/v1",
+  "acquisition": {
+    "start_utc": "2026-10-26T20:24:46.000705+00:00",
+    "end_utc": "2026-10-26T20:27:41.826355+00:00",
+    "scope": "first shared-source discovery through adapter freeze",
+    "time_interpretation": "observed elapsed wall time; not active human attention, model token cost, inference billing, or monetary bill",
+    "wall_seconds": 175.82565,
+    "includes": "source inspection, adapter implementation, protocol amendment coordination, harness preparation, and import-only preflight; excludes panel numerical outcomes",
+    "source_freeze_sha256": "a6eb9d57c4c39fb309f49a764edb6a0aa9ea25e965a87703f1e81b933adf9842"
+  },
+  "original_independent_construction": 225.038953,
+  "panel_start_utc": "2026-10-26T20:27:59.134819+00:00",
+  "panel_end_utc": "2026-10-26T20:29:08.690840+00:00",
+  "panel_total_wall_seconds": 69.556021,
+  "per_method": {
+    "retained_independent": {
+      "complete_chains": 2,
+      "accepted_stages": 6,
+      "method_calls": 6,
+      "sum_method_call_wall_seconds": 2.3273672010036535,
+      "sum_worker_process_wall_seconds": 7.525355748995935,
+      "sum_verification_wall_seconds": 9.938951638003346,
+      "peak_rss_kib": 141728
+    },
+    "acquired_shared": {
+      "complete_chains": 2,
+      "accepted_stages": 6,
+      "method_calls": 6,
+      "sum_method_call_wall_seconds": 35.9990428500023,
+      "sum_worker_process_wall_seconds": 41.34761677799543,
+      "sum_verification_wall_seconds": 9.14534096600255,
+      "peak_rss_kib": 256172
+    }
+  },
+  "model_token_counts": null,
+  "monetary_cost": null,
+  "human_active_attention_seconds": null,
+  "unobserved_fields_reason": "Not exposed or measured; wall-clock intervals are not proxies for these costs",
+  "interval_comparability_note": "Original independent construction and transfer acquisition include different tasks, harness work, and coordination; do not treat their raw difference as a controlled acquisition saving."
+}

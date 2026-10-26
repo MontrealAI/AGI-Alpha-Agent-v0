@@ -1,0 +1,492 @@
+{
+  "schema": "capability-advantage-calibration/v2",
+  "basis": "EXECUTED_RESEARCH_COHORT_ONLY",
+  "actual_customer_collections_cents": 0,
+  "actual_total_cost_cents": null,
+  "timing_scope": "complete_stage_no_additional_retrieval",
+  "resources_are_exclusive_or_explicitly_included": true,
+  "families": [
+    {
+      "id": "G1",
+      "title": "Batch forward response",
+      "prerequisites": [],
+      "arm_assets": {
+        "A": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "B": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "C": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "D": {
+          "sha256": null,
+          "acceptance_sha256": null
+        }
+      },
+      "tested": false,
+      "resources": {
+        "by_arm": {
+          "A": {
+            "construction": {
+              "seconds": null,
+              "basis": "measured_elapsed_allocation",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "B": {
+            "construction": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "C": {
+            "construction": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "D": {
+            "construction": {
+              "seconds": null,
+              "basis": "measured_elapsed_allocation",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          }
+        }
+      },
+      "trials": [
+        {
+          "task_id": "REPLACE-G1-CASE",
+          "chain_id": "REPLACE-CHAIN",
+          "difficulty": "standard",
+          "before": {
+            "accepted": null,
+            "cpu_seconds": null,
+            "basis": "NOT_RUN"
+          },
+          "methods": {
+            "A": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "B": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "C": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "D": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "G2",
+      "title": "Inverse conductance calibration",
+      "prerequisites": [
+        "G1"
+      ],
+      "arm_assets": {
+        "A": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "B": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "C": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "D": {
+          "sha256": null,
+          "acceptance_sha256": null
+        }
+      },
+      "tested": false,
+      "resources": {
+        "by_arm": {
+          "A": {
+            "construction": {
+              "seconds": null,
+              "basis": "measured_elapsed_allocation",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "B": {
+            "construction": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "C": {
+            "construction": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "D": {
+            "construction": {
+              "seconds": null,
+              "basis": "measured_elapsed_allocation",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          }
+        }
+      },
+      "trials": [
+        {
+          "task_id": "REPLACE-G2-CASE",
+          "chain_id": "REPLACE-CHAIN",
+          "difficulty": "standard",
+          "before": {
+            "accepted": null,
+            "cpu_seconds": null,
+            "basis": "NOT_RUN"
+          },
+          "methods": {
+            "A": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "B": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "C": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "D": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "G3",
+      "title": "Constrained robust design",
+      "prerequisites": [
+        "G2"
+      ],
+      "arm_assets": {
+        "A": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "B": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "C": {
+          "sha256": null,
+          "acceptance_sha256": null
+        },
+        "D": {
+          "sha256": null,
+          "acceptance_sha256": null
+        }
+      },
+      "tested": false,
+      "resources": {
+        "by_arm": {
+          "A": {
+            "construction": {
+              "seconds": null,
+              "basis": "measured_elapsed_allocation",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "B": {
+            "construction": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "C": {
+            "construction": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          },
+          "D": {
+            "construction": {
+              "seconds": null,
+              "basis": "measured_elapsed_allocation",
+              "reference": "Allocate one complete construction interval once"
+            },
+            "failedCandidates": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "validation": {
+              "seconds": 0,
+              "basis": "included_in_construction",
+              "reference": "Included in construction interval"
+            },
+            "integration": {
+              "seconds": null,
+              "basis": "scenario_resource_proxy",
+              "reference": "Exclusive incremental integration proxy"
+            }
+          }
+        }
+      },
+      "trials": [
+        {
+          "task_id": "REPLACE-G3-CASE",
+          "chain_id": "REPLACE-CHAIN",
+          "difficulty": "standard",
+          "before": {
+            "accepted": null,
+            "cpu_seconds": null,
+            "basis": "NOT_RUN"
+          },
+          "methods": {
+            "A": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "B": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "C": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            },
+            "D": {
+              "accepted": null,
+              "cpu_seconds": null,
+              "timing_scope": "complete_stage"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "retrieval": {
+    "registry_build": {
+      "seconds": null,
+      "basis": "scenario_resource_proxy",
+      "reference": "Supply declared construction proxy; actual unmetered"
+    },
+    "graph_build": {
+      "seconds": null,
+      "basis": "scenario_resource_proxy",
+      "reference": "Includes graph-controls authoring proxy; actual unmetered"
+    }
+  },
+  "resource_allocation": [
+    {
+      "arm": "A",
+      "category": "construction",
+      "total_seconds": 225.039,
+      "basis": "measured_elapsed_allocation",
+      "allocation_basis": "One complete three-family construction interval allocated equally; includes recorded verification"
+    },
+    {
+      "arm": "D",
+      "category": "construction",
+      "total_seconds": 303.68,
+      "basis": "measured_elapsed_allocation",
+      "allocation_basis": "One complete three-family construction interval allocated equally; includes recorded verification"
+    }
+  ]
+}
