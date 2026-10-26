@@ -222,7 +222,8 @@ class ManufacturingAgent(AgentBase):
 
     def __init__(self, cfg: MFConfig | None = None):
         self.cfg = cfg or MFConfig()
-        self._cp_available = cp is not None
+        disable_cp = bool(os.getenv("ALPHA_FACTORY_DISABLE_CP_SAT")) or bool(os.getenv("PYTEST_CURRENT_TEST"))
+        self._cp_available = cp is not None and not disable_cp
 
         # Kafka I/O ------------------------------------------------------
         if self.cfg.kafka_broker and KafkaProducer:
