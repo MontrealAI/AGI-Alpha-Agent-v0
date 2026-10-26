@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the publication from completed evidence; never execute an experiment."""
+
 from __future__ import annotations
 
 import argparse
@@ -26,6 +27,7 @@ BUILD = PAPER / "build"
 os.environ.setdefault("MPLCONFIGDIR", str(BUILD / "matplotlib-cache"))
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
@@ -38,11 +40,20 @@ TEAL = "#167c80"
 GRAY = "#77717e"
 RED = "#b45b62"
 COLORS = {"A": GRAY, "B": "#9b78b8", "C": PURPLE, "D": TEAL}
-plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9,
-                     "axes.spines.top": False, "axes.spines.right": False,
-                     "axes.labelcolor": "#33293c", "text.color": "#33293c",
-                     "axes.edgecolor": "#bdb5c4", "axes.titleweight": "bold",
-                     "pdf.fonttype": 42, "svg.fonttype": "none"})
+plt.rcParams.update(
+    {
+        "font.family": "DejaVu Sans",
+        "font.size": 9,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "axes.labelcolor": "#33293c",
+        "text.color": "#33293c",
+        "axes.edgecolor": "#bdb5c4",
+        "axes.titleweight": "bold",
+        "pdf.fonttype": 42,
+        "svg.fonttype": "none",
+    }
+)
 INPUTS: dict[str, dict] = {}
 
 
@@ -59,9 +70,18 @@ def read(rel: str):
 
 
 def escape(value) -> str:
-    replacements = {"\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$",
-                    "#": r"\#", "_": r"\_", "{": r"\{", "}": r"\}",
-                    "~": r"\textasciitilde{}", "^": r"\textasciicircum{}"}
+    replacements = {
+        "\\": r"\textbackslash{}",
+        "&": r"\&",
+        "%": r"\%",
+        "$": r"\$",
+        "#": r"\#",
+        "_": r"\_",
+        "{": r"\{",
+        "}": r"\}",
+        "~": r"\textasciitilde{}",
+        "^": r"\textasciicircum{}",
+    }
     return "".join(replacements.get(c, c) for c in str(value))
 
 
@@ -92,113 +112,159 @@ def savefig(fig, stem: str):
 def placeholder(stem: str, title: str):
     fig, ax = plt.subplots(figsize=(6.8, 2.0))
     ax.set_axis_off()
-    ax.text(.5, .60, title, color=PURPLE, weight="bold", ha="center", fontsize=13)
-    ax.text(.5, .32, "AWAITING FROZEN COMPLETED EVIDENCE\nNo empirical values are substituted.", ha="center", color=GRAY)
+    ax.text(0.5, 0.60, title, color=PURPLE, weight="bold", ha="center", fontsize=13)
+    ax.text(
+        0.5, 0.32, "AWAITING FROZEN COMPLETED EVIDENCE\nNo empirical values are substituted.", ha="center", color=GRAY
+    )
     savefig(fig, stem)
 
 
 def cost_tables(costs: dict) -> dict:
-    labels = {"priorDiscovery": "Prior-source discovery", "discovery": "New discovery",
-              "rejectedCandidates": "Rejected candidates / criticism", "construction": "Executable construction",
-              "validation": "Combined-workflow validation", "identityVerification": "Identity policy verification",
-              "indexing": "Index construction", "proofGenerationAndChecking": "Proof generation / checks",
-              "retrieval": "Evidence retrieval", "composition": "Composition / integration",
-              "revalidation": "Revalidation", "storage": "Storage setup",
-              "researcherContribution": "Researcher contribution", "authoringInferenceAndTools": "Authoring inference / tools"}
+    labels = {
+        "priorDiscovery": "Prior-source discovery",
+        "discovery": "New discovery",
+        "rejectedCandidates": "Rejected candidates / criticism",
+        "construction": "Executable construction",
+        "validation": "Combined-workflow validation",
+        "identityVerification": "Identity policy verification",
+        "indexing": "Index construction",
+        "proofGenerationAndChecking": "Proof generation / checks",
+        "retrieval": "Evidence retrieval",
+        "composition": "Composition / integration",
+        "revalidation": "Revalidation",
+        "storage": "Storage setup",
+        "researcherContribution": "Researcher contribution",
+        "authoringInferenceAndTools": "Authoring inference / tools",
+    }
     totals = {a: sum(row["referenceCents"][a] for row in costs["rows"]) for a in "BC"}
     weekly = {a: sum(row["referenceCents"][a] for row in costs["weeklyRows"]) for a in "BC"}
     rows = []
     for row in costs["rows"]:
-        rows.append(f"{escape(labels.get(row['id'], row['id']))} & {num(row['referenceCents']['B']/100,2)} & "
-                    f"{num(row['referenceCents']['C']/100,2)} & {escape(row['canonicalCategory'])} " + r"\\")
-    rows.append(r"\midrule" + "\n" + rf"\textbf{{One-off total}} & {num(totals['B']/100,2)} & {num(totals['C']/100,2)} & Counted once \\")
+        rows.append(
+            f"{escape(labels.get(row['id'], row['id']))} & {num(row['referenceCents']['B'] / 100, 2)} & "
+            f"{num(row['referenceCents']['C'] / 100, 2)} & {escape(row['canonicalCategory'])} " + r"\\"
+        )
+    rows.append(
+        r"\midrule"
+        + "\n"
+        + rf"\textbf{{One-off total}} & {num(totals['B'] / 100, 2)} & {num(totals['C'] / 100, 2)} & Counted once \\"
+    )
     for row in costs["weeklyRows"]:
-        rows.append(f"Weekly {escape(row['id'])} & {num(row['referenceCents']['B']/100,2)} & "
-                    f"{num(row['referenceCents']['C']/100,2)} & Recurring upkeep " + r"\\")
-    rows.append(rf"\textbf{{Weekly total}} & {num(weekly['B']/100,2)} & {num(weekly['C']/100,2)} & Separate from construction \\")
+        rows.append(
+            f"Weekly {escape(row['id'])} & {num(row['referenceCents']['B'] / 100, 2)} & "
+            f"{num(row['referenceCents']['C'] / 100, 2)} & Recurring upkeep " + r"\\"
+        )
+    rows.append(
+        rf"\textbf{{Weekly total}} & {num(weekly['B'] / 100, 2)} & {num(weekly['C'] / 100, 2)} & Separate from construction \\"
+    )
     rows.append(r"Actual complete monetary cost & \multicolumn{2}{c}{\textit{unknown}} & No zero filling \\")
     write("cost-rows.tex", "\n".join(rows) + "\n" + r"\bottomrule")
-    return {"RegistryOneoff": usd(totals["B"]), "GraphOneoff": usd(totals["C"]),
-            "RegistryWeekly": usd(weekly["B"]), "GraphWeekly": usd(weekly["C"])}
+    return {
+        "RegistryOneoff": usd(totals["B"]),
+        "GraphOneoff": usd(totals["C"]),
+        "RegistryWeekly": usd(weekly["B"]),
+        "GraphWeekly": usd(weekly["C"]),
+    }
 
 
 def heritage():
     primary = read("heritage/earlier-results/primary-summary.json")
     diag = read("heritage/earlier-results/policy-diagnostic-findings.json")
     prior_prod = read("heritage/second-investment/results/production-summary.json")
-    findings = read("heritage/second-investment/analysis/market-findings.json")
+    _findings = read("heritage/second-investment/analysis/market-findings.json")
     scenarios = primary["scenarios"]
     n = len(scenarios) * len(primary["seeds"])
     assert all(x["arms"]["B"]["investmentRate"] == 0 for x in scenarios)
     assert all(x["B_C_exact_ties"] for x in scenarios)
-    diagnostic = next(x for x in diag["positiveMeanProfitConfigurations"]
-                      if x["scenario"] == "policy-p2000-i0-a0.5-m10-logit-adoption-seed")
+    diagnostic = next(
+        x
+        for x in diag["positiveMeanProfitConfigurations"]
+        if x["scenario"] == "policy-p2000-i0-a0.5-m10-logit-adoption-seed"
+    )
     prior_means = ", ".join(a + " " + num(prior_prod["arms"][a]["wall_mean_seconds"], 6) + " s" for a in "ABC")
-    write("heritage.tex", rf"""
+    write(
+        "heritage.tex",
+        rf"""
 The original strategic-market primary record contains {len(scenarios)} scenarios and {n:,} paired worlds. No B investment occurred, every B--C comparison tied exactly, and all scenario mean B profits were negative. These are the saved original primary outcomes, not a rerun or a claim about every possible market \citep{{priorstrategic}}.
 
-A later explicitly diagnostic, seed-funded adoption condition had target price USD 20, zero integration friction, arrival probability 0.5 and logit choice over 12 reused seeds. Its mean prospective B profit was {usd(diagnostic['B_mean_profit_USD']*100)}, with B--A {usd(diagnostic['B_minus_A_profit_mean_USD']*100)}. B and conventional C tied. Subtracting the separate USD 361.52 opening research allocation leaves {usd((diagnostic['B_mean_profit_USD']-361.52)*100)} full-history profit. The favorable prospective result therefore did not recover historical research or establish operating-funded improvement. Diagnostic reuse of seeds is not independent confirmation \citep{{priorstrategic}}.
+A later explicitly diagnostic, seed-funded adoption condition had target price USD 20, zero integration friction, arrival probability 0.5 and logit choice over 12 reused seeds. Its mean prospective B profit was {usd(diagnostic["B_mean_profit_USD"] * 100)}, with B--A {usd(diagnostic["B_minus_A_profit_mean_USD"] * 100)}. B and conventional C tied. Subtracting the separate USD 361.52 opening research allocation leaves {usd((diagnostic["B_mean_profit_USD"] - 361.52) * 100)} full-history profit. The favorable prospective result therefore did not recover historical research or establish operating-funded improvement. Diagnostic reuse of seeds is not independent confirmation \citep{{priorstrategic}}.
 
 The later full-lock second-investment edition evaluated six fresh questions in three arms. Each accepted four consistent outcomes and two substantiated root conflicts; all ordinary pip dry-runs exited zero. Mean complete wall times were {prior_means}. The retained candidate was slower on all six questions. Its completed market experiment retained 1,920 paired worlds, 5,760 enterprise histories and 80 groups; each treatment had 114 operating-funded but unqualified research attempts and zero qualifying second investments. Of 1,872 priced paired project differences, 1,870 were negative and two positive; all 78 priced group means were negative. Forty-eight unknown-cost worlds remained unidentified. B and C tied at cent precision. The two positive path-dependent pause/feedback realizations are retained, with no direct asset saving or financial admission \citep{{priorsecond}}.
 
 These summaries are preserved under \artifact{{heritage/earlier-results/}} and \artifact{{heritage/second-investment/}}. The copies include hashes and original source identities. The new graph result is an additional test; it does not revise any of these findings.
-""")
+""",
+    )
 
 
 def review_and_reproduction(draft: bool):
     graph = read("review/graph-probes-final-02.json")
     assert graph["passed"] == 21 and graph["failed"] == 0
-    paths = ["review/independent-graph-review.json", "review/independent-campaign-review.json",
-             "heritage/foundations/implementation-receipt-r7.json"]
+    paths = [
+        "review/independent-graph-review.json",
+        "review/independent-campaign-review.json",
+        "heritage/foundations/implementation-receipt-r7.json",
+    ]
     for rel in paths:
         if (ROOT / rel).exists():
             read(rel)
-    for rel in ['tools/reproduce.py','tools/verify_frozen.py']:
+    for rel in ["tools/reproduce.py", "tools/verify_frozen.py"]:
         if (ROOT / rel).exists():
-            data=(ROOT/rel).read_bytes();INPUTS[rel]={'path':rel,'sha256':sha(data),'bytes':len(data)}
-    write("review.tex", rf"""
-The final independent graph probe receipt reports {graph['passed']} passing cases and {graph['failed']} failures. It includes the valid baseline, expiry, changed authority, stale root/epoch, missing or altered history, committed revocation, duplicate-inventory concealment, dependency removal, lifecycle inconsistency, wrong-operation and deeper-name attestation, displayed descriptor mutation, immutable prepared/direct selector frames, distinct graph and authority state digests, and both callback-context attacks. B and C are required to agree on accepted selection and refusal behavior. The receipt is \artifact{{review/graph-probes-final-02.json}}; earlier unsuccessful receipts remain alongside it.
+            data = (ROOT / rel).read_bytes()
+            INPUTS[rel] = {"path": rel, "sha256": sha(data), "bytes": len(data)}
+    write(
+        "review.tex",
+        rf"""
+The final independent graph probe receipt reports {graph["passed"]} passing cases and {graph["failed"]} failures. It includes the valid baseline, expiry, changed authority, stale root/epoch, missing or altered history, committed revocation, duplicate-inventory concealment, dependency removal, lifecycle inconsistency, wrong-operation and deeper-name attestation, displayed descriptor mutation, immutable prepared/direct selector frames, distinct graph and authority state digests, and both callback-context attacks. B and C are required to agree on accepted selection and refusal behavior. The receipt is \artifact{{review/graph-probes-final-02.json}}; earlier unsuccessful receipts remain alongside it.
 
 The full disposition is \artifact{{review/independent-graph-review.json}}, with separate campaign measurement review in \artifact{{review/independent-campaign-review.json}}. The implementation suite receipt is \artifact{{heritage/foundations/implementation-receipt-r7.json}}. Counts describe software controls, not additional independent missions, customers or markets.
-""")
-    reconciliation_path = 'review/production-reconciliation-02.json'
+""",
+    )
+    reconciliation_path = "review/production-reconciliation-02.json"
     if (ROOT / reconciliation_path).exists():
         reconciliation = read(reconciliation_path)
-        assert reconciliation['status'] == 'PASS' and reconciliation['failed_checks'] == 0
-        with (GEN / 'review.tex').open('a') as out:
+        assert reconciliation["status"] == "PASS" and reconciliation["failed_checks"] == 0
+        with (GEN / "review.tex").open("a") as out:
             out.write(rf"""
 
-A post-outcome reconciliation independently rechecked all {reconciliation['packets_reconciled']} saved production packets against exact wheel metadata and pip evidence, without running another production/pip campaign. It verified {reconciliation['payload_files_verified']:,} payload files, {reconciliation['archive_entries_verified']:,} archive entries and {reconciliation['source_files_verified']} frozen source/input identities; {reconciliation['checks']:,} consistency assertions passed. Timing fields from the new verification pass were excluded from semantic certificate equality and do not replace primary measurements. The receipt is \artifact{{{reconciliation_path}}}. These assertions are an audit of the same 72 packets, not additional fresh observations.
+A post-outcome reconciliation independently rechecked all {reconciliation["packets_reconciled"]} saved production packets against exact wheel metadata and pip evidence, without running another production/pip campaign. It verified {reconciliation["payload_files_verified"]:,} payload files, {reconciliation["archive_entries_verified"]:,} archive entries and {reconciliation["source_files_verified"]} frozen source/input identities; {reconciliation["checks"]:,} consistency assertions passed. Timing fields from the new verification pass were excluded from semantic certificate equality and do not replace primary measurements. The receipt is \artifact{{{reconciliation_path}}}. These assertions are an audit of the same 72 packets, not additional fresh observations.
 """)
-    market_review_path='review/market-reconciliation-01.json'
-    if (ROOT/market_review_path).exists():
-        market_review=read(market_review_path)
-        assert market_review['status']=='PASS' and market_review['failed_checks']==0
-        with (GEN/'review.tex').open('a') as out:
+    market_review_path = "review/market-reconciliation-01.json"
+    if (ROOT / market_review_path).exists():
+        market_review = read(market_review_path)
+        assert market_review["status"] == "PASS" and market_review["failed_checks"] == 0
+        with (GEN / "review.tex").open("a") as out:
             out.write(rf"""
 
-The separate saved-market reconciliation passed {market_review['checks']:,} assertions across {market_review['paired_worlds']:,} paired worlds and {market_review['enterprise_histories']:,} histories, reconciling {market_review['cash_events_reconciled']:,} cash events and {market_review['balance_rows_reconciled']:,} balance rows. It confirmed 24 operating-funded attempts and 417 modeled second-asset uses per treatment, with zero financial admissions or qualifying investments. These are checks and modeled uses of existing records, not additional production or customer observations. The complete receipt is \artifact{{{market_review_path}}}.
+The separate saved-market reconciliation passed {market_review["checks"]:,} assertions across {market_review["paired_worlds"]:,} paired worlds and {market_review["enterprise_histories"]:,} histories, reconciling {market_review["cash_events_reconciled"]:,} cash events and {market_review["balance_rows_reconciled"]:,} balance rows. It confirmed 24 operating-funded attempts and 417 modeled second-asset uses per treatment, with zero financial admissions or qualifying investments. These are checks and modeled uses of existing records, not additional production or customer observations. The complete receipt is \artifact{{{market_review_path}}}.
 """)
     rows = []
-    for label, rel in [("Production freeze", "protocol/production-freeze.json"),
-                       ("Market freeze", "protocol/market-freeze.json"),
-                       ("Production summary", "evidence/production-summary.json"),
-                       ("Market summary", "evidence/market-primary/summary.json"),
-                       ("Native closure", "native/SOURCE.json"),
-                       ("Inherited simulator", "market/inherited/PROVENANCE.json")]:
+    for label, rel in [
+        ("Production freeze", "protocol/production-freeze.json"),
+        ("Market freeze", "protocol/market-freeze.json"),
+        ("Production summary", "evidence/production-summary.json"),
+        ("Market summary", "evidence/market-primary/summary.json"),
+        ("Native closure", "native/SOURCE.json"),
+        ("Inherited simulator", "market/inherited/PROVENANCE.json"),
+    ]:
         if (ROOT / rel).exists():
             read(rel)
             rows.append(rf"\textbf{{{label}:}} \artifact{{{rel}}}. SHA-256: \artifact{{{INPUTS[rel]['sha256']}}}.\par")
     write("reproduction.tex", "\n\n".join(rows))
-    resource_path = 'costs/research-resource-ledger.json'
-    if (ROOT/resource_path).exists():
-        resource_ledger=read(resource_path)
-        subtotal=resource_ledger['partial_observed_compute_subtotal']['inclusive_cpu_seconds_sum']
-        write('resource-scope.tex',rf"""
+    resource_path = "costs/research-resource-ledger.json"
+    if (ROOT / resource_path).exists():
+        resource_ledger = read(resource_path)
+        subtotal = resource_ledger["partial_observed_compute_subtotal"]["inclusive_cpu_seconds_sum"]
+        write(
+            "resource-scope.tex",
+            rf"""
 The existing-schema resource index, \artifact{{{resource_path}}}, records a partial observed subtotal of {subtotal:.6f} CPU seconds for production, separate unchanged-request confirmations and the frozen market campaign. These nonoverlapping selected intervals exclude construction, rejected work, criticism, source acquisition, authoring, residual attention and additional checks. This is not total research cost and has no inferred monetary value. Measured rows retain subprocesses, proof/attestation checks, artifact bytes and failures where available. Deterministic production and simulation make zero runtime model calls; research authoring model/tool use and human attention are not fully metered. Publication/packaging costs belong to a separate closing supplement. Missing counts, invoices and future upkeep remain unknown.
-""")
+""",
+        )
     else:
-        write('resource-scope.tex',r'Measured execution and unknown authoring/attention costs are distinct. The complete actual monetary cost remains unknown; the final resource index is required for a complete publication receipt.')
+        write(
+            "resource-scope.tex",
+            r"Measured execution and unknown authoring/attention costs are distinct. The complete actual monetary cost remains unknown; the final resource index is required for a complete publication receipt.",
+        )
 
 
 def allocated_mean(arm: dict, field: str) -> float:
@@ -223,65 +289,120 @@ def production_results(production: dict):
     ids = list(rows["A"])
     assert all(set(rows[a]) == set(ids) for a in "ABCD")
     accepted = sum(arms[a]["accepted_count"] for a in "ABCD")
-    equivalence = all(len({rows[a][i]["decision"] for a in "ABCD"}) == 1 and all(rows[a][i]["accepted"] for a in "ABCD") for i in ids)
+    equivalence = all(
+        len({rows[a][i]["decision"] for a in "ABCD"}) == 1 and all(rows[a][i]["accepted"] for a in "ABCD") for i in ids
+    )
     assert equivalence == production["quality_equivalence"]
     primary_ids = [i for i in ids if rows["A"][i]["cohort"] == "primary"]
     primary_decisions = Counter(rows["A"][i]["decision"] for i in primary_ids)
     stress_decisions = Counter(rows["A"][i]["decision"] for i in ids if i not in primary_ids)
-    diff = {comp: {k: means[comp[0]][k] - means[comp[1]][k] for k in means['A']} for comp in ["CB", "CA", "CD"]}
-    c_b_slower = sum(rows['C'][i]['elapsed_seconds'] > rows['B'][i]['elapsed_seconds'] for i in primary_ids)
-    selection_means={a:{k:statistics.mean(rows[a][i][k] for i in primary_ids) for k in ['selection_elapsed_seconds','selection_cpu_seconds']} for a in 'BC'}
-    selected_sequence_work={a:rows[a][primary_ids[0]]['selection_counters'] for a in 'BC'}
-    tables = [r"\begin{tabularx}{\linewidth}{Yrrrrr}", r"\toprule Arm & Accepted & Primary wall & Primary CPU & Stress wall & Stress CPU \\", r"\midrule"]
+    diff = {comp: {k: means[comp[0]][k] - means[comp[1]][k] for k in means["A"]} for comp in ["CB", "CA", "CD"]}
+    c_b_slower = sum(rows["C"][i]["elapsed_seconds"] > rows["B"][i]["elapsed_seconds"] for i in primary_ids)
+    selection_means = {
+        a: {
+            k: statistics.mean(rows[a][i][k] for i in primary_ids)
+            for k in ["selection_elapsed_seconds", "selection_cpu_seconds"]
+        }
+        for a in "BC"
+    }
+    selected_sequence_work = {a: rows[a][primary_ids[0]]["selection_counters"] for a in "BC"}
+    tables = [
+        r"\begin{tabularx}{\linewidth}{Yrrrrr}",
+        r"\toprule Arm & Accepted & Primary wall & Primary CPU & Stress wall & Stress CPU \\",
+        r"\midrule",
+    ]
     labels = {"A": "A native", "B": "B registry", "C": "C graph", "D": "D direct"}
     for a in "ABCD":
         stresses = [r for r in arms[a]["per_mission"] if r["cohort"] == "stress"]
-        tables.append(f"{labels[a]} & {arms[a]['accepted_count']}/18 & {num(means[a]['elapsed_seconds'])} & {num(means[a]['cpu_seconds'])} & "
-                      f"{num(statistics.mean(r['elapsed_seconds'] for r in stresses))} & {num(statistics.mean(r['cpu_seconds'] for r in stresses))} " + r"\\")
+        tables.append(
+            f"{labels[a]} & {arms[a]['accepted_count']}/18 & {num(means[a]['elapsed_seconds'])} & {num(means[a]['cpu_seconds'])} & "
+            f"{num(statistics.mean(r['elapsed_seconds'] for r in stresses))} & {num(statistics.mean(r['cpu_seconds'] for r in stresses))} "
+            + r"\\"
+        )
     tables.extend([r"\bottomrule", r"\end{tabularx}"])
     write("production-table.tex", "\n".join(tables))
     mission_rows = []
     for i in ids:
         same = len({rows[a][i]["decision"] for a in "ABCD"}) == 1
-        decision = rows['A'][i]['decision'] if same else "DIFFERENT"
-        mission_rows.append(rf"\artifact{{{i}}} & {rows['A'][i]['cohort']} & {escape(decision)} & "
-                            f"{num(rows['C'][i]['elapsed_seconds']-rows['B'][i]['elapsed_seconds'],4,True)} & "
-                            f"{num(rows['C'][i]['cpu_seconds']-rows['B'][i]['cpu_seconds'],4,True)} " + r"\\")
+        decision = rows["A"][i]["decision"] if same else "DIFFERENT"
+        mission_rows.append(
+            rf"\artifact{{{i}}} & {rows['A'][i]['cohort']} & {escape(decision)} & "
+            f"{num(rows['C'][i]['elapsed_seconds'] - rows['B'][i]['elapsed_seconds'], 4, True)} & "
+            f"{num(rows['C'][i]['cpu_seconds'] - rows['B'][i]['cpu_seconds'], 4, True)} " + r"\\"
+        )
     write("mission-rows.tex", "\n".join(mission_rows) + "\n" + r"\bottomrule")
     decision_text = ", ".join(f"{v} {escape(k.lower())}" for k, v in sorted(primary_decisions.items()))
     stress_text = ", ".join(f"{v} {escape(k.lower())}" for k, v in sorted(stress_decisions.items()))
-    write("results-narrative.tex", rf"""
-The frozen production campaign completed {production['raw_evaluations']} actual assessments of 18 substantive questions. {accepted}/72 packets were accepted. Exact matched decisions were {'equivalent across all four arms' if equivalence else 'not equivalent across all four arms'}. The primary cohort contained {decision_text} outcomes per arm; the three designed stresses contained {stress_text}. This denominator includes every registered question. Four unchanged-request checks were recorded as cache confirmations, with zero new completed jobs.
+    write(
+        "results-narrative.tex",
+        rf"""
+The frozen production campaign completed {production["raw_evaluations"]} actual assessments of 18 substantive questions. {accepted}/72 packets were accepted. Exact matched decisions were {"equivalent across all four arms" if equivalence else "not equivalent across all four arms"}. The primary cohort contained {decision_text} outcomes per arm; the three designed stresses contained {stress_text}. This denominator includes every registered question. Four unchanged-request checks were recorded as cache confirmations, with zero new completed jobs.
 
-Primary inclusive mean complete wall times were A {num(means['A']['elapsed_seconds'],4)} s, B {num(means['B']['elapsed_seconds'],4)} s, C {num(means['C']['elapsed_seconds'],4)} s and D {num(means['D']['elapsed_seconds'],4)} s. C--B was {num(diff['CB']['elapsed_seconds'],4,True)} s in elapsed time and {num(diff['CB']['cpu_seconds'],4,True)} s in CPU; C--A was {num(diff['CA']['elapsed_seconds'],4,True)} s and {num(diff['CA']['cpu_seconds'],4,True)} s. C had higher complete elapsed time than B on {c_b_slower}/15 primary rows. These differences include experimental source-custody checks in every arm and therefore are not deployment-latency estimates. Process bootstrap wall time and final JSON serialization after sampling are explicitly outside the measurement boundary; authoring, human attention and future upkeep are not inferred from these times.
+Primary inclusive mean complete wall times were A {num(means["A"]["elapsed_seconds"], 4)} s, B {num(means["B"]["elapsed_seconds"], 4)} s, C {num(means["C"]["elapsed_seconds"], 4)} s and D {num(means["D"]["elapsed_seconds"], 4)} s. C--B was {num(diff["CB"]["elapsed_seconds"], 4, True)} s in elapsed time and {num(diff["CB"]["cpu_seconds"], 4, True)} s in CPU; C--A was {num(diff["CA"]["elapsed_seconds"], 4, True)} s and {num(diff["CA"]["cpu_seconds"], 4, True)} s. C had higher complete elapsed time than B on {c_b_slower}/15 primary rows. These differences include experimental source-custody checks in every arm and therefore are not deployment-latency estimates. Process bootstrap wall time and final JSON serialization after sampling are explicitly outside the measurement boundary; authoring, human attention and future upkeep are not inferred from these times.
 
-The source-bound graph and registry selected the same complete skill sequence. Any difference in relationship traversal is evaluated against the registry's legitimate cached recipe. Refusal controls and inclusion checks are reported separately; they do not add accepted fresh work. The direct alternative's primary C--D differences were {num(diff['CD']['elapsed_seconds'],4,True)} s wall and {num(diff['CD']['cpu_seconds'],4,True)} s CPU. Native history is an integration constraint rather than a demonstrated customer premium.
+The source-bound graph and registry selected the same complete skill sequence. Any difference in relationship traversal is evaluated against the registry's legitimate cached recipe. Refusal controls and inclusion checks are reported separately; they do not add accepted fresh work. The direct alternative's primary C--D differences were {num(diff["CD"]["elapsed_seconds"], 4, True)} s wall and {num(diff["CD"]["cpu_seconds"], 4, True)} s CPU. Native history is an integration constraint rather than a demonstrated customer premium.
 
-Selection-only mean elapsed time was {num(selection_means['B']['selection_elapsed_seconds'],6)} s for B and {num(selection_means['C']['selection_elapsed_seconds'],6)} s for C; mean selection CPU was {num(selection_means['B']['selection_cpu_seconds'],6)} s and {num(selection_means['C']['selection_cpu_seconds'],6)} s. Thus the modest complete C--B timing difference is not evidence that adjacency traversal reduced selection cost. On the first primary selection both examined {selected_sequence_work['B']['relationship_rows_examined']} relationship rows; B read {selected_sequence_work['B']['recipe_members_read']} cached recipe members and C made {selected_sequence_work['C']['relationship_traversals']} traversals. The graph did not remove a demonstrated repeated-reconstruction burden relative to the strong recipe in this small catalogue.
-""")
+Selection-only mean elapsed time was {num(selection_means["B"]["selection_elapsed_seconds"], 6)} s for B and {num(selection_means["C"]["selection_elapsed_seconds"], 6)} s for C; mean selection CPU was {num(selection_means["B"]["selection_cpu_seconds"], 6)} s and {num(selection_means["C"]["selection_cpu_seconds"], 6)} s. Thus the modest complete C--B timing difference is not evidence that adjacency traversal reduced selection cost. On the first primary selection both examined {selected_sequence_work["B"]["relationship_rows_examined"]} relationship rows; B read {selected_sequence_work["B"]["recipe_members_read"]} cached recipe members and C made {selected_sequence_work["C"]["relationship_traversals"]} traversals. The graph did not remove a demonstrated repeated-reconstruction burden relative to the strong recipe in this small catalogue.
+""",
+    )
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.7), gridspec_kw={"width_ratios": [1, 1.2]})
     xs = np.arange(4)
-    axes[0].bar(xs - .17, [means[a]['elapsed_seconds'] for a in "ABCD"], width=.34, color=[COLORS[a] for a in "ABCD"], label="Elapsed")
-    axes[0].bar(xs + .17, [means[a]['cpu_seconds'] for a in "ABCD"], width=.34, color=[COLORS[a] for a in "ABCD"], alpha=.45, label="CPU")
-    axes[0].set(xticks=xs, xticklabels=["A\nnative", "B\nregistry", "C\ngraph", "D\ndirect"], ylabel="Seconds per primary question", title="Inclusive means")
+    axes[0].bar(
+        xs - 0.17,
+        [means[a]["elapsed_seconds"] for a in "ABCD"],
+        width=0.34,
+        color=[COLORS[a] for a in "ABCD"],
+        label="Elapsed",
+    )
+    axes[0].bar(
+        xs + 0.17,
+        [means[a]["cpu_seconds"] for a in "ABCD"],
+        width=0.34,
+        color=[COLORS[a] for a in "ABCD"],
+        alpha=0.45,
+        label="CPU",
+    )
+    axes[0].set(
+        xticks=xs,
+        xticklabels=["A\nnative", "B\nregistry", "C\ngraph", "D\ndirect"],
+        ylabel="Seconds per primary question",
+        title="Inclusive means",
+    )
     axes[0].legend(frameon=False, fontsize=8, loc="upper right")
-    vals_wall = [rows['C'][i]['elapsed_seconds'] - rows['B'][i]['elapsed_seconds'] for i in primary_ids]
-    vals_cpu = [rows['C'][i]['cpu_seconds'] - rows['B'][i]['cpu_seconds'] for i in primary_ids]
+    vals_wall = [rows["C"][i]["elapsed_seconds"] - rows["B"][i]["elapsed_seconds"] for i in primary_ids]
+    vals_cpu = [rows["C"][i]["cpu_seconds"] - rows["B"][i]["cpu_seconds"] for i in primary_ids]
     ys = np.arange(1, 16)
-    axes[1].axvline(0, color=GRAY, linewidth=.8)
-    axes[1].scatter(vals_wall, ys-.1, color=PURPLE, s=20, label="Elapsed")
-    axes[1].scatter(vals_cpu, ys+.1, color=TEAL, marker="x", s=25, label="CPU")
-    axes[1].set(yticks=[1,5,10,15], ylim=(16,0), ylabel="Frozen primary question", xlabel="C minus B, seconds", title="Paired differences")
+    axes[1].axvline(0, color=GRAY, linewidth=0.8)
+    axes[1].scatter(vals_wall, ys - 0.1, color=PURPLE, s=20, label="Elapsed")
+    axes[1].scatter(vals_cpu, ys + 0.1, color=TEAL, marker="x", s=25, label="CPU")
+    axes[1].set(
+        yticks=[1, 5, 10, 15],
+        ylim=(16, 0),
+        ylabel="Frozen primary question",
+        xlabel="C minus B, seconds",
+        title="Paired differences",
+    )
     axes[1].legend(frameon=False, fontsize=8, loc="upper right")
-    axes[1].text(.5,-.24,"Positive values mean higher graph cost",transform=axes[1].transAxes,ha="center",fontsize=8,color=GRAY)
+    axes[1].text(
+        0.5,
+        -0.24,
+        "Positive values mean higher graph cost",
+        transform=axes[1].transAxes,
+        ha="center",
+        fontsize=8,
+        color=GRAY,
+    )
     fig.tight_layout(w_pad=2)
     savefig(fig, "production-comparison")
-    return {"AbstractProductionResult": f"All {accepted} of 72 packets were accepted with " + ("equivalent" if equivalence else "non-equivalent") +
-            f" decisions. Mean primary wall times were graph {num(means['C']['elapsed_seconds'],4)} s, registry {num(means['B']['elapsed_seconds'],4)} s, "
-            f"native incumbent {num(means['A']['elapsed_seconds'],4)} s and direct conventional {num(means['D']['elapsed_seconds'],4)} s; "
-            f"graph selection itself was {'slower' if selection_means['C']['selection_elapsed_seconds'] > selection_means['B']['selection_elapsed_seconds'] else 'faster'} than registry selection.",
-            "FrenchResult": f"La campagne a accepté {accepted} dossiers sur 72; les coûts et les décisions sont comparés sans attribuer une valeur automatique aux preuves.",
-            "ProductionEquivalence": str(equivalence)}, means
+    return {
+        "AbstractProductionResult": f"All {accepted} of 72 packets were accepted with "
+        + ("equivalent" if equivalence else "non-equivalent")
+        + f" decisions. Mean primary wall times were graph {num(means['C']['elapsed_seconds'], 4)} s, registry {num(means['B']['elapsed_seconds'], 4)} s, "
+        f"native incumbent {num(means['A']['elapsed_seconds'], 4)} s and direct conventional {num(means['D']['elapsed_seconds'], 4)} s; "
+        f"graph selection itself was {'slower' if selection_means['C']['selection_elapsed_seconds'] > selection_means['B']['selection_elapsed_seconds'] else 'faster'} than registry selection.",
+        "FrenchResult": f"La campagne a accepté {accepted} dossiers sur 72; les coûts et les décisions sont comparés sans attribuer une valeur automatique aux preuves.",
+        "ProductionEquivalence": str(equivalence),
+    }, means
 
 
 def market_results(summary: dict, worlds: list[dict], reps: list[dict], effects: dict):
@@ -290,187 +411,393 @@ def market_results(summary: dict, worlds: list[dict], reps: list[dict], effects:
     cells = summary["cells"]
     qualified = {a: sum(c["arms"][a]["conditionalNativeFinancialGatePasses"] for c in cells) for a in "BC"}
     funded = {a: sum(c["arms"][a]["counts"]["fundedFromGeneratedResources"] for c in cells) for a in "BC"}
-    known = [w for w in worlds if w['causal']['C_minus_A_projectInclusiveProfitCents'] is not None]
-    negative = sum(w['causal']['C_minus_A_projectInclusiveProfitCents'] < 0 for w in known)
-    positive = sum(w['causal']['C_minus_A_projectInclusiveProfitCents'] > 0 for w in known)
-    priced_cells = [c for c in cells if c['costProfile'] != 'actual-unknown']
-    positive_means = sum(c['causal']['C_minus_A_projectInclusiveProfitCents']['mean'] > 0 for c in priced_cells)
-    cb_negative = sum(w['causal']['C_minus_B_projectInclusiveProfitCents'] < 0 for w in known)
-    profile_order = {k:i for i,k in enumerate(['low','reference','high','actual-unknown'])}
-    policy_order = {k:i for i,k in enumerate(['adaptive','completed-research-replay'])}
-    condition_order = {k:i for i,k in enumerate(['reference','lower-demand','no-demand','buyer-integration','maintenance-shock','stronger-competitor'])}
-    cells = sorted(cells,key=lambda c:(condition_order[c['condition']],policy_order[c['policy']],profile_order[c['costProfile']]))
-    policy_label = {'adaptive':'Adaptive','completed-research-replay':'Replay'}
-    condition_label = {'reference':'Reference','lower-demand':'Lower demand','no-demand':'No demand',
-                       'buyer-integration':'Integration','maintenance-shock':'Upkeep shock','stronger-competitor':'Stronger AI'}
-    profile_label = {'low':'Low','reference':'Reference','high':'High','actual-unknown':'Unknown'}
-    table = [r"\begin{tabularx}{\linewidth}{YYrrrr}", r"\toprule Policy & Cost & C--A mean & 5th / 95th & Funded C & C gate \\",r"\midrule"]
+    known = [w for w in worlds if w["causal"]["C_minus_A_projectInclusiveProfitCents"] is not None]
+    negative = sum(w["causal"]["C_minus_A_projectInclusiveProfitCents"] < 0 for w in known)
+    positive = sum(w["causal"]["C_minus_A_projectInclusiveProfitCents"] > 0 for w in known)
+    priced_cells = [c for c in cells if c["costProfile"] != "actual-unknown"]
+    positive_means = sum(c["causal"]["C_minus_A_projectInclusiveProfitCents"]["mean"] > 0 for c in priced_cells)
+    cb_negative = sum(w["causal"]["C_minus_B_projectInclusiveProfitCents"] < 0 for w in known)
+    profile_order = {k: i for i, k in enumerate(["low", "reference", "high", "actual-unknown"])}
+    policy_order = {k: i for i, k in enumerate(["adaptive", "completed-research-replay"])}
+    condition_order = {
+        k: i
+        for i, k in enumerate(
+            ["reference", "lower-demand", "no-demand", "buyer-integration", "maintenance-shock", "stronger-competitor"]
+        )
+    }
+    cells = sorted(
+        cells,
+        key=lambda c: (condition_order[c["condition"]], policy_order[c["policy"]], profile_order[c["costProfile"]]),
+    )
+    policy_label = {"adaptive": "Adaptive", "completed-research-replay": "Replay"}
+    condition_label = {
+        "reference": "Reference",
+        "lower-demand": "Lower demand",
+        "no-demand": "No demand",
+        "buyer-integration": "Integration",
+        "maintenance-shock": "Upkeep shock",
+        "stronger-competitor": "Stronger AI",
+    }
+    profile_label = {"low": "Low", "reference": "Reference", "high": "High", "actual-unknown": "Unknown"}
+    table = [
+        r"\begin{tabularx}{\linewidth}{YYrrrr}",
+        r"\toprule Policy & Cost & C--A mean & 5th / 95th & Funded C & C gate \\",
+        r"\midrule",
+    ]
     full = []
     for c in cells:
-        ca = c['causal']['C_minus_A_projectInclusiveProfitCents'];cb=c['causal']['C_minus_B_projectInclusiveProfitCents'];ba=c['causal']['B_minus_A_projectInclusiveProfitCents']
-        if c['condition']=='reference':
-            quantiles = (r'\textit{unknown}' if ca['p05'] is None else f"{num(ca['p05']/100,2)} / {num(ca['p95']/100,2)}")
-            table.append(f"{policy_label[c['policy']]} & {profile_label[c['costProfile']]} & {num(None if ca['mean'] is None else ca['mean']/100,2)} & "
-                         f"{quantiles} & "
-                         f"{c['arms']['C']['counts']['fundedFromGeneratedResources']}/24 & {c['arms']['C']['conditionalNativeFinancialGatePasses']}/24 " + r"\\")
-        full.append(f"{condition_label[c['condition']]} & {policy_label[c['policy']]} & {profile_label[c['costProfile']]} & "
-                    f"{num(None if ba['mean'] is None else ba['mean']/100,2)} & {num(None if ca['mean'] is None else ca['mean']/100,2)} & "
-                    f"{num(None if cb['mean'] is None else cb['mean']/100,2)} & {c['arms']['C']['conditionalNativeFinancialGatePasses']}/{c['completedWorlds']} " + r"\\")
-    table.extend([r"\bottomrule",r"\end{tabularx}"])
-    write('market-reference-table.tex','\n'.join(table));write('market-rows.tex','\n'.join(full) + '\n' + r'\bottomrule')
-    sig = max(abs(w['arms']['C'].get('subcentComputeAbsoluteResidualUSD') or 0) for w in worlds)
-    write('market-narrative.tex',rf"""
-The fixed campaign completed 1,152 paired conditional worlds and 3,456 enterprise histories in 48 cells. Registry B had {funded['B']} operating-funded attempts and {qualified['B']} complete financial-gate passes; graph C had {funded['C']} funded attempts and {qualified['C']} passes. Funding and qualification are distinct. Across {len(known)} priced C--A project differences, {negative} were negative and {positive} positive; {len(worlds)-len(known)} unknown-cost worlds remained unidentified. Of {len(priced_cells)} priced cell means, {positive_means} were positive. C--B project differences were negative in {cb_negative}/{len(known)} priced worlds. These counts summarize a designed scenario grid rather than a random sample of markets.
+        ca = c["causal"]["C_minus_A_projectInclusiveProfitCents"]
+        cb = c["causal"]["C_minus_B_projectInclusiveProfitCents"]
+        ba = c["causal"]["B_minus_A_projectInclusiveProfitCents"]
+        if c["condition"] == "reference":
+            quantiles = (
+                r"\textit{unknown}" if ca["p05"] is None else f"{num(ca['p05'] / 100, 2)} / {num(ca['p95'] / 100, 2)}"
+            )
+            table.append(
+                f"{policy_label[c['policy']]} & {profile_label[c['costProfile']]} & {num(None if ca['mean'] is None else ca['mean'] / 100, 2)} & "
+                f"{quantiles} & "
+                f"{c['arms']['C']['counts']['fundedFromGeneratedResources']}/24 & {c['arms']['C']['conditionalNativeFinancialGatePasses']}/24 "
+                + r"\\"
+            )
+        full.append(
+            f"{condition_label[c['condition']]} & {policy_label[c['policy']]} & {profile_label[c['costProfile']]} & "
+            f"{num(None if ba['mean'] is None else ba['mean'] / 100, 2)} & {num(None if ca['mean'] is None else ca['mean'] / 100, 2)} & "
+            f"{num(None if cb['mean'] is None else cb['mean'] / 100, 2)} & {c['arms']['C']['conditionalNativeFinancialGatePasses']}/{c['completedWorlds']} "
+            + r"\\"
+        )
+    table.extend([r"\bottomrule", r"\end{tabularx}"])
+    write("market-reference-table.tex", "\n".join(table))
+    write("market-rows.tex", "\n".join(full) + "\n" + r"\bottomrule")
+    sig = max(abs(w["arms"]["C"].get("subcentComputeAbsoluteResidualUSD") or 0) for w in worlds)
+    write(
+        "market-narrative.tex",
+        rf"""
+The fixed campaign completed 1,152 paired conditional worlds and 3,456 enterprise histories in 48 cells. Registry B had {funded["B"]} operating-funded attempts and {qualified["B"]} complete financial-gate passes; graph C had {funded["C"]} funded attempts and {qualified["C"]} passes. Funding and qualification are distinct. Across {len(known)} priced C--A project differences, {negative} were negative and {positive} positive; {len(worlds) - len(known)} unknown-cost worlds remained unidentified. Of {len(priced_cells)} priced cell means, {positive_means} were positive. C--B project differences were negative in {cb_negative}/{len(known)} priced worlds. These counts summarize a designed scenario grid rather than a random sample of markets.
 
 No trust, price, quality or human-time benefit was assigned to graph proofs. The measured CPU effect was converted only at declared tariffs. The largest absolute graph microcent residual omitted by the cent-denominated ledger was USD {sig:.8f} across a complete saved history; its sign is retained in the evidence. The complete-cost result includes completed outside research exactly once even when the enterprise declines construction, while preserving the enterprise's actual modeled cash balance. A negative project-inclusive difference can therefore coexist with a rational no-investment decision.
-""")
-    positive_trace = read('review/positive-world-inspection.json')
-    positive_world = next(w for w in worlds if w['cell']==positive_trace['cell'] and w['seed']==positive_trace['seed'])
-    pc = positive_world['arms']['C']
-    with (GEN/'market-narrative.tex').open('a') as out:
+""",
+    )
+    positive_trace = read("review/positive-world-inspection.json")
+    positive_world = next(
+        w for w in worlds if w["cell"] == positive_trace["cell"] and w["seed"] == positive_trace["seed"]
+    )
+    _pc = positive_world["arms"]["C"]
+    with (GEN / "market-narrative.tex").open("a") as out:
         out.write(rf"""
 
-The one positive C--A realization is retained: the reference condition, low-cost completed-research replay, seed {positive_trace['seed']}, yields {usd(positive_world['causal']['C_minus_A_projectInclusiveProfitCents'])}. C receives {usd(positive_trace['C_minus_A_collections_cents'])} more modeled collections and incurs {usd(positive_trace['C_minus_A_accrued_costs_cents'])} additional accrued costs. B and C share the same changed buyer-choice path after the declared week-26 pause: buyer 1 chooses DIY instead of AI in weeks 26 and 32, then the enterprise instead of a human in weeks 47 and 49. Their accepted counts are 33 versus A's 31. C still trails B by {usd(-positive_world['causal']['C_minus_B_projectInclusiveProfitCents'])}, has zero direct asset saving, a negative prospective investment forecast and no financial admission or direct repayment. This is descriptive analysis of saved traces, not a graph-specific causal finding or a new pause-only experiment. The exact path and arithmetic are retained in \artifact{{review/positive-world-inspection.json}}.
+The one positive C--A realization is retained: the reference condition, low-cost completed-research replay, seed {positive_trace["seed"]}, yields {usd(positive_world["causal"]["C_minus_A_projectInclusiveProfitCents"])}. C receives {usd(positive_trace["C_minus_A_collections_cents"])} more modeled collections and incurs {usd(positive_trace["C_minus_A_accrued_costs_cents"])} additional accrued costs. B and C share the same changed buyer-choice path after the declared week-26 pause: buyer 1 chooses DIY instead of AI in weeks 26 and 32, then the enterprise instead of a human in weeks 47 and 49. Their accepted counts are 33 versus A's 31. C still trails B by {usd(-positive_world["causal"]["C_minus_B_projectInclusiveProfitCents"])}, has zero direct asset saving, a negative prospective investment forecast and no financial admission or direct repayment. This is descriptive analysis of saved traces, not a graph-specific causal finding or a new pause-only experiment. The exact path and arithmetic are retained in \artifact{{review/positive-world-inspection.json}}.
 """)
-    fig, axes = plt.subplots(1,2,figsize=(7.1,3.8),sharey=True)
-    zall=[c['causal']['C_minus_A_projectInclusiveProfitCents']['mean']/100 for c in priced_cells]
-    limit=max(1,max(abs(v) for v in zall))
-    norm=TwoSlopeNorm(vmin=-limit,vcenter=0,vmax=limit)
-    for ax,policy in zip(axes,['adaptive','completed-research-replay']):
-        grid=np.array([[next(c for c in cells if c['condition']==cond and c['policy']==policy and c['costProfile']==pr)['causal']['C_minus_A_projectInclusiveProfitCents']['mean']/100
-                        for pr in ['low','reference','high']] for cond in condition_order])
-        im=ax.imshow(grid,cmap='RdYlGn',norm=norm,aspect='auto')
-        ax.set(xticks=range(3),xticklabels=['Low','Reference','High'],yticks=range(6),yticklabels=[condition_label[c] for c in condition_order],title=policy_label[policy],xlabel='Subjective cost profile')
+    fig, axes = plt.subplots(1, 2, figsize=(7.1, 3.8), sharey=True)
+    zall = [c["causal"]["C_minus_A_projectInclusiveProfitCents"]["mean"] / 100 for c in priced_cells]
+    limit = max(1, max(abs(v) for v in zall))
+    norm = TwoSlopeNorm(vmin=-limit, vcenter=0, vmax=limit)
+    for ax, policy in zip(axes, ["adaptive", "completed-research-replay"]):
+        grid = np.array(
+            [
+                [
+                    next(
+                        c for c in cells if c["condition"] == cond and c["policy"] == policy and c["costProfile"] == pr
+                    )["causal"]["C_minus_A_projectInclusiveProfitCents"]["mean"]
+                    / 100
+                    for pr in ["low", "reference", "high"]
+                ]
+                for cond in condition_order
+            ]
+        )
+        im = ax.imshow(grid, cmap="RdYlGn", norm=norm, aspect="auto")
+        ax.set(
+            xticks=range(3),
+            xticklabels=["Low", "Reference", "High"],
+            yticks=range(6),
+            yticklabels=[condition_label[c] for c in condition_order],
+            title=policy_label[policy],
+            xlabel="Subjective cost profile",
+        )
         for iy in range(6):
             for ix in range(3):
-                ax.text(ix,iy,f'{grid[iy,ix]:.1f}',ha='center',va='center',fontsize=8,color='white' if abs(grid[iy,ix])>.6*limit else '#22182d')
+                ax.text(
+                    ix,
+                    iy,
+                    f"{grid[iy, ix]:.1f}",
+                    ha="center",
+                    va="center",
+                    fontsize=8,
+                    color="white" if abs(grid[iy, ix]) > 0.6 * limit else "#22182d",
+                )
         ax.tick_params(length=0)
-    fig.colorbar(im,ax=axes.ravel().tolist(),label='Mean C − A project-inclusive profit, modeled USD',fraction=.035,pad=.035)
-    fig.subplots_adjust(left=.18,right=.88,bottom=.16,top=.86,wspace=.12)
-    savefig(fig,'market-regions')
-    representative=next(x for x in reps if x['condition']=='reference' and x['costProfile']=='reference' and x['policy']=='completed-research-replay' and x['seed']==9101)
-    armruns=representative['paired']['arms']
-    compact=next(w for w in worlds if w['condition']=='reference' and w['costProfile']=='reference' and w['policy']=='completed-research-replay' and w['seed']==9101)
-    fc=compact['arms']['C'];decision=fc['firstDecision'] or {};funding=decision.get('beforeSearch',{})
-    write('ledger-narrative.tex',rf"""
-The predeclared reference-condition, reference-cost replay for seed 9101 ends with modeled C cash {usd(fc['finalCashCents'])}, collections {usd(fc['collectionsCents'])}, unpaid obligations {usd(fc['obligationsCents'])} and a {usd(fc['reserveCents'])} reserve. At its first checkpoint, available operating-generated resources were {usd(funding.get('availableCents'))}, against a complete graph one-off allocation of {usd(fc['completeOneoffCents'])}. It made {fc['actualAssetInvocations']} modeled invocations of the source-bound graph composition and {'passed' if compact['qualification']['C']['conditionalModeledFinancialGatePassed'] else 'did not pass'} the complete financial gate. Its C--A project-inclusive difference was {usd(compact['causal']['C_minus_A_projectInclusiveProfitCents'])}. The saved funding/expense/invoice records, rather than nominal ending cash alone, determine whether an attempt was financed.
+    fig.colorbar(
+        im,
+        ax=axes.ravel().tolist(),
+        label="Mean C − A project-inclusive profit, modeled USD",
+        fraction=0.035,
+        pad=0.035,
+    )
+    fig.subplots_adjust(left=0.18, right=0.88, bottom=0.16, top=0.86, wspace=0.12)
+    savefig(fig, "market-regions")
+    representative = next(
+        x
+        for x in reps
+        if x["condition"] == "reference"
+        and x["costProfile"] == "reference"
+        and x["policy"] == "completed-research-replay"
+        and x["seed"] == 9101
+    )
+    armruns = representative["paired"]["arms"]
+    compact = next(
+        w
+        for w in worlds
+        if w["condition"] == "reference"
+        and w["costProfile"] == "reference"
+        and w["policy"] == "completed-research-replay"
+        and w["seed"] == 9101
+    )
+    fc = compact["arms"]["C"]
+    decision = fc["firstDecision"] or {}
+    funding = decision.get("beforeSearch", {})
+    write(
+        "ledger-narrative.tex",
+        rf"""
+The predeclared reference-condition, reference-cost replay for seed 9101 ends with modeled C cash {usd(fc["finalCashCents"])}, collections {usd(fc["collectionsCents"])}, unpaid obligations {usd(fc["obligationsCents"])} and a {usd(fc["reserveCents"])} reserve. At its first checkpoint, available operating-generated resources were {usd(funding.get("availableCents"))}, against a complete graph one-off allocation of {usd(fc["completeOneoffCents"])}. It made {fc["actualAssetInvocations"]} modeled invocations of the source-bound graph composition and {"passed" if compact["qualification"]["C"]["conditionalModeledFinancialGatePassed"] else "did not pass"} the complete financial gate. Its C--A project-inclusive difference was {usd(compact["causal"]["C_minus_A_projectInclusiveProfitCents"])}. The saved funding/expense/invoice records, rather than nominal ending cash alone, determine whether an attempt was financed.
 
 Direct D is preserved as a real production alternative. Its matched CPU/elapsed means and tariff sensitivities are in \artifact{{evidence/market-primary/effect-calibration.json}}. The native continuation does not supply an independently calibrated D demand model or a complete D adoption-cost measurement, so a global adoption result against D remains unknown. Actual customer collections in every arm are zero.
-""")
-    fig,axes=plt.subplots(1,2,figsize=(7.0,3.1),gridspec_kw={'width_ratios':[1.2,1]})
-    for a in 'ABC':
-        balances=armruns[a]['histories']['balances']
-        axes[0].plot([r['week'] for r in balances],[r['cashCents']/100 for r in balances],label=a,color=COLORS[a],linewidth=1.5,linestyle='--' if a=='B' else '-')
-    axes[0].axhline(fc['reserveCents']/100,color=TEAL,linestyle=':',label='Reserve')
-    axes[0].set(xlabel='Week',ylabel='Modeled USD',title='Cash with explicit reserve')
-    axes[0].legend(frameon=False,ncol=4,fontsize=8,loc='lower left')
-    bars=[funding.get('cashCents',0)/100,funding.get('availableCents',0)/100,(fc['completeOneoffCents'] or 0)/100]
-    axes[1].bar(['Cash','Generated\navailable','Graph\none-off'],bars,color=[GRAY,TEAL,PURPLE],width=.65)
-    axes[1].set(ylabel='Modeled USD',title='First decision checkpoint')
-    for i,v in enumerate(bars):axes[1].text(i,v+max(bars)*.02,f'{v:.2f}',ha='center',fontsize=8)
-    axes[1].set_ylim(0,max(bars)*1.17 if max(bars)>0 else 1)
+""",
+    )
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.1), gridspec_kw={"width_ratios": [1.2, 1]})
+    for a in "ABC":
+        balances = armruns[a]["histories"]["balances"]
+        axes[0].plot(
+            [r["week"] for r in balances],
+            [r["cashCents"] / 100 for r in balances],
+            label=a,
+            color=COLORS[a],
+            linewidth=1.5,
+            linestyle="--" if a == "B" else "-",
+        )
+    axes[0].axhline(fc["reserveCents"] / 100, color=TEAL, linestyle=":", label="Reserve")
+    axes[0].set(xlabel="Week", ylabel="Modeled USD", title="Cash with explicit reserve")
+    axes[0].legend(frameon=False, ncol=4, fontsize=8, loc="lower left")
+    bars = [
+        funding.get("cashCents", 0) / 100,
+        funding.get("availableCents", 0) / 100,
+        (fc["completeOneoffCents"] or 0) / 100,
+    ]
+    axes[1].bar(["Cash", "Generated\navailable", "Graph\none-off"], bars, color=[GRAY, TEAL, PURPLE], width=0.65)
+    axes[1].set(ylabel="Modeled USD", title="First decision checkpoint")
+    for i, v in enumerate(bars):
+        axes[1].text(i, v + max(bars) * 0.02, f"{v:.2f}", ha="center", fontsize=8)
+    axes[1].set_ylim(0, max(bars) * 1.17 if max(bars) > 0 else 1)
     fig.tight_layout(w_pad=2)
-    savefig(fig,'cash-resources')
-    if qualified['C']==0:
-        conclusion=r"""The implemented graph did not earn a justified second-investment result under the frozen financial gate. Technical admission, fresh use and a valid commitment chain were insufficient. The appropriate within-model action is to retain the strongest suitable incumbent or adopt a simpler existing method when its complete costs justify doing so; the actual all-in economic admission remains unknown because unmetered research and attention costs have not become measured invoices. A graph may still be maintained as research infrastructure, but that choice must carry its costs rather than be called commercial self-financing."""
+    savefig(fig, "cash-resources")
+    if qualified["C"] == 0:
+        conclusion = r"""The implemented graph did not earn a justified second-investment result under the frozen financial gate. Technical admission, fresh use and a valid commitment chain were insufficient. The appropriate within-model action is to retain the strongest suitable incumbent or adopt a simpler existing method when its complete costs justify doing so; the actual all-in economic admission remains unknown because unmetered research and attention costs have not become measured invoices. A graph may still be maintained as research infrastructure, but that choice must carry its costs rather than be called commercial self-financing."""
     else:
-        conclusion=rf"""The graph passed the complete within-model financial gate in {qualified['C']} of 1,152 declared worlds. Those conditional successes do not identify an unconditional commercial return or remove unfavorable and unknown-cost regions. The appropriate decision depends on the matched cost/demand cell and the strongest suitable alternative; live authority and actual complete monetary cost remain unestablished. Further adoption requires the relevant evidence boundary to be crossed explicitly."""
-    write('conclusion.tex',conclusion)
-    return {"AbstractMarketResult": f"The 1,152 paired modeled worlds produced {qualified['C']} qualifying graph second investments "
-            f"and {qualified['B']} qualifying registry investments; {funded['C']} graph attempts were funded from modeled generated resources.",
-            "FrenchResult": f"Les 72 dossiers ont été acceptés selon le même critère technique. Dans 1 152 mondes conditionnels, "
-            f"{funded['C']} tentatives du graphe sont financées par les ressources simulées, mais {qualified['C']} satisfait le critère complet d'investissement. "
-            f"Les {len(worlds)-len(known)} cas à coûts inconnus restent indéterminés."}
+        conclusion = rf"""The graph passed the complete within-model financial gate in {qualified["C"]} of 1,152 declared worlds. Those conditional successes do not identify an unconditional commercial return or remove unfavorable and unknown-cost regions. The appropriate decision depends on the matched cost/demand cell and the strongest suitable alternative; live authority and actual complete monetary cost remain unestablished. Further adoption requires the relevant evidence boundary to be crossed explicitly."""
+    write("conclusion.tex", conclusion)
+    return {
+        "AbstractMarketResult": f"The 1,152 paired modeled worlds produced {qualified['C']} qualifying graph second investments "
+        f"and {qualified['B']} qualifying registry investments; {funded['C']} graph attempts were funded from modeled generated resources.",
+        "FrenchResult": f"Les 72 dossiers ont été acceptés selon le même critère technique. Dans 1 152 mondes conditionnels, "
+        f"{funded['C']} tentatives du graphe sont financées par les ressources simulées, mais {qualified['C']} satisfait le critère complet d'investissement. "
+        f"Les {len(worlds) - len(known)} cas à coûts inconnus restent indéterminés.",
+    }
 
 
 def draft_results():
-    write('production-table.tex',r'\begin{tabularx}{\linewidth}{Y}\toprule Fresh results not yet read. No values inserted.\\\bottomrule\end{tabularx}')
-    write('market-reference-table.tex',r'\begin{tabularx}{\linewidth}{Y}\toprule Market results not yet read. No values inserted.\\\bottomrule\end{tabularx}')
-    write('mission-rows.tex',r'Awaiting completed evidence & -- & -- & -- & -- \\' + '\n' + r'\bottomrule')
-    write('market-rows.tex',r'Awaiting evidence & -- & -- & -- & -- & -- & -- \\' + '\n' + r'\bottomrule')
-    for name in ['results-narrative.tex','market-narrative.tex','ledger-narrative.tex','conclusion.tex']:
-        write(name,r'\textbf{Methods/design preview.} Frozen completed outcomes are required before empirical results or a conclusion can be generated. No favorable result is assumed.')
-    placeholder('production-comparison','Frozen production results')
-    placeholder('market-regions','Conditional market regions')
-    placeholder('cash-resources','Reconciled modeled resources')
-    return {'AbstractProductionResult':'Fresh outcomes have not been inserted in this methods preview.',
-            'AbstractMarketResult':'Market outcomes have not been inserted in this methods preview.',
-            'FrenchResult':r'Les résultats définitifs ne sont pas encore insérés dans cet aperçu méthodologique.'}
+    write(
+        "production-table.tex",
+        r"\begin{tabularx}{\linewidth}{Y}\toprule Fresh results not yet read. No values inserted.\\\bottomrule\end{tabularx}",
+    )
+    write(
+        "market-reference-table.tex",
+        r"\begin{tabularx}{\linewidth}{Y}\toprule Market results not yet read. No values inserted.\\\bottomrule\end{tabularx}",
+    )
+    write("mission-rows.tex", r"Awaiting completed evidence & -- & -- & -- & -- \\" + "\n" + r"\bottomrule")
+    write("market-rows.tex", r"Awaiting evidence & -- & -- & -- & -- & -- & -- \\" + "\n" + r"\bottomrule")
+    for name in ["results-narrative.tex", "market-narrative.tex", "ledger-narrative.tex", "conclusion.tex"]:
+        write(
+            name,
+            r"\textbf{Methods/design preview.} Frozen completed outcomes are required before empirical results or a conclusion can be generated. No favorable result is assumed.",
+        )
+    placeholder("production-comparison", "Frozen production results")
+    placeholder("market-regions", "Conditional market regions")
+    placeholder("cash-resources", "Reconciled modeled resources")
+    return {
+        "AbstractProductionResult": "Fresh outcomes have not been inserted in this methods preview.",
+        "AbstractMarketResult": "Market outcomes have not been inserted in this methods preview.",
+        "FrenchResult": r"Les résultats définitifs ne sont pas encore insérés dans cet aperçu méthodologique.",
+    }
 
 
 def run(command, name: str):
-    result=subprocess.run(command,cwd=PAPER,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=60,check=False)
-    (BUILD/name).write_text(result.stdout)
+    result = subprocess.run(
+        command, cwd=PAPER, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=60, check=False
+    )
+    (BUILD / name).write_text(result.stdout)
     if result.returncode:
-        print(result.stdout[-6000:]);raise SystemExit(f'Publication build failed: {command[0]} ({result.returncode})')
+        print(result.stdout[-6000:])
+        raise SystemExit(f"Publication build failed: {command[0]} ({result.returncode})")
 
 
 def render(pdf: Path):
-    directory=PAPER/'rendered'/sha(pdf.read_bytes())[:12];directory.mkdir(parents=True,exist_ok=True)
-    for prior in directory.glob('page-*.png'):prior.unlink()
-    run(['pdftoppm','-r','75','-png',str(pdf),str(directory/'page')],'render.log')
-    pages=sorted(directory.glob('page-*.png'))
-    expected_pages=len(PdfReader(pdf).pages)
-    if len(pages)!=expected_pages:
-        raise ValueError(f'Rendered page count mismatch: {len(pages)} versus {expected_pages}; final visual review blocked')
-    sheets=[]
-    for start in range(0,len(pages),8):
-        subset=pages[start:start+8];canvas=Image.new('RGB',(970,30+680*math.ceil(len(subset)/2)),(232,228,237));draw=ImageDraw.Draw(canvas)
-        for j,page in enumerate(subset):
-            im=Image.open(page).convert('RGB');im.thumbnail((450,638))
-            x=25+(j%2)*480;y=25+(j//2)*680
-            canvas.paste(im,(x,y));draw.text((x,y+642),f'Page {start+j+1}',fill=(69,33,107))
-        target=directory/f'contact-sheet-{start//8+1:02}.png';canvas.save(target);sheets.append(str(target.relative_to(ROOT)))
-    return {'pages':len(pages),'contact_sheets':sheets,'visual_review':'PENDING_MODEL_INSPECTION'}
+    directory = PAPER / "rendered" / sha(pdf.read_bytes())[:12]
+    directory.mkdir(parents=True, exist_ok=True)
+    for prior in directory.glob("page-*.png"):
+        prior.unlink()
+    run(["pdftoppm", "-r", "75", "-png", str(pdf), str(directory / "page")], "render.log")
+    pages = sorted(directory.glob("page-*.png"))
+    expected_pages = len(PdfReader(pdf).pages)
+    if len(pages) != expected_pages:
+        raise ValueError(
+            f"Rendered page count mismatch: {len(pages)} versus {expected_pages}; final visual review blocked"
+        )
+    sheets = []
+    for start in range(0, len(pages), 8):
+        subset = pages[start : start + 8]
+        canvas = Image.new("RGB", (970, 30 + 680 * math.ceil(len(subset) / 2)), (232, 228, 237))
+        draw = ImageDraw.Draw(canvas)
+        for j, page in enumerate(subset):
+            im = Image.open(page).convert("RGB")
+            im.thumbnail((450, 638))
+            x = 25 + (j % 2) * 480
+            y = 25 + (j // 2) * 680
+            canvas.paste(im, (x, y))
+            draw.text((x, y + 642), f"Page {start + j + 1}", fill=(69, 33, 107))
+        target = directory / f"contact-sheet-{start // 8 + 1:02}.png"
+        canvas.save(target)
+        sheets.append(str(target.relative_to(ROOT)))
+    return {"pages": len(pages), "contact_sheets": sheets, "visual_review": "PENDING_MODEL_INSPECTION"}
 
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--draft',action='store_true',help='Generate a clearly labeled methods preview with no invented outcomes.')
-    parser.add_argument('--generate-only',action='store_true',help='Generate tables/figures/prose without compiling.')
-    parser.add_argument('--no-render',action='store_true',help='Compile without rendering (final delivery still requires visual review).')
-    args=parser.parse_args();GEN.mkdir(exist_ok=True);BUILD.mkdir(exist_ok=True)
-    macros={'ReportDate':'26 October 2026','ReportState':'METHODS PREVIEW' if args.draft else 'Completed bounded research; review edition'}
-    costs=read('market/cost-assumptions.json');macros.update(cost_tables(costs));heritage();review_and_reproduction(args.draft)
-    if args.draft:macros.update(draft_results())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--draft", action="store_true", help="Generate a clearly labeled methods preview with no invented outcomes."
+    )
+    parser.add_argument("--generate-only", action="store_true", help="Generate tables/figures/prose without compiling.")
+    parser.add_argument(
+        "--no-render",
+        action="store_true",
+        help="Compile without rendering (final delivery still requires visual review).",
+    )
+    args = parser.parse_args()
+    GEN.mkdir(exist_ok=True)
+    BUILD.mkdir(exist_ok=True)
+    macros = {
+        "ReportDate": "26 October 2026",
+        "ReportState": "METHODS PREVIEW" if args.draft else "Completed bounded research; review edition",
+    }
+    costs = read("market/cost-assumptions.json")
+    macros.update(cost_tables(costs))
+    heritage()
+    review_and_reproduction(args.draft)
+    if args.draft:
+        macros.update(draft_results())
     else:
-        production=read('evidence/production-summary.json');summary=read('evidence/market-primary/summary.json')
-        worlds=read('evidence/market-primary/compact-worlds.jsonl');reps=read('evidence/market-primary/representative-histories.json')
-        effects=read('evidence/market-primary/effect-calibration.json');read('evidence/market-primary/execution.json')
-        more,_=production_results(production);macros.update(more);macros.update(market_results(summary,worlds,reps,effects))
-    write('results-macros.tex','\n'.join(macro(k,v) for k,v in macros.items()))
-    receipt={'schema':'agi-alpha-evidence-paper-build/v1','state':'DRAFT_NO_EMPIRICAL_RESULT' if args.draft else 'FINAL_RESULTS_READ_ONLY',
-             'created_utc':datetime.now(timezone.utc).isoformat(),'experiments_executed_by_build':0,
-             'inputs':list(INPUTS.values()),'unknown_actual_costs_preserved':True,'actual_customer_collections':0,
-             'live_identity_enforcement':'NOT_RUN','external_peer_review':False}
+        production = read("evidence/production-summary.json")
+        summary = read("evidence/market-primary/summary.json")
+        worlds = read("evidence/market-primary/compact-worlds.jsonl")
+        reps = read("evidence/market-primary/representative-histories.json")
+        effects = read("evidence/market-primary/effect-calibration.json")
+        read("evidence/market-primary/execution.json")
+        more, _ = production_results(production)
+        macros.update(more)
+        macros.update(market_results(summary, worlds, reps, effects))
+    write("results-macros.tex", "\n".join(macro(k, v) for k, v in macros.items()))
+    receipt = {
+        "schema": "agi-alpha-evidence-paper-build/v1",
+        "state": "DRAFT_NO_EMPIRICAL_RESULT" if args.draft else "FINAL_RESULTS_READ_ONLY",
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "experiments_executed_by_build": 0,
+        "inputs": list(INPUTS.values()),
+        "unknown_actual_costs_preserved": True,
+        "actual_customer_collections": 0,
+        "live_identity_enforcement": "NOT_RUN",
+        "external_peer_review": False,
+    }
     if not args.generate_only:
-        run(['xelatex','-interaction=nonstopmode','-halt-on-error','-output-directory=build','manuscript.tex'],'xelatex-1.log')
-        env=os.environ.copy();env['BIBINPUTS']=str(PAPER)+os.pathsep
-        result=subprocess.run(['bibtex','manuscript'],cwd=BUILD,env=env,capture_output=True,text=True,timeout=60)
-        (BUILD/'bibtex.log').write_text(result.stdout+result.stderr)
-        if result.returncode:raise SystemExit(result.stdout+result.stderr)
-        for i in [2,3]:run(['xelatex','-interaction=nonstopmode','-halt-on-error','-output-directory=build','manuscript.tex'],f'xelatex-{i}.log')
-        target=PAPER/('methods-preview.pdf' if args.draft else 'AGI_ALPHA_Economy_of_Verified_Capability.pdf')
-        shutil.copyfile(BUILD/'manuscript.pdf',target)
-        receipt['pdf']={'path':str(target.relative_to(ROOT)),'sha256':sha(target.read_bytes()),'bytes':target.stat().st_size,'pages':len(PdfReader(target).pages)}
-        receipt['tex_warnings']=[line for line in (BUILD/'xelatex-3.log').read_text().splitlines() if any(t in line for t in ['Overfull','Underfull','undefined','Missing character'])]
-        if not args.no_render:receipt['rendering']=render(target)
-    generated=[p for p in GEN.iterdir() if p.is_file()]
-    receipt['generated']=[{'path':str(p.relative_to(ROOT)),'bytes':p.stat().st_size,'sha256':sha(p.read_bytes())} for p in sorted(generated)]
-    receipt['publication_sources']=[{'path':str(p.relative_to(ROOT)),'sha256':sha(p.read_bytes())} for p in [PAPER/'manuscript.tex',PAPER/'sources.bib',Path(__file__)]]
-    child_usage=resource.getrusage(resource.RUSAGE_CHILDREN)
-    own_cpu=time.process_time();child_cpu=child_usage.ru_utime+child_usage.ru_stime
-    receipt['publication_resources']={'wall_seconds_since_build_clock':time.perf_counter()-WALL_STARTED,
-        'self_cpu_seconds_since_process_start':own_cpu,'waited_children_cpu_seconds':child_cpu,
-        'inclusive_selected_build_cpu_seconds':own_cpu+child_cpu,'primary_experiments_rerun':0,
-        'model_calls_in_build':0,'network_calls_in_build':0,'authoring_attention_minutes':None,
-        'authoring_inference_cost_usd':None,'complete_publication_cost_usd':None,
-        'excludes':'Process bootstrap wall before build clock, final receipt/history serialization, earlier unmetered authoring/build attempts and attention. Do not sum nested process timers.'}
-    output=PAPER/('draft-build-receipt.json' if args.draft else 'build-receipt.json');output.write_text(json.dumps(receipt,indent=2)+'\n')
-    with (PAPER/'publication-build-history.jsonl').open('a') as history:
-        history.write(json.dumps({'created_utc':receipt['created_utc'],'state':receipt['state'],'pdf':receipt.get('pdf'),
-                                  'resources':receipt['publication_resources']})+'\n')
-    print(json.dumps({'state':receipt['state'],'pdf':receipt.get('pdf'),'warnings':receipt.get('tex_warnings',[]),'rendering':receipt.get('rendering')},indent=2))
+        run(
+            ["xelatex", "-interaction=nonstopmode", "-halt-on-error", "-output-directory=build", "manuscript.tex"],
+            "xelatex-1.log",
+        )
+        env = os.environ.copy()
+        env["BIBINPUTS"] = str(PAPER) + os.pathsep
+        result = subprocess.run(
+            ["bibtex", "manuscript"], cwd=BUILD, env=env, capture_output=True, text=True, timeout=60
+        )
+        (BUILD / "bibtex.log").write_text(result.stdout + result.stderr)
+        if result.returncode:
+            raise SystemExit(result.stdout + result.stderr)
+        for i in [2, 3]:
+            run(
+                ["xelatex", "-interaction=nonstopmode", "-halt-on-error", "-output-directory=build", "manuscript.tex"],
+                f"xelatex-{i}.log",
+            )
+        target = PAPER / ("methods-preview.pdf" if args.draft else "AGI_ALPHA_Economy_of_Verified_Capability.pdf")
+        shutil.copyfile(BUILD / "manuscript.pdf", target)
+        receipt["pdf"] = {
+            "path": str(target.relative_to(ROOT)),
+            "sha256": sha(target.read_bytes()),
+            "bytes": target.stat().st_size,
+            "pages": len(PdfReader(target).pages),
+        }
+        receipt["tex_warnings"] = [
+            line
+            for line in (BUILD / "xelatex-3.log").read_text().splitlines()
+            if any(t in line for t in ["Overfull", "Underfull", "undefined", "Missing character"])
+        ]
+        if not args.no_render:
+            receipt["rendering"] = render(target)
+    generated = [p for p in GEN.iterdir() if p.is_file()]
+    receipt["generated"] = [
+        {"path": str(p.relative_to(ROOT)), "bytes": p.stat().st_size, "sha256": sha(p.read_bytes())}
+        for p in sorted(generated)
+    ]
+    receipt["publication_sources"] = [
+        {"path": str(p.relative_to(ROOT)), "sha256": sha(p.read_bytes())}
+        for p in [PAPER / "manuscript.tex", PAPER / "sources.bib", Path(__file__)]
+    ]
+    child_usage = resource.getrusage(resource.RUSAGE_CHILDREN)
+    own_cpu = time.process_time()
+    child_cpu = child_usage.ru_utime + child_usage.ru_stime
+    receipt["publication_resources"] = {
+        "wall_seconds_since_build_clock": time.perf_counter() - WALL_STARTED,
+        "self_cpu_seconds_since_process_start": own_cpu,
+        "waited_children_cpu_seconds": child_cpu,
+        "inclusive_selected_build_cpu_seconds": own_cpu + child_cpu,
+        "primary_experiments_rerun": 0,
+        "model_calls_in_build": 0,
+        "network_calls_in_build": 0,
+        "authoring_attention_minutes": None,
+        "authoring_inference_cost_usd": None,
+        "complete_publication_cost_usd": None,
+        "excludes": "Process bootstrap wall before build clock, final receipt/history serialization, earlier unmetered authoring/build attempts and attention. Do not sum nested process timers.",
+    }
+    output = PAPER / ("draft-build-receipt.json" if args.draft else "build-receipt.json")
+    output.write_text(json.dumps(receipt, indent=2) + "\n")
+    with (PAPER / "publication-build-history.jsonl").open("a") as history:
+        history.write(
+            json.dumps(
+                {
+                    "created_utc": receipt["created_utc"],
+                    "state": receipt["state"],
+                    "pdf": receipt.get("pdf"),
+                    "resources": receipt["publication_resources"],
+                }
+            )
+            + "\n"
+        )
+    print(
+        json.dumps(
+            {
+                "state": receipt["state"],
+                "pdf": receipt.get("pdf"),
+                "warnings": receipt.get("tex_warnings", []),
+                "rendering": receipt.get("rendering"),
+            },
+            indent=2,
+        )
+    )
 
 
-if __name__=='__main__':main()
+if __name__ == "__main__":
+    main()
