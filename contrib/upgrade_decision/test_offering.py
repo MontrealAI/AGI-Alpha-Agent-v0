@@ -191,6 +191,18 @@ def test_explicit_module_rebinding_does_not_become_a_verified_import() -> None:
     assert result["calls"][0]["mappingVerified"] is False
 
 
+@pytest.mark.parametrize("replacement", ["def check(): pass", "async def check(): pass", "class check: pass"])
+def test_conditional_export_redefinition_does_not_verify_selected_import(replacement: str) -> None:
+    text = "def check(x): pass\n"
+    pack = request(text, text + "if True:\n " + replacement + "\n", "from pkg.api import check\ncheck(1)\n")
+    result = assess(pack)
+    assert result["calls"][0]["mappingVerified"] is False
+    assert result["nextAction"] == "REVIEW_UNRESOLVED_SCOPE"
+    assert "unproved" in result["calls"][0]["qualification"]
+    result["calls"][0]["mappingVerified"] = True
+    assert verify(pack, result)["accepted"] is False
+
+
 def test_mutated_module_attribute_does_not_become_a_verified_import() -> None:
     pack = request(consumer="import pkg.api as api\napi.check = replacement\napi.check(1, strict=True)\n")
     call = next(n for n in ast.walk(ast.parse(pack["sources"]["consumer"]["text"])) if isinstance(n, ast.Call))

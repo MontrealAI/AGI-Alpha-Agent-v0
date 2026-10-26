@@ -171,14 +171,21 @@ def check_execution_custody(files: dict[str, Any], prefix: str, *, verification:
         }
     suffix = "verification" if verification else "observations"
     receipt = read_json(files, f"evidence/{prefix}-{'verification-' if verification else ''}execution.json")
+    # The fixed verifier writes a complete mismatch result and deliberately
+    # exits 2. That is a useful hold outcome, not missing execution evidence.
+    mismatch = (
+        verification and read_json(files, f"evidence/{prefix}-verification.json").get("status") == "BEHAVIOR_MISMATCH"
+    )
+    expected_exit = 2 if mismatch else 0
     before, after = receipt.get("input_identities_before"), receipt.get("input_identities_after")
     if (
         receipt.get("schema") != "alpha-measured-command/v1"
-        or receipt.get("complete_success") is not True
+        or receipt.get("complete_success") is not (expected_exit == 0)
         or receipt.get("command_started") is not True
         or receipt.get("timed_out") is not False
         or receipt.get("inputs_unchanged") is not True
-        or receipt.get("exit_code") != 0
+        or type(receipt.get("exit_code")) is not int
+        or receipt.get("exit_code") != expected_exit
         or receipt.get("timeout_seconds") != 45
         or receipt.get("missing_outputs") != []
         or not isinstance(before, list)

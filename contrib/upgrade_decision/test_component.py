@@ -4,12 +4,14 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
 import pytest
 
-from contrib.upgrade_decision.component import assess, validate, verifier
+from contrib.upgrade_decision.component import assess, validate
 from contrib.upgrade_decision.core import load, mission_key, sha
 from contrib.upgrade_decision.delivery import markdown, render_html
 
@@ -128,23 +130,57 @@ def test_native_mission_identity_ignores_replays_but_binds_real_input_changes() 
     assert mission_key(original) != mission_key(repeated)
 
 
-def test_synthetic_substantiated_regression_returns_useful_hold_not_preservation() -> None:
+def test_synthetic_substantiated_regression_returns_useful_hold_not_preservation(tmp_path: Path) -> None:
     pack = packet()
     original_key = mission_key(pack)
     raw = json.loads(pack["files"]["evidence/target-observations.json"]["text"])
     raw["observations"][0]["observation"]["status"] = 400
     replace_file(pack, "evidence/target-observations.json", raw)
-    contract = json.loads(pack["files"]["evidence/component-contract.json"]["text"])
-    saved = json.loads(pack["files"]["evidence/target-verification.json"]["text"])
-    saved["observations_sha256"] = pack["files"]["evidence/target-observations.json"]["sha256"]
-    saved["cases"][0] = verifier.verify_case(contract["cases"][0], raw["observations"][0], contract["security_headers"])
-    saved["status"] = "BEHAVIOR_MISMATCH"
-    saved["counts"] = {"PASS": 60, "BEHAVIOR_MISMATCH": 1, "INCOMPLETE": 0}
+    mapping = {
+        "evidence/component-contract.json": "protocol/component-contract.json",
+        "evidence/component-projections.json": "protocol/component-projections.json",
+        "evidence/api.py": "data/consumer/api.py",
+        "evidence/models.py": "data/consumer/models.py",
+        "evidence/test_api_boundary.py": "discovery/test_api_boundary.py",
+        "evidence/target-observations.json": "observations.json",
+        "evidence/target-environment.json": "environment.json",
+    }
+    for packaged, relative in mapping.items():
+        target = tmp_path / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(pack["files"][packaged]["text"])
+    # Exercise the actual fixed verifier process, not a hand-written PASS exit.
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(HERE / "vendor/verify_component.py"),
+            "--contract",
+            str(tmp_path / "protocol/component-contract.json"),
+            "--consumer",
+            str(tmp_path / "data/consumer"),
+            "--environment",
+            str(tmp_path / "environment.json"),
+            "--projection",
+            "native-fastapi-bridge-v2",
+            "--observations",
+            str(tmp_path / "observations.json"),
+            "--out",
+            str(tmp_path / "verification.json"),
+        ],
+        capture_output=True,
+        timeout=10,
+        check=False,
+    )
+    assert completed.returncode == 2
+    saved = json.loads((tmp_path / "verification.json").read_text())
+    assert saved["status"] == "BEHAVIOR_MISMATCH" and saved["counts"]["INCOMPLETE"] == 0
     replace_file(pack, "evidence/target-verification.json", saved)
     # This is a fabricated handler fixture, not a new recorded execution. Make
     # all of its relationships coherent so the classification path is exercised.
     for receipt_name in ("evidence/target-execution.json", "evidence/target-verification-execution.json"):
         receipt = json.loads(pack["files"][receipt_name]["text"])
+        if receipt_name.endswith("verification-execution.json"):
+            receipt.update(exit_code=completed.returncode, complete_success=False)
         for collection in ("input_identities_before", "input_identities_after", "output_identities"):
             for row in receipt[collection]:
                 for leaf in ("target-observations.json", "target-verification.json"):
@@ -235,4 +271,15 @@ def test_original_correction_relationships_cannot_be_silently_rewritten(mutation
     text = json.dumps(correction, indent=2) + "\n"
     pack["files"]["correction-receipt.json"] = {"text": text, "sha256": sha(text.encode())}
     with pytest.raises(ValueError, match="custody|correction"):
+        assess(pack)
+
+
+@pytest.mark.parametrize("exit_code", [1, 2, -9])
+def test_nonzero_verifier_exit_requires_a_complete_matching_mismatch_result(exit_code: int) -> None:
+    pack = packet()
+    receipt = json.loads(pack["files"]["evidence/target-verification-execution.json"]["text"])
+    receipt.update(exit_code=exit_code, complete_success=False)
+    replace_file(pack, "evidence/target-verification-execution.json", receipt)
+    refresh_decision_evidence(pack)
+    with pytest.raises(ValueError, match="recorded execution"):
         assess(pack)

@@ -177,6 +177,10 @@ The original 54-case source receipts remain under `evidence/qualification/`.
 The three reproduced review failures and corrected 68-case qualification are
 preserved additively under `evidence/review-correction/`. They are local engineering
 evidence; required exact-source review and hosted security remain separate.
+The subsequent mismatch-exit and conditional-redefinition controls, actual inert
+verifier exit-2 test and 74-case qualification are under
+`evidence/review-correction-v2/`. A complete verifier mismatch is a useful hold;
+an incomplete execution or an unrelated nonzero exit remains refused.
 
 The source base is #4915 `c4a7febc02fb9d607e9da5ece2101c4b6b36fc64`; current-main
 and four-repository inspection are recorded separately. No owner source,

@@ -459,7 +459,22 @@ def direct_mapping(pack: dict[str, Any], trees: dict[str, ast.Module], item: dic
             return False
         target_tree = trees[target["source"]]
         target_root = symbol.split(".")[0]
+        primary = next(
+            node
+            for node in target_tree.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name == target_root
+        )
         for node in ast.walk(target_tree):
+            if (
+                isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+                and node.name == target_root
+                and node is not primary
+            ):
+                return False
+            if isinstance(node, (ast.MatchAs, ast.MatchStar, ast.ExceptHandler)) and node.name == target_root:
+                return False
+            if isinstance(node, ast.MatchMapping) and node.rest == target_root:
+                return False
             if isinstance(node, ast.Name) and node.id == target_root and isinstance(node.ctx, (ast.Store, ast.Del)):
                 return False
             if isinstance(node, ast.ImportFrom) and any(a.name == "*" for a in node.names):
