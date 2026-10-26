@@ -24,6 +24,7 @@ CONTRACTS = {
     "tests/test_held_native_source_guard.py",
     "tests/test_workbox_integrity_contract.py",
     "tests/test_release_artifact_handoffs.py",
+    "tests/test_transformational_artifact_handoff.py::test_gallery_upload_and_bulk_download_keep_named_directories",
 }
 
 

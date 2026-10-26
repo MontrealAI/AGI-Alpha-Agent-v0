@@ -317,7 +317,7 @@ jobs:
       - name: Release contract preflight before full regression
         timeout-minutes: 5
         run: |
-          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py tests/test_held_native_source_guard.py tests/test_workbox_integrity_contract.py tests/test_release_artifact_handoffs.py
+          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py tests/test_held_native_source_guard.py tests/test_workbox_integrity_contract.py tests/test_release_artifact_handoffs.py tests/test_transformational_artifact_handoff.py::test_gallery_upload_and_bulk_download_keep_named_directories
           mkdir -p evidence
           ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests -o addopts= tests/test_workbox_integrity.py -q --junitxml=evidence/workbox-preflight.xml
           python - <<'PY'

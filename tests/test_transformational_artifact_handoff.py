@@ -134,10 +134,24 @@ def test_gallery_upload_and_bulk_download_keep_named_directories() -> None:
     gallery = workflow["jobs"]["gallery"]
     assert gallery["strategy"]["matrix"]["assets"] == ["minimal", "full"]
     upload = next(step for step in gallery["steps"] if "upload-artifact@" in step.get("uses", ""))
-    assert upload["with"]["name"] == "gallery-${{ matrix.assets }}"
+    assert upload["with"]["name"] == "${{ steps.gallery-name.outputs.name }}"
     assert upload["with"]["path"] == "evidence/"
-    download = next(
-        step for step in workflow["jobs"]["package"]["steps"] if step.get("with", {}).get("path") == "evidence"
-    )
+    naming = next(step for step in gallery["steps"] if step.get("id") == "gallery-name")
+    assert naming["env"] == {"ASSETS": "${{ matrix.assets }}"}
+    assert "gallery-${ASSETS}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" in naming["run"]
+    steps = workflow["jobs"]["package"]["steps"]
+    download = next(step for step in steps if "download-artifact@" in step.get("uses", ""))
+    assert download["with"]["path"] == "release-producer-artifacts"
     assert "name" not in download["with"] and "pattern" in download["with"]
     assert download["with"].get("merge-multiple", "false") == "false"
+    assert download["with"]["digest-mismatch"] == "error"
+    select = next(
+        step for step in steps if step.get("name") == "Select remaining producer artifacts without rewriting evidence"
+    )
+    for assets in ("minimal", "full"):
+        output = assets + "-artifact-name"
+        assert gallery["outputs"][output] == "${{ steps.gallery-name.outputs." + assets + "-name }}"
+        accepted = next(step for step in steps if step.get("with", {}).get("path") == "evidence/gallery-" + assets)
+        assert accepted["with"]["name"] == "${{ needs.gallery.outputs." + output + " }}"
+        assert accepted["with"]["digest-mismatch"] == "error"
+        assert steps.index(download) < steps.index(select) < steps.index(accepted)
