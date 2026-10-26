@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import pathlib
+import hashlib
 import subprocess
 import sys
 
@@ -104,3 +105,31 @@ def test_checksum_repair_preserves_current_atomic_downloader() -> None:
     source = (FIXTURES / "current_main.txt").read_text()
     assert "os.replace(temp_file, path)" in source
     assert transform_checksum_write_order(source) is None
+
+
+@pytest.mark.parametrize("comment", ["", " # mismatch"])
+@pytest.mark.parametrize("checksum", ["none", "valid", "invalid"])
+def test_checksum_repair_eof_write_is_not_swallowed_by_comment(tmp_path, comment, checksum) -> None:
+    historical = (FIXTURES / "b207647f.txt").read_text()
+    start = historical.index("    path.write_bytes(data)")
+    end = historical.index("\n\n\ndef download_with_retry", start)
+    body = historical[start:end].rstrip() + comment
+    source = "import base64\nimport hashlib\nCHECKSUMS = {}\ndef download(path, data, label=None):\n" + body
+    assert not source.endswith("\n")
+    updated = transform_checksum_write_order(source)
+    assert updated is not None
+    namespace = {}
+    exec(compile(updated, "checksum_eof_regression", "exec"), namespace)
+    target = tmp_path / "asset.bin"
+    target.write_bytes(b"previous valid bytes")
+    data = b"downloaded bytes"
+    if checksum != "none":
+        expected = data if checksum == "valid" else b"different expected bytes"
+        namespace["CHECKSUMS"] = {"asset.bin": "sha256-" + hashlib.sha256(expected).hexdigest()}
+    if checksum == "invalid":
+        with pytest.raises(RuntimeError, match="Checksum mismatch"):
+            namespace["download"](target, data)
+        assert target.read_bytes() == b"previous valid bytes"
+    else:
+        namespace["download"](target, data)
+        assert target.read_bytes() == data

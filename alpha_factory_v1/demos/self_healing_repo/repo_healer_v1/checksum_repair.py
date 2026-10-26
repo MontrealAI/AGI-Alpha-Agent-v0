@@ -75,11 +75,14 @@ def transform_checksum_write_order(source: str) -> str | None:
             write_indent = write_line[: len(write_line) - len(write_line.lstrip())]
             return_line = lines[returned.lineno - 1]
             return_indent = return_line[: len(return_line) - len(return_line.lstrip())]
+            fallback_prefix = ""
+            if offsets[guard.end_lineno] == len(source) and not source.endswith("\n"):
+                fallback_prefix = "\n"
             edits.extend(
                 [
                     (write.lineno - 1, write.lineno, ""),
                     (returned.lineno - 1, returned.lineno - 1, return_indent + write_line.strip() + "\n"),
-                    (guard.end_lineno, guard.end_lineno, write_indent + write_line.strip() + "\n"),
+                    (guard.end_lineno, guard.end_lineno, fallback_prefix + write_indent + write_line.strip() + "\n"),
                 ]
             )
     if not edits:
