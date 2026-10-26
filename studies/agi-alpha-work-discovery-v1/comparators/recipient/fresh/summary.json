@@ -1,0 +1,129 @@
+{
+  "recordedUtc": "2026-10-26T21:11:33.433782+00:00",
+  "acquisitionManifestSha256": "085ed38ee50bf9e5a4dcacd5746d8440d905bde6e1a8e59572f4e2ff47ce615a",
+  "pairsPreregistered": 2,
+  "pairsExecuted": 1,
+  "pairsInputFailed": 1,
+  "executedPair": [
+    "v23.0.0",
+    "v23.0.6"
+  ],
+  "sourceFrozenBeforeFreshInputs": true,
+  "attemptsPerArm": 1,
+  "allExecutedCommandsPassed": true,
+  "records": [
+    {
+      "label": "shared-raw-swagger-validation",
+      "command": [
+        "research-env/bin/python",
+        "-c",
+        "import json,sys; from swagger_spec_validator.validator20 import validate_spec; [(validate_spec(json.load(open(p))),print(p+' VALID')) for p in sys.argv[1:]]",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json"
+      ],
+      "startedUtc": "2026-10-26T21:11:31.299876+00:00",
+      "exitCode": 0,
+      "wallSeconds": 1.5123633010007325,
+      "cpuSeconds": 1.511759,
+      "maxRssKiB": 29432,
+      "stdout": "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json VALID\nagi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json VALID\n",
+      "stderr": "",
+      "timeoutSeconds": 58
+    },
+    {
+      "label": "original",
+      "command": [
+        "research-env/bin/python",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/recipient_inventory.py",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json",
+        "--out",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/original-v23-v23.0.6.json"
+      ],
+      "startedUtc": "2026-10-26T21:11:32.812544+00:00",
+      "exitCode": 0,
+      "wallSeconds": 0.11505102499722852,
+      "cpuSeconds": 0.11462099999999989,
+      "maxRssKiB": 32876,
+      "stdout": "{\"oldNodes\": 2341, \"newNodes\": 2341, \"changes\": 0, \"oldLimitations\": 9, \"newLimitations\": 9}\n",
+      "stderr": "",
+      "timeoutSeconds": 58
+    },
+    {
+      "label": "full",
+      "command": [
+        "node",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/transfer.mjs",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json",
+        "full",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/full-v23-v23.0.6.json"
+      ],
+      "startedUtc": "2026-10-26T21:11:32.927876+00:00",
+      "exitCode": 0,
+      "wallSeconds": 0.20033660999979475,
+      "cpuSeconds": 0.24497200000000025,
+      "maxRssKiB": 64564,
+      "stdout": "{\"mode\":\"full\",\"changes\":0,\"oldNodes\":2341,\"newNodes\":2341,\"reusedResponses\":0}\n",
+      "stderr": "",
+      "timeoutSeconds": 58
+    },
+    {
+      "label": "incremental",
+      "command": [
+        "node",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/transfer.mjs",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json",
+        "incremental",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/incremental-v23-v23.0.6.json"
+      ],
+      "startedUtc": "2026-10-26T21:11:33.128510+00:00",
+      "exitCode": 0,
+      "wallSeconds": 0.21488733499791124,
+      "cpuSeconds": 0.261842,
+      "maxRssKiB": 66568,
+      "stdout": "{\"mode\":\"incremental\",\"changes\":0,\"oldNodes\":2341,\"newNodes\":2341,\"reusedResponses\":43,\"recomputedResponses\":0,\"referenceComparisons\":87,\"currentSessionIndexDigestVerified\":true}\n",
+      "stderr": "",
+      "timeoutSeconds": 58
+    },
+    {
+      "label": "check-full",
+      "command": [
+        "research-env/bin/python",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/check_transfer.py",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/original-v23-v23.0.6.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/full-v23-v23.0.6.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/full-comparison.json"
+      ],
+      "startedUtc": "2026-10-26T21:11:33.343677+00:00",
+      "exitCode": 0,
+      "wallSeconds": 0.046055922997766174,
+      "cpuSeconds": 0.044458999999999735,
+      "maxRssKiB": 66568,
+      "stdout": "{\"status\": \"PASS\", \"kind\": \"recipient-integration-comparison-not-fresh-confirmation\", \"original\": \"agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/original-v23-v23.0.6.json\", \"transferred\": \"agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/full-v23-v23.0.6.json\", \"mode\": \"full\", \"changedTuples\": 0, \"checks\": [\"exact changed tuple set\", \"fact values\", \"source pointers\", \"old node count\", \"new node count\"], \"limitation\": \"Same-session independently reconstructed comparator; no external customer acceptance. Warning vocabularies differ and are not asserted equivalent.\"}\n",
+      "stderr": "",
+      "timeoutSeconds": 58
+    },
+    {
+      "label": "check-incremental",
+      "command": [
+        "research-env/bin/python",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/check_transfer.py",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/original-v23-v23.0.6.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/incremental-v23-v23.0.6.json",
+        "agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/incremental-comparison.json"
+      ],
+      "startedUtc": "2026-10-26T21:11:33.389976+00:00",
+      "exitCode": 0,
+      "wallSeconds": 0.04346077700029127,
+      "cpuSeconds": 0.04303500000000013,
+      "maxRssKiB": 66568,
+      "stdout": "{\"status\": \"PASS\", \"kind\": \"recipient-integration-comparison-not-fresh-confirmation\", \"original\": \"agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/original-v23-v23.0.6.json\", \"transferred\": \"agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/recipient/fresh/incremental-v23-v23.0.6.json\", \"mode\": \"incremental\", \"changedTuples\": 0, \"checks\": [\"exact changed tuple set\", \"fact values\", \"source pointers\", \"old node count\", \"new node count\"], \"limitation\": \"Same-session independently reconstructed comparator; no external customer acceptance. Warning vocabularies differ and are not asserted equivalent.\"}\n",
+      "stderr": "",
+      "timeoutSeconds": 58
+    }
+  ],
+  "independentOracle": "Campaign owner will assess normalized output; own comparison is integration evidence, not external proof.",
+  "reconstructionRule": "348.622070 second reconstruction and44.567875 second transfer integration charged once, never repeated per fresh delivery. Actual monetary totals unknown."
+}

@@ -1,0 +1,97 @@
+{
+  "archive": "/workspace/scratch/c4e9aee15454/deliverables/AGI_ALPHA_Flywheel_Evidence.zip",
+  "archive_sha256": "844d177cf3b9569bded09b35a7acebe0c4b4007b4745010f695d9d4de623f9f7",
+  "artifacts": [
+    {
+      "bytes": 0,
+      "path": "command-1.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 466,
+      "path": "command-1.stdout.txt",
+      "sha256": "d5321b69fe4b0997c71aa21bd499f953feb52b262490dd4e00e3216227fb7500"
+    },
+    {
+      "bytes": 0,
+      "path": "command-2.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 941,
+      "path": "command-2.stdout.txt",
+      "sha256": "9057283ad05babe4affab178542fb6b04309ca19d3c63164d00ba7f499e1fd59"
+    },
+    {
+      "bytes": 941,
+      "path": "development-acceptance.json",
+      "sha256": "9057283ad05babe4affab178542fb6b04309ca19d3c63164d00ba7f499e1fd59"
+    },
+    {
+      "bytes": 3768,
+      "path": "development-output/measurement.json",
+      "sha256": "4a0d63003cc51a9fc67ab82ab18edd40c46d9e07c00ec4bc18b3c5df4c1df3ca"
+    },
+    {
+      "bytes": 78491,
+      "path": "development-output/response-dossier.json",
+      "sha256": "ef4adc92aaed8a762a3e6f284f5a092e44ec024a8c002a1dd16d080036ff4e5d"
+    },
+    {
+      "bytes": 1463,
+      "path": "development-output/upgrade-review.md",
+      "sha256": "0a16bf0325e7855396fa82861b0eaac06b032791e91e884e9808694b96ebb0b6"
+    },
+    {
+      "bytes": 811102,
+      "path": "development-output/workbench-pack.json",
+      "sha256": "05c0c3040e9e34e96e6d04ea3af4e06a370c8af7cddd589536fdb14ca602955a"
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "node",
+        "src/run_service.mjs",
+        "inputs/discovery-docker-v25.0.0.json",
+        "inputs/discovery-docker-v26.0.0.json",
+        "/workspace/scratch/c4e9aee15454/deliverables/packaging-replay/development-output",
+        "full"
+      ],
+      "elapsed_seconds": 0.8013529329982703,
+      "exit_code": 0,
+      "stderr_path": "command-1.stderr.txt",
+      "stdout_path": "command-1.stdout.txt",
+      "timeout_seconds": 60,
+      "working_directory": "/tmp/agi-alpha-companion-development-b92dk4dx/studies/agi-alpha-work-discovery-v1"
+    },
+    {
+      "command": [
+        "python",
+        "tests/accept_dossier.py",
+        "inputs/discovery-docker-v25.0.0.json",
+        "inputs/discovery-docker-v26.0.0.json",
+        "/workspace/scratch/c4e9aee15454/deliverables/packaging-replay/development-output",
+        "--receipt",
+        "/workspace/scratch/c4e9aee15454/deliverables/packaging-replay/development-acceptance.json"
+      ],
+      "elapsed_seconds": 0.23216024599969387,
+      "exit_code": 0,
+      "stderr_path": "command-2.stderr.txt",
+      "stdout_path": "command-2.stdout.txt",
+      "timeout_seconds": 60,
+      "working_directory": "/tmp/agi-alpha-companion-development-b92dk4dx/studies/agi-alpha-work-discovery-v1"
+    }
+  ],
+  "created_at": "2026-10-26T21:48:34.049380+00:00",
+  "economic_campaign": "NOT_RERUN",
+  "experiment_denominators_unchanged": true,
+  "extraction_root": "/tmp/agi-alpha-companion-development-b92dk4dx",
+  "independent_acceptance": true,
+  "inputs": "Previously used development Moby v25.0.0 to v26.0.0; not fresh confirmation",
+  "primary_campaign": "NOT_RERUN",
+  "schema": "agi-alpha.work-discovery.companion-development-replay.v1",
+  "scope": "PACKAGING_DEVELOPMENT_REPLAY_NOT_EXPERIMENT",
+  "status": "PASS",
+  "transfer_campaign": "NOT_RERUN"
+}

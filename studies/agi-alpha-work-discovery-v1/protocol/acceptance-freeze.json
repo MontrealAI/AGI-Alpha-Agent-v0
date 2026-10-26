@@ -1,0 +1,56 @@
+{
+  "frozen_at": "2026-10-26T21:00:08.678069+00:00",
+  "scope": "Independent root-dossier acceptance adapter before primary inputs/outcomes",
+  "original_conventional_source_sha256": "245cbe8ba69b49862b9d56d5291862bab49f2f6cb1fb8a124939f69df677f4e4",
+  "producer_algorithms_seen": false,
+  "producer_development_outputs_seen": true,
+  "controls_passed": 20,
+  "files": [
+    {
+      "path": "tests/accept_dossier.py",
+      "sha256": "c3ad45c5155befc324bc36a339a2c47bdf0d1fee733ca962292a70014f155bab",
+      "bytes": 10951
+    },
+    {
+      "path": "tests/source_digests.mjs",
+      "sha256": "c532594468ac39ecce3bc0f5d0d383175903226f3bdf60af00121e2d02c6a37d",
+      "bytes": 654
+    },
+    {
+      "path": "tests/test_accept_dossier.py",
+      "sha256": "11733a9edb2d196f98cebeb3f1cc8dddc2ccba03259411727ecdc2945dbf5c9b",
+      "bytes": 7071
+    },
+    {
+      "path": "comparators/conventional/SOURCE_FREEZE.json",
+      "sha256": "245cbe8ba69b49862b9d56d5291862bab49f2f6cb1fb8a124939f69df677f4e4",
+      "bytes": 1514
+    },
+    {
+      "path": "evidence/acceptance-wrapper-controls.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/acceptance-wrapper-controls.stderr",
+      "sha256": "f4a6929caf7a4361e039009d74fdccdc75aa52fd60da6a1890861f54ace3e925",
+      "bytes": 2073
+    },
+    {
+      "path": "evidence/acceptance-wrapper-quality.json",
+      "sha256": "d6290c098f27477051ba817d14d87e1266e03679a76b9db3c5243a49976584b1",
+      "bytes": 988
+    }
+  ],
+  "limits": [
+    "Scientific same-session independence, not organizational reviewer authority",
+    "Inline GET path items; no path-item/operation reference discovery",
+    "Source inclusion and replay do not prove server behavior or market value"
+  ],
+  "pre_freeze_corrections": [
+    "Initial digest helper used a Promise file-descriptor API that rejected stdin; switched to standard synchronous stdin read before success",
+    "Missing-schema pointer aliases normalized between response parent and absent /schema location; changed schema pointer facts remain exact"
+  ],
+  "additional_authoring_monetary_cost": null,
+  "additional_authoring_wall_seconds": null
+}

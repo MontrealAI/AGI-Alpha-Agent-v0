@@ -1,0 +1,32 @@
+\begin{table}[htbp]\small
+\caption{All six locked API questions, including blocked deliveries. Counts are structural facts, not customer incidents.}
+\begin{tabularx}{\linewidth}{@{}p{0.28\linewidth}p{0.18\linewidth}p{0.12\linewidth}Y@{}}
+\toprule Question & Old / new nodes & Changes & Four-arm disposition\\ \midrule
+v20.10.0 $\rightarrow$ v23.0.0 & 2,233 / 2,341 & 489 & 4 / 4 scoped pass \\
+v23.0.0 $\rightarrow$ v24.0.0 & 2,341 / 2,343 & 8 & 4 / 4 scoped pass \\
+v24.0.0 $\rightarrow$ v25.0.0 & 2,343 / 2,408 & 70 & 4 / 4 scoped pass \\
+v26.0.0 $\rightarrow$ v27.0.0 & -- & -- & Source path 404; 0 / 4 delivered \\
+v27.0.0 $\rightarrow$ v28.0.0 & -- & -- & Source path 404; 0 / 4 delivered \\
+v28.0.0 $\rightarrow$ v29.0.0 & -- & -- & Source path 404; 0 / 4 delivered \\
+\bottomrule\end{tabularx}
+\end{table}
+
+The primary delivered three distinct dossiers, accepted in all four arms: 12 accepted arm/question
+outputs out of 24 planned. Three other questions were blocked by two locked source-path 404s.
+On available inputs, conditional technical acceptance was 12/12. The intent-to-deliver fraction
+was 12/24. These denominators answer different questions and are both retained.
+
+The REM packet covers 26 October--1 November 2026, in GTFS local service dates. Its original
+feed version is 20260520, with declared coverage through 31 December 2026. It contains three
+routes, 1,081 trip templates and 19,069 stop-time rows. The supported calendar expansion yields
+443 scheduled trip instances on each weekday, 323 on Saturday and 315 on Sunday: 2,853 in
+total. There are 21 route/date cells and seven daily groups in one delivery.
+
+The canonical MobilityData validator 8.0.1 reports zero errors, 1,565 warnings and one informational
+notice. Eighty-six independent SQLite reconciliation checks pass. The disposition is
+\textbf{SCOPED STRUCTURAL PASS}, with warnings retained for interpretation. This permits
+structural ingestion of the supplied snapshot within the declared scope; it does not certify
+real-time service or independently verify the timetable against actual operations.
+The external Java/Python stages and actual Workbench aggregation have 21.558 measured command
+wall seconds and 23.718 CPU seconds in total, excluding unmetered authoring and attention.
+The Workbench aggregation command contributes 0.115 wall seconds and 0.123 CPU seconds.

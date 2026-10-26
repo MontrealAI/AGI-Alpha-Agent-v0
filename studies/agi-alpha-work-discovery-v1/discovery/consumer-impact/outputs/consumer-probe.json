@@ -1,0 +1,52 @@
+{
+  "status": "SOURCE_BOUND_CONSUMER_RISK_REPRODUCED",
+  "source": "https://github.com/docker/compose/blob/1.29.2/compose/service.py",
+  "sourceSha256": "f2af8cb4a401d892f5d668122803b7e67d93c0be17f03c6f988cd4b74c22dcbb",
+  "function": "get_container_data_volumes",
+  "startLine": 1562,
+  "endLine": 1622,
+  "keyReadLine": 1579,
+  "callerLines": [
+    1547,
+    1548,
+    1549,
+    1550
+  ],
+  "extractedFunctionSha256": "ea0b7ff2a297f965f51c3dce5fb71573f161a3fa8583b07b60fef043850edfd8",
+  "functionModified": false,
+  "cases": [
+    {
+      "fixture": "legacy-field-present-empty-volumes",
+      "imageConfig": {
+        "ContainerConfig": {
+          "Volumes": {}
+        },
+        "Config": {
+          "Volumes": {}
+        }
+      },
+      "result": [
+        [],
+        false
+      ],
+      "error": null
+    },
+    {
+      "fixture": "documented-field-omitted-config-present",
+      "imageConfig": {
+        "Config": {
+          "Volumes": {}
+        }
+      },
+      "result": null,
+      "error": {
+        "type": "KeyError",
+        "key": "ContainerConfig"
+      }
+    }
+  ],
+  "scope": "Authentic unmodified function extracted by AST; empty volume/mount fixtures only. The original full module is not imported. No installed Compose, live Docker, server response capture, API negotiation or real recreation was executed.",
+  "inference": "If this legacy consumer path receives an ImageInspect result without ContainerConfig, it raises KeyError before returning volume bindings. Actual invocation/negotiation and a replacement Compose version require downstream staging checks.",
+  "wallSeconds": 0.015155062999838265,
+  "cpuSeconds": 0.015153745000000003
+}

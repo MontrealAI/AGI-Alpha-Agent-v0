@@ -1,0 +1,111 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Exercise one authentic extracted legacy consumer function with labeled fixtures.
+
+No Docker daemon, Compose installation, image pull or real container is invoked.
+The extracted function is not patched. This is a scoped exploratory diagnostic.
+"""
+
+from __future__ import annotations
+
+import ast
+import hashlib
+import json
+import time
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parent
+EXPECTED_SOURCE_SHA256 = "f2af8cb4a401d892f5d668122803b7e67d93c0be17f03c6f988cd4b74c22dcbb"
+
+
+class FixtureContainer:
+    """Provide only the exact source function's read-only container input surface."""
+
+    def __init__(self, image_config: dict[str, Any]) -> None:
+        self.image_config = image_config
+
+    def get(self, key: str) -> list[dict[str, Any]]:
+        """Return a labeled empty-mount fixture, never query a Docker service."""
+        if key != "Mounts":
+            raise AssertionError(f"Unexpected fixture access: {key}")
+        return []
+
+
+def main() -> None:
+    """Bind source identity, execute the extracted function, and preserve evidence."""
+    started = time.perf_counter()
+    cpu = time.process_time()
+    source = (ROOT / "inputs/service.py").read_bytes()
+    assert hashlib.sha256(source).hexdigest() == EXPECTED_SOURCE_SHA256
+    tree = ast.parse(source.decode(), filename="inputs/service.py")
+    function = next(
+        node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "get_container_data_volumes"
+    )
+    assert function.lineno == 1562
+    isolated = ast.Module(body=[function], type_ignores=[])
+    namespace: dict[str, Any] = {"__builtins__": {"set": set}}
+    exec(compile(isolated, "inputs/service.py", "exec"), namespace)
+    consumer = namespace[function.name]
+    cases: list[dict[str, Any]] = []
+    # Fixtures model only the documented field-presence distinction. They are
+    # not captured daemon responses or evidence that every Compose path fails.
+    fixtures: list[tuple[str, dict[str, Any]]] = [
+        ("legacy-field-present-empty-volumes", {"ContainerConfig": {"Volumes": {}}, "Config": {"Volumes": {}}}),
+        ("documented-field-omitted-config-present", {"Config": {"Volumes": {}}}),
+    ]
+    for label, config in fixtures:
+        try:
+            result = consumer(FixtureContainer(config), [], [], [])
+            row = {"fixture": label, "imageConfig": config, "result": result, "error": None}
+        except KeyError as error:
+            row = {
+                "fixture": label,
+                "imageConfig": config,
+                "result": None,
+                "error": {"type": "KeyError", "key": error.args[0]},
+            }
+        cases.append(row)
+    assert cases[0]["result"] == ([], False)
+    assert cases[1]["error"] == {"type": "KeyError", "key": "ContainerConfig"}
+    lines = source.decode().splitlines(keepends=True)
+    extracted = "".join(lines[function.lineno - 1 : function.end_lineno])
+    (ROOT / "outputs/extracted-get-container-data-volumes.py.txt").write_text(extracted)
+    result = {
+        "status": "SOURCE_BOUND_CONSUMER_RISK_REPRODUCED",
+        "source": "https://github.com/docker/compose/blob/1.29.2/compose/service.py",
+        "sourceSha256": EXPECTED_SOURCE_SHA256,
+        "function": function.name,
+        "startLine": function.lineno,
+        "endLine": function.end_lineno,
+        "keyReadLine": 1579,
+        "callerLines": [1547, 1548, 1549, 1550],
+        "extractedFunctionSha256": hashlib.sha256(extracted.encode()).hexdigest(),
+        "functionModified": False,
+        "cases": cases,
+        "scope": "Authentic unmodified function extracted by AST; empty volume/mount fixtures only. The original full module is not imported. No installed Compose, live Docker, server response capture, API negotiation or real recreation was executed.",
+        "inference": "If this legacy consumer path receives an ImageInspect result without ContainerConfig, it raises KeyError before returning volume bindings. Actual invocation/negotiation and a replacement Compose version require downstream staging checks.",
+        "wallSeconds": time.perf_counter() - started,
+        "cpuSeconds": time.process_time() - cpu,
+    }
+    (ROOT / "outputs/consumer-probe.json").write_text(json.dumps(result, indent=2) + "\n")
+    print(
+        json.dumps(
+            {
+                key: result[key]
+                for key in [
+                    "status",
+                    "sourceSha256",
+                    "startLine",
+                    "endLine",
+                    "keyReadLine",
+                    "cases",
+                    "wallSeconds",
+                    "cpuSeconds",
+                ]
+            }
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

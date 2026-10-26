@@ -1,0 +1,16 @@
+{
+  "status": "exploratory_delivery_protocol_before_canonical_results",
+  "date": "2026-10-26",
+  "family": "GTFS release qualification",
+  "input": "inputs/rem-20261026.zip",
+  "input_sha256": "9263a39e4dff0ee8d1ffb23bacb0884bad90e86cb44f80c6b0b3c7cd18d3b577",
+  "publisher": "Reseau express metropolitain",
+  "question": "Does this exact published REM feed meet canonical structural checks and declare usable route service for the local service dates 2026-10-26 through 2026-11-01, sufficient for a scoped schedule-ingestion decision?",
+  "deliverable": ["unchanged publisher archive", "canonical validator output", "route and date service evidence", "actionable release disposition", "source and license records", "full command and resource log"],
+  "acceptance": ["all input and tool identities recorded", "canonical validator execution completes or failure is an explicit HOLD", "no canonical ERROR is silently waived", "all seven requested local dates are enumerated with calendar exceptions applied", "every referenced route/service/stop is checked by the canonical validator", "scheduled-trip counts distinguish frequency templates from departures", "real-world timetable accuracy is unassessed", "no claim of customer purchase or publisher acceptance"],
+  "decision_rule": "HOLD if canonical ERROR, runtime failure, missing requested service coverage or ambiguous unsupported service representation; otherwise SCOPED-STRUCTURAL-PASS with warnings and residual checks explicit.",
+  "scope_limits": ["one current public feed, no old-version diff", "one publisher, no transfer confirmation", "no observed human-only execution", "existing canonical tool, no new general validation capability", "no live settlement or ENS authentication", "no real-time feed or vehicle data"],
+  "max_subprocess_seconds": 58,
+  "max_jvm_memory_mib": 1024,
+  "max_threads": 2
+}

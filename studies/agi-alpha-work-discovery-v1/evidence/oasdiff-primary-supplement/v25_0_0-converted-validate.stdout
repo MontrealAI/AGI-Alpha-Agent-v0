@@ -1,0 +1,177 @@
+14 findings: 0 error, 3 warning, 11 info
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: value must be a string
+	Schema:
+	  {
+	    "example": [
+	      "10.10.0.0/16",
+	      "20.20.0.0/16"
+	    ],
+	    "format": "CIDR",
+	    "type": "string"
+	  }
+
+	Value:
+	  [
+	    "10.10.0.0/16",
+	    "20.20.0.0/16"
+	  ]
+	 in schema "ClusterInfo"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: value must be an integer
+	Schema:
+	  {
+	    "description": "Date and time at which the image was created as a Unix timestamp\n(number of seconds sinds EPOCH).\n",
+	    "example": "1644009612",
+	    "type": "integer"
+	  }
+
+	Value:
+	  "1644009612"
+	 in schema "ImageSummary"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: value must be an integer
+	Schema:
+	  {
+	    "description": "Prefix length of the IPv6 unicast address.\n\nDeprecated: This field is never set and will be removed in a future release.\n",
+	    "example": "",
+	    "type": "integer"
+	  }
+
+	Value:
+	  ""
+	 in schema "NetworkSettings"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: Error at "/0/Settable": Value is not nullable
+	Schema:
+	  {
+	    "items": {
+	      "type": "string"
+	    },
+	    "type": "array"
+	  }
+
+	Value:
+	  null
+	 in schema "Plugin"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid allOf element: invalid example: value must be a string
+	Schema:
+	  {
+	    "example": [
+	      "10.10.0.0/16",
+	      "20.20.0.0/16"
+	    ],
+	    "format": "CIDR",
+	    "type": "string"
+	  }
+
+	Value:
+	  [
+	    "10.10.0.0/16",
+	    "20.20.0.0/16"
+	  ]
+	 in schema "Swarm"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: value must be a string
+	Schema:
+	  {
+	    "example": [
+	      "10.10.0.0/16",
+	      "20.20.0.0/16"
+	    ],
+	    "format": "CIDR",
+	    "type": "string"
+	  }
+
+	Value:
+	  [
+	    "10.10.0.0/16",
+	    "20.20.0.0/16"
+	  ]
+	 in schema "SwarmInfo"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: value must be an integer
+	Schema:
+	  {
+	    "description": "The network pool size",
+	    "example": "24",
+	    "type": "integer"
+	  }
+
+	Value:
+	  "24"
+	 in schema "SystemInfo"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: Error at "/hello": value must be an object
+	Schema:
+	  {
+	    "type": "object"
+	  }
+
+	Value:
+	  "world"
+	 in schema "Volume"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	invalid example: Error at "/hello": value must be an object
+	Schema:
+	  {
+	    "type": "object"
+	  }
+
+	Value:
+	  "world"
+	 in schema "VolumeListResponse"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	in API POST /containers/create
+		invalid example: doesn't match schema due to: Error at "/Entrypoint": value must be an array
+		Schema:
+		  {
+		    "description": "The entry point for the container as a string or an array of strings.\n\nIf the array consists of exactly one empty string (`[\"\"]`) then the\nentry point is reset to system default (i.e., the entry point used by\ndocker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).\n",
+		    "example": [],
+		    "items": {
+		      "type": "string"
+		    },
+		    "type": "array"
+		  }
+
+		Value:
+		  ""
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	in API POST /swarm/init
+		invalid example: value must be a string
+		Schema:
+		  {
+		    "example": [
+		      "10.10.0.0/16",
+		      "20.20.0.0/16"
+		    ],
+		    "type": "string"
+		  }
+
+		Value:
+		  [
+		    "10.10.0.0/16",
+		    "20.20.0.0/16"
+		  ]
+
+warning	[required-with-default] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	required property "Scope" has a default value, which is never used because a required property must always be present
+
+warning	[required-with-default] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	required property "Size" has a default value, which is never used because a required property must always be present
+
+warning	[required-with-default] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json
+	required property "RefCount" has a default value, which is never used because a required property must always be present
+
+

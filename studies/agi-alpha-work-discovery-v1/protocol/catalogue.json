@@ -1,0 +1,150 @@
+{
+  "schema": "agi-alpha.work-discovery-catalogue.v1",
+  "mode": "FIXTURE_ONLY",
+  "graphId": "response-assurance-study",
+  "policy": {
+    "version": 1,
+    "eligibleAttesters": "direct *.agent.agi.eth fixture delegates only",
+    "jobsValidatorsUnchanged": true,
+    "requireIndependentTechnicalReplay": true,
+    "executionAuthority": [],
+    "fixtureTimeIsNotUtc": true
+  },
+  "environment": {
+    "node": "24.22.1",
+    "language": "JavaScript",
+    "data": "public Swagger2 and scoped OpenAPI JSON"
+  },
+  "rights": {
+    "class": "public-nonpersonal",
+    "codeLicense": "Apache-2.0",
+    "inputLicense": "Apache-2.0"
+  },
+  "skills": [
+    {
+      "id": "response-index",
+      "version": "1",
+      "creator": "fixture:discovery-constructor",
+      "scope": {
+        "operation": "GET",
+        "statuses": "2xx",
+        "media": "application/json",
+        "output": "structural response changes with explicit exclusions",
+        "notClaimed": [
+          "live API compatibility",
+          "correctness outside enumerated schema subset",
+          "operating authority"
+        ]
+      },
+      "implementationFiles": [
+        {
+          "path": "src/schema_inventory.mjs",
+          "bytes": 12516,
+          "sha256": "880f08b6f62dae2e3f284cbe5790cd56c41c5f12167c7eca9642c4c3bd632302"
+        },
+        {
+          "path": "src/adapter.mjs",
+          "bytes": 3984,
+          "sha256": "a11ed7dbd4bd277c718cd06edbd505ae17135f8c1281652dbe57bce7d37947df"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "path": "evidence/acceptance-full.json",
+          "bytes": 949,
+          "sha256": "37eb36ba1ab7270d03080b8ba292a2dff2f8668582413b191a967c9190fea4a4"
+        },
+        {
+          "path": "outputs/preconfirmation-full/response-dossier.json",
+          "bytes": 78491,
+          "sha256": "ef4adc92aaed8a762a3e6f284f5a092e44ec024a8c002a1dd16d080036ff4e5d"
+        },
+        {
+          "path": "inputs/discovery-docker-v25.0.0.json",
+          "bytes": 311079,
+          "sha256": "7ca4f0989cec50c4f9d04e8a820763150e1938866d1413c2b0ea591883f403e9"
+        },
+        {
+          "path": "inputs/discovery-docker-v26.0.0.json",
+          "bytes": 311571,
+          "sha256": "297f3477209eeff4098d588055c2d244b1db287d38312140a69b37cf96b4d276"
+        }
+      ],
+      "compositionEvidenceFiles": [],
+      "dependencies": [],
+      "expiresAt": 700
+    },
+    {
+      "id": "incremental-response-index",
+      "version": "1",
+      "creator": "fixture:discovery-constructor",
+      "scope": {
+        "operation": "same scoped response index",
+        "reuse": "source-bound current-session index; dependency invalidation",
+        "performance": "must be remeasured per supported workload"
+      },
+      "implementationFiles": [
+        {
+          "path": "src/incremental_index.mjs",
+          "bytes": 91,
+          "sha256": "5ec253662018284cc9eef222f54d0e7184387eadaa1cca3a6accb4bf762e10f1"
+        },
+        {
+          "path": "src/schema_inventory.mjs",
+          "bytes": 12516,
+          "sha256": "880f08b6f62dae2e3f284cbe5790cd56c41c5f12167c7eca9642c4c3bd632302"
+        },
+        {
+          "path": "src/adapter.mjs",
+          "bytes": 3984,
+          "sha256": "a11ed7dbd4bd277c718cd06edbd505ae17135f8c1281652dbe57bce7d37947df"
+        }
+      ],
+      "evidenceFiles": [
+        {
+          "path": "evidence/acceptance-incremental.json",
+          "bytes": 948,
+          "sha256": "6799f46e0734b904db672be278597681808e2766a06a1fb6b664a1da9b0436c2"
+        },
+        {
+          "path": "outputs/preconfirmation-incremental/response-dossier.json",
+          "bytes": 78491,
+          "sha256": "99efd19ddc58c7d48994759264ec9b2a2da0a968c0c80a7b9d80c6eeea49dedf"
+        },
+        {
+          "path": "inputs/discovery-docker-v25.0.0.json",
+          "bytes": 311079,
+          "sha256": "7ca4f0989cec50c4f9d04e8a820763150e1938866d1413c2b0ea591883f403e9"
+        },
+        {
+          "path": "inputs/discovery-docker-v26.0.0.json",
+          "bytes": 311571,
+          "sha256": "297f3477209eeff4098d588055c2d244b1db287d38312140a69b37cf96b4d276"
+        }
+      ],
+      "compositionEvidenceFiles": [
+        {
+          "path": "evidence/schema-independent-final.txt",
+          "bytes": 2097,
+          "sha256": "70b3de56e0adda8a86ce4a25327a3c936f1d29e3036f7814b8d4a41ccc52b93e"
+        },
+        {
+          "path": "tests/schema-independent.test.mjs",
+          "bytes": 16243,
+          "sha256": "f784614bdba57be5133b707f28e2f6ff6e818d943bbcaeba92ce75a3c1fa28c0"
+        }
+      ],
+      "dependencies": [
+        "response-index@1"
+      ],
+      "expiresAt": 700
+    }
+  ],
+  "edges": [
+    {
+      "from": "response-index@1",
+      "to": "incremental-response-index@1",
+      "kind": "requires"
+    }
+  ]
+}

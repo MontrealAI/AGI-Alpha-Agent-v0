@@ -1,0 +1,115 @@
+# API response assurance / Vérification des réponses API
+
+Source: /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v27.5.1.json -> /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v28.0.0.json
+Structural changes / Changements structurels: 332
+Responses assessed / Réponses évaluées: 43 -> 43
+Unassessed scope records / Éléments hors portée: 453
+
+Decision: review the exact changed fields before upgrading consumers. No whole-API compatibility approval is issued.
+Décision : examiner les champs modifiés avant la mise à niveau des clients. Aucune approbation globale de compatibilité.
+
+- CHANGED: GET /containers/json 200 i:/p:Id
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:annotations/a:
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:annotations
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:artifactType
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:data
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:digest
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:mediaType
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:platform/p:architecture
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:platform/p:os
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:platform/p:os.features/i:
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:platform/p:os.features
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:platform/p:os.version
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:platform/p:variant
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:platform
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:size
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:urls/i:
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor/p:urls
+- ADDED: GET /containers/json 200 i:/p:ImageManifestDescriptor
+- CHANGED: GET /containers/json 200 i:/p:Mounts/i:/p:Type
+- ADDED: GET /containers/json 200 i:/p:NetworkSettings/p:Networks/a:/p:GwPriority
+- CHANGED: GET /containers/json 200 i:/p:SizeRootFs
+- CHANGED: GET /containers/json 200 i:/p:SizeRw
+- CHANGED: GET /containers/json 200 i:/p:State
+- CHANGED: GET /containers/{id}/json 200 p:Created
+- CHANGED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:LogConfig/p:Type
+- ADDED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:Mounts/i:/p:ImageOptions/p:Subpath
+- ADDED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:Mounts/i:/p:ImageOptions
+- CHANGED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:Mounts/i:/p:Type
+- CHANGED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:Runtime
+- CHANGED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:Sysctls
+- CHANGED: GET /containers/{id}/json 200 p:Id
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:annotations/a:
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:annotations
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:artifactType
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:data
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:digest
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:mediaType
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:platform/p:architecture
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:platform/p:os
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:platform/p:os.features/i:
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:platform/p:os.features
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:platform/p:os.version
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:platform/p:variant
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:platform
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:size
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:urls/i:
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor/p:urls
+- ADDED: GET /containers/{id}/json 200 p:ImageManifestDescriptor
+- CHANGED: GET /containers/{id}/json 200 p:LogPath
+- CHANGED: GET /containers/{id}/json 200 p:Mounts/i:/p:Type
+- ADDED: GET /containers/{id}/json 200 p:NetworkSettings/p:Networks/a:/p:GwPriority
+- CHANGED: GET /containers/{id}/json 200 p:SizeRootFs
+- CHANGED: GET /containers/{id}/json 200 p:SizeRw
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_merged_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_merged_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_merged_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_merged_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_merged_recursive/i:
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_merged_recursive
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_queue_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_queue_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_queue_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_queue_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_queue_recursive/i:
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_queue_recursive
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_bytes_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_bytes_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_bytes_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_bytes_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_bytes_recursive/i:
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_bytes_recursive
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_time_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_time_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_time_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_time_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_time_recursive/i:
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_service_time_recursive
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_serviced_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_serviced_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_serviced_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_serviced_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_serviced_recursive/i:
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_serviced_recursive
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_time_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_time_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_time_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_time_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_time_recursive/i:
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_time_recursive
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_wait_time_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_wait_time_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_wait_time_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_wait_time_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_wait_time_recursive/i:
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:io_wait_time_recursive
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:sectors_recursive/i:/p:major
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:sectors_recursive/i:/p:minor
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:sectors_recursive/i:/p:op
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:sectors_recursive/i:/p:value
+- ADDED: GET /containers/{id}/stats 200 p:blkio_stats/p:sectors_recursive/i:
+
+- Structural GET 2xx JSON schema surface assessment, not blanket compatibility certification.
+- Optional property removal is a review signal, not necessarily a contract violation.
+- Conjunction branch order may produce structural differences without semantic difference.
+- Server behavior, authentication, requests, default/error responses and client runtime are outside scope.

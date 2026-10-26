@@ -1,0 +1,109 @@
+{
+  "id": "primary-03-v24.0.0-to-v25.0.0-B",
+  "arm": "B",
+  "pair": [
+    "v24.0.0",
+    "v25.0.0"
+  ],
+  "order": 3,
+  "accepted": true,
+  "status": "ACCEPTED_SCOPED_RESEARCH_OUTPUT",
+  "processes": [
+    {
+      "command": [
+        "node",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/src/run_service.mjs",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v24.0.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v25.0.0.json",
+        "outputs/primary/primary-03-v24.0.0-to-v25.0.0-B/service",
+        "admitted-full"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:10:41.479834+00:00",
+      "executed": true,
+      "stdout": "production.stdout",
+      "stderr": "production.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 1.2535738739970839,
+      "processWallSeconds": 1.2463709139992716,
+      "cpuSeconds": 1.342862,
+      "maxRssKiB": 214428,
+      "finishedAt": "2026-10-26T21:10:42.733426+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tests/accept_dossier.py",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v24.0.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v25.0.0.json",
+        "outputs/primary/primary-03-v24.0.0-to-v25.0.0-B/service",
+        "--receipt",
+        "outputs/primary/primary-03-v24.0.0-to-v25.0.0-B/service/independent-acceptance.json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:10:42.733595+00:00",
+      "executed": true,
+      "stdout": "verification.stdout",
+      "stderr": "verification.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.27362347099915496,
+      "processWallSeconds": 0.26650861599773634,
+      "cpuSeconds": 0.279428,
+      "maxRssKiB": 48820,
+      "finishedAt": "2026-10-26T21:10:43.007237+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    }
+  ],
+  "actualHumanSeconds": null,
+  "actualCompleteMonetaryCost": null,
+  "summary": {
+    "oldResponses": 43,
+    "newResponses": 43,
+    "changedSurfaces": 70,
+    "unassessed": 355,
+    "mode": "full"
+  },
+  "acceptance": {
+    "accepted": true,
+    "actualHumanSeconds": null,
+    "actualMonetaryCost": null,
+    "changes": 70,
+    "conventionalSourceUnchanged": true,
+    "cpuSeconds": 0.229482764,
+    "dossierFiles": [
+      {
+        "path": "response-dossier.json",
+        "sha256": "fc3600d15b4bc2aa7d80fef5ee8ab99e6b4a47f377eeacade731e39e7505b806"
+      }
+    ],
+    "elapsedSeconds": 0.21380402199793025,
+    "inputRawSha256": [
+      "6912aefb045b7e3c03068c727c076c78ed3ad5151c49d59f9ab1ca54a7603216",
+      "76b2f2c7bf4f0b91d11f165239bede64679c4f07c80cb8887f38d0dabf0cb966"
+    ],
+    "newNodes": 2408,
+    "newResponses": 43,
+    "oldNodes": 2343,
+    "oldResponses": 43,
+    "scope": "Exhaustive independent response-surface and source-binding replay; not server or customer compatibility acceptance",
+    "sourceDigests": [
+      "22411608c7129c33daa9f692bca51f5fd7b4e36e6dc9c2fdcf05beeb34923ff5",
+      "a0fb48b55c91bbd1e7bf6a2b708f42cdd6f6dff4d5ac94fdf66cbf6ff1539340"
+    ],
+    "unassessed": true
+  },
+  "wallSeconds": 1.5277036400002544,
+  "cpuSeconds": 1.6489382589999977,
+  "maxProcessRssKiB": 214428,
+  "cpuAccounting": "outer driver self CPU plus waited-child CPU delta once; internal timing receipts are not added",
+  "sharedAcquisitionCpuSeconds": 0.22347468524999997,
+  "sharedAcquisitionWallSeconds": 0.2934824307499184,
+  "finishedAt": "2026-10-26T21:10:43.007515+00:00"
+}

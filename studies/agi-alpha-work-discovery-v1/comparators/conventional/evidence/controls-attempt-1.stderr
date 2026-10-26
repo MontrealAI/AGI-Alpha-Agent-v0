@@ -1,0 +1,31 @@
+test_array_map_conjunction (test_baseline.BaselineControls.test_array_map_conjunction) ... ok
+test_cycle (test_baseline.BaselineControls.test_cycle) ... ok
+test_duplicate_inventory_rejected (test_baseline.BaselineControls.test_duplicate_inventory_rejected) ... ok
+test_enum_reordering (test_baseline.BaselineControls.test_enum_reordering) ... ok
+test_external_reference (test_baseline.BaselineControls.test_external_reference) ... ok
+test_forged_provenance_rejected (test_baseline.BaselineControls.test_forged_provenance_rejected) ... ok
+test_hidden_unsupported_rejected (test_baseline.BaselineControls.test_hidden_unsupported_rejected) ... ok
+test_missing_reference (test_baseline.BaselineControls.test_missing_reference) ... ok
+test_omitted_change_rejected (test_baseline.BaselineControls.test_omitted_change_rejected) ... ok
+test_omitted_inventory_rejected (test_baseline.BaselineControls.test_omitted_inventory_rejected) ... ok
+test_ref_siblings_unassessed (test_baseline.BaselineControls.test_ref_siblings_unassessed) ... ok
+test_reference_relocation (test_baseline.BaselineControls.test_reference_relocation) ... ok
+test_source_json_portability (test_baseline.BaselineControls.test_source_json_portability) ... ERROR
+test_type_change (test_baseline.BaselineControls.test_type_change) ... ok
+test_union_unassessed (test_baseline.BaselineControls.test_union_unassessed) ... ok
+
+======================================================================
+ERROR: test_source_json_portability (test_baseline.BaselineControls.test_source_json_portability)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c4e9aee15454/research-inputs/api-baseline/test_baseline.py", line 106, in test_source_json_portability
+    self.assertTrue(verify(a, a, json.loads(json.dumps(make_dossier(a, a))))["accepted"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c4e9aee15454/research-inputs/api-baseline/verify_dossier.py", line 161, in verify
+    raise ValueError("INCOMPLETE_OR_FALSE_INVENTORY:" + label)
+ValueError: INCOMPLETE_OR_FALSE_INVENTORY:before
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.002s
+
+FAILED (errors=1)

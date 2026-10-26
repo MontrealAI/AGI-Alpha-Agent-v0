@@ -1,0 +1,1351 @@
+{
+  "schema": "successor-workbench/v1",
+  "spec": {
+    "family": "public-data",
+    "inputs": {
+      "csv": "group,amount\n2026-10-26,220\n2026-10-26,61\n2026-10-26,162\n2026-10-27,220\n2026-10-27,61\n2026-10-27,162\n2026-10-28,220\n2026-10-28,61\n2026-10-28,162\n2026-10-29,220\n2026-10-29,61\n2026-10-29,162\n2026-10-30,220\n2026-10-30,61\n2026-10-30,162\n2026-10-31,158\n2026-10-31,7\n2026-10-31,158\n2026-11-01,154\n2026-11-01,7\n2026-11-01,154\n",
+      "unit": "declared scheduled trip instances; not observed boardings"
+    },
+    "language": "en",
+    "name": "REM seven-day declared trip reconciliation",
+    "owner": "local-owner",
+    "reviewMinutes": 10,
+    "rights": {
+      "dataClass": "public",
+      "license": "CC BY 4.0; included __Licence.txt retained in upstream archive",
+      "source": "REM GTFS, https://gtfs.gpmmom.ca/gtfs/gtfs.zip; retained 2026-10-26 snapshot"
+    },
+    "schema": "successor-workbench/v1"
+  },
+  "createdAt": "2026-10-26T21:00:11.195Z",
+  "frozen": {
+    "schema": "successor-workbench/v1",
+    "missionDigest": "1bdc04493c2392a01982aa8f0bbf706a98f2d6f02fd021f49d09ca0ddb231dba",
+    "sourceHash": "f36f4c3fa45124901755bbb530a8161e98c164f5a66e9b8f932548f5286c93d7",
+    "adapter": "public-data",
+    "adapterVersion": 1,
+    "model": null,
+    "provider": null,
+    "authority": [],
+    "inputPolicy": {
+      "dataClass": "public",
+      "license": "CC BY 4.0; included __Licence.txt retained in upstream archive",
+      "source": "REM GTFS, https://gtfs.gpmmom.ca/gtfs/gtfs.zip; retained 2026-10-26 snapshot"
+    },
+    "reviewMinutes": 10
+  },
+  "releaseDigest": "0dc1f8ccfc2becd62cc5aafc1f50fa8f1d1b8f6df6589f24ba9e2c55ab41524f",
+  "compilation": {
+    "schemaVersion": "1.0.0",
+    "status": "SEALED",
+    "mode": "SYNTHETIC_REHEARSAL",
+    "constitution": {
+      "allowedActions": [
+        "inspect-local"
+      ],
+      "allowedTools": [
+        "fixed-workbench-public-data"
+      ],
+      "alternatives": [
+        {
+          "description": "Measured deterministic sort-and-reduce baseline; not a frontier AI comparator.",
+          "id": "alpha-beta",
+          "version": "successor-browser-v1"
+        }
+      ],
+      "authorityCeiling": {
+        "externalEffects": false,
+        "level": "A0",
+        "permittedActions": [
+          "inspect-local"
+        ],
+        "prohibitedActions": [
+          "send-payment",
+          "post-live-job",
+          "access-private-data",
+          "self-admit"
+        ]
+      },
+      "beneficiary": "Owner of this local synthetic mission",
+      "budget": {
+        "limitBaseUnits": "0",
+        "maxDurationMs": 60000,
+        "maxJobs": 7,
+        "maxRetries": 0,
+        "unit": "AGIALPHA"
+      },
+      "criticalFunctions": [
+        "mission-constitution",
+        "incumbent-baseline",
+        "alternative-set",
+        "rights-data",
+        "mission-gym",
+        "oracle-teacher",
+        "failure-taxonomy",
+        "architecture-frontier",
+        "experience-formation",
+        "specialist-formation",
+        "tools-retrieval",
+        "verifier-formation",
+        "security-privacy",
+        "complete-economics",
+        "human-agency",
+        "resilience-rollback",
+        "fresh-evaluation",
+        "independent-validation",
+        "accountable-acceptance",
+        "chronicle-authority",
+        "capital-requalification"
+      ],
+      "expiresAt": "2026-11-02T21:00:11.195Z",
+      "hardGates": [
+        {
+          "description": "All grouped counts and durations agree exactly.",
+          "id": "exact-output",
+          "maxViolations": 0
+        },
+        {
+          "description": "Malformed and unsupported records are rejected.",
+          "id": "invalid-input",
+          "maxViolations": 0
+        },
+        {
+          "description": "No network request, live job, payment or authority grant.",
+          "id": "no-external-effect",
+          "maxViolations": 0
+        }
+      ],
+      "incumbent": {
+        "description": "Measured one-pass Map baseline.",
+        "id": "alpha-current",
+        "version": "successor-browser-v1"
+      },
+      "institutionId": "local-successor-workshop",
+      "kind": "MissionConstitution",
+      "missionId": "work-1bdc04493c2392a01982aa8f",
+      "objective": "Public or synthetic two-column CSV with exact integer amounts.",
+      "principal": "example-human-principal",
+      "proofProtocol": {
+        "criticalErrorCeiling": 0,
+        "custodian": "example-verifier",
+        "formationOwner": "example-producer",
+        "id": "public-local-rehearsal",
+        "minimumMargin": 0,
+        "mode": "SYNTHETIC_REHEARSAL",
+        "requiredIndependence": "I0",
+        "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+        "version": "1"
+      },
+      "rights": [
+        {
+          "dataClass": "public-licensed-nonpersonal",
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "license": "CC BY 4.0; included __Licence.txt retained in upstream archive",
+          "permittedUses": [
+            "mission-evaluation",
+            "fixture-export"
+          ],
+          "sourceId": "mission-input"
+        }
+      ],
+      "roles": {
+        "acceptor": "example-acceptor",
+        "admitter": "example-admitter",
+        "producer": "example-producer",
+        "verifier": "example-verifier"
+      },
+      "rollback": {
+        "available": true,
+        "reason": "Discard the local candidate and return to the retained fixed baseline.",
+        "target": "alpha-current"
+      },
+      "schemaVersion": "1.0.0",
+      "title": "REM seven-day declared trip reconciliation",
+      "version": "1"
+    },
+    "graph": {
+      "authorityCreated": "NONE",
+      "edges": [
+        {
+          "from": "work-1bdc04493c2392a01982aa8f:constitution",
+          "kind": "evidence",
+          "to": "work-1bdc04493c2392a01982aa8f:evidence"
+        },
+        {
+          "from": "work-1bdc04493c2392a01982aa8f:evidence",
+          "kind": "evidence",
+          "to": "work-1bdc04493c2392a01982aa8f:formation"
+        },
+        {
+          "from": "work-1bdc04493c2392a01982aa8f:formation",
+          "kind": "evidence",
+          "to": "work-1bdc04493c2392a01982aa8f:challenge"
+        },
+        {
+          "from": "work-1bdc04493c2392a01982aa8f:challenge",
+          "kind": "evidence",
+          "to": "work-1bdc04493c2392a01982aa8f:verification"
+        },
+        {
+          "from": "work-1bdc04493c2392a01982aa8f:verification",
+          "kind": "evidence",
+          "to": "work-1bdc04493c2392a01982aa8f:admission"
+        },
+        {
+          "from": "work-1bdc04493c2392a01982aa8f:admission",
+          "kind": "evidence",
+          "to": "work-1bdc04493c2392a01982aa8f:renewal"
+        }
+      ],
+      "graphId": "work-1bdc04493c2392a01982aa8f:graph",
+      "kind": "JobGraph",
+      "missionId": "work-1bdc04493c2392a01982aa8f",
+      "nodes": [
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-02T21:00:11.195Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Public or synthetic two-column CSV with exact integer amounts."
+          },
+          "covers": [
+            "mission-constitution",
+            "alternative-set",
+            "rights-data",
+            "human-agency"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "family": "constitution",
+          "jobId": "work-1bdc04493c2392a01982aa8f:constitution",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-1bdc04493c2392a01982aa8f",
+          "objective": "Freeze objective, beneficiary, accountable principal, hard constraints and prohibitions. Document the strongest credible frontier, specialist, human, hybrid, software and no-action alternatives. Establish source provenance, licenses, retention, exclusions and permitted reuse. Define reviewer capacity, escalation, contestability and accountable decision rights.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-public-data"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:68dc3cb2cb27a9463331211c895e1737d0fd98d62f30bbc88b41500a9b2bc284"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-1bdc04493c2392a01982aa8f:constitution"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-02T21:00:11.195Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Public or synthetic two-column CSV with exact integer amounts."
+          },
+          "covers": [
+            "incumbent-baseline",
+            "oracle-teacher",
+            "complete-economics"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "family": "evidence",
+          "jobId": "work-1bdc04493c2392a01982aa8f:evidence",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-1bdc04493c2392a01982aa8f",
+          "objective": "Measure accepted quality, complete cost, risk, time, human burden and authority. Declare external teaching signals, hidden-call prohibition and transfer hypothesis. Count construction, operation, human rescue, maintenance, requalification and unwind.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-public-data"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:01e7e3584c397e617b887b111248b65a80725212cc56fc6462ffad189e94c377"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-1bdc04493c2392a01982aa8f:evidence"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-02T21:00:11.195Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Public or synthetic two-column CSV with exact integer amounts."
+          },
+          "covers": [
+            "mission-gym",
+            "architecture-frontier",
+            "experience-formation",
+            "specialist-formation",
+            "tools-retrieval"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "family": "formation",
+          "jobId": "work-1bdc04493c2392a01982aa8f:formation",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-1bdc04493c2392a01982aa8f",
+          "objective": "Specify states, observations, actions, transitions, rewards, constraints, partitions, verifier and basis risk; freeze representative distribution, protected custody, critical failures and thresholds. Form diverse complete candidates and retain non-dominated reserve options. Build rights-cleared examples and simulation experience with explicit quality controls. Construct or adapt candidate components with exact immutable release identities. Build bounded deterministic checks, retrieval, planners, sandboxes and interfaces.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-public-data"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:df247743e23a1fc866f3e01aa656416569458358d73adc5961075eefe2b22d64"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Classify errors, severity, causes, abstention, adversarial cases and stop conditions."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-1bdc04493c2392a01982aa8f:formation"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-02T21:00:11.195Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Public or synthetic two-column CSV with exact integer amounts."
+          },
+          "covers": [
+            "failure-taxonomy"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "family": "challenge",
+          "jobId": "work-1bdc04493c2392a01982aa8f:challenge",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-1bdc04493c2392a01982aa8f",
+          "objective": "Classify errors, severity, causes, abstention, adversarial cases and stop conditions.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-public-data"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:e973cef24ad2cb000422bacc35eee3d77b1564bedbd0faa7adbeb26960af4769"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-1bdc04493c2392a01982aa8f:challenge"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-02T21:00:11.195Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Public or synthetic two-column CSV with exact integer amounts."
+          },
+          "covers": [
+            "verifier-formation",
+            "security-privacy",
+            "resilience-rollback",
+            "fresh-evaluation",
+            "independent-validation"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "family": "verification",
+          "jobId": "work-1bdc04493c2392a01982aa8f:verification",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-1bdc04493c2392a01982aa8f",
+          "objective": "Calibrate independent evaluation, replay, attacks, hidden ground truth and scoring. Test credential controls, isolation, threat model, incidents and provider risks. Prove graceful degradation, kill switch, portability and known-good restoration. Evaluate one frozen challenger on unseen representative work with full intervention costs. Independently examine evidence, limitations, critical errors, basis risk and fit for stated purpose.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-public-data"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:1d937ab03fc25c1b9ab445c6f1da3f45afbc7d6877e9f928f16d5c7a9305d8c1"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-1bdc04493c2392a01982aa8f:verification"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-02T21:00:11.195Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Public or synthetic two-column CSV with exact integer amounts."
+          },
+          "covers": [
+            "accountable-acceptance",
+            "chronicle-authority"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "family": "admission",
+          "jobId": "work-1bdc04493c2392a01982aa8f:admission",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-1bdc04493c2392a01982aa8f",
+          "objective": "Record the attributable purpose-specific acceptance decision separately from independent validation and authority admission. Record separate knowledge and authority decisions, scope, expiry, monitoring and revocation.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-public-data"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:a074023f832eba63b7288310dbb9ef0b48a8044e0a7abc0e4ce1c4b9e60d649a"
+        },
+        {
+          "acceptance": {
+            "evidenceSources": [
+              "mission-input"
+            ],
+            "owner": "example-acceptor",
+            "predicate": "Review the exact input, delivered artifacts and retained failures for: Allocate verified available value and define next-successor and fresh-transfer triggers."
+          },
+          "actor": "example-producer",
+          "authorizedInputs": [
+            "mission-input",
+            "work-1bdc04493c2392a01982aa8f:admission"
+          ],
+          "budget": {
+            "limitBaseUnits": "0",
+            "maxDurationMs": 60000,
+            "maxRetries": 0,
+            "unit": "AGIALPHA"
+          },
+          "chronicle": {
+            "eligible": false,
+            "expiresAt": "2026-11-02T21:00:11.195Z",
+            "rights": "Requires a separate rights and admission review.",
+            "scope": "Public or synthetic two-column CSV with exact integer amounts."
+          },
+          "covers": [
+            "capital-requalification"
+          ],
+          "evidenceObligation": [
+            "source-lineage",
+            "complete-cost",
+            "failure-record"
+          ],
+          "expiresAt": "2026-11-02T21:00:11.195Z",
+          "family": "renewal",
+          "jobId": "work-1bdc04493c2392a01982aa8f:renewal",
+          "kind": "SealedWorkOrder",
+          "missionId": "work-1bdc04493c2392a01982aa8f",
+          "objective": "Allocate verified available value and define next-successor and fresh-transfer triggers.",
+          "outputSchema": {
+            "required": [
+              "evidence",
+              "findings",
+              "cost"
+            ],
+            "type": "object"
+          },
+          "permittedActions": [
+            "inspect-local"
+          ],
+          "permittedTools": [
+            "fixed-workbench-public-data"
+          ],
+          "principal": "example-human-principal",
+          "prohibitedActions": [
+            "send-payment",
+            "post-live-job",
+            "access-private-data",
+            "self-admit"
+          ],
+          "rollback": {
+            "available": true,
+            "reason": "Discard the local candidate and return to the retained fixed baseline.",
+            "target": "alpha-current"
+          },
+          "schemaVersion": "1.0.0",
+          "state": "DRAFT",
+          "verifier": {
+            "identity": "example-verifier",
+            "independence": "I0",
+            "method": "Independent examination against frozen purpose-specific criteria; template is not executed proof."
+          },
+          "version": "1",
+          "sealed": true,
+          "signatureStatus": "UNSIGNED_COMMITMENT",
+          "digest": "sha256:6475d46bd1dc01f01bb82bf57caa160f8da8b258b0ec0fad049cad4461a5948c"
+        }
+      ],
+      "schemaVersion": "1.0.0",
+      "version": "1",
+      "digest": "sha256:770c3acb85089f41a2519a7c063926f39385f97888ef254fdf65282aa9187437"
+    },
+    "executionOrder": [
+      "work-1bdc04493c2392a01982aa8f:constitution",
+      "work-1bdc04493c2392a01982aa8f:evidence",
+      "work-1bdc04493c2392a01982aa8f:formation",
+      "work-1bdc04493c2392a01982aa8f:challenge",
+      "work-1bdc04493c2392a01982aa8f:verification",
+      "work-1bdc04493c2392a01982aa8f:admission",
+      "work-1bdc04493c2392a01982aa8f:renewal"
+    ],
+    "coverage": [
+      {
+        "functionId": "mission-constitution",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "incumbent-baseline",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:evidence"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "alternative-set",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "rights-data",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "mission-gym",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "oracle-teacher",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:evidence"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "failure-taxonomy",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:challenge"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "architecture-frontier",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "experience-formation",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "specialist-formation",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "tools-retrieval",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "verifier-formation",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "security-privacy",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "complete-economics",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:evidence"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "human-agency",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "resilience-rollback",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "fresh-evaluation",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "independent-validation",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "accountable-acceptance",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:admission"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "chronicle-authority",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:admission"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      },
+      {
+        "functionId": "capital-requalification",
+        "jobIds": [
+          "work-1bdc04493c2392a01982aa8f:renewal"
+        ],
+        "status": "PLANNED_NOT_ACCEPTED"
+      }
+    ],
+    "criticalEvidenceCuts": [
+      {
+        "functionId": "mission-constitution",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "incumbent-baseline",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:evidence"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "alternative-set",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "rights-data",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "mission-gym",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "oracle-teacher",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:evidence"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "failure-taxonomy",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:challenge"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "architecture-frontier",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "experience-formation",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "specialist-formation",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "tools-retrieval",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:formation"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "verifier-formation",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "security-privacy",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "complete-economics",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:evidence"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "human-agency",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:constitution"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "resilience-rollback",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "fresh-evaluation",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "independent-validation",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:verification"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "accountable-acceptance",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:admission"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "chronicle-authority",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:admission"
+        ],
+        "exhaustive": false
+      },
+      {
+        "functionId": "capital-requalification",
+        "removeJobIds": [
+          "work-1bdc04493c2392a01982aa8f:renewal"
+        ],
+        "exhaustive": false
+      }
+    ],
+    "budgetReservations": {
+      "unit": "AGIALPHA",
+      "reservedBaseUnits": "0",
+      "limitBaseUnits": "0",
+      "includesRetries": true
+    },
+    "dependencyMap": {
+      "work-1bdc04493c2392a01982aa8f:constitution": [],
+      "work-1bdc04493c2392a01982aa8f:evidence": [
+        {
+          "jobId": "work-1bdc04493c2392a01982aa8f:constitution",
+          "kind": "evidence"
+        }
+      ],
+      "work-1bdc04493c2392a01982aa8f:formation": [
+        {
+          "jobId": "work-1bdc04493c2392a01982aa8f:evidence",
+          "kind": "evidence"
+        }
+      ],
+      "work-1bdc04493c2392a01982aa8f:challenge": [
+        {
+          "jobId": "work-1bdc04493c2392a01982aa8f:formation",
+          "kind": "evidence"
+        }
+      ],
+      "work-1bdc04493c2392a01982aa8f:verification": [
+        {
+          "jobId": "work-1bdc04493c2392a01982aa8f:challenge",
+          "kind": "evidence"
+        }
+      ],
+      "work-1bdc04493c2392a01982aa8f:admission": [
+        {
+          "jobId": "work-1bdc04493c2392a01982aa8f:verification",
+          "kind": "evidence"
+        }
+      ],
+      "work-1bdc04493c2392a01982aa8f:renewal": [
+        {
+          "jobId": "work-1bdc04493c2392a01982aa8f:admission",
+          "kind": "evidence"
+        }
+      ]
+    },
+    "invalidationMap": {
+      "mission-input": [
+        "work-1bdc04493c2392a01982aa8f:constitution",
+        "work-1bdc04493c2392a01982aa8f:evidence",
+        "work-1bdc04493c2392a01982aa8f:formation",
+        "work-1bdc04493c2392a01982aa8f:challenge",
+        "work-1bdc04493c2392a01982aa8f:verification",
+        "work-1bdc04493c2392a01982aa8f:admission",
+        "work-1bdc04493c2392a01982aa8f:renewal"
+      ],
+      "work-1bdc04493c2392a01982aa8f:constitution": [
+        "work-1bdc04493c2392a01982aa8f:evidence"
+      ],
+      "work-1bdc04493c2392a01982aa8f:evidence": [
+        "work-1bdc04493c2392a01982aa8f:formation"
+      ],
+      "work-1bdc04493c2392a01982aa8f:formation": [
+        "work-1bdc04493c2392a01982aa8f:challenge"
+      ],
+      "work-1bdc04493c2392a01982aa8f:challenge": [
+        "work-1bdc04493c2392a01982aa8f:verification"
+      ],
+      "work-1bdc04493c2392a01982aa8f:verification": [
+        "work-1bdc04493c2392a01982aa8f:admission"
+      ],
+      "work-1bdc04493c2392a01982aa8f:admission": [
+        "work-1bdc04493c2392a01982aa8f:renewal"
+      ],
+      "work-1bdc04493c2392a01982aa8f:renewal": []
+    },
+    "capabilityRequests": [
+      {
+        "jobId": "work-1bdc04493c2392a01982aa8f:constitution",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-public-data"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-1bdc04493c2392a01982aa8f:evidence",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-public-data"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-1bdc04493c2392a01982aa8f:formation",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-public-data"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-1bdc04493c2392a01982aa8f:challenge",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-public-data"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-1bdc04493c2392a01982aa8f:verification",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-public-data"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-1bdc04493c2392a01982aa8f:admission",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-public-data"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      },
+      {
+        "jobId": "work-1bdc04493c2392a01982aa8f:renewal",
+        "actor": "example-producer",
+        "tools": [
+          "fixed-workbench-public-data"
+        ],
+        "actions": [
+          "inspect-local"
+        ],
+        "status": "REQUESTED_NOT_GRANTED"
+      }
+    ],
+    "evaluationPlan": {
+      "criticalErrorCeiling": 0,
+      "custodian": "example-verifier",
+      "formationOwner": "example-producer",
+      "id": "public-local-rehearsal",
+      "minimumMargin": 0,
+      "mode": "SYNTHETIC_REHEARSAL",
+      "requiredIndependence": "I0",
+      "scope": "Public synthetic cases in one process; no independent proof, mission alpha or operational admission.",
+      "version": "1"
+    },
+    "authorityCreated": "NONE",
+    "signatureStatus": "UNSIGNED_COMMITMENT",
+    "digest": "sha256:066a074ef93cd7af591e44a145fa1955ad249af5b21f397205bfe1a011c999b3"
+  },
+  "result": {
+    "decision": "REPORT_READY_FOR_REVIEW",
+    "summary": {
+      "rows": 21,
+      "groups": 7,
+      "total": 2853,
+      "unit": "declared scheduled trip instances; not observed boardings"
+    },
+    "evidence": {
+      "groups": [
+        {
+          "group": "2026-10-26",
+          "count": 3,
+          "total": 443,
+          "min": 61,
+          "max": 220
+        },
+        {
+          "group": "2026-10-27",
+          "count": 3,
+          "total": 443,
+          "min": 61,
+          "max": 220
+        },
+        {
+          "group": "2026-10-28",
+          "count": 3,
+          "total": 443,
+          "min": 61,
+          "max": 220
+        },
+        {
+          "group": "2026-10-29",
+          "count": 3,
+          "total": 443,
+          "min": 61,
+          "max": 220
+        },
+        {
+          "group": "2026-10-30",
+          "count": 3,
+          "total": 443,
+          "min": 61,
+          "max": 220
+        },
+        {
+          "group": "2026-10-31",
+          "count": 3,
+          "total": 323,
+          "min": 7,
+          "max": 158
+        },
+        {
+          "group": "2026-11-01",
+          "count": 3,
+          "total": 315,
+          "min": 7,
+          "max": 154
+        }
+      ],
+      "reconciled": true
+    },
+    "artifacts": [
+      {
+        "name": "report.html",
+        "type": "text/html",
+        "content": "<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width\"><title>SUCCESSOR data report</title><style>body{font:18px system-ui;max-width:60rem;margin:3rem auto;padding:1rem}td,th{padding:.6rem;text-align:left;border-bottom:1px solid #aaa}table{border-collapse:collapse}</style><h1>Public-data report</h1><p>21 rows · declared scheduled trip instances; not observed boardings · exact total 2853</p><table><thead><tr><th>Group</th><th>Count</th><th>Total</th><th>Minimum</th><th>Maximum</th></tr></thead><tbody><tr><td>2026-10-26</td><td>3</td><td>443</td><td>61</td><td>220</td></tr><tr><td>2026-10-27</td><td>3</td><td>443</td><td>61</td><td>220</td></tr><tr><td>2026-10-28</td><td>3</td><td>443</td><td>61</td><td>220</td></tr><tr><td>2026-10-29</td><td>3</td><td>443</td><td>61</td><td>220</td></tr><tr><td>2026-10-30</td><td>3</td><td>443</td><td>61</td><td>220</td></tr><tr><td>2026-10-31</td><td>3</td><td>323</td><td>7</td><td>158</td></tr><tr><td>2026-11-01</td><td>3</td><td>315</td><td>7</td><td>154</td></tr></tbody></table><p>Descriptive results for the supplied data only. Coverage and causal interpretation require review.</p></html>",
+        "digest": "f34da874d168ba54e89d9f272e8f1c881ad1395845855d6ec6a5ec100b5cd061"
+      },
+      {
+        "name": "summary.csv",
+        "type": "text/csv",
+        "content": "group,count,total,min,max\n\"2026-10-26\",3,443,61,220\n\"2026-10-27\",3,443,61,220\n\"2026-10-28\",3,443,61,220\n\"2026-10-29\",3,443,61,220\n\"2026-10-30\",3,443,61,220\n\"2026-10-31\",3,323,7,158\n\"2026-11-01\",3,315,7,154\n",
+        "digest": "2c7c4822277ab509b245ed035d2a2fed65054b7f5e768a7068cc3f3eb9cfa574"
+      },
+      {
+        "name": "analysis.json",
+        "type": "application/json",
+        "content": "{\n  \"total\": 2853,\n  \"groups\": [\n    {\n      \"group\": \"2026-10-26\",\n      \"count\": 3,\n      \"total\": 443,\n      \"min\": 61,\n      \"max\": 220\n    },\n    {\n      \"group\": \"2026-10-27\",\n      \"count\": 3,\n      \"total\": 443,\n      \"min\": 61,\n      \"max\": 220\n    },\n    {\n      \"group\": \"2026-10-28\",\n      \"count\": 3,\n      \"total\": 443,\n      \"min\": 61,\n      \"max\": 220\n    },\n    {\n      \"group\": \"2026-10-29\",\n      \"count\": 3,\n      \"total\": 443,\n      \"min\": 61,\n      \"max\": 220\n    },\n    {\n      \"group\": \"2026-10-30\",\n      \"count\": 3,\n      \"total\": 443,\n      \"min\": 61,\n      \"max\": 220\n    },\n    {\n      \"group\": \"2026-10-31\",\n      \"count\": 3,\n      \"total\": 323,\n      \"min\": 7,\n      \"max\": 158\n    },\n    {\n      \"group\": \"2026-11-01\",\n      \"count\": 3,\n      \"total\": 315,\n      \"min\": 7,\n      \"max\": 154\n    }\n  ]\n}\n",
+        "digest": "e2fed19a7265beff0dff279140732beba46b61f71d0047f6a0644b89b480a227"
+      }
+    ],
+    "limits": [
+      "Exact descriptive arithmetic does not establish population coverage or causality.",
+      "CSV labels are escaped against formula interpretation; the source remains in the mission specification."
+    ]
+  },
+  "economics": {
+    "elapsedMilliseconds": 21,
+    "providerSpendBaseUnits": "0",
+    "settlementSpendBaseUnits": "0",
+    "computeCost": null,
+    "humanMinutes": null,
+    "reviewCapacityMinutes": 10,
+    "allowanceIs": "UNFUNDED"
+  },
+  "evaluation": {
+    "scope": "PUBLIC_LOCAL_EXECUTION",
+    "independentProof": false,
+    "admission": "HOLD",
+    "authority": [],
+    "settlement": "NOT_CONNECTED"
+  },
+  "chronicle": [
+    {
+      "kind": "local-result",
+      "decision": "REPORT_READY_FOR_REVIEW",
+      "missionDigest": "1bdc04493c2392a01982aa8f0bbf706a98f2d6f02fd021f49d09ca0ddb231dba",
+      "releaseDigest": "0dc1f8ccfc2becd62cc5aafc1f50fa8f1d1b8f6df6589f24ba9e2c55ab41524f",
+      "inheritedProof": false,
+      "inheritedAuthority": false
+    }
+  ],
+  "integrityDigest": "1f981a07d42c9fc05c52f17c12ecb57162fb4900a37daddef0f56e21c2af70f4"
+}

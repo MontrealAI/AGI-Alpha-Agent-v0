@@ -1,0 +1,122 @@
+{
+  "schema": "independent-primary-review/v1",
+  "status": "PASS_SCOPED_RECONCILIATION",
+  "startedAt": "2026-10-26T21:17:41.064389+00:00",
+  "completedAt": "2026-10-26T21:17:41.150039+00:00",
+  "campaignSha256": "d359508d9db2642d09555734127b94591914b88fb2afd4f96c07456e83b87b1c",
+  "reviewSourceSha256": "38f930854450ac9a8a1de34125c2c0660de54a80756da9424b9f68b7eaf40319",
+  "frozenSourceCheck": {
+    "sha256": "f422f5c88283852dda8157d766fe5c70c0e0b9197297c8136924ea5b580bdd34",
+    "files": 61,
+    "checkedAt": "2026-10-26T21:17:41.072324+00:00",
+    "accepted": true
+  },
+  "plannedRecords": 24,
+  "pairResults": [
+    {
+      "pair": [
+        "v20.10.0",
+        "v23.0.0"
+      ],
+      "status": "EXACT_FOUR_ARM_SCOPED_FACT_AND_PROVENANCE_MATCH",
+      "changes": 489,
+      "beforeNodes": 2233,
+      "afterNodes": 2341,
+      "wholeRuntimeCompatibility": "UNASSESSED"
+    },
+    {
+      "pair": [
+        "v23.0.0",
+        "v24.0.0"
+      ],
+      "status": "EXACT_FOUR_ARM_SCOPED_FACT_AND_PROVENANCE_MATCH",
+      "changes": 8,
+      "beforeNodes": 2341,
+      "afterNodes": 2343,
+      "wholeRuntimeCompatibility": "UNASSESSED"
+    },
+    {
+      "pair": [
+        "v24.0.0",
+        "v25.0.0"
+      ],
+      "status": "EXACT_FOUR_ARM_SCOPED_FACT_AND_PROVENANCE_MATCH",
+      "changes": 70,
+      "beforeNodes": 2343,
+      "afterNodes": 2408,
+      "wholeRuntimeCompatibility": "UNASSESSED"
+    },
+    {
+      "pair": [
+        "v26.0.0",
+        "v27.0.0"
+      ],
+      "status": "SOURCE_BLOCKED_ALL_FOUR_ARMS",
+      "attemptedExecutableDeliveries": 0
+    },
+    {
+      "pair": [
+        "v27.0.0",
+        "v28.0.0"
+      ],
+      "status": "SOURCE_BLOCKED_ALL_FOUR_ARMS",
+      "attemptedExecutableDeliveries": 0
+    },
+    {
+      "pair": [
+        "v28.0.0",
+        "v29.0.0"
+      ],
+      "status": "SOURCE_BLOCKED_ALL_FOUR_ARMS",
+      "attemptedExecutableDeliveries": 0
+    }
+  ],
+  "arms": {
+    "A": {
+      "planned": 6,
+      "accepted": 3,
+      "conditionalAccepted": 3,
+      "conditionalAttempted": 3,
+      "cpuSecondsAllCases": 1.274743440000004,
+      "cpuSecondsPerAcceptedIncludingFailures": 0.4249144800000013,
+      "sharedAcquisitionCpuSeconds": 0.8371715435833333
+    },
+    "B": {
+      "planned": 6,
+      "accepted": 3,
+      "conditionalAccepted": 3,
+      "conditionalAttempted": 3,
+      "cpuSecondsAllCases": 4.658205957999996,
+      "cpuSecondsPerAcceptedIncludingFailures": 1.5527353193333322,
+      "sharedAcquisitionCpuSeconds": 0.8371715435833333
+    },
+    "C": {
+      "planned": 6,
+      "accepted": 3,
+      "conditionalAccepted": 3,
+      "conditionalAttempted": 3,
+      "cpuSecondsAllCases": 5.304752934,
+      "cpuSecondsPerAcceptedIncludingFailures": 1.768250978,
+      "sharedAcquisitionCpuSeconds": 0.8371715435833333
+    },
+    "D": {
+      "planned": 6,
+      "accepted": 3,
+      "conditionalAccepted": 3,
+      "conditionalAttempted": 3,
+      "cpuSecondsAllCases": 4.863662576,
+      "cpuSecondsPerAcceptedIncludingFailures": 1.6212208586666668,
+      "sharedAcquisitionCpuSeconds": 0.8371715435833333
+    }
+  },
+  "independentAcceptance": "Every available output previously passed the frozen independent oracle; this additional read-only review reconciles all tuple facts, changed-node provenance and full inventory counts between the four arms, without rerunning producers.",
+  "limitations": [
+    "Three unavailable source questions remain in the denominator; no replacements.",
+    "Correlated historical versions and one execution per arm do not estimate population reliability or speed variance.",
+    "Structural schema agreement is not live Docker compatibility or buyer acceptance.",
+    "No paid demand, complete monetary cost or measured human-only time is established."
+  ],
+  "auditCpuSeconds": 0.085761883,
+  "auditWallSeconds": 0.08577584600061527,
+  "auditCostClassification": "Additional research validation, separate from already measured primary service execution."
+}

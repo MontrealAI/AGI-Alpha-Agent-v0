@@ -1,0 +1,56 @@
+{
+  "schema": "agi-alpha.work-discovery.companion-package-policy.v1",
+  "study_path": "studies/agi-alpha-work-discovery-v1",
+  "archive_layout": "repository-shaped; preserve studies/, examples/, docs/ and root LICENSE",
+  "primary_freeze": "protocol/production-freeze.json",
+  "additional_active_freezes": ["protocol/economics-freeze.json", "protocol/secondary-transfer-freeze.json"],
+  "upstream_additions": [
+    "LICENSE",
+    "examples/build-successor/vendor/agijobs/LICENSE",
+    "examples/build-successor/vendor/agijobs/provenance.json"
+  ],
+  "external_tools": {
+    "gtfs_validator": {
+      "version": "8.0.1",
+      "archive_path": "studies/agi-alpha-work-discovery-v1/discovery/gtfs/tools/gtfs-validator-8.0.1-cli.jar",
+      "original_relative_to_repository_parent": "research-inputs/gtfs-prototype/tools/gtfs-validator-8.0.1-cli.jar",
+      "binding": "discovery/gtfs/inputs/source-manifest.json",
+      "binding_key": "tools/gtfs-validator-8.0.1-cli.jar",
+      "upstream_license": "publication/licenses/gtfs-validator-8.0.1-LICENSE"
+    },
+    "swagger2openapi": {
+      "version": "7.0.8",
+      "archive_root": "external-tools/swagger2openapi",
+      "original_relative_to_repository_parent": "research-inputs/api-baseline/tools",
+      "include": ["package.json", "package-lock.json", "node_modules"],
+      "binding": "evidence/oasdiff-primary-supplement/tool-source-binding.json",
+      "package_sha256": "879b321599c01c01322ebad787c5379c9fa7771ef1a9c5e62f9bddc4eca5ca6c",
+      "lock_sha256": "a75ff4255c6bb67c4c32c51cc036e44d451cc9139f0ff08fb6d9c4c91cc6cc3f"
+    }
+  },
+  "required_deliverables": [
+    "paper/main.tex", "paper/main.pdf", "demo/index.html", "demo/frozen-data.json",
+    "demo/evidence/browser-check.json", "outputs/primary/campaign.json",
+    "outputs/economics-primary/completion.json", "outputs/economics-primary/paper-summary.json"
+  ],
+  "exclusion_policy": {
+    "directories": [".git", "__pycache__", ".ruff_cache", ".mypy_cache", ".pytest_cache", ".cache", ".venv", "venv"],
+    "internal_qa_images": "Browser screenshots and rendered PDF inspection pages are internal QA only. Preserve JSON reports, hashes and explicit omission notes, not the images.",
+    "latex_temporary_files": "Exclude paper aux/toc/out/log/fls/fdb_latexmk/synctex/xdv files and transient build stdout/stderr; retain LaTeX source, final PDF and publication figures.",
+    "environment_binaries": "No Chrome/Chromium/ChromeDriver binary, virtual environment or Python formatter/typechecker installation.",
+    "generated_package_files": "Plans, review lists, release records, ZIPs and package receipts are generated separately, avoiding self-reference.",
+    "source_evidence_archives": "Retain original input ZIPs, exploratory source tarballs and the oasdiff release tar in the full companion. Omit tarballs and large executable binaries from the separate review file list."
+  },
+  "limits": {"maximum_payload_files": 20000, "maximum_uncompressed_bytes": 1000000000},
+  "installed_prerequisites": {
+    "node": "Observed v24.22.1; required for Workbench, admission, economic model and bundled converter.",
+    "python": "Observed 3.12.14. Standard library suffices for normalized-JSON comparator/oracle and packaging.",
+    "pyyaml": "Observed 6.0.3; required to import the acquisition/production driver and for YAML input normalization.",
+    "java": "Observed OpenJDK 17.0.20; needed only to replay the GTFS validator JAR.",
+    "oasdiff": "Bundled 1.34.1 executable is Linux x86-64; other platforms require their own matching upstream build.",
+    "paper_rebuild": "A compatible LaTeX installation plus the Python plotting dependencies used by the paper builders; the completed PDF and figures are included.",
+    "browser_recheck": "A separately installed compatible browser and automation package; browser binaries are intentionally not included. The demo itself is static HTML."
+  },
+  "license_note": "Preserve all available original licenses. tr46 0.0.3 declares MIT in package.json but the original installed package has no standalone license text; that absence is reported, never silently invented.",
+  "release_boundary": "Planning is read-only apart from new manifest files. The final ZIP requires a root-created release record binding the exact plan, final PDF and demo; this local record is not live authentication or repository release qualification."
+}

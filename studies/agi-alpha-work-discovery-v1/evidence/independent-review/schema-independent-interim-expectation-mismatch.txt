@@ -1,0 +1,43 @@
+✔ deep shared reference mutation invalidates every affected response, not unrelated work (13.106475ms)
+✔ unreferenced definition changes consume no response reconstruction (2.552489ms)
+✔ replacing a reference, removing its target and later resolving it preserve fresh-build equality (6.934178ms)
+✔ recursive references remain explicitly unassessed and invalidate correctly when broken (3.172684ms)
+✔ allOf branches, array items and schema-valued maps each retain their own field addresses (3.106636ms)
+✔ escaped reference keys and unusual field names resolve without prototype assumptions (0.852689ms)
+✔ path/response additions and removals preserve complete identifiers (2.118829ms)
+✔ shared response-object ref and operation metadata changes invalidate appropriately (4.183236ms)
+✔ GET success scope excludes POST, default and error behavior explicitly (0.615849ms)
+✔ non-JSON text and file responses are visible exclusions, not silently assessed JSON (0.777147ms)
+✔ OpenAPI 3 application/json media is inspected while JSON-suffix media is disclosed (0.323237ms)
+✔ unsupported composition forms and external references never imply assessed completeness (0.749237ms)
+✔ nullable behavior in Moby x-nullable is not silently discarded (1.092072ms)
+✔ supported OpenAPI 3.1 header cannot silently lose const or schema interpretation constraints (0.321614ms)
+✔ cached index tampering cannot acquire trust through a matching source hash (1.522598ms)
+✖ old input drift is rejected; later service jobs rebuild a trusted old index (4.981394ms)
+✔ asynchronous checkpoint mutation cannot mint a mixed-source trusted index (8.157113ms)
+✔ bounded independent mutation panel agrees with full rebuild across structural edits (22.738361ms)
+✔ full and incremental deliver the same customer dossier and retain review limitations (2.206617ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89.520487
+
+✖ failing tests:
+
+test at studies/agi-alpha-work-discovery-v1/tests/schema-independent.test.mjs:180:1
+✖ old input drift is rejected; later service jobs rebuild a trusted old index (4.981394ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tests/schema-independent.test.mjs:185:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /CURRENT_SESSION_INDEX_IDENTITY_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

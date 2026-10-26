@@ -1,0 +1,361 @@
+{
+  "en": "Review every listed response-schema change before upgrading affected clients.",
+  "fr": "Examiner chaque modification de schéma avant de migrer les clients concernés.",
+  "changes": [
+    {
+      "after": {
+        "address": [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Annotations",
+          "a:"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/HostConfig"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/HostConfig/allOf/1/properties/Annotations/additionalProperties"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Annotations",
+          "a:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Annotations"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/HostConfig"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/HostConfig/allOf/1/properties/Annotations"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Annotations"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:HostConfig",
+          "allOf:1",
+          "p:ShmSize"
+        ],
+        "facts": {
+          "format": "int64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/HostConfig"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/HostConfig/allOf/1/properties/ShmSize"
+      },
+      "before": {
+        "address": [
+          "p:HostConfig",
+          "allOf:1",
+          "p:ShmSize"
+        ],
+        "facts": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/HostConfig"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/HostConfig/allOf/1/properties/ShmSize"
+      },
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:HostConfig",
+          "allOf:1",
+          "p:ShmSize"
+        ]
+      ],
+      "kind": "CHANGED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:VirtualSize"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /images/json 200",
+        "sourcePointer": "#/definitions/ImageSummary/properties/VirtualSize"
+      },
+      "before": {
+        "address": [
+          "i:",
+          "p:VirtualSize"
+        ],
+        "facts": {
+          "format": "int64",
+          "nullable": false,
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /images/json 200",
+        "sourcePointer": "#/definitions/ImageSummary/properties/VirtualSize"
+      },
+      "key": [
+        "GET /images/json 200",
+        [
+          "i:",
+          "p:VirtualSize"
+        ]
+      ],
+      "kind": "CHANGED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:"
+        ],
+        "facts": {
+          "required": [
+            "Containers",
+            "Created",
+            "Id",
+            "Labels",
+            "ParentId",
+            "RepoDigests",
+            "RepoTags",
+            "SharedSize",
+            "Size"
+          ],
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /images/json 200",
+        "sourcePointer": "#/definitions/ImageSummary"
+      },
+      "before": {
+        "address": [
+          "i:"
+        ],
+        "facts": {
+          "required": [
+            "Containers",
+            "Created",
+            "Id",
+            "Labels",
+            "ParentId",
+            "RepoDigests",
+            "RepoTags",
+            "SharedSize",
+            "Size",
+            "VirtualSize"
+          ],
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /images/json 200",
+        "sourcePointer": "#/definitions/ImageSummary"
+      },
+      "key": [
+        "GET /images/json 200",
+        [
+          "i:"
+        ]
+      ],
+      "kind": "CHANGED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:VirtualSize"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageInspect"
+        ],
+        "responseId": "GET /images/{name}/json 200",
+        "sourcePointer": "#/definitions/ImageInspect/properties/VirtualSize"
+      },
+      "before": {
+        "address": [
+          "p:VirtualSize"
+        ],
+        "facts": {
+          "format": "int64",
+          "nullable": false,
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageInspect"
+        ],
+        "responseId": "GET /images/{name}/json 200",
+        "sourcePointer": "#/definitions/ImageInspect/properties/VirtualSize"
+      },
+      "key": [
+        "GET /images/{name}/json 200",
+        [
+          "p:VirtualSize"
+        ]
+      ],
+      "kind": "CHANGED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Images",
+          "i:",
+          "p:VirtualSize"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /system/df 200",
+        "sourcePointer": "#/definitions/ImageSummary/properties/VirtualSize"
+      },
+      "before": {
+        "address": [
+          "p:Images",
+          "i:",
+          "p:VirtualSize"
+        ],
+        "facts": {
+          "format": "int64",
+          "nullable": false,
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /system/df 200",
+        "sourcePointer": "#/definitions/ImageSummary/properties/VirtualSize"
+      },
+      "key": [
+        "GET /system/df 200",
+        [
+          "p:Images",
+          "i:",
+          "p:VirtualSize"
+        ]
+      ],
+      "kind": "CHANGED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Images",
+          "i:"
+        ],
+        "facts": {
+          "required": [
+            "Containers",
+            "Created",
+            "Id",
+            "Labels",
+            "ParentId",
+            "RepoDigests",
+            "RepoTags",
+            "SharedSize",
+            "Size"
+          ],
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /system/df 200",
+        "sourcePointer": "#/definitions/ImageSummary"
+      },
+      "before": {
+        "address": [
+          "p:Images",
+          "i:"
+        ],
+        "facts": {
+          "required": [
+            "Containers",
+            "Created",
+            "Id",
+            "Labels",
+            "ParentId",
+            "RepoDigests",
+            "RepoTags",
+            "SharedSize",
+            "Size",
+            "VirtualSize"
+          ],
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/ImageSummary"
+        ],
+        "responseId": "GET /system/df 200",
+        "sourcePointer": "#/definitions/ImageSummary"
+      },
+      "key": [
+        "GET /system/df 200",
+        [
+          "p:Images",
+          "i:"
+        ]
+      ],
+      "kind": "CHANGED"
+    }
+  ],
+  "unassessed": true,
+  "limits": [
+    "No server execution or consumer acceptance",
+    "Structural allOf branch order is retained, not normalized for logical equivalence",
+    "Only application/json is traversed in OpenAPI 3 content",
+    "Unsupported keywords, missing schemas and reference cycles stay unassessed",
+    "Optional property removal is not automatically a breaking change"
+  ],
+  "actualCustomerAcceptance": false,
+  "actualHumanSeconds": null,
+  "actualMonetaryCost": null,
+  "authority": [],
+  "settlement": "NOT_CONNECTED"
+}

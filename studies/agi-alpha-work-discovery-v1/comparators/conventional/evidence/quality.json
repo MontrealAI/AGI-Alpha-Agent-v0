@@ -1,0 +1,49 @@
+[
+  {
+    "tool": "black",
+    "file": "conventional.py",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "All done! \u2728 \ud83c\udf70 \u2728\n1 file left unchanged.\n"
+  },
+  {
+    "tool": "black",
+    "file": "verify_dossier.py",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "All done! \u2728 \ud83c\udf70 \u2728\n1 file left unchanged.\n"
+  },
+  {
+    "tool": "black",
+    "file": "test_baseline.py",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "All done! \u2728 \ud83c\udf70 \u2728\n1 file left unchanged.\n"
+  },
+  {
+    "command": [
+      "/workspace/scratch/c4e9aee15454/research-env/bin/ruff",
+      "check",
+      "--config",
+      "../../agi-alpha/pyproject.toml",
+      "conventional.py",
+      "verify_dossier.py",
+      "test_baseline.py"
+    ],
+    "exit": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/workspace/scratch/c4e9aee15454/research-env/bin/mypy",
+      "--strict",
+      "conventional.py",
+      "verify_dossier.py",
+      "test_baseline.py"
+    ],
+    "exit": 0,
+    "stdout": "Success: no issues found in 3 source files\n",
+    "stderr": ""
+  }
+]

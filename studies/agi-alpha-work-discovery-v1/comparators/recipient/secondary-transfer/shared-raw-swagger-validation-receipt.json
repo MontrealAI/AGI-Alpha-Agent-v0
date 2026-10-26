@@ -1,0 +1,18 @@
+{
+  "label": "shared-raw-swagger-validation",
+  "command": [
+    "research-env/bin/python",
+    "-c",
+    "import json,sys; from swagger_spec_validator.validator20 import validate_spec; [(validate_spec(json.load(open(p))),print(p+' VALID')) for p in sys.argv[1:]]",
+    "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v27.5.1.json",
+    "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v28.0.0.json"
+  ],
+  "startedUtc": "2026-10-26T21:21:09.004564+00:00",
+  "exitCode": 1,
+  "wallSeconds": 0.6654316849999304,
+  "cpuSeconds": 0.664342,
+  "maxRssKiBUpperBound": 26304,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 186, in validate_spec\n    validate_apis(cast(\"dict[Any, Any]\", apis), bound_deref)\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 430, in validate_apis\n    validate_responses(api_name, oper_name, oper_body[\"responses\"], deref)\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 310, in validate_responses\n    validate_definition(\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 575, in validate_definition\n    validate_arrays_in_definition(\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 514, in validate_arrays_in_definition\n    validate_definition(\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 583, in validate_definition\n    validate_definition(\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 575, in validate_definition\n    validate_arrays_in_definition(\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 514, in validate_arrays_in_definition\n    validate_definition(\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 583, in validate_definition\n    validate_definition(\n  File \"/workspace/scratch/c4e9aee15454/research-inputs/api-recipient/vendor/swagger_spec_validator/validator20.py\", line 567, in validate_definition\n    raise SwaggerValidationError(\nswagger_spec_validator.common.SwaggerValidationError: In definition of #/paths//images/json/get/responses/200/items/properties/Manifests/items/properties/ImageData, required list has properties not defined: ['UnpackedSize'].\n",
+  "timeoutSeconds": 58
+}

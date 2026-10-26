@@ -1,0 +1,171 @@
+{
+  "completed_utc": "2026-10-26T20:51:16.918280+00:00",
+  "job_count": 1,
+  "customer_count": 0,
+  "collections_usd": 0,
+  "route_date_cells": 21,
+  "result": "SCOPED-STRUCTURAL-PASS",
+  "accepted_under": "declared exploratory scoped structural and local-service-date criteria; same-session verification, not publisher/customer acceptance",
+  "independent_checks": 86,
+  "command_receipts": [
+    {
+      "label": "acquire-rem-feed",
+      "command": [
+        "curl",
+        "--fail",
+        "--location",
+        "--max-time",
+        "55",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "commands/acquire-rem-feed.headers.txt",
+        "--output",
+        "inputs/rem-20261026.zip",
+        "https://gtfs.gpmmom.ca/gtfs/gtfs.zip"
+      ],
+      "started_utc": "2026-10-26T20:46:42.148968+00:00",
+      "elapsed_seconds": 0.6161618559999624,
+      "user_cpu_seconds": 0.004758999999999999,
+      "system_cpu_seconds": 0.010983,
+      "max_rss_kib": 9472,
+      "exit_status": 0,
+      "timeout": false,
+      "timeout_seconds": 58
+    },
+    {
+      "label": "acquire-validator",
+      "command": [
+        "curl",
+        "--fail",
+        "--location",
+        "--max-time",
+        "55",
+        "--silent",
+        "--show-error",
+        "--dump-header",
+        "commands/acquire-validator.headers.txt",
+        "--output",
+        "tools/gtfs-validator-8.0.1-cli.jar",
+        "https://github.com/MobilityData/gtfs-validator/releases/download/v8.0.1/gtfs-validator-8.0.1-cli.jar"
+      ],
+      "started_utc": "2026-10-26T20:46:30.568262+00:00",
+      "elapsed_seconds": 1.11807367000074,
+      "user_cpu_seconds": 0.040636,
+      "system_cpu_seconds": 0.104902,
+      "max_rss_kib": 9472,
+      "exit_status": 0,
+      "timeout": false,
+      "timeout_seconds": 58
+    },
+    {
+      "label": "build-release-packet",
+      "command": [
+        "python",
+        "src/build_packet.py"
+      ],
+      "started_utc": "2026-10-26T20:48:56.364059+00:00",
+      "elapsed_seconds": 0.21499351500096964,
+      "user_cpu_seconds": 0.11307,
+      "system_cpu_seconds": 0.053852,
+      "max_rss_kib": 30456,
+      "exit_status": 0,
+      "timeout": false,
+      "timeout_seconds": 58
+    },
+    {
+      "label": "canonical-rem-audit",
+      "command": [
+        "java",
+        "-Xmx1024m",
+        "-jar",
+        "tools/gtfs-validator-8.0.1-cli.jar",
+        "-i",
+        "inputs/rem-20261026.zip",
+        "-o",
+        "output/canonical",
+        "-c",
+        "CA",
+        "-d",
+        "2026-10-26",
+        "-t",
+        "2",
+        "-svu",
+        "-p"
+      ],
+      "started_utc": "2026-10-26T20:47:20.209106+00:00",
+      "elapsed_seconds": 2.381854002000182,
+      "user_cpu_seconds": 5.690334999999999,
+      "system_cpu_seconds": 0.5050089999999999,
+      "max_rss_kib": 273460,
+      "exit_status": 0,
+      "timeout": false,
+      "timeout_seconds": 58
+    },
+    {
+      "label": "independent-reconciliation-with-times",
+      "command": [
+        "python",
+        "src/independent_check.py"
+      ],
+      "started_utc": "2026-10-26T20:50:20.971330+00:00",
+      "elapsed_seconds": 16.631316504001006,
+      "user_cpu_seconds": 16.544128999999998,
+      "system_cpu_seconds": 0.037964,
+      "max_rss_kib": 50616,
+      "exit_status": 0,
+      "timeout": false,
+      "timeout_seconds": 58
+    },
+    {
+      "label": "independent-reconciliation",
+      "command": [
+        "python",
+        "src/independent_check.py"
+      ],
+      "started_utc": "2026-10-26T20:49:28.755255+00:00",
+      "elapsed_seconds": 0.3157806740018714,
+      "user_cpu_seconds": 0.20818799999999998,
+      "system_cpu_seconds": 0.06853,
+      "max_rss_kib": 50596,
+      "exit_status": 0,
+      "timeout": false,
+      "timeout_seconds": 58
+    },
+    {
+      "label": "validator-help",
+      "command": [
+        "java",
+        "-jar",
+        "tools/gtfs-validator-8.0.1-cli.jar",
+        "--help"
+      ],
+      "started_utc": "2026-10-26T20:46:53.342724+00:00",
+      "elapsed_seconds": 0.1650714550014527,
+      "user_cpu_seconds": 0.185988,
+      "system_cpu_seconds": 0.026175999999999998,
+      "max_rss_kib": 42708,
+      "exit_status": 0,
+      "timeout": false,
+      "timeout_seconds": 58
+    }
+  ],
+  "summed_measured_command_elapsed_seconds": 21.443251676006184,
+  "summed_measured_command_cpu_seconds": 23.594520999999997,
+  "unknown_cost_categories": [
+    "pre-command search and legal/license review effort",
+    "agent authoring/inference price",
+    "residual human adoption/support/maintenance time"
+  ],
+  "human_only_execution": "NOT RUN",
+  "capability_transfer": "NOT RUN",
+  "graph_advantage": "NOT ESTABLISHED",
+  "new_algorithm": "NO; public canonical validator plus task-specific integration",
+  "first_measured_command_utc": "2026-10-26T20:46:42.148968+00:00",
+  "no_hidden_failed_candidates": [
+    "STLevis license conflict",
+    "STM/STSV web retrieval failures",
+    "missing /usr/bin/time",
+    "UTF8 license read failure; original bytes preserved and decoded CP1252 for review"
+  ]
+}

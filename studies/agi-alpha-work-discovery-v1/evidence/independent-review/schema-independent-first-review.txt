@@ -1,0 +1,38 @@
+✔ deep shared reference mutation invalidates every affected response, not unrelated work (10.24791ms)
+✔ unreferenced definition changes consume no response reconstruction (2.760254ms)
+✔ replacing a reference, removing its target and later resolving it preserve fresh-build equality (8.798263ms)
+✔ recursive references remain explicitly unassessed and invalidate correctly when broken (3.426509ms)
+✔ allOf branches, array items and schema-valued maps each retain their own field addresses (3.451166ms)
+✔ escaped reference keys and unusual field names resolve without prototype assumptions (0.518813ms)
+✔ path/response additions and removals preserve complete identifiers (2.318518ms)
+✔ shared response-object ref and operation metadata changes invalidate appropriately (4.337433ms)
+✔ GET success scope excludes POST, default and error behavior explicitly (0.639515ms)
+✔ non-JSON text and file responses are visible exclusions, not silently assessed JSON (0.673025ms)
+✔ OpenAPI 3 application/json media is inspected while JSON-suffix media is disclosed (0.376979ms)
+✔ unsupported composition forms and external references never imply assessed completeness (0.540805ms)
+✔ nullable behavior in Moby x-nullable is not silently discarded (0.796512ms)
+✔ supported OpenAPI 3.1 header cannot silently lose const or schema interpretation constraints (0.427024ms)
+✔ cached index tampering cannot acquire trust through a matching source hash (1.689219ms)
+✖ old input drift is rejected and completed incremental indexes support another fresh transition (1.590138ms)
+✔ asynchronous checkpoint mutation cannot mint a mixed-source trusted index (8.278688ms)
+✔ bounded independent mutation panel agrees with full rebuild across structural edits (21.322405ms)
+✔ full and incremental deliver the same customer dossier and retain review limitations (2.306569ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 84.719153
+
+✖ failing tests:
+
+test at studies/agi-alpha-work-discovery-v1/tests/schema-independent.test.mjs:180:1
+✖ old input drift is rejected and completed incremental indexes support another fresh transition (1.590138ms)
+  Error: CURRENT_SESSION_INDEX_IDENTITY_REQUIRED
+      at requireIssuedIndex (file:///workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/src/schema_inventory.mjs:145:11)
+      at updateIndex (file:///workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/src/incremental_index.mjs:8:3)
+      at TestContext.<anonymous> (file:///workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tests/schema-independent.test.mjs:185:22)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

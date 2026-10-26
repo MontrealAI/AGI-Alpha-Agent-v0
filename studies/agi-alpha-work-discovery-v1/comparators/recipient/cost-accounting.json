@@ -1,0 +1,84 @@
+{
+  "recordedUtc": "2026-10-26T21:07:23.558523+00:00",
+  "experimentUnit": "One independently capable recipient; two future preregistered fresh job pairs",
+  "reconstruction": {
+    "scope": "Own Swagger 2 response inventory built before donor access",
+    "observedSessionWallSeconds": 348.62207,
+    "chargeCount": 1,
+    "monetaryCostUsd": null,
+    "limitations": "Includes small GTFS context switches, public tool search/testing; not measured human effort or token bill."
+  },
+  "transferIntegration": {
+    "scope": "Read donor public module and construct/test wrapper on discovery only",
+    "observedSessionWallSeconds": 44.567875,
+    "measuredCommandWallSeconds": 0.8508005170042452,
+    "measuredCommandCpuSeconds": 0.955815,
+    "chargeCount": 1,
+    "monetaryCostUsd": null,
+    "limitations": "First donor read immediately preceded recorded clock. Measured command wall is contained inside integration interval, not additional elapsed time."
+  },
+  "freshDelivery": {
+    "state": "ONE_PAIR_EXECUTED_ONE_INPUT_FAILURE",
+    "pairsPreregistered": 2,
+    "pairsExecuted": 1,
+    "executedPair": [
+      "v23.0.0",
+      "v23.0.6"
+    ],
+    "inputFailurePair": [
+      "v27.0.0",
+      "v27.5.1"
+    ],
+    "perArmReceipts": "fresh/summary.json",
+    "reconstructionChargeCount": 1,
+    "transferIntegrationChargeCount": 1,
+    "repeatsPerArm": 1,
+    "measuredWallSecondsIncludingSharedValidationAndPairChecks": 2.1321549709937244,
+    "measuredCpuSecondsIncludingSharedValidationAndPairChecks": 2.220688,
+    "monetaryCostUsd": null,
+    "interpretation": "The only fresh executed pair has zero structural changed tuples. No new recipient capability, quality gain or execution-time gain demonstrated; no fresh changed-node provenance case."
+  },
+  "donorConstruction": {
+    "source": "Campaign owner records shared donor capability construction and failed discovery separately",
+    "recipientAllocationUsd": null,
+    "rule": "Charge once at enterprise level, or allocate across true recipients/reuses; do not count receiving a duplicate as new capability."
+  },
+  "reuseAndMaintenance": {
+    "actualScope": "Swagger 2 source family; no measured later maintenance yet",
+    "maintenanceCostUsd": null,
+    "integrationBurden": "Versioned module import, CLI wrapper, initial verification, update policy and fresh-input validation",
+    "scarcity": "Fast independent reconstruction is evidence against treating the basic scoped inventory as scarce."
+  },
+  "revenue": {
+    "actualCollectionsUsd": 0,
+    "tokenAppreciationUsd": 0,
+    "internalTransferProfitUsd": 0
+  },
+  "costInterpretation": "No total actual dollar cost or human savings asserted. Null means unknown, not zero. Authoring session times must not be priced as human labor without an explicit model.",
+  "measurementLimitations": [
+    "maxRssKiB from RUSAGE_CHILDREN is a cumulative child high-water mark in the runner, an upper bound rather than a separately isolated per-arm peak.",
+    "Command wall times are contained within construction/integration session intervals; do not sum them as additional authoring elapsed time."
+  ],
+  "lastAdditiveUpdateUtc": "2026-10-26T21:25:48.551606+00:00",
+  "secondaryExploratoryDelivery": {
+    "phase": "EXPLORATORY_CONTENT_DIFFERENT_SECONDARY_TRANSFER",
+    "pair": [
+      "v27.5.1",
+      "v28.0.0"
+    ],
+    "state": "HOLD_INPUT_VALIDATION_FAILED",
+    "receipt": "secondary-transfer/shared-raw-swagger-validation-receipt.json",
+    "measuredValidationWallSeconds": 0.6654316849999304,
+    "measuredValidationCpuSeconds": 0.664342,
+    "efficacyArmsExecuted": 0,
+    "efficacyArmCostsUsd": null,
+    "adjudicationHumanSeconds": null,
+    "adjudicationInferenceCostUsd": null,
+    "monetaryCostUsd": null,
+    "reconstructionAdditionalChargeCount": 0,
+    "transferIntegrationAdditionalChargeCount": 0,
+    "primaryOutcomesUnchanged": true,
+    "marketCalibrationUse": false,
+    "interpretation": "Existing strict raw-validation gate stopped before original/full/incremental execution. Validation failure cost retained. Standards/tool-source review does not change HOLD or establish whole-document validity."
+  }
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "unittest",
+      "-v",
+      "test_baseline.py"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.05450107599972398,
+    "stdout": "",
+    "stderr": "test_array_map_conjunction (test_baseline.BaselineControls.test_array_map_conjunction) ... ok\ntest_cycle (test_baseline.BaselineControls.test_cycle) ... ok\ntest_duplicate_inventory_rejected (test_baseline.BaselineControls.test_duplicate_inventory_rejected) ... ok\ntest_enum_reordering (test_baseline.BaselineControls.test_enum_reordering) ... ok\ntest_external_reference (test_baseline.BaselineControls.test_external_reference) ... ok\ntest_forged_provenance_rejected (test_baseline.BaselineControls.test_forged_provenance_rejected) ... ok\ntest_hidden_unsupported_rejected (test_baseline.BaselineControls.test_hidden_unsupported_rejected) ... ok\ntest_missing_reference (test_baseline.BaselineControls.test_missing_reference) ... ok\ntest_non_json_not_traversed (test_baseline.BaselineControls.test_non_json_not_traversed) ... ok\ntest_omitted_change_rejected (test_baseline.BaselineControls.test_omitted_change_rejected) ... ok\ntest_omitted_inventory_rejected (test_baseline.BaselineControls.test_omitted_inventory_rejected) ... ok\ntest_ref_siblings_unassessed (test_baseline.BaselineControls.test_ref_siblings_unassessed) ... ok\ntest_reference_relocation (test_baseline.BaselineControls.test_reference_relocation) ... ok\ntest_source_json_portability (test_baseline.BaselineControls.test_source_json_portability) ... ok\ntest_swagger_nullable (test_baseline.BaselineControls.test_swagger_nullable) ... ok\ntest_type_change (test_baseline.BaselineControls.test_type_change) ... ok\ntest_union_unassessed (test_baseline.BaselineControls.test_union_unassessed) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 0.002s\n\nOK\n"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "conventional.py",
+      "evidence/docker-v25.0.0-normalized.json",
+      "evidence/docker-v26.0.0-normalized.json",
+      "evidence/normalized-dossier.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.1561068780029018,
+    "stdout": "{\"elapsed_seconds\": 0.11364808399957838, \"cpu_seconds\": 0.11359866699999999, \"source_sha256\": \"f9c6c6cd33fffdeeefefc1ba9639b8aa7914d23404f954a51328a925c57946fb\", \"before_sha256\": \"76b2f2c7bf4f0b91d11f165239bede64679c4f07c80cb8887f38d0dabf0cb966\", \"after_sha256\": \"78d0cf19fb36abffc8551949fe6d94ab4b5e6d06bd80f85f889ed4a39da636df\", \"output_sha256\": \"8ce0b7a516bda5ca3cc36ba27a8ea2ca0318917d9e9bff98f584a5bbf316c6d2\", \"changes\": 6, \"before_nodes\": 2408, \"after_nodes\": 2413, \"warnings\": 354}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "verify_dossier.py",
+      "evidence/docker-v25.0.0-normalized.json",
+      "evidence/docker-v26.0.0-normalized.json",
+      "evidence/normalized-dossier.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.17886313000053633,
+    "stdout": "{\"accepted\": true, \"after_nodes\": 2413, \"before_nodes\": 2408, \"changes\": 6, \"scope\": \"independent exhaustive structural replay, not live API compatibility\", \"unassessed\": true}\n",
+    "stderr": ""
+  }
+]

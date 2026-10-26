@@ -1,0 +1,115 @@
+# API response assurance / Vérification des réponses API
+
+Source: /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v20.10.0.json -> /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json
+Structural changes / Changements structurels: 489
+Responses assessed / Réponses évaluées: 43 -> 43
+Unassessed scope records / Éléments hors portée: 318
+
+Decision: review the exact changed fields before upgrading consumers. No whole-API compatibility approval is issued.
+Décision : examiner les champs modifiés avant la mise à niveau des clients. Aucune approbation globale de compatibilité.
+
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:BindOptions/p:NonRecursive
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:BindOptions/p:Propagation
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:BindOptions
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:Consistency
+- ADDED: GET /containers/json 200 i:/p:Mounts/i:/p:Destination
+- ADDED: GET /containers/json 200 i:/p:Mounts/i:/p:Driver
+- ADDED: GET /containers/json 200 i:/p:Mounts/i:/p:Mode
+- ADDED: GET /containers/json 200 i:/p:Mounts/i:/p:Name
+- ADDED: GET /containers/json 200 i:/p:Mounts/i:/p:Propagation
+- ADDED: GET /containers/json 200 i:/p:Mounts/i:/p:RW
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:ReadOnly
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:Target
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:TmpfsOptions/p:Mode
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:TmpfsOptions/p:SizeBytes
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:TmpfsOptions
+- CHANGED: GET /containers/json 200 i:/p:Mounts/i:/p:Type
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions/p:DriverConfig/p:Name
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions/p:DriverConfig/p:Options/a:
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions/p:DriverConfig/p:Options
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions/p:DriverConfig
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions/p:Labels/a:
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions/p:Labels
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions/p:NoCopy
+- REMOVED: GET /containers/json 200 i:/p:Mounts/i:/p:VolumeOptions
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:ArgsEscaped
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:ExposedPorts
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:Healthcheck/p:Interval
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:Healthcheck/p:StartPeriod
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:Healthcheck/p:Timeout
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:MacAddress
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:NetworkDisabled
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:OnBuild
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:Shell
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:StopSignal
+- CHANGED: GET /containers/{id}/json 200 p:Config/p:StopTimeout
+- REMOVED: GET /containers/{id}/json 200 p:HostConfig/allOf:0/p:KernelMemory
+- REMOVED: GET /containers/{id}/json 200 p:HostConfig/allOf:0/p:NanoCPUs
+- ADDED: GET /containers/{id}/json 200 p:HostConfig/allOf:0/p:NanoCpus
+- CHANGED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:ConsoleSize
+- ADDED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:Mounts/i:/p:BindOptions/p:CreateMountpoint
+- CHANGED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:Mounts/i:/p:Type
+- CHANGED: GET /containers/{id}/json 200 p:HostConfig/allOf:1/p:RestartPolicy/p:Name
+- CHANGED: GET /containers/{id}/json 200 p:Mounts/i:/p:Type
+- CHANGED: GET /containers/{id}/json 200 p:State/p:Health/p:Log/i:
+- CHANGED: GET /containers/{id}/json 200 p:State/p:Health
+- CHANGED: GET /containers/{id}/json 200 p:State
+- REMOVED: GET /containers/{id}/logs 200 (root)
+- REMOVED: GET /distribution/{name}/json 200 p:Descriptor/p:Digest
+- REMOVED: GET /distribution/{name}/json 200 p:Descriptor/p:MediaType
+- REMOVED: GET /distribution/{name}/json 200 p:Descriptor/p:Size
+- REMOVED: GET /distribution/{name}/json 200 p:Descriptor/p:URLs/i:
+- REMOVED: GET /distribution/{name}/json 200 p:Descriptor/p:URLs
+- ADDED: GET /distribution/{name}/json 200 p:Descriptor/p:digest
+- ADDED: GET /distribution/{name}/json 200 p:Descriptor/p:mediaType
+- ADDED: GET /distribution/{name}/json 200 p:Descriptor/p:size
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:Architecture
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:Features/i:
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:Features
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:OS
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:OSFeatures/i:
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:OSFeatures
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:OSVersion
+- REMOVED: GET /distribution/{name}/json 200 p:Platforms/i:/p:Variant
+- ADDED: GET /distribution/{name}/json 200 p:Platforms/i:/p:architecture
+- ADDED: GET /distribution/{name}/json 200 p:Platforms/i:/p:os
+- ADDED: GET /distribution/{name}/json 200 p:Platforms/i:/p:os.features/i:
+- ADDED: GET /distribution/{name}/json 200 p:Platforms/i:/p:os.features
+- ADDED: GET /distribution/{name}/json 200 p:Platforms/i:/p:os.version
+- ADDED: GET /distribution/{name}/json 200 p:Platforms/i:/p:variant
+- CHANGED: GET /events 200 p:Type
+- ADDED: GET /events 200 p:scope
+- CHANGED: GET /events 200 p:time
+- CHANGED: GET /images/json 200 i:/p:SharedSize
+- CHANGED: GET /images/json 200 i:/p:Size
+- CHANGED: GET /images/json 200 i:/p:VirtualSize
+- CHANGED: GET /images/{name}/json 200 p:Config/p:ArgsEscaped
+- CHANGED: GET /images/{name}/json 200 p:Config/p:ExposedPorts
+- CHANGED: GET /images/{name}/json 200 p:Config/p:Healthcheck/p:Interval
+- CHANGED: GET /images/{name}/json 200 p:Config/p:Healthcheck/p:StartPeriod
+- CHANGED: GET /images/{name}/json 200 p:Config/p:Healthcheck/p:Timeout
+- CHANGED: GET /images/{name}/json 200 p:Config/p:MacAddress
+- CHANGED: GET /images/{name}/json 200 p:Config/p:NetworkDisabled
+- CHANGED: GET /images/{name}/json 200 p:Config/p:OnBuild
+- CHANGED: GET /images/{name}/json 200 p:Config/p:Shell
+- CHANGED: GET /images/{name}/json 200 p:Config/p:StopSignal
+- CHANGED: GET /images/{name}/json 200 p:Config/p:StopTimeout
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:ArgsEscaped
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:ExposedPorts
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:Healthcheck/p:Interval
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:Healthcheck/p:StartPeriod
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:Healthcheck/p:Timeout
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:MacAddress
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:NetworkDisabled
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:OnBuild
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:Shell
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:StopSignal
+- CHANGED: GET /images/{name}/json 200 p:ContainerConfig/p:StopTimeout
+- CHANGED: GET /images/{name}/json 200 p:Metadata/p:LastTagTime
+- CHANGED: GET /images/{name}/json 200 p:OsVersion
+- REMOVED: GET /images/{name}/json 200 p:RootFS/p:BaseLayer
+
+- Structural GET 2xx JSON schema surface assessment, not blanket compatibility certification.
+- Optional property removal is a review signal, not necessarily a contract violation.
+- Conjunction branch order may produce structural differences without semantic difference.
+- Server behavior, authentication, requests, default/error responses and client runtime are outside scope.
