@@ -1,0 +1,92 @@
+\section{Problem, operators, and qualified succession}
+\label{sec:bloom-formal}
+
+The operational principle of \textsc{BLOOM}$\infty$ is that every successor must earn its proof. In this study, the predecessor supplies a reusable dependency-impact operator; the successor uses its answers to construct a finite coverage plan. These are distinct tasks connected by consumed data. Neither a lineage label nor successful execution of the predecessor establishes the successor's validity.
+
+Let $G=(V,E)$ be a finite directed graph, with $u\to v$ meaning that $v$ depends on $u$. Let $A=(a_0,\ldots,a_{k-1})$ be the ordered application list. For a changed-node set $S\subseteq V$, the impact target is
+\begin{equation}
+ I_G(S)=\{a\in A:\exists s\in S,\ s\leadsto_G a\},
+\end{equation}
+where reachability includes paths of length zero. A node therefore affects itself when it is an application. The ordering of $A$ defines bit positions and is part of the artifact binding. We write $R(v)$ for the bitmask encoding $I_G(\{v\})$; a multi-source answer is the bitwise union of its source masks.
+
+The successor receives tests $\mathcal{T}$, coverage sets $C_t\subseteq A$, and strictly positive integer weights $c_t$. For an impact set $I$, it computes
+\begin{equation}
+ J^*(I)\in\mathop{\arg\min}_{J\subseteq\mathcal{T}}
+ \left\{\sum_{t\in J}c_t:I\subseteq\bigcup_{t\in J}C_t\right\}.
+\end{equation}
+Equal-cost solutions use the lexicographically smallest tuple of sorted test identifiers. Empty impact produces the empty feasible plan; uncovered requirements produce an explicit infeasible result. The implementation bounds cases to ten applications and twelve tests; the synthetic instances use six applications and ten tests, permitting exact finite optimization. Weights are declared synthetic durations, not measured test runtimes or money. Coverage of these requirements does not establish preservation of every fault detectable by the original test suite~\cite{rothermel1997safe,harrold1993reduction}.
+
+The schema \texttt{bloom-impact-operator/v1} stores a strategy, ordered applications, rows, certificate, and world, policy, environment and source digests. It declares \texttt{authority: none}. A compiled row index is a data-specialized operator executed by a fixed interpreter. Its graph-specific contents are constructed during the run; the underlying algorithms and interpreter are maintained software. This is finite specialization, not discovery of a new graph algorithm or unconstrained program synthesis.
+
+\subsection{Certificates establish exactness, not merely closure}
+\label{sec:bloom-certificates}
+
+There are two complete-index certificates. Both are checked against the supplied graph rather than a producer-provided edge summary. Range, dimension, partition and integer-type checks precede the semantic checks. In particular, a content digest alone supplies no reachability proof.
+
+\paragraph{Proposition 1: component recurrence}
+Suppose a certificate partitions $V$ into nonempty sets $\mathcal{P}$; every set induces a strongly connected subgraph; and every edge between distinct sets advances in a supplied topological order. For $C\in\mathcal{P}$, let $L_C$ encode the applications inside $C$. Suppose the verifier establishes
+\begin{equation}
+ B_C=L_C\mathbin{\lor}\bigvee_{(C,D)\in E_{\mathcal P}}B_D
+ \quad\text{and}\quad R(v)=B_C\quad(v\in C),
+ \label{eq:bloom-scc-recurrence}
+\end{equation}
+where $E_{\mathcal P}$ is reconstructed from $E$. Then every row is exactly the reachable-application mask of its node.
+
+\paragraph{Proof}
+Forward and reverse traversal within a proposed component, from one representative, establish that every member reaches every other member. The checked topological order makes the quotient graph acyclic. A path from any member of $C$ to an application either stays in $C$ or first exits along an edge to a successor component. Conversely, strong connectivity lets every member reach the tail of each such exit. Thus the reachable applications satisfy precisely Equation~\ref{eq:bloom-scc-recurrence}. Reverse topological induction gives its unique solution, beginning with sinks, whose masks contain only their local applications. Equality of every node row with its component mask completes the argument. This verifies both absence of spurious applications and inclusion of every reachable application.\hfill$\square$
+
+The implementation constructs components by two graph traversals and propagates application masks over the condensation. The independent verifier checks the partition, induced strong connectivity, topological edges and recurrence afresh. For the bounded application count, structural verification is linear in graph and certificate size; larger masks add their explicit bit-operation cost. Strong-component computation and transitive closure are established techniques~\cite{tarjan1972dfs,warshall1962boolean}.
+
+\paragraph{Proposition 2: reverse-path witnesses}
+Alternatively, suppose each application owns its own bit. For every claimed bit $a\in R(v)$ with $v\ne a$, the certificate supplies an actual edge $v\to p_a(v)$, the same claimed bit at $p_a(v)$, and nonnegative integer ranks satisfying $r_a(v)>r_a(p_a(v))$. The application root points to itself with rank zero. Unclaimed bits have absent witnesses. Finally, every graph edge $u\to v$ satisfies $R(v)\subseteq R(u)$. Then the rows encode exactly all reachable applications.
+
+\paragraph{Proof}
+For a claimed bit, following its witness strictly decreases a nonnegative rank. It cannot continue indefinitely or cycle; a nonroot cannot terminate at rank zero because its required successor would have a smaller nonnegative rank. The chain therefore reaches the corresponding application through actual edges. There are no false positives. For the opposite direction, a path $v=v_0\to\cdots\to v_\ell=a$ starts from the application's required ownership bit. Repeated edge closure propagates that bit backward to every $v_i$, including $v$. There are no false negatives.\hfill$\square$
+
+Reverse traversal from each application constructs these witnesses alongside the index. The verifier performs $O(k|V|+|E|)$ structural checks, with arithmetic cost determined by encoded integers and masks. Ordinary edge closure without the descending witnesses would accept an all-ones overapproximation; witnesses supply the missing inclusion in the true reachability relation. Memoized operators instead advertise partial rows, each replayed against independent BFS. Every memoized and direct output also receives fresh BFS checking, including cached outputs.
+
+\subsection{Construction and conventional alternatives}
+
+The candidate and expert selection policies can choose direct traversal, memoization, component propagation, reverse-per-application indexing and bitset Warshall closure. The second reference deliberately follows a fixed reverse-index strategy, with memoization then direct traversal as its legal fallbacks. It has the same information and wrapper, while the full-palette expert provides the primary equally equipped competitor. All receive the complete query batch, current graph, applications, test catalogue, available constructors and payload cap. A shared wrapper charges construction attempts, checks actual canonical serialized bytes, and records fallback to an available memoized or direct operator. The cap is not a claim about resident memory.
+
+The candidate uses frozen graph-work estimates and requires at least 20\% estimated headroom before preferring component or Warshall specialization over its available conventional alternatives. This threshold is a policy assumption, not an observed CPU saving. The estimates approximate graph work; they do not price all certificate, integration, maintenance or failure-risk costs. The policy therefore approximates the binding computational constraint rather than solving a complete expected-value optimization. The measured end-to-end test is deliberately able to reject its usefulness. An independently written expert-style policy uses its own transparent workload estimates over the same palette. A conventional reverse-index policy is the second reference. The constructors and qualification boundary are shared deliberately: the comparison tests the policies within this implementation envelope, not differently optimized reimplementations of the same primitives. No claim is made that the reference is the globally fastest existing package. Practical reachability work already demonstrates the importance of initialization, update and query tradeoffs~\cite{hanauer2020dynamic}.
+
+\section{Prospective comparison and artifact interventions}
+\label{sec:bloom-methods}
+
+Competitive advantage and artifact dependence are different estimands. For world $w$, let $T_{B,w}$ and $T_{C,w}$ denote complete measured operational CPU for candidate and conventional policies. The competitive ratio is
+\begin{equation}
+ \rho_C=\exp\left(\frac{1}{W}\sum_{w=1}^{W}
+ \log\frac{T_{B,w}}{T_{C,w}}\right).
+\end{equation}
+Both policies have the same artifact and construction opportunities. Separately, let $S_w(K)$ be receiver CPU with the qualified predecessor artifact retained, and $S_w(\varnothing)$ receiver CPU when it is withheld and reconstruction remains allowed. Their paired ratio tests saved receiver work. Total predecessor-plus-receiver CPU is also reported. An artifact-deprived receiver is an intervention arm, not the principal competitive baseline. This explicit separation follows the logic of defining causal treatments before inspecting outcomes~\cite{rubin2008design}.
+
+The protocol reserves twelve development worlds, at most two versioned development cycles, 48 confirmatory worlds and 24 fresh reproduction worlds. Confirmation crosses four topologies, four node counts and three query-batch sizes. Reproduction crosses the same topologies and query counts with two shifted sizes. The graph world is the independent unit; repeated queries and derived stages are not additional independent observations. The generator and seed ranges are known to the authors. Confirmation uses seeds 20001--20048; reproduction uses 30001--30024. The topologies are sparse DAG, layered DAG, hub graph and cyclic modules; node counts are 48, 72, 96 and 128 in confirmation and 64 and 160 in reproduction, with query batches of 8, 32 and 96. This is untouched execution under a disclosed generator, not a concealed external benchmark. Protocol, source and analysis were frozen and durably persisted before confirmation, preserving the distinction between declared tests and later explanation~\cite{nosek2018preregistration}.
+
+Stable and withheld arms use three complete timed replicates with reset method-local state and randomized execution order. The direct-walk no-construction arm and the proof-disabled corruption diagnostic each use one execution per world. Other declared interventions use one execution: conventional replacement, graph change, rehashed semantic corruption, policy change, authority revocation, scarce storage, constructor outage, withholding combined with outage, malformed input, infeasible coverage, and incomplete observed dependencies. A constructor outage does not invalidate a previously constructed data operator; it restricts new construction. The policy-change case removes a test from the eligible catalogue. Corruption modifies a supplied mask and recomputes its content hash, testing semantics rather than accidental checksum failure. Interventions occur before receiver execution.
+
+Five gates separate reproducibility, quality, competition, succession and economics. Deterministic records must replay exactly, excluding timing and host-dependent metadata. Every eligible complete-graph task must resolve correctly, including explicit infeasibility; authority and malformed-input refusals are evaluated separately. The primary competitive endpoint uses only stable authorized worlds and the median of three complete CPU observations. It includes validation, policy choice, attempted construction, operational qualification, transport, revalidation and successor checking. The native seven-stage orchestration is measured separately in the practical demonstration, not inserted into every scientific kernel trial. Thus these primary times cover the full declared runner operation, not the full product stack. A separately measured research audit uses independent BFS and exhaustive subset enumeration; it is excluded symmetrically from method latency and included in research cost.
+
+Competitive success requires a simultaneous upper ratio bound below $0.90$ against both conventional references without loss of correctness or completion. Artifact benefit requires a receiver ratio bound below $0.80$ at equal quality. The three contrasts form one family: 10,000 fixed-seed world-bootstrap replicates~\cite{efron1979bootstrap} produce 98.333333\% two-sided percentile intervals, providing nominal Bonferroni family coverage of 95\%. Bootstrap coverage is approximate. A subgroup or inner-kernel improvement cannot replace the primary verdict. Scientific execution is capped at 1,200 CPU seconds and 256 MiB of new evidence; interrupted campaigns retain incomplete denominators and failed attempts.
+
+\subsection{Boundaries of independence and proof}
+
+The checker was authored separately within the same research session. Its BFS, finite subset enumeration, and certificate checks do not import candidate kernels. This reduces shared implementation error but is neither organizational independence nor a blinded external evaluation. Reproduction in another process establishes reproducibility under recorded conditions, not universal portability.
+
+World, policy, proof and authority remain separate predicates. The receiver serializes and reopens the artifact, checks current graph/application, policy and source/environment bindings, and rechecks semantics. Restored history has no active proof or grant. Revoked receiver authority requires refusal even after legitimate predecessor production. Missing edges illustrate the observability boundary: exactness over an incomplete supplied graph can still omit real impact. The intervention reports that limitation instead of treating a valid hash as evidence of graph completeness.
+
+The project stages are a trace through these operations: Identify binds the need; Out-Learn reads declared structure; Out-Think compares eligible operators; Out-Design constructs only when justified; Out-Strategise binds constraints; Out-Execute qualifies and computes; Out-Evolve evaluates the distinct coverage successor and retains or terminates its history. These labels do not enlarge the native runtime's authorization or make a changed plan inherit an earlier proof.
+
+\section{Relation to established work}
+\label{sec:bloom-related}
+
+Instance-conditioned operator choice is algorithm selection~\cite{rice1976selection}; parameter and procedure tuning have extensive configuration literature~\cite{hutter2011smac}. Reusable program libraries and construction of later solutions from earlier abstractions are also established~\cite{ellis2021dreamcoder}. Here, the contribution sought is controlled evidence about when a qualified, portable operator pays for its complete measured operational cost and enables a successor under explicit constraints. The familiar machinery is identified rather than renamed as a discovery.
+
+Coverage reduction has a longstanding test-to-requirement formulation~\cite{harrold1993reduction}. Weighted greedy set cover provides an important scalable conventional alternative~\cite{chvatal1979cover}; this experiment uses exact optimization only because its catalogue is deliberately small and grants the same optimizer to every policy. Safe regression selection has stronger assumptions and goals than coverage preservation~\cite{rothermel1997safe}. Consequently, no synthetic planning weight is reported as measured testing saved or preserved fault detection. Finally, portable experiment packaging and provenance precede this work~\cite{chirigati2013reprozip}. Exportability preserves inspectable evidence; semantic applicability and authority must still be established at the receiving boundary.
+
+\subsection{What is new, and what remains established engineering}
+Programming by examples can synthesize transformations within a specified grammar~\cite{gulwani2011strings}; DreamCoder extends this with learned reusable abstractions~\cite{ellis2021dreamcoder}. BLOOM's confirmatory operator grammar and construction algorithms are fixed in advance. Its new per-world object is graph-specific data plus a certificate. It does not reproduce those systems' learned program discovery, and calling this finite construction ``invention'' does not establish equivalent capability.
+
+Workflow planning already reasons about ordered task decomposition and applicability~\cite{nau2003shop2}. Reuse of qualified components has deep engineering roots~\cite{mcilroy1968components}; content-addressed deployment and provenance support inspectable portability~\cite{dolstra2004nix,chirigati2013reprozip}. This edition's additional evidence is the explicit, prospective separation of a fair selection comparison from artifact-retention, replacement and proof-ablation interventions, connected to the project's actual native lifecycle. Its contribution is that integrated experiment and usable bounded implementation, not ownership of the underlying planning or reuse idea.
+
+Adaptive experimentation can invalidate ordinary holdout interpretation when the same evaluation answers guide repeated selection~\cite{dwork2015holdout}. Here, twelve development worlds support two visible development cycles; no confirmatory outcome is used to revise the policy. The fresh-size set remains separately reported after the original failure. The resulting procedure is a simple frozen-split design, not a new reusable-holdout method. The paper's negative comparative result is part of the contribution.

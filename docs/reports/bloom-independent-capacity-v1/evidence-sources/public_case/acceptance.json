@@ -1,0 +1,521 @@
+{
+  "acceptance_criteria": [
+    "All source hashes verified by parser --check.",
+    "Every declared root/build dependency, optional declaration, peer declaration and link matches native Node ancestry or an explicit unresolved record.",
+    "Case edges equal the independently reconstructed source edge set.",
+    "Every fixed query has the expected project-root impact under independent BFS.",
+    "Independent exhaustive subset enumeration supplies expected synthetic-cover outputs for downstream candidate comparison; weights are positive; no actual test-safety claim.",
+    "Illustrative dependency lineages have exact source-declaration receipts."
+  ],
+  "artifact_sha256": {
+    "independent/reference.py": "cc325d342e830315353c1828532ffc79640d17b8558424344e91cc4f8cc82114",
+    "public_case/acceptance.py": "68a8e9afee65ec49d1c5d4489adb89a4fc0f0bf175be62cc4aeb0f4b66a5d438",
+    "public_case/audit_manifest.json": "18d891b8cd63199722128e9b776ae08c52d1bab484edcf5236294c904ad17859",
+    "public_case/case.json": "3cc2b5db6faee8665988abf6b5e24e164c13f8d877033737439a66b22df0dca2",
+    "public_case/graph_audit.json.gz": "e1fc431a427261bf854c9c67dcc34118c16183aa9673a6c0b185a1c565b2d476",
+    "public_case/parser.py": "77b805cc408ce0314bb72c11341c19d6bbc48ed26220602b852dca07729b9948",
+    "public_case/raw/alpha-web-package-lock.json": "efaf9dbd949c5325c90156fe5658515fab3f80bfa18c759638c624c55cff9430",
+    "public_case/raw/jobs-package-lock.json": "d0bf0d1bfe02919131b97cd9480265b6fe20ddbf0f1d9fd670b86c40674f7f62",
+    "public_case/raw/manager-package-lock.json": "26e66d9b9ceeea702cac9f4cf1d01d67f73c0f6c0b4a3acba821b1cc12003987",
+    "public_case/source_receipt.json": "7eb222802f72f476307dc27cc583ec30decd063f47fe2c2898d1d4ca502c422c",
+    "public_case/verify_node_resolution.cjs": "97270f6cdceb20d6054a578414162e712bf86b4e60f557e68a84eded78eb607b"
+  },
+  "cash_or_customer_acceptance": "not_claimed",
+  "counts": {
+    "applications": 2,
+    "edges": 2000,
+    "link_records": 1,
+    "nodes": 1136,
+    "queries": 17,
+    "resolved_declaration_fields": {
+      "dependencies": 1756,
+      "devDependencies": 24,
+      "optionalDependencies": 105,
+      "peerDependencies": 114
+    },
+    "resolved_records": 2000,
+    "synthetic_coverage_options": 3,
+    "unresolved_declaration_fields": {
+      "peerDependencies": 16
+    },
+    "unresolved_records": 16
+  },
+  "coverage_cost_unit": "synthetic_coverage_weight",
+  "decompressed_audit_sha256": "b825d1c3b269d5b510440df56bada259eace3a8934f8485a0ab0a710c756e55b",
+  "environment": {
+    "node": "v24.19.0",
+    "python": "3.12.14"
+  },
+  "lineage_paths": [
+    {
+      "nodes": [
+        "alpha-web::node_modules/vite",
+        "alpha-web::<root>"
+      ],
+      "source_declarations": [
+        {
+          "constraints": {
+            "devDependencies": "^7.0.5"
+          },
+          "dependency": "alpha-web::node_modules/vite",
+          "dependent": "alpha-web::<root>",
+          "from_lock_path": "",
+          "kind": "package-declaration",
+          "optional": false,
+          "peer_optional": false,
+          "project": "alpha-web",
+          "requested_name": "vite",
+          "resolved_path": "node_modules/vite"
+        }
+      ],
+      "start": "alpha-web::node_modules/vite",
+      "target": "alpha-web::<root>"
+    },
+    {
+      "nodes": [
+        "alpha-web::node_modules/react",
+        "alpha-web::<root>"
+      ],
+      "source_declarations": [
+        {
+          "constraints": {
+            "dependencies": "^18.2.0"
+          },
+          "dependency": "alpha-web::node_modules/react",
+          "dependent": "alpha-web::<root>",
+          "from_lock_path": "",
+          "kind": "package-declaration",
+          "optional": false,
+          "peer_optional": false,
+          "project": "alpha-web",
+          "requested_name": "react",
+          "resolved_path": "node_modules/react"
+        }
+      ],
+      "start": "alpha-web::node_modules/react",
+      "target": "alpha-web::<root>"
+    },
+    {
+      "nodes": [
+        "alpha-web::node_modules/@babel/parser",
+        "alpha-web::node_modules/@babel/core",
+        "alpha-web::node_modules/@vitejs/plugin-react",
+        "alpha-web::<root>"
+      ],
+      "source_declarations": [
+        {
+          "constraints": {
+            "dependencies": "^7.29.7"
+          },
+          "dependency": "alpha-web::node_modules/@babel/parser",
+          "dependent": "alpha-web::node_modules/@babel/core",
+          "from_lock_path": "node_modules/@babel/core",
+          "kind": "package-declaration",
+          "optional": false,
+          "peer_optional": false,
+          "project": "alpha-web",
+          "requested_name": "@babel/parser",
+          "resolved_path": "node_modules/@babel/parser"
+        },
+        {
+          "constraints": {
+            "dependencies": "^7.28.0"
+          },
+          "dependency": "alpha-web::node_modules/@babel/core",
+          "dependent": "alpha-web::node_modules/@vitejs/plugin-react",
+          "from_lock_path": "node_modules/@vitejs/plugin-react",
+          "kind": "package-declaration",
+          "optional": false,
+          "peer_optional": false,
+          "project": "alpha-web",
+          "requested_name": "@babel/core",
+          "resolved_path": "node_modules/@babel/core"
+        },
+        {
+          "constraints": {
+            "devDependencies": "^4.7.0"
+          },
+          "dependency": "alpha-web::node_modules/@vitejs/plugin-react",
+          "dependent": "alpha-web::<root>",
+          "from_lock_path": "",
+          "kind": "package-declaration",
+          "optional": false,
+          "peer_optional": false,
+          "project": "alpha-web",
+          "requested_name": "@vitejs/plugin-react",
+          "resolved_path": "node_modules/@vitejs/plugin-react"
+        }
+      ],
+      "start": "alpha-web::node_modules/@babel/parser",
+      "target": "alpha-web::<root>"
+    },
+    {
+      "nodes": [
+        "manager::ui/vendor/zod",
+        "manager::node_modules/zod",
+        "manager::<root>"
+      ],
+      "source_declarations": [
+        {
+          "declared_target": "ui/vendor/zod",
+          "dependency": "manager::ui/vendor/zod",
+          "dependent": "manager::node_modules/zod",
+          "from_lock_path": "node_modules/zod",
+          "kind": "link",
+          "project": "manager",
+          "resolved_path": "ui/vendor/zod"
+        },
+        {
+          "constraints": {
+            "devDependencies": "file:ui/vendor/zod"
+          },
+          "dependency": "manager::node_modules/zod",
+          "dependent": "manager::<root>",
+          "from_lock_path": "",
+          "kind": "package-declaration",
+          "optional": false,
+          "peer_optional": false,
+          "project": "manager",
+          "requested_name": "zod",
+          "resolved_path": "node_modules/zod"
+        }
+      ],
+      "start": "manager::ui/vendor/zod",
+      "target": "manager::<root>"
+    }
+  ],
+  "native_resolution_check": {
+    "basis": "Native Node _nodeModulePaths ancestry over exact local lock maps; package scripts and imports are not executed.",
+    "checked_records": 2016,
+    "edges": 2000,
+    "link_records": 1,
+    "resolved_records": 2000,
+    "status": "PASS",
+    "unresolved_records": 16
+  },
+  "query_results": [
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/vite"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 5,
+        "subsets_examined": 7,
+        "visited_nodes": 4
+      },
+      "feasible": true,
+      "query_index": 0,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/react"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 9,
+        "subsets_examined": 7,
+        "visited_nodes": 5
+      },
+      "feasible": true,
+      "query_index": 1,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/@babel/parser"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 236,
+        "subsets_examined": 7,
+        "visited_nodes": 97
+      },
+      "feasible": true,
+      "query_index": 2,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/rollup"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 22,
+        "subsets_examined": 7,
+        "visited_nodes": 12
+      },
+      "feasible": true,
+      "query_index": 3,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/vue"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 3,
+        "subsets_examined": 7,
+        "visited_nodes": 3
+      },
+      "feasible": true,
+      "query_index": 4,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/typescript"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 39,
+        "subsets_examined": 7,
+        "visited_nodes": 19
+      },
+      "feasible": true,
+      "query_index": 5,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/@vitejs/plugin-react"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 1,
+        "subsets_examined": 7,
+        "visited_nodes": 2
+      },
+      "feasible": true,
+      "query_index": 6,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/@vitejs/plugin-vue"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 1,
+        "subsets_examined": 7,
+        "visited_nodes": 2
+      },
+      "feasible": true,
+      "query_index": 7,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/cypress"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 3,
+        "subsets_examined": 7,
+        "visited_nodes": 3
+      },
+      "feasible": true,
+      "query_index": 8,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/@opentelemetry/api"
+      ],
+      "cost": 7,
+      "diagnostics": {
+        "edge_visits": 38,
+        "subsets_examined": 7,
+        "visited_nodes": 13
+      },
+      "feasible": true,
+      "query_index": 9,
+      "selected": [
+        "synthetic-alpha"
+      ]
+    },
+    {
+      "affected": [
+        "manager::<root>"
+      ],
+      "changed": [
+        "manager::node_modules/hardhat"
+      ],
+      "cost": 5,
+      "diagnostics": {
+        "edge_visits": 1,
+        "subsets_examined": 7,
+        "visited_nodes": 2
+      },
+      "feasible": true,
+      "query_index": 10,
+      "selected": [
+        "synthetic-manager"
+      ]
+    },
+    {
+      "affected": [
+        "manager::<root>"
+      ],
+      "changed": [
+        "manager::node_modules/solc"
+      ],
+      "cost": 5,
+      "diagnostics": {
+        "edge_visits": 1,
+        "subsets_examined": 7,
+        "visited_nodes": 2
+      },
+      "feasible": true,
+      "query_index": 11,
+      "selected": [
+        "synthetic-manager"
+      ]
+    },
+    {
+      "affected": [
+        "manager::<root>"
+      ],
+      "changed": [
+        "manager::node_modules/ethers"
+      ],
+      "cost": 5,
+      "diagnostics": {
+        "edge_visits": 1,
+        "subsets_examined": 7,
+        "visited_nodes": 2
+      },
+      "feasible": true,
+      "query_index": 12,
+      "selected": [
+        "synthetic-manager"
+      ]
+    },
+    {
+      "affected": [
+        "manager::<root>"
+      ],
+      "changed": [
+        "manager::node_modules/@openzeppelin/contracts"
+      ],
+      "cost": 5,
+      "diagnostics": {
+        "edge_visits": 1,
+        "subsets_examined": 7,
+        "visited_nodes": 2
+      },
+      "feasible": true,
+      "query_index": 13,
+      "selected": [
+        "synthetic-manager"
+      ]
+    },
+    {
+      "affected": [
+        "manager::<root>"
+      ],
+      "changed": [
+        "manager::node_modules/zod"
+      ],
+      "cost": 5,
+      "diagnostics": {
+        "edge_visits": 5,
+        "subsets_examined": 7,
+        "visited_nodes": 4
+      },
+      "feasible": true,
+      "query_index": 14,
+      "selected": [
+        "synthetic-manager"
+      ]
+    },
+    {
+      "affected": [
+        "alpha-web::<root>",
+        "manager::<root>"
+      ],
+      "changed": [
+        "alpha-web::node_modules/vite",
+        "manager::node_modules/solc"
+      ],
+      "cost": 10,
+      "diagnostics": {
+        "edge_visits": 6,
+        "subsets_examined": 7,
+        "visited_nodes": 6
+      },
+      "feasible": true,
+      "query_index": 15,
+      "selected": [
+        "synthetic-both"
+      ]
+    },
+    {
+      "affected": [],
+      "changed": [],
+      "cost": 0,
+      "diagnostics": {
+        "edge_visits": 0,
+        "subsets_examined": 1,
+        "visited_nodes": 0
+      },
+      "feasible": true,
+      "query_index": 16,
+      "selected": []
+    }
+  ],
+  "real_regression_safety": "not_established",
+  "schema": "bloom-public-practical-acceptance/v1",
+  "scope": "Pinned public lock-map structure, independent impact and exact synthetic cover; excluded from confirmatory results.",
+  "status": "PASS"
+}

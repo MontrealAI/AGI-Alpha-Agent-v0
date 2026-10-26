@@ -1,0 +1,52 @@
+{
+  "split": "confirmation",
+  "worlds": 48,
+  "gates": {
+    "G1": "PENDING_INDEPENDENT_REPLAY",
+    "G2": "PASS",
+    "G3": "FAIL",
+    "G4": "FAIL",
+    "G5": "INCOMPLETE_COSTS_AND_DEMAND"
+  },
+  "competitive": {
+    "expert": {
+      "geometric_mean_ratio": 0.9824891113518552,
+      "ci_lower": 0.9429765747000655,
+      "ci_upper": 1.0249474012481712,
+      "interval_level": 0.9833333333333333,
+      "family_size": 3,
+      "bootstrap_replicates": 10000,
+      "independent_graph_worlds": 48,
+      "coverage": "nominal percentile-bootstrap; not finite-sample guaranteed",
+      "comparator": "expert",
+      "practical_threshold": 0.9,
+      "pass_threshold": false
+    },
+    "reverse": {
+      "geometric_mean_ratio": 0.9679515464923112,
+      "ci_lower": 0.941111971854166,
+      "ci_upper": 0.9967284401395236,
+      "interval_level": 0.9833333333333333,
+      "family_size": 3,
+      "bootstrap_replicates": 10000,
+      "independent_graph_worlds": 48,
+      "coverage": "nominal percentile-bootstrap; not finite-sample guaranteed",
+      "comparator": "reverse",
+      "practical_threshold": 0.9,
+      "pass_threshold": false
+    }
+  },
+  "dependence": {
+    "geometric_mean_ratio": 0.8141019005621232,
+    "ci_lower": 0.7793895494191101,
+    "ci_upper": 0.8554236258288341,
+    "interval_level": 0.9833333333333333,
+    "family_size": 3,
+    "bootstrap_replicates": 10000,
+    "independent_graph_worlds": 48,
+    "coverage": "nominal percentile-bootstrap; not finite-sample guaranteed",
+    "practical_threshold": 0.8,
+    "pass_threshold": false,
+    "interpretation": "paired controlled receiver effect; predecessor cost reported separately"
+  }
+}

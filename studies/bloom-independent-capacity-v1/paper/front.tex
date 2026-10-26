@@ -1,0 +1,133 @@
+\documentclass[11pt,letterpaper]{article}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.78in,headheight=15pt,headsep=18pt,footskip=28pt]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,tabularx,longtable,array}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,fancyhdr,titlesec}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{placeins,float}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{21172E}
+\definecolor{violet}{HTML}{693BB7}
+\definecolor{lavender}{HTML}{B39AE8}
+\definecolor{night}{HTML}{100A1E}
+\definecolor{mint}{HTML}{1E7153}
+\definecolor{amber}{HTML}{995B13}
+\definecolor{pale}{HTML}{F4F0FA}
+\definecolor{muted}{HTML}{675F72}
+\hypersetup{colorlinks=true,linkcolor=violet,citecolor=violet,urlcolor=violet,
+ pdftitle={BLOOM Infinity: Every Successor Must Earn Its Proof},
+ pdfauthor={Vincent Boucher, MONTREAL.AI},
+ pdfsubject={Verified capacity, causal artifact handoffs, and conditional value},
+ pdfkeywords={BLOOM, Transformational Intelligence, SUCCESSOR Omega, dependency analysis, reproducibility}}
+\urlstyle{same}
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\setlist[itemize]{leftmargin=1.4em,itemsep=3pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=3pt,topsep=4pt}
+\renewcommand{\arraystretch}{1.17}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\titleformat{\section}{\sffamily\Large\bfseries\color{violet}}{\thesection}{0.55em}{}
+\titleformat{\subsection}{\sffamily\large\bfseries\color{ink}}{\thesubsection}{0.55em}{}
+\titleformat{\paragraph}[runin]{\bfseries}{\theparagraph}{0.5em}{}[.]
+\titlespacing*{\section}{0pt}{17pt}{7pt}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{muted}BLOOM $\infty$ \enspace / \enspace VERIFIED CAPACITY}
+\fancyhead[R]{\sffamily\small\color{muted}MONTREAL.AI}
+\fancyfoot[L]{\sffamily\footnotesize Independent research edition 1}
+\fancyfoot[R]{\sffamily\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\newtcolorbox{evidencebox}[1]{enhanced,colback=pale,colframe=violet!35,boxrule=.45pt,
+ arc=2mm,left=3mm,right=3mm,top=2mm,bottom=2mm,title={#1},fonttitle=\sffamily\bfseries,
+ coltitle=ink,colbacktitle=violet!8,breakable}
+\newcommand{\bloom}{\textsc{BLOOM}$\infty$}
+\newcommand{\pass}{\textcolor{mint}{\textbf{PASS}}}
+\newcommand{\miss}{\textcolor{amber}{\textbf{FAIL}}}
+\graphicspath{{figures/}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+\fill[night] (current page.south west) rectangle (current page.north east);
+\foreach \x/\y/\r in {1.0/1.2/.022,2.2/2.8/.015,4.6/1.1/.018,6.8/3.4/.025,8.4/1.8/.015,12.2/2.1/.028,16.9/3.1/.018,18.4/1.3/.02,1.8/8.5/.018,5.7/9.8/.022,13.8/9.5/.016,18.2/8.7/.024,16.5/15.1/.02,19.1/19.4/.018,15.2/23.0/.018,4.2/23.9/.024,1.5/20.5/.018}
+ {\fill[lavender!75] ($(current page.south west)+(\x cm,\y cm)$) circle (\r cm);}
+\draw[violet!60,line width=.5pt] ($(current page.south east)+(-1.5cm,9.9cm)$) circle (3.2cm);
+\draw[violet!35,line width=.5pt] ($(current page.south east)+(-1.5cm,9.9cm)$) circle (4.25cm);
+\draw[lavender!25,line width=.5pt] ($(current page.south east)+(-1.5cm,9.9cm)$) circle (5.3cm);
+\node[draw=lavender,fill=violet!35!night,circle,minimum size=1.15cm,text=white,font=\sffamily\bfseries]
+ (k) at ($(current page.south west)+(11.7cm,9.9cm)$) {$K$};
+\node[draw=lavender,fill=night,circle,minimum size=1.15cm,text=white,font=\sffamily\bfseries]
+ (s) at ($(current page.south west)+(16.3cm,9.9cm)$) {$S$};
+\draw[-{Stealth[length=3mm]},lavender,line width=1pt] (k)--node[above,text=white,font=\sffamily\small]{verified artifact}(s);
+\node[text=lavender,font=\sffamily\small] at ($(current page.south west)+(11.7cm,8.8cm)$) {CAPABILITY};
+\node[text=lavender,font=\sffamily\small] at ($(current page.south west)+(16.3cm,8.8cm)$) {SUCCESSOR};
+\node[text=white,font=\sffamily\small] at ($(current page.south west)+(14cm,7.85cm)$) {Fresh task. Fresh proof. Explicit authority.};
+\end{tikzpicture}
+\color{white}\sffamily
+\vspace*{0.25in}
+{\small\textls[160]{MONTREAL.AI \quad / \quad RESEARCH 2026}}\par
+\vspace{0.65in}
+{\fontsize{66}{70}\selectfont\bfseries BLOOM $\boldsymbol\infty$}\par
+\vspace{0.32in}
+{\fontsize{30}{39}\selectfont\bfseries EVERY SUCCESSOR\\MUST EARN ITS PROOF.\par}
+\vspace{0.38in}
+{\Large\color{lavender}Verified capacity. Conditional value.}\par
+\vspace{0.25in}
+\begin{minipage}{0.78\textwidth}
+{\large A preregistered study of selective operator construction, causal artifact handoffs, and the measured operational cost of qualified succession.}
+\end{minipage}
+\vfill
+{\small\textls[100]{AGI ALPHA AGENT \quad | \quad TRANSFORMATIONAL INTELLIGENCE $\infty$}}\par
+{\small SUCCESSOR $\Omega$ \enspace / \enspace Local Harness integration}\par
+\vspace{0.28in}
+{\large Vincent Boucher \enspace $\cdot$ \enspace MONTREAL.AI}\par
+{\small 23 October 2026, Montr\'eal \quad / \quad Independent research edition 1}\par
+\vspace{0.15in}
+{\footnotesize Research program: \emph{The seed that invents its economy}.\\This edition establishes a bounded engineering result; competitive and commercial targets remain evidence-gated.}
+\end{titlepage}
+\setcounter{page}{1}
+\hypersetup{pageanchor=true}
+\section*{Abstract}
+Software teams repeatedly ask which applications a dependency change can affect and what coverage work should follow. Recomputing every answer wastes work; trusting a portable result after its conditions change can produce a confident error. We implement \bloom, a local system that constructs a graph-specific impact operator, verifies its exact domain, and passes its answers to a distinct minimum-cost coverage-planning successor. The system uses unchanged published AGI ALPHA / SUCCESSOR $\Omega$ runtime components, with inspectable native history and inactive restoration. Before confirmation, we freeze source, analysis and a balanced 48-world study; an independently executed 24-world shifted-size set and a complete deterministic replay follow. All 2,016 eligible confirmatory trials resolve exactly, all 288 input/authority refusals are correct, and all 144 conventional replacement artifacts are accepted. Removing receiver-proof checks causes 48/48 adversarial trials to accept incorrect outcomes. The performance verdict in the shared study runner is narrower: CPU point estimates improve by 2.9\% against an expert-style policy and 4.2\% against reverse indexing, but neither establishes the prespecified 10\% advantage. Artifact retention reduces receiver CPU by 22.2\% at the point estimate; its Bonferroni-adjusted percentile interval supports 19.4--24.9\%, narrowly missing the required 20\% lower bound. Fresh reproduction also misses the practical thresholds. A real public-manifest demonstration covers 1,136 nodes and 2,000 edges through seven native stages. Cash revenue is zero; complete monetary cost and demand are unmeasured. The contribution is an exact, portable and reproducible engineering system with prospective causal evidence and explicit limits, not a new reachability algorithm or proven autonomous commerce.
+
+\begin{evidencebox}{The measured verdict}
+\begin{tabularx}{\linewidth}{@{}lY@{}}
+\textbf{Earned} & Exact supplied-graph outcomes; qualified artifact transport; correctly bounded restoration; reproducible local execution.\\
+\textbf{Not established} & The declared 10\% competitive advantage; the declared 20\% minimum receiver gain; full-cost commercial viability.\\
+\textbf{Useful today} & Inspect public dependency impact and a finite coverage plan, export the evidence, and restore its history without inheriting authority.\\
+\end{tabularx}
+\end{evidencebox}
+\smallskip
+{\small\textbf{Evidence identity.} Freeze manifest: \texttt{ecd3df27\ldots1116bcfbe}; 48 confirmatory worlds; 24 fresh reproduction worlds; 2,544 deterministic replay records. Full identities and commands appear in Section~\ref{sec:reproduction}.}
+\clearpage
+\section{The capacity that survives a completed task}
+An accepted output can be useful in two ways. It may answer the present question, and it may supply a capability that changes the work required by a later question. The second value is conditional. Construction has a cost. Verification has a cost. A changed graph, a revised policy, or withdrawn permission can invalidate the receiving use. A successor must therefore earn its own proof.
+
+This research starts with a practical, nonpersonal need in the project's public software: determine which application roots depend on a changed package, then produce an inspectable coverage plan for those roots. The first task is graph reachability. The second is finite weighted coverage. The successor reads an actual predecessor-produced impact artifact; it does not receive a fictional mission label or a presumed financial return.
+
+TRANSFORMATIONAL INTELLIGENCE supplies the motivating question: can changing the problem-solving setup make a purpose easier to achieve without weakening that purpose? The transformation here is bounded and concrete. Repeated traversal can be replaced by a graph-specialized data program with independently checked applicability. Its usefulness depends on the workload and on the cost of keeping its proof current. The foundations distinguish this structural question from a claim of novel unrestricted planning or universal superiority~\cite{boucher2026ti,boucher2026execute,boucher2026economy}.
+
+The strongest ordinary method remains eligible. BLOOM may use direct traversal, memoization, component propagation, reverse indexing or finite Warshall closure. The conventional references receive the same choices, information and qualification criteria. Building something new is a conditional option, never a requirement for an impressive-looking trace. In the real-manifest demonstration, the expert-style policy selects conventional reverse indexing.
+
+\subsection{Contribution statement}
+This edition contributes four connected artifacts. First, it implements a source-bound portable impact operator with exact certificates and a separately checked coverage successor. Second, it contributes a timestamped, preregistered comparison that distinguishes competitive advantage from the causal benefit of retaining an artifact. Third, it exercises the published Alpha dispatcher, real native history, backup and restoration in a bounded local journey. Fourth, it delivers complete source, raw observations, independent checks, a public-manifest example and an inspectable evidence browser.
+
+The verification propositions collect sufficient conditions for the implemented certificates. They are engineering arguments built from established graph techniques, not claims that SCC decomposition, dynamic programming, caching, algorithm selection or test coverage were invented here. Earlier project editions develop mission-relative capability inheritance and construction of a next capability~\cite{montrealai2026writer4,montrealai2026writer5}. This edition starts its own problem, generator and comparative design, and adds controlled retention, replacement, corruption and resource interventions. No learned model constructs a new algorithm during the confirmatory run. The implemented construction specializes a maintained operator grammar to a particular graph; every resulting program remains finite and inspectable.
+
+\subsection{Three distinct meanings of success}
+\textbf{Engineering success} means exact results within the stated contract, readable failures, reproducible commands, preserved evidence and honest authority. \textbf{Scientific advantage} means passing the declared comparative thresholds against strong allowed alternatives. \textbf{Economic success} would additionally require supported demand and complete attributable costs. The first can be delivered while the latter two remain unproven. The paper keeps all three verdicts visible.
+
+\paragraph{Research question} Under changing workload and resource constraints, does constructing and carrying a verified graph-specific operator improve complete operational cost over equally equipped conventional methods, and does its artifact causally reduce the work of a distinct successor? The answer is tested with declared practical thresholds; useful exactness alone cannot answer the comparative question.
