@@ -1,0 +1,56 @@
+[
+  {
+    "tool": "black",
+    "file": "src/production_campaign.py",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "All done! \u2728 \ud83c\udf70 \u2728\n1 file left unchanged.\n"
+  },
+  {
+    "tool": "black",
+    "file": "tests/test_production_campaign.py",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "All done! \u2728 \ud83c\udf70 \u2728\n1 file left unchanged.\n"
+  },
+  {
+    "command": [
+      "/workspace/scratch/c4e9aee15454/research-env/bin/ruff",
+      "check",
+      "--config",
+      "../../pyproject.toml",
+      "src/production_campaign.py",
+      "tests/test_production_campaign.py"
+    ],
+    "exit": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/workspace/scratch/c4e9aee15454/research-env/bin/mypy",
+      "--strict",
+      "src/production_campaign.py",
+      "tests/test_production_campaign.py"
+    ],
+    "exit": 0,
+    "stdout": "Success: no issues found in 2 source files\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_production_campaign.py",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_all_keys_are_strings (test_production_campaign.ProductionControls.test_all_keys_are_strings) ... ok\ntest_child_execution_and_capture (test_production_campaign.ProductionControls.test_child_execution_and_capture) ... ok\ntest_child_failure_retained (test_production_campaign.ProductionControls.test_child_failure_retained) ... ok\ntest_exact_freeze (test_production_campaign.ProductionControls.test_exact_freeze) ... ok\ntest_failed_guard_prevents_execution (test_production_campaign.ProductionControls.test_failed_guard_prevents_execution) ... ok\ntest_key_collision_rejected (test_production_campaign.ProductionControls.test_key_collision_rejected) ... ok\ntest_manifest_mutation (test_production_campaign.ProductionControls.test_manifest_mutation) ... ok\ntest_missing_source_is_custody_failure (test_production_campaign.ProductionControls.test_missing_source_is_custody_failure) ... ok\ntest_nonfinite_rejected (test_production_campaign.ProductionControls.test_nonfinite_rejected) ... ok\ntest_rotated_pairs_source (test_production_campaign.ProductionControls.test_rotated_pairs_source) ... ok\ntest_source_mutation (test_production_campaign.ProductionControls.test_source_mutation) ... ok\ntest_timeout_keeps_partial_output (test_production_campaign.ProductionControls.test_timeout_keeps_partial_output) ... ok\ntest_timestamp_stays_string (test_production_campaign.ProductionControls.test_timestamp_stays_string) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.122s\n\nOK\n"
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "recordedUtc": "2026-10-26T21:23:08.887011+00:00",
+  "phase": "EXPLORATORY_CONTENT_DIFFERENT_SECONDARY_TRANSFER",
+  "pair": [
+    "v27.5.1",
+    "v28.0.0"
+  ],
+  "secondaryFreezeSha256": "6523368860407ad6a7f89c067b45579ee99a794c84d600ab258ee6cfc30e713a",
+  "status": "HOLD_INPUT_VALIDATION_FAILED",
+  "rawInputSha256": [
+    "bcd18f1ec7c8324ccd1f5b9243fbb2437673f3bf7192c23cea571bdc7049485c",
+    "68770e01f8984c14a671820b255e9663e5e869207cb117889a22d349e6324b79"
+  ],
+  "validation": {
+    "tool": "swagger-spec-validator3.0.4",
+    "failedInput": "v27.5.1.json",
+    "secondInputValidation": "NOT_REACHED",
+    "receipt": "shared-raw-swagger-validation-receipt.json",
+    "error": "Required ImageData.UnpackedSize not declared under properties",
+    "wallSeconds": 0.6654316849999304,
+    "cpuSeconds": 0.664342
+  },
+  "arms": [
+    {
+      "arm": "original",
+      "executed": false,
+      "status": "NOT_RUN_INPUT_VALIDATION_FAILED",
+      "wallSeconds": null,
+      "cpuSeconds": null,
+      "actualCompleteMonetaryCost": null
+    },
+    {
+      "arm": "full",
+      "executed": false,
+      "status": "NOT_RUN_INPUT_VALIDATION_FAILED",
+      "wallSeconds": null,
+      "cpuSeconds": null,
+      "actualCompleteMonetaryCost": null
+    },
+    {
+      "arm": "incremental",
+      "executed": false,
+      "status": "NOT_RUN_INPUT_VALIDATION_FAILED",
+      "wallSeconds": null,
+      "cpuSeconds": null,
+      "actualCompleteMonetaryCost": null
+    }
+  ],
+  "sourceFrozenAndUnchanged": true,
+  "efficacyAttemptsPerArm": 0,
+  "efficacyRetries": 0,
+  "originalPrimaryPreserved": true,
+  "marketCalibrationUse": false,
+  "interpretation": "Different acceptance preconditions: parent A/B/C/D can satisfy its frozen narrow structural contract while this recipient selected a stricter raw-input validator and did not execute. This is not an original-versus-donor performance or capability loss.",
+  "adjudication": "See validation-adjudication.json; specific tool rule stricter than normative required relationship, entire-document validity not adjudicated; original HOLD retained."
+}

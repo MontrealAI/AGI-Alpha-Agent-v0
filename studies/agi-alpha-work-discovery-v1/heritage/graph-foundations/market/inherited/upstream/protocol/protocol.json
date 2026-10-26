@@ -1,0 +1,76 @@
+{
+  "schema": "agi-alpha-market-protocol/v1",
+  "status": "FROZEN_BEFORE_PRIMARY_MARKET_OUTCOMES",
+  "primary_outcomes": [
+    "B_minus_A_profitCents",
+    "C_minus_A_profitCents",
+    "B_minus_C_profitCents"
+  ],
+  "secondary_outcomes": [
+    "enterpriseAccepted",
+    "grossCollectionsCents",
+    "insolvent",
+    "investmentWeek",
+    "directNetSavingCents",
+    "availableOperatingSurplusCents"
+  ],
+  "mechanism": "Actual producer adoption can change only assumed provider finalization effort/capacity; no automatic demand, price, quality or review uplift.",
+  "economic_identification": "Conditional parameter regions; exact human effort, construction/inference total, demand, WTP, quality and collections are not identified by existing experiments.",
+  "production": "Existing six-transition three-arm frozen comparison; any separately registered new tuples remain separately identified.",
+  "horizon_weeks": 52,
+  "buyers": 12,
+  "primary_grid": {
+    "ordinaryFinalizationMinutes": [
+      0,
+      2,
+      10,
+      30
+    ],
+    "constructionHours": [
+      0.5,
+      4,
+      16,
+      40
+    ],
+    "choiceModel": [
+      "deterministic",
+      "logit"
+    ],
+    "investmentCostBasis": [
+      "full-history"
+    ],
+    "historicalCostTiming": "opening",
+    "seeds": {
+      "first": 1001,
+      "count": 24
+    }
+  },
+  "stress_scenarios": "All named scenarios exported by src/market.mjs, same 24 seeds, all three arms; no favorable-only scenario selection.",
+  "adoption_grid": {
+    "ordinaryFinalizationMinutes": [
+      0,
+      2,
+      10,
+      30
+    ],
+    "adoptionHours": [
+      0.5,
+      4,
+      16,
+      40
+    ],
+    "choiceModel": [
+      "deterministic",
+      "logit"
+    ],
+    "investmentCostBasis": "adoption-only"
+  },
+  "adoption_only": "Prospective-operator grid plus same-seed reference/low-demand/cheap-AI/slow-collection stress scenarios; original research is explicitly sunk and historical repayment forbidden.",
+  "historical_timing": "Primary full-history cost accrues at opening from equal finite seed and may cause insolvency; operating surplus can fund later adoption only. At-adoption full historical allocation is separately labeled retrospective sensitivity, not evidence of original R&D affordability.",
+  "adoption_delay": "At least one week and ceil(adoptionHours/engineeringHoursPerWeek), with enterprise deliveries paused; source becomes active only at availability week.",
+  "stochastic_pairing": "Seed+semantic key draws; arm names excluded. B/C economic and outcome summaries must be exactly equal under matched effects and costs.",
+  "inference": "Paired sample mean and percentile of seed differences; 95% normal-approximation Monte Carlo interval 1.96*sample_sd/sqrt(n). It summarizes worlds under assumptions, not uncertainty in market identification.",
+  "recording": "Every run exports exact config, outcomes, invoices, bills, cash payments, balances, buyer actions, investment decisions and competition; original failed runs retained.",
+  "freeze_rule": "Source/protocol/scenario hashes and UTC timestamp must be recorded before primary outcomes are inspected.",
+  "amendments": []
+}

@@ -1,0 +1,82 @@
+{
+  "id": "transfer-01-v23.0.0-to-v23.0.6-A",
+  "arm": "A",
+  "pair": [
+    "v23.0.0",
+    "v23.0.6"
+  ],
+  "order": 0,
+  "accepted": true,
+  "status": "ACCEPTED_SCOPED_RESEARCH_OUTPUT",
+  "processes": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/conventional/conventional.py",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json",
+        "outputs/transfer/transfer-01-v23.0.0-to-v23.0.6-A/service/dossier.json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:11:42.429548+00:00",
+      "executed": true,
+      "stdout": "production.stdout",
+      "stderr": "production.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.19779818099777913,
+      "processWallSeconds": 0.19007267100096215,
+      "cpuSeconds": 0.18837299999999998,
+      "maxRssKiB": 29444,
+      "finishedAt": "2026-10-26T21:11:42.627395+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/comparators/conventional/verify_dossier.py",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json",
+        "outputs/transfer/transfer-01-v23.0.0-to-v23.0.6-A/service/dossier.json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:11:42.627513+00:00",
+      "executed": true,
+      "stdout": "verification.stdout",
+      "stderr": "verification.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.22075547799977357,
+      "processWallSeconds": 0.21156301500013797,
+      "cpuSeconds": 0.20813099999999998,
+      "maxRssKiB": 27320,
+      "finishedAt": "2026-10-26T21:11:42.848356+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    }
+  ],
+  "actualHumanSeconds": null,
+  "actualCompleteMonetaryCost": null,
+  "summary": {
+    "changedSurfaces": 0,
+    "unassessed": true
+  },
+  "acceptance": {
+    "accepted": true,
+    "after_nodes": 2341,
+    "before_nodes": 2341,
+    "changes": 0,
+    "scope": "independent exhaustive structural replay, not live API compatibility",
+    "unassessed": true
+  },
+  "wallSeconds": 0.432850776000123,
+  "cpuSeconds": 0.433404929,
+  "maxProcessRssKiB": 29444,
+  "cpuAccounting": "outer driver self CPU plus waited-child CPU delta once; internal timing receipts are not added",
+  "sharedAcquisitionCpuSeconds": 0.1934409529166667,
+  "sharedAcquisitionWallSeconds": 0.33040776624966384,
+  "finishedAt": "2026-10-26T21:11:42.862366+00:00"
+}

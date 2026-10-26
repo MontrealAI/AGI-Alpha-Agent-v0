@@ -1,0 +1,117 @@
+{
+  "id": "primary-01-v20.10.0-to-v23.0.0-C",
+  "arm": "C",
+  "pair": [
+    "v20.10.0",
+    "v23.0.0"
+  ],
+  "order": 2,
+  "accepted": true,
+  "status": "ACCEPTED_SCOPED_RESEARCH_OUTPUT",
+  "processes": [
+    {
+      "command": [
+        "node",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/src/run_service.mjs",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v20.10.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "outputs/primary/primary-01-v20.10.0-to-v23.0.0-C/service",
+        "registry"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:10:29.869771+00:00",
+      "executed": true,
+      "stdout": "production.stdout",
+      "stderr": "production.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 1.3209109130002616,
+      "processWallSeconds": 1.3129695990028267,
+      "cpuSeconds": 1.41503,
+      "maxRssKiB": 205056,
+      "finishedAt": "2026-10-26T21:10:31.190701+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tests/accept_dossier.py",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v20.10.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+        "outputs/primary/primary-01-v20.10.0-to-v23.0.0-C/service",
+        "--receipt",
+        "outputs/primary/primary-01-v20.10.0-to-v23.0.0-C/service/independent-acceptance.json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:10:31.190847+00:00",
+      "executed": true,
+      "stdout": "verification.stdout",
+      "stderr": "verification.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.32955883799877483,
+      "processWallSeconds": 0.3220256039967353,
+      "cpuSeconds": 0.326971,
+      "maxRssKiB": 47620,
+      "finishedAt": "2026-10-26T21:10:31.520423+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    }
+  ],
+  "actualHumanSeconds": null,
+  "actualCompleteMonetaryCost": null,
+  "summary": {
+    "oldResponses": 43,
+    "newResponses": 43,
+    "changedSurfaces": 489,
+    "unassessed": 318,
+    "mode": "incremental"
+  },
+  "acceptance": {
+    "accepted": true,
+    "actualHumanSeconds": null,
+    "actualMonetaryCost": null,
+    "changes": 489,
+    "conventionalSourceUnchanged": true,
+    "cpuSeconds": 0.264959253,
+    "dossierFiles": [
+      {
+        "path": "response-dossier-index.json",
+        "sha256": "24826a7c14421eee6774a1e854b7ac04516f7f6c0f8ee25f3acd7a5a54ab58bb"
+      },
+      {
+        "path": "dossier-part-1.txt",
+        "sha256": "c6f4a12dea70e312dcd64e679f511667451c4e3393ffbd38aaa78fd956a70b3e"
+      },
+      {
+        "path": "dossier-part-2.txt",
+        "sha256": "02db449e5e69de94de973a6a0f5d4f49589ff9bc56bfff92c310edfa48a5f2e2"
+      }
+    ],
+    "elapsedSeconds": 0.25958415899731335,
+    "inputRawSha256": [
+      "ca20174ce9e25b8ca8a458d24a17f5d3de8f9761027ff0221b927f7534fa97f8",
+      "b21a69a0b9d0f491f529ca1f58103b804c851d3c7f8ce9624115e283855b569e"
+    ],
+    "newNodes": 2341,
+    "newResponses": 43,
+    "oldNodes": 2233,
+    "oldResponses": 43,
+    "scope": "Exhaustive independent response-surface and source-binding replay; not server or customer compatibility acceptance",
+    "sourceDigests": [
+      "a96928c8494f1ef8a9f482c04cdf3e7276f5d6dd4b83ecf5d17eb7a66c86d69a",
+      "26f0f7f07c5836faaa95678eedf7990be82302ef929bd28b07546cb0ea89ce00"
+    ],
+    "unassessed": true
+  },
+  "wallSeconds": 1.6509690170023532,
+  "cpuSeconds": 1.7811623740000002,
+  "maxProcessRssKiB": 205056,
+  "cpuAccounting": "outer driver self CPU plus waited-child CPU delta once; internal timing receipts are not added",
+  "sharedAcquisitionCpuSeconds": 0.18268099466666665,
+  "sharedAcquisitionWallSeconds": 0.30875588075014093,
+  "finishedAt": "2026-10-26T21:10:31.520707+00:00"
+}

@@ -1,0 +1,34 @@
+✔ canonical ordering is invariant and original inputs remain unchanged (2.06654ms)
+✔ independent direct SHA-256 reproduction matches the declared byte format (0.190157ms)
+✔ Python independently reproduces canonical typed leaves, odd-tree root and graph epoch (29.337071ms)
+✔ unsupported numeric and object representations fail closed (0.854821ms)
+✔ sparse arrays, accessor arrays and symbols cannot silently change canonical bytes (0.337739ms)
+✔ typed commitments prohibit same-record cross-class replay (0.433084ms)
+✔ all inclusion paths validate for 1 leaves (0.623532ms)
+✔ all inclusion paths validate for 2 leaves (0.347054ms)
+✔ all inclusion paths validate for 3 leaves (4.483629ms)
+✔ all inclusion paths validate for 5 leaves (1.38387ms)
+✔ all inclusion paths validate for 8 leaves (2.058087ms)
+✔ all inclusion paths validate for 17 leaves (9.244731ms)
+✔ empty tree is deterministic and supplies no false inclusion proof (0.320083ms)
+✔ duplicate records cannot inflate the same commitment set (0.381696ms)
+✔ record and sibling tampering invalidate inclusion (0.454826ms)
+✔ proof policy and path shape cannot be substituted (0.31825ms)
+✔ forged tree levels cannot be used to generate an unverified proof (0.155034ms)
+✔ all nine typed classes and their inclusion proofs are inspectable (1.285391ms)
+✔ mutating input after forest construction cannot rewrite admitted bytes (0.831706ms)
+✔ altering evidence, revocation or supersession changes the graph root (11.649703ms)
+✔ graph root binds context, previous state, policy and schema (9.583929ms)
+✔ inclusion against an epoch requires correct typed count and graph commitment (0.34426ms)
+✔ forest root cannot be replaced without recomputing all leaves and paths (1.113782ms)
+✔ unknown forest type is refused (0.13911ms)
+✔ root-chain integrity does not silently become authorization (1.671954ms)
+✔ history rejects missing epochs, forks, context switches and altered roots (10.731111ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 108.366094

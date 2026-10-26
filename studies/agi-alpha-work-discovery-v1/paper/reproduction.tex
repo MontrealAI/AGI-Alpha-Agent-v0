@@ -1,0 +1,61 @@
+The code and recorded evidence are under
+\ev{studies/agi-alpha-work-discovery-v1/}. The companion retains the repository-relative
+Workbench dependency closure so that its imports resolve without changing the research source.
+Node 24.22.1, Python 3.12.14/PyYAML 6.0.3 and Java 17 were used. Public tool versions and
+licenses are retained. Runtime installations are prerequisites, not claimed to be embedded
+operating systems.
+
+\begin{longtable}{@{}p{0.30\linewidth}p{0.65\linewidth}@{}}
+\toprule Evidence group & Location relative to the study\\ \midrule\endhead
+Preselection and primary freeze &
+\ev{protocol/discovery.json}, \ev{production.json}, \ev{production-freeze.json}\\
+Complete primary execution &
+\ev{outputs/primary/campaign.json}; each case retains command streams, source-bound service output and acceptance\\
+Acquisition and licensing &
+\ev{inputs/acquired/manifest.json}; originals, normalized JSON, per-version licenses and failed URLs\\
+Competent recipients &
+\ev{comparators/conventional/}, \ev{comparators/recipient/}; original source freezes, integration and once-only cost records\\
+Original transfer and successor &
+\ev{outputs/transfer/}, \ev{outputs/secondary-transfer/},
+\ev{protocol/secondary-transfer-freeze.json}\\
+Public alternative &
+\ev{evidence/oasdiff-comparison.md}, raw/converted outputs and the separate normalized-input follow-up\\
+GTFS complete delivery &
+\ev{discovery/gtfs/output/}, \ev{discovery/gtfs/workbench/},
+original archive, license, validator and SQLite receipts\\
+Actual consumer boundary &
+\ev{discovery/consumer-impact/}; authentic source, license, unmodified extracted-function probe and EN/FR advisory\\
+Admission and prior work &
+\ev{src/admission/}, \ev{heritage/graph-foundations/},
+\ev{heritage/prior-studies/}; originals and fixture editions retained\\
+Finite-cash model &
+\ev{src/economics/}, \ev{protocol/economics-freeze.json},
+\ev{outputs/economics-primary/}; calibration, protocol, every weekly history and summaries\\
+Presentation &
+\ev{demo/index.html}, \ev{paper/main.tex}, generated result fragments and scientific figures\\
+\bottomrule
+\end{longtable}
+
+For a new authorized pair of normalized specification files, run the retained conventional
+constructor and its independent verifier, or the actual Workbench adapter:
+
+\begin{quote}\footnotesize\ttfamily
+python comparators/conventional/conventional.py OLD.json NEW.json OUT/dossier.json\\
+python comparators/conventional/verify\_dossier.py OLD.json NEW.json OUT/dossier.json\\[3pt]
+node src/run\_service.mjs OLD.json NEW.json NEW\_OUTPUT admitted-full\\
+python tests/accept\_dossier.py OLD.json NEW.json NEW\_OUTPUT
+\end{quote}
+
+Run from the study directory. Output directories must be new. Ordinary consumers should inspect
+the declared supported scope and warnings before using a dossier for a decision. Guarded
+Workbench modes use local fixtures and do not authenticate a live agent.
+
+Research replay must occur in a disposable copy. The original outcome directories are immutable.
+The primary driver accepts the exact published freeze hash; it refuses source drift, existing
+campaign outputs or changed input manifests. Replaying timings is a reproduction attempt, not
+another primary sample. The economic runner likewise requires its exact source and calibration
+freeze and a new output directory. Do not regenerate the archived data in place.
+
+Publication is an additive research proposal, separate from a deployed service or main-release
+qualification. Required repository merge and release checks retain their existing meaning.
+No frozen native HOLD test or protected execution path was opened by this study.

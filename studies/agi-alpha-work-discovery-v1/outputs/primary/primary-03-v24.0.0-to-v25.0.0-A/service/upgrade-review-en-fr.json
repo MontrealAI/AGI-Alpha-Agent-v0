@@ -1,0 +1,2391 @@
+{
+  "en": "Review every listed response-schema change before upgrading affected clients.",
+  "fr": "Examiner chaque modification de schéma avant de migrer les clients concernés.",
+  "changes": [
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames",
+          "i:"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/ContainerSummary",
+          "#/definitions/EndpointSettings"
+        ],
+        "responseId": "GET /containers/json 200",
+        "sourcePointer": "#/definitions/EndpointSettings/properties/DNSNames/items"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/json 200",
+        [
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames",
+          "i:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames"
+        ],
+        "facts": {
+          "type": "array"
+        },
+        "refChain": [
+          "#/definitions/ContainerSummary",
+          "#/definitions/EndpointSettings"
+        ],
+        "responseId": "GET /containers/json 200",
+        "sourcePointer": "#/definitions/EndpointSettings/properties/DNSNames"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/json 200",
+        [
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Config",
+          "p:Healthcheck",
+          "p:StartInterval"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ContainerConfig",
+          "#/definitions/HealthConfig"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/HealthConfig/properties/StartInterval"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:Config",
+          "p:Healthcheck",
+          "p:StartInterval"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/HostConfig",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyForceRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/HostConfig",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyNonRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:HostConfig",
+          "allOf:1",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames",
+          "i:"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/NetworkSettings",
+          "#/definitions/EndpointSettings"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/EndpointSettings/properties/DNSNames/items"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames",
+          "i:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames"
+        ],
+        "facts": {
+          "type": "array"
+        },
+        "refChain": [
+          "#/definitions/NetworkSettings",
+          "#/definitions/EndpointSettings"
+        ],
+        "responseId": "GET /containers/{id}/json 200",
+        "sourcePointer": "#/definitions/EndpointSettings/properties/DNSNames"
+      },
+      "before": null,
+      "key": [
+        "GET /containers/{id}/json 200",
+        [
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Config",
+          "p:Healthcheck",
+          "p:StartInterval"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageInspect",
+          "#/definitions/ContainerConfig",
+          "#/definitions/HealthConfig"
+        ],
+        "responseId": "GET /images/{name}/json 200",
+        "sourcePointer": "#/definitions/HealthConfig/properties/StartInterval"
+      },
+      "before": null,
+      "key": [
+        "GET /images/{name}/json 200",
+        [
+          "p:Config",
+          "p:Healthcheck",
+          "p:StartInterval"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Container"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/ImageInspect"
+        ],
+        "responseId": "GET /images/{name}/json 200",
+        "sourcePointer": "#/definitions/ImageInspect/properties/Container"
+      },
+      "before": {
+        "address": [
+          "p:Container"
+        ],
+        "facts": {
+          "nullable": false,
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/ImageInspect"
+        ],
+        "responseId": "GET /images/{name}/json 200",
+        "sourcePointer": "#/definitions/ImageInspect/properties/Container"
+      },
+      "key": [
+        "GET /images/{name}/json 200",
+        [
+          "p:Container"
+        ]
+      ],
+      "kind": "CHANGED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:ContainerConfig",
+          "p:Healthcheck",
+          "p:StartInterval"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/ImageInspect",
+          "#/definitions/ContainerConfig",
+          "#/definitions/HealthConfig"
+        ],
+        "responseId": "GET /images/{name}/json 200",
+        "sourcePointer": "#/definitions/HealthConfig/properties/StartInterval"
+      },
+      "before": null,
+      "key": [
+        "GET /images/{name}/json 200",
+        [
+          "p:ContainerConfig",
+          "p:Healthcheck",
+          "p:StartInterval"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:CDISpecDirs",
+          "i:"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/SystemInfo"
+        ],
+        "responseId": "GET /info 200",
+        "sourcePointer": "#/definitions/SystemInfo/properties/CDISpecDirs/items"
+      },
+      "before": null,
+      "key": [
+        "GET /info 200",
+        [
+          "p:CDISpecDirs",
+          "i:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:CDISpecDirs"
+        ],
+        "facts": {
+          "type": "array"
+        },
+        "refChain": [
+          "#/definitions/SystemInfo"
+        ],
+        "responseId": "GET /info 200",
+        "sourcePointer": "#/definitions/SystemInfo/properties/CDISpecDirs"
+      },
+      "before": null,
+      "key": [
+        "GET /info 200",
+        [
+          "p:CDISpecDirs"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": null,
+      "before": {
+        "address": [
+          "p:ClusterAdvertise"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/SystemInfo"
+        ],
+        "responseId": "GET /info 200",
+        "sourcePointer": "#/definitions/SystemInfo/properties/ClusterAdvertise"
+      },
+      "key": [
+        "GET /info 200",
+        [
+          "p:ClusterAdvertise"
+        ]
+      ],
+      "kind": "REMOVED"
+    },
+    {
+      "after": null,
+      "before": {
+        "address": [
+          "p:ClusterStore"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/SystemInfo"
+        ],
+        "responseId": "GET /info 200",
+        "sourcePointer": "#/definitions/SystemInfo/properties/ClusterStore"
+      },
+      "key": [
+        "GET /info 200",
+        [
+          "p:ClusterStore"
+        ]
+      ],
+      "kind": "REMOVED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Runtimes",
+          "a:",
+          "p:status",
+          "a:"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/SystemInfo",
+          "#/definitions/Runtime"
+        ],
+        "responseId": "GET /info 200",
+        "sourcePointer": "#/definitions/Runtime/properties/status/additionalProperties"
+      },
+      "before": null,
+      "key": [
+        "GET /info 200",
+        [
+          "p:Runtimes",
+          "a:",
+          "p:status",
+          "a:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Runtimes",
+          "a:",
+          "p:status"
+        ],
+        "facts": {
+          "nullable": true,
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/SystemInfo",
+          "#/definitions/Runtime"
+        ],
+        "responseId": "GET /info 200",
+        "sourcePointer": "#/definitions/Runtime/properties/status"
+      },
+      "before": null,
+      "key": [
+        "GET /info 200",
+        [
+          "p:Runtimes",
+          "a:",
+          "p:status"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec",
+          "#/definitions/HealthConfig"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/HealthConfig/properties/StartInterval"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyForceRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyNonRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "default",
+            "disabled"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/NoNewPrivileges"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "custom",
+            "default",
+            "unconfined"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Profile"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp"
+      },
+      "before": null,
+      "key": [
+        "GET /services 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec",
+          "#/definitions/HealthConfig"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/HealthConfig/properties/StartInterval"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyForceRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyNonRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "default",
+            "disabled"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/NoNewPrivileges"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "custom",
+            "default",
+            "unconfined"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Profile"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Service",
+          "#/definitions/ServiceSpec",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /services/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp"
+      },
+      "before": null,
+      "key": [
+        "GET /services/{id} 200",
+        [
+          "p:Spec",
+          "p:TaskTemplate",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Containers",
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames",
+          "i:"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/ContainerSummary",
+          "#/definitions/EndpointSettings"
+        ],
+        "responseId": "GET /system/df 200",
+        "sourcePointer": "#/definitions/EndpointSettings/properties/DNSNames/items"
+      },
+      "before": null,
+      "key": [
+        "GET /system/df 200",
+        [
+          "p:Containers",
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames",
+          "i:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Containers",
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames"
+        ],
+        "facts": {
+          "type": "array"
+        },
+        "refChain": [
+          "#/definitions/ContainerSummary",
+          "#/definitions/EndpointSettings"
+        ],
+        "responseId": "GET /system/df 200",
+        "sourcePointer": "#/definitions/EndpointSettings/properties/DNSNames"
+      },
+      "before": null,
+      "key": [
+        "GET /system/df 200",
+        [
+          "p:Containers",
+          "i:",
+          "p:NetworkSettings",
+          "p:Networks",
+          "a:",
+          "p:DNSNames"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec",
+          "#/definitions/HealthConfig"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/HealthConfig/properties/StartInterval"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyForceRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyNonRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "default",
+            "disabled"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/NoNewPrivileges"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "custom",
+            "default",
+            "unconfined"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Profile"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Name"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/Name"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Name"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Protocol"
+        ],
+        "facts": {
+          "enum": [
+            "sctp",
+            "tcp",
+            "udp"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/Protocol"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Protocol"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishMode"
+        ],
+        "facts": {
+          "enum": [
+            "host",
+            "ingress"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/PublishMode"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishMode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishedPort"
+        ],
+        "facts": {
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/PublishedPort"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishedPort"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:TargetPort"
+        ],
+        "facts": {
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/TargetPort"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:TargetPort"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports"
+        ],
+        "facts": {
+          "type": "array"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/PortStatus/properties/Ports"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "i:",
+          "p:Status",
+          "p:PortStatus"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus"
+        ],
+        "responseId": "GET /tasks 200",
+        "sourcePointer": "#/definitions/PortStatus"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks 200",
+        [
+          "i:",
+          "p:Status",
+          "p:PortStatus"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ],
+        "facts": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec",
+          "#/definitions/HealthConfig"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/HealthConfig/properties/StartInterval"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:HealthCheck",
+          "p:StartInterval"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyForceRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyForceRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec",
+          "#/definitions/Mount"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/Mount/properties/BindOptions/properties/ReadOnlyNonRecursive"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Mounts",
+          "i:",
+          "p:BindOptions",
+          "p:ReadOnlyNonRecursive"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "default",
+            "disabled"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/AppArmor"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:AppArmor"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ],
+        "facts": {
+          "type": "boolean"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/NoNewPrivileges"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:NoNewPrivileges"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ],
+        "facts": {
+          "enum": [
+            "custom",
+            "default",
+            "unconfined"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Mode"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Mode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp/properties/Profile"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp",
+          "p:Profile"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskSpec"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/TaskSpec/properties/ContainerSpec/properties/Privileges/properties/Seccomp"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Spec",
+          "p:ContainerSpec",
+          "p:Privileges",
+          "p:Seccomp"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Name"
+        ],
+        "facts": {
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/Name"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Name"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Protocol"
+        ],
+        "facts": {
+          "enum": [
+            "sctp",
+            "tcp",
+            "udp"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/Protocol"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:Protocol"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishMode"
+        ],
+        "facts": {
+          "enum": [
+            "host",
+            "ingress"
+          ],
+          "type": "string"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/PublishMode"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishMode"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishedPort"
+        ],
+        "facts": {
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/PublishedPort"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:PublishedPort"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:TargetPort"
+        ],
+        "facts": {
+          "type": "integer"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig/properties/TargetPort"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:",
+          "p:TargetPort"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus",
+          "#/definitions/EndpointPortConfig"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/EndpointPortConfig"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports",
+          "i:"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports"
+        ],
+        "facts": {
+          "type": "array"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/PortStatus/properties/Ports"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus",
+          "p:Ports"
+        ]
+      ],
+      "kind": "ADDED"
+    },
+    {
+      "after": {
+        "address": [
+          "p:Status",
+          "p:PortStatus"
+        ],
+        "facts": {
+          "type": "object"
+        },
+        "refChain": [
+          "#/definitions/Task",
+          "#/definitions/TaskStatus",
+          "#/definitions/PortStatus"
+        ],
+        "responseId": "GET /tasks/{id} 200",
+        "sourcePointer": "#/definitions/PortStatus"
+      },
+      "before": null,
+      "key": [
+        "GET /tasks/{id} 200",
+        [
+          "p:Status",
+          "p:PortStatus"
+        ]
+      ],
+      "kind": "ADDED"
+    }
+  ],
+  "unassessed": true,
+  "limits": [
+    "No server execution or consumer acceptance",
+    "Structural allOf branch order is retained, not normalized for logical equivalence",
+    "Only application/json is traversed in OpenAPI 3 content",
+    "Unsupported keywords, missing schemas and reference cycles stay unassessed",
+    "Optional property removal is not automatically a breaking change"
+  ],
+  "actualCustomerAcceptance": false,
+  "actualHumanSeconds": null,
+  "actualMonetaryCost": null,
+  "authority": [],
+  "settlement": "NOT_CONNECTED"
+}

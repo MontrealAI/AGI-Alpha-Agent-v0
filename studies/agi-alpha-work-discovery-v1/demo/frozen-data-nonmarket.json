@@ -1,0 +1,485 @@
+{
+  "studyId": "agi-alpha-work-discovery-v1",
+  "frozenAt": "2026-10-26T21:09:19Z",
+  "conclusion": {
+    "en": "Useful scoped delivery; capability advantage unproved",
+    "fr": "Livraison utile et bornée ; avantage de capacité non établi"
+  },
+  "conclusionScope": {
+    "en": "Ordinary delivery is technically feasible. Paid demand, complete observed cost and a self-financing capability succession remain unestablished.",
+    "fr": "La livraison ordinaire est techniquement possible. La demande payante, le coût complet observé et une succession de capacités autofinancée ne sont pas établis."
+  },
+  "evidenceStatus": {
+    "en": "12 accepted / 24 planned comparisons",
+    "fr": "12 comparaisons acceptées / 24 prévues"
+  },
+  "commercialStatus": {
+    "en": "$0 actual collections",
+    "fr": "0 $ encaissé réellement"
+  },
+  "authorityStatus": {
+    "en": "Fixture only · HOLD · no settlement",
+    "fr": "Fixtures seulement · HOLD · aucun règlement"
+  },
+  "jobs": [
+    {
+      "tab": {
+        "en": "API dossiers",
+        "fr": "Dossiers API"
+      },
+      "title": {
+        "en": "A source-bound API change review",
+        "fr": "Une revue des changements d’API rattachée aux sources"
+      },
+      "verdict": {
+        "en": "3 available primary release pairs accepted in all 4 arms",
+        "fr": "3 paires disponibles acceptées dans les 4 approches"
+      },
+      "outcome": {
+        "en": "The v20.10→v23, v23→v24 and v24→v25 questions produced exact inventories of declared GET 2xx JSON response changes, with facts and source locations. They contain 489, 8 and 70 changed addresses respectively.",
+        "fr": "Les questions v20.10→v23, v23→v24 et v24→v25 ont produit des inventaires exacts des changements déclarés de réponses JSON GET 2xx, avec leurs faits et emplacements sources. Elles contiennent respectivement 489, 8 et 70 adresses modifiées."
+      },
+      "buyer": {
+        "en": "Integration maintainers deciding which response fields and client checks require review. No customer commissioned this work.",
+        "fr": "Mainteneurs d’intégrations déterminant les champs et contrôles clients à examiner. Aucun client n’a commandé ce travail."
+      },
+      "trigger": {
+        "en": "A release of a versioned API specification; historical public Moby snapshots used here.",
+        "fr": "Publication d’une spécification d’API versionnée ; instantanés publics historiques de Moby dans cette étude."
+      },
+      "action": {
+        "en": "Trace each changed declaration to its source and assign targeted client review. Preserve the missing-source cases as blocked work.",
+        "fr": "Rattacher chaque déclaration modifiée à sa source et cibler la revue des clients. Conserver les cas sans source comme travaux bloqués."
+      },
+      "scope": {
+        "en": "24 planned arm/case cells: 12 accepted, 12 input-blocked. Two locked URLs (v27.0.0 and v29.0.0 api/swagger.yaml) failed, affecting 3 of 6 primary pairs. No replacements. This is a structural declaration review, not live-client compatibility or 12 customer jobs.",
+        "fr": "24 cellules approche/cas prévues : 12 acceptées, 12 bloquées à l’acquisition. Deux URL figées (api/swagger.yaml pour v27.0.0 et v29.0.0) ont échoué, affectant 3 des 6 paires primaires. Aucune substitution. Il s’agit d’une revue structurelle, pas d’une certification de compatibilité ni de 12 commandes clients."
+      },
+      "metrics": [
+        {
+          "value": "3 / 6",
+          "label": {
+            "en": "Primary questions delivered",
+            "fr": "Questions primaires livrées"
+          }
+        },
+        {
+          "value": "12 / 24",
+          "label": {
+            "en": "Accepted comparison cells",
+            "fr": "Cellules de comparaison acceptées"
+          }
+        },
+        {
+          "value": "12",
+          "label": {
+            "en": "Input-blocked cells retained",
+            "fr": "Cellules bloquées conservées"
+          }
+        }
+      ],
+      "links": [
+        {
+          "label": "v20.10 → v23",
+          "href": "../outputs/primary/primary-01-v20.10.0-to-v23.0.0-B/service/upgrade-review.md"
+        },
+        {
+          "label": "v23 → v24",
+          "href": "../outputs/primary/primary-02-v23.0.0-to-v24.0.0-B/service/upgrade-review.md"
+        },
+        {
+          "label": "v24 → v25",
+          "href": "../outputs/primary/primary-03-v24.0.0-to-v25.0.0-B/service/upgrade-review.md"
+        },
+        {
+          "label": {
+            "en": "All primary receipts",
+            "fr": "Tous les reçus primaires"
+          },
+          "href": "../outputs/primary/campaign.json"
+        }
+      ]
+    },
+    {
+      "tab": {
+        "en": "REM transit feed",
+        "fr": "Flux du REM"
+      },
+      "title": {
+        "en": "A one-week REM ingestion packet",
+        "fr": "Un dossier d’ingestion du REM sur une semaine"
+      },
+      "verdict": {
+        "en": "SCOPED STRUCTURAL PASS · warnings retained",
+        "fr": "RÉUSSITE STRUCTURELLE BORNÉE · avertissements conservés"
+      },
+      "outcome": {
+        "en": "The exact public REM feed snapshot declares 443 trips on each weekday, 323 on Saturday and 315 on Sunday for 26 October–1 November 2026: 2,853 scheduled trip instances. The 21 route/date cells were independently reconciled with SQLite.",
+        "fr": "L’instantané public exact du REM prévoit 443 trajets chaque jour ouvrable, 323 le samedi et 315 le dimanche du 26 octobre au 1er novembre 2026, soit 2 853 occurrences. Les 21 cellules ligne/date ont été rapprochées indépendamment avec SQLite."
+      },
+      "buyer": {
+        "en": "A transit-data ingestion team assessing a staged timetable import. No publisher or paying customer accepted this packet.",
+        "fr": "Une équipe d’ingestion de données de transport évaluant un import d’horaires en préproduction. Aucun éditeur ni client payant n’a accepté ce dossier."
+      },
+      "trigger": {
+        "en": "A public REM GTFS publication, captured 26 October 2026 under its embedded CC BY 4.0 license.",
+        "fr": "Publication GTFS publique du REM, capturée le 26 octobre 2026 sous la licence CC BY 4.0 intégrée."
+      },
+      "action": {
+        "en": "Proceed to a staged importer check with the declared structural disposition, source identities and warnings. Validate actual rider-facing times downstream.",
+        "fr": "Passer au contrôle d’import en préproduction avec la décision structurelle, les identités sources et les avertissements. Valider ensuite les horaires réellement présentés aux voyageurs."
+      },
+      "scope": {
+        "en": "One exploratory packet, 3 routes, 21 cells and 7 daily groups. MobilityData 8.0.1 reports 0 errors, 1,565 warnings and 1 informational license-file notice. Java validation and Python/SQLite interpretation ran externally; the existing Workbench then verified exact daily aggregation, compiled 7 unfunded draft Jobs and retained HOLD. Timetable truth, real-time operations and paid demand were not tested.",
+        "fr": "Un dossier exploratoire, 3 lignes, 21 cellules et 7 groupes quotidiens. MobilityData 8.0.1 signale 0 erreur, 1 565 avertissements et 1 notice sur le fichier de licence. Java et Python/SQLite ont été exécutés séparément ; Workbench a ensuite vérifié l’agrégation quotidienne et compilé 7 propositions sans financement, avec admission HOLD. Exactitude des horaires réels, exploitation en temps réel et demande payante non testées."
+      },
+      "metrics": [
+        {
+          "value": {
+            "en": "2,853",
+            "fr": "2 853"
+          },
+          "label": {
+            "en": "Declared trip instances",
+            "fr": "Occurrences de trajets prévues"
+          }
+        },
+        {
+          "value": "0",
+          "label": {
+            "en": "Canonical structural errors",
+            "fr": "Erreurs structurelles canoniques"
+          }
+        },
+        {
+          "value": {
+            "en": "1,565",
+            "fr": "1 565"
+          },
+          "label": {
+            "en": "Warnings retained",
+            "fr": "Avertissements conservés"
+          }
+        }
+      ],
+      "links": [
+        {
+          "label": {
+            "en": "Complete EN/FR packet",
+            "fr": "Dossier EN/FR complet"
+          },
+          "href": "../discovery/gtfs/output/README-EN-FR.md"
+        },
+        {
+          "label": {
+            "en": "Canonical report",
+            "fr": "Rapport canonique"
+          },
+          "href": "../discovery/gtfs/output/canonical/report.html"
+        },
+        {
+          "label": {
+            "en": "Workbench daily totals",
+            "fr": "Totaux quotidiens Workbench"
+          },
+          "href": "../discovery/gtfs/workbench/report.html"
+        },
+        {
+          "label": {
+            "en": "Complete measured command costs",
+            "fr": "Coûts mesurés des commandes"
+          },
+          "href": "../discovery/gtfs/workbench/pipeline-record.json"
+        }
+      ]
+    },
+    {
+      "tab": {
+        "en": "Consumer advisory",
+        "fr": "Avis pour le consommateur"
+      },
+      "title": {
+        "en": "A conditional hold for legacy Compose",
+        "fr": "Une suspension conditionnelle pour Compose historique"
+      },
+      "verdict": {
+        "en": "EXPLORATORY APPENDIX · not a primary diff success",
+        "fr": "ANNEXE EXPLORATOIRE · pas un succès du différentiel primaire"
+      },
+      "outcome": {
+        "en": "The authentic Compose 1.29.2 volume-reconciliation function reads ContainerConfig directly at line 1579. In the executed extracted function, an empty-volume fixture with the field returns successfully; omitting the field while retaining Config raises KeyError. Docker documents omission at Engine 26 / API 1.45+.",
+        "fr": "La fonction authentique de rapprochement des volumes de Compose 1.29.2 lit ContainerConfig directement à la ligne 1579. La fonction extraite réussit avec une fixture au champ présent et aux volumes vides ; son absence, même avec Config, déclenche KeyError. Docker documente l’omission avec Engine 26 / API 1.45+."
+      },
+      "buyer": {
+        "en": "An operator evaluating an Engine upgrade with the known legacy consumer path.",
+        "fr": "Un exploitant évaluant une mise à niveau d’Engine avec ce chemin de consommation historique."
+      },
+      "trigger": {
+        "en": "Published API-version deprecation plus an actual source-bound consumer assumption.",
+        "fr": "Dépréciation publiée selon la version d’API et hypothèse réelle rattachée au code consommateur."
+      },
+      "action": {
+        "en": "Hold approval for that legacy recreation path until a supported Compose replacement and the real configuration/volume-preservation behavior are qualified in staging.",
+        "fr": "Suspendre l’approbation de ce chemin de recréation jusqu’à la validation en préproduction d’un remplacement Compose maintenu, de la configuration réelle et de la préservation des volumes."
+      },
+      "scope": {
+        "en": "Both v25 and v26 Swagger declarations still contain the identical ContainerConfig property, so structural differencing did not detect this version-conditioned runtime change. The unmodified function was extracted by AST and run on labeled fixtures; no Docker daemon, API negotiation, full Compose, actual recreation or migration was run.",
+        "fr": "Les schémas Swagger v25 et v26 conservent la même propriété ContainerConfig : le différentiel structurel ne détecte pas ce changement d’exécution conditionné par la version. La fonction non modifiée a été extraite par AST et exécutée sur des fixtures étiquetées ; aucun moteur Docker, aucune négociation d’API, aucun Compose complet, aucune recréation ni migration réelle n’a été exécuté."
+      },
+      "metrics": [
+        {
+          "value": "1.29.2",
+          "label": {
+            "en": "Pinned consumer version",
+            "fr": "Version du consommateur figée"
+          }
+        },
+        {
+          "value": "1.45+",
+          "label": {
+            "en": "Documented API boundary",
+            "fr": "Limite d’API documentée"
+          }
+        },
+        {
+          "value": "HOLD",
+          "label": {
+            "en": "Conditional rollout decision",
+            "fr": "Décision conditionnelle de déploiement"
+          }
+        }
+      ],
+      "links": [
+        {
+          "label": {
+            "en": "EN/FR advisory",
+            "fr": "Avis EN/FR"
+          },
+          "href": "../discovery/consumer-impact/README-EN-FR.md"
+        },
+        {
+          "label": {
+            "en": "Executed source probe",
+            "fr": "Sonde source exécutée"
+          },
+          "href": "../discovery/consumer-impact/outputs/consumer-probe.json"
+        },
+        {
+          "label": {
+            "en": "Schema/documentation boundary",
+            "fr": "Limite schéma/documentation"
+          },
+          "href": "../discovery/consumer-impact/outputs/schema-documentation-boundary.json"
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "scope": {
+      "en": "Raw sum per arm across 6 planned primary cases: 3 executed and accepted, 3 blocked by input acquisition. Includes production, independent verification, packaging and small failure bookkeeping. Shared acquisition is recorded separately and excluded from these bars. One run per arm/case; no stable latency distribution is estimated.",
+      "fr": "Somme brute par approche sur 6 cas primaires prévus : 3 exécutés et acceptés, 3 bloqués à l’acquisition. Production, vérification indépendante, préparation du dossier et faible coût de consignation des échecs inclus. Acquisition partagée conservée séparément, exclue des barres. Une exécution par approche/cas ; aucune distribution stable de latence estimée."
+    },
+    "note": {
+      "en": "A delivers the matched scoped dossier with less measured CPU here. Registry and graph use the same skills/evidence; small timing differences do not establish graph advantage. Complete monetary cost, competent human-only task duration and residual attention remain unknown. These bars are not full-cost savings.",
+      "fr": "A livre ici le dossier de portée équivalente avec moins de processeur mesuré. Registre et graphe utilisent les mêmes capacités et preuves ; les faibles différences de temps n’établissent pas un avantage du graphe. Coût monétaire complet, durée humaine compétente et attention résiduelle restent inconnus. Ces barres ne sont pas des économies en coût complet."
+    },
+    "arms": [
+      {
+        "label": {
+          "en": "A · retained conventional Python",
+          "fr": "A · Python conventionnel conservé"
+        },
+        "cases": 6,
+        "accepted": 3,
+        "wallSeconds": 1.2707896759930009,
+        "cpuSeconds": 1.274743440000004,
+        "fullCostUsd": null
+      },
+      {
+        "label": {
+          "en": "B · Workbench full index",
+          "fr": "B · index complet Workbench"
+        },
+        "cases": 6,
+        "accepted": 3,
+        "wallSeconds": 4.303995252004825,
+        "cpuSeconds": 4.658205957999996,
+        "fullCostUsd": null
+      },
+      {
+        "label": {
+          "en": "C · shared registry + incremental index",
+          "fr": "C · registre partagé + index incrémental"
+        },
+        "cases": 6,
+        "accepted": 3,
+        "wallSeconds": 4.93441768800767,
+        "cpuSeconds": 5.304752934,
+        "fullCostUsd": null
+      },
+      {
+        "label": {
+          "en": "D · same catalogue + graph selection",
+          "fr": "D · même catalogue + sélection par graphe"
+        },
+        "cases": 6,
+        "accepted": 3,
+        "wallSeconds": 4.465219015000912,
+        "cpuSeconds": 4.863662576,
+        "fullCostUsd": null
+      }
+    ]
+  },
+  "transfer": {
+    "conclusion": {
+      "en": "Both recipients reconstructed an effective scoped inventory before transfer. The surviving primary pair is byte-identical under two tags. A separately frozen secondary pair contains real changes: parent arms A/B/C/D pass their narrow structural contract, while recipient two remains on HOLD at its stricter raw-input gate. No new capability gap closed is established.",
+      "fr": "Les deux destinataires ont reconstruit un inventaire efficace de portée bornée avant le transfert. La paire primaire disponible est identique octet par octet sous deux tags. Une paire secondaire gelée séparément contient de vrais changements : les méthodes A/B/C/D satisfont leur contrat structurel borné, tandis que le destinataire deux reste en attente au contrôle plus strict de ses données d’entrée. Aucun nouveau déficit de capacité comblé n’est établi."
+    },
+    "observations": [
+      {
+        "label": {
+          "en": "Preserved planned outcomes",
+          "fr": "Résultats prévus conservés"
+        },
+        "value": {
+          "en": "2 preregistered pairs: v23.0.0→v23.0.6 executed with 2,341→2,341 nodes and zero changes; v27.0.0→v27.5.1 input-blocked, with no replacement.",
+          "fr": "2 paires préenregistrées : v23.0.0→v23.0.6 exécutée avec 2 341→2 341 nœuds et zéro changement ; v27.0.0→v27.5.1 bloquée à l’acquisition, sans substitution."
+        }
+      },
+      {
+        "label": {
+          "en": "Recipient two: once-only setup",
+          "fr": "Destinataire deux : préparation unique"
+        },
+        "value": {
+          "en": "Observed reconstruction interval 348.622 seconds; transfer integration 44.568 seconds. These are agent-session intervals, not human task times or known inference bills. Both costs are charged once.",
+          "fr": "Intervalle de reconstruction observé de 348,622 secondes ; intégration du transfert de 44,568 secondes. Ce sont des intervalles de session agent, pas des durées humaines ni des factures connues. Les deux coûts sont comptés une seule fois."
+        }
+      },
+      {
+        "label": {
+          "en": "Recipient two: complete CLI execution",
+          "fr": "Destinataire deux : exécution CLI complète"
+        },
+        "value": {
+          "en": "Original / transferred full / transferred incremental: 0.115 / 0.200 / 0.215 wall seconds on the identical-content pair, including old-index construction. Shared validation and comparison checks are separately retained. No new capability or speed gain demonstrated for this recipient.",
+          "fr": "Original / complet transféré / incrémental transféré : 0,115 / 0,200 / 0,215 seconde écoulée sur la paire au contenu identique, construction de l’ancien index incluse. Validation partagée et contrôles de comparaison conservés séparément. Aucun gain de capacité ou de vitesse démontré pour ce destinataire."
+        }
+      },
+      {
+        "label": {
+          "en": "Secondary: changed-content probe",
+          "fr": "Secondaire : essai sur un contenu modifié"
+        },
+        "value": {
+          "en": "v27.5.1→v28.0.0: 2,465→2,770 scoped nodes; 332 changed addresses. All four parent arms passed independent structural replay. Total CPU including verification and packaging: A 0.594 s, B 2.797 s, C 2.201 s, D 1.920 s. One run each; exploratory, outside primary counts and market calibration. Possible concurrent browser-QA load limits timing interpretation.",
+          "fr": "v27.5.1→v28.0.0 : 2 465→2 770 nœuds dans le périmètre ; 332 adresses modifiées. Les quatre méthodes ont passé la vérification structurelle indépendante. CPU total, vérification et conditionnement inclus : A 0,594 s, B 2,797 s, C 2,201 s, D 1,920 s. Une exécution par méthode ; exploratoire, hors décompte primaire et calibrage économique. Une possible concurrence avec le contrôle du navigateur limite l’interprétation des durées."
+        }
+      },
+      {
+        "label": {
+          "en": "Secondary: recipient two HOLD",
+          "fr": "Secondaire : destinataire deux en attente"
+        },
+        "value": {
+          "en": "The frozen swagger-spec-validator 3.0.4 gate rejected v27.5.1 because ImageData.required names UnpackedSize without a matching properties entry. Validation cost: 0.665 wall s / 0.664 CPU s. Second input and all three recipient execution arms were not run; execution costs remain unknown, not zero. No repair, alternate validator, retry or third pair.",
+          "fr": "Le contrôle gelé swagger-spec-validator 3.0.4 a rejeté v27.5.1, car ImageData.required nomme UnpackedSize sans entrée correspondante dans properties. Coût du contrôle : 0,665 s écoulée / 0,664 s CPU. Le deuxième document et les trois méthodes du destinataire n’ont pas été exécutés ; leurs coûts restent inconnus, pas nuls. Aucune correction, validation de remplacement, nouvelle tentative ou troisième paire."
+        }
+      },
+      {
+        "label": {
+          "en": "Secondary: different acceptance preconditions",
+          "fr": "Secondaire : conditions d’acceptation différentes"
+        },
+        "value": {
+          "en": "Primary standards and installed validator source show that this specific required/properties check is stricter than Draft 4 semantics adopted by OpenAPI 2. Whole-document validity remains unadjudicated. The original HOLD is retained; it is neither donor underperformance nor universal acceptance.",
+          "fr": "Les normes primaires et le code du validateur montrent que cette règle required/properties est plus stricte que la sémantique Draft 4 adoptée par OpenAPI 2. La validité du document entier reste indéterminée. L’attente initiale est conservée ; elle ne démontre ni une infériorité du donneur ni une acceptation universelle."
+        }
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "Campaign transfer evidence",
+          "fr": "Preuves de transfert de la campagne"
+        },
+        "href": "../outputs/transfer/campaign.json"
+      },
+      {
+        "label": {
+          "en": "Independent recipient receipts",
+          "fr": "Reçus du destinataire indépendant"
+        },
+        "href": "../comparators/recipient/fresh/summary.json"
+      },
+      {
+        "label": {
+          "en": "Once-only cost accounting",
+          "fr": "Comptabilisation unique des coûts"
+        },
+        "href": "../comparators/recipient/cost-accounting.json"
+      },
+      {
+        "label": {
+          "en": "Exploratory changed-content campaign",
+          "fr": "Campagne exploratoire sur un contenu modifié"
+        },
+        "href": "../outputs/secondary-transfer/campaign.json"
+      },
+      {
+        "label": {
+          "en": "Recipient HOLD and retained cost",
+          "fr": "Attente du destinataire et coût conservé"
+        },
+        "href": "../comparators/recipient/secondary-transfer/summary.json"
+      },
+      {
+        "label": {
+          "en": "Standards and validator adjudication",
+          "fr": "Analyse des normes et du validateur"
+        },
+        "href": "../comparators/recipient/secondary-transfer/validation-adjudication.json"
+      }
+    ]
+  },
+  "cash": {
+    "scenarios": []
+  },
+  "sources": [
+    {
+      "label": {
+        "en": "Frozen production protocol",
+        "fr": "Protocole de production figé"
+      },
+      "href": "../protocol/production.json"
+    },
+    {
+      "label": {
+        "en": "Input acquisition and failures",
+        "fr": "Acquisition des entrées et échecs"
+      },
+      "href": "../inputs/acquired/manifest.json"
+    },
+    {
+      "label": {
+        "en": "Primary complete-service calibration",
+        "fr": "Calibration du service primaire complet"
+      },
+      "href": "../outputs/primary/calibration.json"
+    },
+    {
+      "label": {
+        "en": "REM Workbench acceptance",
+        "fr": "Acceptation Workbench du REM"
+      },
+      "href": "../discovery/gtfs/workbench/acceptance.json"
+    },
+    {
+      "label": {
+        "en": "Official Docker deprecation",
+        "fr": "Dépréciation officielle Docker"
+      },
+      "href": "https://docs.docker.com/engine/deprecated/#container-and-containerconfig-fields-in-image-inspect"
+    }
+  ]
+}

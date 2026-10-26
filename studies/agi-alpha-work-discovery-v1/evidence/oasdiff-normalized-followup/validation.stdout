@@ -1,0 +1,265 @@
+12 findings: 0 error, 3 warning, 9 info
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	invalid example: value must be a string
+	Schema:
+	  {
+	    "example": [
+	      "10.10.0.0/16",
+	      "20.20.0.0/16"
+	    ],
+	    "format": "CIDR",
+	    "type": "string"
+	  }
+
+	Value:
+	  [
+	    "10.10.0.0/16",
+	    "20.20.0.0/16"
+	  ]
+	 in schema "ClusterInfo"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	invalid example: value must be an integer
+	Schema:
+	  {
+	    "description": "Prefix length of the IPv6 unicast address.",
+	    "example": "64",
+	    "type": "integer"
+	  }
+
+	Value:
+	  "64"
+	 in schema "NetworkSettings"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	invalid example: Error at "/0/Settable": Value is not nullable
+	Schema:
+	  {
+	    "items": {
+	      "type": "string"
+	    },
+	    "type": "array"
+	  }
+
+	Value:
+	  null
+	 in schema "Plugin"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	invalid allOf element: invalid example: value must be a string
+	Schema:
+	  {
+	    "example": [
+	      "10.10.0.0/16",
+	      "20.20.0.0/16"
+	    ],
+	    "format": "CIDR",
+	    "type": "string"
+	  }
+
+	Value:
+	  [
+	    "10.10.0.0/16",
+	    "20.20.0.0/16"
+	  ]
+	 in schema "Swarm"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	invalid example: value must be a string
+	Schema:
+	  {
+	    "example": [
+	      "10.10.0.0/16",
+	      "20.20.0.0/16"
+	    ],
+	    "format": "CIDR",
+	    "type": "string"
+	  }
+
+	Value:
+	  [
+	    "10.10.0.0/16",
+	    "20.20.0.0/16"
+	  ]
+	 in schema "SwarmInfo"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	invalid example: value must be an integer
+	Schema:
+	  {
+	    "description": "The network pool size",
+	    "example": "24",
+	    "type": "integer"
+	  }
+
+	Value:
+	  "24"
+	 in schema "SystemInfo"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	invalid example: Error at "/Status/hello": value must be an object
+	Schema:
+	  {
+	    "type": "object"
+	  }
+
+	Value:
+	  "world"
+	 | Error at "/Options": property "Options" is missing
+	Schema:
+	  {
+	    "example": {
+	      "CreatedAt": "2016-06-07T20:31:11.853781916Z",
+	      "Driver": "custom",
+	      "Labels": {
+	        "com.example.some-label": "some-value",
+	        "com.example.some-other-label": "some-other-value"
+	      },
+	      "Mountpoint": "/var/lib/docker/volumes/tardis",
+	      "Name": "tardis",
+	      "Scope": "local",
+	      "Status": {
+	        "hello": "world"
+	      }
+	    },
+	    "properties": {
+	      "CreatedAt": {
+	        "description": "Date/Time the volume was created.",
+	        "format": "dateTime",
+	        "type": "string"
+	      },
+	      "Driver": {
+	        "description": "Name of the volume driver used by the volume.",
+	        "type": "string"
+	      },
+	      "Labels": {
+	        "additionalProperties": {
+	          "type": "string"
+	        },
+	        "description": "User-defined key/value metadata.",
+	        "type": "object"
+	      },
+	      "Mountpoint": {
+	        "description": "Mount path of the volume on the host.",
+	        "type": "string"
+	      },
+	      "Name": {
+	        "description": "Name of the volume.",
+	        "type": "string"
+	      },
+	      "Options": {
+	        "additionalProperties": {
+	          "type": "string"
+	        },
+	        "description": "The driver specific options used when creating the volume.\n",
+	        "type": "object"
+	      },
+	      "Scope": {
+	        "default": "local",
+	        "description": "The level at which the volume exists. Either `global` for cluster-wide,\nor `local` for machine level.\n",
+	        "enum": [
+	          "local",
+	          "global"
+	        ],
+	        "type": "string"
+	      },
+	      "Status": {
+	        "additionalProperties": {
+	          "type": "object"
+	        },
+	        "description": "Low-level details about the volume, provided by the volume driver.\nDetails are returned as a map with key/value pairs:\n`{\"key\":\"value\",\"key2\":\"value2\"}`.\n\nThe `Status` field is optional, and is omitted if the volume driver\ndoes not support this feature.\n",
+	        "type": "object"
+	      },
+	      "UsageData": {
+	        "description": "Usage details about the volume. This information is used by the\n`GET /system/df` endpoint, and omitted in other endpoints.\n",
+	        "nullable": true,
+	        "properties": {
+	          "RefCount": {
+	            "default": -1,
+	            "description": "The number of containers referencing this volume. This field\nis set to `-1` if the reference-count is not available.\n",
+	            "type": "integer"
+	          },
+	          "Size": {
+	            "default": -1,
+	            "description": "Amount of disk space used by the volume (in bytes). This information\nis only available for volumes created with the `\"local\"` volume\ndriver. For volumes created with other volume drivers, this field\nis set to `-1` (\"not available\")\n",
+	            "type": "integer"
+	          }
+	        },
+	        "required": [
+	          "Size",
+	          "RefCount"
+	        ],
+	        "type": "object"
+	      }
+	    },
+	    "required": [
+	      "Name",
+	      "Driver",
+	      "Mountpoint",
+	      "Labels",
+	      "Scope",
+	      "Options"
+	    ],
+	    "type": "object"
+	  }
+
+	Value:
+	  {
+	    "CreatedAt": "2016-06-07T20:31:11.853781916Z",
+	    "Driver": "custom",
+	    "Labels": {
+	      "com.example.some-label": "some-value",
+	      "com.example.some-other-label": "some-other-value"
+	    },
+	    "Mountpoint": "/var/lib/docker/volumes/tardis",
+	    "Name": "tardis",
+	    "Scope": "local",
+	    "Status": {
+	      "hello": "world"
+	    }
+	  }
+	 in schema "Volume"
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	in API POST /containers/create
+		invalid example: doesn't match schema due to: Error at "/Entrypoint": value must be an array
+		Schema:
+		  {
+		    "description": "The entry point for the container as a string or an array of strings.\n\nIf the array consists of exactly one empty string (`[\"\"]`) then the\nentry point is reset to system default (i.e., the entry point used by\ndocker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).\n",
+		    "items": {
+		      "type": "string"
+		    },
+		    "type": "array"
+		  }
+
+		Value:
+		  ""
+
+info	[example-violates-schema] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	in API POST /swarm/init
+		invalid example: value must be a string
+		Schema:
+		  {
+		    "example": [
+		      "10.10.0.0/16",
+		      "20.20.0.0/16"
+		    ],
+		    "type": "string"
+		  }
+
+		Value:
+		  [
+		    "10.10.0.0/16",
+		    "20.20.0.0/16"
+		  ]
+
+warning	[required-with-default] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	required property "Scope" has a default value, which is never used because a required property must always be present
+
+warning	[required-with-default] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	required property "Size" has a default value, which is never used because a required property must always be present
+
+warning	[required-with-default] at /workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-normalized-followup/v20_10_0-openapi.json
+	required property "RefCount" has a default value, which is never used because a required property must always be present
+
+

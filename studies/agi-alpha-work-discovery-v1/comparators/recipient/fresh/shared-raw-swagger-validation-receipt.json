@@ -1,0 +1,18 @@
+{
+  "label": "shared-raw-swagger-validation",
+  "command": [
+    "research-env/bin/python",
+    "-c",
+    "import json,sys; from swagger_spec_validator.validator20 import validate_spec; [(validate_spec(json.load(open(p))),print(p+' VALID')) for p in sys.argv[1:]]",
+    "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json",
+    "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json"
+  ],
+  "startedUtc": "2026-10-26T21:11:31.299876+00:00",
+  "exitCode": 0,
+  "wallSeconds": 1.5123633010007325,
+  "cpuSeconds": 1.511759,
+  "maxRssKiB": 29432,
+  "stdout": "agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.json VALID\nagi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.6.json VALID\n",
+  "stderr": "",
+  "timeoutSeconds": 58
+}

@@ -1,0 +1,753 @@
+{
+  "assessments": [
+    {
+      "cryptographicAuthentication": false,
+      "currentReuseAllowed": true,
+      "historyValid": true,
+      "liveIdentityEnforcement": "NOT_RUN",
+      "mode": "FIXTURE_ONLY",
+      "nonceKey": "response-assurance-study|ISSUE_SKILL_ATTESTATION|research.agent.agi.eth|response-assurance-study:skill:response-index@1:1",
+      "ok": true,
+      "reasons": [],
+      "skillId": "response-index",
+      "skillVersion": "1"
+    },
+    {
+      "cryptographicAuthentication": false,
+      "currentReuseAllowed": true,
+      "historyValid": true,
+      "liveIdentityEnforcement": "NOT_RUN",
+      "mode": "FIXTURE_ONLY",
+      "nonceKey": "response-assurance-study|ISSUE_SKILL_ATTESTATION|research.agent.agi.eth|response-assurance-study:skill:incremental-response-index@1:1",
+      "ok": true,
+      "reasons": [],
+      "skillId": "incremental-response-index",
+      "skillVersion": "1"
+    }
+  ],
+  "attestations": [
+    {
+      "action": "ISSUE_SKILL_ATTESTATION",
+      "agent": "research.agent.agi.eth",
+      "authoritySnapshotId": "fixture-state-100",
+      "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+      "blockNumber": 100,
+      "chainId": 31337,
+      "expiresAt": 500,
+      "graphId": "response-assurance-study",
+      "issuedAt": 100,
+      "mode": "FIXTURE_ONLY",
+      "nonce": "response-assurance-study:skill:response-index@1:1",
+      "registry": "fixture:ens-v1",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "schema": "agi-alpha.skill-attestation.v1",
+      "signature": {
+        "payloadDigest": "7ee7c102ef7dc269e30cfc4a2f214d0b4cdfedadf1f7ec4fcfa3870289f5cc95",
+        "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+        "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+        "signer": "fixture:attestation-delegate"
+      },
+      "signer": "fixture:attestation-delegate",
+      "skill": {
+        "dependencyDigests": [],
+        "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+        "evidenceDigest": "d4bdc2e8d263133120d23bdf0cb9991fee981722a5fe242db19bf7505faf7a0e",
+        "expiresAt": 700,
+        "id": "response-index",
+        "implementationDigest": "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef",
+        "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+        "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+        "scopeDigest": "c2906a6b6365ad0b2ab1aeeb9cf10559d464bd3cafca7989a0db149cb5ad2878",
+        "version": "1"
+      },
+      "verdict": "PASS_WITH_SCOPE"
+    },
+    {
+      "action": "ISSUE_SKILL_ATTESTATION",
+      "agent": "research.agent.agi.eth",
+      "authoritySnapshotId": "fixture-state-100",
+      "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+      "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+      "blockNumber": 100,
+      "chainId": 31337,
+      "expiresAt": 500,
+      "graphId": "response-assurance-study",
+      "issuedAt": 100,
+      "mode": "FIXTURE_ONLY",
+      "nonce": "response-assurance-study:skill:incremental-response-index@1:1",
+      "registry": "fixture:ens-v1",
+      "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+      "registrySchema": "ENS_V1_FIXTURE",
+      "schema": "agi-alpha.skill-attestation.v1",
+      "signature": {
+        "payloadDigest": "e579353a7da37ac45171efb5fa18e2be9c1c1d89ff685b89aa22a9610314efd4",
+        "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+        "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+        "signer": "fixture:attestation-delegate"
+      },
+      "signer": "fixture:attestation-delegate",
+      "skill": {
+        "dependencyDigests": [
+          "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef"
+        ],
+        "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+        "evidenceDigest": "7ca910a523bec72f649e13ad6713972c595b9611b9fada0be029a3903933d564",
+        "expiresAt": 700,
+        "id": "incremental-response-index",
+        "implementationDigest": "b7d44b89d6bad2e52abca5e774874a990398732fca5e371174b24a8b4d3f1f68",
+        "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+        "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+        "scopeDigest": "f5a426ff3d88212fe718f8087fd98851e5d6dc456a404d8e6fc8538fe790178f",
+        "version": "1"
+      },
+      "verdict": "PASS_WITH_SCOPE"
+    }
+  ],
+  "catalogue": {
+    "edges": [
+      {
+        "from": "response-index@1",
+        "kind": "requires",
+        "to": "incremental-response-index@1"
+      }
+    ],
+    "environment": {
+      "data": "public Swagger2 and scoped OpenAPI JSON",
+      "language": "JavaScript",
+      "node": "24.22.1"
+    },
+    "graphId": "response-assurance-study",
+    "mode": "FIXTURE_ONLY",
+    "policy": {
+      "eligibleAttesters": "direct *.agent.agi.eth fixture delegates only",
+      "executionAuthority": [],
+      "fixtureTimeIsNotUtc": true,
+      "jobsValidatorsUnchanged": true,
+      "requireIndependentTechnicalReplay": true,
+      "version": 1
+    },
+    "rights": {
+      "class": "public-nonpersonal",
+      "codeLicense": "Apache-2.0",
+      "inputLicense": "Apache-2.0"
+    },
+    "schema": "agi-alpha.work-discovery-catalogue.v1",
+    "skills": [
+      {
+        "compositionEvidenceFiles": [],
+        "creator": "fixture:discovery-constructor",
+        "dependencies": [],
+        "evidenceFiles": [
+          {
+            "bytes": 949,
+            "path": "evidence/acceptance-full.json",
+            "sha256": "37eb36ba1ab7270d03080b8ba292a2dff2f8668582413b191a967c9190fea4a4"
+          },
+          {
+            "bytes": 78491,
+            "path": "outputs/preconfirmation-full/response-dossier.json",
+            "sha256": "ef4adc92aaed8a762a3e6f284f5a092e44ec024a8c002a1dd16d080036ff4e5d"
+          },
+          {
+            "bytes": 311079,
+            "path": "inputs/discovery-docker-v25.0.0.json",
+            "sha256": "7ca4f0989cec50c4f9d04e8a820763150e1938866d1413c2b0ea591883f403e9"
+          },
+          {
+            "bytes": 311571,
+            "path": "inputs/discovery-docker-v26.0.0.json",
+            "sha256": "297f3477209eeff4098d588055c2d244b1db287d38312140a69b37cf96b4d276"
+          }
+        ],
+        "expiresAt": 700,
+        "id": "response-index",
+        "implementationFiles": [
+          {
+            "bytes": 12516,
+            "path": "src/schema_inventory.mjs",
+            "sha256": "880f08b6f62dae2e3f284cbe5790cd56c41c5f12167c7eca9642c4c3bd632302"
+          },
+          {
+            "bytes": 3984,
+            "path": "src/adapter.mjs",
+            "sha256": "a11ed7dbd4bd277c718cd06edbd505ae17135f8c1281652dbe57bce7d37947df"
+          }
+        ],
+        "scope": {
+          "media": "application/json",
+          "notClaimed": [
+            "live API compatibility",
+            "correctness outside enumerated schema subset",
+            "operating authority"
+          ],
+          "operation": "GET",
+          "output": "structural response changes with explicit exclusions",
+          "statuses": "2xx"
+        },
+        "version": "1"
+      },
+      {
+        "compositionEvidenceFiles": [
+          {
+            "bytes": 2096,
+            "path": "evidence/independent-review/schema-independent-qualified-review.txt",
+            "sha256": "c396b85003bd3b133da2f33d5dfc6e401287e683014ae5aff1fff0e1432617b4"
+          },
+          {
+            "bytes": 1368,
+            "path": "evidence/independent-review/schema-independent-qualified-receipt.json",
+            "sha256": "65e4495069eabdc7bba3d2ef0c6313798229e7bce4de0102ba638822db7e285a"
+          },
+          {
+            "bytes": 16243,
+            "path": "tests/schema-independent.test.mjs",
+            "sha256": "f784614bdba57be5133b707f28e2f6ff6e818d943bbcaeba92ce75a3c1fa28c0"
+          }
+        ],
+        "creator": "fixture:discovery-constructor",
+        "dependencies": [
+          "response-index@1"
+        ],
+        "evidenceFiles": [
+          {
+            "bytes": 948,
+            "path": "evidence/acceptance-incremental.json",
+            "sha256": "6799f46e0734b904db672be278597681808e2766a06a1fb6b664a1da9b0436c2"
+          },
+          {
+            "bytes": 78491,
+            "path": "outputs/preconfirmation-incremental/response-dossier.json",
+            "sha256": "99efd19ddc58c7d48994759264ec9b2a2da0a968c0c80a7b9d80c6eeea49dedf"
+          },
+          {
+            "bytes": 311079,
+            "path": "inputs/discovery-docker-v25.0.0.json",
+            "sha256": "7ca4f0989cec50c4f9d04e8a820763150e1938866d1413c2b0ea591883f403e9"
+          },
+          {
+            "bytes": 311571,
+            "path": "inputs/discovery-docker-v26.0.0.json",
+            "sha256": "297f3477209eeff4098d588055c2d244b1db287d38312140a69b37cf96b4d276"
+          }
+        ],
+        "expiresAt": 700,
+        "id": "incremental-response-index",
+        "implementationFiles": [
+          {
+            "bytes": 91,
+            "path": "src/incremental_index.mjs",
+            "sha256": "5ec253662018284cc9eef222f54d0e7184387eadaa1cca3a6accb4bf762e10f1"
+          },
+          {
+            "bytes": 12516,
+            "path": "src/schema_inventory.mjs",
+            "sha256": "880f08b6f62dae2e3f284cbe5790cd56c41c5f12167c7eca9642c4c3bd632302"
+          },
+          {
+            "bytes": 3984,
+            "path": "src/adapter.mjs",
+            "sha256": "a11ed7dbd4bd277c718cd06edbd505ae17135f8c1281652dbe57bce7d37947df"
+          }
+        ],
+        "scope": {
+          "operation": "same scoped response index",
+          "performance": "must be remeasured per supported workload",
+          "reuse": "source-bound current-session index; dependency invalidation"
+        },
+        "version": "1"
+      }
+    ]
+  },
+  "checkedAt": 150,
+  "cryptographicAuthentication": false,
+  "executionAuthority": [],
+  "forest": {
+    "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+    "classes": {
+      "attestation": {
+        "count": 2,
+        "records": [
+          {
+            "leafHash": "12e384ef873ff6ed634789eaac9cb203587ebdba150fa6992b7ae4940ad6df63",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 2,
+              "leafIndex": 0,
+              "siblings": [
+                "a4ae8d32fa537b130194d1c3e46350434d68bb683d8986418374e4b822fafac0"
+              ],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "action": "ISSUE_SKILL_ATTESTATION",
+              "agent": "research.agent.agi.eth",
+              "authoritySnapshotId": "fixture-state-100",
+              "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+              "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+              "blockNumber": 100,
+              "chainId": 31337,
+              "expiresAt": 500,
+              "graphId": "response-assurance-study",
+              "issuedAt": 100,
+              "mode": "FIXTURE_ONLY",
+              "nonce": "response-assurance-study:skill:response-index@1:1",
+              "registry": "fixture:ens-v1",
+              "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+              "registrySchema": "ENS_V1_FIXTURE",
+              "schema": "agi-alpha.skill-attestation.v1",
+              "signature": {
+                "payloadDigest": "7ee7c102ef7dc269e30cfc4a2f214d0b4cdfedadf1f7ec4fcfa3870289f5cc95",
+                "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                "signer": "fixture:attestation-delegate"
+              },
+              "signer": "fixture:attestation-delegate",
+              "skill": {
+                "dependencyDigests": [],
+                "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+                "evidenceDigest": "d4bdc2e8d263133120d23bdf0cb9991fee981722a5fe242db19bf7505faf7a0e",
+                "expiresAt": 700,
+                "id": "response-index",
+                "implementationDigest": "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef",
+                "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+                "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+                "scopeDigest": "c2906a6b6365ad0b2ab1aeeb9cf10559d464bd3cafca7989a0db149cb5ad2878",
+                "version": "1"
+              },
+              "verdict": "PASS_WITH_SCOPE"
+            }
+          },
+          {
+            "leafHash": "a4ae8d32fa537b130194d1c3e46350434d68bb683d8986418374e4b822fafac0",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 2,
+              "leafIndex": 1,
+              "siblings": [
+                "12e384ef873ff6ed634789eaac9cb203587ebdba150fa6992b7ae4940ad6df63"
+              ],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "action": "ISSUE_SKILL_ATTESTATION",
+              "agent": "research.agent.agi.eth",
+              "authoritySnapshotId": "fixture-state-100",
+              "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+              "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+              "blockNumber": 100,
+              "chainId": 31337,
+              "expiresAt": 500,
+              "graphId": "response-assurance-study",
+              "issuedAt": 100,
+              "mode": "FIXTURE_ONLY",
+              "nonce": "response-assurance-study:skill:incremental-response-index@1:1",
+              "registry": "fixture:ens-v1",
+              "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+              "registrySchema": "ENS_V1_FIXTURE",
+              "schema": "agi-alpha.skill-attestation.v1",
+              "signature": {
+                "payloadDigest": "e579353a7da37ac45171efb5fa18e2be9c1c1d89ff685b89aa22a9610314efd4",
+                "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+                "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+                "signer": "fixture:attestation-delegate"
+              },
+              "signer": "fixture:attestation-delegate",
+              "skill": {
+                "dependencyDigests": [
+                  "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef"
+                ],
+                "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+                "evidenceDigest": "7ca910a523bec72f649e13ad6713972c595b9611b9fada0be029a3903933d564",
+                "expiresAt": 700,
+                "id": "incremental-response-index",
+                "implementationDigest": "b7d44b89d6bad2e52abca5e774874a990398732fca5e371174b24a8b4d3f1f68",
+                "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+                "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+                "scopeDigest": "f5a426ff3d88212fe718f8087fd98851e5d6dc456a404d8e6fc8538fe790178f",
+                "version": "1"
+              },
+              "verdict": "PASS_WITH_SCOPE"
+            }
+          }
+        ],
+        "root": "7b65ebae95e56726fead5b417e8698ab704c847dcd49e4ce440a8c36f1a53716"
+      },
+      "edge": {
+        "count": 1,
+        "records": [
+          {
+            "leafHash": "7cf46072a3fdf0890705006663003552316a6b36fc3b9977f725379257b33445",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 1,
+              "leafIndex": 0,
+              "siblings": [],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "from": "response-index@1",
+              "kind": "requires",
+              "to": "incremental-response-index@1"
+            }
+          }
+        ],
+        "root": "7cf46072a3fdf0890705006663003552316a6b36fc3b9977f725379257b33445"
+      },
+      "evidence": {
+        "count": 2,
+        "records": [
+          {
+            "leafHash": "eb89ad917edece436d0376cc94f0e78d67ea0b5ef13317789537aab0c2ac9611",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 2,
+              "leafIndex": 1,
+              "siblings": [
+                "001a0b9378a10aad48d640f6f0073738e3203ce0f36133432ecf274237b7104d"
+              ],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "digest": "d4bdc2e8d263133120d23bdf0cb9991fee981722a5fe242db19bf7505faf7a0e",
+              "files": [
+                {
+                  "bytes": 949,
+                  "path": "evidence/acceptance-full.json",
+                  "sha256": "37eb36ba1ab7270d03080b8ba292a2dff2f8668582413b191a967c9190fea4a4"
+                },
+                {
+                  "bytes": 78491,
+                  "path": "outputs/preconfirmation-full/response-dossier.json",
+                  "sha256": "ef4adc92aaed8a762a3e6f284f5a092e44ec024a8c002a1dd16d080036ff4e5d"
+                },
+                {
+                  "bytes": 311079,
+                  "path": "inputs/discovery-docker-v25.0.0.json",
+                  "sha256": "7ca4f0989cec50c4f9d04e8a820763150e1938866d1413c2b0ea591883f403e9"
+                },
+                {
+                  "bytes": 311571,
+                  "path": "inputs/discovery-docker-v26.0.0.json",
+                  "sha256": "297f3477209eeff4098d588055c2d244b1db287d38312140a69b37cf96b4d276"
+                }
+              ],
+              "id": "response-index@1"
+            }
+          },
+          {
+            "leafHash": "001a0b9378a10aad48d640f6f0073738e3203ce0f36133432ecf274237b7104d",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 2,
+              "leafIndex": 0,
+              "siblings": [
+                "eb89ad917edece436d0376cc94f0e78d67ea0b5ef13317789537aab0c2ac9611"
+              ],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "digest": "7ca910a523bec72f649e13ad6713972c595b9611b9fada0be029a3903933d564",
+              "files": [
+                {
+                  "bytes": 948,
+                  "path": "evidence/acceptance-incremental.json",
+                  "sha256": "6799f46e0734b904db672be278597681808e2766a06a1fb6b664a1da9b0436c2"
+                },
+                {
+                  "bytes": 78491,
+                  "path": "outputs/preconfirmation-incremental/response-dossier.json",
+                  "sha256": "99efd19ddc58c7d48994759264ec9b2a2da0a968c0c80a7b9d80c6eeea49dedf"
+                },
+                {
+                  "bytes": 311079,
+                  "path": "inputs/discovery-docker-v25.0.0.json",
+                  "sha256": "7ca4f0989cec50c4f9d04e8a820763150e1938866d1413c2b0ea591883f403e9"
+                },
+                {
+                  "bytes": 311571,
+                  "path": "inputs/discovery-docker-v26.0.0.json",
+                  "sha256": "297f3477209eeff4098d588055c2d244b1db287d38312140a69b37cf96b4d276"
+                },
+                {
+                  "bytes": 2096,
+                  "path": "evidence/independent-review/schema-independent-qualified-review.txt",
+                  "sha256": "c396b85003bd3b133da2f33d5dfc6e401287e683014ae5aff1fff0e1432617b4"
+                },
+                {
+                  "bytes": 1368,
+                  "path": "evidence/independent-review/schema-independent-qualified-receipt.json",
+                  "sha256": "65e4495069eabdc7bba3d2ef0c6313798229e7bce4de0102ba638822db7e285a"
+                },
+                {
+                  "bytes": 16243,
+                  "path": "tests/schema-independent.test.mjs",
+                  "sha256": "f784614bdba57be5133b707f28e2f6ff6e818d943bbcaeba92ce75a3c1fa28c0"
+                }
+              ],
+              "id": "incremental-response-index@1"
+            }
+          }
+        ],
+        "root": "752d98061e3b1e6fe254f3f7e38731812bed61c8f64641a5386fb5f01b8e5537"
+      },
+      "metadata": {
+        "count": 1,
+        "records": [
+          {
+            "leafHash": "083566b781c9cc66c8eb0e4004d9e1602ddbf5aa4f90a83d27ca3cb0a9d57518",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 1,
+              "leafIndex": 0,
+              "siblings": [],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "cryptographicAuthentication": false,
+              "executionAuthority": [],
+              "liveIdentityEnforcement": "NOT_RUN",
+              "mode": "FIXTURE_ONLY",
+              "settlement": "NOT_CONNECTED",
+              "sourceCommit": "c9f2892c06e173cb0f9d5ae710cffc4a6f1fa723"
+            }
+          }
+        ],
+        "root": "083566b781c9cc66c8eb0e4004d9e1602ddbf5aa4f90a83d27ca3cb0a9d57518"
+      },
+      "policy": {
+        "count": 1,
+        "records": [
+          {
+            "leafHash": "514e89dafbf90a91432adda66dfbe951f911b1af0fd4ac93a5851a2e17b3a5f9",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 1,
+              "leafIndex": 0,
+              "siblings": [],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "policy": {
+                "eligibleAttesters": "direct *.agent.agi.eth fixture delegates only",
+                "executionAuthority": [],
+                "fixtureTimeIsNotUtc": true,
+                "jobsValidatorsUnchanged": true,
+                "requireIndependentTechnicalReplay": true,
+                "version": 1
+              },
+              "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010"
+            }
+          }
+        ],
+        "root": "514e89dafbf90a91432adda66dfbe951f911b1af0fd4ac93a5851a2e17b3a5f9"
+      },
+      "proofbundle": {
+        "count": 0,
+        "records": [],
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+      },
+      "revocation": {
+        "count": 0,
+        "records": [],
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+      },
+      "skill": {
+        "count": 2,
+        "records": [
+          {
+            "leafHash": "8cbf514674aef0e479279c3bd1c443126c967e5108d6972b2fc21ef84be2e6cc",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 2,
+              "leafIndex": 1,
+              "siblings": [
+                "81a28ad132bbb560c3729f141511073688ddbdfd31931d3b03bdb69aa57ea1d4"
+              ],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "creator": "fixture:discovery-constructor",
+              "dependencies": [],
+              "dependencyDigests": [],
+              "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+              "evidenceDigest": "d4bdc2e8d263133120d23bdf0cb9991fee981722a5fe242db19bf7505faf7a0e",
+              "expiresAt": 700,
+              "id": "response-index",
+              "implementationDigest": "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef",
+              "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+              "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+              "scopeDigest": "c2906a6b6365ad0b2ab1aeeb9cf10559d464bd3cafca7989a0db149cb5ad2878",
+              "technicalVerifier": "independently-authored-python-bfs",
+              "version": "1"
+            }
+          },
+          {
+            "leafHash": "81a28ad132bbb560c3729f141511073688ddbdfd31931d3b03bdb69aa57ea1d4",
+            "proof": {
+              "hashSuite": "SHA256_RESEARCH_V1",
+              "leafCount": 2,
+              "leafIndex": 0,
+              "siblings": [
+                "8cbf514674aef0e479279c3bd1c443126c967e5108d6972b2fc21ef84be2e6cc"
+              ],
+              "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+            },
+            "record": {
+              "creator": "fixture:discovery-constructor",
+              "dependencies": [
+                "response-index@1"
+              ],
+              "dependencyDigests": [
+                "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef"
+              ],
+              "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+              "evidenceDigest": "7ca910a523bec72f649e13ad6713972c595b9611b9fada0be029a3903933d564",
+              "expiresAt": 700,
+              "id": "incremental-response-index",
+              "implementationDigest": "b7d44b89d6bad2e52abca5e774874a990398732fca5e371174b24a8b4d3f1f68",
+              "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+              "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+              "scopeDigest": "f5a426ff3d88212fe718f8087fd98851e5d6dc456a404d8e6fc8538fe790178f",
+              "technicalVerifier": "independently-authored-python-bfs",
+              "version": "1"
+            }
+          }
+        ],
+        "root": "c01d3a0c88a83e83d0bbbdf8af6f27d1f3b6202398b3e3d4dbb99f126cc796f6"
+      },
+      "supersession": {
+        "count": 0,
+        "records": [],
+        "root": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+      }
+    },
+    "hashSuite": "SHA256_RESEARCH_V1",
+    "schema": "agi-alpha.merkle-forest.v1",
+    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+  },
+  "foundationSources": {
+    "fixtures/authority.json": {
+      "bytes": 16257,
+      "sha256": "c130af4be60ab8ab5e61292ddbdd7f9588f2f8817c0edca150ccfc8709624da4"
+    },
+    "src/authority.mjs": {
+      "bytes": 13915,
+      "sha256": "5229ee523cc6280debed2c55aff922d7d1192c848ade43676a9db86121294de1"
+    },
+    "src/commitments.mjs": {
+      "bytes": 9972,
+      "sha256": "454175c59be23ca5c8d86162403ca8a21a37b9ffddfceebd0f453b1730dd917e"
+    }
+  },
+  "issuedAt": 100,
+  "liveIdentityEnforcement": "NOT_RUN",
+  "mode": "FIXTURE_ONLY",
+  "root": {
+    "action": "COMMIT_GRAPH_ROOT",
+    "agent": "research.agent.agi.eth",
+    "authoritySnapshotId": "fixture-state-100",
+    "authorityStateDigest": "c3a2368e72f0bed75d2d941d81810b9486211abe42233a1a1558d44b8c54e355",
+    "blockHash": "76dd6cdaff8ad950db5f3ce6c9cfab2ac21df6455d5903cb82ccb806326e7228",
+    "blockNumber": 100,
+    "canonicalization": "AGI_ALPHA_JSON_SAFE_INTEGER_NFC_V1",
+    "chainId": 31337,
+    "counts": {
+      "attestation": 2,
+      "edge": 1,
+      "evidence": 2,
+      "metadata": 1,
+      "policy": 1,
+      "proofbundle": 0,
+      "revocation": 0,
+      "skill": 2,
+      "supersession": 0
+    },
+    "epoch": 1,
+    "expiresAt": 500,
+    "graphId": "response-assurance-study",
+    "graphRoot": "0a09e7edff67eb29c125f9f00dd8d4eb2c392af29f78760f50e3f65095281c08",
+    "hashSuite": "SHA256_RESEARCH_V1",
+    "issuedAt": 100,
+    "mode": "FIXTURE_ONLY",
+    "nonce": "response-assurance-study:root:1",
+    "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+    "previousRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+    "proofLevel": "FIXTURE_SCOPED_TECHNICAL",
+    "registry": "fixture:ens-v1",
+    "registryCodeDigest": "a18c115a058e305f1da15744e49c536d8a4914b5ff66c486ad9b96e6ef668bcd",
+    "registrySchema": "ENS_V1_FIXTURE",
+    "roots": {
+      "attestation": "7b65ebae95e56726fead5b417e8698ab704c847dcd49e4ce440a8c36f1a53716",
+      "edge": "7cf46072a3fdf0890705006663003552316a6b36fc3b9977f725379257b33445",
+      "evidence": "752d98061e3b1e6fe254f3f7e38731812bed61c8f64641a5386fb5f01b8e5537",
+      "metadata": "083566b781c9cc66c8eb0e4004d9e1602ddbf5aa4f90a83d27ca3cb0a9d57518",
+      "policy": "514e89dafbf90a91432adda66dfbe951f911b1af0fd4ac93a5851a2e17b3a5f9",
+      "proofbundle": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "revocation": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf",
+      "skill": "c01d3a0c88a83e83d0bbbdf8af6f27d1f3b6202398b3e3d4dbb99f126cc796f6",
+      "supersession": "eedb70584f0ae3341a2398ec77cf0b9c1559619fc4d43634a7a2590e06db42cf"
+    },
+    "schema": "agi-alpha.graph-epoch.v1",
+    "signature": {
+      "payloadDigest": "02486a95def3c6fea3e900cc1a543ee952263e3506422eaff71ccedec1f3d5ba",
+      "protocol": "AGI_ALPHA_SIMULATED_AUTHORITY_V1",
+      "scheme": "FIXTURE_NOT_CRYPTOGRAPHIC",
+      "signer": "fixture:root-delegate"
+    },
+    "signer": "fixture:root-delegate",
+    "snapshotDigest": "2d964806af5cc537da44d41dab648cef796502a5268d6ebb97860426f4339b8d",
+    "treePolicy": "SORTED_PAIR_DUPLICATE_LAST_V1"
+  },
+  "rootAssessment": {
+    "authorizedOperation": "COMMIT_GRAPH_ROOT",
+    "cryptographicAuthentication": false,
+    "currentReuseAllowed": true,
+    "historyValid": true,
+    "liveIdentityEnforcement": "NOT_RUN",
+    "mode": "FIXTURE_ONLY",
+    "nonceKey": "response-assurance-study|COMMIT_GRAPH_ROOT|research.agent.agi.eth|response-assurance-study:root:1",
+    "ok": true,
+    "reasons": []
+  },
+  "schema": "agi-alpha.work-discovery-admission.v1",
+  "settlement": "NOT_CONNECTED",
+  "skills": [
+    {
+      "creator": "fixture:discovery-constructor",
+      "dependencies": [],
+      "dependencyDigests": [],
+      "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+      "evidenceDigest": "d4bdc2e8d263133120d23bdf0cb9991fee981722a5fe242db19bf7505faf7a0e",
+      "expiresAt": 700,
+      "id": "response-index",
+      "implementationDigest": "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef",
+      "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+      "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+      "scopeDigest": "c2906a6b6365ad0b2ab1aeeb9cf10559d464bd3cafca7989a0db149cb5ad2878",
+      "technicalVerifier": "independently-authored-python-bfs",
+      "version": "1"
+    },
+    {
+      "creator": "fixture:discovery-constructor",
+      "dependencies": [
+        "response-index@1"
+      ],
+      "dependencyDigests": [
+        "063f3060e372af56825f65c80095115c0f851a5587ce4dcbff21c0eed4244fef"
+      ],
+      "environmentDigest": "a17094098d267d10a1f02f40084f6fcc74225dc4b4aef301c0a0aab62fb8ee53",
+      "evidenceDigest": "7ca910a523bec72f649e13ad6713972c595b9611b9fada0be029a3903933d564",
+      "expiresAt": 700,
+      "id": "incremental-response-index",
+      "implementationDigest": "b7d44b89d6bad2e52abca5e774874a990398732fca5e371174b24a8b4d3f1f68",
+      "policyDigest": "02997a303d78ca2071f3b2667de07324ebab88363a0425bc8264bbef865b1010",
+      "rightsDigest": "b851c44ee0179f0f5146df6776cf620c19c278e39d782826257acd8d3c4727a3",
+      "scopeDigest": "f5a426ff3d88212fe718f8087fd98851e5d6dc456a404d8e6fc8538fe790178f",
+      "technicalVerifier": "independently-authored-python-bfs",
+      "version": "1"
+    }
+  ],
+  "admissionDigest": "0f068da8649501968830d3c94d8dd877d7cea00e536dd52e5461b228e939460f"
+}

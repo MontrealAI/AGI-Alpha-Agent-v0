@@ -1,0 +1,79 @@
+{
+  "recordedUtc": "2026-10-26T21:23:08.888064+00:00",
+  "method": "Read primary standards and exact installed tool source only; no alternate validator or efficacy run",
+  "sourceFragmentPointer": "#/definitions/ImageManifestSummary/properties/ImageData",
+  "sourceFragment": {
+    "description": "The image data for the image manifest.\nThis field is only populated when Kind is \"image\".\n",
+    "type": "object",
+    "x-nullable": true,
+    "x-omitempty": true,
+    "required": [
+      "Platform",
+      "Containers",
+      "Size",
+      "UnpackedSize"
+    ],
+    "properties": {
+      "Platform": {
+        "$ref": "#/definitions/OCIPlatform",
+        "description": "OCI platform of the image. This will be the platform specified in the\nmanifest descriptor from the index/manifest list.\nIf it's not available, it will be obtained from the image config.\n"
+      },
+      "Containers": {
+        "description": "The IDs of the containers that are using this image.\n",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "ede54ee1fda366ab42f824e8a5ffd195155d853ceaec74a927f249ea270c7430",
+          "abadbce344c096744d8d6071a90d474d28af8f1034b5ea9fb03c3f4bfc6d005e"
+        ]
+      },
+      "Size": {
+        "type": "object",
+        "x-nullable": false,
+        "required": [
+          "Unpacked"
+        ],
+        "properties": {
+          "Unpacked": {
+            "type": "integer",
+            "format": "int64",
+            "example": 3987495,
+            "description": "Unpacked is the size (in bytes) of the locally unpacked\n(uncompressed) image content that's directly usable by the containers\nrunning this image.\nIt's independent of the distributable content - e.g.\nthe image might still have an unpacked data that's still used by\nsome container even when the distributable/compressed content is\nalready gone.\n"
+          }
+        }
+      }
+    }
+  },
+  "validatorSourceSha256": "f686da4a1288f34408a27b3a38dff5cfade911255a45a93c0cbdd1736ce285cb",
+  "validatorCodeLines": [
+    563,
+    564,
+    565,
+    566,
+    567,
+    568,
+    569,
+    570,
+    571
+  ],
+  "validatorRule": "Reject when set(schema.required) minus set(schema.properties.keys()) is nonempty, for non-allOf definitions.",
+  "primaryStandards": [
+    {
+      "url": "https://spec.openapis.org/oas/v2.0.html#schema-object",
+      "section": "6.4.18",
+      "finding": "required follows JSON Schema Draft4 unchanged; properties/additionalProperties keep their semantics with Schema Object references."
+    },
+    {
+      "url": "https://json-schema.org/draft-04/draft-fge-json-schema-validation-00",
+      "section": "5.4.3 and5.4.4",
+      "finding": "required constrains key presence in instances; it does not require corresponding entries under properties. Additional properties remain allowed unless restricted."
+    }
+  ],
+  "specificDiagnosticClassification": "TOOL_RULE_STRICTER_THAN_NORMATIVE_REQUIRED_PROPERTIES_RELATIONSHIP",
+  "inference": "Absence of a property declaration can be an authoring inconsistency but is not by itself a violation of Draft4 required semantics. This does not adjudicate every other schema constraint or live-response behavior.",
+  "entireDocumentValidity": "NOT_ADJUDICATED",
+  "originalRecipientHold": "UNCHANGED",
+  "thirdPairOrRetry": "NONE"
+}

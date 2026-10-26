@@ -1,0 +1,117 @@
+{
+  "id": "transfer-01-v27.5.1-to-v28.0.0-D",
+  "arm": "D",
+  "pair": [
+    "v27.5.1",
+    "v28.0.0"
+  ],
+  "order": 3,
+  "accepted": true,
+  "status": "ACCEPTED_SCOPED_RESEARCH_OUTPUT",
+  "processes": [
+    {
+      "command": [
+        "node",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/src/run_service.mjs",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v27.5.1.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v28.0.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/outputs/secondary-transfer/transfer-01-v27.5.1-to-v28.0.0-D/service",
+        "graph"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:20:12.103491+00:00",
+      "executed": true,
+      "stdout": "production.stdout",
+      "stderr": "production.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 1.4665423040023597,
+      "processWallSeconds": 1.453053937999357,
+      "cpuSeconds": 1.552068,
+      "maxRssKiB": 221332,
+      "finishedAt": "2026-10-26T21:20:13.570052+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tests/accept_dossier.py",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v27.5.1.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v28.0.0.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/outputs/secondary-transfer/transfer-01-v27.5.1-to-v28.0.0-D/service",
+        "--receipt",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/outputs/secondary-transfer/transfer-01-v27.5.1-to-v28.0.0-D/service/independent-acceptance.json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:20:13.570164+00:00",
+      "executed": true,
+      "stdout": "verification.stdout",
+      "stderr": "verification.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.3267880219973449,
+      "processWallSeconds": 0.3178910280003038,
+      "cpuSeconds": 0.335018,
+      "maxRssKiB": 49664,
+      "finishedAt": "2026-10-26T21:20:13.896969+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS"
+    }
+  ],
+  "actualHumanSeconds": null,
+  "actualCompleteMonetaryCost": null,
+  "summary": {
+    "oldResponses": 43,
+    "newResponses": 43,
+    "changedSurfaces": 332,
+    "unassessed": 453,
+    "mode": "incremental"
+  },
+  "acceptance": {
+    "accepted": true,
+    "actualHumanSeconds": null,
+    "actualMonetaryCost": null,
+    "changes": 332,
+    "conventionalSourceUnchanged": true,
+    "cpuSeconds": 0.28670807,
+    "dossierFiles": [
+      {
+        "path": "response-dossier-index.json",
+        "sha256": "068948e748a7ab52e4a31c047fd8e269f222bac63b0c932271c773a17f30958a"
+      },
+      {
+        "path": "dossier-part-1.txt",
+        "sha256": "882d6c7ed7fab7c483fd504e33266ce628807eef6ea97ca9cc907fcd4c756d3a"
+      },
+      {
+        "path": "dossier-part-2.txt",
+        "sha256": "021087808714fe4d3dd83e36e1e336b2fb62d4a09f61aea036c25770320c1d8f"
+      }
+    ],
+    "elapsedSeconds": 0.26888381599928834,
+    "inputRawSha256": [
+      "bcd18f1ec7c8324ccd1f5b9243fbb2437673f3bf7192c23cea571bdc7049485c",
+      "68770e01f8984c14a671820b255e9663e5e869207cb117889a22d349e6324b79"
+    ],
+    "newNodes": 2770,
+    "newResponses": 43,
+    "oldNodes": 2465,
+    "oldResponses": 43,
+    "scope": "Exhaustive independent response-surface and source-binding replay; not server or customer compatibility acceptance",
+    "sourceDigests": [
+      "dec898e81242013dd6c2df14801a5c12a20f50bece70ef2c2d8877fa6a89307d",
+      "46ba406cbeccd124205f4a4b96c6b1398e8191712a71a367d0578ebcde626632"
+    ],
+    "unassessed": true
+  },
+  "wallSeconds": 1.7938545500001055,
+  "cpuSeconds": 1.920023671,
+  "maxProcessRssKiB": 221332,
+  "cpuAccounting": "outer driver self CPU plus waited-child CPU delta once; internal timing receipts are not added",
+  "sharedAcquisitionCpuSeconds": 0.3357090277500001,
+  "sharedAcquisitionWallSeconds": 0.5331824117502038,
+  "finishedAt": "2026-10-26T21:20:13.897307+00:00"
+}

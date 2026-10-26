@@ -1,0 +1,61 @@
+{
+  "recordedUtc": "2026-10-26T21:13:52.395005+00:00",
+  "result": "DOCUMENTED_VERSION_CONDITION_NOT_REPRESENTED_AS_STRUCTURAL_REMOVAL",
+  "snapshots": [
+    {
+      "version": "v25.0.0",
+      "inputPath": "inputs/discovery-docker-v25.0.0.json",
+      "inputSha256": "7ca4f0989cec50c4f9d04e8a820763150e1938866d1413c2b0ea591883f403e9",
+      "pointer": "#/definitions/ImageInspect/properties/ContainerConfig",
+      "declaration": {
+        "description": "**Deprecated**: this field is kept for backward compatibility, but\nwill be removed in API v1.45.\n",
+        "$ref": "#/definitions/ContainerConfig"
+      },
+      "declarationSha256": "7800264cee211be505c7ad664065e41c73c80f805905ed76dc8337e1899fbbda"
+    },
+    {
+      "version": "v26.0.0",
+      "inputPath": "inputs/discovery-docker-v26.0.0.json",
+      "inputSha256": "297f3477209eeff4098d588055c2d244b1db287d38312140a69b37cf96b4d276",
+      "pointer": "#/definitions/ImageInspect/properties/ContainerConfig",
+      "declaration": {
+        "description": "**Deprecated**: this field is kept for backward compatibility, but\nwill be removed in API v1.45.\n",
+        "$ref": "#/definitions/ContainerConfig"
+      },
+      "declarationSha256": "7800264cee211be505c7ad664065e41c73c80f805905ed76dc8337e1899fbbda"
+    }
+  ],
+  "actualStructuralDeltasForImageInspect": [
+    {
+      "responseId": "GET /images/{name}/json 200",
+      "address": [
+        "p:Created"
+      ],
+      "kind": "changed",
+      "oldFacts": {
+        "type": "string",
+        "nullable": false
+      },
+      "newFacts": {
+        "type": "string",
+        "format": "dateTime",
+        "nullable": true
+      }
+    }
+  ],
+  "officialDocumentation": [
+    {
+      "url": "https://docs.docker.com/engine/release-notes/26.0/",
+      "claim": "Engine26.0.0 release notes identify removal of Container and ContainerConfig from image-inspection responses.",
+      "type": "primary-publisher-release-note"
+    },
+    {
+      "url": "https://docs.docker.com/engine/deprecated/#container-and-containerconfig-fields-in-image-inspect",
+      "claim": "The deprecation entry specifies omission for Engine26/API1.45 and up; prior-version compatibility requires attention.",
+      "type": "primary-publisher-deprecation-policy"
+    }
+  ],
+  "inference": "The frozen structural-fact inventory correctly finds no ContainerConfig removal between these declarations. That is insufficient to assess the documented version-conditioned runtime response. Description review and actual consumer inspection add a different kind of evidence.",
+  "primaryResultsModified": false,
+  "newRetainedAssetClaimed": false
+}

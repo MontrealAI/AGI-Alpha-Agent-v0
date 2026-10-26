@@ -1,0 +1,44 @@
+{
+  "en": {
+    "title": "Docker Engine 25.0 to 26.0: GET response schema migration dossier",
+    "decision": "Review six scoped response-surface changes before upgrading affected clients.",
+    "findings": [
+      "ImageInspect.Created changes string format to dateTime and becomes nullable.",
+      "VolumeOptions.Subpath is added in five GET response contexts: container inspect, service list/inspect, task list/inspect."
+    ],
+    "actions": [
+      "Check client parsers for nullable Created; do not require a non-null timestamp.",
+      "Treat the new optional Subpath property as a supported additional volume setting if your client exposes it.",
+      "Read Docker release/deprecation notes and run consumer integration tests: the static specification alone cannot certify actual server compatibility."
+    ],
+    "coverage": {
+      "old_response_schema_nodes": 2408,
+      "new_response_schema_nodes": 2413,
+      "changed_surface_nodes": 6,
+      "get_success_responses": 43
+    },
+    "limits": [
+      "No live Docker server, client application or customer acceptance test was run.",
+      "ContainerConfig remains in these specifications although release notes document its API removal. Absence of a structural diff is not evidence of runtime compatibility.",
+      "Default values, x-go-name, ref siblings, non-JSON outputs and missing schemas remain separately unassessed."
+    ]
+  },
+  "fr": {
+    "title": "Docker Engine 25.0 vers 26.0 : dossier des schémas de réponse GET",
+    "decision": "Examiner six changements de structure avant de migrer les clients concernés.",
+    "findings": [
+      "ImageInspect.Created adopte le format dateTime et peut devenir nul.",
+      "VolumeOptions.Subpath est ajouté dans cinq contextes de réponse GET : inspection du conteneur, liste/inspection des services et liste/inspection des tâches."
+    ],
+    "actions": [
+      "Vérifier que le client accepte une valeur Created nulle.",
+      "Prendre en charge la nouvelle propriété facultative Subpath si le client expose ce réglage de volume.",
+      "Lire les notes de version et tester les intégrations : la spécification statique seule ne certifie pas la compatibilité du serveur."
+    ],
+    "limits": [
+      "Aucun serveur Docker réel, client applicatif ou test d’acceptation client exécuté.",
+      "ContainerConfig demeure dans ces spécifications malgré sa suppression annoncée pour certaines versions de l’API.",
+      "Les valeurs par défaut, extensions x-go-name, frères de $ref, réponses non JSON et schémas manquants restent non évalués."
+    ]
+  }
+}

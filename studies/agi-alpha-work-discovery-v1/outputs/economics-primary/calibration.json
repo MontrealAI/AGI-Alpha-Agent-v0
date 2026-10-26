@@ -1,0 +1,95 @@
+{
+  "schema": "agi-alpha.work-discovery.calibration.v1",
+  "measurementKind": "EXECUTED_PUBLIC_LOCAL",
+  "acceptanceScope": "Selected structural GET 2xx application/json response-contract dossiers; documentation review is still required for runtime compatibility.",
+  "acceptanceSpecificationSha256": "c3ad45c5155befc324bc36a339a2c47bdf0d1fee733ca962292a70014f155bab",
+  "sourceManifestSha256": "f422f5c88283852dda8157d766fe5c70c0e0b9197297c8136924ea5b580bdd34",
+  "acceptanceEquivalent": true,
+  "evidence": [
+    {
+      "path": "outputs/primary/campaign.json",
+      "sha256": "d359508d9db2642d09555734127b94591914b88fb2afd4f96c07456e83b87b1c"
+    },
+    {
+      "path": "protocol/production.json",
+      "sha256": "34f9ef9bb4268f090404b22ead7f08ebe6cffa5731916c7df4a8edab08ca26e2"
+    },
+    {
+      "path": "inputs/acquired/manifest.json",
+      "sha256": "085ed38ee50bf9e5a4dcacd5746d8440d905bde6e1a8e59572f4e2ff47ce615a"
+    },
+    {
+      "path": "tests/accept_dossier.py",
+      "sha256": "c3ad45c5155befc324bc36a339a2c47bdf0d1fee733ca962292a70014f155bab"
+    },
+    {
+      "path": "protocol/production-freeze.json",
+      "sha256": "f422f5c88283852dda8157d766fe5c70c0e0b9197297c8136924ea5b580bdd34"
+    }
+  ],
+  "arms": {
+    "A": {
+      "attempts": 6,
+      "accepted": 3,
+      "inputBlocked": 3,
+      "cpuSecondsMean": 0.21245724000000066,
+      "wallSecondsMean": 0.2117982793321668,
+      "cpuSecondsAvailableMean": 0.42490869133333414,
+      "wallSecondsAvailableMean": 0.4235902093326634,
+      "cpuSecondsBlockedMean": 0.000005788666667190985,
+      "wallSecondsBlockedMean": 0.000006349331670207903
+    },
+    "B": {
+      "attempts": 6,
+      "accepted": 3,
+      "inputBlocked": 3,
+      "cpuSecondsMean": 0.7763676596666661,
+      "wallSecondsMean": 0.7173325420008041,
+      "cpuSecondsAvailableMean": 1.5527300283333325,
+      "wallSecondsAvailableMean": 1.4346591320014948,
+      "cpuSecondsBlockedMean": 0.000005290999999611283,
+      "wallSecondsBlockedMean": 0.000005952000113514562
+    },
+    "C": {
+      "attempts": 6,
+      "accepted": 3,
+      "inputBlocked": 3,
+      "cpuSecondsMean": 0.884125489,
+      "wallSecondsMean": 0.8224029480012783,
+      "cpuSecondsAvailableMean": 1.7682453596666665,
+      "wallSecondsAvailableMean": 1.6447996603346837,
+      "cpuSecondsBlockedMean": 0.000005618333333382945,
+      "wallSecondsBlockedMean": 0.000006235667873018731
+    },
+    "D": {
+      "attempts": 6,
+      "accepted": 3,
+      "inputBlocked": 3,
+      "cpuSecondsMean": 0.8106104293333334,
+      "wallSecondsMean": 0.7442031691668186,
+      "cpuSecondsAvailableMean": 1.6212140550000003,
+      "wallSecondsAvailableMean": 1.4883992139997038,
+      "cpuSecondsBlockedMean": 0.000006803666666499453,
+      "wallSecondsBlockedMean": 0.0000071243339334614575
+    }
+  },
+  "sourceAvailability": {
+    "planned": 6,
+    "inputBlocked": 3,
+    "available": 3,
+    "scenarioProbability": 0.5,
+    "interpretation": "Observed fraction of the frozen intended questions, used as an explicit common scenario condition; not a market frequency estimate."
+  },
+  "commonCosts": {
+    "experimentalAcquisitionCpuSecondsPerPlanned": 0.13952859059722225,
+    "experimentalAcquisitionWallSecondsPerPlanned": 0.2047898474028342,
+    "experimentalArmSharingDivisor": 4,
+    "standaloneAcquisitionCpuSecondsPerPlanned": 0.559554132888889,
+    "standaloneAcquisitionWallSecondsPerPlanned": 0.8207262952360502,
+    "acquisitionSessionOverheadCpuSecondsPerPlanned": 0.0014397704999999927,
+    "acquisitionSessionOverheadWallSecondsPerPlanned": 0.0015669056247133994,
+    "driverCpuSecondsPerPlanned": 0.0016000032083332745,
+    "driverWallSecondsPerPlanned": 0.0015969695829577784,
+    "allocation": "Experimental acquisition is divided among 4 arms and 8 registered questions. Each standalone policy restores the four-arm factor, retains inter-question sharing and adds its session-overhead share once. Driver overhead is divided among the 24 intended primary records."
+  }
+}

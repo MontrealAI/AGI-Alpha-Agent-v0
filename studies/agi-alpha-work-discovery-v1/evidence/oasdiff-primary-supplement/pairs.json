@@ -1,0 +1,319 @@
+[
+  {
+    "pair": [
+      "v20.10.0",
+      "v23.0.0"
+    ],
+    "supplementOnly": true,
+    "matchedPrimaryReplacement": false,
+    "rawBreaking": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "breaking",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v20.10.0.yaml",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.yaml",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:04.578454+00:00",
+      "executed": true,
+      "stdout": "v20_10_0-to-v23_0_0-raw-breaking.stdout",
+      "stderr": "v20_10_0-to-v23_0_0-raw-breaking.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.29249487899869564,
+      "processWallSeconds": 0.28612263100148994,
+      "cpuSeconds": 0.395014,
+      "maxRssKiB": 52856,
+      "finishedAt": "2026-10-26T21:14:04.870968+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v20_10_0-to-v23_0_0-raw-breaking"
+    },
+    "rawBreakingInterpretation": "INVALID_INPUT_FALSE_LEAD: raw Swagger2 is outside this OpenAPI3 comparator input contract; empty output cannot establish compatibility",
+    "status": "CONVERSION_OR_VALIDATION_FAILED"
+  },
+  {
+    "pair": [
+      "v23.0.0",
+      "v24.0.0"
+    ],
+    "supplementOnly": true,
+    "matchedPrimaryReplacement": false,
+    "rawBreaking": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "breaking",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v23.0.0.yaml",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v24.0.0.yaml",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:05.798058+00:00",
+      "executed": true,
+      "stdout": "v23_0_0-to-v24_0_0-raw-breaking.stdout",
+      "stderr": "v23_0_0-to-v24_0_0-raw-breaking.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.3972818479996931,
+      "processWallSeconds": 0.38866593999773613,
+      "cpuSeconds": 0.531824,
+      "maxRssKiB": 56616,
+      "finishedAt": "2026-10-26T21:14:06.195363+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v23_0_0-to-v24_0_0-raw-breaking"
+    },
+    "rawBreakingInterpretation": "INVALID_INPUT_FALSE_LEAD: raw Swagger2 is outside this OpenAPI3 comparator input contract; empty output cannot establish compatibility",
+    "breaking": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "breaking",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v23_0_0-openapi.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v24_0_0-openapi.json",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:06.196004+00:00",
+      "executed": true,
+      "stdout": "v23_0_0-to-v24_0_0-converted-breaking.stdout",
+      "stderr": "v23_0_0-to-v24_0_0-converted-breaking.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.24903374999848893,
+      "processWallSeconds": 0.24057572099991376,
+      "cpuSeconds": 0.294929,
+      "maxRssKiB": 39968,
+      "finishedAt": "2026-10-26T21:14:06.445054+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v23_0_0-to-v24_0_0-converted-breaking"
+    },
+    "breakingFindingCount": 5,
+    "changelog": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "changelog",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v23_0_0-openapi.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v24_0_0-openapi.json",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:06.445913+00:00",
+      "executed": true,
+      "stdout": "v23_0_0-to-v24_0_0-converted-changelog.stdout",
+      "stderr": "v23_0_0-to-v24_0_0-converted-changelog.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.21077722899644868,
+      "processWallSeconds": 0.20472210899970378,
+      "cpuSeconds": 0.276933,
+      "maxRssKiB": 39456,
+      "finishedAt": "2026-10-26T21:14:06.656708+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v23_0_0-to-v24_0_0-converted-changelog"
+    },
+    "changelogFindingCount": 9,
+    "diff": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "diff",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v23_0_0-openapi.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v24_0_0-openapi.json",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:06.657516+00:00",
+      "executed": true,
+      "stdout": "v23_0_0-to-v24_0_0-converted-diff.stdout",
+      "stderr": "v23_0_0-to-v24_0_0-converted-diff.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.17759988399848226,
+      "processWallSeconds": 0.1712776610002038,
+      "cpuSeconds": 0.23035,
+      "maxRssKiB": 35584,
+      "finishedAt": "2026-10-26T21:14:06.835133+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v23_0_0-to-v24_0_0-converted-diff"
+    },
+    "diffFindingCount": null,
+    "status": "COMPLETE_SUPPLEMENT",
+    "interpretation": "oasdiff findings span broader request/response semantics; counts and runtime are not the matched structural-dossier acceptance result; inspect findings rather than default exit code"
+  },
+  {
+    "pair": [
+      "v24.0.0",
+      "v25.0.0"
+    ],
+    "supplementOnly": true,
+    "matchedPrimaryReplacement": false,
+    "rawBreaking": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "breaking",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v24.0.0.yaml",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/inputs/acquired/v25.0.0.yaml",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:07.525946+00:00",
+      "executed": true,
+      "stdout": "v24_0_0-to-v25_0_0-raw-breaking.stdout",
+      "stderr": "v24_0_0-to-v25_0_0-raw-breaking.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.3177942260008422,
+      "processWallSeconds": 0.31054477299767314,
+      "cpuSeconds": 0.42762999999999995,
+      "maxRssKiB": 54848,
+      "finishedAt": "2026-10-26T21:14:07.843759+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v24_0_0-to-v25_0_0-raw-breaking"
+    },
+    "rawBreakingInterpretation": "INVALID_INPUT_FALSE_LEAD: raw Swagger2 is outside this OpenAPI3 comparator input contract; empty output cannot establish compatibility",
+    "breaking": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "breaking",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v24_0_0-openapi.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:07.844763+00:00",
+      "executed": true,
+      "stdout": "v24_0_0-to-v25_0_0-converted-breaking.stdout",
+      "stderr": "v24_0_0-to-v25_0_0-converted-breaking.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.2184925719993771,
+      "processWallSeconds": 0.2115352199980407,
+      "cpuSeconds": 0.263378,
+      "maxRssKiB": 39132,
+      "finishedAt": "2026-10-26T21:14:08.063273+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v24_0_0-to-v25_0_0-converted-breaking"
+    },
+    "breakingFindingCount": 0,
+    "changelog": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "changelog",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v24_0_0-openapi.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:08.064423+00:00",
+      "executed": true,
+      "stdout": "v24_0_0-to-v25_0_0-converted-changelog.stdout",
+      "stderr": "v24_0_0-to-v25_0_0-converted-changelog.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.20855238799776998,
+      "processWallSeconds": 0.2000896499994269,
+      "cpuSeconds": 0.269292,
+      "maxRssKiB": 39072,
+      "finishedAt": "2026-10-26T21:14:08.273010+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v24_0_0-to-v25_0_0-converted-changelog"
+    },
+    "changelogFindingCount": 77,
+    "diff": {
+      "command": [
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+        "diff",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v24_0_0-openapi.json",
+        "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/evidence/oasdiff-primary-supplement/v25_0_0-openapi.json",
+        "--format",
+        "json"
+      ],
+      "cwd": "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1",
+      "startedAt": "2026-10-26T21:14:08.274241+00:00",
+      "executed": true,
+      "stdout": "v24_0_0-to-v25_0_0-converted-diff.stdout",
+      "stderr": "v24_0_0-to-v25_0_0-converted-diff.stderr",
+      "timeoutSeconds": 60,
+      "exit": 0,
+      "timedOut": false,
+      "wallSeconds": 0.20362918300088495,
+      "processWallSeconds": 0.19667578699954902,
+      "cpuSeconds": 0.258398,
+      "maxRssKiB": 36384,
+      "finishedAt": "2026-10-26T21:14:08.477891+00:00",
+      "cpuIncludesWaitedDescendants": true,
+      "maxRssMeaning": "Linux maximum resident set reported for this process tree; not summed concurrent RSS",
+      "label": "v24_0_0-to-v25_0_0-converted-diff"
+    },
+    "diffFindingCount": null,
+    "status": "COMPLETE_SUPPLEMENT",
+    "interpretation": "oasdiff findings span broader request/response semantics; counts and runtime are not the matched structural-dossier acceptance result; inspect findings rather than default exit code"
+  },
+  {
+    "pair": [
+      "v26.0.0",
+      "v27.0.0"
+    ],
+    "supplementOnly": true,
+    "matchedPrimaryReplacement": false,
+    "status": "INPUT_ACQUISITION_FAILED",
+    "missing": [
+      "v27.0.0"
+    ],
+    "attempts": 0,
+    "replacement": null,
+    "costTreatment": "Shared acquisition failure charged in primary manifest, not duplicated here"
+  },
+  {
+    "pair": [
+      "v27.0.0",
+      "v28.0.0"
+    ],
+    "supplementOnly": true,
+    "matchedPrimaryReplacement": false,
+    "status": "INPUT_ACQUISITION_FAILED",
+    "missing": [
+      "v27.0.0"
+    ],
+    "attempts": 0,
+    "replacement": null,
+    "costTreatment": "Shared acquisition failure charged in primary manifest, not duplicated here"
+  },
+  {
+    "pair": [
+      "v28.0.0",
+      "v29.0.0"
+    ],
+    "supplementOnly": true,
+    "matchedPrimaryReplacement": false,
+    "status": "INPUT_ACQUISITION_FAILED",
+    "missing": [
+      "v29.0.0"
+    ],
+    "attempts": 0,
+    "replacement": null,
+    "costTreatment": "Shared acquisition failure charged in primary manifest, not duplicated here"
+  }
+]

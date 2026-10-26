@@ -1,0 +1,47 @@
+Usage: <main class> [options]
+  Options:
+    -c, --country_code
+       Country code of the feed, e.g., `nl`. It must be a two-letter country
+       code (ISO 3166-1 alpha-2)
+    -d, --date
+       The date used to validate the feed for time-based rules, e.g
+       feed_expiration_30_days, in ISO_LOCAL_DATE format like '2001-01-30'. By default, the current date
+       is used. This option can be used to debug rules like feed expiration.
+    -n, --export_notices_schema
+       Export notices schema
+       Default: false
+    -h, --help
+       Print help
+       Default: false
+    -r, --html_report_name
+       The name of the HTML validation report including .html extension.
+    -i, --input
+       Location of the input GTFS ZIP or unarchived directory
+    -o, --output_base
+       Base directory to store the outputs (required if not using --stdout)
+    -p, --pretty
+       Pretty json output
+       Default: false
+    -svu, --skip_validator_update
+       Skips check for new validator version
+       Default: false
+    --stdout
+       Output JSON report to stdout instead of writing to files (conflicts with
+       -o)
+       Default: false
+    -s, --storage_directory
+       Target path where to store the GTFS archive downloaded from network (if
+       not provided, the ZIP will be stored in memory)
+    -e, --system_errors_report_name
+       The name of the system errors report including .json extension.
+    -t, --threads
+       Number of threads to use
+       Default: 1
+    -u, --url
+       Fully qualified URL to download GTFS archive
+    -v, --validation_report_name
+       The name of the validation report including .json extension.
+
+⚠️ Note that parameters marked with an asterisk (*) in the help menu are mandatory.
+⚠️ Note that exactly one of the following options must be provided: --url or --input.
+⚠️ Note that --storage_directory must not be provided if --url is not provided.

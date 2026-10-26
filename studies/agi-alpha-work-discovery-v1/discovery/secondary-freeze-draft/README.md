@@ -1,0 +1,1 @@
+Before any secondary comparison, strict mypy reported no-any-return on the guard metadata function. The wrapper was corrected, then Ruff, Black and strict mypy passed. The unpublished initial manifest is retained; the published freeze is the corrected edition. No implementation of the compared methods changed. Actual cost unknown.

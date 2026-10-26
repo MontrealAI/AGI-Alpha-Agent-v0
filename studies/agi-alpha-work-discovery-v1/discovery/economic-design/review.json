@@ -1,0 +1,71 @@
+{
+  "schema": "agi-alpha.work-discovery.economic-design-review.v1",
+  "capturedAt": "2026-10-26T21:24:58.065Z",
+  "outcomeCampaignRunByAuthor": false,
+  "sourceEditsComplete": true,
+  "stages": [
+    {
+      "stage": "initial source draft",
+      "recordKind": "assumption summary from recorded authoring history; no full original source snapshot asserted",
+      "pricing": "prospective intended-order cost on labor-minute tariff grid",
+      "competitor": {
+        "initialResidualMinutes": {
+          "strong": 2,
+          "equal": 5
+        },
+        "initialComputeAllowanceCents": 50,
+        "initialMarkup": 1.15,
+        "limitation": "initial direct cost omitted comparable business/support overhead"
+      },
+      "diy": {
+        "effortFractions": {
+          "strong": 0.15,
+          "equal": 0.3
+        },
+        "onboardingMinutes": {
+          "strong": 0,
+          "equal": 10
+        },
+        "limitation": "double-counted tool advantage relative to already competent public-tool human benchmark"
+      }
+    },
+    {
+      "stage": "preserved prefinal source",
+      "source": "prefinal-source/capture.json",
+      "description": "Complete source snapshot after shared-cost/source-availability adaptation and equal competitor full-cost correction, before final symmetric pricing and matched-DIY corrections"
+    },
+    {
+      "stage": "final pre-outcome design",
+      "corrections": [
+        "Mechanically expected collected-job full cost for both equal offerings, including availability/defaults",
+        "Same tariff grid and neutral paired paid-offer tie split",
+        "Public DIY equals declared competent human/public-tool effort",
+        "Unavailable inputs incur acquisition/driver/block handling and early triage only",
+        "Conditional technical acceptance separated from all planned intended cases",
+        "Standalone acquisition restores four-arm experimental sharing and adds acquisition session/driver overhead",
+        "Cash rounding provision one cent per active week; incremental maintenance equals cash-charge difference"
+      ]
+    }
+  ],
+  "independentReview": {
+    "reviewer": "api_baseline independent conventional-builder agent",
+    "disposition": "PASS for bounded conditional model, no new blocking findings",
+    "syntheticControls": 26,
+    "command": "node --test --test-isolation=none tests/economics.test.mjs",
+    "primaryMarketCampaignRun": false
+  },
+  "preservedFailure": {
+    "testCount": 24,
+    "passed": 23,
+    "failed": 1,
+    "cause": "laborCents(0) yielded signed negative zero",
+    "correction": "Normalize zero-valued integer money",
+    "evidence": "economic-unit-attempt-01.txt",
+    "sourceIdentity": "economic-unit-attempt-01-source.json"
+  },
+  "limitations": [
+    "Peer review is local and not live agent-identity authentication",
+    "All market money and demand remain modeled",
+    "Final source and calibration freeze is owned by the root before any market outcomes"
+  ]
+}

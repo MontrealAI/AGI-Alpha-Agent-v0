@@ -1,0 +1,47 @@
+[
+  {
+    "command": [
+      "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+      "validate",
+      "/workspace/scratch/c4e9aee15454/research-inputs/api-baseline/evidence/docker-v25.0.0-openapi.json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.1347479870019015,
+    "cpu_seconds": 0.205622,
+    "stdout_bytes": 5162,
+    "stderr_bytes": 0,
+    "preview": "14 findings: 0 error, 3 warning, 11 info\ninfo\t[example-violates-schema] at /workspace/scratch/c4e9aee15454/research-inputs/api-baseline/evidence/docker-v25.0.0-openapi.json\n\tinvalid example: value must be a string\n\tSchema:\n\t  {\n\t    \"example\": [\n\t      \"10.10.0.0/16\",\n\t      \"20.20.0.0/16\"\n\t    ],\n\t    \"format\": \"CIDR\",\n\t    \"type\": \"string\"\n\t  }\n\n\tValue:\n\t  [\n\t    \"10.10.0.0/16\",\n\t    \"20.20.0.0/16\"\n\t  ]\n\t in schema \"ClusterInfo\"\n\ninfo\t[example-violates-schema] at /workspace/scratch/c4e9aee15454/research-inputs/api-baseline/evidence/docker-v25.0.0-openapi.json\n\tinvalid example: value must be an integer\n\tSchema:\n\t  {\n\t    \"description\": \"Date and time at which the image was created as a Unix timestamp\\n(number of seconds sinds EPOCH).\\n\",\n\t    \"example\": \"1644009612\",\n\t    \"type\": \"integer"
+  },
+  {
+    "command": [
+      "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+      "breaking",
+      "/workspace/scratch/c4e9aee15454/research-inputs/api-baseline/evidence/docker-v25.0.0-openapi.json",
+      "/workspace/scratch/c4e9aee15454/research-inputs/api-baseline/evidence/docker-v26.0.0-openapi.json",
+      "--format",
+      "json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.1947613829979673,
+    "cpu_seconds": 0.25487099999999996,
+    "stdout_bytes": 256,
+    "stderr_bytes": 0,
+    "preview": "[{\"id\":\"response-property-became-nullable\",\"text\":\"the response property `Created` became nullable for the status `200`\",\"level\":3,\"operation\":\"GET\",\"operationId\":\"ImageInspect\",\"path\":\"/images/{name}/json\",\"section\":\"paths\",\"fingerprint\":\"0fff848a3f3a\"}]\n"
+  },
+  {
+    "command": [
+      "/workspace/scratch/c4e9aee15454/agi-alpha/studies/agi-alpha-work-discovery-v1/tools/oasdiff/oasdiff",
+      "changelog",
+      "/workspace/scratch/c4e9aee15454/research-inputs/api-baseline/evidence/docker-v25.0.0-openapi.json",
+      "/workspace/scratch/c4e9aee15454/research-inputs/api-baseline/evidence/docker-v26.0.0-openapi.json",
+      "--format",
+      "json"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.19181892599954153,
+    "cpu_seconds": 0.25109699999999996,
+    "stdout_bytes": 5653,
+    "stderr_bytes": 0,
+    "preview": "[{\"id\":\"response-property-became-nullable\",\"text\":\"the response property `Created` became nullable for the status `200`\",\"level\":3,\"operation\":\"GET\",\"operationId\":\"ImageInspect\",\"path\":\"/images/{name}/json\",\"section\":\"paths\",\"fingerprint\":\"0fff848a3f3a\"},{\"id\":\"new-optional-request-parameter\",\"text\":\"added the new optional `query` request parameter `version`\",\"level\":1,\"operation\":\"POST\",\"operationId\":\"ImageBuild\",\"path\":\"/build\",\"section\":\"paths\",\"fingerprint\":\"7a3c5e45ee44\"},{\"id\":\"new-optional-request-property\",\"text\":\"added the new optional request property `allOf[subschema #2]/HostConfig/allOf[subschema #2]/Mounts/items/VolumeOptions/Subpath` (media type: application/json)\",\"comment\":\"This compared the `allOf` branches one at a time, so another branch may still guarantee what this one"
+  }
+]

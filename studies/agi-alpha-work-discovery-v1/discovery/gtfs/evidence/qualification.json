@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "research-env/bin/ruff",
+      "check",
+      "research-inputs/gtfs-prototype/src"
+    ],
+    "status": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": "",
+    "wallSeconds": 0.009693146999779856,
+    "cpuSeconds": 0.017255999999999997
+  },
+  {
+    "command": [
+      "research-env/bin/mypy",
+      "--strict",
+      "research-inputs/gtfs-prototype/src"
+    ],
+    "status": 0,
+    "stdout": "Success: no issues found in 3 source files\n",
+    "stderr": "",
+    "wallSeconds": 0.34961581400057185,
+    "cpuSeconds": 0.34850499999999995
+  },
+  {
+    "command": [
+      "research-env/bin/python",
+      "-c",
+      "import black; print(black.__version__)"
+    ],
+    "status": 0,
+    "stdout": "25.1.0\n",
+    "stderr": "",
+    "wallSeconds": 0.1365576529969985,
+    "cpuSeconds": 0.13609100000000002
+  }
+]

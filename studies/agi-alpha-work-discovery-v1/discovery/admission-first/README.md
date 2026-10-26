@@ -1,0 +1,1 @@
+This preconfirmation admission edition was archived before primary input acquisition. The replacement binds the final 20-control source-bound independent review, instead of the earlier 19-control result, and corrects the build timestamp label from startedAt to completedAt. Both editions and the cost of rebuilding are retained. No primary outcome was used in this refinement.
