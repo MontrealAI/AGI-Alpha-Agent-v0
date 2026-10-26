@@ -226,6 +226,22 @@ PAPERS_20261026_EXTRA_FILES = STRATEGY_144_EXTRA_FILES | {
     ),
 }
 
+# Exact Next Upgrade publication candidate; older complete editions remain valid.
+NEXT_UPGRADE_20261026_EXTRA_FILES = STRATEGY_144_EXTRA_FILES | {
+    "docs/service-worker.js": (
+        23501,
+        "bdae48eb479f68189b2102267dc2c2a6e71e15a51ce035f51e44753c606a0c21",
+    ),
+    "docs/assets/service-worker.js": (
+        23938,
+        "1c8d664bdc82a62e2a556dc4e32c78474111df851567a10223648c09e578a6f6",
+    ),
+    "docs/alpha_factory_v1/demos/alpha_agi_insight_v1/service-worker.js": (
+        26560,
+        "44267c58e069bdbd9b44877368066cea83d4ef7336913ecaefae6f2441bfe931",
+    ),
+}
+
 SourceProfile = tuple[str, int, int, dict[str, tuple[int, str]]]
 
 
@@ -302,6 +318,7 @@ def _source_profiles(raw: bytes) -> list[SourceProfile]:
         (ENTERPRISE_SOURCE_HASH, 53, 61, SOURCE_OPERATION_143_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, STRATEGY_144_EXTRA_FILES),
         (ENTERPRISE_SOURCE_HASH, 53, 61, PAPERS_20261026_EXTRA_FILES),
+        (ENTERPRISE_SOURCE_HASH, 53, 61, NEXT_UPGRADE_20261026_EXTRA_FILES),
     ):
         if digest == extra[CATALOG][1]:
             profiles.append((source_hash, source_count, file_count, extra))

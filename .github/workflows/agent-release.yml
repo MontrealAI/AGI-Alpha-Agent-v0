@@ -309,14 +309,14 @@ jobs:
           ALPHA_PYTEST_OWNER_PID=$$ python -m scripts.run_local_tests tests/test_orchestrator_backoff.py tests/test_insight_orchestrator_restart.py -q --junitxml=evidence/restarts.xml
       - name: Execute the complete catalog finite launch contracts
         run: python -m scripts.validate_demo_catalog --smoke --output evidence/demo-catalog.json
+      - name: Release contract preflight before full regression
+        timeout-minutes: 5
+        run: |
+          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py tests/test_held_native_source_guard.py
       - name: Preserve held native source identities (no behavioral qualification)
         run: |
           mkdir -p evidence
           python scripts/check_held_native_source.py > evidence/held-native-source-preservation.json
-      - name: Release contract preflight before full regression
-        timeout-minutes: 5
-        run: |
-          python -m pytest --noconftest -o addopts= -q tests/test_ci_install_bounds.py tests/test_chromium_provision_lifecycle.py tests/test_capability_checkout_release_versions.py tests/test_capability_publication_edition.py tests/test_release_contract_preflight.py
       - name: Offline regression including notebooks (four held native tests excluded)
         run: |
           mkdir -p evidence
