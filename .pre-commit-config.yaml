@@ -9,6 +9,8 @@ repos:
     rev: 1bd02b3569e3ac5cc66552b1336a96a8880d1bae
     hooks:
       - id: ruff
+        # Fixed v2 exact-source compatibility; all original rule families remain active.
+        entry: python scripts/check_strategy_research_compatibility_v2.py
         exclude: alpha_factory_v1/backend/agent_factory.py
       - id: ruff-format
         exclude: alpha_factory_v1/backend/agent_factory.py
