@@ -1,0 +1,45 @@
+{
+  "schema": "independent-market-review-execution/v1",
+  "executed_utc": "2026-10-26T18:11:07.334561+00:00",
+  "tests": [
+    {
+      "argv": [
+        "node",
+        "--test",
+        "studies/agi-alpha-second-investment-v1/market/tests/test-continuation.mjs"
+      ],
+      "exit_code": 0,
+      "elapsed_wall_seconds": 0.19705358800274553,
+      "child_cpu_seconds": 0.235149
+    },
+    {
+      "argv": [
+        "node",
+        "studies/agi-alpha-second-investment-v1/review/market-independent-probes.mjs"
+      ],
+      "exit_code": 0,
+      "elapsed_wall_seconds": 0.1535038709989749,
+      "child_cpu_seconds": 0.210594
+    },
+    {
+      "argv": [
+        "node",
+        "studies/agi-alpha-second-investment-v1/market/tests/test-continuation.mjs"
+      ],
+      "exit_code": 0,
+      "elapsed_wall_seconds": 0.11235794200183591,
+      "child_cpu_seconds": 0.13225699999999999,
+      "reason": "Direct module execution verifies 17 registered subtests after --test runner reported only the enclosing file."
+    }
+  ],
+  "source_sha256": {
+    "market/continuation.mjs": "5248bd12b0130f2630d449aeda0d76c6ad78980a8cad45fb5c5907661aa29c26",
+    "market/continuation-core.mjs": "5f675c6b979ee8d73f67953a9101abfa776516c4260cf4695cc73407d00a70f4",
+    "market/build-core.mjs": "302e0d497e7093901c57fe2abfae260072841558691a2e048e76fad0a15afe86",
+    "market/tests/test-continuation.mjs": "97ab1c6e5a21cf6f207da09b3d4462321ef8c4d13b977c76a3e9ca01c48a6938",
+    "review/market-independent-probes.mjs": "78ad98a1cc255f3f04e5dbab024ce6067c4a08f018062a48d77e3083575f4d4f"
+  },
+  "model_billing": null,
+  "human_attention_minutes": null,
+  "scope": "Synthetic invariant tests only. No fresh market campaign, fresh production outcomes, or production B source inspected."
+}

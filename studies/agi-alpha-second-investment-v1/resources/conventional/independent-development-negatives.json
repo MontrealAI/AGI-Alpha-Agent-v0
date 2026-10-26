@@ -1,0 +1,34 @@
+[
+  {
+    "case": "root-conflict",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/verify.py",
+      "--job",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-v2-root-conflict.json",
+      "--result",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-root-conflict/result.json",
+      "--out",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-root-conflict/independent-certificate.json"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"COMPLETE\", \"verdict\": \"CONFLICT\", \"errors\": []}\n",
+    "stderr": ""
+  },
+  {
+    "case": "missing-wheel",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/verify.py",
+      "--job",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-v2-missing-wheel.json",
+      "--result",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-missing-wheel/result.json",
+      "--out",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-missing-wheel/independent-certificate.json"
+    ],
+    "returncode": 2,
+    "stdout": "{\"status\": \"INCOMPLETE\", \"verdict\": \"INCOMPLETE\", \"errors\": [\"ValueError: selected wheel manifest must cover exactly active lock rows\"]}\n",
+    "stderr": ""
+  }
+]

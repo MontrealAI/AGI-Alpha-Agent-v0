@@ -1,0 +1,192 @@
+{
+  "schema": "agi-alpha-demo-functional-qa/v1",
+  "basis": "POST-EVALUATION PRESENTATION QA; no research reruns",
+  "html": "publication/AGI_ALPHA_Second_Investment_Demo.html",
+  "html_sha256": "7bfe12575a442f412dc21ef33aa207560831c46addf702471bbbf7b299d6f008",
+  "html_bytes": 1832703,
+  "test_sources": {
+    "review/test_demo.py": "061d01630eed45e634bde6ecf44d26b99e878e4955fd04e8cc6a06f4028fab66",
+    "review/test_demo.cjs": "e5079cb728a146cc34841232d87665a6efef8e35f966c6757e89069b09fc4713"
+  },
+  "frozen_reference_sources": {
+    "market/results/primary-01/summary.json": "e5c2e38c7ffb8cb738606224ffbb94f1a9c46b17131db01b9900db35af729f5b",
+    "market/results/primary-01/predeclared-representatives.json": "ba29b46a51749ea69185646c194b35aed1fd376cc840f3ac1c936ca882eecf64",
+    "publication/publication-data.json": "b69b2bc411629091b31dcdffc42d0c6ed224b5ca94a11404b6ea4e7a22cc6795"
+  },
+  "static_checks": [
+    {
+      "name": "HTML IDs are unique",
+      "passed": true,
+      "details": {
+        "count": 58
+      }
+    },
+    {
+      "name": "Embedded publication-data identity",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "Frozen grid has 80 groups and no actual receipts",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "Local HTML links and fragments resolve",
+      "passed": true,
+      "details": {
+        "checked": 8,
+        "missing": [],
+        "external_links": []
+      }
+    },
+    {
+      "name": "No network-loaded scripts or media",
+      "passed": true,
+      "details": []
+    },
+    {
+      "name": "All inputs and selectors have explicit labels",
+      "passed": true,
+      "details": {
+        "controls": 11
+      }
+    },
+    {
+      "name": "No-JS limitation is explicitly bilingual",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "No-JS reference financial result is present",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "No-JS production outcomes remain present",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "Static 360px safeguards exist (not rendered layout)",
+      "passed": true,
+      "details": {
+        "browser_rendered": false,
+        "viewport_considered_px": 360
+      }
+    },
+    {
+      "name": "Keyboard focus and reduced-motion safeguards exist",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "Both language visibility rules are explicit",
+      "passed": true,
+      "details": null
+    }
+  ],
+  "javascript": {
+    "passed": false,
+    "minimalDOM": true,
+    "browserLayoutVerified": false,
+    "htmlSHA256": "7bfe12575a442f412dc21ef33aa207560831c46addf702471bbbf7b299d6f008",
+    "checks": [
+      {
+        "name": "All 80 saved cells match frozen summaries and work in both languages",
+        "passed": true,
+        "details": {
+          "savedCells": 80,
+          "actualControlSelections": 160,
+          "languages": [
+            "en",
+            "fr"
+          ]
+        }
+      },
+      {
+        "name": "Eight ledger selectors preserve full original cash and cost histories",
+        "passed": true,
+        "details": {
+          "representatives": 8,
+          "cashBillsInvoicesBalances": "A and B byte-derived data equal frozen histories"
+        }
+      },
+      {
+        "name": "Affordable low replay uses the second capability 15 times, loses $27.47, and is never qualified",
+        "passed": true,
+        "details": {
+          "uses": 15,
+          "eventualAccepted": 34,
+          "paidOneoffCents": 2597,
+          "upkeepCents": 150,
+          "incrementalProfitCents": -2747
+        }
+      },
+      {
+        "name": "Language controls preserve choices, translate all dynamic option labels, and localize unknowns",
+        "passed": true,
+        "details": {
+          "selectorChoicesPreserved": 5,
+          "allDynamicOptionsTranslated": true
+        }
+      },
+      {
+        "name": "Calculator rejects blank, invalid and fractional counts; explicit zero and reset are meaningful",
+        "passed": true,
+        "details": {
+          "blankInputs": 5,
+          "invalidBoundaryInputs": 6,
+          "positiveScenarioStillExploratory": true,
+          "frozenDataUnchanged": true
+        }
+      },
+      {
+        "name": "Actual ledger, cash CSV and selected-group download buttons preserve selected data",
+        "passed": true,
+        "details": {
+          "ledgerJson": "AGI_ALPHA_ledger_8001_low_completed-research-replay.json",
+          "cashCsv": "AGI_ALPHA_cash_8001_low_completed-research-replay.csv",
+          "csvRows": 366
+        }
+      },
+      {
+        "name": "Every embedded payload decodes byte-identically to its archived source file",
+        "passed": false,
+        "error": "TypeError: event.preventDefault is not a function\n    at actual-demo-inline.js:107:105\n    at /workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/review/test_demo.cjs:58:81\n    at Array.map (<anonymous>)\n    at Element.emit (/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/review/test_demo.cjs:58:71)\n    at Element.click (/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/review/test_demo.cjs:61:18)\n    at /workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/review/test_demo.cjs:278:82\n    at async run (/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/review/test_demo.cjs:102:25)\n    at async /workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/review/test_demo.cjs:257:3"
+      },
+      {
+        "name": "Missing browser decompression offers exact gzip and corruption refuses output",
+        "passed": true,
+        "details": {
+          "noDecompressionFallback": "exact .gz",
+          "badHash": "download refused"
+        }
+      },
+      {
+        "name": "Original blank-to-zero defect has preserved execution evidence and repaired validation",
+        "passed": true,
+        "details": {
+          "originalScriptSHA256": "b5151b5ae1ed0b9147c17320ed2620fc31bbac87972b7eb73bff67ff0247abec",
+          "originalBlankCostDisplay": "-$6.25",
+          "repairedScriptRejectsBlank": true,
+          "presentationOnly": true,
+          "preservedExecution": "review/demo-functional-before-pdf.json",
+          "rerun": false,
+          "reason": "Initial script expects original uncompressed app-data shape; final encoding deduplicates A."
+        }
+      }
+    ]
+  },
+  "javascript_exit_code": 1,
+  "passed": false,
+  "elapsed_wall_seconds": 0.6129124910003156,
+  "child_cpu_seconds": 0.5653419999999999,
+  "actual_model_fees": null,
+  "human_minutes": null,
+  "limitations": [
+    "Minimal DOM is not a browser; layout, painting, focus movement and screen-reader behavior were not rendered.",
+    "360px review is a static CSS inspection only.",
+    "No primary production campaign, market campaign or relocated reproduction was executed."
+  ]
+}

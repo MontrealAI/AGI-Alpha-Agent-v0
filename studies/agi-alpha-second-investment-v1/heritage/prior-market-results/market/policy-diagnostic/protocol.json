@@ -1,0 +1,93 @@
+{
+  "schema": "agi-alpha-fixed-target-policy-diagnostic/v1",
+  "status": "FROZEN_BEFORE_POLICY_DIAGNOSTIC_OUTCOMES",
+  "stage": "POST_EXPLORATORY_POLICY_ADEQUACY_DIAGNOSTIC",
+  "reason": "Existing histories show the optimistic margin-weighted pricing heuristic repeatedly chose USD80 with zero conversions despite lower-price sales. This concrete policy-adequacy risk prevents attributing its null results solely to demand or technology.",
+  "unchanged_core_sha256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27",
+  "original_primary_preserved": true,
+  "original_exploratory_preserved": true,
+  "grid": {
+    "targetPriceCents": [
+      500,
+      1000,
+      2000,
+      4000,
+      8000
+    ],
+    "integrationCents": [
+      0,
+      1000
+    ],
+    "arrivalProbability": [
+      0.25,
+      0.5
+    ],
+    "ordinaryFinalizationMinutes": [
+      10
+    ],
+    "choiceModel": [
+      "deterministic",
+      "logit"
+    ],
+    "regimes": [
+      {
+        "id": "full-earned",
+        "investmentCostBasis": "full-history",
+        "historicalCostTiming": "opening",
+        "investmentFunding": "operating-surplus"
+      },
+      {
+        "id": "adoption-earned",
+        "investmentCostBasis": "adoption-only",
+        "historicalCostTiming": "opening",
+        "investmentFunding": "operating-surplus"
+      },
+      {
+        "id": "full-seed",
+        "investmentCostBasis": "full-history",
+        "historicalCostTiming": "opening",
+        "investmentFunding": "seed-funded"
+      },
+      {
+        "id": "adoption-seed",
+        "investmentCostBasis": "adoption-only",
+        "historicalCostTiming": "opening",
+        "investmentFunding": "seed-funded"
+      }
+    ]
+  },
+  "total_configurations": 160,
+  "seeds": {
+    "first": 2001,
+    "count": 12,
+    "reused_from_exploratory": true
+  },
+  "paired_worlds": 1920,
+  "enterprise_runs": 5760,
+  "policy_definition": "FIXED TARGET PRICE WITH COST FLOOR: posted=max(target,current assumed unit cost+USD1). Cost-related price changes after actual asset adoption are explicit; this is not an invariant fixed posted-price contract.",
+  "price_evidence_scope": "Computed weekly quotes can occur without an offer during no demand/pause/insolvency. Report computed schedule, actually offered quote ranges (offersSeen>0), and accepted simulated delivery prices separately, with before/after asset distinctions.",
+  "comparison": "Same semantic external draws and matching prior heuristic config for every policy, seed and arm. Report all prices; do not select ex-post best policy as achieved performance.",
+  "representative_figure_slice_selected_before_outcomes": {
+    "targetPriceCents": 2000,
+    "integrationCents": 0,
+    "arrivalProbability": 0.5,
+    "ordinaryFinalizationMinutes": 10,
+    "choiceModel": "logit",
+    "regimes": "all four",
+    "history_seed": 2001,
+    "price_comparison_figure": "all five targets, all twelve seeds, both integration0 and1000"
+  },
+  "required_outputs": [
+    "All complete cash/outcome/invoice/cost histories",
+    "All160scenario summaries",
+    "B−A and B−C differences",
+    "Paired fixed-policy-minus-heuristic values",
+    "Actual posted-price ranges by arm before/after adoption",
+    "All failed and refused investments",
+    "Funding source and upfront historical-cost distinction",
+    "Fixed-realized-path K ceiling without global optimality claims"
+  ],
+  "interpretation": "Post-exploratory diagnostic on reused seeds; not independent confirmation, equilibrium, optimal policy discovery or global market nonviability proof. All earlier failed policies remain material results.",
+  "no_further_campaigns": true,
+  "amendments": []
+}

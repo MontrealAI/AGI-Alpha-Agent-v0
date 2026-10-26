@@ -1,0 +1,45 @@
+{
+  "schema": "agi-alpha-second-investment-core-transformation/v1",
+  "originalSHA256": "52b7d83b57de1ca1cf43e444cedb3639193c91b2d6816f3ba86f9463dd904f27",
+  "resultSHA256": "5f675c6b979ee8d73f67953a9101abfa776516c4260cf4695cc73407d00a70f4",
+  "method": "Exact single-occurrence insertions; original source preserved separately.",
+  "patches": [
+    {
+      "before": "from '../canonical/shadow-ledger.mjs'",
+      "after": "from './upstream/canonical/shadow-ledger.mjs'"
+    },
+    {
+      "before": "  const c=validateConfig(supplied),buyers=Array.from({length:c.buyers},(_,i)=>buyerState(seed,i,c));",
+      "after": "  let c=validateConfig(supplied);\n  const baseConfig=c, buyers=Array.from({length:c.buyers},(_,i)=>buyerState(seed,i,c));"
+    },
+    {
+      "before": "  const decisions=[],jobs=[],buyerChoices=[],competition=[],prices=[],priceStats={},weeklySales=[],feedback=[];",
+      "after": "  const decisions=[],jobs=[],buyerChoices=[],competition=[],prices=[],priceStats={},weeklySales=[],feedback=[];\n  const hooks=options.continuationHooks??null;\n  hooks?.initialize({config:baseConfig,firm:f,seed});"
+    },
+    {
+      "before": "    if(f.assetPending&&week>=f.assetAvailableWeek&&!f.insolvent){f.assetPending=false;f.assetActive=true;}",
+      "after": "    if(f.assetPending&&week>=f.assetAvailableWeek&&!f.insolvent){f.assetPending=false;f.assetActive=true;}\n    hooks?.activate({firm:f,week});\n    c=hooks?hooks.effectiveConfig(baseConfig):baseConfig;"
+    },
+    {
+      "before": "      invest(f,week,c,seed,arm,priorAccepted,decisions);",
+      "after": "      invest(f,week,c,seed,arm,priorAccepted,decisions);\n      hooks?.beforeMarket({config:baseConfig,firm:f,week,seed,priorAccepted,expense,payBills,unitCost});\n      c=hooks?hooks.effectiveConfig(baseConfig):baseConfig;"
+    },
+    {
+      "before": "  if(!enterprise.insolvent&&!enterprise.assetPending&&used.enterprise<c.enterpriseSlotsPerWeek&&",
+      "after": "  if(!enterprise.insolvent&&!enterprise.assetPending&&!enterprise.secondAssetPending&&used.enterprise<c.enterpriseSlotsPerWeek&&"
+    },
+    {
+      "before": "      if(!priceStats[price])priceStats[price]={seen:0,won:0};",
+      "after": "      hooks?.afterProduction({firm:f,week,jobs});\n      if(!priceStats[price])priceStats[price]={seen:0,won:0};"
+    },
+    {
+      "before": "  const canonical=canonicalProjection(f,c),profit=canonical.economic.summary.scenario.operatingMargin;",
+      "after": "  c=baseConfig;\n  const canonical=canonicalProjection(f,c),profit=canonical.economic.summary.scenario.operatingMargin;"
+    },
+    {
+      "before": "    productionEvidence:'Inherited6/6 and new joint-tuple4/4 scoped assessments each arm; no field-reliability estimate inferred.',",
+      "after": "    productionEvidence:'Inherited6/6 and new joint-tuple4/4 scoped assessments each arm; no field-reliability estimate inferred.',\n    ...(hooks?{secondInvestment:hooks.finalize({firm:f,jobs,config:baseConfig})}:{}),"
+    }
+  ],
+  "neutralContract": "With continuationHooks absent, the JSON result must equal the frozen core for the same arguments."
+}

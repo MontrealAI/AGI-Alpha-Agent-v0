@@ -1,0 +1,67 @@
+{
+  "schema": "agi-alpha-presentation-research-contribution/v1",
+  "role": "Common post-evaluation EN/FR renderer, shared equally across A/B/C",
+  "started_utc": "2026-10-26T18:13:54.771320+00:00",
+  "finished_utc": "2026-10-26T18:19:33.494675+00:00",
+  "authoring_window_elapsed_seconds": 338.7233516910019,
+  "elapsed_time_is_not_human_labor": true,
+  "construction_attribution": "Model-authored presentation code based on parent task instructions and frozen campaign artifacts. No autonomous algorithm-invention claim.",
+  "source": "tools/render_deliveries.py",
+  "source_sha256": "aadc2b080a3bd2b634f679a1d46465b61225b9e36a79dd982016943bd468b377",
+  "source_in_frozen_production": false,
+  "included_in_measured_confirmation": false,
+  "credited_provider_time_saving_minutes": 0,
+  "credited_customer_time_saving_minutes": 0,
+  "accounting": "Charge as shared publication/presentation research contribution outside the frozen production asset; retain actual bill uncertainty.",
+  "model_billing_usd": null,
+  "human_attention_minutes": null,
+  "tool_service_cpu_seconds": null,
+  "measured_execution_receipts": [
+    "resources/rendering/render-execution-01.json",
+    "resources/rendering/render-execution.json",
+    "resources/rendering/visual-execution.json"
+  ],
+  "failed_attempts": [
+    {
+      "action": "Headless Chromium layout inspection",
+      "record": "resources/rendering/visual-check.stderr.txt",
+      "exit_code": 1,
+      "reason": "Playwright package present but Chromium executable absent.",
+      "browser_download_or_install_attempted": false
+    }
+  ],
+  "verification": {
+    "renderer_executed": true,
+    "python_compile": true,
+    "local_links": {
+      "all_local_links_resolve": true,
+      "checked_link_occurrences": 427,
+      "external_requests_required": false,
+      "html_files": 7
+    },
+    "content_checks": "resources/rendering/content-check.json",
+    "visual_layout_inspected": false,
+    "style_tools_unavailable": [
+      "black",
+      "ruff",
+      "mypy"
+    ],
+    "python_lines_exceeding_120": []
+  },
+  "outputs": {
+    "cryptography.html": "46c222532127e9823052b63757c48c0ddeebd7fcb24c1b1ff3d75dadd88c4a4b",
+    "eth-account.html": "6cad5405224a7cda4a6e30089e92b7c598cf65b8dbbf07917e9f97b0a7ef758d",
+    "prometheus-client.html": "93795d320052a49f039facc3e7746353198ea0c26765d5a363711d17858b93ed",
+    "pydantic-settings.html": "d0013ac15c95f2dfeecc32a64049228017c9484c4ca3724fcdcbe31d0d4a1788",
+    "pyyaml.html": "ab36fbf7ce07f95a1be0e85742fc2988f4f8a85a64f2536b94a1cd36e7d8f689",
+    "uvicorn.html": "9cca3ece8925332f6090fb842a8773938169ff3a72db158aa1003df723262120",
+    "index.html": "60a79cc8e415390fc545e9e31c79110e9add83daee79300207bf6c57b791b9fa"
+  },
+  "frozen_campaign_sha256": "7081c4b19c6df3558a86b4887b68bd8753ea287f73782701b308b3bc1cf34d2f",
+  "notes": [
+    "All 18 producer receipts and independent certificates are hash-bound to the campaign.",
+    "All captured pip logs/reports are rehashed against the independent certificate before rendering.",
+    "All job, lock and pyproject identities checked; exactly one version substitution among 41 packages.",
+    "No frozen source, primary outcome or runtime changed. No network, external font, customer order, payment or operational authority."
+  ]
+}

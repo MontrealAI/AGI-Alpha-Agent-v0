@@ -1,0 +1,62 @@
+{
+  "schema": "agialpha-lock-result/v1",
+  "job_sha256": "51edeb4f6010e343578584161ecbceb48b5c3f91ef18bce1f93354e777b8cf4c",
+  "job_id": "full-lock-eth-account-0.13.6",
+  "decision": "CONFLICT",
+  "pip_exit_code": 0,
+  "files": {
+    "stdout": "pip.stdout.txt",
+    "stderr": "pip.stderr.txt",
+    "report": "pip-report.json"
+  },
+  "tool_versions": {
+    "python": "3.12.14",
+    "pip": "26.2.2",
+    "packaging": "26.3"
+  },
+  "application_qualified": false,
+  "authority": [],
+  "financial_action": false,
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pip",
+      "--isolated",
+      "--disable-pip-version-check",
+      "install",
+      "--dry-run",
+      "--ignore-installed",
+      "--no-index",
+      "--find-links",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/eth-account/B/native/delivery/selected-wheels",
+      "--only-binary=:all:",
+      "--require-hashes",
+      "--report",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/eth-account/B/native/delivery/pip-report.json",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/confirmation/eth-account/requirements.lock",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/eth-account/B/native/delivery/root-requirements.lock"
+    ]
+  ],
+  "method": "retained ordinary-pip full-lock preflight",
+  "preflight_findings": [
+    {
+      "kind": "ROOT_VERSION_CONFLICT",
+      "requirement": "eth-account>=0.13.7,<0.14",
+      "observed": "0.13.6"
+    }
+  ],
+  "elapsed_wall_seconds": 0.9146426139996038,
+  "cpu_seconds": 0.885222539,
+  "artifacts_sha256": {
+    "pip.stdout.txt": "7bbe85a162a291d286f21667fa31929390b009ef8208835064dd0ca199dadb2f",
+    "pip.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pip-report.json": "e5e7e5fc85487b9726b352b1ed3332d8265ef4b83c1635e973a0488d95b197ce"
+  },
+  "limits": [
+    "Wheel metadata consistency only; application behavior, vulnerabilities and release qualification remain separate.",
+    "Research-proposed lock; no customer order, installation, authority or financial transaction."
+  ]
+}

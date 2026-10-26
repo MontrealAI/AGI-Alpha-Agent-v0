@@ -1,0 +1,82 @@
+{
+  "schema": "conventional-development-checks/v1",
+  "fresh_confirmation": false,
+  "source_sha256": "5ca54becb45a3dbf60a9fed2ad9730975baf7cbe543e95a89a975af176825eac",
+  "wall_seconds": 1.950618230002874,
+  "cpu_seconds": 1.959036382,
+  "results": [
+    {
+      "case": "root-conflict",
+      "expected": "CONFLICT",
+      "observed": "CONFLICT",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-v2-root-conflict.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-root-conflict"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-root-conflict\", \"decision\": \"CONFLICT\", \"elapsed_wall_seconds\": 0.860024573001283, \"cpu_seconds\": 0.8647469959999999}\n",
+      "stderr": "",
+      "result_sha256": "18861b13fbc5cf433f8fd8cbbb9ea640ffbc6c3160eefe45c6e757adf15081e2"
+    },
+    {
+      "case": "missing-wheel",
+      "expected": "INCOMPLETE",
+      "observed": "INCOMPLETE",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-v2-missing-wheel.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-missing-wheel"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-missing-wheel\", \"decision\": \"INCOMPLETE\", \"elapsed_wall_seconds\": 0.6058388029996422, \"cpu_seconds\": 0.608972909}\n",
+      "stderr": "",
+      "result_sha256": "bf1a54bf36a5d28602f73ebfcee0d7c86c8d406902a3087aca65c9b76fc6659d"
+    },
+    {
+      "case": "hash-mismatch",
+      "expected": "INCOMPLETE",
+      "observed": "INCOMPLETE",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-v2-hash-mismatch.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-hash-mismatch"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-hash-mismatch\", \"decision\": \"INCOMPLETE\", \"elapsed_wall_seconds\": 0.002942863000498619, \"cpu_seconds\": 0.0029386639999999936}\n",
+      "stderr": "",
+      "result_sha256": "2c2e6aedddb86e6650c4afaff842966af4d8b85c88e7ad3bb1699427d932ce41"
+    },
+    {
+      "case": "target-mismatch",
+      "expected": "INCOMPLETE",
+      "observed": "INCOMPLETE",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-v2-target-mismatch.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-v2-target-mismatch"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-target-mismatch\", \"decision\": \"INCOMPLETE\", \"elapsed_wall_seconds\": 0.003428566000366118, \"cpu_seconds\": 0.0034228150000000096}\n",
+      "stderr": "",
+      "result_sha256": "e2a7b96bd2b145daa215be4d829cd289273c1650771ba2ccef407f07cf57a034"
+    }
+  ],
+  "passed": true
+}

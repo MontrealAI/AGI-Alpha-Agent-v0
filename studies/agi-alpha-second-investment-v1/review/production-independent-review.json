@@ -1,0 +1,545 @@
+{
+  "schema": "agi-alpha-second-investment-production-independent-review/v1",
+  "reviewed_at": "2026-10-26T18:16:02.903237+00:00",
+  "reviewer_role": "/root/coordination_audit",
+  "scope": "Read-only archival audit of six fresh full-lock questions and eighteen matched production records; no primary rerun.",
+  "audit_source_sha256": "a2d5d4c19f283a6aabb20a42b27d85d358b555c58606ac198c52db7c136a6112",
+  "campaign_path": "results/confirmation-01/campaign.json",
+  "campaign_sha256": "7081c4b19c6df3558a86b4887b68bd8753ea287f73782701b308b3bc1cf34d2f",
+  "source_freeze_sha256": "23e0203abc7ef56a6e9a0e26ec857210fb778777cbf05b6e68fcba5b9f90c664",
+  "checks": 693,
+  "failures": [],
+  "status": "PASS_FOR_REGISTERED_METADATA_SCOPE",
+  "source_files_checked": 25,
+  "selection": [
+    {
+      "family": "cryptography",
+      "baseline": "50.0.1",
+      "selected": "50.0.0",
+      "index_sha256": "32975256deff83cfe92bfcb93233debf77ddc6e8222b2227dec5f45094173d66",
+      "rule_matches": true
+    },
+    {
+      "family": "eth-account",
+      "baseline": "0.13.7",
+      "selected": "0.13.6",
+      "index_sha256": "567c3b13eb980050da47c85cfa115f744bbb99d7cab14608192680528a8291f4",
+      "rule_matches": true
+    },
+    {
+      "family": "prometheus-client",
+      "baseline": "0.26.0",
+      "selected": "0.25.0",
+      "index_sha256": "ab4e1370efe407eab4a4f1450f81e828440593ca10efcde25b57e4d87992ff60",
+      "rule_matches": true
+    },
+    {
+      "family": "pydantic-settings",
+      "baseline": "2.15.0",
+      "selected": "2.14.2",
+      "index_sha256": "196861a4cb12a751abc1c8fc876fc2735f8e6cb5cf07c75f15328149bd0b5228",
+      "rule_matches": true
+    },
+    {
+      "family": "pyyaml",
+      "baseline": "6.0.3",
+      "selected": "6.0.2",
+      "index_sha256": "d0c463a86ed24144dd112fd1fe43b7c208e52c7d3903c2f51c84acfb5b10c749",
+      "rule_matches": true
+    },
+    {
+      "family": "uvicorn",
+      "baseline": "0.53.0",
+      "selected": "0.52.4",
+      "index_sha256": "4effd1bda1c885a4a23e89a96630afbdbaed784c7cf606635310655e5f6d2bbb",
+      "rule_matches": true
+    }
+  ],
+  "recorded_chronology": [
+    "2026-10-26T18:09:09.279711+00:00",
+    "2026-10-26T18:09:38.063845+00:00",
+    "2026-10-26T18:09:43.524070+00:00",
+    "2026-10-26T18:10:05.488656+00:00",
+    "2026-10-26T18:10:27.480034+00:00"
+  ],
+  "root_constraint_review": [
+    {
+      "family": "cryptography",
+      "root_count": 10,
+      "root_contradictions": [
+        {
+          "requirement": "cryptography<51,>=50.0.1",
+          "selected": "50.0.0"
+        }
+      ]
+    },
+    {
+      "family": "eth-account",
+      "root_count": 10,
+      "root_contradictions": [
+        {
+          "requirement": "eth-account<0.14,>=0.13.7",
+          "selected": "0.13.6"
+        }
+      ]
+    },
+    {
+      "family": "prometheus-client",
+      "root_count": 10,
+      "root_contradictions": []
+    },
+    {
+      "family": "pydantic-settings",
+      "root_count": 10,
+      "root_contradictions": []
+    },
+    {
+      "family": "pyyaml",
+      "root_count": 10,
+      "root_contradictions": []
+    },
+    {
+      "family": "uvicorn",
+      "root_count": 10,
+      "root_contradictions": []
+    }
+  ],
+  "metrics": {
+    "A": {
+      "n": 6,
+      "accepted": 6,
+      "consistent": 4,
+      "conflict": 2,
+      "wall_mean_seconds": 1.1352335836672864,
+      "wall_median_seconds": 1.159386617500786,
+      "wall_min_seconds": 0.9817438770005538,
+      "wall_max_seconds": 1.2346346090016596,
+      "cpu_mean_seconds": 1.0766441026666667
+    },
+    "B": {
+      "n": 6,
+      "accepted": 6,
+      "consistent": 4,
+      "conflict": 2,
+      "wall_mean_seconds": 1.3396852598325495,
+      "wall_median_seconds": 1.3713346504991932,
+      "wall_min_seconds": 1.1683287430023483,
+      "wall_max_seconds": 1.471722204998514,
+      "cpu_mean_seconds": 1.3202787283333328
+    },
+    "C": {
+      "n": 6,
+      "accepted": 6,
+      "consistent": 4,
+      "conflict": 2,
+      "wall_mean_seconds": 1.1754976715001249,
+      "wall_median_seconds": 1.1602389500003483,
+      "wall_min_seconds": 1.0824623650005378,
+      "wall_max_seconds": 1.2837999709990982,
+      "cpu_mean_seconds": 1.115225975333333
+    }
+  },
+  "paired_timing": {
+    "B_minus_A": {
+      "paired_questions": 6,
+      "seconds": [
+        0.18746008100060862,
+        0.3354273019976972,
+        0.19118283599527786,
+        0.18896208899604972,
+        0.18658486600179458,
+        0.13709288300015032
+      ],
+      "mean_seconds": 0.20445167616526305,
+      "B_slower_count": 6
+    },
+    "B_minus_C": {
+      "paired_questions": 6,
+      "seconds": [
+        0.04380407899952843,
+        0.33701409099739976,
+        0.14201747399783926,
+        0.1375821929977974,
+        0.08586637800181052,
+        0.23884131500017247
+      ],
+      "mean_seconds": 0.16418758833242464,
+      "B_slower_count": 6
+    }
+  },
+  "outputs": [
+    {
+      "family": "cryptography",
+      "arm": "A",
+      "accepted": true,
+      "verdict": "CONFLICT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [
+        {
+          "actual": "50.0.0",
+          "kind": "root_version",
+          "requirement": "cryptography<51,>=50.0.1"
+        }
+      ],
+      "complete_service_wall_seconds": 1.0421137839985022,
+      "inclusive_cpu_seconds": 1.0117610049999999,
+      "native": null
+    },
+    {
+      "family": "cryptography",
+      "arm": "B",
+      "accepted": true,
+      "verdict": "CONFLICT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [
+        {
+          "actual": "50.0.0",
+          "kind": "root_version",
+          "requirement": "cryptography<51,>=50.0.1"
+        }
+      ],
+      "complete_service_wall_seconds": 1.2295738649991108,
+      "inclusive_cpu_seconds": 1.235831288,
+      "native": {
+        "pack_sha256": "d9dfaec0e04580c52d800b60a57f41da221d11a67e0e21d20435e638d2c6f49f",
+        "inspection_sha256": "ca23fbd8cbbeb291fe4b6d1a06e8823530093673bed66994677405f7e4d893cb",
+        "source_sha256": "f8aaadfb6420846466c6e93def2f891099de6150c0ba35c1fa1a28e2758a799c",
+        "admission": "HOLD",
+        "runtime_model_calls": 0
+      }
+    },
+    {
+      "family": "cryptography",
+      "arm": "C",
+      "accepted": true,
+      "verdict": "CONFLICT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [
+        {
+          "actual": "50.0.0",
+          "kind": "root_version",
+          "requirement": "cryptography<51,>=50.0.1"
+        }
+      ],
+      "complete_service_wall_seconds": 1.1857697859995824,
+      "inclusive_cpu_seconds": 1.1331680039999998,
+      "native": null
+    },
+    {
+      "family": "eth-account",
+      "arm": "B",
+      "accepted": true,
+      "verdict": "CONFLICT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [
+        {
+          "actual": "0.13.6",
+          "kind": "root_version",
+          "requirement": "eth-account<0.14,>=0.13.7"
+        }
+      ],
+      "complete_service_wall_seconds": 1.471722204998514,
+      "inclusive_cpu_seconds": 1.4548646200000008,
+      "native": {
+        "pack_sha256": "4ea3f7740b163b0f26e6804056ef90dbece5cd6032b22c51491e4aff0661bc7e",
+        "inspection_sha256": "b2a1f837b98dd94210911b839a8dc150b1c1f86300bd1f56aa78db9f7bebbef0",
+        "source_sha256": "f8aaadfb6420846466c6e93def2f891099de6150c0ba35c1fa1a28e2758a799c",
+        "admission": "HOLD",
+        "runtime_model_calls": 0
+      }
+    },
+    {
+      "family": "eth-account",
+      "arm": "C",
+      "accepted": true,
+      "verdict": "CONFLICT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [
+        {
+          "actual": "0.13.6",
+          "kind": "root_version",
+          "requirement": "eth-account<0.14,>=0.13.7"
+        }
+      ],
+      "complete_service_wall_seconds": 1.1347081140011142,
+      "inclusive_cpu_seconds": 1.1108202859999996,
+      "native": null
+    },
+    {
+      "family": "eth-account",
+      "arm": "A",
+      "accepted": true,
+      "verdict": "CONFLICT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [
+        {
+          "actual": "0.13.6",
+          "kind": "root_version",
+          "requirement": "eth-account<0.14,>=0.13.7"
+        }
+      ],
+      "complete_service_wall_seconds": 1.1362949030008167,
+      "inclusive_cpu_seconds": 1.0815968340000004,
+      "native": null
+    },
+    {
+      "family": "prometheus-client",
+      "arm": "C",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.2837999709990982,
+      "inclusive_cpu_seconds": 1.2207068019999996,
+      "native": null
+    },
+    {
+      "family": "prometheus-client",
+      "arm": "A",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.2346346090016596,
+      "inclusive_cpu_seconds": 1.1556445909999988,
+      "native": null
+    },
+    {
+      "family": "prometheus-client",
+      "arm": "B",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.4258174449969374,
+      "inclusive_cpu_seconds": 1.366834449,
+      "native": {
+        "pack_sha256": "ef021f72818dd8f6428128323a14ff231702cf06da6c064acf1ae50da36de29f",
+        "inspection_sha256": "93b580f3d1a420956a0bd43ae2167116eac1ecb0dbda44f2ee7709c73d6ecc68",
+        "source_sha256": "f8aaadfb6420846466c6e93def2f891099de6150c0ba35c1fa1a28e2758a799c",
+        "admission": "HOLD",
+        "runtime_model_calls": 0
+      }
+    },
+    {
+      "family": "pydantic-settings",
+      "arm": "A",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 245,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.1824783320007555,
+      "inclusive_cpu_seconds": 1.0996561680000012,
+      "native": null
+    },
+    {
+      "family": "pydantic-settings",
+      "arm": "B",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 245,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.3714404209968052,
+      "inclusive_cpu_seconds": 1.3704169809999986,
+      "native": {
+        "pack_sha256": "9a7ab6ea8f1a79681e6b247a84f96150ffc802f6e13383ab651e0795cb9c9f55",
+        "inspection_sha256": "7a1b735ebbd0aecfe92630c8f52da88784baf70bfe5dca43c4833d646ac55caf",
+        "source_sha256": "f8aaadfb6420846466c6e93def2f891099de6150c0ba35c1fa1a28e2758a799c",
+        "admission": "HOLD",
+        "runtime_model_calls": 0
+      }
+    },
+    {
+      "family": "pydantic-settings",
+      "arm": "C",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 245,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.2338582279990078,
+      "inclusive_cpu_seconds": 1.1580214199999999,
+      "native": null
+    },
+    {
+      "family": "pyyaml",
+      "arm": "B",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.1683287430023483,
+      "inclusive_cpu_seconds": 1.1656625759999988,
+      "native": {
+        "pack_sha256": "c725ff757129ae32bcb50cf40d017152199fc6804962fc73aee55f771a9a43c3",
+        "inspection_sha256": "95bb0db961eaad64821a6e2f5dde52680e9566224b6d1e1c1e8460eac441e401",
+        "source_sha256": "f8aaadfb6420846466c6e93def2f891099de6150c0ba35c1fa1a28e2758a799c",
+        "admission": "HOLD",
+        "runtime_model_calls": 0
+      }
+    },
+    {
+      "family": "pyyaml",
+      "arm": "C",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.0824623650005378,
+      "inclusive_cpu_seconds": 0.9985882600000009,
+      "native": null
+    },
+    {
+      "family": "pyyaml",
+      "arm": "A",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 0.9817438770005538,
+      "inclusive_cpu_seconds": 0.9491743789999996,
+      "native": null
+    },
+    {
+      "family": "uvicorn",
+      "arm": "C",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.1323875650014088,
+      "inclusive_cpu_seconds": 1.0700510799999976,
+      "native": null
+    },
+    {
+      "family": "uvicorn",
+      "arm": "A",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.234135997001431,
+      "inclusive_cpu_seconds": 1.1620316390000007,
+      "native": null
+    },
+    {
+      "family": "uvicorn",
+      "arm": "B",
+      "accepted": true,
+      "verdict": "CONSISTENT",
+      "pip_exit_code": 0,
+      "distributions": 41,
+      "metadata_requirement_edges": 244,
+      "active_edges": 57,
+      "witnesses": [],
+      "complete_service_wall_seconds": 1.3712288800015813,
+      "inclusive_cpu_seconds": 1.3280624559999983,
+      "native": {
+        "pack_sha256": "9e3261a895a227777536c6810a947588176d97a879a12eb8ed2076b9a39bc0c7",
+        "inspection_sha256": "cee2417640c551dbcec7bca027960f03e7716f0683cb3c191435bb3a6de693e8",
+        "source_sha256": "f8aaadfb6420846466c6e93def2f891099de6150c0ba35c1fa1a28e2758a799c",
+        "admission": "HOLD",
+        "runtime_model_calls": 0
+      }
+    }
+  ],
+  "independence": {
+    "verifier_written_before_fresh_targets_and_producer_review": true,
+    "same_session_distinct_agent_role": true,
+    "external_customer_or_institutional_acceptance": false,
+    "shared_frozen_verifier_for_all_arms": true,
+    "archival_reverification_is_separate_oracle": false,
+    "method": "Independently authored verifier recomputed from raw wheel metadata, project inputs and recorded pip artifacts; post-run source/hash/selection audit plus direct project-root constraint check. Archival recomputation uses that same frozen verifier and cannot be treated as a second independent implementation.",
+    "shared_components": [
+      "pip",
+      "packaging marker/specifier semantics",
+      "Python standard libraries",
+      "same native environment and public wheel cache"
+    ]
+  },
+  "claim_limits": [
+    "COMPLETE/CONFLICT is an accepted useful negative; it is not a failed acceptance.",
+    "The two negative questions are project-root version contradictions. All eighteen pip dry-run commands returned zero; there is no observed resolver failure in this fresh panel.",
+    "The four metadata-consistent questions are not installation, application behavior, security or release qualifications.",
+    "Six research-proposed predecessor substitutions are not representative customer orders or actual historical application locks.",
+    "One invocation per arm and family, shared host/cache and balanced order provide descriptive timing only; no population reliability or human effort estimate.",
+    "B gives the same six accepted outcomes as both strong alternatives and is slower than each in all six matched questions. No measured incremental production gain is established.",
+    "Native Workbench performs local research orchestration with HOLD, empty authority, disconnected settlement and zero runtime model calls; authoring is assistant supplied.",
+    "The Workbench reviewMinutes schema field is not observed labor, operating revenue or a financial action.",
+    "No customer acceptance, commercial collections or autonomous invention is observed.",
+    "No whole-application service runtime was installed or restarted by this production experiment.",
+    "Recorded hashes and timestamps establish internal archive consistency; they do not supply hostile-recorder attestation.",
+    "The fresh negative cases exercise root-version rejection, not a newly discovered transitive conflict. Harder metadata failure modes are covered by separately labeled synthetic controls.",
+    "C was authored by a separate assistant builder role with ordinary tools. This is not evidence from a hired human professional or an external institution."
+  ],
+  "practical_usability": {
+    "machine_readable_packets": "All eighteen supply exact job and artifact bindings, raw pip stdout/stderr/report, tool versions, independent wheel graph and scope-limited verdict.",
+    "negative_reason": "Certificates state the source requirement and rejected version; B and C also present root findings in their result. cryptography50.0.0 is below >=50.0.1; eth-account0.13.6 is below >=0.13.7.",
+    "positive_reason": "Certificates expose forty-one selected distributions, active/inactive dependency edges, roots, hashes and native environment for review.",
+    "standalone_consumer_requirement": "Keep job inputs and wheel cache with the output packet. A report JSON alone is not a self-contained portable closure.",
+    "common_human_reader": "At review time technical JSON is inspectable. A common EN/FR reader should explain source-root negatives despite pip exit0 and retain the application-qualification limitation; later presentation work must not be scored as additional production acceptance."
+  },
+  "audit_wall_seconds": 1.8799068490006903,
+  "supplementary_reviews": [
+    {
+      "path": "review/native-pack-review.json",
+      "sha256": "76725709d6035193ff06df262791d8900a266e31b1beab64786612437be4e73a",
+      "passed": true
+    },
+    {
+      "path": "review/prior-cohort-identity-review.json",
+      "sha256": "94f11ce0777e9fc6145972315c1900baedd04f0df8977c2d05466c43802e5b96",
+      "passed": true
+    }
+  ]
+}

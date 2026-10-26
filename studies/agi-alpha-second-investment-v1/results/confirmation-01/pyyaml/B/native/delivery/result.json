@@ -1,0 +1,56 @@
+{
+  "schema": "agialpha-lock-result/v1",
+  "job_sha256": "60cc5c42afaea777bf9878b3ccbde7e621f93a05a9d3aba9ffcb92eeb587b2a0",
+  "job_id": "full-lock-pyyaml-6.0.2",
+  "decision": "CONSISTENT",
+  "pip_exit_code": 0,
+  "files": {
+    "stdout": "pip.stdout.txt",
+    "stderr": "pip.stderr.txt",
+    "report": "pip-report.json"
+  },
+  "tool_versions": {
+    "python": "3.12.14",
+    "pip": "26.2.2",
+    "packaging": "26.3"
+  },
+  "application_qualified": false,
+  "authority": [],
+  "financial_action": false,
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pip",
+      "--isolated",
+      "--disable-pip-version-check",
+      "install",
+      "--dry-run",
+      "--ignore-installed",
+      "--no-index",
+      "--find-links",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/pyyaml/B/native/delivery/selected-wheels",
+      "--only-binary=:all:",
+      "--require-hashes",
+      "--report",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/pyyaml/B/native/delivery/pip-report.json",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/confirmation/pyyaml/requirements.lock",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/pyyaml/B/native/delivery/root-requirements.lock"
+    ]
+  ],
+  "method": "retained ordinary-pip full-lock preflight",
+  "preflight_findings": [],
+  "elapsed_wall_seconds": 0.7462355159987055,
+  "cpu_seconds": 0.73191282,
+  "artifacts_sha256": {
+    "pip.stdout.txt": "3369789af91b97ea94b7adb30418dd57ec4fa87a324b2ea8cacaef6b14d84f57",
+    "pip.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pip-report.json": "f2dcbc70516e7beba0ef3847955372335a3e987d16c633fb0f45235fa30db548"
+  },
+  "limits": [
+    "Wheel metadata consistency only; application behavior, vulnerabilities and release qualification remain separate.",
+    "Research-proposed lock; no customer order, installation, authority or financial transaction."
+  ]
+}

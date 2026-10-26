@@ -1,0 +1,70 @@
+{
+  "schema": "agi-alpha-root-reported-publication-failures/v1",
+  "recorded_at": "2026-10-26T18:44:00.472470+00:00",
+  "provenance": "Parent researcher task message to accounting reviewer; not a timed command receipt",
+  "actions": [
+    {
+      "id": "latex-moving-argument",
+      "action": "First LaTeX attempt",
+      "status": "failed",
+      "reason": "Moving-argument path macro failure",
+      "correction": "Robust text macro"
+    },
+    {
+      "id": "latex-table-bottomrule",
+      "action": "Second LaTeX attempt",
+      "status": "failed",
+      "reason": "Input-derived table bottomrule failure",
+      "correction": "Inline derived table rows"
+    },
+    {
+      "id": "latex-later-success",
+      "action": "Later PDF compile",
+      "status": "parent_reports_pass_15_pages",
+      "reason": "Subsequent publication work continues; final PDF identity belongs to final delivery",
+      "correction": null
+    },
+    {
+      "id": "latex-intermediate-success",
+      "action": "Subsequent intermediate PDF compile",
+      "status": "parent_reports_pass_16_pages",
+      "reason": "Parent reported16-page compile before subsequent layout refinements",
+      "correction": null
+    },
+    {
+      "id": "publication-relative-path-failure",
+      "action": "Publication patch command from wrong work directory",
+      "status": "failed_no_source_change",
+      "reason": "FileNotFoundError from wrong relative path under publication working directory; command corrected",
+      "correction": "Correct path then compile"
+    },
+    {
+      "id": "latex-final-success",
+      "action": "Final layout compile and PDF inspection",
+      "status": "parent_reports_pass_15_pages_323855_bytes",
+      "reason": "Robustness figure restored to float and bibliography spacing tightened; parent inspected all15 rendered pages via contact sheet plus full pages1,6,7,10,14; no LaTeX warnings, overfull or underfull boxes reported",
+      "correction": null
+    },
+    {
+      "id": "chromium-download",
+      "action": "Bundled Chromium151 download",
+      "status": "failed",
+      "reason": "Invalid ZIP; CLI made five internal retries",
+      "internal_retries_reported": 5
+    },
+    {
+      "id": "chromium-old-head",
+      "action": "Archived Chromium revision1200 HEAD probe",
+      "status": "failed",
+      "reason": "Returned HTML,195 bytes; no usable browser"
+    }
+  ],
+  "wall_seconds_each": null,
+  "cpu_seconds_each": null,
+  "model_billing_usd": null,
+  "active_human_minutes": null,
+  "working_browser_established": false,
+  "html_visual_layout_verified": false,
+  "pdf_layout_inspection": "Parent reports all15 pages inspected as contact sheet and selected full-size pages; distinct from unavailable HTML browser inspection",
+  "note": "The separately metered Playwright missing-executable attempt is indexed from its original receipt, not duplicated here. PDF compilation alone is not page-layout inspection."
+}

@@ -1,0 +1,82 @@
+{
+  "schema": "conventional-development-checks/v1",
+  "fresh_confirmation": false,
+  "source_sha256": "b96531af759a5153cc0e9883efe60b8296a44ceb376c1933391e4fd846a91e56",
+  "wall_seconds": 2.1155988829996204,
+  "cpu_seconds": 1.955180346,
+  "results": [
+    {
+      "case": "root-conflict",
+      "expected": "CONFLICT",
+      "observed": "CONFLICT",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-root-conflict.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-root-conflict"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-root-conflict\", \"decision\": \"CONFLICT\", \"elapsed_wall_seconds\": 1.0557794619999186, \"cpu_seconds\": 1.010825687}\n",
+      "stderr": "",
+      "result_sha256": "67d5c2464664f928cd7c1eacb8e60352c3b3e813f8f70855d5c2d557a9a503c0"
+    },
+    {
+      "case": "missing-wheel",
+      "expected": "INCOMPLETE",
+      "observed": "INCOMPLETE",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-missing-wheel.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-missing-wheel"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-missing-wheel\", \"decision\": \"INCOMPLETE\", \"elapsed_wall_seconds\": 0.5910203179992095, \"cpu_seconds\": 0.537952759}\n",
+      "stderr": "",
+      "result_sha256": "2dec47db9782bdf00286b5bd9b395011e9bd8522d5b4a82b1a5bb923af8c0ed8"
+    },
+    {
+      "case": "hash-mismatch",
+      "expected": "INCOMPLETE",
+      "observed": "INCOMPLETE",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-hash-mismatch.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-hash-mismatch"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-hash-mismatch\", \"decision\": \"INCOMPLETE\", \"elapsed_wall_seconds\": 0.0032562179985689, \"cpu_seconds\": 0.003253192000000002}\n",
+      "stderr": "",
+      "result_sha256": "3fbd92aba5bc08918e615bc97af72213e0178aa4f31cf6c5673dafce7d4f3ddd"
+    },
+    {
+      "case": "target-mismatch",
+      "expected": "INCOMPLETE",
+      "observed": "INCOMPLETE",
+      "passed": true,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/production/conventional.py",
+        "--job",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/job-target-mismatch.json",
+        "--out",
+        "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/resources/conventional/development-target-mismatch"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"job_id\": \"C-development-target-mismatch\", \"decision\": \"INCOMPLETE\", \"elapsed_wall_seconds\": 0.003045770998141961, \"cpu_seconds\": 0.002815061999999993}\n",
+      "stderr": "",
+      "result_sha256": "ad2c7dc3ca7ff128655214883626b59b9f5606a24f1c664d337d00549b9db1c6"
+    }
+  ],
+  "passed": true
+}

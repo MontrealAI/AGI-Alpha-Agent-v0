@@ -1,0 +1,40 @@
+{
+  "schema": "agialpha-review-resolution/v1",
+  "finding_id": "F01",
+  "reviewed_at": "2026-10-26T18:08:09.436137+00:00",
+  "status": "CLOSED_BY_SOURCE_INSPECTION",
+  "source": "production/workbench.mjs",
+  "source_sha256": "450df8c140e35d89a9777be7e2d884d0b9a13004c37aa6a4c0bbd4bc76289414",
+  "required_expression": "decision:verification.status==='COMPLETE'?verification.verdict:'INCOMPLETE'",
+  "semantic_controls": [
+    {
+      "raw": "CONSISTENT",
+      "verification_status": "INCOMPLETE",
+      "verified": "INCOMPLETE",
+      "expected": "INCOMPLETE",
+      "observed": "INCOMPLETE",
+      "passed": true
+    },
+    {
+      "raw": "CONSISTENT",
+      "verification_status": "COMPLETE",
+      "verified": "CONSISTENT",
+      "expected": "CONSISTENT",
+      "observed": "CONSISTENT",
+      "passed": true
+    },
+    {
+      "raw": "CONFLICT",
+      "verification_status": "COMPLETE",
+      "verified": "CONFLICT",
+      "expected": "CONFLICT",
+      "observed": "CONFLICT",
+      "passed": true
+    }
+  ],
+  "controls_scope": "Direct truth-table for corrected decision expression, not fresh production or complete native Workbench negative execution",
+  "raw_result_preserved": "lock-decision.json still contains producer receipt; headline now follows independent certificate",
+  "verification_source_changed": false,
+  "contract_changed": false,
+  "fresh_candidate_metadata_inspected": false
+}

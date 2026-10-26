@@ -1,0 +1,49 @@
+{
+  "schema": "agialpha-lock-result/v1",
+  "job_sha256": "60cc5c42afaea777bf9878b3ccbde7e621f93a05a9d3aba9ffcb92eeb587b2a0",
+  "job_id": "full-lock-pyyaml-6.0.2",
+  "decision": "CONSISTENT",
+  "pip_exit_code": 0,
+  "files": {
+    "stdout": "pip.stdout.txt",
+    "stderr": "pip.stderr.txt",
+    "report": "pip-report.json"
+  },
+  "tool_versions": {
+    "python": "3.12.14",
+    "pip": "26.2.2",
+    "packaging": "26.3"
+  },
+  "elapsed_wall_seconds": 0.6722962390012981,
+  "cpu_seconds": 0.665305216,
+  "application_qualified": false,
+  "authority": [],
+  "financial_action": false,
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "pip",
+      "--isolated",
+      "--disable-pip-version-check",
+      "install",
+      "--dry-run",
+      "--ignore-installed",
+      "--no-index",
+      "--find-links",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/wheels",
+      "--only-binary=:all:",
+      "--require-hashes",
+      "--report",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/pyyaml/A/delivery/pip-report.json",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/inputs/confirmation/pyyaml/requirements.lock",
+      "-r",
+      "/workspace/scratch/33fef13ff44f/alpha/studies/agi-alpha-second-investment-v1/results/confirmation-01/pyyaml/A/delivery/root-requirements.lock"
+    ]
+  ],
+  "root_conflicts": [],
+  "method": "direct standard pip workflow; generic measurement wrapper",
+  "new_retained_enterprise_capability": false,
+  "human_finalization_minutes": null
+}

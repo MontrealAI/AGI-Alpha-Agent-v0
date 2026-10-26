@@ -1,0 +1,97 @@
+{
+  "application_qualified": false,
+  "authority": [],
+  "dependency_edges": [
+    {
+      "active": true,
+      "metadata_requirement_index": 0,
+      "metadata_sha256": "a69d6b4b9136593e761d4b2c6c9685f3bd0d0aec3633987d3f8681ae405bb517",
+      "requirement": "helper[audit]>=1.0",
+      "satisfied": true,
+      "selected_version": "1.0",
+      "source": "candidate-app",
+      "source_version": "1.0",
+      "target": "helper"
+    },
+    {
+      "active": true,
+      "metadata_requirement_index": 0,
+      "metadata_sha256": "32d9a277d0f15e983c232041c70f91a5cbab42a8a43bb0d520e2a704d1583fdf",
+      "requirement": "absent>=1.0; extra == \"audit\"",
+      "satisfied": false,
+      "selected_version": null,
+      "source": "helper",
+      "source_version": "1.0",
+      "target": "absent"
+    }
+  ],
+  "errors": [],
+  "evidence": {
+    "active_lock_count": 2,
+    "lock_sha256": "6126a957c9821d789b07fac82fc0a6b211af16f76bd5b6a90c3fc6b1d51d9ca6",
+    "pyproject_sha256": "a8132e336e705a3d1afed4a8c96f2c931e0f0f5f05ea42cd8d521f3c2e81168d",
+    "roots": [
+      {
+        "active": true,
+        "requirement": "candidate-app>=1.0"
+      }
+    ],
+    "selected_extras": {
+      "candidate-app": [],
+      "helper": [
+        "audit"
+      ]
+    },
+    "stderr_sha256": "ed59fae8e63285b17d2cebb6455714f7b1f2bd81e376d7144f966ad4903e97a1",
+    "stdout_sha256": "4a757c4438dde7030d0b9cf39302a1b53c2a79c54473f83028cb4fd117607c60",
+    "wheels": [
+      {
+        "filename": "candidate_app-1.0-py3-none-any.whl",
+        "metadata_sha256": "a69d6b4b9136593e761d4b2c6c9685f3bd0d0aec3633987d3f8681ae405bb517",
+        "name": "candidate-app",
+        "requires_python": ">=3.11",
+        "sha256": "4fe2fb3134dd99cc5aca0f4a896ac7b91d803c26c3b49235d43021e23ae34753",
+        "version": "1.0"
+      },
+      {
+        "filename": "helper-1.0-py3-none-any.whl",
+        "metadata_sha256": "32d9a277d0f15e983c232041c70f91a5cbab42a8a43bb0d520e2a704d1583fdf",
+        "name": "helper",
+        "requires_python": ">=3.11",
+        "sha256": "4e363b07fb20f3759efd09de55f12471fb2f08641cc5ec29c4dfdbc4e5de763f",
+        "version": "1.0"
+      }
+    ]
+  },
+  "evidence_limit": "Independent byte and metadata checking of supplied artifacts and recorded pip output; no hostile-recorder attestation or fresh consumer execution.",
+  "financial_action": false,
+  "independent_metadata_verdict": "CONFLICT",
+  "job_id": "synthetic-recursive-extra",
+  "job_sha256": "50955436bc7d9155f55d1afab4e957cef113aa23612fd0766a641736875bff8f",
+  "result_sha256": "e9f3538c767aac9cbbc4dea11972f6c5fe2cd2bdcb00704ea4461ebd18f8d42f",
+  "schema": "agialpha-independent-lock-certificate/v1",
+  "scope": "Exact declared native interpreter and wheel metadata dependency constraints only; no application behavior, security, runtime, release or installation qualification.",
+  "status": "COMPLETE",
+  "substantiated_witnesses": [
+    {
+      "active": true,
+      "kind": "missing_dependency_pin",
+      "metadata_requirement_index": 0,
+      "metadata_sha256": "32d9a277d0f15e983c232041c70f91a5cbab42a8a43bb0d520e2a704d1583fdf",
+      "requirement": "absent>=1.0; extra == \"audit\"",
+      "satisfied": false,
+      "selected_version": null,
+      "source": "helper",
+      "source_version": "1.0",
+      "target": "absent"
+    }
+  ],
+  "verdict": "CONFLICT",
+  "verifier": {
+    "cpu_seconds": 0.0020771220000000007,
+    "packaging": "26.3",
+    "python": "3.12.14",
+    "source_sha256": "583bc6d7cb5736d6805ceb87407fcf1b3c234de813aad1fba38270d875cfb586",
+    "wall_seconds": 0.0020768350004800595
+  }
+}
